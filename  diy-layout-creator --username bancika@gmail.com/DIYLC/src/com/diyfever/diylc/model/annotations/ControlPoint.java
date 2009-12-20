@@ -1,0 +1,40 @@
+package com.diyfever.diylc.model.annotations;
+
+import java.awt.Point;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import com.diyfever.diylc.model.VisibilityPolicy;
+
+/**
+ * Annotation for control points. This annotation may be added to a field XYZ of
+ * type {@link Point} only when both getters and setters for that property
+ * exist. Annotation is added always on the getter.
+ * 
+ * @author Branislav Stojkovic
+ */
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ControlPoint {
+
+	/**
+	 * Determines when should the control point be rendered on the screen.
+	 * 
+	 * @return
+	 */
+	VisibilityPolicy visibilityPolicy() default VisibilityPolicy.ALWAYS;
+
+	/**
+	 * If true, application will allow the user to edit the control point.
+	 * 
+	 * @return
+	 */
+	boolean editable() default true;
+
+	/**
+	 * If true, the control point may be joined with other components' control
+	 * points.
+	 * 
+	 * @return
+	 */
+	boolean sticky() default true;
+}
