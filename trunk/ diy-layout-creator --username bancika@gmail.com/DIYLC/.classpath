@@ -9,6 +9,7 @@
 	<classpathentry kind="lib" path="lib/iText-2.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/cloning-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/objenesis-1.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/GUI-Framework"/>
+	<classpathentry kind="lib" path="lib/bancika-gui-framework.jar"/>
+	<classpathentry kind="lib" path="lib/HttpProxy.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
