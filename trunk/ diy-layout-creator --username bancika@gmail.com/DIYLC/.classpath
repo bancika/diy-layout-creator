@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/objenesis-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/bancika-gui-framework.jar"/>
 	<classpathentry kind="lib" path="lib/HttpProxy.jar"/>
+	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
