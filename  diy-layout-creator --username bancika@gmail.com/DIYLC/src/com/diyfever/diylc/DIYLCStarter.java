@@ -1,5 +1,9 @@
 package com.diyfever.diylc;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
+
 import javax.swing.UIManager;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -16,7 +20,14 @@ public class DIYLCStarter {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		PropertyConfigurator.configure("log4j.properties");
+		URL url = DIYLCStarter.class.getResource("log4j.properties");
+		Properties properties = new Properties();
+		try {
+			properties.load(url.openStream());
+			PropertyConfigurator.configure(properties);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
