@@ -10,7 +10,7 @@ import com.diyfever.diylc.model.VisibilityPolicy;
 public class ControlPointWrapper {
 
 	private String name;
-	private ActivePoint value;
+	private Point value;
 	private Method setter;
 	private Method getter;
 	private boolean editable;
@@ -31,12 +31,7 @@ public class ControlPointWrapper {
 	public void readFrom(IComponentInstance component)
 			throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
-		Object object = getter.invoke(component);
-		if (object instanceof ActivePoint) {
-			value = (ActivePoint) getter.invoke(component);
-		} else {
-			value = new ActivePoint((Point) object);
-		}
+		value = (Point) getter.invoke(component);
 	}
 
 	public void writeTo(IComponentInstance component)
@@ -57,11 +52,11 @@ public class ControlPointWrapper {
 		return sticky;
 	}
 
-	public ActivePoint getValue() {
+	public Point getValue() {
 		return value;
 	}
 
-	public void setValue(ActivePoint value) {
+	public void setValue(Point value) {
 		this.value = value;
 	}
 

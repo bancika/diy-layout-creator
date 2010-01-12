@@ -12,11 +12,13 @@ import org.apache.log4j.Logger;
 import com.diyfever.diylc.common.ControlPointWrapper;
 import com.diyfever.diylc.common.PropertyWrapper;
 import com.diyfever.diylc.model.IComponentInstance;
+import com.diyfever.diylc.model.annotations.BomName;
+import com.diyfever.diylc.model.annotations.BomValue;
 import com.diyfever.diylc.model.annotations.ControlPoint;
 import com.diyfever.diylc.model.annotations.EditableProperty;
 import com.rits.cloning.Cloner;
 
-class ComponentProcessor {
+public class ComponentProcessor {
 
 	private static final Logger LOG = Logger
 			.getLogger(ComponentProcessor.class);
@@ -157,5 +159,33 @@ class ComponentProcessor {
 			// }
 		}
 		return properties;
+	}
+
+	public String extractBomName(IComponentInstance component) {
+		String name = null;
+		for (Method method : component.getClass().getMethods()) {
+			if (method.isAnnotationPresent(BomName.class)) {
+				try {
+					name = method.invoke(component).toString();
+				} catch (Exception e) {
+					name = null;
+				}
+			}
+		}
+		return name;
+	}
+
+	public String extractBomValue(IComponentInstance component) {
+		String value = null;
+		for (Method method : component.getClass().getMethods()) {
+			if (method.isAnnotationPresent(BomValue.class)) {
+				try {
+					value = method.invoke(component).toString();
+				} catch (Exception e) {
+					value = null;
+				}
+			}
+		}
+		return value;
 	}
 }

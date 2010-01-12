@@ -51,5 +51,5 @@ public enum EventType {
 	 * {@link Project} are passed as parameters, one before and one after the
 	 * change. The third parameter is a string containing change description.
 	 */
-	PROJECT_MODIFIED;
+	PROJECT_MODIFIED, AVAILABLE_CTRL_POINTS_CHANGED, SELECTED_CTRL_POINTS_CHANGED, ;
 }

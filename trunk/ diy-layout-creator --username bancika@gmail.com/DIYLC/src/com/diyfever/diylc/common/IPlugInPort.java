@@ -144,11 +144,13 @@ public interface IPlugInPort {
 	 * 
 	 * @param point
 	 */
-	void pointClickedOn(Point point, boolean ctrlDown, boolean shiftDown,
+	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown,
 			boolean altDown);
 
+	void mouseMoved(Point point);
+
 	/**
-	 * Returns a list of currently selected components.
+	 * Returns the current {@link ComponentSelection}.
 	 * 
 	 * @return
 	 */

@@ -1,6 +1,5 @@
 package com.diyfever.diylc.plugins.file;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.diyfever.diylc.model.IComponentInstance;
-import com.diyfever.diylc.model.annotations.BomName;
-import com.diyfever.diylc.model.annotations.BomValue;
+import com.diyfever.diylc.presenter.ComponentProcessor;
 
 public class BomMaker {
 
@@ -29,24 +27,8 @@ public class BomMaker {
 	public List<BomEntry> createBom(List<IComponentInstance> components) {
 		Map<String, BomEntry> entryMap = new HashMap<String, BomEntry>();
 		for (IComponentInstance component : components) {
-			String name = null;
-			String value = null;
-			for (Method method : component.getClass().getMethods()) {
-				if (method.isAnnotationPresent(BomName.class)) {
-					try {
-						name = method.invoke(component).toString();
-					} catch (Exception e) {
-						name = null;
-					}
-				}
-				if (method.isAnnotationPresent(BomValue.class)) {
-					try {
-						value = method.invoke(component).toString();
-					} catch (Exception e) {
-						value = null;
-					}
-				}
-			}
+			String name = ComponentProcessor.getInstance().extractBomName(component);
+			String value = ComponentProcessor.getInstance().extractBomValue(component);
 			if ((name != null) && (value != null)) {
 				String key = name + "|" + value;
 				if (entryMap.containsKey(key)) {
