@@ -58,13 +58,19 @@ public class Presenter implements IPlugInPort {
 	private static final VersionNumber CURRENT_VERSION = new VersionNumber(0,
 			0, 0);
 	private static final String DEFAULTS_KEY = "defaults";
+	private static final int CONTROL_POINT_SENSITIVITY = 4;
 
 	private double zoomLevel = 1;
 	private Map<IComponentInstance, Area> componentAreaMap;
 	private Project currentProject;
 	private Map<String, List<IComponentType>> componentTypes;
 	private List<IPlugIn> plugIns;
+
 	private ComponentSelection selectedComponents;
+	// List of component names that have at least one of their control points
+	// under the last recorded mouse position.
+	private List<IComponentInstance> componentsUnderCursor;
+
 	private Cloner cloner;
 
 	private Rectangle selectionRect;
@@ -210,8 +216,7 @@ public class Presenter implements IPlugInPort {
 		}
 
 		AffineTransform initialTx = g2d.getTransform();
-		Dimension d = getCanvasDimensions(drawOptions
-				.contains(DrawOption.ZOOM));
+		Dimension d = getCanvasDimensions(drawOptions.contains(DrawOption.ZOOM));
 
 		g2dWrapper.setColor(Color.white);
 		g2dWrapper.fillRect(0, 0, d.width, d.height);
@@ -256,18 +261,14 @@ public class Presenter implements IPlugInPort {
 					List<ControlPointWrapper> controlPoints = ComponentProcessor
 							.getInstance().extractControlPoints(
 									component.getClass());
-					for (ControlPointWrapper point : controlPoints) {
+					for (ControlPointWrapper controlPoint : controlPoints) {
 						try {
-							point.readFrom(component);
-							if (point.getVisibilityPolicy().equals(
-									VisibilityPolicy.ALWAYS)
-									|| ((point.getVisibilityPolicy()
-											.equals(VisibilityPolicy.WHEN_SELECTED)) && (getSelectedComponents()
-											.contains(component)))) {
+							controlPoint.readFrom(component);
+							if (shouldShowControlPoint(controlPoint, component)) {
 								g2d.setColor(Color.blue);
 								g2d.setStroke(new BasicStroke(2));
-								g2d.drawOval(point.getValue().x - 2, point
-										.getValue().y - 2, 4, 4);
+								g2d.drawOval(controlPoint.getValue().x - 2,
+										controlPoint.getValue().y - 2, 4, 4);
 								// g2d.fillOval(point.getValue().x - 2, point
 								// .getValue().y - 2, 5, 5);
 							}
@@ -312,12 +313,17 @@ public class Presenter implements IPlugInPort {
 	// view.setCursorIcon(icon);
 	// }
 
+	/**
+	 * Finds all components whose areas include the specified {@link Point}.
+	 * Point is <b>not</b> scaled by the zoom factor.
+	 * 
+	 * @return
+	 */
 	private List<IComponentInstance> findComponentsAt(Point point) {
 		List<IComponentInstance> components = new ArrayList<IComponentInstance>();
 		for (Map.Entry<IComponentInstance, Area> entry : componentAreaMap
 				.entrySet()) {
-			if (entry.getValue().contains(point.x / zoomLevel,
-					point.y / zoomLevel)) {
+			if (entry.getValue().contains(point)) {
 				components.add(entry.getKey());
 			}
 		}
@@ -325,21 +331,22 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void pointClickedOn(Point point, boolean ctrlDown,
-			boolean shiftDown, boolean altDown) {
-		LOG.debug(String.format("pointClickedOn(%s, %s, %s, %s)", point,
+	public void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown,
+			boolean altDown) {
+		LOG.debug(String.format("mouseClicked(%s, %s, %s, %s)", point,
 				ctrlDown, shiftDown, altDown));
+		Point scaledPoint = scalePoint(point);
 		if (componentSlot != null) {
 			try {
 				instantiateComponent(componentSlot.getComponentInstanceClass(),
-						point);
+						scaledPoint);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("Error instatiating component of type: "
+						+ componentSlot.getComponentInstanceClass().getName());
 			}
 			setNewComponentSlot(null);
 		} else {
-			List<IComponentInstance> components = findComponentsAt(point);
+			List<IComponentInstance> components = findComponentsAt(scaledPoint);
 			// If there's nothing under mouse cursor deselect all.
 			if (components.isEmpty()) {
 				selectedComponents.clear();
@@ -366,6 +373,36 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
+	public void mouseMoved(Point point) {
+		List<IComponentInstance> components = new ArrayList<IComponentInstance>();
+		Point scaledPoint = scalePoint(point);
+		for (IComponentInstance component : currentProject.getComponents()) {
+			List<ControlPointWrapper> currentPoints = ComponentProcessor
+					.getInstance().extractControlPoints(component.getClass());
+			for (ControlPointWrapper controlPoint : currentPoints) {
+				if (shouldShowControlPoint(controlPoint, component)) {
+					try {
+						controlPoint.readFrom(component);
+						if (scaledPoint.distance(controlPoint.getValue()) < CONTROL_POINT_SENSITIVITY) {
+							components.add(component);
+							break;
+						}
+					} catch (Exception e) {
+						LOG
+								.warn("Error reading control point for component of type: "
+										+ component.getClass().getName());
+					}
+				}
+			}
+		}
+		if (!components.equals(componentsUnderCursor)) {
+			componentsUnderCursor = components;
+			messageDispatcher.dispatchMessage(
+					EventType.AVAILABLE_CTRL_POINTS_CHANGED, components);
+		}
+	}
+
+	@Override
 	public ComponentSelection getSelectedComponents() {
 		return new ComponentSelection(selectedComponents);
 	}
@@ -385,7 +422,8 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String.format("dragStarted(%s)", point));
 		dragInProgress = true;
 		dragStartPoint = point;
-		List<IComponentInstance> components = findComponentsAt(point);
+		Point scaledPoint = scalePoint(point);
+		List<IComponentInstance> components = findComponentsAt(scaledPoint);
 		if (components.isEmpty()) {
 			selectedComponents.clear();
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
@@ -624,5 +662,19 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED);
 		messageDispatcher
 				.dispatchMessage(EventType.SLOT_CHANGED, componentSlot);
+	}
+
+	private Point scalePoint(Point point) {
+		return new Point((int) (point.x / zoomLevel),
+				(int) (point.y / zoomLevel));
+	}
+
+	private boolean shouldShowControlPoint(ControlPointWrapper controlPoint,
+			IComponentInstance component) {
+		return controlPoint.getVisibilityPolicy().equals(
+				VisibilityPolicy.ALWAYS)
+				|| ((controlPoint.getVisibilityPolicy()
+						.equals(VisibilityPolicy.WHEN_SELECTED)) && (getSelectedComponents()
+						.contains(component)));
 	}
 }

@@ -142,6 +142,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				setCursor(plugInPort.getCursorAt(e.getPoint()));
+				plugInPort.mouseMoved(e.getPoint());
 			}
 		});
 		addMouseListener(new MouseAdapter() {
@@ -181,9 +182,9 @@ class CanvasPanel extends JComponent implements Autoscroll {
 							}
 						}
 					} else {
-						plugInPort.pointClickedOn(e.getPoint(), e
-								.isControlDown(), e.isShiftDown(), e
-								.isAltDown());
+						plugInPort.mouseClicked(e.getPoint(),
+								e.isControlDown(), e.isShiftDown(), e
+										.isAltDown());
 					}
 				}
 			}

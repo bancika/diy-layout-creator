@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumSet;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -17,7 +18,9 @@ import com.diyfever.diylc.common.BadPositionException;
 import com.diyfever.diylc.common.EventType;
 import com.diyfever.diylc.common.IPlugIn;
 import com.diyfever.diylc.common.IPlugInPort;
+import com.diyfever.diylc.model.IComponentInstance;
 import com.diyfever.diylc.model.IComponentType;
+import com.diyfever.diylc.presenter.ComponentProcessor;
 import com.diyfever.gui.MemoryBar;
 import com.diyfever.gui.miscutils.PercentageListCellRenderer;
 import com.diyfever.gui.update.UpdateLabel;
@@ -32,6 +35,10 @@ public class StatusBar extends JPanel implements IPlugIn {
 	private JLabel statusLabel;
 
 	private IPlugInPort plugInPort;
+
+	// State variables
+	private IComponentType componentSlot;
+	private List<IComponentInstance> componentsUnderCursor;
 
 	public StatusBar() {
 		super();
@@ -135,9 +142,11 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
-		return EnumSet.of(EventType.ZOOM_CHANGED, EventType.SLOT_CHANGED);
+		return EnumSet.of(EventType.ZOOM_CHANGED, EventType.SLOT_CHANGED,
+				EventType.AVAILABLE_CTRL_POINTS_CHANGED);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processMessage(EventType eventType, Object... params) {
 		switch (eventType) {
@@ -147,16 +156,40 @@ public class StatusBar extends JPanel implements IPlugIn {
 			}
 			break;
 		case SLOT_CHANGED:
-			IComponentType componentType = (IComponentType) params[0];
-			if (componentType == null) {
+			componentSlot = (IComponentType) params[0];
+			refreshStatusText();
+			break;
+		case AVAILABLE_CTRL_POINTS_CHANGED:
+			componentsUnderCursor = (List<IComponentInstance>) params[0];
+			refreshStatusText();
+			break;
+		}
+	}
+
+	private void refreshStatusText() {
+		if (componentSlot == null) {
+			if ((componentsUnderCursor == null)
+					|| (componentsUnderCursor.isEmpty())) {
 				getStatusLabel().setText("");
 			} else {
+				String formattedNames = "";
+				int n = 1;
+				for (IComponentInstance component : componentsUnderCursor) {
+					if (n > 1) {
+						formattedNames += ", ";
+					}
+					formattedNames += ComponentProcessor.getInstance()
+							.extractBomName(component)
+							+ " (<b><font color=\"blue\">" + n++ + "</font></b>)";
+				}
 				getStatusLabel().setText(
-						"Click on the canvas to create a new "
-								+ componentType.getName()
-								+ " or press Esc to cancel");
+						"<html>" + "Edit: " + formattedNames + "</html>");
 			}
-			break;
+		} else {
+			getStatusLabel().setText(
+					"Click on the canvas to create a new "
+							+ componentSlot.getName()
+							+ " or press Esc to cancel");
 		}
 	}
 }
