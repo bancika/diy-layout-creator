@@ -8,9 +8,20 @@ import com.diyfever.diylc.model.annotations.EditableProperty;
 import com.diyfever.diylc.model.measures.Size;
 import com.diyfever.diylc.model.measures.SizeUnit;
 
+/**
+ * Entity class that defines a project. Contains project properties and a
+ * collection of components.This class is serialized to file. Some filed getters
+ * are tagged with {@link EditableProperty} to enable for user to edit them.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class Project implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public static String DEFAULT_TITLE = "New Project";
+	public static Size DEFAULT_WIDTH = new Size(29d, SizeUnit.cm);
+	public static Size DEFAULT_HEIGHT = new Size(21d, SizeUnit.cm);
 
 	private String title;
 	private String author;
@@ -21,10 +32,10 @@ public class Project implements Serializable {
 
 	public Project() {
 		components = new ArrayList<IComponentInstance>();
-		title = "New Project";
+		title = DEFAULT_TITLE;
 		author = System.getProperty("user.name");
-		width = new Size(29d, SizeUnit.cm);
-		height = new Size(21d, SizeUnit.cm);
+		width = DEFAULT_WIDTH;
+		height = DEFAULT_HEIGHT;
 	}
 
 	public Project(String title, String author, String description, Size width, Size height,

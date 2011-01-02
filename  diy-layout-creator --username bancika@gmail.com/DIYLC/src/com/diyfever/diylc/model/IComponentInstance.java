@@ -23,6 +23,4 @@ public interface IComponentInstance extends Serializable {
 	 * @param componentState
 	 */
 	void draw(Graphics2D g2d, ComponentState componentState);
-
-	// IComponentInstance clone() throws CloneNotSupportedException;
 }
