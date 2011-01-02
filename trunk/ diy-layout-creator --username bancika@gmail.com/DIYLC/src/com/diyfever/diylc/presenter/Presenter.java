@@ -196,7 +196,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, EnumSet<DrawOption> drawOptions) {
+	public void draw(Graphics2D g2d, Set<DrawOption> drawOptions) {
 		if (currentProject == null) {
 			return;
 		}

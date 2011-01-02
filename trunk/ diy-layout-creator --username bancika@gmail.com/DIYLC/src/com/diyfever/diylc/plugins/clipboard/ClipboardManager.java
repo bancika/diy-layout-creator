@@ -167,7 +167,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 						.getData(ComponentSelection.listFlavor);
 				plugInPort.addComponents(cloner.deepClone(components), null);
 			} catch (Exception ex) {
-				LOG.error(ex.getMessage());
+				LOG.error("Coule not paste.", ex);
 			}
 		}
 	}
