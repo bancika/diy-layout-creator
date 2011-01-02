@@ -1,7 +1,9 @@
 package com.diyfever.diylc.presenter;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -233,6 +235,9 @@ public class Presenter implements IPlugInPort {
 			g2dWrapper.scale(zoomLevel, zoomLevel);
 		}
 
+		Composite mainComposite = g2d.getComposite();
+		Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+
 		g2dWrapper.resetTx();
 
 		List<IComponentInstance> components = getCurrentProject().getComponents();
@@ -240,10 +245,26 @@ public class Presenter implements IPlugInPort {
 		if (components != null) {
 			for (IComponentInstance component : components) {
 				g2dWrapper.startedDrawingComponent();
-				ComponentState state = (selectedComponents.contains(component) && drawOptions
-						.contains(DrawOption.SELECTION)) ? ComponentState.SELECTED
-						: ComponentState.NORMAL;
+				ComponentState state = ComponentState.NORMAL;
+				if (drawOptions.contains(DrawOption.SELECTION)
+						&& selectedComponents.contains(component)) {
+					if (dragInProgress) {
+						state = ComponentState.DRAGGING;
+					} else {
+						state = ComponentState.SELECTED;
+					}
+				}
+				// If the component is being dragged, draw it in a separate
+				// composite.
+				if (state == ComponentState.DRAGGING) {
+					g2dWrapper.setComposite(alphaComposite);
+				}
+				// Draw the component through the g2dWrapper.
 				component.draw(g2dWrapper, state);
+				// Restore the composite if needed.
+				if (state == ComponentState.DRAGGING) {
+					g2dWrapper.setComposite(mainComposite);
+				}
 				componentAreaMap.put(component, g2dWrapper.finishedDrawingComponent());
 
 				// Draw control points
@@ -404,12 +425,15 @@ public class Presenter implements IPlugInPort {
 		dragStartPoint = point;
 		Point scaledPoint = scalePoint(point);
 		List<IComponentInstance> components = findComponentsAt(scaledPoint);
+		// If no components are under the cursor, reset selection.
 		if (components.isEmpty()) {
 			selectedComponents.clear();
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
 			IComponentInstance component = components.get(0);
+			// If the component under the cursor is not already selected, make
+			// it into the only selected component.
 			if (!selectedComponents.contains(component)) {
 				selectedComponents.clear();
 				selectedComponents.add(component);
@@ -421,9 +445,16 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public boolean dragOver(Point point) {
+		// If there's no selection, the only thing to do is update the selection
+		// rectangle and refresh.
 		if (selectedComponents.isEmpty()) {
 			this.selectionRect = Utils.createRectangle(point, dragStartPoint);
 			messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED, selectionRect);
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+		} else {
+			// If there are components selected translate their control points.
+			translateSelection(point);
+			dragStartPoint = point;
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
 		return true;
@@ -454,26 +485,12 @@ public class Presenter implements IPlugInPort {
 			selectionRect = null;
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 		} else {
+			// There is selection, so we need to finalize the drag&drop
+			// operation.
 			Project oldProject = cloner.deepClone(currentProject);
 
 			// If there are components selected translate their control points.
-			int dx = (int) ((point.x - dragStartPoint.x) / zoomLevel);
-			int dy = (int) ((point.y - dragStartPoint.y) / zoomLevel);
-			for (IComponentInstance component : selectedComponents) {
-				List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
-						.extractControlPoints(component.getClass());
-				for (ControlPointWrapper controlPoint : controlPoints) {
-					try {
-						controlPoint.readFrom(component);
-						if (controlPoint.isEditable()) {
-							controlPoint.getValue().translate(dx, dy);
-						}
-						controlPoint.writeTo(component);
-					} catch (Exception e) {
-						LOG.error("Could not translate control points: " + e.getMessage());
-					}
-				}
-			}
+			translateSelection(point);
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Move");
@@ -481,6 +498,26 @@ public class Presenter implements IPlugInPort {
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		dragInProgress = false;
+	}
+
+	private void translateSelection(Point toPoint) {
+		int dx = (int) ((toPoint.x - dragStartPoint.x) / zoomLevel);
+		int dy = (int) ((toPoint.y - dragStartPoint.y) / zoomLevel);
+		for (IComponentInstance component : selectedComponents) {
+			List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
+					.extractControlPoints(component.getClass());
+			for (ControlPointWrapper controlPoint : controlPoints) {
+				try {
+					controlPoint.readFrom(component);
+					if (controlPoint.isEditable()) {
+						controlPoint.getValue().translate(dx, dy);
+					}
+					controlPoint.writeTo(component);
+				} catch (Exception e) {
+					LOG.error("Could not translate control points: " + e.getMessage());
+				}
+			}
+		}
 	}
 
 	@Override

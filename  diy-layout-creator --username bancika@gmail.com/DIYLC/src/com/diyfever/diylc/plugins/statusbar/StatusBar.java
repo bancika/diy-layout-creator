@@ -78,7 +78,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	private MemoryBar getMemoryPanel() {
 		if (memoryPanel == null) {
-			memoryPanel = new MemoryBar();
+			memoryPanel = new MemoryBar(true);
 		}
 		return memoryPanel;
 	}
