@@ -82,8 +82,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
-		return EnumSet.of(EventType.SELECTION_CHANGED,
-				EventType.PROJECT_MODIFIED);
+		return EnumSet.of(EventType.SELECTION_CHANGED, EventType.PROJECT_MODIFIED);
 	}
 
 	@Override
@@ -93,8 +92,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 			refreshActions();
 			break;
 		case PROJECT_MODIFIED:
-			undoHandler.stateChanged((Project) params[0], (Project) params[1],
-					(String) params[2]);
+			undoHandler.stateChanged((Project) params[0], (Project) params[1], (String) params[2]);
 			break;
 		}
 	}
@@ -104,8 +102,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		cutAction.setEnabled(enabled);
 		copyAction.setEnabled(enabled);
 		try {
-			pasteAction.setEnabled(clipboard
-					.isDataFlavorAvailable(ComponentSelection.listFlavor));
+			pasteAction.setEnabled(clipboard.isDataFlavorAvailable(ComponentSelection.listFlavor));
 		} catch (Exception e) {
 			pasteAction.setEnabled(false);
 		}
@@ -118,8 +115,8 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		public CutAction() {
 			super();
 			putValue(AbstractAction.NAME, "Cut");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-					KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X,
+					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Cut.getIcon());
 		}
 
@@ -136,16 +133,16 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		public CopyAction() {
 			super();
 			putValue(AbstractAction.NAME, "Copy");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-					KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C,
+					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Copy.getIcon());
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Copy triggered");
-			clipboard.setContents(cloner.deepClone(plugInPort
-					.getSelectedComponents()), ClipboardManager.this);
+			clipboard.setContents(cloner.deepClone(plugInPort.getSelectedComponents()),
+					ClipboardManager.this);
 		}
 	}
 
@@ -156,8 +153,8 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		public PasteAction() {
 			super();
 			putValue(AbstractAction.NAME, "Paste");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-					KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V,
+					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Paste.getIcon());
 		}
 
@@ -182,8 +179,8 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		public SelectAllAction() {
 			super();
 			putValue(AbstractAction.NAME, "Select All");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-					KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
+					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Selection.getIcon());
 		}
 

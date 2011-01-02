@@ -27,8 +27,8 @@ public class Project implements Serializable {
 		height = new Size(21d, SizeUnit.cm);
 	}
 
-	public Project(String title, String author, String description, Size width,
-			Size height, List<IComponentInstance> components) {
+	public Project(String title, String author, String description, Size width, Size height,
+			List<IComponentInstance> components) {
 		super();
 		this.title = title;
 		this.author = author;
@@ -92,10 +92,8 @@ public class Project implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((author == null) ? 0 : author.hashCode());
-		result = prime * result
-				+ ((components == null) ? 0 : components.hashCode());
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((components == null) ? 0 : components.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((height == null) ? 0 : height.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((width == null) ? 0 : width.hashCode());
@@ -144,14 +142,15 @@ public class Project implements Serializable {
 		return true;
 	}
 
-//	@Override
-//	public Project clone() throws CloneNotSupportedException {
-//		List<IComponentInstance> clonedComponents = new ArrayList<IComponentInstance>();
-//		for (IComponentInstance component : components) {
-//			clonedComponents.add(component.clone());
-//		}
-//		Project project = new Project(title, author, description,
-//				width.clone(), height.clone(), clonedComponents);
-//		return project;
-//	}
+	// @Override
+	// public Project clone() throws CloneNotSupportedException {
+	// List<IComponentInstance> clonedComponents = new
+	// ArrayList<IComponentInstance>();
+	// for (IComponentInstance component : components) {
+	// clonedComponents.add(component.clone());
+	// }
+	// Project project = new Project(title, author, description,
+	// width.clone(), height.clone(), clonedComponents);
+	// return project;
+	// }
 }

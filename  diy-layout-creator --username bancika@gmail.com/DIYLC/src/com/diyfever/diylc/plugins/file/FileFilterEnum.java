@@ -6,12 +6,9 @@ import javax.swing.filechooser.FileFilter;
 
 enum FileFilterEnum {
 
-	PNG("PNG Images (*.png)", "png"),
-	PDF("PDF Files (*.pdf)", "pdf"),
-	DIY("DIY Project Files (*.diy)", "diy"),
-	EXCEL("Excel Workbooks (*.xls)", "xls"),
-	CSV("Comma Separated Files (*.csv)", "csv"),
-	HTML("HTML Files (*.html)", "html");
+	PNG("PNG Images (*.png)", "png"), PDF("PDF Files (*.pdf)", "pdf"), DIY(
+			"DIY Project Files (*.diy)", "diy"), EXCEL("Excel Workbooks (*.xls)", "xls"), CSV(
+			"Comma Separated Files (*.csv)", "csv"), HTML("HTML Files (*.html)", "html");
 
 	FileFilter filter;
 	String[] extensions;
@@ -23,8 +20,7 @@ enum FileFilterEnum {
 			@Override
 			public boolean accept(File f) {
 				String fileExt = f.getName();
-				fileExt = fileExt.substring(fileExt.lastIndexOf('.') + 1)
-						.toLowerCase();
+				fileExt = fileExt.substring(fileExt.lastIndexOf('.') + 1).toLowerCase();
 				for (String ext : extensions) {
 					if (ext.equals(fileExt)) {
 						return true;

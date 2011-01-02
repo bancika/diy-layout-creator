@@ -57,10 +57,10 @@ public class GhostedDragImage extends AbstractComponentDecorator {
 	 * @param imageOffset
 	 *            offset of the image from the cursor
 	 */
-	public GhostedDragImage(JComponent dragSource, Point screenLocation,
-			Icon icon, Point imageOffset) {
-		this(dragSource, dragSource.getRootPane().getLayeredPane(),
-				screenLocation, icon, imageOffset, true);
+	public GhostedDragImage(JComponent dragSource, Point screenLocation, Icon icon,
+			Point imageOffset) {
+		this(dragSource, dragSource.getRootPane().getLayeredPane(), screenLocation, icon,
+				imageOffset, true);
 	}
 
 	/**
@@ -80,29 +80,26 @@ public class GhostedDragImage extends AbstractComponentDecorator {
 	 *            if true, creates additional ghosts for all extant frames which
 	 *            contain a {@link JLayeredPane} where the image can be painted.
 	 */
-	protected GhostedDragImage(JComponent dragSource, JLayeredPane root,
-			Point screenLocation, Icon icon, Point imageOffset,
-			boolean trackFrames) {
+	protected GhostedDragImage(JComponent dragSource, JLayeredPane root, Point screenLocation,
+			Icon icon, Point imageOffset, boolean trackFrames) {
 		super(root);
 		this.dragSource = dragSource;
 		this.icon = icon;
 		this.imageOffset = imageOffset;
 		Point loc = root.getLocationOnScreen();
-		setLocation(screenLocation.x - loc.x + imageOffset.x, screenLocation.y
-				- loc.y + imageOffset.y);
+		setLocation(screenLocation.x - loc.x + imageOffset.x, screenLocation.y - loc.y
+				+ imageOffset.y);
 		if (trackFrames) {
 			Window w = SwingUtilities.getWindowAncestor(root);
 			Frame[] frames = Frame.getFrames();
 			// Log.debug("track " + frames.length + " other frames");
 			for (int i = 0; i < frames.length; i++) {
 				Frame frame = frames[i];
-				if (frame instanceof RootPaneContainer && frame.isShowing()
-						&& frame != w) {
+				if (frame instanceof RootPaneContainer && frame.isShowing() && frame != w) {
 					// Log.debug("Track " + frame);
-					JLayeredPane p = ((RootPaneContainer) frame)
-							.getLayeredPane();
-					GhostedDragImage slave = new GhostedDragImage(dragSource,
-							p, screenLocation, icon, imageOffset, false);
+					JLayeredPane p = ((RootPaneContainer) frame).getLayeredPane();
+					GhostedDragImage slave = new GhostedDragImage(dragSource, p, screenLocation,
+							icon, imageOffset, false);
 					ghosts.add(slave);
 					slave.move(screenLocation);
 				}
@@ -143,8 +140,7 @@ public class GhostedDragImage extends AbstractComponentDecorator {
 	 * with {@link #returnToOrigin}.
 	 */
 	private void setLocation(int x, int y) {
-		location = SwingUtilities
-				.convertPoint(getComponent(), x, y, dragSource);
+		location = SwingUtilities.convertPoint(getComponent(), x, y, dragSource);
 		if (origin == null)
 			origin = location;
 		setDecorationBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
@@ -176,8 +172,7 @@ public class GhostedDragImage extends AbstractComponentDecorator {
 	public void move(Point screen) {
 		// Log.debug("Move to " + screen);
 		Point loc = getComponent().getLocationOnScreen();
-		setLocation(screen.x - loc.x + imageOffset.x, screen.y - loc.y
-				+ imageOffset.y);
+		setLocation(screen.x - loc.x + imageOffset.x, screen.y - loc.y + imageOffset.y);
 		for (Iterator i = ghosts.iterator(); i.hasNext();) {
 			GhostedDragImage g = (GhostedDragImage) i.next();
 			// Log.debug("Move on other frame");
@@ -189,8 +184,7 @@ public class GhostedDragImage extends AbstractComponentDecorator {
 	public void paint(Graphics graphics) {
 		Rectangle r = getDecorationBounds();
 		Graphics2D g = (Graphics2D) graphics.create();
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-				ghostAlpha));
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ghostAlpha));
 		g.translate(CURSOR_SIZE, CURSOR_SIZE);
 		icon.paintIcon(getPainter(), g, r.x, r.y);
 		g.dispose();
@@ -208,9 +202,8 @@ public class GhostedDragImage extends AbstractComponentDecorator {
 				int dy = (origin.y - location.y) / 2;
 				if (dx != 0 || dy != 0) {
 					Point loc = dragSource.getLocationOnScreen();
-					Point where = new Point(loc.x + location.x + dx
-							- imageOffset.x, loc.y + location.y + dy
-							- imageOffset.y);
+					Point where = new Point(loc.x + location.x + dx - imageOffset.x, loc.y
+							+ location.y + dy - imageOffset.y);
 					move(where);
 				} else {
 					timer.stop();

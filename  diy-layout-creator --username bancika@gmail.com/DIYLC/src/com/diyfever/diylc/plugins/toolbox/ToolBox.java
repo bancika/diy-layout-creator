@@ -14,8 +14,7 @@ public class ToolBox implements IPlugIn {
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		try {
-			plugInPort.injectGUIComponent(new ComponentTabbedPane(plugInPort),
-					SwingConstants.TOP);
+			plugInPort.injectGUIComponent(new ComponentTabbedPane(plugInPort), SwingConstants.TOP);
 		} catch (BadPositionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

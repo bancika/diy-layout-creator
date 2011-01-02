@@ -14,8 +14,8 @@ public class PropertyWrapper implements Cloneable {
 	private Method getter;
 	private boolean defaultable;
 
-	public PropertyWrapper(String name, Class<?> type, Method getter,
-			Method setter, boolean defaultable) {
+	public PropertyWrapper(String name, Class<?> type, Method getter, Method setter,
+			boolean defaultable) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -24,24 +24,22 @@ public class PropertyWrapper implements Cloneable {
 		this.defaultable = defaultable;
 	}
 
-	public void readFrom(IComponentInstance component)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public void readFrom(IComponentInstance component) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		this.value = getter.invoke(component);
 	}
 
-//	public void readUniqueFrom(IComponentInstance component)
-//			throws IllegalArgumentException, IllegalAccessException,
-//			InvocationTargetException {
-//		Object newValue = getter.invoke(component);
-//		if (!newValue.equals(value)) {
-//			this.value = null;
-//		}
-//	}
+	// public void readUniqueFrom(IComponentInstance component)
+	// throws IllegalArgumentException, IllegalAccessException,
+	// InvocationTargetException {
+	// Object newValue = getter.invoke(component);
+	// if (!newValue.equals(value)) {
+	// this.value = null;
+	// }
+	// }
 
-	public void writeTo(IComponentInstance component)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public void writeTo(IComponentInstance component) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		setter.invoke(component, value);
 	}
 

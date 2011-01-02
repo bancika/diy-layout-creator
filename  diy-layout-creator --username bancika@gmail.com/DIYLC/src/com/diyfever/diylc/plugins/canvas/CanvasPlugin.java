@@ -33,8 +33,7 @@ public class CanvasPlugin implements IPlugIn {
 		this.plugInPort = plugInPort;
 		canvasPanel = new CanvasPanel(plugInPort);
 		try {
-			plugInPort.injectGUIComponent(getScrollPane(),
-					SwingConstants.CENTER);
+			plugInPort.injectGUIComponent(getScrollPane(), SwingConstants.CENTER);
 		} catch (BadPositionException e) {
 			e.printStackTrace();
 		}
@@ -42,10 +41,9 @@ public class CanvasPlugin implements IPlugIn {
 
 	private RulerScrollPane getScrollPane() {
 		if (scrollPane == null) {
-			scrollPane = new RulerScrollPane(canvasPanel,
-					new ProjectDrawingProvider(plugInPort));
-			Boolean metric = (Boolean) ConfigurationManager.getInstance()
-					.getConfigurationItem(METRIC_KEY);
+			scrollPane = new RulerScrollPane(canvasPanel, new ProjectDrawingProvider(plugInPort));
+			Boolean metric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
+					METRIC_KEY);
 			if (metric == null) {
 				metric = true;
 			}
@@ -54,8 +52,7 @@ public class CanvasPlugin implements IPlugIn {
 
 				@Override
 				public void unitsChanged(boolean isMetric) {
-					ConfigurationManager.getInstance().setConfigurationItem(
-							METRIC_KEY, isMetric);
+					ConfigurationManager.getInstance().setConfigurationItem(METRIC_KEY, isMetric);
 				}
 			});
 		}
@@ -64,8 +61,7 @@ public class CanvasPlugin implements IPlugIn {
 
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
-		return EnumSet.of(EventType.PROJECT_LOADED, EventType.ZOOM_CHANGED,
-				EventType.REPAINT);
+		return EnumSet.of(EventType.PROJECT_LOADED, EventType.ZOOM_CHANGED, EventType.REPAINT);
 	}
 
 	@Override
@@ -81,8 +77,7 @@ public class CanvasPlugin implements IPlugIn {
 			if ((Boolean) params[1]) {
 				// Scroll to the center.
 				Rectangle visibleRect = canvasPanel.getVisibleRect();
-				visibleRect.setLocation(
-						(canvasPanel.getWidth() - visibleRect.width) / 2,
+				visibleRect.setLocation((canvasPanel.getWidth() - visibleRect.width) / 2,
 						(canvasPanel.getHeight() - visibleRect.height) / 2);
 				canvasPanel.scrollRectToVisible(visibleRect);
 				canvasPanel.revalidate();

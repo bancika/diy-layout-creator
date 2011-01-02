@@ -17,16 +17,14 @@ public class SelectionTransferable implements Transferable {
 	private Point startPoint;
 	private List<IComponentInstance> selection;
 
-	public SelectionTransferable(List<IComponentInstance> selection,
-			Point startPoint) {
+	public SelectionTransferable(List<IComponentInstance> selection, Point startPoint) {
 		super();
 		this.selection = selection;
 		this.startPoint = startPoint;
 	}
 
 	@Override
-	public Object getTransferData(DataFlavor flavor)
-			throws UnsupportedFlavorException, IOException {
+	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 		if (flavor.equals(selectionFlavor)) {
 			return selection;
 		}
@@ -38,8 +36,7 @@ public class SelectionTransferable implements Transferable {
 
 	@Override
 	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[] { selectionFlavor,
-				PointTransferable.pointFlavor };
+		return new DataFlavor[] { selectionFlavor, PointTransferable.pointFlavor };
 	}
 
 	@Override

@@ -17,8 +17,8 @@ public class ControlPointWrapper {
 	private boolean sticky;
 	private VisibilityPolicy visibilityPolicy;
 
-	public ControlPointWrapper(String name, Method getter, Method setter,
-			boolean editable, boolean sticky, VisibilityPolicy visibilityPolicy) {
+	public ControlPointWrapper(String name, Method getter, Method setter, boolean editable,
+			boolean sticky, VisibilityPolicy visibilityPolicy) {
 		super();
 		this.name = name;
 		this.getter = getter;
@@ -28,15 +28,13 @@ public class ControlPointWrapper {
 		this.visibilityPolicy = visibilityPolicy;
 	}
 
-	public void readFrom(IComponentInstance component)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public void readFrom(IComponentInstance component) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		value = (Point) getter.invoke(component);
 	}
 
-	public void writeTo(IComponentInstance component)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public void writeTo(IComponentInstance component) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		setter.invoke(component, value);
 	}
 

@@ -30,8 +30,8 @@ public class MockComponentInstance implements IComponentInstance {
 	private Point leftTopCorner = new Point(0, 0);
 	private String name = "something";
 
-	public MockComponentInstance(String testField, Capacitance c, Resistance r,
-			Size s, Color color, Point leftTopCorner) {
+	public MockComponentInstance(String testField, Capacitance c, Resistance r, Size s,
+			Color color, Point leftTopCorner) {
 		super();
 		this.testField = testField;
 		this.c = c;
@@ -113,16 +113,14 @@ public class MockComponentInstance implements IComponentInstance {
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState) {
-		g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color
-				: color.darker());
+		g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color : color.darker());
 		g2d.fillRect(leftTopCorner.x, leftTopCorner.y, 200, 50);
 	}
 
 	@Override
 	public MockComponentInstance clone() throws CloneNotSupportedException {
-		MockComponentInstance newInstance = new MockComponentInstance(
-				testField, c.clone(), r.clone(), s.clone(), color,
-				(Point) leftTopCorner.clone());
+		MockComponentInstance newInstance = new MockComponentInstance(testField, c.clone(), r
+				.clone(), s.clone(), color, (Point) leftTopCorner.clone());
 		return newInstance;
 	}
 }

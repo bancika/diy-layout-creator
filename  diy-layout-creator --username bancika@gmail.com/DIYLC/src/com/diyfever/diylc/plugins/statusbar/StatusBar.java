@@ -49,8 +49,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	private JComboBox getZoomBox() {
 		if (zoomBox == null) {
-			zoomBox = new JComboBox(new Double[] { 0.25d, 0.5d, 0.75d, 1d,
-					1.5d, 2d });
+			zoomBox = new JComboBox(new Double[] { 0.25d, 0.5d, 0.75d, 1d, 1.5d, 2d });
 			zoomBox.setSelectedItem(1d);
 			zoomBox.setFocusable(false);
 			zoomBox.setRenderer(new PercentageListCellRenderer());
@@ -168,8 +167,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	private void refreshStatusText() {
 		if (componentSlot == null) {
-			if ((componentsUnderCursor == null)
-					|| (componentsUnderCursor.isEmpty())) {
+			if ((componentsUnderCursor == null) || (componentsUnderCursor.isEmpty())) {
 				getStatusLabel().setText("");
 			} else {
 				String formattedNames = "";
@@ -178,17 +176,14 @@ public class StatusBar extends JPanel implements IPlugIn {
 					if (n > 1) {
 						formattedNames += ", ";
 					}
-					formattedNames += ComponentProcessor.getInstance()
-							.extractBomName(component)
+					formattedNames += ComponentProcessor.getInstance().extractBomName(component)
 							+ " (<b><font color=\"blue\">" + n++ + "</font></b>)";
 				}
-				getStatusLabel().setText(
-						"<html>" + "Edit: " + formattedNames + "</html>");
+				getStatusLabel().setText("<html>" + "Edit: " + formattedNames + "</html>");
 			}
 		} else {
 			getStatusLabel().setText(
-					"Click on the canvas to create a new "
-							+ componentSlot.getName()
+					"Click on the canvas to create a new " + componentSlot.getName()
 							+ " or press Esc to cancel");
 		}
 	}

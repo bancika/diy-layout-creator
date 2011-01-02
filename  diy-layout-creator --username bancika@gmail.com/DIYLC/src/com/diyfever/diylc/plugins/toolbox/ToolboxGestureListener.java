@@ -26,8 +26,7 @@ class ToolboxGestureListener implements DragGestureListener {
 	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
 		presenter.dragStarted(dge.getDragOrigin());
-		dge.startDrag(Cursor.getDefaultCursor(),
-				new StringSelection(className), new ToolboxSourceListener(
-						presenter));
+		dge.startDrag(Cursor.getDefaultCursor(), new StringSelection(className),
+				new ToolboxSourceListener(presenter));
 	}
 }

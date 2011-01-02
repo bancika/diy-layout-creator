@@ -37,10 +37,10 @@ public class HelpManager implements IPlugIn {
 
 	private AboutDialog getAboutDialog() {
 		if (aboutDialog == null) {
-			aboutDialog = DialogFactory.getInstance().createAboutDialog(
-					"DIY Layout Creator 4", IconLoader.BlackBoard.getIcon(),
-					plugInPort.getCurrentVersionNumber().toString(),
-					"Bane Stojkovic", "diy-fever.com", "bancika@gmail.com", "");
+			aboutDialog = DialogFactory.getInstance().createAboutDialog("DIY Layout Creator 4",
+					IconLoader.BlackBoard.getIcon(),
+					plugInPort.getCurrentVersionNumber().toString(), "Bane Stojkovic",
+					"diy-fever.com", "bancika@gmail.com", "");
 		}
 		return aboutDialog;
 	}

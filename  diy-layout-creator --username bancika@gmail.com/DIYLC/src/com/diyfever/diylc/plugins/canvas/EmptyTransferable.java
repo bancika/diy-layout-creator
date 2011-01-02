@@ -8,8 +8,7 @@ import java.io.IOException;
 public class EmptyTransferable implements Transferable {
 
 	@Override
-	public Object getTransferData(DataFlavor flavor)
-			throws UnsupportedFlavorException, IOException {
+	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 		throw new UnsupportedFlavorException(flavor);
 	}
 

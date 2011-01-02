@@ -20,8 +20,7 @@ import com.rits.cloning.Cloner;
 
 public class ComponentProcessor {
 
-	private static final Logger LOG = Logger
-			.getLogger(ComponentProcessor.class);
+	private static final Logger LOG = Logger.getLogger(ComponentProcessor.class);
 
 	private static ComponentProcessor instance;
 
@@ -44,8 +43,7 @@ public class ComponentProcessor {
 		this.controlPointCache = new HashMap<Class<?>, List<ControlPointWrapper>>();
 	}
 
-	public List<PropertyWrapper> extractProperties(
-			Class<? extends IComponentInstance> clazz) {
+	public List<PropertyWrapper> extractProperties(Class<? extends IComponentInstance> clazz) {
 		if (propertyCache.containsKey(clazz)) {
 			return cloner.deepClone(propertyCache.get(clazz));
 		}
@@ -53,12 +51,10 @@ public class ComponentProcessor {
 		for (Method method : clazz.getMethods()) {
 			if (method.getName().startsWith("get")) {
 				try {
-					Method setter = clazz.getMethod("set"
-							+ method.getName().substring(3), method
+					Method setter = clazz.getMethod("set" + method.getName().substring(3), method
 							.getReturnType());
 					if (method.isAnnotationPresent(EditableProperty.class)) {
-						EditableProperty annotation = method
-								.getAnnotation(EditableProperty.class);
+						EditableProperty annotation = method.getAnnotation(EditableProperty.class);
 						String name;
 						if (annotation.name().equals("")) {
 							name = method.getName().substring(3);
@@ -66,13 +62,12 @@ public class ComponentProcessor {
 							name = annotation.name();
 						}
 						PropertyWrapper property = new PropertyWrapper(name,
-								method.getReturnType(), method, setter,
-								annotation.defaultable());
+								method.getReturnType(), method, setter, annotation.defaultable());
 						properties.add(property);
 					}
 				} catch (NoSuchMethodException e) {
-					LOG.debug("No matching setter found for \""
-							+ method.getName() + "\". Skipping...");
+					LOG.debug("No matching setter found for \"" + method.getName()
+							+ "\". Skipping...");
 				}
 			}
 		}
@@ -81,8 +76,7 @@ public class ComponentProcessor {
 		return cloner.deepClone(properties);
 	}
 
-	public List<ControlPointWrapper> extractControlPoints(
-			Class<? extends IComponentInstance> clazz) {
+	public List<ControlPointWrapper> extractControlPoints(Class<? extends IComponentInstance> clazz) {
 		if (controlPointCache.containsKey(clazz)) {
 			return cloner.deepClone(controlPointCache.get(clazz));
 		}
@@ -90,27 +84,22 @@ public class ComponentProcessor {
 		for (Method method : clazz.getMethods()) {
 			if (method.getName().startsWith("get")) {
 				try {
-					Method setter = clazz.getMethod("set"
-							+ method.getName().substring(3), method
+					Method setter = clazz.getMethod("set" + method.getName().substring(3), method
 							.getReturnType());
 					if (method.isAnnotationPresent(ControlPoint.class)) {
 						if (method.getReturnType().equals(Point.class)) {
-							ControlPoint annotation = method
-									.getAnnotation(ControlPoint.class);
-							ControlPointWrapper controlPoint = new ControlPointWrapper(
-									method.getName().substring(3), method,
-									setter, annotation.editable(), annotation
-											.sticky(), annotation
-											.visibilityPolicy());
+							ControlPoint annotation = method.getAnnotation(ControlPoint.class);
+							ControlPointWrapper controlPoint = new ControlPointWrapper(method
+									.getName().substring(3), method, setter, annotation.editable(),
+									annotation.sticky(), annotation.visibilityPolicy());
 							controlPoints.add(controlPoint);
 						} else {
-							LOG
-									.debug("Control point return type must be java.awt.Point.");
+							LOG.debug("Control point return type must be java.awt.Point.");
 						}
 					}
 				} catch (NoSuchMethodException e) {
-					LOG.debug("No matching setter found for \""
-							+ method.getName() + "\". Skipping...");
+					LOG.debug("No matching setter found for \"" + method.getName()
+							+ "\". Skipping...");
 				}
 			}
 		}
@@ -138,8 +127,7 @@ public class ComponentProcessor {
 		}
 		for (int i = 1; i < selectedComponents.size(); i++) {
 			IComponentInstance component = selectedComponents.get(i);
-			List<PropertyWrapper> newProperties = extractProperties(component
-					.getClass());
+			List<PropertyWrapper> newProperties = extractProperties(component.getClass());
 			for (PropertyWrapper property : newProperties) {
 				try {
 					property.readFrom(component);

@@ -59,8 +59,7 @@ public class FileManager implements IPlugIn {
 		public NewAction() {
 			super();
 			putValue(AbstractAction.NAME, "New");
-			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlainYellow
-					.getIcon());
+			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlainYellow.getIcon());
 		}
 
 		@Override
@@ -82,10 +81,8 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance()
-					.showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
-							FileFilterEnum.DIY.getExtensions()[0],
-							new ProjectPreview());
+			File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(),
+					null, FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
 			if (file != null) {
 				LOG.info("Loading project from file.");
 				FileInputStream fis;
@@ -117,10 +114,8 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance()
-					.showSaveDialog(FileFilterEnum.DIY.getFilter(), null,
-							FileFilterEnum.DIY.getExtensions()[0],
-							new ProjectPreview());
+			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.DIY.getFilter(),
+					null, FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
 			if (file != null) {
 				LOG.info("Saving project to file.");
 				FileOutputStream fos;
@@ -151,10 +146,8 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance()
-					.showSaveDialog(FileFilterEnum.DIY.getFilter(), null,
-							FileFilterEnum.DIY.getExtensions()[0],
-							new ProjectPreview());
+			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.DIY.getFilter(),
+					null, FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
 			if (file != null) {
 				LOG.info("Saving project to file.");
 				FileOutputStream fos;
@@ -204,9 +197,8 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance().showSaveDialog(
-					FileFilterEnum.PDF.getFilter(), null,
-					FileFilterEnum.PDF.getExtensions()[0], null);
+			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PDF.getFilter(),
+					null, FileFilterEnum.PDF.getExtensions()[0], null);
 			if (file != null) {
 				DrawingExporter.getInstance().exportPDF(drawingProvider, file);
 			}
@@ -225,9 +217,8 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance().showSaveDialog(
-					FileFilterEnum.PNG.getFilter(), null,
-					FileFilterEnum.PNG.getExtensions()[0], null);
+			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PNG.getFilter(),
+					null, FileFilterEnum.PNG.getExtensions()[0], null);
 			if (file != null) {
 				DrawingExporter.getInstance().exportPNG(drawingProvider, file);
 			}

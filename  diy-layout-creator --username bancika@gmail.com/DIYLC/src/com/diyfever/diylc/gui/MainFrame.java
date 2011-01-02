@@ -124,8 +124,7 @@ public class MainFrame extends JFrame implements IView {
 	// IView
 
 	@Override
-	public void addComponent(JComponent component, int position)
-			throws BadPositionException {
+	public void addComponent(JComponent component, int position) throws BadPositionException {
 		switch (position) {
 		case SwingConstants.TOP:
 			topPanel.add(component);
