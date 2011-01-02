@@ -108,8 +108,7 @@ public interface IPlugInPort {
 	 * @throws BadPositionException
 	 *             in case invalid position is specified
 	 */
-	void injectGUIComponent(JComponent component, int position)
-			throws BadPositionException;
+	void injectGUIComponent(JComponent component, int position) throws BadPositionException;
 
 	/**
 	 * Injects a custom menu action into application's main menu. If
@@ -144,8 +143,7 @@ public interface IPlugInPort {
 	 * 
 	 * @param point
 	 */
-	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown,
-			boolean altDown);
+	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
 	void mouseMoved(Point point);
 
@@ -266,8 +264,7 @@ public interface IPlugInPort {
 	 * @param properties
 	 * @throws Exception
 	 */
-	void applyPropertiesToSelection(List<PropertyWrapper> properties)
-			throws Exception;
+	void applyPropertiesToSelection(List<PropertyWrapper> properties) throws Exception;
 
 	// void setCursorIcon(Icon icon);
 

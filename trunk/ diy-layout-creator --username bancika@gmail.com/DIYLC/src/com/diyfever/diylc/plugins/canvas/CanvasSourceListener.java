@@ -39,8 +39,7 @@ class CanvasSourceListener implements DragSourceListener {
 	public void dragOver(DragSourceDragEvent dsde) {
 		Point p = dsde.getDragSourceContext().getComponent().getMousePosition();
 		if (p != null) {
-			dsde.getDragSourceContext().getComponent().firePropertyChange(
-					"dragPoint", p.x, p.y);
+			dsde.getDragSourceContext().getComponent().firePropertyChange("dragPoint", p.x, p.y);
 		}
 	}
 

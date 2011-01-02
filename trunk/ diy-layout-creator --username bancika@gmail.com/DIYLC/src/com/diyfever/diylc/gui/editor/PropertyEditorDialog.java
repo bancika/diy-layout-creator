@@ -24,8 +24,7 @@ import com.diyfever.gui.ButtonDialog;
 
 public class PropertyEditorDialog extends ButtonDialog {
 
-	private static final Logger LOG = Logger
-			.getLogger(PropertyEditorDialog.class);
+	private static final Logger LOG = Logger.getLogger(PropertyEditorDialog.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,8 +34,7 @@ public class PropertyEditorDialog extends ButtonDialog {
 	private Set<PropertyWrapper> defaultedProperties;
 
 	public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties) {
-		super(owner, "Editor", new String[] { ButtonDialog.OK,
-				ButtonDialog.CANCEL });
+		super(owner, "Editor", new String[] { ButtonDialog.OK, ButtonDialog.CANCEL });
 
 		LOG.debug("Creating property editor for: " + properties);
 
@@ -85,8 +83,7 @@ public class PropertyEditorDialog extends ButtonDialog {
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1;
 
-			editorPanel
-					.add(FieldEditorFactory.createFieldEditor(property), gbc);
+			editorPanel.add(FieldEditorFactory.createFieldEditor(property), gbc);
 
 			if (property.isDefaultable()) {
 				gbc.gridx = 2;
@@ -124,8 +121,7 @@ public class PropertyEditorDialog extends ButtonDialog {
 	}
 
 	public static boolean showFor(JFrame owner, List<PropertyWrapper> properties) {
-		PropertyEditorDialog editor = new PropertyEditorDialog(owner,
-				properties);
+		PropertyEditorDialog editor = new PropertyEditorDialog(owner, properties);
 		editor.setVisible(true);
 		if (OK.equals(editor.getSelectedButtonCaption())) {
 			return true;

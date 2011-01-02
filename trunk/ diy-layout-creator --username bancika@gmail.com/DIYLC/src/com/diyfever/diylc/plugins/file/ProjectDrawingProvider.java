@@ -26,8 +26,7 @@ public class ProjectDrawingProvider implements IDrawingProvider {
 
 	@Override
 	public void draw(Graphics g) {
-		plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ZOOM,
-				DrawOption.ANTIALIASING));
+		plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ZOOM, DrawOption.ANTIALIASING));
 	}
 
 	@Override

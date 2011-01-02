@@ -35,8 +35,7 @@ public class MeasureEditor extends Container {
 		add(valueField, BorderLayout.CENTER);
 		try {
 			Method method = measure.getUnit().getClass().getMethod("values");
-			final JComboBox unitBox = new JComboBox((Object[]) method
-					.invoke(measure.getUnit()));
+			final JComboBox unitBox = new JComboBox((Object[]) method.invoke(measure.getUnit()));
 			unitBox.setSelectedItem(measure.getUnit());
 			unitBox.addActionListener(new ActionListener() {
 

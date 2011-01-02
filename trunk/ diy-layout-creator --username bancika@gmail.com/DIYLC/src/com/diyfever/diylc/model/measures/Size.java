@@ -6,8 +6,7 @@ public class Size extends AbstractMeasure<SizeUnit> {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int PIXELS_PER_INCH = Toolkit.getDefaultToolkit()
-			.getScreenResolution();
+	public static final int PIXELS_PER_INCH = Toolkit.getDefaultToolkit().getScreenResolution();
 
 	public Size() {
 		super();

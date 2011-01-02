@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.Format;
 
-public class AbstractMeasure<T extends Enum<? extends Unit>> implements
-		Serializable, Cloneable {
+public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 

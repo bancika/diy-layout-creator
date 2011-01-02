@@ -48,9 +48,9 @@ class CanvasPanel extends JComponent implements Autoscroll {
 	private VolatileImage bufferImage;
 	private GraphicsConfiguration screenGraphicsConfiguration;
 
-	private static final EnumSet<DrawOption> drawOptions = EnumSet.of(
-			DrawOption.GRID, DrawOption.SELECTION, DrawOption.ZOOM,
-			DrawOption.ANTIALIASING, DrawOption.CONTROL_POINTS);
+	private static final EnumSet<DrawOption> drawOptions = EnumSet.of(DrawOption.GRID,
+			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
+			DrawOption.CONTROL_POINTS);
 
 	public CanvasPanel(IPlugInPort plugInPort) {
 		super();
@@ -59,8 +59,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 		setFocusable(true);
 		initializeListeners();
 		initializeDnD();
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice[] devices = graphicsEnvironment.getScreenDevices();
 		screenGraphicsConfiguration = devices[0].getDefaultConfiguration();
 
@@ -73,9 +72,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 	private void initializeDnD() {
 		// Initialize drag source recognizer.
-		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-				this, DnDConstants.ACTION_MOVE,
-				new CanvasGestureListener(plugInPort));
+		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
+				DnDConstants.ACTION_MOVE, new CanvasGestureListener(plugInPort));
 		// Initialize drop target.
 		new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE,
 				new CanvasTargetListener(plugInPort), true);
@@ -96,8 +94,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 	}
 
 	protected void createBufferImage() {
-		bufferImage = screenGraphicsConfiguration
-				.createCompatibleVolatileImage(getWidth(), getHeight());
+		bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(getWidth(),
+				getHeight());
 		bufferImage.validate(screenGraphicsConfiguration);
 		Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
 		plugInPort.draw(g2d, drawOptions);
@@ -157,24 +155,19 @@ class CanvasPanel extends JComponent implements Autoscroll {
 							if (properties.isEmpty()) {
 
 							} else {
-								PropertyEditorDialog editor = DialogFactory
-										.getInstance()
+								PropertyEditorDialog editor = DialogFactory.getInstance()
 										.createPropertyEditorDialog(properties);
 								editor.setVisible(true);
-								if (ButtonDialog.OK.equals(editor
-										.getSelectedButtonCaption())) {
+								if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
 									try {
-										plugInPort
-												.applyPropertiesToSelection(properties);
+										plugInPort.applyPropertiesToSelection(properties);
 									} catch (Exception e1) {
 										// TODO Auto-generated catch block
 										e1.printStackTrace();
 									}
-									for (PropertyWrapper property : editor
-											.getDefaultedProperties()) {
+									for (PropertyWrapper property : editor.getDefaultedProperties()) {
 										if (property.getValue() != null) {
-											plugInPort.setDefaultPropertyValue(
-													property.getName(),
+											plugInPort.setDefaultPropertyValue(property.getName(),
 													property.getValue());
 										}
 									}
@@ -182,9 +175,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 							}
 						}
 					} else {
-						plugInPort.mouseClicked(e.getPoint(),
-								e.isControlDown(), e.isShiftDown(), e
-										.isAltDown());
+						plugInPort.mouseClicked(e.getPoint(), e.isControlDown(), e.isShiftDown(), e
+								.isAltDown());
 					}
 				}
 			}
@@ -195,14 +187,13 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 	@Override
 	public void autoscroll(Point cursorLocn) {
-		scrollRectToVisible(new Rectangle(cursorLocn.x - 15, cursorLocn.y - 15,
-				30, 30));
+		scrollRectToVisible(new Rectangle(cursorLocn.x - 15, cursorLocn.y - 15, 30, 30));
 	}
 
 	@Override
 	public Insets getAutoscrollInsets() {
 		Rectangle rect = getVisibleRect();
-		return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15,
-				rect.x + rect.width + 15);
+		return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15, rect.x + rect.width
+				+ 15);
 	}
 }

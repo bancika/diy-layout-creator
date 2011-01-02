@@ -19,18 +19,15 @@ class ComponentTabbedPane extends JTabbedPane {
 	public ComponentTabbedPane(IPlugInPort plugInPort) {
 		super();
 		this.plugInPort = plugInPort;
-		Map<String, List<IComponentType>> componentTypes = plugInPort
-				.getComponentTypes();
-		for (Map.Entry<String, List<IComponentType>> entry : componentTypes
-				.entrySet()) {
+		Map<String, List<IComponentType>> componentTypes = plugInPort.getComponentTypes();
+		for (Map.Entry<String, List<IComponentType>> entry : componentTypes.entrySet()) {
 			addTab(entry.getKey(), createComponentPanel(entry.getValue()));
 		}
 	}
 
 	private Container createComponentPanel(List<IComponentType> componentTypes) {
 		Container componentPanel = new Container();
-		componentPanel
-				.setLayout(new BoxLayout(componentPanel, BoxLayout.X_AXIS));
+		componentPanel.setLayout(new BoxLayout(componentPanel, BoxLayout.X_AXIS));
 		for (IComponentType componentType : componentTypes) {
 			JButton button = new ComponentButton(plugInPort, componentType);
 			componentPanel.add(button);

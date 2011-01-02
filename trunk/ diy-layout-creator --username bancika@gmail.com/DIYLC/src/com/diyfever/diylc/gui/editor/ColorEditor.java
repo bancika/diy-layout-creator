@@ -27,8 +27,8 @@ public class ColorEditor extends JLabel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color newColor = JColorChooser.showDialog(ColorEditor.this,
-						"Choose Color", getBackground());
+				Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color",
+						getBackground());
 				if (newColor != null) {
 					property.setValue(newColor);
 					setBackground(newColor);

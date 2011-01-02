@@ -82,31 +82,29 @@ public class LoginDialog extends ButtonDialog {
 		this.password = new String(getPasswordField().getPassword());
 
 		JButton okButton = getButton(OK);
-		okButton.setEnabled((this.userName.length() > 0)
-				&& (this.password.length() > 0));
+		okButton.setEnabled((this.userName.length() > 0) && (this.password.length() > 0));
 	}
 
 	private JTextField getUserNameField() {
 		if (userNameField == null) {
 			userNameField = new JTextField();
-			userNameField.getDocument().addDocumentListener(
-					new DocumentListener() {
+			userNameField.getDocument().addDocumentListener(new DocumentListener() {
 
-						@Override
-						public void removeUpdate(DocumentEvent e) {
-							refreshState();
-						}
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					refreshState();
+				}
 
-						@Override
-						public void insertUpdate(DocumentEvent e) {
-							refreshState();
-						}
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					refreshState();
+				}
 
-						@Override
-						public void changedUpdate(DocumentEvent e) {
-							refreshState();
-						}
-					});
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					refreshState();
+				}
+			});
 		}
 		return userNameField;
 	}
@@ -114,24 +112,23 @@ public class LoginDialog extends ButtonDialog {
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.getDocument().addDocumentListener(
-					new DocumentListener() {
+			passwordField.getDocument().addDocumentListener(new DocumentListener() {
 
-						@Override
-						public void removeUpdate(DocumentEvent e) {
-							refreshState();
-						}
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					refreshState();
+				}
 
-						@Override
-						public void insertUpdate(DocumentEvent e) {
-							refreshState();
-						}
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					refreshState();
+				}
 
-						@Override
-						public void changedUpdate(DocumentEvent e) {
-							refreshState();
-						}
-					});
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					refreshState();
+				}
+			});
 		}
 		return passwordField;
 	}

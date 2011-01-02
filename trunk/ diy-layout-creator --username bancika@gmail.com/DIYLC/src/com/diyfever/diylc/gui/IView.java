@@ -25,8 +25,7 @@ public interface IView {
 	 * 
 	 * @see IPlugInPort#injectGUIComponent
 	 */
-	void addComponent(JComponent component, int position)
-			throws BadPositionException;
+	void addComponent(JComponent component, int position) throws BadPositionException;
 
 	/**
 	 * Adds a menu action.

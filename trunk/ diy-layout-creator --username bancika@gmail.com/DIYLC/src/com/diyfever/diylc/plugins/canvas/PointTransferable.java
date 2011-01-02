@@ -8,8 +8,7 @@ import java.io.IOException;
 
 public class PointTransferable implements Transferable {
 
-	public static final DataFlavor pointFlavor = new DataFlavor(Point.class,
-			"Java Point");
+	public static final DataFlavor pointFlavor = new DataFlavor(Point.class, "Java Point");
 
 	private Point startPoint;
 
@@ -19,8 +18,7 @@ public class PointTransferable implements Transferable {
 	}
 
 	@Override
-	public Object getTransferData(DataFlavor flavor)
-			throws UnsupportedFlavorException, IOException {
+	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 		if (flavor.equals(pointFlavor)) {
 			return startPoint;
 		}

@@ -15,16 +15,15 @@ public class ClassProcessorTest {
 
 	@Test
 	public void testExtractProperties() {
-		List<PropertyWrapper> properties = ComponentProcessor.getInstance()
-				.extractProperties(MockComponentInstance.class);
+		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
+				MockComponentInstance.class);
 		assertNotNull(properties);
 		assertEquals(4, properties.size());
 	};
 
 	@Test
 	public void testExtractControlPoints() {
-		List<ControlPointWrapper> controlPoints = ComponentProcessor
-				.getInstance()
+		List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
 				.extractControlPoints(MockComponentInstance.class);
 		assertNotNull(controlPoints);
 		assertEquals(1, controlPoints.size());

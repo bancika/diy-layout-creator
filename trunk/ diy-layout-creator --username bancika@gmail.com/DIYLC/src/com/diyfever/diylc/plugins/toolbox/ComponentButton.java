@@ -23,8 +23,7 @@ class ComponentButton extends JButton {
 	private IPlugInPort plugInPort;
 	private IComponentType componentType;
 
-	public ComponentButton(final IPlugInPort plugInPort,
-			final IComponentType componentType) {
+	public ComponentButton(final IPlugInPort plugInPort, final IComponentType componentType) {
 		super(componentType.getIcon());
 		this.plugInPort = plugInPort;
 		this.componentType = componentType;
@@ -62,7 +61,7 @@ class ComponentButton extends JButton {
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this,
 				DnDConstants.ACTION_MOVE,
-				new ToolboxGestureListener(plugInPort, componentType
-						.getComponentInstanceClass().getName()));
+				new ToolboxGestureListener(plugInPort, componentType.getComponentInstanceClass()
+						.getName()));
 	}
 }

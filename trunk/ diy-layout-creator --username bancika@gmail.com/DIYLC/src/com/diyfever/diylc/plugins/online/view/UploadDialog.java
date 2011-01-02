@@ -34,9 +34,7 @@ public class UploadDialog extends ButtonDialog {
 			+ "You can <b>not</b> use Online Library to advertise products or services.<br>"
 			+ BULLET
 			+ "Users that do not follow these terms may be banned from the server, with or without notice.<br>"
-			+ BULLET
-			+ "Administrator is not responsible for library contents.<br>"
-			+ "</html>";
+			+ BULLET + "Administrator is not responsible for library contents.<br>" + "</html>";
 
 	private JPanel mainPanel;
 	private JLabel termsLabel;
@@ -98,9 +96,8 @@ public class UploadDialog extends ButtonDialog {
 			termsLabel = new JLabel();
 			termsLabel.setOpaque(true);
 			termsLabel.setBackground(UIManager.getColor("ToolTip.background"));
-			termsLabel.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createEtchedBorder(), BorderFactory
-							.createEmptyBorder(2, 2, 2, 2)));
+			termsLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory
+					.createEtchedBorder(), BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 			termsLabel.setText(TERMS_HTML);
 		}
 		return termsLabel;

@@ -10,48 +10,18 @@ import javax.swing.ImageIcon;
  */
 public enum IconLoader {
 
-	Delete("delete.png"),
-	Add("add.png"),
-	FolderOut("folder_out.png"),
-	Garbage("garbage.png"),
-	DiskBlue("disk_blue.png"),
-	SaveAs("save_as.png"),
-	Exit("exit.png"),
-	DocumentPlainYellow("document_plain_yellow.png"),
-	PhotoScenery("photo_scenery.png"),
-	LightBulbOn("lightbulb_on.png"),
-	LightBulbOff("lightbulb_off.png"),
-	NotebookAdd("notebook_add.png"),
-	FormGreen("form_green.png"),
-	Gears("gears.png"),
-	About("about.png"), 
-	Donate("donate.gif"),
-	WindowColors("window_colors.png"),
-	WindowGear("window_gear.png"),
-	NavigateCheck("navigate_check.png"),
-	Undo("undo.png"),
-	Error("error.png"),
-	Warning("warning.png"),
-	ZoomSmall("zoom_small.png"),
-	MoveSmall("move_small.png"),
-	Print("print.png"),
-	PDF("pdf.png"),
-	Excel("excel.png"),
-	CSV("csv.png"),
-	HTML("html.png"),
-	Image("image.png"),
-	Cut("cut.png"),
-	Copy("copy.png"),
-	Paste("paste.png"),
-	Selection("selection.png"),
-	BOM("bom.png"),
-	BlackBoard("blackboard.png"),
-	IdCard("id_card.png"),
-	IdCardAdd("id_card_add.png"),
-	Chest("chest.png"),
-	Upload("upload.png"),
-	Wrench("wrench.png"),
-	;
+	Delete("delete.png"), Add("add.png"), FolderOut("folder_out.png"), Garbage("garbage.png"), DiskBlue(
+			"disk_blue.png"), SaveAs("save_as.png"), Exit("exit.png"), DocumentPlainYellow(
+			"document_plain_yellow.png"), PhotoScenery("photo_scenery.png"), LightBulbOn(
+			"lightbulb_on.png"), LightBulbOff("lightbulb_off.png"), NotebookAdd("notebook_add.png"), FormGreen(
+			"form_green.png"), Gears("gears.png"), About("about.png"), Donate("donate.gif"), WindowColors(
+			"window_colors.png"), WindowGear("window_gear.png"), NavigateCheck("navigate_check.png"), Undo(
+			"undo.png"), Error("error.png"), Warning("warning.png"), ZoomSmall("zoom_small.png"), MoveSmall(
+			"move_small.png"), Print("print.png"), PDF("pdf.png"), Excel("excel.png"), CSV(
+			"csv.png"), HTML("html.png"), Image("image.png"), Cut("cut.png"), Copy("copy.png"), Paste(
+			"paste.png"), Selection("selection.png"), BOM("bom.png"), BlackBoard("blackboard.png"), IdCard(
+			"id_card.png"), IdCardAdd("id_card_add.png"), Chest("chest.png"), Upload("upload.png"), Wrench(
+			"wrench.png"), ;
 
 	protected String name;
 

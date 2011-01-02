@@ -16,16 +16,13 @@ public class OverwritePromptFileChooser extends JFileChooser {
 		if (getSelectedFile().getAbsolutePath().contains(".")) {
 			lSelectedFile = getSelectedFile();
 		} else {
-			lSelectedFile = new File(getSelectedFile().getAbsoluteFile() + "."
-					+ defaultExtension);
+			lSelectedFile = new File(getSelectedFile().getAbsoluteFile() + "." + defaultExtension);
 		}
 
 		if (lSelectedFile != null && lSelectedFile.exists()) {
-			int lResponse = JOptionPane.showConfirmDialog(this, lSelectedFile
-					.getAbsolutePath()
-					+ " already exists.\nDo you " + "want to replace it?",
-					"Warning", JOptionPane.YES_NO_OPTION,
-					JOptionPane.WARNING_MESSAGE);
+			int lResponse = JOptionPane.showConfirmDialog(this, lSelectedFile.getAbsolutePath()
+					+ " already exists.\nDo you " + "want to replace it?", "Warning",
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 			if (lResponse != JOptionPane.YES_OPTION) {
 				return;

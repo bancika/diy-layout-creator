@@ -55,8 +55,7 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	private static final VersionNumber CURRENT_VERSION = new VersionNumber(0,
-			0, 0);
+	private static final VersionNumber CURRENT_VERSION = new VersionNumber(0, 0, 0);
 	private static final String DEFAULTS_KEY = "defaults";
 	private static final int CONTROL_POINT_SENSITIVITY = 4;
 
@@ -104,8 +103,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	public void installPlugin(IPlugIn plugIn) {
-		LOG.debug(String.format("installPlugin(%s)", plugIn.getClass()
-				.getSimpleName()));
+		LOG.debug(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
 		plugIns.add(plugIn);
 		plugIn.connect(this);
 		messageDispatcher.registerListener(plugIn);
@@ -135,10 +133,8 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public Cursor getCursorAt(Point point) {
 		// Scale point to remove zoom factor.
-		Point2D scaledPoint = new Point2D.Double(point.getX() / zoomLevel,
-				point.getY() / zoomLevel);
-		for (Map.Entry<IComponentInstance, Area> entry : componentAreaMap
-				.entrySet()) {
+		Point2D scaledPoint = new Point2D.Double(point.getX() / zoomLevel, point.getY() / zoomLevel);
+		for (Map.Entry<IComponentInstance, Area> entry : componentAreaMap.entrySet()) {
 			if (entry.getValue().contains(scaledPoint)) {
 				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			}
@@ -167,8 +163,7 @@ public class Presenter implements IPlugInPort {
 		LOG.info("Loading project: " + project.getTitle());
 		this.currentProject = project;
 		selectedComponents.clear();
-		messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project,
-				freshStart);
+		messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
@@ -177,20 +172,17 @@ public class Presenter implements IPlugInPort {
 		if (componentTypes == null) {
 			LOG.info("Loading component types.");
 			componentTypes = new HashMap<String, List<IComponentType>>();
-			List<Class<?>> componentTypeClasses = JarScanner.getInstance()
-					.scanFolder("library/", IComponentType.class);
+			List<Class<?>> componentTypeClasses = JarScanner.getInstance().scanFolder("library/",
+					IComponentType.class);
 			for (Class<?> clazz : componentTypeClasses) {
 				try {
-					IComponentType componentType = (IComponentType) clazz
-							.newInstance();
+					IComponentType componentType = (IComponentType) clazz.newInstance();
 					List<IComponentType> nestedList;
 					if (componentTypes.containsKey(componentType.getCategory())) {
-						nestedList = componentTypes.get(componentType
-								.getCategory());
+						nestedList = componentTypes.get(componentType.getCategory());
 					} else {
 						nestedList = new ArrayList<IComponentType>();
-						componentTypes.put(componentType.getCategory(),
-								nestedList);
+						componentTypes.put(componentType.getCategory(), nestedList);
 					}
 					nestedList.add(componentType);
 				} catch (InstantiationException e) {
@@ -211,8 +203,9 @@ public class Presenter implements IPlugInPort {
 		G2DWrapper g2dWrapper = new G2DWrapper(g2d);
 
 		if (drawOptions.contains(DrawOption.ANTIALIASING)) {
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d
+					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+							RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 
 		AffineTransform initialTx = g2d.getTransform();
@@ -236,15 +229,13 @@ public class Presenter implements IPlugInPort {
 			}
 		}
 
-		if ((drawOptions.contains(DrawOption.ZOOM))
-				&& (Math.abs(1.0 - zoomLevel) > 1e-4)) {
+		if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 - zoomLevel) > 1e-4)) {
 			g2dWrapper.scale(zoomLevel, zoomLevel);
 		}
 
 		g2dWrapper.resetTx();
 
-		List<IComponentInstance> components = getCurrentProject()
-				.getComponents();
+		List<IComponentInstance> components = getCurrentProject().getComponents();
 		componentAreaMap.clear();
 		if (components != null) {
 			for (IComponentInstance component : components) {
@@ -253,14 +244,12 @@ public class Presenter implements IPlugInPort {
 						.contains(DrawOption.SELECTION)) ? ComponentState.SELECTED
 						: ComponentState.NORMAL;
 				component.draw(g2dWrapper, state);
-				componentAreaMap.put(component, g2dWrapper
-						.finishedDrawingComponent());
+				componentAreaMap.put(component, g2dWrapper.finishedDrawingComponent());
 
 				// Draw control points
 				if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
-					List<ControlPointWrapper> controlPoints = ComponentProcessor
-							.getInstance().extractControlPoints(
-									component.getClass());
+					List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
+							.extractControlPoints(component.getClass());
 					for (ControlPointWrapper controlPoint : controlPoints) {
 						try {
 							controlPoint.readFrom(component);
@@ -273,9 +262,8 @@ public class Presenter implements IPlugInPort {
 								// .getValue().y - 2, 5, 5);
 							}
 						} catch (Exception e) {
-							LOG
-									.error("Could not obtain control points for component of type "
-											+ component.getClass().getName());
+							LOG.error("Could not obtain control points for component of type "
+									+ component.getClass().getName());
 						}
 					}
 				}
@@ -285,8 +273,7 @@ public class Presenter implements IPlugInPort {
 		g2d.setTransform(initialTx);
 
 		// At the end draw selection rectangle.
-		if (drawOptions.contains(DrawOption.SELECTION)
-				&& (selectionRect != null)) {
+		if (drawOptions.contains(DrawOption.SELECTION) && (selectionRect != null)) {
 			g2d.setColor(Color.white);
 			g2d.drawRect(selectionRect.x, selectionRect.y, selectionRect.width,
 					selectionRect.height);
@@ -298,8 +285,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void injectGUIComponent(JComponent component, int position)
-			throws BadPositionException {
+	public void injectGUIComponent(JComponent component, int position) throws BadPositionException {
 		view.addComponent(component, position);
 	}
 
@@ -321,8 +307,7 @@ public class Presenter implements IPlugInPort {
 	 */
 	private List<IComponentInstance> findComponentsAt(Point point) {
 		List<IComponentInstance> components = new ArrayList<IComponentInstance>();
-		for (Map.Entry<IComponentInstance, Area> entry : componentAreaMap
-				.entrySet()) {
+		for (Map.Entry<IComponentInstance, Area> entry : componentAreaMap.entrySet()) {
 			if (entry.getValue().contains(point)) {
 				components.add(entry.getKey());
 			}
@@ -331,15 +316,13 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown,
-			boolean altDown) {
-		LOG.debug(String.format("mouseClicked(%s, %s, %s, %s)", point,
-				ctrlDown, shiftDown, altDown));
+	public void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
+		LOG.debug(String
+				.format("mouseClicked(%s, %s, %s, %s)", point, ctrlDown, shiftDown, altDown));
 		Point scaledPoint = scalePoint(point);
 		if (componentSlot != null) {
 			try {
-				instantiateComponent(componentSlot.getComponentInstanceClass(),
-						scaledPoint);
+				instantiateComponent(componentSlot.getComponentInstanceClass(), scaledPoint);
 			} catch (Exception e) {
 				LOG.error("Error instatiating component of type: "
 						+ componentSlot.getComponentInstanceClass().getName());
@@ -366,8 +349,7 @@ public class Presenter implements IPlugInPort {
 					selectedComponents.add(component);
 				}
 			}
-			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
-					selectedComponents);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
 	}
@@ -377,8 +359,8 @@ public class Presenter implements IPlugInPort {
 		List<IComponentInstance> components = new ArrayList<IComponentInstance>();
 		Point scaledPoint = scalePoint(point);
 		for (IComponentInstance component : currentProject.getComponents()) {
-			List<ControlPointWrapper> currentPoints = ComponentProcessor
-					.getInstance().extractControlPoints(component.getClass());
+			List<ControlPointWrapper> currentPoints = ComponentProcessor.getInstance()
+					.extractControlPoints(component.getClass());
 			for (ControlPointWrapper controlPoint : currentPoints) {
 				if (shouldShowControlPoint(controlPoint, component)) {
 					try {
@@ -388,17 +370,15 @@ public class Presenter implements IPlugInPort {
 							break;
 						}
 					} catch (Exception e) {
-						LOG
-								.warn("Error reading control point for component of type: "
-										+ component.getClass().getName());
+						LOG.warn("Error reading control point for component of type: "
+								+ component.getClass().getName());
 					}
 				}
 			}
 		}
 		if (!components.equals(componentsUnderCursor)) {
 			componentsUnderCursor = components;
-			messageDispatcher.dispatchMessage(
-					EventType.AVAILABLE_CTRL_POINTS_CHANGED, components);
+			messageDispatcher.dispatchMessage(EventType.AVAILABLE_CTRL_POINTS_CHANGED, components);
 		}
 	}
 
@@ -426,16 +406,14 @@ public class Presenter implements IPlugInPort {
 		List<IComponentInstance> components = findComponentsAt(scaledPoint);
 		if (components.isEmpty()) {
 			selectedComponents.clear();
-			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
-					selectedComponents);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
 			IComponentInstance component = components.get(0);
 			if (!selectedComponents.contains(component)) {
 				selectedComponents.clear();
 				selectedComponents.add(component);
-				messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
-						selectedComponents);
+				messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 				messageDispatcher.dispatchMessage(EventType.REPAINT);
 			}
 		}
@@ -445,8 +423,7 @@ public class Presenter implements IPlugInPort {
 	public boolean dragOver(Point point) {
 		if (selectedComponents.isEmpty()) {
 			this.selectionRect = Utils.createRectangle(point, dragStartPoint);
-			messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
-					selectionRect);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED, selectionRect);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
 		return true;
@@ -462,23 +439,20 @@ public class Presenter implements IPlugInPort {
 			// If there's no selection finalize selectionRect and see which
 			// components intersect with it.
 			if (point != null) {
-				this.selectionRect = Utils.createRectangle(point,
-						dragStartPoint);
+				this.selectionRect = Utils.createRectangle(point, dragStartPoint);
 			}
 			selectedComponents.clear();
 			for (IComponentInstance component : currentProject.getComponents()) {
 				Area area = componentAreaMap.get(component);
 				if ((area != null)
 						&& area.intersects(selectionRect.x / zoomLevel,
-								selectionRect.y / zoomLevel,
-								selectionRect.width / zoomLevel,
+								selectionRect.y / zoomLevel, selectionRect.width / zoomLevel,
 								selectionRect.height / zoomLevel)) {
 					selectedComponents.add(component);
 				}
 			}
 			selectionRect = null;
-			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
-					selectedComponents);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 		} else {
 			Project oldProject = cloner.deepClone(currentProject);
 
@@ -486,9 +460,8 @@ public class Presenter implements IPlugInPort {
 			int dx = (int) ((point.x - dragStartPoint.x) / zoomLevel);
 			int dy = (int) ((point.y - dragStartPoint.y) / zoomLevel);
 			for (IComponentInstance component : selectedComponents) {
-				List<ControlPointWrapper> controlPoints = ComponentProcessor
-						.getInstance().extractControlPoints(
-								component.getClass());
+				List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
+						.extractControlPoints(component.getClass());
 				for (ControlPointWrapper controlPoint : controlPoints) {
 					try {
 						controlPoint.readFrom(component);
@@ -497,14 +470,13 @@ public class Presenter implements IPlugInPort {
 						}
 						controlPoint.writeTo(component);
 					} catch (Exception e) {
-						LOG.error("Could not translate control points: "
-								+ e.getMessage());
+						LOG.error("Could not translate control points: " + e.getMessage());
 					}
 				}
 			}
 			if (!oldProject.equals(currentProject)) {
-				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-						oldProject, cloner.deepClone(currentProject), "Move");
+				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+						.deepClone(currentProject), "Move");
 			}
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -512,13 +484,12 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void addComponents(List<IComponentInstance> components,
-			Point preferredPoint) {
+	public void addComponents(List<IComponentInstance> components, Point preferredPoint) {
 		LOG.debug(String.format("addComponents(%s)", components));
 		Project oldProject = cloner.deepClone(currentProject);
 		currentProject.getComponents().addAll(components);
-		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-				oldProject, cloner.deepClone(currentProject), "Add");
+		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+				.deepClone(currentProject), "Add");
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
@@ -558,27 +529,23 @@ public class Presenter implements IPlugInPort {
 	// componentClass.getName() + ":" + propertyName);
 	// }
 	public void setDefaultPropertyValue(String propertyName, Object value) {
-		LOG.debug(String.format("setDefaultPropertyValue(%s, %s)",
-				propertyName, value));
-		Map<String, Object> defaultMap = (Map<String, Object>) ConfigurationManager
-				.getInstance().getConfigurationItem(DEFAULTS_KEY);
+		LOG.debug(String.format("setDefaultPropertyValue(%s, %s)", propertyName, value));
+		Map<String, Object> defaultMap = (Map<String, Object>) ConfigurationManager.getInstance()
+				.getConfigurationItem(DEFAULTS_KEY);
 		if (defaultMap == null) {
 			defaultMap = new HashMap<String, Object>();
-			ConfigurationManager.getInstance().setConfigurationItem(
-					DEFAULTS_KEY, defaultMap);
+			ConfigurationManager.getInstance().setConfigurationItem(DEFAULTS_KEY, defaultMap);
 		}
 		for (IComponentInstance component : selectedComponents) {
 			String className = component.getClass().getName();
-			LOG.debug("Default property value set for " + className + ":"
-					+ propertyName);
+			LOG.debug("Default property value set for " + className + ":" + propertyName);
 			defaultMap.put(className + ":" + propertyName, value);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private void instantiateComponent(
-			Class<? extends IComponentInstance> componentClass, Point point)
-			throws Exception {
+	private void instantiateComponent(Class<? extends IComponentInstance> componentClass,
+			Point point) throws Exception {
 		LOG.info("Instatiating component of type: " + componentClass.getName());
 
 		Project oldProject = cloner.deepClone(currentProject);
@@ -589,8 +556,8 @@ public class Presenter implements IPlugInPort {
 		currentProject.getComponents().add(component);
 
 		// Extract control points.
-		List<ControlPointWrapper> controlPoints = ComponentProcessor
-				.getInstance().extractControlPoints(componentClass);
+		List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
+				.extractControlPoints(componentClass);
 		// Translate them to the desired location.
 		if (point != null) {
 			for (ControlPointWrapper controlPoint : controlPoints) {
@@ -601,16 +568,15 @@ public class Presenter implements IPlugInPort {
 		}
 
 		// Extract properties.
-		List<PropertyWrapper> properties = ComponentProcessor.getInstance()
-				.extractProperties(componentClass);
+		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
+				componentClass);
 		// Override with default values if available.
 		for (PropertyWrapper property : properties) {
 			Object defaultValue = null;
 			Map<String, Object> defaultMap = (Map<String, Object>) ConfigurationManager
 					.getInstance().getConfigurationItem(DEFAULTS_KEY);
 			if (defaultMap != null) {
-				defaultValue = defaultMap.get(componentClass.getName() + ":"
-						+ property.getName());
+				defaultValue = defaultMap.get(componentClass.getName() + ":" + property.getName());
 			}
 			if (defaultValue != null) {
 				property.setValue(cloner.deepClone(defaultValue));
@@ -620,21 +586,19 @@ public class Presenter implements IPlugInPort {
 
 		// Notify the listeners.
 		if (!oldProject.equals(currentProject)) {
-			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-					oldProject, cloner.deepClone(currentProject), "Create");
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+					.deepClone(currentProject), "Create");
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
 	@Override
 	public List<PropertyWrapper> getMutualSelectionProperties() {
-		return ComponentProcessor.getInstance().getMutualSelectionProperties(
-				selectedComponents);
+		return ComponentProcessor.getInstance().getMutualSelectionProperties(selectedComponents);
 	}
 
 	@Override
-	public void applyPropertiesToSelection(List<PropertyWrapper> properties)
-			throws Exception {
+	public void applyPropertiesToSelection(List<PropertyWrapper> properties) throws Exception {
 		LOG.debug(String.format("applyPropertiesToSelection(%s)", properties));
 		Project oldProject = cloner.deepClone(currentProject);
 		try {
@@ -646,8 +610,8 @@ public class Presenter implements IPlugInPort {
 		} finally {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
-				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-						oldProject, cloner.deepClone(currentProject), "Edit");
+				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+						.deepClone(currentProject), "Edit");
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
@@ -655,26 +619,22 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void setNewComponentSlot(IComponentType componentType) {
-		LOG.debug(String.format("setNewComponentSlot(%s)",
-				componentType == null ? null : componentType.getName()));
+		LOG.debug(String.format("setNewComponentSlot(%s)", componentType == null ? null
+				: componentType.getName()));
 		this.componentSlot = componentType;
 		selectedComponents.clear();
 		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED);
-		messageDispatcher
-				.dispatchMessage(EventType.SLOT_CHANGED, componentSlot);
+		messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot);
 	}
 
 	private Point scalePoint(Point point) {
-		return new Point((int) (point.x / zoomLevel),
-				(int) (point.y / zoomLevel));
+		return new Point((int) (point.x / zoomLevel), (int) (point.y / zoomLevel));
 	}
 
 	private boolean shouldShowControlPoint(ControlPointWrapper controlPoint,
 			IComponentInstance component) {
-		return controlPoint.getVisibilityPolicy().equals(
-				VisibilityPolicy.ALWAYS)
-				|| ((controlPoint.getVisibilityPolicy()
-						.equals(VisibilityPolicy.WHEN_SELECTED)) && (getSelectedComponents()
+		return controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.ALWAYS)
+				|| ((controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.WHEN_SELECTED)) && (getSelectedComponents()
 						.contains(component)));
 	}
 }

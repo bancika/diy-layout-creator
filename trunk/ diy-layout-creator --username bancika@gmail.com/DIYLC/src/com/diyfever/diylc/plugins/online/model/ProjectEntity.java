@@ -21,8 +21,7 @@ public class ProjectEntity implements Serializable {
 		super();
 	}
 
-	public ProjectEntity(int id, String name, String description, String owner,
-			String category) {
+	public ProjectEntity(int id, String name, String description, String owner, String category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -88,10 +87,8 @@ public class ProjectEntity implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((category == null) ? 0 : category.hashCode());
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((owner == null) ? 0 : owner.hashCode());

@@ -53,19 +53,17 @@ public class LibraryPresenter {
 		}
 	}
 
-	public void createUser(String userName, String password, String email)
-			throws SQLException, NotConnectedException, AlreadyExistsException {
+	public void createUser(String userName, String password, String email) throws SQLException,
+			NotConnectedException, AlreadyExistsException {
 		LOG.info("Creating user: " + userName);
 		if (dbManager.isConnected()) {
-			ResultSet resultSet = dbManager.getResultSet(String.format(
-					USER_SQL, userName));
+			ResultSet resultSet = dbManager.getResultSet(String.format(USER_SQL, userName));
 			if (resultSet.next()) {
 				throw new AlreadyExistsException();
 			}
-			dbManager.updateDB(String.format(CREATE_USER_SQL, userName,
-					hashPassword(password), email));
-			resultSet = dbManager.getResultSet(String
-					.format(USER_SQL, userName));
+			dbManager.updateDB(String.format(CREATE_USER_SQL, userName, hashPassword(password),
+					email));
+			resultSet = dbManager.getResultSet(String.format(USER_SQL, userName));
 			if (resultSet.next()) {
 				LOG.info("Logged in as \"" + userName + "\"");
 				currentUserId = resultSet.getInt("user_id");
@@ -80,8 +78,7 @@ public class LibraryPresenter {
 			NotConnectedException {
 		LOG.info("Logging in as: " + userName);
 		if (dbManager.isConnected()) {
-			ResultSet resultSet = dbManager.getResultSet(String.format(
-					USER_SQL, userName));
+			ResultSet resultSet = dbManager.getResultSet(String.format(USER_SQL, userName));
 			if (resultSet.next()) {
 				String dbPassword = resultSet.getString("password");
 				String hashPassword = hashPassword(password);
@@ -99,15 +96,13 @@ public class LibraryPresenter {
 		}
 	}
 
-	public Map<Integer, String> fetchCategories() throws SQLException,
-			NotConnectedException {
+	public Map<Integer, String> fetchCategories() throws SQLException, NotConnectedException {
 		LOG.info("Fetching categories");
 		if (dbManager.isConnected()) {
 			Map<Integer, String> categories = new HashMap<Integer, String>();
 			ResultSet resultSet = dbManager.getResultSet(CATEGORY_SQL);
 			while (resultSet.next()) {
-				categories.put(resultSet.getInt("category_id"), resultSet
-						.getString("name"));
+				categories.put(resultSet.getInt("category_id"), resultSet.getString("name"));
 			}
 			return categories;
 		} else {
@@ -116,19 +111,18 @@ public class LibraryPresenter {
 		}
 	}
 
-	public List<ProjectEntity> fetchMyProjectRows()
-			throws NotLoggedInException, NotConnectedException, SQLException {
+	public List<ProjectEntity> fetchMyProjectRows() throws NotLoggedInException,
+			NotConnectedException, SQLException {
 		if (dbManager.isConnected()) {
 			if (isLoggedIn()) {
 				Map<Integer, String> categories = fetchCategories();
 				List<ProjectEntity> projects = new ArrayList<ProjectEntity>();
-				ResultSet resultSet = dbManager.getResultSet(String.format(
-						MY_PROJECTS_SQL, currentUserId));
+				ResultSet resultSet = dbManager.getResultSet(String.format(MY_PROJECTS_SQL,
+						currentUserId));
 				while (resultSet.next()) {
-					projects.add(new ProjectEntity(resultSet
-							.getInt("project_id"), resultSet.getString("name"),
-							resultSet.getString("description"), "", categories
-									.get(resultSet.getInt("category_id"))));
+					projects.add(new ProjectEntity(resultSet.getInt("project_id"), resultSet
+							.getString("name"), resultSet.getString("description"), "", categories
+							.get(resultSet.getInt("category_id"))));
 				}
 				return projects;
 			} else {
@@ -141,16 +135,14 @@ public class LibraryPresenter {
 		}
 	}
 
-	public String downloadProjectContent(int projectId)
-			throws NotConnectedException, NotExistsException, SQLException {
+	public String downloadProjectContent(int projectId) throws NotConnectedException,
+			NotExistsException, SQLException {
 		if (dbManager.isConnected()) {
-			ResultSet resultSet = dbManager.getResultSet(String.format(
-					PROJECT_SQL, projectId));
+			ResultSet resultSet = dbManager.getResultSet(String.format(PROJECT_SQL, projectId));
 			if (resultSet.next()) {
 				return resultSet.getString("content");
 			}
-			throw new NotExistsException("Project with id = " + projectId
-					+ " does not exist.");
+			throw new NotExistsException("Project with id = " + projectId + " does not exist.");
 		} else {
 			LOG.error("Not connected");
 			throw new NotConnectedException();

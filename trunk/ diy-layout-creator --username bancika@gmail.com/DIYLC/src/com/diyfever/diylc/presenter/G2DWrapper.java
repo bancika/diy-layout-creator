@@ -180,8 +180,7 @@ class G2DWrapper extends Graphics2D {
 	 *{@inheritDoc}
 	 **/
 	@Override
-	public void drawString(AttributedCharacterIterator iterator, float x,
-			float y) {
+	public void drawString(AttributedCharacterIterator iterator, float x, float y) {
 		canvasGraphics.drawString(iterator, x, y);
 		// FIXME: process map
 	}
@@ -441,8 +440,7 @@ class G2DWrapper extends Graphics2D {
 	 *{@inheritDoc}
 	 **/
 	@Override
-	public void drawArc(int x, int y, int width, int height, int startAngle,
-			int arcAngle) {
+	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 		canvasGraphics.drawArc(x, y, width, height, startAngle, arcAngle);
 	}
 
@@ -459,8 +457,7 @@ class G2DWrapper extends Graphics2D {
 	 *{@inheritDoc}
 	 **/
 	@Override
-	public boolean drawImage(Image img, int x, int y, Color bgcolor,
-			ImageObserver observer) {
+	public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
 		// FIXME: map
 		return canvasGraphics.drawImage(img, x, y, bgcolor, observer);
 	}
@@ -469,8 +466,7 @@ class G2DWrapper extends Graphics2D {
 	 *{@inheritDoc}
 	 **/
 	@Override
-	public boolean drawImage(Image img, int x, int y, int width, int height,
-			ImageObserver observer) {
+	public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
 		// FIXME: map
 		return canvasGraphics.drawImage(img, x, y, width, height, observer);
 	}
@@ -479,34 +475,30 @@ class G2DWrapper extends Graphics2D {
 	 *{@inheritDoc}
 	 **/
 	@Override
-	public boolean drawImage(Image img, int x, int y, int width, int height,
-			Color bgcolor, ImageObserver observer) {
-		// FIXME: map
-		return canvasGraphics.drawImage(img, x, y, width, height, bgcolor,
-				observer);
-	}
-
-	/**
-	 *{@inheritDoc}
-	 **/
-	@Override
-	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-		// FIXME: map
-		return canvasGraphics.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2,
-				sy2, observer);
-	}
-
-	/**
-	 *{@inheritDoc}
-	 **/
-	@Override
-	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-			int sx1, int sy1, int sx2, int sy2, Color bgcolor,
+	public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor,
 			ImageObserver observer) {
 		// FIXME: map
-		return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor,
-				observer);
+		return canvasGraphics.drawImage(img, x, y, width, height, bgcolor, observer);
+	}
+
+	/**
+	 *{@inheritDoc}
+	 **/
+	@Override
+	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1,
+			int sx2, int sy2, ImageObserver observer) {
+		// FIXME: map
+		return canvasGraphics.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
+	}
+
+	/**
+	 *{@inheritDoc}
+	 **/
+	@Override
+	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1,
+			int sx2, int sy2, Color bgcolor, ImageObserver observer) {
+		// FIXME: map
+		return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
 	}
 
 	/**
@@ -545,8 +537,7 @@ class G2DWrapper extends Graphics2D {
 	 *{@inheritDoc}
 	 **/
 	@Override
-	public void drawRoundRect(int x, int y, int width, int height,
-			int arcWidth, int arcHeight) {
+	public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 		canvasGraphics.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
 	}
 
@@ -554,11 +545,9 @@ class G2DWrapper extends Graphics2D {
 	 *{@inheritDoc}
 	 **/
 	@Override
-	public void fillArc(int x, int y, int width, int height, int startAngle,
-			int arcAngle) {
+	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 		canvasGraphics.fillArc(x, y, width, height, startAngle, arcAngle);
-		appendShape(new Arc2D.Double(x, y, width, height, startAngle, arcAngle,
-				Arc2D.PIE));
+		appendShape(new Arc2D.Double(x, y, width, height, startAngle, arcAngle, Arc2D.PIE));
 	}
 
 	/**
@@ -592,11 +581,9 @@ class G2DWrapper extends Graphics2D {
 	 *{@inheritDoc}
 	 **/
 	@Override
-	public void fillRoundRect(int x, int y, int width, int height,
-			int arcWidth, int arcHeight) {
+	public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 		canvasGraphics.fillRoundRect(x, y, width, height, arcWidth, arcHeight);
-		appendShape(new RoundRectangle2D.Double(x, y, width, height, arcWidth,
-				arcHeight));
+		appendShape(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
 	}
 
 	/**

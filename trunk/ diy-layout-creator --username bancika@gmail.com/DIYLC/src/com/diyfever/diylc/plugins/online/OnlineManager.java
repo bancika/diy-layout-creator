@@ -95,8 +95,7 @@ public class OnlineManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			LoginDialog dialog = DialogFactory.getInstance()
-					.createLoginDialog();
+			LoginDialog dialog = DialogFactory.getInstance().createLoginDialog();
 			dialog.setVisible(true);
 		}
 	}
@@ -113,8 +112,7 @@ public class OnlineManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			NewUserDialog dialog = DialogFactory.getInstance()
-					.createNewUserDialog();
+			NewUserDialog dialog = DialogFactory.getInstance().createNewUserDialog();
 			dialog.setVisible(true);
 		}
 	}
@@ -131,8 +129,7 @@ public class OnlineManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			UploadDialog dialog = DialogFactory.getInstance()
-					.createUploadDialog();
+			UploadDialog dialog = DialogFactory.getInstance().createUploadDialog();
 			dialog.setVisible(true);
 		}
 	}
@@ -149,9 +146,8 @@ public class OnlineManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			ProgressDialog dialog = DialogFactory.getInstance()
-					.createProgressDialog("Test", new String[] {}, "Some text",
-							false);
+			ProgressDialog dialog = DialogFactory.getInstance().createProgressDialog("Test",
+					new String[] {}, "Some text", false);
 			dialog.setVisible(true);
 		}
 	}
