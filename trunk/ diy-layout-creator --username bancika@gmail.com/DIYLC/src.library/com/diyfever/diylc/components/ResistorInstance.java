@@ -126,6 +126,9 @@ public class ResistorInstance implements IComponentInstance {
 	public void draw(Graphics2D g2d, ComponentState componentState) {
 		g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color : color.darker());
 		g2d.setStroke(new BasicStroke(2));
+		if (componentState == ComponentState.DRAGGING) {
+			g2d.setStroke(new BasicStroke(1));
+		}
 		g2d.drawLine(leftTopCorner.x, leftTopCorner.y, otherCorner.x, otherCorner.y);
 		g2d.fillRect((leftTopCorner.x + otherCorner.x) / 2 - 10,
 				(leftTopCorner.y + otherCorner.y) / 2 - 10, 20, 20);
