@@ -5,6 +5,12 @@ import java.lang.reflect.Method;
 
 import com.diyfever.diylc.model.IComponentInstance;
 
+/**
+ * Entity class for editable properties extracted from component objects.
+ * Represents a single editable property together with it's current value.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class PropertyWrapper implements Cloneable {
 
 	private String name;

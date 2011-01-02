@@ -32,7 +32,10 @@ import java.util.Map;
 
 /**
  * {@link Graphics2D} wrapper that keeps track of all drawing actions and
- * creates an {@link Area} that corresponds to drawn objects.
+ * creates an {@link Area} that corresponds to drawn objects. Before each
+ * component is drawn, {@link #startedDrawingComponent()} should be called.
+ * After the component is drawn, area may be retrieved using
+ * {@link #finishedDrawingComponent()}.
  * 
  * @author Branislav Stojkovic
  */
@@ -71,7 +74,8 @@ class G2DWrapper extends Graphics2D {
 	}
 
 	/**
-	 * Resets transformation to identity.
+	 * Resets transformation to identity. Should be called only once before any
+	 * drawing is done.
 	 */
 	public void resetTx() {
 		currentTx = new AffineTransform();

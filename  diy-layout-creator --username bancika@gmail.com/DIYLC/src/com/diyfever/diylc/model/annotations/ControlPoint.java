@@ -7,9 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import com.diyfever.diylc.model.VisibilityPolicy;
 
 /**
- * Annotation for control points. This annotation may be added to a field XYZ of
- * type {@link Point} only when both getters and setters for that property
- * exist. Annotation is added always on the getter.
+ * Annotation for control points. This annotation may be added fields of type
+ * {@link Point} only when both getters and setters exist. Annotation is added
+ * always on the getter.
  * 
  * @author Branislav Stojkovic
  */

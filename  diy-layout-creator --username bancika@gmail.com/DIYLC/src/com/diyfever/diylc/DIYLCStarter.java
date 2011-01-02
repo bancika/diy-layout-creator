@@ -9,6 +9,7 @@ import javax.swing.UIManager;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.diyfever.diylc.gui.MainFrame;
+import com.diyfever.gui.miscutils.PropertyInjector;
 
 /**
  * 
@@ -26,6 +27,16 @@ public class DIYLCStarter {
 			properties.load(url.openStream());
 			PropertyConfigurator.configure(properties);
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		url = DIYLCStarter.class.getResource("config.properties");
+		properties = new Properties();
+		try {
+			properties.load(url.openStream());
+			PropertyInjector.injectProperties(properties);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
