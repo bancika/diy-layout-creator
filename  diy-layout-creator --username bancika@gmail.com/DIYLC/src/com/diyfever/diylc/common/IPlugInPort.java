@@ -5,9 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Area;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -88,7 +88,7 @@ public interface IPlugInPort {
 	 * 
 	 * @param g2d
 	 */
-	void draw(Graphics2D g2d, EnumSet<DrawOption> drawProperties);
+	void draw(Graphics2D g2d, Set<DrawOption> drawProperties);
 
 	/**
 	 * Injects a custom GUI panels provided by the plug-in and desired position

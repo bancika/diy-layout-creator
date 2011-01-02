@@ -10,6 +10,13 @@ import java.util.List;
 
 import com.diyfever.diylc.model.IComponentInstance;
 
+/**
+ * Represents component selection as a {@link List} of
+ * {@link IComponentInstance} objects. Implements {@link Transferable}, so it is
+ * suitable for clipboard usage.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class ComponentSelection extends ArrayList<IComponentInstance> implements Transferable {
 
 	private static final long serialVersionUID = 1L;

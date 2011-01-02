@@ -7,6 +7,12 @@ import java.lang.reflect.Method;
 import com.diyfever.diylc.model.IComponentInstance;
 import com.diyfever.diylc.model.VisibilityPolicy;
 
+/**
+ * Entity bean that represents a control point. Has methods for reading/writing
+ * {@link Point} value from/to a component.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class ControlPointWrapper {
 
 	private String name;
@@ -28,11 +34,29 @@ public class ControlPointWrapper {
 		this.visibilityPolicy = visibilityPolicy;
 	}
 
+	/**
+	 * Reads value from the specified component by invoking it's
+	 * <code>getter</code> method.
+	 * 
+	 * @param component
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
 	public void readFrom(IComponentInstance component) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		value = (Point) getter.invoke(component);
 	}
 
+	/**
+	 * Writes the value into the specified component by invoking it's
+	 * <code>setter</code> method.
+	 * 
+	 * @param component
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
 	public void writeTo(IComponentInstance component) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		setter.invoke(component, value);
