@@ -12,6 +12,11 @@ import com.diyfever.diylc.gui.DialogFactory;
 import com.diyfever.diylc.images.IconLoader;
 import com.diyfever.gui.AboutDialog;
 
+/**
+ * Entry point class for help-related utilities.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class HelpManager implements IPlugIn {
 
 	private static final String HELP_TITLE = "Help";

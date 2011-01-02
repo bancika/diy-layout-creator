@@ -1,6 +1,11 @@
 package com.diyfever.diylc.model;
 
+/**
+ * Enumerates all drawing layers.
+ * 
+ * @author Branislav Stojkovic
+ */
 public enum ComponentLayer {
 
-	BELOW_CHASSIS, CHASSIS, BELOW_BOARD, BOARD, TRACE, COMPONENT, ABOVE_COMPONENT;
+	BELOW_CHASSIS, CHASSIS, ABOVE_CHASSIS, BELOW_BOARD, BOARD, TRACE, COMPONENT, ABOVE_COMPONENT;
 }

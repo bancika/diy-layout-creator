@@ -23,6 +23,11 @@ import com.diyfever.gui.export.DrawingExporter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+/**
+ * Entry point class for File management utilities.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class FileManager implements IPlugIn {
 
 	private static final Logger LOG = Logger.getLogger(FileManager.class);
@@ -253,13 +258,12 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+			System.exit(0);
 		}
 	}
 
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
