@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.diyfever.diylc.common.BadPositionException;
-import com.diyfever.diylc.components.MockComponentInstance;
 import com.diyfever.diylc.model.Project;
 import com.diyfever.diylc.plugins.canvas.CanvasPlugin;
 import com.diyfever.diylc.plugins.clipboard.ClipboardManager;
@@ -67,7 +66,7 @@ public class MainFrame extends JFrame implements IView {
 		presenter.installPlugin(new CanvasPlugin());
 
 		Project project = new Project();
-		project.getComponents().add(new MockComponentInstance());
+//		project.getComponents().add(new MockComponentInstance());
 		presenter.loadProject(project, true);
 
 		addWindowListener(new WindowAdapter() {
