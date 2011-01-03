@@ -360,7 +360,8 @@ public class Presenter implements IPlugInPort {
 		Point scaledPoint = scalePoint(point);
 		if (componentSlot != null) {
 			try {
-				instantiateComponent(componentSlot.getComponentInstanceClass(), scaledPoint);
+				instantiateComponent(componentSlot.getComponentInstanceClass(), componentSlot
+						.getName(), componentSlot.getInstanceNamePrefix(), scaledPoint);
 			} catch (Exception e) {
 				LOG.error("Error instatiating component of type: "
 						+ componentSlot.getComponentInstanceClass().getName());
@@ -447,9 +448,14 @@ public class Presenter implements IPlugInPort {
 		Point scaledPoint = scalePoint(point);
 		previousDragPoint = scaledPoint;
 		List<IComponentInstance> components = findComponentsAt(scaledPoint);
-		if (!componentControlPointMap.isEmpty() || components.isEmpty()) {
-			// If we're dragging control points or there are no components are
-			// under the cursor, reset selection.
+		if (!componentControlPointMap.isEmpty()) {
+			// If we're dragging control points reset selection.
+			selectedComponents.clear();
+			selectedComponents.addAll(componentControlPointMap.keySet());
+			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+		} else if (components.isEmpty()) {
+			// If there are no components are under the cursor, reset selection.
 			selectedComponents.clear();
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -647,13 +653,31 @@ public class Presenter implements IPlugInPort {
 
 	@SuppressWarnings("unchecked")
 	private void instantiateComponent(Class<? extends IComponentInstance> componentClass,
-			Point point) throws Exception {
+			String componentTypeName, String namePrefix, Point point) throws Exception {
 		LOG.info("Instatiating component of type: " + componentClass.getName());
 
 		Project oldProject = cloner.deepClone(currentProject);
 
 		// Instantiate the component.
 		IComponentInstance component = componentClass.newInstance();
+
+		// Find the next available name for the component.
+		int i = 0;
+		boolean exists = true;
+		while (exists) {
+			i++;
+			String name = namePrefix + i;
+			exists = false;
+			for (IComponentInstance c : currentProject.getComponents()) {
+				String cName = ComponentProcessor.getInstance().extractBomName(c);
+				if (cName.equals(name)) {
+					exists = true;
+					break;
+				}
+			}
+		}
+		ComponentProcessor.getInstance().writeBomName(component, namePrefix + i);
+
 		// Add it to the project.
 		currentProject.getComponents().add(component);
 
@@ -693,7 +717,7 @@ public class Presenter implements IPlugInPort {
 		// Notify the listeners.
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
-					.deepClone(currentProject), "Create");
+					.deepClone(currentProject), "Add " + componentTypeName);
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}

@@ -13,6 +13,11 @@ public class MockComponentType implements IComponentType {
 	public Class<? extends IComponentInstance> getComponentInstanceClass() {
 		return MockComponentInstance.class;
 	}
+	
+	@Override
+	public String getInstanceNamePrefix() {
+		return "ABC";
+	}
 
 	@Override
 	public ComponentLayer getComponentLayer() {

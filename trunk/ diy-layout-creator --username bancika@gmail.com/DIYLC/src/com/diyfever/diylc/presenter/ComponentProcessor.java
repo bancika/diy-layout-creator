@@ -173,6 +173,19 @@ public class ComponentProcessor {
 		return name;
 	}
 
+	public void writeBomName(IComponentInstance component, String newBomName) {
+		for (Method method : component.getClass().getMethods()) {
+			if (method.isAnnotationPresent(BomName.class)) {
+				try {
+					Method setter = component.getClass().getMethod(
+							method.getName().replaceFirst("get", "set"), String.class);
+					setter.invoke(component, newBomName);
+				} catch (Exception e) {
+				}
+			}
+		}
+	}
+
 	public String extractBomValue(IComponentInstance component) {
 		String value = null;
 		for (Method method : component.getClass().getMethods()) {
