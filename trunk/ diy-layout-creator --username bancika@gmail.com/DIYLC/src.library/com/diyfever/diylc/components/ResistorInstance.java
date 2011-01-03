@@ -18,6 +18,7 @@ import com.diyfever.diylc.model.measures.Resistance;
 import com.diyfever.diylc.model.measures.ResistanceUnit;
 import com.diyfever.diylc.model.measures.Size;
 import com.diyfever.diylc.model.measures.SizeUnit;
+import com.diyfever.diylc.utils.Constants;
 
 public class ResistorInstance implements IComponentInstance {
 
@@ -29,7 +30,7 @@ public class ResistorInstance implements IComponentInstance {
 	private Size s = new Size(1d, SizeUnit.cm);
 	private Color color = Color.green;
 	private Point leftTopCorner = new Point(0, 0);
-	private Point otherCorner = new Point(100, 100);
+	private Point otherCorner = new Point((int) (Constants.GRID * 10), (int) (Constants.GRID * 10));
 	private String name = "something";
 
 	public ResistorInstance(String testField, Capacitance c, Resistance r, Size s, Color color,

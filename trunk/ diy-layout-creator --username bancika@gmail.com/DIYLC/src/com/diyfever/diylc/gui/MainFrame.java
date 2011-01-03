@@ -3,6 +3,8 @@ package com.diyfever.diylc.gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
@@ -17,7 +19,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import com.diyfever.diylc.common.BadPositionException;
 import com.diyfever.diylc.model.Project;
@@ -95,14 +97,24 @@ public class MainFrame extends JFrame implements IView {
 		super.setVisible(b);
 		// TODO: hack to prevent painting issues in the scroll bar rulers. Find
 		// a better fix if possible.
-		if (b) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					canvasPlugin.refresh();
-				}
-			});
-		}
+		Timer timer = new Timer(50, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				canvasPlugin.refresh();
+			}
+
+		});
+		timer.setRepeats(false);
+		timer.start();
+		// if (b) {
+		// SwingUtilities.invokeLater(new Runnable() {
+		// @Override
+		// public void run() {
+		//					
+		// }
+		// });
+		// }
 	}
 
 	private void createBasePanels() {
