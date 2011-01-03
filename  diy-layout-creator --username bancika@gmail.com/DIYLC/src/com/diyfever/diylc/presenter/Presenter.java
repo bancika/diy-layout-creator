@@ -87,7 +87,8 @@ public class Presenter implements IPlugInPort {
 
 	// D&D
 	private boolean dragInProgress = false;
-	private Point dragStartPoint = null;
+	// Previous mouse location, not scaled for zoom factor.
+	private Point previousDragPoint = null;
 	private Project preDragProject = null;
 
 	private IComponentType componentSlot;
@@ -136,15 +137,18 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public Cursor getCursorAt(Point point) {
-		// Scale point to remove zoom factor.
-		Point2D scaledPoint = new Point2D.Double(point.getX() / zoomLevel, point.getY() / zoomLevel);
-		for (Map.Entry<IComponentInstance, Area> entry : componentAreaMap.entrySet()) {
-			if (entry.getValue().contains(scaledPoint)) {
+		// Only change the cursor if we're not making a new component.
+		if (componentSlot == null) {
+			// Scale point to remove zoom factor.
+			Point2D scaledPoint = scalePoint(point);
+			for (Map.Entry<IComponentInstance, Area> entry : componentAreaMap.entrySet()) {
+				if (entry.getValue().contains(scaledPoint)) {
+					return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+				}
+			}
+			if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
 				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			}
-		}
-		if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
-			return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 		}
 		return Cursor.getDefaultCursor();
 	}
@@ -297,17 +301,23 @@ public class Presenter implements IPlugInPort {
 		}
 
 		g2d.setTransform(initialTx);
+		if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 - zoomLevel) > 1e-4)) {
+			g2d.scale(zoomLevel, zoomLevel);
+		}
 
 		// At the end draw selection rectangle.
 		if (drawOptions.contains(DrawOption.SELECTION) && (selectionRect != null)) {
 			g2d.setColor(Color.white);
-			g2d.drawRect(selectionRect.x, selectionRect.y, selectionRect.width,
-					selectionRect.height);
+			g2d.draw(selectionRect);
 			g2d.setColor(Color.black);
 			g2d.setStroke(Constants.dashedStroke);
-			g2d.drawRect(selectionRect.x, selectionRect.y, selectionRect.width,
-					selectionRect.height);
+			g2d.draw(selectionRect);
 		}
+
+		// g2d.setColor(Color.red);
+		// for (Area area : componentAreaMap.values()) {
+		// g2d.draw(area);
+		// }
 	}
 
 	@Override
@@ -431,9 +441,9 @@ public class Presenter implements IPlugInPort {
 	public void dragStarted(Point point) {
 		LOG.debug(String.format("dragStarted(%s)", point));
 		dragInProgress = true;
-		dragStartPoint = point;
 		preDragProject = cloner.deepClone(currentProject);
 		Point scaledPoint = scalePoint(point);
+		previousDragPoint = scaledPoint;
 		List<IComponentInstance> components = findComponentsAt(scaledPoint);
 		if (!componentsUnderCursor.isEmpty()) {
 			// If there are control points under the cursor, drag them.
@@ -457,33 +467,53 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public boolean dragOver(Point point) {
+		Point scaledPoint = scalePoint(point);
 		if (!componentsUnderCursor.isEmpty()) {
-			int dx = (int) ((point.x - dragStartPoint.x) / zoomLevel);
-			int dy = (int) ((point.y - dragStartPoint.y) / zoomLevel);
+			// We're dragging control point(s).
+			// int dx = (int) ((point.x - dragStartPoint.x) / zoomLevel);
+			// int dy = (int) ((point.y - dragStartPoint.y) / zoomLevel);
+			//			
+			IComponentInstance firstComponent = componentsUnderCursor.keySet().iterator().next();
+			ControlPointWrapper controlPoint = componentsUnderCursor.get(firstComponent);
+			// Re-read the value just in case.
+			try {
+				controlPoint.readFrom(firstComponent);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			int x = (int) (Math
+					.round((controlPoint.getValue().x + scaledPoint.x - previousDragPoint.x)
+							/ Constants.GRID) * Constants.GRID);
+			int y = (int) (Math
+					.round((controlPoint.getValue().y + scaledPoint.y - previousDragPoint.y)
+							/ Constants.GRID) * Constants.GRID);
+			previousDragPoint.setLocation(x, y);
+
 			for (Entry<IComponentInstance, ControlPointWrapper> entry : componentsUnderCursor
 					.entrySet()) {
 				try {
-					ControlPointWrapper controlPoint = entry.getValue();
+					controlPoint = entry.getValue();
 					IComponentInstance component = entry.getKey();
 					controlPoint.readFrom(component);
 					if (controlPoint.isEditable()) {
-						controlPoint.getValue().translate(dx, dy);
+						controlPoint.getValue().setLocation(x, y);
 					}
 					controlPoint.writeTo(component);
 				} catch (Exception e) {
 
 				}
 			}
-			dragStartPoint = point;
+			// dragStartPoint = point;
 		} else if (selectedComponents.isEmpty()) {
 			// If there's no selection, the only thing to do is update the
 			// selection rectangle and refresh.
-			this.selectionRect = Utils.createRectangle(point, dragStartPoint);
-			messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED, selectionRect);
+			this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
+			// selectionRect);
 		} else {
 			// If there are components selected translate their control points.
-			translateSelectedComponents(dragStartPoint, point);
-			dragStartPoint = point;
+			translateSelectedComponents(previousDragPoint, scaledPoint);
+			// dragStartPoint = point;
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		return true;
@@ -495,19 +525,17 @@ public class Presenter implements IPlugInPort {
 		if (!dragInProgress) {
 			return;
 		}
+		Point scaledPoint = scalePoint(point);
 		if (selectedComponents.isEmpty()) {
 			// If there's no selection finalize selectionRect and see which
 			// components intersect with it.
-			if (point != null) {
-				this.selectionRect = Utils.createRectangle(point, dragStartPoint);
+			if (scaledPoint != null) {
+				this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
 			}
 			selectedComponents.clear();
 			for (IComponentInstance component : currentProject.getComponents()) {
 				Area area = componentAreaMap.get(component);
-				if ((area != null)
-						&& area.intersects(selectionRect.x / zoomLevel,
-								selectionRect.y / zoomLevel, selectionRect.width / zoomLevel,
-								selectionRect.height / zoomLevel)) {
+				if ((area != null) && area.intersects(selectionRect)) {
 					selectedComponents.add(component);
 				}
 			}
@@ -530,8 +558,9 @@ public class Presenter implements IPlugInPort {
 			LOG.debug("Drag ended outside the drawing area.");
 			return;
 		}
-		int dx = (int) ((toPoint.x - fromPoint.x) / zoomLevel);
-		int dy = (int) ((toPoint.y - fromPoint.y) / zoomLevel);
+		int dx = (int) (Math.round((toPoint.x - fromPoint.x) / zoomLevel / Constants.GRID) * Constants.GRID);
+		int dy = (int) (Math.round((toPoint.y - fromPoint.y) / zoomLevel / Constants.GRID) * Constants.GRID);
+		fromPoint.translate(dx, dy);
 		for (IComponentInstance component : selectedComponents) {
 			List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
 					.extractControlPoints(component.getClass());
@@ -539,7 +568,7 @@ public class Presenter implements IPlugInPort {
 				try {
 					controlPoint.readFrom(component);
 					if (controlPoint.isEditable()) {
-						controlPoint.getValue().translate(dx, dy);
+						translateControlPoint(controlPoint, dx, dy);
 					}
 					controlPoint.writeTo(component);
 				} catch (Exception e) {
@@ -547,6 +576,12 @@ public class Presenter implements IPlugInPort {
 				}
 			}
 		}
+	}
+
+	private void translateControlPoint(ControlPointWrapper controlPoint, int dx, int dy) {
+		int x = controlPoint.getValue().x + dx;
+		int y = controlPoint.getValue().y + dy;
+		controlPoint.getValue().setLocation(x, y);
 	}
 
 	@Override
@@ -628,7 +663,11 @@ public class Presenter implements IPlugInPort {
 		if (point != null) {
 			for (ControlPointWrapper controlPoint : controlPoints) {
 				controlPoint.readFrom(component);
-				controlPoint.getValue().translate(point.x, point.y);
+				int x = controlPoint.getValue().x + point.x;
+				int y = controlPoint.getValue().y + point.y;
+				x = (int) (Math.round(x / Constants.GRID) * Constants.GRID);
+				y = (int) (Math.round(y / Constants.GRID) * Constants.GRID);
+				controlPoint.getValue().setLocation(x, y);
 				controlPoint.writeTo(component);
 			}
 		}
