@@ -63,10 +63,11 @@ public class MainFrame extends JFrame implements IView {
 		presenter.installPlugin(new HelpManager());
 
 		presenter.installPlugin(new StatusBar());
-		presenter.installPlugin(new CanvasPlugin());
+		CanvasPlugin canvasPlugin = new CanvasPlugin();
+		presenter.installPlugin(canvasPlugin);
 
 		Project project = new Project();
-//		project.getComponents().add(new MockComponentInstance());
+		// project.getComponents().add(new MockComponentInstance());
 		presenter.loadProject(project, true);
 
 		addWindowListener(new WindowAdapter() {
@@ -81,7 +82,9 @@ public class MainFrame extends JFrame implements IView {
 				presenter.dispose();
 			}
 		});
-
+		// TODO: hack to fix painting issues with rulers in the scroll pane.
+		// Find a better solution if possible.
+		canvasPlugin.refresh();
 		// setGlassPane(new CustomGlassPane());
 		// getGlassPane().setVisible(true);
 	}
