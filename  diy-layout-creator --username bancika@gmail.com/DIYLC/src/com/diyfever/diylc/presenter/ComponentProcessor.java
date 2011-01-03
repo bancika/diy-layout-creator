@@ -18,6 +18,11 @@ import com.diyfever.diylc.model.annotations.ControlPoint;
 import com.diyfever.diylc.model.annotations.EditableProperty;
 import com.rits.cloning.Cloner;
 
+/**
+ * Utility class with component processing methods.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class ComponentProcessor {
 
 	private static final Logger LOG = Logger.getLogger(ComponentProcessor.class);
@@ -43,6 +48,12 @@ public class ComponentProcessor {
 		this.controlPointCache = new HashMap<Class<?>, List<ControlPointWrapper>>();
 	}
 
+	/**
+	 * Extracts all editable properties from the component class.
+	 * 
+	 * @param clazz
+	 * @return
+	 */
 	public List<PropertyWrapper> extractProperties(Class<? extends IComponentInstance> clazz) {
 		if (propertyCache.containsKey(clazz)) {
 			return cloner.deepClone(propertyCache.get(clazz));
@@ -118,6 +129,12 @@ public class ComponentProcessor {
 		return cloner.deepClone(controlPoints);
 	}
 
+	/**
+	 * Returns properties mutual for all the selected components.
+	 * 
+	 * @param selectedComponents
+	 * @return
+	 */
 	public List<PropertyWrapper> getMutualSelectionProperties(
 			List<IComponentInstance> selectedComponents) {
 		if (selectedComponents.isEmpty()) {
@@ -159,6 +176,13 @@ public class ComponentProcessor {
 		return properties;
 	}
 
+	/**
+	 * Finds the method annotated with {@link BomName} annotations and calls it
+	 * to retrieve component name.
+	 * 
+	 * @param component
+	 * @return
+	 */
 	public String extractBomName(IComponentInstance component) {
 		String name = null;
 		for (Method method : component.getClass().getMethods()) {
@@ -173,6 +197,13 @@ public class ComponentProcessor {
 		return name;
 	}
 
+	/**
+	 * Finds the method annotated with {@link BomName} and it's matching setter
+	 * and calls the setter to update the component name.
+	 * 
+	 * @param component
+	 * @param newBomName
+	 */
 	public void writeBomName(IComponentInstance component, String newBomName) {
 		for (Method method : component.getClass().getMethods()) {
 			if (method.isAnnotationPresent(BomName.class)) {
@@ -186,6 +217,13 @@ public class ComponentProcessor {
 		}
 	}
 
+	/**
+	 * Finds the method annotated with {@link BomValue} annotations and calls it
+	 * to retrieve component value.
+	 * 
+	 * @param component
+	 * @return
+	 */
 	public String extractBomValue(IComponentInstance component) {
 		String value = null;
 		for (Method method : component.getClass().getMethods()) {
