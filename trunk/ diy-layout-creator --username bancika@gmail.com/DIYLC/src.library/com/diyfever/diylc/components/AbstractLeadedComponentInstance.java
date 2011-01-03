@@ -23,8 +23,8 @@ public abstract class AbstractLeadedComponentInstance implements IComponentInsta
 	protected Size width;
 	protected Size height;
 	protected Point point1 = new Point(0, 0);
-	protected Point point2 = new Point(0, (int) (Constants.GRID * 10));
-	protected Point labelPoint = new Point((int) Constants.GRID, (int) (Constants.GRID * 5));
+	protected Point point2 = new Point((int) (Constants.GRID * 10), 0);
+	protected Point labelPoint = new Point((int) (Constants.GRID * 5), -(int) Constants.GRID);
 	protected String name = "New Component";
 
 	protected AbstractLeadedComponentInstance() {
