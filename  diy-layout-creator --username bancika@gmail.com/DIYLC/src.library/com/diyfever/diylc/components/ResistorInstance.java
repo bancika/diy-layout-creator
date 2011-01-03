@@ -57,7 +57,7 @@ public class ResistorInstance implements IComponentInstance {
 		this.name = name;
 	}
 
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
+	@ControlPoint(visibilityPolicy = VisibilityPolicy.ALWAYS)
 	public Point getLeftTopCorner() {
 		return leftTopCorner;
 	}
@@ -66,7 +66,7 @@ public class ResistorInstance implements IComponentInstance {
 		this.leftTopCorner = leftTopCorner;
 	}
 
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
+	@ControlPoint(visibilityPolicy = VisibilityPolicy.ALWAYS)
 	public Point getOtherCorner() {
 		return otherCorner;
 	}
