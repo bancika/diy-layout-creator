@@ -400,6 +400,10 @@ public class Presenter implements IPlugInPort {
 					}
 				}
 			}
+			// If CTRL is pressed, we only care about the top most component.
+			if (altDown && components.size() > 0) {
+				break;
+			}
 		}
 		if (!components.equals(componentsUnderCursor)) {
 			componentsUnderCursor = components;

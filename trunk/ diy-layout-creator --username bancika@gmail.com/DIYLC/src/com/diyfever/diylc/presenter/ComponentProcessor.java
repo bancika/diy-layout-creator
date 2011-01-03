@@ -76,6 +76,16 @@ public class ComponentProcessor {
 		return cloner.deepClone(properties);
 	}
 
+	/**
+	 * Reads all control points from the specified component class. Note than
+	 * control points are cached, so it may happen that control points returned
+	 * already have their values populated. Always use
+	 * {@link ControlPointWrapper#readFrom(IComponentInstance)} to update their
+	 * state from an actual component.
+	 * 
+	 * @param clazz
+	 * @return
+	 */
 	public List<ControlPointWrapper> extractControlPoints(Class<? extends IComponentInstance> clazz) {
 		if (controlPointCache.containsKey(clazz)) {
 			return cloner.deepClone(controlPointCache.get(clazz));
