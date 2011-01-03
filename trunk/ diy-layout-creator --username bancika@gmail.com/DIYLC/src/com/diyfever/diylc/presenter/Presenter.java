@@ -69,9 +69,9 @@ public class Presenter implements IPlugInPort {
 	private List<IPlugIn> plugIns;
 
 	private ComponentSelection selectedComponents;
-	// List of component names that have at least one of their control points
+	// List of components that have at least one of their control points
 	// under the last recorded mouse position.
-	private Map<IComponentInstance, ControlPointWrapper> componentsUnderCursor;
+	private Map<IComponentInstance, ControlPointWrapper> componentControlPointMap;
 
 	private Cloner cloner;
 
@@ -146,7 +146,7 @@ public class Presenter implements IPlugInPort {
 					return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 				}
 			}
-			if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
+			if (componentControlPointMap != null && !componentControlPointMap.isEmpty()) {
 				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			}
 		}
@@ -247,7 +247,7 @@ public class Presenter implements IPlugInPort {
 		Composite mainComposite = g2d.getComposite();
 		Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
 
-		g2dWrapper.resetTx();
+		// g2dWrapper.resetTx();
 
 		List<IComponentInstance> components = getCurrentProject().getComponents();
 		componentAreaMap.clear();
@@ -305,7 +305,7 @@ public class Presenter implements IPlugInPort {
 			g2d.scale(zoomLevel, zoomLevel);
 		}
 
-		// At the end draw selection rectangle.
+		// At the end draw selection rectangle if needed.
 		if (drawOptions.contains(DrawOption.SELECTION) && (selectionRect != null)) {
 			g2d.setColor(Color.white);
 			g2d.draw(selectionRect);
@@ -314,6 +314,8 @@ public class Presenter implements IPlugInPort {
 			g2d.draw(selectionRect);
 		}
 
+		// // Draw component area for test
+		// g2d.setStroke(new BasicStroke());
 		// g2d.setColor(Color.red);
 		// for (Area area : componentAreaMap.values()) {
 		// g2d.draw(area);
@@ -416,8 +418,8 @@ public class Presenter implements IPlugInPort {
 				break;
 			}
 		}
-		if (!components.equals(componentsUnderCursor)) {
-			componentsUnderCursor = components;
+		if (!components.equals(componentControlPointMap)) {
+			componentControlPointMap = components;
 			messageDispatcher.dispatchMessage(EventType.AVAILABLE_CTRL_POINTS_CHANGED, components);
 		}
 	}
@@ -445,10 +447,9 @@ public class Presenter implements IPlugInPort {
 		Point scaledPoint = scalePoint(point);
 		previousDragPoint = scaledPoint;
 		List<IComponentInstance> components = findComponentsAt(scaledPoint);
-		if (!componentsUnderCursor.isEmpty()) {
-			// If there are control points under the cursor, drag them.
-		} else if (components.isEmpty()) {
-			// If no components are under the cursor, reset selection.
+		if (!componentControlPointMap.isEmpty() || components.isEmpty()) {
+			// If we're dragging control points or there are no components are
+			// under the cursor, reset selection.
 			selectedComponents.clear();
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -468,13 +469,13 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public boolean dragOver(Point point) {
 		Point scaledPoint = scalePoint(point);
-		if (!componentsUnderCursor.isEmpty()) {
+		if (!componentControlPointMap.isEmpty()) {
 			// We're dragging control point(s).
 			// int dx = (int) ((point.x - dragStartPoint.x) / zoomLevel);
 			// int dy = (int) ((point.y - dragStartPoint.y) / zoomLevel);
 			//			
-			IComponentInstance firstComponent = componentsUnderCursor.keySet().iterator().next();
-			ControlPointWrapper controlPoint = componentsUnderCursor.get(firstComponent);
+			IComponentInstance firstComponent = componentControlPointMap.keySet().iterator().next();
+			ControlPointWrapper controlPoint = componentControlPointMap.get(firstComponent);
 			// Re-read the value just in case.
 			try {
 				controlPoint.readFrom(firstComponent);
@@ -489,7 +490,7 @@ public class Presenter implements IPlugInPort {
 							/ Constants.GRID) * Constants.GRID);
 			previousDragPoint.setLocation(x, y);
 
-			for (Entry<IComponentInstance, ControlPointWrapper> entry : componentsUnderCursor
+			for (Entry<IComponentInstance, ControlPointWrapper> entry : componentControlPointMap
 					.entrySet()) {
 				try {
 					controlPoint = entry.getValue();
