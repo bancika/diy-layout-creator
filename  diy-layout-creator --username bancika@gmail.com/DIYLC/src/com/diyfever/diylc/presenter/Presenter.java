@@ -88,6 +88,7 @@ public class Presenter implements IPlugInPort {
 	// D&D
 	private boolean dragInProgress = false;
 	private Point dragStartPoint = null;
+	private Project preDragProject = null;
 
 	private IComponentType componentSlot;
 
@@ -431,6 +432,7 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String.format("dragStarted(%s)", point));
 		dragInProgress = true;
 		dragStartPoint = point;
+		preDragProject = cloner.deepClone(currentProject);
 		Point scaledPoint = scalePoint(point);
 		List<IComponentInstance> components = findComponentsAt(scaledPoint);
 		if (!componentsUnderCursor.isEmpty()) {
@@ -511,17 +513,15 @@ public class Presenter implements IPlugInPort {
 			}
 			selectionRect = null;
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-		} else {
-			// There is selection, so we need to finalize the drag&drop
-			// operation.
-			Project oldProject = cloner.deepClone(currentProject);
+		}
+		// There is selection, so we need to finalize the drag&drop
+		// operation.
 
-			// If there are components selected translate their control points.
-			translateSelectedComponents(dragStartPoint, point);
-			if (!oldProject.equals(currentProject)) {
-				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
-						.deepClone(currentProject), "Move");
-			}
+		// If there are components selected translate their control points.
+		// translateSelectedComponents(dragStartPoint, point);
+		if (!preDragProject.equals(currentProject)) {
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, cloner
+					.deepClone(currentProject), "Move");
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		dragInProgress = false;
