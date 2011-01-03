@@ -92,7 +92,6 @@ public class CanvasPlugin implements IPlugIn {
 			refreshSize();
 			break;
 		case REPAINT:
-			canvasPanel.invalidateCache();
 			canvasPanel.repaint();
 			break;
 		}
