@@ -1,6 +1,5 @@
 package com.diyfever.diylc.plugins.canvas;
 
-import java.awt.Cursor;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 
@@ -23,8 +22,7 @@ class CanvasGestureListener implements DragGestureListener {
 	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
 		presenter.dragStarted(dge.getDragOrigin());
-		dge.startDrag(presenter.getSelectedComponents().isEmpty() ? Cursor.getDefaultCursor()
-				: Cursor.getPredefinedCursor(Cursor.HAND_CURSOR), new EmptyTransferable(),
+		dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(),
 				new CanvasSourceListener(presenter));
 	}
 }
