@@ -20,7 +20,7 @@ import com.diyfever.diylc.model.measures.Size;
 import com.diyfever.diylc.model.measures.SizeUnit;
 import com.diyfever.diylc.utils.Constants;
 
-public class ResistorInstance implements IComponentInstance {
+public class ResistorInstance extends AbstractLeadedComponentInstance {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,51 +29,9 @@ public class ResistorInstance implements IComponentInstance {
 	private Resistance r = new Resistance(123d, ResistanceUnit.K);
 	private Size s = new Size(1d, SizeUnit.cm);
 	private Color color = Color.green;
-	private Point leftTopCorner = new Point(0, 0);
-	private Point otherCorner = new Point((int) (Constants.GRID * 10), (int) (Constants.GRID * 10));
-	private String name = "something";
-
-	public ResistorInstance(String testField, Capacitance c, Resistance r, Size s, Color color,
-			Point leftTopCorner) {
-		super();
-		this.testField = testField;
-		this.c = c;
-		this.r = r;
-		this.s = s;
-		this.color = color;
-		this.leftTopCorner = leftTopCorner;
-	}
 
 	public ResistorInstance() {
 		super();
-	}
-
-	@BomName
-	@EditableProperty
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.ALWAYS)
-	public Point getLeftTopCorner() {
-		return leftTopCorner;
-	}
-
-	public void setLeftTopCorner(Point leftTopCorner) {
-		this.leftTopCorner = leftTopCorner;
-	}
-
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.ALWAYS)
-	public Point getOtherCorner() {
-		return otherCorner;
-	}
-
-	public void setOtherCorner(Point otherCorner) {
-		this.otherCorner = otherCorner;
 	}
 
 	@EditableProperty(name = "Test Field")
@@ -126,21 +84,22 @@ public class ResistorInstance implements IComponentInstance {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState) {
 		g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color : color.darker());
-		g2d.setStroke(new BasicStroke(2));
+		g2d.setStroke(new BasicStroke(1));
 		if (componentState == ComponentState.DRAGGING) {
 			g2d.setStroke(new BasicStroke(1));
 		}
-		g2d.drawLine(leftTopCorner.x, leftTopCorner.y, otherCorner.x, otherCorner.y);
-		g2d.rotate(Math.PI / 4, (leftTopCorner.x + otherCorner.x) / 2,
-				(leftTopCorner.y + otherCorner.y) / 2);
-		g2d.fillRect((leftTopCorner.x + otherCorner.x) / 2 - 10,
-				(leftTopCorner.y + otherCorner.y) / 2 - 10, 20, 20);
+		g2d.drawLine(point1.x, point1.y, point2.x, point2.y);
+		g2d.rotate(Math.PI / 4, (point1.x + point2.x) / 2, (point1.y + point2.y) / 2);
+		g2d.fillRect((point1.x + point2.x) / 2 - 10, (point1.y + point2.y) / 2 - 10, 20, 20);
 	}
 
 	@Override
-	public ResistorInstance clone() throws CloneNotSupportedException {
-		ResistorInstance newInstance = new ResistorInstance(testField, c.clone(), r.clone(), s
-				.clone(), color, (Point) leftTopCorner.clone());
-		return newInstance;
+	protected Size getDefaultHeight() {
+		return new Size(3d, SizeUnit.mm);
+	}
+
+	@Override
+	protected Size getDefaultWidth() {
+		return new Size(10d, SizeUnit.mm);
 	}
 }

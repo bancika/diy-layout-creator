@@ -19,6 +19,14 @@ public interface IComponentType {
 	String getName();
 
 	/**
+	 * Returns component instance name prefix, e.g. "R" for resistors, "C" for
+	 * capacitors, etc.
+	 * 
+	 * @return
+	 */
+	String getInstanceNamePrefix();
+
+	/**
 	 * Returns component category.
 	 * 
 	 * @return

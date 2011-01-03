@@ -13,6 +13,11 @@ public class ResistorType implements IComponentType {
 	public Class<? extends IComponentInstance> getComponentInstanceClass() {
 		return ResistorInstance.class;
 	}
+	
+	@Override
+	public String getInstanceNamePrefix() {
+		return "R";
+	}
 
 	@Override
 	public ComponentLayer getComponentLayer() {
