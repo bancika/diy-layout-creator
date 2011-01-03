@@ -517,8 +517,6 @@ public class Presenter implements IPlugInPort {
 		// There is selection, so we need to finalize the drag&drop
 		// operation.
 
-		// If there are components selected translate their control points.
-		// translateSelectedComponents(dragStartPoint, point);
 		if (!preDragProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, cloner
 					.deepClone(currentProject), "Move");
