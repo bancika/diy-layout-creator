@@ -144,6 +144,9 @@ public interface IPlugInPort {
 	 * Note: point coordinates are display based, i.e. scaled for zoom factor.
 	 * 
 	 * @param point
+	 * @param ctrlDown
+	 * @param shiftDown
+	 * @param altDown
 	 */
 	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
@@ -153,6 +156,9 @@ public interface IPlugInPort {
 	 * Note: point coordinates are display based, i.e. scaled for zoom factor.
 	 * 
 	 * @param point
+	 * @param ctrlDown
+	 * @param shiftDown
+	 * @param altDown
 	 */
 	void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
