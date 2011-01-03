@@ -474,14 +474,17 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public boolean dragOver(Point point) {
+		if (point == null) {
+			return false;
+		}
 		Point scaledPoint = scalePoint(point);
 		if (!componentControlPointMap.isEmpty()) {
-			// We're dragging control point(s).
-			// int dx = (int) ((point.x - dragStartPoint.x) / zoomLevel);
-			// int dy = (int) ((point.y - dragStartPoint.y) / zoomLevel);
-			//			
+			// We're dragging control point(s).		
 			IComponentInstance firstComponent = componentControlPointMap.keySet().iterator().next();
 			ControlPointWrapper controlPoint = componentControlPointMap.get(firstComponent);
+			if (controlPoint == null) {
+				LOG.warn("Control point not found in the map!");
+			}
 			// Re-read the value just in case.
 			try {
 				controlPoint.readFrom(firstComponent);
@@ -764,7 +767,8 @@ public class Presenter implements IPlugInPort {
 	 * @return
 	 */
 	private Point scalePoint(Point point) {
-		return new Point((int) (point.x / zoomLevel), (int) (point.y / zoomLevel));
+		return point == null ? null : new Point((int) (point.x / zoomLevel),
+				(int) (point.y / zoomLevel));
 	}
 
 	private boolean shouldShowControlPoint(ControlPointWrapper controlPoint,
