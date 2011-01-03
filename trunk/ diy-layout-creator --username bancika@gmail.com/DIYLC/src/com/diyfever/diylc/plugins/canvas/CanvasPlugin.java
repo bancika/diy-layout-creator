@@ -2,6 +2,7 @@ package com.diyfever.diylc.plugins.canvas;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.util.EnumSet;
 
 import javax.swing.SwingConstants;
@@ -103,6 +104,16 @@ public class CanvasPlugin implements IPlugIn {
 		Dimension d = plugInPort.getCanvasDimensions(true);
 		canvasPanel.setSize(d);
 		canvasPanel.setPreferredSize(d);
-		scrollPane.setZoomLevel(plugInPort.getZoomLevel());
+		getScrollPane().setZoomLevel(plugInPort.getZoomLevel());
+	}
+
+	/**
+	 * Causes ruller scroll pane to refresh by sending a fake mouse moved
+	 * message to the canvasPanel.
+	 */
+	public void refresh() {
+		MouseEvent event = new MouseEvent(canvasPanel, MouseEvent.MOUSE_MOVED, System
+				.currentTimeMillis(), 0, 0, 0, 0, false);
+		canvasPanel.dispatchEvent(event);
 	}
 }
