@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -70,7 +71,7 @@ public class Presenter implements IPlugInPort {
 	private ComponentSelection selectedComponents;
 	// List of component names that have at least one of their control points
 	// under the last recorded mouse position.
-	private List<IComponentInstance> componentsUnderCursor;
+	private Map<IComponentInstance, ControlPointWrapper> componentsUnderCursor;
 
 	private Cloner cloner;
 
@@ -140,6 +141,9 @@ public class Presenter implements IPlugInPort {
 			if (entry.getValue().contains(scaledPoint)) {
 				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			}
+		}
+		if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
+			return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 		}
 		return Cursor.getDefaultCursor();
 	}
@@ -376,8 +380,8 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void mouseMoved(Point point) {
-		List<IComponentInstance> components = new ArrayList<IComponentInstance>();
+	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
+		Map<IComponentInstance, ControlPointWrapper> components = new HashMap<IComponentInstance, ControlPointWrapper>();
 		Point scaledPoint = scalePoint(point);
 		for (IComponentInstance component : currentProject.getComponents()) {
 			List<ControlPointWrapper> currentPoints = ComponentProcessor.getInstance()
@@ -387,7 +391,7 @@ public class Presenter implements IPlugInPort {
 					try {
 						controlPoint.readFrom(component);
 						if (scaledPoint.distance(controlPoint.getValue()) < CONTROL_POINT_SENSITIVITY) {
-							components.add(component);
+							components.put(component, controlPoint);
 							break;
 						}
 					} catch (Exception e) {
@@ -425,8 +429,10 @@ public class Presenter implements IPlugInPort {
 		dragStartPoint = point;
 		Point scaledPoint = scalePoint(point);
 		List<IComponentInstance> components = findComponentsAt(scaledPoint);
-		// If no components are under the cursor, reset selection.
-		if (components.isEmpty()) {
+		if (!componentsUnderCursor.isEmpty()) {
+			// If there are control points under the cursor, drag them.
+		} else if (components.isEmpty()) {
+			// If no components are under the cursor, reset selection.
 			selectedComponents.clear();
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -445,18 +451,35 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public boolean dragOver(Point point) {
-		// If there's no selection, the only thing to do is update the selection
-		// rectangle and refresh.
-		if (selectedComponents.isEmpty()) {
+		if (!componentsUnderCursor.isEmpty()) {
+			int dx = (int) ((point.x - dragStartPoint.x) / zoomLevel);
+			int dy = (int) ((point.y - dragStartPoint.y) / zoomLevel);
+			for (Entry<IComponentInstance, ControlPointWrapper> entry : componentsUnderCursor
+					.entrySet()) {
+				try {
+					ControlPointWrapper controlPoint = entry.getValue();
+					IComponentInstance component = entry.getKey();
+					controlPoint.readFrom(component);
+					if (controlPoint.isEditable()) {
+						controlPoint.getValue().translate(dx, dy);
+					}
+					controlPoint.writeTo(component);
+				} catch (Exception e) {
+
+				}
+			}
+			dragStartPoint = point;
+		} else if (selectedComponents.isEmpty()) {
+			// If there's no selection, the only thing to do is update the
+			// selection rectangle and refresh.
 			this.selectionRect = Utils.createRectangle(point, dragStartPoint);
 			messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED, selectionRect);
-			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
 			// If there are components selected translate their control points.
-			translateSelection(dragStartPoint, point);
+			translateSelectedComponents(dragStartPoint, point);
 			dragStartPoint = point;
-			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		return true;
 	}
 
@@ -490,7 +513,7 @@ public class Presenter implements IPlugInPort {
 			Project oldProject = cloner.deepClone(currentProject);
 
 			// If there are components selected translate their control points.
-			translateSelection(dragStartPoint, point);
+			translateSelectedComponents(dragStartPoint, point);
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Move");
@@ -500,7 +523,7 @@ public class Presenter implements IPlugInPort {
 		dragInProgress = false;
 	}
 
-	private void translateSelection(Point fromPoint, Point toPoint) {
+	private void translateSelectedComponents(Point fromPoint, Point toPoint) {
 		if (toPoint == null) {
 			LOG.debug("Drag ended outside the drawing area.");
 			return;
@@ -668,6 +691,12 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot);
 	}
 
+	/**
+	 * Scales point from display base to actual base.
+	 * 
+	 * @param point
+	 * @return
+	 */
 	private Point scalePoint(Point point) {
 		return new Point((int) (point.x / zoomLevel), (int) (point.y / zoomLevel));
 	}

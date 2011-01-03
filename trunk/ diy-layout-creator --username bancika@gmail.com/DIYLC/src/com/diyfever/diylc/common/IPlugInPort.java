@@ -139,13 +139,22 @@ public interface IPlugInPort {
 	void setZoomLevel(double zoomLevel);
 
 	/**
-	 * Note: point coordinates are scaled for zoom factor.
+	 * Notifies the presenter that mouse is clicked.
+	 * 
+	 * Note: point coordinates are display based, i.e. scaled for zoom factor.
 	 * 
 	 * @param point
 	 */
 	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
-	void mouseMoved(Point point);
+	/**
+	 * Notifies the presenter that mouse is moved.
+	 * 
+	 * Note: point coordinates are display based, i.e. scaled for zoom factor.
+	 * 
+	 * @param point
+	 */
+	void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
 	/**
 	 * Returns the current {@link ComponentSelection}.

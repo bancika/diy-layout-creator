@@ -5,8 +5,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -15,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import com.diyfever.diylc.common.BadPositionException;
+import com.diyfever.diylc.common.ControlPointWrapper;
 import com.diyfever.diylc.common.EventType;
 import com.diyfever.diylc.common.IPlugIn;
 import com.diyfever.diylc.common.IPlugInPort;
@@ -159,7 +162,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 			refreshStatusText();
 			break;
 		case AVAILABLE_CTRL_POINTS_CHANGED:
-			componentsUnderCursor = (List<IComponentInstance>) params[0];
+			componentsUnderCursor = new ArrayList<IComponentInstance>(
+					((Map<IComponentInstance, ControlPointWrapper>) params[0]).keySet());
 			refreshStatusText();
 			break;
 		}
@@ -170,16 +174,34 @@ public class StatusBar extends JPanel implements IPlugIn {
 			if ((componentsUnderCursor == null) || (componentsUnderCursor.isEmpty())) {
 				getStatusLabel().setText("");
 			} else {
-				String formattedNames = "";
-				int n = 1;
-				for (IComponentInstance component : componentsUnderCursor) {
-					if (n > 1) {
-						formattedNames += ", ";
-					}
-					formattedNames += ComponentProcessor.getInstance().extractBomName(component)
-							+ " (<b><font color=\"blue\">" + n++ + "</font></b>)";
+				// String formattedNames = "";
+				// int n = 1;
+				// for (IComponentInstance component : componentsUnderCursor) {
+				// if (n > 1) {
+				// formattedNames += ", ";
+				// }
+				// formattedNames +=
+				// ComponentProcessor.getInstance().extractBomName(component);//
+				// +
+				// // " (<b><font color=\"blue\">"
+				// // +
+				// // n++
+				// // +
+				// // "</font></b>)";
+				// }
+				if (componentsUnderCursor.size() == 1) {
+					getStatusLabel().setText(
+							"Drag \""
+									+ ComponentProcessor.getInstance().extractBomName(
+											componentsUnderCursor.get(0)) + "\"");
+				} else {
+					getStatusLabel().setText(
+							"Hold CTRL key to drag all "
+									+ componentsUnderCursor.size()
+									+ " components under the cursor or drag only \""
+									+ ComponentProcessor.getInstance().extractBomName(
+											componentsUnderCursor.get(0)) + "\"");
 				}
-				getStatusLabel().setText("<html>" + "Edit: " + formattedNames + "</html>");
 			}
 		} else {
 			getStatusLabel().setText(
