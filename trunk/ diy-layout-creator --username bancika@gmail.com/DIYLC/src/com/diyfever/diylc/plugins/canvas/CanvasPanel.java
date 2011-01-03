@@ -110,15 +110,19 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			createBufferImage();
 		}
 		do {
-			if (bufferImage.contentsLost()) {
-				createBufferImage();
+			try {
+				if (bufferImage.contentsLost()) {
+					createBufferImage();
+				}
+				int validation = bufferImage.validate(screenGraphicsConfiguration);
+				if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
+					createBufferImage();
+				}
+				g.drawImage(bufferImage, 0, 0, this);
+			} catch (NullPointerException e) {
+				// Do nothing, it will be recreated in the next pass.
 			}
-			int validation = bufferImage.validate(screenGraphicsConfiguration);
-			if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
-				createBufferImage();
-			}
-			g.drawImage(bufferImage, 0, 0, this);
-		} while (bufferImage.contentsLost());
+		} while (bufferImage == null || bufferImage.contentsLost());
 	}
 
 	@Override

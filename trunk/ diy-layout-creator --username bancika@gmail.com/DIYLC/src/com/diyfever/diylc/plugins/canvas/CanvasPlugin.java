@@ -6,6 +6,8 @@ import java.util.EnumSet;
 
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
+
 import com.diyfever.diylc.common.BadPositionException;
 import com.diyfever.diylc.common.EventType;
 import com.diyfever.diylc.common.IPlugIn;
@@ -17,7 +19,7 @@ import com.diyfever.gui.ruler.RulerScrollPane;
 
 public class CanvasPlugin implements IPlugIn {
 
-	// private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
+	private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
 
 	private static final String METRIC_KEY = "metric";
 
@@ -35,7 +37,7 @@ public class CanvasPlugin implements IPlugIn {
 		try {
 			plugInPort.injectGUIComponent(getScrollPane(), SwingConstants.CENTER);
 		} catch (BadPositionException e) {
-			e.printStackTrace();
+			LOG.error("Could not install canvas plugin", e);
 		}
 	}
 

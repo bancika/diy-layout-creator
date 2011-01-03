@@ -453,7 +453,7 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
 			// If there are components selected translate their control points.
-			translateSelection(point);
+			translateSelection(dragStartPoint, point);
 			dragStartPoint = point;
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
@@ -490,7 +490,7 @@ public class Presenter implements IPlugInPort {
 			Project oldProject = cloner.deepClone(currentProject);
 
 			// If there are components selected translate their control points.
-			translateSelection(point);
+			translateSelection(dragStartPoint, point);
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Move");
@@ -500,9 +500,13 @@ public class Presenter implements IPlugInPort {
 		dragInProgress = false;
 	}
 
-	private void translateSelection(Point toPoint) {
-		int dx = (int) ((toPoint.x - dragStartPoint.x) / zoomLevel);
-		int dy = (int) ((toPoint.y - dragStartPoint.y) / zoomLevel);
+	private void translateSelection(Point fromPoint, Point toPoint) {
+		if (toPoint == null) {
+			LOG.debug("Drag ended outside the drawing area.");
+			return;
+		}
+		int dx = (int) ((toPoint.x - fromPoint.x) / zoomLevel);
+		int dy = (int) ((toPoint.y - fromPoint.y) / zoomLevel);
 		for (IComponentInstance component : selectedComponents) {
 			List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
 					.extractControlPoints(component.getClass());

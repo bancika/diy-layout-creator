@@ -21,11 +21,11 @@
     </map>
   </entry>
   <entry>
-    <string>metric</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
     <string>lastPath</string>
     <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
+  </entry>
+  <entry>
+    <string>metric</string>
+    <boolean>true</boolean>
   </entry>
 </map>
