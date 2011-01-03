@@ -113,7 +113,9 @@ public class CanvasPlugin implements IPlugIn {
 	 */
 	public void refresh() {
 		MouseEvent event = new MouseEvent(canvasPanel, MouseEvent.MOUSE_MOVED, System
-				.currentTimeMillis(), 0, 0, 0, 0, false);
+				.currentTimeMillis(), 0, 1, 1,// canvasPanel.getWidth() / 2,
+												// canvasPanel.getHeight() / 2,
+				0, false);
 		canvasPanel.dispatchEvent(event);
 	}
 }

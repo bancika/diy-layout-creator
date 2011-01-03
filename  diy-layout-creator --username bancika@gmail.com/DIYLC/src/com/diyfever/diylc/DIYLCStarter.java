@@ -29,7 +29,7 @@ public class DIYLCStarter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		url = DIYLCStarter.class.getResource("config.properties");
 		properties = new Properties();
 		try {
