@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -46,8 +47,10 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 	private IPlugInPort plugInPort;
 
-	private VolatileImage bufferImage;
+	private Image bufferImage;
 	private GraphicsConfiguration screenGraphicsConfiguration;
+
+	private static boolean USE_HARDWARE_ACCELLERATION = false;
 
 	private static final EnumSet<DrawOption> drawOptions = EnumSet.of(DrawOption.GRID,
 			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
@@ -95,9 +98,13 @@ class CanvasPanel extends JComponent implements Autoscroll {
 	}
 
 	protected void createBufferImage() {
-		bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(getWidth(),
-				getHeight());
-		bufferImage.validate(screenGraphicsConfiguration);
+		if (USE_HARDWARE_ACCELLERATION) {
+			bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(getWidth(),
+					getHeight());
+			((VolatileImage) bufferImage).validate(screenGraphicsConfiguration);
+		} else {
+			bufferImage = createImage(getWidth(), getHeight());
+		}
 		Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
 		plugInPort.draw(g2d, drawOptions);
 	}
@@ -109,21 +116,32 @@ class CanvasPanel extends JComponent implements Autoscroll {
 		}
 		if (bufferImage == null) {
 			createBufferImage();
+		} else {
+			Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
+			plugInPort.draw(g2d, drawOptions);
 		}
-		do {
-			try {
-				if (bufferImage.contentsLost()) {
+		if (USE_HARDWARE_ACCELLERATION) {
+			VolatileImage volatileImage = (VolatileImage) bufferImage;
+			do {
+				try {
+					if (volatileImage.contentsLost()) {
+						createBufferImage();
+					}
+					int validation = volatileImage.validate(screenGraphicsConfiguration);
+					if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
+						createBufferImage();
+					}
+					g.drawImage(bufferImage, 0, 0, this);
+				} catch (NullPointerException e) {
 					createBufferImage();
 				}
-				int validation = bufferImage.validate(screenGraphicsConfiguration);
-				if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
-					createBufferImage();
-				}
-				g.drawImage(bufferImage, 0, 0, this);
-			} catch (NullPointerException e) {
-				createBufferImage();
-			}
-		} while (bufferImage == null || bufferImage.contentsLost());
+			} while (volatileImage == null || volatileImage.contentsLost());
+		} else {
+			Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
+			plugInPort.draw(g2d, drawOptions);
+			g.drawImage(bufferImage, 0, 0, this);
+			bufferImage.flush();
+		}
 	}
 
 	@Override
@@ -141,7 +159,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			}
 		});
 		addKeyListener(new KeyAdapter() {
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 				plugInPort.mouseMoved(getMousePosition(), e.isControlDown(), e.isShiftDown(), e
