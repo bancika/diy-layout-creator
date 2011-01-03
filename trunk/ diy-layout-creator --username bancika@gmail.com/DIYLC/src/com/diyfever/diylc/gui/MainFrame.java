@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import com.diyfever.diylc.common.BadPositionException;
 import com.diyfever.diylc.model.Project;
@@ -44,6 +45,8 @@ public class MainFrame extends JFrame implements IView {
 	private JMenuBar mainMenuBar;
 	private Map<String, JMenu> menuMap;
 
+	private CanvasPlugin canvasPlugin;
+
 	public MainFrame() {
 		super("DIYLC4");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,7 +66,7 @@ public class MainFrame extends JFrame implements IView {
 		presenter.installPlugin(new HelpManager());
 
 		presenter.installPlugin(new StatusBar());
-		CanvasPlugin canvasPlugin = new CanvasPlugin();
+		canvasPlugin = new CanvasPlugin();
 		presenter.installPlugin(canvasPlugin);
 
 		Project project = new Project();
@@ -82,11 +85,24 @@ public class MainFrame extends JFrame implements IView {
 				presenter.dispose();
 			}
 		});
-		// TODO: hack to fix painting issues with rulers in the scroll pane.
-		// Find a better solution if possible.
-		canvasPlugin.refresh();
+
 		// setGlassPane(new CustomGlassPane());
 		// getGlassPane().setVisible(true);
+	}
+
+	@Override
+	public void setVisible(boolean b) {
+		super.setVisible(b);
+		// TODO: hack to prevent painting issues in the scroll bar rulers. Find
+		// a better fix if possible.
+		if (b) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					canvasPlugin.refresh();
+				}
+			});
+		}
 	}
 
 	private void createBasePanels() {
