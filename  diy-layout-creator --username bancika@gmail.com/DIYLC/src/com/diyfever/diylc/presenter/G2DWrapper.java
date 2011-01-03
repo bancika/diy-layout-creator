@@ -42,6 +42,10 @@ import java.util.Map;
 class G2DWrapper extends Graphics2D {
 
 	private Graphics2D canvasGraphics;
+	private Stroke originalStroke;
+	private Color originalColor;
+	private Composite originalComposite;
+	private AffineTransform originalTx;
 	private AffineTransform currentTx;
 	private Area currentArea;
 
@@ -54,35 +58,38 @@ class G2DWrapper extends Graphics2D {
 		super();
 		this.canvasGraphics = canvasGraphics;
 		startedDrawingComponent();
-		resetTx();
 	}
 
 	/**
-	 * Clears out current area.
+	 * Clears out the current area and caches canvas settings.
 	 */
 	public void startedDrawingComponent() {
 		currentArea = new Area();
+		originalStroke = canvasGraphics.getStroke();
+		originalColor = canvasGraphics.getColor();
+		originalTx = canvasGraphics.getTransform();
+		originalComposite = canvasGraphics.getComposite();
+		currentTx = new AffineTransform();
 	}
 
 	/**
-	 * Reverts {@link Graphics2D} state and returns area drawn by component.
+	 * Reverts {@link Graphics2D} settings and returns area drawn by component
+	 * in the meantime.
 	 * 
 	 * @return
 	 */
 	public Area finishedDrawingComponent() {
+		canvasGraphics.setStroke(originalStroke);
+		canvasGraphics.setColor(originalColor);
+		canvasGraphics.setTransform(originalTx);
+		canvasGraphics.setComposite(originalComposite);
 		return currentArea;
 	}
 
-	/**
-	 * Resets transformation to identity. Should be called only once before any
-	 * drawing is done.
-	 */
-	public void resetTx() {
-		currentTx = new AffineTransform();
-	}
-
 	private void appendShape(Shape s) {
-		currentArea.add(new Area(s));
+		Area area = new Area(s);
+		area.transform(currentTx);
+		currentArea.add(area);
 	}
 
 	@Override
@@ -98,6 +105,7 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void draw(Shape s) {
 		canvasGraphics.draw(s);
+		appendShape(s);
 	}
 
 	@Override
@@ -212,16 +220,19 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void rotate(double theta) {
 		canvasGraphics.rotate(theta);
+		currentTx.rotate(theta);
 	}
 
 	@Override
 	public void rotate(double theta, double x, double y) {
 		canvasGraphics.rotate(theta, x, y);
+		currentTx.rotate(theta, x, y);
 	}
 
 	@Override
 	public void scale(double sx, double sy) {
 		canvasGraphics.scale(sx, sy);
+		currentTx.scale(sx, sy);
 	}
 
 	@Override
@@ -366,6 +377,7 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void drawOval(int x, int y, int width, int height) {
 		canvasGraphics.drawOval(x, y, width, height);
+		appendShape(new Ellipse2D.Double(x, y, width, height));
 	}
 
 	@Override
@@ -381,6 +393,7 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 		canvasGraphics.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
+		appendShape(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
 	}
 
 	@Override
