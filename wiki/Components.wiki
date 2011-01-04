@@ -14,8 +14,8 @@
   # Create a new Java project.
   # Add *diylc.jar* to the dependencies.
   # Since it's your own project, you can use whichever package name you like.
-  # When you are done developing and testing the new components, build your project as *library/`<`myLibraryName`>`.jar*.
-  # To add your components to the DIYLC project by building your project into a jar and committing it to *library* folder in the DIYLC source control. It should be automatically recognized by the app.
+  # When you are done developing and testing the new components, build your project as *`<`myLibraryName`>`.jar*.
+  # To add your components to the DIYLC project commit your new jar to *library* folder in the DIYLC source control. It should be automatically recognized by the app.
 
 ===Component design guidelines===
 
