@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
+import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
 
 import com.diyfever.gui.MemoryBar;
@@ -166,6 +168,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 		case AVAILABLE_CTRL_POINTS_CHANGED:
 			componentsUnderCursor = new ArrayList<IDIYComponent>(
 					((Map<IDIYComponent, ControlPointWrapper>) params[0]).keySet());
+			Collections.sort(componentsUnderCursor, ComparatorFactory.getInstance()
+					.getComponentNameComparator());
 			refreshStatusText();
 			break;
 		}
@@ -176,34 +180,22 @@ public class StatusBar extends JPanel implements IPlugIn {
 			if ((componentsUnderCursor == null) || (componentsUnderCursor.isEmpty())) {
 				getStatusLabel().setText("");
 			} else {
-				// String formattedNames = "";
-				// int n = 1;
-				// for (IDIYComponent component : componentsUnderCursor) {
-				// if (n > 1) {
-				// formattedNames += ", ";
-				// }
-				// formattedNames +=
-				// ComponentProcessor.getInstance().extractBomName(component);//
-				// +
-				// // " (<b><font color=\"blue\">"
-				// // +
-				// // n++
-				// // +
-				// // "</font></b>)";
-				// }
-				if (componentsUnderCursor.size() == 1) {
-					getStatusLabel().setText(
-							"Drag \""
-									+ ComponentProcessor.getInstance().extractComponentName(
-											componentsUnderCursor.get(0)) + "\"");
-				} else {
-					getStatusLabel().setText(
-							"Hold CTRL key to drag all "
-									+ componentsUnderCursor.size()
-									+ " components under the cursor or drag only \""
-									+ ComponentProcessor.getInstance().extractComponentName(
-											componentsUnderCursor.get(0)) + "\"");
+				String formattedNames = "";
+				int n = 1;
+				for (IDIYComponent component : componentsUnderCursor) {
+					if (n > 1) {
+						formattedNames += ", ";
+					}
+					formattedNames += ComponentProcessor.getInstance().extractComponentName(
+							component);//
+					// +
+					// " (<b><font color=\"blue\">"
+					// +
+					n++;
+					// +
+					// "</font></b>)";
 				}
+				getStatusLabel().setText("Drag " + formattedNames + "");
 			}
 		} else {
 			getStatusLabel().setText(

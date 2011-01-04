@@ -31,6 +31,7 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 
 	public static Color LEAD_COLOR = Color.black;
 	public static Color LABEL_COLOR = Color.black;
+	public static Color LABEL_COLOR_SELECTED = Color.red;
 	public static Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 11);
 
 	protected Size width;
@@ -98,13 +99,17 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 				(point1.y + point2.y - shapeRect.height) / 2);
 		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
 		// Draw body.
-		g2d.setColor(getBodyColor());
-		g2d.fill(shape);
+		if (componentState != ComponentState.DRAGGING) {
+			g2d.setColor(getBodyColor());
+			g2d.fill(shape);
+		}
 		g2d.setColor(getBorderColor());
 		g2d.draw(shape);
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
-		g2d.setColor(LABEL_COLOR);
+		g2d
+				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
+						: LABEL_COLOR);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
 		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getComponentName(), g2d);
 		g2d.drawString(getComponentName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
