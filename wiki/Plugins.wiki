@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Developer guide for creating new plugins to extend functionalities.
 #labels Featured,Phase-Implementation
 
 = Introduction =
