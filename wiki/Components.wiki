@@ -1,5 +1,5 @@
+#summary Developer guide for creating new components.
 #labels Featured,Phase-Implementation
-Developer guide for creating new components.
 
 = Introduction =
 
