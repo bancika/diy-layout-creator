@@ -21,7 +21,7 @@ public class Resistor extends AbstractLeadedDIYComponent {
 	public static Size DEFAULT_WIDTH = new Size(1d / 2, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
 	public static Color BODY_COLOR = Color.decode("#82CFFD");
-	public static Color BORDER_COLOR = Color.decode("#5D92B1");
+	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Resistance value = new Resistance(123d, ResistanceUnit.K);
 

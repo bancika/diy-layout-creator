@@ -14,18 +14,18 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Ceramic Capacitor", author = "bancika", category = "Passive", instanceNamePrefix = "C", desciption = "test")
-public class CeramicDiskCapacitor extends AbstractLeadedDIYComponent {
+public class RadialCeramicDiskCapacitor extends AbstractLeadedDIYComponent {
 
 	private static final long serialVersionUID = 1L;
 
 	public static Size DEFAULT_WIDTH = new Size(1d / 2, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
 	public static Color BODY_COLOR = Color.decode("#F0E68C");
-	public static Color BORDER_COLOR = Color.decode("#B8860B");
+	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Capacitance value = new Capacitance(123d, CapacitanceUnit.nF);
 
-	public CeramicDiskCapacitor() {
+	public RadialCeramicDiskCapacitor() {
 		super();
 	}
 

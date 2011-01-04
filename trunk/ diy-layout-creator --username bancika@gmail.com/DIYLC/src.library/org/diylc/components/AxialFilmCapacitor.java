@@ -21,7 +21,7 @@ public class AxialFilmCapacitor extends AbstractLeadedDIYComponent {
 	public static Size DEFAULT_WIDTH = new Size(1d / 2, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
 	public static Color BODY_COLOR = Color.decode("#FFE303");
-	public static Color BORDER_COLOR = Color.decode("#B8860B");
+	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Capacitance value = new Capacitance(123d, CapacitanceUnit.nF);
 

@@ -20,8 +20,8 @@ public class RadialFilmCapacitor extends AbstractLeadedDIYComponent {
 
 	public static Size DEFAULT_WIDTH = new Size(1d, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1d / 4, SizeUnit.in);
-	public static Color BODY_COLOR = Color.decode("#FF9912");
-	public static Color BORDER_COLOR = Color.decode("#D98719");
+	public static Color BODY_COLOR = Color.decode("#FF8000");
+	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Capacitance value = new Capacitance(123d, CapacitanceUnit.nF);
 
