@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.diylc.components.MockComponentInstance;
 import org.diylc.model.IComponentInstance;
 import org.diylc.model.measures.Capacitance;
 import org.diylc.model.measures.CapacitanceUnit;
@@ -12,7 +13,6 @@ import org.diylc.plugins.file.BomEntry;
 import org.diylc.plugins.file.BomMaker;
 import org.junit.Test;
 
-import com.diyfever.diylc.components.MockComponentInstance;
 
 public class BomMakerTest {
 

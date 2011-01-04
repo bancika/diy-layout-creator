@@ -1,4 +1,4 @@
-package com.diyfever.diylc.components;
+package org.diylc.components;
 
 import java.awt.Point;
 
