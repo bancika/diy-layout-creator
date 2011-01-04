@@ -1,11 +1,11 @@
-package com.diyfever.diylc;
+package org.diylc;
 
+import org.diylc.plugins.file.BomMakerTest;
+import org.diylc.presenter.ClassProcessorTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.diyfever.diylc.plugins.file.BomMakerTest;
-import com.diyfever.diylc.presenter.ClassProcessorTest;
 
 @RunWith(Suite.class)
 @SuiteClasses( { BomMakerTest.class, ClassProcessorTest.class })

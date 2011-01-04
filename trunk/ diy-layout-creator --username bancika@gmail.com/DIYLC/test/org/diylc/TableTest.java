@@ -1,4 +1,4 @@
-package com.diyfever.diylc;
+package org.diylc;
 
 import java.util.ArrayList;
 import java.util.Arrays;

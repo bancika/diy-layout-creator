@@ -1,4 +1,4 @@
-package com.diyfever.diylc.presenter;
+package org.diylc.presenter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

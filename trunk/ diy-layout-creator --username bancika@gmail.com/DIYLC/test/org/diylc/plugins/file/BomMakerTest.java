@@ -1,4 +1,4 @@
-package com.diyfever.diylc.plugins.file;
+package org.diylc.plugins.file;
 
 import static org.junit.Assert.*;
 
