@@ -9,6 +9,7 @@ public class Constants {
 
 	public static final float GRID = Toolkit.getDefaultToolkit().getScreenResolution() / 10f;
 
+	public static final Color CANVAS_COLOR = Color.white;
 	public static final Color GRID_COLOR = new Color(240, 240, 240);
 
 	public static final Stroke dashedStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,

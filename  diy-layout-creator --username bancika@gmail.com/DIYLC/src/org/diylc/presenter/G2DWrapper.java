@@ -46,6 +46,7 @@ class G2DWrapper extends Graphics2D {
 	private Color originalColor;
 	private Composite originalComposite;
 	private AffineTransform originalTx;
+	private Font originalFont;
 	private AffineTransform currentTx;
 	private Area currentArea;
 
@@ -69,6 +70,7 @@ class G2DWrapper extends Graphics2D {
 		originalColor = canvasGraphics.getColor();
 		originalTx = canvasGraphics.getTransform();
 		originalComposite = canvasGraphics.getComposite();
+		originalFont = canvasGraphics.getFont();
 		currentTx = new AffineTransform();
 	}
 
@@ -83,6 +85,7 @@ class G2DWrapper extends Graphics2D {
 		canvasGraphics.setColor(originalColor);
 		canvasGraphics.setTransform(originalTx);
 		canvasGraphics.setComposite(originalComposite);
+		canvasGraphics.setFont(originalFont);
 		return currentArea;
 	}
 

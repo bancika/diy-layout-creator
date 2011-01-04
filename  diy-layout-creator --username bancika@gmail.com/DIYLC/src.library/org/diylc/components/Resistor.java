@@ -1,10 +1,10 @@
 package org.diylc.components;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
-import org.diylc.core.ComponentState;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Resistance;
@@ -17,8 +17,12 @@ public class Resistor extends AbstractLeadedDIYComponent {
 
 	private static final long serialVersionUID = 1L;
 
+	public static Size DEFAULT_WIDTH = new Size(1d / 2, SizeUnit.in);
+	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
+	public static Color BODY_COLOR = Color.decode("#82CFFD");
+	public static Color BORDER_COLOR = Color.decode("#5D92B1");
+
 	private Resistance r = new Resistance(123d, ResistanceUnit.K);
-	private Color color = Color.green;
 
 	public Resistor() {
 		super();
@@ -29,30 +33,33 @@ public class Resistor extends AbstractLeadedDIYComponent {
 		return r;
 	}
 
-	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState) {
-		g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color : color.darker());
-		g2d.setStroke(new BasicStroke(1));
-		if (componentState == ComponentState.DRAGGING) {
-			g2d.setStroke(new BasicStroke(1));
-		}
-		g2d.drawLine(point1.x, point1.y, point2.x, point2.y);
-		g2d.rotate(Math.PI / 4, (point1.x + point2.x) / 2, (point1.y + point2.y) / 2);
-		g2d.fillRect((point1.x + point2.x) / 2 - 10, (point1.y + point2.y) / 2 - 10, 20, 20);
-	}
-
-	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.drawString("R", 10, 10);
 	}
 
 	@Override
 	protected Size getDefaultHeight() {
-		return new Size(3d, SizeUnit.mm);
+		return DEFAULT_HEIGHT;
 	}
 
 	@Override
 	protected Size getDefaultWidth() {
-		return new Size(10d, SizeUnit.mm);
+		return DEFAULT_WIDTH;
+	}
+
+	@Override
+	protected Color getBodyColor() {
+		return BODY_COLOR;
+	}
+
+	@Override
+	protected Color getBorderColor() {
+		return BORDER_COLOR;
+	}
+
+	@Override
+	protected Shape getComponentShape() {
+		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(), getHeight()
+				.convertToPixels());
 	}
 }
