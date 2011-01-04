@@ -2,10 +2,11 @@ package com.diyfever.diylc.components;
 
 import javax.swing.Icon;
 
-import com.diyfever.diylc.images.IconLoader;
-import com.diyfever.diylc.model.ComponentLayer;
-import com.diyfever.diylc.model.IComponentInstance;
-import com.diyfever.diylc.model.IComponentType;
+import org.diylc.images.IconLoader;
+import org.diylc.model.ComponentLayer;
+import org.diylc.model.IComponentInstance;
+import org.diylc.model.IComponentType;
+
 
 public class MockComponentType implements IComponentType {
 

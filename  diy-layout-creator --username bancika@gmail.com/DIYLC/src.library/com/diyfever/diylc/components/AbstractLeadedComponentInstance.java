@@ -2,13 +2,14 @@ package com.diyfever.diylc.components;
 
 import java.awt.Point;
 
-import com.diyfever.diylc.model.IComponentInstance;
-import com.diyfever.diylc.model.VisibilityPolicy;
-import com.diyfever.diylc.model.annotations.BomName;
-import com.diyfever.diylc.model.annotations.ControlPoint;
-import com.diyfever.diylc.model.annotations.EditableProperty;
-import com.diyfever.diylc.model.measures.Size;
-import com.diyfever.diylc.utils.Constants;
+import org.diylc.model.IComponentInstance;
+import org.diylc.model.VisibilityPolicy;
+import org.diylc.model.annotations.BomName;
+import org.diylc.model.annotations.ControlPoint;
+import org.diylc.model.annotations.EditableProperty;
+import org.diylc.model.measures.Size;
+import org.diylc.utils.Constants;
+
 
 /**
  * Base class for all leaded components such as resistors or capacitors. Has two
