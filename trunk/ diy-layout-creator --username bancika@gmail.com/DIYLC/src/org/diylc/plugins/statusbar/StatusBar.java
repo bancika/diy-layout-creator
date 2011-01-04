@@ -193,14 +193,14 @@ public class StatusBar extends JPanel implements IPlugIn {
 				if (componentsUnderCursor.size() == 1) {
 					getStatusLabel().setText(
 							"Drag \""
-									+ ComponentProcessor.getInstance().extractBomName(
+									+ ComponentProcessor.getInstance().extractComponentName(
 											componentsUnderCursor.get(0)) + "\"");
 				} else {
 					getStatusLabel().setText(
 							"Hold CTRL key to drag all "
 									+ componentsUnderCursor.size()
 									+ " components under the cursor or drag only \""
-									+ ComponentProcessor.getInstance().extractBomName(
+									+ ComponentProcessor.getInstance().extractComponentName(
 											componentsUnderCursor.get(0)) + "\"");
 				}
 			}

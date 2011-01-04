@@ -28,8 +28,8 @@ public class BomMaker {
 	public List<BomEntry> createBom(List<IDIYComponent> components) {
 		Map<String, BomEntry> entryMap = new HashMap<String, BomEntry>();
 		for (IDIYComponent component : components) {
-			String name = ComponentProcessor.getInstance().extractBomName(component);
-			String value = ComponentProcessor.getInstance().extractBomValue(component);
+			String name = ComponentProcessor.getInstance().extractComponentName(component);
+			String value = ComponentProcessor.getInstance().extractComponentValue(component);
 			if ((name != null) && (value != null)) {
 				String key = name + "|" + value;
 				if (entryMap.containsKey(key)) {

@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
-import org.diylc.core.annotations.BomName;
+import org.diylc.core.annotations.ComponentName;
 import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -48,7 +48,7 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 	 */
 	protected abstract Size getDefaultHeight();
 
-	@BomName
+	@ComponentName
 	@EditableProperty
 	public String getName() {
 		return name;
