@@ -3,9 +3,8 @@
 
 ===Environment setup===
 
-  * When adding components to the main component library you need to setup DIYLC project. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from code base.
-  * When creating your own component library, setup a Java project and add *diylc.jar* to it's dependencies.
-
+  * When adding components to the main component library you need to setup DIYLC project. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from the source control. New components should be created inside *org.diylc.components* package. When you are done developing and testing the new components, commit source back to the source control, build src.library folder into a jar and commit that file as well. That will ensure that other people see them.
+  * When creating your own component library, create a new Java project and add *diylc.jar* to it's dependencies. Since it's your own project, you can use whichever package name you like. When you are done developing and testing the new components, you can add your components to the DIYLC project by building your project into a jar and committing it to *library* folder in the DIYLC source control. It should be automatically recognized by the app.
 
 = Details =
 
