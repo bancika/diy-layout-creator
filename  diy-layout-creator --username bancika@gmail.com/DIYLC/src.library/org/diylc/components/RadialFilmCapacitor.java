@@ -3,7 +3,7 @@ package org.diylc.components;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.ComponentValue;
@@ -13,19 +13,19 @@ import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Axial Film Capacitor", author = "bancika", category = "Passive", instanceNamePrefix = "C", desciption = "test")
-public class Capacitor extends AbstractLeadedDIYComponent {
+@ComponentDescriptor(name = "Radial Film Capacitor", author = "bancika", category = "Passive", instanceNamePrefix = "C", desciption = "test")
+public class RadialFilmCapacitor extends AbstractLeadedDIYComponent {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Size DEFAULT_WIDTH = new Size(1d / 2, SizeUnit.in);
-	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
-	public static Color BODY_COLOR = Color.decode("#FFE303");
-	public static Color BORDER_COLOR = Color.decode("#B8860B");
+	public static Size DEFAULT_WIDTH = new Size(1d, SizeUnit.in);
+	public static Size DEFAULT_HEIGHT = new Size(1d / 4, SizeUnit.in);
+	public static Color BODY_COLOR = Color.decode("#FF9912");
+	public static Color BORDER_COLOR = Color.decode("#D98719");
 
 	private Capacitance value = new Capacitance(123d, CapacitanceUnit.nF);
 
-	public Capacitor() {
+	public RadialFilmCapacitor() {
 		super();
 	}
 
@@ -65,7 +65,8 @@ public class Capacitor extends AbstractLeadedDIYComponent {
 
 	@Override
 	protected Shape getComponentShape() {
-		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(), getHeight()
-				.convertToPixels());
+		double radius = getHeight().convertToPixels() * 0.7;
+		return new RoundRectangle2D.Double(0f, 0f, getWidth().convertToPixels(), getHeight()
+				.convertToPixels(), radius, radius);
 	}
 }
