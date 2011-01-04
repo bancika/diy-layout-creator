@@ -8,8 +8,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
+import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
-import org.diylc.presenter.ComponentType;
 
 
 class ComponentTabbedPane extends JTabbedPane {

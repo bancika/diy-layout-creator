@@ -17,7 +17,6 @@ import javax.swing.JPopupMenu.Separator;
 import org.diylc.core.ComponentLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
-import org.diylc.presenter.ComponentType;
 
 import com.diyfever.gui.simplemq.IMessageListener;
 import com.diyfever.gui.simplemq.MessageDispatcher;
