@@ -11,8 +11,8 @@ import org.apache.log4j.Logger;
 import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.annotations.BomName;
-import org.diylc.core.annotations.BomValue;
+import org.diylc.core.annotations.ComponentName;
+import org.diylc.core.annotations.ComponentValue;
 import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 
@@ -91,8 +91,8 @@ public class ComponentProcessor {
 	 * Reads all control points from the specified component class. Note than
 	 * control points are cached, so it may happen that control points returned
 	 * already have their values populated. Always use
-	 * {@link ControlPointWrapper#readFrom(IDIYComponent)} to update their
-	 * state from an actual component.
+	 * {@link ControlPointWrapper#readFrom(IDIYComponent)} to update their state
+	 * from an actual component.
 	 * 
 	 * @param clazz
 	 * @return
@@ -135,8 +135,7 @@ public class ComponentProcessor {
 	 * @param selectedComponents
 	 * @return
 	 */
-	public List<PropertyWrapper> getMutualSelectionProperties(
-			List<IDIYComponent> selectedComponents) {
+	public List<PropertyWrapper> getMutualSelectionProperties(List<IDIYComponent> selectedComponents) {
 		if (selectedComponents.isEmpty()) {
 			return null;
 		}
@@ -177,16 +176,16 @@ public class ComponentProcessor {
 	}
 
 	/**
-	 * Finds the method annotated with {@link BomName} annotations and calls it
-	 * to retrieve component name.
+	 * Finds the method annotated with {@link ComponentName} annotations and
+	 * calls it to retrieve component name.
 	 * 
 	 * @param component
 	 * @return
 	 */
-	public String extractBomName(IDIYComponent component) {
+	public String extractComponentName(IDIYComponent component) {
 		String name = null;
 		for (Method method : component.getClass().getMethods()) {
-			if (method.isAnnotationPresent(BomName.class)) {
+			if (method.isAnnotationPresent(ComponentName.class)) {
 				try {
 					name = method.invoke(component).toString();
 				} catch (Exception e) {
@@ -198,36 +197,38 @@ public class ComponentProcessor {
 	}
 
 	/**
-	 * Finds the method annotated with {@link BomName} and it's matching setter
-	 * and calls the setter to update the component name.
+	 * Finds the method annotated with {@link ComponentName} and it's matching
+	 * setter and calls the setter to update the component name.
 	 * 
 	 * @param component
-	 * @param newBomName
+	 * @param newName
 	 */
-	public void writeBomName(IDIYComponent component, String newBomName) {
+	public void writeComponentName(IDIYComponent component, String newName) {
 		for (Method method : component.getClass().getMethods()) {
-			if (method.isAnnotationPresent(BomName.class)) {
+			if (method.isAnnotationPresent(ComponentName.class)) {
 				try {
 					Method setter = component.getClass().getMethod(
 							method.getName().replaceFirst("get", "set"), String.class);
-					setter.invoke(component, newBomName);
+					setter.invoke(component, newName);
 				} catch (Exception e) {
+					LOG.warn("Could not update component name on a component of type "
+							+ component.getClass().getName());
 				}
 			}
 		}
 	}
 
 	/**
-	 * Finds the method annotated with {@link BomValue} annotations and calls it
-	 * to retrieve component value.
+	 * Finds the method annotated with {@link ComponentValue} annotations and
+	 * calls it to retrieve component value.
 	 * 
 	 * @param component
 	 * @return
 	 */
-	public String extractBomValue(IDIYComponent component) {
+	public String extractComponentValue(IDIYComponent component) {
 		String value = null;
 		for (Method method : component.getClass().getMethods()) {
-			if (method.isAnnotationPresent(BomValue.class)) {
+			if (method.isAnnotationPresent(ComponentValue.class)) {
 				try {
 					value = method.invoke(component).toString();
 				} catch (Exception e) {

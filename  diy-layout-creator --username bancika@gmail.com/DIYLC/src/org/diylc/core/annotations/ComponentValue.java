@@ -10,6 +10,6 @@ import java.lang.annotation.RetentionPolicy;
  * @author Branislav Stojkovic
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BomValue {
+public @interface ComponentValue {
 
 }

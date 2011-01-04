@@ -714,14 +714,14 @@ public class Presenter implements IPlugInPort {
 			String name = namePrefix + i;
 			exists = false;
 			for (IDIYComponent c : currentProject.getComponents()) {
-				String cName = ComponentProcessor.getInstance().extractBomName(c);
+				String cName = ComponentProcessor.getInstance().extractComponentName(c);
 				if (cName.equals(name)) {
 					exists = true;
 					break;
 				}
 			}
 		}
-		ComponentProcessor.getInstance().writeBomName(component, namePrefix + i);
+		ComponentProcessor.getInstance().writeComponentName(component, namePrefix + i);
 
 		// Add it to the project.
 		currentProject.getComponents().add(component);
