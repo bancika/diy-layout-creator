@@ -8,39 +8,39 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.ComponentValue;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.measures.Resistance;
-import org.diylc.core.measures.ResistanceUnit;
+import org.diylc.core.measures.Capacitance;
+import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Resistor", author = "bancika", category = "Passive", instanceNamePrefix = "R", desciption = "test")
-public class Resistor extends AbstractLeadedDIYComponent {
+@ComponentDescriptor(name = "Axial Film Capacitor", author = "bancika", category = "Passive", instanceNamePrefix = "C", desciption = "test")
+public class Capacitor extends AbstractLeadedDIYComponent {
 
 	private static final long serialVersionUID = 1L;
 
 	public static Size DEFAULT_WIDTH = new Size(1d / 2, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
-	public static Color BODY_COLOR = Color.decode("#82CFFD");
-	public static Color BORDER_COLOR = Color.decode("#5D92B1");
+	public static Color BODY_COLOR = Color.decode("#FFE303");
+	public static Color BORDER_COLOR = Color.decode("#B8860B");
 
-	private Resistance value = new Resistance(123d, ResistanceUnit.K);
+	private Capacitance value = new Capacitance(123d, CapacitanceUnit.nF);
 
-	public Resistor() {
+	public Capacitor() {
 		super();
 	}
 
 	@ComponentValue
 	@EditableProperty
-	public Resistance getValue() {
+	public Capacitance getValue() {
 		return value;
 	}
-	
-	public void setValue(Resistance value) {
+
+	public void setValue(Capacitance value) {
 		this.value = value;
 	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		g2d.drawString("R", 10, 10);
+		g2d.drawString("C", 10, 10);
 	}
 
 	@Override
