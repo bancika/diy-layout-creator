@@ -73,7 +73,7 @@ public class MainFrame extends JFrame implements IView {
 		presenter.installPlugin(canvasPlugin);
 
 		Project project = new Project();
-		// project.getComponents().add(new MockComponentInstance());
+		// project.getComponents().add(new MockDIYComponent());
 		presenter.loadProject(project, true);
 
 		addWindowListener(new WindowAdapter() {

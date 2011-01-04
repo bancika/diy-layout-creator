@@ -15,9 +15,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JPopupMenu.Separator;
 
 import org.diylc.core.ComponentLayer;
-import org.diylc.core.IComponentInstance;
-import org.diylc.core.IComponentType;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.presenter.ComponentType;
 
 import com.diyfever.gui.simplemq.IMessageListener;
 import com.diyfever.gui.simplemq.MessageDispatcher;
@@ -76,13 +76,13 @@ public interface IPlugInPort {
 	void loadProject(Project project, boolean freshStart);
 
 	/**
-	 * Returns all available {@link IComponentType}s classified by category.
+	 * Returns all available {@link ComponentType}s classified by category.
 	 * Result is a {@link Map} between category name to a {@link List} of all
-	 * {@link IComponentType}s that share that category name.
+	 * {@link ComponentType}s that share that category name.
 	 * 
 	 * @return
 	 */
-	Map<String, List<IComponentType>> getComponentTypes();
+	Map<String, List<ComponentType>> getComponentTypes();
 
 	/**
 	 * Draws project on the provided {@link Graphics2D}.
@@ -175,7 +175,7 @@ public interface IPlugInPort {
 	 * 
 	 * @return
 	 */
-	Area getComponentArea(IComponentInstance component);
+	Area getComponentArea(IDIYComponent component);
 
 	/**
 	 * Notification that drag has been started from the specified point.
@@ -218,7 +218,7 @@ public interface IPlugInPort {
 	 * @param components
 	 * @param preferredPoint
 	 */
-	void addComponents(List<IComponentInstance> components, Point preferredPoint);
+	void addComponents(List<IDIYComponent> components, Point preferredPoint);
 
 	/**
 	 * Checks if a certain layer is locked for editing.
@@ -288,5 +288,5 @@ public interface IPlugInPort {
 	 * Sets the new component slot. Specified component type will be used to
 	 * instantiate new component.
 	 */
-	void setNewComponentSlot(IComponentType componentType);
+	void setNewComponentSlot(ComponentType componentType);
 }

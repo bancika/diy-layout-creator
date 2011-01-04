@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.components.MockComponentInstance;
+import org.diylc.components.MockDIYComponent;
 import org.diylc.presenter.ComponentProcessor;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class ClassProcessorTest {
 	@Test
 	public void testExtractProperties() {
 		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
-				MockComponentInstance.class);
+				MockDIYComponent.class);
 		assertNotNull(properties);
 		assertEquals(4, properties.size());
 	};
@@ -25,7 +25,7 @@ public class ClassProcessorTest {
 	@Test
 	public void testExtractControlPoints() {
 		List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
-				.extractControlPoints(MockComponentInstance.class);
+				.extractControlPoints(MockDIYComponent.class);
 		assertNotNull(controlPoints);
 		assertEquals(1, controlPoints.size());
 	};

@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.diylc.core.IComponentInstance;
+import org.diylc.core.IDIYComponent;
 
 
 /**
  * Represents component selection as a {@link List} of
- * {@link IComponentInstance} objects. Implements {@link Transferable}, so it is
+ * {@link IDIYComponent} objects. Implements {@link Transferable}, so it is
  * suitable for clipboard usage.
  * 
  * @author Branislav Stojkovic
  */
-public class ComponentSelection extends ArrayList<IComponentInstance> implements Transferable {
+public class ComponentSelection extends ArrayList<IDIYComponent> implements Transferable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class ComponentSelection extends ArrayList<IComponentInstance> implements
 		super();
 	}
 
-	public ComponentSelection(Collection<IComponentInstance> selectedComponents) {
+	public ComponentSelection(Collection<IDIYComponent> selectedComponents) {
 		super(selectedComponents);
 	}
 

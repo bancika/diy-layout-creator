@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.diylc.components.MockComponentInstance;
-import org.diylc.core.IComponentInstance;
+import org.diylc.components.MockDIYComponent;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.plugins.file.BomEntry;
@@ -18,12 +18,12 @@ public class BomMakerTest {
 
 	@Test
 	public void testCreateBom() {
-		List<IComponentInstance> components = new ArrayList<IComponentInstance>();
-		MockComponentInstance c1 = new MockComponentInstance();
+		List<IDIYComponent> components = new ArrayList<IDIYComponent>();
+		MockDIYComponent c1 = new MockDIYComponent();
 		c1.setC(new Capacitance(3d, CapacitanceUnit.pF));
 		components.add(c1);
-		components.add(new MockComponentInstance());
-		components.add(new MockComponentInstance());
+		components.add(new MockDIYComponent());
+		components.add(new MockDIYComponent());
 		List<BomEntry> bom = BomMaker.getInstance().createBom(components);
 		assertNotNull(bom);
 		assertEquals(2, bom.size());

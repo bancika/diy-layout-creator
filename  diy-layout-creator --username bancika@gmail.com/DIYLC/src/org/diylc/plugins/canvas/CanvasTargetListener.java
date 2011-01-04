@@ -53,7 +53,7 @@ class CanvasTargetListener implements DropTargetListener {
 			// (t.isDataFlavorSupported(SelectionTransferable.selectionFlavor))
 			// {
 			// if (currentPoint != null) {
-			// List<IComponentInstance> selection = (List<IComponentInstance>) t
+			// List<IDIYComponent> selection = (List<IDIYComponent>) t
 			// .getTransferData(SelectionTransferable.selectionFlavor);
 			// Point startPoint = (Point) t
 			// .getTransferData(PointTransferable.pointFlavor);

@@ -57,7 +57,7 @@ public class DIYLCStarter {
 		// p.installPlugin(new CanvasPlugin());
 		//
 		// Project project = new Project();
-		// project.getComponents().add(new MockComponentInstance());
+		// project.getComponents().add(new MockDIYComponent());
 		// p.loadProject(project);
 		// panel.setPreferredSize(new Dimension(2000, 1500));
 		// RulerScrollPane scrollPane = new RulerScrollPane(panel);
