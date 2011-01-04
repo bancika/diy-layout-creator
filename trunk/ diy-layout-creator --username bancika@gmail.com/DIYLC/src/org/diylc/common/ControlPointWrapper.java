@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.diylc.core.IComponentInstance;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
 
 
@@ -44,7 +44,7 @@ public class ControlPointWrapper {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public void readFrom(IComponentInstance component) throws IllegalArgumentException,
+	public void readFrom(IDIYComponent component) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		value = (Point) getter.invoke(component);
 	}
@@ -58,7 +58,7 @@ public class ControlPointWrapper {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public void writeTo(IComponentInstance component) throws IllegalArgumentException,
+	public void writeTo(IDIYComponent component) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		setter.invoke(component, value);
 	}

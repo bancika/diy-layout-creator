@@ -10,7 +10,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.core.IComponentInstance;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.BomName;
 import org.diylc.core.annotations.BomValue;
 import org.diylc.core.annotations.ControlPoint;
@@ -54,7 +54,7 @@ public class ComponentProcessor {
 	 * @param clazz
 	 * @return
 	 */
-	public List<PropertyWrapper> extractProperties(Class<? extends IComponentInstance> clazz) {
+	public List<PropertyWrapper> extractProperties(Class<? extends IDIYComponent> clazz) {
 		if (propertyCache.containsKey(clazz)) {
 			return cloner.deepClone(propertyCache.get(clazz));
 		}
@@ -91,13 +91,13 @@ public class ComponentProcessor {
 	 * Reads all control points from the specified component class. Note than
 	 * control points are cached, so it may happen that control points returned
 	 * already have their values populated. Always use
-	 * {@link ControlPointWrapper#readFrom(IComponentInstance)} to update their
+	 * {@link ControlPointWrapper#readFrom(IDIYComponent)} to update their
 	 * state from an actual component.
 	 * 
 	 * @param clazz
 	 * @return
 	 */
-	public List<ControlPointWrapper> extractControlPoints(Class<? extends IComponentInstance> clazz) {
+	public List<ControlPointWrapper> extractControlPoints(Class<? extends IDIYComponent> clazz) {
 		if (controlPointCache.containsKey(clazz)) {
 			return cloner.deepClone(controlPointCache.get(clazz));
 		}
@@ -136,12 +136,12 @@ public class ComponentProcessor {
 	 * @return
 	 */
 	public List<PropertyWrapper> getMutualSelectionProperties(
-			List<IComponentInstance> selectedComponents) {
+			List<IDIYComponent> selectedComponents) {
 		if (selectedComponents.isEmpty()) {
 			return null;
 		}
 		List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
-		IComponentInstance firstComponent = selectedComponents.get(0);
+		IDIYComponent firstComponent = selectedComponents.get(0);
 		properties.addAll(extractProperties(firstComponent.getClass()));
 		// Initialize values
 		for (PropertyWrapper property : properties) {
@@ -153,7 +153,7 @@ public class ComponentProcessor {
 			}
 		}
 		for (int i = 1; i < selectedComponents.size(); i++) {
-			IComponentInstance component = selectedComponents.get(i);
+			IDIYComponent component = selectedComponents.get(i);
 			List<PropertyWrapper> newProperties = extractProperties(component.getClass());
 			for (PropertyWrapper property : newProperties) {
 				try {
@@ -183,7 +183,7 @@ public class ComponentProcessor {
 	 * @param component
 	 * @return
 	 */
-	public String extractBomName(IComponentInstance component) {
+	public String extractBomName(IDIYComponent component) {
 		String name = null;
 		for (Method method : component.getClass().getMethods()) {
 			if (method.isAnnotationPresent(BomName.class)) {
@@ -204,7 +204,7 @@ public class ComponentProcessor {
 	 * @param component
 	 * @param newBomName
 	 */
-	public void writeBomName(IComponentInstance component, String newBomName) {
+	public void writeBomName(IDIYComponent component, String newBomName) {
 		for (Method method : component.getClass().getMethods()) {
 			if (method.isAnnotationPresent(BomName.class)) {
 				try {
@@ -224,7 +224,7 @@ public class ComponentProcessor {
 	 * @param component
 	 * @return
 	 */
-	public String extractBomValue(IComponentInstance component) {
+	public String extractBomValue(IDIYComponent component) {
 		String value = null;
 		for (Method method : component.getClass().getMethods()) {
 			if (method.isAnnotationPresent(BomValue.class)) {

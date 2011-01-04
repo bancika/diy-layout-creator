@@ -21,9 +21,9 @@ import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.IComponentInstance;
-import org.diylc.core.IComponentType;
+import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.presenter.ComponentType;
 
 import com.diyfever.gui.MemoryBar;
 import com.diyfever.gui.miscutils.PercentageListCellRenderer;
@@ -41,8 +41,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 	private IPlugInPort plugInPort;
 
 	// State variables
-	private IComponentType componentSlot;
-	private List<IComponentInstance> componentsUnderCursor;
+	private ComponentType componentSlot;
+	private List<IDIYComponent> componentsUnderCursor;
 
 	public StatusBar() {
 		super();
@@ -159,12 +159,12 @@ public class StatusBar extends JPanel implements IPlugIn {
 			}
 			break;
 		case SLOT_CHANGED:
-			componentSlot = (IComponentType) params[0];
+			componentSlot = (ComponentType) params[0];
 			refreshStatusText();
 			break;
 		case AVAILABLE_CTRL_POINTS_CHANGED:
-			componentsUnderCursor = new ArrayList<IComponentInstance>(
-					((Map<IComponentInstance, ControlPointWrapper>) params[0]).keySet());
+			componentsUnderCursor = new ArrayList<IDIYComponent>(
+					((Map<IDIYComponent, ControlPointWrapper>) params[0]).keySet());
 			refreshStatusText();
 			break;
 		}
@@ -177,7 +177,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 			} else {
 				// String formattedNames = "";
 				// int n = 1;
-				// for (IComponentInstance component : componentsUnderCursor) {
+				// for (IDIYComponent component : componentsUnderCursor) {
 				// if (n > 1) {
 				// formattedNames += ", ";
 				// }

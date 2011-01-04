@@ -2,7 +2,7 @@ package org.diylc.components;
 
 import java.awt.Point;
 
-import org.diylc.core.IComponentInstance;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomName;
 import org.diylc.core.annotations.ControlPoint;
@@ -17,7 +17,7 @@ import org.diylc.utils.Constants;
  * 
  * @author Branislav Stojkovic
  */
-public abstract class AbstractLeadedComponentInstance implements IComponentInstance {
+public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public abstract class AbstractLeadedComponentInstance implements IComponentInsta
 	protected Point labelPoint = new Point((int) (Constants.GRID * 5), -(int) Constants.GRID);
 	protected String name = "New Component";
 
-	protected AbstractLeadedComponentInstance() {
+	protected AbstractLeadedDIYComponent() {
 		super();
 		this.width = getDefaultWidth();
 		this.height = getDefaultHeight();
@@ -119,7 +119,7 @@ public abstract class AbstractLeadedComponentInstance implements IComponentInsta
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractLeadedComponentInstance other = (AbstractLeadedComponentInstance) obj;
+		AbstractLeadedDIYComponent other = (AbstractLeadedDIYComponent) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;

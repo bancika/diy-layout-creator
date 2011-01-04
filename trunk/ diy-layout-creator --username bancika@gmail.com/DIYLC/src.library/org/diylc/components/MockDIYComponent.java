@@ -5,10 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import org.diylc.core.ComponentState;
-import org.diylc.core.IComponentInstance;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomName;
 import org.diylc.core.annotations.BomValue;
+import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
@@ -18,8 +19,8 @@ import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-
-public class MockComponentInstance implements IComponentInstance {
+@ComponentDescriptor(name = "Mock", author = "bancika", category = "Sample", instanceNamePrefix = "M", desciption = "test")
+public class MockDIYComponent implements IDIYComponent {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +32,7 @@ public class MockComponentInstance implements IComponentInstance {
 	private Point leftTopCorner = new Point(0, 0);
 	private String name = "something";
 
-	public MockComponentInstance(String testField, Capacitance c, Resistance r, Size s,
+	public MockDIYComponent(String testField, Capacitance c, Resistance r, Size s,
 			Color color, Point leftTopCorner) {
 		super();
 		this.testField = testField;
@@ -42,7 +43,7 @@ public class MockComponentInstance implements IComponentInstance {
 		this.leftTopCorner = leftTopCorner;
 	}
 
-	public MockComponentInstance() {
+	public MockDIYComponent() {
 		super();
 	}
 
@@ -119,9 +120,7 @@ public class MockComponentInstance implements IComponentInstance {
 	}
 
 	@Override
-	public MockComponentInstance clone() throws CloneNotSupportedException {
-		MockComponentInstance newInstance = new MockComponentInstance(testField, c.clone(), r
-				.clone(), s.clone(), color, (Point) leftTopCorner.clone());
-		return newInstance;
+	public void drawIcon(Graphics2D g2d, int width, int height) {
+		g2d.drawString("X", 10, 10);
 	}
 }

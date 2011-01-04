@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.diylc.core.IComponentInstance;
+import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComponentProcessor;
 
 
@@ -25,9 +25,9 @@ public class BomMaker {
 	private BomMaker() {
 	}
 
-	public List<BomEntry> createBom(List<IComponentInstance> components) {
+	public List<BomEntry> createBom(List<IDIYComponent> components) {
 		Map<String, BomEntry> entryMap = new HashMap<String, BomEntry>();
-		for (IComponentInstance component : components) {
+		for (IDIYComponent component : components) {
 			String name = ComponentProcessor.getInstance().extractBomName(component);
 			String value = ComponentProcessor.getInstance().extractBomValue(component);
 			if ((name != null) && (value != null)) {

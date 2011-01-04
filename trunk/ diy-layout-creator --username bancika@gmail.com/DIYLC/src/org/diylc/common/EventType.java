@@ -2,8 +2,8 @@ package org.diylc.common;
 
 import java.awt.Rectangle;
 
-import org.diylc.core.IComponentType;
 import org.diylc.core.Project;
+import org.diylc.presenter.ComponentType;
 
 
 /**
@@ -44,7 +44,7 @@ public enum EventType {
 	REPAINT,
 	/**
 	 * Called when new component slot has been changed. The only parameter is
-	 * {@link IComponentType} and may be null.
+	 * {@link ComponentType} and may be null.
 	 */
 	SLOT_CHANGED,
 	/**

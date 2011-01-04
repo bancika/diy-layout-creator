@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.IComponentType;
+import org.diylc.presenter.ComponentType;
 
 
 class ComponentTabbedPane extends JTabbedPane {
@@ -20,16 +20,16 @@ class ComponentTabbedPane extends JTabbedPane {
 	public ComponentTabbedPane(IPlugInPort plugInPort) {
 		super();
 		this.plugInPort = plugInPort;
-		Map<String, List<IComponentType>> componentTypes = plugInPort.getComponentTypes();
-		for (Map.Entry<String, List<IComponentType>> entry : componentTypes.entrySet()) {
+		Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
+		for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet()) {
 			addTab(entry.getKey(), createComponentPanel(entry.getValue()));
 		}
 	}
 
-	private Container createComponentPanel(List<IComponentType> componentTypes) {
+	private Container createComponentPanel(List<ComponentType> componentTypes) {
 		Container componentPanel = new Container();
 		componentPanel.setLayout(new BoxLayout(componentPanel, BoxLayout.X_AXIS));
-		for (IComponentType componentType : componentTypes) {
+		for (ComponentType componentType : componentTypes) {
 			JButton button = new ComponentButton(plugInPort, componentType);
 			componentPanel.add(button);
 		}

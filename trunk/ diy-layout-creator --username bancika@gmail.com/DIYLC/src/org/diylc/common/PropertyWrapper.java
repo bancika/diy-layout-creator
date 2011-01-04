@@ -3,7 +3,7 @@ package org.diylc.common;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.diylc.core.IComponentInstance;
+import org.diylc.core.IDIYComponent;
 
 
 /**
@@ -31,12 +31,12 @@ public class PropertyWrapper implements Cloneable {
 		this.defaultable = defaultable;
 	}
 
-	public void readFrom(IComponentInstance component) throws IllegalArgumentException,
+	public void readFrom(IDIYComponent component) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		this.value = getter.invoke(component);
 	}
 
-	// public void readUniqueFrom(IComponentInstance component)
+	// public void readUniqueFrom(IDIYComponent component)
 	// throws IllegalArgumentException, IllegalAccessException,
 	// InvocationTargetException {
 	// Object newValue = getter.invoke(component);
@@ -45,7 +45,7 @@ public class PropertyWrapper implements Cloneable {
 	// }
 	// }
 
-	public void writeTo(IComponentInstance component) throws IllegalArgumentException,
+	public void writeTo(IDIYComponent component) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		setter.invoke(component, value);
 	}

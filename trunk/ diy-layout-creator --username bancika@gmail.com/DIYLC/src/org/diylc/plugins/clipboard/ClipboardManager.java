@@ -19,7 +19,7 @@ import org.diylc.common.ComponentSelection;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.IComponentInstance;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.images.IconLoader;
 
@@ -163,7 +163,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Paste triggered");
 			try {
-				List<IComponentInstance> components = (List<IComponentInstance>) clipboard
+				List<IDIYComponent> components = (List<IDIYComponent>) clipboard
 						.getData(ComponentSelection.listFlavor);
 				plugInPort.addComponents(cloner.deepClone(components), null);
 			} catch (Exception ex) {

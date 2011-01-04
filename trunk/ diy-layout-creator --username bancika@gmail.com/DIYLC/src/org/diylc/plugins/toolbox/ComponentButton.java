@@ -8,8 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.IComponentType;
-
+import org.diylc.presenter.ComponentType;
 
 /**
  * {@link JButton} that displays component type icon and instantiates the
@@ -22,9 +21,9 @@ class ComponentButton extends JButton {
 	private static final long serialVersionUID = 1L;
 
 	private IPlugInPort plugInPort;
-	private IComponentType componentType;
+	private ComponentType componentType;
 
-	public ComponentButton(final IPlugInPort plugInPort, final IComponentType componentType) {
+	public ComponentButton(final IPlugInPort plugInPort, final ComponentType componentType) {
 		super(componentType.getIcon());
 		this.plugInPort = plugInPort;
 		this.componentType = componentType;
@@ -59,10 +58,8 @@ class ComponentButton extends JButton {
 
 	private void initializeDnD() {
 		// Initialize drag source recognizer.
-		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-				this,
+		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
 				DnDConstants.ACTION_MOVE,
-				new ToolboxGestureListener(plugInPort, componentType.getComponentInstanceClass()
-						.getName()));
+				new ToolboxGestureListener(plugInPort, componentType.getInstanceClass().getName()));
 	}
 }
