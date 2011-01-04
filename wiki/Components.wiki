@@ -1,10 +1,21 @@
 #summary Developer guide for creating new components.
 #labels Featured,Phase-Implementation
 
-===Environment setup===
+===Adding to the main library===
 
-  * When adding components to the main component library you need to setup DIYLC project. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from the source control. New components should be created inside *org.diylc.components* package. When you are done developing and testing the new components, commit source back to the source control, build src.library folder into a jar and commit that file as well. That will ensure that other people see them.
-  * When creating your own component library, create a new Java project and add *diylc.jar* to it's dependencies. Since it's your own project, you can use whichever package name you like. When you are done developing and testing the new components, you can add your components to the DIYLC project by building your project into a jar and committing it to *library* folder in the DIYLC source control. It should be automatically recognized by the app.
+  # Setup DIYLC project. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from the source control.
+  # New components should be created inside *org.diylc.components* package of *src.library* folder.
+  # When you are done developing and testing the new components, build the *src.library* folder as *library/main.jar*.
+  # Commit new classes to the source control.
+  # Commit the updated library/main.jar back to the source control.
+
+===Creating your own component library===
+
+  # Create a new Java project.
+  # Add *diylc.jar* to the dependencies.
+  # Since it's your own project, you can use whichever package name you like.
+  # When you are done developing and testing the new components, build your project as *library/<myLibraryName>.jar*.
+  # To add your components to the DIYLC project by building your project into a jar and committing it to *library* folder in the DIYLC source control. It should be automatically recognized by the app.
 
 = Details =
 
