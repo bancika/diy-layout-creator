@@ -38,12 +38,4 @@ public @interface ControlPoint {
 	 * @return
 	 */
 	boolean sticky() default true;
-
-	// /**
-	// * If true, the control point is the main control point for the component.
-	// * There cannot be more than one control point for a single component.
-	// *
-	// * @return
-	// */
-	// boolean main() default false;
 }

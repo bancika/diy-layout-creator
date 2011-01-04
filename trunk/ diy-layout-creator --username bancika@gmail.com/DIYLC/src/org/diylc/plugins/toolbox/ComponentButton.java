@@ -28,8 +28,9 @@ class ComponentButton extends JButton {
 		this.plugInPort = plugInPort;
 		this.componentType = componentType;
 
-		setToolTipText("<html><b>" + componentType.getName() + "</b><br><br>"
-				+ componentType.getDescription() + "</html>");
+		setToolTipText("<html><b>" + componentType.getName() + "</b><br>"
+				+ componentType.getDescription() + "<br>Author: " + componentType.getAuthor()
+				+ "</html>");
 		// initializeDnD();
 		addActionListener(new ActionListener() {
 
