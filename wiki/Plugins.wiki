@@ -1,4 +1,4 @@
-#summary Developer guide for creating new plugins to extend functionalities.
+#summary Developer guide for creating new plugins to extend app functionality.
 #labels Featured,Phase-Implementation
 
 = Introduction =
