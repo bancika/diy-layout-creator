@@ -17,7 +17,7 @@
   # When you are done developing and testing the new components, build your project as *library/`<`myLibraryName`>`.jar*.
   # To add your components to the DIYLC project by building your project into a jar and committing it to *library* folder in the DIYLC source control. It should be automatically recognized by the app.
 
-= Details =
+===Component design guidelines===
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
