@@ -1,7 +1,15 @@
 package org.diylc.components;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
 
+import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentName;
@@ -10,10 +18,10 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.utils.Constants;
 
-
 /**
  * Base class for all leaded components such as resistors or capacitors. Has two
- * control points for leads and one control point for the label.
+ * control points and draws leads between them. Also, it positions and draws the
+ * shape of the component as specified by a child class.
  * 
  * @author Branislav Stojkovic
  */
@@ -21,41 +29,96 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 
 	private static final long serialVersionUID = 1L;
 
+	public static Color LEAD_COLOR = Color.black;
+	public static Color LABEL_COLOR = Color.black;
+	public static Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 11);
+
 	protected Size width;
 	protected Size height;
 	protected Point point1 = new Point(0, 0);
 	protected Point point2 = new Point((int) (Constants.GRID * 10), 0);
-	protected Point labelPoint = new Point((int) (Constants.GRID * 5), -(int) Constants.GRID);
-	protected String name = "New Component";
+	protected String componentName = "New Component";
 
 	protected AbstractLeadedDIYComponent() {
 		super();
-		this.width = getDefaultWidth();
-		this.height = getDefaultHeight();
+		try {
+			this.width = getDefaultWidth().clone();
+			this.height = getDefaultHeight().clone();
+		} catch (CloneNotSupportedException e) {
+			// This should never happen because Size supports cloning.
+		}
 	}
 
 	/**
-	 * Returns the default component width.
-	 * 
-	 * @return
+	 * @return default component width.
 	 */
 	protected abstract Size getDefaultWidth();
 
 	/**
-	 * Returns the default component height.
+	 * Returns default component height.
 	 * 
 	 * @return
 	 */
 	protected abstract Size getDefaultHeight();
 
-	@ComponentName
-	@EditableProperty
-	public String getName() {
-		return name;
+	/**
+	 * @return shape that represents component body. Shape should not be
+	 *         transformed and should be referenced to (0, 0).
+	 */
+	protected abstract Shape getComponentShape();
+
+	/**
+	 * @return component body color.
+	 */
+	protected abstract Color getBodyColor();
+
+	/**
+	 * @return component border color.
+	 */
+	protected abstract Color getBorderColor();
+
+	@Override
+	public void draw(Graphics2D g2d, ComponentState componentState) {
+		g2d.setColor(LEAD_COLOR);
+		g2d.setStroke(new BasicStroke(1));
+		double distance = point1.distance(point2);
+		Shape shape = getComponentShape();
+		Rectangle shapeRect = shape.getBounds();
+		double leadLenght = (distance - shapeRect.width) / 2;
+		Double theta;
+		theta = Math.atan2(point2.y - point1.y, point2.x - point1.x);
+		// Draw leads.
+		g2d.drawLine(point1.x, point1.y, (int) (point1.x + leadLenght * Math.cos(theta)),
+				(int) (point1.y + leadLenght * Math.sin(theta)));
+		g2d.drawLine(point2.x, point2.y, (int) (point2.x - leadLenght * Math.cos(theta)),
+				(int) (point2.y - leadLenght * Math.sin(theta)));
+		// Transform graphics to draw the body in the right place and at the
+		// right angle.
+		g2d.translate((point1.x + point2.x - shapeRect.width) / 2,
+				(point1.y + point2.y - shapeRect.height) / 2);
+		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
+		// Draw body.
+		g2d.setColor(getBodyColor());
+		g2d.fill(shape);
+		g2d.setColor(getBorderColor());
+		g2d.draw(shape);
+		// Draw label.
+		g2d.setFont(LABEL_FONT);
+		g2d.setColor(LABEL_COLOR);
+		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
+		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getComponentName(), g2d);
+		g2d.drawString(getComponentName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
+				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	@ComponentName
+	@EditableProperty
+	public String getComponentName() {
+		return componentName;
+	}
+
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
 	}
 
 	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
@@ -74,15 +137,6 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 
 	public void setPoint2(Point point2) {
 		this.point2 = point2;
-	}
-
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
-	public Point getLabelPoint() {
-		return labelPoint;
-	}
-
-	public void setLabelPoint(Point labelPoint) {
-		this.labelPoint = labelPoint;
 	}
 
 	@EditableProperty(defaultable = true)
@@ -107,7 +161,7 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((componentName == null) ? 0 : componentName.hashCode());
 		return result;
 	}
 
@@ -120,10 +174,10 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 		if (getClass() != obj.getClass())
 			return false;
 		AbstractLeadedDIYComponent other = (AbstractLeadedDIYComponent) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (componentName == null) {
+			if (other.componentName != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!componentName.equals(other.componentName))
 			return false;
 		return true;
 	}

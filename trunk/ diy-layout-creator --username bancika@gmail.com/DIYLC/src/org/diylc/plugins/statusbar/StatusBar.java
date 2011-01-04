@@ -33,6 +33,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	private static final long serialVersionUID = 1L;
 
+	public static String UPDATE_URL = "http://www.diy-fever.com/update.xml";
+
 	private JComboBox zoomBox;
 	private UpdateLabel updateLabel;
 	private MemoryBar memoryPanel;
@@ -70,8 +72,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	private UpdateLabel getUpdateLabel() {
 		if (updateLabel == null) {
-			updateLabel = new UpdateLabel(plugInPort.getCurrentVersionNumber(),
-					"http://www.diy-fever.com/update.xml");
+			updateLabel = new UpdateLabel(plugInPort.getCurrentVersionNumber(), UPDATE_URL);
 			// updateLabel.setBorder(BorderFactory.createCompoundBorder(
 			// BorderFactory.createEtchedBorder(), BorderFactory
 			// .createEmptyBorder(2, 4, 2, 4)));

@@ -63,10 +63,11 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	private static final VersionNumber CURRENT_VERSION = new VersionNumber(0, 0, 0);
-	private static final String DEFAULTS_KEY = "defaults";
-	private static final int CONTROL_POINT_SENSITIVITY = 4;
-	private static final int ICON_SIZE = 32;
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(0, 0, 0);
+	public static final String DEFAULTS_KEY = "defaults";
+	public static final int CONTROL_POINT_SENSITIVITY = 4;
+	public static final int ICON_SIZE = 32;
+	public static boolean ENABLE_ANTIALIASING = true;
 
 	private double zoomLevel = 1;
 	private Map<IDIYComponent, Area> componentAreaMap;
@@ -255,7 +256,7 @@ public class Presenter implements IPlugInPort {
 		}
 		G2DWrapper g2dWrapper = new G2DWrapper(g2d);
 
-		if (drawOptions.contains(DrawOption.ANTIALIASING)) {
+		if (drawOptions.contains(DrawOption.ANTIALIASING) && ENABLE_ANTIALIASING) {
 			g2d
 					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 							RenderingHints.VALUE_ANTIALIAS_ON);
@@ -264,7 +265,7 @@ public class Presenter implements IPlugInPort {
 		AffineTransform initialTx = g2d.getTransform();
 		Dimension d = getCanvasDimensions(drawOptions.contains(DrawOption.ZOOM));
 
-		g2dWrapper.setColor(Color.white);
+		g2dWrapper.setColor(Constants.CANVAS_COLOR);
 		g2dWrapper.fillRect(0, 0, d.width, d.height);
 
 		if (drawOptions.contains(DrawOption.GRID)) {
@@ -706,7 +707,7 @@ public class Presenter implements IPlugInPort {
 		// Instantiate the component.
 		IDIYComponent component = componentClass.newInstance();
 
-		// Find the next available name for the component.
+		// Find the next available componentName for the component.
 		int i = 0;
 		boolean exists = true;
 		while (exists) {

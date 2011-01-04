@@ -27,7 +27,6 @@ import org.diylc.plugins.canvas.CanvasPlugin;
 import org.diylc.plugins.clipboard.ClipboardManager;
 import org.diylc.plugins.file.FileManager;
 import org.diylc.plugins.help.HelpManager;
-import org.diylc.plugins.online.OnlineManager;
 import org.diylc.plugins.statusbar.StatusBar;
 import org.diylc.plugins.toolbox.ToolBox;
 import org.diylc.presenter.Presenter;
@@ -65,7 +64,7 @@ public class MainFrame extends JFrame implements IView {
 		presenter.installPlugin(new ToolBox());
 		presenter.installPlugin(new FileManager());
 		presenter.installPlugin(new ClipboardManager());
-		presenter.installPlugin(new OnlineManager());
+//		presenter.installPlugin(new OnlineManager());
 		presenter.installPlugin(new HelpManager());
 
 		presenter.installPlugin(new StatusBar());
