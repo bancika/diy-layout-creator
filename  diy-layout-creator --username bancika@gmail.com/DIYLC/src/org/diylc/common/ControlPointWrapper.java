@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.VisibilityPolicy;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.VisibilityPolicy;
 
 
 /**

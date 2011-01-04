@@ -10,11 +10,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.annotations.BomName;
-import org.diylc.model.annotations.BomValue;
-import org.diylc.model.annotations.ControlPoint;
-import org.diylc.model.annotations.EditableProperty;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.annotations.BomName;
+import org.diylc.core.annotations.BomValue;
+import org.diylc.core.annotations.ControlPoint;
+import org.diylc.core.annotations.EditableProperty;
 
 import com.rits.cloning.Cloner;
 

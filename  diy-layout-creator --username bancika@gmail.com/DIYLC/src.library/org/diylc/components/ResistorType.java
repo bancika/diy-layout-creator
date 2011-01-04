@@ -2,10 +2,10 @@ package org.diylc.components;
 
 import javax.swing.Icon;
 
+import org.diylc.core.ComponentLayer;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.IComponentType;
 import org.diylc.images.IconLoader;
-import org.diylc.model.ComponentLayer;
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.IComponentType;
 
 
 public class ResistorType implements IComponentType {

@@ -21,8 +21,8 @@ import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.IComponentType;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.IComponentType;
 import org.diylc.presenter.ComponentProcessor;
 
 import com.diyfever.gui.MemoryBar;

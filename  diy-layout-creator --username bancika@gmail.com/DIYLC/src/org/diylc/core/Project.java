@@ -1,12 +1,12 @@
-package org.diylc.model;
+package org.diylc.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.diylc.model.annotations.EditableProperty;
-import org.diylc.model.measures.Size;
-import org.diylc.model.measures.SizeUnit;
+import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 
 
 /**

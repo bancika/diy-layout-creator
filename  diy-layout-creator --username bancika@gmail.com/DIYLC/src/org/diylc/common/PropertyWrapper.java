@@ -3,7 +3,7 @@ package org.diylc.common;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.diylc.model.IComponentInstance;
+import org.diylc.core.IComponentInstance;
 
 
 /**

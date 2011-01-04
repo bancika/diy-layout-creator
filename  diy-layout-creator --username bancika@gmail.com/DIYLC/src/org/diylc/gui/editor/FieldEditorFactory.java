@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 
 import org.diylc.common.PropertyWrapper;
-import org.diylc.model.measures.AbstractMeasure;
+import org.diylc.core.measures.AbstractMeasure;
 
 
 public class FieldEditorFactory {

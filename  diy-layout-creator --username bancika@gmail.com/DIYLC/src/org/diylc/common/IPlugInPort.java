@@ -14,10 +14,10 @@ import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 import javax.swing.JPopupMenu.Separator;
 
-import org.diylc.model.ComponentLayer;
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.IComponentType;
-import org.diylc.model.Project;
+import org.diylc.core.ComponentLayer;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.IComponentType;
+import org.diylc.core.Project;
 
 import com.diyfever.gui.simplemq.IMessageListener;
 import com.diyfever.gui.simplemq.MessageDispatcher;

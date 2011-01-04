@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.diylc.components.MockComponentInstance;
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.measures.Capacitance;
-import org.diylc.model.measures.CapacitanceUnit;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.measures.Capacitance;
+import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.plugins.file.BomEntry;
 import org.diylc.plugins.file.BomMaker;
 import org.junit.Test;

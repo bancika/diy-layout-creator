@@ -15,9 +15,9 @@ import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.Project;
 import org.diylc.gui.DialogFactory;
 import org.diylc.images.IconLoader;
-import org.diylc.model.Project;
 
 import com.diyfever.gui.export.DrawingExporter;
 import com.thoughtworks.xstream.XStream;
