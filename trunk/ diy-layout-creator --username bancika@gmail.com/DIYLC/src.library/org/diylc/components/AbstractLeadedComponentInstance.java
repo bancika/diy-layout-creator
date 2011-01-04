@@ -2,12 +2,12 @@ package org.diylc.components;
 
 import java.awt.Point;
 
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.VisibilityPolicy;
-import org.diylc.model.annotations.BomName;
-import org.diylc.model.annotations.ControlPoint;
-import org.diylc.model.annotations.EditableProperty;
-import org.diylc.model.measures.Size;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.BomName;
+import org.diylc.core.annotations.ControlPoint;
+import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.Size;
 import org.diylc.utils.Constants;
 
 

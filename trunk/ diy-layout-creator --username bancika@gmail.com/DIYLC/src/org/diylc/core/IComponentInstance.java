@@ -1,4 +1,4 @@
-package org.diylc.model;
+package org.diylc.core;
 
 import java.awt.Graphics2D;
 import java.io.Serializable;

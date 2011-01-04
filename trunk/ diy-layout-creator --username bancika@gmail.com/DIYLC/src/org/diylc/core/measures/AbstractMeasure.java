@@ -1,4 +1,4 @@
-package org.diylc.model.measures;
+package org.diylc.core.measures;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;

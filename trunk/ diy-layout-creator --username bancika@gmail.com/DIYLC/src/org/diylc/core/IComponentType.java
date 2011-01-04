@@ -1,4 +1,4 @@
-package org.diylc.model;
+package org.diylc.core;
 
 import javax.swing.Icon;
 

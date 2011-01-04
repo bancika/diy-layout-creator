@@ -1,10 +1,10 @@
-package org.diylc.model.annotations;
+package org.diylc.core.annotations;
 
 import java.awt.Point;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.diylc.model.VisibilityPolicy;
+import org.diylc.core.VisibilityPolicy;
 
 
 /**

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.diylc.model.IComponentInstance;
+import org.diylc.core.IComponentInstance;
 
 
 /**

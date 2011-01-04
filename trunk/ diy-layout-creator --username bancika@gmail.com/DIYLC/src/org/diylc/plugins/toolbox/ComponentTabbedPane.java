@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
 import org.diylc.common.IPlugInPort;
-import org.diylc.model.IComponentType;
+import org.diylc.core.IComponentType;
 
 
 class ComponentTabbedPane extends JTabbedPane {

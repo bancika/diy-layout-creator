@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.diylc.model.IComponentInstance;
+import org.diylc.core.IComponentInstance;
 import org.diylc.presenter.ComponentProcessor;
 
 

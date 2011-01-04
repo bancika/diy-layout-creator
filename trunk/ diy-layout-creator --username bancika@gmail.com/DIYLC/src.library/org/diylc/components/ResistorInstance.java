@@ -4,12 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import org.diylc.model.ComponentState;
-import org.diylc.model.annotations.EditableProperty;
-import org.diylc.model.measures.Resistance;
-import org.diylc.model.measures.ResistanceUnit;
-import org.diylc.model.measures.Size;
-import org.diylc.model.measures.SizeUnit;
+import org.diylc.core.ComponentState;
+import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.Resistance;
+import org.diylc.core.measures.ResistanceUnit;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 
 
 public class ResistorInstance extends AbstractLeadedComponentInstance {

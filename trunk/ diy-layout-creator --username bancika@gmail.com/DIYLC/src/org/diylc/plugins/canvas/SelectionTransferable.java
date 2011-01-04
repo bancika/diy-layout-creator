@@ -7,7 +7,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.List;
 
-import org.diylc.model.IComponentInstance;
+import org.diylc.core.IComponentInstance;
 
 
 public class SelectionTransferable implements Transferable {

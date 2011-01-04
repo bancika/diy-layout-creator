@@ -19,9 +19,9 @@ import org.diylc.common.ComponentSelection;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.Project;
 import org.diylc.images.IconLoader;
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.Project;
 
 import com.diyfever.gui.undo.IUndoListener;
 import com.diyfever.gui.undo.UndoHandler;

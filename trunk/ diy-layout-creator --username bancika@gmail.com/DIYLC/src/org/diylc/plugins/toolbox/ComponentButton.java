@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import org.diylc.common.IPlugInPort;
-import org.diylc.model.IComponentType;
+import org.diylc.core.IComponentType;
 
 
 /**

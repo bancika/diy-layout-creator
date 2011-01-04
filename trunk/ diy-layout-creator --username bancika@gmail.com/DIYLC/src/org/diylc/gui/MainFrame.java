@@ -22,7 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import org.diylc.common.BadPositionException;
-import org.diylc.model.Project;
+import org.diylc.core.Project;
 import org.diylc.plugins.canvas.CanvasPlugin;
 import org.diylc.plugins.clipboard.ClipboardManager;
 import org.diylc.plugins.file.FileManager;

@@ -2,8 +2,8 @@ package org.diylc.common;
 
 import java.awt.Rectangle;
 
-import org.diylc.model.IComponentType;
-import org.diylc.model.Project;
+import org.diylc.core.IComponentType;
+import org.diylc.core.Project;
 
 
 /**

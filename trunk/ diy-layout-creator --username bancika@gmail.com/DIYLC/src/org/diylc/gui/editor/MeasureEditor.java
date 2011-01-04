@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import javax.swing.JComboBox;
 
 import org.diylc.common.PropertyWrapper;
-import org.diylc.model.measures.AbstractMeasure;
+import org.diylc.core.measures.AbstractMeasure;
 
 import com.diyfever.gui.DoubleTextField;
 

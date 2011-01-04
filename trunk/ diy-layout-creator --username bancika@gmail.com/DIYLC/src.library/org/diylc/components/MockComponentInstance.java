@@ -4,19 +4,19 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import org.diylc.model.ComponentState;
-import org.diylc.model.IComponentInstance;
-import org.diylc.model.VisibilityPolicy;
-import org.diylc.model.annotations.BomName;
-import org.diylc.model.annotations.BomValue;
-import org.diylc.model.annotations.ControlPoint;
-import org.diylc.model.annotations.EditableProperty;
-import org.diylc.model.measures.Capacitance;
-import org.diylc.model.measures.CapacitanceUnit;
-import org.diylc.model.measures.Resistance;
-import org.diylc.model.measures.ResistanceUnit;
-import org.diylc.model.measures.Size;
-import org.diylc.model.measures.SizeUnit;
+import org.diylc.core.ComponentState;
+import org.diylc.core.IComponentInstance;
+import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.BomName;
+import org.diylc.core.annotations.BomValue;
+import org.diylc.core.annotations.ControlPoint;
+import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.Capacitance;
+import org.diylc.core.measures.CapacitanceUnit;
+import org.diylc.core.measures.Resistance;
+import org.diylc.core.measures.ResistanceUnit;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 
 
 public class MockComponentInstance implements IComponentInstance {
