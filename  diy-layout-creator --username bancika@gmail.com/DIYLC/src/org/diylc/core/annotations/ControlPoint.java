@@ -6,11 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.diylc.core.VisibilityPolicy;
 
-
 /**
  * Annotation for control points. This annotation may be added fields of type
  * {@link Point} only when both getters and setters exist. Annotation is added
- * always on the getter.
+ * always on the getter and it must return {@link Point} values.
  * 
  * @author Branislav Stojkovic
  */

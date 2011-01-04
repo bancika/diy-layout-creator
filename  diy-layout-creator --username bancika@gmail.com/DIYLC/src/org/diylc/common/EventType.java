@@ -3,7 +3,6 @@ package org.diylc.common;
 import java.awt.Rectangle;
 
 import org.diylc.core.Project;
-import org.diylc.presenter.ComponentType;
 
 
 /**

@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
-import org.diylc.presenter.ComponentType;
 
 /**
  * {@link JButton} that displays component type icon and instantiates the

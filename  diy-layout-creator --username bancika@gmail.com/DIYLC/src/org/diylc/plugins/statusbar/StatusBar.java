@@ -17,13 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.diylc.common.BadPositionException;
+import org.diylc.common.ComponentType;
 import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComponentProcessor;
-import org.diylc.presenter.ComponentType;
 
 import com.diyfever.gui.MemoryBar;
 import com.diyfever.gui.miscutils.PercentageListCellRenderer;

@@ -1,4 +1,4 @@
-package org.diylc.presenter;
+package org.diylc.common;
 
 import javax.swing.Icon;
 
