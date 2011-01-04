@@ -1,9 +1,10 @@
 #summary Developer guide for creating new components.
 #labels Featured,Phase-Implementation
 
-= Introduction =
+===Environment setup===
 
-Add your content here.
+  * When adding components to the main component library you need to setup DIYLC project. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from code base.
+  * When creating your own component library, setup a Java project and add *diylc.jar* to it's dependencies.
 
 
 = Details =
