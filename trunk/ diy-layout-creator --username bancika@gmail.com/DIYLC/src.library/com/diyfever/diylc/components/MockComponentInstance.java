@@ -4,19 +4,20 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import com.diyfever.diylc.model.ComponentState;
-import com.diyfever.diylc.model.IComponentInstance;
-import com.diyfever.diylc.model.VisibilityPolicy;
-import com.diyfever.diylc.model.annotations.BomName;
-import com.diyfever.diylc.model.annotations.BomValue;
-import com.diyfever.diylc.model.annotations.ControlPoint;
-import com.diyfever.diylc.model.annotations.EditableProperty;
-import com.diyfever.diylc.model.measures.Capacitance;
-import com.diyfever.diylc.model.measures.CapacitanceUnit;
-import com.diyfever.diylc.model.measures.Resistance;
-import com.diyfever.diylc.model.measures.ResistanceUnit;
-import com.diyfever.diylc.model.measures.Size;
-import com.diyfever.diylc.model.measures.SizeUnit;
+import org.diylc.model.ComponentState;
+import org.diylc.model.IComponentInstance;
+import org.diylc.model.VisibilityPolicy;
+import org.diylc.model.annotations.BomName;
+import org.diylc.model.annotations.BomValue;
+import org.diylc.model.annotations.ControlPoint;
+import org.diylc.model.annotations.EditableProperty;
+import org.diylc.model.measures.Capacitance;
+import org.diylc.model.measures.CapacitanceUnit;
+import org.diylc.model.measures.Resistance;
+import org.diylc.model.measures.ResistanceUnit;
+import org.diylc.model.measures.Size;
+import org.diylc.model.measures.SizeUnit;
+
 
 public class MockComponentInstance implements IComponentInstance {
 
