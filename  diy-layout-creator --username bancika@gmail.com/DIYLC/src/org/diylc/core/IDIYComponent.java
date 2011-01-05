@@ -19,8 +19,8 @@ import org.diylc.core.annotations.EditableProperty;
  * <li>Control point getters need to be annotated with {@link ControlPoint}.</li>
  * <li>Getters for properties editable by users should be annotated with
  * {@link EditableProperty}.</li>
- * <li>Component configuration should be declared using
- * <code>public static</code> fields so they can be set through config file.</li>
+ * <li>Component configuration should be stored int <code>public static</code>
+ * fields so they can be set through config file.</li>
  * </ul>
  * 
  * @author Branislav Stojkovic
@@ -42,8 +42,9 @@ public interface IDIYComponent<T> extends Serializable {
 	 * 
 	 * @param g2d
 	 * @param componentState
+	 * @param project
 	 */
-	void draw(Graphics2D g2d, ComponentState componentState);
+	void draw(Graphics2D g2d, ComponentState componentState, Project project);
 
 	/**
 	 * Draws icon representation of the component.

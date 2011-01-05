@@ -1,13 +1,15 @@
 package org.diylc;
 
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.Properties;
 
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.gui.MainFrame;
+import org.diylc.presenter.Presenter;
 
 import com.diyfever.gui.miscutils.PropertyInjector;
 
@@ -16,6 +18,8 @@ import com.diyfever.gui.miscutils.PropertyInjector;
  * @author Branislav Stojkovic
  */
 public class DIYLCStarter {
+	
+	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
 	/**
 	 * @param args
@@ -26,25 +30,23 @@ public class DIYLCStarter {
 		try {
 			properties.load(url.openStream());
 			PropertyConfigurator.configure(properties);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error("Could not initialize log4j configuration", e);
 		}
 
-		url = DIYLCStarter.class.getResource("config.properties");
+		url = DIYLCStarter.class.getResource("/config.properties");
 		properties = new Properties();
 		try {
-			properties.load(url.openStream());
+			properties.load(new FileInputStream("config.properties"));
 			PropertyInjector.injectProperties(properties);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error("Could not read config.properties file", e);
 		}
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (Exception e) {
+			LOG.error("Could not set Look&Feel", e);
 		}
 
 		MainFrame mainFrame = new MainFrame();

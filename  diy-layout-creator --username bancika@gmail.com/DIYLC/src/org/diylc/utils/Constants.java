@@ -10,8 +10,9 @@ public class Constants {
 
 	public static final float GRID = Toolkit.getDefaultToolkit().getScreenResolution() / 10f;
 
-	public static final Color CANVAS_COLOR = Color.white;
-	public static final Color GRID_COLOR = new Color(240, 240, 240);
+	public static Color CANVAS_COLOR = Color.white;
+	public static Color GRID_COLOR = new Color(240, 240, 240);
+	public static Color CONTROL_POINT_COLOR = Color.blue;
 
 	public static Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 11);
 

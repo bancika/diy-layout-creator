@@ -10,6 +10,7 @@ import java.awt.Shape;
 
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
@@ -76,7 +77,7 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 	protected abstract Color getBorderColor();
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
 		g2d.setColor(LEAD_COLOR);
 		g2d.setStroke(new BasicStroke(1));
 		double distance = point1.distance(point2);
