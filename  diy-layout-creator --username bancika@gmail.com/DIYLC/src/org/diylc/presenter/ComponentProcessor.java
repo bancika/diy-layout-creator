@@ -11,8 +11,6 @@ import org.apache.log4j.Logger;
 import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.annotations.ComponentName;
-import org.diylc.core.annotations.ComponentValue;
 import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 
@@ -173,69 +171,5 @@ public class ComponentProcessor {
 			// }
 		}
 		return properties;
-	}
-
-	/**
-	 * Finds the method annotated with {@link ComponentName} annotations and
-	 * calls it to retrieve component name.
-	 * 
-	 * @param component
-	 * @return
-	 */
-	public String extractComponentName(IDIYComponent component) {
-		String name = null;
-		for (Method method : component.getClass().getMethods()) {
-			if (method.isAnnotationPresent(ComponentName.class)) {
-				try {
-					name = method.invoke(component).toString();
-				} catch (Exception e) {
-					name = null;
-				}
-			}
-		}
-		return name;
-	}
-
-	/**
-	 * Finds the method annotated with {@link ComponentName} and it's matching
-	 * setter and calls the setter to update the component name.
-	 * 
-	 * @param component
-	 * @param newName
-	 */
-	public void writeComponentName(IDIYComponent component, String newName) {
-		for (Method method : component.getClass().getMethods()) {
-			if (method.isAnnotationPresent(ComponentName.class)) {
-				try {
-					Method setter = component.getClass().getMethod(
-							method.getName().replaceFirst("get", "set"), String.class);
-					setter.invoke(component, newName);
-				} catch (Exception e) {
-					LOG.warn("Could not update component name on a component of type "
-							+ component.getClass().getName());
-				}
-			}
-		}
-	}
-
-	/**
-	 * Finds the method annotated with {@link ComponentValue} annotations and
-	 * calls it to retrieve component value.
-	 * 
-	 * @param component
-	 * @return
-	 */
-	public String extractComponentValue(IDIYComponent component) {
-		String value = null;
-		for (Method method : component.getClass().getMethods()) {
-			if (method.isAnnotationPresent(ComponentValue.class)) {
-				try {
-					value = method.invoke(component).toString();
-				} catch (Exception e) {
-					value = null;
-				}
-			}
-		}
-		return value;
 	}
 }

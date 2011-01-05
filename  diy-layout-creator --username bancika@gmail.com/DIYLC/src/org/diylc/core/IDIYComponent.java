@@ -4,8 +4,6 @@ import java.awt.Graphics2D;
 import java.io.Serializable;
 
 import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.annotations.ComponentName;
-import org.diylc.core.annotations.ComponentValue;
 import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 
@@ -18,8 +16,6 @@ import org.diylc.core.annotations.EditableProperty;
  * <ul>
  * <li>Must have an empty constructor.</li>
  * <li>Class should be annotated with {@link ComponentDescriptor}.</li>
- * <li>Exactly one getter should be annotated with {@link ComponentName}.</li>
- * <li>Exactly one getter should be annotated with {@link ComponentValue}.</li>
  * <li>Control point getters need to be annotated with {@link ControlPoint}.</li>
  * <li>Getters for properties editable by users should be annotated with
  * {@link EditableProperty}.</li>
@@ -28,8 +24,18 @@ import org.diylc.core.annotations.EditableProperty;
  * </ul>
  * 
  * @author Branislav Stojkovic
+ * 
+ * @param <T>
+ *            type of component values, e.g. Resistance for resistors or String
+ *            for transistors.
  */
-public interface IDIYComponent extends Serializable {
+public interface IDIYComponent<T> extends Serializable {
+
+	String getName();
+
+	void setName(String name);
+
+	T getValue();
 
 	/**
 	 * Draws the component onto the {@link Graphics2D}.

@@ -23,8 +23,8 @@ public class ComparatorFactory {
 
 				@Override
 				public int compare(IDIYComponent o1, IDIYComponent o2) {
-					String name1 = ComponentProcessor.getInstance().extractComponentName(o1);
-					String name2 = ComponentProcessor.getInstance().extractComponentName(o2);
+					String name1 = o1.getName();
+					String name2 = o2.getName();
 					if (name1 == null || name2 == null) {
 						return 0;
 					}

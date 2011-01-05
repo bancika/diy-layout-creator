@@ -6,7 +6,6 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.annotations.ComponentValue;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
@@ -14,7 +13,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Axial Film Capacitor", author = "bancika", category = "Passive", instanceNamePrefix = "C", desciption = "test")
-public class AxialFilmCapacitor extends AbstractLeadedDIYComponent {
+public class AxialFilmCapacitor extends AbstractLeadedDIYComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +28,6 @@ public class AxialFilmCapacitor extends AbstractLeadedDIYComponent {
 		super();
 	}
 
-	@ComponentValue
 	@EditableProperty
 	public Capacitance getValue() {
 		return value;
