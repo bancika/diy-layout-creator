@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.common.Orientation;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -27,6 +28,7 @@ public class DIL_IC implements IDIYComponent<String> {
 	private Point point2 = new Point((int) (Constants.GRID) * 4, (int) (Constants.GRID) * 5);
 	private String name = "New Component";
 	private String value = "";
+	private Orientation orientation = Orientation.DEFAULT;
 
 	@EditableProperty
 	public String getName() {
@@ -46,16 +48,25 @@ public class DIL_IC implements IDIYComponent<String> {
 		this.value = value;
 	}
 
+	@EditableProperty
+	public Orientation getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;
+	}
+
 	@Override
 	public int getControlPointCount() {
 		return 2;
 	}
-	
+
 	@Override
 	public Point getControlPoint(int index) {
 		return index == 0 ? point1 : point2;
 	}
-	
+
 	@Override
 	public void setControlPoint(Point point, int index) {
 		if (index == 0) {

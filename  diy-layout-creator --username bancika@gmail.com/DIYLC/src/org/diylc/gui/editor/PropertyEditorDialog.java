@@ -34,7 +34,7 @@ public class PropertyEditorDialog extends ButtonDialog {
 	private Set<PropertyWrapper> defaultedProperties;
 
 	public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties) {
-		super(owner, "Editor", new String[] { ButtonDialog.OK, ButtonDialog.CANCEL });
+		super(owner, "Component Editor", new String[] { ButtonDialog.OK, ButtonDialog.CANCEL });
 
 		LOG.debug("Creating property editor for: " + properties);
 
