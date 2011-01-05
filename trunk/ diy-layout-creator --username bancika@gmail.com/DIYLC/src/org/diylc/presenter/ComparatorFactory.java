@@ -8,7 +8,7 @@ public class ComparatorFactory {
 
 	private static ComparatorFactory instance;
 
-	private Comparator<IDIYComponent> componentNameComparator;
+	private Comparator<IDIYComponent<?>> componentNameComparator;
 
 	public static ComparatorFactory getInstance() {
 		if (instance == null) {
@@ -17,12 +17,12 @@ public class ComparatorFactory {
 		return instance;
 	}
 
-	public Comparator<IDIYComponent> getComponentNameComparator() {
+	public Comparator<IDIYComponent<?>> getComponentNameComparator() {
 		if (componentNameComparator == null) {
-			componentNameComparator = new Comparator<IDIYComponent>() {
+			componentNameComparator = new Comparator<IDIYComponent<?>>() {
 
 				@Override
-				public int compare(IDIYComponent o1, IDIYComponent o2) {
+				public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
 					String name1 = o1.getName();
 					String name2 = o2.getName();
 					if (name1 == null || name2 == null) {

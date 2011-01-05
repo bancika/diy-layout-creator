@@ -1,5 +1,6 @@
 package org.diylc.plugins.toolbox;
 
+import java.awt.Insets;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,8 @@ class ComponentButton extends JButton {
 
 	private static final long serialVersionUID = 1L;
 
+	public static int MARGIN = 2;
+
 	private IPlugInPort plugInPort;
 	private ComponentType componentType;
 
@@ -27,6 +30,8 @@ class ComponentButton extends JButton {
 		super(componentType.getIcon());
 		this.plugInPort = plugInPort;
 		this.componentType = componentType;
+
+		setMargin(new Insets(MARGIN, MARGIN, MARGIN, MARGIN));
 
 		setToolTipText("<html><b>" + componentType.getName() + "</b><br>"
 				+ componentType.getDescription() + "<br>Author: " + componentType.getAuthor()

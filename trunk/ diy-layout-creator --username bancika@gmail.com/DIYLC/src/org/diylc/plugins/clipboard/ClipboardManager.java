@@ -163,7 +163,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Paste triggered");
 			try {
-				List<IDIYComponent> components = (List<IDIYComponent>) clipboard
+				List<IDIYComponent<?>> components = (List<IDIYComponent<?>>) clipboard
 						.getData(ComponentSelection.listFlavor);
 				plugInPort.addComponents(cloner.deepClone(components), null);
 			} catch (Exception ex) {
