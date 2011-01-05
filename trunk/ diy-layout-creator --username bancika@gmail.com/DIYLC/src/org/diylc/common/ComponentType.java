@@ -20,9 +20,11 @@ public class ComponentType {
 	private String namePrefix;
 	private String author;
 	private Icon icon;
+	@SuppressWarnings("unchecked")
 	private Class<? extends IDIYComponent> instanceClass;
 	private ComponentLayer layer;
 
+	@SuppressWarnings("unchecked")
 	public ComponentType(String name, String description, String category, String namePrefix,
 			String author, Icon icon, Class<? extends IDIYComponent> instanceClass,
 			ComponentLayer layer) {
@@ -61,6 +63,7 @@ public class ComponentType {
 		return icon;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Class<? extends IDIYComponent> getInstanceClass() {
 		return instanceClass;
 	}
