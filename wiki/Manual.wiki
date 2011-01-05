@@ -1,6 +1,10 @@
 #summary End user manual for non-developers.
 #labels Featured,Phase-Deploy
 
+===Moving components===
+
+The easiest way to move a component across the canvas is to drag it by clicking on it's body and moving the mouse to the desired location. When mouse cursor is over a component, it will change to "hand pointer" and status bar will read name of the component that can be dragged. By default, moving a component may cause other components that are stuck to it to move together with it. Hold CTRL key to prevent that.
+
 ===Control points===
 
 A component may have one or more control points. Control points have dual purpose:
