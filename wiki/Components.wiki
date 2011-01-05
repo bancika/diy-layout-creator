@@ -1,6 +1,11 @@
 #summary Developer guide for creating new components.
 #labels Featured,Phase-Implementation
 
+===Prerequisites===
+  # JDK or JRE 1.6.0_10 or newer installed.
+  # Some Java IDE, preferably [http://www.eclipse.org/ Eclipse].
+  # Knowledge of Java language, [http://java.sun.com/j2se/1.5/pdf/generics-tutorial.pdf generics], [http://download.oracle.com/javase/tutorial/java/javaOO/annotations.html annotations] and [http://download.oracle.com/javase/tutorial/2d/overview/index.html Graphics2D].
+
 ===Adding to the main library===
 
   # Setup DIYLC project. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from the source control.
