@@ -12,9 +12,11 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "DIL IC", author = "bancika", category = "Semiconductors", instanceNamePrefix = "IC", desciption = "test")
+@ComponentDescriptor(name = "DIL IC", author = "bancika", category = "Semiconductors", instanceNamePrefix = "IC", desciption = "test", stretchable = false)
 public class DIL_IC implements IDIYComponent<String> {
 
 	private static final long serialVersionUID = 1L;
@@ -24,11 +26,17 @@ public class DIL_IC implements IDIYComponent<String> {
 	public static Color LABEL_COLOR = Color.white;
 	public static int EDGE_RADIUS = 6;
 
-	private Point point1 = new Point(0, 0);
-	private Point point2 = new Point((int) (Constants.GRID) * 4, (int) (Constants.GRID) * 5);
 	private String name = "New Component";
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
+	private PinCount pinCount = PinCount._8;
+	private Size rowSpacing = new Size(0.3d, SizeUnit.in);
+	private Point[] controlPoints = new Point[] { new Point(0, 0),
+			new Point(0, (int) Constants.GRID), new Point(0, (int) (2 * Constants.GRID)),
+			new Point(0, (int) (3 * Constants.GRID)), new Point((int) (3 * Constants.GRID), 0),
+			new Point((int) (3 * Constants.GRID), (int) Constants.GRID),
+			new Point((int) (3 * Constants.GRID), (int) (2 * Constants.GRID)),
+			new Point((int) (3 * Constants.GRID), (int) (3 * Constants.GRID)) };
 
 	@EditableProperty
 	public String getName() {
@@ -57,43 +65,105 @@ public class DIL_IC implements IDIYComponent<String> {
 		this.orientation = orientation;
 	}
 
+	@EditableProperty(name = "Pins")
+	public PinCount getPinCount() {
+		return pinCount;
+	}
+
+	public void setPinCount(PinCount pinCount) {
+		this.pinCount = pinCount;
+		updateControlPoints();
+	}
+
+	@EditableProperty(name = "Row spacing")
+	public Size getRowSpacing() {
+		return rowSpacing;
+	}
+
+	public void setRowSpacing(Size rowSpacing) {
+		this.rowSpacing = rowSpacing;
+		updateControlPoints();
+	}
+
 	@Override
 	public int getControlPointCount() {
-		return 2;
+		return controlPoints.length;
 	}
 
 	@Override
 	public Point getControlPoint(int index) {
-		return index == 0 ? point1 : point2;
+		return controlPoints[index];
 	}
 
 	@Override
 	public void setControlPoint(Point point, int index) {
-		if (index == 0) {
-			point1.setLocation(point);
-		} else {
-			point2.setLocation(point);
-		}
+		controlPoints[index].setLocation(point);
 	}
 
-	public void setPoint2(Point point2) {
-		this.point2 = point2;
+	private void updateControlPoints() {
+		Point firstPoint = controlPoints[0];
+		controlPoints = new Point[pinCount.getValue()];
+		controlPoints[0] = firstPoint;
+		int dx1;
+		int dy1;
+		int dx2;
+		int dy2;
+		for (int i = 0; i < pinCount.getValue() / 2; i++) {
+			switch (orientation) {
+			case DEFAULT:
+				dx1 = 0;
+				dy1 = (int) (i * Constants.GRID);
+				dx2 = rowSpacing.convertToPixels();
+				dy2 = (int) (i * Constants.GRID);
+				break;
+			case _90:
+				dx1 = (int) (-i * Constants.GRID);
+				dy1 = 0;
+				dx2 = (int) (-i * Constants.GRID);
+				dy2 = rowSpacing.convertToPixels();
+				break;
+			case _180:
+				dx1 = 0;
+				dy1 = (int) (-i * Constants.GRID);
+				dx2 = -rowSpacing.convertToPixels();
+				dy2 = (int) (-i * Constants.GRID);
+				break;
+			case _270:
+				dx1 = (int) (i * Constants.GRID);
+				dy1 = 0;
+				dx2 = (int) (i * Constants.GRID);
+				dy2 = rowSpacing.convertToPixels();
+				break;
+			default:
+				throw new RuntimeException("Unexpected orientation: " + orientation);
+			}
+			controlPoints[i] = new Point(firstPoint.x + dx1, firstPoint.y + dy1);
+			controlPoints[i + pinCount.getValue() / 2] = new Point(firstPoint.x + dx2, firstPoint.y
+					+ dy2);
+		}
 	}
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
-		int width = ((int) (Math.abs(point1.x - point2.x) / Constants.GRID));
-		if (width % 2 == 1) {
-			width--;
+		int x = controlPoints[0].x;
+		int y = controlPoints[0].y;
+		int width;
+		int height;
+		if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
+			width = rowSpacing.convertToPixels();
+			height = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+			y -= (int) (Constants.GRID / 2);
+		} else {
+			width = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+			height = rowSpacing.convertToPixels();
+			x -= (int) (Constants.GRID / 2);
 		}
-		width = (int) (width * Constants.GRID);
-		int height = ((int) (Math.abs(point1.y - point2.y) / Constants.GRID));
-		if (height % 2 == 1) {
-			height--;
+		if (orientation == Orientation._90) {
+			x -= width - Constants.GRID;
+		} else if (orientation == Orientation._180) {
+			x -= rowSpacing.convertToPixels();
+			y -= height - Constants.GRID;
 		}
-		height = (int) (height * Constants.GRID);
-		int x = (point1.x + point2.x - width) / 2;
-		int y = (point1.y + point2.y - height) / 2;
 		if (componentState != ComponentState.DRAGGING) {
 			g2d.setColor(BODY_COLOR);
 			g2d.fillRoundRect(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
@@ -116,5 +186,19 @@ public class DIL_IC implements IDIYComponent<String> {
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.drawString("IC", 10, 10);
+	}
+
+	static enum PinCount {
+
+		_4, _8, _10, _12, _14, _16, _24, _32;
+
+		@Override
+		public String toString() {
+			return name().replace("_", "");
+		}
+
+		public int getValue() {
+			return Integer.parseInt(toString());
+		}
 	}
 }
