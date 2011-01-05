@@ -8,7 +8,7 @@ User interface can be separated into 4 major components:
   # *Canvas* is used as a [http://en.wikipedia.org/wiki/WYSIWYG WYSIWYG] editor for the project.
   # *Toolbox* lists all available components and allows you to pick the one you want to add.
   # *Main menu* offers file operations, such as saving, loading and exporting, clipboard operations, etc.
-  # *Status bar*: shows context related information, update information and memory consumption.
+  # *Status bar*: shows context related information, zoom control, update information and memory consumption.
 
 ===Adding components===
 
@@ -39,5 +39,6 @@ A component may have one or more control points. Control points have dual purpos
 Status bar contains three different features:
 
   * *Information bar* shows context related information and guidance through the app.
+  * *Zoom control* allows you to zoom in or out.
   * *Auto-update* notification. When the bulb is on, there are updates available. Click on it for more information.
   * *Memory bar* is the blue-ish icon on the right side that shows the amount of memory occupied by the application. Move the mouse over it to see more details or click on it to try to cleanup as much memory as possible.
