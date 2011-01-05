@@ -19,7 +19,6 @@ import javax.swing.SwingUtilities;
 
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ComponentType;
-import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -166,7 +165,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 			break;
 		case AVAILABLE_CTRL_POINTS_CHANGED:
 			componentsUnderCursor = new ArrayList<IDIYComponent<?>>(
-					((Map<IDIYComponent<?>, ControlPointWrapper>) params[0]).keySet());
+					((Map<IDIYComponent<?>, Integer>) params[0]).keySet());
 			Collections.sort(componentsUnderCursor, ComparatorFactory.getInstance()
 					.getComponentNameComparator());
 			refreshStatusText();

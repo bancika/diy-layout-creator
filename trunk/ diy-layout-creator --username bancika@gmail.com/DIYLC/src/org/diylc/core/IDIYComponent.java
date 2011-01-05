@@ -1,10 +1,10 @@
 package org.diylc.core;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.io.Serializable;
 
 import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 
 /**
@@ -16,7 +16,6 @@ import org.diylc.core.annotations.EditableProperty;
  * <ul>
  * <li>Must have an empty constructor.</li>
  * <li>Class should be annotated with {@link ComponentDescriptor}.</li>
- * <li>Control point getters need to be annotated with {@link ControlPoint}.</li>
  * <li>Getters for properties editable by users should be annotated with
  * {@link EditableProperty}.</li>
  * <li>Component configuration should be stored int <code>public static</code>
@@ -36,6 +35,12 @@ public interface IDIYComponent<T> extends Serializable {
 	void setName(String name);
 
 	T getValue();
+	
+	int getControlPointCount();
+	
+	Point getControlPoint(int index);
+	
+	void setControlPoint(Point point, int index);
 
 	/**
 	 * Draws the component onto the {@link Graphics2D}.

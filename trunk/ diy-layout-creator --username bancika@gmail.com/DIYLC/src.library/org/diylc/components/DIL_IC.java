@@ -9,9 +9,7 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.utils.Constants;
 
@@ -48,18 +46,23 @@ public class DIL_IC implements IDIYComponent<String> {
 		this.value = value;
 	}
 
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
-	public Point getPoint1() {
-		return point1;
+	@Override
+	public int getControlPointCount() {
+		return 2;
 	}
-
-	public void setPoint1(Point point1) {
-		this.point1 = point1;
+	
+	@Override
+	public Point getControlPoint(int index) {
+		return index == 0 ? point1 : point2;
 	}
-
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
-	public Point getPoint2() {
-		return point2;
+	
+	@Override
+	public void setControlPoint(Point point, int index) {
+		if (index == 0) {
+			point1.setLocation(point);
+		} else {
+			point2.setLocation(point);
+		}
 	}
 
 	public void setPoint2(Point point2) {

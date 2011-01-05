@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -33,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ComponentSelection;
 import org.diylc.common.ComponentType;
-import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -43,7 +41,6 @@ import org.diylc.core.ComponentLayer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.gui.IView;
 import org.diylc.utils.Constants;
@@ -79,7 +76,7 @@ public class Presenter implements IPlugInPort {
 	private ComponentSelection selectedComponents;
 	// List of components that have at least one of their control points
 	// under the last recorded mouse position.
-	private Map<IDIYComponent<?>, ControlPointWrapper> componentControlPointMap;
+	private Map<IDIYComponent<?>, Integer> componentControlPointMap;
 
 	private Cloner cloner;
 
@@ -322,16 +319,13 @@ public class Presenter implements IPlugInPort {
 
 				// Draw control points
 				if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
-					List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
-							.extractControlPoints(component.getClass());
-					for (ControlPointWrapper controlPoint : controlPoints) {
+					for (int i = 0; i < component.getControlPointCount(); i++) {
+						Point controlPoint = component.getControlPoint(i);
 						try {
-							controlPoint.readFrom(component);
-							if (shouldShowControlPoint(controlPoint, component)) {
+							if (shouldShowControlPointsFor(component)) {
 								g2d.setColor(Constants.CONTROL_POINT_COLOR);
 								g2d.setStroke(new BasicStroke(2));
-								g2d.drawOval(controlPoint.getValue().x - 2,
-										controlPoint.getValue().y - 2, 4, 4);
+								g2d.drawOval(controlPoint.x - 2, controlPoint.y - 2, 4, 4);
 								// g2d.fillOval(point.getValue().x - 2, point
 								// .getValue().y - 2, 5, 5);
 							}
@@ -439,17 +433,15 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
-		Map<IDIYComponent<?>, ControlPointWrapper> components = new HashMap<IDIYComponent<?>, ControlPointWrapper>();
+		Map<IDIYComponent<?>, Integer> components = new HashMap<IDIYComponent<?>, Integer>();
 		Point scaledPoint = scalePoint(point);
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
-			List<ControlPointWrapper> currentPoints = ComponentProcessor.getInstance()
-					.extractControlPoints(component.getClass());
-			for (ControlPointWrapper controlPoint : currentPoints) {
-				if (shouldShowControlPoint(controlPoint, component)) {
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				Point controlPoint = component.getControlPoint(i);
+				if (shouldShowControlPointsFor(component)) {
 					try {
-						controlPoint.readFrom(component);
-						if (scaledPoint.distance(controlPoint.getValue()) < CONTROL_POINT_SENSITIVITY) {
-							components.put(component, controlPoint);
+						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SENSITIVITY) {
+							components.put(component, i);
 							break;
 						}
 					} catch (Exception e) {
@@ -525,37 +517,21 @@ public class Presenter implements IPlugInPort {
 		if (!componentControlPointMap.isEmpty()) {
 			// We're dragging control point(s).
 			IDIYComponent<?> firstComponent = componentControlPointMap.keySet().iterator().next();
-			ControlPointWrapper controlPoint = componentControlPointMap.get(firstComponent);
+			Point controlPoint = firstComponent.getControlPoint(componentControlPointMap
+					.get(firstComponent));
 			if (controlPoint == null) {
 				LOG.warn("Control point not found in the map!");
 			}
-			// Re-read the value just in case.
-			try {
-				controlPoint.readFrom(firstComponent);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			int x = (int) (Math
-					.round((controlPoint.getValue().x + scaledPoint.x - previousDragPoint.x)
-							/ Constants.GRID) * Constants.GRID);
-			int y = (int) (Math
-					.round((controlPoint.getValue().y + scaledPoint.y - previousDragPoint.y)
-							/ Constants.GRID) * Constants.GRID);
+			int x = (int) (Math.round((controlPoint.x + scaledPoint.x - previousDragPoint.x)
+					/ Constants.GRID) * Constants.GRID);
+			int y = (int) (Math.round((controlPoint.y + scaledPoint.y - previousDragPoint.y)
+					/ Constants.GRID) * Constants.GRID);
 			previousDragPoint.setLocation(x, y);
 
-			for (Entry<IDIYComponent<?>, ControlPointWrapper> entry : componentControlPointMap
-					.entrySet()) {
-				try {
-					controlPoint = entry.getValue();
-					IDIYComponent<?> component = entry.getKey();
-					controlPoint.readFrom(component);
-					if (controlPoint.isEditable()) {
-						controlPoint.getValue().setLocation(x, y);
-					}
-					controlPoint.writeTo(component);
-				} catch (Exception e) {
-
-				}
+			// Update all points.
+			for (Map.Entry<IDIYComponent<?>, Integer> entry : componentControlPointMap.entrySet()) {
+				Point p = new Point(x, y);
+				entry.getKey().setControlPoint(p, entry.getValue());
 			}
 			// dragStartPoint = point;
 		} else if (selectedComponents.isEmpty()) {
@@ -616,26 +592,18 @@ public class Presenter implements IPlugInPort {
 		int dy = (int) (Math.round((toPoint.y - fromPoint.y) / zoomLevel / Constants.GRID) * Constants.GRID);
 		fromPoint.translate(dx, dy);
 		for (IDIYComponent<?> component : selectedComponents) {
-			List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
-					.extractControlPoints(component.getClass());
-			for (ControlPointWrapper controlPoint : controlPoints) {
-				try {
-					controlPoint.readFrom(component);
-					if (controlPoint.isEditable()) {
-						translateControlPoint(controlPoint, dx, dy);
-					}
-					controlPoint.writeTo(component);
-				} catch (Exception e) {
-					LOG.error("Could not translate control points: " + e.getMessage());
-				}
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				Point controlPoint = component.getControlPoint(i);
+				translateControlPoint(controlPoint, dx, dy);
+				component.setControlPoint(controlPoint, i);
 			}
 		}
 	}
 
-	private void translateControlPoint(ControlPointWrapper controlPoint, int dx, int dy) {
-		int x = controlPoint.getValue().x + dx;
-		int y = controlPoint.getValue().y + dy;
-		controlPoint.getValue().setLocation(x, y);
+	private void translateControlPoint(Point controlPoint, int dx, int dy) {
+		int x = controlPoint.x + dx;
+		int y = controlPoint.y + dy;
+		controlPoint.setLocation(x, y);
 	}
 
 	@Override
@@ -727,19 +695,16 @@ public class Presenter implements IPlugInPort {
 		// Add it to the project.
 		currentProject.getComponents().add(component);
 
-		// Extract control points.
-		List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
-				.extractControlPoints(componentClass);
 		// Translate them to the desired location.
 		if (point != null) {
-			for (ControlPointWrapper controlPoint : controlPoints) {
-				controlPoint.readFrom(component);
-				int x = controlPoint.getValue().x + point.x;
-				int y = controlPoint.getValue().y + point.y;
+			for (int j = 0; j < component.getControlPointCount(); j++) {
+				Point controlPoint = component.getControlPoint(j);
+				int x = controlPoint.x + point.x;
+				int y = controlPoint.y + point.y;
 				x = (int) (Math.round(x / Constants.GRID) * Constants.GRID);
 				y = (int) (Math.round(y / Constants.GRID) * Constants.GRID);
-				controlPoint.getValue().setLocation(x, y);
-				controlPoint.writeTo(component);
+				controlPoint.setLocation(x, y);
+				component.setControlPoint(controlPoint, j);
 			}
 		}
 
@@ -814,9 +779,13 @@ public class Presenter implements IPlugInPort {
 				(int) (point.y / zoomLevel));
 	}
 
-	private boolean shouldShowControlPoint(ControlPointWrapper controlPoint, IDIYComponent<?> component) {
-		return controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.ALWAYS)
-				|| ((controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.WHEN_SELECTED)) && (getSelectedComponents()
-						.contains(component)));
+	private boolean shouldShowControlPointsFor(IDIYComponent<?> component) {
+		return selectedComponents.contains(component);
+		// return
+		// controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.ALWAYS)
+		// ||
+		// ((controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.WHEN_SELECTED))
+		// && (getSelectedComponents()
+		// .contains(component)));
 	}
 }

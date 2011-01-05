@@ -7,9 +7,7 @@ import java.awt.Point;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
@@ -19,7 +17,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Mock", author = "bancika", category = "Sample", instanceNamePrefix = "M", desciption = "test")
-public class MockDIYComponent implements IDIYComponent {
+public class MockDIYComponent implements IDIYComponent<Object> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,8 +29,8 @@ public class MockDIYComponent implements IDIYComponent {
 	private Point leftTopCorner = new Point(0, 0);
 	private String name = "something";
 
-	public MockDIYComponent(String testField, Capacitance c, Resistance r, Size s,
-			Color color, Point leftTopCorner) {
+	public MockDIYComponent(String testField, Capacitance c, Resistance r, Size s, Color color,
+			Point leftTopCorner) {
 		super();
 		this.testField = testField;
 		this.c = c;
@@ -55,13 +53,19 @@ public class MockDIYComponent implements IDIYComponent {
 		this.name = name;
 	}
 
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
-	public Point getLeftTopCorner() {
+	@Override
+	public int getControlPointCount() {
+		return 1;
+	}
+
+	@Override
+	public Point getControlPoint(int index) {
 		return leftTopCorner;
 	}
 
-	public void setLeftTopCorner(Point leftTopCorner) {
-		this.leftTopCorner = leftTopCorner;
+	@Override
+	public void setControlPoint(Point point, int index) {
+		leftTopCorner.setLocation(point);
 	}
 
 	@EditableProperty(name = "Test Field")
