@@ -10,6 +10,14 @@ User interface can be separated into 4 major components:
   # *Main menu*: offers file operations, such as saving, loading and exporting, clipboard operations, etc.
   # *Status bar*: shows context related information, update information (when light bulb is ON it means there are available updates) and memory consumption bar (clicking on it will free as much memory as possible).
 
+===Adding components===
+
+To add a component to your project follow these steps:
+
+  * Locate the component in the toolbox. Components are categorized into several tabs, so make sure you're looking into the right one.
+  * Click on the button that shows the desired component. Note that text in the status bar changes to reflect this action.
+  * Click on the desired location on the canvas to create the component.
+
 ===Moving components===
 
 The easiest way to move a component across the canvas is to drag it by clicking on it's body and moving the mouse to the desired location. When mouse cursor is over a component, it will change to "hand pointer" and status bar will read name of the component that can be dragged. By default, moving a component may cause other components that are stuck to it to move together with it. Hold CTRL key to prevent that.
