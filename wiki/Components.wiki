@@ -2,13 +2,15 @@
 #labels Featured,Phase-Implementation
 
 ===Prerequisites===
+
   # JDK or JRE 1.6.0_10 or newer installed.
   # Some Java IDE, preferably [http://www.eclipse.org/ Eclipse].
-  # Knowledge of Java language, [http://java.sun.com/j2se/1.5/pdf/generics-tutorial.pdf generics], [http://download.oracle.com/javase/tutorial/java/javaOO/annotations.html annotations] and [http://download.oracle.com/javase/tutorial/2d/overview/index.html Graphics2D].
+  # SVN client, [http://subclipse.tigris.org/ Subclipse] is recommended if you're using Eclipse. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from the source control.
+  # Decent knowledge of Java language, in specific [http://java.sun.com/j2se/1.5/pdf/generics-tutorial.pdf generics], [http://download.oracle.com/javase/tutorial/java/javaOO/annotations.html annotations] and [http://download.oracle.com/javase/tutorial/2d/overview/index.html Graphics2D].
 
 ===Adding to the main library===
 
-  # Setup DIYLC project. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from the source control.
+  # Setup DIYLC project from the SVN.
   # New components should be created inside *org.diylc.components* package of *src.library* folder.
   # When you are done developing and testing the new components, build the *src.library* folder as *library/main.jar*.
   # Commit new classes to the source control.
