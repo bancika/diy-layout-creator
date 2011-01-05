@@ -1,4 +1,4 @@
-#summary Application user manual for non-developers
+#summary User manual for non-developers.
 #labels Featured,Phase-Deploy
 
 = Introduction =
