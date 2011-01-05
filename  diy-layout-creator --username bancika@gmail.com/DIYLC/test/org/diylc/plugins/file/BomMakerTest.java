@@ -18,7 +18,7 @@ public class BomMakerTest {
 
 	@Test
 	public void testCreateBom() {
-		List<IDIYComponent> components = new ArrayList<IDIYComponent>();
+		List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
 		MockDIYComponent c1 = new MockDIYComponent();
 		c1.setC(new Capacitance(3d, CapacitanceUnit.pF));
 		components.add(c1);

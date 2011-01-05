@@ -29,10 +29,10 @@ public class Project implements Serializable {
 	private String description;
 	private Size width;
 	private Size height;
-	private List<IDIYComponent> components;
+	private List<IDIYComponent<?>> components;
 
 	public Project() {
-		components = new ArrayList<IDIYComponent>();
+		components = new ArrayList<IDIYComponent<?>>();
 		title = DEFAULT_TITLE;
 		author = System.getProperty("user.name");
 		width = DEFAULT_WIDTH;
@@ -40,7 +40,7 @@ public class Project implements Serializable {
 	}
 
 	public Project(String title, String author, String description, Size width, Size height,
-			List<IDIYComponent> components) {
+			List<IDIYComponent<?>> components) {
 		super();
 		this.title = title;
 		this.author = author;
@@ -95,7 +95,7 @@ public class Project implements Serializable {
 		this.height = height;
 	}
 
-	public List<IDIYComponent> getComponents() {
+	public List<IDIYComponent<?>> getComponents() {
 		return components;
 	}
 

@@ -71,7 +71,7 @@ public class Presenter implements IPlugInPort {
 	public static boolean ENABLE_ANTIALIASING = true;
 
 	private double zoomLevel = 1;
-	private Map<IDIYComponent, Area> componentAreaMap;
+	private Map<IDIYComponent<?>, Area> componentAreaMap;
 	private Project currentProject;
 	private Map<String, List<ComponentType>> componentTypes;
 	private List<IPlugIn> plugIns;
@@ -79,7 +79,7 @@ public class Presenter implements IPlugInPort {
 	private ComponentSelection selectedComponents;
 	// List of components that have at least one of their control points
 	// under the last recorded mouse position.
-	private Map<IDIYComponent, ControlPointWrapper> componentControlPointMap;
+	private Map<IDIYComponent<?>, ControlPointWrapper> componentControlPointMap;
 
 	private Cloner cloner;
 
@@ -104,7 +104,7 @@ public class Presenter implements IPlugInPort {
 	public Presenter(IView view) {
 		super();
 		this.view = view;
-		componentAreaMap = new HashMap<IDIYComponent, Area>();
+		componentAreaMap = new HashMap<IDIYComponent<?>, Area>();
 		plugIns = new ArrayList<IPlugIn>();
 		messageDispatcher = new MessageDispatcher<EventType>();
 		selectedComponents = new ComponentSelection();
@@ -149,7 +149,7 @@ public class Presenter implements IPlugInPort {
 		if (componentSlot == null) {
 			// Scale point to remove zoom factor.
 			Point2D scaledPoint = scalePoint(point);
-			for (Map.Entry<IDIYComponent, Area> entry : componentAreaMap.entrySet()) {
+			for (Map.Entry<IDIYComponent<?>, Area> entry : componentAreaMap.entrySet()) {
 				if (entry.getValue().contains(scaledPoint)) {
 					return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 				}
@@ -293,10 +293,10 @@ public class Presenter implements IPlugInPort {
 
 		// g2dWrapper.resetTx();
 
-		List<IDIYComponent> components = getCurrentProject().getComponents();
+		List<IDIYComponent<?>> components = getCurrentProject().getComponents();
 		componentAreaMap.clear();
 		if (components != null) {
-			for (IDIYComponent component : components) {
+			for (IDIYComponent<?> component : components) {
 				g2dWrapper.startedDrawingComponent();
 				ComponentState state = ComponentState.NORMAL;
 				if (drawOptions.contains(DrawOption.SELECTION)
@@ -387,9 +387,9 @@ public class Presenter implements IPlugInPort {
 	 * 
 	 * @return
 	 */
-	private List<IDIYComponent> findComponentsAt(Point point) {
-		List<IDIYComponent> components = new ArrayList<IDIYComponent>();
-		for (Map.Entry<IDIYComponent, Area> entry : componentAreaMap.entrySet()) {
+	private List<IDIYComponent<?>> findComponentsAt(Point point) {
+		List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
+		for (Map.Entry<IDIYComponent<?>, Area> entry : componentAreaMap.entrySet()) {
 			if (entry.getValue().contains(point)) {
 				components.add(entry.getKey());
 			}
@@ -412,12 +412,12 @@ public class Presenter implements IPlugInPort {
 			}
 			setNewComponentSlot(null);
 		} else {
-			List<IDIYComponent> components = findComponentsAt(scaledPoint);
+			List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
 			// If there's nothing under mouse cursor deselect all.
 			if (components.isEmpty()) {
 				selectedComponents.clear();
 			} else {
-				IDIYComponent component = components.get(0);
+				IDIYComponent<?> component = components.get(0);
 				// If ctrl is pressed just toggle the component under mouse
 				// cursor.
 				if (ctrlDown) {
@@ -439,9 +439,9 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
-		Map<IDIYComponent, ControlPointWrapper> components = new HashMap<IDIYComponent, ControlPointWrapper>();
+		Map<IDIYComponent<?>, ControlPointWrapper> components = new HashMap<IDIYComponent<?>, ControlPointWrapper>();
 		Point scaledPoint = scalePoint(point);
-		for (IDIYComponent component : currentProject.getComponents()) {
+		for (IDIYComponent<?> component : currentProject.getComponents()) {
 			List<ControlPointWrapper> currentPoints = ComponentProcessor.getInstance()
 					.extractControlPoints(component.getClass());
 			for (ControlPointWrapper controlPoint : currentPoints) {
@@ -475,7 +475,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public Area getComponentArea(IDIYComponent component) {
+	public Area getComponentArea(IDIYComponent<?> component) {
 		return componentAreaMap.get(component);
 	}
 
@@ -491,7 +491,7 @@ public class Presenter implements IPlugInPort {
 		preDragProject = cloner.deepClone(currentProject);
 		Point scaledPoint = scalePoint(point);
 		previousDragPoint = scaledPoint;
-		List<IDIYComponent> components = findComponentsAt(scaledPoint);
+		List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
 		if (!componentControlPointMap.isEmpty()) {
 			// If we're dragging control points reset selection.
 			selectedComponents.clear();
@@ -504,7 +504,7 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
-			IDIYComponent component = components.get(0);
+			IDIYComponent<?> component = components.get(0);
 			// If the component under the cursor is not already selected, make
 			// it into the only selected component.
 			if (!selectedComponents.contains(component)) {
@@ -524,7 +524,7 @@ public class Presenter implements IPlugInPort {
 		Point scaledPoint = scalePoint(point);
 		if (!componentControlPointMap.isEmpty()) {
 			// We're dragging control point(s).
-			IDIYComponent firstComponent = componentControlPointMap.keySet().iterator().next();
+			IDIYComponent<?> firstComponent = componentControlPointMap.keySet().iterator().next();
 			ControlPointWrapper controlPoint = componentControlPointMap.get(firstComponent);
 			if (controlPoint == null) {
 				LOG.warn("Control point not found in the map!");
@@ -543,11 +543,11 @@ public class Presenter implements IPlugInPort {
 							/ Constants.GRID) * Constants.GRID);
 			previousDragPoint.setLocation(x, y);
 
-			for (Entry<IDIYComponent, ControlPointWrapper> entry : componentControlPointMap
+			for (Entry<IDIYComponent<?>, ControlPointWrapper> entry : componentControlPointMap
 					.entrySet()) {
 				try {
 					controlPoint = entry.getValue();
-					IDIYComponent component = entry.getKey();
+					IDIYComponent<?> component = entry.getKey();
 					controlPoint.readFrom(component);
 					if (controlPoint.isEditable()) {
 						controlPoint.getValue().setLocation(x, y);
@@ -587,7 +587,7 @@ public class Presenter implements IPlugInPort {
 				this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
 			}
 			selectedComponents.clear();
-			for (IDIYComponent component : currentProject.getComponents()) {
+			for (IDIYComponent<?> component : currentProject.getComponents()) {
 				Area area = componentAreaMap.get(component);
 				if ((area != null) && area.intersects(selectionRect)) {
 					selectedComponents.add(component);
@@ -615,7 +615,7 @@ public class Presenter implements IPlugInPort {
 		int dx = (int) (Math.round((toPoint.x - fromPoint.x) / zoomLevel / Constants.GRID) * Constants.GRID);
 		int dy = (int) (Math.round((toPoint.y - fromPoint.y) / zoomLevel / Constants.GRID) * Constants.GRID);
 		fromPoint.translate(dx, dy);
-		for (IDIYComponent component : selectedComponents) {
+		for (IDIYComponent<?> component : selectedComponents) {
 			List<ControlPointWrapper> controlPoints = ComponentProcessor.getInstance()
 					.extractControlPoints(component.getClass());
 			for (ControlPointWrapper controlPoint : controlPoints) {
@@ -639,7 +639,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void addComponents(List<IDIYComponent> components, Point preferredPoint) {
+	public void addComponents(List<IDIYComponent<?>> components, Point preferredPoint) {
 		LOG.debug(String.format("addComponents(%s)", components));
 		Project oldProject = cloner.deepClone(currentProject);
 		currentProject.getComponents().addAll(components);
@@ -778,7 +778,7 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String.format("applyPropertiesToSelection(%s)", properties));
 		Project oldProject = cloner.deepClone(currentProject);
 		try {
-			for (IDIYComponent component : selectedComponents) {
+			for (IDIYComponent<?> component : selectedComponents) {
 				for (PropertyWrapper property : properties) {
 					property.writeTo(component);
 				}
@@ -814,7 +814,7 @@ public class Presenter implements IPlugInPort {
 				(int) (point.y / zoomLevel));
 	}
 
-	private boolean shouldShowControlPoint(ControlPointWrapper controlPoint, IDIYComponent component) {
+	private boolean shouldShowControlPoint(ControlPointWrapper controlPoint, IDIYComponent<?> component) {
 		return controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.ALWAYS)
 				|| ((controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.WHEN_SELECTED)) && (getSelectedComponents()
 						.contains(component)));

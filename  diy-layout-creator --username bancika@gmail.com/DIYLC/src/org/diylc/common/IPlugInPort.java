@@ -174,7 +174,7 @@ public interface IPlugInPort {
 	 * 
 	 * @return
 	 */
-	Area getComponentArea(IDIYComponent component);
+	Area getComponentArea(IDIYComponent<?> component);
 
 	/**
 	 * Notification that drag has been started from the specified point.
@@ -217,7 +217,7 @@ public interface IPlugInPort {
 	 * @param components
 	 * @param preferredPoint
 	 */
-	void addComponents(List<IDIYComponent> components, Point preferredPoint);
+	void addComponents(List<IDIYComponent<?>> components, Point preferredPoint);
 
 	/**
 	 * Checks if a certain layer is locked for editing.

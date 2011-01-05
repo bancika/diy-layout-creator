@@ -23,9 +23,9 @@ public class BomMaker {
 	private BomMaker() {
 	}
 
-	public List<BomEntry> createBom(List<IDIYComponent> components) {
+	public List<BomEntry> createBom(List<IDIYComponent<?>> components) {
 		Map<String, BomEntry> entryMap = new HashMap<String, BomEntry>();
-		for (IDIYComponent component : components) {
+		for (IDIYComponent<?> component : components) {
 			String name = component.getName();
 			String value = component.getValue() == null ? "" : component.getValue().toString();
 			if ((name != null) && (value != null)) {

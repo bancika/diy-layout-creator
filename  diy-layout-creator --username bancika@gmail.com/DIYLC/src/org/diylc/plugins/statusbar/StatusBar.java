@@ -45,7 +45,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	// State variables
 	private ComponentType componentSlot;
-	private List<IDIYComponent> componentsUnderCursor;
+	private List<IDIYComponent<?>> componentsUnderCursor;
 
 	public StatusBar() {
 		super();
@@ -165,8 +165,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 			refreshStatusText();
 			break;
 		case AVAILABLE_CTRL_POINTS_CHANGED:
-			componentsUnderCursor = new ArrayList<IDIYComponent>(
-					((Map<IDIYComponent, ControlPointWrapper>) params[0]).keySet());
+			componentsUnderCursor = new ArrayList<IDIYComponent<?>>(
+					((Map<IDIYComponent<?>, ControlPointWrapper>) params[0]).keySet());
 			Collections.sort(componentsUnderCursor, ComparatorFactory.getInstance()
 					.getComponentNameComparator());
 			refreshStatusText();
@@ -181,7 +181,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 			} else {
 				String formattedNames = "";
 				int n = 1;
-				for (IDIYComponent component : componentsUnderCursor) {
+				for (IDIYComponent<?> component : componentsUnderCursor) {
 					if (n > 1) {
 						formattedNames += ", ";
 					}

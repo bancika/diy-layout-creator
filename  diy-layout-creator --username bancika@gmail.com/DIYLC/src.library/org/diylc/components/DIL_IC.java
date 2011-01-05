@@ -87,14 +87,14 @@ public class DIL_IC implements IDIYComponent<String> {
 		g2d.drawRoundRect(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
-		g2d.setColor(LABEL_COLOR);
+		g2d.setColor(componentState == ComponentState.DRAGGING ? BORDER_COLOR : LABEL_COLOR);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
 		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
 		int textHeight = (int) (rect.getHeight());
 		int textWidth = (int) (rect.getWidth());
 		// Center text horizontally and vertically
-		x = (width - textWidth) / 2;
-		y = (height - textHeight) / 2 + fontMetrics.getAscent();
+		x += (width - textWidth) / 2;
+		y += (height - textHeight) / 2 + fontMetrics.getAscent();
 		g2d.drawString(getName(), x, y);
 	}
 
