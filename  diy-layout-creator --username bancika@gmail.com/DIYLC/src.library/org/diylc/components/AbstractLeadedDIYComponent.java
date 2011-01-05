@@ -11,8 +11,6 @@ import java.awt.Shape;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
-import org.diylc.core.VisibilityPolicy;
-import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.utils.Constants;
@@ -34,8 +32,8 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 
 	protected Size width;
 	protected Size height;
-	protected Point point1 = new Point(0, 0);
-	protected Point point2 = new Point((int) (Constants.GRID * 10), 0);
+	protected Point[] points = new Point[] { new Point(0, 0),
+			new Point((int) (Constants.GRID * 10), 0) };
 	protected String name = "New Component";
 
 	protected AbstractLeadedDIYComponent() {
@@ -77,24 +75,39 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 	protected abstract Color getBorderColor();
 
 	@Override
+	public int getControlPointCount() {
+		return points.length;
+	}
+
+	@Override
+	public Point getControlPoint(int index) {
+		return (Point) points[index].clone();
+	}
+
+	@Override
+	public void setControlPoint(Point point, int index) {
+		points[index].setLocation(point);
+	}
+
+	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
 		g2d.setColor(LEAD_COLOR);
 		g2d.setStroke(new BasicStroke(1));
-		double distance = point1.distance(point2);
+		double distance = points[0].distance(points[1]);
 		Shape shape = getComponentShape();
 		Rectangle shapeRect = shape.getBounds();
 		double leadLenght = (distance - shapeRect.width) / 2;
 		Double theta;
-		theta = Math.atan2(point2.y - point1.y, point2.x - point1.x);
+		theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
 		// Draw leads.
-		g2d.drawLine(point1.x, point1.y, (int) (point1.x + leadLenght * Math.cos(theta)),
-				(int) (point1.y + leadLenght * Math.sin(theta)));
-		g2d.drawLine(point2.x, point2.y, (int) (point2.x - leadLenght * Math.cos(theta)),
-				(int) (point2.y - leadLenght * Math.sin(theta)));
+		g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + leadLenght * Math.cos(theta)),
+				(int) (points[0].y + leadLenght * Math.sin(theta)));
+		g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x - leadLenght * Math.cos(theta)),
+				(int) (points[1].y - leadLenght * Math.sin(theta)));
 		// Transform graphics to draw the body in the right place and at the
 		// right angle.
-		g2d.translate((point1.x + point2.x - shapeRect.width) / 2,
-				(point1.y + point2.y - shapeRect.height) / 2);
+		g2d.translate((points[0].x + points[1].x - shapeRect.width) / 2,
+				(points[0].y + points[1].y - shapeRect.height) / 2);
 		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
 		// Draw body.
 		if (componentState != ComponentState.DRAGGING) {
@@ -121,24 +134,6 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
-	public Point getPoint1() {
-		return point1;
-	}
-
-	public void setPoint1(Point point1) {
-		this.point1 = point1;
-	}
-
-	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
-	public Point getPoint2() {
-		return point2;
-	}
-
-	public void setPoint2(Point point2) {
-		this.point2 = point2;
 	}
 
 	@EditableProperty(defaultable = true)

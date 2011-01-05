@@ -1,6 +1,5 @@
 package org.diylc.presenter;
 
-import java.awt.Point;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,10 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.diylc.common.ControlPointWrapper;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 
 import com.rits.cloning.Cloner;
@@ -28,7 +25,6 @@ public class ComponentProcessor {
 	private static ComponentProcessor instance;
 
 	private Map<Class<?>, List<PropertyWrapper>> propertyCache;
-	private Map<Class<?>, List<ControlPointWrapper>> controlPointCache;
 
 	private Cloner cloner;
 
@@ -43,7 +39,6 @@ public class ComponentProcessor {
 		super();
 		this.cloner = new Cloner();
 		this.propertyCache = new HashMap<Class<?>, List<PropertyWrapper>>();
-		this.controlPointCache = new HashMap<Class<?>, List<ControlPointWrapper>>();
 	}
 
 	/**
@@ -87,55 +82,13 @@ public class ComponentProcessor {
 	}
 
 	/**
-	 * Reads all control points from the specified component class. Note than
-	 * control points are cached, so it may happen that control points returned
-	 * already have their values populated. Always use
-	 * {@link ControlPointWrapper#readFrom(IDIYComponent)} to update their state
-	 * from an actual component.
-	 * 
-	 * @param clazz
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public List<ControlPointWrapper> extractControlPoints(Class<? extends IDIYComponent> clazz) {
-		if (controlPointCache.containsKey(clazz)) {
-			return cloner.deepClone(controlPointCache.get(clazz));
-		}
-		List<ControlPointWrapper> controlPoints = new ArrayList<ControlPointWrapper>();
-		for (Method method : clazz.getMethods()) {
-			if (method.getName().startsWith("get")) {
-				try {
-					Method setter = clazz.getMethod("set" + method.getName().substring(3), method
-							.getReturnType());
-					if (method.isAnnotationPresent(ControlPoint.class)) {
-						if (method.getReturnType().equals(Point.class)) {
-							ControlPoint annotation = method.getAnnotation(ControlPoint.class);
-							ControlPointWrapper controlPoint = new ControlPointWrapper(method
-									.getName().substring(3), method, setter, annotation.editable(),
-									annotation.sticky(), annotation.visibilityPolicy());
-							controlPoints.add(controlPoint);
-						} else {
-							LOG.debug("Control point return type must be java.awt.Point.");
-						}
-					}
-				} catch (NoSuchMethodException e) {
-					LOG.debug("No matching setter found for \"" + method.getName()
-							+ "\". Skipping...");
-				}
-			}
-		}
-
-		controlPointCache.put(clazz, controlPoints);
-		return cloner.deepClone(controlPoints);
-	}
-
-	/**
 	 * Returns properties mutual for all the selected components.
 	 * 
 	 * @param selectedComponents
 	 * @return
 	 */
-	public List<PropertyWrapper> getMutualSelectionProperties(List<IDIYComponent<?>> selectedComponents) {
+	public List<PropertyWrapper> getMutualSelectionProperties(
+			List<IDIYComponent<?>> selectedComponents) {
 		if (selectedComponents.isEmpty()) {
 			return null;
 		}
