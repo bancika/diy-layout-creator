@@ -5,10 +5,10 @@
 
 User interface can be separated into 4 major components:
 
-  # *Canvas*: used as a [http://en.wikipedia.org/wiki/WYSIWYG WYSIWYG] editor for the project.
-  # *Toolbox*: lists all available components and allows you to pick the one you want to add.
-  # *Main menu*: offers file operations, such as saving, loading and exporting, clipboard operations, etc.
-  # *Status bar*: shows context related information, update information (when light bulb is ON it means there are available updates) and memory consumption bar (clicking on it will free as much memory as possible).
+  # *Canvas* is used as a [http://en.wikipedia.org/wiki/WYSIWYG WYSIWYG] editor for the project.
+  # *Toolbox* lists all available components and allows you to pick the one you want to add.
+  # *Main menu* offers file operations, such as saving, loading and exporting, clipboard operations, etc.
+  # *Status bar*: shows context related information, update information and memory consumption.
 
 ===Adding components===
 
@@ -33,3 +33,11 @@ A component may have one or more control points. Control points have dual purpos
 
   * Double click on a component opens the Component Editor - dialog that lists all editable properties of the selected component(s).
   * Checking the "Default" checkbox on the right side will make the value for that property default. In other words, all the components created after that will inherit that value.
+
+===Using the status bar===
+
+Status bar contains three different features:
+
+  * *Information bar* shows context related information and guidance through the app.
+  * *Auto-update* notification. When the bulb is on, there are updates available. Click on it for more information.
+  * *Memory bar* is the blue-ish icon on the right side that shows the amount of memory occupied by the application. Move the mouse over it to see more details or click on it to try to cleanup as much memory as possible.
