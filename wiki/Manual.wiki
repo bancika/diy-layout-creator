@@ -12,7 +12,7 @@ User interface can be separated into 4 major components:
 
 ===Adding components===
 
-To add a component to your project follow these steps:
+This sections explains how to add an existing component to the project. To learn how to develop your own components follow [http://code.google.com/p/diy-layout-creator/wiki/Components this tutorial]. To instantiate a component, follow these steps:
 
   * Locate the component in the toolbox. Components are categorized into several tabs, so make sure you're looking into the right one.
   * Click on the button that shows the desired component. Note that text in the status bar changes to reflect this action.
