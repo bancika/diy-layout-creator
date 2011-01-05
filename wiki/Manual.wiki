@@ -1,10 +1,12 @@
-#summary User manual for non-developers.
+#summary End user manual for non-developers.
 #labels Featured,Phase-Deploy
 
-= Introduction =
+===Control points===
 
-Add your content here.
+A component may have one or more control points. Control points have dual purpose:
 
+  * Allows changing component placement or appearance by dragging it's control point on the canvas. For instance, drag one end point of the resistor.
+  * Allows the component to "stick" to other components.
 
 = Details =
 
