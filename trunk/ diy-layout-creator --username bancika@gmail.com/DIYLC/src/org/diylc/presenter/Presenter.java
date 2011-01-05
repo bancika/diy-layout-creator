@@ -313,7 +313,7 @@ public class Presenter implements IPlugInPort {
 					g2dWrapper.setComposite(alphaComposite);
 				}
 				// Draw the component through the g2dWrapper.
-				component.draw(g2dWrapper, state);
+				component.draw(g2dWrapper, state, currentProject);
 				// Restore the composite if needed.
 				if (state == ComponentState.DRAGGING) {
 					g2dWrapper.setComposite(mainComposite);
@@ -328,7 +328,7 @@ public class Presenter implements IPlugInPort {
 						try {
 							controlPoint.readFrom(component);
 							if (shouldShowControlPoint(controlPoint, component)) {
-								g2d.setColor(Color.blue);
+								g2d.setColor(Constants.CONTROL_POINT_COLOR);
 								g2d.setStroke(new BasicStroke(2));
 								g2d.drawOval(controlPoint.getValue().x - 2,
 										controlPoint.getValue().y - 2, 4, 4);

@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.ControlPoint;
@@ -66,7 +67,7 @@ public class DIL_IC implements IDIYComponent<String> {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
 		int width = ((int) (Math.abs(point1.x - point2.x) / Constants.GRID));
 		if (width % 2 == 1) {
 			width--;

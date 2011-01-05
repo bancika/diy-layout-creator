@@ -16,9 +16,9 @@ public class SelectionTransferable implements Transferable {
 			"Component Selection");
 
 	private Point startPoint;
-	private List<IDIYComponent> selection;
+	private List<IDIYComponent<?>> selection;
 
-	public SelectionTransferable(List<IDIYComponent> selection, Point startPoint) {
+	public SelectionTransferable(List<IDIYComponent<?>> selection, Point startPoint) {
 		super();
 		this.selection = selection;
 		this.startPoint = startPoint;

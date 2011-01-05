@@ -52,6 +52,7 @@ public class ComponentProcessor {
 	 * @param clazz
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<PropertyWrapper> extractProperties(Class<? extends IDIYComponent> clazz) {
 		if (propertyCache.containsKey(clazz)) {
 			return cloner.deepClone(propertyCache.get(clazz));
@@ -95,6 +96,7 @@ public class ComponentProcessor {
 	 * @param clazz
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<ControlPointWrapper> extractControlPoints(Class<? extends IDIYComponent> clazz) {
 		if (controlPointCache.containsKey(clazz)) {
 			return cloner.deepClone(controlPointCache.get(clazz));

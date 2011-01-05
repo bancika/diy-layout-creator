@@ -6,6 +6,7 @@ import java.awt.Point;
 
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.ControlPoint;
@@ -110,7 +111,7 @@ public class MockDIYComponent implements IDIYComponent {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
 		g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color : color.darker());
 		g2d.fillRect(leftTopCorner.x, leftTopCorner.y, 200, 50);
 	}
