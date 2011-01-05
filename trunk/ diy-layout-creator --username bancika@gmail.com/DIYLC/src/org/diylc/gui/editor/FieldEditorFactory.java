@@ -6,7 +6,6 @@ import java.awt.Component;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.AbstractMeasure;
 
-
 public class FieldEditorFactory {
 
 	public static Component createFieldEditor(PropertyWrapper property) {
@@ -20,6 +19,10 @@ public class FieldEditorFactory {
 		}
 		if (AbstractMeasure.class.isAssignableFrom(property.getType())) {
 			MeasureEditor editor = new MeasureEditor(property);
+			return editor;
+		}
+		if (property.getType().isEnum()) {
+			EnumEditor editor = new EnumEditor(property);
 			return editor;
 		}
 		return null;

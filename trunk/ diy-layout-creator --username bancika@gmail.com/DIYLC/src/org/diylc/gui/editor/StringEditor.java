@@ -10,6 +10,7 @@ import org.diylc.common.PropertyWrapper;
 public class StringEditor extends JTextField {
 
 	private static final long serialVersionUID = 1L;
+	
 	private final PropertyWrapper property;
 
 	public StringEditor(PropertyWrapper property) {
