@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.diylc.core.IDIYComponent;
-import org.diylc.presenter.ComponentProcessor;
-
 
 public class BomMaker {
 
@@ -28,8 +26,8 @@ public class BomMaker {
 	public List<BomEntry> createBom(List<IDIYComponent> components) {
 		Map<String, BomEntry> entryMap = new HashMap<String, BomEntry>();
 		for (IDIYComponent component : components) {
-			String name = ComponentProcessor.getInstance().extractComponentName(component);
-			String value = ComponentProcessor.getInstance().extractComponentValue(component);
+			String name = component.getName();
+			String value = component.getValue() == null ? "" : component.getValue().toString();
 			if ((name != null) && (value != null)) {
 				String key = name + "|" + value;
 				if (entryMap.containsKey(key)) {

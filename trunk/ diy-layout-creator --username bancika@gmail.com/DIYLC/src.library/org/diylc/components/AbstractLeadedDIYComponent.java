@@ -2,7 +2,6 @@ package org.diylc.components;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -12,7 +11,6 @@ import java.awt.Shape;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
-import org.diylc.core.annotations.ComponentName;
 import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -25,20 +23,19 @@ import org.diylc.utils.Constants;
  * 
  * @author Branislav Stojkovic
  */
-public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
+public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> {
 
 	private static final long serialVersionUID = 1L;
 
 	public static Color LEAD_COLOR = Color.black;
 	public static Color LABEL_COLOR = Color.black;
 	public static Color LABEL_COLOR_SELECTED = Color.red;
-	public static Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 11);
 
 	protected Size width;
 	protected Size height;
 	protected Point point1 = new Point(0, 0);
 	protected Point point2 = new Point((int) (Constants.GRID * 10), 0);
-	protected String componentName = "New Component";
+	protected String name = "New Component";
 
 	protected AbstractLeadedDIYComponent() {
 		super();
@@ -106,24 +103,23 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 		g2d.setColor(getBorderColor());
 		g2d.draw(shape);
 		// Draw label.
-		g2d.setFont(LABEL_FONT);
+		g2d.setFont(Constants.LABEL_FONT);
 		g2d
 				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
 						: LABEL_COLOR);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getComponentName(), g2d);
-		g2d.drawString(getComponentName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
+		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getName(), g2d);
+		g2d.drawString(getName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
 				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
 	}
 
-	@ComponentName
 	@EditableProperty
-	public String getComponentName() {
-		return componentName;
+	public String getName() {
+		return name;
 	}
 
-	public void setComponentName(String componentName) {
-		this.componentName = componentName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@ControlPoint(visibilityPolicy = VisibilityPolicy.WHEN_SELECTED)
@@ -166,7 +162,7 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((componentName == null) ? 0 : componentName.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -179,10 +175,10 @@ public abstract class AbstractLeadedDIYComponent implements IDIYComponent {
 		if (getClass() != obj.getClass())
 			return false;
 		AbstractLeadedDIYComponent other = (AbstractLeadedDIYComponent) obj;
-		if (componentName == null) {
-			if (other.componentName != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!componentName.equals(other.componentName))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

@@ -25,7 +25,6 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComparatorFactory;
-import org.diylc.presenter.ComponentProcessor;
 
 import com.diyfever.gui.MemoryBar;
 import com.diyfever.gui.miscutils.PercentageListCellRenderer;
@@ -186,8 +185,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 					if (n > 1) {
 						formattedNames += ", ";
 					}
-					formattedNames += ComponentProcessor.getInstance().extractComponentName(
-							component);//
+					formattedNames += component.getName();//
 					// +
 					// " (<b><font color=\"blue\">"
 					// +

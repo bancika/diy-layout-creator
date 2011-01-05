@@ -6,7 +6,6 @@ import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.annotations.ComponentValue;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
@@ -14,7 +13,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Radial Film Capacitor", author = "bancika", category = "Passive", instanceNamePrefix = "C", desciption = "test")
-public class RadialFilmCapacitor extends AbstractLeadedDIYComponent {
+public class RadialFilmCapacitor extends AbstractLeadedDIYComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +28,6 @@ public class RadialFilmCapacitor extends AbstractLeadedDIYComponent {
 		super();
 	}
 
-	@ComponentValue
 	@EditableProperty
 	public Capacitance getValue() {
 		return value;

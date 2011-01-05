@@ -7,8 +7,6 @@ import java.awt.Point;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
-import org.diylc.core.annotations.ComponentName;
-import org.diylc.core.annotations.ComponentValue;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.ControlPoint;
 import org.diylc.core.annotations.EditableProperty;
@@ -47,7 +45,6 @@ public class MockDIYComponent implements IDIYComponent {
 		super();
 	}
 
-	@ComponentName
 	@EditableProperty
 	public String getName() {
 		return name;
@@ -75,9 +72,8 @@ public class MockDIYComponent implements IDIYComponent {
 		this.testField = testField;
 	}
 
-	@ComponentValue
 	@EditableProperty(defaultable = true)
-	public Capacitance getC() {
+	public Capacitance getValue() {
 		return c;
 	}
 
