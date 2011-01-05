@@ -6,7 +6,7 @@
   # JDK or JRE 1.6.0_10 or newer installed.
   # Some Java IDE, preferably [http://www.eclipse.org/ Eclipse].
   # SVN client, [http://subclipse.tigris.org/ Subclipse] is recommended if you're using Eclipse. Follow [http://code.google.com/p/diy-layout-creator/source/checkout this guide] to learn how to checkout the project from the source control.
-  # Decent knowledge of Java language, in specific [http://java.sun.com/j2se/1.5/pdf/generics-tutorial.pdf generics], [http://download.oracle.com/javase/tutorial/java/javaOO/annotations.html annotations] and [http://download.oracle.com/javase/tutorial/2d/overview/index.html Graphics2D]. Unlike the previous version, you actually need to program the component to look and behave the way you want it. This makes it harder for non-programmers to make their own components or customize existing ones, but it allows greater flexibility and performance.
+  # Decent knowledge of Java language, in specific [http://java.sun.com/j2se/1.5/pdf/generics-tutorial.pdf generics], [http://download.oracle.com/javase/tutorial/java/javaOO/annotations.html annotations] and [http://download.oracle.com/javase/tutorial/2d/overview/index.html Graphics2D]. Unlike the previous version, you actually need to write Java code to make the component look and behave the way you want it. This makes it harder for non-programmers to make their own components or customize existing ones, but it allows greater flexibility and performance.
 
 ===Adding to the main library===
 
