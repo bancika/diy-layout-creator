@@ -34,4 +34,4 @@ In order for a component to be recognized by the application it has to meet the 
 
   * It should be compiled, packed inside a jar and placed in *library* folder.
   * It must implement *IDIYComponent* component interface, or extend some of the existing component classes.
-  * It is not mandatory but highly recommended to annotate each component class with *`@`ComponentDescriptor* annotation. Application will recognize the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted.
+  * It is not mandatory but highly recommended to annotate each component class with *ComponentDescriptor* annotation. Application will recognize the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted.
