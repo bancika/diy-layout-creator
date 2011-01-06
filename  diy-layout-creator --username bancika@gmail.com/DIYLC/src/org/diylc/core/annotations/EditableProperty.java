@@ -16,16 +16,18 @@ public @interface EditableProperty {
 	/**
 	 * Returns property name. If left blank property name will be extracted from
 	 * the getter name, e.g. getter <code>getXYZ</code> will induce property
-	 * name <code>XYZ</code>.
+	 * name <code>XYZ</code>. <br>
+	 * Default value is blank.
 	 * 
 	 * @return
 	 */
 	String name() default "";
 
 	/**
-	 * If true, application may set default value for this property.
+	 * If true, application may set default value for this property. <br>
+	 * Default value is true.
 	 * 
 	 * @return
 	 */
-	boolean defaultable() default false;
+	boolean defaultable() default true;
 }

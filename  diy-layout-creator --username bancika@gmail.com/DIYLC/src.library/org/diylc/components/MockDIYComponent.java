@@ -17,7 +17,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Mock", author = "bancika", category = "Sample", instanceNamePrefix = "M", desciption = "test")
-public class MockDIYComponent implements IDIYComponent<Object> {
+public class MockDIYComponent implements IDIYComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -82,7 +82,7 @@ public class MockDIYComponent implements IDIYComponent<Object> {
 		return c;
 	}
 
-	public void setC(Capacitance c) {
+	public void setValue(Capacitance c) {
 		this.c = c;
 	}
 

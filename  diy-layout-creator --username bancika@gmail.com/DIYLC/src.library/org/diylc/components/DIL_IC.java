@@ -38,7 +38,7 @@ public class DIL_IC implements IDIYComponent<String> {
 			new Point((int) (3 * Constants.GRID), (int) (2 * Constants.GRID)),
 			new Point((int) (3 * Constants.GRID), (int) (3 * Constants.GRID)) };
 
-	@EditableProperty
+	@EditableProperty(defaultable = false)
 	public String getName() {
 		return name;
 	}

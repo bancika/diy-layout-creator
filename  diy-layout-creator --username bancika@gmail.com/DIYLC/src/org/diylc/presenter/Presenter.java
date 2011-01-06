@@ -19,6 +19,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,17 +67,19 @@ public class Presenter implements IPlugInPort {
 	public static final int CONTROL_POINT_SENSITIVITY = 4;
 	public static final int ICON_SIZE = 32;
 	public static boolean ENABLE_ANTIALIASING = true;
+	public static boolean DEBUG_COMPONENT_AREAS = false;
 
 	private double zoomLevel = 1;
 	private Map<IDIYComponent<?>, Area> componentAreaMap;
 	private Project currentProject;
 	private Map<String, List<ComponentType>> componentTypes;
+	private Map<Class<? extends IDIYComponent>, ComponentType> componentTypeMap;
 	private List<IPlugIn> plugIns;
 
 	private ComponentSelection selectedComponents;
-	// List of components that have at least one of their control points
-	// under the last recorded mouse position.
-	private Map<IDIYComponent<?>, Integer> componentControlPointMap;
+	// Maps components that have at least one dragged point to set of indices
+	// that designate which of their control points are being dragged.
+	private Map<IDIYComponent<?>, Set<Integer>> controlPointMap;
 
 	private Cloner cloner;
 
@@ -97,6 +100,8 @@ public class Presenter implements IPlugInPort {
 	private Project preDragProject = null;
 
 	private ComponentType componentSlot;
+
+	private boolean snapToGrid = true;
 
 	public Presenter(IView view) {
 		super();
@@ -151,7 +156,7 @@ public class Presenter implements IPlugInPort {
 					return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 				}
 			}
-			if (componentControlPointMap != null && !componentControlPointMap.isEmpty()) {
+			if (controlPointMap != null && !controlPointMap.isEmpty()) {
 				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			}
 		}
@@ -189,6 +194,7 @@ public class Presenter implements IPlugInPort {
 		if (componentTypes == null) {
 			LOG.info("Loading component types.");
 			componentTypes = new HashMap<String, List<ComponentType>>();
+			componentTypeMap = new HashMap<Class<? extends IDIYComponent>, ComponentType>();
 			List<Class<?>> componentTypeClasses = JarScanner.getInstance().scanFolder("library/",
 					IDIYComponent.class);
 			for (Class<?> clazz : componentTypeClasses) {
@@ -202,6 +208,7 @@ public class Presenter implements IPlugInPort {
 					Icon icon;
 					Class<? extends IDIYComponent> instanceClass = (Class<? extends IDIYComponent>) clazz;
 					ComponentLayer layer;
+					boolean stretchable;
 					if (annotation == null) {
 						name = clazz.getSimpleName();
 						description = "";
@@ -209,6 +216,7 @@ public class Presenter implements IPlugInPort {
 						namePrefix = "Unknown";
 						author = "Unknown";
 						layer = ComponentLayer.COMPONENT;
+						stretchable = true;
 					} else {
 						name = annotation.name();
 						description = annotation.desciption();
@@ -216,6 +224,7 @@ public class Presenter implements IPlugInPort {
 						namePrefix = annotation.instanceNamePrefix();
 						author = annotation.author();
 						layer = annotation.componentLayer();
+						stretchable = annotation.stretchable();
 					}
 					icon = null;
 					// Draw component icon.
@@ -232,7 +241,8 @@ public class Presenter implements IPlugInPort {
 						e.printStackTrace();
 					}
 					ComponentType componentType = new ComponentType(name, description, category,
-							namePrefix, author, icon, instanceClass, layer);
+							namePrefix, author, icon, instanceClass, layer, stretchable);
+					componentTypeMap.put(instanceClass, componentType);
 					List<ComponentType> nestedList;
 					if (componentTypes.containsKey(componentType.getCategory())) {
 						nestedList = componentTypes.get(componentType.getCategory());
@@ -353,11 +363,13 @@ public class Presenter implements IPlugInPort {
 		}
 
 		// // Draw component area for test
-		// g2d.setStroke(new BasicStroke());
-		// g2d.setColor(Color.red);
-		// for (Area area : componentAreaMap.values()) {
-		// g2d.draw(area);
-		// }
+		if (DEBUG_COMPONENT_AREAS) {
+			g2d.setStroke(new BasicStroke());
+			g2d.setColor(Color.red);
+			for (Area area : componentAreaMap.values()) {
+				g2d.draw(area);
+			}
+		}
 	}
 
 	@Override
@@ -433,7 +445,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
-		Map<IDIYComponent<?>, Integer> components = new HashMap<IDIYComponent<?>, Integer>();
+		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
 			for (int i = 0; i < component.getControlPointCount(); i++) {
@@ -441,7 +453,17 @@ public class Presenter implements IPlugInPort {
 				if (shouldShowControlPointsFor(component)) {
 					try {
 						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SENSITIVITY) {
-							components.put(component, i);
+							Set<Integer> indices = new HashSet<Integer>();
+							ComponentType componentType = componentTypeMap
+									.get(component.getClass());
+							if (componentType.isStretchable()) {
+								indices.add(i);
+							} else {
+								for (int j = 0; j < component.getControlPointCount(); j++) {
+									indices.add(j);
+								}
+							}
+							components.put(component, indices);
 							break;
 						}
 					} catch (Exception e) {
@@ -455,8 +477,8 @@ public class Presenter implements IPlugInPort {
 				break;
 			}
 		}
-		if (!components.equals(componentControlPointMap)) {
-			componentControlPointMap = components;
+		if (!components.equals(controlPointMap)) {
+			controlPointMap = components;
 			messageDispatcher.dispatchMessage(EventType.AVAILABLE_CTRL_POINTS_CHANGED, components);
 		}
 	}
@@ -484,10 +506,10 @@ public class Presenter implements IPlugInPort {
 		Point scaledPoint = scalePoint(point);
 		previousDragPoint = scaledPoint;
 		List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
-		if (!componentControlPointMap.isEmpty()) {
+		if (!controlPointMap.isEmpty()) {
 			// If we're dragging control points reset selection.
 			selectedComponents.clear();
-			selectedComponents.addAll(componentControlPointMap.keySet());
+			selectedComponents.addAll(controlPointMap.keySet());
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else if (components.isEmpty()) {
@@ -514,24 +536,39 @@ public class Presenter implements IPlugInPort {
 			return false;
 		}
 		Point scaledPoint = scalePoint(point);
-		if (!componentControlPointMap.isEmpty()) {
+		if (!controlPointMap.isEmpty()) {
 			// We're dragging control point(s).
-			IDIYComponent<?> firstComponent = componentControlPointMap.keySet().iterator().next();
-			Point controlPoint = firstComponent.getControlPoint(componentControlPointMap
-					.get(firstComponent));
-			if (controlPoint == null) {
-				LOG.warn("Control point not found in the map!");
+			// IDIYComponent<?> firstComponent =
+			// controlPointMap.keySet().iterator().next();
+			// Point controlPoint = firstComponent
+			// .getControlPoint(controlPointMap.get(firstComponent));
+			// if (controlPoint == null) {
+			// LOG.warn("Control point not found in the map!");
+			// }
+			// int x = (int) (Math.round((controlPoint.x + scaledPoint.x -
+			// previousDragPoint.x)
+			// / Constants.GRID) * Constants.GRID);
+			// int y = (int) (Math.round((controlPoint.y + scaledPoint.y -
+			// previousDragPoint.y)
+			// / Constants.GRID) * Constants.GRID);
+			// previousDragPoint.setLocation(x, y);
+			int dx = (point.x - previousDragPoint.x);
+			int dy = (point.y - previousDragPoint.y);
+			if (snapToGrid) {
+				dx = (int) (Math.round(dx / Constants.GRID) * Constants.GRID);
+				dy = (int) (Math.round(dy / Constants.GRID) * Constants.GRID);
 			}
-			int x = (int) (Math.round((controlPoint.x + scaledPoint.x - previousDragPoint.x)
-					/ Constants.GRID) * Constants.GRID);
-			int y = (int) (Math.round((controlPoint.y + scaledPoint.y - previousDragPoint.y)
-					/ Constants.GRID) * Constants.GRID);
-			previousDragPoint.setLocation(x, y);
+
+			previousDragPoint.translate(dx, dy);
 
 			// Update all points.
-			for (Map.Entry<IDIYComponent<?>, Integer> entry : componentControlPointMap.entrySet()) {
-				Point p = new Point(x, y);
-				entry.getKey().setControlPoint(p, entry.getValue());
+			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+				IDIYComponent<?> c = entry.getKey();
+				for (Integer index : entry.getValue()) {
+					Point p = c.getControlPoint(index);
+					p.translate(dx, dy);
+					c.setControlPoint(p, index);
+				}
 			}
 			// dragStartPoint = point;
 		} else if (selectedComponents.isEmpty()) {

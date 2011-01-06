@@ -30,16 +30,49 @@ import org.diylc.core.annotations.EditableProperty;
  */
 public interface IDIYComponent<T> extends Serializable {
 
+	/**
+	 * @return component instance name.
+	 */
 	String getName();
 
+	/**
+	 * Updates component instance name.
+	 * 
+	 * @param name
+	 */
 	void setName(String name);
 
+	/**
+	 * @return component value.
+	 */
 	T getValue();
-	
+
+	/**
+	 * Updates component value.
+	 * 
+	 * @param value
+	 */
+	void setValue(T value);
+
+	/**
+	 * @return number of control points for this component instance. May vary
+	 *         between two instances of the same type, e.g. DIL IC with 8 and 16
+	 *         pins will have 8 or 16 pins although they are of the same type.
+	 */
 	int getControlPointCount();
-	
+
+	/**
+	 * @param index
+	 * @return control point at the specified index.
+	 */
 	Point getControlPoint(int index);
-	
+
+	/**
+	 * Updates the control point at the specified index.
+	 * 
+	 * @param point
+	 * @param index
+	 */
 	void setControlPoint(Point point, int index);
 
 	/**
@@ -52,7 +85,8 @@ public interface IDIYComponent<T> extends Serializable {
 	void draw(Graphics2D g2d, ComponentState componentState, Project project);
 
 	/**
-	 * Draws icon representation of the component.
+	 * Draws icon representation of the component. This should not depend on
+	 * component state, i.e. it should be treated as a static method.
 	 * 
 	 * @param g2d
 	 * @param width
