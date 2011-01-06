@@ -1,5 +1,6 @@
 package org.diylc.components;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -169,6 +170,7 @@ public class DIL_IC implements IDIYComponent<String> {
 			g2d.fillRoundRect(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
 		}
 		g2d.setColor(BORDER_COLOR);
+		g2d.setStroke(new BasicStroke());
 		g2d.drawRoundRect(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
