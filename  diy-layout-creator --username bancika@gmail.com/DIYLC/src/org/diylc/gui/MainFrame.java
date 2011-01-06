@@ -97,7 +97,7 @@ public class MainFrame extends JFrame implements IView {
 		super.setVisible(b);
 		// TODO: hack to prevent painting issues in the scroll bar rulers. Find
 		// a better fix if possible.
-		Timer timer = new Timer(50, new ActionListener() {
+		Timer timer = new Timer(200, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

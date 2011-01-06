@@ -73,6 +73,7 @@ public class Presenter implements IPlugInPort {
 	private Map<IDIYComponent<?>, Area> componentAreaMap;
 	private Project currentProject;
 	private Map<String, List<ComponentType>> componentTypes;
+	@SuppressWarnings("unchecked")
 	private Map<Class<? extends IDIYComponent>, ComponentType> componentTypeMap;
 	private List<IPlugIn> plugIns;
 
@@ -738,8 +739,10 @@ public class Presenter implements IPlugInPort {
 				Point controlPoint = component.getControlPoint(j);
 				int x = controlPoint.x + point.x;
 				int y = controlPoint.y + point.y;
-				x = (int) (Math.round(x / Constants.GRID) * Constants.GRID);
-				y = (int) (Math.round(y / Constants.GRID) * Constants.GRID);
+				if (snapToGrid) {
+					x = (int) (Math.round(x / Constants.GRID) * Constants.GRID);
+					y = (int) (Math.round(y / Constants.GRID) * Constants.GRID);
+				}
 				controlPoint.setLocation(x, y);
 				component.setControlPoint(controlPoint, j);
 			}
