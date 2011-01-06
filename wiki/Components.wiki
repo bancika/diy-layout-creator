@@ -36,7 +36,7 @@ In order for a component to be recognized by the application it has to meet the 
   * It must implement *`IDIYComponent`* component interface, or extend some of the existing component classes.
   * It is not mandatory but highly recommended to annotate each component class with *`@ComponentDescriptor`* annotation. Application will recognize the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted.
 
-====`ComponentDescriptor` annotation===
+====`ComponentDescriptor` annotation====
 
 Contains the following attributes:
 
@@ -52,3 +52,18 @@ Sample usage:
 @ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "R", desciption = "Resistor layout symbol")
 public class Resistor extends AbstractLeadedDIYComponent<Resistance> {
 }}}
+
+====`AbstractLeadedDIYComponent` class====
+
+This class should be used as a base class for all component that have two flying leads and solid color body, e.g. resistor or capacitor layout symbols. It contains common logic that makes it easier to create similar components. It has the following features:
+
+  * Draws leads automatically
+  * Allows user to choose component body width and height
+  * Defines two control points for lead ends
+  * Positions and draws component body based on component location on the canvas
+
+Child classes should implement the following methods:
+
+  * *`getDefaultWidth`* and *`getDefaultHeight`* are used to determine default component body size.
+  * *`getBodyColor`* and *`getBorderColor`* are used to determine colors for body and body border.
+  * *`getBodyShape`* should return a `Shape` object that represents component body, e.g. rectangle for resistors or ellipse for ceramic capacitors. Shape should include the current component size into account, as specified in protected fields `width` and `height`. Shape should *not* include component placement into account and should be not be scaled or rotated. Also, the minimum bounding rectangle of the shape should have it's top left corner at point (0, 0). This is important because abstract class relies on that fact when drawing the component body on the canvas.
