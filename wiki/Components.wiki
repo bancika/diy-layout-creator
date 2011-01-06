@@ -60,6 +60,7 @@ This class should be used as a base class for all component that have two flying
   * Draws leads automatically
   * Allows user to choose component body width and height
   * Defines two control points for lead ends
+  * Defines component name and allows for editing
   * Positions and draws component body based on component location on the canvas
 
 Child classes should implement the following methods:
