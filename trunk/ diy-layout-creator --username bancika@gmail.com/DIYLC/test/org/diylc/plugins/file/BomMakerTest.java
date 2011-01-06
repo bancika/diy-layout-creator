@@ -13,14 +13,13 @@ import org.diylc.plugins.file.BomEntry;
 import org.diylc.plugins.file.BomMaker;
 import org.junit.Test;
 
-
 public class BomMakerTest {
 
 	@Test
 	public void testCreateBom() {
 		List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
 		MockDIYComponent c1 = new MockDIYComponent();
-		c1.setC(new Capacitance(3d, CapacitanceUnit.pF));
+		c1.setValue(new Capacitance(3d, CapacitanceUnit.pF));
 		components.add(c1);
 		components.add(new MockDIYComponent());
 		components.add(new MockDIYComponent());

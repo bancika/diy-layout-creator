@@ -127,7 +127,7 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
 	}
 
-	@EditableProperty
+	@EditableProperty(defaultable = false)
 	public String getName() {
 		return name;
 	}
@@ -162,6 +162,7 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

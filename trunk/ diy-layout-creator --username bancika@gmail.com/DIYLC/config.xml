@@ -1,31 +1,6 @@
 <map>
   <entry>
-    <string>defaults</string>
-    <map>
-      <entry>
-        <string>com.diyfever.diylc.components.MockComponentInstance:C</string>
-        <com.diyfever.diylc.model.measures.Capacitance>
-          <value>22.0</value>
-          <unit class="com.diyfever.diylc.model.measures.CapacitanceUnit">uF</unit>
-        </com.diyfever.diylc.model.measures.Capacitance>
-      </entry>
-      <entry>
-        <string>com.diyfever.diylc.components.MockComponentInstance:Color</string>
-        <awt-color>
-          <red>255</red>
-          <green>0</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </awt-color>
-      </entry>
-    </map>
-  </entry>
-  <entry>
     <string>metric</string>
     <boolean>true</boolean>
-  </entry>
-  <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
   </entry>
 </map>

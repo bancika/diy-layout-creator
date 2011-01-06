@@ -23,11 +23,12 @@ public class ComponentType {
 	@SuppressWarnings("unchecked")
 	private Class<? extends IDIYComponent> instanceClass;
 	private ComponentLayer layer;
+	private boolean stretchable;
 
 	@SuppressWarnings("unchecked")
 	public ComponentType(String name, String description, String category, String namePrefix,
 			String author, Icon icon, Class<? extends IDIYComponent> instanceClass,
-			ComponentLayer layer) {
+			ComponentLayer layer, boolean stretchable) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -37,6 +38,7 @@ public class ComponentType {
 		this.icon = icon;
 		this.instanceClass = instanceClass;
 		this.layer = layer;
+		this.stretchable = stretchable;
 	}
 
 	public String getName() {
@@ -70,6 +72,10 @@ public class ComponentType {
 
 	public ComponentLayer getLayer() {
 		return layer;
+	}
+
+	public boolean isStretchable() {
+		return stretchable;
 	}
 
 	@Override
