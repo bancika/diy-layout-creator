@@ -1,6 +1,11 @@
 #summary Developer guide for creating new components.
 #labels Featured,Phase-Implementation
 
+===General advice===
+
+When making a new component make sure to look around and be consistent with what's already 
+ there. This applies to component appearance, behavior but also the code. It is important to keep the visual identity and user experience consistent across the board and to have a maintainable code base that follows the same coding standards and patterns.
+
 ===Prerequisites===
 
   # JDK or JRE 1.6.0_10 or newer installed.
