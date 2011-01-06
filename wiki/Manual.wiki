@@ -42,3 +42,8 @@ Status bar contains three different features:
   * *Zoom control* allows you to zoom in or out.
   * *Auto-update* notification. When the bulb is on, there are updates available. Click on it for more information.
   * *Memory bar* is the blue-ish icon on the right side that shows the amount of memory occupied by the application. Move the mouse over it to see more details or click on it to try to cleanup as much memory as possible.
+
+===Presets===
+
+Preset is a file that contains default application settings and individual component configuration. File format is very simple to make it easier for users to edit the existing presets or make their own.
+TODO: add more details here
