@@ -553,7 +553,6 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public boolean dragOver(Point point) {
-//		System.err.println("DragOver: " + point);
 		if (point == null) {
 			return false;
 		}
@@ -561,20 +560,6 @@ public class Presenter implements IPlugInPort {
 		boolean repaint = false;
 		if (!controlPointMap.isEmpty()) {
 			// We're dragging control point(s).
-			// IDIYComponent<?> firstComponent =
-			// controlPointMap.keySet().iterator().next();
-			// Point controlPoint = firstComponent
-			// .getControlPoint(controlPointMap.get(firstComponent));
-			// if (controlPoint == null) {
-			// LOG.warn("Control point not found in the map!");
-			// }
-			// int x = (int) (Math.round((controlPoint.x + scaledPoint.x -
-			// previousDragPoint.x)
-			// / Constants.GRID) * Constants.GRID);
-			// int y = (int) (Math.round((controlPoint.y + scaledPoint.y -
-			// previousDragPoint.y)
-			// / Constants.GRID) * Constants.GRID);
-			// previousDragPoint.setLocation(x, y);
 			int dx = (point.x - previousDragPoint.x);
 			int dy = (point.y - previousDragPoint.y);
 			if (snapToGrid) {
@@ -603,12 +588,6 @@ public class Presenter implements IPlugInPort {
 			repaint = true;
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
 			// selectionRect);
-			// } else {
-			// // If there are components selected translate their control
-			// points.
-			// repaint = translateSelectedComponents(previousDragPoint,
-			// scaledPoint);
-			// // dragStartPoint = point;
 		}
 		if (repaint) {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -650,33 +629,6 @@ public class Presenter implements IPlugInPort {
 		dragInProgress = false;
 	}
 
-	// private boolean translateSelectedComponents(Point fromPoint, Point
-	// toPoint) {
-	// if (toPoint == null) {
-	// LOG.debug("Drag ended outside the drawing area.");
-	// return false;
-	// }
-	// int dx = (int) (Math.round((toPoint.x - fromPoint.x) / zoomLevel /
-	// Constants.GRID) * Constants.GRID);
-	// int dy = (int) (Math.round((toPoint.y - fromPoint.y) / zoomLevel /
-	// Constants.GRID) * Constants.GRID);
-	// fromPoint.translate(dx, dy);
-	// for (IDIYComponent<?> component : selectedComponents) {
-	// for (int i = 0; i < component.getControlPointCount(); i++) {
-	// Point controlPoint = new Point(component.getControlPoint(i));
-	// translateControlPoint(controlPoint, dx, dy);
-	// component.setControlPoint(controlPoint, i);
-	// }
-	// }
-	// return dx != 0 && dy != 0;
-	// }
-
-	// private void translateControlPoint(Point controlPoint, int dx, int dy) {
-	// int x = controlPoint.x + dx;
-	// int y = controlPoint.y + dy;
-	// controlPoint.setLocation(x, y);
-	// }
-
 	@Override
 	public void addComponents(List<IDIYComponent<?>> components, Point preferredPoint) {
 		LOG.debug(String.format("addComponents(%s)", components));
@@ -717,13 +669,6 @@ public class Presenter implements IPlugInPort {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	// @Override
-	// public Object getDefaultPropertyValue(
-	// Class<? extends IDIYComponent> componentClass,
-	// String propertyName) {
-	// return configuration.getDefaultPropertyValues().get(
-	// componentClass.getName() + ":" + propertyName);
-	// }
 	public void setDefaultPropertyValue(String propertyName, Object value) {
 		LOG.debug(String.format("setDefaultPropertyValue(%s, %s)", propertyName, value));
 		Map<String, Object> defaultMap = (Map<String, Object>) ConfigurationManager.getInstance()
