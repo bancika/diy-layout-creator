@@ -17,8 +17,9 @@ public abstract class AbstractBoard implements IDIYComponent<String> {
 
 	protected String name;
 	protected String value;
-	protected Point[] controlPoints = new Point[] { new Point(0, 0),
-			new Point((int) (10 * Constants.GRID), (int) (10 * Constants.GRID)) };
+	protected Point[] controlPoints = new Point[] {
+			new Point((int) (-5 * Constants.GRID), (int) (-5 * Constants.GRID)),
+			new Point((int) (5 * Constants.GRID), (int) (5 * Constants.GRID)) };
 
 	protected abstract Color getBoardColor();
 
