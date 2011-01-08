@@ -327,8 +327,9 @@ public class Presenter implements IPlugInPort {
 				// g2dWrapper.setComposite(mainComposite);
 				// }
 				componentAreaMap.put(component, g2dWrapper.finishedDrawingComponent());
-
-				// Draw control points
+			}
+			// Draw control points.
+			for (IDIYComponent<?> component : components) {
 				if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
 					for (int i = 0; i < component.getControlPointCount(); i++) {
 						Point controlPoint = component.getControlPoint(i);
