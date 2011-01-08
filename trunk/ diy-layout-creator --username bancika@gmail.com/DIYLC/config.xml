@@ -1,5 +1,9 @@
 <map>
   <entry>
+    <string>defaults</string>
+    <map/>
+  </entry>
+  <entry>
     <string>metric</string>
     <boolean>true</boolean>
   </entry>

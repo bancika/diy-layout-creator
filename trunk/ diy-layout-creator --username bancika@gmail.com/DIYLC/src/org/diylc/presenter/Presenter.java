@@ -560,8 +560,8 @@ public class Presenter implements IPlugInPort {
 		boolean repaint = false;
 		if (!controlPointMap.isEmpty()) {
 			// We're dragging control point(s).
-			int dx = (point.x - previousDragPoint.x);
-			int dy = (point.y - previousDragPoint.y);
+			int dx = (scaledPoint.x - previousDragPoint.x);
+			int dy = (scaledPoint.y - previousDragPoint.y);
 			if (snapToGrid) {
 				dx = (int) (Math.round(dx / Constants.GRID) * Constants.GRID);
 				dy = (int) (Math.round(dy / Constants.GRID) * Constants.GRID);
