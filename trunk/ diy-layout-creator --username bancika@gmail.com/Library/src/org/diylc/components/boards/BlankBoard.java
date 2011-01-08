@@ -1,4 +1,4 @@
-package org.diylc.components;
+package org.diylc.components.boards;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
