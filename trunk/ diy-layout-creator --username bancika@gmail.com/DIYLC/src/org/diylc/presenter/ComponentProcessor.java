@@ -56,7 +56,8 @@ public class ComponentProcessor {
 		for (Method method : clazz.getMethods()) {
 			if (method.getName().startsWith("get")) {
 				try {
-					if (method.isAnnotationPresent(EditableProperty.class)) {
+					if (method.isAnnotationPresent(EditableProperty.class)
+							&& !method.isAnnotationPresent(Deprecated.class)) {
 						EditableProperty annotation = method.getAnnotation(EditableProperty.class);
 						String name;
 						if (annotation.name().equals("")) {
@@ -64,8 +65,8 @@ public class ComponentProcessor {
 						} else {
 							name = annotation.name();
 						}
-						Method setter = clazz.getMethod("set" + method.getName().substring(3), method
-								.getReturnType());
+						Method setter = clazz.getMethod("set" + method.getName().substring(3),
+								method.getReturnType());
 						PropertyWrapper property = new PropertyWrapper(name,
 								method.getReturnType(), method, setter, annotation.defaultable());
 						properties.add(property);

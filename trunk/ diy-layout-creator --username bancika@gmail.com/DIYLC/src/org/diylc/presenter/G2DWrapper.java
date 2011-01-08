@@ -1,5 +1,6 @@
 package org.diylc.presenter;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
@@ -21,6 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -40,6 +42,8 @@ import java.util.Map;
  * @author Branislav Stojkovic
  */
 class G2DWrapper extends Graphics2D {
+
+	public static int LINE_SENSITIVITY_MARGIN = 2;
 
 	private Graphics2D canvasGraphics;
 	private Stroke originalStroke;
@@ -375,6 +379,21 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void drawLine(int x1, int y1, int x2, int y2) {
 		canvasGraphics.drawLine(x1, y1, x2, y2);
+		Double theta = Math.atan2(y2 - y1, x2 - x1);
+		double width = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+		double height;
+		if (getStroke() instanceof BasicStroke) {
+			height = ((BasicStroke) getStroke()).getLineWidth() + 2 * LINE_SENSITIVITY_MARGIN;
+		} else {
+			height = 2 * LINE_SENSITIVITY_MARGIN;
+		}
+		int midX = (x1 + x2) / 2;
+		int midY = (y1 + y2) / 2;
+		Rectangle2D rect = new Rectangle2D.Double(midX - width / 2, midY - height / 2, width,
+				height);
+		Area area = new Area(rect);
+		area.transform(AffineTransform.getRotateInstance(theta, midX, midY));
+		appendShape(area);
 	}
 
 	@Override
@@ -416,7 +435,7 @@ class G2DWrapper extends Graphics2D {
 		canvasGraphics.fillPolygon(points, points2, points3);
 		appendShape(new Polygon(points, points2, points3));
 	}
-	
+
 	@Override
 	public void drawRect(int x, int y, int width, int height) {
 		canvasGraphics.drawRect(x, y, width, height);
