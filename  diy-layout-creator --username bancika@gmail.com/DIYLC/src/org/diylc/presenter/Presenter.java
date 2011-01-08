@@ -524,6 +524,7 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
+			// Take the last component, i.e. the top order component.
 			IDIYComponent<?> component = components.get(components.size() - 1);
 			// If the component under the cursor is not already selected, make
 			// it into the only selected component.
