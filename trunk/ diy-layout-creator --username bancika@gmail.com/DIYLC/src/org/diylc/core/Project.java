@@ -8,7 +8,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-
 /**
  * Entity class that defines a project. Contains project properties and a
  * collection of components.This class is serialized to file. Some filed getters
@@ -95,6 +94,11 @@ public class Project implements Serializable {
 		this.height = height;
 	}
 
+	/**
+	 * List of components sorted by z-order ascending.
+	 * 
+	 * @return
+	 */
 	public List<IDIYComponent<?>> getComponents() {
 		return components;
 	}
