@@ -28,9 +28,11 @@ public abstract class AbstractBoard implements IDIYComponent<String> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
 		g2d.setStroke(new BasicStroke());
-		g2d.setColor(getBoardColor());
-		g2d.fillRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
-				- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
+		if (componentState != ComponentState.DRAGGING) {
+			g2d.setColor(getBoardColor());
+			g2d.fillRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
+					- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
+		}
 		g2d.setColor(getBorderColor());
 		g2d.drawRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
 				- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);

@@ -1,9 +1,7 @@
 package org.diylc.presenter;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -297,8 +295,9 @@ public class Presenter implements IPlugInPort {
 			g2dWrapper.scale(zoomLevel, zoomLevel);
 		}
 
-		Composite mainComposite = g2d.getComposite();
-		Composite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+		// Composite mainComposite = g2d.getComposite();
+		// Composite alphaComposite =
+		// AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
 
 		// g2dWrapper.resetTx();
 
@@ -318,15 +317,15 @@ public class Presenter implements IPlugInPort {
 				}
 				// If the component is being dragged, draw it in a separate
 				// composite.
-				if (state == ComponentState.DRAGGING) {
-					g2dWrapper.setComposite(alphaComposite);
-				}
+				// if (state == ComponentState.DRAGGING) {
+				// g2dWrapper.setComposite(alphaComposite);
+				// }
 				// Draw the component through the g2dWrapper.
 				component.draw(g2dWrapper, state, currentProject);
 				// Restore the composite if needed.
-				if (state == ComponentState.DRAGGING) {
-					g2dWrapper.setComposite(mainComposite);
-				}
+				// if (state == ComponentState.DRAGGING) {
+				// g2dWrapper.setComposite(mainComposite);
+				// }
 				componentAreaMap.put(component, g2dWrapper.finishedDrawingComponent());
 
 				// Draw control points
@@ -483,9 +482,11 @@ public class Presenter implements IPlugInPort {
 				break;
 			}
 		}
+
 		if (!components.equals(controlPointMap)) {
 			controlPointMap = components;
-			messageDispatcher.dispatchMessage(EventType.AVAILABLE_CTRL_POINTS_CHANGED, components);
+			messageDispatcher.dispatchMessage(EventType.AVAILABLE_CTRL_POINTS_CHANGED,
+					new HashMap<IDIYComponent<?>, Set<Integer>>(components));
 		}
 	}
 
@@ -534,11 +535,25 @@ public class Presenter implements IPlugInPort {
 				messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 				messageDispatcher.dispatchMessage(EventType.REPAINT);
 			}
+			// If there aren't any control points, try to add all the selected
+			// components with all their control points. That will allow the
+			// user to
+			// drag the whole component.
+			for (IDIYComponent<?> c : selectedComponents) {
+				Set<Integer> pointIndices = new HashSet<Integer>();
+				if (component.getControlPointCount() > 0) {
+					for (int i = 0; i < component.getControlPointCount(); i++) {
+						pointIndices.add(i);
+					}
+					controlPointMap.put(c, pointIndices);
+				}
+			}
 		}
 	}
 
 	@Override
 	public boolean dragOver(Point point) {
+//		System.err.println("DragOver: " + point);
 		if (point == null) {
 			return false;
 		}
@@ -567,7 +582,7 @@ public class Presenter implements IPlugInPort {
 				dy = (int) (Math.round(dy / Constants.GRID) * Constants.GRID);
 			}
 			// Only repaint if there's an actual change.
-			repaint = dx != 0 && dy != 0;
+			repaint = dx != 0 || dy != 0;
 
 			previousDragPoint.translate(dx, dy);
 
@@ -588,10 +603,12 @@ public class Presenter implements IPlugInPort {
 			repaint = true;
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
 			// selectionRect);
-		} else {
-			// If there are components selected translate their control points.
-			repaint = translateSelectedComponents(previousDragPoint, scaledPoint);
-			// dragStartPoint = point;
+			// } else {
+			// // If there are components selected translate their control
+			// points.
+			// repaint = translateSelectedComponents(previousDragPoint,
+			// scaledPoint);
+			// // dragStartPoint = point;
 		}
 		if (repaint) {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -633,29 +650,32 @@ public class Presenter implements IPlugInPort {
 		dragInProgress = false;
 	}
 
-	private boolean translateSelectedComponents(Point fromPoint, Point toPoint) {
-		if (toPoint == null) {
-			LOG.debug("Drag ended outside the drawing area.");
-			return false;
-		}
-		int dx = (int) (Math.round((toPoint.x - fromPoint.x) / zoomLevel / Constants.GRID) * Constants.GRID);
-		int dy = (int) (Math.round((toPoint.y - fromPoint.y) / zoomLevel / Constants.GRID) * Constants.GRID);
-		fromPoint.translate(dx, dy);
-		for (IDIYComponent<?> component : selectedComponents) {
-			for (int i = 0; i < component.getControlPointCount(); i++) {
-				Point controlPoint = new Point(component.getControlPoint(i));
-				translateControlPoint(controlPoint, dx, dy);
-				component.setControlPoint(controlPoint, i);
-			}
-		}
-		return dx != 0 && dy != 0;
-	}
+	// private boolean translateSelectedComponents(Point fromPoint, Point
+	// toPoint) {
+	// if (toPoint == null) {
+	// LOG.debug("Drag ended outside the drawing area.");
+	// return false;
+	// }
+	// int dx = (int) (Math.round((toPoint.x - fromPoint.x) / zoomLevel /
+	// Constants.GRID) * Constants.GRID);
+	// int dy = (int) (Math.round((toPoint.y - fromPoint.y) / zoomLevel /
+	// Constants.GRID) * Constants.GRID);
+	// fromPoint.translate(dx, dy);
+	// for (IDIYComponent<?> component : selectedComponents) {
+	// for (int i = 0; i < component.getControlPointCount(); i++) {
+	// Point controlPoint = new Point(component.getControlPoint(i));
+	// translateControlPoint(controlPoint, dx, dy);
+	// component.setControlPoint(controlPoint, i);
+	// }
+	// }
+	// return dx != 0 && dy != 0;
+	// }
 
-	private void translateControlPoint(Point controlPoint, int dx, int dy) {
-		int x = controlPoint.x + dx;
-		int y = controlPoint.y + dy;
-		controlPoint.setLocation(x, y);
-	}
+	// private void translateControlPoint(Point controlPoint, int dx, int dy) {
+	// int x = controlPoint.x + dx;
+	// int y = controlPoint.y + dy;
+	// controlPoint.setLocation(x, y);
+	// }
 
 	@Override
 	public void addComponents(List<IDIYComponent<?>> components, Point preferredPoint) {

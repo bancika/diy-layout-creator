@@ -26,7 +26,7 @@ public class PerfBoard extends AbstractBoard {
 	private static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);
 	private static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
 
-//	private Area copperArea;
+	// private Area copperArea;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
@@ -41,20 +41,25 @@ public class PerfBoard extends AbstractBoard {
 
 		// long t = System.nanoTime();
 		super.draw(g2d, componentState, project);
-		Point p = new Point(controlPoints[0]);
-		int radius = PAD_SIZE.convertToPixels() / 2;
-		int holeRadius = HOLE_SIZE.convertToPixels() / 2;
-		g2d.setStroke(new BasicStroke(radius));
 
-		while (p.y < controlPoints[1].y - SPACING.convertToPixels()) {
-			p.x = controlPoints[0].x;
-			p.y += SPACING.convertToPixels();
-			while (p.x < controlPoints[1].x - SPACING.convertToPixels()) {
-				p.x += SPACING.convertToPixels();
-				g2d.setColor(COPPER_COLOR);
-				g2d.fillOval(p.x - radius, p.y - radius, radius * 2, radius * 2);
-				g2d.setColor(Constants.CANVAS_COLOR);
-				g2d.fillOval(p.x - holeRadius, p.y - holeRadius, holeRadius * 2, holeRadius * 2);
+		if (componentState != ComponentState.DRAGGING) {
+			Point p = new Point(controlPoints[0]);
+			int radius = PAD_SIZE.convertToPixels() / 2;
+			int holeRadius = HOLE_SIZE.convertToPixels() / 2;
+			g2d.setStroke(new BasicStroke(radius));
+
+			while (p.y < controlPoints[1].y - SPACING.convertToPixels()) {
+				p.x = controlPoints[0].x;
+				p.y += SPACING.convertToPixels();
+				while (p.x < controlPoints[1].x - SPACING.convertToPixels()) {
+					p.x += SPACING.convertToPixels();
+					g2d.setColor(COPPER_COLOR);
+					g2d.fillOval(p.x - radius, p.y - radius, radius * 2, radius * 2);
+					g2d.setColor(Constants.CANVAS_COLOR);
+					g2d
+							.fillOval(p.x - holeRadius, p.y - holeRadius, holeRadius * 2,
+									holeRadius * 2);
+				}
 			}
 		}
 		// System.err.println("OldDraw: " + (System.nanoTime() - t));

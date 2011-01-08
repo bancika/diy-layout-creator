@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 
 public class Constants {
 
-	public static final float GRID = (int) (Toolkit.getDefaultToolkit().getScreenResolution() / 10f);
+	public static final int GRID = (int) (Toolkit.getDefaultToolkit().getScreenResolution() / 10f);
 
 	public static Color CANVAS_COLOR = Color.white;
 	public static Color GRID_COLOR = new Color(240, 240, 240);
