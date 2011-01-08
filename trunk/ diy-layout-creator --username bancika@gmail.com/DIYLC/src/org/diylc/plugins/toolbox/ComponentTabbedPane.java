@@ -1,6 +1,8 @@
 package org.diylc.plugins.toolbox;
 
 import java.awt.Container;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +13,12 @@ import javax.swing.JTabbedPane;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 
-
+/**
+ * Tabbed pane that shows all available components categorized into
+ * tabs.
+ * 
+ * @author Branislav Stojkovic
+ */
 class ComponentTabbedPane extends JTabbedPane {
 
 	private static final long serialVersionUID = 1L;
@@ -21,8 +28,10 @@ class ComponentTabbedPane extends JTabbedPane {
 		super();
 		this.plugInPort = plugInPort;
 		Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
-		for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet()) {
-			addTab(entry.getKey(), createComponentPanel(entry.getValue()));
+		List<String> categories = new ArrayList<String>(componentTypes.keySet());
+		Collections.sort(categories);
+		for (String category : categories) {
+			addTab(category, createComponentPanel(componentTypes.get(category)));
 		}
 	}
 
