@@ -13,6 +13,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 /**
@@ -43,6 +44,8 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 			this.height = getDefaultHeight().clone();
 		} catch (CloneNotSupportedException e) {
 			// This should never happen because Size supports cloning.
+		} catch (NullPointerException e) {
+			// This will happen if components do not have any shape.
 		}
 	}
 
@@ -74,6 +77,20 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 	 */
 	protected abstract Color getBorderColor();
 
+	/**
+	 * @return default lead thickness. Override this method to change it.
+	 */
+	protected Size getLeadThickness() {
+		return new Size(0.5d, SizeUnit.mm);
+	}
+	
+	/**
+	 * @return default lead color. Override this method to change it.
+	 */
+	protected Color getLeadColor() {
+		return LEAD_COLOR;
+	}
+
 	@Override
 	public int getControlPointCount() {
 		return points.length;
@@ -91,14 +108,17 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
-		g2d.setColor(LEAD_COLOR);
-		g2d.setStroke(new BasicStroke(1));
+		g2d.setColor(getLeadColor());
+		g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
 		double distance = points[0].distance(points[1]);
 		Shape shape = getComponentShape();
+		if (shape == null) {
+			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
+			return;
+		}
 		Rectangle shapeRect = shape.getBounds();
 		double leadLenght = (distance - shapeRect.width) / 2;
-		Double theta;
-		theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
+		Double theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
 		// Draw leads.
 		g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + leadLenght * Math.cos(theta)),
 				(int) (points[0].y + leadLenght * Math.sin(theta)));
@@ -114,6 +134,7 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 			g2d.setColor(getBodyColor());
 			g2d.fill(shape);
 		}
+		g2d.setStroke(new BasicStroke(1));
 		g2d.setColor(getBorderColor());
 		g2d.draw(shape);
 		// Draw label.
