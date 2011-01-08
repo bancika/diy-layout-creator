@@ -1,10 +1,11 @@
-package org.diylc.components;
+package org.diylc.components.passive;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.AbstractLeadedDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;

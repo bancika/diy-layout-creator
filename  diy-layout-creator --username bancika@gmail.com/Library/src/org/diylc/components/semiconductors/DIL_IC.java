@@ -1,4 +1,4 @@
-package org.diylc.components;
+package org.diylc.components.semiconductors;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
