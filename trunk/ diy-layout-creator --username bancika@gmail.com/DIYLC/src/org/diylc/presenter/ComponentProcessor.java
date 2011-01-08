@@ -1,14 +1,23 @@
 package org.diylc.presenter;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 import org.apache.log4j.Logger;
+import org.diylc.common.ComponentType;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.ComponentLayer;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
 import com.rits.cloning.Cloner;
@@ -39,6 +48,52 @@ public class ComponentProcessor {
 		super();
 		this.cloner = new Cloner();
 		this.propertyCache = new HashMap<Class<?>, List<PropertyWrapper>>();
+	}
+
+	public ComponentType createComponentTypeFrom(Class<? extends IDIYComponent<?>> clazz) {
+		String name;
+		String description;
+		String category;
+		String namePrefix;
+		String author;
+		Icon icon;
+		ComponentLayer layer;
+		boolean stretchable;
+		if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
+			ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
+			name = annotation.name();
+			description = annotation.desciption();
+			category = annotation.category();
+			namePrefix = annotation.instanceNamePrefix();
+			author = annotation.author();
+			layer = annotation.componentLayer();
+			stretchable = annotation.stretchable();
+		} else {
+			name = clazz.getSimpleName();
+			description = "";
+			category = "Uncategorized";
+			namePrefix = "Unknown";
+			author = "Unknown";
+			layer = ComponentLayer.COMPONENT;
+			stretchable = true;
+		}
+		icon = null;
+		// Draw component icon.
+		try {
+			IDIYComponent<?> componentInstance = (IDIYComponent<?>) clazz.newInstance();
+			Image image = new BufferedImage(Presenter.ICON_SIZE, Presenter.ICON_SIZE,
+					java.awt.image.BufferedImage.TYPE_INT_ARGB);
+			componentInstance.drawIcon((Graphics2D) image.getGraphics(), Presenter.ICON_SIZE,
+					Presenter.ICON_SIZE);
+			icon = new ImageIcon(image);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		ComponentType componentType = new ComponentType(name, description, category, namePrefix,
+				author, icon, clazz, layer, stretchable);
+		return componentType;
 	}
 
 	/**
