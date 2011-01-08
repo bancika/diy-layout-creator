@@ -6,9 +6,14 @@ import java.awt.Font;
 import java.awt.Stroke;
 import java.awt.Toolkit;
 
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
+
 public class Constants {
 
-	public static final int GRID = (int) (Toolkit.getDefaultToolkit().getScreenResolution() / 10f);
+	public static final int PIXELS_PER_INCH = Toolkit.getDefaultToolkit().getScreenResolution();
+	public static Size GRID_SIZE = new Size(0.1d, SizeUnit.in);
+	public static final int GRID = GRID_SIZE.convertToPixels();
 
 	public static Color CANVAS_COLOR = Color.white;
 	public static Color GRID_COLOR = new Color(240, 240, 240);

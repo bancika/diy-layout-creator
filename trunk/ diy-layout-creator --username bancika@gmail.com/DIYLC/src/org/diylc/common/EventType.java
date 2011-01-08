@@ -1,9 +1,9 @@
 package org.diylc.common;
 
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 
 import org.diylc.core.Project;
-
 
 /**
  * Enumerates all possible events between {@link IPlugInPort} and
@@ -38,6 +38,12 @@ public enum EventType {
 	 */
 	SELECTION_CHANGED,
 	/**
+	 * Called when selection size changes, together with a {@link Point2D}
+	 * object containing selection size (x = width, y = height). Size is
+	 * expressed in the default measure (cm for metric, inches for imperial).
+	 */
+	SELECTION_SIZE_CHANGED,
+	/**
 	 * Called when display needs to be repainted. No parameters are passed.
 	 */
 	REPAINT,
@@ -51,5 +57,12 @@ public enum EventType {
 	 * {@link Project} are passed as parameters, one before and one after the
 	 * change. The third parameter is a string containing change description.
 	 */
-	PROJECT_MODIFIED, AVAILABLE_CTRL_POINTS_CHANGED, SELECTED_CTRL_POINTS_CHANGED, ;
+	PROJECT_MODIFIED,
+	/**
+	 * Called when control points under the cursor are changed. A single
+	 * parameter is passed, an instance of
+	 * <code>Map<IDIYComponent<?>, Set<Integer>></code> containing all the
+	 * components and indices of their control points that are under the cursor.
+	 */
+	AVAILABLE_CTRL_POINTS_CHANGED, SELECTED_CTRL_POINTS_CHANGED, ;
 }

@@ -13,6 +13,7 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.plugins.file.ProjectDrawingProvider;
+import org.diylc.presenter.Presenter;
 
 import com.diyfever.gui.miscutils.ConfigurationManager;
 import com.diyfever.gui.ruler.IRulerListener;
@@ -22,7 +23,7 @@ public class CanvasPlugin implements IPlugIn {
 
 	private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
 
-	private static final String METRIC_KEY = "metric";
+
 
 	private RulerScrollPane scrollPane;
 	private CanvasPanel canvasPanel;
@@ -46,7 +47,7 @@ public class CanvasPlugin implements IPlugIn {
 		if (scrollPane == null) {
 			scrollPane = new RulerScrollPane(canvasPanel, new ProjectDrawingProvider(plugInPort));
 			Boolean metric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
-					METRIC_KEY);
+					Presenter.METRIC_KEY);
 			if (metric == null) {
 				metric = true;
 			}
@@ -55,7 +56,7 @@ public class CanvasPlugin implements IPlugIn {
 
 				@Override
 				public void unitsChanged(boolean isMetric) {
-					ConfigurationManager.getInstance().setConfigurationItem(METRIC_KEY, isMetric);
+					plugInPort.setMetric(isMetric);
 				}
 			});
 		}

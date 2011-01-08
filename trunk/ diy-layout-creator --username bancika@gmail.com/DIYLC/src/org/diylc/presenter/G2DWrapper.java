@@ -416,6 +416,12 @@ class G2DWrapper extends Graphics2D {
 		canvasGraphics.fillPolygon(points, points2, points3);
 		appendShape(new Polygon(points, points2, points3));
 	}
+	
+	@Override
+	public void drawRect(int x, int y, int width, int height) {
+		canvasGraphics.drawRect(x, y, width, height);
+		appendShape(new Rectangle(x, y, width, height));
+	}
 
 	@Override
 	public void fillRect(int x, int y, int width, int height) {

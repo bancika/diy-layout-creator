@@ -5,6 +5,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -15,7 +18,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ComponentType;
@@ -24,8 +30,10 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComparatorFactory;
+import org.diylc.presenter.Presenter;
 
 import com.diyfever.gui.MemoryBar;
+import com.diyfever.gui.miscutils.ConfigurationManager;
 import com.diyfever.gui.miscutils.PercentageListCellRenderer;
 import com.diyfever.gui.update.UpdateLabel;
 
@@ -34,11 +42,13 @@ public class StatusBar extends JPanel implements IPlugIn {
 	private static final long serialVersionUID = 1L;
 
 	public static String UPDATE_URL = "http://www.diy-fever.com/update.xml";
+	private static final Format sizeFormat = new DecimalFormat("0.00");
 
 	private JComboBox zoomBox;
 	private UpdateLabel updateLabel;
 	private MemoryBar memoryPanel;
 	private JLabel statusLabel;
+	private JLabel sizeLabel;
 
 	private IPlugInPort plugInPort;
 
@@ -97,6 +107,16 @@ public class StatusBar extends JPanel implements IPlugIn {
 		return statusLabel;
 	}
 
+	public JLabel getSizeLabel() {
+		if (sizeLabel == null) {
+			sizeLabel = new JLabel();
+			sizeLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(
+					0, 1, 0, 1, UIManager.getColor("Separator.shadow")), BorderFactory
+					.createEmptyBorder(0, 4, 0, 4)));
+		}
+		return sizeLabel;
+	}
+
 	private void layoutComponents() {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
@@ -116,16 +136,25 @@ public class StatusBar extends JPanel implements IPlugIn {
 		gbc.gridx = 1;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 0;
-		add(zoomPanel, gbc);
+		add(new JSeparator(SwingConstants.HORIZONTAL), gbc);
 
 		gbc.gridx = 2;
-		add(getUpdateLabel(), gbc);
+		add(getSizeLabel(), gbc);
 
 		gbc.gridx = 3;
+		add(new JSeparator(SwingConstants.HORIZONTAL), gbc);
+
+		gbc.gridx = 4;
+		add(zoomPanel, gbc);
+
+		gbc.gridx = 5;
+		add(getUpdateLabel(), gbc);
+
+		gbc.gridx = 6;
 		gbc.fill = GridBagConstraints.NONE;
 		add(getMemoryPanel(), gbc);
 
-		gbc.gridx = 4;
+		gbc.gridx = 7;
 		add(new JPanel(), gbc);
 	}
 
@@ -148,7 +177,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
 		return EnumSet.of(EventType.ZOOM_CHANGED, EventType.SLOT_CHANGED,
-				EventType.AVAILABLE_CTRL_POINTS_CHANGED);
+				EventType.AVAILABLE_CTRL_POINTS_CHANGED, EventType.SELECTION_SIZE_CHANGED);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -158,6 +187,18 @@ public class StatusBar extends JPanel implements IPlugIn {
 		case ZOOM_CHANGED:
 			if (!params[0].equals(getZoomBox().getSelectedItem())) {
 				getZoomBox().setSelectedItem(params[0]);
+			}
+			break;
+		case SELECTION_SIZE_CHANGED:
+			Point2D size = (Point2D) params[0];
+			boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
+					Presenter.METRIC_KEY);
+			if (size == null) {
+				getSizeLabel().setText("Size: N/A");
+			} else {
+				getSizeLabel().setText(
+						"Size: " + sizeFormat.format(size.getX()) + " x "
+								+ sizeFormat.format(size.getY()) + (isMetric ? " cm" : " in"));
 			}
 			break;
 		case SLOT_CHANGED:
