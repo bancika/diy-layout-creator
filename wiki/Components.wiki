@@ -14,9 +14,9 @@
 
 ===Adding to the main library===
 
-  # Setup DIYLC project from the SVN.
-  # New components should be created inside *org.diylc.components* package of *src.library* folder.
-  # When you are done developing and testing the new components, build the *src.library* folder as *library/main.jar*.
+  # Checkout *DIYLC* and *Library* folders from the SVN.
+  # New components should be created inside *org.diylc.components* package.
+  # When you are done developing and testing the new components, build the project into *DIYLC/library/main.jar*.
   # Commit new classes to the source control.
   # Commit the updated library/main.jar back to the source control.
 
