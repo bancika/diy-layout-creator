@@ -32,8 +32,8 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 
 	protected Size width;
 	protected Size height;
-	protected Point[] points = new Point[] { new Point(0, 0),
-			new Point((int) (Constants.GRID * 10), 0) };
+	protected Point[] points = new Point[] { new Point((int) (-Constants.GRID * 5), 0),
+			new Point((int) (Constants.GRID * 5), 0) };
 	protected String name = "New Component";
 
 	protected AbstractLeadedDIYComponent() {

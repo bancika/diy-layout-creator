@@ -12,7 +12,7 @@ import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Radial Film Capacitor", author = "bancika", category = "Passive", instanceNamePrefix = "C", desciption = "test")
+@ComponentDescriptor(name = "Radial Film Capacitor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "C", desciption = "test")
 public class RadialFilmCapacitor extends AbstractLeadedDIYComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
