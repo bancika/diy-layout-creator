@@ -17,7 +17,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "DIL IC", author = "bancika", category = "Semiconductors", instanceNamePrefix = "IC", desciption = "test", stretchable = false)
+@ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", desciption = "test", stretchable = false)
 public class DIL_IC implements IDIYComponent<String> {
 
 	private static final long serialVersionUID = 1L;
