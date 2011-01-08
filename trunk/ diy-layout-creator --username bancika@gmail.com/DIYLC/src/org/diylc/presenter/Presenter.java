@@ -847,6 +847,8 @@ public class Presenter implements IPlugInPort {
 						.deepClone(currentProject), "Edit");
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+					calculateSelectionDimension());
 		}
 	}
 

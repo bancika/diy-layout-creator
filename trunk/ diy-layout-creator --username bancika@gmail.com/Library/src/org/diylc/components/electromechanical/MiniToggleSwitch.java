@@ -20,7 +20,7 @@ public class MiniToggleSwitch implements IDIYComponent<ToggleSwitchType> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static Size SPACING = new Size(0.1d, SizeUnit.in);
+	private static Size SPACING = new Size(0.2d, SizeUnit.in);
 	private static Size MARGIN = new Size(0.08d, SizeUnit.in);
 	private static Size CIRCLE_SIZE = new Size(0.09d, SizeUnit.in);
 	private static Size LUG_WIDTH = new Size(0.065d, SizeUnit.in);
