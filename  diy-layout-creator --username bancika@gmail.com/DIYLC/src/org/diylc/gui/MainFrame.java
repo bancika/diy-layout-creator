@@ -50,7 +50,7 @@ public class MainFrame extends JFrame implements IView {
 	private CanvasPlugin canvasPlugin;
 
 	public MainFrame() {
-		super("DIYLC4");
+		super("DIYLC 3");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 600));
 		createBasePanels();
@@ -59,7 +59,7 @@ public class MainFrame extends JFrame implements IView {
 
 		this.presenter = new Presenter(this);
 
-		setTitle(getTitle() + " " + presenter.getCurrentVersionNumber());
+		setTitle(getTitle() + " v." + presenter.getCurrentVersionNumber());
 
 		presenter.installPlugin(new ToolBox());
 		presenter.installPlugin(new FileManager());

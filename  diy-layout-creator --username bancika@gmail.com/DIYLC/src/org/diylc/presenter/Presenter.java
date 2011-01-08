@@ -427,7 +427,7 @@ public class Presenter implements IPlugInPort {
 			if (components.isEmpty()) {
 				selectedComponents.clear();
 			} else {
-				IDIYComponent<?> component = components.get(0);
+				IDIYComponent<?> component = components.get(components.size() - 1);
 				// If ctrl is pressed just toggle the component under mouse
 				// cursor.
 				if (ctrlDown) {
@@ -451,10 +451,11 @@ public class Presenter implements IPlugInPort {
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
-		for (IDIYComponent<?> component : currentProject.getComponents()) {
-			// Go backwards so we take the highest z-order components first.
-			for (int i = component.getControlPointCount() - 1; i >= 0; i--) {
-				Point controlPoint = component.getControlPoint(i);
+		// Go backwards so we take the highest z-order components first.
+		for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
+			IDIYComponent<?> component = currentProject.getComponents().get(i);
+			for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
+				Point controlPoint = component.getControlPoint(pointIndex);
 				if (shouldShowControlPointsFor(component)) {
 					try {
 						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SENSITIVITY) {
@@ -462,7 +463,7 @@ public class Presenter implements IPlugInPort {
 							ComponentType componentType = componentTypeMap
 									.get(component.getClass());
 							if (componentType.isStretchable()) {
-								indices.add(i);
+								indices.add(pointIndex);
 							} else {
 								for (int j = 0; j < component.getControlPointCount(); j++) {
 									indices.add(j);
@@ -523,7 +524,7 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
-			IDIYComponent<?> component = components.get(0);
+			IDIYComponent<?> component = components.get(components.size() - 1);
 			// If the component under the cursor is not already selected, make
 			// it into the only selected component.
 			if (!selectedComponents.contains(component)) {
@@ -591,7 +592,9 @@ public class Presenter implements IPlugInPort {
 			repaint = translateSelectedComponents(previousDragPoint, scaledPoint);
 			// dragStartPoint = point;
 		}
-		messageDispatcher.dispatchMessage(EventType.REPAINT);
+		if (repaint) {
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+		}
 		return true;
 	}
 
@@ -657,7 +660,9 @@ public class Presenter implements IPlugInPort {
 	public void addComponents(List<IDIYComponent<?>> components, Point preferredPoint) {
 		LOG.debug(String.format("addComponents(%s)", components));
 		Project oldProject = cloner.deepClone(currentProject);
-		currentProject.getComponents().addAll(components);
+		for (IDIYComponent<?> component : components) {
+			addComponent(component, componentTypeMap.get(component.getClass()));
+		}
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -713,6 +718,26 @@ public class Presenter implements IPlugInPort {
 		}
 	}
 
+	/**
+	 * Adds a component to the project taking z-order into account.
+	 * 
+	 * @param component
+	 * @param componentType
+	 */
+	private void addComponent(IDIYComponent<?> component, ComponentType componentType) {
+		int index = 0;
+		while (index < currentProject.getComponents().size()
+				&& componentType.getLayer().ordinal() >= componentTypeMap.get(
+						currentProject.getComponents().get(index).getClass()).getLayer().ordinal()) {
+			index++;
+		}
+		if (index < currentProject.getComponents().size()) {
+			currentProject.getComponents().add(index, component);
+		} else {
+			currentProject.getComponents().add(component);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	private void instantiateComponent(ComponentType componentType, Point point) throws Exception {
 		LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
@@ -739,17 +764,7 @@ public class Presenter implements IPlugInPort {
 		component.setName(componentType.getNamePrefix() + i);
 
 		// Add it to the project taking z-order into account.
-		int index = 0;
-		while (index < currentProject.getComponents().size()
-				&& componentType.getLayer().ordinal() >= componentTypeMap.get(
-						currentProject.getComponents().get(index).getClass()).getLayer().ordinal()) {
-			index++;
-		}
-		if (index < currentProject.getComponents().size()) {
-			currentProject.getComponents().add(index, component);
-		} else {
-			currentProject.getComponents().add(component);
-		}
+		addComponent(component, componentType);
 
 		// Translate them to the desired location.
 		if (point != null) {
