@@ -17,6 +17,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -401,6 +402,9 @@ public class Presenter implements IPlugInPort {
 				components.add(entry.getKey());
 			}
 		}
+		// Sort by z-order.
+		Collections.sort(components, ComparatorFactory.getInstance().getComponentZOrderComparator(
+				componentTypeMap));
 		return components;
 	}
 
@@ -411,11 +415,10 @@ public class Presenter implements IPlugInPort {
 		Point scaledPoint = scalePoint(point);
 		if (componentSlot != null) {
 			try {
-				instantiateComponent(componentSlot.getInstanceClass(), componentSlot.getName(),
-						componentSlot.getNamePrefix(), scaledPoint);
+				instantiateComponent(componentSlot, scaledPoint);
 			} catch (Exception e) {
 				LOG.error("Error instatiating component of type: "
-						+ componentSlot.getInstanceClass().getName());
+						+ componentSlot.getInstanceClass().getName(), e);
 			}
 			setNewComponentSlot(null);
 		} else {
@@ -449,7 +452,8 @@ public class Presenter implements IPlugInPort {
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
-			for (int i = 0; i < component.getControlPointCount(); i++) {
+			// Go backwards so we take the highest z-order components first.
+			for (int i = component.getControlPointCount() - 1; i >= 0; i--) {
 				Point controlPoint = component.getControlPoint(i);
 				if (shouldShowControlPointsFor(component)) {
 					try {
@@ -537,6 +541,7 @@ public class Presenter implements IPlugInPort {
 			return false;
 		}
 		Point scaledPoint = scalePoint(point);
+		boolean repaint = false;
 		if (!controlPointMap.isEmpty()) {
 			// We're dragging control point(s).
 			// IDIYComponent<?> firstComponent =
@@ -559,6 +564,8 @@ public class Presenter implements IPlugInPort {
 				dx = (int) (Math.round(dx / Constants.GRID) * Constants.GRID);
 				dy = (int) (Math.round(dy / Constants.GRID) * Constants.GRID);
 			}
+			// Only repaint if there's an actual change.
+			repaint = dx != 0 && dy != 0;
 
 			previousDragPoint.translate(dx, dy);
 
@@ -566,7 +573,7 @@ public class Presenter implements IPlugInPort {
 			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
 				IDIYComponent<?> c = entry.getKey();
 				for (Integer index : entry.getValue()) {
-					Point p = c.getControlPoint(index);
+					Point p = new Point(c.getControlPoint(index));
 					p.translate(dx, dy);
 					c.setControlPoint(p, index);
 				}
@@ -576,11 +583,12 @@ public class Presenter implements IPlugInPort {
 			// If there's no selection, the only thing to do is update the
 			// selection rectangle and refresh.
 			this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
+			repaint = true;
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
 			// selectionRect);
 		} else {
 			// If there are components selected translate their control points.
-			translateSelectedComponents(previousDragPoint, scaledPoint);
+			repaint = translateSelectedComponents(previousDragPoint, scaledPoint);
 			// dragStartPoint = point;
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -621,21 +629,22 @@ public class Presenter implements IPlugInPort {
 		dragInProgress = false;
 	}
 
-	private void translateSelectedComponents(Point fromPoint, Point toPoint) {
+	private boolean translateSelectedComponents(Point fromPoint, Point toPoint) {
 		if (toPoint == null) {
 			LOG.debug("Drag ended outside the drawing area.");
-			return;
+			return false;
 		}
 		int dx = (int) (Math.round((toPoint.x - fromPoint.x) / zoomLevel / Constants.GRID) * Constants.GRID);
 		int dy = (int) (Math.round((toPoint.y - fromPoint.y) / zoomLevel / Constants.GRID) * Constants.GRID);
 		fromPoint.translate(dx, dy);
 		for (IDIYComponent<?> component : selectedComponents) {
 			for (int i = 0; i < component.getControlPointCount(); i++) {
-				Point controlPoint = component.getControlPoint(i);
+				Point controlPoint = new Point(component.getControlPoint(i));
 				translateControlPoint(controlPoint, dx, dy);
 				component.setControlPoint(controlPoint, i);
 			}
 		}
+		return dx != 0 && dy != 0;
 	}
 
 	private void translateControlPoint(Point controlPoint, int dx, int dy) {
@@ -705,21 +714,20 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void instantiateComponent(Class<? extends IDIYComponent> componentClass,
-			String componentTypeName, String namePrefix, Point point) throws Exception {
-		LOG.info("Instatiating component of type: " + componentClass.getName());
+	private void instantiateComponent(ComponentType componentType, Point point) throws Exception {
+		LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
 
 		Project oldProject = cloner.deepClone(currentProject);
 
 		// Instantiate the component.
-		IDIYComponent component = componentClass.newInstance();
+		IDIYComponent component = componentType.getInstanceClass().newInstance();
 
 		// Find the next available componentName for the component.
 		int i = 0;
 		boolean exists = true;
 		while (exists) {
 			i++;
-			String name = namePrefix + i;
+			String name = componentType.getNamePrefix() + i;
 			exists = false;
 			for (IDIYComponent c : currentProject.getComponents()) {
 				if (c.getName().equals(name)) {
@@ -728,15 +736,25 @@ public class Presenter implements IPlugInPort {
 				}
 			}
 		}
-		component.setName(namePrefix + i);
+		component.setName(componentType.getNamePrefix() + i);
 
-		// Add it to the project.
-		currentProject.getComponents().add(component);
+		// Add it to the project taking z-order into account.
+		int index = 0;
+		while (index < currentProject.getComponents().size()
+				&& componentType.getLayer().ordinal() >= componentTypeMap.get(
+						currentProject.getComponents().get(index).getClass()).getLayer().ordinal()) {
+			index++;
+		}
+		if (index < currentProject.getComponents().size()) {
+			currentProject.getComponents().add(index, component);
+		} else {
+			currentProject.getComponents().add(component);
+		}
 
 		// Translate them to the desired location.
 		if (point != null) {
 			for (int j = 0; j < component.getControlPointCount(); j++) {
-				Point controlPoint = component.getControlPoint(j);
+				Point controlPoint = new Point(component.getControlPoint(j));
 				int x = controlPoint.x + point.x;
 				int y = controlPoint.y + point.y;
 				if (snapToGrid) {
@@ -750,14 +768,15 @@ public class Presenter implements IPlugInPort {
 
 		// Extract properties.
 		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
-				componentClass);
+				componentType.getInstanceClass());
 		// Override with default values if available.
 		for (PropertyWrapper property : properties) {
 			Object defaultValue = null;
 			Map<String, Object> defaultMap = (Map<String, Object>) ConfigurationManager
 					.getInstance().getConfigurationItem(DEFAULTS_KEY);
 			if (defaultMap != null) {
-				defaultValue = defaultMap.get(componentClass.getName() + ":" + property.getName());
+				defaultValue = defaultMap.get(componentType.getInstanceClass().getName() + ":"
+						+ property.getName());
 			}
 			if (defaultValue != null) {
 				property.setValue(cloner.deepClone(defaultValue));
@@ -768,7 +787,7 @@ public class Presenter implements IPlugInPort {
 		// Notify the listeners.
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
-					.deepClone(currentProject), "Add " + componentTypeName);
+					.deepClone(currentProject), "Add " + componentType.getName());
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
