@@ -42,6 +42,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.measures.SizeUnit;
 import org.diylc.gui.IView;
 import org.diylc.utils.Constants;
 
@@ -63,6 +64,8 @@ public class Presenter implements IPlugInPort {
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(0, 0, 0);
 	public static final String DEFAULTS_KEY = "defaults";
+	public static final String METRIC_KEY = "metric";
+
 	public static final int CONTROL_POINT_SENSITIVITY = 4;
 	public static final int ICON_SIZE = 32;
 	public static boolean ENABLE_ANTIALIASING = true;
@@ -443,6 +446,8 @@ public class Presenter implements IPlugInPort {
 				}
 			}
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+					calculateSelectionDimension());
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
 	}
@@ -520,11 +525,15 @@ public class Presenter implements IPlugInPort {
 			selectedComponents.clear();
 			selectedComponents.addAll(controlPointMap.keySet());
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+					calculateSelectionDimension());
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else if (components.isEmpty()) {
 			// If there are no components are under the cursor, reset selection.
 			selectedComponents.clear();
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+					calculateSelectionDimension());
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
 			// Take the last component, i.e. the top order component.
@@ -535,6 +544,8 @@ public class Presenter implements IPlugInPort {
 				selectedComponents.clear();
 				selectedComponents.add(component);
 				messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+				messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+						calculateSelectionDimension());
 				messageDispatcher.dispatchMessage(EventType.REPAINT);
 			}
 			// If there aren't any control points, try to add all the selected
@@ -594,6 +605,8 @@ public class Presenter implements IPlugInPort {
 		if (repaint) {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
+		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+				calculateSelectionDimension());
 		return true;
 	}
 
@@ -619,6 +632,8 @@ public class Presenter implements IPlugInPort {
 			}
 			selectionRect = null;
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+					calculateSelectionDimension());
 		}
 		// There is selection, so we need to finalize the drag&drop
 		// operation.
@@ -684,6 +699,41 @@ public class Presenter implements IPlugInPort {
 			LOG.debug("Default property value set for " + className + ":" + propertyName);
 			defaultMap.put(className + ":" + propertyName, value);
 		}
+	}
+
+	@Override
+	public void setMetric(boolean isMetric) {
+		ConfigurationManager.getInstance().setConfigurationItem(Presenter.METRIC_KEY, isMetric);
+		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+				calculateSelectionDimension());
+	}
+
+	private Point2D calculateSelectionDimension() {
+		if (selectedComponents.isEmpty()) {
+			return null;
+		}
+		boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
+				METRIC_KEY);
+		Area area = new Area();
+		for (IDIYComponent<?> component : selectedComponents) {
+			Area componentArea = componentAreaMap.get(component);
+			if (componentArea != null) {
+				LOG.warn("Area added!" + componentArea.getBounds());
+				area.add(componentArea);
+			} else {
+				LOG.warn("No area!");
+			}
+		}
+		double width = area.getBounds2D().getWidth();
+		double height = area.getBounds2D().getHeight();
+		width /= Constants.PIXELS_PER_INCH;
+		height /= Constants.PIXELS_PER_INCH;
+		if (isMetric) {
+			width *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
+			height *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
+		}
+		Point2D dimension = new Point2D.Double(width, height);
+		return dimension;
 	}
 
 	/**
@@ -806,7 +856,9 @@ public class Presenter implements IPlugInPort {
 				: componentType.getName()));
 		this.componentSlot = componentType;
 		selectedComponents.clear();
-		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED);
+		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+				calculateSelectionDimension());
 		messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot);
 	}
 

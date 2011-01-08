@@ -1,12 +1,10 @@
 package org.diylc.core.measures;
 
-import java.awt.Toolkit;
+import org.diylc.utils.Constants;
 
 public class Size extends AbstractMeasure<SizeUnit> {
 
 	private static final long serialVersionUID = 1L;
-
-	public static final int PIXELS_PER_INCH = Toolkit.getDefaultToolkit().getScreenResolution();
 
 	public Size() {
 		super();
@@ -20,7 +18,7 @@ public class Size extends AbstractMeasure<SizeUnit> {
 
 	public int convertToPixels() {
 		double factor = getUnit().getFactor() / SizeUnit.in.getFactor();
-		return (int) (factor * PIXELS_PER_INCH * getValue());
+		return (int) (factor * Constants.PIXELS_PER_INCH * getValue());
 	}
 
 	@Override

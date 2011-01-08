@@ -288,4 +288,11 @@ public interface IPlugInPort {
 	 * instantiate new component.
 	 */
 	void setNewComponentSlot(ComponentType componentType);
+
+	/**
+	 * Changes default size notation, true for metric, false for imperial.
+	 * 
+	 * @param isMetric
+	 */
+	void setMetric(boolean isMetric);
 }
