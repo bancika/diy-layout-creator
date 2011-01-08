@@ -5,14 +5,12 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,8 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
@@ -41,7 +37,6 @@ import org.diylc.core.ComponentLayer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
-import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.gui.IView;
 import org.diylc.utils.Constants;
@@ -202,50 +197,9 @@ public class Presenter implements IPlugInPort {
 					IDIYComponent.class);
 			for (Class<?> clazz : componentTypeClasses) {
 				if (!Modifier.isAbstract(clazz.getModifiers())) {
-					ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
-					String name;
-					String description;
-					String category;
-					String namePrefix;
-					String author;
-					Icon icon;
-					Class<? extends IDIYComponent> instanceClass = (Class<? extends IDIYComponent>) clazz;
-					ComponentLayer layer;
-					boolean stretchable;
-					if (annotation == null) {
-						name = clazz.getSimpleName();
-						description = "";
-						category = "Uncategorized";
-						namePrefix = "Unknown";
-						author = "Unknown";
-						layer = ComponentLayer.COMPONENT;
-						stretchable = true;
-					} else {
-						name = annotation.name();
-						description = annotation.desciption();
-						category = annotation.category();
-						namePrefix = annotation.instanceNamePrefix();
-						author = annotation.author();
-						layer = annotation.componentLayer();
-						stretchable = annotation.stretchable();
-					}
-					icon = null;
-					// Draw component icon.
-					try {
-						IDIYComponent componentInstance = (IDIYComponent) clazz.newInstance();
-						Image image = new BufferedImage(ICON_SIZE, ICON_SIZE,
-								java.awt.image.BufferedImage.TYPE_INT_ARGB);
-						componentInstance.drawIcon((Graphics2D) image.getGraphics(), ICON_SIZE,
-								ICON_SIZE);
-						icon = new ImageIcon(image);
-					} catch (InstantiationException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}
-					ComponentType componentType = new ComponentType(name, description, category,
-							namePrefix, author, icon, instanceClass, layer, stretchable);
-					componentTypeMap.put(instanceClass, componentType);
+					ComponentType componentType = ComponentProcessor.getInstance()
+							.createComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
+					componentTypeMap.put(componentType.getInstanceClass(), componentType);
 					List<ComponentType> nestedList;
 					if (componentTypes.containsKey(componentType.getCategory())) {
 						nestedList = componentTypes.get(componentType.getCategory());
