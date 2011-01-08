@@ -404,7 +404,7 @@ public class Presenter implements IPlugInPort {
 		}
 		// Sort by z-order.
 		Collections.sort(components, ComparatorFactory.getInstance().getComponentZOrderComparator(
-				componentTypeMap));
+				currentProject.getComponents()));
 		return components;
 	}
 
