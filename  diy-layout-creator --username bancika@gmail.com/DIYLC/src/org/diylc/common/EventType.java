@@ -64,5 +64,5 @@ public enum EventType {
 	 * <code>Map<IDIYComponent<?>, Set<Integer>></code> containing all the
 	 * components and indices of their control points that are under the cursor.
 	 */
-	AVAILABLE_CTRL_POINTS_CHANGED, SELECTED_CTRL_POINTS_CHANGED, ;
+	AVAILABLE_CTRL_POINTS_CHANGED;
 }
