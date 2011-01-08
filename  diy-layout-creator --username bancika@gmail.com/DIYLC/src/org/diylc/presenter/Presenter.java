@@ -455,7 +455,8 @@ public class Presenter implements IPlugInPort {
 			IDIYComponent<?> component = currentProject.getComponents().get(i);
 			for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
 				Point controlPoint = component.getControlPoint(pointIndex);
-				if (shouldShowControlPointsFor(component)) {
+				// Only consider selected components.
+				if (selectedComponents.contains(component)) {
 					try {
 						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SENSITIVITY) {
 							Set<Integer> indices = new HashSet<Integer>();
@@ -820,6 +821,11 @@ public class Presenter implements IPlugInPort {
 	}
 
 	private boolean shouldShowControlPointsFor(IDIYComponent<?> component) {
+		ComponentType componentType = componentTypeMap.get(component.getClass());
+		// Do not show control points for non-stretchable components.
+		if (!componentType.isStretchable()) {
+			return false;
+		}
 		return selectedComponents.contains(component);
 		// return
 		// controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.ALWAYS)
