@@ -58,7 +58,7 @@ public class Presenter implements IPlugInPort {
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(0, 0, 0);
-	public static final String DEFAULTS_KEY = "defaults";
+	public static final String DEFAULTS_KEY = "default.";
 	public static final String METRIC_KEY = "metric";
 
 	public static final int CONTROL_POINT_SENSITIVITY = 4;
@@ -642,16 +642,11 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void setDefaultPropertyValue(String propertyName, Object value) {
 		LOG.debug(String.format("setDefaultPropertyValue(%s, %s)", propertyName, value));
-		Map<String, Object> defaultMap = (Map<String, Object>) ConfigurationManager.getInstance()
-				.getConfigurationItem(DEFAULTS_KEY);
-		if (defaultMap == null) {
-			defaultMap = new HashMap<String, Object>();
-			ConfigurationManager.getInstance().setConfigurationItem(DEFAULTS_KEY, defaultMap);
-		}
 		for (IDIYComponent component : selectedComponents) {
 			String className = component.getClass().getName();
 			LOG.debug("Default property value set for " + className + ":" + propertyName);
-			defaultMap.put(className + ":" + propertyName, value);
+			ConfigurationManager.getInstance().setConfigurationItem(
+					DEFAULTS_KEY + className + ":" + propertyName, value);
 		}
 	}
 
@@ -672,10 +667,7 @@ public class Presenter implements IPlugInPort {
 		for (IDIYComponent<?> component : selectedComponents) {
 			Area componentArea = componentAreaMap.get(component);
 			if (componentArea != null) {
-				LOG.warn("Area added!" + componentArea.getBounds());
 				area.add(componentArea);
-			} else {
-				LOG.warn("No area!");
 			}
 		}
 		double width = area.getBounds2D().getWidth();
@@ -758,13 +750,9 @@ public class Presenter implements IPlugInPort {
 				componentType.getInstanceClass());
 		// Override with default values if available.
 		for (PropertyWrapper property : properties) {
-			Object defaultValue = null;
-			Map<String, Object> defaultMap = (Map<String, Object>) ConfigurationManager
-					.getInstance().getConfigurationItem(DEFAULTS_KEY);
-			if (defaultMap != null) {
-				defaultValue = defaultMap.get(componentType.getInstanceClass().getName() + ":"
-						+ property.getName());
-			}
+			Object defaultValue = ConfigurationManager.getInstance().getConfigurationItem(
+					DEFAULTS_KEY + componentType.getInstanceClass().getName() + ":"
+							+ property.getName());
 			if (defaultValue != null) {
 				property.setValue(cloner.deepClone(defaultValue));
 				property.writeTo(component);
