@@ -65,7 +65,7 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 	 * @return shape that represents component body. Shape should not be
 	 *         transformed and should be referenced to (0, 0).
 	 */
-	protected abstract Shape getComponentShape();
+	protected abstract Shape getBodyShape();
 
 	/**
 	 * @return component body color.
@@ -111,7 +111,7 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 		g2d.setColor(getLeadColor());
 		g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
 		double distance = points[0].distance(points[1]);
-		Shape shape = getComponentShape();
+		Shape shape = getBodyShape();
 		if (shape == null) {
 			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 			return;

@@ -2,6 +2,7 @@ package org.diylc.presenter;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -83,8 +84,11 @@ public class ComponentProcessor {
 			IDIYComponent<?> componentInstance = (IDIYComponent<?>) clazz.newInstance();
 			Image image = new BufferedImage(Presenter.ICON_SIZE, Presenter.ICON_SIZE,
 					java.awt.image.BufferedImage.TYPE_INT_ARGB);
-			componentInstance.drawIcon((Graphics2D) image.getGraphics(), Presenter.ICON_SIZE,
-					Presenter.ICON_SIZE);
+			Graphics2D g2d = (Graphics2D) image.getGraphics();
+			g2d
+					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+							RenderingHints.VALUE_ANTIALIAS_ON);
+			componentInstance.drawIcon(g2d, Presenter.ICON_SIZE, Presenter.ICON_SIZE);
 			icon = new ImageIcon(image);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
