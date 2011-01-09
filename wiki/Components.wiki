@@ -49,7 +49,8 @@ Contains the following attributes:
 
 Sample usage:
 {{{
-@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "R", description = "Resistor layout symbol", zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "R",
+                     description = "Resistor layout symbol", zOrder = IDIYComponent.COMPONENT)
 public class Resistor extends AbstractLeadedDIYComponent<Resistance> {
 }}}
 
