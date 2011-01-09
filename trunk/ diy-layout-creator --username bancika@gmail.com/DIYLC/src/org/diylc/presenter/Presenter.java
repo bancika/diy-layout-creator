@@ -49,7 +49,7 @@ import com.diyfever.gui.update.VersionNumber;
 import com.rits.cloning.Cloner;
 
 /**
- * The main presenter class.
+ * The main presenter class, contains core app logic and drawing routines.
  * 
  * @author Branislav Stojkovic
  */
@@ -340,11 +340,6 @@ public class Presenter implements IPlugInPort {
 	public void injectMenuAction(Action action, String menuName) {
 		view.addMenuAction(action, menuName);
 	}
-
-	// @Override
-	// public void setCursorIcon(Icon icon) {
-	// view.setCursorIcon(icon);
-	// }
 
 	/**
 	 * Finds all components whose areas include the specified {@link Point}.
@@ -657,6 +652,10 @@ public class Presenter implements IPlugInPort {
 				calculateSelectionDimension());
 	}
 
+	/**
+	 * @return selection size expressed in either inches or centimeters, based
+	 *         on the user preference.
+	 */
 	private Point2D calculateSelectionDimension() {
 		if (selectedComponents.isEmpty()) {
 			return null;
@@ -817,6 +816,11 @@ public class Presenter implements IPlugInPort {
 				(int) (point.y / zoomLevel));
 	}
 
+	/**
+	 * @param component
+	 * @return true if control points should be rendered for the specified
+	 *         component.
+	 */
 	private boolean shouldShowControlPointsFor(IDIYComponent<?> component) {
 		ComponentType componentType = componentTypeMap.get(component.getClass());
 		// Do not show control points for non-stretchable components.
