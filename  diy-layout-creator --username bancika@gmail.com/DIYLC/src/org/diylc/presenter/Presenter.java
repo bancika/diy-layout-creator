@@ -728,6 +728,9 @@ public class Presenter implements IPlugInPort {
 
 		// Add it to the project taking z-order into account.
 		addComponent(component, componentType);
+		// Select the new component
+		selectedComponents.clear();
+		selectedComponents.add(component);
 
 		// Translate them to the desired location.
 		if (point != null) {
@@ -763,6 +766,9 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Add " + componentType.getName());
 		}
+		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+				calculateSelectionDimension());
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
