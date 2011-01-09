@@ -1,7 +1,10 @@
 <map>
   <entry>
-    <string>defaults</string>
-    <map/>
+    <string>default.org.diylc.components.passive.Resistor:Value</string>
+    <org.diylc.core.measures.Resistance>
+      <value>100.0</value>
+      <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+    </org.diylc.core.measures.Resistance>
   </entry>
   <entry>
     <string>lastPath</string>
@@ -10,5 +13,12 @@
   <entry>
     <string>metric</string>
     <boolean>true</boolean>
+  </entry>
+  <entry>
+    <string>default.org.diylc.components.passive.AxialFilmCapacitor:Width</string>
+    <org.diylc.core.measures.Size>
+      <value>0.7</value>
+      <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+    </org.diylc.core.measures.Size>
   </entry>
 </map>
