@@ -136,6 +136,13 @@ public class PerfBoard extends AbstractBoard {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-
+		g2d.setColor(BOARD_COLOR);
+		g2d.fillRect(2, 2, width - 4, height - 4);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRect(2, 2, width - 4, height - 4);
+		g2d.setColor(COPPER_COLOR);
+		g2d.fillOval(width / 4, width / 4, width / 2, width / 2);
+		g2d.setColor(Constants.CANVAS_COLOR);
+		g2d.fillOval(width / 2 - 1, width / 2 - 1, 2, 2);
 	}
 }

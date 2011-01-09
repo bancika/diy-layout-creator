@@ -39,7 +39,7 @@ public class HookupWire extends AbstractTransparentComponent<AWG> {
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
 		if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
 			g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10f,
-					new float[] {2f, 3f }, 5f));
+					new float[] { 2f, 3f }, 5f));
 			g2d.setColor(GUIDELINE_COLOR);
 			g2d.drawLine(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x,
 					controlPoints[1].y);
@@ -56,8 +56,8 @@ public class HookupWire extends AbstractTransparentComponent<AWG> {
 
 		Composite oldComposite = g2d.getComposite();
 		if (alpha < MAX_ALPHA) {
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-					1f * alpha / MAX_ALPHA));
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+					/ MAX_ALPHA));
 		}
 		g2d.setColor(color.darker());
 		g2d.setStroke(new BasicStroke(thickness));
@@ -83,7 +83,7 @@ public class HookupWire extends AbstractTransparentComponent<AWG> {
 		controlPoints[index].setLocation(point);
 	}
 
-	@EditableProperty
+	@EditableProperty(name = "AWG")
 	@Override
 	public AWG getValue() {
 		return value;

@@ -39,7 +39,13 @@ public class Resistor extends AbstractLeadedDIYComponent<Resistance> {
 	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		g2d.drawString("R", 10, 10);
+		g2d.rotate(-Math.PI / 4, width / 2, height / 2);
+		g2d.setColor(LEAD_COLOR);
+		g2d.drawLine(0, height / 2, width, height / 2);
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRect(4, height / 2 - 3, width - 8, 6);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRect(4, height / 2 - 3, width - 8, 6);
 	}
 
 	@Override
@@ -63,7 +69,7 @@ public class Resistor extends AbstractLeadedDIYComponent<Resistance> {
 	}
 
 	@Override
-	protected Shape getComponentShape() {
+	protected Shape getBodyShape() {
 		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(), getHeight()
 				.convertToPixels());
 	}
