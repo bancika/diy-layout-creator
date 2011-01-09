@@ -59,12 +59,12 @@ public class RadialCeramicDiskCapacitor extends AbstractLeadedDIYComponent<Capac
 	}
 
 	@Override
-	protected Color getBodyColor() {
+	protected Color getDefaultBodyColor() {
 		return BODY_COLOR;
 	}
 
 	@Override
-	protected Color getBorderColor() {
+	protected Color getDefaultBorderColor() {
 		return BORDER_COLOR;
 	}
 

@@ -59,12 +59,12 @@ public class Resistor extends AbstractLeadedDIYComponent<Resistance> {
 	}
 
 	@Override
-	protected Color getBodyColor() {
+	protected Color getDefaultBodyColor() {
 		return BODY_COLOR;
 	}
 
 	@Override
-	protected Color getBorderColor() {
+	protected Color getDefaultBorderColor() {
 		return BORDER_COLOR;
 	}
 
