@@ -511,6 +511,7 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void drawPolygon(int[] points, int[] points2, int points3) {
 		canvasGraphics.drawPolygon(points, points2, points3);
+		appendShapeOutline(new Polygon(points, points2, points3));
 	}
 
 	@Override
