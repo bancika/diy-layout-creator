@@ -37,7 +37,8 @@ import java.util.Map;
  * creates an {@link Area} that corresponds to drawn objects. Before each
  * component is drawn, {@link #startedDrawingComponent()} should be called.
  * After the component is drawn, area may be retrieved using
- * {@link #finishedDrawingComponent()}.
+ * {@link #finishedDrawingComponent()}. Graphics configuration (color, font,
+ * etc) is reset between each two components.
  * 
  * @author Branislav Stojkovic
  */
