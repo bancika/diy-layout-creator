@@ -7,7 +7,10 @@ import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
@@ -25,9 +28,14 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	private static final long serialVersionUID = 1L;
 
 	public static Color BODY_COLOR = Color.gray;
-	public static Color BORDER_COLOR = Color.black;
+	public static Color BORDER_COLOR = Color.gray.darker();
+	public static Color PIN_COLOR = Color.decode("#00B2EE");
+	public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
+	public static Color INDENT_COLOR = Color.lightGray;
 	public static Color LABEL_COLOR = Color.white;
 	public static int EDGE_RADIUS = 6;
+	public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
+	public static Size INDENT_SIZE = new Size(0.15d, SizeUnit.in);
 
 	private String name = "New Component";
 	private String value = "";
@@ -40,6 +48,12 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			new Point((int) (3 * Constants.GRID), (int) Constants.GRID),
 			new Point((int) (3 * Constants.GRID), (int) (2 * Constants.GRID)),
 			new Point((int) (3 * Constants.GRID), (int) (3 * Constants.GRID)) };
+	private Shape body;
+
+	public DIL_IC() {
+		super();
+		updateControlPoints();
+	}
 
 	@EditableProperty(defaultable = false)
 	public String getName() {
@@ -66,6 +80,8 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
+		// Reset body shape;
+		body = null;
 	}
 
 	@EditableProperty(name = "Pins")
@@ -76,6 +92,8 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public void setPinCount(PinCount pinCount) {
 		this.pinCount = pinCount;
 		updateControlPoints();
+		// Reset body shape;
+		body = null;
 	}
 
 	@EditableProperty(name = "Row spacing")
@@ -86,6 +104,8 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public void setRowSpacing(Size rowSpacing) {
 		this.rowSpacing = rowSpacing;
 		updateControlPoints();
+		// Reset body shape;
+		body = null;
 	}
 
 	@Override
@@ -101,12 +121,14 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	@Override
 	public void setControlPoint(Point point, int index) {
 		controlPoints[index].setLocation(point);
+		body = null;
 	}
 
 	private void updateControlPoints() {
 		Point firstPoint = controlPoints[0];
 		controlPoints = new Point[pinCount.getValue()];
 		controlPoints[0] = firstPoint;
+		// Update control points.
 		int dx1;
 		int dy1;
 		int dx2;
@@ -146,40 +168,68 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		}
 	}
 
+	public Shape getBody() {
+		if (body == null) {
+			int x = controlPoints[0].x;
+			int y = controlPoints[0].y;
+			int width;
+			int height;
+			int pinSize = PIN_SIZE.convertToPixels();
+			switch (orientation) {
+			case DEFAULT:
+				width = rowSpacing.convertToPixels() - pinSize;
+				height = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+				x += pinSize / 2;
+				y -= (int) (Constants.GRID / 2);
+				break;
+			case _90:
+				width = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+				height = rowSpacing.convertToPixels() - pinSize;
+				x -= (int) (Constants.GRID / 2) + width - Constants.GRID;
+				y += pinSize / 2;
+				break;
+			case _180:
+				width = rowSpacing.convertToPixels() - pinSize;
+				height = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+				x -= rowSpacing.convertToPixels() - pinSize / 2;
+				y -= (int) (Constants.GRID / 2) + height - Constants.GRID;
+				break;
+			case _270:
+				width = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+				height = rowSpacing.convertToPixels() - pinSize;
+				x -= (int) (Constants.GRID / 2);
+				y += pinSize / 2;
+				break;
+			default:
+				throw new RuntimeException("Unexpected orientation: " + orientation);
+			}
+			body = new RoundRectangle2D.Double(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
+		}
+		return body;
+	}
+
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
-		int x = controlPoints[0].x;
-		int y = controlPoints[0].y;
-		int width;
-		int height;
-		if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
-			width = rowSpacing.convertToPixels();
-			height = (int) ((pinCount.getValue() / 2) * Constants.GRID);
-			y -= (int) (Constants.GRID / 2);
-		} else {
-			width = (int) ((pinCount.getValue() / 2) * Constants.GRID);
-			height = rowSpacing.convertToPixels();
-			x -= (int) (Constants.GRID / 2);
-		}
-		if (orientation == Orientation._90) {
-			x -= width - Constants.GRID;
-		} else if (orientation == Orientation._180) {
-			x -= rowSpacing.convertToPixels();
-			y -= height - Constants.GRID;
+		int pinSize = PIN_SIZE.convertToPixels() / 2 * 2;
+		for (Point point : controlPoints) {
+			g2d.setColor(PIN_COLOR);
+			g2d.fillRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+			g2d.setColor(PIN_BORDER_COLOR);
+			g2d.drawRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
 		}
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-						1f * alpha / MAX_ALPHA));
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+						/ MAX_ALPHA));
 			}
 			g2d.setColor(BODY_COLOR);
-			g2d.fillRoundRect(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
+			g2d.fill(getBody());
 			g2d.setComposite(oldComposite);
 		}
 		g2d.setColor(BORDER_COLOR);
 		g2d.setStroke(new BasicStroke());
-		g2d.drawRoundRect(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
+		g2d.draw(getBody());
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
 		g2d.setColor(componentState == ComponentState.DRAGGING ? BORDER_COLOR : LABEL_COLOR);
@@ -188,8 +238,9 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		int textHeight = (int) (rect.getHeight());
 		int textWidth = (int) (rect.getWidth());
 		// Center text horizontally and vertically
-		x += (width - textWidth) / 2;
-		y += (height - textHeight) / 2 + fontMetrics.getAscent();
+		Rectangle bounds = getBody().getBounds();
+		int x = bounds.x + (bounds.width - textWidth) / 2;
+		int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
 		g2d.drawString(getName(), x, y);
 	}
 
