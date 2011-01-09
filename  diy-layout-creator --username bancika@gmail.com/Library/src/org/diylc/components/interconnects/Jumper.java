@@ -20,6 +20,12 @@ public class Jumper extends AbstractLeadedDIYComponent<Void> {
 	
 	@Deprecated
 	@Override
+	public Byte getAlpha() {
+		return super.getAlpha();
+	}
+	
+	@Deprecated
+	@Override
 	public Size getWidth() {
 		return super.getWidth();
 	}

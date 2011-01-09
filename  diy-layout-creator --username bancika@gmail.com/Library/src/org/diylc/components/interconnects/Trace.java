@@ -45,6 +45,12 @@ public class Trace extends AbstractLeadedDIYComponent<Void> {
 	public void setLeadThickness(Size leadThickness) {
 		this.leadThickness = leadThickness;
 	}
+	
+	@Deprecated
+	@Override
+	public Byte getAlpha() {
+		return super.getAlpha();
+	}
 
 	@Deprecated
 	@Override
