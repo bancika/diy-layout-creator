@@ -31,6 +31,7 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 	public static Color LEAD_COLOR = Color.black;
 	public static Color LABEL_COLOR = Color.black;
 	public static Color LABEL_COLOR_SELECTED = Color.red;
+	public static Size LEAD_THICKNESS = new Size(0.3d, SizeUnit.mm);
 
 	protected Size width;
 	protected Size height;
@@ -83,7 +84,7 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 	 * @return default lead thickness. Override this method to change it.
 	 */
 	protected Size getLeadThickness() {
-		return new Size(0.5d, SizeUnit.mm);
+		return LEAD_THICKNESS;
 	}
 
 	/**
@@ -100,7 +101,7 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 
 	@Override
 	public Point getControlPoint(int index) {
-		return (Point) points[index].clone();
+		return (Point) points[index];
 	}
 
 	@Override

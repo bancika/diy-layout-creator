@@ -18,7 +18,7 @@ public class Size extends AbstractMeasure<SizeUnit> {
 
 	public int convertToPixels() {
 		double factor = getUnit().getFactor() / SizeUnit.in.getFactor();
-		return (int) (factor * Constants.PIXELS_PER_INCH * getValue());
+		return (int) Math.round(factor * Constants.PIXELS_PER_INCH * getValue());
 	}
 
 	@Override
