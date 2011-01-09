@@ -1,7 +1,6 @@
 package org.diylc.components.boards;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -15,8 +14,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Perf Board w/ Pads", category = "Boards", author = "Branislav Stojkovic", componentLayer = ComponentLayer.BOARD, instanceNamePrefix = "B", desciption = "Perforated FR4 board with solder pads spaced 0.1 inch apart")
-public class PerfBoard extends AbstractBoard {
+@ComponentDescriptor(name = "Vero Board", category = "Boards", author = "Branislav Stojkovic", componentLayer = ComponentLayer.BOARD, instanceNamePrefix = "B", desciption = "Perforated FR4 board with solder pads spaced 0.1 inch apart")
+public class VeroBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,7 +24,7 @@ public class PerfBoard extends AbstractBoard {
 	public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
 	private static Size SPACING = new Size(0.1d, SizeUnit.in);
-	private static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);
+	private static Size STRIP_SIZE = new Size(0.085d, SizeUnit.in);
 	private static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
 
 	// private Area copperArea;
@@ -51,17 +50,17 @@ public class PerfBoard extends AbstractBoard {
 						/ MAX_ALPHA));
 			}
 			Point p = new Point(controlPoints[0]);
-			int radius = PAD_SIZE.convertToPixels() / 2;
+			int stripSize = STRIP_SIZE.convertToPixels();
 			int holeRadius = HOLE_SIZE.convertToPixels() / 2;
-			g2d.setStroke(new BasicStroke(radius));
 
 			while (p.y < controlPoints[1].y - SPACING.convertToPixels()) {
 				p.x = controlPoints[0].x;
 				p.y += SPACING.convertToPixels();
+				g2d.setColor(COPPER_COLOR);
+				g2d.fillRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
+						controlPoints[1].x - SPACING.convertToPixels() - p.x, stripSize);
 				while (p.x < controlPoints[1].x - SPACING.convertToPixels()) {
 					p.x += SPACING.convertToPixels();
-					g2d.setColor(COPPER_COLOR);
-					g2d.fillOval(p.x - radius, p.y - radius, radius * 2, radius * 2);
 					g2d.setColor(Constants.CANVAS_COLOR);
 					g2d
 							.fillOval(p.x - holeRadius, p.y - holeRadius, holeRadius * 2,

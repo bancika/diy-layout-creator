@@ -25,6 +25,11 @@ public class FieldEditorFactory {
 			EnumEditor editor = new EnumEditor(property);
 			return editor;
 		}
+		if (Byte.class.isAssignableFrom(property.getType())
+				|| byte.class.isAssignableFrom(property.getType())) {
+			ByteEditor byteEditor = new ByteEditor(property);
+			return byteEditor;
+		}
 		return null;
 	}
 }

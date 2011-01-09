@@ -31,7 +31,6 @@ import org.diylc.plugins.statusbar.StatusBar;
 import org.diylc.plugins.toolbox.ToolBox;
 import org.diylc.presenter.Presenter;
 
-
 public class MainFrame extends JFrame implements IView {
 
 	private static final long serialVersionUID = 1L;
@@ -64,7 +63,7 @@ public class MainFrame extends JFrame implements IView {
 		presenter.installPlugin(new ToolBox());
 		presenter.installPlugin(new FileManager());
 		presenter.installPlugin(new ClipboardManager());
-//		presenter.installPlugin(new OnlineManager());
+		// presenter.installPlugin(new OnlineManager());
 		presenter.installPlugin(new HelpManager());
 
 		presenter.installPlugin(new StatusBar());
@@ -97,7 +96,7 @@ public class MainFrame extends JFrame implements IView {
 		super.setVisible(b);
 		// TODO: hack to prevent painting issues in the scroll bar rulers. Find
 		// a better fix if possible.
-		Timer timer = new Timer(200, new ActionListener() {
+		Timer timer = new Timer(500, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

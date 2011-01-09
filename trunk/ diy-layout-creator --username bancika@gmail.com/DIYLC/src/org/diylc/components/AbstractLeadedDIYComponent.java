@@ -1,7 +1,9 @@
 package org.diylc.components;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -9,7 +11,6 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 
 import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -23,7 +24,7 @@ import org.diylc.utils.Constants;
  * 
  * @author Branislav Stojkovic
  */
-public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> {
+public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentComponent<T> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +36,6 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 	protected Size height;
 	protected Point[] points = new Point[] { new Point((int) (-Constants.GRID * 5), 0),
 			new Point((int) (Constants.GRID * 5), 0) };
-	protected String name = "New Component";
 
 	protected AbstractLeadedDIYComponent() {
 		super();
@@ -83,7 +83,7 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 	protected Size getLeadThickness() {
 		return new Size(0.5d, SizeUnit.mm);
 	}
-	
+
 	/**
 	 * @return default lead color. Override this method to change it.
 	 */
@@ -131,8 +131,14 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
 		// Draw body.
 		if (componentState != ComponentState.DRAGGING) {
+			Composite oldComposite = g2d.getComposite();
+			if (alpha < MAX_ALPHA) {
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+						1f * alpha / MAX_ALPHA));
+			}
 			g2d.setColor(getBodyColor());
 			g2d.fill(shape);
+			g2d.setComposite(oldComposite);
 		}
 		g2d.setStroke(new BasicStroke(1));
 		g2d.setColor(getBorderColor());
@@ -146,15 +152,6 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getName(), g2d);
 		g2d.drawString(getName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
 				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
-	}
-
-	@EditableProperty(defaultable = false)
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@EditableProperty(defaultable = true)
@@ -173,31 +170,5 @@ public abstract class AbstractLeadedDIYComponent<T> implements IDIYComponent<T> 
 
 	public void setHeight(Size height) {
 		this.height = height;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AbstractLeadedDIYComponent other = (AbstractLeadedDIYComponent) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
 	}
 }
