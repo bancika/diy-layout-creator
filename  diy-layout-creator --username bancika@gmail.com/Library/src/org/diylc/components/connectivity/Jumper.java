@@ -15,11 +15,18 @@ public class Jumper extends AbstractLeadedDIYComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
 
+	public static Color COLOR = Color.blue;
+
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setStroke(new BasicStroke(1));
-		g2d.setColor(LEAD_COLOR);
+		g2d.setColor(COLOR);
 		g2d.drawLine(1, height - 2, width - 2, 1);
+	}
+
+	@Override
+	protected Color getLeadColor() {
+		return COLOR;
 	}
 
 	@Deprecated
