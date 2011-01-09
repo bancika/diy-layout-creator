@@ -39,7 +39,13 @@ public class RadialFilmCapacitor extends AbstractLeadedDIYComponent<Capacitance>
 	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		g2d.drawString("C", 10, 10);
+		g2d.rotate(-Math.PI / 4, width / 2, height / 2);
+		g2d.setColor(LEAD_COLOR);
+		g2d.drawLine(0, height / 2, width, height / 2);
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRoundRect(4, height / 2 - 3, width - 8, 6, 2, 2);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRoundRect(4, height / 2 - 3, width - 8, 6, 2, 2);
 	}
 
 	@Override
@@ -63,7 +69,7 @@ public class RadialFilmCapacitor extends AbstractLeadedDIYComponent<Capacitance>
 	}
 
 	@Override
-	protected Shape getComponentShape() {
+	protected Shape getBodyShape() {
 		double radius = getHeight().convertToPixels() * 0.7;
 		return new RoundRectangle2D.Double(0f, 0f, getWidth().convertToPixels(), getHeight()
 				.convertToPixels(), radius, radius);

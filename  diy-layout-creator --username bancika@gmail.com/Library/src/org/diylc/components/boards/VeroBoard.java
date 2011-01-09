@@ -14,7 +14,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Vero Board", category = "Boards", author = "Branislav Stojkovic", componentLayer = ComponentLayer.BOARD, instanceNamePrefix = "B", desciption = "Perforated FR4 board with solder pads spaced 0.1 inch apart")
+@ComponentDescriptor(name = "Vero Board", category = "Boards", author = "Branislav Stojkovic", componentLayer = ComponentLayer.BOARD, instanceNamePrefix = "B", desciption = "Perforated FR4 board with copper strips connecting all holes in a row")
 public class VeroBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
@@ -135,6 +135,14 @@ public class VeroBoard extends AbstractBoard {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-
+		g2d.setColor(BOARD_COLOR);
+		g2d.fillRect(2, 2, width - 4, height - 4);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRect(2, 2, width - 4, height - 4);
+		g2d.setColor(COPPER_COLOR);
+		g2d.fillRect(4, width / 4, width - 8, width / 2);
+		g2d.setColor(Constants.CANVAS_COLOR);
+		g2d.fillOval(width / 3 - 1, width / 2 - 1, 2, 2);
+		g2d.fillOval(2 * width / 3 - 1, width / 2 - 1, 2, 2);
 	}
 }

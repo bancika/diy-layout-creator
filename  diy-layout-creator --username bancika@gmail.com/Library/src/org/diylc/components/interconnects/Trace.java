@@ -86,7 +86,7 @@ public class Trace extends AbstractLeadedDIYComponent<Void> {
 	}
 
 	@Override
-	protected Shape getComponentShape() {
+	protected Shape getBodyShape() {
 		return null;
 	}
 
