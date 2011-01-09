@@ -3,7 +3,6 @@ package org.diylc.core.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.diylc.core.ComponentLayer;
 import org.diylc.core.IDIYComponent;
 
 /**
@@ -16,53 +15,39 @@ import org.diylc.core.IDIYComponent;
 public @interface ComponentDescriptor {
 
 	/**
-	 * Component type name.
-	 * 
-	 * @return
+	 * @return component type name.
 	 */
 	String name();
 
 	/**
-	 * Component type description.
-	 * 
-	 * @return
+	 * @return component type description.
 	 */
-	String desciption();
+	String description();
 
 	/**
-	 * Component category, e.g. "Passive" or "Semiconductors".
-	 * 
-	 * @return
+	 * @return component category, e.g. "Passive", "Semiconductors", etc.
 	 */
 	String category();
 
 	/**
-	 * Component author name.
-	 * 
-	 * @return
+	 * @return component author name.
 	 */
 	String author();
 
 	/**
-	 * Prefix that will be used to generate component instance names, e.g. "R"
-	 * for resistors or "Q" for transistors.
-	 * 
-	 * @return
+	 * @return prefix that will be used to generate component instance names,
+	 *         e.g. "R" for resistors or "Q" for transistors.
 	 */
 	String instanceNamePrefix();
 
 	/**
-	 * Z-order of the component.
-	 * 
-	 * @return
+	 * @return Z-order of the component.
 	 */
-	ComponentLayer componentLayer() default ComponentLayer.COMPONENT;
+	double zOrder();
 
 	/**
-	 * When false, moving one control point will cause all the others to move
-	 * together with it.
-	 * 
-	 * @return
+	 * @return when false, moving one control point will cause all the others to
+	 *         move together with it.
 	 */
 	boolean stretchable() default true;
 }

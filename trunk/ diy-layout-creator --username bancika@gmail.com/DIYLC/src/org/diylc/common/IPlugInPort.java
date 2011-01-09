@@ -14,7 +14,6 @@ import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 import javax.swing.JPopupMenu.Separator;
 
-import org.diylc.core.ComponentLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 
@@ -219,37 +218,37 @@ public interface IPlugInPort {
 	 */
 	void addComponents(List<IDIYComponent<?>> components, Point preferredPoint);
 
-	/**
-	 * Checks if a certain layer is locked for editing.
-	 * 
-	 * @param layer
-	 * @return
-	 */
-	boolean isLayerLocked(ComponentLayer layer);
-
-	/**
-	 * Changes layer's locked state.
-	 * 
-	 * @param layer
-	 * @param locked
-	 */
-	void setLayerLocked(ComponentLayer layer, boolean locked);
-
-	/**
-	 * Checks if a certain layer is visible.
-	 * 
-	 * @param layer
-	 * @return
-	 */
-	boolean isLayerVisible(ComponentLayer layer);
-
-	/**
-	 * Changes layer visibility.
-	 * 
-	 * @param layer
-	 * @param visible
-	 */
-	void setLayerVisible(ComponentLayer layer, boolean visible);
+//	/**
+//	 * Checks if a certain layer is locked for editing.
+//	 * 
+//	 * @param layer
+//	 * @return
+//	 */
+//	boolean isLayerLocked(ComponentLayer layer);
+//
+//	/**
+//	 * Changes layer's locked state.
+//	 * 
+//	 * @param layer
+//	 * @param locked
+//	 */
+//	void setLayerLocked(ComponentLayer layer, boolean locked);
+//
+//	/**
+//	 * Checks if a certain layer is visible.
+//	 * 
+//	 * @param layer
+//	 * @return
+//	 */
+//	boolean isLayerVisible(ComponentLayer layer);
+//
+//	/**
+//	 * Changes layer visibility.
+//	 * 
+//	 * @param layer
+//	 * @param visible
+//	 */
+//	void setLayerVisible(ComponentLayer layer, boolean visible);
 
 	/**
 	 * Sets default value for the specified property name for currently selected

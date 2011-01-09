@@ -16,7 +16,7 @@ import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Mock", author = "bancika", category = "Sample", instanceNamePrefix = "M", desciption = "test")
+@ComponentDescriptor(name = "Mock", author = "bancika", category = "Sample", instanceNamePrefix = "M", description = "test", zOrder = IDIYComponent.COMPONENT)
 public class MockDIYComponent implements IDIYComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;

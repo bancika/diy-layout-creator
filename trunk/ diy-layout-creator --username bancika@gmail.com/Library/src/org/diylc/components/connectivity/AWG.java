@@ -1,4 +1,4 @@
-package org.diylc.components.interconnects;
+package org.diylc.components.connectivity;
 
 public enum AWG {
 

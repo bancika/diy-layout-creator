@@ -14,7 +14,6 @@ import java.awt.geom.Point2D;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +32,6 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.core.ComponentLayer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -88,8 +86,8 @@ public class Presenter implements IPlugInPort {
 	private MessageDispatcher<EventType> messageDispatcher;
 
 	// Layers
-	private Set<ComponentLayer> lockedLayers;
-	private Set<ComponentLayer> visibleLayers;
+//	private Set<ComponentLayer> lockedLayers;
+//	private Set<ComponentLayer> visibleLayers;
 
 	// D&D
 	private boolean dragInProgress = false;
@@ -111,8 +109,8 @@ public class Presenter implements IPlugInPort {
 		currentProject = new Project();
 		cloner = new Cloner();
 
-		lockedLayers = EnumSet.noneOf(ComponentLayer.class);
-		visibleLayers = EnumSet.allOf(ComponentLayer.class);
+//		lockedLayers = EnumSet.noneOf(ComponentLayer.class);
+//		visibleLayers = EnumSet.allOf(ComponentLayer.class);
 	}
 
 	public void installPlugin(IPlugIn plugIn) {
@@ -607,31 +605,31 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
-	public boolean isLayerLocked(ComponentLayer layer) {
-		return lockedLayers.contains(layer);
-	}
-
-	public void setLayerLocked(ComponentLayer layer, boolean locked) {
-		LOG.debug(String.format("setLayerLocked(%s, %s)", layer, locked));
-		if (locked) {
-			lockedLayers.add(layer);
-		} else {
-			lockedLayers.remove(layer);
-		}
-	}
-
-	public boolean isLayerVisible(ComponentLayer layer) {
-		return visibleLayers.contains(layer);
-	}
-
-	public void setLayerVisible(ComponentLayer layer, boolean visible) {
-		LOG.debug(String.format("setLayerVisible(%s, %s)", layer, visible));
-		if (visible) {
-			visibleLayers.add(layer);
-		} else {
-			visibleLayers.remove(layer);
-		}
-	}
+//	public boolean isLayerLocked(ComponentLayer layer) {
+//		return lockedLayers.contains(layer);
+//	}
+//
+//	public void setLayerLocked(ComponentLayer layer, boolean locked) {
+//		LOG.debug(String.format("setLayerLocked(%s, %s)", layer, locked));
+//		if (locked) {
+//			lockedLayers.add(layer);
+//		} else {
+//			lockedLayers.remove(layer);
+//		}
+//	}
+//
+//	public boolean isLayerVisible(ComponentLayer layer) {
+//		return visibleLayers.contains(layer);
+//	}
+//
+//	public void setLayerVisible(ComponentLayer layer, boolean visible) {
+//		LOG.debug(String.format("setLayerVisible(%s, %s)", layer, visible));
+//		if (visible) {
+//			visibleLayers.add(layer);
+//		} else {
+//			visibleLayers.remove(layer);
+//		}
+//	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -690,8 +688,8 @@ public class Presenter implements IPlugInPort {
 	private void addComponent(IDIYComponent<?> component, ComponentType componentType) {
 		int index = 0;
 		while (index < currentProject.getComponents().size()
-				&& componentType.getLayer().ordinal() >= componentTypeMap.get(
-						currentProject.getComponents().get(index).getClass()).getLayer().ordinal()) {
+				&& componentType.getZOrder() >= componentTypeMap.get(
+						currentProject.getComponents().get(index).getClass()).getZOrder()) {
 			index++;
 		}
 		if (index < currentProject.getComponents().size()) {
