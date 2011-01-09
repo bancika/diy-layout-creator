@@ -16,7 +16,6 @@ import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.core.ComponentLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -58,16 +57,16 @@ public class ComponentProcessor {
 		String namePrefix;
 		String author;
 		Icon icon;
-		ComponentLayer layer;
+		double zOrder;
 		boolean stretchable;
 		if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
 			ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
 			name = annotation.name();
-			description = annotation.desciption();
+			description = annotation.description();
 			category = annotation.category();
 			namePrefix = annotation.instanceNamePrefix();
 			author = annotation.author();
-			layer = annotation.componentLayer();
+			zOrder = annotation.zOrder();
 			stretchable = annotation.stretchable();
 		} else {
 			name = clazz.getSimpleName();
@@ -75,7 +74,7 @@ public class ComponentProcessor {
 			category = "Uncategorized";
 			namePrefix = "Unknown";
 			author = "Unknown";
-			layer = ComponentLayer.COMPONENT;
+			zOrder = IDIYComponent.COMPONENT;
 			stretchable = true;
 		}
 		icon = null;
@@ -96,7 +95,7 @@ public class ComponentProcessor {
 			e.printStackTrace();
 		}
 		ComponentType componentType = new ComponentType(name, description, category, namePrefix,
-				author, icon, clazz, layer, stretchable);
+				author, icon, clazz, zOrder, stretchable);
 		return componentType;
 	}
 

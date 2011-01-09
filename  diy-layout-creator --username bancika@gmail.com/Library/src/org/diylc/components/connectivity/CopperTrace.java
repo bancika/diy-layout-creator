@@ -1,17 +1,19 @@
-package org.diylc.components.interconnects;
+package org.diylc.components.connectivity;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
 import org.diylc.components.AbstractLeadedDIYComponent;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Trace", author = "Branislav Stojkovic", category = "Interconnects", instanceNamePrefix = "J", desciption = "Jumper wire")
-public class Trace extends AbstractLeadedDIYComponent<Void> {
+@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "J", description = "Jumper wire", zOrder = IDIYComponent.ABOVE_BOARD)
+public class CopperTrace extends AbstractLeadedDIYComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +25,9 @@ public class Trace extends AbstractLeadedDIYComponent<Void> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-
+		g2d.setStroke(new BasicStroke(3));
+		g2d.setColor(COLOR);
+		g2d.drawLine(1, height - 2, width - 2, 1);
 	}
 
 	@Override
@@ -49,7 +53,7 @@ public class Trace extends AbstractLeadedDIYComponent<Void> {
 	@Deprecated
 	public Color getBodyColor() {
 		return super.getBodyColor();
-	};
+	}
 
 	@Deprecated
 	@Override

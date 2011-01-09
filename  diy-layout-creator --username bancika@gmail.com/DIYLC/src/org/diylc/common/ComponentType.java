@@ -2,7 +2,6 @@ package org.diylc.common;
 
 import javax.swing.Icon;
 
-import org.diylc.core.ComponentLayer;
 import org.diylc.core.IDIYComponent;
 
 /**
@@ -22,13 +21,13 @@ public class ComponentType {
 	private Icon icon;
 	@SuppressWarnings("unchecked")
 	private Class<? extends IDIYComponent> instanceClass;
-	private ComponentLayer layer;
+	private double zOrder;
 	private boolean stretchable;
 
 	@SuppressWarnings("unchecked")
 	public ComponentType(String name, String description, String category, String namePrefix,
 			String author, Icon icon, Class<? extends IDIYComponent> instanceClass,
-			ComponentLayer layer, boolean stretchable) {
+			double zOrder, boolean stretchable) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -37,7 +36,7 @@ public class ComponentType {
 		this.author = author;
 		this.icon = icon;
 		this.instanceClass = instanceClass;
-		this.layer = layer;
+		this.zOrder = zOrder;
 		this.stretchable = stretchable;
 	}
 
@@ -70,8 +69,8 @@ public class ComponentType {
 		return instanceClass;
 	}
 
-	public ComponentLayer getLayer() {
-		return layer;
+	public double getZOrder() {
+		return zOrder;
 	}
 
 	public boolean isStretchable() {

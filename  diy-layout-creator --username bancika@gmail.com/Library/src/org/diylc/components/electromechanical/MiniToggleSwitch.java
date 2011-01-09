@@ -9,15 +9,15 @@ import java.awt.Point;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.core.ComponentLayer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", desciption = "", stretchable = false, componentLayer = ComponentLayer.COMPONENT, instanceNamePrefix = "SW")
+@ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW")
 public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> {
 
 	private static final long serialVersionUID = 1L;
