@@ -36,7 +36,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	protected Point[] controlPoints = new Point[] { new Point(0, 0) };
 	protected RoundRectangle2D body;
 	protected String name;
-	protected ToggleSwitchType switchType = ToggleSwitchType.SPST;
+	protected ToggleSwitchType switchType = ToggleSwitchType.DPDT;
 
 	public MiniToggleSwitch() {
 		super();
@@ -167,8 +167,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 			if (componentState != ComponentState.DRAGGING) {
 				Composite oldComposite = g2d.getComposite();
 				if (alpha < MAX_ALPHA) {
-					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-							1f * alpha / MAX_ALPHA));
+					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+							/ MAX_ALPHA));
 				}
 				g2d.setColor(BODY_COLOR);
 				g2d.fill(body);
@@ -194,7 +194,14 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		// TODO Auto-generated method stub
-
+		int circleSize = 5 * width / 32;
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRoundRect(width / 4, 1, width / 2, height - 2, circleSize, circleSize);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRoundRect(width / 4, 1, width / 2, height - 2, circleSize, circleSize);
+		g2d.setColor(CIRCLE_COLOR);
+		for (int i = 1; i <= 3; i++) {
+			g2d.fillOval(width / 2 - circleSize / 2, i * height / 4 - 3, circleSize, circleSize);
+		}
 	}
 }

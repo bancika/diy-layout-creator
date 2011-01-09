@@ -45,7 +45,19 @@ public class Trace extends AbstractLeadedDIYComponent<Void> {
 	public void setLeadThickness(Size leadThickness) {
 		this.leadThickness = leadThickness;
 	}
-	
+
+	@Deprecated
+	public Color getBodyColor() {
+		return super.getBodyColor();
+	};
+
+	@Deprecated
+	@Override
+	public Color getBorderColor() {
+		// TODO Auto-generated method stub
+		return super.getBorderColor();
+	}
+
 	@Deprecated
 	@Override
 	public Byte getAlpha() {
@@ -76,12 +88,12 @@ public class Trace extends AbstractLeadedDIYComponent<Void> {
 	}
 
 	@Override
-	protected Color getBodyColor() {
+	protected Color getDefaultBodyColor() {
 		return null;
 	}
 
 	@Override
-	protected Color getBorderColor() {
+	protected Color getDefaultBorderColor() {
 		return null;
 	}
 

@@ -17,13 +17,25 @@ public class Jumper extends AbstractLeadedDIYComponent<Void> {
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 
 	}
+
+	@Deprecated
+	public Color getBodyColor() {
+		return super.getBodyColor();
+	};
 	
+	@Deprecated
+	@Override
+	public Color getBorderColor() {
+		// TODO Auto-generated method stub
+		return super.getBorderColor();
+	}
+
 	@Deprecated
 	@Override
 	public Byte getAlpha() {
 		return super.getAlpha();
 	}
-	
+
 	@Deprecated
 	@Override
 	public Size getWidth() {
@@ -48,12 +60,12 @@ public class Jumper extends AbstractLeadedDIYComponent<Void> {
 	}
 
 	@Override
-	protected Color getBodyColor() {
+	protected Color getDefaultBodyColor() {
 		return null;
 	}
 
 	@Override
-	protected Color getBorderColor() {
+	protected Color getDefaultBorderColor() {
 		return null;
 	}
 

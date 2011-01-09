@@ -43,9 +43,9 @@ public class RadialFilmCapacitor extends AbstractLeadedDIYComponent<Capacitance>
 		g2d.setColor(LEAD_COLOR);
 		g2d.drawLine(0, height / 2, width, height / 2);
 		g2d.setColor(BODY_COLOR);
-		g2d.fillRoundRect(4, height / 2 - 3, width - 8, 6, 2, 2);
+		g2d.fillRoundRect(4, height / 2 - 3, width - 8, 6, 5, 5);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawRoundRect(4, height / 2 - 3, width - 8, 6, 2, 2);
+		g2d.drawRoundRect(4, height / 2 - 3, width - 8, 6, 5, 5);
 	}
 
 	@Override
@@ -59,12 +59,12 @@ public class RadialFilmCapacitor extends AbstractLeadedDIYComponent<Capacitance>
 	}
 
 	@Override
-	protected Color getBodyColor() {
+	protected Color getDefaultBodyColor() {
 		return BODY_COLOR;
 	}
 
 	@Override
-	protected Color getBorderColor() {
+	protected Color getDefaultBorderColor() {
 		return BORDER_COLOR;
 	}
 

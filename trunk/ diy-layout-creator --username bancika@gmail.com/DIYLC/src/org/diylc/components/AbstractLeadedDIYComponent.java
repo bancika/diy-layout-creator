@@ -36,6 +36,8 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 	protected Size height;
 	protected Point[] points = new Point[] { new Point((int) (-Constants.GRID * 5), 0),
 			new Point((int) (Constants.GRID * 5), 0) };
+	protected Color bodyColor = getDefaultBodyColor();
+	protected Color borderColor = getDefaultBorderColor();
 
 	protected AbstractLeadedDIYComponent() {
 		super();
@@ -68,14 +70,14 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 	protected abstract Shape getBodyShape();
 
 	/**
-	 * @return component body color.
+	 * @return default component body color.
 	 */
-	protected abstract Color getBodyColor();
+	protected abstract Color getDefaultBodyColor();
 
 	/**
-	 * @return component border color.
+	 * @return default component border color.
 	 */
-	protected abstract Color getBorderColor();
+	protected abstract Color getDefaultBorderColor();
 
 	/**
 	 * @return default lead thickness. Override this method to change it.
@@ -133,15 +135,15 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-						1f * alpha / MAX_ALPHA));
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+						/ MAX_ALPHA));
 			}
-			g2d.setColor(getBodyColor());
+			g2d.setColor(bodyColor);
 			g2d.fill(shape);
 			g2d.setComposite(oldComposite);
 		}
 		g2d.setStroke(new BasicStroke(1));
-		g2d.setColor(getBorderColor());
+		g2d.setColor(borderColor);
 		g2d.draw(shape);
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
@@ -152,6 +154,24 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getName(), g2d);
 		g2d.drawString(getName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
 				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
+	}
+
+	@EditableProperty(name = "Color")
+	public Color getBodyColor() {
+		return bodyColor;
+	}
+
+	public void setBodyColor(Color bodyColor) {
+		this.bodyColor = bodyColor;
+	}
+
+	@EditableProperty(name = "Border")
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
 	}
 
 	@EditableProperty(defaultable = true)
