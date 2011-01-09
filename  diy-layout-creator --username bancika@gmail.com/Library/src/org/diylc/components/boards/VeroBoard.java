@@ -50,7 +50,7 @@ public class VeroBoard extends AbstractBoard {
 						/ MAX_ALPHA));
 			}
 			Point p = new Point(controlPoints[0]);
-			int stripSize = STRIP_SIZE.convertToPixels();
+			int stripSize = STRIP_SIZE.convertToPixels() / 2 * 2;
 			int holeRadius = HOLE_SIZE.convertToPixels() / 2;
 
 			while (p.y < controlPoints[1].y - SPACING.convertToPixels()) {
