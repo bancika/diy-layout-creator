@@ -44,7 +44,7 @@ Contains the following attributes:
   * *description*: one or two sentence description of the component. Will be shown in the tooltip over toolbox buttons
   * *author*: name of the developer who wrote the component
   * *instanceNamePrefix*: prefix that will be used to generate component instance names, e.g. "R" for resistors or "Q" for transistors. Application will append the index automatically to form component instance names, such as "Q1"
-  * *componentLayer*: Z-order of the component, default is `ComponentLayer.COMPONENT`
+  * *zOrder*: Z-order of the component, lower number meaning that component will be shown in the back. `IDIYComponent` lists major layers, but you can use any double number. Sometimes it's useful to add a small offset to an existing zOrder. For instance, solder pads and copper traces belong to the same layer but pads should be always rendered above traces to show the hole correctly. That's why it's zOrder is increased for 0.1.
   * *stretchable*: when false, moving one control point will cause all the others to move together with it, default is `true`
 
 Sample usage:
