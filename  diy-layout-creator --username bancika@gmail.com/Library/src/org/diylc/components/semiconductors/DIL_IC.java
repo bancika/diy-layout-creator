@@ -1,15 +1,17 @@
 package org.diylc.components.semiconductors;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.Orientation;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -18,7 +20,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", desciption = "test", stretchable = false)
-public class DIL_IC implements IDIYComponent<String> {
+public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -166,8 +168,14 @@ public class DIL_IC implements IDIYComponent<String> {
 			y -= height - Constants.GRID;
 		}
 		if (componentState != ComponentState.DRAGGING) {
+			Composite oldComposite = g2d.getComposite();
+			if (alpha < MAX_ALPHA) {
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+						1f * alpha / MAX_ALPHA));
+			}
 			g2d.setColor(BODY_COLOR);
 			g2d.fillRoundRect(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
+			g2d.setComposite(oldComposite);
 		}
 		g2d.setColor(BORDER_COLOR);
 		g2d.setStroke(new BasicStroke());

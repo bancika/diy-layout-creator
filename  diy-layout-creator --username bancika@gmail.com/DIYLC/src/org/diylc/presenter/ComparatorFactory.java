@@ -3,6 +3,7 @@ package org.diylc.presenter;
 import java.util.Comparator;
 import java.util.List;
 
+import org.diylc.common.ComponentType;
 import org.diylc.core.IDIYComponent;
 
 public class ComparatorFactory {
@@ -10,6 +11,7 @@ public class ComparatorFactory {
 	private static ComparatorFactory instance;
 
 	private Comparator<IDIYComponent<?>> componentNameComparator;
+	private Comparator<ComponentType> componentTypeComparator;
 
 	public static ComparatorFactory getInstance() {
 		if (instance == null) {
@@ -34,6 +36,19 @@ public class ComparatorFactory {
 			};
 		}
 		return componentNameComparator;
+	}
+
+	public Comparator<ComponentType> getComponentTypeComparator() {
+		if (componentTypeComparator == null) {
+			componentTypeComparator = new Comparator<ComponentType>() {
+
+				@Override
+				public int compare(ComponentType o1, ComponentType o2) {
+					return o1.getName().compareToIgnoreCase(o2.getName());
+				}
+			};
+		}
+		return componentTypeComparator;
 	}
 
 	public Comparator<IDIYComponent<?>> getComponentZOrderComparator(

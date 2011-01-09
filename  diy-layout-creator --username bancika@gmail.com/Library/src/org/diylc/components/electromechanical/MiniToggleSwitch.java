@@ -1,14 +1,16 @@
 package org.diylc.components.electromechanical;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.RoundRectangle2D;
 
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentLayer;
 import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -16,7 +18,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", desciption = "", stretchable = false, componentLayer = ComponentLayer.COMPONENT, instanceNamePrefix = "SW")
-public class MiniToggleSwitch implements IDIYComponent<ToggleSwitchType> {
+public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -163,8 +165,14 @@ public class MiniToggleSwitch implements IDIYComponent<ToggleSwitchType> {
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
 		if (body != null) {
 			if (componentState != ComponentState.DRAGGING) {
+				Composite oldComposite = g2d.getComposite();
+				if (alpha < MAX_ALPHA) {
+					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+							1f * alpha / MAX_ALPHA));
+				}
 				g2d.setColor(BODY_COLOR);
 				g2d.fill(body);
+				g2d.setComposite(oldComposite);
 			}
 			g2d.setStroke(new BasicStroke());
 			g2d.setColor(BORDER_COLOR);
