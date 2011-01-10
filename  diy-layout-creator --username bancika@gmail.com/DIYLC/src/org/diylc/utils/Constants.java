@@ -4,14 +4,13 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Stroke;
-import java.awt.Toolkit;
 
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 public class Constants {
 
-	public static final int PIXELS_PER_INCH = Toolkit.getDefaultToolkit().getScreenResolution();
+//	public static final int PIXELS_PER_INCH = Toolkit.getDefaultToolkit().getScreenResolution();
 	public static int GRIDS_PER_INCH = 10;
 	public static Size GRID_SIZE = new Size(1d / GRIDS_PER_INCH, SizeUnit.in);
 	public static final int GRID = 10;

@@ -437,6 +437,8 @@ public class Presenter implements IPlugInPort {
 			}
 		}
 
+		messageDispatcher.dispatchMessage(EventType.MOUSE_MOVED, scaledPoint);
+
 		if (!components.equals(controlPointMap)) {
 			controlPointMap = components;
 			messageDispatcher.dispatchMessage(EventType.AVAILABLE_CTRL_POINTS_CHANGED,
@@ -604,7 +606,7 @@ public class Presenter implements IPlugInPort {
 				.deepClone(currentProject), "Add");
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
-	
+
 	@Override
 	public void deleteSelectedComponents() {
 		LOG.debug("deleteSelectedComponents()");
@@ -679,8 +681,8 @@ public class Presenter implements IPlugInPort {
 		}
 		double width = area.getBounds2D().getWidth();
 		double height = area.getBounds2D().getHeight();
-		width /= Constants.PIXELS_PER_INCH;
-		height /= Constants.PIXELS_PER_INCH;
+		width /= Constants.GRID * Constants.GRIDS_PER_INCH;
+		height /= Constants.GRID * Constants.GRIDS_PER_INCH;
 		if (isMetric) {
 			width *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
 			height *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
