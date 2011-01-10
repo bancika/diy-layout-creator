@@ -17,15 +17,17 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
 	private static final long serialVersionUID = 1L;
 
+	public static Color BOARD_COLOR = Color.decode("#BCED91");
+	public static Color BORDER_COLOR = BOARD_COLOR.darker();
+
 	protected String name;
 	protected String value;
 	protected Point[] controlPoints = new Point[] {
 			new Point((int) (-5 * Constants.GRID), (int) (-5 * Constants.GRID)),
 			new Point((int) (5 * Constants.GRID), (int) (5 * Constants.GRID)) };
 
-	protected abstract Color getBoardColor();
-
-	protected abstract Color getBorderColor();
+	protected Color boardColor = BOARD_COLOR;
+	protected Color borderColor = BORDER_COLOR;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
@@ -36,14 +38,32 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 						/ MAX_ALPHA));
 			}
-			g2d.setColor(getBoardColor());
+			g2d.setColor(boardColor);
 			g2d.fillRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
 					- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
 			g2d.setComposite(oldComposite);
 		}
-		g2d.setColor(getBorderColor());
+		g2d.setColor(borderColor);
 		g2d.drawRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
 				- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
+	}
+
+	@EditableProperty(name = "Color")
+	public Color getBoardColor() {
+		return boardColor;
+	}
+
+	public void setBoardColor(Color boardColor) {
+		this.boardColor = boardColor;
+	}
+
+	@EditableProperty(name = "Border")
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
 	}
 
 	@Override
