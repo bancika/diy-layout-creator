@@ -34,6 +34,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
 	public static Color INDENT_COLOR = Color.lightGray;
 	public static Color LABEL_COLOR = Color.white;
+	public static Color LABEL_COLOR_SELECTED = Color.red;
 	public static int EDGE_RADIUS = 6;
 	public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
 	public static Size INDENT_SIZE = new Size(0.15d, SizeUnit.in);
@@ -233,7 +234,16 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		g2d.draw(getBody());
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
-		g2d.setColor(componentState == ComponentState.DRAGGING ? BORDER_COLOR : LABEL_COLOR);
+		switch (componentState) {
+		case DRAGGING:
+			g2d.setColor(BORDER_COLOR);
+			break;
+		case SELECTED:
+			g2d.setColor(LABEL_COLOR_SELECTED);
+			break;
+		default:
+			g2d.setColor(LABEL_COLOR);
+		}
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
 		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
 		int textHeight = (int) (rect.getHeight());
@@ -247,7 +257,17 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		g2d.drawString("IC", 10, 10);
+		int radius = 6 * width / 32;
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRoundRect(width / 6, 1, 4 * width / 6, height - 4, radius, radius);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRoundRect(width / 6, 1, 4 * width / 6, height - 4, radius, radius);
+		int pinSize = 2 * width / 32;
+		g2d.setColor(PIN_COLOR);
+		for (int i = 0; i < 4; i++) {
+			g2d.fillRect(width / 6 - pinSize, (height / 5) * (i + 1) - 1, pinSize, pinSize);
+			g2d.fillRect(5 * width / 6 + 1, (height / 5) * (i + 1) - 1, pinSize, pinSize);
+		}
 	}
 
 	static enum PinCount {
