@@ -179,13 +179,13 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 			g2d.draw(body);
 		}
 		if (componentState != ComponentState.DRAGGING) {
-			int circleRadius = CIRCLE_SIZE.convertToPixels() / 2;
-			int lugWidth = LUG_WIDTH.convertToPixels();
-			int lugHeight = LUG_HEIGHT.convertToPixels();
+			int circleDiameter = getClosestOdd(CIRCLE_SIZE.convertToPixels());
+			int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
+			int lugHeight = getClosestOdd(LUG_HEIGHT.convertToPixels());
 			for (Point p : controlPoints) {
 				g2d.setColor(CIRCLE_COLOR);
-				g2d.fillOval(p.x - circleRadius, p.y - circleRadius, 2 * circleRadius,
-						2 * circleRadius);
+				g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2,
+						circleDiameter, circleDiameter);
 				g2d.setColor(LUG_COLOR);
 				g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
 			}

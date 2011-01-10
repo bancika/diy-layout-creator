@@ -12,7 +12,6 @@ import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;

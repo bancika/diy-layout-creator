@@ -3,10 +3,15 @@ package org.diylc.gui.editor;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.JLabel;
+
+import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.AbstractMeasure;
 
 public class FieldEditorFactory {
+
+	private static final Logger LOG = Logger.getLogger(FieldEditorFactory.class);
 
 	public static Component createFieldEditor(PropertyWrapper property) {
 		if (property.getType().equals(String.class)) {
@@ -30,6 +35,7 @@ public class FieldEditorFactory {
 			ByteEditor byteEditor = new ByteEditor(property);
 			return byteEditor;
 		}
-		return null;
+		LOG.error("Unrecognized parameter type: " + property.getType().getName());
+		return new JLabel("Unrecognized");
 	}
 }
