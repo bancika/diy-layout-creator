@@ -26,8 +26,8 @@ The easiest way to move a component across the canvas is to drag it by clicking 
 
 A component may have one or more control points. Control points have dual purpose:
 
-  * Allows changing component placement or appearance by dragging it's control point on the canvas. For instance, drag one end point of the resistor. To be able to drag a control point, the component must be selected. That makes it easier to "un-stick" two component that have overlapping control points and to have control over points that are dragged. This also works with multiple selection. When two or more components have their components stuck to each other, selecting all of them will allow you to drag their control points at the same time. Note that status bar lists all the components that will be affected by drag&drop operation.
-  * Allows the component to "stick" to other components. Consider the following example: two resistors are joined with overlapping control points. Moving one of them will cause the overlapping control point of the other to move together and keep the two resistors connected.
+  * Allows changing component placement or appearance by dragging it's control point on the canvas. For instance, drag one end point of the resistor. To be able to drag a control point, the component must be selected. That makes it easier to "un-stick" two component that have overlapping control points and to have control over points that are dragged. This also works with multiple selection. When two or more components have their components stuck to each other, selecting all of them will allow you to drag their control points at the same time. Note that status bar lists all the components that will be affected by the drag&drop operation.
+  * Allows the component to "stick" to other components. Consider the following example: two resistors are joined with overlapping control points. Moving one of them will cause the overlapping control point of the other to move together and keep the two resistors connected. Hold CTRL key to prevent that.
 
 ===Editing components===
 
