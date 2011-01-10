@@ -5,6 +5,8 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 
@@ -49,6 +51,15 @@ class ComponentButton extends JButton {
 				// } catch (Exception e1) {
 				// e1.printStackTrace();
 				// }
+			}
+		});
+		addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					plugInPort.deleteSelectedComponents();
+				}
 			}
 		});
 		// addKeyListener(new KeyAdapter() {
