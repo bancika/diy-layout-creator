@@ -604,6 +604,16 @@ public class Presenter implements IPlugInPort {
 				.deepClone(currentProject), "Add");
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
+	
+	@Override
+	public void deleteSelectedComponents() {
+		LOG.debug("deleteSelectedComponents()");
+		Project oldProject = cloner.deepClone(currentProject);
+		currentProject.getComponents().removeAll(selectedComponents);
+		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+				.deepClone(currentProject), "Delete");
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
+	}
 
 	// public boolean isLayerLocked(ComponentLayer layer) {
 	// return lockedLayers.contains(layer);
