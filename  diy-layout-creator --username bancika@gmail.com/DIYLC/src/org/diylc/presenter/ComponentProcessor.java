@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,7 @@ public class ComponentProcessor {
 			// }
 			// }
 		}
+		Collections.sort(properties, ComparatorFactory.getInstance().getPropertyNameComparator());
 		return properties;
 	}
 }
