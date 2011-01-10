@@ -70,3 +70,7 @@ Child classes should implement the following methods:
   * *`getDefaultWidth`* and *`getDefaultHeight`* are used to determine default component body size. Note that users may change this later; do not use these when creating body shape.
   * *`getBodyColor`* and *`getBorderColor`* are used to determine colors for body and body border.
   * *`getBodyShape`* should return a `Shape` object that represents component body, e.g. rectangle for resistors or ellipse for ceramic capacitors. Shape should include the current component size into account, as specified in protected fields `width` and `height`. Shape should *not* include component placement into account and should be not be scaled or rotated. Also, the minimum bounding rectangle of the shape should have it's top left corner at point (0, 0). This is important because abstract class relies on that fact when drawing the component body on the canvas.
+
+====`AbstractCurvedComponent` class====
+
+This class should be used as a base class for all components that may be represented by a cubic (Bezier) curve. It defines 4 control points - two for start/end and two curve control points. Also, it defines the component name, allows the user to edit component color and draws 3 guidelines. It's up to the child class to draw the `CubicCurve2D` object and to provide the default color.
