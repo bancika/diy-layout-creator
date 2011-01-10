@@ -98,7 +98,7 @@ This class should be used as a base class for all components that may be represe
 
 ====Measures====
 
-DIYLC supports several different measures. All of them extend *`AbstractMeasure<T>`* class. Type parameter is enum that implements *`Unit`* interface and designates measure units. To illustrate how it works, see the example below.
+DIYLC supports several different measures. All of them extend *`AbstractMeasure<T>`* class. Type parameter is enum that implements *`Unit`* interface and designates measure units. To illustrate how it works, see the example below. It defines an enum for all possible resistance units (ohm, K, M) and then creates a measure that uses it.
 
 {{{
 public enum ResistanceUnit implements Unit {
