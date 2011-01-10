@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
-import org.diylc.components.AbstractLeadedDIYComponent;
+import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -13,7 +13,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "CT", description = "", zOrder = IDIYComponent.ABOVE_BOARD)
-public class CopperTrace extends AbstractLeadedDIYComponent<Void> {
+public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
 
