@@ -20,9 +20,7 @@ public class PerfBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color BOARD_COLOR = Color.decode("#BCED91");
 	public static Color COPPER_COLOR = Color.decode("#B87333");
-	public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
 	private static Size SPACING = new Size(0.1d, SizeUnit.in);
 	private static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);
@@ -131,16 +129,6 @@ public class PerfBoard extends AbstractBoard {
 
 	public void setSpacing(Size spacing) {
 		this.spacing = spacing;
-	}
-
-	@Override
-	protected Color getBoardColor() {
-		return BOARD_COLOR;
-	}
-
-	@Override
-	protected Color getBorderColor() {
-		return BORDER_COLOR;
 	}
 
 	@Override

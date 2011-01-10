@@ -136,16 +136,6 @@ public class VeroBoard extends AbstractBoard {
 	}
 
 	@Override
-	protected Color getBoardColor() {
-		return BOARD_COLOR;
-	}
-
-	@Override
-	protected Color getBorderColor() {
-		return BORDER_COLOR;
-	}
-
-	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setColor(BOARD_COLOR);
 		g2d.fillRect(2, 2, width - 4, height - 4);
