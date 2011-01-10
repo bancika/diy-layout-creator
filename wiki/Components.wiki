@@ -32,9 +32,10 @@
 
 In order for a component to be recognized by the application it has to meet the following:
 
-  * It should be compiled, packed inside a jar and placed in *library* folder.
   * It must implement *`IDIYComponent`* component interface, or extend some of the existing component classes.
+  * Class parameter is type of component value. For instance, resistor will have it's value type set to `Resistance` and IC will have the type of `String` (to designate IC code)
   * It is not mandatory but highly recommended to annotate each component class with *`@ComponentDescriptor`* annotation. Application will recognize the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted.
+  * It should be compiled, packed inside a jar and placed in *library* folder.
 
 ====`@ComponentDescriptor` annotation====
 
