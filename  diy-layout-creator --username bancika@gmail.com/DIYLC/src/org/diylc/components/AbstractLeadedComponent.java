@@ -24,7 +24,7 @@ import org.diylc.utils.Constants;
  * 
  * @author Branislav Stojkovic
  */
-public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentComponent<T> {
+public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComponent<T> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,7 +40,7 @@ public abstract class AbstractLeadedDIYComponent<T> extends AbstractTransparentC
 	protected Color bodyColor = getDefaultBodyColor();
 	protected Color borderColor = getDefaultBorderColor();
 
-	protected AbstractLeadedDIYComponent() {
+	protected AbstractLeadedComponent() {
 		super();
 		try {
 			this.width = getDefaultWidth().clone();
