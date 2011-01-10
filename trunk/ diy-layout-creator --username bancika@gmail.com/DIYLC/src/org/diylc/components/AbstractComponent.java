@@ -32,4 +32,15 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	public String toString() {
 		return name;
 	}
+
+	/**
+	 * Returns the closest odd number, i.e. x when x is odd, or x + 1 when x is
+	 * even.
+	 * 
+	 * @param x
+	 * @return
+	 */
+	protected int getClosestOdd(int x) {
+		return (x / 2) * 2 + 1;
+	}
 }

@@ -2,8 +2,9 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 
-import org.diylc.components.AbstractSinglePointComponent;
+import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -14,7 +15,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD + 0.1)
-public class SolderPad extends AbstractSinglePointComponent {
+public class SolderPad extends AbstractComponent<Color> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,11 +25,12 @@ public class SolderPad extends AbstractSinglePointComponent {
 
 	private Size size = SIZE;
 	private Color color = COLOR;
+	private Point point = new Point(0, 0);
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
-		int diameter = size.convertToPixels();
-		int holeDiameter = HOLE_SIZE.convertToPixels();
+		int diameter = getClosestOdd(size.convertToPixels());
+		int holeDiameter = getClosestOdd(HOLE_SIZE.convertToPixels());
 		g2d.setColor(color);
 		g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
 		g2d.setColor(Constants.CANVAS_COLOR);
@@ -38,8 +40,8 @@ public class SolderPad extends AbstractSinglePointComponent {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		int diameter = width / 2;
-		int holeDiameter = 4;
+		int diameter = getClosestOdd(width / 2);
+		int holeDiameter = 5;
 		g2d.setColor(COLOR);
 		g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
 		g2d.setColor(Constants.CANVAS_COLOR);
@@ -56,12 +58,35 @@ public class SolderPad extends AbstractSinglePointComponent {
 		this.size = size;
 	}
 
-	@EditableProperty
-	public Color getColor() {
+	@Deprecated
+	@Override
+	public String getName() {
+		return super.getName();
+	}
+
+	@Override
+	public int getControlPointCount() {
+		return 1;
+	}
+
+	@Override
+	public Point getControlPoint(int index) {
+		return point;
+	}
+
+	@Override
+	public void setControlPoint(Point point, int index) {
+		this.point.setLocation(point);
+	}
+
+	@EditableProperty(name = "Color")
+	@Override
+	public Color getValue() {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	@Override
+	public void setValue(Color value) {
+		this.color = value;
 	}
 }

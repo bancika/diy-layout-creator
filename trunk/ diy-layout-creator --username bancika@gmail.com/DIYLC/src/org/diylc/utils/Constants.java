@@ -12,8 +12,9 @@ import org.diylc.core.measures.SizeUnit;
 public class Constants {
 
 	public static final int PIXELS_PER_INCH = Toolkit.getDefaultToolkit().getScreenResolution();
-	public static Size GRID_SIZE = new Size(0.1d, SizeUnit.in);
-	public static final int GRID = GRID_SIZE.convertToPixels();
+	public static int GRIDS_PER_INCH = 10;
+	public static Size GRID_SIZE = new Size(1d / GRIDS_PER_INCH, SizeUnit.in);
+	public static final int GRID = 10;
 
 	public static Color CANVAS_COLOR = Color.white;
 	public static Color GRID_COLOR = new Color(240, 240, 240);

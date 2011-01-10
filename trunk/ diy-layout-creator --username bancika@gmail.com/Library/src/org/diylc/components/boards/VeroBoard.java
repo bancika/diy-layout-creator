@@ -26,7 +26,7 @@ public class VeroBoard extends AbstractBoard {
 
 	private static Size SPACING = new Size(0.1d, SizeUnit.in);
 	private static Size STRIP_SIZE = new Size(0.085d, SizeUnit.in);
-	private static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
+	private static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
 	// private Area copperArea;
 	private Size spacing = SPACING;
@@ -52,17 +52,18 @@ public class VeroBoard extends AbstractBoard {
 						/ MAX_ALPHA));
 			}
 			Point p = new Point(controlPoints[0]);
-			int stripSize = STRIP_SIZE.convertToPixels() / 2 * 2;
-			int holeRadius = HOLE_SIZE.convertToPixels() / 2;
+			int stripSize = getClosestOdd(STRIP_SIZE.convertToPixels());
+			int holeRadius = getClosestOdd(HOLE_SIZE.convertToPixels() / 2);
+			int spacing = this.spacing.convertToPixels();
 
-			while (p.y < controlPoints[1].y - spacing.convertToPixels()) {
+			while (p.y < controlPoints[1].y - spacing) {
 				p.x = controlPoints[0].x;
-				p.y += spacing.convertToPixels();
+				p.y += spacing;
 				g2d.setColor(COPPER_COLOR);
 				g2d.fillRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
-						controlPoints[1].x - spacing.convertToPixels() - p.x, stripSize);
-				while (p.x < controlPoints[1].x - spacing.convertToPixels()) {
-					p.x += spacing.convertToPixels();
+						controlPoints[1].x - spacing - p.x, stripSize);
+				while (p.x < controlPoints[1].x - spacing) {
+					p.x += spacing;
 					g2d.setColor(Constants.CANVAS_COLOR);
 					g2d
 							.fillOval(p.x - holeRadius, p.y - holeRadius, holeRadius * 2,
@@ -153,7 +154,7 @@ public class VeroBoard extends AbstractBoard {
 		g2d.setColor(COPPER_COLOR);
 		g2d.fillRect(4, width / 4, width - 8, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(width / 3 - 1, width / 2 - 1, 2, 2);
-		g2d.fillOval(2 * width / 3 - 1, width / 2 - 1, 2, 2);
+		g2d.fillOval(width / 3 - 1, width / 2 - 1, 3, 3);
+		g2d.fillOval(2 * width / 3 - 1, width / 2 - 1, 3, 3);
 	}
 }

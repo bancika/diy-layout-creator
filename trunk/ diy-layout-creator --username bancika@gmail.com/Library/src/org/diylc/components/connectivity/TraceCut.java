@@ -79,4 +79,10 @@ public class TraceCut extends AbstractSinglePointComponent {
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
 	}
+
+	@Deprecated
+	@Override
+	public String getName() {
+		return super.getName();
+	}
 }

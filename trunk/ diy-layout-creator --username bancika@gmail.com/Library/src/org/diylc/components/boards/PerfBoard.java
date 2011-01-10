@@ -1,7 +1,6 @@
 package org.diylc.components.boards;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -27,7 +26,7 @@ public class PerfBoard extends AbstractBoard {
 
 	private static Size SPACING = new Size(0.1d, SizeUnit.in);
 	private static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);
-	private static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
+	private static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
 	// private Area copperArea;
 	private Size spacing = SPACING;
@@ -53,21 +52,20 @@ public class PerfBoard extends AbstractBoard {
 						/ MAX_ALPHA));
 			}
 			Point p = new Point(controlPoints[0]);
-			int radius = PAD_SIZE.convertToPixels() / 2;
-			int holeRadius = HOLE_SIZE.convertToPixels() / 2;
-			g2d.setStroke(new BasicStroke(radius));
+			int diameter = getClosestOdd(PAD_SIZE.convertToPixels());
+			int holeDiameter = getClosestOdd(HOLE_SIZE.convertToPixels());
+			int spacing = this.spacing.convertToPixels();
 
-			while (p.y < controlPoints[1].y - spacing.convertToPixels()) {
+			while (p.y < controlPoints[1].y - spacing) {
 				p.x = controlPoints[0].x;
-				p.y += spacing.convertToPixels();
-				while (p.x < controlPoints[1].x - spacing.convertToPixels()) {
-					p.x += spacing.convertToPixels();
+				p.y += spacing;
+				while (p.x < controlPoints[1].x - spacing) {
+					p.x += spacing;
 					g2d.setColor(COPPER_COLOR);
-					g2d.fillOval(p.x - radius, p.y - radius, radius * 2, radius * 2);
+					g2d.fillOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
 					g2d.setColor(Constants.CANVAS_COLOR);
-					g2d
-							.fillOval(p.x - holeRadius, p.y - holeRadius, holeRadius * 2,
-									holeRadius * 2);
+					g2d.fillOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter,
+							holeDiameter);
 				}
 			}
 			g2d.setComposite(oldComposite);
