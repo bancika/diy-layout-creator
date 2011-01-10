@@ -11,6 +11,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -29,6 +30,7 @@ public class PerfBoard extends AbstractBoard {
 	private static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
 
 	// private Area copperArea;
+	private Size spacing = SPACING;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
@@ -55,11 +57,11 @@ public class PerfBoard extends AbstractBoard {
 			int holeRadius = HOLE_SIZE.convertToPixels() / 2;
 			g2d.setStroke(new BasicStroke(radius));
 
-			while (p.y < controlPoints[1].y - SPACING.convertToPixels()) {
+			while (p.y < controlPoints[1].y - spacing.convertToPixels()) {
 				p.x = controlPoints[0].x;
-				p.y += SPACING.convertToPixels();
-				while (p.x < controlPoints[1].x - SPACING.convertToPixels()) {
-					p.x += SPACING.convertToPixels();
+				p.y += spacing.convertToPixels();
+				while (p.x < controlPoints[1].x - spacing.convertToPixels()) {
+					p.x += spacing.convertToPixels();
 					g2d.setColor(COPPER_COLOR);
 					g2d.fillOval(p.x - radius, p.y - radius, radius * 2, radius * 2);
 					g2d.setColor(Constants.CANVAS_COLOR);
@@ -123,6 +125,15 @@ public class PerfBoard extends AbstractBoard {
 	// }
 	// return copperArea;
 	// }
+
+	@EditableProperty
+	public Size getSpacing() {
+		return spacing;
+	}
+
+	public void setSpacing(Size spacing) {
+		this.spacing = spacing;
+	}
 
 	@Override
 	protected Color getBoardColor() {
