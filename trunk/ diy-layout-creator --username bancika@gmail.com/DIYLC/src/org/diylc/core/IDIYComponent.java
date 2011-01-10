@@ -35,7 +35,7 @@ public interface IDIYComponent<T> extends Serializable {
 	public static final int ABOVE_CHASSIS = 3;
 	public static final int BELOW_BOARD = 4;
 	public static final int BOARD = 5;
-	public static final int ABOVE_BOARD = 5;
+	public static final int ABOVE_BOARD = 6;
 	public static final int COMPONENT = 7;
 	public static final int ABOVE_COMPONENT = 8;
 
