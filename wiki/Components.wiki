@@ -53,7 +53,7 @@ Sample usage:
 {{{
 @ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "R",
                      description = "Resistor layout symbol", zOrder = IDIYComponent.COMPONENT)
-public class Resistor extends AbstractLeadedDIYComponent<Resistance> {
+public class Resistor extends AbstractLeadedComponent<Resistance> {
 }}}
 
 ====`@EditableProperty` annotation====
@@ -76,7 +76,7 @@ Base class for all components that may be transparent. Defines component name an
 
 Base class for components having only one control point.
 
-====`AbstractLeadedDIYComponent` class====
+====`AbstractLeadedComponent` class====
 
 This class should be used as a base class for all components that have two flying leads and solid color body that may be represented with a `Shape` object, e.g. resistor or capacitor layout symbols. It extends `AbstractTransparentComponent` and adds common logic that makes it easier to create similar components. It has the following features:
 
