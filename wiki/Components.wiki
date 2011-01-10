@@ -58,13 +58,15 @@ public class Resistor extends AbstractLeadedDIYComponent<Resistance> {
 
 ====`@EditableProperty` annotation====
 
-May be applied only to component a property getter that has a matching setter. Below is the list of supported property types:
+May be applied only to component a property getter that has a matching setter. Application will recognize all editable properties and allow the user to edit them through GUI. Based on the property type, different GUI control will be created that is suitable for that data type. Below is the list of supported property types:
 
   * *Byte* and *byte*: create a slider that has range from 0 to 127.
   * *Color*: creates a colored panel that opens the color picker when clicked.
   * *Enum*: creates a combo box with all values from the enum.
   * *Measure*: creates a text field and combo box that edit measure value and units respectively. See the section that explains measures for more details.
   * *String*: creates a text field.
+
+Data types not listed above are currently not supported and should not be used with editable properties.
 
 ====`AbstractTransparentComponent` class====
 
