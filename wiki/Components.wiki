@@ -125,10 +125,6 @@ public enum ResistanceUnit implements Unit {
 
 public class Resistance extends AbstractMeasure<ResistanceUnit> {
 
-        public Resistance() {
-                super();
-        }
-
         public Resistance(Double value, ResistanceUnit multiplier) {
                 super(value, multiplier);
         }
