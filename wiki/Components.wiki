@@ -32,7 +32,7 @@
 
 In order for a component to be recognized by the application it has to meet the following:
 
-  * It must implement (directly or indirectly) *`IDIYComponent`* component interface. It is advisable, whenever possible, to extends one of the abstract classes instead of making a component from scratch. See below the list of them and more details.
+  * It must implement (directly or indirectly) *`IDIYComponent<T>`* component interface. It is advisable, whenever possible, to extends one of the abstract classes instead of making a component from scratch. See below the list of them and more details.
   * Class parameter is type of component value. For instance, resistor will have it's value type set to `Resistance` and IC will have the type of `String` (to designate IC code)
   * It is not mandatory but highly recommended to annotate each component class with *`@ComponentDescriptor`* annotation. Application will recognize and install the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted to values that are potentially unsuitable for the component.
   * All component properties should be annotated with *`@EditableProperty`* annotation.
@@ -93,3 +93,50 @@ Child classes should implement the following methods:
 ====`AbstractCurvedComponent` class====
 
 This class should be used as a base class for all components that may be represented by a cubic (Bezier) curve. It extends `AbstractTransparentComponent` and adds 4 control points - two for start/end and two curve control points. Also, it defines the component name, allows the user to edit component color and draws 3 guidelines. It's up to the child class to draw the `CubicCurve2D` object and to provide the default color.
+
+====Mesures====
+
+DIYLC supports several different measures. All of them extend *`AbstractMeasure<T>`* class. Type parameter is enum that implements *`Unit`* interface and designates measure units. To illustrate how it works, see the example below.
+
+{{{
+public enum ResistanceUnit implements Unit {
+
+        R(1, "\u03a9"), K(1e3, "K"), M(1e6, "M");
+
+        double factor;
+        String display;
+
+        private ResistanceUnit(double factor, String display) {
+                this.factor = factor;
+                this.display = display;
+        }
+
+        @Override
+        public double getFactor() {
+                return factor;
+        }
+
+        @Override
+        public String toString() {
+                return display;
+        }
+}
+
+
+public class Resistance extends AbstractMeasure<ResistanceUnit> {
+
+        public Resistance() {
+                super();
+        }
+
+        public Resistance(Double value, ResistanceUnit multiplier) {
+                super(value, multiplier);
+        }
+
+        @Override
+        public Resistance clone() throws CloneNotSupportedException {
+                return new Resistance(value, unit);
+        }
+}
+
+}}}
