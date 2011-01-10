@@ -107,7 +107,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	public JLabel getSizeLabel() {
 		if (sizeLabel == null) {
-			sizeLabel = new JLabel();
+			sizeLabel = new JLabel("N/A");
+			sizeLabel.setToolTipText("Selection Size");
 			sizeLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(
 					0, 1, 0, 1, UIManager.getColor("Separator.shadow")), BorderFactory
 					.createEmptyBorder(0, 4, 0, 4)));
@@ -186,11 +187,11 @@ public class StatusBar extends JPanel implements IPlugIn {
 			boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
 					Presenter.METRIC_KEY);
 			if (size == null) {
-				getSizeLabel().setText("Size: N/A");
+				getSizeLabel().setText("N/A");
 			} else {
 				getSizeLabel().setText(
-						"Size: " + sizeFormat.format(size.getX()) + " x "
-								+ sizeFormat.format(size.getY()) + (isMetric ? " cm" : " in"));
+						sizeFormat.format(size.getX()) + " x " + sizeFormat.format(size.getY())
+								+ (isMetric ? " cm" : " in"));
 			}
 			break;
 		case SLOT_CHANGED:
