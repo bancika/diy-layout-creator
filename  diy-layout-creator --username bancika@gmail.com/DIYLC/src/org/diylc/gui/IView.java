@@ -1,7 +1,6 @@
 package org.diylc.gui;
 
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JComponent;
 
 import org.diylc.common.BadPositionException;
@@ -39,6 +38,4 @@ public interface IView {
 	 * @see IPlugInPort#injectMenuAction
 	 */
 	void addMenuAction(Action action, String menuName);
-
-	void setCursorIcon(Icon icon);
 }

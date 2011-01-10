@@ -192,10 +192,4 @@ public class MainFrame extends JFrame implements IView {
 			menu.add(action);
 		}
 	}
-
-	@Override
-	public void setCursorIcon(Icon icon) {
-		// TODO Auto-generated method stub
-
-	}
 }

@@ -12,7 +12,6 @@ import java.io.FileInputStream;
 import java.util.EnumSet;
 
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -59,10 +58,6 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 
 			@Override
 			public void addMenuAction(Action action, String menuName) {
-			}
-
-			@Override
-			public void setCursorIcon(Icon icon) {
 			}
 		});
 		xStream = new XStream(new DomDriver());
