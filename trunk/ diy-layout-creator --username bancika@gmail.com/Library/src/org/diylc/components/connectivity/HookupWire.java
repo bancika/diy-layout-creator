@@ -20,16 +20,16 @@ public class HookupWire extends AbstractCurvedComponent<AWG> {
 	public static double INSULATION_THICKNESS_PCT = 0.3;
 
 	protected AWG value = AWG._22;
-	
+
 	@Override
 	protected Color getDefaultColor() {
 		return COLOR;
 	}
-	
+
 	@Override
 	protected void drawCurve(CubicCurve2D curve, Graphics2D g2d) {
 		int thickness = (int) (Math.pow(Math.E, -1.12436 - 0.11594 * value.getValue())
-				* Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT));
+				* Constants.GRID * Constants.GRIDS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT));
 		g2d.setColor(color.darker());
 		g2d.setStroke(new BasicStroke(thickness));
 		g2d.draw(curve);

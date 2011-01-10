@@ -59,7 +59,7 @@ public class Presenter implements IPlugInPort {
 	public static final String DEFAULTS_KEY = "default.";
 	public static final String METRIC_KEY = "metric";
 
-	public static final int CONTROL_POINT_SENSITIVITY = 4;
+	public static final int CONTROL_POINT_SIZE = 5;
 	public static final int ICON_SIZE = 32;
 	public static boolean ENABLE_ANTIALIASING = true;
 	public static boolean DEBUG_COMPONENT_AREAS = false;
@@ -292,9 +292,11 @@ public class Presenter implements IPlugInPort {
 							if (shouldShowControlPointsFor(component)) {
 								g2d.setColor(Constants.CONTROL_POINT_COLOR);
 								g2d.setStroke(new BasicStroke(2));
-								g2d.drawOval(controlPoint.x - 2, controlPoint.y - 2, 4, 4);
-								// g2d.fillOval(point.getValue().x - 2, point
-								// .getValue().y - 2, 5, 5);
+								// g2d.drawOval(controlPoint.x - 2,
+								// controlPoint.y - 2, 4, 4);
+								g2d.fillOval(controlPoint.x - CONTROL_POINT_SIZE / 2,
+										controlPoint.y - CONTROL_POINT_SIZE / 2,
+										CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
 							}
 						} catch (Exception e) {
 							LOG.error("Could not obtain control points for component of type "
@@ -411,7 +413,7 @@ public class Presenter implements IPlugInPort {
 				// Only consider selected components.
 				if (selectedComponents.contains(component)) {
 					try {
-						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SENSITIVITY) {
+						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SIZE) {
 							Set<Integer> indices = new HashSet<Integer>();
 							ComponentType componentType = componentTypeMap
 									.get(component.getClass());

@@ -52,6 +52,54 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		}
 	}
 
+	@Override
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+		g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
+		double distance = points[0].distance(points[1]);
+		Shape shape = getBodyShape();
+		if (shape == null) {
+			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
+			return;
+		}
+		Rectangle shapeRect = shape.getBounds();
+		double leadLenght = (distance - shapeRect.width) / 2;
+		Double theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
+		// Transform graphics to draw the body in the right place and at the
+		// right angle.
+		g2d.translate((points[0].x + points[1].x - shapeRect.width) / 2,
+				(points[0].y + points[1].y - shapeRect.height) / 2);
+		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
+		// Draw body.
+		if (componentState != ComponentState.DRAGGING) {
+			Composite oldComposite = g2d.getComposite();
+			if (alpha < MAX_ALPHA) {
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+						/ MAX_ALPHA));
+			}
+			g2d.setColor(bodyColor);
+			g2d.fill(shape);
+			g2d.setComposite(oldComposite);
+		}
+		// Draw leads.
+		g2d.setColor(getLeadColor());
+		g2d.drawLine((int) (shapeRect.width - distance) / 2, (int) shapeRect.height / 2,
+				(int) ((shapeRect.width - distance) / 2 + leadLenght), (int) shapeRect.height / 2);
+		g2d.drawLine((int) (shapeRect.width + distance) / 2, (int) shapeRect.height / 2,
+				(int) ((shapeRect.width + distance) / 2 - leadLenght), (int) shapeRect.height / 2);
+		g2d.setStroke(new BasicStroke(1));
+		g2d.setColor(borderColor);
+		g2d.draw(shape);
+		// Draw label.
+		g2d.setFont(Constants.LABEL_FONT);
+		g2d
+				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
+						: LABEL_COLOR);
+		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
+		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getName(), g2d);
+		g2d.drawString(getName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
+				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
+	}
+
 	/**
 	 * @return default component width.
 	 */
@@ -107,54 +155,6 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	@Override
 	public void setControlPoint(Point point, int index) {
 		points[index].setLocation(point);
-	}
-
-	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
-		g2d.setColor(getLeadColor());
-		g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
-		double distance = points[0].distance(points[1]);
-		Shape shape = getBodyShape();
-		if (shape == null) {
-			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
-			return;
-		}
-		Rectangle shapeRect = shape.getBounds();
-		double leadLenght = (distance - shapeRect.width) / 2;
-		Double theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
-		// Draw leads.
-		g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + leadLenght * Math.cos(theta)),
-				(int) (points[0].y + leadLenght * Math.sin(theta)));
-		g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x - leadLenght * Math.cos(theta)),
-				(int) (points[1].y - leadLenght * Math.sin(theta)));
-		// Transform graphics to draw the body in the right place and at the
-		// right angle.
-		g2d.translate((points[0].x + points[1].x - shapeRect.width) / 2,
-				(points[0].y + points[1].y - shapeRect.height) / 2);
-		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
-		// Draw body.
-		if (componentState != ComponentState.DRAGGING) {
-			Composite oldComposite = g2d.getComposite();
-			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-						/ MAX_ALPHA));
-			}
-			g2d.setColor(bodyColor);
-			g2d.fill(shape);
-			g2d.setComposite(oldComposite);
-		}
-		g2d.setStroke(new BasicStroke(1));
-		g2d.setColor(borderColor);
-		g2d.draw(shape);
-		// Draw label.
-		g2d.setFont(Constants.LABEL_FONT);
-		g2d
-				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
-						: LABEL_COLOR);
-		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getName(), g2d);
-		g2d.drawString(getName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
-				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
 	}
 
 	@EditableProperty(name = "Color")
