@@ -12,6 +12,8 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 import org.diylc.plugins.file.ProjectDrawingProvider;
 import org.diylc.presenter.Presenter;
 
@@ -22,8 +24,6 @@ import com.diyfever.gui.ruler.RulerScrollPane;
 public class CanvasPlugin implements IPlugIn {
 
 	private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
-
-
 
 	private RulerScrollPane scrollPane;
 	private CanvasPanel canvasPanel;
@@ -45,7 +45,9 @@ public class CanvasPlugin implements IPlugIn {
 
 	private RulerScrollPane getScrollPane() {
 		if (scrollPane == null) {
-			scrollPane = new RulerScrollPane(canvasPanel, new ProjectDrawingProvider(plugInPort));
+			scrollPane = new RulerScrollPane(canvasPanel, new ProjectDrawingProvider(plugInPort),
+					new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in)
+							.convertToPixels());
 			Boolean metric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
 					Presenter.METRIC_KEY);
 			if (metric == null) {
@@ -114,7 +116,7 @@ public class CanvasPlugin implements IPlugIn {
 	public void refresh() {
 		MouseEvent event = new MouseEvent(canvasPanel, MouseEvent.MOUSE_MOVED, System
 				.currentTimeMillis(), 0, 1, 1,// canvasPanel.getWidth() / 2,
-												// canvasPanel.getHeight() / 2,
+				// canvasPanel.getHeight() / 2,
 				0, false);
 		canvasPanel.dispatchEvent(event);
 	}
