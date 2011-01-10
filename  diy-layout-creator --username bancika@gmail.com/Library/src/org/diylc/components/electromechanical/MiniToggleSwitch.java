@@ -25,13 +25,13 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	private static Size SPACING = new Size(0.2d, SizeUnit.in);
 	private static Size MARGIN = new Size(0.08d, SizeUnit.in);
 	private static Size CIRCLE_SIZE = new Size(0.09d, SizeUnit.in);
-	private static Size LUG_WIDTH = new Size(0.065d, SizeUnit.in);
+	private static Size LUG_WIDTH = new Size(0.060d, SizeUnit.in);
 	private static Size LUG_HEIGHT = new Size(0.03d, SizeUnit.in);
 
 	private static Color BODY_COLOR = Color.decode("#3299CC");
 	private static Color BORDER_COLOR = BODY_COLOR.darker();
 	private static Color CIRCLE_COLOR = Color.red;
-	private static Color LUG_COLOR = Color.blue;
+	private static Color LUG_COLOR = Color.decode("#00B2EE");
 
 	protected Point[] controlPoints = new Point[] { new Point(0, 0) };
 	protected RoundRectangle2D body;
