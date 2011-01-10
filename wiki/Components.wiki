@@ -94,7 +94,7 @@ Child classes should implement the following methods:
 
 This class should be used as a base class for all components that may be represented by a cubic (Bezier) curve. It extends `AbstractTransparentComponent` and adds 4 control points - two for start/end and two curve control points. Also, it defines the component name, allows the user to edit component color and draws 3 guidelines. It's up to the child class to draw the `CubicCurve2D` object and to provide the default color.
 
-====Mesures====
+====Measures====
 
 DIYLC supports several different measures. All of them extend *`AbstractMeasure<T>`* class. Type parameter is enum that implements *`Unit`* interface and designates measure units. To illustrate how it works, see the example below.
 
