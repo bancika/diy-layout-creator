@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.components.AbstractTransparentComponent;
@@ -45,21 +46,16 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
 	private void updateControlPoints() {
 		Point firstPoint = controlPoints[0];
-		int margin = MARGIN.convertToPixels();
 		int spacing = SPACING.convertToPixels();
 		switch (switchType) {
 		case SPST:
 			controlPoints = new Point[] { firstPoint,
 					new Point(firstPoint.x, firstPoint.y + spacing) };
-			body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin,
-					2 * margin, 2 * margin + spacing, margin, margin);
 			break;
 		case SPDT:
 			controlPoints = new Point[] { firstPoint,
 					new Point(firstPoint.x, firstPoint.y + spacing),
 					new Point(firstPoint.x, firstPoint.y + 2 * spacing) };
-			body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin,
-					2 * margin, 2 * margin + 2 * spacing, margin, margin);
 			break;
 		case DPDT:
 			controlPoints = new Point[] { firstPoint,
@@ -68,8 +64,6 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 					new Point(firstPoint.x + spacing, firstPoint.y),
 					new Point(firstPoint.x + spacing, firstPoint.y + spacing),
 					new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing) };
-			body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
-					* margin + spacing, 2 * margin + 2 * spacing, margin, margin);
 			break;
 		case _3PDT:
 			controlPoints = new Point[] { firstPoint,
@@ -81,8 +75,6 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 					new Point(firstPoint.x + 2 * spacing, firstPoint.y),
 					new Point(firstPoint.x + 2 * spacing, firstPoint.y + spacing),
 					new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2 * spacing) };
-			body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
-					* margin + 2 * spacing, 2 * margin + 2 * spacing, margin, margin);
 			break;
 		case _4PDT:
 			controlPoints = new Point[] { firstPoint,
@@ -97,8 +89,6 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 					new Point(firstPoint.x + 3 * spacing, firstPoint.y),
 					new Point(firstPoint.x + 3 * spacing, firstPoint.y + spacing),
 					new Point(firstPoint.x + 3 * spacing, firstPoint.y + 2 * spacing) };
-			body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
-					* margin + 3 * spacing, 2 * margin + 2 * spacing, margin, margin);
 			break;
 		case _5PDT:
 			controlPoints = new Point[] { firstPoint,
@@ -116,8 +106,6 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 					new Point(firstPoint.x + 4 * spacing, firstPoint.y),
 					new Point(firstPoint.x + 4 * spacing, firstPoint.y + spacing),
 					new Point(firstPoint.x + 4 * spacing, firstPoint.y + 2 * spacing) };
-			body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
-					* margin + 4 * spacing, 2 * margin + 2 * spacing, margin, margin);
 			break;
 		}
 	}
@@ -135,7 +123,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	@Override
 	public void setControlPoint(Point point, int index) {
 		controlPoints[index].setLocation(point);
-		updateControlPoints();
+		// Reset body shape.
+		body = null;
 	}
 
 	@EditableProperty
@@ -159,10 +148,14 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	public void setValue(ToggleSwitchType value) {
 		this.switchType = value;
 		updateControlPoints();
+		// Reset body shape.
+		body = null;
 	}
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+		Shape body = getBody();
+		// Draw body if available.
 		if (body != null) {
 			if (componentState != ComponentState.DRAGGING) {
 				Composite oldComposite = g2d.getComposite();
@@ -178,18 +171,54 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 			g2d.setColor(BORDER_COLOR);
 			g2d.draw(body);
 		}
-		if (componentState != ComponentState.DRAGGING) {
-			int circleDiameter = getClosestOdd(CIRCLE_SIZE.convertToPixels());
-			int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
-			int lugHeight = getClosestOdd(LUG_HEIGHT.convertToPixels());
-			for (Point p : controlPoints) {
+		// Draw lugs.
+		int circleDiameter = getClosestOdd(CIRCLE_SIZE.convertToPixels());
+		int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
+		int lugHeight = getClosestOdd(LUG_HEIGHT.convertToPixels());
+		for (Point p : controlPoints) {
+			if (componentState != ComponentState.DRAGGING) {
 				g2d.setColor(CIRCLE_COLOR);
-				g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2,
-						circleDiameter, circleDiameter);
-				g2d.setColor(LUG_COLOR);
-				g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+				g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter,
+						circleDiameter);
+			}
+			g2d.setColor(LUG_COLOR);
+			g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+		}
+	}
+
+	public RoundRectangle2D getBody() {
+		if (body == null) {
+			Point firstPoint = controlPoints[0];
+			int margin = MARGIN.convertToPixels();
+			int spacing = SPACING.convertToPixels();
+			switch (switchType) {
+			case SPST:
+				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin,
+						2 * margin, 2 * margin + spacing, margin, margin);
+				break;
+			case SPDT:
+				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin,
+						2 * margin, 2 * margin + 2 * spacing, margin, margin);
+				break;
+			case DPDT:
+				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
+						* margin + spacing, 2 * margin + 2 * spacing, margin, margin);
+				break;
+			case _3PDT:
+				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
+						* margin + 2 * spacing, 2 * margin + 2 * spacing, margin, margin);
+				break;
+			case _4PDT:
+				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
+						* margin + 3 * spacing, 2 * margin + 2 * spacing, margin, margin);
+				break;
+			case _5PDT:
+				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
+						* margin + 4 * spacing, 2 * margin + 2 * spacing, margin, margin);
+				break;
 			}
 		}
+		return body;
 	}
 
 	@Override
