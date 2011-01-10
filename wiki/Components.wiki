@@ -34,12 +34,13 @@ In order for a component to be recognized by the application it has to meet the 
 
   * It must implement *`IDIYComponent`* component interface, or extend some of the existing component classes.
   * Class parameter is type of component value. For instance, resistor will have it's value type set to `Resistance` and IC will have the type of `String` (to designate IC code)
-  * It is not mandatory but highly recommended to annotate each component class with *`@ComponentDescriptor`* annotation. Application will recognize the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted.
+  * It is not mandatory but highly recommended to annotate each component class with *`@ComponentDescriptor`* annotation. Application will recognize and install the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted to values that are potentially unsuitable for the component.
+  * All component properties should be annotated with *`@EditableProperty`* annotation.
   * It should be compiled, packed inside a jar and placed in *library* folder.
 
 ====`@ComponentDescriptor` annotation====
 
-Contains the following attributes:
+May be applied only to classes that implement `IDIYComponent` interface. Contains the following attributes:
 
   * *name*: name of component type, e.g. "Resistor". This will be shown in the toolbox
   * *description*: one or two sentence description of the component. Will be shown in the tooltip over toolbox buttons
@@ -55,9 +56,27 @@ Sample usage:
 public class Resistor extends AbstractLeadedDIYComponent<Resistance> {
 }}}
 
+====`@EditableProperty` annotation====
+
+May be applied only to component a property getter that has a matching setter. Below is the list of supported property types:
+
+  * *Byte* and *byte*: create a slider that has range from 0 to 127.
+  * *Color*: creates a colored panel that opens the color picker when clicked.
+  * *Enum*: creates a combo box with all values from the enum.
+  * *Measure*: creates a text field and combo box that edit measure value and units respectively. See the section that explains measures for more details.
+  * *String*: creates a text field.
+
+====`AbstractTransparentComponent` class====
+
+Base class for all components that may be transparent. Defines component name and alpha level ranging from 1 to 127. It is up to the component to use the protected byte field `alpha` when drawing.
+
+====`AbstractSinglePointComponent` class====
+
+Base class for components having only one control point.
+
 ====`AbstractLeadedDIYComponent` class====
 
-This class should be used as a base class for all components that have two flying leads and solid color body that may be represented with a `Shape` object, e.g. resistor or capacitor layout symbols. It contains common logic that makes it easier to create similar components. It has the following features:
+This class should be used as a base class for all components that have two flying leads and solid color body that may be represented with a `Shape` object, e.g. resistor or capacitor layout symbols. It extends `AbstractTransparentComponent` and adds common logic that makes it easier to create similar components. It has the following features:
 
   * Draws leads automatically
   * Allows user to choose component body width and height
@@ -73,4 +92,4 @@ Child classes should implement the following methods:
 
 ====`AbstractCurvedComponent` class====
 
-This class should be used as a base class for all components that may be represented by a cubic (Bezier) curve. It defines 4 control points - two for start/end and two curve control points. Also, it defines the component name, allows the user to edit component color and draws 3 guidelines. It's up to the child class to draw the `CubicCurve2D` object and to provide the default color.
+This class should be used as a base class for all components that may be represented by a cubic (Bezier) curve. It extends `AbstractTransparentComponent` and adds 4 control points - two for start/end and two curve control points. Also, it defines the component name, allows the user to edit component color and draws 3 guidelines. It's up to the child class to draw the `CubicCurve2D` object and to provide the default color.
