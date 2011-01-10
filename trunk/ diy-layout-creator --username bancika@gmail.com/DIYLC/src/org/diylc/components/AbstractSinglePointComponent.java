@@ -2,9 +2,7 @@ package org.diylc.components;
 
 import java.awt.Point;
 
-import org.diylc.core.IDIYComponent;
-
-public abstract class AbstractSinglePointComponent implements IDIYComponent<Void> {
+public abstract class AbstractSinglePointComponent extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,15 +23,6 @@ public abstract class AbstractSinglePointComponent implements IDIYComponent<Void
 		this.point.setLocation(point);
 	}
 	
-	@Override
-	public String getName() {
-		return "Pad";
-	}
-	
-	@Override
-	public void setName(String name) {
-	}
-
 	@Deprecated
 	@Override
 	public Void getValue() {

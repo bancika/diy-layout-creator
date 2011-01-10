@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.diylc.common.ComponentType;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 
 public class ComparatorFactory {
@@ -12,6 +13,7 @@ public class ComparatorFactory {
 
 	private Comparator<IDIYComponent<?>> componentNameComparator;
 	private Comparator<ComponentType> componentTypeComparator;
+	private Comparator<PropertyWrapper> propertyNameComparator;
 
 	public static ComparatorFactory getInstance() {
 		if (instance == null) {
@@ -63,5 +65,19 @@ public class ComparatorFactory {
 			}
 		};
 		return componentZOrderComparator;
+	}
+
+	public Comparator<PropertyWrapper> getPropertyNameComparator() {
+		if (propertyNameComparator == null) {
+			propertyNameComparator = new Comparator<PropertyWrapper>() {
+
+				@Override
+				public int compare(PropertyWrapper o1, PropertyWrapper o2) {
+					return o1.getName().compareToIgnoreCase(o2.getName());
+				}
+
+			};
+		}
+		return propertyNameComparator;
 	}
 }
