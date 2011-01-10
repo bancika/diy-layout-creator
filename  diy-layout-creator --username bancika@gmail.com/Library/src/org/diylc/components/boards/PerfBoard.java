@@ -20,27 +20,18 @@ public class PerfBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color COPPER_COLOR = Color.decode("#B87333");
+	public static Color PAD_COLOR = Color.decode("#B87333");
 
-	private static Size SPACING = new Size(0.1d, SizeUnit.in);
-	private static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);
-	private static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
+	public static Size SPACING = new Size(0.1d, SizeUnit.in);
+	public static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);
+	public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
 	// private Area copperArea;
-	private Size spacing = SPACING;
+	protected Size spacing = SPACING;
+	protected Color padColor = PAD_COLOR;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
-		// long t = System.nanoTime();
-		// Area copperArea = getCopperArea();
-		// System.err.println("Calc: " + (System.nanoTime() - t));
-		// t = System.nanoTime();
-		// super.draw(g2d, componentState, project);
-		// g2d.setColor(COPPER_COLOR);
-		// g2d.fill(copperArea);
-		// System.err.println("   Draw: " + (System.nanoTime() - t));
-
-		// long t = System.nanoTime();
 		super.draw(g2d, componentState, project);
 
 		if (componentState != ComponentState.DRAGGING) {
@@ -59,7 +50,7 @@ public class PerfBoard extends AbstractBoard {
 				p.y += spacing;
 				while (p.x < controlPoints[1].x - spacing) {
 					p.x += spacing;
-					g2d.setColor(COPPER_COLOR);
+					g2d.setColor(padColor);
 					g2d.fillOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
 					g2d.setColor(Constants.CANVAS_COLOR);
 					g2d.fillOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter,
@@ -68,59 +59,16 @@ public class PerfBoard extends AbstractBoard {
 			}
 			g2d.setComposite(oldComposite);
 		}
-		// System.err.println("OldDraw: " + (System.nanoTime() - t));
 	}
 
-	// @Override
-	// public void setControlPoint(Point point, int index) {
-	// // Reset copper area if a control point is changed.
-	// if (!point.equals(getControlPoint(index))) {
-	// copperArea = null;
-	// }
-	// super.setControlPoint(point, index);
-	// }
-	//
-	// public Area getCopperArea() {
-	// if (copperArea == null) {
-	// copperArea = new Area();
-	//
-	// int holeRadius = HOLE_SIZE.convertToPixels() / 2;
-	// int radius = PAD_SIZE.convertToPixels() / 2;
-	// int spacing = SPACING.convertToPixels();
-	//
-	// // Create a pad.
-	// Area pad = new Area(new Ellipse2D.Double(-radius, -radius, radius * 2,
-	// radius * 2));
-	// pad.subtract(new Area(new Ellipse2D.Double(-holeRadius, -holeRadius,
-	// holeRadius * 2,
-	// holeRadius * 2)));
-	//
-	// // Create a row duplicating the pad.
-	// Area row = new Area();
-	// int columnCount = (controlPoints[1].x - controlPoints[0].x) / spacing -
-	// 1;
-	// int rowCount = (controlPoints[1].y - controlPoints[0].y) / spacing - 1;
-	//
-	// AffineTransform xTransform =
-	// AffineTransform.getTranslateInstance(spacing, 0);
-	// for (int i = 0; i < columnCount; i++) {
-	// pad.transform(xTransform);
-	// row.add(pad);
-	// }
-	//
-	// // Create the whole matrix duplicating the row.
-	// AffineTransform yTransform = AffineTransform.getTranslateInstance(0,
-	// spacing);
-	// for (int i = 0; i < rowCount; i++) {
-	// row.transform(yTransform);
-	// copperArea.add(row);
-	// }
-	//
-	// copperArea.transform(AffineTransform.getTranslateInstance(controlPoints[0].x,
-	// controlPoints[0].y));
-	// }
-	// return copperArea;
-	// }
+	@EditableProperty(name = "Pad")
+	public Color getPadColor() {
+		return padColor;
+	}
+
+	public void setPadColor(Color padColor) {
+		this.padColor = padColor;
+	}
 
 	@EditableProperty
 	public Size getSpacing() {
@@ -137,7 +85,7 @@ public class PerfBoard extends AbstractBoard {
 		g2d.fillRect(2, 2, width - 4, height - 4);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRect(2, 2, width - 4, height - 4);
-		g2d.setColor(COPPER_COLOR);
+		g2d.setColor(PAD_COLOR);
 		g2d.fillOval(width / 4, width / 4, width / 2, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
 		g2d.fillOval(width / 2 - 1, width / 2 - 1, 2, 2);
