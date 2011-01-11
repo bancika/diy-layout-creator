@@ -54,7 +54,6 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
-		g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
 		double distance = points[0].distance(points[1]);
 		Shape shape = getBodyShape();
 		if (shape == null) {
@@ -80,15 +79,17 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			g2d.fill(shape);
 			g2d.setComposite(oldComposite);
 		}
+		g2d.setStroke(new BasicStroke(1));
+		g2d.setColor(componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
+		g2d.draw(shape);
 		// Draw leads.
+		g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
 		g2d.setColor(getLeadColor());
 		g2d.drawLine((int) (shapeRect.width - distance) / 2, (int) shapeRect.height / 2,
 				(int) ((shapeRect.width - distance) / 2 + leadLenght), (int) shapeRect.height / 2);
 		g2d.drawLine((int) (shapeRect.width + distance) / 2, (int) shapeRect.height / 2,
 				(int) ((shapeRect.width + distance) / 2 - leadLenght), (int) shapeRect.height / 2);
-		g2d.setStroke(new BasicStroke(1));
-		g2d.setColor(borderColor);
-		g2d.draw(shape);
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
 		g2d
