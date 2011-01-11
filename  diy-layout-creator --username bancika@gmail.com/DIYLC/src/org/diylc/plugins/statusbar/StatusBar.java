@@ -9,8 +9,10 @@ import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.diylc.common.BadPositionException;
+import org.diylc.common.ComponentSelection;
 import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -53,6 +56,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 	// State variables
 	private ComponentType componentSlot;
 	private List<IDIYComponent<?>> componentsUnderCursor;
+	private List<String> selectedComponentNames;
 
 	public StatusBar() {
 		super();
@@ -170,7 +174,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
 		return EnumSet.of(EventType.ZOOM_CHANGED, EventType.SLOT_CHANGED,
-				EventType.AVAILABLE_CTRL_POINTS_CHANGED, EventType.SELECTION_SIZE_CHANGED);
+				EventType.AVAILABLE_CTRL_POINTS_CHANGED, EventType.SELECTION_SIZE_CHANGED,
+				EventType.SELECTION_CHANGED);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -181,6 +186,16 @@ public class StatusBar extends JPanel implements IPlugIn {
 			if (!params[0].equals(getZoomBox().getSelectedItem())) {
 				getZoomBox().setSelectedItem(params[0]);
 			}
+			break;
+		case SELECTION_CHANGED:
+			ComponentSelection selection = (ComponentSelection) params[0];
+			Collection<String> componentNames = new HashSet<String>();
+			for (IDIYComponent<?> component : selection) {
+				componentNames.add(component.getName());
+			}
+			this.selectedComponentNames = new ArrayList<String>(componentNames);
+			Collections.sort(this.selectedComponentNames);
+			refreshStatusText();
 			break;
 		case SELECTION_SIZE_CHANGED:
 			Point2D size = (Point2D) params[0];
@@ -210,9 +225,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	private void refreshStatusText() {
 		if (componentSlot == null) {
-			if ((componentsUnderCursor == null) || (componentsUnderCursor.isEmpty())) {
-				getStatusLabel().setText("");
-			} else {
+			if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
 				String formattedNames = "";
 				int n = 1;
 				for (IDIYComponent<?> component : componentsUnderCursor) {
@@ -227,7 +240,22 @@ public class StatusBar extends JPanel implements IPlugIn {
 					// +
 					// "</font></b>)";
 				}
-				getStatusLabel().setText("Drag " + formattedNames + "");
+				getStatusLabel().setText("Drag " + formattedNames);
+			} else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
+				String formattedNames = "";
+				for (int i = 0; i < selectedComponentNames.size(); i++) {
+					if (i > 0) {
+						if (i == selectedComponentNames.size() - 1) {
+							formattedNames += " and ";
+						} else {
+							formattedNames += ", ";
+						}
+					}
+					formattedNames += selectedComponentNames.get(i);
+				}
+				getStatusLabel().setText("Selection: " + formattedNames);
+			} else {
+				getStatusLabel().setText("");
 			}
 		} else {
 			getStatusLabel().setText(
