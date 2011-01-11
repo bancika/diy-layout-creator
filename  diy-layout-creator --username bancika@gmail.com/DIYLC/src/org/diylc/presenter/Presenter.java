@@ -454,6 +454,15 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
+	public void setSelectedComponents(ComponentSelection selection) {
+		this.selectedComponents = new ComponentSelection(selection);
+		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
+		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+				calculateSelectionDimension());
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
+	}
+
+	@Override
 	public Area getComponentArea(IDIYComponent<?> component) {
 		return componentAreaMap.get(component);
 	}

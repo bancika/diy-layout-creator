@@ -187,6 +187,8 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Select All triggered");
+			plugInPort.setSelectedComponents(new ComponentSelection(plugInPort.getCurrentProject()
+					.getComponents()));
 		}
 	}
 
