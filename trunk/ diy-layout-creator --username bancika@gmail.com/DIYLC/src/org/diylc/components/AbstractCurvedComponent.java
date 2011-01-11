@@ -20,8 +20,8 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	public static Color GUIDELINE_COLOR = Color.blue;
 
 	protected Point[] controlPoints = new Point[] {
-			new Point(-5 * Constants.GRID, -5 * Constants.GRID), new Point(0, -3 * Constants.GRID),
-			new Point(0, 3 * Constants.GRID), new Point(5 * Constants.GRID, 5 * Constants.GRID) };
+			new Point(-5 * Constants.GRID, -5 * Constants.GRID), new Point(0, -5 * Constants.GRID),
+			new Point(0, 5 * Constants.GRID), new Point(5 * Constants.GRID, 5 * Constants.GRID) };
 
 	protected Color color = getDefaultColor();
 
@@ -30,9 +30,14 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	 * 
 	 * @param curve
 	 * @param g2d
+	 * @param componentState
 	 */
-	protected abstract void drawCurve(CubicCurve2D curve, Graphics2D g2d);
-	
+	protected abstract void drawCurve(CubicCurve2D curve, Graphics2D g2d,
+			ComponentState componentState);
+
+	/**
+	 * @return default color.
+	 */
 	protected abstract Color getDefaultColor();
 
 	@Override
@@ -75,7 +80,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 		// g2d.setColor(color);
 		// g2d.setStroke(new BasicStroke(thickness - 2));
 		// g2d.draw(path);
-		drawCurve(curve, g2d);
+		drawCurve(curve, g2d, componentState);
 		g2d.setComposite(oldComposite);
 	}
 
