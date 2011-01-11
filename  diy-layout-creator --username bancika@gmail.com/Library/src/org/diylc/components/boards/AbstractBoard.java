@@ -43,7 +43,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 					- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
 			g2d.setComposite(oldComposite);
 		}
-		g2d.setColor(borderColor);
+		g2d.setColor(componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.drawRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
 				- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
 	}

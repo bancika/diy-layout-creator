@@ -34,7 +34,6 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
 	public static Color INDENT_COLOR = Color.lightGray;
 	public static Color LABEL_COLOR = Color.white;
-	public static Color LABEL_COLOR_SELECTED = Color.red;
 	public static int EDGE_RADIUS = 6;
 	public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
 	public static Size INDENT_SIZE = new Size(0.15d, SizeUnit.in);
@@ -229,19 +228,15 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			g2d.fill(getBody());
 			g2d.setComposite(oldComposite);
 		}
-		g2d.setColor(BORDER_COLOR);
+		g2d.setColor(componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
 		g2d.setStroke(new BasicStroke());
 		g2d.draw(getBody());
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
-		switch (componentState) {
-		case DRAGGING:
+		if (componentState == ComponentState.DRAGGING) {
 			g2d.setColor(BORDER_COLOR);
-			break;
-		case SELECTED:
-			g2d.setColor(LABEL_COLOR_SELECTED);
-			break;
-		default:
+		} else {
 			g2d.setColor(LABEL_COLOR);
 		}
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
