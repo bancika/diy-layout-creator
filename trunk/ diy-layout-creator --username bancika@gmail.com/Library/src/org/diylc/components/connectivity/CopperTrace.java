@@ -13,7 +13,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "CT", description = "", zOrder = IDIYComponent.ABOVE_BOARD)
+@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "Trace", description = "", zOrder = IDIYComponent.ABOVE_BOARD)
 public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
