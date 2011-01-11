@@ -6,8 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 
 @ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "J", description = "", zOrder = IDIYComponent.ABOVE_BOARD)
@@ -25,8 +27,10 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 	}
 
 	@Override
-	protected Color getLeadColor() {
-		return COLOR;
+	@EditableProperty(name = "Color")
+	public Color getLeadColor(ComponentState componentState) {
+		return componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : COLOR;
 	}
 
 	@Deprecated
