@@ -433,10 +433,10 @@ public class Presenter implements IPlugInPort {
 					}
 				}
 			}
-			// If CTRL is pressed, we only care about the top most component.
-			if (altDown && components.size() > 0) {
-				break;
-			}
+//			// If CTRL is pressed, we only care about the top most component.
+//			if (altDown && components.size() > 0) {
+//				break;
+//			}
 		}
 
 		messageDispatcher.dispatchMessage(EventType.MOUSE_MOVED, scaledPoint);
@@ -510,17 +510,17 @@ public class Presenter implements IPlugInPort {
 			}
 			// If there aren't any control points, try to add all the selected
 			// components with all their control points. That will allow the
-			// user to
-			// drag the whole component.
+			// user to drag the whole components.
 			for (IDIYComponent<?> c : selectedComponents) {
 				Set<Integer> pointIndices = new HashSet<Integer>();
-				if (component.getControlPointCount() > 0) {
-					for (int i = 0; i < component.getControlPointCount(); i++) {
+				if (c.getControlPointCount() > 0) {
+					for (int i = 0; i < c.getControlPointCount(); i++) {
 						pointIndices.add(i);
 					}
 					controlPointMap.put(c, pointIndices);
 				}
 			}
+			LOG.debug(controlPointMap);
 		}
 	}
 
