@@ -57,6 +57,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		double distance = points[0].distance(points[1]);
 		Shape shape = getBodyShape();
 		if (shape == null) {
+			g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
+			g2d.setColor(getLeadColor(componentState));
 			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 			return;
 		}
@@ -85,7 +87,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.draw(shape);
 		// Draw leads.
 		g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
-		g2d.setColor(getLeadColor());
+		g2d.setColor(getLeadColor(componentState));
 		g2d.drawLine((int) (shapeRect.width - distance) / 2, (int) shapeRect.height / 2,
 				(int) ((shapeRect.width - distance) / 2 + leadLenght), (int) shapeRect.height / 2);
 		g2d.drawLine((int) (shapeRect.width + distance) / 2, (int) shapeRect.height / 2,
@@ -139,8 +141,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	/**
 	 * @return default lead color. Override this method to change it.
 	 */
-	protected Color getLeadColor() {
-		return LEAD_COLOR;
+	protected Color getLeadColor(ComponentState componentState) {
+		return componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : LEAD_COLOR;
 	}
 
 	@Override

@@ -21,6 +21,7 @@ public class TraceCut extends AbstractSinglePointComponent {
 	public static Size SIZE = new Size(0.085d, SizeUnit.in);
 	public static Color FILL_COLOR = Color.white;
 	public static Color BORDER_COLOR = Color.red;
+	public static Color SELECTION_COLOR = Color.blue;
 
 	private Size size = SIZE;
 	private Color fillColor = FILL_COLOR;
@@ -32,7 +33,8 @@ public class TraceCut extends AbstractSinglePointComponent {
 		int dotDiameter = (size / 3 * 2) / 2 * 2 + 1;
 		g2d.setColor(fillColor);
 		g2d.fillRect(point.x - size / 2, point.y - size / 2, size, size);
-		g2d.setColor(borderColor);
+		g2d.setColor(componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.setStroke(new BasicStroke(1));
 		g2d.drawRect(point.x - size / 2, point.y - size / 2, size, size);
 		g2d

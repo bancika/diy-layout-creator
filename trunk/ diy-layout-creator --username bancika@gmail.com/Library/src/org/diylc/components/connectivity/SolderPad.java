@@ -31,7 +31,8 @@ public class SolderPad extends AbstractComponent<Color> {
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
 		int diameter = getClosestOdd(size.convertToPixels());
 		int holeDiameter = getClosestOdd(HOLE_SIZE.convertToPixels());
-		g2d.setColor(color);
+		g2d.setColor(componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
 		g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
 		g2d.setColor(Constants.CANVAS_COLOR);
 		g2d.fillOval(point.x - holeDiameter / 2, point.y - holeDiameter / 2, holeDiameter,

@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -32,8 +33,9 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	@Override
 	@EditableProperty(name = "Color")
-	public Color getLeadColor() {
-		return leadColor;
+	public Color getLeadColor(ComponentState componentState) {
+		return componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : leadColor;
 	}
 
 	public void setLeadColor(Color leadColor) {
