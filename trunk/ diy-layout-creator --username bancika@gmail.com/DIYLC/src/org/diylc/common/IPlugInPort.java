@@ -169,6 +169,13 @@ public interface IPlugInPort {
 	ComponentSelection getSelectedComponents();
 
 	/**
+	 * Changes component selection.
+	 * 
+	 * @param selection
+	 */
+	void setSelectedComponents(ComponentSelection selection);
+
+	/**
 	 * Returns the {@link Area} occupied by the component.
 	 * 
 	 * @return
