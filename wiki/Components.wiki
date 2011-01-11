@@ -78,9 +78,13 @@ May be applied only to component a property getter that has a matching setter. A
 
 Data types not listed above are currently not supported and should not be used with editable properties.
 
+====`AbstractComponent` class====
+
+Base class that should be use for pretty much all components that do not have a more suitable abstract class as a base. Defines component name and allows for editing. Also, this class contains a convenience method `getClosestOdd(int x)` that returns the closes odd number to the specified number. This is useful when drawing a component, as object with even size do no align perfectly to the baseline.
+
 ====`AbstractTransparentComponent` class====
 
-Base class for all components that may be transparent. Defines component name and alpha level ranging from 1 to 127. It is up to the component to use the protected byte field `alpha` when drawing.
+Base class for all components that may be transparent. Extends `AbstractComponent` and defines alpha level ranging from 1 to 127. It is up to the component to use the protected byte field `alpha` when drawing.
 
 ====`AbstractLeadedComponent` class====
 
@@ -144,3 +148,5 @@ public class Resistance extends AbstractMeasure<ResistanceUnit> {
 }
 
 }}}
+
+Measure class `Size` has a convenience method `convertToPixels` that converts any `Size` object to pixels.
