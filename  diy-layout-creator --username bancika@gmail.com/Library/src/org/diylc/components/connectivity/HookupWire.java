@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.CubicCurve2D;
 
 import org.diylc.components.AbstractCurvedComponent;
+import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -27,15 +28,18 @@ public class HookupWire extends AbstractCurvedComponent<AWG> {
 	}
 
 	@Override
-	protected void drawCurve(CubicCurve2D curve, Graphics2D g2d) {
+	protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
 		int thickness = (int) (Math.pow(Math.E, -1.12436 - 0.11594 * value.getValue())
 				* Constants.GRID * Constants.GRIDS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT));
-		g2d.setColor(color.darker());
+		g2d.setColor(componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color.darker());
 		g2d.setStroke(new BasicStroke(thickness));
 		g2d.draw(curve);
-		g2d.setColor(color);
-		g2d.setStroke(new BasicStroke(thickness - 2));
-		g2d.draw(curve);
+		if (componentState == ComponentState.NORMAL) {
+			g2d.setColor(color);
+			g2d.setStroke(new BasicStroke(thickness - 2));
+			g2d.draw(curve);
+		}
 	}
 
 	@EditableProperty(name = "AWG")

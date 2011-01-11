@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.CubicCurve2D;
 
 import org.diylc.components.AbstractCurvedComponent;
+import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -28,10 +29,11 @@ public class CurvedTrace extends AbstractCurvedComponent<Size> {
 	}
 
 	@Override
-	protected void drawCurve(CubicCurve2D curve, Graphics2D g2d) {
+	protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
 		int thickness = size.convertToPixels();
 		g2d.setStroke(new BasicStroke(thickness));
-		g2d.setColor(color);
+		g2d.setColor(componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
 		g2d.draw(curve);
 	}
 
