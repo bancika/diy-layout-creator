@@ -33,10 +33,20 @@
 Each component is a separate class. From coding perspective, components are *annotated entity bean classes that know how to draw themselves*. In order for a component class to be recognized by the application it has to meet the following:
 
   * It must implement (directly or indirectly) *`IDIYComponent<T>`* component interface. It is advisable, whenever possible, to extends one of the abstract classes instead of making a component from scratch. See below the list of them and more details.
-  * Class parameter is type of component value. For instance, resistor will have it's value type set to `Resistance` and IC will have the type of `String` (to designate IC code)
+  * It must have an empty constructor. It will be used by the application to instantiate the component, so there's no need for other constructors.
   * It is not mandatory but highly recommended to annotate each component class with *`@ComponentDescriptor`* annotation. Application will recognize and install the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted to values that are potentially unsuitable for the component.
   * All component properties should be annotated with *`@EditableProperty`* annotation.
   * It should be compiled, packed inside a jar and placed in *library* folder.
+
+====`IDIYComponent<T>` interface====
+
+Base interface for all components. Class parameter T represents type of component value. For instance, resistor will have it's value type set to `Resistance` and IC will have the type of `String` (to designate IC code). In some cases, components do not have a value (solder pads for instance) and it's ok to use `Void` type as a parameter. Below is the list of methods specified by the interface.
+
+  * *getName* and *setName* used to obtain and update component instance name. Annotate it with `@EditableProperty` to allow the user to edit component name
+  * *getValue* and *setValue* similar to the previous
+  * *getControlPointCount*, *getControlPoint* and *setControlPoint* used to obtain and update component's control points. Note that two instances of the same component may have a different number of control points, e.g. 16 and 8 pin versions of DIL IC
+  * *draw* pains the component instance onto the specified `Graphics2D`. Typically, this method would use the state of the component (control points, value and other user editable properties) to draw it
+  * *drawIcon* paints the component icon of the specified size onto the specified `Graphics2D`. It should act like a static method, i.e. not depend on state of the component.
 
 ====`@ComponentDescriptor` annotation====
 
