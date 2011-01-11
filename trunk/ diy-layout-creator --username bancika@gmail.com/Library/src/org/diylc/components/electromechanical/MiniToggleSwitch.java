@@ -168,7 +168,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 				g2d.setComposite(oldComposite);
 			}
 			g2d.setStroke(new BasicStroke());
-			g2d.setColor(BORDER_COLOR);
+			g2d.setColor(componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
 			g2d.draw(body);
 		}
 		// Draw lugs.
