@@ -13,7 +13,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "CT", description = "Curved copper trace with two control points", zOrder = IDIYComponent.ABOVE_BOARD)
+@ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "Trace", description = "Curved copper trace with two control points", zOrder = IDIYComponent.ABOVE_BOARD)
 public class CurvedTrace extends AbstractCurvedComponent<Size> {
 
 	private static final long serialVersionUID = 1L;

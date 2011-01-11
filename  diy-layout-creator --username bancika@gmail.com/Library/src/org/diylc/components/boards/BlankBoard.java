@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 
-@ComponentDescriptor(name = "Blank Board", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "B", description = "Blank circuit board")
+@ComponentDescriptor(name = "Blank Board", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Blank circuit board")
 public class BlankBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
