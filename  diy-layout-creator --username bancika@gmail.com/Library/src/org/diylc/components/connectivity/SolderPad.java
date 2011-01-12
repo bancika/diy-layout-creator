@@ -15,7 +15,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Pad", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD + 0.1)
-public class SolderPad extends AbstractComponent<Color> {
+public class SolderPad extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,13 +81,21 @@ public class SolderPad extends AbstractComponent<Color> {
 	}
 
 	@EditableProperty(name = "Color")
-	@Override
-	public Color getValue() {
+	public Color getColor() {
 		return color;
 	}
 
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	@Deprecated
 	@Override
-	public void setValue(Color value) {
-		this.color = value;
+	public Void getValue() {
+		return null;
+	}
+	
+	@Override
+	public void setValue(Void value) {
 	}
 }

@@ -14,7 +14,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "Trace", description = "Curved copper trace with two control points", zOrder = IDIYComponent.ABOVE_BOARD)
-public class CurvedTrace extends AbstractCurvedComponent<Size> {
+public class CurvedTrace extends AbstractCurvedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,15 +36,23 @@ public class CurvedTrace extends AbstractCurvedComponent<Size> {
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
 		g2d.draw(curve);
 	}
-
+	
 	@EditableProperty(name = "Width")
-	@Override
-	public Size getValue() {
+	public Size getSize() {
 		return size;
 	}
 
+	public void setSize(Size size) {
+		this.size = size;
+	}
+
+	@Deprecated
 	@Override
-	public void setValue(Size value) {
-		this.size = value;
+	public Void getValue() {
+		return null;
+	}
+	
+	@Override
+	public void setValue(Void value) {
 	}
 }
