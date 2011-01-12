@@ -26,7 +26,7 @@ LOG.info("Something happened.");
 <p align="center">http://www.diy-fever.com/diylc/images/icons.png</p>
   * Component should be drawn differently when selected. Where applicable, component border should be painted red (resistors). In some cases it's necessary to paint the whole component red (jumper, trace, etc). Components that are red by default (trace cut) should be painted blue when selected.
   * When a component is dragged, only outline should be pained, together with elements that correspond to its control points. To illustrate it, consider an example of DIL IC component. When dragged, we should draw the border together with pins. That way the user will know where the pins will land when dropped.
-  * When applying transparency - border, leads and label should be made transparent to keep them readable. However, large surfaces, like component body should be made transparent.
+  * When applying transparency - border, leads and label should not be made transparent to keep them readable. However, large surfaces, like component body should be made transparent.
 
 Here's an example that should be a good guideline for painting components in different situations:
 <p align="center">http://www.diy-fever.com/diylc/images/coloring.png</p>
