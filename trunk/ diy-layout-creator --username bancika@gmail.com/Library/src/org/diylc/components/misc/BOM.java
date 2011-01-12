@@ -1,6 +1,7 @@
 package org.diylc.components.misc;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -20,12 +21,13 @@ import org.diylc.plugins.file.BomEntry;
 import org.diylc.plugins.file.BomMaker;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Bill of materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
+@ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
 public class BOM extends AbstractComponent<Size> {
 
 	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);
 	public static Size SPACING = Constants.GRID_SIZE;
 	public static Color COLOR = Color.black;
+	public static String DEFAULT_TEXT = "No components to show in the Bill of Materials";
 
 	private static final long serialVersionUID = 1L;
 	private Size size = DEFAULT_SIZE;
@@ -76,6 +78,7 @@ public class BOM extends AbstractComponent<Size> {
 		int columnWidth = size.convertToPixels() / columnCount;
 		int entriesPerColumn = (int) Math.ceil(1.d * bom.size() / columnCount);
 		if (entriesPerColumn == 0) {
+			g2d.drawString(DEFAULT_TEXT, point.x, point.y);
 			return;
 		}
 		for (int i = 0; i < bom.size(); i++) {
@@ -91,8 +94,32 @@ public class BOM extends AbstractComponent<Size> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		// TODO Auto-generated method stub
+		g2d.setColor(Color.white);
+		g2d.fillRect(width / 8, 0, 6 * width / 8, height - 1);
+		g2d.setColor(Color.black);
+		g2d.drawRect(width / 8, 0, 6 * width / 8, height - 1);
+		g2d.setFont(Constants.LABEL_FONT.deriveFont(1f * 9 * width / 32).deriveFont(Font.PLAIN));
 
+		FontMetrics fontMetrics = g2d.getFontMetrics();
+		Rectangle2D rect = fontMetrics.getStringBounds("BOM", g2d);
+
+		int textHeight = (int) (rect.getHeight());
+		int textWidth = (int) (rect.getWidth());
+
+		// Center text horizontally and vertically.
+		int x = (width - textWidth) / 2 + 1;
+		int y = textHeight + 2;
+
+		g2d.drawString("BOM", x, y);
+
+		g2d.setFont(g2d.getFont().deriveFont(1f * 5 * width / 32));
+		
+		fontMetrics = g2d.getFontMetrics();
+		rect = fontMetrics.getStringBounds("resistors", g2d);
+		x = (width - textWidth) / 2 + 1;
+		g2d.drawString("resistors", x, 4 * height / 7);
+		g2d.drawString("tubes", x, 5 * height / 7);
+		g2d.drawString("diodes", x, 6 * height / 7);
 	}
 
 	@Override

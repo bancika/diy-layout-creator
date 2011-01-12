@@ -15,6 +15,10 @@
     <boolean>true</boolean>
   </entry>
   <entry>
+    <string>default.org.diylc.components.semiconductors.DIL_IC:Value</string>
+    <string>LM366</string>
+  </entry>
+  <entry>
     <string>default.org.diylc.components.passive.AxialFilmCapacitor:Width</string>
     <org.diylc.core.measures.Size>
       <value>0.7</value>
