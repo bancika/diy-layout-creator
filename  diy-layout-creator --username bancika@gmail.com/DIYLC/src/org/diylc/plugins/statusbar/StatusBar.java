@@ -199,8 +199,11 @@ public class StatusBar extends JPanel implements IPlugIn {
 			break;
 		case SELECTION_SIZE_CHANGED:
 			Point2D size = (Point2D) params[0];
-			boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
+			Boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
 					Presenter.METRIC_KEY);
+			if (isMetric == null) {
+				isMetric = true;
+			}
 			if (size == null) {
 				getSizeLabel().setText("N/A");
 			} else {

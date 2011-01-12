@@ -752,8 +752,11 @@ public class Presenter implements IPlugInPort {
 		if (selectedComponents.isEmpty()) {
 			return null;
 		}
-		boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
+		Boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
 				METRIC_KEY);
+		if (isMetric == null) {
+			isMetric = true;
+		}
 		Area area = new Area();
 		for (IDIYComponent<?> component : selectedComponents) {
 			Area componentArea = componentAreaMap.get(component);
