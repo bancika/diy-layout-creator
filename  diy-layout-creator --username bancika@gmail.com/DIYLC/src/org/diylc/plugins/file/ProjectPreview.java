@@ -131,7 +131,6 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 			} else {
 				zoomRatio = rect.getHeight() / d.getHeight();
 			}
-			System.out.println(zoomRatio);
 			// d.setSize(d.getWidth() * zoomRatio, d.getHeight() * zoomRatio);
 			int x = (int) (rect.getWidth() - d.getWidth() * zoomRatio) / 2;
 			int y = (int) (rect.getHeight() - d.getHeight() * zoomRatio) / 2;
