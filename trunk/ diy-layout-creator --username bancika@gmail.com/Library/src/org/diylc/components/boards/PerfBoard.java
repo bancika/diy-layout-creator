@@ -2,7 +2,6 @@ package org.diylc.components.boards;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
@@ -15,7 +14,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Perf Board w/ Pads", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated FR4 board with solder pads spaced 0.1 inch apart")
+@ComponentDescriptor(name = "Perf Board w/ Pads", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with solder pads")
 public class PerfBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
@@ -35,7 +34,6 @@ public class PerfBoard extends AbstractBoard {
 		super.draw(g2d, componentState, project);
 
 		if (componentState != ComponentState.DRAGGING) {
-			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 						/ MAX_ALPHA));
@@ -57,7 +55,6 @@ public class PerfBoard extends AbstractBoard {
 							holeDiameter);
 				}
 			}
-			g2d.setComposite(oldComposite);
 		}
 	}
 
