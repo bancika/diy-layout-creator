@@ -28,6 +28,20 @@
   # When you are done developing and testing the new components, build your project as jar file (any name except for main.jar is fine).
   # To add your components to the DIYLC project commit your new jar to *library* folder in the DIYLC source control. It should be automatically recognized by the app.
 
+===Component design guidelines===
+
+  * Make sure that your code is formatted using *diylc* formatter (included in the source code) before committing.
+  * Add JavaDoc on the new classes and public method you add. In particular, classes should have a brief description of what they represent and author name. Typical methods should have a one-two line description of what they do, what are the parameters and what's the output.
+  * Output to console should go through log4j, as shown below. Make sure to use the appropriate logging levels (debug, info, warn, error).
+{{{
+private static final Logger LOG = Logger.getLogger(MyClass.class);
+...
+LOG.info("Something happened.");
+}}}
+  * Icons for leaded components (resistors, jumpers, wires, etc) should be drawn in the SW-NE direction.
+  * Component should be drawn differently when selected. Where applicable, component border should be painted red (resistors). In some cases it's necessary to paint the whole component red (jumper, trace, etc). Components that are red by default (trace cut) should be painted blue when selected.
+  * When a component is dragged, only outline should be pained, together with elements that correspond to its control points. To illustrate it, consider an example of DIL IC component. When dragged, we should draw the border together with pins. That way the user will know where the pins will land when dropped.
+
 ===Component API===
 
 Each component is a separate class. From coding perspective, components are *annotated entity bean classes that know how to draw themselves*. In order for a component class to be recognized by the application it has to meet the following:
