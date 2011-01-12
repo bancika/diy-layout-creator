@@ -22,7 +22,7 @@ import org.diylc.plugins.file.BomMaker;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
-public class BOM extends AbstractComponent<Size> {
+public class BOM extends AbstractComponent<Void> {
 
 	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);
 	public static Size SPACING = Constants.GRID_SIZE;
@@ -113,13 +113,16 @@ public class BOM extends AbstractComponent<Size> {
 		g2d.drawString("BOM", x, y);
 
 		g2d.setFont(g2d.getFont().deriveFont(1f * 5 * width / 32));
-		
+
 		fontMetrics = g2d.getFontMetrics();
 		rect = fontMetrics.getStringBounds("resistors", g2d);
 		x = (width - textWidth) / 2 + 1;
-		g2d.drawString("resistors", x, 4 * height / 7);
-		g2d.drawString("tubes", x, 5 * height / 7);
-		g2d.drawString("diodes", x, 6 * height / 7);
+		y = height / 2 + 2;
+		g2d.drawString("resistors", x, y);
+		y += rect.getHeight() - 1;
+		g2d.drawString("tubes", x, y);
+		y += rect.getHeight() - 1;
+		g2d.drawString("diodes", x, y);
 	}
 
 	@Override
@@ -138,13 +141,21 @@ public class BOM extends AbstractComponent<Size> {
 	}
 
 	@EditableProperty(name = "Width")
-	@Override
-	public Size getValue() {
+	public Size getSize() {
 		return size;
 	}
 
+	public void setSize(Size size) {
+		this.size = size;
+	}
+
+	@Deprecated
 	@Override
-	public void setValue(Size value) {
-		this.size = value;
+	public Void getValue() {
+		return null;
+	}
+
+	@Override
+	public void setValue(Void value) {
 	}
 }
