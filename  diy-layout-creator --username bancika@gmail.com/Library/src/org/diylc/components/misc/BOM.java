@@ -41,9 +41,7 @@ public class BOM extends AbstractComponent<Void> {
 		Iterator<BomEntry> iterator = bom.iterator();
 		while (iterator.hasNext()) {
 			BomEntry entry = iterator.next();
-			Object value = entry.getValue();
-			if (value == null || value.toString().trim().isEmpty()
-					|| entry.getName().toLowerCase().contains("bom")) {
+			if (entry.getValue() == null || entry.getName().toLowerCase().contains("bom")) {
 				iterator.remove();
 			}
 		}
