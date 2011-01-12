@@ -705,6 +705,12 @@ public class Presenter implements IPlugInPort {
 		}
 	}
 
+	/**
+	 * Removes all the groups that contain at least one of the specified
+	 * components.
+	 * 
+	 * @param components
+	 */
 	private void ungroupComponents(Collection<IDIYComponent<?>> components) {
 		Iterator<Set<IDIYComponent<?>>> groupIterator = currentProject.getGroups().iterator();
 		while (groupIterator.hasNext()) {
