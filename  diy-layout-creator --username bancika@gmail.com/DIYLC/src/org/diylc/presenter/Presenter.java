@@ -412,8 +412,9 @@ public class Presenter implements IPlugInPort {
 			IDIYComponent<?> component = currentProject.getComponents().get(i);
 			for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
 				Point controlPoint = component.getControlPoint(pointIndex);
-				// Only consider selected components.
-				if (selectedComponents.contains(component)) {
+				// Only consider selected components that are not grouped.
+				if (selectedComponents.contains(component)
+						&& findAllGroupedComponents(component).size() == 1) {
 					try {
 						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SIZE) {
 							Set<Integer> indices = new HashSet<Integer>();
@@ -715,12 +716,23 @@ public class Presenter implements IPlugInPort {
 		}
 	}
 
+	/**
+	 * Finds all components that are grouped with the specified component. This
+	 * should be called any time components are added or removed from the
+	 * selection.
+	 * 
+	 * @param component
+	 * @return set of all components that belong to the same group with the
+	 *         specified component. At the minimum, set contains that single
+	 *         component.
+	 */
 	private Set<IDIYComponent<?>> findAllGroupedComponents(IDIYComponent<?> component) {
 		Set<IDIYComponent<?>> components = new HashSet<IDIYComponent<?>>();
 		components.add(component);
 		for (Set<IDIYComponent<?>> group : currentProject.getGroups()) {
 			if (group.contains(component)) {
 				components.addAll(group);
+				break;
 			}
 		}
 		return components;
@@ -905,6 +917,9 @@ public class Presenter implements IPlugInPort {
 		ComponentType componentType = componentTypeMap.get(component.getClass());
 		// Do not show control points for non-stretchable components.
 		if (!componentType.isStretchable()) {
+			return false;
+		}
+		if (findAllGroupedComponents(component).size() > 1) {
 			return false;
 		}
 		return selectedComponents.contains(component);
