@@ -13,9 +13,11 @@ import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -384,14 +386,14 @@ public class Presenter implements IPlugInPort {
 				// cursor.
 				if (ctrlDown) {
 					if (selectedComponents.contains(component)) {
-						selectedComponents.remove(component);
+						selectedComponents.removeAll(findAllGroupedComponents(component));
 					} else {
-						selectedComponents.add(component);
+						selectedComponents.addAll(findAllGroupedComponents(component));
 					}
 				} else {
 					// Otherwise just select that one component.
 					selectedComponents.clear();
-					selectedComponents.add(component);
+					selectedComponents.addAll(findAllGroupedComponents(component));
 				}
 			}
 			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
@@ -433,10 +435,10 @@ public class Presenter implements IPlugInPort {
 					}
 				}
 			}
-//			// If CTRL is pressed, we only care about the top most component.
-//			if (altDown && components.size() > 0) {
-//				break;
-//			}
+			// // If CTRL is pressed, we only care about the top most component.
+			// if (altDown && components.size() > 0) {
+			// break;
+			// }
 		}
 
 		messageDispatcher.dispatchMessage(EventType.MOUSE_MOVED, scaledPoint);
@@ -454,8 +456,8 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void setSelectedComponents(ComponentSelection selection) {
-		this.selectedComponents = new ComponentSelection(selection);
+	public void selectAll() {
+		this.selectedComponents = new ComponentSelection(currentProject.getComponents());
 		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 				calculateSelectionDimension());
@@ -502,7 +504,7 @@ public class Presenter implements IPlugInPort {
 			// it into the only selected component.
 			if (!selectedComponents.contains(component)) {
 				selectedComponents.clear();
-				selectedComponents.add(component);
+				selectedComponents.addAll(findAllGroupedComponents(component));
 				messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 				messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 						calculateSelectionDimension());
@@ -587,7 +589,7 @@ public class Presenter implements IPlugInPort {
 			for (IDIYComponent<?> component : currentProject.getComponents()) {
 				Area area = componentAreaMap.get(component);
 				if ((area != null) && (selectionRect != null) && area.intersects(selectionRect)) {
-					selectedComponents.add(component);
+					selectedComponents.addAll(findAllGroupedComponents(component));
 				}
 			}
 			selectionRect = null;
@@ -622,6 +624,8 @@ public class Presenter implements IPlugInPort {
 	public void deleteSelectedComponents() {
 		LOG.debug("deleteSelectedComponents()");
 		Project oldProject = cloner.deepClone(currentProject);
+		// Remove selected components from any groups.
+		ungroupComponents(selectedComponents);
 		currentProject.getComponents().removeAll(selectedComponents);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Delete");
@@ -671,6 +675,55 @@ public class Presenter implements IPlugInPort {
 		ConfigurationManager.getInstance().setConfigurationItem(Presenter.METRIC_KEY, isMetric);
 		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 				calculateSelectionDimension());
+	}
+
+	@Override
+	public void groupSelectedComponents() {
+		LOG.debug("groupSelectedComponents()");
+		Project oldProject = cloner.deepClone(currentProject);
+		// First remove the selected components from other groups.
+		ungroupComponents(selectedComponents);
+		// Then group them together
+		currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(selectedComponents));
+		// Notify the listeners.
+		if (!oldProject.equals(currentProject)) {
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+					.deepClone(currentProject), "Group");
+		}
+	}
+
+	@Override
+	public void ungroupSelectedComponents() {
+		LOG.debug("ungroupSelectedComponents()");
+		Project oldProject = cloner.deepClone(currentProject);
+		ungroupComponents(selectedComponents);
+		// Notify the listeners.
+		if (!oldProject.equals(currentProject)) {
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+					.deepClone(currentProject), "Group");
+		}
+	}
+
+	private void ungroupComponents(Collection<IDIYComponent<?>> components) {
+		Iterator<Set<IDIYComponent<?>>> groupIterator = currentProject.getGroups().iterator();
+		while (groupIterator.hasNext()) {
+			Set<IDIYComponent<?>> group = groupIterator.next();
+			group.removeAll(components);
+			if (group.isEmpty()) {
+				groupIterator.remove();
+			}
+		}
+	}
+
+	private Set<IDIYComponent<?>> findAllGroupedComponents(IDIYComponent<?> component) {
+		Set<IDIYComponent<?>> components = new HashSet<IDIYComponent<?>>();
+		components.add(component);
+		for (Set<IDIYComponent<?>> group : currentProject.getGroups()) {
+			if (group.contains(component)) {
+				components.addAll(group);
+			}
+		}
+		return components;
 	}
 
 	/**
