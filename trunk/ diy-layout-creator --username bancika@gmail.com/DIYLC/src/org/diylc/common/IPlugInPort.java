@@ -290,8 +290,6 @@ public interface IPlugInPort {
 	 */
 	void applyPropertiesToSelection(List<PropertyWrapper> properties) throws Exception;
 
-	// void setCursorIcon(Icon icon);
-
 	/**
 	 * Sets the new component slot. Specified component type will be used to
 	 * instantiate new component.
@@ -305,7 +303,13 @@ public interface IPlugInPort {
 	 */
 	void setMetric(boolean isMetric);
 
+	/**
+	 * Groups all selected components.
+	 */
 	void groupSelectedComponents();
 
+	/**
+	 * Ungroups all selected components.
+	 */
 	void ungroupSelectedComponents();
 }

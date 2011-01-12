@@ -37,6 +37,8 @@ public class DIYLCStarter {
 		} catch (Exception e) {
 			LOG.error("Could not initialize log4j configuration", e);
 		}
+		
+		LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
 
 		url = DIYLCStarter.class.getResource("/config.properties");
 		properties = new Properties();

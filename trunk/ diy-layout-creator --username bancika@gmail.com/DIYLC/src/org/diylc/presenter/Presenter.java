@@ -235,9 +235,6 @@ public class Presenter implements IPlugInPort {
 
 		if (drawOptions.contains(DrawOption.GRID)) {
 			double zoomStep = Constants.GRID * zoomLevel;
-			// Point2D p = new Point2D.Double(step, 0);
-			// g2d.getTransform().transform(p, p);
-			// System.out.println(p);
 
 			g2dWrapper.setColor(Constants.GRID_COLOR);
 			for (double i = zoomStep; i < d.width; i += zoomStep) {
@@ -272,17 +269,8 @@ public class Presenter implements IPlugInPort {
 						state = ComponentState.SELECTED;
 					}
 				}
-				// If the component is being dragged, draw it in a separate
-				// composite.
-				// if (state == ComponentState.DRAGGING) {
-				// g2dWrapper.setComposite(alphaComposite);
-				// }
 				// Draw the component through the g2dWrapper.
 				component.draw(g2dWrapper, state, currentProject);
-				// Restore the composite if needed.
-				// if (state == ComponentState.DRAGGING) {
-				// g2dWrapper.setComposite(mainComposite);
-				// }
 				componentAreaMap.put(component, g2dWrapper.finishedDrawingComponent());
 			}
 			// Draw control points.
@@ -292,11 +280,11 @@ public class Presenter implements IPlugInPort {
 						Point controlPoint = component.getControlPoint(i);
 						try {
 							if (shouldShowControlPointsFor(component)) {
-								g2d.setColor(Constants.CONTROL_POINT_COLOR);
-								g2d.setStroke(new BasicStroke(2));
+								g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
+								g2dWrapper.setStroke(new BasicStroke(2));
 								// g2d.drawOval(controlPoint.x - 2,
 								// controlPoint.y - 2, 4, 4);
-								g2d.fillOval(controlPoint.x - CONTROL_POINT_SIZE / 2,
+								g2dWrapper.fillOval(controlPoint.x - CONTROL_POINT_SIZE / 2,
 										controlPoint.y - CONTROL_POINT_SIZE / 2,
 										CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
 							}
@@ -309,6 +297,8 @@ public class Presenter implements IPlugInPort {
 			}
 		}
 
+		// Go back to the original transformation and zoom in to draw the
+		// selection rectangle and other similar elements.
 		g2d.setTransform(initialTx);
 		if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 - zoomLevel) > 1e-4)) {
 			g2d.scale(zoomLevel, zoomLevel);
@@ -323,7 +313,7 @@ public class Presenter implements IPlugInPort {
 			g2d.draw(selectionRect);
 		}
 
-		// // Draw component area for test
+		// Draw component area for test
 		if (DEBUG_COMPONENT_AREAS) {
 			g2d.setStroke(new BasicStroke());
 			g2d.setColor(Color.red);
@@ -335,11 +325,14 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void injectGUIComponent(JComponent component, int position) throws BadPositionException {
+		LOG.info(String.format("injectGUIComponent(%s, %s)", component.toString(), position));
 		view.addComponent(component, position);
 	}
 
 	@Override
 	public void injectMenuAction(Action action, String menuName) {
+		LOG.info(String.format("injectMenuAction(%s, %s)", action == null ? "Separator" : action
+				.getValue(Action.NAME), menuName));
 		view.addMenuAction(action, menuName);
 	}
 
@@ -458,6 +451,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void selectAll() {
+		LOG.info("selectAll()");
 		this.selectedComponents = new ComponentSelection(currentProject.getComponents());
 		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
 		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
