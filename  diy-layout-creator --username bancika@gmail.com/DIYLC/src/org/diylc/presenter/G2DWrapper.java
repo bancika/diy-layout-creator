@@ -29,6 +29,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.CubicCurve2D.Double;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
@@ -267,13 +268,19 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void drawString(String str, int x, int y) {
 		canvasGraphics.drawString(str, x, y);
-		// FIXME: process map
+		FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
+		Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
+		appendShape(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(), rect
+				.getHeight()));
 	}
 
 	@Override
 	public void drawString(String str, float x, float y) {
 		canvasGraphics.drawString(str, x, y);
-		// FIXME: process map
+		FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
+		Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
+		appendShape(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(), rect
+				.getHeight()));
 	}
 
 	@Override
