@@ -22,7 +22,8 @@ private static final Logger LOG = Logger.getLogger(MyClass.class);
 ...
 LOG.info("Something happened.");
 }}}
-  * Icons for leaded components (resistors, jumpers, wires, etc) should be drawn in the SW-NE direction.
+  * Icons for leaded components (resistors, jumpers, wires, etc) should be drawn in the SW-NE direction, like shown below
+<p align="center">http://www.diy-fever.com/diylc/images/icons.png</p>
   * Component should be drawn differently when selected. Where applicable, component border should be painted red (resistors). In some cases it's necessary to paint the whole component red (jumper, trace, etc). Components that are red by default (trace cut) should be painted blue when selected.
   * When a component is dragged, only outline should be pained, together with elements that correspond to its control points. To illustrate it, consider an example of DIL IC component. When dragged, we should draw the border together with pins. That way the user will know where the pins will land when dropped.
 
