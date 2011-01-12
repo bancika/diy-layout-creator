@@ -1,4 +1,4 @@
 #summary Frequently asked questions
 #labels Featured
 
-  * *App runs but no components are shown in the toolbar. What should I do?*<br><br>Go to the main app folder where *diylc.jar* is and make sure that *library* directory exists and that it contains *main.jar* at the minimum. If that's ok, make sure that the application is running with the current directory set to the main app directory (*diylc3* typically).
+  * *App runs but no components are shown in the toolbox. What should I do?*<br><br>Go to the main app directory where *diylc.jar* is located and make sure that *library* directory exists and that it contains *main.jar* at the minimum. If that's OK, make sure that the application is running with the current directory set to the main app directory (*diylc3* typically). If the problem persists, create an [http://code.google.com/p/diy-layout-creator/issues/entry issue] with the most recent log file from *log* directory attached.
