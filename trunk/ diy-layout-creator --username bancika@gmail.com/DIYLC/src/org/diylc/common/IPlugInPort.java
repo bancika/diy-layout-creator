@@ -169,11 +169,9 @@ public interface IPlugInPort {
 	ComponentSelection getSelectedComponents();
 
 	/**
-	 * Changes component selection.
-	 * 
-	 * @param selection
+	 * Selects all components in the project.
 	 */
-	void setSelectedComponents(ComponentSelection selection);
+	void selectAll();
 
 	/**
 	 * Returns the {@link Area} occupied by the component.
@@ -306,4 +304,8 @@ public interface IPlugInPort {
 	 * @param isMetric
 	 */
 	void setMetric(boolean isMetric);
+
+	void groupSelectedComponents();
+
+	void ungroupSelectedComponents();
 }

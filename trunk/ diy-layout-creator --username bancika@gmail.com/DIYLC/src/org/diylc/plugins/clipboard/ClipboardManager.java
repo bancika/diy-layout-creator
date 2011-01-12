@@ -76,6 +76,9 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		plugInPort.injectMenuAction(pasteAction, EDIT_TITLE);
 		plugInPort.injectMenuAction(null, EDIT_TITLE);
 		plugInPort.injectMenuAction(new SelectAllAction(), EDIT_TITLE);
+		plugInPort.injectMenuAction(null, EDIT_TITLE);
+		plugInPort.injectMenuAction(new GroupAction(), EDIT_TITLE);
+		plugInPort.injectMenuAction(new UngroupAction(), EDIT_TITLE);
 
 		refreshActions();
 	}
@@ -187,8 +190,45 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Select All triggered");
-			plugInPort.setSelectedComponents(new ComponentSelection(plugInPort.getCurrentProject()
-					.getComponents()));
+			plugInPort.selectAll();
+		}
+	}
+
+	class GroupAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public GroupAction() {
+			super();
+			putValue(AbstractAction.NAME, "Group Selection");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G,
+					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.SMALL_ICON, IconLoader.Group.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Group Selection triggered");
+			plugInPort.groupSelectedComponents();
+		}
+	}
+
+	class UngroupAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public UngroupAction() {
+			super();
+			putValue(AbstractAction.NAME, "Ungroup Selection");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U,
+					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.SMALL_ICON, IconLoader.Ungroup.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Ungroup Selection triggered");
+			plugInPort.ungroupSelectedComponents();
 		}
 	}
 

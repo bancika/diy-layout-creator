@@ -2,7 +2,9 @@ package org.diylc.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -29,9 +31,11 @@ public class Project implements Serializable {
 	private Size width;
 	private Size height;
 	private List<IDIYComponent<?>> components;
+	private Set<Set<IDIYComponent<?>>> groups;
 
 	public Project() {
 		components = new ArrayList<IDIYComponent<?>>();
+		groups = new HashSet<Set<IDIYComponent<?>>>();
 		title = DEFAULT_TITLE;
 		author = System.getProperty("user.name");
 		width = DEFAULT_WIDTH;
@@ -39,7 +43,7 @@ public class Project implements Serializable {
 	}
 
 	public Project(String title, String author, String description, Size width, Size height,
-			List<IDIYComponent<?>> components) {
+			List<IDIYComponent<?>> components, Set<Set<IDIYComponent<?>>> groups) {
 		super();
 		this.title = title;
 		this.author = author;
@@ -47,6 +51,7 @@ public class Project implements Serializable {
 		this.width = width;
 		this.height = height;
 		this.components = components;
+		this.groups = groups;
 	}
 
 	@EditableProperty
@@ -101,6 +106,15 @@ public class Project implements Serializable {
 	 */
 	public List<IDIYComponent<?>> getComponents() {
 		return components;
+	}
+
+	/**
+	 * Set of grouped components.
+	 * 
+	 * @return
+	 */
+	public Set<Set<IDIYComponent<?>>> getGroups() {
+		return groups;
 	}
 
 	@Override
