@@ -157,16 +157,14 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 		Shape body = getBody();
 		// Draw body if available.
 		if (body != null) {
-			if (componentState != ComponentState.DRAGGING) {
-				Composite oldComposite = g2d.getComposite();
-				if (alpha < MAX_ALPHA) {
-					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-							/ MAX_ALPHA));
-				}
-				g2d.setColor(BODY_COLOR);
-				g2d.fill(body);
-				g2d.setComposite(oldComposite);
+			Composite oldComposite = g2d.getComposite();
+			if (alpha < MAX_ALPHA) {
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+						/ MAX_ALPHA));
 			}
+			g2d.setColor(BODY_COLOR);
+			g2d.fill(body);
+			g2d.setComposite(oldComposite);
 			g2d.setStroke(new BasicStroke());
 			g2d.setColor(componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
@@ -177,11 +175,9 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 		int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
 		int lugHeight = getClosestOdd(LUG_HEIGHT.convertToPixels());
 		for (Point p : controlPoints) {
-			if (componentState != ComponentState.DRAGGING) {
-				g2d.setColor(CIRCLE_COLOR);
-				g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter,
-						circleDiameter);
-			}
+			g2d.setColor(CIRCLE_COLOR);
+			g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter,
+					circleDiameter);
 			g2d.setColor(LUG_COLOR);
 			g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
 		}

@@ -83,11 +83,15 @@ public interface IPlugInPort {
 	Map<String, List<ComponentType>> getComponentTypes();
 
 	/**
-	 * Draws project on the provided {@link Graphics2D}.
+	 * Draws project on the provided {@link Graphics2D}. If the provided filter
+	 * is not null, it will be used to filter the components that are shown.
 	 * 
 	 * @param g2d
+	 * @param drawOptions
+	 *            specific drawing options
+	 * @param filter
 	 */
-	void draw(Graphics2D g2d, Set<DrawOption> drawProperties);
+	void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter);
 
 	/**
 	 * Injects a custom GUI panels provided by the plug-in and desired position
