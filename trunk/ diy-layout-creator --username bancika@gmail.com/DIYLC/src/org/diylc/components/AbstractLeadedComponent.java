@@ -71,16 +71,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				(points[0].y + points[1].y - shapeRect.height) / 2);
 		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
 		// Draw body.
-		if (componentState != ComponentState.DRAGGING) {
-			Composite oldComposite = g2d.getComposite();
-			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-						/ MAX_ALPHA));
-			}
-			g2d.setColor(bodyColor);
-			g2d.fill(shape);
-			g2d.setComposite(oldComposite);
+		Composite oldComposite = g2d.getComposite();
+		if (alpha < MAX_ALPHA) {
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+					/ MAX_ALPHA));
 		}
+		g2d.setColor(bodyColor);
+		g2d.fill(shape);
+		g2d.setComposite(oldComposite);
 		g2d.setStroke(new BasicStroke(1));
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);

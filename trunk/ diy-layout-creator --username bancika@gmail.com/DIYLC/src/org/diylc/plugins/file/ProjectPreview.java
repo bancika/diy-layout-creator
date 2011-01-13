@@ -132,14 +132,14 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 				zoomRatio = rect.getHeight() / d.getHeight();
 			}
 			// d.setSize(d.getWidth() * zoomRatio, d.getHeight() * zoomRatio);
-			int x = (int) (rect.getWidth() - d.getWidth() * zoomRatio) / 2;
-			int y = (int) (rect.getHeight() - d.getHeight() * zoomRatio) / 2;
+//			int x = (int) (rect.getWidth() - d.getWidth() * zoomRatio) / 2;
+//			int y = (int) (rect.getHeight() - d.getHeight() * zoomRatio) / 2;
 
 			// System.out.println(x + "," + y);
 
-			g2d.translate(x, y);
+//			g2d.translate(x, y);
 			g2d.scale(zoomRatio, zoomRatio);
-			presenter.draw(g2d, EnumSet.noneOf(DrawOption.class));
+			presenter.draw(g2d, EnumSet.noneOf(DrawOption.class), null);
 
 			g2d.setColor(Color.black);
 			g2d.drawRect(0, 0, d.width - (int) (1 / zoomRatio), d.height - (int) (1 / zoomRatio));

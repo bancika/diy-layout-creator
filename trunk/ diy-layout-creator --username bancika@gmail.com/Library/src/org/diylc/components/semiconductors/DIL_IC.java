@@ -218,27 +218,21 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			g2d.setColor(PIN_BORDER_COLOR);
 			g2d.drawRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
 		}
-		if (componentState != ComponentState.DRAGGING) {
-			Composite oldComposite = g2d.getComposite();
-			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-						/ MAX_ALPHA));
-			}
-			g2d.setColor(BODY_COLOR);
-			g2d.fill(getBody());
-			g2d.setComposite(oldComposite);
+		Composite oldComposite = g2d.getComposite();
+		if (alpha < MAX_ALPHA) {
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+					/ MAX_ALPHA));
 		}
+		g2d.setColor(BODY_COLOR);
+		g2d.fill(getBody());
+		g2d.setComposite(oldComposite);
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
 		g2d.setStroke(new BasicStroke());
 		g2d.draw(getBody());
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
-		if (componentState == ComponentState.DRAGGING) {
-			g2d.setColor(BORDER_COLOR);
-		} else {
-			g2d.setColor(LABEL_COLOR);
-		}
+		g2d.setColor(LABEL_COLOR);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
 		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
 		int textHeight = (int) (rect.getHeight());

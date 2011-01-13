@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Modifier;
@@ -31,6 +30,7 @@ import org.diylc.common.ComponentSelection;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
+import org.diylc.common.IComponentFiler;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
@@ -215,7 +215,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, Set<DrawOption> drawOptions) {
+	public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter) {
 		if (currentProject == null) {
 			return;
 		}
@@ -227,7 +227,7 @@ public class Presenter implements IPlugInPort {
 							RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 
-		AffineTransform initialTx = g2d.getTransform();
+//		AffineTransform initialTx = g2d.getTransform();
 		Dimension d = getCanvasDimensions(drawOptions.contains(DrawOption.ZOOM));
 
 		g2dWrapper.setColor(Constants.CANVAS_COLOR);
@@ -259,6 +259,10 @@ public class Presenter implements IPlugInPort {
 		componentAreaMap.clear();
 		if (components != null) {
 			for (IDIYComponent<?> component : components) {
+				// Do not draw the component if it's filtered out.
+				if (filter != null && !filter.testComponent(component)) {
+					continue;
+				}
 				g2dWrapper.startedDrawingComponent();
 				ComponentState state = ComponentState.NORMAL;
 				if (drawOptions.contains(DrawOption.SELECTION)
@@ -299,10 +303,10 @@ public class Presenter implements IPlugInPort {
 
 		// Go back to the original transformation and zoom in to draw the
 		// selection rectangle and other similar elements.
-		g2d.setTransform(initialTx);
-		if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 - zoomLevel) > 1e-4)) {
-			g2d.scale(zoomLevel, zoomLevel);
-		}
+//		g2d.setTransform(initialTx);
+//		if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 - zoomLevel) > 1e-4)) {
+//			g2d.scale(zoomLevel, zoomLevel);
+//		}
 
 		// At the end draw selection rectangle if needed.
 		if (drawOptions.contains(DrawOption.SELECTION) && (selectionRect != null)) {
