@@ -34,6 +34,12 @@ A component may have one or more control points. Control points have dual purpos
   * Double click on a component opens the Component Editor - dialog that lists all editable properties of the selected component(s).
   * Checking the "Default" checkbox on the right side will make the value for that property default. In other words, all the components created after that will inherit that value.
 
+===Grouping components together===
+
+Component groups behave similar to object groups Corel Draw. The idea is to keep two or more components together and move/edit/delete them at the same time. To group components, select them and press Ctrl+G (or select "Group Selection" from the menu). Double click on one of the grouped components will open the editor with all the mutual properties of selected components and allow editing them at the same time.
+Note that while the components are grouped, you can't edit drag their individual control points.
+To un-group the components, select them and press Ctrl+U (or select "Ungroup Selection" from the menu).
+
 ===Using the status bar===
 
 Status bar contains three different features:
