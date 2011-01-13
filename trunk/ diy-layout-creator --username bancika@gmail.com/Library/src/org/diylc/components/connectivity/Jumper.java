@@ -12,7 +12,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 
-@ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "J", description = "", zOrder = IDIYComponent.ABOVE_BOARD)
+@ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "J", description = "", zOrder = IDIYComponent.ABOVE_BOARD, sticky = true)
 public class Jumper extends AbstractLeadedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;

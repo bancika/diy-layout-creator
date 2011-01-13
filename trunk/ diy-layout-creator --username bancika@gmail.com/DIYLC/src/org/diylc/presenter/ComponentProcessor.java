@@ -60,6 +60,7 @@ public class ComponentProcessor {
 		Icon icon;
 		double zOrder;
 		boolean stretchable;
+		boolean sticky;
 		if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
 			ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
 			name = annotation.name();
@@ -69,6 +70,7 @@ public class ComponentProcessor {
 			author = annotation.author();
 			zOrder = annotation.zOrder();
 			stretchable = annotation.stretchable();
+			sticky = annotation.sticky();
 		} else {
 			name = clazz.getSimpleName();
 			description = "";
@@ -77,6 +79,7 @@ public class ComponentProcessor {
 			author = "Unknown";
 			zOrder = IDIYComponent.COMPONENT;
 			stretchable = true;
+			sticky = false;
 		}
 		icon = null;
 		// Draw component icon.
@@ -96,7 +99,7 @@ public class ComponentProcessor {
 			e.printStackTrace();
 		}
 		ComponentType componentType = new ComponentType(name, description, category, namePrefix,
-				author, icon, clazz, zOrder, stretchable);
+				author, icon, clazz, zOrder, stretchable, sticky);
 		return componentType;
 	}
 

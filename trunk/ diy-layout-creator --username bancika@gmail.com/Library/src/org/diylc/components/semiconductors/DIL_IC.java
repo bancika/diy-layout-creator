@@ -23,7 +23,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "test", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "test", stretchable = false, zOrder = IDIYComponent.COMPONENT, sticky = true)
 public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
@@ -38,7 +38,6 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
 	public static Size INDENT_SIZE = new Size(0.15d, SizeUnit.in);
 
-	private String name = "New Component";
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
 	private PinCount pinCount = PinCount._8;
@@ -54,15 +53,6 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public DIL_IC() {
 		super();
 		updateControlPoints();
-	}
-
-	@EditableProperty(defaultable = false)
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@EditableProperty
