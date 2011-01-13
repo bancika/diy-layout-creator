@@ -12,7 +12,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.ABOVE_COMPONENT)
+@ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.ABOVE_COMPONENT, sticky = true)
 public class HookupWire extends AbstractCurvedComponent<AWG> {
 
 	private static final long serialVersionUID = 1L;

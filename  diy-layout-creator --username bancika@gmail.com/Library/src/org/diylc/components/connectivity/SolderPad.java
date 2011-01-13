@@ -14,7 +14,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Pad", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD + 0.1)
+@ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Pad", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD + 0.1, sticky = true)
 public class SolderPad extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;

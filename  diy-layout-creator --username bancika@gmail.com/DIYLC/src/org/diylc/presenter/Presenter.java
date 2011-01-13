@@ -70,8 +70,8 @@ public class Presenter implements IPlugInPort {
 	private Map<IDIYComponent<?>, Area> componentAreaMap;
 	private Project currentProject;
 	private Map<String, List<ComponentType>> componentTypes;
-	@SuppressWarnings("unchecked")
-	private Map<Class<? extends IDIYComponent>, ComponentType> componentTypeMap;
+	// Maps component class names to ComponentType objects.
+	private Map<String, ComponentType> componentTypeMap;
 	private List<IPlugIn> plugIns;
 
 	private ComponentSelection selectedComponents;
@@ -192,14 +192,14 @@ public class Presenter implements IPlugInPort {
 		if (componentTypes == null) {
 			LOG.info("Loading component types.");
 			componentTypes = new HashMap<String, List<ComponentType>>();
-			componentTypeMap = new HashMap<Class<? extends IDIYComponent>, ComponentType>();
+			componentTypeMap = new HashMap<String, ComponentType>();
 			List<Class<?>> componentTypeClasses = JarScanner.getInstance().scanFolder("library/",
 					IDIYComponent.class);
 			for (Class<?> clazz : componentTypeClasses) {
 				if (!Modifier.isAbstract(clazz.getModifiers())) {
 					ComponentType componentType = ComponentProcessor.getInstance()
 							.createComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
-					componentTypeMap.put(componentType.getInstanceClass(), componentType);
+					componentTypeMap.put(componentType.getInstanceClass().getName(), componentType);
 					List<ComponentType> nestedList;
 					if (componentTypes.containsKey(componentType.getCategory())) {
 						nestedList = componentTypes.get(componentType.getCategory());
@@ -227,7 +227,7 @@ public class Presenter implements IPlugInPort {
 							RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 
-//		AffineTransform initialTx = g2d.getTransform();
+		// AffineTransform initialTx = g2d.getTransform();
 		Dimension d = getCanvasDimensions(drawOptions.contains(DrawOption.ZOOM));
 
 		g2dWrapper.setColor(Constants.CANVAS_COLOR);
@@ -303,10 +303,11 @@ public class Presenter implements IPlugInPort {
 
 		// Go back to the original transformation and zoom in to draw the
 		// selection rectangle and other similar elements.
-//		g2d.setTransform(initialTx);
-//		if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 - zoomLevel) > 1e-4)) {
-//			g2d.scale(zoomLevel, zoomLevel);
-//		}
+		// g2d.setTransform(initialTx);
+		// if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 -
+		// zoomLevel) > 1e-4)) {
+		// g2d.scale(zoomLevel, zoomLevel);
+		// }
 
 		// At the end draw selection rectangle if needed.
 		if (drawOptions.contains(DrawOption.SELECTION) && (selectionRect != null)) {
@@ -415,8 +416,8 @@ public class Presenter implements IPlugInPort {
 					try {
 						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SIZE) {
 							Set<Integer> indices = new HashSet<Integer>();
-							ComponentType componentType = componentTypeMap
-									.get(component.getClass());
+							ComponentType componentType = componentTypeMap.get(component.getClass()
+									.getName());
 							if (componentType.isStretchable()) {
 								indices.add(pointIndex);
 							} else {
@@ -521,7 +522,73 @@ public class Presenter implements IPlugInPort {
 					controlPointMap.put(c, pointIndices);
 				}
 			}
+			// Expand control points to include all stuck components.
+			includeStuckComponents(controlPointMap);
 			LOG.debug(controlPointMap);
+		}
+	}
+
+	/**
+	 * Finds any components that are stuck to one of the components already in
+	 * the map.
+	 * 
+	 * @param controlPointMap
+	 */
+	private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap) {
+		int oldSize = controlPointMap.size();
+		LOG.debug("Expanding selected component map");
+		for (IDIYComponent<?> component : currentProject.getComponents()) {
+			// Do not process a component if it's already in the map.
+			ComponentType componentType = componentTypeMap.get(component.getClass().getName());
+			if (!controlPointMap.containsKey(component) && componentType.isSticky()) {
+				// Check if there's a control point in the current selection
+				// that matches with one of its control points.
+				for (int i = 0; i < component.getControlPointCount(); i++) {
+					if (controlPointMap.containsKey(component)) {
+						break;
+					}
+					boolean componentMatches = false;
+					for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap
+							.entrySet()) {
+						if (componentMatches) {
+							break;
+						}
+						for (Integer j : entry.getValue()) {
+							Point firstPoint = component.getControlPoint(i);
+							Point secondPoint = entry.getKey().getControlPoint(j);
+							// If they are close enough we can consider them
+							// matched.
+							if (firstPoint.distance(secondPoint) < CONTROL_POINT_SIZE) {
+								componentMatches = true;
+								break;
+							}
+						}
+					}
+					if (componentMatches) {
+						LOG.debug("Including component: " + component);
+						Set<Integer> indices = new HashSet<Integer>();
+						// For stretchable components just add the
+						// matching component.
+						// Otherwise, add all control points.
+						if (componentType.isStretchable()) {
+							indices.add(i);
+						} else {
+							for (int k = 0; k < component.getControlPointCount(); k++) {
+								indices.add(k);
+							}
+						}
+						controlPointMap.put(component, indices);
+					}
+				}
+			}
+		}
+		int newSize = controlPointMap.size();
+		// As long as we're adding new components, do another iteration.
+		if (newSize > oldSize) {
+			LOG.debug("Component count changed, trying one more time.");
+			includeStuckComponents(controlPointMap);
+		} else {
+			LOG.debug("Component count didn't change, done with expanding.");
 		}
 	}
 
@@ -612,7 +679,7 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String.format("addComponents(%s)", components));
 		Project oldProject = cloner.deepClone(currentProject);
 		for (IDIYComponent<?> component : components) {
-			addComponent(component, componentTypeMap.get(component.getClass()));
+			addComponent(component, componentTypeMap.get(component.getClass().getName()));
 		}
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
@@ -784,7 +851,7 @@ public class Presenter implements IPlugInPort {
 		int index = 0;
 		while (index < currentProject.getComponents().size()
 				&& componentType.getZOrder() >= componentTypeMap.get(
-						currentProject.getComponents().get(index).getClass()).getZOrder()) {
+						currentProject.getComponents().get(index).getClass().getName()).getZOrder()) {
 			index++;
 		}
 		if (index < currentProject.getComponents().size()) {
@@ -921,7 +988,7 @@ public class Presenter implements IPlugInPort {
 	 *         component.
 	 */
 	private boolean shouldShowControlPointsFor(IDIYComponent<?> component) {
-		ComponentType componentType = componentTypeMap.get(component.getClass());
+		ComponentType componentType = componentTypeMap.get(component.getClass().getName());
 		// Do not show control points for non-stretchable components.
 		if (!componentType.isStretchable()) {
 			return false;

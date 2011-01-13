@@ -18,7 +18,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW")
+@ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", sticky = true)
 public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> {
 
 	private static final long serialVersionUID = 1L;
