@@ -56,7 +56,7 @@ public class FileManager implements IPlugIn {
 		plugInPort.injectMenuAction(new ExportPDFAction(drawingProvider), FILE_TITLE);
 		plugInPort.injectMenuAction(new ExportPNGAction(drawingProvider), FILE_TITLE);
 		plugInPort.injectMenuAction(new PrintAction(drawingProvider), FILE_TITLE);
-		plugInPort.injectSubmenu(TRACE_MASK_TITLE, null, FILE_TITLE);
+		plugInPort.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);
 		plugInPort
 				.injectMenuAction(new ExportPDFAction(traceMaskDrawingProvider), TRACE_MASK_TITLE);
 		plugInPort
