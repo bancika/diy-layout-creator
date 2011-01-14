@@ -23,7 +23,7 @@ public enum IconLoader {
 			"id_card.png"), IdCardAdd("id_card_add.png"), Chest("chest.png"), Upload("upload.png"), Wrench(
 			"wrench.png"), Group("group.png"), Ungroup("ungroup.png"), TraceMask("trace_mask.png"), Faq(
 			"faq.png"), Component("component.png"), Plugin("plugin.png"), Manual("manual.png"), Donate(
-			"donate.png"), Bug("bug.png");
+			"donate.png"), Bug("bug.png"), AboutDialog("about_dialog.png");
 
 	protected String name;
 
