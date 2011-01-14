@@ -1,11 +1,11 @@
 package org.diylc.gui;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 
 import org.diylc.common.BadPositionException;
 import org.diylc.common.IPlugInPort;
-
 
 /**
  * Base interface for the main GUI component.
@@ -38,4 +38,13 @@ public interface IView {
 	 * @see IPlugInPort#injectMenuAction
 	 */
 	void addMenuAction(Action action, String menuName);
+
+	/**
+	 * Adds a submenu to an existing menu.
+	 * 
+	 * @param name
+	 * @param icon
+	 * @param parentMenuName
+	 */
+	void addSubmenu(String name, Icon icon, String parentMenuName);
 }

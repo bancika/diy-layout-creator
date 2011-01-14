@@ -6,7 +6,10 @@ import java.awt.Graphics2D;
 import java.util.EnumSet;
 
 import org.diylc.common.DrawOption;
+import org.diylc.common.IComponentFiler;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IDIYComponent;
+import org.diylc.presenter.ComponentZOrderFiler;
 
 import com.diyfever.gui.IDrawingProvider;
 
@@ -16,18 +19,21 @@ import com.diyfever.gui.IDrawingProvider;
  * 
  * @author Branislav Stojkovic
  */
-public class ProjectDrawingProvider implements IDrawingProvider {
+public class TraceMaskDrawingProvider implements IDrawingProvider {
 
 	private IPlugInPort plugInPort;
+	private IComponentFiler filter;
 
-	public ProjectDrawingProvider(IPlugInPort plugInPort) {
+	public TraceMaskDrawingProvider(IPlugInPort plugInPort) {
 		super();
 		this.plugInPort = plugInPort;
+		this.filter = new ComponentZOrderFiler(IDIYComponent.ABOVE_BOARD);
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ZOOM, DrawOption.ANTIALIASING), null);
+		plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ZOOM, DrawOption.ANTIALIASING),
+				this.filter);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
@@ -341,6 +342,12 @@ public class Presenter implements IPlugInPort {
 		view.addMenuAction(action, menuName);
 	}
 
+	@Override
+	public void injectSubmenu(String name, Icon icon, String parentMenuName) {
+		LOG.info(String.format("injectSubmenu(%s, icon, %s)", name, parentMenuName));
+		view.addSubmenu(name, icon, parentMenuName);
+	}
+
 	/**
 	 * Finds all components whose areas include the specified {@link Point}.
 	 * Point is <b>not</b> scaled by the zoom factor.
@@ -394,9 +401,11 @@ public class Presenter implements IPlugInPort {
 					selectedComponents.addAll(findAllGroupedComponents(component));
 				}
 			}
-			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-					calculateSelectionDimension());
+			fireSelectionChanged();
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+			// selectedComponents);
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+			// calculateSelectionDimension());
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
 	}
@@ -458,9 +467,11 @@ public class Presenter implements IPlugInPort {
 	public void selectAll() {
 		LOG.info("selectAll()");
 		this.selectedComponents = new ComponentSelection(currentProject.getComponents());
-		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-				calculateSelectionDimension());
+		fireSelectionChanged();
+		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+		// selectedComponents);
+		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+		// calculateSelectionDimension());
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
@@ -486,16 +497,20 @@ public class Presenter implements IPlugInPort {
 			// If we're dragging control points reset selection.
 			selectedComponents.clear();
 			selectedComponents.addAll(controlPointMap.keySet());
-			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-					calculateSelectionDimension());
+			fireSelectionChanged();
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+			// selectedComponents);
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+			// calculateSelectionDimension());
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else if (components.isEmpty()) {
 			// If there are no components are under the cursor, reset selection.
 			selectedComponents.clear();
-			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-					calculateSelectionDimension());
+			fireSelectionChanged();
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+			// selectedComponents);
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+			// calculateSelectionDimension());
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
 			// Take the last component, i.e. the top order component.
@@ -505,9 +520,11 @@ public class Presenter implements IPlugInPort {
 			if (!selectedComponents.contains(component)) {
 				selectedComponents.clear();
 				selectedComponents.addAll(findAllGroupedComponents(component));
-				messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-				messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-						calculateSelectionDimension());
+				fireSelectionChanged();
+				// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+				// selectedComponents);
+				// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+				// calculateSelectionDimension());
 				messageDispatcher.dispatchMessage(EventType.REPAINT);
 			}
 			// If there aren't any control points, try to add all the selected
@@ -659,9 +676,10 @@ public class Presenter implements IPlugInPort {
 				}
 			}
 			selectionRect = null;
-			messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-					calculateSelectionDimension());
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+			// selectedComponents);
+			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+			// calculateSelectionDimension());
 		}
 		// There is selection, so we need to finalize the drag&drop
 		// operation.
@@ -670,6 +688,7 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, cloner
 					.deepClone(currentProject), "Move");
 		}
+		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		dragInProgress = false;
 	}
@@ -749,9 +768,10 @@ public class Presenter implements IPlugInPort {
 		Project oldProject = cloner.deepClone(currentProject);
 		// First remove the selected components from other groups.
 		ungroupComponents(selectedComponents);
-		// Then group them together
+		// Then group them together.
 		currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(selectedComponents));
 		// Notify the listeners.
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Group");
@@ -764,10 +784,27 @@ public class Presenter implements IPlugInPort {
 		Project oldProject = cloner.deepClone(currentProject);
 		ungroupComponents(selectedComponents);
 		// Notify the listeners.
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Group");
 		}
+	}
+
+	private void fireSelectionChanged() {
+		Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
+		for (IDIYComponent<?> component : selectedComponents) {
+			Set<Integer> indices = new HashSet<Integer>();
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				indices.add(i);
+			}
+			controlPointMap.put(component, indices);
+		}
+		includeStuckComponents(controlPointMap);
+		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents,
+				controlPointMap.keySet());
+		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+				calculateSelectionDimension());
 	}
 
 	/**
@@ -926,9 +963,12 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Add " + componentType.getName());
 		}
-		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-				calculateSelectionDimension());
+
+		fireSelectionChanged();
+		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+		// selectedComponents);
+		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+		// calculateSelectionDimension());
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
@@ -965,9 +1005,11 @@ public class Presenter implements IPlugInPort {
 				: componentType.getName()));
 		this.componentSlot = componentType;
 		selectedComponents.clear();
-		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents);
-		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-				calculateSelectionDimension());
+		fireSelectionChanged();
+		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+		// selectedComponents);
+		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+		// calculateSelectionDimension());
 		messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot);
 	}
 

@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -177,6 +178,23 @@ public class MainFrame extends JFrame implements IView {
 
 	@Override
 	public void addMenuAction(Action action, String menuName) {
+		JMenu menu = findOrCreateMenu(menuName);
+		if (action == null) {
+			menu.addSeparator();
+		} else {
+			menu.add(action);
+		}
+	}
+	
+	@Override
+	public void addSubmenu(String name, Icon icon, String parentMenuName) {
+		JMenu menu = findOrCreateMenu(parentMenuName);
+		JMenu submenu = new JMenu(name);
+		menu.add(submenu);
+		menuMap.put(name, submenu);
+	}
+	
+	private JMenu findOrCreateMenu(String menuName) {
 		JMenu menu;
 		if (menuMap.containsKey(menuName)) {
 			menu = menuMap.get(menuName);
@@ -185,10 +203,6 @@ public class MainFrame extends JFrame implements IView {
 			menuMap.put(menuName, menu);
 			getMainMenuBar().add(menu);
 		}
-		if (action == null) {
-			menu.addSeparator();
-		} else {
-			menu.add(action);
-		}
+		return menu;
 	}
 }
