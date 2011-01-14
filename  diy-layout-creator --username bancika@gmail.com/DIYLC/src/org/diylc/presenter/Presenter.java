@@ -331,7 +331,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void injectGUIComponent(JComponent component, int position) throws BadPositionException {
-		LOG.info(String.format("injectGUIComponent(%s, %s)", component.toString(), position));
+		LOG.info(String.format("injectGUIComponent(%s, %s)", component.getClass().getName(), position));
 		view.addComponent(component, position);
 	}
 

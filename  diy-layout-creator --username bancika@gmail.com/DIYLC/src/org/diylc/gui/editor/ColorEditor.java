@@ -37,4 +37,14 @@ public class ColorEditor extends JLabel {
 			}
 		});
 	}
+	
+	@Override
+	public void setBackground(Color bg) {
+		if (bg.getRed() < 127 || bg.getBlue() < 127 || bg.getGreen() < 127) {
+			setForeground(Color.white);
+		} else {
+			setForeground(Color.black);
+		}
+		super.setBackground(bg);
+	}
 }
