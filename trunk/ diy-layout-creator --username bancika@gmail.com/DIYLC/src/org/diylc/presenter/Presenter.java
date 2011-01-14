@@ -417,16 +417,15 @@ public class Presenter implements IPlugInPort {
 		// Go backwards so we take the highest z-order components first.
 		for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
 			IDIYComponent<?> component = currentProject.getComponents().get(i);
+			ComponentType componentType = componentTypeMap.get(component.getClass().getName());
 			for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
 				Point controlPoint = component.getControlPoint(pointIndex);
 				// Only consider selected components that are not grouped.
-				if (selectedComponents.contains(component)
+				if (selectedComponents.contains(component) && componentType.isStretchable()
 						&& findAllGroupedComponents(component).size() == 1) {
 					try {
 						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SIZE) {
 							Set<Integer> indices = new HashSet<Integer>();
-							ComponentType componentType = componentTypeMap.get(component.getClass()
-									.getName());
 							if (componentType.isStretchable()) {
 								indices.add(pointIndex);
 							} else {
