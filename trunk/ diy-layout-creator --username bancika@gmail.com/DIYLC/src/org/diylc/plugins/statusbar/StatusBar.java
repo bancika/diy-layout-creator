@@ -57,6 +57,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 	private ComponentType componentSlot;
 	private List<IDIYComponent<?>> componentsUnderCursor;
 	private List<String> selectedComponentNames;
+	private List<String> stuckComponentNames;
 
 	public StatusBar() {
 		super();
@@ -189,12 +190,19 @@ public class StatusBar extends JPanel implements IPlugIn {
 			break;
 		case SELECTION_CHANGED:
 			ComponentSelection selection = (ComponentSelection) params[0];
+			Collection<IDIYComponent<?>> stuckComponents = (Collection<IDIYComponent<?>>) params[1];
 			Collection<String> componentNames = new HashSet<String>();
 			for (IDIYComponent<?> component : selection) {
 				componentNames.add(component.getName());
 			}
 			this.selectedComponentNames = new ArrayList<String>(componentNames);
 			Collections.sort(this.selectedComponentNames);
+			this.stuckComponentNames = new ArrayList<String>();
+			for (IDIYComponent<?> component : stuckComponents) {
+				this.stuckComponentNames.add(component.getName());
+			}
+			this.stuckComponentNames.removeAll(this.selectedComponentNames);
+			Collections.sort(this.stuckComponentNames);
 			refreshStatusText();
 			break;
 		case SELECTION_SIZE_CHANGED:
@@ -245,18 +253,32 @@ public class StatusBar extends JPanel implements IPlugIn {
 				}
 				getStatusLabel().setText("Drag " + formattedNames);
 			} else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
-				String formattedNames = "";
+				StringBuilder builder = new StringBuilder();
 				for (int i = 0; i < selectedComponentNames.size(); i++) {
 					if (i > 0) {
 						if (i == selectedComponentNames.size() - 1) {
-							formattedNames += " and ";
+							builder.append(" and ");
 						} else {
-							formattedNames += ", ";
+							builder.append(", ");
 						}
 					}
-					formattedNames += selectedComponentNames.get(i);
+					builder.append(selectedComponentNames.get(i));
 				}
-				getStatusLabel().setText("Selection: " + formattedNames);
+				if (!stuckComponentNames.isEmpty()) {
+					builder.append(" (");
+					for (int i = 0; i < stuckComponentNames.size(); i++) {
+						if (i > 0) {
+							if (i == stuckComponentNames.size() - 1) {
+								builder.append(" and ");
+							} else {
+								builder.append(", ");
+							}
+						}
+						builder.append(stuckComponentNames.get(i));
+					}
+					builder.append(" would be affected by dragging as well)");
+				}
+				getStatusLabel().setText("Selection: " + builder.toString());
 			} else {
 				getStatusLabel().setText("");
 			}

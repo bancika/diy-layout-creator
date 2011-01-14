@@ -19,6 +19,7 @@ import org.diylc.core.Project;
 import org.diylc.gui.DialogFactory;
 import org.diylc.images.IconLoader;
 
+import com.diyfever.gui.IDrawingProvider;
 import com.diyfever.gui.export.DrawingExporter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -33,8 +34,11 @@ public class FileManager implements IPlugIn {
 	private static final Logger LOG = Logger.getLogger(FileManager.class);
 
 	private static final String FILE_TITLE = "File";
+	private static final String TRACE_MASK_TITLE = "Trace Mask";
+
 	private IPlugInPort plugInPort;
 	private ProjectDrawingProvider drawingProvider;
+	private TraceMaskDrawingProvider traceMaskDrawingProvider;
 
 	private XStream xStream = new XStream(new DomDriver());
 
@@ -42,17 +46,23 @@ public class FileManager implements IPlugIn {
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
 		this.drawingProvider = new ProjectDrawingProvider(plugInPort);
+		this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
 
 		plugInPort.injectMenuAction(new NewAction(), FILE_TITLE);
 		plugInPort.injectMenuAction(new OpenAction(), FILE_TITLE);
 		plugInPort.injectMenuAction(new SaveAction(), FILE_TITLE);
 		plugInPort.injectMenuAction(new SaveAsAction(), FILE_TITLE);
 		plugInPort.injectMenuAction(null, FILE_TITLE);
+		plugInPort.injectMenuAction(new ExportPDFAction(drawingProvider), FILE_TITLE);
+		plugInPort.injectMenuAction(new ExportPNGAction(drawingProvider), FILE_TITLE);
+		plugInPort.injectMenuAction(new PrintAction(drawingProvider), FILE_TITLE);
+		plugInPort.injectSubmenu(TRACE_MASK_TITLE, null, FILE_TITLE);
+		plugInPort
+				.injectMenuAction(new ExportPDFAction(traceMaskDrawingProvider), TRACE_MASK_TITLE);
+		plugInPort
+				.injectMenuAction(new ExportPNGAction(traceMaskDrawingProvider), TRACE_MASK_TITLE);
+		plugInPort.injectMenuAction(new PrintAction(traceMaskDrawingProvider), TRACE_MASK_TITLE);
 		plugInPort.injectMenuAction(new CreateBomAction(), FILE_TITLE);
-		plugInPort.injectMenuAction(null, FILE_TITLE);
-		plugInPort.injectMenuAction(new ExportPDFAction(), FILE_TITLE);
-		plugInPort.injectMenuAction(new ExportPNGAction(), FILE_TITLE);
-		plugInPort.injectMenuAction(new PrintAction(), FILE_TITLE);
 		plugInPort.injectMenuAction(null, FILE_TITLE);
 		plugInPort.injectMenuAction(new ExitAction(), FILE_TITLE);
 	}
@@ -194,8 +204,11 @@ public class FileManager implements IPlugIn {
 
 		private static final long serialVersionUID = 1L;
 
-		public ExportPDFAction() {
+		private IDrawingProvider drawingProvider;
+
+		public ExportPDFAction(IDrawingProvider drawingProvider) {
 			super();
+			this.drawingProvider = drawingProvider;
 			putValue(AbstractAction.NAME, "Export to PDF");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.PDF.getIcon());
 		}
@@ -205,7 +218,7 @@ public class FileManager implements IPlugIn {
 			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PDF.getFilter(),
 					null, FileFilterEnum.PDF.getExtensions()[0], null);
 			if (file != null) {
-				DrawingExporter.getInstance().exportPDF(drawingProvider, file);
+				DrawingExporter.getInstance().exportPDF(this.drawingProvider, file);
 			}
 		}
 	}
@@ -214,8 +227,11 @@ public class FileManager implements IPlugIn {
 
 		private static final long serialVersionUID = 1L;
 
-		public ExportPNGAction() {
+		private IDrawingProvider drawingProvider;
+
+		public ExportPNGAction(IDrawingProvider drawingProvider) {
 			super();
+			this.drawingProvider = drawingProvider;
 			putValue(AbstractAction.NAME, "Export to PNG");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Image.getIcon());
 		}
@@ -225,7 +241,7 @@ public class FileManager implements IPlugIn {
 			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PNG.getFilter(),
 					null, FileFilterEnum.PNG.getExtensions()[0], null);
 			if (file != null) {
-				DrawingExporter.getInstance().exportPNG(drawingProvider, file);
+				DrawingExporter.getInstance().exportPNG(this.drawingProvider, file);
 			}
 		}
 	}
@@ -234,15 +250,18 @@ public class FileManager implements IPlugIn {
 
 		private static final long serialVersionUID = 1L;
 
-		public PrintAction() {
+		private IDrawingProvider drawingProvider;
+
+		public PrintAction(IDrawingProvider drawingProvider) {
 			super();
+			this.drawingProvider = drawingProvider;
 			putValue(AbstractAction.NAME, "Print...");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Print.getIcon());
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			DrawingExporter.getInstance().print(drawingProvider);
+			DrawingExporter.getInstance().print(this.drawingProvider);
 		}
 	}
 

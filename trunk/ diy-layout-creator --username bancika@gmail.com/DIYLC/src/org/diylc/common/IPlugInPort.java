@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 import javax.swing.JPopupMenu.Separator;
@@ -123,7 +124,18 @@ public interface IPlugInPort {
 	 * @param menuName
 	 *            name of the menu to insert into
 	 */
-	public void injectMenuAction(Action action, String menuName);
+	void injectMenuAction(Action action, String menuName);
+
+	/**
+	 * Injects a custom submenu into application's main menu. If
+	 * <code>action</code> is set to null {@link Separator} will be added. If
+	 * the specified menu does not exist it will be automatically created.
+	 * 
+	 * @param name
+	 * @param icon
+	 * @param parentMenuName
+	 */
+	void injectSubmenu(String name, Icon icon, String parentMenuName);
 
 	/**
 	 * Returns current zoom level where <code>zoomLevel = 1.0d</code> means
