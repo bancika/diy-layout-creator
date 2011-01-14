@@ -33,7 +33,7 @@ public class HelpManager implements IPlugIn {
 
 		plugInPort.injectMenuAction(new NavigateURLAction("User Manual", IconLoader.Manual
 				.getIcon(), "http://code.google.com/p/diy-layout-creator/wiki/Manual"), HELP_TITLE);
-		plugInPort.injectMenuAction(new NavigateURLAction("FAW", IconLoader.Faq.getIcon(),
+		plugInPort.injectMenuAction(new NavigateURLAction("FAQ", IconLoader.Faq.getIcon(),
 				"http://code.google.com/p/diy-layout-creator/wiki/FAQ"), HELP_TITLE);
 		plugInPort.injectMenuAction(new NavigateURLAction("Component API", IconLoader.Component
 				.getIcon(), "http://code.google.com/p/diy-layout-creator/wiki/ComponentAPI"),
