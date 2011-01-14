@@ -37,6 +37,11 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
 	public void setUnit(T multiplier) {
 		this.unit = multiplier;
 	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 
 	@Override
 	public int hashCode() {

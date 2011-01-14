@@ -32,10 +32,14 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 	}
 
 	@Override
-	@EditableProperty(name = "Color")
-	public Color getLeadColor(ComponentState componentState) {
+	protected Color getLeadColor(ComponentState componentState) {
 		return componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : leadColor;
+	}
+
+	@EditableProperty(name = "Color")
+	public Color getLeadColor() {
+		return leadColor;
 	}
 
 	public void setLeadColor(Color leadColor) {
