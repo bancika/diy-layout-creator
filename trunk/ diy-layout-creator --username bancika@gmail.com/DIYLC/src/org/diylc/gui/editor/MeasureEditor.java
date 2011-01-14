@@ -30,7 +30,12 @@ public class MeasureEditor extends Container {
 
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
-						measure.setValue((Double) evt.getNewValue());
+						try {
+							AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) measure.clone();
+							newMeasure.setValue((Double) evt.getNewValue());
+							property.setValue(newMeasure);
+						} catch (CloneNotSupportedException ex) {
+						}
 					}
 				});
 		add(valueField, BorderLayout.CENTER);
@@ -42,7 +47,12 @@ public class MeasureEditor extends Container {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					measure.setUnit((Enum) unitBox.getSelectedItem());
+					try {
+						AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) measure.clone();
+						measure.setUnit((Enum) unitBox.getSelectedItem());
+						property.setValue(newMeasure);
+					} catch (CloneNotSupportedException ex) {
+					}
 				}
 			});
 			add(unitBox, BorderLayout.EAST);

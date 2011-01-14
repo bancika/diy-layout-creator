@@ -973,7 +973,13 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public List<PropertyWrapper> getMutualSelectionProperties() {
-		return ComponentProcessor.getInstance().getMutualSelectionProperties(selectedComponents);
+		try {
+			return ComponentProcessor.getInstance()
+					.getMutualSelectionProperties(selectedComponents);
+		} catch (Exception e) {
+			LOG.error("Could not get mutual selection properties", e);
+			return null;
+		}
 	}
 
 	@Override
