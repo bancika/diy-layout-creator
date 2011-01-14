@@ -24,6 +24,13 @@ public class HelpManager implements IPlugIn {
 
 	private static final String HELP_TITLE = "Help";
 
+	public static String MANUAL_URL = "http://code.google.com/p/diy-layout-creator/wiki/Manual";
+	public static String FAQ_URL = "http://code.google.com/p/diy-layout-creator/wiki/FAQ";
+	public static String COMPONENT_URL = "http://code.google.com/p/diy-layout-creator/wiki/ComponentAPI";
+	public static String PLUGIN_URL = "http://code.google.com/p/diy-layout-creator/wiki/PluginAPI";
+	public static String BUG_URL = "http://code.google.com/p/diy-layout-creator/issues/entry";
+	public static String DONATE_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=25161";
+
 	private IPlugInPort plugInPort;
 	private AboutDialog aboutDialog;
 
@@ -32,21 +39,18 @@ public class HelpManager implements IPlugIn {
 		this.plugInPort = plugInPort;
 
 		plugInPort.injectMenuAction(new NavigateURLAction("User Manual", IconLoader.Manual
-				.getIcon(), "http://code.google.com/p/diy-layout-creator/wiki/Manual"), HELP_TITLE);
-		plugInPort.injectMenuAction(new NavigateURLAction("FAQ", IconLoader.Faq.getIcon(),
-				"http://code.google.com/p/diy-layout-creator/wiki/FAQ"), HELP_TITLE);
+				.getIcon(), MANUAL_URL), HELP_TITLE);
+		plugInPort.injectMenuAction(
+				new NavigateURLAction("FAQ", IconLoader.Faq.getIcon(), FAQ_URL), HELP_TITLE);
 		plugInPort.injectMenuAction(new NavigateURLAction("Component API", IconLoader.Component
-				.getIcon(), "http://code.google.com/p/diy-layout-creator/wiki/ComponentAPI"),
-				HELP_TITLE);
+				.getIcon(), COMPONENT_URL), HELP_TITLE);
 		plugInPort.injectMenuAction(new NavigateURLAction("Plugin API",
-				IconLoader.Plugin.getIcon(),
-				"http://code.google.com/p/diy-layout-creator/wiki/PluginAPI"), HELP_TITLE);
+				IconLoader.Plugin.getIcon(), PLUGIN_URL), HELP_TITLE);
 		plugInPort.injectMenuAction(new NavigateURLAction("Submit a Bug", IconLoader.Bug.getIcon(),
-				"http://code.google.com/p/diy-layout-creator/issues/entry"), HELP_TITLE);
+				BUG_URL), HELP_TITLE);
 		plugInPort.injectMenuAction(null, HELP_TITLE);
 		plugInPort.injectMenuAction(new NavigateURLAction("Donate", IconLoader.Donate.getIcon(),
-				"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=25161"),
-				HELP_TITLE);
+				BUG_URL), HELP_TITLE);
 		plugInPort.injectMenuAction(new AboutAction(), HELP_TITLE);
 	}
 
