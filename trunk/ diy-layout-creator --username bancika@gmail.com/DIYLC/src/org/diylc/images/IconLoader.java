@@ -21,7 +21,7 @@ public enum IconLoader {
 			"csv.png"), HTML("html.png"), Image("image.png"), Cut("cut.png"), Copy("copy.png"), Paste(
 			"paste.png"), Selection("selection.png"), BOM("bom.png"), BlackBoard("blackboard.png"), IdCard(
 			"id_card.png"), IdCardAdd("id_card_add.png"), Chest("chest.png"), Upload("upload.png"), Wrench(
-			"wrench.png"), Group("group.png"), Ungroup("ungroup.png");
+			"wrench.png"), Group("group.png"), Ungroup("ungroup.png"), TraceMask("trace_mask.png");
 
 	protected String name;
 

@@ -190,6 +190,7 @@ public class MainFrame extends JFrame implements IView {
 	public void addSubmenu(String name, Icon icon, String parentMenuName) {
 		JMenu menu = findOrCreateMenu(parentMenuName);
 		JMenu submenu = new JMenu(name);
+		submenu.setIcon(icon);
 		menu.add(submenu);
 		menuMap.put(name, submenu);
 	}
