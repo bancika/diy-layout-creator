@@ -77,11 +77,12 @@ May be applied only to classes that implement `IDIYComponent` interface. Contain
   * *instanceNamePrefix*: prefix that will be used to generate component instance names, e.g. "R" for resistors or "Q" for transistors. Application will append the index automatically to form component instance names, such as "Q1". Do not leave it blank or null because components instances will be named "1", "2", etc. Not something we want.
   * *zOrder*: Z-order of the component, lower number meaning that component will be shown in the back. `IDIYComponent` lists major layers, but you can use any double number. Sometimes it's useful to add a small offset to an existing zOrder. For instance, solder pads and copper traces belong to the same layer but pads should be always rendered above traces to show the hole correctly. That's why it's zOrder is increased for 0.1.
   * *stretchable*: when false, moving one control point will cause all the others to move together with it, default is `true`.
+  * *sticky*: when true, component's control points may stick to other control points, default is `false`.
 
 Sample usage:
 {{{
 @ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "R",
-                     description = "Resistor layout symbol", zOrder = IDIYComponent.COMPONENT)
+                     description = "Resistor layout symbol", zOrder = IDIYComponent.COMPONENT, sticky = true)
 public class Resistor extends AbstractLeadedComponent<Resistance> {
 }}}
 
