@@ -273,7 +273,7 @@ public interface IPlugInPort {
 	 * 
 	 * @param components
 	 */
-	void addComponents(List<IDIYComponent<?>> components);
+	void pasteComponents(List<IDIYComponent<?>> components);
 
 	/**
 	 * Deletes all the selected components from the project.
