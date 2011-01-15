@@ -289,7 +289,17 @@ public interface IPlugInPort {
 	 * @param value
 	 *            new default value, must not be null
 	 */
-	void setDefaultPropertyValue(String propertyName, Object value);
+	void setSelectionDefaultPropertyValue(String propertyName, Object value);
+	
+	/**
+	 * Sets default value for the specified property name for projects.
+	 * 
+	 * @param propertyName
+	 *            display name for property
+	 * @param value
+	 *            new default value, must not be null
+	 */
+	void setProjectDefaultPropertyValue(String propertyName, Object value);
 
 	/**
 	 * @return a list of properties that are mutual for all the selected

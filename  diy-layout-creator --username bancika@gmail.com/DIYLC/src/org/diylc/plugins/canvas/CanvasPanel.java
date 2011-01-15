@@ -198,7 +198,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 								// Save default values.
 								for (PropertyWrapper property : editor.getDefaultedProperties()) {
 									if (property.getValue() != null) {
-										plugInPort.setDefaultPropertyValue(property.getName(),
+										plugInPort.setProjectDefaultPropertyValue(property.getName(),
 												property.getValue());
 									}
 								}
@@ -217,7 +217,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 								// Save default values.
 								for (PropertyWrapper property : editor.getDefaultedProperties()) {
 									if (property.getValue() != null) {
-										plugInPort.setDefaultPropertyValue(property.getName(),
+										plugInPort.setSelectionDefaultPropertyValue(property.getName(),
 												property.getValue());
 									}
 								}

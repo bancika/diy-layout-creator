@@ -1,27 +1,8 @@
 <map>
   <entry>
-    <string>default.org.diylc.components.passive.Resistor:Value</string>
-    <org.diylc.core.measures.Resistance>
-      <value>100.0</value>
-      <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
-    </org.diylc.core.measures.Resistance>
-  </entry>
-  <entry>
-    <string>metric</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
-  </entry>
-  <entry>
-    <string>default.org.diylc.components.semiconductors.DIL_IC:Value</string>
-    <string>LM366</string>
-  </entry>
-  <entry>
-    <string>default.org.diylc.components.passive.AxialFilmCapacitor:Width</string>
+    <string>default.org.diylc.core.Project:Grid spacing</string>
     <org.diylc.core.measures.Size>
-      <value>0.7</value>
+      <value>0.2</value>
       <unit class="org.diylc.core.measures.SizeUnit">in</unit>
     </org.diylc.core.measures.Size>
   </entry>

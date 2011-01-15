@@ -829,14 +829,22 @@ public class Presenter implements IPlugInPort {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setDefaultPropertyValue(String propertyName, Object value) {
-		LOG.info(String.format("setDefaultPropertyValue(%s, %s)", propertyName, value));
+	public void setSelectionDefaultPropertyValue(String propertyName, Object value) {
+		LOG.info(String.format("setSelectionDefaultPropertyValue(%s, %s)", propertyName, value));
 		for (IDIYComponent component : selectedComponents) {
 			String className = component.getClass().getName();
 			LOG.debug("Default property value set for " + className + ":" + propertyName);
 			ConfigurationManager.getInstance().setConfigurationItem(
 					DEFAULTS_KEY + className + ":" + propertyName, value);
 		}
+	}
+
+	@Override
+	public void setProjectDefaultPropertyValue(String propertyName, Object value) {
+		LOG.info(String.format("setProjectDefaultPropertyValue(%s, %s)", propertyName, value));
+		LOG.debug("Default property value set for " + Project.class.getName() + ":" + propertyName);
+		ConfigurationManager.getInstance().setConfigurationItem(
+				DEFAULTS_KEY + Project.class.getName() + ":" + propertyName, value);
 	}
 
 	@Override
@@ -1104,7 +1112,8 @@ public class Presenter implements IPlugInPort {
 			}
 		} catch (Exception e) {
 			LOG.error("Could not apply selection properties", e);
-			view.showMessage("Could not apply changes to the selection. Check the log for details.",
+			view.showMessage(
+					"Could not apply changes to the selection. Check the log for details.",
 					"Error", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			// Notify the listeners.

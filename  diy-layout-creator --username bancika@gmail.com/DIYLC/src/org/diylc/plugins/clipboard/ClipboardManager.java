@@ -264,7 +264,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 			// Save default values.
 			for (PropertyWrapper property : editor.getDefaultedProperties()) {
 				if (property.getValue() != null) {
-					plugInPort.setDefaultPropertyValue(property.getName(), property.getValue());
+					plugInPort.setProjectDefaultPropertyValue(property.getName(), property.getValue());
 				}
 			}
 		}
@@ -299,7 +299,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 			// Save default values.
 			for (PropertyWrapper property : editor.getDefaultedProperties()) {
 				if (property.getValue() != null) {
-					plugInPort.setDefaultPropertyValue(property.getName(), property.getValue());
+					plugInPort.setSelectionDefaultPropertyValue(property.getName(), property.getValue());
 				}
 			}
 		}
