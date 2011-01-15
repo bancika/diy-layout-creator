@@ -48,11 +48,8 @@ public class CanvasPlugin implements IPlugIn {
 			scrollPane = new RulerScrollPane(canvasPanel, new ProjectDrawingProvider(plugInPort),
 					new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in)
 							.convertToPixels());
-			Boolean metric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
-					Presenter.METRIC_KEY);
-			if (metric == null) {
-				metric = true;
-			}
+			boolean metric = ConfigurationManager.getInstance().readBoolean(
+					Presenter.METRIC_KEY, true);
 			scrollPane.setMetric(metric);
 			scrollPane.addUnitListener(new IRulerListener() {
 

@@ -50,7 +50,7 @@ public class DialogFactory {
 	public void initialize(JFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		String lastDirectoryPath = (String) ConfigurationManager.getInstance()
-				.getConfigurationItem(PATH_KEY);
+				.readString(PATH_KEY, null);
 		if (lastDirectoryPath != null) {
 			lastDirectory = new File(lastDirectoryPath);
 		}
@@ -111,7 +111,7 @@ public class DialogFactory {
 		fileChooser.setAccessory(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			lastDirectory = fileChooser.getCurrentDirectory();
-			ConfigurationManager.getInstance().setConfigurationItem(PATH_KEY,
+			ConfigurationManager.getInstance().writeValue(PATH_KEY,
 					lastDirectory.getAbsolutePath());
 			if (fileChooser.getSelectedFile().getAbsolutePath().contains(".")) {
 				return fileChooser.getSelectedFile();
