@@ -62,6 +62,7 @@ class G2DWrapper extends Graphics2D {
 	private Font originalFont;
 	private AffineTransform currentTx;
 	private Area currentArea;
+	private Shape lastFilledShape;
 
 	/**
 	 * Creates a wrapper around specified {@link Graphics2D} object.
@@ -87,6 +88,7 @@ class G2DWrapper extends Graphics2D {
 		originalComposite = canvasGraphics.getComposite();
 		originalFont = canvasGraphics.getFont();
 		currentTx = new AffineTransform();
+		lastFilledShape = null;
 	}
 
 	/**
@@ -117,6 +119,7 @@ class G2DWrapper extends Graphics2D {
 		Area area = new Area(s);
 		area.transform(currentTx);
 		currentArea.add(area);
+		lastFilledShape = s;
 	}
 
 	/**
@@ -125,7 +128,8 @@ class G2DWrapper extends Graphics2D {
 	 * @param s
 	 */
 	private void appendShapeOutline(Shape s) {
-		if (!drawingComponent) {
+		// Do not add shape outline if the same shape has been filled recently.
+		if (!drawingComponent || s.equals(lastFilledShape)) {
 			return;
 		}
 		PathIterator pathIterator = s.getPathIterator(null);
