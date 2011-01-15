@@ -796,16 +796,24 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void addComponents(List<IDIYComponent<?>> components) {
+	public void pasteComponents(List<IDIYComponent<?>> components) {
 		LOG.info(String.format("addComponents(%s)", components));
 		Project oldProject = cloner.deepClone(currentProject);
 		for (IDIYComponent<?> component : components) {
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				Point point = component.getControlPoint(i);
+				point.translate(currentProject.getGridSpacing().convertToPixels(), currentProject
+						.getGridSpacing().convertToPixels());
+			}
 			addComponent(component, componentTypeMap.get(component.getClass().getName()));
 		}
+		selectedComponents.clear();
+		selectedComponents.addAll(components);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
 		this.modified = true;
 		fireFileStatusChanged();
+		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 

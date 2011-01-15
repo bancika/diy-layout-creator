@@ -175,7 +175,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 			try {
 				List<IDIYComponent<?>> components = (List<IDIYComponent<?>>) clipboard
 						.getData(ComponentSelection.listFlavor);
-				plugInPort.addComponents(cloner.deepClone(components));
+				plugInPort.pasteComponents(cloner.deepClone(components));
 			} catch (Exception ex) {
 				LOG.error("Coule not paste.", ex);
 			}
