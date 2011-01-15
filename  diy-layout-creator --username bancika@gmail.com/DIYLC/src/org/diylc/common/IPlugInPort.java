@@ -73,6 +73,18 @@ public interface IPlugInPort {
 	 * @param freshStart
 	 */
 	void loadProject(Project project, boolean freshStart);
+	
+	void createNewProject();
+	
+	void loadProjectFromFile(String fileName);
+	
+	void saveProjectToFile(String fileName);
+	
+	String getCurrentFileName();
+	
+	boolean isProjectModified();
+	
+	boolean allowFileAction();
 
 	/**
 	 * Returns all available {@link ComponentType}s classified by category.

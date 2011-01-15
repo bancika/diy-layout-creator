@@ -27,6 +27,12 @@ public enum EventType {
 	 */
 	PROJECT_LOADED,
 	/**
+	 * Called when either current file name or modified flag are changed. The
+	 * first parameter is the current file name, the second one is a boolean
+	 * modified flag.
+	 */
+	FILE_STATUS_CHANGED,
+	/**
 	 * Called when selection rectangle is changed. Object of type
 	 * {@link Rectangle} is the only parameter and it contains the new selection
 	 * rectangle.

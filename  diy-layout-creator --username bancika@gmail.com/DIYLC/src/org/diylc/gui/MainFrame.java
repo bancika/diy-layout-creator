@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +18,15 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import org.diylc.common.BadPositionException;
-import org.diylc.core.Project;
+import org.diylc.common.EventType;
+import org.diylc.common.IPlugIn;
+import org.diylc.common.IPlugInPort;
 import org.diylc.plugins.canvas.CanvasPlugin;
 import org.diylc.plugins.clipboard.ClipboardManager;
 import org.diylc.plugins.file.FileManager;
@@ -50,15 +54,13 @@ public class MainFrame extends JFrame implements IView {
 
 	public MainFrame() {
 		super("DIYLC 3");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 600));
 		createBasePanels();
 		menuMap = new HashMap<String, JMenu>();
 		DialogFactory.getInstance().initialize(this);
 
 		this.presenter = new Presenter(this);
-
-		setTitle(getTitle() + " v." + presenter.getCurrentVersionNumber());
 
 		presenter.installPlugin(new ToolBox());
 		presenter.installPlugin(new FileManager());
@@ -69,21 +71,28 @@ public class MainFrame extends JFrame implements IView {
 		presenter.installPlugin(new StatusBar());
 		canvasPlugin = new CanvasPlugin();
 		presenter.installPlugin(canvasPlugin);
+		presenter.installPlugin(new FramePlugin());
 
-		Project project = new Project();
-		// project.getComponents().add(new MockDIYComponent());
-		presenter.loadProject(project, true);
+		presenter.createNewProject();
 
 		addWindowListener(new WindowAdapter() {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				presenter.dispose();
+				if (presenter.allowFileAction()) {
+					dispose();
+					presenter.dispose();
+					System.exit(0);
+				}
 			}
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				presenter.dispose();
+				if (presenter.allowFileAction()) {
+					dispose();
+					presenter.dispose();
+					System.exit(0);
+				}
 			}
 		});
 
@@ -185,7 +194,7 @@ public class MainFrame extends JFrame implements IView {
 			menu.add(action);
 		}
 	}
-	
+
 	@Override
 	public void addSubmenu(String name, Icon icon, String parentMenuName) {
 		JMenu menu = findOrCreateMenu(parentMenuName);
@@ -194,7 +203,17 @@ public class MainFrame extends JFrame implements IView {
 		menu.add(submenu);
 		menuMap.put(name, submenu);
 	}
-	
+
+	@Override
+	public void showMessage(String message, String title, int messageType) {
+		JOptionPane.showMessageDialog(this, message, title, messageType);
+	}
+
+	@Override
+	public int showConfirmDialog(String message, String title, int optionType, int messageType) {
+		return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
+	}
+
 	private JMenu findOrCreateMenu(String menuName) {
 		JMenu menu;
 		if (menuMap.containsKey(menuName)) {
@@ -205,5 +224,32 @@ public class MainFrame extends JFrame implements IView {
 			getMainMenuBar().add(menu);
 		}
 		return menu;
+	}
+
+	class FramePlugin implements IPlugIn {
+
+		private IPlugInPort plugInPort;
+
+		@Override
+		public void connect(IPlugInPort plugInPort) {
+			this.plugInPort = plugInPort;
+		}
+
+		@Override
+		public EnumSet<EventType> getSubscribedEventTypes() {
+			return EnumSet.of(EventType.FILE_STATUS_CHANGED);
+		}
+
+		@Override
+		public void processMessage(EventType eventType, Object... params) {
+			if (eventType == EventType.FILE_STATUS_CHANGED) {
+				String fileName = plugInPort.getCurrentFileName() == null ? "Untitled" : plugInPort
+						.getCurrentFileName();
+				String modified = plugInPort.isProjectModified() ? " (modified)" : "";
+				setTitle(String.format("DIYLC 3.%s - %s %s", plugInPort.getCurrentVersionNumber(),
+						fileName, modified));
+			}
+		}
+
 	}
 }
