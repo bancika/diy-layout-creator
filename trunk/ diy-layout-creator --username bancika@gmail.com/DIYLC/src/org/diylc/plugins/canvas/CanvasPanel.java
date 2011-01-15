@@ -166,8 +166,9 @@ class CanvasPanel extends JComponent implements Autoscroll {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					plugInPort.deleteSelectedComponents();
 				}
-//				plugInPort.mouseMoved(getMousePosition(), e.isControlDown(), e.isShiftDown(), e
-//						.isAltDown());
+				// plugInPort.mouseMoved(getMousePosition(), e.isControlDown(),
+				// e.isShiftDown(), e
+				// .isAltDown());
 			}
 		});
 		addMouseMotionListener(new MouseAdapter() {
@@ -187,26 +188,31 @@ class CanvasPanel extends JComponent implements Autoscroll {
 					if (e.getClickCount() == 2) {
 						List<PropertyWrapper> properties = plugInPort
 								.getMutualSelectionProperties();
-						if (properties != null) {
-							if (properties.isEmpty()) {
-
-							} else {
-								PropertyEditorDialog editor = DialogFactory.getInstance()
-										.createPropertyEditorDialog(properties);
-								editor.setVisible(true);
-								if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
-									try {
-										plugInPort.applyPropertiesToSelection(properties);
-									} catch (Exception e1) {
-										// TODO Auto-generated catch block
-										e1.printStackTrace();
-									}
-									for (PropertyWrapper property : editor.getDefaultedProperties()) {
-										if (property.getValue() != null) {
-											plugInPort.setDefaultPropertyValue(property.getName(),
-													property.getValue());
-										}
-									}
+						if (properties == null || properties.isEmpty()) {
+							properties = plugInPort.getProjectProperties();
+							PropertyEditorDialog editor = DialogFactory.getInstance()
+									.createPropertyEditorDialog(properties, "Edit Project");
+							editor.setVisible(true);
+							if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
+								plugInPort.applyPropertiesToProject(properties);
+							}
+						} else {
+							PropertyEditorDialog editor = DialogFactory.getInstance()
+									.createPropertyEditorDialog(properties, "Edit Selection");
+							editor.setVisible(true);
+							if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
+								try {
+									plugInPort.applyPropertiesToSelection(properties);
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+							// Save default values.
+							for (PropertyWrapper property : editor.getDefaultedProperties()) {
+								if (property.getValue() != null) {
+									plugInPort.setDefaultPropertyValue(property.getName(), property
+											.getValue());
 								}
 							}
 						}
