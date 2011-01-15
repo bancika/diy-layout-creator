@@ -820,10 +820,12 @@ public class Presenter implements IPlugInPort {
 		// Remove selected components from any groups.
 		ungroupComponents(selectedComponents);
 		currentProject.getComponents().removeAll(selectedComponents);
+		this.selectedComponents.clear();
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Delete");
 		this.modified = true;
 		fireFileStatusChanged();
+		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
