@@ -10,6 +10,11 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +29,7 @@ import java.util.Set;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.BadPositionException;
@@ -48,6 +54,8 @@ import com.diyfever.gui.miscutils.Utils;
 import com.diyfever.gui.simplemq.MessageDispatcher;
 import com.diyfever.gui.update.VersionNumber;
 import com.rits.cloning.Cloner;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * The main presenter class, contains core app logic and drawing routines.
@@ -70,6 +78,8 @@ public class Presenter implements IPlugInPort {
 	private double zoomLevel = 1;
 	private Map<IDIYComponent<?>, Area> componentAreaMap;
 	private Project currentProject;
+	private String currentFileName = null;
+	private boolean modified = false;
 	private Map<String, List<ComponentType>> componentTypes;
 	// Maps component class names to ComponentType objects.
 	private Map<String, ComponentType> componentTypeMap;
@@ -80,7 +90,9 @@ public class Presenter implements IPlugInPort {
 	// that designate which of their control points are being dragged.
 	private Map<IDIYComponent<?>, Set<Integer>> controlPointMap;
 
+	// Utilities
 	private Cloner cloner;
+	private XStream xStream = new XStream(new DomDriver());
 
 	private Rectangle selectionRect;
 
@@ -185,6 +197,82 @@ public class Presenter implements IPlugInPort {
 		selectedComponents.clear();
 		messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
+	}
+
+	@Override
+	public void createNewProject() {
+		LOG.info("createNewFile()");
+		try {
+			Project project = new Project();
+			setDefaultProperties(project);
+			loadProject(project, true);
+			this.currentFileName = null;
+			this.modified = false;
+			fireFileStatusChanged();
+		} catch (Exception e) {
+			LOG.error("Could not create new file", e);
+		}
+	}
+
+	@Override
+	public void loadProjectFromFile(String fileName) {
+		LOG.info(String.format("loadProjectFromFile(%s)", fileName));
+		try {
+			FileInputStream fis = new FileInputStream(fileName);
+			Project project = (Project) xStream.fromXML(fis);
+			loadProject(project, true);
+			fis.close();
+			this.currentFileName = fileName;
+			this.modified = false;
+			fireFileStatusChanged();
+		} catch (FileNotFoundException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public boolean allowFileAction() {
+		if (this.modified) {
+			int response = view.showConfirmDialog(
+					"There are unsaved changes. Are you sure you want to abandon these changes?",
+					"Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			return response == JOptionPane.YES_OPTION;
+		}
+		return true;
+	}
+
+	@Override
+	public void saveProjectToFile(String fileName) {
+		LOG.info(String.format("saveProjectToFile(%s)", fileName));
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(fileName);
+			xStream.toXML(currentProject, fos);
+			fos.close();
+			this.currentFileName = fileName;
+			this.modified = false;
+			fireFileStatusChanged();
+		} catch (FileNotFoundException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public String getCurrentFileName() {
+		return this.currentFileName;
+	}
+
+	@Override
+	public boolean isProjectModified() {
+		return this.modified;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -699,6 +787,7 @@ public class Presenter implements IPlugInPort {
 		if (!preDragProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, cloner
 					.deepClone(currentProject), "Move");
+			fireFileStatusChanged();
 		}
 		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -714,18 +803,26 @@ public class Presenter implements IPlugInPort {
 		}
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
+		this.modified = true;
+		fireFileStatusChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
 	@Override
 	public void deleteSelectedComponents() {
 		LOG.debug("deleteSelectedComponents()");
+		if (selectedComponents.isEmpty()) {
+			LOG.debug("Nothing to delete");
+			return;
+		}
 		Project oldProject = cloner.deepClone(currentProject);
 		// Remove selected components from any groups.
 		ungroupComponents(selectedComponents);
 		currentProject.getComponents().removeAll(selectedComponents);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Delete");
+		this.modified = true;
+		fireFileStatusChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
@@ -787,6 +884,8 @@ public class Presenter implements IPlugInPort {
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Group");
+			this.modified = true;
+			fireFileStatusChanged();
 		}
 	}
 
@@ -800,6 +899,8 @@ public class Presenter implements IPlugInPort {
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Group");
+			this.modified = true;
+			fireFileStatusChanged();
 		}
 	}
 
@@ -817,6 +918,11 @@ public class Presenter implements IPlugInPort {
 				controlPointMap.keySet());
 		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 				calculateSelectionDimension());
+	}
+
+	private void fireFileStatusChanged() {
+		messageDispatcher.dispatchMessage(EventType.FILE_STATUS_CHANGED, this.currentFileName,
+				this.modified);
 	}
 
 	/**
@@ -956,24 +1062,14 @@ public class Presenter implements IPlugInPort {
 			}
 		}
 
-		// Extract properties.
-		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
-				componentType.getInstanceClass());
-		// Override with default values if available.
-		for (PropertyWrapper property : properties) {
-			Object defaultValue = ConfigurationManager.getInstance().getConfigurationItem(
-					DEFAULTS_KEY + componentType.getInstanceClass().getName() + ":"
-							+ property.getName());
-			if (defaultValue != null) {
-				property.setValue(cloner.deepClone(defaultValue));
-				property.writeTo(component);
-			}
-		}
+		setDefaultProperties(component);
 
 		// Notify the listeners.
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Add " + componentType.getName());
+			this.modified = true;
+			fireFileStatusChanged();
 		}
 
 		fireSelectionChanged();
@@ -982,6 +1078,32 @@ public class Presenter implements IPlugInPort {
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 		// calculateSelectionDimension());
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
+	}
+
+	/**
+	 * Finds any properties that have default values and injects default values.
+	 * Typically it should be used for {@link IDIYComponent} and {@link Project}
+	 * objects.
+	 * 
+	 * @param object
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	private void setDefaultProperties(Object object) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
+		// Extract properties.
+		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
+				object.getClass());
+		// Override with default values if available.
+		for (PropertyWrapper property : properties) {
+			Object defaultValue = ConfigurationManager.getInstance().getConfigurationItem(
+					DEFAULTS_KEY + object.getClass().getName() + ":" + property.getName());
+			if (defaultValue != null) {
+				property.setValue(cloner.deepClone(defaultValue));
+				property.writeTo(object);
+			}
+		}
 	}
 
 	@Override
@@ -1012,6 +1134,8 @@ public class Presenter implements IPlugInPort {
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Edit Selection");
+				this.modified = true;
+				fireFileStatusChanged();
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
@@ -1049,6 +1173,8 @@ public class Presenter implements IPlugInPort {
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Edit Project");
+				this.modified = true;
+				fireFileStatusChanged();
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 			messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);

@@ -60,9 +60,19 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 			@Override
 			public void addMenuAction(Action action, String menuName) {
 			}
-			
+
 			@Override
 			public void addSubmenu(String name, Icon icon, String parentMenuName) {
+			}
+
+			@Override
+			public int showConfirmDialog(String message, String title, int optionType,
+					int messageType) {
+				return 0;
+			}
+
+			@Override
+			public void showMessage(String message, String title, int messageType) {
 			}
 		});
 		xStream = new XStream(new DomDriver());
@@ -137,12 +147,12 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 				zoomRatio = rect.getHeight() / d.getHeight();
 			}
 			// d.setSize(d.getWidth() * zoomRatio, d.getHeight() * zoomRatio);
-//			int x = (int) (rect.getWidth() - d.getWidth() * zoomRatio) / 2;
-//			int y = (int) (rect.getHeight() - d.getHeight() * zoomRatio) / 2;
+			// int x = (int) (rect.getWidth() - d.getWidth() * zoomRatio) / 2;
+			// int y = (int) (rect.getHeight() - d.getHeight() * zoomRatio) / 2;
 
 			// System.out.println(x + "," + y);
 
-//			g2d.translate(x, y);
+			// g2d.translate(x, y);
 			g2d.scale(zoomRatio, zoomRatio);
 			presenter.draw(g2d, EnumSet.noneOf(DrawOption.class), null);
 

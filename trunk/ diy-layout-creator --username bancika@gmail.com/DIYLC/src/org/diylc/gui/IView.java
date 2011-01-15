@@ -47,4 +47,8 @@ public interface IView {
 	 * @param parentMenuName
 	 */
 	void addSubmenu(String name, Icon icon, String parentMenuName);
+
+	void showMessage(String message, String title, int messageType);
+
+	int showConfirmDialog(String message, String title, int optionType, int messageType);
 }

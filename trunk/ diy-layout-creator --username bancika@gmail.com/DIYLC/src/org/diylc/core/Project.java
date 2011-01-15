@@ -45,8 +45,8 @@ public class Project implements Serializable {
 		gridSpacing = DEFAULT_GRID_SPACING;
 	}
 
-	public Project(String title, String author, String description, Size width, Size height, Size gridSpacing,
-			List<IDIYComponent<?>> components, Set<Set<IDIYComponent<?>>> groups) {
+	public Project(String title, String author, String description, Size width, Size height,
+			Size gridSpacing, List<IDIYComponent<?>> components, Set<Set<IDIYComponent<?>>> groups) {
 		super();
 		this.title = title;
 		this.author = author;
@@ -102,12 +102,12 @@ public class Project implements Serializable {
 	public void setHeight(Size height) {
 		this.height = height;
 	}
-	
-	@EditableProperty
+
+	@EditableProperty(name = "Grid spacing")
 	public Size getGridSpacing() {
 		return gridSpacing;
 	}
-	
+
 	public void setGridSpacing(Size gridSpacing) {
 		this.gridSpacing = gridSpacing;
 	}

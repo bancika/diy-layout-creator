@@ -2,7 +2,6 @@ package org.diylc.plugins.file;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.Project;
 import org.diylc.gui.DialogFactory;
 import org.diylc.images.IconLoader;
 
@@ -79,8 +77,10 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			LOG.info("Creating blank project.");
-			plugInPort.loadProject(new Project(), true);
+			if (!plugInPort.allowFileAction()) {
+				return;
+			}
+			plugInPort.createNewProject();
 		}
 	}
 
@@ -96,23 +96,13 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if (!plugInPort.allowFileAction()) {
+				return;
+			}
 			File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(),
 					null, FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
 			if (file != null) {
-				LOG.info("Loading project from file.");
-				FileInputStream fis;
-				try {
-					fis = new FileInputStream(file);
-					Project project = (Project) xStream.fromXML(fis);
-					plugInPort.loadProject(project, true);
-					fis.close();
-				} catch (FileNotFoundException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
-				} catch (IOException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
-				}
+				plugInPort.loadProjectFromFile(file.getAbsolutePath());
 			}
 		}
 	}
@@ -277,7 +267,9 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.exit(0);
+			if (plugInPort.allowFileAction()) {
+				System.exit(0);
+			}
 		}
 	}
 
