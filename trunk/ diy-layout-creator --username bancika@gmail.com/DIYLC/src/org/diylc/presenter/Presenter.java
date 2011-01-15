@@ -836,7 +836,7 @@ public class Presenter implements IPlugInPort {
 		for (IDIYComponent component : selectedComponents) {
 			String className = component.getClass().getName();
 			LOG.debug("Default property value set for " + className + ":" + propertyName);
-			ConfigurationManager.getInstance().setConfigurationItem(
+			ConfigurationManager.getInstance().writeValue(
 					DEFAULTS_KEY + className + ":" + propertyName, value);
 		}
 	}
@@ -845,13 +845,13 @@ public class Presenter implements IPlugInPort {
 	public void setProjectDefaultPropertyValue(String propertyName, Object value) {
 		LOG.info(String.format("setProjectDefaultPropertyValue(%s, %s)", propertyName, value));
 		LOG.debug("Default property value set for " + Project.class.getName() + ":" + propertyName);
-		ConfigurationManager.getInstance().setConfigurationItem(
+		ConfigurationManager.getInstance().writeValue(
 				DEFAULTS_KEY + Project.class.getName() + ":" + propertyName, value);
 	}
 
 	@Override
 	public void setMetric(boolean isMetric) {
-		ConfigurationManager.getInstance().setConfigurationItem(Presenter.METRIC_KEY, isMetric);
+		ConfigurationManager.getInstance().writeValue(Presenter.METRIC_KEY, isMetric);
 		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 				calculateSelectionDimension());
 	}
@@ -957,11 +957,7 @@ public class Presenter implements IPlugInPort {
 		if (selectedComponents.isEmpty()) {
 			return null;
 		}
-		Boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
-				METRIC_KEY);
-		if (isMetric == null) {
-			isMetric = true;
-		}
+		boolean metric = ConfigurationManager.getInstance().readBoolean(METRIC_KEY, true);
 		Area area = new Area();
 		for (IDIYComponent<?> component : selectedComponents) {
 			Area componentArea = componentAreaMap.get(component);
@@ -973,7 +969,7 @@ public class Presenter implements IPlugInPort {
 		double height = area.getBounds2D().getHeight();
 		width /= Constants.PIXELS_PER_INCH;
 		height /= Constants.PIXELS_PER_INCH;
-		if (isMetric) {
+		if (metric) {
 			width *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
 			height *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
 		}
@@ -1082,8 +1078,8 @@ public class Presenter implements IPlugInPort {
 				object.getClass());
 		// Override with default values if available.
 		for (PropertyWrapper property : properties) {
-			Object defaultValue = ConfigurationManager.getInstance().getConfigurationItem(
-					DEFAULTS_KEY + object.getClass().getName() + ":" + property.getName());
+			Object defaultValue = ConfigurationManager.getInstance().readObject(
+					DEFAULTS_KEY + object.getClass().getName() + ":" + property.getName(), null);
 			if (defaultValue != null) {
 				property.setValue(cloner.deepClone(defaultValue));
 				property.writeTo(object);

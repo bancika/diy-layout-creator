@@ -207,17 +207,14 @@ public class StatusBar extends JPanel implements IPlugIn {
 			break;
 		case SELECTION_SIZE_CHANGED:
 			Point2D size = (Point2D) params[0];
-			Boolean isMetric = (Boolean) ConfigurationManager.getInstance().getConfigurationItem(
-					Presenter.METRIC_KEY);
-			if (isMetric == null) {
-				isMetric = true;
-			}
+			boolean metric = ConfigurationManager.getInstance().readBoolean(
+					Presenter.METRIC_KEY, true);
 			if (size == null) {
 				getSizeLabel().setText("N/A");
 			} else {
 				getSizeLabel().setText(
 						sizeFormat.format(size.getX()) + " x " + sizeFormat.format(size.getY())
-								+ (isMetric ? " cm" : " in"));
+								+ (metric ? " cm" : " in"));
 			}
 			break;
 		case SLOT_CHANGED:
