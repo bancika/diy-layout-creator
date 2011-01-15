@@ -1,9 +1,2 @@
 <map>
-  <entry>
-    <string>default.org.diylc.core.Project:Grid spacing</string>
-    <org.diylc.core.measures.Size>
-      <value>0.2</value>
-      <unit class="org.diylc.core.measures.SizeUnit">in</unit>
-    </org.diylc.core.measures.Size>
-  </entry>
 </map>
