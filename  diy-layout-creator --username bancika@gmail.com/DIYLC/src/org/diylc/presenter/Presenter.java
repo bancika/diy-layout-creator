@@ -664,7 +664,7 @@ public class Presenter implements IPlugInPort {
 	 */
 	private int roundToGrid(int x) {
 		int grid = currentProject.getGridSpacing().convertToPixels();
-		return (Math.round(x / grid) * grid);
+		return (Math.round(1f * x / grid) * grid);
 	}
 
 	@Override
