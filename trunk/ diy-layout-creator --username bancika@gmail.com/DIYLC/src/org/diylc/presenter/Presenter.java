@@ -1147,6 +1147,7 @@ public class Presenter implements IPlugInPort {
 			LOG.error("Could not get project properties", e);
 			return null;
 		}
+		Collections.sort(properties, ComparatorFactory.getInstance().getPropertyNameComparator());
 		return properties;
 	}
 
