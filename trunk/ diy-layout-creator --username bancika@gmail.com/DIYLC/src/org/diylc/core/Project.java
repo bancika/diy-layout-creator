@@ -58,7 +58,7 @@ public class Project implements Serializable {
 		this.groups = groups;
 	}
 
-	@EditableProperty
+	@EditableProperty(defaultable = false)
 	public String getTitle() {
 		return title;
 	}
@@ -76,7 +76,7 @@ public class Project implements Serializable {
 		this.author = author;
 	}
 
-	@EditableProperty
+	@EditableProperty(defaultable = false)
 	public String getDescription() {
 		return description;
 	}
