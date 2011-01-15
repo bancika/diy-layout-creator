@@ -32,11 +32,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	public static Color LABEL_COLOR = Color.black;
 	public static Color LABEL_COLOR_SELECTED = Color.red;
 	public static Size LEAD_THICKNESS = new Size(0.3d, SizeUnit.mm);
+	public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
 	protected Size width;
 	protected Size height;
-	protected Point[] points = new Point[] { new Point((int) (-Constants.GRID * 5), 0),
-			new Point((int) (Constants.GRID * 5), 0) };
+	protected Point[] points = new Point[] {
+			new Point((int) (-DEFAULT_SIZE.convertToPixels() / 2), 0),
+			new Point(DEFAULT_SIZE.convertToPixels() / 2, 0) };
 	protected Color bodyColor = getDefaultBodyColor();
 	protected Color borderColor = getDefaultBorderColor();
 
