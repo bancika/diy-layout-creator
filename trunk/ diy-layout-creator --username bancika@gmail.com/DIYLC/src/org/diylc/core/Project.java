@@ -24,12 +24,14 @@ public class Project implements Serializable {
 	public static String DEFAULT_TITLE = "New Project";
 	public static Size DEFAULT_WIDTH = new Size(29d, SizeUnit.cm);
 	public static Size DEFAULT_HEIGHT = new Size(21d, SizeUnit.cm);
+	public static Size DEFAULT_GRID_SPACING = new Size(0.2d, SizeUnit.in);
 
 	private String title;
 	private String author;
 	private String description;
 	private Size width;
 	private Size height;
+	private Size gridSpacing;
 	private List<IDIYComponent<?>> components;
 	private Set<Set<IDIYComponent<?>>> groups;
 
@@ -40,9 +42,10 @@ public class Project implements Serializable {
 		author = System.getProperty("user.name");
 		width = DEFAULT_WIDTH;
 		height = DEFAULT_HEIGHT;
+		gridSpacing = DEFAULT_GRID_SPACING;
 	}
 
-	public Project(String title, String author, String description, Size width, Size height,
+	public Project(String title, String author, String description, Size width, Size height, Size gridSpacing,
 			List<IDIYComponent<?>> components, Set<Set<IDIYComponent<?>>> groups) {
 		super();
 		this.title = title;
@@ -50,6 +53,7 @@ public class Project implements Serializable {
 		this.description = description;
 		this.width = width;
 		this.height = height;
+		this.gridSpacing = gridSpacing;
 		this.components = components;
 		this.groups = groups;
 	}
@@ -97,6 +101,15 @@ public class Project implements Serializable {
 
 	public void setHeight(Size height) {
 		this.height = height;
+	}
+	
+	@EditableProperty
+	public Size getGridSpacing() {
+		return gridSpacing;
+	}
+	
+	public void setGridSpacing(Size gridSpacing) {
+		this.gridSpacing = gridSpacing;
 	}
 
 	/**

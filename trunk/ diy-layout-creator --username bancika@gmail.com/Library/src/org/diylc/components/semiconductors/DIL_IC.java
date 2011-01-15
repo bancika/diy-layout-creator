@@ -41,13 +41,16 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
 	private PinCount pinCount = PinCount._8;
+	private Size pinSpacing = new Size(0.1d, SizeUnit.in);
 	private Size rowSpacing = new Size(0.3d, SizeUnit.in);
-	private Point[] controlPoints = new Point[] { new Point(0, 0),
-			new Point(0, (int) Constants.GRID), new Point(0, (int) (2 * Constants.GRID)),
-			new Point(0, (int) (3 * Constants.GRID)), new Point((int) (3 * Constants.GRID), 0),
-			new Point((int) (3 * Constants.GRID), (int) Constants.GRID),
-			new Point((int) (3 * Constants.GRID), (int) (2 * Constants.GRID)),
-			new Point((int) (3 * Constants.GRID), (int) (3 * Constants.GRID)) };
+	private Point[] controlPoints = new Point[] { new Point(0, 0) };
+//			new Point(0, pinSpacing.convertToPixels()),
+//			new Point(0, 2 * pinSpacing.convertToPixels()),
+//			new Point(0, 3 * pinSpacing.convertToPixels()),
+//			new Point(3 * pinSpacing.convertToPixels(), 0),
+//			new Point(3 * pinSpacing.convertToPixels(), pinSpacing.convertToPixels()),
+//			new Point(3 * pinSpacing.convertToPixels(), 2 * pinSpacing.convertToPixels()),
+//			new Point(3 * pinSpacing.convertToPixels(), 3 * pinSpacing.convertToPixels()) };
 	private Shape body;
 
 	public DIL_IC() {
@@ -85,6 +88,15 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		updateControlPoints();
 		// Reset body shape;
 		body = null;
+	}
+
+	@EditableProperty(name = "Pin spacing")
+	public Size getPinSpacing() {
+		return pinSpacing;
+	}
+
+	public void setPinSpacing(Size pinSpacing) {
+		this.pinSpacing = pinSpacing;
 	}
 
 	@EditableProperty(name = "Row spacing")
@@ -128,26 +140,26 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			switch (orientation) {
 			case DEFAULT:
 				dx1 = 0;
-				dy1 = (int) (i * Constants.GRID);
+				dy1 = i * pinSpacing.convertToPixels();
 				dx2 = rowSpacing.convertToPixels();
-				dy2 = (int) (i * Constants.GRID);
+				dy2 = i * pinSpacing.convertToPixels();
 				break;
 			case _90:
-				dx1 = (int) (-i * Constants.GRID);
+				dx1 = -i * pinSpacing.convertToPixels();
 				dy1 = 0;
-				dx2 = (int) (-i * Constants.GRID);
+				dx2 = -i * pinSpacing.convertToPixels();
 				dy2 = rowSpacing.convertToPixels();
 				break;
 			case _180:
 				dx1 = 0;
-				dy1 = (int) (-i * Constants.GRID);
+				dy1 = -i * pinSpacing.convertToPixels();
 				dx2 = -rowSpacing.convertToPixels();
-				dy2 = (int) (-i * Constants.GRID);
+				dy2 = -i * pinSpacing.convertToPixels();
 				break;
 			case _270:
-				dx1 = (int) (i * Constants.GRID);
+				dx1 = i * pinSpacing.convertToPixels();
 				dy1 = 0;
-				dx2 = (int) (i * Constants.GRID);
+				dx2 = i * pinSpacing.convertToPixels();
 				dy2 = rowSpacing.convertToPixels();
 				break;
 			default:
@@ -169,26 +181,26 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			switch (orientation) {
 			case DEFAULT:
 				width = rowSpacing.convertToPixels() - pinSize;
-				height = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+				height = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
 				x += pinSize / 2;
-				y -= (int) (Constants.GRID / 2);
+				y -= pinSpacing.convertToPixels() / 2;
 				break;
 			case _90:
-				width = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+				width = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
 				height = rowSpacing.convertToPixels() - pinSize;
-				x -= (int) (Constants.GRID / 2) + width - Constants.GRID;
+				x -= (pinSpacing.convertToPixels() / 2) + width - pinSpacing.convertToPixels();
 				y += pinSize / 2;
 				break;
 			case _180:
 				width = rowSpacing.convertToPixels() - pinSize;
-				height = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+				height = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
 				x -= rowSpacing.convertToPixels() - pinSize / 2;
-				y -= (int) (Constants.GRID / 2) + height - Constants.GRID;
+				y -= (pinSpacing.convertToPixels() / 2) + height - pinSpacing.convertToPixels();
 				break;
 			case _270:
-				width = (int) ((pinCount.getValue() / 2) * Constants.GRID);
+				width = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
 				height = rowSpacing.convertToPixels() - pinSize;
-				x -= (int) (Constants.GRID / 2);
+				x -= pinSpacing.convertToPixels() / 2;
 				y += pinSize / 2;
 				break;
 			default:

@@ -25,7 +25,7 @@ import org.diylc.utils.Constants;
 public class BOM extends AbstractComponent<Void> {
 
 	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);
-	public static Size SPACING = Constants.GRID_SIZE;
+	public static Size SPACING = new Size(0.1d, SizeUnit.in);
 	public static Color COLOR = Color.black;
 	public static String DEFAULT_TEXT = "No components to show in the Bill of Materials";
 

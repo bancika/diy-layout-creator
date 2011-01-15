@@ -12,7 +12,7 @@
   </entry>
   <entry>
     <string>metric</string>
-    <boolean>true</boolean>
+    <boolean>false</boolean>
   </entry>
   <entry>
     <string>default.org.diylc.components.semiconductors.DIL_IC:Value</string>

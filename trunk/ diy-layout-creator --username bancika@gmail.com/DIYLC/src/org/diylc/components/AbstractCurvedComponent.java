@@ -11,17 +11,21 @@ import java.awt.geom.CubicCurve2D;
 import org.diylc.core.ComponentState;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.utils.Constants;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 
 public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> {
 
 	private static final long serialVersionUID = 1L;
 
 	public static Color GUIDELINE_COLOR = Color.blue;
+	public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
 	protected Point[] controlPoints = new Point[] {
-			new Point(-5 * Constants.GRID, -5 * Constants.GRID), new Point(0, -5 * Constants.GRID),
-			new Point(0, 5 * Constants.GRID), new Point(5 * Constants.GRID, 5 * Constants.GRID) };
+			new Point(-DEFAULT_SIZE.convertToPixels() / 2, -DEFAULT_SIZE.convertToPixels() / 2),
+			new Point(0, -DEFAULT_SIZE.convertToPixels() / 2),
+			new Point(0, DEFAULT_SIZE.convertToPixels() / 2),
+			new Point(DEFAULT_SIZE.convertToPixels() / 2, DEFAULT_SIZE.convertToPixels() / 2) };
 
 	protected Color color = getDefaultColor();
 

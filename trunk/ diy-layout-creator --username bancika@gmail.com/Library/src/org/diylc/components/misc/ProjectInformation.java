@@ -20,7 +20,6 @@ import org.diylc.utils.Constants;
 public class ProjectInformation extends AbstractComponent<Void> {
 
 	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);
-	public static Size SPACING = Constants.GRID_SIZE;
 	public static Color COLOR = Color.black;
 	public static String DEFAULT_TEXT = "No components to show in the Bill of Materials";
 

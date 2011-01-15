@@ -17,10 +17,12 @@ public class Size extends AbstractMeasure<SizeUnit> {
 	}
 
 	public int convertToPixels() {
-		double factor = getUnit().getFactor() / SizeUnit.in.getFactor();
-		int grids = (int) (factor * getValue() * Constants.GRIDS_PER_INCH);
-		double remainder = (factor * getValue() * Constants.GRIDS_PER_INCH) - grids;
-		return (int) Math.round(Constants.GRID * (grids + remainder));
+//		double factor = getUnit().getFactor() / SizeUnit.in.getFactor();
+//		int grids = (int) (factor * getValue() * Constants.GRIDS_PER_INCH);
+//		double remainder = (factor * getValue() * Constants.GRIDS_PER_INCH) - grids;
+//		return (int) Math.round(Constants.PIXELS_PER_INCH / Constants.GRIDS_PER_INCH
+//				* (grids + remainder));
+		return (int) (getValue() * getUnit().getFactor() / SizeUnit.in.getFactor() * Constants.PIXELS_PER_INCH);
 	}
 
 	@Override

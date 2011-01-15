@@ -58,7 +58,7 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(0, 0, 0);
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(0, 1, 0);
 	public static final String DEFAULTS_KEY = "default.";
 	public static final String METRIC_KEY = "metric";
 
@@ -235,7 +235,7 @@ public class Presenter implements IPlugInPort {
 		g2dWrapper.fillRect(0, 0, d.width, d.height);
 
 		if (drawOptions.contains(DrawOption.GRID)) {
-			double zoomStep = Constants.GRID * zoomLevel;
+			double zoomStep = currentProject.getGridSpacing().convertToPixels() * zoomLevel;
 
 			g2dWrapper.setColor(Constants.GRID_COLOR);
 			for (double i = zoomStep; i < d.width; i += zoomStep) {
@@ -331,7 +331,8 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void injectGUIComponent(JComponent component, int position) throws BadPositionException {
-		LOG.info(String.format("injectGUIComponent(%s, %s)", component.getClass().getName(), position));
+		LOG.info(String.format("injectGUIComponent(%s, %s)", component.getClass().getName(),
+				position));
 		view.addComponent(component, position);
 	}
 
@@ -620,24 +621,25 @@ public class Presenter implements IPlugInPort {
 			int dx = (scaledPoint.x - previousDragPoint.x);
 			int dy = (scaledPoint.y - previousDragPoint.y);
 			if (snapToGrid) {
-				dx = (int) (Math.round(dx / Constants.GRID) * Constants.GRID);
-				dy = (int) (Math.round(dy / Constants.GRID) * Constants.GRID);
+				dx = roundToGrid(dx);
+				dy = roundToGrid(dy);
 			}
 			// Only repaint if there's an actual change.
 			repaint = dx != 0 || dy != 0;
 
-			previousDragPoint.translate(dx, dy);
+			if (repaint) {
+				previousDragPoint.translate(dx, dy);
 
-			// Update all points.
-			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
-				IDIYComponent<?> c = entry.getKey();
-				for (Integer index : entry.getValue()) {
-					Point p = new Point(c.getControlPoint(index));
-					p.translate(dx, dy);
-					c.setControlPoint(p, index);
+				// Update all points.
+				for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+					IDIYComponent<?> c = entry.getKey();
+					for (Integer index : entry.getValue()) {
+						Point p = new Point(c.getControlPoint(index));
+						p.translate(dx, dy);
+						c.setControlPoint(p, index);
+					}
 				}
 			}
-			// dragStartPoint = point;
 		} else if (selectedComponents.isEmpty()) {
 			// If there's no selection, the only thing to do is update the
 			// selection rectangle and refresh.
@@ -652,6 +654,17 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 				calculateSelectionDimension());
 		return true;
+	}
+
+	/**
+	 * Rounds the number to the closest grid line.
+	 * 
+	 * @param x
+	 * @return
+	 */
+	private int roundToGrid(int x) {
+		int grid = currentProject.getGridSpacing().convertToPixels();
+		return (Math.round(x / grid) * grid);
 	}
 
 	@Override
@@ -867,8 +880,8 @@ public class Presenter implements IPlugInPort {
 		}
 		double width = area.getBounds2D().getWidth();
 		double height = area.getBounds2D().getHeight();
-		width /= Constants.GRID * Constants.GRIDS_PER_INCH;
-		height /= Constants.GRID * Constants.GRIDS_PER_INCH;
+		width /= Constants.PIXELS_PER_INCH;
+		height /= Constants.PIXELS_PER_INCH;
 		if (isMetric) {
 			width *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
 			height *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
@@ -935,8 +948,8 @@ public class Presenter implements IPlugInPort {
 				int x = controlPoint.x + point.x;
 				int y = controlPoint.y + point.y;
 				if (snapToGrid) {
-					x = (int) (Math.round(x / Constants.GRID) * Constants.GRID);
-					y = (int) (Math.round(y / Constants.GRID) * Constants.GRID);
+					x = roundToGrid(x);
+					y = roundToGrid(y);
 				}
 				controlPoint.setLocation(x, y);
 				component.setControlPoint(controlPoint, j);
