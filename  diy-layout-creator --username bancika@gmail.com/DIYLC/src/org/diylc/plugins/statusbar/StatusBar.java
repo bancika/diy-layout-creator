@@ -36,6 +36,7 @@ import org.diylc.presenter.Presenter;
 import com.diyfever.gui.MemoryBar;
 import com.diyfever.gui.miscutils.ConfigurationManager;
 import com.diyfever.gui.miscutils.PercentageListCellRenderer;
+import com.diyfever.gui.miscutils.Utils;
 import com.diyfever.gui.update.UpdateLabel;
 
 public class StatusBar extends JPanel implements IPlugIn {
@@ -207,8 +208,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 			break;
 		case SELECTION_SIZE_CHANGED:
 			Point2D size = (Point2D) params[0];
-			boolean metric = ConfigurationManager.getInstance().readBoolean(
-					Presenter.METRIC_KEY, true);
+			boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY,
+					true);
 			if (size == null) {
 				getSizeLabel().setText("N/A");
 			} else {
@@ -234,45 +235,14 @@ public class StatusBar extends JPanel implements IPlugIn {
 	private void refreshStatusText() {
 		if (componentSlot == null) {
 			if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
-				String formattedNames = "";
-				int n = 1;
-				for (IDIYComponent<?> component : componentsUnderCursor) {
-					if (n > 1) {
-						formattedNames += ", ";
-					}
-					formattedNames += component.getName();//
-					// +
-					// " (<b><font color=\"blue\">"
-					// +
-					n++;
-					// +
-					// "</font></b>)";
-				}
-				getStatusLabel().setText("Drag " + formattedNames);
+				String formattedNames = Utils.toCommaString(componentsUnderCursor);
+				getStatusLabel().setText("Drag control points of " + formattedNames);
 			} else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
 				StringBuilder builder = new StringBuilder();
-				for (int i = 0; i < selectedComponentNames.size(); i++) {
-					if (i > 0) {
-						if (i == selectedComponentNames.size() - 1) {
-							builder.append(" and ");
-						} else {
-							builder.append(", ");
-						}
-					}
-					builder.append(selectedComponentNames.get(i));
-				}
+				builder.append(Utils.toCommaString(selectedComponentNames));
 				if (!stuckComponentNames.isEmpty()) {
 					builder.append(" (");
-					for (int i = 0; i < stuckComponentNames.size(); i++) {
-						if (i > 0) {
-							if (i == stuckComponentNames.size() - 1) {
-								builder.append(" and ");
-							} else {
-								builder.append(", ");
-							}
-						}
-						builder.append(stuckComponentNames.get(i));
-					}
+					builder.append(Utils.toCommaString(stuckComponentNames));
 					builder.append(" would be affected by dragging as well)");
 				}
 				getStatusLabel().setText("Selection: " + builder.toString());
