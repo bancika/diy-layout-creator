@@ -109,8 +109,7 @@ public class ComponentProcessor {
 	 * @param clazz
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public List<PropertyWrapper> extractProperties(Class<? extends IDIYComponent> clazz) {
+	public List<PropertyWrapper> extractProperties(Class<?> clazz) {
 		if (propertyCache.containsKey(clazz)) {
 			return cloner.deepClone(propertyCache.get(clazz));
 		}

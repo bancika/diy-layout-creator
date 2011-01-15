@@ -56,8 +56,9 @@ public class DialogFactory {
 		}
 	}
 
-	public PropertyEditorDialog createPropertyEditorDialog(List<PropertyWrapper> properties) {
-		PropertyEditorDialog editor = new PropertyEditorDialog(mainFrame, properties);
+	public PropertyEditorDialog createPropertyEditorDialog(List<PropertyWrapper> properties,
+			String title) {
+		PropertyEditorDialog editor = new PropertyEditorDialog(mainFrame, properties, title);
 		return editor;
 	}
 

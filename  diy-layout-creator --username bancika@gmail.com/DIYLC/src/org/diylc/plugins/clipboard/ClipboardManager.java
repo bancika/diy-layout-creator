@@ -19,10 +19,14 @@ import org.diylc.common.ComponentSelection;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.gui.DialogFactory;
+import org.diylc.gui.editor.PropertyEditorDialog;
 import org.diylc.images.IconLoader;
 
+import com.diyfever.gui.ButtonDialog;
 import com.diyfever.gui.undo.IUndoListener;
 import com.diyfever.gui.undo.UndoHandler;
 import com.rits.cloning.Cloner;
@@ -76,6 +80,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		plugInPort.injectMenuAction(pasteAction, EDIT_TITLE);
 		plugInPort.injectMenuAction(null, EDIT_TITLE);
 		plugInPort.injectMenuAction(new SelectAllAction(), EDIT_TITLE);
+		plugInPort.injectMenuAction(new EditProjectAction(), EDIT_TITLE);
 		plugInPort.injectMenuAction(null, EDIT_TITLE);
 		plugInPort.injectMenuAction(new GroupAction(), EDIT_TITLE);
 		plugInPort.injectMenuAction(new UngroupAction(), EDIT_TITLE);
@@ -229,6 +234,37 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Ungroup Selection triggered");
 			plugInPort.ungroupSelectedComponents();
+		}
+	}
+
+	class EditProjectAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public EditProjectAction() {
+			super();
+			putValue(AbstractAction.NAME, "Edit Project");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
+					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentEdit.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Edit Project triggered");
+			List<PropertyWrapper> properties = plugInPort.getProjectProperties();
+			PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
+					properties, "Edit Project");
+			editor.setVisible(true);
+			if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
+				plugInPort.applyPropertiesToProject(properties);
+			}
+			// Save default values.
+			for (PropertyWrapper property : editor.getDefaultedProperties()) {
+				if (property.getValue() != null) {
+					plugInPort.setDefaultPropertyValue(property.getName(), property.getValue());
+				}
+			}
 		}
 	}
 

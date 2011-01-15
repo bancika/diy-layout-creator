@@ -3,8 +3,6 @@ package org.diylc.common;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.diylc.core.IDIYComponent;
-
 /**
  * Entity class for editable properties extracted from component objects.
  * Represents a single editable property together with it's current value.
@@ -30,9 +28,9 @@ public class PropertyWrapper implements Cloneable {
 		this.defaultable = defaultable;
 	}
 
-	public void readFrom(IDIYComponent<?> component) throws IllegalArgumentException,
+	public void readFrom(Object object) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
-		this.value = getter.invoke(component);
+		this.value = getter.invoke(object);
 	}
 
 	// public void readUniqueFrom(IDIYComponent component)
@@ -44,9 +42,9 @@ public class PropertyWrapper implements Cloneable {
 	// }
 	// }
 
-	public void writeTo(IDIYComponent<?> component) throws IllegalArgumentException,
+	public void writeTo(Object object) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
-		setter.invoke(component, value);
+		setter.invoke(object, value);
 	}
 
 	public String getName() {

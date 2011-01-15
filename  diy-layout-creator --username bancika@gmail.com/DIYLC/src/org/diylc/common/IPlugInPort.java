@@ -288,11 +288,10 @@ public interface IPlugInPort {
 	void setDefaultPropertyValue(String propertyName, Object value);
 
 	/**
-	 * Returns a list of properties that are mutual for all the selected
-	 * components. Resulting list may be empty if selected components do not
-	 * have mutual properties or can be null if the selection is empty.
-	 * 
-	 * @return
+	 * @return a list of properties that are mutual for all the selected
+	 *         components. Resulting list may be empty if selected components do
+	 *         not have mutual properties or can be null if the selection is
+	 *         empty.
 	 */
 	List<PropertyWrapper> getMutualSelectionProperties();
 
@@ -305,6 +304,18 @@ public interface IPlugInPort {
 	 * @throws Exception
 	 */
 	void applyPropertiesToSelection(List<PropertyWrapper> properties) throws Exception;
+
+	/**
+	 * @return a list of editable properties of the current project.
+	 */
+	List<PropertyWrapper> getProjectProperties();
+
+	/**
+	 * Applies specified properties to the current project.
+	 * 
+	 * @param properties
+	 */
+	void applyPropertiesToProject(List<PropertyWrapper> properties);
 
 	/**
 	 * Sets the new component slot. Specified component type will be used to

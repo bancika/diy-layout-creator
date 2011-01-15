@@ -1018,6 +1018,43 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
+	public List<PropertyWrapper> getProjectProperties() {
+		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
+				Project.class);
+		try {
+			for (PropertyWrapper property : properties) {
+				property.readFrom(currentProject);
+			}
+		} catch (Exception e) {
+			LOG.error("Could not get project properties", e);
+			return null;
+		}
+		return properties;
+	}
+
+	@Override
+	public void applyPropertiesToProject(List<PropertyWrapper> properties) {
+		LOG.debug(String.format("applyPropertiesToProject(%s)", properties));
+		Project oldProject = cloner.deepClone(currentProject);
+		try {
+			for (PropertyWrapper property : properties) {
+				property.writeTo(currentProject);
+			}
+		} catch (Exception e) {
+			LOG.error("Could not apply project properties", e);
+		} finally {
+			// Notify the listeners.
+			if (!oldProject.equals(currentProject)) {
+				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+						.deepClone(currentProject), "Edit Project");
+			}
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+					calculateSelectionDimension());
+		}
+	}
+
+	@Override
 	public void setNewComponentSlot(ComponentType componentType) {
 		LOG.debug(String.format("setNewComponentSlot(%s)", componentType == null ? null
 				: componentType.getName()));

@@ -33,8 +33,8 @@ public class PropertyEditorDialog extends ButtonDialog {
 	private List<PropertyWrapper> properties;
 	private Set<PropertyWrapper> defaultedProperties;
 
-	public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties) {
-		super(owner, "Component Editor", new String[] { ButtonDialog.OK, ButtonDialog.CANCEL });
+	public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title) {
+		super(owner, title, new String[] { ButtonDialog.OK, ButtonDialog.CANCEL });
 
 		LOG.debug("Creating property editor for: " + properties);
 
@@ -120,8 +120,8 @@ public class PropertyEditorDialog extends ButtonDialog {
 		return defaultedProperties;
 	}
 
-	public static boolean showFor(JFrame owner, List<PropertyWrapper> properties) {
-		PropertyEditorDialog editor = new PropertyEditorDialog(owner, properties);
+	public static boolean showFor(JFrame owner, List<PropertyWrapper> properties, String title) {
+		PropertyEditorDialog editor = new PropertyEditorDialog(owner, properties, title);
 		editor.setVisible(true);
 		if (OK.equals(editor.getSelectedButtonCaption())) {
 			return true;
