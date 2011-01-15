@@ -24,7 +24,7 @@ public class Project implements Serializable {
 	public static String DEFAULT_TITLE = "New Project";
 	public static Size DEFAULT_WIDTH = new Size(29d, SizeUnit.cm);
 	public static Size DEFAULT_HEIGHT = new Size(21d, SizeUnit.cm);
-	public static Size DEFAULT_GRID_SPACING = new Size(0.2d, SizeUnit.in);
+	public static Size DEFAULT_GRID_SPACING = new Size(0.1d, SizeUnit.in);
 
 	private String title;
 	private String author;

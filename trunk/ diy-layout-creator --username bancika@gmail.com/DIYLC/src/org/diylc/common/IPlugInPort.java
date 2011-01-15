@@ -73,17 +73,42 @@ public interface IPlugInPort {
 	 * @param freshStart
 	 */
 	void loadProject(Project project, boolean freshStart);
-	
+
+	/**
+	 * Creates a new project.
+	 */
 	void createNewProject();
-	
+
+	/**
+	 * Loads a project from the specified file.
+	 * 
+	 * @param fileName
+	 */
 	void loadProjectFromFile(String fileName);
-	
+
+	/**
+	 * Saves the current project into the specified file.
+	 * 
+	 * @param fileName
+	 */
 	void saveProjectToFile(String fileName);
-	
+
+	/**
+	 * @return the current file name.
+	 */
 	String getCurrentFileName();
-	
+
+	/**
+	 * @return true if the current project is modified.
+	 */
 	boolean isProjectModified();
-	
+
+	/**
+	 * Shows a user dialog if there are changes to confirm that it's safe to
+	 * proceed.
+	 * 
+	 * @return true, if file actions (new, open, close) can be taken
+	 */
 	boolean allowFileAction();
 
 	/**
@@ -247,46 +272,13 @@ public interface IPlugInPort {
 	 * Adds a list of components to the project.
 	 * 
 	 * @param components
-	 * @param preferredPoint
 	 */
-	void addComponents(List<IDIYComponent<?>> components, Point preferredPoint);
+	void addComponents(List<IDIYComponent<?>> components);
 
 	/**
 	 * Deletes all the selected components from the project.
 	 */
 	void deleteSelectedComponents();
-
-	// /**
-	// * Checks if a certain layer is locked for editing.
-	// *
-	// * @param layer
-	// * @return
-	// */
-	// boolean isLayerLocked(ComponentLayer layer);
-	//
-	// /**
-	// * Changes layer's locked state.
-	// *
-	// * @param layer
-	// * @param locked
-	// */
-	// void setLayerLocked(ComponentLayer layer, boolean locked);
-	//
-	// /**
-	// * Checks if a certain layer is visible.
-	// *
-	// * @param layer
-	// * @return
-	// */
-	// boolean isLayerVisible(ComponentLayer layer);
-	//
-	// /**
-	// * Changes layer visibility.
-	// *
-	// * @param layer
-	// * @param visible
-	// */
-	// void setLayerVisible(ComponentLayer layer, boolean visible);
 
 	/**
 	 * Sets default value for the specified property name for currently selected
