@@ -732,8 +732,9 @@ public class Presenter implements IPlugInPort {
 		} else if (selectedComponents.isEmpty()) {
 			// If there's no selection, the only thing to do is update the
 			// selection rectangle and refresh.
+			Rectangle oldSelectionRect = selectionRect == null ? null : new Rectangle(selectionRect);
 			this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
-			repaint = true;
+			repaint = !selectionRect.equals(oldSelectionRect);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
 			// selectionRect);
 		}
