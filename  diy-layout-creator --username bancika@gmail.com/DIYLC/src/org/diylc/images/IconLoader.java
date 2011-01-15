@@ -24,7 +24,7 @@ public enum IconLoader {
 			"wrench.png"), Group("group.png"), Ungroup("ungroup.png"), TraceMask("trace_mask.png"), Faq(
 			"faq.png"), Component("component.png"), Plugin("plugin.png"), Manual("manual.png"), Donate(
 			"donate.png"), Bug("bug.png"), AboutDialog("about_dialog.png"), DocumentEdit(
-			"document_edit.png");
+			"document_edit.png"), EditComponent("edit_component.png");
 
 	protected String name;
 

@@ -80,6 +80,8 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		plugInPort.injectMenuAction(pasteAction, EDIT_TITLE);
 		plugInPort.injectMenuAction(null, EDIT_TITLE);
 		plugInPort.injectMenuAction(new SelectAllAction(), EDIT_TITLE);
+		plugInPort.injectMenuAction(null, EDIT_TITLE);
+		plugInPort.injectMenuAction(new EditSelectionAction(), EDIT_TITLE);
 		plugInPort.injectMenuAction(new EditProjectAction(), EDIT_TITLE);
 		plugInPort.injectMenuAction(null, EDIT_TITLE);
 		plugInPort.injectMenuAction(new GroupAction(), EDIT_TITLE);
@@ -258,6 +260,41 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 			editor.setVisible(true);
 			if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
 				plugInPort.applyPropertiesToProject(properties);
+			}
+			// Save default values.
+			for (PropertyWrapper property : editor.getDefaultedProperties()) {
+				if (property.getValue() != null) {
+					plugInPort.setDefaultPropertyValue(property.getName(), property.getValue());
+				}
+			}
+		}
+	}
+
+	class EditSelectionAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public EditSelectionAction() {
+			super();
+			putValue(AbstractAction.NAME, "Edit Selection");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
+					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.SMALL_ICON, IconLoader.EditComponent.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Edit Selection triggered");
+			List<PropertyWrapper> properties = plugInPort.getMutualSelectionProperties();
+			if (properties == null || properties.isEmpty()) {
+				LOG.info("Nothing to edit");
+				return;
+			}
+			PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
+					properties, "Edit Selection");
+			editor.setVisible(true);
+			if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
+				plugInPort.applyPropertiesToSelection(properties);
 			}
 			// Save default values.
 			for (PropertyWrapper property : editor.getDefaultedProperties()) {
