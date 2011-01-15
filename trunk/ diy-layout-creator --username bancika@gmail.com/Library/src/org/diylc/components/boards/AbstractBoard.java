@@ -23,7 +23,6 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	public static Size DEFAULT_WIDTH = new Size(1.5d, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1d, SizeUnit.in);
 
-	protected String name;
 	protected String value;
 	protected Point[] controlPoints = new Point[] {
 			new Point(-DEFAULT_WIDTH.convertToPixels() / 2, -DEFAULT_HEIGHT.convertToPixels() / 2),
@@ -83,16 +82,6 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	@Override
 	public void setControlPoint(Point point, int index) {
 		controlPoints[index].setLocation(point);
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@EditableProperty
