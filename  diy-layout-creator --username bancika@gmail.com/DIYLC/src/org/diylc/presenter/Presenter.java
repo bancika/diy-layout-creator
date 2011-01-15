@@ -129,7 +129,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	public void installPlugin(IPlugIn plugIn) {
-		LOG.debug(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
+		LOG.info(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
 		plugIns.add(plugIn);
 		plugIn.connect(this);
 		messageDispatcher.registerListener(plugIn);
@@ -150,7 +150,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void setZoomLevel(double zoomLevel) {
-		LOG.debug(String.format("setZoomLevel(%s)", zoomLevel));
+		LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
 		this.zoomLevel = zoomLevel;
 		messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -192,7 +192,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void loadProject(Project project, boolean freshStart) {
-		LOG.info("Loading project: " + project.getTitle());
+		LOG.info(String.format("loadProject(%s, %s)", project.getTitle(), freshStart));
 		this.currentProject = project;
 		selectedComponents.clear();
 		messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
@@ -211,6 +211,8 @@ public class Presenter implements IPlugInPort {
 			fireFileStatusChanged();
 		} catch (Exception e) {
 			LOG.error("Could not create new file", e);
+			view.showMessage("Could not create a new file. Check the log for details.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -226,11 +228,13 @@ public class Presenter implements IPlugInPort {
 			this.modified = false;
 			fireFileStatusChanged();
 		} catch (FileNotFoundException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
+			LOG.error("Could not load file", ex);
+			view.showMessage("Could not open file, " + fileName + " does not exist.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
+			LOG.error("Could not load file", ex);
+			view.showMessage("Could not open file " + fileName + ". Check the log for details.",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -256,12 +260,10 @@ public class Presenter implements IPlugInPort {
 			this.currentFileName = fileName;
 			this.modified = false;
 			fireFileStatusChanged();
-		} catch (FileNotFoundException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
+		} catch (Exception ex) {
+			LOG.error("Could not save file", ex);
+			view.showMessage("Could not save file " + fileName + ". Check the log for details.",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -629,7 +631,6 @@ public class Presenter implements IPlugInPort {
 			}
 			// Expand control points to include all stuck components.
 			includeStuckComponents(controlPointMap);
-			LOG.debug(controlPointMap);
 		}
 	}
 
@@ -795,8 +796,8 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void addComponents(List<IDIYComponent<?>> components, Point preferredPoint) {
-		LOG.debug(String.format("addComponents(%s)", components));
+	public void addComponents(List<IDIYComponent<?>> components) {
+		LOG.info(String.format("addComponents(%s)", components));
 		Project oldProject = cloner.deepClone(currentProject);
 		for (IDIYComponent<?> component : components) {
 			addComponent(component, componentTypeMap.get(component.getClass().getName()));
@@ -810,7 +811,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void deleteSelectedComponents() {
-		LOG.debug("deleteSelectedComponents()");
+		LOG.info("deleteSelectedComponents()");
 		if (selectedComponents.isEmpty()) {
 			LOG.debug("Nothing to delete");
 			return;
@@ -826,36 +827,10 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
-	// public boolean isLayerLocked(ComponentLayer layer) {
-	// return lockedLayers.contains(layer);
-	// }
-	//
-	// public void setLayerLocked(ComponentLayer layer, boolean locked) {
-	// LOG.debug(String.format("setLayerLocked(%s, %s)", layer, locked));
-	// if (locked) {
-	// lockedLayers.add(layer);
-	// } else {
-	// lockedLayers.remove(layer);
-	// }
-	// }
-	//
-	// public boolean isLayerVisible(ComponentLayer layer) {
-	// return visibleLayers.contains(layer);
-	// }
-	//
-	// public void setLayerVisible(ComponentLayer layer, boolean visible) {
-	// LOG.debug(String.format("setLayerVisible(%s, %s)", layer, visible));
-	// if (visible) {
-	// visibleLayers.add(layer);
-	// } else {
-	// visibleLayers.remove(layer);
-	// }
-	// }
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setDefaultPropertyValue(String propertyName, Object value) {
-		LOG.debug(String.format("setDefaultPropertyValue(%s, %s)", propertyName, value));
+		LOG.info(String.format("setDefaultPropertyValue(%s, %s)", propertyName, value));
 		for (IDIYComponent component : selectedComponents) {
 			String className = component.getClass().getName();
 			LOG.debug("Default property value set for " + className + ":" + propertyName);
@@ -873,7 +848,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void groupSelectedComponents() {
-		LOG.debug("groupSelectedComponents()");
+		LOG.info("groupSelectedComponents()");
 		Project oldProject = cloner.deepClone(currentProject);
 		// First remove the selected components from other groups.
 		ungroupComponents(selectedComponents);
@@ -891,7 +866,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void ungroupSelectedComponents() {
-		LOG.debug("ungroupSelectedComponents()");
+		LOG.info("ungroupSelectedComponents()");
 		Project oldProject = cloner.deepClone(currentProject);
 		ungroupComponents(selectedComponents);
 		// Notify the listeners.
@@ -1129,6 +1104,8 @@ public class Presenter implements IPlugInPort {
 			}
 		} catch (Exception e) {
 			LOG.error("Could not apply selection properties", e);
+			view.showMessage("Could not apply changes to the selection. Check the log for details.",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
@@ -1168,6 +1145,8 @@ public class Presenter implements IPlugInPort {
 			}
 		} catch (Exception e) {
 			LOG.error("Could not apply project properties", e);
+			view.showMessage("Could not apply changes to the project. Check the log for details.",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
@@ -1183,7 +1162,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void setNewComponentSlot(ComponentType componentType) {
-		LOG.debug(String.format("setNewComponentSlot(%s)", componentType == null ? null
+		LOG.info(String.format("setNewComponentSlot(%s)", componentType == null ? null
 				: componentType.getName()));
 		this.componentSlot = componentType;
 		selectedComponents.clear();
@@ -1221,11 +1200,5 @@ public class Presenter implements IPlugInPort {
 			return false;
 		}
 		return selectedComponents.contains(component);
-		// return
-		// controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.ALWAYS)
-		// ||
-		// ((controlPoint.getVisibilityPolicy().equals(VisibilityPolicy.WHEN_SELECTED))
-		// && (getSelectedComponents()
-		// .contains(component)));
 	}
 }
