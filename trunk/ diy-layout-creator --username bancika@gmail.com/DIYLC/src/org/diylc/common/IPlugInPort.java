@@ -301,9 +301,8 @@ public interface IPlugInPort {
 	 * exception will be thrown.
 	 * 
 	 * @param properties
-	 * @throws Exception
 	 */
-	void applyPropertiesToSelection(List<PropertyWrapper> properties) throws Exception;
+	void applyPropertiesToSelection(List<PropertyWrapper> properties);
 
 	/**
 	 * @return a list of editable properties of the current project.

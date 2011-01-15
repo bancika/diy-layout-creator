@@ -996,7 +996,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void applyPropertiesToSelection(List<PropertyWrapper> properties) throws Exception {
+	public void applyPropertiesToSelection(List<PropertyWrapper> properties) {
 		LOG.debug(String.format("applyPropertiesToSelection(%s)", properties));
 		Project oldProject = cloner.deepClone(currentProject);
 		try {
@@ -1005,11 +1005,13 @@ public class Presenter implements IPlugInPort {
 					property.writeTo(component);
 				}
 			}
+		} catch (Exception e) {
+			LOG.error("Could not apply selection properties", e);
 		} finally {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
-						.deepClone(currentProject), "Edit");
+						.deepClone(currentProject), "Edit Selection");
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
@@ -1049,8 +1051,7 @@ public class Presenter implements IPlugInPort {
 						.deepClone(currentProject), "Edit Project");
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
-			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-					calculateSelectionDimension());
+			messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);
 		}
 	}
 
