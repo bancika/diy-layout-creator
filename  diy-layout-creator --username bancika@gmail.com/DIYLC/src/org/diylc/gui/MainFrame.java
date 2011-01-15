@@ -246,7 +246,7 @@ public class MainFrame extends JFrame implements IView {
 				String fileName = plugInPort.getCurrentFileName() == null ? "Untitled" : plugInPort
 						.getCurrentFileName();
 				String modified = plugInPort.isProjectModified() ? " (modified)" : "";
-				setTitle(String.format("DIYLC 3.%s - %s %s", plugInPort.getCurrentVersionNumber(),
+				setTitle(String.format("DIYLC %s alpha - %s %s", plugInPort.getCurrentVersionNumber(),
 						fileName, modified));
 			}
 		}
