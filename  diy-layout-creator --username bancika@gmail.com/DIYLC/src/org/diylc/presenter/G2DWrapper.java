@@ -50,7 +50,7 @@ import java.util.Map;
 class G2DWrapper extends Graphics2D {
 
 	public static int LINE_SENSITIVITY_MARGIN = 2;
-	public static int CURVE_SENSITIVITY = 10;
+	public static int CURVE_SENSITIVITY = 6;
 
 	private boolean drawingComponent = false;
 
@@ -189,10 +189,9 @@ class G2DWrapper extends Graphics2D {
 	 * @param curve
 	 */
 	private void addCubicCurveArea(CubicCurve2D curve) {
-		double d = curve.getP1().distance(curve.getP2());
 		// When end points are close enough, approximate the curve with a
 		// straight line.
-		if (d < CURVE_SENSITIVITY) {
+		if (curve.getFlatness() < CURVE_SENSITIVITY) {
 			appendShapeOutline(new Line2D.Double(curve.getP1(), curve.getP2()));
 		} else {
 			CubicCurve2D leftSubcurve = new CubicCurve2D.Double();
@@ -210,10 +209,9 @@ class G2DWrapper extends Graphics2D {
 	 * @param curve
 	 */
 	private void addQuadCurveArea(QuadCurve2D curve) {
-		double d = curve.getP1().distance(curve.getP2());
 		// When end points are close enough, approximate the curve with a
 		// straight line.
-		if (d < CURVE_SENSITIVITY) {
+		if (curve.getFlatness() < CURVE_SENSITIVITY) {
 			appendShapeOutline(new Line2D.Double(curve.getP1(), curve.getP2()));
 		} else {
 			QuadCurve2D leftSubcurve = new QuadCurve2D.Double();
