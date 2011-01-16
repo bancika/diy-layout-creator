@@ -14,6 +14,7 @@ import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> {
 
@@ -63,8 +64,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 		if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
 			// Do not track guidelines.
 			drawingObserver.stopTracking();
-			g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10f,
-					new float[] { 2f, 3f }, 5f));
+			g2d.setStroke(Constants.DASHED_STROKE);
 			g2d.setColor(GUIDELINE_COLOR);
 			g2d.drawLine(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x,
 					controlPoints[1].y);

@@ -18,8 +18,8 @@ public class Constants {
 	public static Color SELECTED_CONTROL_POINT_COLOR = Color.blue;
 	public static Color CREATION_POINT_COLOR = Color.decode("#32CD32");
 
-	public static Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 11);
+	public static Font LABEL_FONT = new Font("Tahoma", Font.PLAIN, 11);
 
-	public static final Stroke dashedStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+	public static final Stroke DASHED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
 			BasicStroke.JOIN_MITER, 2.0f, new float[] { 2.0f }, 0.0f);
 }

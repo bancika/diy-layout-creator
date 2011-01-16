@@ -167,7 +167,7 @@ public class ProjectPainter {
 			g2d.setColor(Color.white);
 			g2d.draw(selectionRect);
 			g2d.setColor(Color.black);
-			g2d.setStroke(Constants.dashedStroke);
+			g2d.setStroke(Constants.DASHED_STROKE);
 			g2d.draw(selectionRect);
 		}
 
