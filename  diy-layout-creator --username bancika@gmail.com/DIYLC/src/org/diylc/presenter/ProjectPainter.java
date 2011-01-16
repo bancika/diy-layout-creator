@@ -133,20 +133,28 @@ public class ProjectPainter {
 			}
 		}
 
-		g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
 		// Draw control points.
-		for (IDIYComponent<?> component : project.getComponents()) {
-			if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
+		if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
+			// Draw unselected points first to make sure they are below.
+			for (IDIYComponent<?> component : project.getComponents()) {
+				if (drawControlPoints.contains(component)
+						&& !selectedComponents.contains(component)) {
+					g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
+					for (int i = 0; i < component.getControlPointCount(); i++) {
+						Point controlPoint = component.getControlPoint(i);
+						int pointSize = CONTROL_POINT_SIZE - 2;
+						g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
+								- pointSize / 2, pointSize, pointSize);
+					}
+				}
+			}
+			// Then draw the selected ones.
+			for (IDIYComponent<?> component : selectedComponents) {
 				if (drawControlPoints.contains(component)) {
-					boolean isSelected = selectedComponents.contains(component);
-					g2dWrapper.setColor(isSelected ? Constants.SELECTED_CONTROL_POINT_COLOR
-							: Constants.CONTROL_POINT_COLOR);
+					g2dWrapper.setColor(Constants.SELECTED_CONTROL_POINT_COLOR);
 					for (int i = 0; i < component.getControlPointCount(); i++) {
 						Point controlPoint = component.getControlPoint(i);
 						int pointSize = CONTROL_POINT_SIZE;
-						if (!isSelected) {
-							pointSize -= 2;
-						}
 						g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
 								- pointSize / 2, pointSize, pointSize);
 					}
