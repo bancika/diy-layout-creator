@@ -90,7 +90,7 @@ public class FileManager implements IPlugIn {
 				return;
 			}
 			File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(),
-					null, FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
+					null, FileFilterEnum.DIY.getExtensions()[0], null);
 			if (file != null) {
 				plugInPort.loadProjectFromFile(file.getAbsolutePath());
 			}
@@ -112,7 +112,7 @@ public class FileManager implements IPlugIn {
 			if (plugInPort.getCurrentFileName() == null) {
 				File file = DialogFactory.getInstance().showSaveDialog(
 						FileFilterEnum.DIY.getFilter(), null,
-						FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
+						FileFilterEnum.DIY.getExtensions()[0], null);
 				if (file != null) {
 					plugInPort.saveProjectToFile(file.getAbsolutePath());
 				}
@@ -135,7 +135,7 @@ public class FileManager implements IPlugIn {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.DIY.getFilter(),
-					null, FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
+					null, FileFilterEnum.DIY.getExtensions()[0], null);
 			if (file != null) {
 				plugInPort.saveProjectToFile(file.getAbsolutePath());
 			}
