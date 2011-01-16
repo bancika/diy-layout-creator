@@ -239,7 +239,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 		if (componentSlot == null) {
 			if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
 				String formattedNames = Utils.toCommaString(componentsUnderCursor);
-				getStatusLabel().setText("Drag control points of " + formattedNames);
+				getStatusLabel().setText("Drag control point(s) of " + formattedNames);
 			} else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
 				StringBuilder builder = new StringBuilder();
 				builder.append(Utils.toCommaString(selectedComponentNames));
