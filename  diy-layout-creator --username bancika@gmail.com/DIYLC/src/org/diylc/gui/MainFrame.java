@@ -252,6 +252,5 @@ public class MainFrame extends JFrame implements IView {
 						fileName, modified));
 			}
 		}
-
 	}
 }
