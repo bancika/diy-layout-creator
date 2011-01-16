@@ -9,6 +9,7 @@ import java.awt.Point;
 
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -32,7 +33,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	protected Color borderColor = BORDER_COLOR;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		g2d.setStroke(new BasicStroke());
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
@@ -49,6 +51,9 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.drawRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
 				- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
+		// Do not track any changes that follow because the whole board has been
+		// tracked so far.
+		drawingObserver.stopTracking();
 	}
 
 	@EditableProperty(name = "Color")

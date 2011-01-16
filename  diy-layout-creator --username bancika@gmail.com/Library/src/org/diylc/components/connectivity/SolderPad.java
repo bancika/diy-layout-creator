@@ -7,6 +7,7 @@ import java.awt.Point;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -28,7 +29,8 @@ public class SolderPad extends AbstractComponent<Void> {
 	private Point point = new Point(0, 0);
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		int diameter = getClosestOdd(size.convertToPixels());
 		int holeDiameter = getClosestOdd(HOLE_SIZE.convertToPixels());
 		g2d.setColor(componentState == ComponentState.SELECTED
@@ -94,7 +96,7 @@ public class SolderPad extends AbstractComponent<Void> {
 	public Void getValue() {
 		return null;
 	}
-	
+
 	@Override
 	public void setValue(Void value) {
 	}

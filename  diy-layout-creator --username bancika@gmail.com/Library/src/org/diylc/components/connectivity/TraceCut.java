@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import org.diylc.components.AbstractSinglePointComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -28,7 +29,8 @@ public class TraceCut extends AbstractSinglePointComponent {
 	private Color borderColor = BORDER_COLOR;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		int size = this.size.convertToPixels() / 2 * 2;
 		int dotDiameter = (size / 3 * 2) / 2 * 2 + 1;
 		g2d.setColor(fillColor);

@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.geom.CubicCurve2D;
 
 import org.diylc.core.ComponentState;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -57,8 +58,11 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
+			// Do not track guidelines.
+			drawingObserver.stopTracking();
 			g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10f,
 					new float[] { 2f, 3f }, 5f));
 			g2d.setColor(GUIDELINE_COLOR);
@@ -68,6 +72,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 					controlPoints[2].y);
 			g2d.drawLine(controlPoints[2].x, controlPoints[2].y, controlPoints[3].x,
 					controlPoints[3].y);
+			drawingObserver.startTracking();
 		}
 		CubicCurve2D curve = new CubicCurve2D.Double(controlPoints[0].x, controlPoints[0].y,
 				controlPoints[1].x, controlPoints[1].y, controlPoints[2].x, controlPoints[2].y,

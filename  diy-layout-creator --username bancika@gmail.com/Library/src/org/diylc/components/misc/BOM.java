@@ -12,6 +12,7 @@ import java.util.List;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -35,7 +36,8 @@ public class BOM extends AbstractComponent<Void> {
 	private Point point = new Point(0, 0);
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		List<BomEntry> bom = BomMaker.getInstance().createBom(project.getComponents());
 		// Cleanup entries that do not have a value set.
 		Iterator<BomEntry> iterator = bom.iterator();
