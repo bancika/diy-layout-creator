@@ -1,13 +1,10 @@
 package org.diylc.presenter;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.io.FileInputStream;
@@ -41,7 +38,6 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.measures.SizeUnit;
@@ -70,13 +66,9 @@ public class Presenter implements IPlugInPort {
 	public static final String DEFAULTS_KEY = "default.";
 	public static final String METRIC_KEY = "metric";
 
-	public static final int CONTROL_POINT_SIZE = 5;
 	public static final int ICON_SIZE = 32;
-	public static boolean ENABLE_ANTIALIASING = true;
-	public static boolean DEBUG_COMPONENT_AREAS = false;
 
 	private double zoomLevel = 1;
-	private Map<IDIYComponent<?>, Area> componentAreaMap;
 	private Project currentProject;
 	private String currentFileName = null;
 	private boolean modified = false;
@@ -93,6 +85,7 @@ public class Presenter implements IPlugInPort {
 	// Utilities
 	private Cloner cloner;
 	private XStream xStream = new XStream(new DomDriver());
+	private ProjectPainter projectPainter;
 
 	private Rectangle selectionRect;
 
@@ -117,12 +110,12 @@ public class Presenter implements IPlugInPort {
 	public Presenter(IView view) {
 		super();
 		this.view = view;
-		componentAreaMap = new HashMap<IDIYComponent<?>, Area>();
 		plugIns = new ArrayList<IPlugIn>();
 		messageDispatcher = new MessageDispatcher<EventType>();
 		selectedComponents = new ComponentSelection();
 		currentProject = new Project();
 		cloner = new Cloner();
+		projectPainter = new ProjectPainter();
 
 		// lockedLayers = EnumSet.noneOf(ComponentLayer.class);
 		// visibleLayers = EnumSet.allOf(ComponentLayer.class);
@@ -162,10 +155,8 @@ public class Presenter implements IPlugInPort {
 		if (componentSlot == null) {
 			// Scale point to remove zoom factor.
 			Point2D scaledPoint = scalePoint(point);
-			for (Map.Entry<IDIYComponent<?>, Area> entry : componentAreaMap.entrySet()) {
-				if (entry.getValue().contains(scaledPoint)) {
-					return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-				}
+			if (projectPainter.isCursorOverArea(scaledPoint)) {
+				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			}
 			if (controlPointMap != null && !controlPointMap.isEmpty()) {
 				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -310,113 +301,14 @@ public class Presenter implements IPlugInPort {
 		if (currentProject == null) {
 			return;
 		}
-		G2DWrapper g2dWrapper = new G2DWrapper(g2d);
-
-		if (drawOptions.contains(DrawOption.ANTIALIASING) && ENABLE_ANTIALIASING) {
-			g2d
-					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
-		}
-
-		// AffineTransform initialTx = g2d.getTransform();
-		Dimension d = getCanvasDimensions(drawOptions.contains(DrawOption.ZOOM));
-
-		g2dWrapper.setColor(Constants.CANVAS_COLOR);
-		g2dWrapper.fillRect(0, 0, d.width, d.height);
-
-		if (drawOptions.contains(DrawOption.GRID)) {
-			double zoomStep = currentProject.getGridSpacing().convertToPixels() * zoomLevel;
-
-			g2dWrapper.setColor(Constants.GRID_COLOR);
-			for (double i = zoomStep; i < d.width; i += zoomStep) {
-				g2dWrapper.drawLine((int) i, 0, (int) i, d.height - 1);
-			}
-			for (double j = zoomStep; j < d.height; j += zoomStep) {
-				g2dWrapper.drawLine(0, (int) j, d.width - 1, (int) j);
+		Set<IDIYComponent<?>> drawControlPoints = new HashSet<IDIYComponent<?>>();
+		for (IDIYComponent<?> component : currentProject.getComponents()) {
+			if (shouldShowControlPointsFor(component)) {
+				drawControlPoints.add(component);
 			}
 		}
-
-		if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 - zoomLevel) > 1e-4)) {
-			g2dWrapper.scale(zoomLevel, zoomLevel);
-		}
-
-		// Composite mainComposite = g2d.getComposite();
-		// Composite alphaComposite =
-		// AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
-
-		// g2dWrapper.resetTx();
-
-		List<IDIYComponent<?>> components = getCurrentProject().getComponents();
-		componentAreaMap.clear();
-		if (components != null) {
-			for (IDIYComponent<?> component : components) {
-				// Do not draw the component if it's filtered out.
-				if (filter != null && !filter.testComponent(component)) {
-					continue;
-				}
-				g2dWrapper.startedDrawingComponent();
-				ComponentState state = ComponentState.NORMAL;
-				if (drawOptions.contains(DrawOption.SELECTION)
-						&& selectedComponents.contains(component)) {
-					if (dragInProgress) {
-						state = ComponentState.DRAGGING;
-					} else {
-						state = ComponentState.SELECTED;
-					}
-				}
-				// Draw the component through the g2dWrapper.
-				component.draw(g2dWrapper, state, currentProject, g2dWrapper);
-				componentAreaMap.put(component, g2dWrapper.finishedDrawingComponent());
-			}
-			// Draw control points.
-			for (IDIYComponent<?> component : components) {
-				if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
-					for (int i = 0; i < component.getControlPointCount(); i++) {
-						Point controlPoint = component.getControlPoint(i);
-						try {
-							if (shouldShowControlPointsFor(component)) {
-								g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
-								g2dWrapper.setStroke(new BasicStroke(2));
-								// g2d.drawOval(controlPoint.x - 2,
-								// controlPoint.y - 2, 4, 4);
-								g2dWrapper.fillOval(controlPoint.x - CONTROL_POINT_SIZE / 2,
-										controlPoint.y - CONTROL_POINT_SIZE / 2,
-										CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
-							}
-						} catch (Exception e) {
-							LOG.error("Could not obtain control points for component of type "
-									+ component.getClass().getName());
-						}
-					}
-				}
-			}
-		}
-
-		// Go back to the original transformation and zoom in to draw the
-		// selection rectangle and other similar elements.
-		// g2d.setTransform(initialTx);
-		// if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 -
-		// zoomLevel) > 1e-4)) {
-		// g2d.scale(zoomLevel, zoomLevel);
-		// }
-
-		// At the end draw selection rectangle if needed.
-		if (drawOptions.contains(DrawOption.SELECTION) && (selectionRect != null)) {
-			g2d.setColor(Color.white);
-			g2d.draw(selectionRect);
-			g2d.setColor(Color.black);
-			g2d.setStroke(Constants.dashedStroke);
-			g2d.draw(selectionRect);
-		}
-
-		// Draw component area for test
-		if (DEBUG_COMPONENT_AREAS) {
-			g2d.setStroke(new BasicStroke());
-			g2d.setColor(Color.red);
-			for (Area area : componentAreaMap.values()) {
-				g2d.draw(area);
-			}
-		}
+		projectPainter.draw(g2d, currentProject, drawOptions, filter, selectionRect,
+				selectedComponents, drawControlPoints, dragInProgress, zoomLevel);
 	}
 
 	@Override
@@ -446,16 +338,7 @@ public class Presenter implements IPlugInPort {
 	 * @return
 	 */
 	private List<IDIYComponent<?>> findComponentsAt(Point point) {
-		List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
-		for (Map.Entry<IDIYComponent<?>, Area> entry : componentAreaMap.entrySet()) {
-			if (entry.getValue().contains(point)) {
-				components.add(entry.getKey());
-			}
-		}
-		// Sort by z-order.
-		Collections.sort(components, ComparatorFactory.getInstance().getComponentZOrderComparator(
-				currentProject.getComponents()));
-		return components;
+		return projectPainter.findComponentsAt(point, currentProject);
 	}
 
 	@Override
@@ -515,7 +398,7 @@ public class Presenter implements IPlugInPort {
 				if (selectedComponents.contains(component) && componentType.isStretchable()
 						&& findAllGroupedComponents(component).size() == 1) {
 					try {
-						if (scaledPoint.distance(controlPoint) < CONTROL_POINT_SIZE) {
+						if (scaledPoint.distance(controlPoint) < ProjectPainter.CONTROL_POINT_SIZE) {
 							Set<Integer> indices = new HashSet<Integer>();
 							if (componentType.isStretchable()) {
 								indices.add(pointIndex);
@@ -563,11 +446,6 @@ public class Presenter implements IPlugInPort {
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 		// calculateSelectionDimension());
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
-	}
-
-	@Override
-	public Area getComponentArea(IDIYComponent<?> component) {
-		return componentAreaMap.get(component);
 	}
 
 	@Override
@@ -664,7 +542,7 @@ public class Presenter implements IPlugInPort {
 							Point secondPoint = entry.getKey().getControlPoint(j);
 							// If they are close enough we can consider them
 							// matched.
-							if (firstPoint.distance(secondPoint) < CONTROL_POINT_SIZE) {
+							if (firstPoint.distance(secondPoint) < ProjectPainter.CONTROL_POINT_SIZE) {
 								componentMatches = true;
 								break;
 							}
@@ -722,6 +600,7 @@ public class Presenter implements IPlugInPort {
 				// Update all points.
 				for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
 					IDIYComponent<?> c = entry.getKey();
+					projectPainter.invalidateComponent(c);
 					for (Integer index : entry.getValue()) {
 						Point p = new Point(c.getControlPoint(index));
 						p.translate(dx, dy);
@@ -732,7 +611,8 @@ public class Presenter implements IPlugInPort {
 		} else if (selectedComponents.isEmpty()) {
 			// If there's no selection, the only thing to do is update the
 			// selection rectangle and refresh.
-			Rectangle oldSelectionRect = selectionRect == null ? null : new Rectangle(selectionRect);
+			Rectangle oldSelectionRect = selectionRect == null ? null
+					: new Rectangle(selectionRect);
 			this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
 			repaint = !selectionRect.equals(oldSelectionRect);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
@@ -772,7 +652,7 @@ public class Presenter implements IPlugInPort {
 			}
 			selectedComponents.clear();
 			for (IDIYComponent<?> component : currentProject.getComponents()) {
-				Area area = componentAreaMap.get(component);
+				Area area = projectPainter.getComponentArea(component);
 				if ((area != null) && (selectionRect != null) && area.intersects(selectionRect)) {
 					selectedComponents.addAll(findAllGroupedComponents(component));
 				}
@@ -970,7 +850,7 @@ public class Presenter implements IPlugInPort {
 		boolean metric = ConfigurationManager.getInstance().readBoolean(METRIC_KEY, true);
 		Area area = new Area();
 		for (IDIYComponent<?> component : selectedComponents) {
-			Area componentArea = componentAreaMap.get(component);
+			Area componentArea = projectPainter.getComponentArea(component);
 			if (componentArea != null) {
 				area.add(componentArea);
 			}
@@ -1114,6 +994,7 @@ public class Presenter implements IPlugInPort {
 		Project oldProject = cloner.deepClone(currentProject);
 		try {
 			for (IDIYComponent<?> component : selectedComponents) {
+				projectPainter.invalidateComponent(component);
 				for (PropertyWrapper property : properties) {
 					property.writeTo(component);
 				}
