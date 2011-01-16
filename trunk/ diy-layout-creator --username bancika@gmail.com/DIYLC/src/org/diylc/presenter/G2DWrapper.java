@@ -37,6 +37,8 @@ import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
+import org.diylc.core.IDrawingObserver;
+
 /**
  * {@link Graphics2D} wrapper that keeps track of all drawing actions and
  * creates an {@link Area} that corresponds to drawn objects. Before each
@@ -47,12 +49,13 @@ import java.util.Map;
  * 
  * @author Branislav Stojkovic
  */
-class G2DWrapper extends Graphics2D {
+class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
 	public static int LINE_SENSITIVITY_MARGIN = 2;
 	public static int CURVE_SENSITIVITY = 6;
 
 	private boolean drawingComponent = false;
+	private boolean trackingAllowed = true;
 
 	private Graphics2D canvasGraphics;
 	private Stroke originalStroke;
@@ -89,6 +92,7 @@ class G2DWrapper extends Graphics2D {
 		originalFont = canvasGraphics.getFont();
 		currentTx = new AffineTransform();
 		lastShape = null;
+		startTracking();
 	}
 
 	/**
@@ -107,13 +111,23 @@ class G2DWrapper extends Graphics2D {
 		return currentArea;
 	}
 
+	@Override
+	public void startTracking() {
+		this.trackingAllowed = true;
+	}
+
+	@Override
+	public void stopTracking() {
+		this.trackingAllowed = false;
+	}
+
 	/**
 	 * Appends shape interior to the current component area.
 	 * 
 	 * @param s
 	 */
 	private void appendShape(Shape s) {
-		if (!drawingComponent) {
+		if (!drawingComponent || !trackingAllowed) {
 			return;
 		}
 		Area area = new Area(s);
@@ -129,7 +143,7 @@ class G2DWrapper extends Graphics2D {
 	 */
 	private void appendShapeOutline(Shape s) {
 		// Do not add shape outline if the same shape has been filled recently.
-		if (!drawingComponent || s.equals(lastShape)) {
+		if (!drawingComponent || !trackingAllowed || s.equals(lastShape)) {
 			return;
 		}
 		lastShape = s;
@@ -235,7 +249,9 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void draw(Shape s) {
 		canvasGraphics.draw(s);
-		appendShapeOutline(s);
+		if (drawingComponent && trackingAllowed) {
+			appendShapeOutline(s);
+		}
 	}
 
 	@Override
@@ -270,19 +286,23 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void drawString(String str, int x, int y) {
 		canvasGraphics.drawString(str, x, y);
-		FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
-		Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
-		appendShape(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(), rect
-				.getHeight()));
+		if (drawingComponent && trackingAllowed) {
+			FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
+			Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
+			appendShape(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(),
+					rect.getHeight()));
+		}
 	}
 
 	@Override
 	public void drawString(String str, float x, float y) {
 		canvasGraphics.drawString(str, x, y);
-		FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
-		Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
-		appendShape(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(), rect
-				.getHeight()));
+		if (drawingComponent && trackingAllowed) {
+			FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
+			Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
+			appendShape(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(),
+					rect.getHeight()));
+		}
 	}
 
 	@Override
@@ -508,19 +528,25 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void drawLine(int x1, int y1, int x2, int y2) {
 		canvasGraphics.drawLine(x1, y1, x2, y2);
-		appendShapeOutline(new Line2D.Double(x1, y1, x2, y2));
+		if (drawingComponent && trackingAllowed) {
+			appendShapeOutline(new Line2D.Double(x1, y1, x2, y2));
+		}
 	}
 
 	@Override
 	public void drawOval(int x, int y, int width, int height) {
 		canvasGraphics.drawOval(x, y, width, height);
-		appendShapeOutline(new Ellipse2D.Double(x, y, width, height));
+		if (drawingComponent && trackingAllowed) {
+			appendShapeOutline(new Ellipse2D.Double(x, y, width, height));
+		}
 	}
 
 	@Override
 	public void drawPolygon(int[] points, int[] points2, int points3) {
 		canvasGraphics.drawPolygon(points, points2, points3);
-		appendShapeOutline(new Polygon(points, points2, points3));
+		if (drawingComponent && trackingAllowed) {
+			appendShapeOutline(new Polygon(points, points2, points3));
+		}
 	}
 
 	@Override
@@ -531,43 +557,57 @@ class G2DWrapper extends Graphics2D {
 	@Override
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 		canvasGraphics.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
-		appendShapeOutline(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
+		if (drawingComponent && trackingAllowed) {
+			appendShapeOutline(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
+		}
 	}
 
 	@Override
 	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 		canvasGraphics.fillArc(x, y, width, height, startAngle, arcAngle);
-		appendShape(new Arc2D.Double(x, y, width, height, startAngle, arcAngle, Arc2D.PIE));
+		if (drawingComponent && trackingAllowed) {
+			appendShape(new Arc2D.Double(x, y, width, height, startAngle, arcAngle, Arc2D.PIE));
+		}
 	}
 
 	@Override
 	public void fillOval(int x, int y, int width, int height) {
 		canvasGraphics.fillOval(x, y, width, height);
-		appendShape(new Ellipse2D.Double(x, y, width, height));
+		if (drawingComponent && trackingAllowed) {
+			appendShape(new Ellipse2D.Double(x, y, width, height));
+		}
 	}
 
 	@Override
 	public void fillPolygon(int[] points, int[] points2, int points3) {
 		canvasGraphics.fillPolygon(points, points2, points3);
-		appendShape(new Polygon(points, points2, points3));
+		if (drawingComponent && trackingAllowed) {
+			appendShape(new Polygon(points, points2, points3));
+		}
 	}
 
 	@Override
 	public void drawRect(int x, int y, int width, int height) {
 		canvasGraphics.drawRect(x, y, width, height);
-		appendShapeOutline(new Rectangle(x, y, width, height));
+		if (drawingComponent && trackingAllowed) {
+			appendShapeOutline(new Rectangle(x, y, width, height));
+		}
 	}
 
 	@Override
 	public void fillRect(int x, int y, int width, int height) {
 		canvasGraphics.fillRect(x, y, width, height);
-		appendShape(new Rectangle(x, y, width, height));
+		if (drawingComponent && trackingAllowed) {
+			appendShape(new Rectangle(x, y, width, height));
+		}
 	}
 
 	@Override
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 		canvasGraphics.fillRoundRect(x, y, width, height, arcWidth, arcHeight);
-		appendShape(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
+		if (drawingComponent && trackingAllowed) {
+			appendShape(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
+		}
 	}
 
 	@Override

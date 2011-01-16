@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 
 import org.diylc.core.ComponentState;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -55,7 +56,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		double distance = points[0].distance(points[1]);
 		Shape shape = getBodyShape();
 		if (shape == null) {
@@ -92,6 +94,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				(int) ((shapeRect.width - distance) / 2 + leadLenght), (int) shapeRect.height / 2);
 		g2d.drawLine((int) (shapeRect.width + distance) / 2, (int) shapeRect.height / 2,
 				(int) ((shapeRect.width + distance) / 2 - leadLenght), (int) shapeRect.height / 2);
+		// Do not track the label because that area was already covered.
+		drawingObserver.stopTracking();
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
 		g2d

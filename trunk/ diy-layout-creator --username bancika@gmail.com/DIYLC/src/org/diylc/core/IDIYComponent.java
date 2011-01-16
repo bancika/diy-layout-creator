@@ -39,7 +39,7 @@ public interface IDIYComponent<T> extends Serializable {
 	public static final int ABOVE_BOARD = 6;
 	public static final int COMPONENT = 7;
 	public static final int ABOVE_COMPONENT = 8;
-	
+
 	public static Color SELECTION_COLOR = Color.red;
 
 	/**
@@ -93,8 +93,10 @@ public interface IDIYComponent<T> extends Serializable {
 	 * @param g2d
 	 * @param componentState
 	 * @param project
+	 * @param drawingObserver
 	 */
-	void draw(Graphics2D g2d, ComponentState componentState, Project project);
+	void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver);
 
 	/**
 	 * Draws icon representation of the component. This should not depend on

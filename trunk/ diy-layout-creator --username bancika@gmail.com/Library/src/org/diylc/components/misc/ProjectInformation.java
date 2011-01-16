@@ -10,6 +10,7 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.Size;
@@ -28,7 +29,8 @@ public class ProjectInformation extends AbstractComponent<Void> {
 	private Point point = new Point(0, 0);
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		g2d.setFont(Constants.LABEL_FONT);
 		g2d.setColor(componentState == ComponentState.DRAGGING
 				|| componentState == ComponentState.SELECTED ? SELECTION_COLOR : COLOR);

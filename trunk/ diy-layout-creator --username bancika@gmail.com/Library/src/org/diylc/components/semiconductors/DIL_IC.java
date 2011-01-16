@@ -16,6 +16,7 @@ import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -44,13 +45,16 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	private Size pinSpacing = new Size(0.1d, SizeUnit.in);
 	private Size rowSpacing = new Size(0.3d, SizeUnit.in);
 	private Point[] controlPoints = new Point[] { new Point(0, 0) };
-//			new Point(0, pinSpacing.convertToPixels()),
-//			new Point(0, 2 * pinSpacing.convertToPixels()),
-//			new Point(0, 3 * pinSpacing.convertToPixels()),
-//			new Point(3 * pinSpacing.convertToPixels(), 0),
-//			new Point(3 * pinSpacing.convertToPixels(), pinSpacing.convertToPixels()),
-//			new Point(3 * pinSpacing.convertToPixels(), 2 * pinSpacing.convertToPixels()),
-//			new Point(3 * pinSpacing.convertToPixels(), 3 * pinSpacing.convertToPixels()) };
+	// new Point(0, pinSpacing.convertToPixels()),
+	// new Point(0, 2 * pinSpacing.convertToPixels()),
+	// new Point(0, 3 * pinSpacing.convertToPixels()),
+	// new Point(3 * pinSpacing.convertToPixels(), 0),
+	// new Point(3 * pinSpacing.convertToPixels(),
+	// pinSpacing.convertToPixels()),
+	// new Point(3 * pinSpacing.convertToPixels(), 2 *
+	// pinSpacing.convertToPixels()),
+	// new Point(3 * pinSpacing.convertToPixels(), 3 *
+	// pinSpacing.convertToPixels()) };
 	private Shape body;
 
 	public DIL_IC() {
@@ -212,7 +216,8 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		int pinSize = PIN_SIZE.convertToPixels() / 2 * 2;
 		for (Point point : controlPoints) {
 			g2d.setColor(PIN_COLOR);

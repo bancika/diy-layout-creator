@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -30,9 +31,9 @@ public class PerfBoard extends AbstractBoard {
 	protected Color padColor = PAD_COLOR;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
-		super.draw(g2d, componentState, project);
-
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
+		super.draw(g2d, componentState, project, drawingObserver);
 		if (componentState != ComponentState.DRAGGING) {
 			if (alpha < MAX_ALPHA) {
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha

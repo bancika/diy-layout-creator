@@ -12,6 +12,7 @@ import java.awt.geom.RoundRectangle2D;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -153,7 +154,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project) {
+	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+			IDrawingObserver drawingObserver) {
 		Shape body = getBody();
 		// Draw body if available.
 		if (body != null) {
@@ -170,6 +172,9 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
 			g2d.draw(body);
 		}
+		// Do not track these changes because the whole switch has been tracked
+		// so far.
+		drawingObserver.stopTracking();
 		// Draw lugs.
 		int circleDiameter = getClosestOdd(CIRCLE_SIZE.convertToPixels());
 		int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
