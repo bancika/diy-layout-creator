@@ -4,7 +4,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Area;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -225,13 +224,6 @@ public interface IPlugInPort {
 	 * Selects all components in the project.
 	 */
 	void selectAll();
-
-	/**
-	 * Returns the {@link Area} occupied by the component.
-	 * 
-	 * @return
-	 */
-	Area getComponentArea(IDIYComponent<?> component);
 
 	/**
 	 * Notification that drag has been started from the specified point.
