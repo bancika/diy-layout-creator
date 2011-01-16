@@ -243,9 +243,11 @@ public class MainFrame extends JFrame implements IView {
 		@Override
 		public void processMessage(EventType eventType, Object... params) {
 			if (eventType == EventType.FILE_STATUS_CHANGED) {
-				String fileName = plugInPort.getCurrentFileName() == null ? "Untitled" : plugInPort
-						.getCurrentFileName();
-				String modified = plugInPort.isProjectModified() ? " (modified)" : "";
+				String fileName = (String) params[0];
+				if (fileName == null) {
+					fileName = "Untitled";
+				}
+				String modified = (Boolean) params[1] ? " (modified)" : "";
 				setTitle(String.format("DIYLC %s alpha - %s %s", plugInPort.getCurrentVersionNumber(),
 						fileName, modified));
 			}
