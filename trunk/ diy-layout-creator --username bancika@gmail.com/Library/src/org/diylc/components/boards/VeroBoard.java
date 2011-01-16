@@ -45,7 +45,7 @@ public class VeroBoard extends AbstractBoard {
 			}
 			Point p = new Point(controlPoints[0]);
 			int stripSize = getClosestOdd(STRIP_SIZE.convertToPixels());
-			int holeRadius = getClosestOdd(HOLE_SIZE.convertToPixels() / 2);
+			int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
 			int spacing = this.spacing.convertToPixels();
 
 			while (p.y < controlPoints[1].y - spacing) {
@@ -57,9 +57,7 @@ public class VeroBoard extends AbstractBoard {
 				while (p.x < controlPoints[1].x - spacing) {
 					p.x += spacing;
 					g2d.setColor(Constants.CANVAS_COLOR);
-					g2d
-							.fillOval(p.x - holeRadius, p.y - holeRadius, holeRadius * 2,
-									holeRadius * 2);
+					g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
 				}
 			}
 			g2d.setComposite(oldComposite);
