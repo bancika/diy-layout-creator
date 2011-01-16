@@ -20,6 +20,7 @@ public class Constants {
 
 	public static Font LABEL_FONT = new Font("Tahoma", Font.PLAIN, 11);
 
+	public static final Stroke BASIC_STROKE = new BasicStroke();
 	public static final Stroke DASHED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
 			BasicStroke.JOIN_MITER, 2.0f, new float[] { 2.0f }, 0.0f);
 }
