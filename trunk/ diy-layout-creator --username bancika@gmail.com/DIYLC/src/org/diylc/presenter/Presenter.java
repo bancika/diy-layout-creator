@@ -375,6 +375,8 @@ public class Presenter implements IPlugInPort {
 				} else {
 					controlPointSlot = scaledPoint;
 					snapPointToGrid(controlPointSlot);
+					messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot,
+							controlPointSlot);
 					messageDispatcher.dispatchMessage(EventType.REPAINT);
 				}
 				break;
@@ -1118,11 +1120,12 @@ public class Presenter implements IPlugInPort {
 		this.potentialControlPoint = null;
 		selectedComponents.clear();
 		fireSelectionChanged();
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 		// selectedComponents);
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 		// calculateSelectionDimension());
-		messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot);
+		messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot, controlPointSlot);
 	}
 
 	/**

@@ -3,6 +3,7 @@ package org.diylc.plugins.statusbar;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -56,6 +57,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	// State variables
 	private ComponentType componentSlot;
+	private Point controlPointSlot;
 	private List<IDIYComponent<?>> componentsUnderCursor;
 	private List<String> selectedComponentNames;
 	private List<String> stuckComponentNames;
@@ -220,6 +222,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 			break;
 		case SLOT_CHANGED:
 			componentSlot = (ComponentType) params[0];
+			controlPointSlot = (Point) params[1];
 			refreshStatusText();
 			break;
 		case AVAILABLE_CTRL_POINTS_CHANGED:
@@ -250,9 +253,24 @@ public class StatusBar extends JPanel implements IPlugIn {
 				getStatusLabel().setText("");
 			}
 		} else {
-			getStatusLabel().setText(
-					"Click on the canvas to create a new " + componentSlot.getName()
-							+ " or press Esc to cancel");
+			switch (componentSlot.getCreationMethod()) {
+			case POINT_BY_POINT:
+				String count;
+				if (controlPointSlot == null) {
+					count = "first";
+				} else {
+					count = "second";
+				}
+				getStatusLabel().setText(
+						"Click on the canvas to set the " + count + " control point of a new "
+								+ componentSlot.getName() + " or press Esc to cancel");
+				break;
+			case SINGLE_CLICK:
+				getStatusLabel().setText(
+						"Click on the canvas to create a new " + componentSlot.getName()
+								+ " or press Esc to cancel");
+				break;
+			}
 		}
 	}
 }
