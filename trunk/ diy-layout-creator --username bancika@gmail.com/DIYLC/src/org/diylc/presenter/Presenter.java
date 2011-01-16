@@ -715,7 +715,8 @@ public class Presenter implements IPlugInPort {
 
 		if (!preDragProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, cloner
-					.deepClone(currentProject), "Move");
+					.deepClone(currentProject), "Drag");
+			this.modified = true;
 			fireFileStatusChanged();
 		}
 		fireSelectionChanged();
