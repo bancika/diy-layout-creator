@@ -6,6 +6,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -14,7 +15,7 @@ import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Ceramic Capacitor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "C", description = "test", zOrder = IDIYComponent.COMPONENT, sticky = true)
+@ComponentDescriptor(name = "Ceramic Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "test", zOrder = IDIYComponent.COMPONENT, sticky = true)
 public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;

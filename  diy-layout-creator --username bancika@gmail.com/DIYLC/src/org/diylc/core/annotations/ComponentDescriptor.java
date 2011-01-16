@@ -3,6 +3,7 @@ package org.diylc.core.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 
 /**
@@ -23,6 +24,13 @@ public @interface ComponentDescriptor {
 	 * @return component type description.
 	 */
 	String description();
+
+	/**
+	 * @return method that should be used to create a component. If
+	 *         <code>CreationMethod.POINT_BY_POINT</code> is used, user will
+	 *         have to select ending points before the component is created.
+	 */
+	CreationMethod creationMethod() default CreationMethod.SINGLE_CLICK;
 
 	/**
 	 * @return component category, e.g. "Passive", "Semiconductors", etc.

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.diylc.common.ComponentSelection;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IComponentFiler;
@@ -33,9 +32,7 @@ import org.diylc.utils.Constants;
  */
 public class ProjectPainter {
 
-	private static final Logger LOG = Logger.getLogger(ProjectPainter.class);
-
-	public static final int CONTROL_POINT_SIZE = 5;
+	public static final int CONTROL_POINT_SIZE = 7;
 	public static boolean ENABLE_ANTIALIASING = true;
 	public static boolean DEBUG_COMPONENT_AREAS = false;
 
@@ -51,9 +48,10 @@ public class ProjectPainter {
 		lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
 	}
 
-	public void draw(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
+	public void drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
 			IComponentFiler filter, Rectangle selectionRect, ComponentSelection selectedComponents,
-			Set<IDIYComponent<?>> drawControlPoints, boolean dragInProgress, double zoomLevel) {
+			Set<IDIYComponent<?>> drawControlPoints, List<Point> controlPointSlot,
+			boolean dragInProgress, double zoomLevel) {
 		if (project == null) {
 			return;
 		}
@@ -93,57 +91,64 @@ public class ProjectPainter {
 
 		// g2dWrapper.resetTx();
 
-		List<IDIYComponent<?>> components = project.getComponents();
 		// componentAreaMap.clear();
-		if (components != null) {
-			for (IDIYComponent<?> component : components) {
-				// Do not draw the component if it's filtered out.
-				if (filter != null && !filter.testComponent(component)) {
-					continue;
-				}
-				ComponentState state = ComponentState.NORMAL;
-				if (drawOptions.contains(DrawOption.SELECTION)
-						&& selectedComponents.contains(component)) {
-					if (dragInProgress) {
-						state = ComponentState.DRAGGING;
-					} else {
-						state = ComponentState.SELECTED;
-					}
-				}
-				// Do not track the area if component is not invalidated and was
-				// drawn in the same state.
-				boolean trackArea = lastDrawnStateMap.get(component) != state;
-				g2dWrapper.startedDrawingComponent();
-				if (!trackArea) {
-					g2dWrapper.stopTracking();
-				}
-				// Draw the component through the g2dWrapper.
-				component.draw(g2dWrapper, state, project, g2dWrapper);
-				Area area = g2dWrapper.finishedDrawingComponent();
-				if (trackArea) {
-					componentAreaMap.put(component, area);
-					lastDrawnStateMap.put(component, state);
+		for (IDIYComponent<?> component : project.getComponents()) {
+			// Do not draw the component if it's filtered out.
+			if (filter != null && !filter.testComponent(component)) {
+				continue;
+			}
+			ComponentState state = ComponentState.NORMAL;
+			if (drawOptions.contains(DrawOption.SELECTION)
+					&& selectedComponents.contains(component)) {
+				if (dragInProgress) {
+					state = ComponentState.DRAGGING;
+				} else {
+					state = ComponentState.SELECTED;
 				}
 			}
-			// Draw control points.
-			for (IDIYComponent<?> component : components) {
-				if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
+			// Do not track the area if component is not invalidated and was
+			// drawn in the same state.
+			boolean trackArea = lastDrawnStateMap.get(component) != state;
+			g2dWrapper.startedDrawingComponent();
+			if (!trackArea) {
+				g2dWrapper.stopTracking();
+			}
+			// Draw the component through the g2dWrapper.
+			component.draw(g2dWrapper, state, project, g2dWrapper);
+			Area area = g2dWrapper.finishedDrawingComponent();
+			if (trackArea) {
+				componentAreaMap.put(component, area);
+				lastDrawnStateMap.put(component, state);
+			}
+		}
+
+		// Draw control points of the component in the slot.
+		if (controlPointSlot != null) {
+			for (Point point : controlPointSlot) {
+				if (point != null) {
+					g2dWrapper.setColor(Constants.SELECTED_CONTROL_POINT_COLOR);
+					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2, point.y
+							- CONTROL_POINT_SIZE / 2, CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
+				}
+			}
+		}
+
+		g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
+		// Draw control points.
+		for (IDIYComponent<?> component : project.getComponents()) {
+			if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
+				if (drawControlPoints.contains(component)) {
+					boolean isSelected = selectedComponents.contains(component);
+					g2dWrapper.setColor(isSelected ? Constants.SELECTED_CONTROL_POINT_COLOR
+							: Constants.CONTROL_POINT_COLOR);
 					for (int i = 0; i < component.getControlPointCount(); i++) {
 						Point controlPoint = component.getControlPoint(i);
-						try {
-							if (drawControlPoints.contains(component)) {
-								g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
-								g2dWrapper.setStroke(new BasicStroke(2));
-								// g2d.drawOval(controlPoint.x - 2,
-								// controlPoint.y - 2, 4, 4);
-								g2dWrapper.fillOval(controlPoint.x - CONTROL_POINT_SIZE / 2,
-										controlPoint.y - CONTROL_POINT_SIZE / 2,
-										CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
-							}
-						} catch (Exception e) {
-							LOG.error("Could not obtain control points for component of type "
-									+ component.getClass().getName());
+						int pointSize = CONTROL_POINT_SIZE;
+						if (!isSelected) {
+							pointSize -= 2;
 						}
+						g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
+								- pointSize / 2, pointSize, pointSize);
 					}
 				}
 			}

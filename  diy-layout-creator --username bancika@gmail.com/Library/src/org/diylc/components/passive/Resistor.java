@@ -6,6 +6,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -14,7 +15,7 @@ import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "R", description = "test", zOrder = IDIYComponent.COMPONENT, sticky = true)
+@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "test", zOrder = IDIYComponent.COMPONENT, sticky = true)
 public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	private static final long serialVersionUID = 1L;

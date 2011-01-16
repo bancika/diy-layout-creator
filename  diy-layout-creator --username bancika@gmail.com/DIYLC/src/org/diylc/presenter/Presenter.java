@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.measures.SizeUnit;
@@ -103,7 +105,10 @@ public class Presenter implements IPlugInPort {
 	private Point previousDragPoint = null;
 	private Project preDragProject = null;
 
+	// Component creation
 	private ComponentType componentSlot;
+	private Point controlPointSlot;
+	private Point potentialControlPoint;
 
 	private boolean snapToGrid = true;
 
@@ -307,8 +312,9 @@ public class Presenter implements IPlugInPort {
 				drawControlPoints.add(component);
 			}
 		}
-		projectPainter.draw(g2d, currentProject, drawOptions, filter, selectionRect,
-				selectedComponents, drawControlPoints, dragInProgress, zoomLevel);
+		projectPainter.drawProject(g2d, currentProject, drawOptions, filter, selectionRect,
+				selectedComponents, drawControlPoints, Arrays.asList(controlPointSlot,
+						potentialControlPoint), dragInProgress, zoomLevel);
 	}
 
 	@Override
@@ -347,13 +353,34 @@ public class Presenter implements IPlugInPort {
 				.format("mouseClicked(%s, %s, %s, %s)", point, ctrlDown, shiftDown, altDown));
 		Point scaledPoint = scalePoint(point);
 		if (componentSlot != null) {
-			try {
-				instantiateComponent(componentSlot, scaledPoint);
-			} catch (Exception e) {
-				LOG.error("Error instatiating component of type: "
-						+ componentSlot.getInstanceClass().getName(), e);
+			switch (componentSlot.getCreationMethod()) {
+			case SINGLE_CLICK:
+				try {
+					instantiateComponent(componentSlot, scaledPoint);
+				} catch (Exception e) {
+					LOG.error("Error instatiating component of type: "
+							+ componentSlot.getInstanceClass().getName(), e);
+				}
+				setNewComponentSlot(null);
+				break;
+			case POINT_BY_POINT:
+				if (controlPointSlot != null) {
+					try {
+						instantiateComponent(componentSlot, controlPointSlot, scaledPoint);
+					} catch (Exception e) {
+						LOG.error("Error instatiating component of type: "
+								+ componentSlot.getInstanceClass().getName(), e);
+					}
+					setNewComponentSlot(null);
+				} else {
+					controlPointSlot = scaledPoint;
+					snapPointToGrid(controlPointSlot);
+					messageDispatcher.dispatchMessage(EventType.REPAINT);
+				}
+				break;
+			default:
+				LOG.error("Unknown creation method: " + componentSlot.getCreationMethod());
 			}
-			setNewComponentSlot(null);
 		} else {
 			List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
 			// If there's nothing under mouse cursor deselect all.
@@ -388,38 +415,46 @@ public class Presenter implements IPlugInPort {
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
-		// Go backwards so we take the highest z-order components first.
-		for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
-			IDIYComponent<?> component = currentProject.getComponents().get(i);
-			ComponentType componentType = componentTypeMap.get(component.getClass().getName());
-			for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
-				Point controlPoint = component.getControlPoint(pointIndex);
-				// Only consider selected components that are not grouped.
-				if (selectedComponents.contains(component) && componentType.isStretchable()
-						&& findAllGroupedComponents(component).size() == 1) {
-					try {
-						if (scaledPoint.distance(controlPoint) < ProjectPainter.CONTROL_POINT_SIZE) {
-							Set<Integer> indices = new HashSet<Integer>();
-							if (componentType.isStretchable()) {
-								indices.add(pointIndex);
-							} else {
-								for (int j = 0; j < component.getControlPointCount(); j++) {
-									indices.add(j);
+		if (componentSlot != null
+				&& componentSlot.getCreationMethod() == CreationMethod.POINT_BY_POINT) {
+			potentialControlPoint = scaledPoint;
+			snapPointToGrid(potentialControlPoint);
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+		} else {
+			// Go backwards so we take the highest z-order components first.
+			for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
+				IDIYComponent<?> component = currentProject.getComponents().get(i);
+				ComponentType componentType = componentTypeMap.get(component.getClass().getName());
+				for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
+					Point controlPoint = component.getControlPoint(pointIndex);
+					// Only consider selected components that are not grouped.
+					if (selectedComponents.contains(component) && componentType.isStretchable()
+							&& findAllGroupedComponents(component).size() == 1) {
+						try {
+							if (scaledPoint.distance(controlPoint) < ProjectPainter.CONTROL_POINT_SIZE) {
+								Set<Integer> indices = new HashSet<Integer>();
+								if (componentType.isStretchable()) {
+									indices.add(pointIndex);
+								} else {
+									for (int j = 0; j < component.getControlPointCount(); j++) {
+										indices.add(j);
+									}
 								}
+								components.put(component, indices);
+								break;
 							}
-							components.put(component, indices);
-							break;
+						} catch (Exception e) {
+							LOG.warn("Error reading control point for component of type: "
+									+ component.getClass().getName());
 						}
-					} catch (Exception e) {
-						LOG.warn("Error reading control point for component of type: "
-								+ component.getClass().getName());
 					}
 				}
+				// // If CTRL is pressed, we only care about the top most
+				// component.
+				// if (altDown && components.size() > 0) {
+				// break;
+				// }
 			}
-			// // If CTRL is pressed, we only care about the top most component.
-			// if (altDown && components.size() > 0) {
-			// break;
-			// }
 		}
 
 		messageDispatcher.dispatchMessage(EventType.MOUSE_MOVED, scaledPoint);
@@ -637,6 +672,16 @@ public class Presenter implements IPlugInPort {
 		return (Math.round(1f * x / grid) * grid);
 	}
 
+	private void snapPointToGrid(Point point) {
+		int x = point.x;
+		int y = point.y;
+		if (snapToGrid) {
+			x = roundToGrid(x);
+			y = roundToGrid(y);
+		}
+		point.setLocation(x, y);
+	}
+
 	@Override
 	public void dragEnded(Point point) {
 		LOG.debug(String.format("dragEnded(%s)", point));
@@ -719,7 +764,6 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setSelectionDefaultPropertyValue(String propertyName, Object value) {
 		LOG.info(String.format("setSelectionDefaultPropertyValue(%s, %s)", propertyName, value));
@@ -887,8 +931,8 @@ public class Presenter implements IPlugInPort {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void instantiateComponent(ComponentType componentType, Point point) throws Exception {
+	private void instantiateComponent(ComponentType componentType, Point... points)
+			throws Exception {
 		LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
 
 		Project oldProject = cloner.deepClone(currentProject);
@@ -919,17 +963,23 @@ public class Presenter implements IPlugInPort {
 		selectedComponents.add(component);
 
 		// Translate them to the desired location.
-		if (point != null) {
-			for (int j = 0; j < component.getControlPointCount(); j++) {
-				Point controlPoint = new Point(component.getControlPoint(j));
-				int x = controlPoint.x + point.x;
-				int y = controlPoint.y + point.y;
-				if (snapToGrid) {
-					x = roundToGrid(x);
-					y = roundToGrid(y);
+		if (points != null) {
+			switch (componentType.getCreationMethod()) {
+			case SINGLE_CLICK:
+				for (int j = 0; j < component.getControlPointCount(); j++) {
+					Point controlPoint = new Point(component.getControlPoint(j));
+					controlPoint.translate(points[0].x, points[0].y);
+					snapPointToGrid(controlPoint);
+					component.setControlPoint(controlPoint, j);
 				}
-				controlPoint.setLocation(x, y);
-				component.setControlPoint(controlPoint, j);
+				break;
+			case POINT_BY_POINT:
+				for (int j = 0; j < points.length; j++) {
+					Point point = points[j];
+					snapPointToGrid(point);
+					component.setControlPoint(point, j);
+				}
+				break;
 			}
 		}
 
@@ -1064,6 +1114,8 @@ public class Presenter implements IPlugInPort {
 		LOG.info(String.format("setNewComponentSlot(%s)", componentType == null ? null
 				: componentType.getName()));
 		this.componentSlot = componentType;
+		this.controlPointSlot = null;
+		this.potentialControlPoint = null;
 		selectedComponents.clear();
 		fireSelectionChanged();
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
@@ -1098,6 +1150,6 @@ public class Presenter implements IPlugInPort {
 		if (findAllGroupedComponents(component).size() > 1) {
 			return false;
 		}
-		return selectedComponents.contains(component);
+		return true;
 	}
 }

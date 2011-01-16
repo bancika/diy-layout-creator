@@ -21,8 +21,7 @@ public class VeroBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color BOARD_COLOR = Color.decode("#BCED91");
-	public static Color PAD_COLOR = Color.decode("#B87333");
+	public static Color PAD_COLOR = Color.decode("#F3926C");
 	public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
 	public static Size SPACING = new Size(0.1d, SizeUnit.in);
