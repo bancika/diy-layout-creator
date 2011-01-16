@@ -31,10 +31,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color LEAD_COLOR = Color.black;
+	public static Color LEAD_COLOR = Color.decode("#65909A");
 	public static Color LABEL_COLOR = Color.black;
 	public static Color LABEL_COLOR_SELECTED = Color.red;
-	public static Size LEAD_THICKNESS = new Size(0.3d, SizeUnit.mm);
+	public static Size LEAD_THICKNESS = new Size(0.8d, SizeUnit.mm);
 	public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
 	protected Size width;
@@ -91,12 +91,15 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.draw(shape);
 		// Draw leads.
-		g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
+		int leadThickness = getLeadThickness().convertToPixels();
+		g2d.setStroke(new BasicStroke(leadThickness));
 		g2d.setColor(getLeadColor(componentState));
 		g2d.drawLine((int) (shapeRect.width - distance) / 2, (int) shapeRect.height / 2,
-				(int) ((shapeRect.width - distance) / 2 + leadLenght), (int) shapeRect.height / 2);
+				(int) ((shapeRect.width - distance) / 2 + leadLenght) - leadThickness / 2,
+				(int) shapeRect.height / 2);
 		g2d.drawLine((int) (shapeRect.width + distance) / 2, (int) shapeRect.height / 2,
-				(int) ((shapeRect.width + distance) / 2 - leadLenght), (int) shapeRect.height / 2);
+				(int) ((shapeRect.width + distance) / 2 - leadLenght) + leadThickness / 2,
+				(int) shapeRect.height / 2);
 		// Do not track the label because that area was already covered.
 		drawingObserver.stopTracking();
 		// Draw label.
@@ -204,12 +207,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	public void setHeight(Size height) {
 		this.height = height;
 	}
-	
+
 	@EditableProperty
 	public Display getDisplay() {
 		return display;
 	}
-	
+
 	public void setDisplay(Display display) {
 		this.display = display;
 	}

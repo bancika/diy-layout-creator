@@ -7,13 +7,14 @@ import java.awt.Shape;
 
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "Trace", description = "", zOrder = IDIYComponent.ABOVE_BOARD, sticky = true)
+@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace", description = "", zOrder = IDIYComponent.ABOVE_BOARD, sticky = true)
 public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;

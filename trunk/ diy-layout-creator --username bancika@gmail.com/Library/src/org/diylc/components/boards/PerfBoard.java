@@ -20,7 +20,7 @@ public class PerfBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color PAD_COLOR = Color.decode("#B87333");
+	public static Color PAD_COLOR = Color.decode("#F3926C");
 
 	public static Size SPACING = new Size(0.1d, SizeUnit.in);
 	public static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);

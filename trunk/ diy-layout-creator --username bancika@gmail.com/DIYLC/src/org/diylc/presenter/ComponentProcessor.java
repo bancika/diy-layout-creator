@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -54,6 +55,7 @@ public class ComponentProcessor {
 	public ComponentType createComponentTypeFrom(Class<? extends IDIYComponent<?>> clazz) {
 		String name;
 		String description;
+		CreationMethod creationMethod;
 		String category;
 		String namePrefix;
 		String author;
@@ -65,6 +67,7 @@ public class ComponentProcessor {
 			ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
 			name = annotation.name();
 			description = annotation.description();
+			creationMethod = annotation.creationMethod();
 			category = annotation.category();
 			namePrefix = annotation.instanceNamePrefix();
 			author = annotation.author();
@@ -74,6 +77,7 @@ public class ComponentProcessor {
 		} else {
 			name = clazz.getSimpleName();
 			description = "";
+			creationMethod = CreationMethod.SINGLE_CLICK;
 			category = "Uncategorized";
 			namePrefix = "Unknown";
 			author = "Unknown";
@@ -88,9 +92,7 @@ public class ComponentProcessor {
 			Image image = new BufferedImage(Presenter.ICON_SIZE, Presenter.ICON_SIZE,
 					java.awt.image.BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) image.getGraphics();
-			g2d
-					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			componentInstance.drawIcon(g2d, Presenter.ICON_SIZE, Presenter.ICON_SIZE);
 			icon = new ImageIcon(image);
 		} catch (InstantiationException e) {
@@ -98,8 +100,8 @@ public class ComponentProcessor {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		ComponentType componentType = new ComponentType(name, description, category, namePrefix,
-				author, icon, clazz, zOrder, stretchable, sticky);
+		ComponentType componentType = new ComponentType(name, description, creationMethod,
+				category, namePrefix, author, icon, clazz, zOrder, stretchable, sticky);
 		return componentType;
 	}
 

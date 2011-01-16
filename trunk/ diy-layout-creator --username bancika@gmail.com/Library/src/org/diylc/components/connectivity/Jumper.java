@@ -7,12 +7,13 @@ import java.awt.Shape;
 
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 
-@ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "J", description = "", zOrder = IDIYComponent.ABOVE_BOARD, sticky = true)
+@ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "J", description = "", zOrder = IDIYComponent.ABOVE_BOARD, sticky = true)
 public class Jumper extends AbstractLeadedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
