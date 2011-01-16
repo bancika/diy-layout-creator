@@ -9,7 +9,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
+import org.diylc.common.Display;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -42,6 +44,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			new Point(DEFAULT_SIZE.convertToPixels() / 2, 0) };
 	protected Color bodyColor = getDefaultBodyColor();
 	protected Color borderColor = getDefaultBorderColor();
+	protected Display display = Display.NAME;
 
 	protected AbstractLeadedComponent() {
 		super();
@@ -102,8 +105,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
 						: LABEL_COLOR);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-		java.awt.geom.Rectangle2D textRect = fontMetrics.getStringBounds(getName(), g2d);
-		g2d.drawString(getName(), (int) (shapeRect.width - textRect.getWidth()) / 2,
+		String label = display == Display.NAME ? getName() : getValue().toString();
+		Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
+		g2d.drawString(label, (int) (shapeRect.width - textRect.getWidth()) / 2,
 				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
 	}
 
@@ -199,5 +203,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
 	public void setHeight(Size height) {
 		this.height = height;
+	}
+	
+	@EditableProperty
+	public Display getDisplay() {
+		return display;
+	}
+	
+	public void setDisplay(Display display) {
+		this.display = display;
 	}
 }
