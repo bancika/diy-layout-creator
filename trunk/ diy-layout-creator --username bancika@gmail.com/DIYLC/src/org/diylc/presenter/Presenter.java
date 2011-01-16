@@ -802,9 +802,10 @@ public class Presenter implements IPlugInPort {
 		Project oldProject = cloner.deepClone(currentProject);
 		for (IDIYComponent<?> component : components) {
 			for (int i = 0; i < component.getControlPointCount(); i++) {
-				Point point = component.getControlPoint(i);
+				Point point = new Point(component.getControlPoint(i));
 				point.translate(currentProject.getGridSpacing().convertToPixels(), currentProject
 						.getGridSpacing().convertToPixels());
+				component.setControlPoint(point, i);
 			}
 			addComponent(component, componentTypeMap.get(component.getClass().getName()));
 		}
