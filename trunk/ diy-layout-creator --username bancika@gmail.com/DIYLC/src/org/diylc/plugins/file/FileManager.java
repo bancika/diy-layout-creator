@@ -2,15 +2,11 @@ package org.diylc.plugins.file;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.EnumSet;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 
-import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -19,8 +15,6 @@ import org.diylc.images.IconLoader;
 
 import com.diyfever.gui.IDrawingProvider;
 import com.diyfever.gui.export.DrawingExporter;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * Entry point class for File management utilities.
@@ -29,16 +23,12 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class FileManager implements IPlugIn {
 
-	private static final Logger LOG = Logger.getLogger(FileManager.class);
-
 	private static final String FILE_TITLE = "File";
 	private static final String TRACE_MASK_TITLE = "Trace Mask";
 
 	private IPlugInPort plugInPort;
 	private ProjectDrawingProvider drawingProvider;
 	private TraceMaskDrawingProvider traceMaskDrawingProvider;
-
-	private XStream xStream = new XStream(new DomDriver());
 
 	@Override
 	public void connect(IPlugInPort plugInPort) {
@@ -119,22 +109,15 @@ public class FileManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.DIY.getFilter(),
-					null, FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
-			if (file != null) {
-				LOG.info("Saving project to file.");
-				FileOutputStream fos;
-				try {
-					fos = new FileOutputStream(file);
-					xStream.toXML(plugInPort.getCurrentProject(), fos);
-					fos.close();
-				} catch (FileNotFoundException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
-				} catch (IOException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
+			if (plugInPort.getCurrentFileName() == null) {
+				File file = DialogFactory.getInstance().showSaveDialog(
+						FileFilterEnum.DIY.getFilter(), null,
+						FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
+				if (file != null) {
+					plugInPort.saveProjectToFile(file.getAbsolutePath());
 				}
+			} else {
+				plugInPort.saveProjectToFile(plugInPort.getCurrentFileName());
 			}
 		}
 	}
@@ -154,19 +137,7 @@ public class FileManager implements IPlugIn {
 			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.DIY.getFilter(),
 					null, FileFilterEnum.DIY.getExtensions()[0], new ProjectPreview());
 			if (file != null) {
-				LOG.info("Saving project to file.");
-				FileOutputStream fos;
-				try {
-					fos = new FileOutputStream(file);
-					xStream.toXML(plugInPort.getCurrentProject(), fos);
-					fos.close();
-				} catch (FileNotFoundException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
-				} catch (IOException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
-				}
+				plugInPort.saveProjectToFile(file.getAbsolutePath());
 			}
 		}
 	}
