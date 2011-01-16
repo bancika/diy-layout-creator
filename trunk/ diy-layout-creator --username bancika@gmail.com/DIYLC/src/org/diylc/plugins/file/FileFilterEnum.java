@@ -19,6 +19,9 @@ enum FileFilterEnum {
 
 			@Override
 			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				}
 				String fileExt = f.getName();
 				fileExt = fileExt.substring(fileExt.lastIndexOf('.') + 1).toLowerCase();
 				for (String ext : extensions) {
