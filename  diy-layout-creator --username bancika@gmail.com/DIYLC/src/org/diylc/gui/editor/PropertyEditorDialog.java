@@ -1,11 +1,14 @@
 package org.diylc.gui.editor;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,7 +86,19 @@ public class PropertyEditorDialog extends ButtonDialog {
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1;
 
-			editorPanel.add(FieldEditorFactory.createFieldEditor(property), gbc);
+			Component editor = FieldEditorFactory.createFieldEditor(property);
+			editor.addKeyListener(new KeyAdapter() {
+
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						getButton(OK).doClick();
+					} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+						getButton(CANCEL).doClick();
+					}
+				}
+			});
+			editorPanel.add(editor, gbc);
 
 			if (property.isDefaultable()) {
 				gbc.gridx = 2;
