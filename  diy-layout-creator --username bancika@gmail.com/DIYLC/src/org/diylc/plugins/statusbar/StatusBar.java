@@ -73,7 +73,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 		if (zoomBox == null) {
 			zoomBox = new JComboBox(new Double[] { 0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d,
 					1.5d, 2d });
-			zoomBox.setSelectedItem(1d);
+			zoomBox.setSelectedItem(plugInPort.getZoomLevel());
 			zoomBox.setFocusable(false);
 			zoomBox.setRenderer(new PercentageListCellRenderer());
 			zoomBox.addActionListener(new ActionListener() {

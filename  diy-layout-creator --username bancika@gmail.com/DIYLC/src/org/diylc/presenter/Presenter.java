@@ -66,10 +66,11 @@ public class Presenter implements IPlugInPort {
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 1);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 	public static final String METRIC_KEY = "metric";
+	public static final String ZOOM_KEY = "zoom";
 
 	public static final int ICON_SIZE = 32;
 
-	private double zoomLevel = 1;
+	private double zoomLevel = ConfigurationManager.getInstance().readDouble(ZOOM_KEY, 1d);
 	private Project currentProject;
 	private String currentFileName = null;
 	private boolean modified = false;
@@ -149,6 +150,7 @@ public class Presenter implements IPlugInPort {
 	public void setZoomLevel(double zoomLevel) {
 		LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
 		this.zoomLevel = zoomLevel;
+		ConfigurationManager.getInstance().writeValue(ZOOM_KEY, zoomLevel);
 		messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
