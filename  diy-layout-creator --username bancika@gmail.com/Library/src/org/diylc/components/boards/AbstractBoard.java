@@ -26,9 +26,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	public static Size DEFAULT_HEIGHT = new Size(1d, SizeUnit.in);
 
 	protected String value;
-	protected Point[] controlPoints = new Point[] {
-			new Point(-DEFAULT_WIDTH.convertToPixels() / 2, -DEFAULT_HEIGHT.convertToPixels() / 2),
-			new Point(DEFAULT_WIDTH.convertToPixels() / 2, DEFAULT_HEIGHT.convertToPixels() / 2) };
+	protected Point[] controlPoints = new Point[] { new Point(0, 0),
+			new Point(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels()) };
 
 	protected Color boardColor = BOARD_COLOR;
 	protected Color borderColor = BORDER_COLOR;
