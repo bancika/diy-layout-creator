@@ -50,7 +50,7 @@ public class HelpManager implements IPlugIn {
 				BUG_URL), HELP_TITLE);
 		plugInPort.injectMenuAction(null, HELP_TITLE);
 		plugInPort.injectMenuAction(new NavigateURLAction("Donate", IconLoader.Donate.getIcon(),
-				BUG_URL), HELP_TITLE);
+				DONATE_URL), HELP_TITLE);
 		plugInPort.injectMenuAction(new AboutAction(), HELP_TITLE);
 	}
 
@@ -66,7 +66,7 @@ public class HelpManager implements IPlugIn {
 	private AboutDialog getAboutDialog() {
 		if (aboutDialog == null) {
 			aboutDialog = DialogFactory.getInstance().createAboutDialog("DIY Layout Creator 4",
-					IconLoader.AboutDialog.getIcon(),
+					IconLoader.IconLarge.getIcon(),
 					plugInPort.getCurrentVersionNumber().toString(), "Branislav Stojkovic",
 					"diylc.org", "bancika@gmail.com", "");
 		}
