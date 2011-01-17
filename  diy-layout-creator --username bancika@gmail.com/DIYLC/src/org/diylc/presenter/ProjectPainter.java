@@ -25,6 +25,8 @@ import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.utils.Constants;
 
+import com.diyfever.gui.miscutils.ConfigurationManager;
+
 /**
  * Utility that deals with painting {@link Project} on the {@link Graphics2D}
  * and keeps areas taken by each drawn component.
@@ -34,7 +36,7 @@ import org.diylc.utils.Constants;
 public class ProjectPainter {
 
 	public static final int CONTROL_POINT_SIZE = 7;
-	public static boolean ENABLE_ANTIALIASING = true;
+	public static final String ANTIALIASING_KEY = "anti-aliasing";
 	public static boolean DEBUG_COMPONENT_AREAS = false;
 
 	// Keeps Area object of each drawn component.
@@ -42,6 +44,9 @@ public class ProjectPainter {
 	// Maps components to the last state they are drawn in. Also, used to
 	// determine which components are invalidated when they are not in the map.
 	private Map<IDIYComponent<?>, ComponentState> lastDrawnStateMap;
+
+	public boolean antiAliasing = ConfigurationManager.getInstance().readBoolean(
+			ANTIALIASING_KEY, true);
 
 	public ProjectPainter() {
 		super();
@@ -58,7 +63,7 @@ public class ProjectPainter {
 		}
 		G2DWrapper g2dWrapper = new G2DWrapper(g2d);
 
-		if (drawOptions.contains(DrawOption.ANTIALIASING) && ENABLE_ANTIALIASING) {
+		if (drawOptions.contains(DrawOption.ANTIALIASING) && antiAliasing) {
 			g2d
 					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 							RenderingHints.VALUE_ANTIALIAS_ON);

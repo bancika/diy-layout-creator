@@ -64,7 +64,7 @@ public class Presenter implements IPlugInPort {
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 1);
-	public static final String DEFAULTS_KEY = "default.";
+	public static final String DEFAULTS_KEY_PREFIX = "default.";
 	public static final String METRIC_KEY = "metric";
 
 	public static final int ICON_SIZE = 32;
@@ -783,7 +783,7 @@ public class Presenter implements IPlugInPort {
 			String className = component.getClass().getName();
 			LOG.debug("Default property value set for " + className + ":" + propertyName);
 			ConfigurationManager.getInstance().writeValue(
-					DEFAULTS_KEY + className + ":" + propertyName, value);
+					DEFAULTS_KEY_PREFIX + className + ":" + propertyName, value);
 		}
 	}
 
@@ -792,7 +792,7 @@ public class Presenter implements IPlugInPort {
 		LOG.info(String.format("setProjectDefaultPropertyValue(%s, %s)", propertyName, value));
 		LOG.debug("Default property value set for " + Project.class.getName() + ":" + propertyName);
 		ConfigurationManager.getInstance().writeValue(
-				DEFAULTS_KEY + Project.class.getName() + ":" + propertyName, value);
+				DEFAULTS_KEY_PREFIX + Project.class.getName() + ":" + propertyName, value);
 	}
 
 	@Override
@@ -1031,7 +1031,7 @@ public class Presenter implements IPlugInPort {
 		// Override with default values if available.
 		for (PropertyWrapper property : properties) {
 			Object defaultValue = ConfigurationManager.getInstance().readObject(
-					DEFAULTS_KEY + object.getClass().getName() + ":" + property.getName(), null);
+					DEFAULTS_KEY_PREFIX + object.getClass().getName() + ":" + property.getName(), null);
 			if (defaultValue != null) {
 				property.setValue(cloner.deepClone(defaultValue));
 				property.writeTo(object);

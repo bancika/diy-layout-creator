@@ -27,7 +27,7 @@ public class BomMaker {
 		Map<String, BomEntry> entryMap = new HashMap<String, BomEntry>();
 		for (IDIYComponent<?> component : components) {
 			String name = component.getName();
-			String value = component.getValue() == null ? "" : component.getValue().toString();
+			String value = component.getValue() == null ? null : component.getValue().toString();
 			if ((name != null) && (value != null)) {
 				String key = name + "|" + value;
 				if (entryMap.containsKey(key)) {
