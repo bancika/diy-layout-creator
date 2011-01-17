@@ -51,8 +51,13 @@ public class PerfBoard extends AbstractBoard {
 					p.x += spacing;
 					g2d.setColor(padColor);
 					g2d.fillOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
+					g2d.setColor(padColor.darker());
+					g2d.drawOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
 					g2d.setColor(Constants.CANVAS_COLOR);
 					g2d.fillOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter,
+							holeDiameter);
+					g2d.setColor(padColor.darker());
+					g2d.drawOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter,
 							holeDiameter);
 				}
 			}
@@ -85,7 +90,11 @@ public class PerfBoard extends AbstractBoard {
 		g2d.drawRect(2, 2, width - 4, height - 4);
 		g2d.setColor(PAD_COLOR);
 		g2d.fillOval(width / 4, width / 4, width / 2, width / 2);
+		g2d.setColor(PAD_COLOR.darker());
+		g2d.drawOval(width / 4, width / 4, width / 2, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(width / 2 - 1, width / 2 - 1, 2, 2);
+		g2d.fillOval(width / 2 - 2, width / 2 - 2, 5, 5);
+		g2d.setColor(PAD_COLOR.darker());
+		g2d.drawOval(width / 2 - 2, width / 2 - 2, 5, 5);
 	}
 }

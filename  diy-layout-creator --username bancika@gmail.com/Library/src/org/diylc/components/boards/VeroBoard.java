@@ -25,7 +25,7 @@ public class VeroBoard extends AbstractBoard {
 	public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
 	public static Size SPACING = new Size(0.1d, SizeUnit.in);
-	public static Size STRIP_SIZE = new Size(0.085d, SizeUnit.in);
+	public static Size STRIP_SIZE = new Size(0.07d, SizeUnit.in);
 	public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
 	protected Size spacing = SPACING;
@@ -53,10 +53,15 @@ public class VeroBoard extends AbstractBoard {
 				g2d.setColor(padColor);
 				g2d.fillRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
 						controlPoints[1].x - spacing - p.x, stripSize);
+				g2d.setColor(padColor.darker());
+				g2d.drawRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
+						controlPoints[1].x - spacing - p.x, stripSize);
 				while (p.x < controlPoints[1].x - spacing) {
 					p.x += spacing;
 					g2d.setColor(Constants.CANVAS_COLOR);
 					g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+					g2d.setColor(padColor.darker());
+					g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
 				}
 			}
 			g2d.setComposite(oldComposite);
@@ -89,8 +94,13 @@ public class VeroBoard extends AbstractBoard {
 		g2d.drawRect(2, 2, width - 4, height - 4);
 		g2d.setColor(PAD_COLOR);
 		g2d.fillRect(4, width / 4, width - 8, width / 2);
+		g2d.setColor(PAD_COLOR.darker());
+		g2d.drawRect(4, width / 4, width - 8, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(width / 3 - 1, width / 2 - 1, 3, 3);
-		g2d.fillOval(2 * width / 3 - 1, width / 2 - 1, 3, 3);
+		g2d.fillOval(width / 3 - 2, width / 2 - 2, 5, 5);
+		g2d.fillOval(2 * width / 3 - 2, width / 2 - 2, 5, 5);
+		g2d.setColor(PAD_COLOR.darker());
+		g2d.drawOval(width / 3 - 2, width / 2 - 2, 5, 5);
+		g2d.drawOval(2 * width / 3 - 2, width / 2 - 2, 5, 5);
 	}
 }

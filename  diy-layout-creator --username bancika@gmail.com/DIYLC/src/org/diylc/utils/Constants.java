@@ -7,7 +7,7 @@ import java.awt.Stroke;
 
 public class Constants {
 
-	public static final int PIXELS_PER_INCH = 120;//Toolkit.getDefaultToolkit().getScreenResolution();
+	public static final int PIXELS_PER_INCH = 150;//Toolkit.getDefaultToolkit().getScreenResolution();
 	public static int GRIDS_PER_INCH = 8;
 //	public static Size GRID_SIZE = new Size(1d / GRIDS_PER_INCH, SizeUnit.in);
 //	public static final int GRID = 20;

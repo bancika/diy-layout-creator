@@ -418,7 +418,8 @@ public class Presenter implements IPlugInPort {
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
 		if (componentSlot != null
-				&& componentSlot.getCreationMethod() == CreationMethod.POINT_BY_POINT) {
+				&& (componentSlot.getCreationMethod() == CreationMethod.POINT_BY_POINT || !componentSlot
+						.isStretchable())) {
 			potentialControlPoint = scaledPoint;
 			snapPointToGrid(potentialControlPoint);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
