@@ -1,7 +1,6 @@
 package org.diylc.components.boards;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -14,6 +13,7 @@ import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 public abstract class AbstractBoard extends AbstractTransparentComponent<String> {
 
@@ -35,7 +35,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
-		g2d.setStroke(new BasicStroke());
+		g2d.setStroke(Constants.BASIC_STROKE);
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
