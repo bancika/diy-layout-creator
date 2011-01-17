@@ -14,6 +14,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -133,6 +134,16 @@ public class BOM extends AbstractComponent<Void> {
 	@Override
 	public Point getControlPoint(int index) {
 		return point;
+	}
+	
+	@Override
+	public boolean isControlPointSticky(int index) {
+		return false;
+	}
+	
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.NEVER;
 	}
 
 	@Override

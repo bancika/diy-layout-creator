@@ -86,6 +86,10 @@ public interface IDIYComponent<T> extends Serializable {
 	 * @param index
 	 */
 	void setControlPoint(Point point, int index);
+	
+	boolean isControlPointSticky(int index);
+	
+	VisibilityPolicy getControlPointVisibilityPolicy(int index);
 
 	/**
 	 * Draws the component onto the {@link Graphics2D}.

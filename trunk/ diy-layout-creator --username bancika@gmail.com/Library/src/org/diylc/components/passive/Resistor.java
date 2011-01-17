@@ -15,7 +15,7 @@ import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "test", zOrder = IDIYComponent.COMPONENT, sticky = true)
+@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "test", zOrder = IDIYComponent.COMPONENT)
 public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	private static final long serialVersionUID = 1L;

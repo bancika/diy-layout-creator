@@ -62,7 +62,6 @@ public class ComponentProcessor {
 		Icon icon;
 		double zOrder;
 		boolean stretchable;
-		boolean sticky;
 		if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
 			ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
 			name = annotation.name();
@@ -73,7 +72,6 @@ public class ComponentProcessor {
 			author = annotation.author();
 			zOrder = annotation.zOrder();
 			stretchable = annotation.stretchable();
-			sticky = annotation.sticky();
 		} else {
 			name = clazz.getSimpleName();
 			description = "";
@@ -83,7 +81,6 @@ public class ComponentProcessor {
 			author = "Unknown";
 			zOrder = IDIYComponent.COMPONENT;
 			stretchable = true;
-			sticky = false;
 		}
 		icon = null;
 		// Draw component icon.
@@ -92,7 +89,9 @@ public class ComponentProcessor {
 			Image image = new BufferedImage(Presenter.ICON_SIZE, Presenter.ICON_SIZE,
 					java.awt.image.BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) image.getGraphics();
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d
+					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+							RenderingHints.VALUE_ANTIALIAS_ON);
 			componentInstance.drawIcon(g2d, Presenter.ICON_SIZE, Presenter.ICON_SIZE);
 			icon = new ImageIcon(image);
 		} catch (InstantiationException e) {
@@ -101,7 +100,7 @@ public class ComponentProcessor {
 			e.printStackTrace();
 		}
 		ComponentType componentType = new ComponentType(name, description, creationMethod,
-				category, namePrefix, author, icon, clazz, zOrder, stretchable, sticky);
+				category, namePrefix, author, icon, clazz, zOrder, stretchable);
 		return componentType;
 	}
 

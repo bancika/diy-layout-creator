@@ -8,6 +8,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
@@ -57,6 +58,16 @@ public class MockDIYComponent implements IDIYComponent<Capacitance> {
 	@Override
 	public int getControlPointCount() {
 		return 1;
+	}
+
+	@Override
+	public boolean isControlPointSticky(int index) {
+		return false;
+	}
+
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.WHEN_SELECTED;
 	}
 
 	@Override

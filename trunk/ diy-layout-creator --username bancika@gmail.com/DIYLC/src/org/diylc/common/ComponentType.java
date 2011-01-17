@@ -12,7 +12,6 @@ import org.diylc.core.IDIYComponent;
  * 
  * @see IDIYComponent
  */
-@SuppressWarnings("rawtypes")
 public class ComponentType {
 
 	private String name;
@@ -25,12 +24,10 @@ public class ComponentType {
 	private Class<? extends IDIYComponent> instanceClass;
 	private double zOrder;
 	private boolean stretchable;
-	private boolean sticky;
 
 	public ComponentType(String name, String description, CreationMethod creationMethod,
 			String category, String namePrefix, String author, Icon icon,
-			Class<? extends IDIYComponent> instanceClass, double zOrder, boolean stretchable,
-			boolean sticky) {
+			Class<? extends IDIYComponent> instanceClass, double zOrder, boolean stretchable) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -42,7 +39,6 @@ public class ComponentType {
 		this.instanceClass = instanceClass;
 		this.zOrder = zOrder;
 		this.stretchable = stretchable;
-		this.sticky = sticky;
 	}
 
 	public String getName() {
@@ -83,10 +79,6 @@ public class ComponentType {
 
 	public boolean isStretchable() {
 		return stretchable;
-	}
-
-	public boolean isSticky() {
-		return sticky;
 	}
 
 	@Override

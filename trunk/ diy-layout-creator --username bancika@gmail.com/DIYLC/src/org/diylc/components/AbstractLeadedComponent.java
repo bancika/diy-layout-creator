@@ -15,6 +15,7 @@ import org.diylc.common.Display;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -168,8 +169,21 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	}
 
 	@Override
+	public boolean isControlPointSticky(int index) {
+		return true;
+	}
+	
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.ALWAYS;
+	}
+	
+	@Override
 	public void setControlPoint(Point point, int index) {
-		points[index].setLocation(point);
+		// Only accept the change if ending points are not the same.
+		if (!point.equals(points[1 - index])) {
+			points[index].setLocation(point);
+		}
 	}
 
 	@EditableProperty(name = "Color")

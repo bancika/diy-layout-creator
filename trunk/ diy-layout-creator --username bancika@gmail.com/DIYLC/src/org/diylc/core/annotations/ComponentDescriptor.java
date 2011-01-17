@@ -59,9 +59,4 @@ public @interface ComponentDescriptor {
 	 */
 	boolean stretchable() default true;
 
-	/**
-	 * @return true, if control points may stick to other components' control
-	 *         points.
-	 */
-	boolean sticky() default false;
 }

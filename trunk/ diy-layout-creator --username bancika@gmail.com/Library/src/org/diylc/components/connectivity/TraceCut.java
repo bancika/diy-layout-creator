@@ -2,12 +2,14 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 
-import org.diylc.components.AbstractSinglePointComponent;
+import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -15,7 +17,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Cut", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD)
-public class TraceCut extends AbstractSinglePointComponent {
+public class TraceCut extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +29,8 @@ public class TraceCut extends AbstractSinglePointComponent {
 	private Size size = SIZE;
 	private Color fillColor = FILL_COLOR;
 	private Color borderColor = BORDER_COLOR;
+	
+	protected Point point = new Point(0, 0);
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
@@ -57,6 +61,43 @@ public class TraceCut extends AbstractSinglePointComponent {
 				dotDiameter);
 	}
 
+	@Override
+	public int getControlPointCount() {
+		return 1;
+	}
+
+	@Override
+	public Point getControlPoint(int index) {
+		return point;
+	}
+	
+	@Override
+	public boolean isControlPointSticky(int index) {
+		return false;
+	}
+
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.NEVER;
+	}
+
+
+	@Override
+	public void setControlPoint(Point point, int index) {
+		this.point.setLocation(point);
+	}
+	
+	@Deprecated
+	@Override
+	public Void getValue() {
+		return null;
+	}
+	
+	@Deprecated
+	@Override
+	public void setValue(Void value) {
+	}
+	
 	@EditableProperty
 	public Size getSize() {
 		return size;
