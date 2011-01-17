@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.images.IconLoader;
 import org.diylc.plugins.canvas.CanvasPlugin;
 import org.diylc.plugins.clipboard.ClipboardManager;
 import org.diylc.plugins.file.FileManager;
@@ -58,6 +60,8 @@ public class MainFrame extends JFrame implements IView {
 		setPreferredSize(new Dimension(800, 600));
 		createBasePanels();
 		menuMap = new HashMap<String, JMenu>();
+		setIconImages(Arrays.asList(IconLoader.IconSmall.getImage(), IconLoader.IconMedium
+				.getImage(), IconLoader.IconLarge.getImage()));
 		DialogFactory.getInstance().initialize(this);
 
 		this.presenter = new Presenter(this);
@@ -248,8 +252,8 @@ public class MainFrame extends JFrame implements IView {
 					fileName = "Untitled";
 				}
 				String modified = (Boolean) params[1] ? " (modified)" : "";
-				setTitle(String.format("DIYLC %s alpha - %s %s", plugInPort.getCurrentVersionNumber(),
-						fileName, modified));
+				setTitle(String.format("DIYLC %s alpha - %s %s", plugInPort
+						.getCurrentVersionNumber(), fileName, modified));
 			}
 		}
 	}

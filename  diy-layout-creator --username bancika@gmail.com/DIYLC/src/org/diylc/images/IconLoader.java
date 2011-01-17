@@ -1,5 +1,10 @@
 package org.diylc.images;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -23,8 +28,9 @@ public enum IconLoader {
 			"id_card.png"), IdCardAdd("id_card_add.png"), Chest("chest.png"), Upload("upload.png"), Wrench(
 			"wrench.png"), Group("group.png"), Ungroup("ungroup.png"), TraceMask("trace_mask.png"), Faq(
 			"faq.png"), Component("component.png"), Plugin("plugin.png"), Manual("manual.png"), Donate(
-			"donate.png"), Bug("bug.png"), AboutDialog("about_dialog.png"), DocumentEdit(
-			"document_edit.png"), EditComponent("edit_component.png");
+			"donate.png"), Bug("bug.png"), IconLarge("icon_large.png"), IconMedium(
+			"icon_medium.png"), IconSmall("icon_small.png"), DocumentEdit("document_edit.png"), EditComponent(
+			"edit_component.png");
 
 	protected String name;
 
@@ -40,5 +46,15 @@ public enum IconLoader {
 			System.err.println("Couldn't find file: " + name);
 			return null;
 		}
+	}
+
+	public Image getImage() {
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(getClass().getResourceAsStream(name));
+		} catch (IOException e) {
+			System.err.println("Couldn't find file: " + name);
+		}
+		return img;
 	}
 }

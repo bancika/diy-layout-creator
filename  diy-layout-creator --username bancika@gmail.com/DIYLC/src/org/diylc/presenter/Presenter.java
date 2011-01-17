@@ -365,6 +365,13 @@ public class Presenter implements IPlugInPort {
 				break;
 			case POINT_BY_POINT:
 				if (controlPointSlot != null) {
+					snapPointToGrid(scaledPoint);
+					if (scaledPoint.equals(controlPointSlot)) {
+						String message = "Cannot create the component because both controls points match. Choose the second control point.";
+						LOG.warn(message);
+						view.showMessage(message, "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 					try {
 						instantiateComponent(componentSlot, controlPointSlot, scaledPoint);
 					} catch (Exception e) {
