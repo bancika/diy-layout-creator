@@ -78,6 +78,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.translate((points[0].x + points[1].x - shapeRect.width) / 2,
 				(points[0].y + points[1].y - shapeRect.height) / 2);
 		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
+		System.err.println(theta);
 		// Draw body.
 		Composite oldComposite = g2d.getComposite();
 		if (alpha < MAX_ALPHA) {
@@ -110,6 +111,11 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 						: LABEL_COLOR);
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		String label = display == Display.NAME ? getName() : getValue().toString();
+		// Adjust label angle if needed to make sure that it's readable.
+		if ((theta >= Math.PI / 2 && theta <= Math.PI)
+				|| (theta < -Math.PI / 2 && theta > -Math.PI)) {
+			g2d.rotate(Math.PI, shapeRect.width / 2, shapeRect.height / 2);
+		}
 		Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
 		g2d.drawString(label, (int) (shapeRect.width - textRect.getWidth()) / 2,
 				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
@@ -172,12 +178,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	public boolean isControlPointSticky(int index) {
 		return true;
 	}
-	
+
 	@Override
 	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
 		return VisibilityPolicy.ALWAYS;
 	}
-	
+
 	@Override
 	public void setControlPoint(Point point, int index) {
 		// Only accept the change if ending points are not the same.
