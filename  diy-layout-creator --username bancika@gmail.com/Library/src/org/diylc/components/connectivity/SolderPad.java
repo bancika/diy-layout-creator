@@ -9,13 +9,14 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Pad", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD + 0.1, sticky = true)
+@ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Pad", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD + 0.1)
 public class SolderPad extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
@@ -70,6 +71,16 @@ public class SolderPad extends AbstractComponent<Void> {
 	@Override
 	public int getControlPointCount() {
 		return 1;
+	}
+
+	@Override
+	public boolean isControlPointSticky(int index) {
+		return true;
+	}
+
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.NEVER;
 	}
 
 	@Override

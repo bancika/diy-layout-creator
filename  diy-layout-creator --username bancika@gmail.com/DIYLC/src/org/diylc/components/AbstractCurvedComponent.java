@@ -11,6 +11,7 @@ import java.awt.geom.CubicCurve2D;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -96,6 +97,16 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	@Override
 	public int getControlPointCount() {
 		return controlPoints.length;
+	}
+
+	@Override
+	public boolean isControlPointSticky(int index) {
+		return index == 0 || index == 3;
+	}
+
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return index == 0 || index == 3 ? VisibilityPolicy.ALWAYS : VisibilityPolicy.WHEN_SELECTED;
 	}
 
 	@Override

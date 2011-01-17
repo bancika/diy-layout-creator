@@ -22,6 +22,7 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.utils.Constants;
 
 /**
@@ -50,7 +51,7 @@ public class ProjectPainter {
 
 	public void drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
 			IComponentFiler filter, Rectangle selectionRect, ComponentSelection selectedComponents,
-			Set<IDIYComponent<?>> drawControlPoints, List<Point> controlPointSlot,
+			Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
 			boolean dragInProgress, double zoomLevel) {
 		if (project == null) {
 			return;
@@ -137,10 +138,17 @@ public class ProjectPainter {
 		if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
 			// Draw unselected points first to make sure they are below.
 			for (IDIYComponent<?> component : project.getComponents()) {
-				if (drawControlPoints.contains(component)
-						&& !selectedComponents.contains(component)) {
-					g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
-					for (int i = 0; i < component.getControlPointCount(); i++) {
+				for (int i = 0; i < component.getControlPointCount(); i++) {
+					VisibilityPolicy visibilityPolicy = component
+							.getControlPointVisibilityPolicy(i);
+					if ((groupedComponents.contains(component)
+							&& (visibilityPolicy == VisibilityPolicy.ALWAYS || (selectedComponents
+									.contains(component) && visibilityPolicy == VisibilityPolicy.WHEN_SELECTED)) || (!groupedComponents
+							.contains(component)
+							&& !selectedComponents.contains(component) && component
+							.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS))) {
+						g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
+
 						Point controlPoint = component.getControlPoint(i);
 						int pointSize = CONTROL_POINT_SIZE - 2;
 						g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
@@ -150,9 +158,12 @@ public class ProjectPainter {
 			}
 			// Then draw the selected ones.
 			for (IDIYComponent<?> component : selectedComponents) {
-				if (drawControlPoints.contains(component)) {
-					g2dWrapper.setColor(Constants.SELECTED_CONTROL_POINT_COLOR);
-					for (int i = 0; i < component.getControlPointCount(); i++) {
+				for (int i = 0; i < component.getControlPointCount(); i++) {
+					if (!groupedComponents.contains(component)
+							&& (component.getControlPointVisibilityPolicy(i) == VisibilityPolicy.WHEN_SELECTED || component
+									.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS)) {
+						g2dWrapper.setColor(Constants.SELECTED_CONTROL_POINT_COLOR);
+
 						Point controlPoint = component.getControlPoint(i);
 						int pointSize = CONTROL_POINT_SIZE;
 						g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y

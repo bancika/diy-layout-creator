@@ -10,6 +10,7 @@ import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -82,6 +83,16 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	@Override
 	public Point getControlPoint(int index) {
 		return controlPoints[index];
+	}
+
+	@Override
+	public boolean isControlPointSticky(int index) {
+		return false;
+	}
+
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.WHEN_SELECTED;
 	}
 
 	@Override

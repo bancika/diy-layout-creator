@@ -14,12 +14,13 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", sticky = true)
+@ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW")
 public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> {
 
 	private static final long serialVersionUID = 1L;
@@ -114,6 +115,16 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	@Override
 	public Point getControlPoint(int index) {
 		return controlPoints[index];
+	}
+	
+	@Override
+	public boolean isControlPointSticky(int index) {
+		return true;
+	}
+	
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.NEVER;
 	}
 
 	@Override

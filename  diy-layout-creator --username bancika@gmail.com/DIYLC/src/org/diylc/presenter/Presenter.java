@@ -306,14 +306,15 @@ public class Presenter implements IPlugInPort {
 		if (currentProject == null) {
 			return;
 		}
-		Set<IDIYComponent<?>> drawControlPoints = new HashSet<IDIYComponent<?>>();
+		Set<IDIYComponent<?>> groupedComponents = new HashSet<IDIYComponent<?>>();
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
-			if (shouldShowControlPointsFor(component)) {
-				drawControlPoints.add(component);
+			// Only try to draw control points of ungrouped
+			if (findAllGroupedComponents(component).size() > 1) {
+				groupedComponents.add(component);
 			}
 		}
 		projectPainter.drawProject(g2d, currentProject, drawOptions, filter, selectionRect,
-				selectedComponents, drawControlPoints, Arrays.asList(controlPointSlot,
+				selectedComponents, groupedComponents, Arrays.asList(controlPointSlot,
 						potentialControlPoint), dragInProgress, zoomLevel);
 	}
 
@@ -569,13 +570,14 @@ public class Presenter implements IPlugInPort {
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
 			// Do not process a component if it's already in the map.
 			ComponentType componentType = componentTypeMap.get(component.getClass().getName());
-			if (!controlPointMap.containsKey(component) && componentType.isSticky()) {
-				// Check if there's a control point in the current selection
-				// that matches with one of its control points.
-				for (int i = 0; i < component.getControlPointCount(); i++) {
-					if (controlPointMap.containsKey(component)) {
-						break;
-					}
+
+			// Check if there's a control point in the current selection
+			// that matches with one of its control points.
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				if (controlPointMap.containsKey(component)) {
+					break;
+				}
+				if (!controlPointMap.containsKey(component) && component.isControlPointSticky(i)) {
 					boolean componentMatches = false;
 					for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap
 							.entrySet()) {
@@ -1154,11 +1156,6 @@ public class Presenter implements IPlugInPort {
 	 *         component.
 	 */
 	private boolean shouldShowControlPointsFor(IDIYComponent<?> component) {
-		ComponentType componentType = componentTypeMap.get(component.getClass().getName());
-		// Do not show control points for non-stretchable components.
-		if (!componentType.isStretchable()) {
-			return false;
-		}
 		if (findAllGroupedComponents(component).size() > 1) {
 			return false;
 		}
