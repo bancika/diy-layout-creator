@@ -39,7 +39,6 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.measures.SizeUnit;
@@ -425,9 +424,7 @@ public class Presenter implements IPlugInPort {
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
-		if (componentSlot != null
-				&& (componentSlot.getCreationMethod() == CreationMethod.POINT_BY_POINT || !componentSlot
-						.isStretchable())) {
+		if (componentSlot != null) {
 			potentialControlPoint = scaledPoint;
 			snapPointToGrid(potentialControlPoint);
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -586,12 +583,14 @@ public class Presenter implements IPlugInPort {
 						}
 						for (Integer j : entry.getValue()) {
 							Point firstPoint = component.getControlPoint(i);
-							Point secondPoint = entry.getKey().getControlPoint(j);
-							// If they are close enough we can consider them
-							// matched.
-							if (firstPoint.distance(secondPoint) < ProjectPainter.CONTROL_POINT_SIZE) {
-								componentMatches = true;
-								break;
+							if (entry.getKey().isControlPointSticky(j)) {
+								Point secondPoint = entry.getKey().getControlPoint(j);
+								// If they are close enough we can consider them
+								// matched.
+								if (firstPoint.distance(secondPoint) < ProjectPainter.CONTROL_POINT_SIZE) {
+									componentMatches = true;
+									break;
+								}
 							}
 						}
 					}
@@ -1148,17 +1147,5 @@ public class Presenter implements IPlugInPort {
 	private Point scalePoint(Point point) {
 		return point == null ? null : new Point((int) (point.x / zoomLevel),
 				(int) (point.y / zoomLevel));
-	}
-
-	/**
-	 * @param component
-	 * @return true if control points should be rendered for the specified
-	 *         component.
-	 */
-	private boolean shouldShowControlPointsFor(IDIYComponent<?> component) {
-		if (findAllGroupedComponents(component).size() > 1) {
-			return false;
-		}
-		return true;
 	}
 }
