@@ -643,6 +643,28 @@ public class Presenter implements IPlugInPort {
 			repaint = dx != 0 || dy != 0;
 
 			if (repaint) {
+				// Do a simulation of the move to see if any of them will
+				// collide.
+				for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+					IDIYComponent<?> c = entry.getKey();
+					Point[] controlPoints = new Point[c.getControlPointCount()];
+					for (int i = 0; i < controlPoints.length; i++) {
+						controlPoints[i] = new Point(c.getControlPoint(i));
+						if (entry.getValue().contains(i)) {
+							controlPoints[i].translate(dx, dy);
+						}
+					}
+					for (int i = 0; i < controlPoints.length - 1; i++) {
+						for (int j = i + 1; j < controlPoints.length; j++) {
+							if (controlPoints[i].equals(controlPoints[j])) {
+								LOG
+										.error("Control points collision detected, cannot make this move.");
+								return true;
+							}
+						}
+					}
+				}
+
 				previousDragPoint.translate(dx, dy);
 
 				// Update all points.
@@ -1033,7 +1055,8 @@ public class Presenter implements IPlugInPort {
 		// Override with default values if available.
 		for (PropertyWrapper property : properties) {
 			Object defaultValue = ConfigurationManager.getInstance().readObject(
-					DEFAULTS_KEY_PREFIX + object.getClass().getName() + ":" + property.getName(), null);
+					DEFAULTS_KEY_PREFIX + object.getClass().getName() + ":" + property.getName(),
+					null);
 			if (defaultValue != null) {
 				property.setValue(cloner.deepClone(defaultValue));
 				property.writeTo(object);
