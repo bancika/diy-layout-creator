@@ -1,6 +1,18 @@
 #summary End user manual for non-developers.
 #labels Featured,Phase-Deploy
 
+===System requirements===
+
+  # Java JRE/JDK 1.6.0_10 or newer
+  # 256MB or more free RAM memory is recommended
+  # 10MB free hard drive space
+  # Zip utility to unpack the archive (7-zip, WinZip, Total Commander, etc)
+
+===Running the app===
+
+  # On *Windows* just run the diylc.exe
+  # On *Linux/Unix* or *Mac*, open the terminal, change the directory to diylc (*cd `<`directory`>`*) and type *./run.sh*
+
 ===User interface===
 
 User interface can be separated into 4 major components:
