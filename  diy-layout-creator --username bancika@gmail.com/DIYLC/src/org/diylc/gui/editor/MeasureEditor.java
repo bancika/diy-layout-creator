@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.AbstractMeasure;
+import org.diylc.core.measures.Unit;
 
 import com.diyfever.gui.DoubleTextField;
 
@@ -23,7 +24,7 @@ public class MeasureEditor extends Container {
 	@SuppressWarnings("unchecked")
 	public MeasureEditor(final PropertyWrapper property) {
 		setLayout(new BorderLayout());
-		final AbstractMeasure measure = ((AbstractMeasure) property.getValue());
+		AbstractMeasure measure = ((AbstractMeasure) property.getValue());
 		DoubleTextField valueField = new DoubleTextField(measure.getValue());
 		valueField.addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY,
 				new PropertyChangeListener() {
@@ -31,7 +32,8 @@ public class MeasureEditor extends Container {
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
 						try {
-							AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) measure.clone();
+							AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ((AbstractMeasure) property
+									.getValue()).clone();
 							newMeasure.setValue((Double) evt.getNewValue());
 							property.setValue(newMeasure);
 						} catch (CloneNotSupportedException ex) {
@@ -48,8 +50,9 @@ public class MeasureEditor extends Container {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) measure.clone();
-						measure.setUnit((Enum) unitBox.getSelectedItem());
+						AbstractMeasure<Enum<? extends Unit>> newMeasure = (AbstractMeasure<Enum<? extends Unit>>) ((AbstractMeasure) property
+								.getValue()).clone();
+						newMeasure.setUnit((Enum<? extends Unit>) unitBox.getSelectedItem());
 						property.setValue(newMeasure);
 					} catch (CloneNotSupportedException ex) {
 					}
