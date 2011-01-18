@@ -64,6 +64,8 @@ Base interface for all components. Class parameter T represents type of componen
   * *getName* and *setName* used to obtain and update component instance name. Annotate it with `@EditableProperty` to allow the user to edit component name.
   * *getValue* and *setValue* similar to the previous.
   * *getControlPointCount*, *getControlPoint* and *setControlPoint* used to obtain and update component's control points. Note that two instances of the same component may have a different number of control points, e.g. 16 and 8 pin versions of DIL IC.
+  * *isControlPointSticky* returns true for all control points that may stick to other components' control points. It may be the case that some control points may and the others may not, even within the same component. For instance, hookup wire component has 4 control points, but only two ending points may stick; the middle two are there only to control wire shape and should not stick to other control points.
+  * *getControlPointVisibilityPolicy* tells when to render each control point. Use `ALWAYS` to show the control point all the time, `WHEN_SELECTED` to show it only when component is selected or `NEVER` to never render the control point. Use `ALWAYS` for control points of resistors or similar components with ending points. `WHEN_SELECTED` is useful for board ending points, or shape control points of hookup wire. `NEVER` is suitable for components like IC or toggle switch that already have visible pins and should not render additional control points.
   * *draw* pains the component instance onto the specified `Graphics2D`. Typically, this method would use the state of the component (control points, value and other user editable properties) to draw it.
   * *drawIcon* paints the component icon of the specified size onto the specified `Graphics2D`. It should act like a static method, i.e. not depend on state of the component.
 
@@ -77,12 +79,11 @@ May be applied only to classes that implement `IDIYComponent` interface. Contain
   * *instanceNamePrefix*: prefix that will be used to generate component instance names, e.g. "R" for resistors or "Q" for transistors. Application will append the index automatically to form component instance names, such as "Q1". Do not leave it blank or null because components instances will be named "1", "2", etc. Not something we want.
   * *zOrder*: Z-order of the component, lower number meaning that component will be shown in the back. `IDIYComponent` lists major layers, but you can use any double number. Sometimes it's useful to add a small offset to an existing zOrder. For instance, solder pads and copper traces belong to the same layer but pads should be always rendered above traces to show the hole correctly. That's why it's zOrder is increased for 0.1.
   * *stretchable*: when false, moving one control point will cause all the others to move together with it, default is `true`.
-  * *sticky*: when true, component's control points may stick to other control points, default is `false`.
 
 Sample usage:
 {{{
 @ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", instanceNamePrefix = "R",
-                     description = "Resistor layout symbol", zOrder = IDIYComponent.COMPONENT, sticky = true)
+                     description = "Resistor layout symbol", zOrder = IDIYComponent.COMPONENT)
 public class Resistor extends AbstractLeadedComponent<Resistance> {
 }}}
 
