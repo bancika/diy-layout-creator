@@ -78,7 +78,6 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.translate((points[0].x + points[1].x - shapeRect.width) / 2,
 				(points[0].y + points[1].y - shapeRect.height) / 2);
 		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
-		System.err.println(theta);
 		// Draw body.
 		Composite oldComposite = g2d.getComposite();
 		if (alpha < MAX_ALPHA) {
