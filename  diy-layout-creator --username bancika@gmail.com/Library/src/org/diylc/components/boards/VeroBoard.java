@@ -21,7 +21,7 @@ public class VeroBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color PAD_COLOR = Color.decode("#F3926C");
+	public static Color COPPER_COLOR = Color.decode("#DA8A67");
 	public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
 	public static Size SPACING = new Size(0.1d, SizeUnit.in);
@@ -29,7 +29,7 @@ public class VeroBoard extends AbstractBoard {
 	public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
 	protected Size spacing = SPACING;
-	protected Color padColor = PAD_COLOR;
+	protected Color padColor = COPPER_COLOR;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
@@ -92,14 +92,14 @@ public class VeroBoard extends AbstractBoard {
 		g2d.fillRect(2, 2, width - 4, height - 4);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRect(2, 2, width - 4, height - 4);
-		g2d.setColor(PAD_COLOR);
+		g2d.setColor(COPPER_COLOR);
 		g2d.fillRect(4, width / 4, width - 8, width / 2);
-		g2d.setColor(PAD_COLOR.darker());
+		g2d.setColor(COPPER_COLOR.darker());
 		g2d.drawRect(4, width / 4, width - 8, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
 		g2d.fillOval(width / 3 - 2, width / 2 - 2, 5, 5);
 		g2d.fillOval(2 * width / 3 - 2, width / 2 - 2, 5, 5);
-		g2d.setColor(PAD_COLOR.darker());
+		g2d.setColor(COPPER_COLOR.darker());
 		g2d.drawOval(width / 3 - 2, width / 2 - 2, 5, 5);
 		g2d.drawOval(2 * width / 3 - 2, width / 2 - 2, 5, 5);
 	}
