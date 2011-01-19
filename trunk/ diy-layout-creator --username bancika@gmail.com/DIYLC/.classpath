@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/HttpProxy.jar"/>
 	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
+	<classpathentry kind="lib" path="library/main.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

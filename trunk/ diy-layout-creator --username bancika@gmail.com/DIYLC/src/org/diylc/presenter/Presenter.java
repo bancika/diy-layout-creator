@@ -7,10 +7,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -51,8 +47,6 @@ import com.diyfever.gui.miscutils.Utils;
 import com.diyfever.gui.simplemq.MessageDispatcher;
 import com.diyfever.gui.update.VersionNumber;
 import com.rits.cloning.Cloner;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * The main presenter class, contains core app logic and drawing routines.
@@ -72,8 +66,6 @@ public class Presenter implements IPlugInPort {
 
 	private double zoomLevel = ConfigurationManager.getInstance().readDouble(ZOOM_KEY, 1d);
 	private Project currentProject;
-	private String currentFileName = null;
-	private boolean modified = false;
 	private Map<String, List<ComponentType>> componentTypes;
 	// Maps component class names to ComponentType objects.
 	private Map<String, ComponentType> componentTypeMap;
@@ -86,8 +78,8 @@ public class Presenter implements IPlugInPort {
 
 	// Utilities
 	private Cloner cloner;
-	private XStream xStream = new XStream(new DomDriver());
 	private ProjectPainter projectPainter;
+	private ProjectFileManager projectFileManager;
 
 	private Rectangle selectionRect;
 
@@ -121,6 +113,7 @@ public class Presenter implements IPlugInPort {
 		currentProject = new Project();
 		cloner = new Cloner();
 		projectPainter = new ProjectPainter();
+		projectFileManager = new ProjectFileManager();
 
 		// lockedLayers = EnumSet.noneOf(ComponentLayer.class);
 		// visibleLayers = EnumSet.allOf(ComponentLayer.class);
@@ -203,8 +196,6 @@ public class Presenter implements IPlugInPort {
 			Project project = new Project();
 			setDefaultProperties(project);
 			loadProject(project, true);
-			this.currentFileName = null;
-			this.modified = false;
 			fireFileStatusChanged();
 		} catch (Exception e) {
 			LOG.error("Could not create new file", e);
@@ -217,18 +208,10 @@ public class Presenter implements IPlugInPort {
 	public void loadProjectFromFile(String fileName) {
 		LOG.info(String.format("loadProjectFromFile(%s)", fileName));
 		try {
-			FileInputStream fis = new FileInputStream(fileName);
-			Project project = (Project) xStream.fromXML(fis);
+			Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName);
 			loadProject(project, true);
-			fis.close();
-			this.currentFileName = fileName;
-			this.modified = false;
 			fireFileStatusChanged();
-		} catch (FileNotFoundException ex) {
-			LOG.error("Could not load file", ex);
-			view.showMessage("Could not open file, " + fileName + " does not exist.", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			LOG.error("Could not load file", ex);
 			view.showMessage("Could not open file " + fileName + ". Check the log for details.",
 					"Error", JOptionPane.ERROR_MESSAGE);
@@ -237,7 +220,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public boolean allowFileAction() {
-		if (this.modified) {
+		if (projectFileManager.isModified()) {
 			int response = view.showConfirmDialog(
 					"There are unsaved changes. Are you sure you want to abandon these changes?",
 					"Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -249,13 +232,8 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void saveProjectToFile(String fileName) {
 		LOG.info(String.format("saveProjectToFile(%s)", fileName));
-		FileOutputStream fos;
 		try {
-			fos = new FileOutputStream(fileName);
-			xStream.toXML(currentProject, fos);
-			fos.close();
-			this.currentFileName = fileName;
-			this.modified = false;
+			projectFileManager.serializeProjectToFile(currentProject, fileName);
 			fireFileStatusChanged();
 		} catch (Exception ex) {
 			LOG.error("Could not save file", ex);
@@ -266,12 +244,12 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public String getCurrentFileName() {
-		return this.currentFileName;
+		return projectFileManager.getCurrentFileName();
 	}
 
 	@Override
 	public boolean isProjectModified() {
-		return this.modified;
+		return projectFileManager.isModified();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -749,7 +727,7 @@ public class Presenter implements IPlugInPort {
 		if (!preDragProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, cloner
 					.deepClone(currentProject), "Drag");
-			this.modified = true;
+			projectFileManager.notifyFileChange();
 			fireFileStatusChanged();
 		}
 		fireSelectionChanged();
@@ -774,7 +752,7 @@ public class Presenter implements IPlugInPort {
 		selectedComponents.addAll(components);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
-		this.modified = true;
+		projectFileManager.notifyFileChange();
 		fireFileStatusChanged();
 		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -794,7 +772,7 @@ public class Presenter implements IPlugInPort {
 		this.selectedComponents.clear();
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Delete");
-		this.modified = true;
+		projectFileManager.notifyFileChange();
 		fireFileStatusChanged();
 		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -839,7 +817,7 @@ public class Presenter implements IPlugInPort {
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Group");
-			this.modified = true;
+			projectFileManager.notifyFileChange();
 			fireFileStatusChanged();
 		}
 	}
@@ -854,7 +832,7 @@ public class Presenter implements IPlugInPort {
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Group");
-			this.modified = true;
+			projectFileManager.notifyFileChange();
 			fireFileStatusChanged();
 		}
 	}
@@ -876,8 +854,8 @@ public class Presenter implements IPlugInPort {
 	}
 
 	private void fireFileStatusChanged() {
-		messageDispatcher.dispatchMessage(EventType.FILE_STATUS_CHANGED, this.currentFileName,
-				this.modified);
+		messageDispatcher.dispatchMessage(EventType.FILE_STATUS_CHANGED, getCurrentFileName(),
+				isProjectModified());
 	}
 
 	/**
@@ -1025,7 +1003,7 @@ public class Presenter implements IPlugInPort {
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Add " + componentType.getName());
-			this.modified = true;
+			projectFileManager.notifyFileChange();
 			fireFileStatusChanged();
 		}
 
@@ -1096,7 +1074,7 @@ public class Presenter implements IPlugInPort {
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Edit Selection");
-				this.modified = true;
+				projectFileManager.notifyFileChange();
 				fireFileStatusChanged();
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1138,7 +1116,7 @@ public class Presenter implements IPlugInPort {
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Edit Project");
-				this.modified = true;
+				projectFileManager.notifyFileChange();
 				fireFileStatusChanged();
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
