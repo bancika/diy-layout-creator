@@ -28,7 +28,7 @@ This sections explains how to add an existing component to the project. To learn
 
   * Locate the component in the toolbox. Components are categorized into several tabs, so make sure you're looking into the right one.
   * Click on the button that shows the desired component. Note that text in the status bar changes to reflect this action.
-  * Click on the desired location on the canvas to create the component. Some components (solder pads, trace cuts, etc) will be created on single click, others (like resistors, jumpers, etc) will require two clicks to set both ending points.
+  * Click on the desired location on the canvas to create the component. Some components (solder pads, trace cuts, etc) will be created on single click, others (like resistors, jumpers, etc) will require two clicks to set both ending points. Instructions in the status bar will guide you through the process.
 
 ===Moving components===
 
