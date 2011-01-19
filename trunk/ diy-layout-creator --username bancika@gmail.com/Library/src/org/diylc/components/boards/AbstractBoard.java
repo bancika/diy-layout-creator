@@ -28,6 +28,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	protected String value = "";
 	protected Point[] controlPoints = new Point[] { new Point(0, 0),
 			new Point(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels()) };
+	protected Point firstPoint = new Point();
+	protected Point secondPoint = new Point();
 
 	protected Color boardColor = BOARD_COLOR;
 	protected Color borderColor = BORDER_COLOR;
@@ -43,14 +45,14 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 						/ MAX_ALPHA));
 			}
 			g2d.setColor(boardColor);
-			g2d.fillRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
-					- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
+			g2d.fillRect(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y
+					- firstPoint.y);
 			g2d.setComposite(oldComposite);
 		}
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
-		g2d.drawRect(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x
-				- controlPoints[0].x, controlPoints[1].y - controlPoints[0].y);
+		g2d.drawRect(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y
+				- firstPoint.y);
 		// Do not track any changes that follow because the whole board has been
 		// tracked so far.
 		drawingObserver.stopTracking();
@@ -97,6 +99,10 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	@Override
 	public void setControlPoint(Point point, int index) {
 		controlPoints[index].setLocation(point);
+		firstPoint.setLocation(Math.min(controlPoints[0].x, controlPoints[1].x), Math.min(
+				controlPoints[0].y, controlPoints[1].y));
+		secondPoint.setLocation(Math.max(controlPoints[0].x, controlPoints[1].x), Math.max(
+				controlPoints[0].y, controlPoints[1].y));
 	}
 
 	@EditableProperty
