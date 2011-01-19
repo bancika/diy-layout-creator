@@ -3,7 +3,7 @@
 
 ===System requirements===
 
-  * Java JRE/JDK 1.6.0_10 or newer
+  * [http://www.oracle.com/technetwork/java/javase/downloads/index.html Java JRE/JDK] 1.6.0_10 or newer
   * 256MB free RAM memory
   * 10MB free hard drive space
   * Zip utility to unpack the archive (7-zip, !WinZip, Total Commander, etc)
