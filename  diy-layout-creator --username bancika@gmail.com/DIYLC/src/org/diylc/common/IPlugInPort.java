@@ -172,6 +172,8 @@ public interface IPlugInPort {
 	 * @param parentMenuName
 	 */
 	void injectSubmenu(String name, Icon icon, String parentMenuName);
+	
+	Double[] getAvailableZoomLevels();
 
 	/**
 	 * Returns current zoom level where <code>zoomLevel = 1.0d</code> means

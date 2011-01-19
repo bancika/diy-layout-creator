@@ -20,7 +20,7 @@ import com.diyfever.gui.miscutils.Utils;
  * 
  * @author Branislav Stojkovic
  */
-public class HelpManager implements IPlugIn {
+public class HelpMenuPlugin implements IPlugIn {
 
 	private static final String HELP_TITLE = "Help";
 

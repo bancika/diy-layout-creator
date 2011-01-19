@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.diylc.common.ComponentSelection;
 import org.diylc.common.DrawOption;
+import org.diylc.common.GridType;
 import org.diylc.common.IComponentFiler;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -45,9 +46,6 @@ public class ProjectPainter {
 	// determine which components are invalidated when they are not in the map.
 	private Map<IDIYComponent<?>, ComponentState> lastDrawnStateMap;
 
-	public boolean antiAliasing = ConfigurationManager.getInstance().readBoolean(ANTIALIASING_KEY,
-			true);
-
 	public ProjectPainter() {
 		super();
 		componentAreaMap = new HashMap<IDIYComponent<?>, Area>();
@@ -63,7 +61,8 @@ public class ProjectPainter {
 		}
 		G2DWrapper g2dWrapper = new G2DWrapper(g2d);
 
-		if (drawOptions.contains(DrawOption.ANTIALIASING) && antiAliasing) {
+		if (drawOptions.contains(DrawOption.ANTIALIASING)
+				&& ConfigurationManager.getInstance().readBoolean(ANTIALIASING_KEY, true)) {
 			g2d
 					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 							RenderingHints.VALUE_ANTIALIAS_ON);
@@ -76,8 +75,18 @@ public class ProjectPainter {
 		g2dWrapper.fillRect(0, 0, d.width, d.height);
 		g2d.setClip(new Rectangle(new Point(0, 0), d));
 
-		if (drawOptions.contains(DrawOption.GRID)) {
+		GridType gridType = (GridType) ConfigurationManager.getInstance().readObject(
+				ANTIALIASING_KEY, GridType.LINES);
+		if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
 			double zoomStep = project.getGridSpacing().convertToPixels() * zoomLevel;
+			if (gridType == GridType.CROSSHAIR) {
+				g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+						10f, new float[] { (float) zoomStep / 2, (float) zoomStep / 2 },
+						(float) zoomStep / 4));
+			} else if (gridType == GridType.DOT) {
+				g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+						10f, new float[] { 1f, (float) zoomStep - 1 }, 0f));
+			}
 
 			g2dWrapper.setColor(Constants.GRID_COLOR);
 			for (double i = zoomStep; i < d.width; i += zoomStep) {

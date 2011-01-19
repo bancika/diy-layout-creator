@@ -21,7 +21,7 @@ import com.diyfever.gui.export.DrawingExporter;
  * 
  * @author Branislav Stojkovic
  */
-public class FileManager implements IPlugIn {
+public class FileMenuPlugin implements IPlugIn {
 
 	private static final String FILE_TITLE = "File";
 	private static final String TRACE_MASK_TITLE = "Trace Mask";
