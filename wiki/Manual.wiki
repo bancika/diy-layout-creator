@@ -33,6 +33,7 @@ This sections explains how to add an existing component to the project. To learn
 ===Moving components===
 
 The easiest way to move a component across the canvas is to drag it by clicking on it's body and moving the mouse to the desired location. When mouse cursor is over a component, it will change to "hand pointer" and status bar will read name of the component that will be dragged.
+
 Note that:
   * if more than one component is selected, all of them will be moved
   * moving one (or more) components will move/stretch any components that are stuck to them. Status bar will inform you which components will be affected.
