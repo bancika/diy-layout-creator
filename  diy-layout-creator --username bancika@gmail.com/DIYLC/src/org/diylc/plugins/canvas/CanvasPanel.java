@@ -1,6 +1,5 @@
 package org.diylc.plugins.canvas;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -60,7 +59,6 @@ class CanvasPanel extends JComponent implements Autoscroll {
 	public CanvasPanel(IPlugInPort plugInPort) {
 		super();
 		this.plugInPort = plugInPort;
-		setBackground(Color.white);
 		setFocusable(true);
 		initializeListeners();
 		initializeDnD();

@@ -45,8 +45,8 @@ public class ProjectPainter {
 	// determine which components are invalidated when they are not in the map.
 	private Map<IDIYComponent<?>, ComponentState> lastDrawnStateMap;
 
-	public boolean antiAliasing = ConfigurationManager.getInstance().readBoolean(
-			ANTIALIASING_KEY, true);
+	public boolean antiAliasing = ConfigurationManager.getInstance().readBoolean(ANTIALIASING_KEY,
+			true);
 
 	public ProjectPainter() {
 		super();
@@ -74,6 +74,7 @@ public class ProjectPainter {
 
 		g2dWrapper.setColor(Constants.CANVAS_COLOR);
 		g2dWrapper.fillRect(0, 0, d.width, d.height);
+		g2d.setClip(new Rectangle(new Point(0, 0), d));
 
 		if (drawOptions.contains(DrawOption.GRID)) {
 			double zoomStep = project.getGridSpacing().convertToPixels() * zoomLevel;
