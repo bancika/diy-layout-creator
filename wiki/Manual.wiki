@@ -60,6 +60,9 @@ Component groups behave similar to object groups Corel Draw. The idea is to keep
 Note that while the components are grouped, you can't edit drag their individual control points.
 To un-group the components, select them and press Ctrl+U (or select "Ungroup Selection" from the menu).
 
+Note that:
+  * nested groups are not currently supported. If you group two groups of components together you'll end up with one large group instead of group that contains two groups.
+
 ===Using the status bar===
 
 Status bar contains three different features:
