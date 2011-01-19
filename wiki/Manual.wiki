@@ -45,6 +45,7 @@ A component may have one or more control points. Control points have dual purpos
 
   * Double click on a component opens the Component Editor - dialog that lists all editable properties of the selected component(s).
   * Checking the "Default" checkbox on the right side will make the value for that property default. In other words, all the components created after that will inherit that value.
+  * Boxes that edit measures (size, resistance, capacitance, etc) can take math expressions in addition to constants. For instance you can type 3/32 and it will be automatically converted to decimal. Even more complicated expressions with parenthesis and 4 basic numerical operators are possible.
 
 ===Grouping components together===
 
