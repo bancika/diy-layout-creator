@@ -15,7 +15,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 
 	private static final long serialVersionUID = 1L;
 
-	protected String name;
+	protected String name = "";
 
 	@EditableProperty(defaultable = false)
 	@Override

@@ -29,4 +29,14 @@ public class Size extends AbstractMeasure<SizeUnit> {
 	public Size clone() throws CloneNotSupportedException {
 		return new Size(value, unit);
 	}
+	
+	public static Size parseSize(String value) {
+		for (SizeUnit unit : SizeUnit.values()) {
+			if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
+				value = value.substring(0, value.length() - unit.toString().length() - 1).trim();
+				return new Size(Double.parseDouble(value), unit);
+			}
+		}
+		throw new IllegalArgumentException("Could not parse size: " + value);
+	}
 }
