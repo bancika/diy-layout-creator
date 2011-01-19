@@ -113,7 +113,7 @@ public class Presenter implements IPlugInPort {
 		currentProject = new Project();
 		cloner = new Cloner();
 		projectPainter = new ProjectPainter();
-		projectFileManager = new ProjectFileManager();
+		projectFileManager = new ProjectFileManager(messageDispatcher);
 
 		// lockedLayers = EnumSet.noneOf(ComponentLayer.class);
 		// visibleLayers = EnumSet.allOf(ComponentLayer.class);
@@ -196,7 +196,7 @@ public class Presenter implements IPlugInPort {
 			Project project = new Project();
 			setDefaultProperties(project);
 			loadProject(project, true);
-			fireFileStatusChanged();
+			projectFileManager.fireFileStatusChanged();
 		} catch (Exception e) {
 			LOG.error("Could not create new file", e);
 			view.showMessage("Could not create a new file. Check the log for details.", "Error",
@@ -210,7 +210,7 @@ public class Presenter implements IPlugInPort {
 		try {
 			Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName);
 			loadProject(project, true);
-			fireFileStatusChanged();
+			projectFileManager.fireFileStatusChanged();
 		} catch (Exception ex) {
 			LOG.error("Could not load file", ex);
 			view.showMessage("Could not open file " + fileName + ". Check the log for details.",
@@ -234,7 +234,6 @@ public class Presenter implements IPlugInPort {
 		LOG.info(String.format("saveProjectToFile(%s)", fileName));
 		try {
 			projectFileManager.serializeProjectToFile(currentProject, fileName);
-			fireFileStatusChanged();
 		} catch (Exception ex) {
 			LOG.error("Could not save file", ex);
 			view.showMessage("Could not save file " + fileName + ". Check the log for details.",
@@ -728,7 +727,6 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, cloner
 					.deepClone(currentProject), "Drag");
 			projectFileManager.notifyFileChange();
-			fireFileStatusChanged();
 		}
 		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -753,7 +751,6 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
 		projectFileManager.notifyFileChange();
-		fireFileStatusChanged();
 		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
@@ -773,7 +770,6 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Delete");
 		projectFileManager.notifyFileChange();
-		fireFileStatusChanged();
 		fireSelectionChanged();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
@@ -818,7 +814,6 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Group");
 			projectFileManager.notifyFileChange();
-			fireFileStatusChanged();
 		}
 	}
 
@@ -833,7 +828,6 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Group");
 			projectFileManager.notifyFileChange();
-			fireFileStatusChanged();
 		}
 	}
 
@@ -851,11 +845,6 @@ public class Presenter implements IPlugInPort {
 				controlPointMap.keySet());
 		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 				calculateSelectionDimension());
-	}
-
-	private void fireFileStatusChanged() {
-		messageDispatcher.dispatchMessage(EventType.FILE_STATUS_CHANGED, getCurrentFileName(),
-				isProjectModified());
 	}
 
 	/**
@@ -1004,7 +993,6 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 					.deepClone(currentProject), "Add " + componentType.getName());
 			projectFileManager.notifyFileChange();
-			fireFileStatusChanged();
 		}
 
 		fireSelectionChanged();
@@ -1075,7 +1063,6 @@ public class Presenter implements IPlugInPort {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Edit Selection");
 				projectFileManager.notifyFileChange();
-				fireFileStatusChanged();
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
@@ -1117,7 +1104,6 @@ public class Presenter implements IPlugInPort {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 						.deepClone(currentProject), "Edit Project");
 				projectFileManager.notifyFileChange();
-				fireFileStatusChanged();
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 			messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);

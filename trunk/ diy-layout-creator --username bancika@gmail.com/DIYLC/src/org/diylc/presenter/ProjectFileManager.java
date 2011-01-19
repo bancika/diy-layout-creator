@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.diylc.common.EventType;
 import org.diylc.common.Orientation;
 import org.diylc.components.boards.AbstractBoard;
 import org.diylc.components.boards.BlankBoard;
@@ -36,6 +37,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.diyfever.gui.simplemq.MessageDispatcher;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -51,6 +53,13 @@ public class ProjectFileManager {
 	private String currentFileName = null;
 	private boolean modified = false;
 
+	private MessageDispatcher<EventType> messageDispatcher;
+
+	public ProjectFileManager(MessageDispatcher<EventType> messageDispatcher) {
+		super();
+		this.messageDispatcher = messageDispatcher;
+	}
+
 	public void serializeProjectToFile(Project project, String fileName) throws IOException {
 		LOG.info(String.format("saveProjectToFile(%s)", fileName));
 		FileOutputStream fos;
@@ -59,7 +68,7 @@ public class ProjectFileManager {
 		fos.close();
 		this.currentFileName = fileName;
 		this.modified = false;
-		// fireFileStatusChanged();
+		fireFileStatusChanged();
 	}
 
 	public Project deserializeProjectFromFile(String fileName) throws SAXException, IOException,
@@ -96,6 +105,7 @@ public class ProjectFileManager {
 
 	public void notifyFileChange() {
 		this.modified = true;
+		fireFileStatusChanged();
 	}
 
 	public String getCurrentFileName() {
@@ -104,6 +114,11 @@ public class ProjectFileManager {
 
 	public boolean isModified() {
 		return modified;
+	}
+
+	public void fireFileStatusChanged() {
+		messageDispatcher.dispatchMessage(EventType.FILE_STATUS_CHANGED, getCurrentFileName(),
+				isModified());
 	}
 
 	private Project parseV1File(Element root) {
