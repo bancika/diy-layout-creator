@@ -56,6 +56,11 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 	public void setLeadThickness(Size leadThickness) {
 		this.leadThickness = leadThickness;
 	}
+	
+	@Override
+	protected boolean shouldShadeLeads() {
+		return false;
+	}
 
 	@Deprecated
 	public Color getBodyColor() {
