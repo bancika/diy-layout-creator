@@ -30,9 +30,9 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.images.IconLoader;
 import org.diylc.plugins.canvas.CanvasPlugin;
-import org.diylc.plugins.clipboard.ClipboardManager;
-import org.diylc.plugins.file.FileManager;
-import org.diylc.plugins.help.HelpManager;
+import org.diylc.plugins.clipboard.EditMenuPlugin;
+import org.diylc.plugins.file.FileMenuPlugin;
+import org.diylc.plugins.help.HelpMenuPlugin;
 import org.diylc.plugins.statusbar.StatusBar;
 import org.diylc.plugins.toolbox.ToolBox;
 import org.diylc.presenter.Presenter;
@@ -67,10 +67,10 @@ public class MainFrame extends JFrame implements IView {
 		this.presenter = new Presenter(this);
 
 		presenter.installPlugin(new ToolBox());
-		presenter.installPlugin(new FileManager());
-		presenter.installPlugin(new ClipboardManager());
+		presenter.installPlugin(new FileMenuPlugin());
+		presenter.installPlugin(new EditMenuPlugin());
 		// presenter.installPlugin(new OnlineManager());
-		presenter.installPlugin(new HelpManager());
+		presenter.installPlugin(new HelpMenuPlugin());
 
 		presenter.installPlugin(new StatusBar());
 		canvasPlugin = new CanvasPlugin();

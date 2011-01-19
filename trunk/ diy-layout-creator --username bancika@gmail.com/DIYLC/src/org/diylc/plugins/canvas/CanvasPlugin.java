@@ -3,6 +3,8 @@ package org.diylc.plugins.canvas;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.EnumSet;
 
 import javax.swing.SwingConstants;
@@ -35,7 +37,6 @@ public class CanvasPlugin implements IPlugIn {
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
-		canvasPanel = new CanvasPanel(plugInPort);
 		try {
 			plugInPort.injectGUIComponent(getScrollPane(), SwingConstants.CENTER);
 		} catch (BadPositionException e) {
@@ -43,19 +44,50 @@ public class CanvasPlugin implements IPlugIn {
 		}
 	}
 
+	public CanvasPanel getCanvasPanel() {
+		if (canvasPanel == null) {
+			canvasPanel = new CanvasPanel(plugInPort);
+		}
+		return canvasPanel;
+	}
+
 	private RulerScrollPane getScrollPane() {
 		if (scrollPane == null) {
-			scrollPane = new RulerScrollPane(canvasPanel, new ProjectDrawingProvider(plugInPort),
-					new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in)
-							.convertToPixels());
-			boolean metric = ConfigurationManager.getInstance().readBoolean(
-					Presenter.METRIC_KEY, true);
+			scrollPane = new RulerScrollPane(getCanvasPanel(), new ProjectDrawingProvider(
+					plugInPort), new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d,
+					SizeUnit.in).convertToPixels());
+			boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY,
+					true);
 			scrollPane.setMetric(metric);
+			scrollPane.setWheelScrollingEnabled(false);
 			scrollPane.addUnitListener(new IRulerListener() {
 
 				@Override
 				public void unitsChanged(boolean isMetric) {
 					plugInPort.setMetric(isMetric);
+				}
+			});
+			scrollPane.addMouseWheelListener(new MouseWheelListener() {
+
+				@Override
+				public void mouseWheelMoved(MouseWheelEvent e) {
+					double d = plugInPort.getZoomLevel();
+					Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
+					if (e.getWheelRotation() > 0) {
+						int i = availableZoomLevels.length - 1;
+						while (i > 0 && availableZoomLevels[i] >= d) {
+							i--;
+						}
+						plugInPort.setZoomLevel(availableZoomLevels[i]);
+					} else {
+						int i = 0;
+						while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= d) {
+							i++;
+						}
+						plugInPort.setZoomLevel(availableZoomLevels[i]);
+					}
+					System.out.println(e);
+					e.consume();
 				}
 			});
 		}

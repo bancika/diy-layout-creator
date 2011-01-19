@@ -135,6 +135,11 @@ public class Presenter implements IPlugInPort {
 	// IPlugInPort
 
 	@Override
+	public Double[] getAvailableZoomLevels() {
+		return new Double[] { 0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d };
+	}
+
+	@Override
 	public double getZoomLevel() {
 		return zoomLevel;
 	}
@@ -142,6 +147,9 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void setZoomLevel(double zoomLevel) {
 		LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
+		if (this.zoomLevel == zoomLevel) {
+			return;
+		}
 		this.zoomLevel = zoomLevel;
 		ConfigurationManager.getInstance().writeValue(ZOOM_KEY, zoomLevel);
 		messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);

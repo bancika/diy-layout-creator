@@ -31,9 +31,9 @@ import com.diyfever.gui.undo.IUndoListener;
 import com.diyfever.gui.undo.UndoHandler;
 import com.rits.cloning.Cloner;
 
-public class ClipboardManager implements IPlugIn, ClipboardOwner {
+public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
-	private static final Logger LOG = Logger.getLogger(ClipboardManager.class);
+	private static final Logger LOG = Logger.getLogger(EditMenuPlugin.class);
 
 	private static final String EDIT_TITLE = "Edit";
 	private IPlugInPort plugInPort;
@@ -47,7 +47,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 
 	private UndoHandler<Project> undoHandler;
 
-	public ClipboardManager() {
+	public EditMenuPlugin() {
 		clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		cloner = new Cloner();
 		undoHandler = new UndoHandler<Project>(new IUndoListener<Project>() {
@@ -152,7 +152,7 @@ public class ClipboardManager implements IPlugIn, ClipboardOwner {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Copy triggered");
 			clipboard.setContents(cloner.deepClone(plugInPort.getSelectedComponents()),
-					ClipboardManager.this);
+					EditMenuPlugin.this);
 		}
 	}
 
