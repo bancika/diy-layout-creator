@@ -188,7 +188,7 @@ public class Presenter implements IPlugInPort {
 		LOG.info("createNewFile()");
 		try {
 			Project project = new Project();
-			instantiationManager.setDefaultProperties(project);
+			instantiationManager.fillWithDefaultProperties(project);
 			loadProject(project, true);
 			projectFileManager.fireFileStatusChanged();
 		} catch (Exception e) {

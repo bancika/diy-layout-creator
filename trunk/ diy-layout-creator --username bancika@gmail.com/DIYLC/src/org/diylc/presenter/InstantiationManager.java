@@ -147,7 +147,7 @@ public class InstantiationManager {
 			}
 		}
 
-		setDefaultProperties(component);
+		fillWithDefaultProperties(component);
 
 		return component;
 	}
@@ -162,7 +162,7 @@ public class InstantiationManager {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public void setDefaultProperties(Object object) throws IllegalArgumentException,
+	public void fillWithDefaultProperties(Object object) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		// Extract properties.
 		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
