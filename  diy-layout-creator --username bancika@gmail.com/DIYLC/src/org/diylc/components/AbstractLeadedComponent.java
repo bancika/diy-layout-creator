@@ -35,7 +35,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	public static Color LEAD_COLOR = Color.decode("#236B8E");
 	public static Color LABEL_COLOR = Color.black;
 	public static Color LABEL_COLOR_SELECTED = Color.red;
-	public static Size LEAD_THICKNESS = new Size(0.8d, SizeUnit.mm);
+	public static Size LEAD_THICKNESS = new Size(0.6d, SizeUnit.mm);
 	public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
 	protected Size width;
@@ -92,7 +92,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.draw(shape);
 		// Draw leads.
-		int leadThickness = getLeadThickness().convertToPixels();
+		int leadThickness = getClosestOdd(getLeadThickness().convertToPixels());
 		g2d.setStroke(new BasicStroke(leadThickness));
 		g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
 				: getLeadColor(componentState));

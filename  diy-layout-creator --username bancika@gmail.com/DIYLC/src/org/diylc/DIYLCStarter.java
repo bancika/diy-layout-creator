@@ -40,15 +40,6 @@ public class DIYLCStarter {
 		
 		LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
 
-		url = DIYLCStarter.class.getResource("/config.properties");
-		properties = new Properties();
-		try {
-			properties.load(new FileInputStream("config.properties"));
-			PropertyInjector.injectProperties(properties);
-		} catch (Exception e) {
-			LOG.error("Could not read config.properties file", e);
-		}
-
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -58,5 +49,16 @@ public class DIYLCStarter {
 		MainFrame mainFrame = new MainFrame();
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
+		
+		url = DIYLCStarter.class.getResource("/config.properties");
+		properties = new Properties();
+		try {
+			LOG.info("Injecting default properties.");
+			properties.load(new FileInputStream("config.properties"));
+			PropertyInjector.injectProperties(properties);
+		} catch (Exception e) {
+			LOG.error("Could not read config.properties file", e);
+		}
+
 	}
 }

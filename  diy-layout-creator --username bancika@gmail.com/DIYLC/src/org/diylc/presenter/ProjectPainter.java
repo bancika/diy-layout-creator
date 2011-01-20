@@ -40,6 +40,10 @@ public class ProjectPainter {
 	public static final String ANTIALIASING_KEY = "anti-aliasing";
 	public static boolean DEBUG_COMPONENT_AREAS = false;
 
+	public static Color GRID_COLOR = new Color(240, 240, 240);
+	public static Color CONTROL_POINT_COLOR = Color.black;
+	public static Color SELECTED_CONTROL_POINT_COLOR = Color.green;
+
 	// Keeps Area object of each drawn component.
 	private Map<IDIYComponent<?>, Area> componentAreaMap;
 	// Maps components to the last state they are drawn in. Also, used to
@@ -68,8 +72,15 @@ public class ProjectPainter {
 							RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 
+		double zoom = 1d;
+		if (drawOptions.contains(DrawOption.ZOOM)) {
+			zoom = zoomLevel;
+		} else {
+			zoom = 1 / Constants.PIXEL_SIZE;
+		}
+
 		// AffineTransform initialTx = g2d.getTransform();
-		Dimension d = getCanvasDimensions(project, zoomLevel, drawOptions.contains(DrawOption.ZOOM));
+		Dimension d = getCanvasDimensions(project, zoom, true);
 
 		g2dWrapper.setColor(Constants.CANVAS_COLOR);
 		g2dWrapper.fillRect(0, 0, d.width, d.height);
@@ -78,7 +89,7 @@ public class ProjectPainter {
 		GridType gridType = (GridType) ConfigurationManager.getInstance().readObject(
 				ANTIALIASING_KEY, GridType.LINES);
 		if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
-			double zoomStep = project.getGridSpacing().convertToPixels() * zoomLevel;
+			double zoomStep = project.getGridSpacing().convertToPixels() * zoom;
 			if (gridType == GridType.CROSSHAIR) {
 				g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
 						10f, new float[] { (float) zoomStep / 2, (float) zoomStep / 2 },
@@ -88,7 +99,7 @@ public class ProjectPainter {
 						10f, new float[] { 1f, (float) zoomStep - 1 }, 0f));
 			}
 
-			g2dWrapper.setColor(Constants.GRID_COLOR);
+			g2dWrapper.setColor(GRID_COLOR);
 			for (double i = zoomStep; i < d.width; i += zoomStep) {
 				g2dWrapper.drawLine((int) i, 0, (int) i, d.height - 1);
 			}
@@ -97,8 +108,8 @@ public class ProjectPainter {
 			}
 		}
 
-		if ((drawOptions.contains(DrawOption.ZOOM)) && (Math.abs(1.0 - zoomLevel) > 1e-4)) {
-			g2dWrapper.scale(zoomLevel, zoomLevel);
+		if (Math.abs(1.0 - zoom) > 1e-4) {
+			g2dWrapper.scale(zoom, zoom);
 		}
 
 		// Composite mainComposite = g2d.getComposite();
@@ -142,9 +153,13 @@ public class ProjectPainter {
 		if (controlPointSlot != null) {
 			for (Point point : controlPointSlot) {
 				if (point != null) {
-					g2dWrapper.setColor(Constants.SELECTED_CONTROL_POINT_COLOR);
+					g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
 					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2, point.y
 							- CONTROL_POINT_SIZE / 2, CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
+					g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
+					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2 + 1, point.y
+							- CONTROL_POINT_SIZE / 2 + 1, CONTROL_POINT_SIZE - 2,
+							CONTROL_POINT_SIZE - 2);
 				}
 			}
 		}
@@ -162,7 +177,7 @@ public class ProjectPainter {
 							.contains(component)
 							&& !selectedComponents.contains(component) && component
 							.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS))) {
-						g2dWrapper.setColor(Constants.CONTROL_POINT_COLOR);
+						g2dWrapper.setColor(CONTROL_POINT_COLOR);
 
 						Point controlPoint = component.getControlPoint(i);
 						int pointSize = CONTROL_POINT_SIZE - 2;
@@ -177,12 +192,17 @@ public class ProjectPainter {
 					if (!groupedComponents.contains(component)
 							&& (component.getControlPointVisibilityPolicy(i) == VisibilityPolicy.WHEN_SELECTED || component
 									.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS)) {
-						g2dWrapper.setColor(Constants.SELECTED_CONTROL_POINT_COLOR);
 
 						Point controlPoint = component.getControlPoint(i);
 						int pointSize = CONTROL_POINT_SIZE;
+
+						g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
 						g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
 								- pointSize / 2, pointSize, pointSize);
+						g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
+						g2dWrapper.fillOval(controlPoint.x - CONTROL_POINT_SIZE / 2 + 1,
+								controlPoint.y - CONTROL_POINT_SIZE / 2 + 1,
+								CONTROL_POINT_SIZE - 2, CONTROL_POINT_SIZE - 2);
 					}
 				}
 			}
@@ -251,6 +271,9 @@ public class ProjectPainter {
 		if (useZoom) {
 			width *= zoomLevel;
 			height *= zoomLevel;
+		} else {
+			width /= Constants.PIXEL_SIZE;
+			height /= Constants.PIXEL_SIZE;
 		}
 		return new Dimension((int) width, (int) height);
 	}

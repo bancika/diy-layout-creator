@@ -4,15 +4,15 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 
 public class Constants {
 
-	public static final int PIXELS_PER_INCH = 150;//Toolkit.getDefaultToolkit().getScreenResolution();
+	public static final int PIXELS_PER_INCH = 150;
+	public static final double PIXEL_SIZE = 1d * PIXELS_PER_INCH
+			/ Toolkit.getDefaultToolkit().getScreenResolution();
 
 	public static Color CANVAS_COLOR = Color.white;
-	public static Color GRID_COLOR = new Color(240, 240, 240);
-	public static Color CONTROL_POINT_COLOR = Color.black;
-	public static Color SELECTED_CONTROL_POINT_COLOR = Color.blue;
 
 	public static Font LABEL_FONT = new Font("Tahoma", Font.PLAIN, 12);
 

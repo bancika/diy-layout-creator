@@ -187,7 +187,14 @@ public class StatusBar extends JPanel implements IPlugIn {
 		switch (eventType) {
 		case ZOOM_CHANGED:
 			if (!params[0].equals(getZoomBox().getSelectedItem())) {
-				getZoomBox().setSelectedItem(params[0]);
+				final Double zoom = (Double) params[0];
+				SwingUtilities.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						getZoomBox().setSelectedItem(zoom);
+					}
+				});
 			}
 			break;
 		case SELECTION_CHANGED:
