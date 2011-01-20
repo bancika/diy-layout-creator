@@ -12,9 +12,12 @@ import javax.swing.AbstractAction;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.gui.DialogFactory;
+import org.diylc.gui.editor.PropertyEditorDialog;
 import org.diylc.images.IconLoader;
 
+import com.diyfever.gui.ButtonDialog;
 import com.diyfever.gui.IDrawingProvider;
 import com.diyfever.gui.export.DrawingExporter;
 import com.lowagie.text.DocumentException;
@@ -74,6 +77,19 @@ public class FileMenuPlugin implements IPlugIn {
 				return;
 			}
 			plugInPort.createNewProject();
+			List<PropertyWrapper> properties = plugInPort.getProjectProperties();
+			PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
+					properties, "Edit Project");
+			editor.setVisible(true);
+			if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
+				plugInPort.applyPropertiesToProject(properties);
+			}
+			// Save default values.
+			for (PropertyWrapper property : editor.getDefaultedProperties()) {
+				if (property.getValue() != null) {
+					plugInPort.setProjectDefaultPropertyValue(property.getName(), property.getValue());
+				}
+			}
 		}
 	}
 

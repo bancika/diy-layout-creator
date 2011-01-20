@@ -1,7 +1,9 @@
 package org.diylc.presenter;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -50,6 +52,8 @@ public class ProjectPainter {
 	// determine which components are invalidated when they are not in the map.
 	private Map<IDIYComponent<?>, ComponentState> lastDrawnStateMap;
 
+	private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
+
 	public ProjectPainter() {
 		super();
 		componentAreaMap = new HashMap<IDIYComponent<?>, Area>();
@@ -59,7 +63,7 @@ public class ProjectPainter {
 	public void drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
 			IComponentFiler filter, Rectangle selectionRect, ComponentSelection selectedComponents,
 			Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
-			boolean dragInProgress, double zoomLevel) {
+			IDIYComponent<?> componentSlot, boolean dragInProgress, double zoomLevel) {
 		if (project == null) {
 			return;
 		}
@@ -149,21 +153,6 @@ public class ProjectPainter {
 			}
 		}
 
-		// Draw control points of the component in the slot.
-		if (controlPointSlot != null) {
-			for (Point point : controlPointSlot) {
-				if (point != null) {
-					g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
-					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2, point.y
-							- CONTROL_POINT_SIZE / 2, CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
-					g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
-					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2 + 1, point.y
-							- CONTROL_POINT_SIZE / 2 + 1, CONTROL_POINT_SIZE - 2,
-							CONTROL_POINT_SIZE - 2);
-				}
-			}
-		}
-
 		// Draw control points.
 		if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
 			// Draw unselected points first to make sure they are below.
@@ -208,6 +197,29 @@ public class ProjectPainter {
 			}
 		}
 
+		// Draw component slot in a separate composite.
+		if (componentSlot != null) {
+			g2dWrapper.startedDrawingComponent();
+			g2dWrapper.setComposite(slotComposite);
+			componentSlot.draw(g2dWrapper, ComponentState.NORMAL, project, g2dWrapper);
+			g2dWrapper.finishedDrawingComponent();
+		}
+
+		// Draw control points of the component in the slot.
+		if (controlPointSlot != null) {
+			for (Point point : controlPointSlot) {
+				if (point != null) {
+					g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
+					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2, point.y
+							- CONTROL_POINT_SIZE / 2, CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
+					g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
+					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2 + 1, point.y
+							- CONTROL_POINT_SIZE / 2 + 1, CONTROL_POINT_SIZE - 2,
+							CONTROL_POINT_SIZE - 2);
+				}
+			}
+		}
+
 		// Go back to the original transformation and zoom in to draw the
 		// selection rectangle and other similar elements.
 		// g2d.setTransform(initialTx);
@@ -236,6 +248,7 @@ public class ProjectPainter {
 	}
 
 	public void invalidateComponent(IDIYComponent<?> component) {
+		componentAreaMap.remove(component);
 		lastDrawnStateMap.remove(component);
 	}
 
