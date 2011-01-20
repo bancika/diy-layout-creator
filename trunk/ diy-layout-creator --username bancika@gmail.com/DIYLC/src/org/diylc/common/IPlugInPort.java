@@ -331,7 +331,7 @@ public interface IPlugInPort {
 	 * Sets the new component slot. Specified component type will be used to
 	 * instantiate new component.
 	 */
-	void setNewComponentSlot(ComponentType componentType);
+	void setNewComponentTypeSlot(ComponentType componentType);
 
 	/**
 	 * Changes default size notation, true for metric, false for imperial.
