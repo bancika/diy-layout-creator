@@ -23,6 +23,14 @@ public class ComponentSelection extends ArrayList<IDIYComponent<?>> implements T
 	private static final long serialVersionUID = 1L;
 
 	public static final DataFlavor listFlavor = new DataFlavor(List.class, "Java List");
+	
+	public static final ComponentSelection EMPTY_SELECTION = new ComponentSelection();
+	
+	public static ComponentSelection of(IDIYComponent<?> component) {
+		ComponentSelection selection = new ComponentSelection();
+		selection.add(component);
+		return selection;
+	}
 
 	public ComponentSelection() {
 		super();
