@@ -21,13 +21,13 @@ public class ComponentType {
 	private String namePrefix;
 	private String author;
 	private Icon icon;
-	private Class<? extends IDIYComponent> instanceClass;
+	private Class<? extends IDIYComponent<?>> instanceClass;
 	private double zOrder;
 	private boolean stretchable;
 
 	public ComponentType(String name, String description, CreationMethod creationMethod,
 			String category, String namePrefix, String author, Icon icon,
-			Class<? extends IDIYComponent> instanceClass, double zOrder, boolean stretchable) {
+			Class<? extends IDIYComponent<?>> instanceClass, double zOrder, boolean stretchable) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -69,7 +69,7 @@ public class ComponentType {
 		return icon;
 	}
 
-	public Class<? extends IDIYComponent> getInstanceClass() {
+	public Class<? extends IDIYComponent<?>> getInstanceClass() {
 		return instanceClass;
 	}
 
