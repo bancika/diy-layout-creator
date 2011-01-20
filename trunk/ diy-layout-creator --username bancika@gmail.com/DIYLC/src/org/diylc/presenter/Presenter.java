@@ -692,7 +692,8 @@ public class Presenter implements IPlugInPort {
 					}
 				}
 			}
-		} else if (selectedComponents.isEmpty()) {
+		} else if (selectedComponents.isEmpty()
+				&& instantiationManager.getComponentTypeSlot() == null) {
 			// If there's no selection, the only thing to do is update the
 			// selection rectangle and refresh.
 			Rectangle oldSelectionRect = selectionRect == null ? null
@@ -736,6 +737,8 @@ public class Presenter implements IPlugInPort {
 			// selectedComponents);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 			// calculateSelectionDimension());
+		} else {
+			updateSelection(selectedComponents);
 		}
 		// There is selection, so we need to finalize the drag&drop
 		// operation.
@@ -744,7 +747,6 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, cloner
 					.deepClone(currentProject), "Drag");
 			projectFileManager.notifyFileChange();
-			fireSelectionSizeChanged();
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		dragInProgress = false;
