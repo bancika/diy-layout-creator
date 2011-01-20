@@ -72,7 +72,7 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 
 	@Override
 	protected Shape getBodyShape() {
-		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(), getHeight()
-				.convertToPixels());
+		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(),
+				getClosestOdd(getHeight().convertToPixels()));
 	}
 }

@@ -73,7 +73,7 @@ public class RadialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 	@Override
 	protected Shape getBodyShape() {
 		double radius = getHeight().convertToPixels() * 0.7;
-		return new RoundRectangle2D.Double(0f, 0f, getWidth().convertToPixels(), getHeight()
-				.convertToPixels(), radius, radius);
+		return new RoundRectangle2D.Double(0f, 0f, getWidth().convertToPixels(),
+				getClosestOdd(getHeight().convertToPixels()), radius, radius);
 	}
 }

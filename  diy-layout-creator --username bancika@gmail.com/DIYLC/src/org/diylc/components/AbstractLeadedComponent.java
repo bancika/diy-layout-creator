@@ -66,8 +66,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		Shape shape = getBodyShape();
 		if (shape == null) {
 			g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
-			g2d.setColor(getLeadColor(componentState));
+			g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
+					: getLeadColor(componentState));
 			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
+			if (shouldShadeLeads()) {
+				g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels() - 2));
+				g2d.setColor(getLeadColor(componentState));
+				g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
+			}
 			return;
 		}
 		Rectangle shapeRect = shape.getBounds();

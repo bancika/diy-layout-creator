@@ -72,7 +72,7 @@ public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacita
 
 	@Override
 	protected Shape getBodyShape() {
-		return new Ellipse2D.Double(0f, 0f, getWidth().convertToPixels(), getHeight()
-				.convertToPixels());
+		return new Ellipse2D.Double(0f, 0f, getWidth().convertToPixels(), getClosestOdd(getHeight()
+				.convertToPixels()));
 	}
 }
