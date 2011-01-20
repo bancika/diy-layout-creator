@@ -200,10 +200,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
 	@Override
 	public void setControlPoint(Point point, int index) {
-		// Only accept the change if ending points are not the same.
-		if (!point.equals(points[1 - index])) {
-			points[index].setLocation(point);
-		}
+		points[index].setLocation(point);
 	}
 
 	@EditableProperty(name = "Color")

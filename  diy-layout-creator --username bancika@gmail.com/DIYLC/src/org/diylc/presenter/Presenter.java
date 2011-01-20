@@ -98,7 +98,8 @@ public class Presenter implements IPlugInPort {
 	private Project preDragProject = null;
 
 	// Component creation
-	private ComponentType componentSlot;
+	private ComponentType componentTypeSlot;
+	private IDIYComponent<?> componentSlot;
 	private Point controlPointSlot;
 	private Point potentialControlPoint;
 
@@ -159,7 +160,7 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public Cursor getCursorAt(Point point) {
 		// Only change the cursor if we're not making a new component.
-		if (componentSlot == null) {
+		if (componentTypeSlot == null) {
 			// Scale point to remove zoom factor.
 			Point2D scaledPoint = scalePoint(point);
 			if (projectPainter.isCursorOverArea(scaledPoint)) {
@@ -288,14 +289,22 @@ public class Presenter implements IPlugInPort {
 		}
 		Set<IDIYComponent<?>> groupedComponents = new HashSet<IDIYComponent<?>>();
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
-			// Only try to draw control points of ungrouped
+			// Only try to draw control points of ungrouped components.
 			if (findAllGroupedComponents(component).size() > 1) {
 				groupedComponents.add(component);
 			}
 		}
+		// Don't draw the component in the slot if both control points match.
+		IDIYComponent<?> componentSlotToDraw;
+		if (controlPointSlot != null && potentialControlPoint != null
+				&& potentialControlPoint.equals(controlPointSlot)) {
+			componentSlotToDraw = null;
+		} else {
+			componentSlotToDraw = componentSlot;
+		}
 		projectPainter.drawProject(g2d, currentProject, drawOptions, filter, selectionRect,
 				selectedComponents, groupedComponents, Arrays.asList(controlPointSlot,
-						potentialControlPoint), dragInProgress, zoomLevel);
+						potentialControlPoint), componentSlotToDraw, dragInProgress, zoomLevel);
 	}
 
 	@Override
@@ -333,43 +342,74 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String
 				.format("mouseClicked(%s, %s, %s, %s)", point, ctrlDown, shiftDown, altDown));
 		Point scaledPoint = scalePoint(point);
-		if (componentSlot != null) {
-			switch (componentSlot.getCreationMethod()) {
+		if (componentTypeSlot != null) {
+			// Keep the reference to component type for later.
+			ComponentType componentType = componentTypeSlot;
+			Project oldProject = cloner.deepClone(currentProject);
+			switch (componentTypeSlot.getCreationMethod()) {
 			case SINGLE_CLICK:
 				try {
-					instantiateComponent(componentSlot, scaledPoint);
+					IDIYComponent<?> component = instantiateComponent(componentTypeSlot,
+							scaledPoint);
+					addComponent(component, componentTypeSlot);
+					// Select the new component
+					selectedComponents.clear();
+					selectedComponents.add(component);
+
+					fireSelectionChanged();
+					// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+					// selectedComponents);
+					// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+					// calculateSelectionDimension());
+					messageDispatcher.dispatchMessage(EventType.REPAINT);
 				} catch (Exception e) {
 					LOG.error("Error instatiating component of type: "
-							+ componentSlot.getInstanceClass().getName(), e);
+							+ componentTypeSlot.getInstanceClass().getName(), e);
 				}
 				setNewComponentSlot(null);
 				break;
 			case POINT_BY_POINT:
-				if (controlPointSlot != null) {
+				// First click is just to set the controlPointSlot and
+				// componentSlot.
+				if (snapToGrid) {
 					snapPointToGrid(scaledPoint);
-					if (scaledPoint.equals(controlPointSlot)) {
-						String message = "Cannot create the component because both controls points match. Choose the second control point.";
-						LOG.warn(message);
-						view.showMessage(message, "Error", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					try {
-						instantiateComponent(componentSlot, controlPointSlot, scaledPoint);
-					} catch (Exception e) {
-						LOG.error("Error instatiating component of type: "
-								+ componentSlot.getInstanceClass().getName(), e);
-					}
-					setNewComponentSlot(null);
-				} else {
+				}
+				if (controlPointSlot == null) {
 					controlPointSlot = scaledPoint;
-					snapPointToGrid(controlPointSlot);
-					messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot,
+					try {
+						componentSlot = instantiateComponent(componentTypeSlot, controlPointSlot);
+					} catch (Exception e) {
+						view.showMessage("Could not create component. Check log for details.",
+								"Error", JOptionPane.ERROR_MESSAGE);
+						LOG.error("Could not create component", e);
+					}
+					// Set the other control point to the same location, we'll
+					// move it later when mouse moves.
+					componentSlot.setControlPoint(controlPointSlot, 0);
+					componentSlot.setControlPoint(controlPointSlot, 1);
+					messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentTypeSlot,
 							controlPointSlot);
 					messageDispatcher.dispatchMessage(EventType.REPAINT);
+				} else {
+					// On the second click, add the component to the project.
+					componentSlot.setControlPoint(scaledPoint, 1);
+					addComponent(componentSlot, componentTypeSlot);
+					// Select the new component
+					selectedComponents.clear();
+					selectedComponents.add(componentSlot);
+					fireSelectionChanged();
+					messageDispatcher.dispatchMessage(EventType.REPAINT);
+					setNewComponentSlot(null);
 				}
 				break;
 			default:
-				LOG.error("Unknown creation method: " + componentSlot.getCreationMethod());
+				LOG.error("Unknown creation method: " + componentTypeSlot.getCreationMethod());
+			}
+			// Notify the listeners.
+			if (!oldProject.equals(currentProject)) {
+				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+						.deepClone(currentProject), "Add " + componentType.getName());
+				projectFileManager.notifyFileChange();
 			}
 		} else {
 			List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
@@ -405,9 +445,44 @@ public class Presenter implements IPlugInPort {
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
-		if (componentSlot != null) {
-			potentialControlPoint = scaledPoint;
-			snapPointToGrid(potentialControlPoint);
+		if (componentTypeSlot != null) {
+			if (snapToGrid) {
+				snapPointToGrid(scaledPoint);
+			}
+			switch (componentTypeSlot.getCreationMethod()) {
+			case POINT_BY_POINT:
+				potentialControlPoint = scaledPoint;
+				if (componentSlot != null) {
+					componentSlot.setControlPoint(scaledPoint, 1);
+				}
+				break;
+			case SINGLE_CLICK:
+				if (potentialControlPoint == null) {
+					potentialControlPoint = new Point(0, 0);
+				}
+				int dx = scaledPoint.x - potentialControlPoint.x;
+				int dy = scaledPoint.y - potentialControlPoint.y;
+				if (snapToGrid) {
+					dx = roundToGrid(dx);
+					dy = roundToGrid(dy);
+				}
+				// Only repaint if there's an actual change.
+				if (dx == 0 && dy == 0) {
+					return;
+				}
+				potentialControlPoint.translate(dx, dy);
+				if (componentSlot == null) {
+					LOG.error("Component slot should not be null!");
+				} else {
+					Point p = new Point();
+					for (int i = 0; i < componentSlot.getControlPointCount(); i++) {
+						p.setLocation(componentSlot.getControlPoint(i));
+						p.translate(dx, dy);
+						componentSlot.setControlPoint(p, i);
+					}
+				}
+				break;
+			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
 			// Go backwards so we take the highest z-order components first.
@@ -767,6 +842,10 @@ public class Presenter implements IPlugInPort {
 		Project oldProject = cloner.deepClone(currentProject);
 		// Remove selected components from any groups.
 		ungroupComponents(selectedComponents);
+		// Remove from area map.
+		for (IDIYComponent<?> component : selectedComponents) {
+			projectPainter.invalidateComponent(component);
+		}
 		currentProject.getComponents().removeAll(selectedComponents);
 		this.selectedComponents.clear();
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
@@ -779,7 +858,7 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void setSelectionDefaultPropertyValue(String propertyName, Object value) {
 		LOG.info(String.format("setSelectionDefaultPropertyValue(%s, %s)", propertyName, value));
-		for (IDIYComponent component : selectedComponents) {
+		for (IDIYComponent<?> component : selectedComponents) {
 			String className = component.getClass().getName();
 			LOG.debug("Default property value set for " + className + ":" + propertyName);
 			ConfigurationManager.getInstance().writeValue(
@@ -936,14 +1015,12 @@ public class Presenter implements IPlugInPort {
 		}
 	}
 
-	private void instantiateComponent(ComponentType componentType, Point... points)
+	private IDIYComponent<?> instantiateComponent(ComponentType componentType, Point point)
 			throws Exception {
 		LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
 
-		Project oldProject = cloner.deepClone(currentProject);
-
 		// Instantiate the component.
-		IDIYComponent component = componentType.getInstanceClass().newInstance();
+		IDIYComponent<?> component = componentType.getInstanceClass().newInstance();
 
 		// Find the next available componentName for the component.
 		int i = 0;
@@ -952,7 +1029,7 @@ public class Presenter implements IPlugInPort {
 			i++;
 			String name = componentType.getNamePrefix() + i;
 			exists = false;
-			for (IDIYComponent c : currentProject.getComponents()) {
+			for (IDIYComponent<?> c : currentProject.getComponents()) {
 				if (c.getName().equals(name)) {
 					exists = true;
 					break;
@@ -961,48 +1038,19 @@ public class Presenter implements IPlugInPort {
 		}
 		component.setName(componentType.getNamePrefix() + i);
 
-		// Add it to the project taking z-order into account.
-		addComponent(component, componentType);
-		// Select the new component
-		selectedComponents.clear();
-		selectedComponents.add(component);
-
 		// Translate them to the desired location.
-		if (points != null) {
-			switch (componentType.getCreationMethod()) {
-			case SINGLE_CLICK:
-				for (int j = 0; j < component.getControlPointCount(); j++) {
-					Point controlPoint = new Point(component.getControlPoint(j));
-					controlPoint.translate(points[0].x, points[0].y);
-					snapPointToGrid(controlPoint);
-					component.setControlPoint(controlPoint, j);
-				}
-				break;
-			case POINT_BY_POINT:
-				for (int j = 0; j < points.length; j++) {
-					Point point = points[j];
-					snapPointToGrid(point);
-					component.setControlPoint(point, j);
-				}
-				break;
+		if (point != null) {
+			for (int j = 0; j < component.getControlPointCount(); j++) {
+				Point controlPoint = new Point(component.getControlPoint(j));
+				controlPoint.translate(point.x, point.y);
+				snapPointToGrid(controlPoint);
+				component.setControlPoint(controlPoint, j);
 			}
 		}
 
 		setDefaultProperties(component);
 
-		// Notify the listeners.
-		if (!oldProject.equals(currentProject)) {
-			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
-					.deepClone(currentProject), "Add " + componentType.getName());
-			projectFileManager.notifyFileChange();
-		}
-
-		fireSelectionChanged();
-		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
-		// selectedComponents);
-		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-		// calculateSelectionDimension());
-		messageDispatcher.dispatchMessage(EventType.REPAINT);
+		return component;
 	}
 
 	/**
@@ -1116,7 +1164,24 @@ public class Presenter implements IPlugInPort {
 	public void setNewComponentSlot(ComponentType componentType) {
 		LOG.info(String.format("setNewComponentSlot(%s)", componentType == null ? null
 				: componentType.getName()));
-		this.componentSlot = componentType;
+		this.componentTypeSlot = componentType;
+		if (componentTypeSlot == null) {
+			this.componentSlot = null;
+		} else {
+			switch (componentTypeSlot.getCreationMethod()) {
+			case POINT_BY_POINT:
+				this.componentSlot = null;
+				break;
+			case SINGLE_CLICK:
+				try {
+					this.componentSlot = instantiateComponent(componentTypeSlot, new Point(0, 0));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
 		this.controlPointSlot = null;
 		this.potentialControlPoint = null;
 		selectedComponents.clear();
@@ -1126,7 +1191,8 @@ public class Presenter implements IPlugInPort {
 		// selectedComponents);
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 		// calculateSelectionDimension());
-		messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentSlot, controlPointSlot);
+		messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentTypeSlot,
+				controlPointSlot);
 	}
 
 	/**

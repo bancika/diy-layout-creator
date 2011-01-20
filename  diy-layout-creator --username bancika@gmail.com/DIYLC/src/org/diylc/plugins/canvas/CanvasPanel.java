@@ -185,20 +185,25 @@ class CanvasPanel extends JComponent implements Autoscroll {
 						List<PropertyWrapper> properties = plugInPort
 								.getMutualSelectionProperties();
 						if (properties == null || properties.isEmpty()) {
-							properties = plugInPort.getProjectProperties();
-							PropertyEditorDialog editor = DialogFactory.getInstance()
-									.createPropertyEditorDialog(properties, "Edit Project");
-							editor.setVisible(true);
-							if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
-								plugInPort.applyPropertiesToProject(properties);
-								// Save default values.
-								for (PropertyWrapper property : editor.getDefaultedProperties()) {
-									if (property.getValue() != null) {
-										plugInPort.setProjectDefaultPropertyValue(property.getName(),
-												property.getValue());
-									}
-								}
-							}
+							// properties = plugInPort.getProjectProperties();
+							// PropertyEditorDialog editor =
+							// DialogFactory.getInstance()
+							// .createPropertyEditorDialog(properties,
+							// "Edit Project");
+							// editor.setVisible(true);
+							// if
+							// (ButtonDialog.OK.equals(editor.getSelectedButtonCaption()))
+							// {
+							// plugInPort.applyPropertiesToProject(properties);
+							// // Save default values.
+							// for (PropertyWrapper property :
+							// editor.getDefaultedProperties()) {
+							// if (property.getValue() != null) {
+							// plugInPort.setProjectDefaultPropertyValue(property.getName(),
+							// property.getValue());
+							// }
+							// }
+							// }
 						} else {
 							PropertyEditorDialog editor = DialogFactory.getInstance()
 									.createPropertyEditorDialog(properties, "Edit Selection");

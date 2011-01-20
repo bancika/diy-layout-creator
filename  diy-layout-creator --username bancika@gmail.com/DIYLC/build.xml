@@ -35,6 +35,11 @@
 				<exclude name="**/*dll" />
 			</fileset>
 		</copy>
+		<copy todir="${jar.dir}/library" overwrite="true">
+			<fileset dir="${basedir}/library">
+				<exclude name="**/*dll" />
+			</fileset>
+		</copy>
 		<copy todir="${jar.dir}" overwrite="true">
 			<fileset dir="${basedir}/lib/" includes="**/*.dll" />
 		</copy>
@@ -43,6 +48,7 @@
 	<path id="class.path">
 		<fileset dir="${basedir}">
 			<include name="lib/**/*.jar" />
+			<include name="library/**/*.jar" />
 		</fileset>
 	</path>
 
