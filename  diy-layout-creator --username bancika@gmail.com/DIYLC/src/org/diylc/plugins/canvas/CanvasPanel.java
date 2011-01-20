@@ -91,7 +91,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CanvasPanel.this.plugInPort.setNewComponentSlot(null);
+				CanvasPanel.this.plugInPort.setNewComponentTypeSlot(null);
 			}
 		});
 	}

@@ -44,7 +44,7 @@ class ComponentButton extends JButton {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// plugInPort.setCursorIcon(componentType.getIcon());
-				plugInPort.setNewComponentSlot(componentType);
+				plugInPort.setNewComponentTypeSlot(componentType);
 				// try {
 				// plugInPort.instantiateComponent(componentType
 				// .getComponentInstanceClass(), null);
