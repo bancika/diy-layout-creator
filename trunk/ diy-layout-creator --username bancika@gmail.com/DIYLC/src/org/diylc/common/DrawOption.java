@@ -5,7 +5,7 @@ import java.awt.Graphics;
 /**
  * Enumerates all options that can be used when drawing a project.
  * 
- * @see IPlugInPort#draw(java.awt.Graphics2D, java.util.EnumSet)
+ * @see IPlugInPort#draw(java.awt.Graphics2D, java.util.Set, IComponentFiler)
  * 
  * @author Branislav Stojkovic
  */

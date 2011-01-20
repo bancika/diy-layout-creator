@@ -1,7 +1,9 @@
 package org.diylc.plugins.file;
 
 import java.awt.event.ActionEvent;
+import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import org.diylc.images.IconLoader;
 
 import com.diyfever.gui.IDrawingProvider;
 import com.diyfever.gui.export.DrawingExporter;
+import com.lowagie.text.DocumentException;
 
 /**
  * Entry point class for File management utilities.
@@ -33,7 +36,7 @@ public class FileMenuPlugin implements IPlugIn {
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
-		this.drawingProvider = new ProjectDrawingProvider(plugInPort);
+		this.drawingProvider = new ProjectDrawingProvider(plugInPort, false);
 		this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
 
 		plugInPort.injectMenuAction(new NewAction(), FILE_TITLE);
@@ -179,7 +182,15 @@ public class FileMenuPlugin implements IPlugIn {
 			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PDF.getFilter(),
 					null, FileFilterEnum.PDF.getExtensions()[0], null);
 			if (file != null) {
-				DrawingExporter.getInstance().exportPDF(this.drawingProvider, file);
+				try {
+					DrawingExporter.getInstance().exportPDF(this.drawingProvider, file);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
@@ -222,7 +233,12 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			DrawingExporter.getInstance().print(this.drawingProvider);
+			try {
+				DrawingExporter.getInstance().print(this.drawingProvider);
+			} catch (PrinterException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

@@ -54,7 +54,7 @@ public class CanvasPlugin implements IPlugIn {
 	private RulerScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new RulerScrollPane(getCanvasPanel(), new ProjectDrawingProvider(
-					plugInPort), new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d,
+					plugInPort, true), new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d,
 					SizeUnit.in).convertToPixels());
 			boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY,
 					true);
@@ -86,8 +86,6 @@ public class CanvasPlugin implements IPlugIn {
 						}
 						plugInPort.setZoomLevel(availableZoomLevels[i]);
 					}
-					System.out.println(e);
-					e.consume();
 				}
 			});
 		}

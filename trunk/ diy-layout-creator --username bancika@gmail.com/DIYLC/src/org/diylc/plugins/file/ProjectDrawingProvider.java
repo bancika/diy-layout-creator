@@ -19,19 +19,25 @@ import com.diyfever.gui.IDrawingProvider;
 public class ProjectDrawingProvider implements IDrawingProvider {
 
 	private IPlugInPort plugInPort;
+	private boolean useZoom;
 
-	public ProjectDrawingProvider(IPlugInPort plugInPort) {
+	public ProjectDrawingProvider(IPlugInPort plugInPort, boolean useZoom) {
 		super();
 		this.plugInPort = plugInPort;
+		this.useZoom = useZoom;
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ZOOM, DrawOption.ANTIALIASING), null);
+		EnumSet<DrawOption> options = EnumSet.of(DrawOption.ANTIALIASING);
+		if (useZoom) {
+			options.add(DrawOption.ZOOM);
+		}
+		plugInPort.draw((Graphics2D) g, options, null);
 	}
 
 	@Override
 	public Dimension getSize() {
-		return plugInPort.getCanvasDimensions(true);
+		return plugInPort.getCanvasDimensions(useZoom);
 	}
 }

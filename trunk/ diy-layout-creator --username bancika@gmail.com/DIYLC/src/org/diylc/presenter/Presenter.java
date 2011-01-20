@@ -174,13 +174,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public Dimension getCanvasDimensions(boolean useZoom) {
-		double width = currentProject.getWidth().convertToPixels();
-		int height = currentProject.getHeight().convertToPixels();
-		if (useZoom) {
-			width *= zoomLevel;
-			height *= zoomLevel;
-		}
-		return new Dimension((int) width, (int) height);
+		return projectPainter.getCanvasDimensions(currentProject, zoomLevel, useZoom);
 	}
 
 	@Override

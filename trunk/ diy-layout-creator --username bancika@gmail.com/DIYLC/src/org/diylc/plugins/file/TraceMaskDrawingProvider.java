@@ -32,12 +32,12 @@ public class TraceMaskDrawingProvider implements IDrawingProvider {
 
 	@Override
 	public void draw(Graphics g) {
-		plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ZOOM, DrawOption.ANTIALIASING),
+		plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ANTIALIASING),
 				this.filter);
 	}
 
 	@Override
 	public Dimension getSize() {
-		return plugInPort.getCanvasDimensions(true);
+		return plugInPort.getCanvasDimensions(false);
 	}
 }
