@@ -31,7 +31,6 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
-import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.Presenter;
 
 import com.diyfever.gui.MemoryBar;
@@ -58,7 +57,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 	// State variables
 	private ComponentType componentSlot;
 	private Point controlPointSlot;
-	private List<IDIYComponent<?>> componentsUnderCursor;
+	private List<String> componentNamesUnderCursor;
 	private List<String> selectedComponentNames;
 	private List<String> stuckComponentNames;
 
@@ -233,10 +232,12 @@ public class StatusBar extends JPanel implements IPlugIn {
 			refreshStatusText();
 			break;
 		case AVAILABLE_CTRL_POINTS_CHANGED:
-			componentsUnderCursor = new ArrayList<IDIYComponent<?>>(
-					((Map<IDIYComponent<?>, Integer>) params[0]).keySet());
-			Collections.sort(componentsUnderCursor, ComparatorFactory.getInstance()
-					.getComponentNameComparator());
+			componentNamesUnderCursor = new ArrayList<String>();
+			for (IDIYComponent<?> component : ((Map<IDIYComponent<?>, Integer>) params[0]).keySet()) {
+				componentNamesUnderCursor.add("<font color='blue'>" + component.getName()
+						+ "</font>");
+			}
+			Collections.sort(componentNamesUnderCursor);
 			refreshStatusText();
 			break;
 		}
@@ -245,9 +246,9 @@ public class StatusBar extends JPanel implements IPlugIn {
 	private void refreshStatusText() {
 		String statusText = "";
 		if (componentSlot == null) {
-			if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
-				String formattedNames = Utils.toCommaString(componentsUnderCursor);
-				statusText = "Drag control point(s) of " + formattedNames;
+			if (componentNamesUnderCursor != null && !componentNamesUnderCursor.isEmpty()) {
+				String formattedNames = Utils.toCommaString(componentNamesUnderCursor);
+				statusText = "<html>Drag control point(s) of " + formattedNames + "</html>";
 			} else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
 				StringBuilder builder = new StringBuilder();
 				builder.append(Utils.toCommaString(selectedComponentNames));
