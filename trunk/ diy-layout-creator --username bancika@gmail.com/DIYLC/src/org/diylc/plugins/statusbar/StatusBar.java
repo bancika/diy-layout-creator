@@ -202,13 +202,14 @@ public class StatusBar extends JPanel implements IPlugIn {
 			Collection<IDIYComponent<?>> stuckComponents = (Collection<IDIYComponent<?>>) params[1];
 			Collection<String> componentNames = new HashSet<String>();
 			for (IDIYComponent<?> component : selection) {
-				componentNames.add(component.getName());
+				componentNames.add("<font color='blue'>" + component.getName() + "</font>");
 			}
 			this.selectedComponentNames = new ArrayList<String>(componentNames);
 			Collections.sort(this.selectedComponentNames);
 			this.stuckComponentNames = new ArrayList<String>();
 			for (IDIYComponent<?> component : stuckComponents) {
-				this.stuckComponentNames.add(component.getName());
+				this.stuckComponentNames.add("<font color='blue'>" + component.getName()
+						+ "</font>");
 			}
 			this.stuckComponentNames.removeAll(this.selectedComponentNames);
 			Collections.sort(this.stuckComponentNames);
@@ -242,21 +243,22 @@ public class StatusBar extends JPanel implements IPlugIn {
 	}
 
 	private void refreshStatusText() {
+		String statusText = "";
 		if (componentSlot == null) {
 			if (componentsUnderCursor != null && !componentsUnderCursor.isEmpty()) {
 				String formattedNames = Utils.toCommaString(componentsUnderCursor);
-				getStatusLabel().setText("Drag control point(s) of " + formattedNames);
+				statusText = "Drag control point(s) of " + formattedNames;
 			} else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
 				StringBuilder builder = new StringBuilder();
 				builder.append(Utils.toCommaString(selectedComponentNames));
 				if (!stuckComponentNames.isEmpty()) {
-					builder.append(" (");
+					builder.append(" (hold <b>Ctrl</b> to unstuck from ");
 					builder.append(Utils.toCommaString(stuckComponentNames));
-					builder.append(" would be affected by dragging as well)");
+					builder.append(")");
 				}
-				getStatusLabel().setText("Selection: " + builder.toString());
+				statusText = "<html>Selection: " + builder.toString() + "</html>";
 			} else {
-				getStatusLabel().setText("");
+				statusText = "";
 			}
 		} else {
 			switch (componentSlot.getCreationMethod()) {
@@ -267,16 +269,22 @@ public class StatusBar extends JPanel implements IPlugIn {
 				} else {
 					count = "second";
 				}
-				getStatusLabel().setText(
-						"Click on the canvas to set the " + count + " control point of a new "
-								+ componentSlot.getName() + " or press Esc to cancel");
+				statusText = "Click on the canvas to set the " + count + " control point of a new "
+						+ componentSlot.getName() + " or press Esc to cancel";
 				break;
 			case SINGLE_CLICK:
-				getStatusLabel().setText(
-						"Click on the canvas to create a new " + componentSlot.getName()
-								+ " or press Esc to cancel");
+				statusText = "Click on the canvas to create a new " + componentSlot.getName()
+						+ " or press Esc to cancel";
 				break;
 			}
 		}
+		final String finalStatus = statusText;
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				getStatusLabel().setText(finalStatus);
+			}
+		});
 	}
 }

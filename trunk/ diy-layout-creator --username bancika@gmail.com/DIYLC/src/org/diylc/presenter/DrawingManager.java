@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.diylc.common.ComponentSelection;
 import org.diylc.common.DrawOption;
+import org.diylc.common.EventType;
 import org.diylc.common.GridType;
 import org.diylc.common.IComponentFiler;
 import org.diylc.core.ComponentState;
@@ -29,6 +30,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.utils.Constants;
 
 import com.diyfever.gui.miscutils.ConfigurationManager;
+import com.diyfever.gui.simplemq.MessageDispatcher;
 
 /**
  * Utility that deals with painting {@link Project} on the {@link Graphics2D}
@@ -36,10 +38,12 @@ import com.diyfever.gui.miscutils.ConfigurationManager;
  * 
  * @author Branislav Stojkovic
  */
-public class ProjectPainter {
+public class DrawingManager {
 
-	public static final int CONTROL_POINT_SIZE = 7;
+	public static int CONTROL_POINT_SIZE = 7;
+
 	public static final String ANTIALIASING_KEY = "anti-aliasing";
+	public static final String ZOOM_KEY = "zoom";
 	public static boolean DEBUG_COMPONENT_AREAS = false;
 
 	public static Color GRID_COLOR = new Color(240, 240, 240);
@@ -54,8 +58,14 @@ public class ProjectPainter {
 
 	private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
 
-	public ProjectPainter() {
+	private double zoomLevel = 1d;// ConfigurationManager.getInstance().readDouble(ZOOM_KEY,
+									// 1d);
+
+	private MessageDispatcher<EventType> messageDispatcher;
+
+	public DrawingManager(MessageDispatcher<EventType> messageDispatcher) {
 		super();
+		this.messageDispatcher = messageDispatcher;
 		componentAreaMap = new HashMap<IDIYComponent<?>, Area>();
 		lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
 	}
@@ -63,7 +73,7 @@ public class ProjectPainter {
 	public void drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
 			IComponentFiler filter, Rectangle selectionRect, ComponentSelection selectedComponents,
 			Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
-			IDIYComponent<?> componentSlot, boolean dragInProgress, double zoomLevel) {
+			IDIYComponent<?> componentSlot, boolean dragInProgress) {
 		if (project == null) {
 			return;
 		}
@@ -247,6 +257,16 @@ public class ProjectPainter {
 		}
 	}
 
+	public double getZoomLevel() {
+		return zoomLevel;
+	}
+
+	public void setZoomLevel(double zoomLevel) {
+		this.zoomLevel = zoomLevel;
+		fireZoomChanged();
+		// ConfigurationManager.getInstance().writeValue(ZOOM_KEY, zoomLevel);
+	}
+
 	public void invalidateComponent(IDIYComponent<?> component) {
 		componentAreaMap.remove(component);
 		lastDrawnStateMap.remove(component);
@@ -289,5 +309,10 @@ public class ProjectPainter {
 			height /= Constants.PIXEL_SIZE;
 		}
 		return new Dimension((int) width, (int) height);
+	}
+
+	public void fireZoomChanged() {
+		messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 }
