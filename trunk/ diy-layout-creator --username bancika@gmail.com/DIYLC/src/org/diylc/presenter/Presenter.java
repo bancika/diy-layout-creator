@@ -518,6 +518,10 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void dragStarted(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
 		LOG.debug(String.format("dragStarted(%s)", point));
+		if (instantiationManager.getComponentTypeSlot() != null) {
+			LOG.debug("Cannot start drag because a new component is being created.");
+			return;
+		}
 		dragInProgress = true;
 		preDragProject = cloner.deepClone(currentProject);
 		Point scaledPoint = scalePoint(point);
