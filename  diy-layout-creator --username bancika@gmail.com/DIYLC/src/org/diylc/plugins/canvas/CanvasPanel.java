@@ -76,7 +76,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 	private void initializeDnD() {
 		// Initialize drag source recognizer.
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
-				DnDConstants.ACTION_MOVE, new CanvasGestureListener(plugInPort));
+				DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK, new CanvasGestureListener(plugInPort));
 		// Initialize drop target.
 		new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE,
 				new CanvasTargetListener(plugInPort), true);

@@ -5,7 +5,6 @@ import java.awt.dnd.DragGestureListener;
 
 import org.diylc.common.IPlugInPort;
 
-
 /**
  * {@link DragGestureListener} for {@link CanvasPanel}.
  * 
@@ -22,7 +21,8 @@ class CanvasGestureListener implements DragGestureListener {
 
 	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
-		presenter.dragStarted(dge.getDragOrigin());
+		presenter.dragStarted(dge.getDragOrigin(), dge.getTriggerEvent().isControlDown(), dge
+				.getTriggerEvent().isShiftDown(), dge.getTriggerEvent().isAltDown());
 		dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(),
 				new CanvasSourceListener(presenter));
 	}

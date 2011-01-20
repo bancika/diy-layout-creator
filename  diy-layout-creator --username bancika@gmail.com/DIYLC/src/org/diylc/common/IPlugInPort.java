@@ -172,7 +172,7 @@ public interface IPlugInPort {
 	 * @param parentMenuName
 	 */
 	void injectSubmenu(String name, Icon icon, String parentMenuName);
-	
+
 	Double[] getAvailableZoomLevels();
 
 	/**
@@ -233,8 +233,11 @@ public interface IPlugInPort {
 	 * Note: point coordinates are scaled for zoom factor.
 	 * 
 	 * @param point
+	 * @param ctrlDown
+	 * @param shiftDown
+	 * @param altDown
 	 */
-	void dragStarted(Point point);
+	void dragStarted(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
 	/**
 	 * Checks if it's possible to drop over the specified point.
@@ -284,7 +287,7 @@ public interface IPlugInPort {
 	 *            new default value, must not be null
 	 */
 	void setSelectionDefaultPropertyValue(String propertyName, Object value);
-	
+
 	/**
 	 * Sets default value for the specified property name for projects.
 	 * 

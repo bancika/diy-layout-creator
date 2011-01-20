@@ -60,11 +60,9 @@ public class Presenter implements IPlugInPort {
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 1);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 	public static final String METRIC_KEY = "metric";
-	public static final String ZOOM_KEY = "zoom";
 
 	public static final int ICON_SIZE = 32;
 
-	private double zoomLevel = ConfigurationManager.getInstance().readDouble(ZOOM_KEY, 1d);
 	private Project currentProject;
 	private Map<String, List<ComponentType>> componentTypes;
 	// Maps component class names to ComponentType objects.
@@ -78,7 +76,7 @@ public class Presenter implements IPlugInPort {
 
 	// Utilities
 	private Cloner cloner;
-	private ProjectPainter projectPainter;
+	private DrawingManager drawingManager;
 	private ProjectFileManager projectFileManager;
 
 	private Rectangle selectionRect;
@@ -113,7 +111,7 @@ public class Presenter implements IPlugInPort {
 		selectedComponents = new ComponentSelection();
 		currentProject = new Project();
 		cloner = new Cloner();
-		projectPainter = new ProjectPainter();
+		drawingManager = new DrawingManager(messageDispatcher);
 		projectFileManager = new ProjectFileManager(messageDispatcher);
 
 		// lockedLayers = EnumSet.noneOf(ComponentLayer.class);
@@ -142,19 +140,16 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public double getZoomLevel() {
-		return zoomLevel;
+		return drawingManager.getZoomLevel();
 	}
 
 	@Override
 	public void setZoomLevel(double zoomLevel) {
 		LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
-		if (this.zoomLevel == zoomLevel) {
+		if (drawingManager.getZoomLevel() == zoomLevel) {
 			return;
 		}
-		this.zoomLevel = zoomLevel;
-		ConfigurationManager.getInstance().writeValue(ZOOM_KEY, zoomLevel);
-		messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);
-		messageDispatcher.dispatchMessage(EventType.REPAINT);
+		drawingManager.setZoomLevel(zoomLevel);
 	}
 
 	@Override
@@ -163,7 +158,7 @@ public class Presenter implements IPlugInPort {
 		if (componentTypeSlot == null) {
 			// Scale point to remove zoom factor.
 			Point2D scaledPoint = scalePoint(point);
-			if (projectPainter.isCursorOverArea(scaledPoint)) {
+			if (drawingManager.isCursorOverArea(scaledPoint)) {
 				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			}
 			if (controlPointMap != null && !controlPointMap.isEmpty()) {
@@ -175,7 +170,8 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public Dimension getCanvasDimensions(boolean useZoom) {
-		return projectPainter.getCanvasDimensions(currentProject, zoomLevel, useZoom);
+		return drawingManager.getCanvasDimensions(currentProject, drawingManager.getZoomLevel(),
+				useZoom);
 	}
 
 	@Override
@@ -302,9 +298,9 @@ public class Presenter implements IPlugInPort {
 		} else {
 			componentSlotToDraw = componentSlot;
 		}
-		projectPainter.drawProject(g2d, currentProject, drawOptions, filter, selectionRect,
+		drawingManager.drawProject(g2d, currentProject, drawOptions, filter, selectionRect,
 				selectedComponents, groupedComponents, Arrays.asList(controlPointSlot,
-						potentialControlPoint), componentSlotToDraw, dragInProgress, zoomLevel);
+						potentialControlPoint), componentSlotToDraw, dragInProgress);
 	}
 
 	@Override
@@ -334,7 +330,7 @@ public class Presenter implements IPlugInPort {
 	 * @return
 	 */
 	private List<IDIYComponent<?>> findComponentsAt(Point point) {
-		return projectPainter.findComponentsAt(point, currentProject);
+		return drawingManager.findComponentsAt(point, currentProject);
 	}
 
 	@Override
@@ -495,7 +491,7 @@ public class Presenter implements IPlugInPort {
 					if (selectedComponents.contains(component) && componentType.isStretchable()
 							&& findAllGroupedComponents(component).size() == 1) {
 						try {
-							if (scaledPoint.distance(controlPoint) < ProjectPainter.CONTROL_POINT_SIZE) {
+							if (scaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE) {
 								Set<Integer> indices = new HashSet<Integer>();
 								if (componentType.isStretchable()) {
 									indices.add(pointIndex);
@@ -553,7 +549,7 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void dragStarted(Point point) {
+	public void dragStarted(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
 		LOG.debug(String.format("dragStarted(%s)", point));
 		dragInProgress = true;
 		preDragProject = cloner.deepClone(currentProject);
@@ -607,7 +603,9 @@ public class Presenter implements IPlugInPort {
 				}
 			}
 			// Expand control points to include all stuck components.
-			includeStuckComponents(controlPointMap);
+			if (!ctrlDown) {
+				includeStuckComponents(controlPointMap);
+			}
 		}
 	}
 
@@ -643,7 +641,7 @@ public class Presenter implements IPlugInPort {
 								Point secondPoint = entry.getKey().getControlPoint(j);
 								// If they are close enough we can consider them
 								// matched.
-								if (firstPoint.distance(secondPoint) < ProjectPainter.CONTROL_POINT_SIZE) {
+								if (firstPoint.distance(secondPoint) < DrawingManager.CONTROL_POINT_SIZE) {
 									componentMatches = true;
 									break;
 								}
@@ -724,7 +722,7 @@ public class Presenter implements IPlugInPort {
 				// Update all points.
 				for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
 					IDIYComponent<?> c = entry.getKey();
-					projectPainter.invalidateComponent(c);
+					drawingManager.invalidateComponent(c);
 					for (Integer index : entry.getValue()) {
 						Point p = new Point(c.getControlPoint(index));
 						p.translate(dx, dy);
@@ -786,7 +784,7 @@ public class Presenter implements IPlugInPort {
 			}
 			selectedComponents.clear();
 			for (IDIYComponent<?> component : currentProject.getComponents()) {
-				Area area = projectPainter.getComponentArea(component);
+				Area area = drawingManager.getComponentArea(component);
 				if ((area != null) && (selectionRect != null) && area.intersects(selectionRect)) {
 					selectedComponents.addAll(findAllGroupedComponents(component));
 				}
@@ -844,7 +842,7 @@ public class Presenter implements IPlugInPort {
 		ungroupComponents(selectedComponents);
 		// Remove from area map.
 		for (IDIYComponent<?> component : selectedComponents) {
-			projectPainter.invalidateComponent(component);
+			drawingManager.invalidateComponent(component);
 		}
 		currentProject.getComponents().removeAll(selectedComponents);
 		this.selectedComponents.clear();
@@ -978,7 +976,7 @@ public class Presenter implements IPlugInPort {
 		boolean metric = ConfigurationManager.getInstance().readBoolean(METRIC_KEY, true);
 		Area area = new Area();
 		for (IDIYComponent<?> component : selectedComponents) {
-			Area componentArea = projectPainter.getComponentArea(component);
+			Area componentArea = drawingManager.getComponentArea(component);
 			if (componentArea != null) {
 				area.add(componentArea);
 			}
@@ -1097,7 +1095,7 @@ public class Presenter implements IPlugInPort {
 		Project oldProject = cloner.deepClone(currentProject);
 		try {
 			for (IDIYComponent<?> component : selectedComponents) {
-				projectPainter.invalidateComponent(component);
+				drawingManager.invalidateComponent(component);
 				for (PropertyWrapper property : properties) {
 					property.writeTo(component);
 				}
@@ -1155,8 +1153,7 @@ public class Presenter implements IPlugInPort {
 						.deepClone(currentProject), "Edit Project");
 				projectFileManager.notifyFileChange();
 			}
-			messageDispatcher.dispatchMessage(EventType.REPAINT);
-			messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);
+			drawingManager.fireZoomChanged();
 		}
 	}
 
@@ -1202,7 +1199,7 @@ public class Presenter implements IPlugInPort {
 	 * @return
 	 */
 	private Point scalePoint(Point point) {
-		return point == null ? null : new Point((int) (point.x / zoomLevel),
-				(int) (point.y / zoomLevel));
+		return point == null ? null : new Point((int) (point.x / drawingManager.getZoomLevel()),
+				(int) (point.y / drawingManager.getZoomLevel()));
 	}
 }
