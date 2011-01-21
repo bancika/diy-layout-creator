@@ -12,6 +12,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.Display;
+import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -65,12 +66,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		double distance = points[0].distance(points[1]);
 		Shape shape = getBodyShape();
 		if (shape == null) {
-			g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels()));
+			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+					getLeadThickness().convertToPixels()));
 			g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
 					: getLeadColor(componentState));
 			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 			if (shouldShadeLeads()) {
-				g2d.setStroke(new BasicStroke(getLeadThickness().convertToPixels() - 2));
+				g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+						getLeadThickness().convertToPixels() - 2));
 				g2d.setColor(getLeadColor(componentState));
 				g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 			}
@@ -99,7 +102,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.draw(shape);
 		// Draw leads.
 		int leadThickness = getClosestOdd(getLeadThickness().convertToPixels());
-		g2d.setStroke(new BasicStroke(leadThickness));
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
 		g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
 				: getLeadColor(componentState));
 		g2d.drawLine((int) (shapeRect.width - distance) / 2, (int) shapeRect.height / 2,
@@ -109,7 +112,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				(int) ((shapeRect.width + distance) / 2 - leadLenght) + leadThickness / 2,
 				(int) shapeRect.height / 2);
 		if (shouldShadeLeads()) {
-			g2d.setStroke(new BasicStroke(leadThickness - 2));
+			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
 			g2d.setColor(getLeadColor(componentState));
 			g2d.drawLine((int) (shapeRect.width - distance) / 2, (int) shapeRect.height / 2,
 					(int) ((shapeRect.width - distance) / 2 + leadLenght) - leadThickness / 2,

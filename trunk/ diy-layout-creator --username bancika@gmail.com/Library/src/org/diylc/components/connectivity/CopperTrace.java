@@ -1,10 +1,10 @@
 package org.diylc.components.connectivity;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
@@ -27,7 +27,7 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		g2d.setStroke(new BasicStroke(3));
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(3));
 		g2d.setColor(COLOR);
 		g2d.drawLine(1, height - 2, width - 2, 1);
 	}

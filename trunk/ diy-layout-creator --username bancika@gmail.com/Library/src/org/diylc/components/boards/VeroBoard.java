@@ -52,10 +52,10 @@ public class VeroBoard extends AbstractBoard {
 				p.y += spacing;
 				g2d.setColor(padColor);
 				g2d.fillRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
-						controlPoints[1].x - spacing - p.x, stripSize);
+						secondPoint.x - spacing - p.x, stripSize);
 				g2d.setColor(padColor.darker());
 				g2d.drawRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
-						controlPoints[1].x - spacing - p.x, stripSize);
+						secondPoint.x - spacing - p.x, stripSize);
 				while (p.x < secondPoint.x - spacing) {
 					p.x += spacing;
 					g2d.setColor(Constants.CANVAS_COLOR);

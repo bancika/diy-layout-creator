@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -14,7 +15,6 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Cut", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD)
 public class TraceCut extends AbstractComponent<Void> {
@@ -41,7 +41,7 @@ public class TraceCut extends AbstractComponent<Void> {
 		g2d.fillRect(point.x - size / 2, point.y - size / 2, size, size);
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
-		g2d.setStroke(Constants.BASIC_STROKE);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.drawRect(point.x - size / 2, point.y - size / 2, size, size);
 		g2d
 				.fillOval(point.x - dotDiameter / 2, point.y - dotDiameter / 2, dotDiameter,
@@ -55,7 +55,7 @@ public class TraceCut extends AbstractComponent<Void> {
 		g2d.setColor(FILL_COLOR);
 		g2d.fillRect((width - size) / 2, (height - size) / 2, size, size);
 		g2d.setColor(BORDER_COLOR);
-		g2d.setStroke(Constants.BASIC_STROKE);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.drawRect((width - size) / 2, (height - size) / 2, size, size);
 		g2d.fillOval((width - dotDiameter) / 2, (height - dotDiameter) / 2, dotDiameter,
 				dotDiameter);

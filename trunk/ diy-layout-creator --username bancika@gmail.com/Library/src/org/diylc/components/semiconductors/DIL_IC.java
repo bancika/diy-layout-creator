@@ -1,7 +1,6 @@
 package org.diylc.components.semiconductors;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
@@ -12,6 +11,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
@@ -246,7 +246,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		g2d.setComposite(oldComposite);
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
-		g2d.setStroke(new BasicStroke());
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.draw(getBody());
 		// Draw label.
 		g2d.setFont(Constants.LABEL_FONT);
