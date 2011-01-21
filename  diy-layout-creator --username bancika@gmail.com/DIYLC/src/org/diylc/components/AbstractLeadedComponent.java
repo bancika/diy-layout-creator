@@ -96,7 +96,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.setColor(bodyColor);
 		g2d.fill(shape);
 		g2d.setComposite(oldComposite);
-		g2d.setStroke(Constants.BASIC_STROKE);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.draw(shape);
