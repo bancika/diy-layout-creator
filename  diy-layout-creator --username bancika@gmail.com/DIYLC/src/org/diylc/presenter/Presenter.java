@@ -585,49 +585,48 @@ public class Presenter implements IPlugInPort {
 		int oldSize = controlPointMap.size();
 		LOG.debug("Expanding selected component map");
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
-			// Do not process a component if it's already in the map.
 			ComponentType componentType = componentTypeMap.get(component.getClass().getName());
 
-			// Check if there's a control point in the current selection
-			// that matches with one of its control points.
-			for (int i = 0; i < component.getControlPointCount(); i++) {
-				if (controlPointMap.containsKey(component)) {
-					break;
-				}
-				if (!controlPointMap.containsKey(component) && component.isControlPointSticky(i)) {
-					boolean componentMatches = false;
-					for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap
-							.entrySet()) {
-						if (componentMatches) {
-							break;
-						}
-						for (Integer j : entry.getValue()) {
-							Point firstPoint = component.getControlPoint(i);
-							if (entry.getKey().isControlPointSticky(j)) {
-								Point secondPoint = entry.getKey().getControlPoint(j);
-								// If they are close enough we can consider them
-								// matched.
-								if (firstPoint.distance(secondPoint) < DrawingManager.CONTROL_POINT_SIZE) {
-									componentMatches = true;
-									break;
+			// Do not process a component if it's already in the map.
+			if (!controlPointMap.containsKey(component)) {
+				// Check if there's a control point in the current selection
+				// that matches with one of its control points.
+				for (int i = 0; i < component.getControlPointCount(); i++) {
+					if (component.isControlPointSticky(i)) {
+						boolean componentMatches = false;
+						for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap
+								.entrySet()) {
+							if (componentMatches) {
+								break;
+							}
+							for (Integer j : entry.getValue()) {
+								Point firstPoint = component.getControlPoint(i);
+								if (entry.getKey().isControlPointSticky(j)) {
+									Point secondPoint = entry.getKey().getControlPoint(j);
+									// If they are close enough we can consider
+									// them matched.
+									if (firstPoint.distance(secondPoint) < DrawingManager.CONTROL_POINT_SIZE) {
+										componentMatches = true;
+										break;
+									}
 								}
 							}
 						}
-					}
-					if (componentMatches) {
-						LOG.debug("Including component: " + component);
-						Set<Integer> indices = new HashSet<Integer>();
-						// For stretchable components just add the
-						// matching component.
-						// Otherwise, add all control points.
-						if (componentType.isStretchable()) {
-							indices.add(i);
-						} else {
-							for (int k = 0; k < component.getControlPointCount(); k++) {
-								indices.add(k);
+						if (componentMatches) {
+							LOG.debug("Including component: " + component);
+							Set<Integer> indices = new HashSet<Integer>();
+							// For stretchable components just add the
+							// matching component.
+							// Otherwise, add all control points.
+							if (componentType.isStretchable()) {
+								indices.add(i);
+							} else {
+								for (int k = 0; k < component.getControlPointCount(); k++) {
+									indices.add(k);
+								}
 							}
+							controlPointMap.put(component, indices);
 						}
-						controlPointMap.put(component, indices);
 					}
 				}
 			}
