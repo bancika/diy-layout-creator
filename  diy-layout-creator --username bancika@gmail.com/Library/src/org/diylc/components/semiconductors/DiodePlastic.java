@@ -10,13 +10,11 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.measures.Resistance;
-import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Diode (plastic)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "test", zOrder = IDIYComponent.COMPONENT)
-public class DiodePlastic extends AbstractLeadedComponent<Resistance> {
+public class DiodePlastic extends AbstractLeadedComponent<String> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,18 +26,18 @@ public class DiodePlastic extends AbstractLeadedComponent<Resistance> {
 	public static Color LABEL_COLOR = Color.white;
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
-	private Resistance value = new Resistance(123d, ResistanceUnit.K);
+	private String value = "";
 
 	public DiodePlastic() {
 		super();
 	}
 
 	@EditableProperty
-	public Resistance getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(Resistance value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 
