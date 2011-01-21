@@ -98,7 +98,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	private MemoryBar getMemoryPanel() {
 		if (memoryPanel == null) {
-			memoryPanel = new MemoryBar(true);
+			memoryPanel = new MemoryBar(false);
 		}
 		return memoryPanel;
 	}
@@ -253,7 +253,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 				StringBuilder builder = new StringBuilder();
 				builder.append(Utils.toCommaString(selectedComponentNames));
 				if (!stuckComponentNames.isEmpty()) {
-					builder.append(" (hold <b>Ctrl</b> to unstuck from ");
+					builder.append(" (hold <b>Ctrl</b> and drag to unstuck from ");
 					builder.append(Utils.toCommaString(stuckComponentNames));
 					builder.append(")");
 				}
