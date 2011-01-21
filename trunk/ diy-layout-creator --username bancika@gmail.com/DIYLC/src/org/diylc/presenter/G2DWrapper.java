@@ -130,12 +130,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 		if (!drawingComponent || !trackingAllowed) {
 			return;
 		}
-		Area area = new Area(s);
-		area.transform(currentTx);
-		currentArea.add(area);
 		Rectangle2D bounds = s.getBounds2D();
 		// Only cache the shape if it's not 1D.
 		if (bounds.getWidth() > 1 && bounds.getHeight() > 1) {
+			Area area = new Area(s);
+			area.transform(currentTx);
+			currentArea.add(area);
 			lastShape = s;
 		}
 	}
