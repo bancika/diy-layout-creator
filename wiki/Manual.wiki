@@ -36,7 +36,7 @@ The easiest way to move a component across the canvas is to drag it by clicking 
 
 Note that:
   * if more than one component is selected, all of them will be moved
-  * moving one (or more) components will move/stretch any components that are stuck to them. Status bar will inform you which components will be affected.
+  * moving one (or more) components will move/stretch any components that are stuck to them. Status bar will inform you which components will be affected. Hold <b>Ctrl</b> to unstuck the selected components and move them only.
 
 ===Control points===
 
