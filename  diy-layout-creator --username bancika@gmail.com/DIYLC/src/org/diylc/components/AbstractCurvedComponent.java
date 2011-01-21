@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.CubicCurve2D;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -50,12 +51,12 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setColor(getDefaultColor().darker());
-		g2d.setStroke(new BasicStroke(3));
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(3));
 		CubicCurve2D curve = new CubicCurve2D.Double(1, height - 1, width / 4, height / 3,
 				3 * width / 4, 2 * height / 3, width - 1, 1);
 		g2d.draw(curve);
 		g2d.setColor(getDefaultColor());
-		g2d.setStroke(new BasicStroke(1));
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.draw(curve);
 	}
 

@@ -23,6 +23,7 @@ import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.GridType;
 import org.diylc.common.IComponentFiler;
+import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -249,7 +250,7 @@ public class DrawingManager {
 
 		// Draw component area for test
 		if (DEBUG_COMPONENT_AREAS) {
-			g2d.setStroke(new BasicStroke());
+			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 			g2d.setColor(Color.red);
 			for (Area area : componentAreaMap.values()) {
 				g2d.draw(area);

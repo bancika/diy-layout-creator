@@ -1,7 +1,6 @@
 package org.diylc.components.electromechanical;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -9,6 +8,7 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -178,7 +178,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 			g2d.setColor(BODY_COLOR);
 			g2d.fill(body);
 			g2d.setComposite(oldComposite);
-			g2d.setStroke(new BasicStroke());
+			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 			g2d.setColor(componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
 			g2d.draw(body);

@@ -6,6 +6,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
@@ -14,7 +15,6 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.utils.Constants;
 
 public abstract class AbstractBoard extends AbstractTransparentComponent<String> {
 
@@ -37,7 +37,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
-		g2d.setStroke(Constants.BASIC_STROKE);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
