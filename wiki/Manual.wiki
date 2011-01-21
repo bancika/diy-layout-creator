@@ -46,7 +46,7 @@ A component may have one or more control points. Control points have dual purpos
 
 Note that:
   * status bar lists all the components that will be affected by the drag&drop operation.
-  * you can drag control points only when they turn blue.
+  * you can drag control points only when they turn green.
 
 ===Editing component properties===
 
