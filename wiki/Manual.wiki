@@ -28,7 +28,7 @@ This sections explains how to add an existing component to the project. To learn
 
   * Locate the component in the toolbox. Components are categorized into several tabs, so make sure you're looking into the right one.
   * Click on the button that shows the desired component. Note that text in the status bar changes to reflect this action.
-  * Click on the desired location on the canvas to create the component. Some components (solder pads, trace cuts, etc) will be created on single click, others (like resistors, jumpers, etc) will require two clicks to set both ending points. Instructions in the status bar will guide you through the process.
+  * Click on the desired location on the canvas to create the component. Some components (solder pads, trace cuts, etc) will be created on single click, others (like resistors, jumpers, etc) will require two clicks to set both ending points. Instructions in the status bar will guide you through the process. Component will be drawn translucent until the creation process is finalized.
 
 ===Moving components===
 
@@ -61,7 +61,7 @@ Note that while the components are grouped, you can't edit drag their individual
 To un-group the components, select them and press Ctrl+U (or select "Ungroup Selection" from the menu).
 
 Note that:
-  * nested groups are not currently supported. If you group two groups of components together you'll end up with one large group instead of group that contains two groups.
+  * nested groups are not currently supported. If you group two groups of components together you'll end up with one large group instead of a group that contains two groups.
 
 ===Using the status bar===
 
