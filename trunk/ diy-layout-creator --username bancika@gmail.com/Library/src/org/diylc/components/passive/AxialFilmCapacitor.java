@@ -15,7 +15,7 @@ import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Axial Film Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "test", zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Film Capacitor (axial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "test", zOrder = IDIYComponent.COMPONENT)
 public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
