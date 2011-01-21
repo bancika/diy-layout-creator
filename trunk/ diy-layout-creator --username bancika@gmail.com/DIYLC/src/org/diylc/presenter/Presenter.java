@@ -1055,7 +1055,9 @@ public class Presenter implements IPlugInPort {
 				: componentType.getName()));
 		try {
 			instantiationManager.setComponentTypeSlot(componentType, currentProject);
-			updateSelection(ComponentSelection.EMPTY_SELECTION);
+			if (componentType != null) {
+				updateSelection(ComponentSelection.EMPTY_SELECTION);
+			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 			// selectedComponents);
