@@ -94,6 +94,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		}
 		g2d.setColor(bodyColor);
 		g2d.fill(shape);
+		decorateComponentBody(g2d);
 		g2d.setComposite(oldComposite);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.setColor(componentState == ComponentState.SELECTED
@@ -126,7 +127,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.setFont(Constants.LABEL_FONT);
 		g2d
 				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
-						: LABEL_COLOR);
+						: getLabelColor());
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		String label = display == Display.NAME ? getName() : getValue().toString();
 		// Adjust label angle if needed to make sure that it's readable.
@@ -137,6 +138,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
 		g2d.drawString(label, (int) (shapeRect.width - textRect.getWidth()) / 2,
 				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
+	}
+
+	protected void decorateComponentBody(Graphics2D g2d) {
+		// Do nothing.
+	}
+
+	protected Color getLabelColor() {
+		return LABEL_COLOR;
 	}
 
 	protected boolean shouldShadeLeads() {

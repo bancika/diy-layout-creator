@@ -652,48 +652,58 @@ public class Presenter implements IPlugInPort {
 			// We're dragging control point(s).
 			int dx = (scaledPoint.x - previousDragPoint.x);
 			int dy = (scaledPoint.y - previousDragPoint.y);
-			if (snapToGrid) {
-				dx = CalcUtils.roundToGrid(dx, currentProject.getGridSpacing());
-				dy = CalcUtils.roundToGrid(dy, currentProject.getGridSpacing());
+			// After we make the transfer and snap to grid, calculate actual dx
+			// and dy. We'll use them to translate the previous drag point.
+			int actualDx = 0;
+			int actualDy = 0;
+
+			// Do a simulation of the move to see if any of them will
+			// collide.
+			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+				IDIYComponent<?> c = entry.getKey();
+				Point[] controlPoints = new Point[c.getControlPointCount()];
+				for (int i = 0; i < controlPoints.length; i++) {
+					controlPoints[i] = new Point(c.getControlPoint(i));
+					if (entry.getValue().contains(i)) {
+						controlPoints[i].translate(dx, dy);
+						if (snapToGrid) {
+							CalcUtils.snapPointToGrid(controlPoints[i], currentProject
+									.getGridSpacing());
+						}
+					}
+				}
+				for (int i = 0; i < controlPoints.length - 1; i++) {
+					for (int j = i + 1; j < controlPoints.length; j++) {
+						if (controlPoints[i].equals(controlPoints[j])) {
+							LOG.error("Control points collision detected, cannot make this move.");
+							return true;
+						}
+					}
+				}
 			}
-			// Only repaint if there's an actual change.
-			repaint = dx != 0 || dy != 0;
 
-			if (repaint) {
-				// Do a simulation of the move to see if any of them will
-				// collide.
-				for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
-					IDIYComponent<?> c = entry.getKey();
-					Point[] controlPoints = new Point[c.getControlPointCount()];
-					for (int i = 0; i < controlPoints.length; i++) {
-						controlPoints[i] = new Point(c.getControlPoint(i));
-						if (entry.getValue().contains(i)) {
-							controlPoints[i].translate(dx, dy);
-						}
+			// Update all points.
+			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+				IDIYComponent<?> c = entry.getKey();
+				drawingManager.invalidateComponent(c);
+				for (Integer index : entry.getValue()) {
+					Point p = new Point(c.getControlPoint(index));
+					p.translate(dx, dy);
+					if (snapToGrid) {
+						CalcUtils.snapPointToGrid(p, currentProject.getGridSpacing());
 					}
-					for (int i = 0; i < controlPoints.length - 1; i++) {
-						for (int j = i + 1; j < controlPoints.length; j++) {
-							if (controlPoints[i].equals(controlPoints[j])) {
-								LOG
-										.error("Control points collision detected, cannot make this move.");
-								return true;
-							}
-						}
+					// When the first point is moved, calculate how much it
+					// actually moved after snapping.
+					if (actualDx == 0 && actualDy == 0) {
+						actualDx = p.x - c.getControlPoint(index).x;
+						actualDy = p.y - c.getControlPoint(index).y;
 					}
+					c.setControlPoint(p, index);
 				}
-
-				previousDragPoint.translate(dx, dy);
-
-				// Update all points.
-				for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
-					IDIYComponent<?> c = entry.getKey();
-					drawingManager.invalidateComponent(c);
-					for (Integer index : entry.getValue()) {
-						Point p = new Point(c.getControlPoint(index));
-						p.translate(dx, dy);
-						c.setControlPoint(p, index);
-					}
-				}
+			}
+			if (actualDx != 0 || actualDy != 0) {
+				previousDragPoint.translate(actualDx, actualDy);
+				repaint = true;
 			}
 		} else if (selectedComponents.isEmpty()
 				&& instantiationManager.getComponentTypeSlot() == null) {
