@@ -37,7 +37,8 @@ public class LayersMenuPlugin implements IPlugIn {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					LayersMenuPlugin.this.plugInPort.setLayerLocked(zOrder, true);
+					LayersMenuPlugin.this.plugInPort.setLayerLocked(zOrder,
+							(Boolean) getValue(Action.SELECTED_KEY));
 				}
 			};
 			action.putValue(IPlugInPort.CHECK_BOX_MENU_ITEM, true);
@@ -51,6 +52,7 @@ public class LayersMenuPlugin implements IPlugIn {
 		return EnumSet.of(EventType.LAYER_STATE_CHANGED);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processMessage(EventType eventType, Object... params) {
 		if (eventType == EventType.LAYER_STATE_CHANGED) {
