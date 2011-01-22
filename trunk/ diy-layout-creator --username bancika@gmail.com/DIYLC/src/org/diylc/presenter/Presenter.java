@@ -56,7 +56,7 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 1);
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 3);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 	public static final String METRIC_KEY = "metric";
 
@@ -72,6 +72,7 @@ public class Presenter implements IPlugInPort {
 	// Maps components that have at least one dragged point to set of indices
 	// that designate which of their control points are being dragged.
 	private Map<IDIYComponent<?>, Set<Integer>> controlPointMap;
+	private Set<IDIYComponent<?>> lockedComponents;
 
 	// Utilities
 	private Cloner cloner;
@@ -103,6 +104,7 @@ public class Presenter implements IPlugInPort {
 		plugIns = new ArrayList<IPlugIn>();
 		messageDispatcher = new MessageDispatcher<EventType>();
 		selectedComponents = new ComponentSelection();
+		lockedComponents = new HashSet<IDIYComponent<?>>();
 		currentProject = new Project();
 		cloner = new Cloner();
 		drawingManager = new DrawingManager(messageDispatcher);
@@ -153,11 +155,16 @@ public class Presenter implements IPlugInPort {
 		if (instantiationManager.getComponentTypeSlot() == null) {
 			// Scale point to remove zoom factor.
 			Point2D scaledPoint = scalePoint(point);
-			if (drawingManager.isCursorOverArea(scaledPoint)) {
-				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-			}
 			if (controlPointMap != null && !controlPointMap.isEmpty()) {
 				return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+			}
+			for (IDIYComponent<?> component : currentProject.getComponents()) {
+				if (!isComponentLocked(component)) {
+					Area area = drawingManager.getComponentArea(component);
+					if (area != null && area.contains(scaledPoint)) {
+						return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+					}
+				}
 			}
 		}
 		return Cursor.getDefaultCursor();
@@ -181,6 +188,8 @@ public class Presenter implements IPlugInPort {
 		updateSelection(ComponentSelection.EMPTY_SELECTION);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
+		messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject
+				.getLockedLayers());
 	}
 
 	@Override
@@ -296,9 +305,9 @@ public class Presenter implements IPlugInPort {
 			componentSlotToDraw = instantiationManager.getComponentSlot();
 		}
 		drawingManager.drawProject(g2d, currentProject, drawOptions, filter, selectionRect,
-				selectedComponents, groupedComponents, Arrays.asList(instantiationManager
-						.getFirstControlPoint(), instantiationManager.getPotentialControlPoint()),
-				componentSlotToDraw, dragInProgress);
+				selectedComponents, getLockedComponents(), groupedComponents, Arrays.asList(
+						instantiationManager.getFirstControlPoint(), instantiationManager
+								.getPotentialControlPoint()), componentSlotToDraw, dragInProgress);
 	}
 
 	@Override
@@ -323,12 +332,20 @@ public class Presenter implements IPlugInPort {
 
 	/**
 	 * Finds all components whose areas include the specified {@link Point}.
-	 * Point is <b>not</b> scaled by the zoom factor.
+	 * Point is <b>not</b> scaled by the zoom factor. Components that belong to
+	 * locked layers are ignored.
 	 * 
 	 * @return
 	 */
 	private List<IDIYComponent<?>> findComponentsAt(Point point) {
-		return drawingManager.findComponentsAt(point, currentProject);
+		List<IDIYComponent<?>> components = drawingManager.findComponentsAt(point, currentProject);
+		Iterator<IDIYComponent<?>> iterator = components.iterator();
+		while (iterator.hasNext()) {
+			if (isComponentLocked(iterator.next())) {
+				iterator.remove();
+			}
+		}
+		return components;
 	}
 
 	@Override
@@ -350,12 +367,12 @@ public class Presenter implements IPlugInPort {
 							componentTypeSlot, scaledPoint, currentProject);
 					addComponent(component, componentTypeSlot);
 					// Select the new component
-					updateSelection(ComponentSelection.of(component));
 					// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 					// selectedComponents);
 					// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 					// calculateSelectionDimension());
 					messageDispatcher.dispatchMessage(EventType.REPAINT);
+					updateSelection(ComponentSelection.of(component));
 				} catch (Exception e) {
 					LOG.error("Error instatiating component of type: "
 							+ componentTypeSlot.getInstanceClass().getName(), e);
@@ -384,8 +401,9 @@ public class Presenter implements IPlugInPort {
 					IDIYComponent<?> componentSlot = instantiationManager.getComponentSlot();
 					componentSlot.setControlPoint(scaledPoint, 1);
 					addComponent(componentSlot, componentTypeSlot);
-					// Select the new component
-					updateSelection(ComponentSelection.of(componentSlot));
+					// Select the new component if it's not locked.
+					updateSelection(isComponentLocked(componentSlot) ? ComponentSelection.EMPTY_SELECTION
+							: ComponentSelection.of(componentSlot));
 					messageDispatcher.dispatchMessage(EventType.REPAINT);
 					setNewComponentTypeSlot(null);
 				}
@@ -685,7 +703,7 @@ public class Presenter implements IPlugInPort {
 			// Update all points.
 			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
 				IDIYComponent<?> c = entry.getKey();
-				drawingManager.invalidateComponent(c);
+				// drawingManager.invalidateComponent(c);
 				for (Integer index : entry.getValue()) {
 					Point p = new Point(c.getControlPoint(index));
 					p.translate(dx, dy);
@@ -739,9 +757,11 @@ public class Presenter implements IPlugInPort {
 			}
 			ComponentSelection newSelection = new ComponentSelection();
 			for (IDIYComponent<?> component : currentProject.getComponents()) {
-				Area area = drawingManager.getComponentArea(component);
-				if ((area != null) && (selectionRect != null) && area.intersects(selectionRect)) {
-					newSelection.addAll(findAllGroupedComponents(component));
+				if (!isComponentLocked(component)) {
+					Area area = drawingManager.getComponentArea(component);
+					if ((area != null) && (selectionRect != null) && area.intersects(selectionRect)) {
+						newSelection.addAll(findAllGroupedComponents(component));
+					}
 				}
 			}
 			selectionRect = null;
@@ -864,6 +884,19 @@ public class Presenter implements IPlugInPort {
 		}
 	}
 
+	@Override
+	public void setLayerLocked(int layerZOrder, boolean locked) {
+		if (locked) {
+			currentProject.getLockedLayers().add(layerZOrder);
+		} else {
+			currentProject.getLockedLayers().remove(layerZOrder);
+		}
+		updateSelection(ComponentSelection.EMPTY_SELECTION);
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
+		messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject
+				.getLockedLayers());
+	}
+
 	/**
 	 * Updates the selection with the specified {@link ComponentSelection}.
 	 * Also, updates control point map with all components that are stuck to the
@@ -945,6 +978,8 @@ public class Presenter implements IPlugInPort {
 			Area componentArea = drawingManager.getComponentArea(component);
 			if (componentArea != null) {
 				area.add(componentArea);
+			} else {
+				LOG.warn("No area found for: " + component.getName());
 			}
 		}
 		double width = area.getBounds2D().getWidth();
@@ -1079,6 +1114,22 @@ public class Presenter implements IPlugInPort {
 			view.showMessage("Could not set component type slot. Check log for details.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	private Set<IDIYComponent<?>> getLockedComponents() {
+		lockedComponents.clear();
+		for (IDIYComponent<?> component : currentProject.getComponents()) {
+			if (isComponentLocked(component)) {
+				lockedComponents.add(component);
+			}
+		}
+		return lockedComponents;
+	}
+
+	private boolean isComponentLocked(IDIYComponent<?> component) {
+		ComponentType componentType = componentTypeMap.get(component.getClass().getName());
+		return currentProject.getLockedLayers().contains(
+				(int) Math.round(componentType.getZOrder()));
 	}
 
 	/**

@@ -75,5 +75,7 @@ public enum EventType {
 	 * Called when mouse cursor is moved. Point object is passed, containing the
 	 * current cursor location (not taking zoom into account).
 	 */
-	MOUSE_MOVED;
+	MOUSE_MOVED,
+	LAYER_STATE_CHANGED;
+	;
 }

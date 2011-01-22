@@ -21,7 +21,7 @@ public class VeroBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color COPPER_COLOR = Color.decode("#DA8A67");
+	public static Color STRIP_COLOR = Color.decode("#DA8A67");
 	public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
 	public static Size SPACING = new Size(0.1d, SizeUnit.in);
@@ -29,7 +29,7 @@ public class VeroBoard extends AbstractBoard {
 	public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
 	protected Size spacing = SPACING;
-	protected Color padColor = COPPER_COLOR;
+	protected Color stripColor = STRIP_COLOR;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
@@ -50,17 +50,17 @@ public class VeroBoard extends AbstractBoard {
 			while (p.y < secondPoint.y - spacing) {
 				p.x = firstPoint.x;
 				p.y += spacing;
-				g2d.setColor(padColor);
+				g2d.setColor(stripColor);
 				g2d.fillRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
 						secondPoint.x - spacing - p.x, stripSize);
-				g2d.setColor(padColor.darker());
+				g2d.setColor(stripColor.darker());
 				g2d.drawRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
 						secondPoint.x - spacing - p.x, stripSize);
 				while (p.x < secondPoint.x - spacing) {
 					p.x += spacing;
 					g2d.setColor(Constants.CANVAS_COLOR);
 					g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
-					g2d.setColor(padColor.darker());
+					g2d.setColor(stripColor.darker());
 					g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
 				}
 			}
@@ -68,13 +68,13 @@ public class VeroBoard extends AbstractBoard {
 		}
 	}
 
-	@EditableProperty(name = "Pad")
-	public Color getPadColor() {
-		return padColor;
+	@EditableProperty(name = "Strip color")
+	public Color getStripColor() {
+		return stripColor;
 	}
 
-	public void setPadColor(Color padColor) {
-		this.padColor = padColor;
+	public void setStripColor(Color padColor) {
+		this.stripColor = padColor;
 	}
 
 	@EditableProperty
@@ -92,14 +92,14 @@ public class VeroBoard extends AbstractBoard {
 		g2d.fillRect(2, 2, width - 4, height - 4);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRect(2, 2, width - 4, height - 4);
-		g2d.setColor(COPPER_COLOR);
+		g2d.setColor(STRIP_COLOR);
 		g2d.fillRect(4, width / 4, width - 8, width / 2);
-		g2d.setColor(COPPER_COLOR.darker());
+		g2d.setColor(STRIP_COLOR.darker());
 		g2d.drawRect(4, width / 4, width - 8, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
 		g2d.fillOval(width / 3 - 2, width / 2 - 2, 5, 5);
 		g2d.fillOval(2 * width / 3 - 2, width / 2 - 2, 5, 5);
-		g2d.setColor(COPPER_COLOR.darker());
+		g2d.setColor(STRIP_COLOR.darker());
 		g2d.drawOval(width / 3 - 2, width / 2 - 2, 5, 5);
 		g2d.drawOval(2 * width / 3 - 2, width / 2 - 2, 5, 5);
 	}

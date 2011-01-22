@@ -34,28 +34,17 @@ public class Project implements Serializable {
 	private Size gridSpacing;
 	private List<IDIYComponent<?>> components;
 	private Set<Set<IDIYComponent<?>>> groups;
+	private Set<Integer> lockedLayers;
 
 	public Project() {
 		components = new ArrayList<IDIYComponent<?>>();
 		groups = new HashSet<Set<IDIYComponent<?>>>();
+		lockedLayers = new HashSet<Integer>();
 		title = DEFAULT_TITLE;
 		author = System.getProperty("user.name");
 		width = DEFAULT_WIDTH;
 		height = DEFAULT_HEIGHT;
 		gridSpacing = DEFAULT_GRID_SPACING;
-	}
-
-	public Project(String title, String author, String description, Size width, Size height,
-			Size gridSpacing, List<IDIYComponent<?>> components, Set<Set<IDIYComponent<?>>> groups) {
-		super();
-		this.title = title;
-		this.author = author;
-		this.description = description;
-		this.width = width;
-		this.height = height;
-		this.gridSpacing = gridSpacing;
-		this.components = components;
-		this.groups = groups;
 	}
 
 	@EditableProperty(defaultable = false)
@@ -129,6 +118,10 @@ public class Project implements Serializable {
 	public Set<Set<IDIYComponent<?>>> getGroups() {
 		return groups;
 	}
+	
+	public Set<Integer> getLockedLayers() {
+		return lockedLayers;
+	}
 
 	@Override
 	public int hashCode() {
@@ -183,6 +176,11 @@ public class Project implements Serializable {
 		} else if (!width.equals(other.width))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return title;
 	}
 
 	// @Override
