@@ -10,7 +10,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Area;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,9 +57,10 @@ public class DrawingManager {
 	private Map<IDIYComponent<?>, ComponentState> lastDrawnStateMap;
 
 	private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
+	private Composite lockedComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
 
 	private double zoomLevel = 1d;// ConfigurationManager.getInstance().readDouble(ZOOM_KEY,
-									// 1d);
+	// 1d);
 
 	private MessageDispatcher<EventType> messageDispatcher;
 
@@ -73,8 +73,8 @@ public class DrawingManager {
 
 	public void drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
 			IComponentFiler filter, Rectangle selectionRect, ComponentSelection selectedComponents,
-			Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
-			IDIYComponent<?> componentSlot, boolean dragInProgress) {
+			Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents,
+			List<Point> controlPointSlot, IDIYComponent<?> componentSlot, boolean dragInProgress) {
 		if (project == null) {
 			return;
 		}
@@ -154,6 +154,10 @@ public class DrawingManager {
 			g2dWrapper.startedDrawingComponent();
 			if (!trackArea) {
 				g2dWrapper.stopTracking();
+			}
+			// Draw locked components in a new composite.
+			if (lockedComponents.contains(component)) {
+				g2d.setComposite(lockedComposite);
 			}
 			// Draw the component through the g2dWrapper.
 			component.draw(g2dWrapper, state, project, g2dWrapper);
@@ -275,15 +279,6 @@ public class DrawingManager {
 
 	public Area getComponentArea(IDIYComponent<?> component) {
 		return componentAreaMap.get(component);
-	}
-
-	public boolean isCursorOverArea(Point2D cursorPosition) {
-		for (Map.Entry<IDIYComponent<?>, Area> entry : componentAreaMap.entrySet()) {
-			if (entry.getValue().contains(cursorPosition)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public List<IDIYComponent<?>> findComponentsAt(Point point, Project project) {

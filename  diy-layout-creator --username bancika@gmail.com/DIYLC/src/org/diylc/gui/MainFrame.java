@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -33,6 +34,7 @@ import org.diylc.plugins.canvas.CanvasPlugin;
 import org.diylc.plugins.clipboard.EditMenuPlugin;
 import org.diylc.plugins.file.FileMenuPlugin;
 import org.diylc.plugins.help.HelpMenuPlugin;
+import org.diylc.plugins.layers.LayersMenuPlugin;
 import org.diylc.plugins.statusbar.StatusBar;
 import org.diylc.plugins.toolbox.ToolBox;
 import org.diylc.presenter.Presenter;
@@ -69,6 +71,7 @@ public class MainFrame extends JFrame implements IView {
 		presenter.installPlugin(new ToolBox());
 		presenter.installPlugin(new FileMenuPlugin());
 		presenter.installPlugin(new EditMenuPlugin());
+		presenter.installPlugin(new LayersMenuPlugin());
 		// presenter.installPlugin(new OnlineManager());
 		presenter.installPlugin(new HelpMenuPlugin());
 
@@ -195,7 +198,12 @@ public class MainFrame extends JFrame implements IView {
 		if (action == null) {
 			menu.addSeparator();
 		} else {
-			menu.add(action);
+			Boolean isCheckBox = (Boolean) action.getValue(IPlugInPort.CHECK_BOX_MENU_ITEM);
+			if (isCheckBox != null && isCheckBox) {
+				menu.add(new JCheckBoxMenuItem(action));
+			} else {
+				menu.add(action);
+			}
 		}
 	}
 

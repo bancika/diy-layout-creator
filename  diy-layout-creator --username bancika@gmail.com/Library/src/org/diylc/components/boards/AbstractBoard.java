@@ -23,7 +23,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	public static Color BOARD_COLOR = Color.decode("#F8EBB3");
 	public static Color BORDER_COLOR = BOARD_COLOR.darker();
 	public static Size DEFAULT_WIDTH = new Size(1.5d, SizeUnit.in);
-	public static Size DEFAULT_HEIGHT = new Size(1d, SizeUnit.in);
+	public static Size DEFAULT_HEIGHT = new Size(1.2d, SizeUnit.in);
 
 	protected String value = "";
 	protected Point[] controlPoints = new Point[] { new Point(0, 0),

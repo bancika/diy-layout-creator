@@ -34,6 +34,8 @@ import com.diyfever.gui.update.VersionNumber;
  * @see EventType
  */
 public interface IPlugInPort {
+	
+	public static final String CHECK_BOX_MENU_ITEM = "org.diylc.checkBoxMenuItem";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as
@@ -349,4 +351,6 @@ public interface IPlugInPort {
 	 * Ungroups all selected components.
 	 */
 	void ungroupSelectedComponents();
+	
+	void setLayerLocked(int layerZOrder, boolean locked);
 }
