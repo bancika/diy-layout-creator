@@ -605,8 +605,8 @@ public class Presenter implements IPlugInPort {
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
 			ComponentType componentType = componentTypeMap.get(component.getClass().getName());
 
-			// Do not process a component if it's already in the map.
-			if (!controlPointMap.containsKey(component)) {
+			// Do not process a component if it's already in the map and if it's locked.
+			if (!controlPointMap.containsKey(component) && !isComponentLocked(component)) {
 				// Check if there's a control point in the current selection
 				// that matches with one of its control points.
 				for (int i = 0; i < component.getControlPointCount(); i++) {
