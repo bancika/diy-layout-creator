@@ -3,13 +3,14 @@ package org.diylc.components.passive;
 import java.awt.Point;
 
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractComponent;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.ResistanceUnit;
 
-public abstract class AbstractPotentiometer extends AbstractComponent<PotentiometerValue> {
+public abstract class AbstractPotentiometer extends
+		AbstractTransparentComponent<PotentiometerValue> {
 
 	private static final long serialVersionUID = 1L;
 

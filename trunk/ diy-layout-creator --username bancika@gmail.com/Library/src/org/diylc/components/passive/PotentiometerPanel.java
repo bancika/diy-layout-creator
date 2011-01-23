@@ -1,6 +1,8 @@
 package org.diylc.components.passive;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -162,7 +164,13 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 		for (Area shape : getBody()) {
 			if (shape != null) {
 				g2d.setColor(bodyColor);
+				Composite oldComposite = g2d.getComposite();
+				if (alpha < MAX_ALPHA) {
+					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+							/ MAX_ALPHA));
+				}
 				g2d.fill(shape);
+				g2d.setComposite(oldComposite);
 				g2d.setColor(componentState == ComponentState.SELECTED
 						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
 						: borderColor);
