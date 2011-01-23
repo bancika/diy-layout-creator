@@ -8,8 +8,8 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.diylc.gui.MainFrame;
 import org.diylc.presenter.Presenter;
+import org.diylc.swing.gui.MainFrame;
 
 import com.diyfever.gui.miscutils.PropertyInjector;
 

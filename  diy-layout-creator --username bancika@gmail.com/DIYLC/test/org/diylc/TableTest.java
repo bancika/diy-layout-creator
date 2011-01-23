@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import org.apache.log4j.BasicConfigurator;
-import org.diylc.plugins.online.model.ProjectEntity;
+import org.diylc.swing.plugins.online.model.ProjectEntity;
 
 import com.diyfever.gui.objecttable.IActionProcessor;
 import com.diyfever.gui.objecttable.ObjectListTable;

@@ -19,12 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-
 import org.apache.log4j.Logger;
-import org.diylc.common.BadPositionException;
 import org.diylc.common.ComponentSelection;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
@@ -309,26 +304,6 @@ public class Presenter implements IPlugInPort {
 								.getPotentialControlPoint()), componentSlotToDraw, dragInProgress);
 	}
 
-	@Override
-	public void injectGUIComponent(JComponent component, int position) throws BadPositionException {
-		LOG.info(String.format("injectGUIComponent(%s, %s)", component.getClass().getName(),
-				position));
-		view.addComponent(component, position);
-	}
-
-	@Override
-	public void injectMenuAction(Action action, String menuName) {
-		LOG.info(String.format("injectMenuAction(%s, %s)", action == null ? "Separator" : action
-				.getValue(Action.NAME), menuName));
-		view.addMenuAction(action, menuName);
-	}
-
-	@Override
-	public void injectSubmenu(String name, Icon icon, String parentMenuName) {
-		LOG.info(String.format("injectSubmenu(%s, icon, %s)", name, parentMenuName));
-		view.addSubmenu(name, icon, parentMenuName);
-	}
-
 	/**
 	 * Finds all components whose areas include the specified {@link Point}.
 	 * Point is <b>not</b> scaled by the zoom factor. Components that belong to
@@ -604,7 +579,8 @@ public class Presenter implements IPlugInPort {
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
 			ComponentType componentType = componentTypeMap.get(component.getClass().getName());
 
-			// Do not process a component if it's already in the map and if it's locked.
+			// Do not process a component if it's already in the map and if it's
+			// locked.
 			if (!controlPointMap.containsKey(component) && !isComponentLocked(component)) {
 				// Check if there's a control point in the current selection
 				// that matches with one of its control points.
@@ -700,20 +676,24 @@ public class Presenter implements IPlugInPort {
 			}
 
 			// Update all points.
+			boolean isFirst = true;
 			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
 				IDIYComponent<?> c = entry.getKey();
 				// drawingManager.invalidateComponent(c);
 				for (Integer index : entry.getValue()) {
 					Point p = new Point(c.getControlPoint(index));
-					p.translate(dx, dy);
-					if (snapToGrid) {
-						CalcUtils.snapPointToGrid(p, currentProject.getGridSpacing());
-					}
 					// When the first point is moved, calculate how much it
 					// actually moved after snapping.
-					if (actualDx == 0 && actualDy == 0) {
+					if (isFirst) {
+						isFirst = false;
+						p.translate(dx, dy);
+						if (snapToGrid) {
+							CalcUtils.snapPointToGrid(p, currentProject.getGridSpacing());
+						}
 						actualDx = p.x - c.getControlPoint(index).x;
 						actualDy = p.y - c.getControlPoint(index).y;
+					} else {
+						p.translate(actualDx, actualDy);
 					}
 					c.setControlPoint(p, index);
 				}
