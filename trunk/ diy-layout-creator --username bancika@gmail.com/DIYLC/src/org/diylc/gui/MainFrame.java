@@ -29,6 +29,7 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.plugins.canvas.CanvasPlugin;
 import org.diylc.plugins.clipboard.EditMenuPlugin;

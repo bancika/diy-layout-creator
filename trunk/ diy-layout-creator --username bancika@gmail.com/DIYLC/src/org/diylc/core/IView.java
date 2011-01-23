@@ -1,4 +1,4 @@
-package org.diylc.gui;
+package org.diylc.core;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -13,6 +13,20 @@ import org.diylc.common.IPlugInPort;
  * @author Branislav Stojkovic
  */
 public interface IView {
+
+	public static final int ERROR_MESSAGE = 0;
+	public static final int INFORMATION_MESSAGE = 1;
+	public static final int WARNING_MESSAGE = 2;
+	public static final int QUESTION_MESSAGE = 3;
+	public static final int PLAIN_MESSAGE = -1;
+	public static final int DEFAULT_OPTION = -1;
+	public static final int YES_NO_OPTION = 0;
+	public static final int YES_NO_CANCEL_OPTION = 1;
+	public static final int OK_CANCEL_OPTION = 2;
+	public static final int YES_OPTION = 0;
+	public static final int NO_OPTION = 1;
+	public static final int CANCEL_OPTION = 2;
+	public static final int OK_OPTION = 0;
 
 	/**
 	 * Adds a component to the view.
