@@ -102,7 +102,7 @@ public class Presenter implements IPlugInPort {
 		super();
 		this.view = view;
 		plugIns = new ArrayList<IPlugIn>();
-		messageDispatcher = new MessageDispatcher<EventType>();
+		messageDispatcher = new MessageDispatcher<EventType>(true);
 		selectedComponents = new ComponentSelection();
 		lockedComponents = new HashSet<IDIYComponent<?>>();
 		currentProject = new Project();
