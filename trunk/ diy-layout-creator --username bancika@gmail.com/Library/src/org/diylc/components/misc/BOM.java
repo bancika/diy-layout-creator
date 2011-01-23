@@ -21,7 +21,6 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.plugins.file.BomEntry;
 import org.diylc.plugins.file.BomMaker;
-import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
 public class BOM extends AbstractComponent<Void> {
@@ -48,7 +47,7 @@ public class BOM extends AbstractComponent<Void> {
 				iterator.remove();
 			}
 		}
-		g2d.setFont(Constants.LABEL_FONT);
+		g2d.setFont(LABEL_FONT);
 		g2d.setColor(componentState == ComponentState.DRAGGING
 				|| componentState == ComponentState.SELECTED ? SELECTION_COLOR : COLOR);
 		// Determine maximum name length and maximum value length to calculate
@@ -99,7 +98,7 @@ public class BOM extends AbstractComponent<Void> {
 		g2d.fillRect(width / 8, 0, 6 * width / 8, height - 1);
 		g2d.setColor(Color.black);
 		g2d.drawRect(width / 8, 0, 6 * width / 8, height - 1);
-		g2d.setFont(Constants.LABEL_FONT.deriveFont(1f * 9 * width / 32).deriveFont(Font.PLAIN));
+		g2d.setFont(LABEL_FONT.deriveFont(1f * 9 * width / 32).deriveFont(Font.PLAIN));
 
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		Rectangle2D rect = fontMetrics.getStringBounds("BOM", g2d);

@@ -1,6 +1,7 @@
 package org.diylc.components.passive;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Area;
@@ -19,7 +20,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Potentiometer (panel mount)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR", description = "test", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
+@ComponentDescriptor(name = "Potentiometer (panel mount)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR", description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
 public class PotentiometerPanel extends AbstractPotentiometer {
 
 	private static final long serialVersionUID = 1L;
@@ -32,8 +33,10 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 
 	protected Size bodyDiameter = BODY_DIAMETER;
 	protected Size spacing = SPACING;
+	protected Size lugDiameter = LUG_DIAMETER;
 	protected Color bodyColor = BODY_COLOR;
 	protected Color borderColor = BORDER_COLOR;
+	// Array of 7 elements: 3 lug connectors, 1 pot body and 3 lugs
 	protected Area[] body = null;
 
 	public PotentiometerPanel() {
@@ -72,8 +75,8 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 			body = new Area[7];
 
 			// Add lugs.
-			int lugDiameter = getClosestOdd(LUG_DIAMETER.convertToPixels());
-			int holeDiameter = getClosestOdd(LUG_DIAMETER.convertToPixels() / 2);
+			int lugDiameter = getClosestOdd(this.lugDiameter.convertToPixels());
+			int holeDiameter = getClosestOdd(this.lugDiameter.convertToPixels() / 2);
 			for (int i = 0; i < 3; i++) {
 				Area area = new Area(new Ellipse2D.Double(controlPoints[i].x - lugDiameter / 2,
 						controlPoints[i].y - lugDiameter / 2, lugDiameter, lugDiameter));
@@ -160,16 +163,62 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 			if (shape != null) {
 				g2d.setColor(bodyColor);
 				g2d.fill(shape);
-				g2d.setColor(borderColor);
+				g2d.setColor(componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+						: borderColor);
 				g2d.draw(shape);
 			}
 		}
+		// Draw caption.
+		g2d.setFont(LABEL_FONT);
+		g2d
+				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
+						: LABEL_COLOR);
+		FontMetrics fontMetrics = g2d.getFontMetrics();
+		Rectangle2D bodyRect = getBody()[3].getBounds2D();
+		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
+
+		int textHeight = (int) rect.getHeight();
+		int textWidth = (int) rect.getWidth();
+		int panelHeight = (int) bodyRect.getHeight();
+		int panelWidth = (int) bodyRect.getWidth();
+
+		int x = (panelWidth - textWidth) / 2;
+		int y = panelHeight / 2 - textHeight + fontMetrics.getAscent();
+
+		g2d.drawString(getName(), (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
+
+		// Draw value.
+		rect = fontMetrics.getStringBounds(getValue().toString(), g2d);
+
+		textHeight = (int) rect.getHeight();
+		textWidth = (int) rect.getWidth();
+
+		x = (panelWidth - textWidth) / 2;
+		y = panelHeight / 2 + fontMetrics.getAscent();
+
+		g2d.drawString(getValue().toString(), (int) (bodyRect.getX() + x),
+				(int) (bodyRect.getY() + y));
 	}
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		// TODO Auto-generated method stub
-
+		int margin = 4 * width / 32;
+		int spacing = width / 3;
+		g2d.setColor(BORDER_COLOR);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2 * width / 32));
+		g2d.drawLine(width / 2 - spacing, height / 2, width / 2 - spacing, height - margin);
+		g2d.drawLine(width / 2 + spacing, height / 2, width / 2 + spacing, height - margin);
+		g2d.drawLine(width / 2, height / 2, width / 2, height - margin);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(4 * width / 32));
+		g2d.drawLine(width / 2 - spacing, height - margin, width / 2 - spacing, height - margin);
+		g2d.drawLine(width / 2 + spacing, height - margin, width / 2 + spacing, height - margin);
+		g2d.drawLine(width / 2, height - margin, width / 2, height - margin);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+		g2d.setColor(BODY_COLOR);
+		g2d.fillOval(margin, margin / 2, width - 2 * margin, height - 2 * margin);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawOval(margin, margin / 2, width - 2 * margin, height - 2 * margin);
 	}
 
 	@EditableProperty
@@ -190,6 +239,15 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 
 	public void setBodyDiameter(Size bodyDiameter) {
 		this.bodyDiameter = bodyDiameter;
+	}
+
+	@EditableProperty(name = "Lug size")
+	public Size getLugDiameter() {
+		return lugDiameter;
+	}
+
+	public void setLugDiameter(Size lugDiameter) {
+		this.lugDiameter = lugDiameter;
 	}
 
 	@EditableProperty(name = "Body")

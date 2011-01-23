@@ -14,61 +14,54 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.measures.Size;
-import org.diylc.core.measures.SizeUnit;
+import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "Project Information", author = "Branislav Stojkovic", category = "Misc", description = "Draws a box with general project information", instanceNamePrefix = "BOM", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
-public class ProjectInformation extends AbstractComponent<Void> {
+@ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc", description = "User defined label", instanceNamePrefix = "L", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
+public class Label extends AbstractComponent<Void> {
 
-	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);
-	public static Color COLOR = Color.black;
-	public static String DEFAULT_TEXT = "No components to show in the Bill of Materials";
+	public static String DEFAULT_TEXT = "Double click to edit text";
 
 	private static final long serialVersionUID = 1L;
 
 	private Point point = new Point(0, 0);
+	private String text = DEFAULT_TEXT;
+	private Font font = LABEL_FONT;
+	private Color color = LABEL_COLOR;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
-		g2d.setFont(LABEL_FONT);
-		g2d.setColor(componentState == ComponentState.DRAGGING
-				|| componentState == ComponentState.SELECTED ? SELECTION_COLOR : COLOR);
-		// FontMetrics fontMetrics = g2d.getFontMetrics();
-		g2d.drawString(project.getTitle(), point.x, point.y);
+		g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : color);
+		g2d.setFont(font);
+		FontMetrics fontMetrics = g2d.getFontMetrics();
+		Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);
+
+		int textHeight = (int) rect.getHeight();
+		int textWidth = (int) rect.getWidth();
+
+		// Center text horizontally and vertically
+		int x = point.x - textWidth / 2;
+		int y = point.y - textHeight / 2 + fontMetrics.getAscent();
+
+		g2d.drawString(text, x, y);
 	}
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		g2d.setColor(Color.white);
-		g2d.fillRect(width / 8, 0, 6 * width / 8, height - 1);
-		g2d.setColor(Color.black);
-		g2d.drawRect(width / 8, 0, 6 * width / 8, height - 1);
-		g2d.setFont(LABEL_FONT.deriveFont(1f * 9 * width / 32).deriveFont(Font.PLAIN));
+		g2d.setColor(LABEL_COLOR);
+		g2d.setFont(LABEL_FONT.deriveFont(13f * width / 32).deriveFont(Font.PLAIN));
 
 		FontMetrics fontMetrics = g2d.getFontMetrics();
-		Rectangle2D rect = fontMetrics.getStringBounds("BOM", g2d);
+		Rectangle2D rect = fontMetrics.getStringBounds("Abc", g2d);
 
 		int textHeight = (int) (rect.getHeight());
 		int textWidth = (int) (rect.getWidth());
 
 		// Center text horizontally and vertically.
 		int x = (width - textWidth) / 2 + 1;
-		int y = textHeight + 2;
+		int y = (height - textHeight) / 2 + fontMetrics.getAscent();
 
-		g2d.drawString("BOM", x, y);
-
-		g2d.setFont(g2d.getFont().deriveFont(1f * 5 * width / 32));
-
-		fontMetrics = g2d.getFontMetrics();
-		rect = fontMetrics.getStringBounds("resistors", g2d);
-		x = (width - textWidth) / 2 + 1;
-		y = height / 2 + 2;
-		g2d.drawString("resistors", x, y);
-		y += rect.getHeight() - 1;
-		g2d.drawString("tubes", x, y);
-		y += rect.getHeight() - 1;
-		g2d.drawString("diodes", x, y);
+		g2d.drawString("Abc", x, y);
 	}
 
 	@Override
@@ -94,6 +87,29 @@ public class ProjectInformation extends AbstractComponent<Void> {
 	@Override
 	public void setControlPoint(Point point, int index) {
 		this.point.setLocation(point);
+	}
+
+	@EditableProperty(defaultable = false)
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	@EditableProperty
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	@Override
+	public String getName() {
+		return super.getName();
 	}
 
 	@Deprecated

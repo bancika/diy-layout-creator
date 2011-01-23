@@ -68,9 +68,9 @@ public class LayersMenuPlugin implements IPlugIn {
 		BELOW_CHASSIS("Below Chassis", IDIYComponent.BELOW_CHASSIS), CHASSIS("Chassis",
 				IDIYComponent.CHASSIS), ABOVE_CHASSIS("Above Chassis", IDIYComponent.ABOVE_CHASSIS), BELOW_BOARD(
 				"Below Board", IDIYComponent.BELOW_BOARD), BOARD("Board", IDIYComponent.BOARD), ABOVE_BOARD(
-				"Above Board", IDIYComponent.ABOVE_BOARD), COMPONENT("Component",
-				IDIYComponent.COMPONENT), ABOVE_COMPONENT("Above Component",
-				IDIYComponent.ABOVE_COMPONENT);
+				"Above Board", IDIYComponent.ABOVE_BOARD), BELOW_COMPONENT("Below Component",
+				IDIYComponent.BELOW_COMPONENT), COMPONENT("Component", IDIYComponent.COMPONENT), ABOVE_COMPONENT(
+				"Above Component", IDIYComponent.ABOVE_COMPONENT);
 
 		String title;
 		int zOrder;

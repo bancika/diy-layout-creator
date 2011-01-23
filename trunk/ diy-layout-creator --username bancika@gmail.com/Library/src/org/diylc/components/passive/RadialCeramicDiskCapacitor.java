@@ -15,7 +15,7 @@ import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Ceramic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "test", zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Ceramic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Standard radial ceramic capacitor", zOrder = IDIYComponent.COMPONENT)
 public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
