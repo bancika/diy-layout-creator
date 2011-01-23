@@ -524,6 +524,7 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String.format("dragStarted(%s)", point));
 		if (instantiationManager.getComponentTypeSlot() != null) {
 			LOG.debug("Cannot start drag because a new component is being created.");
+			mouseClicked(point, ctrlDown, shiftDown, altDown);
 			return;
 		}
 		dragInProgress = true;
