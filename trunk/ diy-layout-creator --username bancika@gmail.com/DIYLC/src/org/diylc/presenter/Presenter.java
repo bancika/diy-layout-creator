@@ -679,7 +679,7 @@ public class Presenter implements IPlugInPort {
 			boolean isFirst = true;
 			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
 				IDIYComponent<?> c = entry.getKey();
-				// drawingManager.invalidateComponent(c);
+				drawingManager.invalidateComponent(c);
 				for (Integer index : entry.getValue()) {
 					Point p = new Point(c.getControlPoint(index));
 					// When the first point is moved, calculate how much it

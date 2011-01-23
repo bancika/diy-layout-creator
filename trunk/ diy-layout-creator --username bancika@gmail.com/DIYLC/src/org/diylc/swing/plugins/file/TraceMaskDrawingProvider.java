@@ -27,7 +27,7 @@ public class TraceMaskDrawingProvider implements IDrawingProvider {
 	public TraceMaskDrawingProvider(IPlugInPort plugInPort) {
 		super();
 		this.plugInPort = plugInPort;
-		this.filter = new ComponentZOrderFiler(IDIYComponent.ABOVE_BOARD);
+		this.filter = new ComponentZOrderFiler(IDIYComponent.TRACE);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Cut", stretchable = false, zOrder = IDIYComponent.ABOVE_BOARD)
+@ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic", description = "test", instanceNamePrefix = "Cut", stretchable = false, zOrder = IDIYComponent.BOARD + 1)
 public class TraceCut extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ public class TraceCut extends AbstractComponent<Void> {
 	private Size size = SIZE;
 	private Color fillColor = FILL_COLOR;
 	private Color borderColor = BORDER_COLOR;
-	
+
 	protected Point point = new Point(0, 0);
 
 	@Override
@@ -70,7 +70,7 @@ public class TraceCut extends AbstractComponent<Void> {
 	public Point getControlPoint(int index) {
 		return point;
 	}
-	
+
 	@Override
 	public boolean isControlPointSticky(int index) {
 		return false;
@@ -81,23 +81,22 @@ public class TraceCut extends AbstractComponent<Void> {
 		return VisibilityPolicy.NEVER;
 	}
 
-
 	@Override
 	public void setControlPoint(Point point, int index) {
 		this.point.setLocation(point);
 	}
-	
+
 	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;
 	}
-	
+
 	@Deprecated
 	@Override
 	public void setValue(Void value) {
 	}
-	
+
 	@EditableProperty
 	public Size getSize() {
 		return size;

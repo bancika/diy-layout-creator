@@ -13,7 +13,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "Trace", description = "Curved copper trace with two control points", zOrder = IDIYComponent.ABOVE_BOARD)
+@ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "Trace", description = "Curved copper trace with two control points", zOrder = IDIYComponent.TRACE)
 public class CurvedTrace extends AbstractCurvedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
@@ -36,7 +36,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
 		g2d.draw(curve);
 	}
-	
+
 	@EditableProperty(name = "Width")
 	public Size getSize() {
 		return size;
@@ -51,7 +51,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 	public Void getValue() {
 		return null;
 	}
-	
+
 	@Override
 	public void setValue(Void value) {
 	}
@@ -61,7 +61,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 	public Byte getAlpha() {
 		return super.getAlpha();
 	}
-	
+
 	@Override
 	public void setAlpha(Byte alpha) {
 		super.setAlpha(alpha);

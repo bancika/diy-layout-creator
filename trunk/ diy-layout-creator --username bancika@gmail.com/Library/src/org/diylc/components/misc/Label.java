@@ -16,7 +16,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc", description = "User defined label", instanceNamePrefix = "L", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
+@ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc", description = "User defined label", instanceNamePrefix = "L", zOrder = IDIYComponent.TEXT, stretchable = false)
 public class Label extends AbstractComponent<Void> {
 
 	public static String DEFAULT_TEXT = "Double click to edit text";
