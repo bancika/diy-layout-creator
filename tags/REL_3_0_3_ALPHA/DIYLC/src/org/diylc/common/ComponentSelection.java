@@ -1,0 +1,60 @@
+package org.diylc.common;
+
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.diylc.core.IDIYComponent;
+
+
+/**
+ * Represents component selection as a {@link List} of
+ * {@link IDIYComponent} objects. Implements {@link Transferable}, so it is
+ * suitable for clipboard usage.
+ * 
+ * @author Branislav Stojkovic
+ */
+public class ComponentSelection extends ArrayList<IDIYComponent<?>> implements Transferable {
+
+	private static final long serialVersionUID = 1L;
+
+	public static final DataFlavor listFlavor = new DataFlavor(List.class, "Java List");
+	
+	public static final ComponentSelection EMPTY_SELECTION = new ComponentSelection();
+	
+	public static ComponentSelection of(IDIYComponent<?> component) {
+		ComponentSelection selection = new ComponentSelection();
+		selection.add(component);
+		return selection;
+	}
+
+	public ComponentSelection() {
+		super();
+	}
+
+	public ComponentSelection(Collection<IDIYComponent<?>> selectedComponents) {
+		super(selectedComponents);
+	}
+
+	@Override
+	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+		if (flavor.equals(listFlavor)) {
+			return this;
+		}
+		throw new UnsupportedFlavorException(flavor);
+	}
+
+	@Override
+	public DataFlavor[] getTransferDataFlavors() {
+		return new DataFlavor[] { listFlavor };
+	}
+
+	@Override
+	public boolean isDataFlavorSupported(DataFlavor flavor) {
+		return flavor.equals(listFlavor);
+	}
+}
