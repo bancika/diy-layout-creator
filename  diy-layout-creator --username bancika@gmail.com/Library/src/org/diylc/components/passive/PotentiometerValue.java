@@ -23,6 +23,6 @@ public class PotentiometerValue {
 
 	@Override
 	public String toString() {
-		return resistance.toString() + taper.toString();
+		return resistance.toString() + " " + taper.toString();
 	}
 }

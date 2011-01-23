@@ -23,7 +23,6 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "test", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class DIL_IC extends AbstractTransparentComponent<String> {
@@ -125,12 +124,12 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public Point getControlPoint(int index) {
 		return controlPoints[index];
 	}
-	
+
 	@Override
 	public boolean isControlPointSticky(int index) {
 		return true;
 	}
-	
+
 	@Override
 	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
 		return VisibilityPolicy.NEVER;
@@ -249,7 +248,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.draw(getBody());
 		// Draw label.
-		g2d.setFont(Constants.LABEL_FONT);
+		g2d.setFont(LABEL_FONT);
 		g2d.setColor(LABEL_COLOR);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
 		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);

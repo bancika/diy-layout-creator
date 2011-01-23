@@ -1,6 +1,5 @@
 package org.diylc.core;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.Serializable;
@@ -37,10 +36,9 @@ public interface IDIYComponent<T> extends Serializable {
 	public static final int BELOW_BOARD = 4;
 	public static final int BOARD = 5;
 	public static final int ABOVE_BOARD = 6;
-	public static final int COMPONENT = 7;
-	public static final int ABOVE_COMPONENT = 8;
-
-	public static Color SELECTION_COLOR = Color.red;
+	public static final int BELOW_COMPONENT = 7;
+	public static final int COMPONENT = 8;
+	public static final int ABOVE_COMPONENT = 9;
 
 	/**
 	 * @return component instance name.

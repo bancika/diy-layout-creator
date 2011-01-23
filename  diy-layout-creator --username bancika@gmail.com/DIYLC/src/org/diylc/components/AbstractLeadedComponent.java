@@ -19,7 +19,6 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.utils.Constants;
 
 /**
  * Base class for all leaded components such as resistors or capacitors. Has two
@@ -33,8 +32,6 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	private static final long serialVersionUID = 1L;
 
 	public static Color LEAD_COLOR = Color.decode("#236B8E");
-	public static Color LABEL_COLOR = Color.black;
-	public static Color LABEL_COLOR_SELECTED = Color.red;
 	public static Size LEAD_THICKNESS = new Size(0.6d, SizeUnit.mm);
 	public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
@@ -45,6 +42,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			new Point(DEFAULT_SIZE.convertToPixels() / 2, 0) };
 	protected Color bodyColor = getDefaultBodyColor();
 	protected Color borderColor = getDefaultBorderColor();
+	protected Color labelColor = LABEL_COLOR;
 	protected Display display = Display.NAME;
 
 	protected AbstractLeadedComponent() {
@@ -124,10 +122,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		// Do not track the label because that area was already covered.
 		drawingObserver.stopTracking();
 		// Draw label.
-		g2d.setFont(Constants.LABEL_FONT);
-		g2d
-				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
-						: getLabelColor());
+		g2d.setFont(LABEL_FONT);
+		g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : labelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		String label = display == Display.NAME ? getName() : getValue().toString();
 		// Adjust label angle if needed to make sure that it's readable.
@@ -142,10 +138,6 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
 	protected void decorateComponentBody(Graphics2D g2d) {
 		// Do nothing.
-	}
-
-	protected Color getLabelColor() {
-		return LABEL_COLOR;
 	}
 
 	protected boolean shouldShadeLeads() {

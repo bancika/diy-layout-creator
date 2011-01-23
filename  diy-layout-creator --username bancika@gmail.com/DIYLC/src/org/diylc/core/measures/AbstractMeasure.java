@@ -8,7 +8,7 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
 
 	private static final long serialVersionUID = 1L;
 
-	protected static final Format format = new DecimalFormat("#.00##");
+	protected static final Format format = new DecimalFormat("0.####");
 
 	protected Double value;
 	protected T unit;

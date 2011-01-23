@@ -1,5 +1,8 @@
 package org.diylc.components;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.EditableProperty;
 
@@ -16,6 +19,11 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	private static final long serialVersionUID = 1L;
 
 	protected String name = "";
+	
+	public static Color SELECTION_COLOR = Color.red;
+	public static Color LABEL_COLOR = Color.black;
+	public static Color LABEL_COLOR_SELECTED = Color.red;
+	public static Font LABEL_FONT = new Font("Tahoma", Font.PLAIN, 12);
 
 	@EditableProperty(defaultable = false)
 	@Override

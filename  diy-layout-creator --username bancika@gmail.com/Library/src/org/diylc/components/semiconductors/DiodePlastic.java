@@ -30,6 +30,7 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 
 	public DiodePlastic() {
 		super();
+		this.labelColor = LABEL_COLOR;
 	}
 
 	@EditableProperty
@@ -72,11 +73,6 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 	@Override
 	protected Color getDefaultBorderColor() {
 		return BORDER_COLOR;
-	}
-
-	@Override
-	protected Color getLabelColor() {
-		return LABEL_COLOR;
 	}
 
 	@Override

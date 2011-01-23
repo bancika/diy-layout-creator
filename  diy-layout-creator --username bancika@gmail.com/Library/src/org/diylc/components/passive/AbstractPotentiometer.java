@@ -17,7 +17,7 @@ public abstract class AbstractPotentiometer extends AbstractComponent<Potentiome
 
 	protected Resistance resistance = new Resistance(100d, ResistanceUnit.K);
 	protected Orientation orientation = Orientation.DEFAULT;
-	protected Taper taper;
+	protected Taper taper = Taper.LIN;
 
 	@Override
 	public int getControlPointCount() {

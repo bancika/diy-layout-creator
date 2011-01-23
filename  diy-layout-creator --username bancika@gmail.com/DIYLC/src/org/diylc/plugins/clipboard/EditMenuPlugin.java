@@ -41,7 +41,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private Clipboard clipboard;
 	private Cloner cloner;
 
-	private CutAction cutAction;
+//	private CutAction cutAction;
 	private CopyAction copyAction;
 	private PasteAction pasteAction;
 
@@ -72,8 +72,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		plugInPort.injectMenuAction(undoHandler.getUndoAction(), EDIT_TITLE);
 		plugInPort.injectMenuAction(undoHandler.getRedoAction(), EDIT_TITLE);
 		plugInPort.injectMenuAction(null, EDIT_TITLE);
-		cutAction = new CutAction();
-		plugInPort.injectMenuAction(cutAction, EDIT_TITLE);
+		// cutAction = new CutAction();
+		// plugInPort.injectMenuAction(cutAction, EDIT_TITLE);
 		copyAction = new CopyAction();
 		plugInPort.injectMenuAction(copyAction, EDIT_TITLE);
 		pasteAction = new PasteAction();
@@ -109,7 +109,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
 	private void refreshActions() {
 		boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
-		cutAction.setEnabled(enabled);
+		// cutAction.setEnabled(enabled);
 		copyAction.setEnabled(enabled);
 		try {
 			pasteAction.setEnabled(clipboard.isDataFlavorAvailable(ComponentSelection.listFlavor));
@@ -264,7 +264,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 			// Save default values.
 			for (PropertyWrapper property : editor.getDefaultedProperties()) {
 				if (property.getValue() != null) {
-					plugInPort.setProjectDefaultPropertyValue(property.getName(), property.getValue());
+					plugInPort.setProjectDefaultPropertyValue(property.getName(), property
+							.getValue());
 				}
 			}
 		}
@@ -299,7 +300,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 			// Save default values.
 			for (PropertyWrapper property : editor.getDefaultedProperties()) {
 				if (property.getValue() != null) {
-					plugInPort.setSelectionDefaultPropertyValue(property.getName(), property.getValue());
+					plugInPort.setSelectionDefaultPropertyValue(property.getName(), property
+							.getValue());
 				}
 			}
 		}
