@@ -30,15 +30,11 @@ import org.diylc.core.annotations.EditableProperty;
  */
 public interface IDIYComponent<T> extends Serializable {
 
-	public static final int BELOW_CHASSIS = 1;
-	public static final int CHASSIS = 2;
-	public static final int ABOVE_CHASSIS = 3;
-	public static final int BELOW_BOARD = 4;
-	public static final int BOARD = 5;
-	public static final int ABOVE_BOARD = 6;
-	public static final int BELOW_COMPONENT = 7;
-	public static final int COMPONENT = 8;
-	public static final int ABOVE_COMPONENT = 9;
+	public static final int CHASSIS = 1;
+	public static final int BOARD = 2;
+	public static final int TRACE = 3;
+	public static final int COMPONENT = 4;
+	public static final int TEXT = 5;
 
 	/**
 	 * @return component instance name.

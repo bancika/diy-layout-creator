@@ -17,7 +17,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Project Information", author = "Branislav Stojkovic", category = "Misc", description = "Draws a box with general project information", instanceNamePrefix = "BOM", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
+@ComponentDescriptor(name = "Project Information", author = "Branislav Stojkovic", category = "Misc", description = "Draws a box with general project information", instanceNamePrefix = "BOM", zOrder = IDIYComponent.TEXT, stretchable = false)
 public class ProjectInformation extends AbstractComponent<Void> {
 
 	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);

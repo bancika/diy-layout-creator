@@ -14,7 +14,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace", description = "", zOrder = IDIYComponent.ABOVE_BOARD)
+@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace", description = "", zOrder = IDIYComponent.TRACE)
 public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
@@ -56,7 +56,7 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 	public void setLeadThickness(Size leadThickness) {
 		this.leadThickness = leadThickness;
 	}
-	
+
 	@Override
 	protected boolean shouldShadeLeads() {
 		return false;

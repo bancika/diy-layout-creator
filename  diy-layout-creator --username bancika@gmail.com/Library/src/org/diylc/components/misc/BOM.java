@@ -19,10 +19,10 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.plugins.file.BomEntry;
-import org.diylc.plugins.file.BomMaker;
+import org.diylc.swing.plugins.file.BomEntry;
+import org.diylc.swing.plugins.file.BomMaker;
 
-@ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.ABOVE_COMPONENT, stretchable = false)
+@ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.TEXT, stretchable = false)
 public class BOM extends AbstractComponent<Void> {
 
 	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);
@@ -134,12 +134,12 @@ public class BOM extends AbstractComponent<Void> {
 	public Point getControlPoint(int index) {
 		return point;
 	}
-	
+
 	@Override
 	public boolean isControlPointSticky(int index) {
 		return false;
 	}
-	
+
 	@Override
 	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
 		return VisibilityPolicy.NEVER;
