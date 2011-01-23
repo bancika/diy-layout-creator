@@ -205,9 +205,21 @@ public class Presenter implements IPlugInPort {
 	public void loadProjectFromFile(String fileName) {
 		LOG.info(String.format("loadProjectFromFile(%s)", fileName));
 		try {
-			Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName);
+			List<String> warnings = new ArrayList<String>();
+			Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName,
+					warnings);
 			loadProject(project, true);
 			projectFileManager.fireFileStatusChanged();
+			if (!warnings.isEmpty()) {
+				StringBuilder builder = new StringBuilder(
+						"<html>File was opened, but there were some issues with it:<br><br>");
+				for (String warning : warnings) {
+					builder.append(warning);
+					builder.append("<br>");
+				}
+				builder.append("</html");
+				view.showMessage(builder.toString(), "Warning", IView.WARNING_MESSAGE);
+			}
 		} catch (Exception ex) {
 			LOG.error("Could not load file", ex);
 			view.showMessage("Could not open file " + fileName + ". Check the log for details.",

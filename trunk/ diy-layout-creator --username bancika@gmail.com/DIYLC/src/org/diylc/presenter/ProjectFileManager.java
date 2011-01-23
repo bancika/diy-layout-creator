@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -71,7 +73,7 @@ public class ProjectFileManager {
 		fireFileStatusChanged();
 	}
 
-	public Project deserializeProjectFromFile(String fileName) throws SAXException, IOException,
+	public Project deserializeProjectFromFile(String fileName, List<String> warnings) throws SAXException, IOException,
 			ParserConfigurationException {
 		LOG.info(String.format("loadProjectFromFile(%s)", fileName));
 		Project project;
@@ -90,7 +92,7 @@ public class ProjectFileManager {
 			String formatVersion = doc.getDocumentElement().getAttribute("formatVersion");
 			if (formatVersion == null || formatVersion.trim().isEmpty()) {
 				LOG.debug("Detected v1 file.");
-				project = parseV1File(doc.getDocumentElement());
+				project = parseV1File(doc.getDocumentElement(), warnings);
 			} else if (formatVersion.equals("2.0")) {
 				LOG.debug("Detected v2 file.");
 				project = parseV2File(doc.getDocumentElement());
@@ -98,6 +100,7 @@ public class ProjectFileManager {
 				throw new IllegalArgumentException("Unknown file format version: " + formatVersion);
 			}
 		}
+		Collections.sort(warnings);
 		this.currentFileName = fileName;
 		this.modified = false;
 		return project;
@@ -121,7 +124,7 @@ public class ProjectFileManager {
 				isModified());
 	}
 
-	private Project parseV1File(Element root) {
+	private Project parseV1File(Element root, List<String> warnings) {
 		Project project = new Project();
 		project.setTitle(root.getAttribute("Project"));
 		project.setAuthor(root.getAttribute("Credits"));
@@ -254,7 +257,11 @@ public class ProjectFileManager {
 					ic.setValue(valueAttr);
 					component = ic;
 				} else {
-					LOG.debug("Could not recognize component type " + nodeName);
+					String message = "Could not recognize component type " + nodeName; 
+					LOG.debug(message);
+					if (!warnings.contains(message)) {
+						warnings.add(message);
+					}
 				}
 				if (component != null) {
 					project.getComponents().add(component);
