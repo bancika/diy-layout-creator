@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.BadPositionException;
@@ -35,9 +34,9 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.gui.IView;
 import org.diylc.utils.Constants;
 
 import com.diyfever.gui.miscutils.ConfigurationManager;
@@ -203,7 +202,7 @@ public class Presenter implements IPlugInPort {
 		} catch (Exception e) {
 			LOG.error("Could not create new file", e);
 			view.showMessage("Could not create a new file. Check the log for details.", "Error",
-					JOptionPane.ERROR_MESSAGE);
+					IView.ERROR_MESSAGE);
 		}
 	}
 
@@ -217,7 +216,7 @@ public class Presenter implements IPlugInPort {
 		} catch (Exception ex) {
 			LOG.error("Could not load file", ex);
 			view.showMessage("Could not open file " + fileName + ". Check the log for details.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+					"Error", IView.ERROR_MESSAGE);
 		}
 	}
 
@@ -226,8 +225,8 @@ public class Presenter implements IPlugInPort {
 		if (projectFileManager.isModified()) {
 			int response = view.showConfirmDialog(
 					"There are unsaved changes. Are you sure you want to abandon these changes?",
-					"Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-			return response == JOptionPane.YES_OPTION;
+					"Warning", IView.YES_NO_OPTION, IView.WARNING_MESSAGE);
+			return response == IView.YES_OPTION;
 		}
 		return true;
 	}
@@ -240,7 +239,7 @@ public class Presenter implements IPlugInPort {
 		} catch (Exception ex) {
 			LOG.error("Could not save file", ex);
 			view.showMessage("Could not save file " + fileName + ". Check the log for details.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+					"Error", IView.ERROR_MESSAGE);
 		}
 	}
 
@@ -390,7 +389,7 @@ public class Presenter implements IPlugInPort {
 						instantiationManager.instatiatePointByPoint(scaledPoint, currentProject);
 					} catch (Exception e) {
 						view.showMessage("Could not create component. Check log for details.",
-								"Error", JOptionPane.ERROR_MESSAGE);
+								"Error", IView.ERROR_MESSAGE);
 						LOG.error("Could not create component", e);
 					}
 					messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentTypeSlot,
@@ -1040,7 +1039,7 @@ public class Presenter implements IPlugInPort {
 			LOG.error("Could not apply selection properties", e);
 			view.showMessage(
 					"Could not apply changes to the selection. Check the log for details.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+					"Error", IView.ERROR_MESSAGE);
 		} finally {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
@@ -1081,7 +1080,7 @@ public class Presenter implements IPlugInPort {
 		} catch (Exception e) {
 			LOG.error("Could not apply project properties", e);
 			view.showMessage("Could not apply changes to the project. Check the log for details.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+					"Error", IView.ERROR_MESSAGE);
 		} finally {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
@@ -1112,7 +1111,7 @@ public class Presenter implements IPlugInPort {
 		} catch (Exception e) {
 			LOG.error("Could not set component type slot", e);
 			view.showMessage("Could not set component type slot. Check log for details.", "Error",
-					JOptionPane.ERROR_MESSAGE);
+					IView.ERROR_MESSAGE);
 		}
 	}
 

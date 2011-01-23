@@ -1,14 +1,23 @@
 <map>
   <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
+    <string>metric</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>zoom</string>
     <double>1.0</double>
   </entry>
   <entry>
-    <string>metric</string>
-    <boolean>true</boolean>
+    <string>lastPath</string>
+    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
+  </entry>
+  <entry>
+    <string>default.org.diylc.components.misc.Label:Color</string>
+    <awt-color>
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+      <alpha>255</alpha>
+    </awt-color>
   </entry>
 </map>

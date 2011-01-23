@@ -21,8 +21,8 @@ import javax.swing.JPanel;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IView;
 import org.diylc.core.Project;
-import org.diylc.gui.IView;
 import org.diylc.presenter.Presenter;
 
 import com.diyfever.gui.IFileChooserAccessory;
