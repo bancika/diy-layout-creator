@@ -31,7 +31,7 @@ public class InstantiationManager {
 	private Point potentialControlPoint;
 
 	public InstantiationManager() {
-		// TODO Auto-generated constructor stub
+		cloner = new Cloner();
 	}
 
 	public ComponentType getComponentTypeSlot() {
