@@ -9,6 +9,7 @@ import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -36,6 +37,11 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 	protected Color getLeadColor(ComponentState componentState) {
 		return componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : leadColor;
+	}
+	
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.WHEN_SELECTED;
 	}
 
 	@EditableProperty(name = "Color")

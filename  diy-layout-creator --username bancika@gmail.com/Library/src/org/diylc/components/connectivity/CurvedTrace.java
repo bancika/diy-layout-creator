@@ -8,6 +8,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -35,6 +36,11 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
 		g2d.draw(curve);
+	}
+	
+	@Override
+	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+		return VisibilityPolicy.NEVER;
 	}
 
 	@EditableProperty(name = "Width")
