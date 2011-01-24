@@ -25,6 +25,7 @@ import org.diylc.components.boards.VeroBoard;
 import org.diylc.components.connectivity.CopperTrace;
 import org.diylc.components.connectivity.Jumper;
 import org.diylc.components.connectivity.SolderPad;
+import org.diylc.components.misc.Label;
 import org.diylc.components.passive.ElectrolyticRadial;
 import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
@@ -51,7 +52,7 @@ public class ProjectFileManager {
 
 	private static final Logger LOG = Logger.getLogger(ProjectFileManager.class);
 
-	private static final int V1_PIXELS_PER_INCH = 200;
+	// private static final int V1_PIXELS_PER_INCH = 200;
 	private static final Size V1_GRID_SPACING = new Size(0.1d, SizeUnit.in);
 	private static final Map<String, Color> V1_COLOR_MAP = new HashMap<String, Color>();
 	static {
@@ -203,7 +204,18 @@ public class ProjectFileManager {
 					point2 = convertV1CoordinatesToV3Point(referencePoint, x2Attr, y2Attr);
 				}
 				IDIYComponent<?> component = null;
-				if (nodeName.equalsIgnoreCase("pad")) {
+				if (nodeName.equalsIgnoreCase("text")) {
+					LOG.debug("Recognized " + nodeName);
+					Label pad = new Label();
+					pad.setName(nameAttr);
+					if (color != null) {
+						pad.setColor(color);
+					}
+					pad.setText(valueAttr);
+					pad.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr,
+							y1Attr), 0);
+					component = pad;
+				} else if (nodeName.equalsIgnoreCase("pad")) {
 					LOG.debug("Recognized " + nodeName);
 					SolderPad pad = new SolderPad();
 					pad.setName(nameAttr);
@@ -269,9 +281,9 @@ public class ProjectFileManager {
 					}
 					String sizeAttr = node.getAttributes().getNamedItem("Size").getNodeValue();
 					if (sizeAttr.equalsIgnoreCase("small")) {
-						capacitor.setWidth(new Size(2.5d, SizeUnit.mm));
+						capacitor.setWidth(new Size(3d, SizeUnit.mm));
 					} else if (sizeAttr.equalsIgnoreCase("medium")) {
-						capacitor.setWidth(new Size(4d, SizeUnit.mm));
+						capacitor.setWidth(new Size(5d, SizeUnit.mm));
 					} else if (sizeAttr.equalsIgnoreCase("large")) {
 						capacitor.setWidth(new Size(7d, SizeUnit.mm));
 					} else {
