@@ -1,15 +1,15 @@
 <map>
   <entry>
-    <string>metric</string>
-    <boolean>true</boolean>
+    <string>lastPath</string>
+    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop\oldFiles</string>
   </entry>
   <entry>
     <string>zoom</string>
     <double>1.0</double>
   </entry>
   <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
+    <string>metric</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>default.org.diylc.components.misc.Label:Color</string>

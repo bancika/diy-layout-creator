@@ -729,8 +729,6 @@ public class Presenter implements IPlugInPort {
 		if (repaint) {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
-		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-				calculateSelectionDimension());
 		return true;
 	}
 
@@ -841,8 +839,6 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void setMetric(boolean isMetric) {
 		ConfigurationManager.getInstance().writeValue(Presenter.METRIC_KEY, isMetric);
-		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-				calculateSelectionDimension());
 	}
 
 	@Override
@@ -909,12 +905,6 @@ public class Presenter implements IPlugInPort {
 		includeStuckComponents(controlPointMap);
 		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents,
 				controlPointMap.keySet());
-		fireSelectionSizeChanged();
-	}
-
-	private void fireSelectionSizeChanged() {
-		messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-				calculateSelectionDimension());
 	}
 
 	/**
@@ -956,11 +946,8 @@ public class Presenter implements IPlugInPort {
 		return components;
 	}
 
-	/**
-	 * @return selection size expressed in either inches or centimeters, based
-	 *         on the user preference.
-	 */
-	private Point2D calculateSelectionDimension() {
+	@Override
+	public Point2D calculateSelectionDimension() {
 		if (selectedComponents.isEmpty()) {
 			return null;
 		}
@@ -1041,8 +1028,6 @@ public class Presenter implements IPlugInPort {
 				projectFileManager.notifyFileChange();
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
-			messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-					calculateSelectionDimension());
 		}
 	}
 

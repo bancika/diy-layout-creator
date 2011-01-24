@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -20,9 +22,9 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.BadPositionException;
@@ -32,9 +34,9 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
+import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.gui.MainFrame;
 
 import com.diyfever.gui.MemoryBar;
 import com.diyfever.gui.miscutils.ConfigurationManager;
@@ -45,7 +47,7 @@ import com.diyfever.gui.update.UpdateLabel;
 public class StatusBar extends JPanel implements IPlugIn {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Logger LOG = Logger.getLogger(StatusBar.class);
 
 	public static String UPDATE_URL = "http://www.diy-fever.com/update.xml";
@@ -70,7 +72,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 		super();
 
 		setLayout(new GridBagLayout());
-		
+
 		try {
 			swingUI.injectGUIComponent(this, SwingUtilities.BOTTOM);
 		} catch (BadPositionException e) {
@@ -123,11 +125,27 @@ public class StatusBar extends JPanel implements IPlugIn {
 
 	public JLabel getSizeLabel() {
 		if (sizeLabel == null) {
-			sizeLabel = new JLabel("N/A");
-			sizeLabel.setToolTipText("Selection Size");
-			sizeLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(
-					0, 1, 0, 1, UIManager.getColor("Separator.shadow")), BorderFactory
-					.createEmptyBorder(0, 4, 0, 4)));
+			sizeLabel = new JLabel(IconLoader.Size.getIcon());
+			sizeLabel.setFocusable(true);
+			sizeLabel.setToolTipText("Click to calculate selection size");
+			sizeLabel.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					Point2D size = plugInPort.calculateSelectionDimension();
+					boolean metric = ConfigurationManager.getInstance().readBoolean(
+							Presenter.METRIC_KEY, true);
+					String text;
+					if (size == null) {
+						text = "Selection is empty.";
+					} else {
+						text = "Selection size: " + sizeFormat.format(size.getX()) + " x "
+								+ sizeFormat.format(size.getY()) + (metric ? " cm" : " in");
+					}
+					JOptionPane.showMessageDialog(SwingUtilities.getRootPane(StatusBar.this), text,
+							"Information", JOptionPane.INFORMATION_MESSAGE);
+				}
+			});
 		}
 		return sizeLabel;
 	}
@@ -151,10 +169,10 @@ public class StatusBar extends JPanel implements IPlugIn {
 		gbc.gridx = 1;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 0;
-		add(getSizeLabel(), gbc);
+		add(zoomPanel, gbc);
 
 		gbc.gridx = 2;
-		add(zoomPanel, gbc);
+		add(getSizeLabel(), gbc);
 
 		gbc.gridx = 3;
 		add(getUpdateLabel(), gbc);
@@ -179,8 +197,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
 		return EnumSet.of(EventType.ZOOM_CHANGED, EventType.SLOT_CHANGED,
-				EventType.AVAILABLE_CTRL_POINTS_CHANGED, EventType.SELECTION_SIZE_CHANGED,
-				EventType.SELECTION_CHANGED);
+				EventType.AVAILABLE_CTRL_POINTS_CHANGED, EventType.SELECTION_CHANGED);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -216,18 +233,6 @@ public class StatusBar extends JPanel implements IPlugIn {
 			this.stuckComponentNames.removeAll(this.selectedComponentNames);
 			Collections.sort(this.stuckComponentNames);
 			refreshStatusText();
-			break;
-		case SELECTION_SIZE_CHANGED:
-			Point2D size = (Point2D) params[0];
-			boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY,
-					true);
-			if (size == null) {
-				getSizeLabel().setText("N/A");
-			} else {
-				getSizeLabel().setText(
-						sizeFormat.format(size.getX()) + " x " + sizeFormat.format(size.getY())
-								+ (metric ? " cm" : " in"));
-			}
 			break;
 		case SLOT_CHANGED:
 			componentSlot = (ComponentType) params[0];
