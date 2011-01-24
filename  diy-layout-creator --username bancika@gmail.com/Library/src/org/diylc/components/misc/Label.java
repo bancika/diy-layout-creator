@@ -27,6 +27,7 @@ public class Label extends AbstractComponent<Void> {
 	private String text = DEFAULT_TEXT;
 	private Font font = LABEL_FONT;
 	private Color color = LABEL_COLOR;
+	private boolean center = true;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
@@ -39,9 +40,16 @@ public class Label extends AbstractComponent<Void> {
 		int textHeight = (int) rect.getHeight();
 		int textWidth = (int) rect.getWidth();
 
-		// Center text horizontally and vertically
-		int x = point.x - textWidth / 2;
-		int y = point.y - textHeight / 2 + fontMetrics.getAscent();
+		int x;
+		int y;
+		if (center) {
+			// Center text horizontally and vertically
+			x = point.x - textWidth / 2;
+			y = point.y - textHeight / 2 + fontMetrics.getAscent();
+		} else {
+			x = point.x;
+			y = point.y - textHeight;
+		}
 
 		g2d.drawString(text, x, y);
 	}
@@ -105,6 +113,14 @@ public class Label extends AbstractComponent<Void> {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public boolean getCenter() {
+		return center;
+	}
+
+	public void setCenter(boolean center) {
+		this.center = center;
 	}
 
 	@Override
