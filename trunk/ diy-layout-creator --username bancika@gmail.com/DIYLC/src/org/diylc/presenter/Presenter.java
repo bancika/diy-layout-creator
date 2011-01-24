@@ -59,7 +59,6 @@ public class Presenter implements IPlugInPort {
 	private Project currentProject;
 	private Map<String, List<ComponentType>> componentTypes;
 	// Maps component class names to ComponentType objects.
-	private Map<String, ComponentType> componentTypeMap;
 	private List<IPlugIn> plugIns;
 
 	private ComponentSelection selectedComponents;
@@ -266,14 +265,12 @@ public class Presenter implements IPlugInPort {
 		if (componentTypes == null) {
 			LOG.info("Loading component types.");
 			componentTypes = new HashMap<String, List<ComponentType>>();
-			componentTypeMap = new HashMap<String, ComponentType>();
 			List<Class<?>> componentTypeClasses = JarScanner.getInstance().scanFolder("library/",
 					IDIYComponent.class);
 			for (Class<?> clazz : componentTypeClasses) {
 				if (!Modifier.isAbstract(clazz.getModifiers())) {
 					ComponentType componentType = ComponentProcessor.getInstance()
-							.createComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
-					componentTypeMap.put(componentType.getInstanceClass().getName(), componentType);
+							.extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
 					List<ComponentType> nestedList;
 					if (componentTypes.containsKey(componentType.getCategory())) {
 						nestedList = componentTypes.get(componentType.getCategory());
@@ -456,7 +453,9 @@ public class Presenter implements IPlugInPort {
 			// Go backwards so we take the highest z-order components first.
 			for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
 				IDIYComponent<?> component = currentProject.getComponents().get(i);
-				ComponentType componentType = componentTypeMap.get(component.getClass().getName());
+				ComponentType componentType = ComponentProcessor.getInstance()
+						.extractComponentTypeFrom(
+								(Class<? extends IDIYComponent<?>>) component.getClass());
 				for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
 					Point controlPoint = component.getControlPoint(pointIndex);
 					// Only consider selected components that are not grouped.
@@ -590,7 +589,9 @@ public class Presenter implements IPlugInPort {
 		int oldSize = controlPointMap.size();
 		LOG.debug("Expanding selected component map");
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
-			ComponentType componentType = componentTypeMap.get(component.getClass().getName());
+			ComponentType componentType = ComponentProcessor.getInstance()
+					.extractComponentTypeFrom(
+							(Class<? extends IDIYComponent<?>>) component.getClass());
 
 			// Do not process a component if it's already in the map and if it's
 			// locked.
@@ -786,7 +787,8 @@ public class Presenter implements IPlugInPort {
 						.getGridSpacing().convertToPixels());
 				component.setControlPoint(point, i);
 			}
-			addComponent(component, componentTypeMap.get(component.getClass().getName()));
+			addComponent(component, ComponentProcessor.getInstance().extractComponentTypeFrom(
+					(Class<? extends IDIYComponent<?>>) component.getClass()));
 		}
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
@@ -982,8 +984,10 @@ public class Presenter implements IPlugInPort {
 	private void addComponent(IDIYComponent<?> component, ComponentType componentType) {
 		int index = 0;
 		while (index < currentProject.getComponents().size()
-				&& componentType.getZOrder() >= componentTypeMap.get(
-						currentProject.getComponents().get(index).getClass().getName()).getZOrder()) {
+				&& componentType.getZOrder() >= ComponentProcessor.getInstance()
+						.extractComponentTypeFrom(
+								(Class<? extends IDIYComponent<?>>) currentProject.getComponents()
+										.get(index).getClass()).getZOrder()) {
 			index++;
 		}
 		if (index < currentProject.getComponents().size()) {
@@ -1104,7 +1108,8 @@ public class Presenter implements IPlugInPort {
 	}
 
 	private boolean isComponentLocked(IDIYComponent<?> component) {
-		ComponentType componentType = componentTypeMap.get(component.getClass().getName());
+		ComponentType componentType = ComponentProcessor.getInstance().extractComponentTypeFrom(
+				(Class<? extends IDIYComponent<?>>) component.getClass());
 		return currentProject.getLockedLayers().contains(
 				(int) Math.round(componentType.getZOrder()));
 	}

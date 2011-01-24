@@ -16,7 +16,7 @@ public class ComponentZOrderFiler implements IComponentFiler {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean testComponent(IDIYComponent<?> component) {
-		ComponentType componentType = ComponentProcessor.getInstance().createComponentTypeFrom(
+		ComponentType componentType = ComponentProcessor.getInstance().extractComponentTypeFrom(
 				(Class<? extends IDIYComponent<?>>) component.getClass());
 		return Math.round(componentType.getZOrder()) == zOrder;
 	}
