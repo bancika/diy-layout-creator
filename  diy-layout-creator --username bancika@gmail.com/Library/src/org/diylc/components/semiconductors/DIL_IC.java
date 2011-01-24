@@ -7,7 +7,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -33,11 +34,11 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public static Color BORDER_COLOR = Color.gray.darker();
 	public static Color PIN_COLOR = Color.decode("#00B2EE");
 	public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
-	public static Color INDENT_COLOR = Color.lightGray;
+	public static Color INDENT_COLOR = Color.gray.darker();
 	public static Color LABEL_COLOR = Color.white;
 	public static int EDGE_RADIUS = 6;
 	public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
-	public static Size INDENT_SIZE = new Size(0.15d, SizeUnit.in);
+	public static Size INDENT_SIZE = new Size(0.07d, SizeUnit.in);
 
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
@@ -55,7 +56,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	// pinSpacing.convertToPixels()),
 	// new Point(3 * pinSpacing.convertToPixels(), 3 *
 	// pinSpacing.convertToPixels()) };
-	private Shape body;
+	private Area body[];
 
 	public DIL_IC() {
 		super();
@@ -174,7 +175,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 				dx1 = i * pinSpacing.convertToPixels();
 				dy1 = 0;
 				dx2 = i * pinSpacing.convertToPixels();
-				dy2 = rowSpacing.convertToPixels();
+				dy2 = -rowSpacing.convertToPixels();
 				break;
 			default:
 				throw new RuntimeException("Unexpected orientation: " + orientation);
@@ -185,42 +186,58 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		}
 	}
 
-	public Shape getBody() {
+	public Area[] getBody() {
 		if (body == null) {
+			body = new Area[2];
 			int x = controlPoints[0].x;
 			int y = controlPoints[0].y;
 			int width;
 			int height;
 			int pinSize = PIN_SIZE.convertToPixels();
+			Area indentation = null;
+			int indentationSize = getClosestOdd(INDENT_SIZE.convertToPixels());
 			switch (orientation) {
 			case DEFAULT:
 				width = rowSpacing.convertToPixels() - pinSize;
 				height = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
 				x += pinSize / 2;
 				y -= pinSpacing.convertToPixels() / 2;
+				indentation = new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2, y
+						- indentationSize / 2, indentationSize, indentationSize));
 				break;
 			case _90:
 				width = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
 				height = rowSpacing.convertToPixels() - pinSize;
 				x -= (pinSpacing.convertToPixels() / 2) + width - pinSpacing.convertToPixels();
 				y += pinSize / 2;
+				indentation = new Area(new Ellipse2D.Double(x + width - indentationSize / 2, y
+						+ height / 2 - indentationSize / 2, indentationSize, indentationSize));
 				break;
 			case _180:
 				width = rowSpacing.convertToPixels() - pinSize;
 				height = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
 				x -= rowSpacing.convertToPixels() - pinSize / 2;
 				y -= (pinSpacing.convertToPixels() / 2) + height - pinSpacing.convertToPixels();
+				indentation = new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2, y
+						+ height - indentationSize / 2, indentationSize, indentationSize));
 				break;
 			case _270:
 				width = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
 				height = rowSpacing.convertToPixels() - pinSize;
 				x -= pinSpacing.convertToPixels() / 2;
-				y += pinSize / 2;
+				y += pinSize / 2 - rowSpacing.convertToPixels();
+				indentation = new Area(new Ellipse2D.Double(x - indentationSize / 2, y + height / 2
+						- indentationSize / 2, indentationSize, indentationSize));
 				break;
 			default:
 				throw new RuntimeException("Unexpected orientation: " + orientation);
 			}
-			body = new RoundRectangle2D.Double(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS);
+			body[0] = new Area(new RoundRectangle2D.Double(x, y, width, height, EDGE_RADIUS,
+					EDGE_RADIUS));
+			body[1] = indentation;
+			if (indentation != null) {
+				indentation.intersect(body[0]);
+			}
 		}
 		return body;
 	}
@@ -229,6 +246,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
 		int pinSize = PIN_SIZE.convertToPixels() / 2 * 2;
+		Area mainArea = getBody()[0];
 		for (Point point : controlPoints) {
 			g2d.setColor(PIN_COLOR);
 			g2d.fillRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
@@ -241,12 +259,16 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 					/ MAX_ALPHA));
 		}
 		g2d.setColor(BODY_COLOR);
-		g2d.fill(getBody());
+		g2d.fill(mainArea);
 		g2d.setComposite(oldComposite);
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-		g2d.draw(getBody());
+		g2d.draw(mainArea);
+		if (getBody()[1] != null) {
+			g2d.setColor(INDENT_COLOR);
+			g2d.fill(getBody()[1]);
+		}
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
 		g2d.setColor(LABEL_COLOR);
@@ -255,7 +277,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		int textHeight = (int) (rect.getHeight());
 		int textWidth = (int) (rect.getWidth());
 		// Center text horizontally and vertically
-		Rectangle bounds = getBody().getBounds();
+		Rectangle bounds = mainArea.getBounds();
 		int x = bounds.x + (bounds.width - textWidth) / 2;
 		int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
 		g2d.drawString(getName(), x, y);
