@@ -11,7 +11,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -283,14 +282,12 @@ public class DrawingManager {
 
 	public List<IDIYComponent<?>> findComponentsAt(Point point, Project project) {
 		List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
-		for (Map.Entry<IDIYComponent<?>, Area> entry : componentAreaMap.entrySet()) {
-			if (entry.getValue().contains(point)) {
-				components.add(entry.getKey());
+		for (int i = 0; i < project.getComponents().size(); i++) {
+			Area area = componentAreaMap.get(project.getComponents().get(i));
+			if (area != null && area.contains(point)) {
+				components.add(project.getComponents().get(i));
 			}
 		}
-		// Sort by z-order.
-		Collections.sort(components, ComparatorFactory.getInstance().getComponentZOrderComparator(
-				project.getComponents()));
 		return components;
 	}
 

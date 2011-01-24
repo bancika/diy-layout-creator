@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,6 +28,7 @@ import org.diylc.components.connectivity.SolderPad;
 import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.components.semiconductors.DIL_IC;
+import org.diylc.components.semiconductors.DiodePlastic;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.measures.Capacitance;
@@ -49,6 +52,15 @@ public class ProjectFileManager {
 
 	private static final int V1_PIXELS_PER_INCH = 200;
 	private static final Size V1_GRID_SPACING = new Size(0.1d, SizeUnit.in);
+	private static final Map<String, Color> V1_COLOR_MAP = new HashMap<String, Color>();
+	static {
+		V1_COLOR_MAP.put("red", Color.red);
+		V1_COLOR_MAP.put("blue", Color.blue);
+		V1_COLOR_MAP.put("white", Color.white);
+		V1_COLOR_MAP.put("green", Color.green.darker());
+		V1_COLOR_MAP.put("black", Color.black);
+		V1_COLOR_MAP.put("yellow", Color.yellow);
+	}
 
 	private XStream xStream = new XStream(new DomDriver());
 
@@ -73,8 +85,8 @@ public class ProjectFileManager {
 		fireFileStatusChanged();
 	}
 
-	public Project deserializeProjectFromFile(String fileName, List<String> warnings) throws SAXException, IOException,
-			ParserConfigurationException {
+	public Project deserializeProjectFromFile(String fileName, List<String> warnings)
+			throws SAXException, IOException, ParserConfigurationException {
 		LOG.info(String.format("loadProjectFromFile(%s)", fileName));
 		Project project;
 		File file = new File(fileName);
@@ -176,6 +188,11 @@ public class ProjectFileManager {
 				Point point2 = null;
 				Integer x2Attr = null;
 				Integer y2Attr = null;
+				Color color = null;
+				if (node.getAttributes().getNamedItem("Color") != null) {
+					String colorAttr = node.getAttributes().getNamedItem("Color").getNodeValue();
+					color = V1_COLOR_MAP.get(colorAttr.toLowerCase());
+				}
 				if (node.getAttributes().getNamedItem("X2") != null
 						&& node.getAttributes().getNamedItem("Y2") != null) {
 					x2Attr = Integer.parseInt(node.getAttributes().getNamedItem("X2")
@@ -187,18 +204,21 @@ public class ProjectFileManager {
 				IDIYComponent<?> component = null;
 				if (nodeName.equalsIgnoreCase("pad")) {
 					LOG.debug("Recognized " + nodeName);
-					String colorAttr = node.getAttributes().getNamedItem("Color").getNodeValue();
 					SolderPad pad = new SolderPad();
 					pad.setName(nameAttr);
-					// pad.setColor(Color.getColor(colorAttr));
+					if (color != null) {
+						pad.setColor(color);
+					}
 					pad.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr,
 							y1Attr), 0);
 					component = pad;
 				} else if (nodeName.equalsIgnoreCase("trace")) {
 					LOG.debug("Recognized " + nodeName);
-					String colorAttr = node.getAttributes().getNamedItem("Color").getNodeValue();
 					CopperTrace trace = new CopperTrace();
 					trace.setName(nameAttr);
+					if (color != null) {
+						trace.setLeadColor(color);
+					}
 					trace.setControlPoint(point1, 0);
 					trace.setControlPoint(point2, 1);
 					component = trace;
@@ -237,6 +257,20 @@ public class ProjectFileManager {
 					capacitor.setControlPoint(point1, 0);
 					capacitor.setControlPoint(point2, 1);
 					component = capacitor;
+				} else if (nodeName.equalsIgnoreCase("diode")) {
+					LOG.debug("Recognized " + nodeName);
+					DiodePlastic capacitor = new DiodePlastic();
+					capacitor.setName(nameAttr);
+					try {
+						capacitor.setValue(valueAttr);
+					} catch (Exception e) {
+						LOG.debug("Could not set value of " + nameAttr);
+					}
+					capacitor.setWidth(new Size(6d, SizeUnit.mm));
+					capacitor.setHeight(new Size(2d, SizeUnit.mm));
+					capacitor.setControlPoint(point1, 0);
+					capacitor.setControlPoint(point2, 1);
+					component = capacitor;
 				} else if (nodeName.equalsIgnoreCase("ic")) {
 					LOG.debug("Recognized " + nodeName);
 					DIL_IC ic = new DIL_IC();
@@ -253,11 +287,16 @@ public class ProjectFileManager {
 						}
 					}
 					ic.setName(nameAttr);
-					ic.setControlPoint(point1, 0);
+					// Translate control points.
+					for (int j = 0; j < ic.getControlPointCount(); j++) {
+						Point p = new Point(ic.getControlPoint(j));
+						p.translate(point1.x, point1.y);
+						ic.setControlPoint(p, j);
+					}
 					ic.setValue(valueAttr);
 					component = ic;
 				} else {
-					String message = "Could not recognize component type " + nodeName; 
+					String message = "Could not recognize component type " + nodeName;
 					LOG.debug(message);
 					if (!warnings.contains(message)) {
 						warnings.add(message);
@@ -268,6 +307,8 @@ public class ProjectFileManager {
 				}
 			}
 		}
+		Collections.sort(project.getComponents(), ComparatorFactory.getInstance()
+				.getComponentZOrderComparator());
 		return project;
 	}
 

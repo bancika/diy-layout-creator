@@ -36,6 +36,7 @@ public class ComponentProcessor {
 	private static ComponentProcessor instance;
 
 	private Map<Class<?>, List<PropertyWrapper>> propertyCache;
+	private Map<String, ComponentType> componentTypeMap;
 
 	private Cloner cloner;
 
@@ -50,9 +51,13 @@ public class ComponentProcessor {
 		super();
 		this.cloner = new Cloner();
 		this.propertyCache = new HashMap<Class<?>, List<PropertyWrapper>>();
+		this.componentTypeMap = new HashMap<String, ComponentType>();
 	}
 
-	public ComponentType createComponentTypeFrom(Class<? extends IDIYComponent<?>> clazz) {
+	public ComponentType extractComponentTypeFrom(Class<? extends IDIYComponent<?>> clazz) {
+		if (componentTypeMap.containsKey(clazz.getName())) {
+			return componentTypeMap.get(clazz.getName());
+		}
 		String name;
 		String description;
 		CreationMethod creationMethod;
@@ -101,6 +106,7 @@ public class ComponentProcessor {
 		}
 		ComponentType componentType = new ComponentType(name, description, creationMethod,
 				category, namePrefix, author, icon, clazz, zOrder, stretchable);
+		componentTypeMap.put(clazz.getName(), componentType);
 		return componentType;
 	}
 

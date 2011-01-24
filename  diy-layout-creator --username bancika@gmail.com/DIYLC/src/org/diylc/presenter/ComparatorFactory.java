@@ -1,7 +1,6 @@
 package org.diylc.presenter;
 
 import java.util.Comparator;
-import java.util.List;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.PropertyWrapper;
@@ -14,6 +13,7 @@ public class ComparatorFactory {
 	private Comparator<IDIYComponent<?>> componentNameComparator;
 	private Comparator<ComponentType> componentTypeComparator;
 	private Comparator<PropertyWrapper> propertyNameComparator;
+	private Comparator<IDIYComponent<?>> componentZOrderComparator;
 
 	public static ComparatorFactory getInstance() {
 		if (instance == null) {
@@ -53,20 +53,6 @@ public class ComparatorFactory {
 		return componentTypeComparator;
 	}
 
-	public Comparator<IDIYComponent<?>> getComponentZOrderComparator(
-			final List<IDIYComponent<?>> components) {
-		Comparator<IDIYComponent<?>> componentZOrderComparator = new Comparator<IDIYComponent<?>>() {
-
-			@Override
-			public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-				int index1 = components.indexOf(o1);
-				int index2 = components.indexOf(o2);
-				return new Integer(index1).compareTo(index2);
-			}
-		};
-		return componentZOrderComparator;
-	}
-
 	public Comparator<PropertyWrapper> getPropertyNameComparator() {
 		if (propertyNameComparator == null) {
 			propertyNameComparator = new Comparator<PropertyWrapper>() {
@@ -79,5 +65,24 @@ public class ComparatorFactory {
 			};
 		}
 		return propertyNameComparator;
+	}
+
+	public Comparator<IDIYComponent<?>> getComponentZOrderComparator() {
+		if (componentZOrderComparator == null) {
+			componentZOrderComparator = new Comparator<IDIYComponent<?>>() {
+
+				@Override
+				public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
+					ComponentType type1 = ComponentProcessor.getInstance()
+							.extractComponentTypeFrom(
+									(Class<? extends IDIYComponent<?>>) o1.getClass());
+					ComponentType type2 = ComponentProcessor.getInstance()
+							.extractComponentTypeFrom(
+									(Class<? extends IDIYComponent<?>>) o2.getClass());
+					return new Double(type1.getZOrder()).compareTo(type2.getZOrder());
+				}
+			};
+		}
+		return componentZOrderComparator;
 	}
 }
