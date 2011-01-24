@@ -593,12 +593,14 @@ public class Presenter implements IPlugInPort {
 					.extractComponentTypeFrom(
 							(Class<? extends IDIYComponent<?>>) component.getClass());
 
-			// Do not process a component if it's already in the map and if it's
-			// locked.
-			if (!controlPointMap.containsKey(component) && !isComponentLocked(component)) {
-				// Check if there's a control point in the current selection
-				// that matches with one of its control points.
-				for (int i = 0; i < component.getControlPointCount(); i++) {
+			// Check if there's a control point in the current selection
+			// that matches with one of its control points.
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				// Do not process a control point if it's already in the map and
+				// if it's locked.
+				if ((!controlPointMap.containsKey(component) || !controlPointMap.get(component)
+						.contains(i))
+						&& !isComponentLocked(component)) {
 					if (component.isControlPointSticky(i)) {
 						boolean componentMatches = false;
 						for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap
@@ -623,8 +625,8 @@ public class Presenter implements IPlugInPort {
 							LOG.debug("Including component: " + component);
 							Set<Integer> indices = new HashSet<Integer>();
 							// For stretchable components just add the
-							// matching component.
-							// Otherwise, add all control points.
+							// matching component. Otherwise, add all control
+							// points.
 							if (componentType.isStretchable()) {
 								indices.add(i);
 							} else {
@@ -632,7 +634,11 @@ public class Presenter implements IPlugInPort {
 									indices.add(k);
 								}
 							}
-							controlPointMap.put(component, indices);
+							if (controlPointMap.containsKey(component)) {
+								controlPointMap.get(component).addAll(indices);
+							} else {
+								controlPointMap.put(component, indices);
+							}
 						}
 					}
 				}
