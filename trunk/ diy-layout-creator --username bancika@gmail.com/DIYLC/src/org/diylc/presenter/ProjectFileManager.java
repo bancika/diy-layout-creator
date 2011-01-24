@@ -206,15 +206,16 @@ public class ProjectFileManager {
 				IDIYComponent<?> component = null;
 				if (nodeName.equalsIgnoreCase("text")) {
 					LOG.debug("Recognized " + nodeName);
-					Label pad = new Label();
-					pad.setName(nameAttr);
+					Label label = new Label();
+					label.setName(nameAttr);
 					if (color != null) {
-						pad.setColor(color);
+						label.setColor(color);
 					}
-					pad.setText(valueAttr);
-					pad.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr,
+					label.setText(valueAttr);
+					label.setCenter(false);
+					label.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr,
 							y1Attr), 0);
-					component = pad;
+					component = label;
 				} else if (nodeName.equalsIgnoreCase("pad")) {
 					LOG.debug("Recognized " + nodeName);
 					SolderPad pad = new SolderPad();
