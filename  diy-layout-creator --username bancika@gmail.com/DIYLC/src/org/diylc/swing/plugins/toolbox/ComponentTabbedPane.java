@@ -3,13 +3,6 @@ package org.diylc.swing.plugins.toolbox;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,45 +42,48 @@ class ComponentTabbedPane extends JTabbedPane {
 			JPanel panel = createTab((componentTypes.get(category)));
 			addTab(category, panel);
 		}
-		setPreferredSize(new Dimension(-1, Presenter.ICON_SIZE + ComponentButton.MARGIN * 2 + 38));
 	}
 
 	private JPanel createTab(List<ComponentType> componentTypes) {
 		JPanel panel = new JPanel(new BorderLayout());
-		final JScrollPane scrollPane = createComponentScrollBar(componentTypes);
+		// final JScrollPane scrollPane =
+		// createComponentScrollBar(componentTypes);
 		panel.setOpaque(false);
-		JButton leftButton = new JButton("<");
-		leftButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Rectangle rect = scrollPane.getVisibleRect();
-				if (rect.x > SCROLL_STEP) {
-					rect.translate(-SCROLL_STEP, 0);
-				} else {
-					rect.translate(-rect.x, 0);
-				}
-			}
-		});
-		leftButton.setMargin(new Insets(0, 2, 0, 2));
-		JButton rightButton = new JButton(">");
-		rightButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Rectangle rect = scrollPane.getVisibleRect();
-				if (rect.x + rect.width < scrollPane.getViewport().getSize().width - SCROLL_STEP) {
-					rect.translate(SCROLL_STEP, 0);
-				} else {
-					rect.translate(scrollPane.getViewport().getSize().width - rect.x - rect.width,
-							0);
-				}
-			}
-		});
-		rightButton.setMargin(new Insets(0, 2, 0, 2));
-		panel.add(leftButton, BorderLayout.WEST);
-		panel.add(scrollPane);
-		panel.add(rightButton, BorderLayout.EAST);
+		panel.add(createComponentPanel(componentTypes), BorderLayout.CENTER);
+		// JButton leftButton = new JButton("<");
+		// leftButton.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// Rectangle rect = scrollPane.getVisibleRect();
+		// if (rect.x > SCROLL_STEP) {
+		// rect.translate(-SCROLL_STEP, 0);
+		// } else {
+		// rect.translate(-rect.x, 0);
+		// }
+		// }
+		// });
+		// leftButton.setMargin(new Insets(0, 2, 0, 2));
+		// JButton rightButton = new JButton(">");
+		// rightButton.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// Rectangle rect = scrollPane.getVisibleRect();
+		// if (rect.x + rect.width < scrollPane.getViewport().getSize().width -
+		// SCROLL_STEP) {
+		// rect.translate(SCROLL_STEP, 0);
+		// } else {
+		// rect.translate(scrollPane.getViewport().getSize().width - rect.x -
+		// rect.width,
+		// 0);
+		// }
+		// }
+		// });
+		// rightButton.setMargin(new Insets(0, 2, 0, 2));
+		// panel.add(leftButton, BorderLayout.WEST);
+		// panel.add(scrollPane);
+		// panel.add(rightButton, BorderLayout.EAST);
 		return panel;
 	}
 

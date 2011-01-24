@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +29,7 @@ import com.diyfever.gui.update.VersionNumber;
  * @see EventType
  */
 public interface IPlugInPort {
-	
+
 	public static final String CHECK_BOX_MENU_ITEM = "org.diylc.checkBoxMenuItem";
 
 	/**
@@ -302,6 +303,12 @@ public interface IPlugInPort {
 	 * Ungroups all selected components.
 	 */
 	void ungroupSelectedComponents();
-	
+
 	void setLayerLocked(int layerZOrder, boolean locked);
+
+	/**
+	 * @return selection size expressed in either inches or centimeters, based
+	 *         on the user preference.
+	 */
+	Point2D calculateSelectionDimension();
 }

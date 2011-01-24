@@ -48,10 +48,6 @@ public enum EventType {
 	 * object containing selection size (x = width, y = height). Size is
 	 * expressed in the default measure (cm for metric, inches for imperial).
 	 */
-	SELECTION_SIZE_CHANGED,
-	/**
-	 * Called when display needs to be repainted. No parameters are passed.
-	 */
 	REPAINT,
 	/**
 	 * Called when new component slot has been changed. The only parameter is
