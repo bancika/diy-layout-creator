@@ -25,6 +25,7 @@ import org.diylc.components.boards.VeroBoard;
 import org.diylc.components.connectivity.CopperTrace;
 import org.diylc.components.connectivity.Jumper;
 import org.diylc.components.connectivity.SolderPad;
+import org.diylc.components.passive.ElectrolyticRadial;
 import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.components.semiconductors.DIL_IC;
@@ -254,6 +255,28 @@ public class ProjectFileManager {
 					}
 					capacitor.setWidth(new Size(6d, SizeUnit.mm));
 					capacitor.setHeight(new Size(2d, SizeUnit.mm));
+					capacitor.setControlPoint(point1, 0);
+					capacitor.setControlPoint(point2, 1);
+					component = capacitor;
+				} else if (nodeName.equalsIgnoreCase("electrolyte")) {
+					LOG.debug("Recognized " + nodeName);
+					ElectrolyticRadial capacitor = new ElectrolyticRadial();
+					capacitor.setName(nameAttr);
+					try {
+						capacitor.setValue(Capacitance.parseCapacitance(valueAttr));
+					} catch (Exception e) {
+						LOG.debug("Could not set value of " + nameAttr);
+					}
+					String sizeAttr = node.getAttributes().getNamedItem("Size").getNodeValue();
+					if (sizeAttr.equalsIgnoreCase("small")) {
+						capacitor.setWidth(new Size(2.5d, SizeUnit.mm));
+					} else if (sizeAttr.equalsIgnoreCase("medium")) {
+						capacitor.setWidth(new Size(4d, SizeUnit.mm));
+					} else if (sizeAttr.equalsIgnoreCase("large")) {
+						capacitor.setWidth(new Size(7d, SizeUnit.mm));
+					} else {
+						capacitor.setWidth(new Size(4d, SizeUnit.mm));
+					}
 					capacitor.setControlPoint(point1, 0);
 					capacitor.setControlPoint(point2, 1);
 					component = capacitor;
