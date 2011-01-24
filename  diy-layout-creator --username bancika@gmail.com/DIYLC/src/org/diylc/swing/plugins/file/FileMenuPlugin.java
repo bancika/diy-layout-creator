@@ -36,8 +36,20 @@ public class FileMenuPlugin implements IPlugIn {
 	private IPlugInPort plugInPort;
 	private ProjectDrawingProvider drawingProvider;
 	private TraceMaskDrawingProvider traceMaskDrawingProvider;
+	
+	private ISwingUI swingUI;
 
 	public FileMenuPlugin(ISwingUI swingUI) {
+		super();
+		this.swingUI = swingUI;
+	}
+
+	@Override
+	public void connect(IPlugInPort plugInPort) {
+		this.plugInPort = plugInPort;
+		this.drawingProvider = new ProjectDrawingProvider(plugInPort, false);
+		this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
+		
 		swingUI.injectMenuAction(new NewAction(), FILE_TITLE);
 		swingUI.injectMenuAction(new OpenAction(), FILE_TITLE);
 		swingUI.injectMenuAction(new SaveAction(), FILE_TITLE);
@@ -53,13 +65,6 @@ public class FileMenuPlugin implements IPlugIn {
 		swingUI.injectMenuAction(new CreateBomAction(), FILE_TITLE);
 		swingUI.injectMenuAction(null, FILE_TITLE);
 		swingUI.injectMenuAction(new ExitAction(), FILE_TITLE);
-	}
-
-	@Override
-	public void connect(IPlugInPort plugInPort) {
-		this.plugInPort = plugInPort;
-		this.drawingProvider = new ProjectDrawingProvider(plugInPort, false);
-		this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
 	}
 
 	class NewAction extends AbstractAction {
