@@ -105,7 +105,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 
 	@Override
 	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-		return index == 0 || index == 3 ? VisibilityPolicy.ALWAYS : VisibilityPolicy.WHEN_SELECTED;
+		return VisibilityPolicy.WHEN_SELECTED;
 	}
 
 	@Override
