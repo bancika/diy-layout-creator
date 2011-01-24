@@ -28,6 +28,8 @@ public class CanvasPlugin implements IPlugIn {
 
 	private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
 
+	private static final String WHEEL_ZOOM = "wheelZoom";
+
 	private RulerScrollPane scrollPane;
 	private CanvasPanel canvasPanel;
 	private IPlugInPort plugInPort;
@@ -62,8 +64,9 @@ public class CanvasPlugin implements IPlugIn {
 					SizeUnit.in).convertToPixels());
 			boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY,
 					true);
+			boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(WHEEL_ZOOM, false);
 			scrollPane.setMetric(metric);
-			scrollPane.setWheelScrollingEnabled(false);
+			scrollPane.setWheelScrollingEnabled(!wheelZoom);
 			scrollPane.addUnitListener(new IRulerListener() {
 
 				@Override
@@ -71,27 +74,30 @@ public class CanvasPlugin implements IPlugIn {
 					plugInPort.setMetric(isMetric);
 				}
 			});
-			scrollPane.addMouseWheelListener(new MouseWheelListener() {
+			if (wheelZoom) {
+				scrollPane.addMouseWheelListener(new MouseWheelListener() {
 
-				@Override
-				public void mouseWheelMoved(MouseWheelEvent e) {
-					double d = plugInPort.getZoomLevel();
-					Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
-					if (e.getWheelRotation() > 0) {
-						int i = availableZoomLevels.length - 1;
-						while (i > 0 && availableZoomLevels[i] >= d) {
-							i--;
+					@Override
+					public void mouseWheelMoved(MouseWheelEvent e) {
+						double d = plugInPort.getZoomLevel();
+						Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
+						if (e.getWheelRotation() > 0) {
+							int i = availableZoomLevels.length - 1;
+							while (i > 0 && availableZoomLevels[i] >= d) {
+								i--;
+							}
+							plugInPort.setZoomLevel(availableZoomLevels[i]);
+						} else {
+							int i = 0;
+							while (i < availableZoomLevels.length - 1
+									&& availableZoomLevels[i] <= d) {
+								i++;
+							}
+							plugInPort.setZoomLevel(availableZoomLevels[i]);
 						}
-						plugInPort.setZoomLevel(availableZoomLevels[i]);
-					} else {
-						int i = 0;
-						while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= d) {
-							i++;
-						}
-						plugInPort.setZoomLevel(availableZoomLevels[i]);
 					}
-				}
-			});
+				});
+			}
 		}
 		return scrollPane;
 	}
