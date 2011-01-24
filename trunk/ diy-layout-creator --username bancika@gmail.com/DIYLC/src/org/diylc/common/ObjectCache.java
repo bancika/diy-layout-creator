@@ -32,7 +32,7 @@ public class ObjectCache {
 		if (basicStrokeMap.containsKey(width)) {
 			return basicStrokeMap.get(width);
 		}
-		Stroke stroke = new BasicStroke(width);
+		Stroke stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		basicStrokeMap.put(width, stroke);
 		return stroke;
 	}
