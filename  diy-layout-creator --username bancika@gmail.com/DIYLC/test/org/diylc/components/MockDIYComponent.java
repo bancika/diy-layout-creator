@@ -45,6 +45,11 @@ public class MockDIYComponent implements IDIYComponent<Capacitance> {
 	public MockDIYComponent() {
 		super();
 	}
+	
+	@Override
+	public boolean canControlPointOverlap(int index) {
+		return false;
+	}
 
 	@EditableProperty
 	public String getName() {

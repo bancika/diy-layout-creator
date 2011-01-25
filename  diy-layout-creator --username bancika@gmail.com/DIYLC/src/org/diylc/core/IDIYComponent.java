@@ -80,9 +80,22 @@ public interface IDIYComponent<T> extends Serializable {
 	 * @param index
 	 */
 	void setControlPoint(Point point, int index);
-	
+
+	/**
+	 * @param index
+	 * @return true, if the specified control point may stick to control points
+	 *         of other components.
+	 */
 	boolean isControlPointSticky(int index);
-	
+
+	/**
+	 * @param index
+	 * @return true, if the specified control point may overlap with other
+	 *         control points <b>of the same component</b>. The other control
+	 *         point must be able to overlap too.
+	 */
+	boolean canControlPointOverlap(int index);
+
 	VisibilityPolicy getControlPointVisibilityPolicy(int index);
 
 	/**

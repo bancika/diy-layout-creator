@@ -107,6 +107,12 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
 		return VisibilityPolicy.WHEN_SELECTED;
 	}
+	
+	@Override
+	public boolean canControlPointOverlap(int index) {
+		// Only shape control points may overlap.
+		return index == 1 || index == 2;
+	}
 
 	@Override
 	public Point getControlPoint(int index) {
