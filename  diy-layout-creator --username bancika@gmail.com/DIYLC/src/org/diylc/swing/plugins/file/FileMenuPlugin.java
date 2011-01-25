@@ -9,11 +9,13 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.images.IconLoader;
+import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -29,6 +31,8 @@ import com.lowagie.text.DocumentException;
  * @author Branislav Stojkovic
  */
 public class FileMenuPlugin implements IPlugIn {
+	
+	private static final Logger LOG = Logger.getLogger(FileMenuPlugin.class);
 
 	private static final String FILE_TITLE = "File";
 	private static final String TRACE_MASK_TITLE = "Trace Mask";
@@ -79,10 +83,11 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("NewAction triggered");
 			if (!plugInPort.allowFileAction()) {
 				return;
 			}
-			plugInPort.createNewProject();
+						plugInPort.createNewProject();
 			List<PropertyWrapper> properties = plugInPort.getProjectProperties();
 			PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
 					properties, "Edit Project");
@@ -112,12 +117,14 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("OpenAction triggered");
 			if (!plugInPort.allowFileAction()) {
 				return;
 			}
 			File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(),
 					null, FileFilterEnum.DIY.getExtensions()[0], null);
 			if (file != null) {
+				LOG.debug("Opening from " + file.getAbsolutePath());
 				plugInPort.loadProjectFromFile(file.getAbsolutePath());
 			}
 		}
@@ -135,14 +142,17 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("SaveAction triggered");
 			if (plugInPort.getCurrentFileName() == null) {
 				File file = DialogFactory.getInstance().showSaveDialog(
 						FileFilterEnum.DIY.getFilter(), null,
 						FileFilterEnum.DIY.getExtensions()[0], null);
 				if (file != null) {
+					LOG.debug("Saving to " + file.getAbsolutePath());
 					plugInPort.saveProjectToFile(file.getAbsolutePath());
 				}
 			} else {
+				LOG.debug("Exporting to " + plugInPort.getCurrentFileName());
 				plugInPort.saveProjectToFile(plugInPort.getCurrentFileName());
 			}
 		}
@@ -160,9 +170,11 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("SaveAsAction triggered");
 			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.DIY.getFilter(),
 					null, FileFilterEnum.DIY.getExtensions()[0], null);
 			if (file != null) {
+				LOG.debug("Save to " + file.getAbsolutePath());
 				plugInPort.saveProjectToFile(file.getAbsolutePath());
 			}
 		}
@@ -180,6 +192,7 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("CreateBomAction triggered");
 			List<BomEntry> bom = BomMaker.getInstance().createBom(
 					plugInPort.getCurrentProject().getComponents());
 			BomDialog dialog = DialogFactory.getInstance().createBomDialog(bom);
@@ -202,10 +215,12 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("ExportPDFAction triggered");
 			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PDF.getFilter(),
 					null, FileFilterEnum.PDF.getExtensions()[0], null);
 			if (file != null) {
 				try {
+					LOG.debug("Exporting to " + file.getAbsolutePath());
 					DrawingExporter.getInstance().exportPDF(this.drawingProvider, file);
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -233,9 +248,11 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("ExportPNGAction triggered");
 			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PNG.getFilter(),
 					null, FileFilterEnum.PNG.getExtensions()[0], null);
 			if (file != null) {
+				LOG.debug("Exporting to " + file.getAbsolutePath());
 				DrawingExporter.getInstance().exportPNG(this.drawingProvider, file);
 			}
 		}
@@ -256,6 +273,7 @@ public class FileMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("ExportPNGAction triggered");
 			try {
 				DrawingExporter.getInstance().print(this.drawingProvider);
 			} catch (PrinterException e1) {
