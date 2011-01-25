@@ -80,14 +80,22 @@ public class InstantiationManager {
 		componentSlot.setControlPoint(firstControlPoint, 1);
 	}
 
-	public void updatePointByPoint(Point scaledPoint) {
+	/**
+	 * Updates component in the slot with the new second control point.
+	 * 
+	 * @param scaledPoint
+	 * @return true, if any change is made
+	 */
+	public boolean updatePointByPoint(Point scaledPoint) {
+		boolean changeMade = !scaledPoint.equals(potentialControlPoint);
 		potentialControlPoint = scaledPoint;
 		if (componentSlot != null) {
 			componentSlot.setControlPoint(scaledPoint, 1);
 		}
+		return changeMade;
 	}
-	
-	public void updateSingleClick(Point scaledPoint, boolean snapToGrid, Size gridSpacing) {
+
+	public boolean updateSingleClick(Point scaledPoint, boolean snapToGrid, Size gridSpacing) {
 		if (potentialControlPoint == null) {
 			potentialControlPoint = new Point(0, 0);
 		}
@@ -99,7 +107,7 @@ public class InstantiationManager {
 		}
 		// Only repaint if there's an actual change.
 		if (dx == 0 && dy == 0) {
-			return;
+			return false;
 		}
 		potentialControlPoint.translate(dx, dy);
 		if (componentSlot == null) {
@@ -112,6 +120,7 @@ public class InstantiationManager {
 				componentSlot.setControlPoint(p, i);
 			}
 		}
+		return true;
 	}
 
 	public IDIYComponent<?> instantiateComponent(ComponentType componentType, Point point,

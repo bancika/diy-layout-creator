@@ -439,16 +439,19 @@ public class Presenter implements IPlugInPort {
 			if (snapToGrid) {
 				CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
 			}
+			boolean refresh = false;
 			switch (instantiationManager.getComponentTypeSlot().getCreationMethod()) {
 			case POINT_BY_POINT:
-				instantiationManager.updatePointByPoint(scaledPoint);
+				refresh = instantiationManager.updatePointByPoint(scaledPoint);
 				break;
 			case SINGLE_CLICK:
-				instantiationManager.updateSingleClick(scaledPoint, snapToGrid, currentProject
+				refresh = instantiationManager.updateSingleClick(scaledPoint, snapToGrid, currentProject
 						.getGridSpacing());
 				break;
 			}
-			messageDispatcher.dispatchMessage(EventType.REPAINT);
+			if (refresh) {
+				messageDispatcher.dispatchMessage(EventType.REPAINT);
+			}
 		} else {
 			// Go backwards so we take the highest z-order components first.
 			for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
