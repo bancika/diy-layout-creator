@@ -480,11 +480,6 @@ public class Presenter implements IPlugInPort {
 						}
 					}
 				}
-				// // If CTRL is pressed, we only care about the top most
-				// component.
-				// if (altDown && components.size() > 0) {
-				// break;
-				// }
 			}
 		}
 
@@ -660,7 +655,6 @@ public class Presenter implements IPlugInPort {
 			return false;
 		}
 		Point scaledPoint = scalePoint(point);
-		boolean repaint = false;
 		if (!controlPointMap.isEmpty()) {
 			// We're dragging control point(s).
 			int dx = (scaledPoint.x - previousDragPoint.x);
@@ -670,24 +664,46 @@ public class Presenter implements IPlugInPort {
 			int actualDx = 0;
 			int actualDy = 0;
 
-			// Do a simulation of the move to see if any of them will
-			// collide.
+			// For each component, do a simulation of the move to see if any of
+			// them will
+			// overlap.
+			boolean isFirst = true;
 			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
-				IDIYComponent<?> c = entry.getKey();
-				Point[] controlPoints = new Point[c.getControlPointCount()];
-				for (int i = 0; i < controlPoints.length; i++) {
-					controlPoints[i] = new Point(c.getControlPoint(i));
-					if (entry.getValue().contains(i)) {
-						controlPoints[i].translate(dx, dy);
-						if (snapToGrid) {
-							CalcUtils.snapPointToGrid(controlPoints[i], currentProject
-									.getGridSpacing());
+				IDIYComponent<?> component = entry.getKey();
+				Point[] controlPoints = new Point[component.getControlPointCount()];
+				for (int index = 0; index < component.getControlPointCount(); index++) {
+					controlPoints[index] = new Point(component.getControlPoint(index));
+					// When the first point is moved, calculate how much it
+					// actually moved after snapping.
+					if (entry.getValue().contains(index)) {
+						if (isFirst) {
+							isFirst = false;
+							controlPoints[index].translate(dx, dy);
+							if (snapToGrid) {
+								CalcUtils.snapPointToGrid(controlPoints[index], currentProject
+										.getGridSpacing());
+							}
+							actualDx = controlPoints[index].x - component.getControlPoint(index).x;
+							actualDy = controlPoints[index].y - component.getControlPoint(index).y;
+							if (actualDx == 0 && actualDy == 0) {
+								// Nothing to move.
+								return true;
+							}
+						} else {
+							controlPoints[index].translate(actualDx, actualDy);
 						}
 					}
+					// For control points that may overlap, just write null,
+					// we'll ignore them later.
+					if (component.canControlPointOverlap(index)) {
+						controlPoints[index] = null;
+					}
 				}
+				System.out.println(Arrays.deepToString(controlPoints));
 				for (int i = 0; i < controlPoints.length - 1; i++) {
 					for (int j = i + 1; j < controlPoints.length; j++) {
-						if (controlPoints[i].equals(controlPoints[j])) {
+						if (controlPoints[i] != null && controlPoints[j] != null
+								&& controlPoints[i].equals(controlPoints[j])) {
 							LOG.error("Control points collision detected, cannot make this move.");
 							return true;
 						}
@@ -696,32 +712,16 @@ public class Presenter implements IPlugInPort {
 			}
 
 			// Update all points.
-			boolean isFirst = true;
 			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
 				IDIYComponent<?> c = entry.getKey();
 				drawingManager.invalidateComponent(c);
 				for (Integer index : entry.getValue()) {
 					Point p = new Point(c.getControlPoint(index));
-					// When the first point is moved, calculate how much it
-					// actually moved after snapping.
-					if (isFirst) {
-						isFirst = false;
-						p.translate(dx, dy);
-						if (snapToGrid) {
-							CalcUtils.snapPointToGrid(p, currentProject.getGridSpacing());
-						}
-						actualDx = p.x - c.getControlPoint(index).x;
-						actualDy = p.y - c.getControlPoint(index).y;
-					} else {
-						p.translate(actualDx, actualDy);
-					}
+					p.translate(actualDx, actualDy);
 					c.setControlPoint(p, index);
 				}
 			}
-			if (actualDx != 0 || actualDy != 0) {
-				previousDragPoint.translate(actualDx, actualDy);
-				repaint = true;
-			}
+			previousDragPoint.translate(actualDx, actualDy);
 		} else if (selectedComponents.isEmpty()
 				&& instantiationManager.getComponentTypeSlot() == null) {
 			// If there's no selection, the only thing to do is update the
@@ -729,13 +729,13 @@ public class Presenter implements IPlugInPort {
 			Rectangle oldSelectionRect = selectionRect == null ? null
 					: new Rectangle(selectionRect);
 			this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
-			repaint = !selectionRect.equals(oldSelectionRect);
+			if (selectionRect.equals(oldSelectionRect)) {
+				return true;
+			}
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
 			// selectionRect);
 		}
-		if (repaint) {
-			messageDispatcher.dispatchMessage(EventType.REPAINT);
-		}
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		return true;
 	}
 

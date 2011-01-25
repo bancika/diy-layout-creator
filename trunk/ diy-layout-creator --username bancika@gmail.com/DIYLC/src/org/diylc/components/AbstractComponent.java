@@ -35,6 +35,11 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override
+	public boolean canControlPointOverlap(int index) {
+		return false;
+	}
 
 	@Override
 	public String toString() {
