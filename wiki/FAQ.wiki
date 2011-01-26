@@ -4,6 +4,6 @@
   * *App runs but no components are shown in the toolbox. What should I do?*<br><br>Go to the main app directory where *diylc.jar* is located and make sure that *library* directory exists and that it contains *main.jar* at the minimum. If that's OK, make sure that the application is running with the current directory set to the main app directory (*diylc3* typically). If the problem persists, create an [http://code.google.com/p/diy-layout-creator/issues/entry issue] with the most recent log file from *log* directory attached.
 
 
-  * *What do those check boxes on the right side of component editor do?*<br><br>They are used to set default values for the selected component(s). When checked, value on the left will be used as a default for all components of that type.
+  * *What do those check boxes on the right side of the component editor do?*<br><br>They are used to set default values for the selected component(s). When checked, value on the left will be used as a default for all components of that type.
 
   * *I'm getting `java.lang.UnsupportedClassVersionError: Bad version number in .class file` error, what does it mean?*<br><br>It means that you're running the app with an older version of Java. Version should be 1.6.0_10 or newer. If you have multiple versions installed, make sure that a suitable one is set as default. To check the version of default Java VM, type `java -version` in the console.
