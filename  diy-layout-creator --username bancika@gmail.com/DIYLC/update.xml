@@ -1,56 +1,72 @@
 <java.util.Arrays_-ArrayList>
-  <a class="com.diyfever.gui.update.Version-array">
-    <com.diyfever.gui.update.Version>
-      <versionNumber>
-        <major>3</major>
-        <minor>0</minor>
-        <build>4</build>
-      </versionNumber>
-      <releaseDate>2011-01-26 19:48:13.687 CET</releaseDate>
-      <name></name>
-      <changes>
-        <com.diyfever.gui.update.Change>
-          <changeType>BUG_FIX</changeType>
-          <description>Copy/paste between two instances of the application</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>BUG_FIX</changeType>
-          <description>Parsing numerical values in countries that use comma as decimal separator</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>BUG_FIX</changeType>
-          <description>Dragging sticky points affects selectability of objects</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>BUG_FIX</changeType>
-          <description>Click is sometimes not registered while adding a new component</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>BUG_FIX</changeType>
-          <description>Fixed NPE when using default values</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>IMPROVEMENT</changeType>
-          <description>Allow shape control points of curves to overlap</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>IMPROVEMENT</changeType>
-          <description>Added DIL IC first pin indentation</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>IMPROVEMENT</changeType>
-          <description>Added transparency to the potentiometer</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>IMPROVEMENT</changeType>
-          <description>Reduced number of layers</description>
-        </com.diyfever.gui.update.Change>
-		<com.diyfever.gui.update.Change>
-          <changeType>NEW_FEATURE</changeType>
-          <description>Added Label component</description>
-        </com.diyfever.gui.update.Change>
-	  </changes>
-      <url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-    </com.diyfever.gui.update.Version>
-  </a>
+	<a class="com.diyfever.gui.update.Version-array">
+		<com.diyfever.gui.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>0</minor>
+				<build>4</build>
+			</versionNumber>
+			<releaseDate>2011-01-26 19:48:13.687 CET</releaseDate>
+			<name></name>
+			<changes>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Copy/paste between two instances of the
+						application</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Parsing numerical values in countries that use
+						comma as decimal separator</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Dragging sticky points affects selectability
+						of objects</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Click is sometimes not registered while adding a
+						new component</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed NPE when using default values</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow shape control points of curves to overlap
+					</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added DIL IC first pin indentation</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added transparency to the potentiometer
+					</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Reduced number of layers</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Import from v1 files can now read label and
+						electrolytic capacitor components and trace/pad colors</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added label component</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added image component</description>
+				</com.diyfever.gui.update.Change>
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list
+			</url>
+		</com.diyfever.gui.update.Version>
+	</a>
 </java.util.Arrays_-ArrayList>

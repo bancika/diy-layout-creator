@@ -4,11 +4,12 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-enum FileFilterEnum {
+public enum FileFilterEnum {
 
 	PNG("PNG Images (*.png)", "png"), PDF("PDF Files (*.pdf)", "pdf"), DIY(
 			"DIY Project Files (*.diy)", "diy"), EXCEL("Excel Workbooks (*.xls)", "xls"), CSV(
-			"Comma Separated Files (*.csv)", "csv"), HTML("HTML Files (*.html)", "html");
+			"Comma Separated Files (*.csv)", "csv"), HTML("HTML Files (*.html)", "html"), IMAGES(
+			"Image Files (*.png, *.jpg, *.gif)", "png", "jpg", "gif");
 
 	FileFilter filter;
 	String[] extensions;
