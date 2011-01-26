@@ -170,11 +170,11 @@ public interface IPlugInPort {
 	void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
 	/**
-	 * Returns the current {@link ComponentSelection}.
+	 * Returns the current {@link ComponentTransferable}.
 	 * 
 	 * @return
 	 */
-	ComponentSelection getSelectedComponents();
+	List<IDIYComponent<?>> getSelectedComponents();
 
 	/**
 	 * Selects all components in the project.

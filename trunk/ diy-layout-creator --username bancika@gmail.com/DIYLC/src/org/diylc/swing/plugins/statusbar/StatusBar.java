@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.BadPositionException;
-import org.diylc.common.ComponentSelection;
 import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -217,7 +216,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 			}
 			break;
 		case SELECTION_CHANGED:
-			ComponentSelection selection = (ComponentSelection) params[0];
+			List<IDIYComponent<?>> selection = (List<IDIYComponent<?>>) params[0];
 			Collection<IDIYComponent<?>> stuckComponents = (Collection<IDIYComponent<?>>) params[1];
 			Collection<String> componentNames = new HashSet<String>();
 			for (IDIYComponent<?> component : selection) {

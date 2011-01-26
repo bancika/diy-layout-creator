@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.diylc.common.ComponentSelection;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
@@ -54,6 +53,8 @@ public class Presenter implements IPlugInPort {
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 	public static final String METRIC_KEY = "metric";
 
+	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
+
 	public static final int ICON_SIZE = 32;
 
 	private Project currentProject;
@@ -61,7 +62,7 @@ public class Presenter implements IPlugInPort {
 	// Maps component class names to ComponentType objects.
 	private List<IPlugIn> plugIns;
 
-	private ComponentSelection selectedComponents;
+	private List<IDIYComponent<?>> selectedComponents;
 	// Maps components that have at least one dragged point to set of indices
 	// that designate which of their control points are being dragged.
 	private Map<IDIYComponent<?>, Set<Integer>> controlPointMap;
@@ -96,7 +97,7 @@ public class Presenter implements IPlugInPort {
 		this.view = view;
 		plugIns = new ArrayList<IPlugIn>();
 		messageDispatcher = new MessageDispatcher<EventType>(true);
-		selectedComponents = new ComponentSelection();
+		selectedComponents = new ArrayList<IDIYComponent<?>>();
 		lockedComponents = new HashSet<IDIYComponent<?>>();
 		currentProject = new Project();
 		cloner = new Cloner();
@@ -178,7 +179,7 @@ public class Presenter implements IPlugInPort {
 	public void loadProject(Project project, boolean freshStart) {
 		LOG.info(String.format("loadProject(%s, %s)", project.getTitle(), freshStart));
 		this.currentProject = project;
-		updateSelection(ComponentSelection.EMPTY_SELECTION);
+		updateSelection(EMPTY_SELECTION);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject
@@ -355,7 +356,9 @@ public class Presenter implements IPlugInPort {
 					// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
 					// calculateSelectionDimension());
 					messageDispatcher.dispatchMessage(EventType.REPAINT);
-					updateSelection(ComponentSelection.of(component));
+					List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
+					newSelection.add(component);
+					updateSelection(newSelection);
 				} catch (Exception e) {
 					LOG.error("Error instatiating component of type: "
 							+ componentTypeSlot.getInstanceClass().getName(), e);
@@ -385,8 +388,11 @@ public class Presenter implements IPlugInPort {
 					componentSlot.setControlPoint(scaledPoint, 1);
 					addComponent(componentSlot, componentTypeSlot);
 					// Select the new component if it's not locked.
-					updateSelection(isComponentLocked(componentSlot) ? ComponentSelection.EMPTY_SELECTION
-							: ComponentSelection.of(componentSlot));
+					List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
+					if (!isComponentLocked(componentSlot)) {
+						newSelection.add(componentSlot);
+					}
+					updateSelection(newSelection);
 					messageDispatcher.dispatchMessage(EventType.REPAINT);
 					setNewComponentTypeSlot(null);
 				}
@@ -401,7 +407,8 @@ public class Presenter implements IPlugInPort {
 				projectFileManager.notifyFileChange();
 			}
 		} else {
-			ComponentSelection newSelection = new ComponentSelection(selectedComponents);
+			List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(
+					selectedComponents);
 			List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
 			// If there's nothing under mouse cursor deselect all.
 			if (components.isEmpty()) {
@@ -445,8 +452,8 @@ public class Presenter implements IPlugInPort {
 				refresh = instantiationManager.updatePointByPoint(scaledPoint);
 				break;
 			case SINGLE_CLICK:
-				refresh = instantiationManager.updateSingleClick(scaledPoint, snapToGrid, currentProject
-						.getGridSpacing());
+				refresh = instantiationManager.updateSingleClick(scaledPoint, snapToGrid,
+						currentProject.getGridSpacing());
 				break;
 			}
 			if (refresh) {
@@ -496,14 +503,14 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public ComponentSelection getSelectedComponents() {
-		return new ComponentSelection(selectedComponents);
+	public List<IDIYComponent<?>> getSelectedComponents() {
+		return selectedComponents;
 	}
 
 	@Override
 	public void selectAll() {
 		LOG.info("selectAll()");
-		updateSelection(new ComponentSelection(currentProject.getComponents()));
+		updateSelection(new ArrayList<IDIYComponent<?>>(currentProject.getComponents()));
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 		// selectedComponents);
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
@@ -531,7 +538,7 @@ public class Presenter implements IPlugInPort {
 		List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
 		if (!controlPointMap.isEmpty()) {
 			// If we're dragging control points reset selection.
-			updateSelection(new ComponentSelection(controlPointMap.keySet()));
+			updateSelection(new ArrayList<IDIYComponent<?>>(controlPointMap.keySet()));
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 			// selectedComponents);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
@@ -539,7 +546,7 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else if (components.isEmpty()) {
 			// If there are no components are under the cursor, reset selection.
-			updateSelection(ComponentSelection.EMPTY_SELECTION);
+			updateSelection(EMPTY_SELECTION);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 			// selectedComponents);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
@@ -551,7 +558,7 @@ public class Presenter implements IPlugInPort {
 			// If the component under the cursor is not already selected, make
 			// it into the only selected component.
 			if (!selectedComponents.contains(component)) {
-				updateSelection(new ComponentSelection(findAllGroupedComponents(component)));
+				updateSelection(new ArrayList<IDIYComponent<?>>(findAllGroupedComponents(component)));
 				// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 				// selectedComponents);
 				// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
@@ -755,7 +762,7 @@ public class Presenter implements IPlugInPort {
 			if (scaledPoint != null) {
 				this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
 			}
-			ComponentSelection newSelection = new ComponentSelection();
+			List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
 			for (IDIYComponent<?> component : currentProject.getComponents()) {
 				if (!isComponentLocked(component)) {
 					Area area = drawingManager.getComponentArea(component);
@@ -802,7 +809,7 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
 		projectFileManager.notifyFileChange();
-		updateSelection(new ComponentSelection(components));
+		updateSelection(new ArrayList<IDIYComponent<?>>(components));
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
@@ -824,7 +831,7 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Delete");
 		projectFileManager.notifyFileChange();
-		updateSelection(ComponentSelection.EMPTY_SELECTION);
+		updateSelection(EMPTY_SELECTION);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
@@ -890,20 +897,20 @@ public class Presenter implements IPlugInPort {
 		} else {
 			currentProject.getLockedLayers().remove(layerZOrder);
 		}
-		updateSelection(ComponentSelection.EMPTY_SELECTION);
+		updateSelection(EMPTY_SELECTION);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject
 				.getLockedLayers());
 	}
 
 	/**
-	 * Updates the selection with the specified {@link ComponentSelection}.
+	 * Updates the selection with the specified {@link ComponentTransferable}.
 	 * Also, updates control point map with all components that are stuck to the
 	 * newly selected components.
 	 * 
 	 * @param newSelection
 	 */
-	private void updateSelection(ComponentSelection newSelection) {
+	private void updateSelection(List<IDIYComponent<?>> newSelection) {
 		this.selectedComponents = newSelection;
 		Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		for (IDIYComponent<?> component : selectedComponents) {
@@ -1090,7 +1097,7 @@ public class Presenter implements IPlugInPort {
 		try {
 			instantiationManager.setComponentTypeSlot(componentType, currentProject);
 			if (componentType != null) {
-				updateSelection(ComponentSelection.EMPTY_SELECTION);
+				updateSelection(EMPTY_SELECTION);
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,

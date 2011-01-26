@@ -1,4 +1,4 @@
-package org.diylc.common;
+package org.diylc.swing.plugins.clipboard;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -10,33 +10,24 @@ import java.util.List;
 
 import org.diylc.core.IDIYComponent;
 
-
 /**
- * Represents component selection as a {@link List} of
- * {@link IDIYComponent} objects. Implements {@link Transferable}, so it is
- * suitable for clipboard usage.
+ * Represents component selection as a {@link List} of {@link IDIYComponent}
+ * objects. Implements {@link Transferable}, so it is suitable for clipboard
+ * usage.
  * 
  * @author Branislav Stojkovic
  */
-public class ComponentSelection extends ArrayList<IDIYComponent<?>> implements Transferable {
+public class ComponentTransferable extends ArrayList<IDIYComponent<?>> implements Transferable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final DataFlavor listFlavor = new DataFlavor(List.class, "Java List");
-	
-	public static final ComponentSelection EMPTY_SELECTION = new ComponentSelection();
-	
-	public static ComponentSelection of(IDIYComponent<?> component) {
-		ComponentSelection selection = new ComponentSelection();
-		selection.add(component);
-		return selection;
-	}
+	public static final DataFlavor listFlavor = new DataFlavor(ComponentTransferable.class, "application/diylc");
 
-	public ComponentSelection() {
+	public ComponentTransferable() {
 		super();
 	}
 
-	public ComponentSelection(Collection<IDIYComponent<?>> selectedComponents) {
+	public ComponentTransferable(Collection<IDIYComponent<?>> selectedComponents) {
 		super(selectedComponents);
 	}
 
