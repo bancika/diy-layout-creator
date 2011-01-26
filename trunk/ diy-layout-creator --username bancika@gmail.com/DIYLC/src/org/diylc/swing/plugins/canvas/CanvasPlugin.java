@@ -147,7 +147,7 @@ public class CanvasPlugin implements IPlugIn {
 	}
 
 	/**
-	 * Causes ruller scroll pane to refresh by sending a fake mouse moved
+	 * Causes ruler scroll pane to refresh by sending a fake mouse moved
 	 * message to the canvasPanel.
 	 */
 	public void refresh() {
