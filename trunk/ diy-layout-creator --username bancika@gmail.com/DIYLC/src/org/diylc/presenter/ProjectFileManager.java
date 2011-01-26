@@ -77,6 +77,12 @@ public class ProjectFileManager {
 		xStream.autodetectAnnotations(true);
 		this.messageDispatcher = messageDispatcher;
 	}
+	
+	public void startNewFile() {
+		currentFileName = null;
+		modified = false;
+		fireFileStatusChanged();
+	}
 
 	public void serializeProjectToFile(Project project, String fileName) throws IOException {
 		LOG.info(String.format("saveProjectToFile(%s)", fileName));
