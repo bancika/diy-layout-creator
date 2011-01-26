@@ -64,7 +64,7 @@ public class ProjectFileManager {
 		V1_COLOR_MAP.put("yellow", Color.yellow);
 	}
 
-	private XStream xStream = new XStream(new DomDriver());
+	private XStream xStream;
 
 	private String currentFileName = null;
 	private boolean modified = false;
@@ -73,6 +73,8 @@ public class ProjectFileManager {
 
 	public ProjectFileManager(MessageDispatcher<EventType> messageDispatcher) {
 		super();
+		this.xStream = new XStream(new DomDriver());
+		xStream.autodetectAnnotations(true);
 		this.messageDispatcher = messageDispatcher;
 	}
 
