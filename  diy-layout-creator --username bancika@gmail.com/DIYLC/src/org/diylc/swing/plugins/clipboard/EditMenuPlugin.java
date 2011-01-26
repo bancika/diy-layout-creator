@@ -41,7 +41,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private Clipboard clipboard;
 	private Cloner cloner;
 
-	// private CutAction cutAction;
+	private CutAction cutAction;
 	private CopyAction copyAction;
 	private PasteAction pasteAction;
 
@@ -76,8 +76,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectMenuAction(undoHandler.getUndoAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(undoHandler.getRedoAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
-		// cutAction = new CutAction();
-		// plugInPort.injectMenuAction(cutAction, EDIT_TITLE);
+		cutAction = new CutAction();
+		swingUI.injectMenuAction(cutAction, EDIT_TITLE);
 		copyAction = new CopyAction();
 		swingUI.injectMenuAction(copyAction, EDIT_TITLE);
 		pasteAction = new PasteAction();
@@ -117,9 +117,9 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
 	private void refreshActions() {
 		boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
-		// cutAction.setEnabled(enabled);
+		cutAction.setEnabled(enabled);
 		copyAction.setEnabled(enabled);
-		 try {
+		try {
 			pasteAction.setEnabled(clipboard
 					.isDataFlavorAvailable(ComponentTransferable.listFlavor));
 		} catch (Exception e) {
@@ -142,6 +142,9 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Cut triggered");
+			clipboard.setContents(new ComponentTransferable(cloner.deepClone(plugInPort
+					.getSelectedComponents())), EditMenuPlugin.this);
+			plugInPort.deleteSelectedComponents();
 		}
 	}
 
