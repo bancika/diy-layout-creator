@@ -709,7 +709,7 @@ public class Presenter implements IPlugInPort {
 						controlPoints[index] = null;
 					}
 				}
-				System.out.println(Arrays.deepToString(controlPoints));
+				
 				for (int i = 0; i < controlPoints.length - 1; i++) {
 					for (int j = i + 1; j < controlPoints.length; j++) {
 						if (controlPoints[i] != null && controlPoints[j] != null

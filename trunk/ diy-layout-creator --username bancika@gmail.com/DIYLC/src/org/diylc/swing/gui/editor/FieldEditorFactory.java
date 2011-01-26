@@ -3,6 +3,7 @@ package org.diylc.swing.gui.editor;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
@@ -24,6 +25,10 @@ public class FieldEditorFactory {
 		}
 		if (AbstractMeasure.class.isAssignableFrom(property.getType())) {
 			MeasureEditor editor = new MeasureEditor(property);
+			return editor;
+		}
+		if (ImageIcon.class.isAssignableFrom(property.getType())) {
+			ImageEditor editor = new ImageEditor(property);
 			return editor;
 		}
 		if (property.getType().isEnum()) {

@@ -492,8 +492,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-		// FIXME: map
-		return canvasGraphics.drawImage(img, x, y, observer);
+		boolean result = canvasGraphics.drawImage(img, x, y, observer);
+		appendShape(new Rectangle2D.Double(x, y, img.getWidth(observer), img.getHeight(observer)));
+		return result;
 	}
 
 	@Override
