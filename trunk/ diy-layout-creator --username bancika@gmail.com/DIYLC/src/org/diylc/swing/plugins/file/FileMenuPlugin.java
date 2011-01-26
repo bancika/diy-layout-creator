@@ -3,7 +3,6 @@ package org.diylc.swing.plugins.file;
 import java.awt.event.ActionEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -13,9 +12,9 @@ import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.images.IconLoader;
-import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -23,7 +22,6 @@ import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import com.diyfever.gui.ButtonDialog;
 import com.diyfever.gui.IDrawingProvider;
 import com.diyfever.gui.export.DrawingExporter;
-import com.lowagie.text.DocumentException;
 
 /**
  * Entry point class for File management utilities.
@@ -31,7 +29,7 @@ import com.lowagie.text.DocumentException;
  * @author Branislav Stojkovic
  */
 public class FileMenuPlugin implements IPlugIn {
-	
+
 	private static final Logger LOG = Logger.getLogger(FileMenuPlugin.class);
 
 	private static final String FILE_TITLE = "File";
@@ -40,7 +38,7 @@ public class FileMenuPlugin implements IPlugIn {
 	private IPlugInPort plugInPort;
 	private ProjectDrawingProvider drawingProvider;
 	private TraceMaskDrawingProvider traceMaskDrawingProvider;
-	
+
 	private ISwingUI swingUI;
 
 	public FileMenuPlugin(ISwingUI swingUI) {
@@ -53,7 +51,7 @@ public class FileMenuPlugin implements IPlugIn {
 		this.plugInPort = plugInPort;
 		this.drawingProvider = new ProjectDrawingProvider(plugInPort, false);
 		this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
-		
+
 		swingUI.injectMenuAction(new NewAction(), FILE_TITLE);
 		swingUI.injectMenuAction(new OpenAction(), FILE_TITLE);
 		swingUI.injectMenuAction(new SaveAction(), FILE_TITLE);
@@ -87,7 +85,7 @@ public class FileMenuPlugin implements IPlugIn {
 			if (!plugInPort.allowFileAction()) {
 				return;
 			}
-						plugInPort.createNewProject();
+			plugInPort.createNewProject();
 			List<PropertyWrapper> properties = plugInPort.getProjectProperties();
 			PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
 					properties, "Edit Project");
@@ -121,11 +119,29 @@ public class FileMenuPlugin implements IPlugIn {
 			if (!plugInPort.allowFileAction()) {
 				return;
 			}
-			File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(),
-					null, FileFilterEnum.DIY.getExtensions()[0], null);
+			final File file = DialogFactory.getInstance().showOpenDialog(
+					FileFilterEnum.DIY.getFilter(), null, FileFilterEnum.DIY.getExtensions()[0],
+					null);
 			if (file != null) {
-				LOG.debug("Opening from " + file.getAbsolutePath());
-				plugInPort.loadProjectFromFile(file.getAbsolutePath());
+				swingUI.executeBackgroundTask(new ITask<Void>() {
+
+					@Override
+					public Void doInBackground() throws Exception {
+						LOG.debug("Opening from " + file.getAbsolutePath());
+						plugInPort.loadProjectFromFile(file.getAbsolutePath());
+						return null;
+					}
+
+					@Override
+					public void complete(Void result) {
+					}
+
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage("Could not open file. " + e.getMessage(), "Error",
+								ISwingUI.ERROR_MESSAGE);
+					}
+				});
 			}
 		}
 	}
@@ -144,16 +160,50 @@ public class FileMenuPlugin implements IPlugIn {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("SaveAction triggered");
 			if (plugInPort.getCurrentFileName() == null) {
-				File file = DialogFactory.getInstance().showSaveDialog(
+				final File file = DialogFactory.getInstance().showSaveDialog(
 						FileFilterEnum.DIY.getFilter(), null,
 						FileFilterEnum.DIY.getExtensions()[0], null);
 				if (file != null) {
-					LOG.debug("Saving to " + file.getAbsolutePath());
-					plugInPort.saveProjectToFile(file.getAbsolutePath());
+					swingUI.executeBackgroundTask(new ITask<Void>() {
+
+						@Override
+						public Void doInBackground() throws Exception {
+							LOG.debug("Saving to " + file.getAbsolutePath());
+							plugInPort.saveProjectToFile(file.getAbsolutePath());
+							return null;
+						}
+
+						@Override
+						public void complete(Void result) {
+						}
+
+						@Override
+						public void failed(Exception e) {
+							swingUI.showMessage("Could not save to file. " + e.getMessage(),
+									"Error", ISwingUI.ERROR_MESSAGE);
+						}
+					});
 				}
 			} else {
-				LOG.debug("Exporting to " + plugInPort.getCurrentFileName());
-				plugInPort.saveProjectToFile(plugInPort.getCurrentFileName());
+				swingUI.executeBackgroundTask(new ITask<Void>() {
+
+					@Override
+					public Void doInBackground() throws Exception {
+						LOG.debug("Saving to " + plugInPort.getCurrentFileName());
+						plugInPort.saveProjectToFile(plugInPort.getCurrentFileName());
+						return null;
+					}
+
+					@Override
+					public void complete(Void result) {
+					}
+
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error",
+								ISwingUI.ERROR_MESSAGE);
+					}
+				});
 			}
 		}
 	}
@@ -171,11 +221,29 @@ public class FileMenuPlugin implements IPlugIn {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("SaveAsAction triggered");
-			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.DIY.getFilter(),
-					null, FileFilterEnum.DIY.getExtensions()[0], null);
+			final File file = DialogFactory.getInstance().showSaveDialog(
+					FileFilterEnum.DIY.getFilter(), null, FileFilterEnum.DIY.getExtensions()[0],
+					null);
 			if (file != null) {
-				LOG.debug("Save to " + file.getAbsolutePath());
-				plugInPort.saveProjectToFile(file.getAbsolutePath());
+				swingUI.executeBackgroundTask(new ITask<Void>() {
+
+					@Override
+					public Void doInBackground() throws Exception {
+						LOG.debug("Saving to " + file.getAbsolutePath());
+						plugInPort.saveProjectToFile(file.getAbsolutePath());
+						return null;
+					}
+
+					@Override
+					public void complete(Void result) {
+					}
+
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error",
+								ISwingUI.ERROR_MESSAGE);
+					}
+				});
 			}
 		}
 	}
@@ -216,19 +284,30 @@ public class FileMenuPlugin implements IPlugIn {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("ExportPDFAction triggered");
-			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PDF.getFilter(),
-					null, FileFilterEnum.PDF.getExtensions()[0], null);
+			final File file = DialogFactory.getInstance().showSaveDialog(
+					FileFilterEnum.PDF.getFilter(), null, FileFilterEnum.PDF.getExtensions()[0],
+					null);
 			if (file != null) {
-				try {
-					LOG.debug("Exporting to " + file.getAbsolutePath());
-					DrawingExporter.getInstance().exportPDF(this.drawingProvider, file);
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DocumentException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				swingUI.executeBackgroundTask(new ITask<Void>() {
+
+					@Override
+					public Void doInBackground() throws Exception {
+						LOG.debug("Exporting to " + file.getAbsolutePath());
+						DrawingExporter.getInstance().exportPDF(
+								ExportPDFAction.this.drawingProvider, file);
+						return null;
+					}
+
+					@Override
+					public void complete(Void result) {
+					}
+
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage("Could not export to PDF. " + e.getMessage(), "Error",
+								ISwingUI.ERROR_MESSAGE);
+					}
+				});
 			}
 		}
 	}
@@ -249,11 +328,30 @@ public class FileMenuPlugin implements IPlugIn {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("ExportPNGAction triggered");
-			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PNG.getFilter(),
-					null, FileFilterEnum.PNG.getExtensions()[0], null);
+			final File file = DialogFactory.getInstance().showSaveDialog(
+					FileFilterEnum.PNG.getFilter(), null, FileFilterEnum.PNG.getExtensions()[0],
+					null);
 			if (file != null) {
-				LOG.debug("Exporting to " + file.getAbsolutePath());
-				DrawingExporter.getInstance().exportPNG(this.drawingProvider, file);
+				swingUI.executeBackgroundTask(new ITask<Void>() {
+
+					@Override
+					public Void doInBackground() throws Exception {
+						LOG.debug("Exporting to " + file.getAbsolutePath());
+						DrawingExporter.getInstance().exportPNG(
+								ExportPNGAction.this.drawingProvider, file);
+						return null;
+					}
+
+					@Override
+					public void complete(Void result) {
+					}
+
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage("Could not export to PNG. " + e.getMessage(), "Error",
+								ISwingUI.ERROR_MESSAGE);
+					}
+				});
 			}
 		}
 	}

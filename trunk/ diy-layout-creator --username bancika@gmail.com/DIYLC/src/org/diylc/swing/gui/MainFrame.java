@@ -2,6 +2,7 @@ package org.diylc.swing.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -23,6 +25,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
@@ -30,6 +33,7 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
@@ -42,8 +46,8 @@ import org.diylc.swing.plugins.layers.LayersMenuPlugin;
 import org.diylc.swing.plugins.statusbar.StatusBar;
 import org.diylc.swing.plugins.toolbox.ToolBox;
 
-public class MainFrame extends JFrame implements IView, ISwingUI {
-	
+public class MainFrame extends JFrame implements ISwingUI {
+
 	private static final Logger LOG = Logger.getLogger(MainFrame.class);
 
 	private static final long serialVersionUID = 1L;
@@ -246,6 +250,31 @@ public class MainFrame extends JFrame implements IView, ISwingUI {
 		submenu.setIcon(icon);
 		menu.add(submenu);
 		menuMap.put(name, submenu);
+	}
+
+	@Override
+	public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
+		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		SwingWorker<T, Void> worker = new SwingWorker<T, Void>() {
+
+			@Override
+			protected T doInBackground() throws Exception {
+				return task.doInBackground();
+			}
+
+			@Override
+			protected void done() {
+				try {
+					T result = get();
+					task.complete(result);
+				} catch (Exception e) {
+					LOG.error("Task failed", e);
+					task.failed(e);
+				}
+				setCursor(Cursor.getDefaultCursor());
+			}
+		};
+		worker.execute();
 	}
 
 	class FramePlugin implements IPlugIn {

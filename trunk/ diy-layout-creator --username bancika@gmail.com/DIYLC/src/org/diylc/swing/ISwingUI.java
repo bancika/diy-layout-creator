@@ -7,13 +7,15 @@ import javax.swing.SwingConstants;
 import javax.swing.JPopupMenu.Separator;
 
 import org.diylc.common.BadPositionException;
+import org.diylc.common.ITask;
+import org.diylc.core.IView;
 
 /**
  * Interface for plugin access to the swing front end.
  * 
  * @author Branislav Stojkovic
  */
-public interface ISwingUI {
+public interface ISwingUI extends IView {
 
 	/**
 	 * Injects a custom GUI panels provided by the plug-in and desired position
@@ -57,4 +59,6 @@ public interface ISwingUI {
 	 * @param parentMenuName
 	 */
 	void injectSubmenu(String name, Icon icon, String parentMenuName);
+	
+	<T extends Object> void executeBackgroundTask(ITask<T> task);
 }
