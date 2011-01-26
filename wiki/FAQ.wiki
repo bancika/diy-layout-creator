@@ -6,4 +6,4 @@
 
   * *What do those check boxes on the right side of component editor do?*<br><br>They are used to set default values for the selected component(s). When checked, value on the left will be used as a default for all components of that type.
 
-  * *I'm getting `java.lang.UnsupportedClassVersionError: Bad version number in .class file` error, what does it mean?<br><br>It means that you're running the app with an older version of Java. Version should be 1.6.0_10 or newer. If you have multiple versions installed, make sure that a suitable one is set as default. To check the version of default Java VM, type `java -version` in the console.
+  * *I'm getting `java.lang.UnsupportedClassVersionError: Bad version number in .class file` error, what does it mean?*<br><br>It means that you're running the app with an older version of Java. Version should be 1.6.0_10 or newer. If you have multiple versions installed, make sure that a suitable one is set as default. To check the version of default Java VM, type `java -version` in the console.
