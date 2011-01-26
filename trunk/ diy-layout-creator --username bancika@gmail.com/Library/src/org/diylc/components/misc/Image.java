@@ -16,6 +16,8 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
+import com.thoughtworks.xstream.annotations.XStreamConverter;
+
 @ComponentDescriptor(name = "Image", author = "Branislav Stojkovic", category = "Misc", description = "User defined image", instanceNamePrefix = "Img", zOrder = IDIYComponent.TEXT, stretchable = false)
 public class Image extends AbstractTransparentComponent<Void> {
 
@@ -33,6 +35,7 @@ public class Image extends AbstractTransparentComponent<Void> {
 	}
 
 	private Point point = new Point(0, 0);
+	@XStreamConverter(IconImageConverter.class)
 	private ImageIcon image = ICON;
 	private byte scale = 50;
 
@@ -47,9 +50,9 @@ public class Image extends AbstractTransparentComponent<Void> {
 		double s = 1d * scale / DEFAULT_SCALE;
 		g2d.scale(s, s);
 		g2d.drawImage(image.getImage(), (int) (point.x / s), (int) (point.y / s), null);
-		g2d.setComposite(oldComposite);
-		g2d.scale(1 / s, 1 / s);
 		if (componentState == ComponentState.SELECTED) {
+			g2d.setComposite(oldComposite);
+			g2d.scale(1 / s, 1 / s);
 			g2d.setColor(SELECTION_COLOR);
 			g2d.drawRect(point.x, point.y, (int) (image.getIconWidth() * s), (int) (image
 					.getIconHeight() * s));
