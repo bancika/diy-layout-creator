@@ -54,7 +54,13 @@
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Import from v1 files can now read label and
-						electrolytic capacitor components and trace/pad colors</description>
+						electrolytic capacitor components and trace/pad colors
+					</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added worker thread for longer file operation, so
+						GUI doesn't freeze</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
