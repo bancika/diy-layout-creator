@@ -193,7 +193,7 @@ public class Presenter implements IPlugInPort {
 			Project project = new Project();
 			instantiationManager.fillWithDefaultProperties(project);
 			loadProject(project, true);
-			projectFileManager.fireFileStatusChanged();
+			projectFileManager.startNewFile();
 		} catch (Exception e) {
 			LOG.error("Could not create new file", e);
 			view.showMessage("Could not create a new file. Check the log for details.", "Error",
