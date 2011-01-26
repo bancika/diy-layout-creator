@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.diylc.common.ComponentSelection;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.GridType;
@@ -71,7 +70,7 @@ public class DrawingManager {
 	}
 
 	public void drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
-			IComponentFiler filter, Rectangle selectionRect, ComponentSelection selectedComponents,
+			IComponentFiler filter, Rectangle selectionRect, List<IDIYComponent<?>> selectedComponents,
 			Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents,
 			List<Point> controlPointSlot, IDIYComponent<?> componentSlot, boolean dragInProgress) {
 		if (project == null) {

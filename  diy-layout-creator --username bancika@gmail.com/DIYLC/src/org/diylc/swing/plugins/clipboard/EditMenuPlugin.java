@@ -15,7 +15,6 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
-import org.diylc.common.ComponentSelection;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -42,13 +41,21 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private Clipboard clipboard;
 	private Cloner cloner;
 
-//	private CutAction cutAction;
+	// private CutAction cutAction;
 	private CopyAction copyAction;
 	private PasteAction pasteAction;
 
 	private UndoHandler<Project> undoHandler;
 
 	public EditMenuPlugin(ISwingUI swingUI) {
+		SecurityManager securityManager = System.getSecurityManager();
+		if (securityManager != null) {
+			try {
+				securityManager.checkSystemClipboardAccess();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		cloner = new Cloner();
 		undoHandler = new UndoHandler<Project>(new IUndoListener<Project>() {
@@ -65,7 +72,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 				refreshActions();
 			}
 		});
-		
+
 		swingUI.injectMenuAction(undoHandler.getUndoAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(undoHandler.getRedoAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
@@ -112,8 +119,9 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
 		// cutAction.setEnabled(enabled);
 		copyAction.setEnabled(enabled);
-		try {
-			pasteAction.setEnabled(clipboard.isDataFlavorAvailable(ComponentSelection.listFlavor));
+		 try {
+			pasteAction.setEnabled(clipboard
+					.isDataFlavorAvailable(ComponentTransferable.listFlavor));
 		} catch (Exception e) {
 			pasteAction.setEnabled(false);
 		}
@@ -152,8 +160,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Copy triggered");
-			clipboard.setContents(cloner.deepClone(plugInPort.getSelectedComponents()),
-					EditMenuPlugin.this);
+			clipboard.setContents(new ComponentTransferable(cloner.deepClone(plugInPort
+					.getSelectedComponents())), EditMenuPlugin.this);
 		}
 	}
 
@@ -175,7 +183,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 			LOG.info("Paste triggered");
 			try {
 				List<IDIYComponent<?>> components = (List<IDIYComponent<?>>) clipboard
-						.getData(ComponentSelection.listFlavor);
+						.getData(ComponentTransferable.listFlavor);
 				plugInPort.pasteComponents(cloner.deepClone(components));
 			} catch (Exception ex) {
 				LOG.error("Coule not paste.", ex);
