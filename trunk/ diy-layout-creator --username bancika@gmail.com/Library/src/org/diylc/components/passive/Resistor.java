@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.common.ObjectCache;
+import org.diylc.common.ResistorColorCode;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -26,6 +28,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Resistance value = new Resistance(123d, ResistanceUnit.K);
+	private ResistorColorCode colorCode = ResistorColorCode._5_BAND;
 
 	public Resistor() {
 		super();
@@ -70,9 +73,32 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 		return BORDER_COLOR;
 	}
 
+	@EditableProperty(name = "Color code")
+	public ResistorColorCode getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(ResistorColorCode colorCode) {
+		this.colorCode = colorCode;
+	}
+
 	@Override
 	protected Shape getBodyShape() {
 		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(),
 				getClosestOdd(getHeight().convertToPixels()));
+	}
+
+	@Override
+	protected void decorateComponentBody(Graphics2D g2d) {
+		// int width = getWidth().convertToPixels();
+		int height = getClosestOdd(getHeight().convertToPixels());
+		Color[] bands = value.getColorCode(colorCode);
+		int x = 4;
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+		for (int i = 0; i < bands.length; i++) {
+			g2d.setColor(bands[i]);
+			g2d.drawLine(x, 1, x, height - 1);
+			x += 5;
+		}
 	}
 }
