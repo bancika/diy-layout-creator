@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.clipboard;
+package org.diylc.swing.plugins.edit;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
