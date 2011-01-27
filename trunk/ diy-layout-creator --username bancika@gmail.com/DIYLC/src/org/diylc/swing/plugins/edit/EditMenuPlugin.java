@@ -21,7 +21,9 @@ import com.diyfever.gui.undo.UndoHandler;
 public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
 	private static final String EDIT_TITLE = "Edit";
+	
 	private IPlugInPort plugInPort;
+	private ISwingUI swingUI;
 
 	private Clipboard clipboard;
 
@@ -36,6 +38,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private UndoHandler<Project> undoHandler;
 
 	public EditMenuPlugin(ISwingUI swingUI) {
+		this.swingUI = swingUI;
 		// SecurityManager securityManager = System.getSecurityManager();
 		// if (securityManager != null) {
 		// try {
@@ -59,23 +62,6 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 				refreshActions();
 			}
 		});
-
-		ActionFactory actionFactory = ActionFactory.getInstance();
-
-		swingUI.injectMenuAction(undoHandler.getUndoAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(undoHandler.getRedoAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(null, EDIT_TITLE);
-		swingUI.injectMenuAction(getCutAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getCopyAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getPasteAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(null, EDIT_TITLE);
-		swingUI.injectMenuAction(actionFactory.createSelectAllAction(plugInPort), EDIT_TITLE);
-		swingUI.injectMenuAction(getEditSelectionAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getDeleteSelectionAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getGroupAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getUngroupAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(null, EDIT_TITLE);
-		swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
 	}
 
 	public ActionFactory.CutAction getCutAction() {
@@ -131,6 +117,24 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
+		
+		ActionFactory actionFactory = ActionFactory.getInstance();
+
+		swingUI.injectMenuAction(undoHandler.getUndoAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(undoHandler.getRedoAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(null, EDIT_TITLE);
+		swingUI.injectMenuAction(getCutAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getCopyAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getPasteAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(null, EDIT_TITLE);
+		swingUI.injectMenuAction(actionFactory.createSelectAllAction(plugInPort), EDIT_TITLE);
+		swingUI.injectMenuAction(getEditSelectionAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getDeleteSelectionAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getGroupAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getUngroupAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(null, EDIT_TITLE);
+		swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
+		
 		refreshActions();
 	}
 
