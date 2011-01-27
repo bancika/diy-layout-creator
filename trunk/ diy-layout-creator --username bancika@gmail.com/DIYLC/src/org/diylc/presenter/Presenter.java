@@ -908,6 +908,7 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void sendSelectionToBack() {
 		LOG.info("sendSelectionToBack()");
+		Project oldProject = cloner.deepClone(currentProject);
 		for (IDIYComponent<?> component : selectedComponents) {
 			ComponentType componentType = ComponentProcessor.getInstance()
 					.extractComponentTypeFrom(
@@ -925,12 +926,18 @@ public class Presenter implements IPlugInPort {
 				}
 			}
 		}
-		messageDispatcher.dispatchMessage(EventType.REPAINT);
+		if (!oldProject.equals(currentProject)) {
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+					.deepClone(currentProject), "Send to Back");
+			projectFileManager.notifyFileChange();
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+		}
 	}
 
 	@Override
 	public void bringSelectionToFront() {
 		LOG.info("bringSelectionToFront()");
+		Project oldProject = cloner.deepClone(currentProject);
 		for (IDIYComponent<?> component : selectedComponents) {
 			ComponentType componentType = ComponentProcessor.getInstance()
 					.extractComponentTypeFrom(
@@ -948,7 +955,12 @@ public class Presenter implements IPlugInPort {
 				}
 			}
 		}
-		messageDispatcher.dispatchMessage(EventType.REPAINT);
+		if (!oldProject.equals(currentProject)) {
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+					.deepClone(currentProject), "Bring to Front");
+			projectFileManager.notifyFileChange();
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+		}
 	}
 
 	/**
