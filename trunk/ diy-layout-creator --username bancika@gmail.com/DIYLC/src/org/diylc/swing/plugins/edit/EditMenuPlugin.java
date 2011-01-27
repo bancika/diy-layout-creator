@@ -34,6 +34,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.DeleteSelectionAction deleteSelectionAction;
 	private ActionFactory.GroupAction groupAction;
 	private ActionFactory.UngroupAction ungroupAction;
+	private ActionFactory.SendToBackAction sendToBackAction;
+	private ActionFactory.BringToFrontAction bringToFrontAction;
 
 	private UndoHandler<Project> undoHandler;
 
@@ -113,6 +115,20 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		}
 		return ungroupAction;
 	}
+	
+	public ActionFactory.SendToBackAction getSendToBackAction() {
+		if (sendToBackAction == null) {
+			sendToBackAction = ActionFactory.getInstance().createSendToBackAction(plugInPort);
+		}
+		return sendToBackAction;
+	}
+	
+	public ActionFactory.BringToFrontAction getBringToFrontAction() {
+		if (bringToFrontAction == null) {
+			bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
+		}
+		return bringToFrontAction;
+	}
 
 	@Override
 	public void connect(IPlugInPort plugInPort) {
@@ -132,6 +148,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectMenuAction(getDeleteSelectionAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getGroupAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getUngroupAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getSendToBackAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getBringToFrontAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
 		swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
 		
@@ -169,6 +187,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		getDeleteSelectionAction().setEnabled(enabled);
 		getGroupAction().setEnabled(enabled);
 		getUngroupAction().setEnabled(enabled);
+		getSendToBackAction().setEnabled(enabled);
+		getBringToFrontAction().setEnabled(enabled);
 	}
 
 	// ClipboardOwner

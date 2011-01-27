@@ -31,6 +31,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.utils.Constants;
 
 import com.diyfever.gui.miscutils.ConfigurationManager;
@@ -709,7 +710,7 @@ public class Presenter implements IPlugInPort {
 						controlPoints[index] = null;
 					}
 				}
-				
+
 				for (int i = 0; i < controlPoints.length - 1; i++) {
 					for (int j = i + 1; j < controlPoints.length; j++) {
 						if (controlPoints[i] != null && controlPoints[j] != null
@@ -892,6 +893,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void setLayerLocked(int layerZOrder, boolean locked) {
+		LOG.info(String.format("setLayerLocked(%s, %s)", layerZOrder, locked));
 		if (locked) {
 			currentProject.getLockedLayers().add(layerZOrder);
 		} else {
@@ -901,6 +903,52 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject
 				.getLockedLayers());
+	}
+
+	@Override
+	public void sendSelectionToBack() {
+		LOG.info("sendSelectionToBack()");
+		for (IDIYComponent<?> component : selectedComponents) {
+			ComponentType componentType = ComponentProcessor.getInstance()
+					.extractComponentTypeFrom(
+							(Class<? extends IDIYComponent<?>>) component.getClass());
+			int index = currentProject.getComponents().indexOf(component);
+			if (index < 0) {
+				LOG.warn("Component not found in the project: " + component.getName());
+			} else if (index > 0) {
+				IDIYComponent<?> componentBefore = currentProject.getComponents().get(index - 1);
+				ComponentType componentBeforeType = ComponentProcessor.getInstance()
+						.extractComponentTypeFrom(
+								(Class<? extends IDIYComponent<?>>) componentBefore.getClass());
+				if (componentType.getZOrder() == componentBeforeType.getZOrder()) {
+					Collections.swap(currentProject.getComponents(), index, index - 1);
+				}
+			}
+		}
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
+	}
+
+	@Override
+	public void bringSelectionToFront() {
+		LOG.info("bringSelectionToFront()");
+		for (IDIYComponent<?> component : selectedComponents) {
+			ComponentType componentType = ComponentProcessor.getInstance()
+					.extractComponentTypeFrom(
+							(Class<? extends IDIYComponent<?>>) component.getClass());
+			int index = currentProject.getComponents().indexOf(component);
+			if (index < 0) {
+				LOG.warn("Component not found in the project: " + component.getName());
+			} else if (index < currentProject.getComponents().size() - 1) {
+				IDIYComponent<?> componentAfter = currentProject.getComponents().get(index + 1);
+				ComponentType componentAfterType = ComponentProcessor.getInstance()
+						.extractComponentTypeFrom(
+								(Class<? extends IDIYComponent<?>>) componentAfter.getClass());
+				if (componentType.getZOrder() == componentAfterType.getZOrder()) {
+					Collections.swap(currentProject.getComponents(), index, index + 1);
+				}
+			}
+		}
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
 	/**

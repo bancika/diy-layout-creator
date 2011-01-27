@@ -49,6 +49,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.DeleteSelectionAction deleteSelectionAction;
 	private ActionFactory.GroupAction groupAction;
 	private ActionFactory.UngroupAction ungroupAction;
+	private ActionFactory.SendToBackAction sendToBackAction;
+	private ActionFactory.BringToFrontAction bringToFrontAction;
 
 	private IPlugInPort plugInPort;
 	private ISwingUI swingUI;
@@ -94,6 +96,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 						getDeleteSelectionAction().setEnabled(enabled);
 						getGroupAction().setEnabled(enabled);
 						getUngroupAction().setEnabled(enabled);
+						getSendToBackAction().setEnabled(enabled);
+						getBringToFrontAction().setEnabled(enabled);
 
 						getPopupMenu().show(canvasPanel, e.getX(), e.getY());
 					}
@@ -159,6 +163,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.add(getDeleteSelectionAction());
 			popupMenu.add(getGroupAction());
 			popupMenu.add(getUngroupAction());
+			popupMenu.add(getSendToBackAction());
+			popupMenu.add(getBringToFrontAction());
 		}
 		return popupMenu;
 	}
@@ -210,6 +216,20 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			ungroupAction = ActionFactory.getInstance().createUngroupAction(plugInPort);
 		}
 		return ungroupAction;
+	}
+	
+	public ActionFactory.SendToBackAction getSendToBackAction() {
+		if (sendToBackAction == null) {
+			sendToBackAction = ActionFactory.getInstance().createSendToBackAction(plugInPort);
+		}
+		return sendToBackAction;
+	}
+	
+	public ActionFactory.BringToFrontAction getBringToFrontAction() {
+		if (bringToFrontAction == null) {
+			bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
+		}
+		return bringToFrontAction;
 	}
 
 	@Override
