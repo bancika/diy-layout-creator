@@ -885,7 +885,7 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
-					.deepClone(currentProject), "Group");
+					.deepClone(currentProject), "Ungroup");
 			projectFileManager.notifyFileChange();
 		}
 	}
