@@ -124,6 +124,14 @@ public class ActionFactory {
 	public DeleteSelectionAction createDeleteSelectionAction(IPlugInPort plugInPort) {
 		return new DeleteSelectionAction(plugInPort);
 	}
+	
+	public SendToBackAction createSendToBackAction(IPlugInPort plugInPort) {
+		return new SendToBackAction(plugInPort);
+	}
+	
+	public BringToFrontAction createBringToFrontAction(IPlugInPort plugInPort) {
+		return new BringToFrontAction(plugInPort);
+	}
 
 	// File menu actions.
 
@@ -731,6 +739,46 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Delete Selection triggered");
 			plugInPort.deleteSelectedComponents();
+		}
+	}
+	
+	public static class SendToBackAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		private IPlugInPort plugInPort;
+
+		public SendToBackAction(IPlugInPort plugInPort) {
+			super();
+			this.plugInPort = plugInPort;
+			putValue(AbstractAction.NAME, "Send to Back");
+			putValue(AbstractAction.SMALL_ICON, IconLoader.Back.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Send to Back triggered");
+			plugInPort.sendSelectionToBack();
+		}
+	}
+	
+	public static class BringToFrontAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		private IPlugInPort plugInPort;
+
+		public BringToFrontAction(IPlugInPort plugInPort) {
+			super();
+			this.plugInPort = plugInPort;
+			putValue(AbstractAction.NAME, "Bring to Front");
+			putValue(AbstractAction.SMALL_ICON, IconLoader.Front.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Bring to Front triggered");
+			plugInPort.bringSelectionToFront();
 		}
 	}
 }

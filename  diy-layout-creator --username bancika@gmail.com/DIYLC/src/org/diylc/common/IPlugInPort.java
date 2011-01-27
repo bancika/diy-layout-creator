@@ -304,6 +304,13 @@ public interface IPlugInPort {
 	 */
 	void ungroupSelectedComponents();
 
+	/**
+	 * Locks or unlocks the specified layer. All components within +- 0.5 range
+	 * will be affected by the change as well.
+	 * 
+	 * @param layerZOrder
+	 * @param locked
+	 */
 	void setLayerLocked(int layerZOrder, boolean locked);
 
 	/**
@@ -311,4 +318,14 @@ public interface IPlugInPort {
 	 *         on the user preference.
 	 */
 	Point2D calculateSelectionDimension();
+
+	/**
+	 * Sends each of the selected components one step back.
+	 */
+	void sendSelectionToBack();
+
+	/**
+	 * Brings each of the selected components one step to front.
+	 */
+	void bringSelectionToFront();
 }
