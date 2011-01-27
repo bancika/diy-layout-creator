@@ -1,0 +1,78 @@
+<project name="diylc" basedir="." default="jar">
+	<property name="src.dir" value="src" />
+
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="jar.dir" value="${build.dir}/jar" />
+	<property name="report.dir" value="${build.dir}/junitreport" />
+	<property name="main.class" value="org.diylc.DIYLCStarter" />
+
+	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
+	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!--change src dir-->
+	<target name="compile">
+		<mkdir dir="${classes.dir}" />
+		<echo>Compile with JDK ${java.runtime.version}</echo>
+		<javac encoding="8859_1" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="class.path" />
+	</target>
+
+	<target name="resource.copy">
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="lib.copy">
+		<copy todir="${jar.dir}/lib" overwrite="true">
+			<fileset dir="${basedir}/lib">
+				<exclude name="**/*dll" />
+			</fileset>
+		</copy>
+		<copy todir="${jar.dir}/library" overwrite="true">
+			<fileset dir="${basedir}/library">
+				<exclude name="**/*dll" />
+			</fileset>
+		</copy>
+		<copy todir="${jar.dir}" overwrite="true">
+			<fileset dir="${basedir}/lib/" includes="**/*.dll" />
+		</copy>
+	</target>
+
+	<path id="class.path">
+		<fileset dir="${basedir}">
+			<include name="lib/**/*.jar" />
+			<include name="library/**/*.jar" />
+		</fileset>
+	</path>
+
+	<manifestclasspath jarfile="${ant.project.name}.jar" property="manifest.class.path">
+		<classpath refid="class.path" />
+	</manifestclasspath>
+
+	<target name="jar" depends="clean, lib.copy, resource.copy, compile">
+		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="${main.class}" />
+				<attribute name="Class-Path" value="${manifest.class.path}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="javadoc">
+		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">
+			<fileset dir="${src.dir}">
+				<exclude name="**\.svn\**" />
+				<include name="**/*.java" />
+			</fileset>
+		</javadoc>
+	</target>
+
+</project>
