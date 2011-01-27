@@ -165,6 +165,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.add(getUngroupAction());
 			popupMenu.add(getSendToBackAction());
 			popupMenu.add(getBringToFrontAction());
+			popupMenu.addSeparator();
+			popupMenu.add(ActionFactory.getInstance().createEditProjectAction(plugInPort));
 		}
 		return popupMenu;
 	}
