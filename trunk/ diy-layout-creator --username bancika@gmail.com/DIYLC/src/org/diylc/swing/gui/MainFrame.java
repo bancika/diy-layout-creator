@@ -39,7 +39,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
-import org.diylc.swing.plugins.clipboard.EditMenuPlugin;
+import org.diylc.swing.plugins.edit.EditMenuPlugin;
 import org.diylc.swing.plugins.file.FileMenuPlugin;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
 import org.diylc.swing.plugins.layers.LayersMenuPlugin;

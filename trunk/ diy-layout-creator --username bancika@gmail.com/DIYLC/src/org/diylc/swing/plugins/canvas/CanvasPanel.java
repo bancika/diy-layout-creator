@@ -16,7 +16,6 @@ import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -155,18 +154,18 @@ class CanvasPanel extends JComponent implements Autoscroll {
 				invalidate();
 			}
 		});
-		addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					plugInPort.deleteSelectedComponents();
-				}
-				// plugInPort.mouseMoved(getMousePosition(), e.isControlDown(),
-				// e.isShiftDown(), e
-				// .isAltDown());
-			}
-		});
+//		addKeyListener(new KeyAdapter() {
+//
+//			@Override
+//			public void keyPressed(KeyEvent e) {
+//				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+//					plugInPort.deleteSelectedComponents();
+//				}
+//				// plugInPort.mouseMoved(getMousePosition(), e.isControlDown(),
+//				// e.isShiftDown(), e
+//				// .isAltDown());
+//			}
+//		});
 		addMouseMotionListener(new MouseAdapter() {
 
 			@Override

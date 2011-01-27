@@ -64,6 +64,10 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added right click menu on the canvas</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added label component</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
