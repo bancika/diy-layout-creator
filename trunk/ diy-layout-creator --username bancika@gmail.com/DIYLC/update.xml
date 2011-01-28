@@ -11,23 +11,19 @@
 			<changes>
 				<com.diyfever.gui.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Copy/paste between two instances of the
-						application</description>
+					<description>Copy/paste between two instances of the application</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Parsing numerical values in countries that use
-						comma as decimal separator</description>
+					<description>Parsing numerical values in countries that use comma as decimal separator</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Dragging sticky points affects selectability
-						of objects</description>
+					<description>Dragging sticky points affects selectability of objects</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Click is sometimes not registered while adding a
-						new component</description>
+					<description>Click is sometimes not registered while adding a new component</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>BUG_FIX</changeType>
@@ -35,8 +31,7 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Allow shape control points of curves to overlap
-					</description>
+					<description>Allow shape control points of curves to overlap</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -44,8 +39,7 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Added transparency to the potentiometer
-					</description>
+					<description>Added transparency to the potentiometer</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -53,14 +47,11 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Import from v1 files can now read label and
-						electrolytic capacitor components and trace/pad colors
-					</description>
+					<description>Import from v1 files can now read label and electrolytic capacitor components and trace/pad colors</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Added worker thread for longer file operation, so
-						GUI doesn't freeze</description>
+					<description>Added worker thread for longer file operation, so GUI doesn't freeze</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -101,7 +92,7 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description></description>
+					<description>Added support for creating and loading templates</description>
 				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list
