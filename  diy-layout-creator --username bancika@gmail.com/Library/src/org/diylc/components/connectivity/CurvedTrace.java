@@ -38,11 +38,6 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 		g2d.draw(curve);
 	}
 	
-	@Override
-	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-		return VisibilityPolicy.NEVER;
-	}
-
 	@EditableProperty(name = "Width")
 	public Size getSize() {
 		return size;

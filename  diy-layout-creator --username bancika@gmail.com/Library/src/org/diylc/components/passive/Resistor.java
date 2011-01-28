@@ -91,6 +91,9 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d) {
 		// int width = getWidth().convertToPixels();
+		if (colorCode == ResistorColorCode.NONE) {
+			return;
+		}
 		int height = getClosestOdd(getHeight().convertToPixels());
 		Color[] bands = value.getColorCode(colorCode);
 		int x = 4;
