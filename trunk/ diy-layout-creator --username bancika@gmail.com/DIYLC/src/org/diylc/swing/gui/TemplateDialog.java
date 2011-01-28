@@ -240,7 +240,9 @@ public class TemplateDialog extends JDialog {
 			File dir = new File("templates");
 			if (dir.exists()) {
 				for (File f : dir.listFiles()) {
-					files.add(f);
+					if (f.isFile() && f.getName().toLowerCase().endsWith(".diy")) {
+						files.add(f);
+					}
 				}
 			}
 			LOG.debug("Found " + files.size() + " templates");
