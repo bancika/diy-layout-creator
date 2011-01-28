@@ -1,15 +1,15 @@
 <map>
   <entry>
-    <string>metric</string>
-    <boolean>true</boolean>
+    <string>lastPath</string>
+    <string>C:\Documents and Settings\Branislav Stojkovic\workspace\DIYLC\templates</string>
   </entry>
   <entry>
     <string>zoom</string>
     <double>1.0</double>
   </entry>
   <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\workspace\DIYLC\templates</string>
+    <string>metric</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>default.org.diylc.components.misc.Label:Color</string>
@@ -19,5 +19,13 @@
       <blue>0</blue>
       <alpha>255</alpha>
     </awt-color>
+  </entry>
+  <entry>
+    <string>showTemplatesAtStartup</string>
+    <boolean>false</boolean>
+  </entry>
+  <entry>
+    <string>default.org.diylc.components.semiconductors.TransistorTO92:Orientation</string>
+    <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
   </entry>
 </map>
