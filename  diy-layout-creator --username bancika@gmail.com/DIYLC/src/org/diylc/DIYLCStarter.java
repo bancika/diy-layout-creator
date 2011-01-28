@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
-import org.diylc.swing.plugins.templates.TemplateDialog;
+import org.diylc.swing.gui.TemplateDialog;
 
 import com.diyfever.gui.miscutils.ConfigurationManager;
 import com.diyfever.gui.miscutils.PropertyInjector;
@@ -70,6 +70,5 @@ public class DIYLCStarter {
 		} catch (Exception e) {
 			LOG.error("Could not read config.properties file", e);
 		}
-
 	}
 }
