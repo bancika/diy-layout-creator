@@ -10,7 +10,9 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
+import org.diylc.swing.plugins.templates.TemplateDialog;
 
+import com.diyfever.gui.miscutils.ConfigurationManager;
 import com.diyfever.gui.miscutils.PropertyInjector;
 
 /**
@@ -37,7 +39,7 @@ public class DIYLCStarter {
 		} catch (Exception e) {
 			LOG.error("Could not initialize log4j configuration", e);
 		}
-		
+
 		LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
 
 		try {
@@ -49,7 +51,16 @@ public class DIYLCStarter {
 		MainFrame mainFrame = new MainFrame();
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
-		
+
+		boolean showTemplates = ConfigurationManager.getInstance().readBoolean(
+				TemplateDialog.SHOW_TEMPLATES_KEY, true);
+		if (showTemplates) {
+			TemplateDialog templateDialog = new TemplateDialog(mainFrame, mainFrame.getPresenter());
+			if (!templateDialog.getFiles().isEmpty()) {
+				templateDialog.setVisible(true);
+			}
+		}
+
 		url = DIYLCStarter.class.getResource("/config.properties");
 		properties = new Properties();
 		try {

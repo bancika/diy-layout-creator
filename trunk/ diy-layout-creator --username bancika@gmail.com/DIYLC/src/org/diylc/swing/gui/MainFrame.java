@@ -115,6 +115,10 @@ public class MainFrame extends JFrame implements ISwingUI {
 		// setGlassPane(new CustomGlassPane());
 		// getGlassPane().setVisible(true);
 	}
+	
+	public Presenter getPresenter() {
+		return presenter;
+	}
 
 	@Override
 	public void setVisible(boolean b) {
