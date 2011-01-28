@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.templates;
+package org.diylc.swing.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
