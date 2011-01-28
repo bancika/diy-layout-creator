@@ -82,5 +82,30 @@
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list
 			</url>
 		</com.diyfever.gui.update.Version>
+		<com.diyfever.gui.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>0</minor>
+				<build>5</build>
+			</versionNumber>
+			<releaseDate>2011-01-27 21:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Curved trace does not show control points</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Resistor can show color bands</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description></description>
+				</com.diyfever.gui.update.Change>
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list
+			</url>
+		</com.diyfever.gui.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
