@@ -136,12 +136,12 @@ public class TemplateDialog extends JDialog {
 			c.gridy = 2;
 			c.weightx = 0;
 			c.weighty = 0;
-			c.anchor = GridBagConstraints.FIRST_LINE_START;
+			c.anchor = GridBagConstraints.LAST_LINE_START;
 			c.fill = GridBagConstraints.NONE;
 			mainPanel.add(getShowTemplatesBox(), c);
 
 			c.gridx = 1;
-			c.anchor = GridBagConstraints.FIRST_LINE_END;
+			c.anchor = GridBagConstraints.LAST_LINE_END;
 			c.insets = new Insets(4, 0, 0, 0);
 			mainPanel.add(getLoadButton(), c);
 		}
@@ -170,7 +170,8 @@ public class TemplateDialog extends JDialog {
 			infoPanel.setBorder(new JTextField().getBorder());
 			JLabel infoLabel = new JLabel(
 					"<html>Templates are semi-product layouts that are used as a starting point for your projects.<br>"
-							+ "You can create your own templates by saving a DIY file into <b>templates</b> directory.</html>");
+							+ "Pick a templete in the left list and click \"Load Template\" to load it or close this dialog to continue.<br>"
+							+ "You can create your own templates by placing a DIY file into <b>diylc/templates</b> directory.</html>");
 			infoLabel.setOpaque(false);
 			infoPanel.add(infoLabel);
 		}
