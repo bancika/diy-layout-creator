@@ -108,7 +108,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 				break;
 			case _180:
 				body[3] = new Area(new Ellipse2D.Double(
-						controlPoints[0].x + spacing - diameter / 2, controlPoints[0].y + spacing
+						controlPoints[0].x - spacing - diameter / 2, controlPoints[0].y + spacing
 								/ 2, diameter, diameter));
 				for (int i = 0; i < 3; i++) {
 					body[i] = new Area(new Rectangle2D.Double(
