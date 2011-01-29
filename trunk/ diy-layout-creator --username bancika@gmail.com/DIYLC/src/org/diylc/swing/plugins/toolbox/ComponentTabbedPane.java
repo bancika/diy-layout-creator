@@ -11,9 +11,9 @@ import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
@@ -42,6 +42,13 @@ class ComponentTabbedPane extends JTabbedPane {
 			JPanel panel = createTab((componentTypes.get(category)));
 			addTab(category, panel);
 		}
+		addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				ComponentTabbedPane.this.plugInPort.setNewComponentTypeSlot(null);
+			}
+		});
 	}
 
 	private JPanel createTab(List<ComponentType> componentTypes) {
@@ -87,13 +94,13 @@ class ComponentTabbedPane extends JTabbedPane {
 		return panel;
 	}
 
-	private JScrollPane createComponentScrollBar(List<ComponentType> componentTypes) {
-		JScrollPane scrollPane = new JScrollPane(createComponentPanel(componentTypes));
-		scrollPane.setOpaque(false);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		return scrollPane;
-	}
+//	private JScrollPane createComponentScrollBar(List<ComponentType> componentTypes) {
+//		JScrollPane scrollPane = new JScrollPane(createComponentPanel(componentTypes));
+//		scrollPane.setOpaque(false);
+//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+//		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+//		return scrollPane;
+//	}
 
 	private Component createComponentPanel(List<ComponentType> componentTypes) {
 		Container toolbar = new Container();
