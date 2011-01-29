@@ -53,14 +53,14 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 
 	@Deprecated
 	@Override
-	public Size getWidth() {
-		return super.getWidth();
+	public Size getLength() {
+		return super.getLength();
 	}
 
 	@Deprecated
 	@Override
-	public Size getHeight() {
-		return super.getHeight();
+	public Size getWidth() {
+		return super.getWidth();
 	}
 
 	@Deprecated
@@ -80,12 +80,12 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 	}
 
 	@Override
-	protected Size getDefaultHeight() {
+	protected Size getDefaultWidth() {
 		return null;
 	}
 
 	@Override
-	protected Size getDefaultWidth() {
+	protected Size getDefaultLength() {
 		return null;
 	}
 }

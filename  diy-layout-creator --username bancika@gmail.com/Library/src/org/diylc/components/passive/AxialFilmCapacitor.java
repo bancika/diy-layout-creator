@@ -53,18 +53,18 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 	}
 
 	@Override
-	protected Size getDefaultHeight() {
+	protected Size getDefaultWidth() {
 		return DEFAULT_HEIGHT;
 	}
 
 	@Override
-	protected Size getDefaultWidth() {
+	protected Size getDefaultLength() {
 		return DEFAULT_WIDTH;
 	}
 
 	@Override
 	protected Shape getBodyShape() {
-		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(),
-				getClosestOdd(getHeight().convertToPixels()));
+		return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(),
+				getClosestOdd(getWidth().convertToPixels()));
 	}
 }
