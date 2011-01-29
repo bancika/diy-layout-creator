@@ -87,6 +87,10 @@
 					<description>Curved trace does not show control points</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Potentiometer draws wrong at 180 degrees</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Resistor can show color bands</description>
 				</com.diyfever.gui.update.Change>

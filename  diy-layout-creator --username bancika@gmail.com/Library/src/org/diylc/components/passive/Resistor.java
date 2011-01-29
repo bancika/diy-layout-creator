@@ -51,6 +51,12 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 		g2d.drawLine(0, height / 2, width, height / 2);
 		g2d.setColor(BODY_COLOR);
 		g2d.fillRect(4, height / 2 - 3, width - 8, 6);
+		g2d.setColor(Color.red);
+		g2d.drawLine(7, height / 2 - 3, 7, height / 2 + 3);
+		g2d.setColor(Color.orange);
+		g2d.drawLine(11, height / 2 - 3, 11, height / 2 + 3);
+		g2d.setColor(Color.black);
+		g2d.drawLine(15, height / 2 - 3, 15, height / 2 + 3);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRect(4, height / 2 - 3, width - 8, 6);
 	}
