@@ -37,8 +37,13 @@ public class FieldEditorFactory {
 		}
 		if (Byte.class.isAssignableFrom(property.getType())
 				|| byte.class.isAssignableFrom(property.getType())) {
-			ByteEditor byteEditor = new ByteEditor(property);
-			return byteEditor;
+			ByteEditor editor = new ByteEditor(property);
+			return editor;
+		}
+		if (Boolean.class.isAssignableFrom(property.getType())
+				|| boolean.class.isAssignableFrom(property.getType())) {
+			BooleanEditor editor = new BooleanEditor(property);
+			return editor;
 		}
 		LOG.error("Unrecognized parameter type: " + property.getType().getName());
 		return new JLabel("Unrecognized");
