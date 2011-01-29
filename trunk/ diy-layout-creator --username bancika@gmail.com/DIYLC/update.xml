@@ -118,6 +118,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added LED</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added axial electrolytic capacitor</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list
 			</url>
