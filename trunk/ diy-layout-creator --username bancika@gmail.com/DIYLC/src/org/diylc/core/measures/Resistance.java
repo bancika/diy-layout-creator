@@ -42,8 +42,6 @@ public class Resistance extends AbstractMeasure<ResistanceUnit> {
 			multiplier -= 1;
 			base *= 10;
 		}
-		System.out.println("base: " + base + " factor: " + multiplier);
-
 		if (multiplier > 6 || multiplier < -2) {
 			// Out of range.
 			return new Color[] {};
