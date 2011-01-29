@@ -57,6 +57,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 	private Clipboard clipboard;
 
+	private double zoomLevel = 1;
+
 	public CanvasPlugin(ISwingUI swingUI) {
 		this.swingUI = swingUI;
 		clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -201,7 +203,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 	public ActionFactory.DeleteSelectionAction getDeleteSelectionAction() {
 		if (deleteSelectionAction == null) {
-			deleteSelectionAction = ActionFactory.getInstance().createDeleteSelectionAction(plugInPort);
+			deleteSelectionAction = ActionFactory.getInstance().createDeleteSelectionAction(
+					plugInPort);
 		}
 		return deleteSelectionAction;
 	}
@@ -219,14 +222,14 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 		}
 		return ungroupAction;
 	}
-	
+
 	public ActionFactory.SendToBackAction getSendToBackAction() {
 		if (sendToBackAction == null) {
 			sendToBackAction = ActionFactory.getInstance().createSendToBackAction(plugInPort);
 		}
 		return sendToBackAction;
 	}
-	
+
 	public ActionFactory.BringToFrontAction getBringToFrontAction() {
 		if (bringToFrontAction == null) {
 			bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
@@ -257,11 +260,19 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 				canvasPanel.scrollRectToVisible(visibleRect);
 				canvasPanel.revalidate();
 			}
-			// canvasPanel.validate();
-			// canvasPanel.repaint();
 			break;
 		case ZOOM_CHANGED:
+			Rectangle visibleRect = canvasPanel.getVisibleRect();
 			refreshSize();
+			// Try to set the visible area to be centered with the previous
+			// one.
+			double zoomFactor = (Double) params[0] / zoomLevel;
+			visibleRect.setBounds((int) (visibleRect.x * zoomFactor),
+					(int) (visibleRect.y * zoomFactor), visibleRect.width, visibleRect.height);
+			canvasPanel.scrollRectToVisible(visibleRect);
+			canvasPanel.revalidate();
+			
+			zoomLevel = (Double) params[0];
 			break;
 		case REPAINT:
 			canvasPanel.repaint();
