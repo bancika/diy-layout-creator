@@ -26,7 +26,7 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 	public static Size DEFAULT_SIZE = new Size(1d / 2, SizeUnit.in);
 	public static Color BODY_COLOR = Color.decode("#EAADEA");
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
-	public static Color MARKER_COLOR = Color.gray;// Color.decode("#C3E4ED");
+	public static Color MARKER_COLOR = Color.gray;
 	public static Color TICK_COLOR = Color.white;
 
 	private Capacitance value = new Capacitance(1d, CapacitanceUnit.uF);
@@ -134,12 +134,12 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 	public void setMarkerColor(Color coverColor) {
 		this.markerColor = coverColor;
 	}
-	
+
 	@EditableProperty(name = "Tick")
 	public Color getTickColor() {
 		return tickColor;
 	}
-	
+
 	public void setTickColor(Color tickColor) {
 		this.tickColor = tickColor;
 	}
