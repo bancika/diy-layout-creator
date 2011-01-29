@@ -25,7 +25,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "test", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "IC with rectangular housing and two parallel rows of pins", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;

@@ -32,6 +32,8 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	public Resistor() {
 		super();
+		this.bodyColor = BODY_COLOR;
+		this.borderColor = BORDER_COLOR;
 	}
 
 	@EditableProperty
@@ -61,16 +63,6 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	@Override
 	protected Size getDefaultWidth() {
 		return DEFAULT_WIDTH;
-	}
-
-	@Override
-	protected Color getDefaultBodyColor() {
-		return BODY_COLOR;
-	}
-
-	@Override
-	protected Color getDefaultBorderColor() {
-		return BORDER_COLOR;
 	}
 
 	@EditableProperty(name = "Color code")

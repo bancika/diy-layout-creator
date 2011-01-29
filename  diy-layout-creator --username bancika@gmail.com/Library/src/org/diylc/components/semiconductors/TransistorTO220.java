@@ -7,8 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
@@ -24,8 +23,8 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Transistor (TO-92 package)", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "Transistor with small plastic or epoxy body", stretchable = false, zOrder = IDIYComponent.COMPONENT)
-public class TransistorTO92 extends AbstractTransparentComponent<String> {
+@ComponentDescriptor(name = "Transistor (TO-220 package)", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "Transistors with metal tab for heat sink mounting", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+public class TransistorTO220 extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,19 +32,25 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 	public static Color BORDER_COLOR = Color.gray.darker();
 	public static Color PIN_COLOR = Color.decode("#00B2EE");
 	public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
+	public static Color TAB_COLOR = Color.decode("#C3E4ED");
+	public static Color TAB_BORDER_COLOR = TAB_COLOR.darker();
 	public static Color LABEL_COLOR = Color.white;
 	public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
 	public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
-	public static Size BODY_DIAMETER = new Size(0.2d, SizeUnit.in);
+	public static Size BODY_WIDTH = new Size(0.4d, SizeUnit.in);
+	public static Size BODY_HEIGHT = new Size(4.5d, SizeUnit.mm);
+	public static Size TAB_THICKNESS = new Size(0.05d, SizeUnit.in);
 
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
 	private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
-	private Area body;
+	private Shape[] body;
 	private Color bodyColor = BODY_COLOR;
 	private Color borderColor = BORDER_COLOR;
+	private Color tabColor = TAB_COLOR;
+	private Color tabBorderColor = TAB_BORDER_COLOR;
 
-	public TransistorTO92() {
+	public TransistorTO220() {
 		super();
 		updateControlPoints();
 	}
@@ -124,37 +129,40 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		}
 	}
 
-	public Area getBody() {
+	public Shape[] getBody() {
 		if (body == null) {
+			body = new Shape[2];
 			int x = controlPoints[0].x;
 			int y = controlPoints[0].y;
 			int pinSpacing = PIN_SPACING.convertToPixels();
-			int bodyDiameter = getClosestOdd(BODY_DIAMETER.convertToPixels());
+			int bodyWidth = getClosestOdd(BODY_WIDTH.convertToPixels());
+			int bodyHeight = getClosestOdd(BODY_HEIGHT.convertToPixels());
+			int tabThickness = TAB_THICKNESS.convertToPixels();
 
 			switch (orientation) {
 			case DEFAULT:
-				body = new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y + pinSpacing
-						- bodyDiameter / 2, bodyDiameter, bodyDiameter));
-				body.subtract(new Area(new Rectangle2D.Double(x - bodyDiameter, y + pinSpacing
-						- bodyDiameter / 2, 3 * bodyDiameter / 4, bodyDiameter)));
+				body[0] = new Rectangle2D.Double(x - bodyHeight / 2,
+						y + pinSpacing - bodyWidth / 2, bodyHeight, bodyWidth);
+				body[1] = new Rectangle2D.Double(x + bodyHeight / 2 - tabThickness, y + pinSpacing
+						- bodyWidth / 2, tabThickness, bodyWidth);
 				break;
 			case _90:
-				body = new Area(new Ellipse2D.Double(x - pinSpacing - bodyDiameter / 2, y
-						- bodyDiameter / 2, bodyDiameter, bodyDiameter));
-				body.subtract(new Area(new Rectangle2D.Double(x - pinSpacing - bodyDiameter / 2, y
-						- bodyDiameter, bodyDiameter, 3 * bodyDiameter / 4)));
+				body[0] = new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2,
+						y - bodyHeight / 2, bodyWidth, bodyHeight);
+				body[1] = new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + bodyHeight / 2
+						- tabThickness, bodyWidth, tabThickness);
 				break;
 			case _180:
-				body = new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y - pinSpacing
-						- bodyDiameter / 2, bodyDiameter, bodyDiameter));
-				body.subtract(new Area(new Rectangle2D.Double(x + bodyDiameter / 4, y - pinSpacing
-						- bodyDiameter / 2, 3 * bodyDiameter / 4, bodyDiameter)));
+				body[0] = new Rectangle2D.Double(x - bodyHeight / 2,
+						y - pinSpacing - bodyWidth / 2, bodyHeight, bodyWidth);
+				body[1] = new Rectangle2D.Double(x - bodyHeight / 2,
+						y - pinSpacing - bodyWidth / 2, tabThickness, bodyWidth);
 				break;
 			case _270:
-				body = new Area(new Ellipse2D.Double(x + pinSpacing - bodyDiameter / 2, y
-						- bodyDiameter / 2, bodyDiameter, bodyDiameter));
-				body.subtract(new Area(new Rectangle2D.Double(x + pinSpacing - bodyDiameter / 2, y
-						+ bodyDiameter / 4, bodyDiameter, 3 * bodyDiameter / 4)));
+				body[0] = new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2,
+						y - bodyHeight / 2, bodyWidth, bodyHeight);
+				body[1] = new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2,
+						y - bodyHeight / 2, bodyWidth, tabThickness);
 				break;
 			default:
 				throw new RuntimeException("Unexpected orientation: " + orientation);
@@ -167,7 +175,8 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
 		int pinSize = PIN_SIZE.convertToPixels() / 2 * 2;
-		Area mainArea = getBody();
+		Shape mainArea = getBody()[0];
+		Shape tabArea = getBody()[1];
 		Composite oldComposite = g2d.getComposite();
 		if (alpha < MAX_ALPHA) {
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
@@ -175,10 +184,14 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		}
 		g2d.setColor(bodyColor);
 		g2d.fill(mainArea);
+		g2d.setColor(tabColor);
+		g2d.fill(tabArea);
 		g2d.setComposite(oldComposite);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+		g2d.setColor(tabBorderColor);
+		g2d.draw(tabArea);
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
-		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.draw(mainArea);
 
 		for (Point point : controlPoints) {
@@ -204,14 +217,14 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		int margin = 3 * width / 32;
-		Area area = new Area(new Ellipse2D.Double(margin / 2, margin, width - 2 * margin, width - 2
-				* margin));
-		area.subtract(new Area(new Rectangle2D.Double(0, 0, 2 * margin, height)));
 		g2d.setColor(BODY_COLOR);
-		g2d.fill(area);
+		int margin = 2 * width / 32;
+		int thickness = 7 * width / 32;
+		g2d.fillRect(margin, (height - thickness) / 2, width - margin * 2, thickness);
+		g2d.setColor(TAB_COLOR);
+		g2d.fillRect(margin, (height + thickness) / 2 - margin - 1, width - margin * 2, margin);
 		g2d.setColor(BORDER_COLOR);
-		g2d.draw(area);
+		g2d.drawRect(margin, (height - thickness) / 2, width - margin * 2, thickness);
 	}
 
 	@EditableProperty(name = "Body")
@@ -230,5 +243,23 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
+	}
+
+	@EditableProperty(name = "Tab")
+	public Color getTabColor() {
+		return tabColor;
+	}
+
+	public void setTabColor(Color tabColor) {
+		this.tabColor = tabColor;
+	}
+
+	@EditableProperty(name = "Tab border")
+	public Color getTabBorderColor() {
+		return tabBorderColor;
+	}
+
+	public void setTabBorderColor(Color tabBorderColor) {
+		this.tabBorderColor = tabBorderColor;
 	}
 }

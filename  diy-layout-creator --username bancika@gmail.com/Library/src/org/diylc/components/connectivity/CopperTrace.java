@@ -15,7 +15,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace", description = "", zOrder = IDIYComponent.TRACE)
+@ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace", description = "Straight copper trace", zOrder = IDIYComponent.TRACE)
 public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
@@ -107,16 +107,6 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 	@Deprecated
 	@Override
 	public void setValue(Void value) {
-	}
-
-	@Override
-	protected Color getDefaultBodyColor() {
-		return null;
-	}
-
-	@Override
-	protected Color getDefaultBorderColor() {
-		return null;
 	}
 
 	@Override
