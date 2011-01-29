@@ -53,7 +53,7 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d) {
-		int totalDiameter = getClosestOdd(getWidth().convertToPixels());
+		int totalDiameter = getClosestOdd(getLength().convertToPixels());
 		int coverDiameter = getClosestOdd(totalDiameter * 3 / 4);
 		g2d.setColor(coverColor);
 		int position = (totalDiameter - coverDiameter) / 2;
@@ -66,26 +66,26 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 	}
 
 	@Override
-	protected Size getDefaultHeight() {
+	protected Size getDefaultWidth() {
 		return null;
 	}
 
 	@Deprecated
 	@Override
-	public Size getHeight() {
-		return super.getHeight();
+	public Size getWidth() {
+		return super.getWidth();
 	}
 
 	@Override
-	protected Size getDefaultWidth() {
+	protected Size getDefaultLength() {
 		// We'll reuse width property to set the diameter.
 		return DEFAULT_SIZE;
 	}
 
 	@EditableProperty(name = "Diameter")
 	@Override
-	public Size getWidth() {
-		return super.getWidth();
+	public Size getLength() {
+		return super.getLength();
 	}
 
 	@EditableProperty(name = "Cover")
@@ -99,7 +99,7 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 
 	@Override
 	protected Shape getBodyShape() {
-		return new Ellipse2D.Double(0f, 0f, getClosestOdd(getWidth().convertToPixels()),
-				getClosestOdd(getWidth().convertToPixels()));
+		return new Ellipse2D.Double(0f, 0f, getClosestOdd(getLength().convertToPixels()),
+				getClosestOdd(getLength().convertToPixels()));
 	}
 }

@@ -260,8 +260,8 @@ public class ProjectFileManager {
 					} catch (Exception e) {
 						LOG.debug("Could not set value of " + nameAttr);
 					}
-					resistor.setWidth(new Size(6d, SizeUnit.mm));
-					resistor.setHeight(new Size(2d, SizeUnit.mm));
+					resistor.setLength(new Size(6d, SizeUnit.mm));
+					resistor.setWidth(new Size(2d, SizeUnit.mm));
 					resistor.setControlPoint(point1, 0);
 					resistor.setControlPoint(point2, 1);
 					component = resistor;
@@ -274,8 +274,8 @@ public class ProjectFileManager {
 					} catch (Exception e) {
 						LOG.debug("Could not set value of " + nameAttr);
 					}
-					capacitor.setWidth(new Size(6d, SizeUnit.mm));
-					capacitor.setHeight(new Size(2d, SizeUnit.mm));
+					capacitor.setLength(new Size(6d, SizeUnit.mm));
+					capacitor.setWidth(new Size(2d, SizeUnit.mm));
 					capacitor.setControlPoint(point1, 0);
 					capacitor.setControlPoint(point2, 1);
 					component = capacitor;
@@ -290,13 +290,13 @@ public class ProjectFileManager {
 					}
 					String sizeAttr = node.getAttributes().getNamedItem("Size").getNodeValue();
 					if (sizeAttr.equalsIgnoreCase("small")) {
-						capacitor.setWidth(new Size(3d, SizeUnit.mm));
+						capacitor.setLength(new Size(3d, SizeUnit.mm));
 					} else if (sizeAttr.equalsIgnoreCase("medium")) {
-						capacitor.setWidth(new Size(5d, SizeUnit.mm));
+						capacitor.setLength(new Size(5d, SizeUnit.mm));
 					} else if (sizeAttr.equalsIgnoreCase("large")) {
-						capacitor.setWidth(new Size(7d, SizeUnit.mm));
+						capacitor.setLength(new Size(7d, SizeUnit.mm));
 					} else {
-						capacitor.setWidth(new Size(4d, SizeUnit.mm));
+						capacitor.setLength(new Size(4d, SizeUnit.mm));
 					}
 					capacitor.setControlPoint(point1, 0);
 					capacitor.setControlPoint(point2, 1);
@@ -310,8 +310,8 @@ public class ProjectFileManager {
 					} catch (Exception e) {
 						LOG.debug("Could not set value of " + nameAttr);
 					}
-					capacitor.setWidth(new Size(6d, SizeUnit.mm));
-					capacitor.setHeight(new Size(2d, SizeUnit.mm));
+					capacitor.setLength(new Size(6d, SizeUnit.mm));
+					capacitor.setWidth(new Size(2d, SizeUnit.mm));
 					capacitor.setControlPoint(point1, 0);
 					capacitor.setControlPoint(point2, 1);
 					component = capacitor;

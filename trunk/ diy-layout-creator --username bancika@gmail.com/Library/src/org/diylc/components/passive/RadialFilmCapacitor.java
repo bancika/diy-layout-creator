@@ -53,19 +53,19 @@ public class RadialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 	}
 
 	@Override
-	protected Size getDefaultHeight() {
+	protected Size getDefaultWidth() {
 		return DEFAULT_HEIGHT;
 	}
 
 	@Override
-	protected Size getDefaultWidth() {
+	protected Size getDefaultLength() {
 		return DEFAULT_WIDTH;
 	}
 
 	@Override
 	protected Shape getBodyShape() {
-		double radius = getHeight().convertToPixels() * 0.7;
-		return new RoundRectangle2D.Double(0f, 0f, getWidth().convertToPixels(),
-				getClosestOdd(getHeight().convertToPixels()), radius, radius);
+		double radius = getWidth().convertToPixels() * 0.7;
+		return new RoundRectangle2D.Double(0f, 0f, getLength().convertToPixels(),
+				getClosestOdd(getWidth().convertToPixels()), radius, radius);
 	}
 }

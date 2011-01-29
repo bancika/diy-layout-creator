@@ -56,12 +56,12 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	}
 
 	@Override
-	protected Size getDefaultHeight() {
+	protected Size getDefaultWidth() {
 		return DEFAULT_HEIGHT;
 	}
 
 	@Override
-	protected Size getDefaultWidth() {
+	protected Size getDefaultLength() {
 		return DEFAULT_WIDTH;
 	}
 
@@ -76,8 +76,8 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	@Override
 	protected Shape getBodyShape() {
-		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(),
-				getClosestOdd(getHeight().convertToPixels()));
+		return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(),
+				getClosestOdd(getWidth().convertToPixels()));
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 		if (colorCode == ResistorColorCode.NONE) {
 			return;
 		}
-		int height = getClosestOdd(getHeight().convertToPixels());
+		int height = getClosestOdd(getWidth().convertToPixels());
 		Color[] bands = value.getColorCode(colorCode);
 		int x = 4;
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));

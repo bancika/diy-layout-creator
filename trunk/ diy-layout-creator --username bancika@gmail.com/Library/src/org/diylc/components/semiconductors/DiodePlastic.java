@@ -59,27 +59,27 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 	}
 
 	@Override
-	protected Size getDefaultHeight() {
+	protected Size getDefaultWidth() {
 		return DEFAULT_HEIGHT;
 	}
 
 	@Override
-	protected Size getDefaultWidth() {
+	protected Size getDefaultLength() {
 		return DEFAULT_WIDTH;
 	}
 
 	@Override
 	protected Shape getBodyShape() {
-		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(),
-				getClosestOdd(getHeight().convertToPixels()));
+		return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(),
+				getClosestOdd(getWidth().convertToPixels()));
 	}
 
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d) {
 		g2d.setColor(markerColor);
-		int width = getWidth().convertToPixels();
+		int width = getLength().convertToPixels();
 		int markerWidth = MARKER_WIDTH.convertToPixels();
-		g2d.fillRect(width - markerWidth, 0, markerWidth, getClosestOdd(getHeight()
+		g2d.fillRect(width - markerWidth, 0, markerWidth, getClosestOdd(getWidth()
 				.convertToPixels()));
 	}
 

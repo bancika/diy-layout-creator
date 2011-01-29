@@ -207,7 +207,9 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		int margin = 3 * width / 32;
 		Area area = new Area(new Ellipse2D.Double(margin / 2, margin, width - 2 * margin, width - 2
 				* margin));
-		area.subtract(new Area(new Rectangle2D.Double(0, 0, 2 * margin, height)));
+		// area.subtract(new Area(new Rectangle2D.Double(0, 0, 2 * margin,
+		// height)));
+		area.intersect(new Area(new Rectangle2D.Double(2 * margin, 0, width, height)));
 		g2d.setColor(BODY_COLOR);
 		g2d.fill(area);
 		g2d.setColor(BORDER_COLOR);

@@ -53,18 +53,18 @@ public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacita
 	}
 
 	@Override
-	protected Size getDefaultHeight() {
+	protected Size getDefaultWidth() {
 		return DEFAULT_HEIGHT;
 	}
 
 	@Override
-	protected Size getDefaultWidth() {
+	protected Size getDefaultLength() {
 		return DEFAULT_WIDTH;
 	}
 
 	@Override
 	protected Shape getBodyShape() {
-		return new Ellipse2D.Double(0f, 0f, getWidth().convertToPixels(), getClosestOdd(getHeight()
+		return new Ellipse2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth()
 				.convertToPixels()));
 	}
 }

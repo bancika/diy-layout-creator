@@ -35,8 +35,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	public static Size LEAD_THICKNESS = new Size(0.6d, SizeUnit.mm);
 	public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
+	protected Size length;
 	protected Size width;
-	protected Size height;
 	protected Point[] points = new Point[] {
 			new Point((int) (-DEFAULT_SIZE.convertToPixels() / 2), 0),
 			new Point(DEFAULT_SIZE.convertToPixels() / 2, 0) };
@@ -48,8 +48,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	protected AbstractLeadedComponent() {
 		super();
 		try {
+			this.length = getDefaultLength().clone();
 			this.width = getDefaultWidth().clone();
-			this.height = getDefaultHeight().clone();
 		} catch (CloneNotSupportedException e) {
 			// This should never happen because Size supports cloning.
 		} catch (NullPointerException e) {
@@ -145,16 +145,16 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	}
 
 	/**
-	 * @return default component width.
+	 * @return default component length.
 	 */
-	protected abstract Size getDefaultWidth();
+	protected abstract Size getDefaultLength();
 
 	/**
-	 * Returns default component height.
+	 * Returns default component width.
 	 * 
 	 * @return
 	 */
-	protected abstract Size getDefaultHeight();
+	protected abstract Size getDefaultWidth();
 
 	/**
 	 * @return shape that represents component body. Shape should not be
@@ -220,22 +220,22 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		this.borderColor = borderColor;
 	}
 
-	@EditableProperty(defaultable = true)
+	@EditableProperty(name = "Length", defaultable = true)
+	public Size getLength() {
+		return length;
+	}
+
+	public void setLength(Size length) {
+		this.length = length;
+	}
+
+	@EditableProperty(name = "Width", defaultable = true)
 	public Size getWidth() {
 		return width;
 	}
 
 	public void setWidth(Size width) {
 		this.width = width;
-	}
-
-	@EditableProperty(defaultable = true)
-	public Size getHeight() {
-		return height;
-	}
-
-	public void setHeight(Size height) {
-		this.height = height;
 	}
 
 	@EditableProperty
