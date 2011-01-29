@@ -18,6 +18,9 @@ public class ToolBox implements IPlugIn {
 	private static final Logger LOG = Logger.getLogger(StatusBar.class);
 	
 	private ISwingUI swingUI;
+	private IPlugInPort plugInPort;
+	
+	private ComponentTabbedPane componentTabbedPane;
 
 	public ToolBox(ISwingUI swingUI) {
 		this.swingUI = swingUI;
@@ -25,11 +28,19 @@ public class ToolBox implements IPlugIn {
 
 	@Override
 	public void connect(IPlugInPort plugInPort) {
+		this.plugInPort = plugInPort;
 		try {
-			swingUI.injectGUIComponent(new ComponentTabbedPane(plugInPort), SwingConstants.TOP);
+			swingUI.injectGUIComponent(getComponentTabbedPane(), SwingConstants.TOP);
 		} catch (BadPositionException e) {
 			LOG.error("Could not install the toolbox", e);
 		}
+	}
+	
+	public ComponentTabbedPane getComponentTabbedPane() {
+		if (componentTabbedPane == null) {
+			componentTabbedPane = new ComponentTabbedPane(plugInPort);
+		}
+		return componentTabbedPane;
 	}
 
 	@Override
