@@ -95,6 +95,10 @@
 					<description>Resistor can show color bands</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Electrolytic capacitor has a new icon and new looks</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added support for creating and loading templates</description>
 				</com.diyfever.gui.update.Change>
