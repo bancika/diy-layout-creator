@@ -29,6 +29,8 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 
 	public AxialFilmCapacitor() {
 		super();
+		this.bodyColor = BODY_COLOR;
+		this.borderColor = BORDER_COLOR;
 	}
 
 	@EditableProperty
@@ -58,16 +60,6 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 	@Override
 	protected Size getDefaultWidth() {
 		return DEFAULT_WIDTH;
-	}
-
-	@Override
-	protected Color getDefaultBodyColor() {
-		return BODY_COLOR;
-	}
-
-	@Override
-	protected Color getDefaultBorderColor() {
-		return BORDER_COLOR;
 	}
 
 	@Override

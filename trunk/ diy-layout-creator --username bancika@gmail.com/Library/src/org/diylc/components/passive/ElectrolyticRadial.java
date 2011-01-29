@@ -15,7 +15,7 @@ import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Electrolytic Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "test", zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Electrolytic Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT)
 public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
@@ -27,8 +27,12 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 
 	private Capacitance value = new Capacitance(1d, CapacitanceUnit.uF);
 
+	private Color coverColor = COVER_COLOR;
+
 	public ElectrolyticRadial() {
 		super();
+		this.bodyColor = BODY_COLOR;
+		this.borderColor = BORDER_COLOR;
 	}
 
 	@EditableProperty
@@ -51,10 +55,10 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 	protected void decorateComponentBody(Graphics2D g2d) {
 		int totalDiameter = getClosestOdd(getWidth().convertToPixels());
 		int coverDiameter = getClosestOdd(totalDiameter * 3 / 4);
-		g2d.setColor(COVER_COLOR);
+		g2d.setColor(coverColor);
 		int position = (totalDiameter - coverDiameter) / 2;
 		g2d.fillOval(position, position, coverDiameter, coverDiameter);
-		g2d.setColor(COVER_COLOR.darker());
+		g2d.setColor(coverColor.darker());
 		g2d.drawLine(position + coverDiameter / 5, position + coverDiameter / 5, position + 4
 				* coverDiameter / 5, position + 4 * coverDiameter / 5);
 		g2d.drawLine(position + coverDiameter / 5, position + 4 * coverDiameter / 5, position + 4
@@ -84,14 +88,13 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 		return super.getWidth();
 	}
 
-	@Override
-	protected Color getDefaultBodyColor() {
-		return BODY_COLOR;
+	@EditableProperty(name = "Cover")
+	public Color getCoverColor() {
+		return coverColor;
 	}
 
-	@Override
-	protected Color getDefaultBorderColor() {
-		return BORDER_COLOR;
+	public void setCoverColor(Color coverColor) {
+		this.coverColor = coverColor;
 	}
 
 	@Override

@@ -277,12 +277,13 @@ public class StatusBar extends JPanel implements IPlugIn {
 				} else {
 					count = "second";
 				}
-				statusText = "Click on the canvas to set the " + count + " control point of a new "
-						+ componentSlot.getName() + " or press Esc to cancel";
+				statusText = "<html>Click on the canvas to set the " + count
+						+ " control point of a new <font color='blue'>" + componentSlot.getName()
+						+ "</font> or press <b>Esc</b> to cancel</html>";
 				break;
 			case SINGLE_CLICK:
-				statusText = "Click on the canvas to create a new " + componentSlot.getName()
-						+ " or press Esc to cancel";
+				statusText = "<html>Click on the canvas to create a new <font color='blue'>"
+						+ componentSlot.getName() + "</font> or press <b>Esc</b> to cancel</html>";
 				break;
 			}
 		}

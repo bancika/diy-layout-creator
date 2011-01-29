@@ -75,16 +75,6 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 	}
 
 	@Override
-	protected Color getDefaultBodyColor() {
-		return null;
-	}
-
-	@Override
-	protected Color getDefaultBorderColor() {
-		return null;
-	}
-
-	@Override
 	protected Shape getBodyShape() {
 		return null;
 	}

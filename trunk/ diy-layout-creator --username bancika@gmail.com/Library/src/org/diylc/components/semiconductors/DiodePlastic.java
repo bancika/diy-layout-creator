@@ -13,7 +13,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Diode (plastic)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "test", zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Diode (plastic)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Plastic diode, like most rectifier, zener, schottky, etc.", zOrder = IDIYComponent.COMPONENT)
 public class DiodePlastic extends AbstractLeadedComponent<String> {
 
 	private static final long serialVersionUID = 1L;
@@ -27,10 +27,13 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private String value = "";
+	private Color markerColor = MARKER_COLOR;
 
 	public DiodePlastic() {
 		super();
 		this.labelColor = LABEL_COLOR;
+		this.bodyColor = BODY_COLOR;
+		this.borderColor = BORDER_COLOR;
 	}
 
 	@EditableProperty
@@ -66,16 +69,6 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 	}
 
 	@Override
-	protected Color getDefaultBodyColor() {
-		return BODY_COLOR;
-	}
-
-	@Override
-	protected Color getDefaultBorderColor() {
-		return BORDER_COLOR;
-	}
-
-	@Override
 	protected Shape getBodyShape() {
 		return new Rectangle2D.Double(0f, 0f, getWidth().convertToPixels(),
 				getClosestOdd(getHeight().convertToPixels()));
@@ -83,10 +76,19 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d) {
-		g2d.setColor(MARKER_COLOR);
+		g2d.setColor(markerColor);
 		int width = getWidth().convertToPixels();
 		int markerWidth = MARKER_WIDTH.convertToPixels();
-		g2d.fillRect(width - markerWidth, 0, markerWidth, getClosestOdd(getHeight().convertToPixels()));
-		super.decorateComponentBody(g2d);
+		g2d.fillRect(width - markerWidth, 0, markerWidth, getClosestOdd(getHeight()
+				.convertToPixels()));
+	}
+
+	@EditableProperty(name = "Marker")
+	public Color getMarkerColor() {
+		return markerColor;
+	}
+
+	public void setMarkerColor(Color markerColor) {
+		this.markerColor = markerColor;
 	}
 }

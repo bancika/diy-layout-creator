@@ -40,8 +40,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	protected Point[] points = new Point[] {
 			new Point((int) (-DEFAULT_SIZE.convertToPixels() / 2), 0),
 			new Point(DEFAULT_SIZE.convertToPixels() / 2, 0) };
-	protected Color bodyColor = getDefaultBodyColor();
-	protected Color borderColor = getDefaultBorderColor();
+	protected Color bodyColor = Color.white;
+	protected Color borderColor = Color.black;
 	protected Color labelColor = LABEL_COLOR;
 	protected Display display = Display.NAME;
 
@@ -161,16 +161,6 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	 *         transformed and should be referenced to (0, 0).
 	 */
 	protected abstract Shape getBodyShape();
-
-	/**
-	 * @return default component body color.
-	 */
-	protected abstract Color getDefaultBodyColor();
-
-	/**
-	 * @return default component border color.
-	 */
-	protected abstract Color getDefaultBorderColor();
 
 	/**
 	 * @return default lead thickness. Override this method to change it.
