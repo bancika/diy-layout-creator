@@ -26,6 +26,7 @@ public class RadialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Capacitance value = new Capacitance(123d, CapacitanceUnit.nF);
+	private Voltage voltage = Voltage._63V;
 
 	public RadialFilmCapacitor() {
 		super();
@@ -41,6 +42,16 @@ public class RadialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
+	
+	@EditableProperty
+	public Voltage getVoltage() {
+		return voltage;
+	}
+
+	public void setVoltage(Voltage voltage) {
+		this.voltage = voltage;
+	}
+
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.rotate(-Math.PI / 4, width / 2, height / 2);

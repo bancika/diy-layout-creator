@@ -19,7 +19,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT)
-public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
+public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,12 +30,13 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 	public static Color TICK_COLOR = Color.white;
 
 	private Capacitance value = new Capacitance(1d, CapacitanceUnit.uF);
+	private Voltage voltage = Voltage._63V;
 
 	private Color markerColor = MARKER_COLOR;
 	private Color tickColor = TICK_COLOR;
 	private boolean polarized = true;
 
-	public ElectrolyticRadial() {
+	public RadialElectrolytic() {
 		super();
 		this.bodyColor = BODY_COLOR;
 		this.borderColor = BORDER_COLOR;
@@ -49,6 +50,16 @@ public class ElectrolyticRadial extends AbstractLeadedComponent<Capacitance> {
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
+	
+	@EditableProperty
+	public Voltage getVoltage() {
+		return voltage;
+	}
+
+	public void setVoltage(Voltage voltage) {
+		this.voltage = voltage;
+	}
+
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setColor(BODY_COLOR);

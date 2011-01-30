@@ -29,6 +29,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Resistance value = new Resistance(123d, ResistanceUnit.K);
+	private Power power = Power.HALF;
 	private ResistorColorCode colorCode = ResistorColorCode._5_BAND;
 
 	public Resistor() {
@@ -44,6 +45,15 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	public void setValue(Resistance value) {
 		this.value = value;
+	}
+	
+	@EditableProperty
+	public Power getPower() {
+		return power;
+	}
+	
+	public void setPower(Power power) {
+		this.power = power;
 	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {

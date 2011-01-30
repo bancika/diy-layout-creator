@@ -29,6 +29,7 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 	public static Color TICK_COLOR = Color.white;
 
 	private Capacitance value = new Capacitance(1d, CapacitanceUnit.uF);
+	private Voltage voltage = Voltage._63V;
 
 	private Color markerColor = MARKER_COLOR;
 	private Color tickColor = TICK_COLOR;
@@ -47,6 +48,15 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
 	public void setValue(Capacitance value) {
 		this.value = value;
+	}
+
+	@EditableProperty
+	public Voltage getVoltage() {
+		return voltage;
+	}
+
+	public void setVoltage(Voltage voltage) {
+		this.voltage = voltage;
 	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
