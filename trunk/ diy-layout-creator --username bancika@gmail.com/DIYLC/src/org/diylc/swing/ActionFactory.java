@@ -124,11 +124,11 @@ public class ActionFactory {
 	public DeleteSelectionAction createDeleteSelectionAction(IPlugInPort plugInPort) {
 		return new DeleteSelectionAction(plugInPort);
 	}
-	
+
 	public SendToBackAction createSendToBackAction(IPlugInPort plugInPort) {
 		return new SendToBackAction(plugInPort);
 	}
-	
+
 	public BringToFrontAction createBringToFrontAction(IPlugInPort plugInPort) {
 		return new BringToFrontAction(plugInPort);
 	}
@@ -145,6 +145,8 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "New");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
+					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlainYellow.getIcon());
 		}
 
@@ -184,6 +186,8 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			this.swingUI = swingUI;
 			putValue(AbstractAction.NAME, "Open");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
+					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.FolderOut.getIcon());
 		}
 
@@ -232,6 +236,8 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			this.swingUI = swingUI;
 			putValue(AbstractAction.NAME, "Save");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
+					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
 		}
 
@@ -299,6 +305,8 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			this.swingUI = swingUI;
 			putValue(AbstractAction.NAME, "Save As");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
+					ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
 		}
 
@@ -457,6 +465,8 @@ public class ActionFactory {
 			super();
 			this.drawingProvider = drawingProvider;
 			putValue(AbstractAction.NAME, "Print...");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P,
+					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Print.getIcon());
 		}
 
@@ -657,8 +667,6 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Edit Project");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
-					ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentEdit.getIcon());
 		}
 
@@ -741,7 +749,7 @@ public class ActionFactory {
 			plugInPort.deleteSelectedComponents();
 		}
 	}
-	
+
 	public static class SendToBackAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -761,7 +769,7 @@ public class ActionFactory {
 			plugInPort.sendSelectionToBack();
 		}
 	}
-	
+
 	public static class BringToFrontAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
