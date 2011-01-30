@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.GridType;
@@ -38,6 +39,8 @@ import com.diyfever.gui.simplemq.MessageDispatcher;
  */
 public class DrawingManager {
 
+	private static final Logger LOG = Logger.getLogger(DrawingManager.class);
+
 	public static int CONTROL_POINT_SIZE = 7;
 
 	public static final String ANTIALIASING_KEY = "anti-aliasing";
@@ -56,6 +59,7 @@ public class DrawingManager {
 
 	private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
 	private Composite lockedComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
+	private List<IDIYComponent<?>> failedComponents = new ArrayList<IDIYComponent<?>>();
 
 	private double zoomLevel = 1d;// ConfigurationManager.getInstance().readDouble(ZOOM_KEY,
 	// 1d);
@@ -69,12 +73,31 @@ public class DrawingManager {
 		lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
 	}
 
-	public void drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
-			IComponentFiler filter, Rectangle selectionRect, List<IDIYComponent<?>> selectedComponents,
-			Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents,
-			List<Point> controlPointSlot, IDIYComponent<?> componentSlot, boolean dragInProgress) {
+	/**
+	 * Paints the project onto the canvas and returns the list of components
+	 * that failed to draw.
+	 * 
+	 * @param g2d
+	 * @param project
+	 * @param drawOptions
+	 * @param filter
+	 * @param selectionRect
+	 * @param selectedComponents
+	 * @param lockedComponents
+	 * @param groupedComponents
+	 * @param controlPointSlot
+	 * @param componentSlot
+	 * @param dragInProgress
+	 * @return
+	 */
+	public List<IDIYComponent<?>> drawProject(Graphics2D g2d, Project project,
+			Set<DrawOption> drawOptions, IComponentFiler filter, Rectangle selectionRect,
+			List<IDIYComponent<?>> selectedComponents, Set<IDIYComponent<?>> lockedComponents,
+			Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
+			IDIYComponent<?> componentSlot, boolean dragInProgress) {
+		failedComponents.clear();
 		if (project == null) {
-			return;
+			return failedComponents;
 		}
 		G2DWrapper g2dWrapper = new G2DWrapper(g2d);
 
@@ -158,7 +181,12 @@ public class DrawingManager {
 				g2d.setComposite(lockedComposite);
 			}
 			// Draw the component through the g2dWrapper.
-			component.draw(g2dWrapper, state, project, g2dWrapper);
+			try {
+				component.draw(g2dWrapper, state, project, g2dWrapper);
+			} catch (Exception e) {
+				LOG.error("Error drawing " + component.getName(), e);
+				failedComponents.add(component);
+			}
 			Area area = g2dWrapper.finishedDrawingComponent();
 			if (trackArea) {
 				componentAreaMap.put(component, area);
@@ -214,7 +242,12 @@ public class DrawingManager {
 		if (componentSlot != null) {
 			g2dWrapper.startedDrawingComponent();
 			g2dWrapper.setComposite(slotComposite);
-			componentSlot.draw(g2dWrapper, ComponentState.NORMAL, project, g2dWrapper);
+			try {
+				componentSlot.draw(g2dWrapper, ComponentState.NORMAL, project, g2dWrapper);
+			} catch (Exception e) {
+				LOG.error("Error drawing " + componentSlot.getName(), e);
+				failedComponents.add(componentSlot);
+			}
 			g2dWrapper.finishedDrawingComponent();
 		}
 
@@ -258,6 +291,8 @@ public class DrawingManager {
 				g2d.draw(area);
 			}
 		}
+
+		return failedComponents;
 	}
 
 	public double getZoomLevel() {

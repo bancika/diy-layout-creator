@@ -66,6 +66,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 	private List<String> componentNamesUnderCursor;
 	private List<String> selectedComponentNames;
 	private List<String> stuckComponentNames;
+	private String statusMessage;
 
 	public StatusBar(ISwingUI swingUI) {
 		super();
@@ -196,7 +197,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
 		return EnumSet.of(EventType.ZOOM_CHANGED, EventType.SLOT_CHANGED,
-				EventType.AVAILABLE_CTRL_POINTS_CHANGED, EventType.SELECTION_CHANGED);
+				EventType.AVAILABLE_CTRL_POINTS_CHANGED, EventType.SELECTION_CHANGED,
+				EventType.STATUS_MESSAGE_CHANGED);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -247,11 +249,13 @@ public class StatusBar extends JPanel implements IPlugIn {
 			Collections.sort(componentNamesUnderCursor);
 			refreshStatusText();
 			break;
+		case STATUS_MESSAGE_CHANGED:
+			statusMessage = (String) params[0];
 		}
 	}
 
 	private void refreshStatusText() {
-		String statusText = "";
+		String statusText = this.statusMessage;
 		if (componentSlot == null) {
 			if (componentNamesUnderCursor != null && !componentNamesUnderCursor.isEmpty()) {
 				String formattedNames = Utils.toCommaString(componentNamesUnderCursor);
@@ -265,8 +269,6 @@ public class StatusBar extends JPanel implements IPlugIn {
 					builder.append(")");
 				}
 				statusText = "<html>Selection: " + builder.toString() + "</html>";
-			} else {
-				statusText = "";
 			}
 		} else {
 			switch (componentSlot.getCreationMethod()) {

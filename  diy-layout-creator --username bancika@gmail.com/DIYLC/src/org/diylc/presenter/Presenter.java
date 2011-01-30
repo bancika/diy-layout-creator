@@ -299,7 +299,8 @@ public class Presenter implements IPlugInPort {
 				groupedComponents.add(component);
 			}
 		}
-		// Don't draw the component in the slot if both control points match.
+		// Don't draw the component in the slot if both control points
+		// match.
 		IDIYComponent<?> componentSlotToDraw;
 		if (instantiationManager.getFirstControlPoint() != null
 				&& instantiationManager.getPotentialControlPoint() != null
@@ -309,10 +310,23 @@ public class Presenter implements IPlugInPort {
 		} else {
 			componentSlotToDraw = instantiationManager.getComponentSlot();
 		}
-		drawingManager.drawProject(g2d, currentProject, drawOptions, filter, selectionRect,
-				selectedComponents, getLockedComponents(), groupedComponents, Arrays.asList(
-						instantiationManager.getFirstControlPoint(), instantiationManager
-								.getPotentialControlPoint()), componentSlotToDraw, dragInProgress);
+		List<IDIYComponent<?>> failedComponents = drawingManager.drawProject(g2d, currentProject,
+				drawOptions, filter, selectionRect, selectedComponents, getLockedComponents(),
+				groupedComponents, Arrays.asList(instantiationManager.getFirstControlPoint(),
+						instantiationManager.getPotentialControlPoint()), componentSlotToDraw,
+				dragInProgress);
+		List<String> failedComponentNames = new ArrayList<String>();
+		for (IDIYComponent<?> component : failedComponents) {
+			failedComponentNames.add(component.getName());
+		}
+		Collections.sort(failedComponentNames);
+		if (!failedComponentNames.isEmpty()) {
+			messageDispatcher.dispatchMessage(EventType.STATUS_MESSAGE_CHANGED,
+					"<html><font color='red'>Failed to draw components: "
+							+ Utils.toCommaString(failedComponentNames) + "</font></html>");
+		} else {
+			messageDispatcher.dispatchMessage(EventType.STATUS_MESSAGE_CHANGED, "");
+		}
 	}
 
 	/**
