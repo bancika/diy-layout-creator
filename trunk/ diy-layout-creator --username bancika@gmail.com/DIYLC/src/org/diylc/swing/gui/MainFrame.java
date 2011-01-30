@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -34,7 +33,6 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
-import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
@@ -303,7 +301,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 					fileName = "Untitled";
 				}
 				String modified = (Boolean) params[1] ? " (modified)" : "";
-				setTitle(String.format("DIYLC %s alpha - %s %s", plugInPort
+				setTitle(String.format("DIYLC %s beta - %s %s", plugInPort
 						.getCurrentVersionNumber(), fileName, modified));
 			}
 		}
