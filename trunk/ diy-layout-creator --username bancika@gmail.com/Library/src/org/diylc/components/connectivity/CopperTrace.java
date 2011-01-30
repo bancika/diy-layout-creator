@@ -24,7 +24,7 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 	public static Color COLOR = Color.black;
 
 	private Color leadColor = COLOR;
-	private Size leadThickness = THICKNESS;
+	private Size thickness = THICKNESS;
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -53,14 +53,18 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 		this.leadColor = leadColor;
 	}
 
-	@Override
-	@EditableProperty(name = "Thickness")
-	public Size getLeadThickness() {
-		return leadThickness;
+	@EditableProperty(name = "Width")
+	public Size getThickness() {
+		return thickness;
 	}
 
-	public void setLeadThickness(Size leadThickness) {
-		this.leadThickness = leadThickness;
+	public void setThickness(Size thickness) {
+		this.thickness = thickness;
+	}
+	
+	@Override
+	protected int getLeadThickness() {
+		return getThickness().convertToPixels();
 	}
 
 	@Override

@@ -63,14 +63,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		double distance = points[0].distance(points[1]);
 		Shape shape = getBodyShape();
 		if (shape == null) {
-			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
-					getLeadThickness().convertToPixels()));
+			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness()));
 			g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
 					: getLeadColor(componentState));
 			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 			if (shouldShadeLeads()) {
-				g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
-						getLeadThickness().convertToPixels() - 2));
+				g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness() - 2));
 				g2d.setColor(getLeadColor(componentState));
 				g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 			}
@@ -90,8 +88,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 					/ MAX_ALPHA));
 		}
-		g2d.setColor(bodyColor);
-		g2d.fill(shape);
+		if (bodyColor != null) {
+			g2d.setColor(bodyColor);
+			g2d.fill(shape);
+		}
 		decorateComponentBody(g2d);
 		g2d.setComposite(oldComposite);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -99,7 +99,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.draw(shape);
 		// Draw leads.
-		int leadThickness = getClosestOdd(getLeadThickness().convertToPixels());
+		int leadThickness = getClosestOdd(getLeadThickness());
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
 		g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
 				: getLeadColor(componentState));
@@ -123,7 +123,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		drawingObserver.stopTracking();
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
-		g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : labelColor);
+		g2d.setColor(componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED : labelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		String label = display == Display.NAME ? getName() : getValue().toString();
 		// Adjust label angle if needed to make sure that it's readable.
@@ -133,11 +134,16 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		}
 		Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
 		g2d.drawString(label, (int) (shapeRect.width - textRect.getWidth()) / 2,
-				(int) (shapeRect.height - textRect.getHeight()) / 2 + fontMetrics.getAscent());
+				calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));
 	}
 
 	protected void decorateComponentBody(Graphics2D g2d) {
 		// Do nothing.
+	}
+
+	protected int calculateLabelYCoordinate(Rectangle2D shapeRect, Rectangle2D textRect,
+			FontMetrics fontMetrics) {
+		return (int) (shapeRect.getHeight() - textRect.getHeight()) / 2 + fontMetrics.getAscent();
 	}
 
 	protected boolean shouldShadeLeads() {
@@ -165,8 +171,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	/**
 	 * @return default lead thickness. Override this method to change it.
 	 */
-	protected Size getLeadThickness() {
-		return LEAD_THICKNESS;
+	protected int getLeadThickness() {
+		return LEAD_THICKNESS.convertToPixels();
 	}
 
 	/**
