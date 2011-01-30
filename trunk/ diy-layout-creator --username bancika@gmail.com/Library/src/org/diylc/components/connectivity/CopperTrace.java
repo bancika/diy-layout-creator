@@ -72,43 +72,36 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 		return false;
 	}
 
-	@Deprecated
 	public Color getBodyColor() {
 		return super.getBodyColor();
 	}
 
-	@Deprecated
 	@Override
 	public Color getBorderColor() {
 		// TODO Auto-generated method stub
 		return super.getBorderColor();
 	}
 
-	@Deprecated
 	@Override
 	public Byte getAlpha() {
 		return super.getAlpha();
 	}
 
-	@Deprecated
 	@Override
 	public Size getLength() {
 		return super.getLength();
 	}
 
-	@Deprecated
 	@Override
 	public Size getWidth() {
 		return super.getWidth();
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;
 	}
 
-	@Deprecated
 	@Override
 	public void setValue(Void value) {
 	}

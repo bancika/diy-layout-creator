@@ -128,7 +128,6 @@ public class Label extends AbstractComponent<Void> {
 		return super.getName();
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;

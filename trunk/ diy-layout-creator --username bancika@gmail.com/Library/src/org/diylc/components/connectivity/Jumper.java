@@ -22,6 +22,9 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(3));
+		g2d.setColor(COLOR.darker());
+		g2d.drawLine(1, height - 2, width - 2, 1);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.setColor(COLOR);
 		g2d.drawLine(1, height - 2, width - 2, 1);
@@ -34,42 +37,35 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : COLOR;
 	}
 
-	@Deprecated
 	public Color getBodyColor() {
 		return super.getBodyColor();
 	}
 
-	@Deprecated
 	@Override
 	public Color getBorderColor() {
 		return super.getBorderColor();
 	}
 
-	@Deprecated
 	@Override
 	public Byte getAlpha() {
 		return super.getAlpha();
 	}
 
-	@Deprecated
 	@Override
 	public Size getLength() {
 		return super.getLength();
 	}
 
-	@Deprecated
 	@Override
 	public Size getWidth() {
 		return super.getWidth();
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;
 	}
 
-	@Deprecated
 	@Override
 	public void setValue(Void value) {
 	}

@@ -46,7 +46,6 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 		this.size = size;
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;
@@ -56,7 +55,6 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 	public void setValue(Void value) {
 	}
 
-	@Deprecated
 	@Override
 	public Byte getAlpha() {
 		return super.getAlpha();

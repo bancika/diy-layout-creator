@@ -67,7 +67,6 @@ public class SolderPad extends AbstractComponent<Void> {
 		this.size = size;
 	}
 
-	@Deprecated
 	@Override
 	public String getName() {
 		return super.getName();
@@ -116,7 +115,6 @@ public class SolderPad extends AbstractComponent<Void> {
 		this.type = type;
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;

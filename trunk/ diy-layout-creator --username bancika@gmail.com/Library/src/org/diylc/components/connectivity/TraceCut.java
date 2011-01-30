@@ -86,13 +86,11 @@ public class TraceCut extends AbstractComponent<Void> {
 		this.point.setLocation(point);
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;
 	}
 
-	@Deprecated
 	@Override
 	public void setValue(Void value) {
 	}
@@ -124,7 +122,6 @@ public class TraceCut extends AbstractComponent<Void> {
 		this.borderColor = borderColor;
 	}
 
-	@Deprecated
 	@Override
 	public String getName() {
 		return super.getName();
