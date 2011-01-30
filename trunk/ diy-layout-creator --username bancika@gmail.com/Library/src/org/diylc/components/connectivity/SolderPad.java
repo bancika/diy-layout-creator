@@ -28,6 +28,7 @@ public class SolderPad extends AbstractComponent<Void> {
 	private Size size = SIZE;
 	private Color color = COLOR;
 	private Point point = new Point(0, 0);
+	private Type type = Type.ROUND;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
@@ -36,7 +37,11 @@ public class SolderPad extends AbstractComponent<Void> {
 		int holeDiameter = getClosestOdd(HOLE_SIZE.convertToPixels());
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
-		g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+		if (type == Type.ROUND) {
+			g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+		} else {
+			g2d.fillRect(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+		}
 		g2d.setColor(Constants.CANVAS_COLOR);
 		g2d.fillOval(point.x - holeDiameter / 2, point.y - holeDiameter / 2, holeDiameter,
 				holeDiameter);
@@ -102,6 +107,15 @@ public class SolderPad extends AbstractComponent<Void> {
 		this.color = color;
 	}
 
+	@EditableProperty
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
 	@Deprecated
 	@Override
 	public Void getValue() {
@@ -110,5 +124,14 @@ public class SolderPad extends AbstractComponent<Void> {
 
 	@Override
 	public void setValue(Void value) {
+	}
+
+	static enum Type {
+		ROUND, SQUARE;
+
+		@Override
+		public String toString() {
+			return name().substring(0, 1) + name().substring(1).toLowerCase();
+		}
 	}
 }

@@ -212,7 +212,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		int margin = 4 * width / 32;
-		int spacing = width / 3;
+		int spacing = width / 3 - 1;
 		g2d.setColor(BORDER_COLOR);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2 * width / 32));
 		g2d.drawLine(width / 2 - spacing, height / 2, width / 2 - spacing, height - margin);
