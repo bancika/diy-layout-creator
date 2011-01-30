@@ -23,6 +23,7 @@ import org.diylc.components.boards.BlankBoard;
 import org.diylc.components.boards.PerfBoard;
 import org.diylc.components.boards.VeroBoard;
 import org.diylc.components.connectivity.CopperTrace;
+import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.connectivity.Jumper;
 import org.diylc.components.connectivity.SolderPad;
 import org.diylc.components.misc.Label;
@@ -31,6 +32,7 @@ import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.components.semiconductors.DIL_IC;
 import org.diylc.components.semiconductors.DiodePlastic;
+import org.diylc.components.semiconductors.TransistorTO92;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.measures.Capacitance;
@@ -77,7 +79,7 @@ public class ProjectFileManager {
 		xStream.autodetectAnnotations(true);
 		this.messageDispatcher = messageDispatcher;
 	}
-	
+
 	public void startNewFile() {
 		currentFileName = null;
 		modified = false;
@@ -251,6 +253,16 @@ public class ProjectFileManager {
 					jumper.setControlPoint(point1, 0);
 					jumper.setControlPoint(point2, 1);
 					component = jumper;
+				} else if (nodeName.equalsIgnoreCase("wire")) {
+					LOG.debug("Recognized " + nodeName);
+					HookupWire wire = new HookupWire();
+					Point midPoint = new Point((point1.x + point2.x) / 2, (point1.y + point2.y) / 2);
+					wire.setName(nameAttr);
+					wire.setControlPoint(point1, 0);
+					wire.setControlPoint(midPoint, 1);
+					wire.setControlPoint(midPoint, 2);
+					wire.setControlPoint(point2, 3);
+					component = wire;
 				} else if (nodeName.equalsIgnoreCase("resistor")) {
 					LOG.debug("Recognized " + nodeName);
 					Resistor resistor = new Resistor();
@@ -315,6 +327,27 @@ public class ProjectFileManager {
 					capacitor.setControlPoint(point1, 0);
 					capacitor.setControlPoint(point2, 1);
 					component = capacitor;
+				} else if (nodeName.equalsIgnoreCase("transistor")) {
+					LOG.debug("Recognized " + nodeName);
+					TransistorTO92 transistor = new TransistorTO92();
+					transistor.setName(nameAttr);
+					try {
+						transistor.setValue(valueAttr);
+					} catch (Exception e) {
+						LOG.debug("Could not set value of " + nameAttr);
+					}
+					transistor.setControlPoint(point1, 0);
+					if (point1.y > point2.y) {
+						transistor.setOrientation(Orientation._180);
+					} else if (point1.y < point2.y) {
+						transistor.setOrientation(Orientation.DEFAULT);
+					} else if (point1.x < point2.x) {
+						transistor.setOrientation(Orientation._270);
+					} else if (point1.x > point2.x) {
+						transistor.setOrientation(Orientation._90);
+					}
+					// capacitor.setControlPoint(point2, 1);
+					component = transistor;
 				} else if (nodeName.equalsIgnoreCase("ic")) {
 					LOG.debug("Recognized " + nodeName);
 					DIL_IC ic = new DIL_IC();

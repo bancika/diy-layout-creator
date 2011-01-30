@@ -107,6 +107,14 @@
 					<description>Solder pad can be square</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added keyboard shortcuts to some menu options</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>V1 file importer can recognize hookup wire and transistors</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added support for creating and loading templates</description>
 				</com.diyfever.gui.update.Change>
