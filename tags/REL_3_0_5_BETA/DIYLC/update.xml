@@ -1,0 +1,142 @@
+<java.util.Arrays_-ArrayList>
+	<a class="com.diyfever.gui.update.Version-array">
+		<com.diyfever.gui.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>0</minor>
+				<build>4</build>
+			</versionNumber>
+			<releaseDate>2011-01-27 21:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Copy/paste between two instances of the application</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Parsing numerical values in countries that use comma as decimal separator</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Dragging sticky points affects selectability of objects</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Click is sometimes not registered while adding a new component</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed NPE when using default values</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow shape control points of curves to overlap</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added DIL IC first pin indentation</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added transparency to the potentiometer</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Reduced number of layers</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Import from v1 files can now read label and electrolytic capacitor components and trace/pad colors</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added worker thread for longer file operation, so GUI doesn't freeze</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added right click menu on the canvas</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "send to back" and "bring to front" options</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added label component</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added image component</description>
+				</com.diyfever.gui.update.Change>
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list
+			</url>
+		</com.diyfever.gui.update.Version>
+		<com.diyfever.gui.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>0</minor>
+				<build>5</build>
+			</versionNumber>
+			<releaseDate>2011-01-30 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Curved trace does not show control points</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Potentiometer draws wrong at 180 degrees</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Reset component selection when tab is changed</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Resistor can show color bands</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Electrolytic capacitor has a new icon and new looks</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Solder pad can be square</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added keyboard shortcuts to some menu options</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>V1 file importer can recognize hookup wire and transistors</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added support for creating and loading templates</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added TO-92 transistor</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added TO-220 transistor</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added LED</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added axial electrolytic capacitor</description>
+				</com.diyfever.gui.update.Change>
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list
+			</url>
+		</com.diyfever.gui.update.Version>
+	</a>
+</java.util.Arrays_-ArrayList>
