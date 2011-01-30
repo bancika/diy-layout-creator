@@ -12,6 +12,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
@@ -36,7 +37,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 		this.borderColor = BORDER_COLOR;
 	}
 
-	@EditableProperty
+	@EditableProperty(validatorClass = PositiveMeasureValidator.class)
 	public Resistance getValue() {
 		return value;
 	}

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
@@ -92,7 +93,7 @@ public class Project implements Serializable {
 		this.height = height;
 	}
 
-	@EditableProperty(name = "Grid spacing")
+	@EditableProperty(name = "Grid spacing", validatorClass = SpacingValidator.class)
 	public Size getGridSpacing() {
 		return gridSpacing;
 	}
@@ -118,7 +119,7 @@ public class Project implements Serializable {
 	public Set<Set<IDIYComponent<?>>> getGroups() {
 		return groups;
 	}
-	
+
 	public Set<Integer> getLockedLayers() {
 		return lockedLayers;
 	}
@@ -177,10 +178,25 @@ public class Project implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return title;
+	}
+
+	public static class SpacingValidator extends PositiveMeasureValidator {
+
+		@Override
+		public void validate(Object value) throws ValidationException {
+			super.validate(value);
+			Size size = (Size) value;
+			if (size.compareTo(new Size(1d, SizeUnit.mm)) < 0) {
+				throw new ValidationException("must be greater than 1mm");
+			}
+			if (size.compareTo(new Size(1d, SizeUnit.in)) > 0) {
+				throw new ValidationException("must be less than 1in");
+			}
+		}
 	}
 
 	// @Override
