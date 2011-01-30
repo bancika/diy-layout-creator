@@ -46,6 +46,9 @@
 
 	<target name="jar" depends="clean, lib.copy, resource.copy, compile">
 		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}" />
+		<copy todir="../DIYLC/library" overwrite="true">
+			<fileset dir="${jar.dir}" includes="${ant.project.name}.jar" />
+		</copy>
 	</target>
 
 	<target name="javadoc">
