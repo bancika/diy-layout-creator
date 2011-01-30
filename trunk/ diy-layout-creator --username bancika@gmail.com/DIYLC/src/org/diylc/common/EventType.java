@@ -72,6 +72,12 @@ public enum EventType {
 	 * current cursor location (not taking zoom into account).
 	 */
 	MOUSE_MOVED,
-	LAYER_STATE_CHANGED;
-	;
+	/**
+	 * Called when a layer status is changed. The first parameter is a set of indices of locked layers. All layers not included are considered unlocked.
+	 */
+	LAYER_STATE_CHANGED,
+	/**
+	 * Called to update the status message. New status message is passed as a first parameter.
+	 */
+	STATUS_MESSAGE_CHANGED;
 }
