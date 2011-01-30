@@ -19,6 +19,7 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IPropertyValidator;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
@@ -35,7 +36,8 @@ public class ComponentProcessor {
 
 	private static ComponentProcessor instance;
 
-	private Map<Class<?>, List<PropertyWrapper>> propertyCache;
+	private Map<String, List<PropertyWrapper>> propertyCache;
+	private Map<String, IPropertyValidator> propertyValidatorCache;
 	private Map<String, ComponentType> componentTypeMap;
 
 	private Cloner cloner;
@@ -50,8 +52,9 @@ public class ComponentProcessor {
 	private ComponentProcessor() {
 		super();
 		this.cloner = new Cloner();
-		this.propertyCache = new HashMap<Class<?>, List<PropertyWrapper>>();
+		this.propertyCache = new HashMap<String, List<PropertyWrapper>>();
 		this.componentTypeMap = new HashMap<String, ComponentType>();
+		this.propertyValidatorCache = new HashMap<String, IPropertyValidator>();
 	}
 
 	public ComponentType extractComponentTypeFrom(Class<? extends IDIYComponent<?>> clazz) {
@@ -117,8 +120,8 @@ public class ComponentProcessor {
 	 * @return
 	 */
 	public List<PropertyWrapper> extractProperties(Class<?> clazz) {
-		if (propertyCache.containsKey(clazz)) {
-			return cloner.deepClone(propertyCache.get(clazz));
+		if (propertyCache.containsKey(clazz.getName())) {
+			return cloner.deepClone(propertyCache.get(clazz.getName()));
 		}
 		List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
 		for (Method method : clazz.getMethods()) {
@@ -133,10 +136,13 @@ public class ComponentProcessor {
 						} else {
 							name = annotation.name();
 						}
+						IPropertyValidator validator = getPropertyValidator(annotation
+								.validatorClass());
 						Method setter = clazz.getMethod("set" + method.getName().substring(3),
 								method.getReturnType());
 						PropertyWrapper property = new PropertyWrapper(name,
-								method.getReturnType(), method, setter, annotation.defaultable());
+								method.getReturnType(), method, setter, annotation.defaultable(),
+								validator);
 						properties.add(property);
 					}
 				} catch (NoSuchMethodException e) {
@@ -146,7 +152,7 @@ public class ComponentProcessor {
 			}
 		}
 
-		propertyCache.put(clazz, properties);
+		propertyCache.put(clazz.getName(), properties);
 		return cloner.deepClone(properties);
 	}
 
@@ -186,5 +192,20 @@ public class ComponentProcessor {
 		}
 		Collections.sort(properties, ComparatorFactory.getInstance().getPropertyNameComparator());
 		return properties;
+	}
+
+	private IPropertyValidator getPropertyValidator(Class<? extends IPropertyValidator> clazz) {
+		if (propertyValidatorCache.containsKey(clazz.getName())) {
+			return propertyValidatorCache.get(clazz.getName());
+		}
+		IPropertyValidator validator;
+		try {
+			validator = clazz.newInstance();
+		} catch (Exception e) {
+			LOG.error("Could not instantiate validator for " + clazz.getName(), e);
+			return null;
+		}
+		propertyValidatorCache.put(clazz.getName(), validator);
+		return validator;
 	}
 }

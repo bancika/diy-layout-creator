@@ -18,10 +18,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.ValidationException;
 
 import com.diyfever.gui.ButtonDialog;
 
@@ -63,6 +65,23 @@ public class PropertyEditorDialog extends ButtonDialog {
 		//
 		// pack();
 		// setLocationRelativeTo(owner);
+	}
+
+	@Override
+	protected boolean validateInput(String button) {
+		if (button.equals(ButtonDialog.OK)) {
+			for (PropertyWrapper property : properties) {
+				try {
+					property.getValidator().validate(property.getValue());
+				} catch (ValidationException ve) {
+					JOptionPane.showMessageDialog(PropertyEditorDialog.this, "Input error for \""
+							+ property.getName() + "\": " + ve.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private JPanel createEditorFields() {

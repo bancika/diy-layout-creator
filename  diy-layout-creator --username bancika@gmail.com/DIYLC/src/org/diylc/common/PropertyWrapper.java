@@ -3,6 +3,8 @@ package org.diylc.common;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.diylc.core.IPropertyValidator;
+
 /**
  * Entity class for editable properties extracted from component objects.
  * Represents a single editable property together with it's current value.
@@ -17,19 +19,21 @@ public class PropertyWrapper implements Cloneable {
 	private Method setter;
 	private Method getter;
 	private boolean defaultable;
+	private IPropertyValidator validator;
 
 	public PropertyWrapper(String name, Class<?> type, Method getter, Method setter,
-			boolean defaultable) {
+			boolean defaultable, IPropertyValidator validator) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.getter = getter;
 		this.setter = setter;
 		this.defaultable = defaultable;
+		this.validator = validator;
 	}
 
-	public void readFrom(Object object) throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public void readFrom(Object object) throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		this.value = getter.invoke(object);
 	}
 
@@ -42,8 +46,8 @@ public class PropertyWrapper implements Cloneable {
 	// }
 	// }
 
-	public void writeTo(Object object) throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public void writeTo(Object object) throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		setter.invoke(object, value);
 	}
 
@@ -67,8 +71,8 @@ public class PropertyWrapper implements Cloneable {
 		return defaultable;
 	}
 
-	public void setDefaultable(boolean defaultable) {
-		this.defaultable = defaultable;
+	public IPropertyValidator getValidator() {
+		return validator;
 	}
 
 	// @Override

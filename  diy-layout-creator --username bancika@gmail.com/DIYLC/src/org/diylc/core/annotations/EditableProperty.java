@@ -3,6 +3,9 @@ package org.diylc.core.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import org.diylc.core.AllowAllValidator;
+import org.diylc.core.IPropertyValidator;
+
 /**
  * Used to annotate editable component property. Editable property XYZ must have
  * both getter and setter named <code>getXYZ</code> and <code>setXYZ</code>
@@ -30,4 +33,10 @@ public @interface EditableProperty {
 	 * @return
 	 */
 	boolean defaultable() default true;
+	
+	/**
+	 * Class of validator to use to 
+	 * @return
+	 */
+	Class<? extends IPropertyValidator> validatorClass() default AllowAllValidator.class;
 }

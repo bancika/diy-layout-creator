@@ -2,7 +2,7 @@ package org.diylc.core.measures;
 
 import org.diylc.utils.Constants;
 
-public class Size extends AbstractMeasure<SizeUnit> {
+public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,5 +38,10 @@ public class Size extends AbstractMeasure<SizeUnit> {
 			}
 		}
 		throw new IllegalArgumentException("Could not parse size: " + value);
+	}
+
+	@Override
+	public int compareTo(Size o) {
+		return new Double(value * unit.getFactor()).compareTo(o.getValue() * o.getUnit().getFactor());
 	}
 }
