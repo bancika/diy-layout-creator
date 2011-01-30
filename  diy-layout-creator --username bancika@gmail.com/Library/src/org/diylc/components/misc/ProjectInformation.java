@@ -96,7 +96,6 @@ public class ProjectInformation extends AbstractComponent<Void> {
 		this.point.setLocation(point);
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;

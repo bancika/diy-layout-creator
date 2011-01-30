@@ -159,7 +159,6 @@ public class BOM extends AbstractComponent<Void> {
 		this.size = size;
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;

@@ -118,7 +118,6 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 		return null;
 	}
 
-	@Deprecated
 	@Override
 	public Size getWidth() {
 		return super.getWidth();

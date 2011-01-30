@@ -112,7 +112,6 @@ public class Image extends AbstractTransparentComponent<Void> {
 		return super.getName();
 	}
 
-	@Deprecated
 	@Override
 	public Void getValue() {
 		return null;
