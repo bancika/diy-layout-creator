@@ -50,7 +50,7 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
-	
+
 	@EditableProperty
 	public Voltage getVoltage() {
 		return voltage;
@@ -59,7 +59,6 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 	public void setVoltage(Voltage voltage) {
 		this.voltage = voltage;
 	}
-
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setColor(BODY_COLOR);

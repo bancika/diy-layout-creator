@@ -27,7 +27,7 @@ import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.connectivity.Jumper;
 import org.diylc.components.connectivity.SolderPad;
 import org.diylc.components.misc.Label;
-import org.diylc.components.passive.ElectrolyticRadial;
+import org.diylc.components.passive.RadialElectrolytic;
 import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.components.semiconductors.DIL_IC;
@@ -293,7 +293,7 @@ public class ProjectFileManager {
 					component = capacitor;
 				} else if (nodeName.equalsIgnoreCase("electrolyte")) {
 					LOG.debug("Recognized " + nodeName);
-					ElectrolyticRadial capacitor = new ElectrolyticRadial();
+					RadialElectrolytic capacitor = new RadialElectrolytic();
 					capacitor.setName(nameAttr);
 					try {
 						capacitor.setValue(Capacitance.parseCapacitance(valueAttr));

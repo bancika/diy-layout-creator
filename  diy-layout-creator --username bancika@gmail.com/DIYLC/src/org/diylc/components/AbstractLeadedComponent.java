@@ -119,8 +119,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 					(int) ((shapeRect.width + distance) / 2 - leadLenght) + leadThickness / 2,
 					(int) shapeRect.height / 2);
 		}
-		// Do not track the label because that area was already covered.
-		drawingObserver.stopTracking();
+//		 Do not track the label because that area was already covered.
+//		drawingObserver.stopTracking();
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
 		g2d.setColor(componentState == ComponentState.SELECTED
