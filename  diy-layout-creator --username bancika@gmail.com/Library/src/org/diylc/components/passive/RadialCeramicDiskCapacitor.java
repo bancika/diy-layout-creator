@@ -25,7 +25,8 @@ public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacita
 	public static Color BODY_COLOR = Color.decode("#F0E68C");
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
-	private Capacitance value = new Capacitance(123d, CapacitanceUnit.nF);
+	private Capacitance value = new Capacitance(470d, CapacitanceUnit.pF);
+	private Voltage voltage = Voltage._63V;
 
 	public RadialCeramicDiskCapacitor() {
 		super();

@@ -153,7 +153,11 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description></description>
+					<description>Resistors can specify power handling</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Capacitors can specify voltage handling</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>

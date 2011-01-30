@@ -23,6 +23,7 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 	public static Size DEFAULT_WIDTH = new Size(0.08, SizeUnit.in);
 
 	private Resistance value = new Resistance(100d, ResistanceUnit.K);
+	private Power power = Power.HALF;
 
 	@EditableProperty
 	public Resistance getValue() {
@@ -31,6 +32,15 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 
 	public void setValue(Resistance value) {
 		this.value = value;
+	}
+	
+	@EditableProperty
+	public Power getPower() {
+		return power;
+	}
+	
+	public void setPower(Power power) {
+		this.power = power;
 	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
