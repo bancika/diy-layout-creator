@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.Display;
@@ -75,10 +76,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			return;
 		}
 		Rectangle shapeRect = shape.getBounds();
-		double leadLenght = (distance - shapeRect.width) / 2;
 		Double theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
 		// Transform graphics to draw the body in the right place and at the
 		// right angle.
+		AffineTransform oldTransform = g2d.getTransform();
 		g2d.translate((points[0].x + points[1].x - shapeRect.width) / 2,
 				(points[0].y + points[1].y - shapeRect.height) / 2);
 		g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
@@ -98,29 +99,6 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.draw(shape);
-		// Draw leads.
-		int leadThickness = getClosestOdd(getLeadThickness());
-		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-		g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
-				: getLeadColor(componentState));
-		g2d.drawLine((int) (shapeRect.width - distance) / 2, (int) shapeRect.height / 2,
-				(int) ((shapeRect.width - distance) / 2 + leadLenght) - leadThickness / 2,
-				(int) shapeRect.height / 2);
-		g2d.drawLine((int) (shapeRect.width + distance) / 2, (int) shapeRect.height / 2,
-				(int) ((shapeRect.width + distance) / 2 - leadLenght) + leadThickness / 2,
-				(int) shapeRect.height / 2);
-		if (shouldShadeLeads()) {
-			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
-			g2d.setColor(getLeadColor(componentState));
-			g2d.drawLine((int) (shapeRect.width - distance) / 2, (int) shapeRect.height / 2,
-					(int) ((shapeRect.width - distance) / 2 + leadLenght) - leadThickness / 2,
-					(int) shapeRect.height / 2);
-			g2d.drawLine((int) (shapeRect.width + distance) / 2, (int) shapeRect.height / 2,
-					(int) ((shapeRect.width + distance) / 2 - leadLenght) + leadThickness / 2,
-					(int) shapeRect.height / 2);
-		}
-//		 Do not track the label because that area was already covered.
-//		drawingObserver.stopTracking();
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
 		g2d.setColor(componentState == ComponentState.SELECTED
@@ -135,6 +113,26 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
 		g2d.drawString(label, (int) (shapeRect.width - textRect.getWidth()) / 2,
 				calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));
+
+		// Go back to the original transformation to draw leads.
+		g2d.setTransform(oldTransform);
+		int leadThickness = getClosestOdd(getLeadThickness());
+		double leadLength = (distance - shapeRect.width) / 2 - leadThickness / 2;
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
+		g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
+				: getLeadColor(componentState));
+		g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + Math.cos(theta) * leadLength),
+				(int) (points[0].y + Math.sin(theta) * leadLength));
+		g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x + Math.cos(theta - Math.PI)
+				* leadLength), (int) (points[1].y + Math.sin(theta - Math.PI) * leadLength));
+		if (shouldShadeLeads()) {
+			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
+			g2d.setColor(getLeadColor(componentState));
+			g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + Math.cos(theta)
+					* leadLength), (int) (points[0].y + Math.sin(theta) * leadLength));
+			g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x + Math.cos(theta - Math.PI)
+					* leadLength), (int) (points[1].y + Math.sin(theta - Math.PI) * leadLength));
+		}
 	}
 
 	protected void decorateComponentBody(Graphics2D g2d) {
