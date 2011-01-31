@@ -56,6 +56,7 @@ Each component is a separate class. From coding perspective, components are *ann
   * It is not mandatory but highly recommended to annotate each component class with *`@ComponentDescriptor`* annotation. Application will recognize and install the component even without it, but you will be unable to configure all the aspects of a component and they will be defaulted to values that are potentially unsuitable for the component.
   * All component properties should be annotated with *`@EditableProperty`* annotation.
   * It should be compiled, packed inside a jar and placed in *library* folder.
+  * It must be serializable, i.e. all of it's fields need to be serializable. Any fields that are not necessary for serialization (typically caches) should be made `transient` as well as any fields that are not serializable. Component should know how to handle null values for those fields because they will be nulled after deserialization (when a project is loaded or copy/paste).
 
 ====`IDIYComponent<T>` interface====
 
