@@ -32,6 +32,7 @@ import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.components.semiconductors.DIL_IC;
 import org.diylc.components.semiconductors.DiodePlastic;
+import org.diylc.components.semiconductors.LED;
 import org.diylc.components.semiconductors.TransistorTO92;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -302,7 +303,7 @@ public class ProjectFileManager {
 					}
 					String sizeAttr = node.getAttributes().getNamedItem("Size").getNodeValue();
 					if (sizeAttr.equalsIgnoreCase("small")) {
-						capacitor.setLength(new Size(3d, SizeUnit.mm));
+						capacitor.setLength(new Size(3.5d, SizeUnit.mm));
 					} else if (sizeAttr.equalsIgnoreCase("medium")) {
 						capacitor.setLength(new Size(5d, SizeUnit.mm));
 					} else if (sizeAttr.equalsIgnoreCase("large")) {
@@ -327,6 +328,17 @@ public class ProjectFileManager {
 					capacitor.setControlPoint(point1, 0);
 					capacitor.setControlPoint(point2, 1);
 					component = capacitor;
+				} else if (nodeName.equalsIgnoreCase("led")) {
+					LOG.debug("Recognized " + nodeName);
+					LED led = new LED();
+					led.setName(nameAttr);
+					led.setValue(valueAttr);
+					led.setBodyColor(Color.red);
+					led.setBorderColor(Color.red.darker());
+					led.setLength(new Size(3d, SizeUnit.mm));
+					led.setControlPoint(point1, 0);
+					led.setControlPoint(point2, 1);
+					component = led;
 				} else if (nodeName.equalsIgnoreCase("transistor")) {
 					LOG.debug("Recognized " + nodeName);
 					TransistorTO92 transistor = new TransistorTO92();

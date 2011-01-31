@@ -313,6 +313,10 @@ public class DrawingManager {
 	public Area getComponentArea(IDIYComponent<?> component) {
 		return componentAreaMap.get(component);
 	}
+	
+	public void clearComponentAreaMap() {
+		componentAreaMap.clear();
+	}
 
 	public List<IDIYComponent<?>> findComponentsAt(Point point, Project project) {
 		List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();

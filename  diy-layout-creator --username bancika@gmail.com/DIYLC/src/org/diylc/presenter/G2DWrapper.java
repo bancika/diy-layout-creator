@@ -179,6 +179,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 						width, thickness);
 				Area area = new Area(rect);
 				area.transform(AffineTransform.getRotateInstance(theta, midX, midY));
+				area.transform(currentTx);
 				appendShape(area);
 				// Set the prev point to line end
 				prevPoint = nextPoint;

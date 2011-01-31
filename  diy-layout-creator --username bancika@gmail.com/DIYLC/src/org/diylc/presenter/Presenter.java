@@ -180,6 +180,7 @@ public class Presenter implements IPlugInPort {
 	public void loadProject(Project project, boolean freshStart) {
 		LOG.info(String.format("loadProject(%s, %s)", project.getTitle(), freshStart));
 		this.currentProject = project;
+		drawingManager.clearComponentAreaMap();
 		updateSelection(EMPTY_SELECTION);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
