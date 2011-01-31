@@ -121,10 +121,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
 		g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
 				: getLeadColor(componentState));
-		g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + Math.cos(theta) * leadLength),
-				(int) (points[0].y + Math.sin(theta) * leadLength));
-		g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x + Math.cos(theta - Math.PI)
-				* leadLength), (int) (points[1].y + Math.sin(theta - Math.PI) * leadLength));
+		int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
+		int endY = (int) Math.round(points[0].y + Math.sin(theta) * leadLength);
+		g2d.drawLine(points[0].x, points[0].y, endX, endY);
+		endX = (int) (points[1].x + Math.cos(theta - Math.PI) * leadLength);
+		endY = (int) Math.round(points[1].y + Math.sin(theta - Math.PI) * leadLength);
+		g2d.drawLine(points[1].x, points[1].y, endX, endY);
 		if (shouldShadeLeads()) {
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
 			g2d.setColor(getLeadColor(componentState));
