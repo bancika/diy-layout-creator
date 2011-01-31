@@ -42,6 +42,15 @@ public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacita
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
+	
+	@EditableProperty
+	public Voltage getVoltage() {
+		return voltage;
+	}
+	
+	public void setVoltage(Voltage voltage) {
+		this.voltage = voltage;
+	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.rotate(-Math.PI / 4, width / 2, height / 2);

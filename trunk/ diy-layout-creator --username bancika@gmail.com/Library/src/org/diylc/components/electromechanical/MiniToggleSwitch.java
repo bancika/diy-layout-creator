@@ -37,7 +37,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	private static Color LUG_COLOR = Color.decode("#00B2EE");
 
 	protected Point[] controlPoints = new Point[] { new Point(0, 0) };
-	protected RoundRectangle2D body;
+	transient protected RoundRectangle2D body;
 	protected String name;
 	protected ToggleSwitchType switchType = ToggleSwitchType.DPDT;
 

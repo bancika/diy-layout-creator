@@ -78,7 +78,6 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	@Override
 	public Color getBorderColor() {
-		// TODO Auto-generated method stub
 		return super.getBorderColor();
 	}
 

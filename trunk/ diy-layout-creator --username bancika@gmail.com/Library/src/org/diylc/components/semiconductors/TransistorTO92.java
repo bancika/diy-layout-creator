@@ -41,7 +41,7 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
 	private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
-	private Area body;
+	transient private Area body;
 	private Color bodyColor = BODY_COLOR;
 	private Color borderColor = BORDER_COLOR;
 
