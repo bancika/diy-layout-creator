@@ -22,9 +22,9 @@ public class EyeletBoard extends AbstractBoard {
 
 	public static Color EYELET_COLOR = Color.decode("#C3E4ED");
 
-	public static Size SPACING = new Size(0.3d, SizeUnit.in);
-	public static Size EYELET_SIZE = new Size(1/8d, SizeUnit.in);
-	public static Size HOLE_SIZE = new Size(2d, SizeUnit.mm);
+	public static Size SPACING = new Size(0.5d, SizeUnit.in);
+	public static Size EYELET_SIZE = new Size(0.2d, SizeUnit.in);
+	public static Size HOLE_SIZE = new Size(0.1d, SizeUnit.in);
 
 	// private Area copperArea;
 	protected Size spacing = SPACING;
