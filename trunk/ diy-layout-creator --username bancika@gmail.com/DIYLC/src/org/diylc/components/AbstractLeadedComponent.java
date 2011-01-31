@@ -63,6 +63,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			IDrawingObserver drawingObserver) {
 		double distance = points[0].distance(points[1]);
 		Shape shape = getBodyShape();
+		// If there's no body, just draw the line connecting the ending points.
 		if (shape == null) {
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness()));
 			g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
