@@ -160,6 +160,10 @@
 					<description>Capacitors can specify voltage handling</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Fixed lead alignment issue</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added resistor schematic symbol</description>
 				</com.diyfever.gui.update.Change>
