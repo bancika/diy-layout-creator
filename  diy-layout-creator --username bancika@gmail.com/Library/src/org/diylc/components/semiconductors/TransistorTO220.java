@@ -44,7 +44,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
 	private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
-	private Shape[] body;
+	transient private Shape[] body;
 	private Color bodyColor = BODY_COLOR;
 	private Color borderColor = BORDER_COLOR;
 	private Color tabColor = TAB_COLOR;

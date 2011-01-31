@@ -149,7 +149,7 @@
 			<changes>
 				<com.diyfever.gui.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description></description>
+					<description>Copy/paste doesn't work for some components (potentiometer, transistor, etc)</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>

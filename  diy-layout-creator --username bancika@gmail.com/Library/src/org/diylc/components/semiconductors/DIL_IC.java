@@ -56,7 +56,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	// pinSpacing.convertToPixels()),
 	// new Point(3 * pinSpacing.convertToPixels(), 3 *
 	// pinSpacing.convertToPixels()) };
-	private Area body[];
+	transient private Area body[];
 
 	public DIL_IC() {
 		super();

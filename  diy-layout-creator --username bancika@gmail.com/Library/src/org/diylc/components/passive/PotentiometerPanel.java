@@ -39,7 +39,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 	protected Color bodyColor = BODY_COLOR;
 	protected Color borderColor = BORDER_COLOR;
 	// Array of 7 elements: 3 lug connectors, 1 pot body and 3 lugs
-	protected Area[] body = null;
+	transient protected Area[] body = null;
 
 	public PotentiometerPanel() {
 		controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
