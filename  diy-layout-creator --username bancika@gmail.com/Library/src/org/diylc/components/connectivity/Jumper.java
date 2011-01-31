@@ -19,6 +19,8 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 	private static final long serialVersionUID = 1L;
 
 	public static Color COLOR = Color.blue;
+	
+	private Color color = COLOR;
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -31,10 +33,18 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 	}
 
 	@Override
-	@EditableProperty(name = "Color")
 	public Color getLeadColor(ComponentState componentState) {
 		return componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : COLOR;
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color;
+	}
+	
+	@EditableProperty
+	public Color getColor() {
+		return color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	public Color getBodyColor() {
