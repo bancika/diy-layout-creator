@@ -49,15 +49,15 @@ public class Resistance extends AbstractMeasure<ResistanceUnit> {
 		switch (resistorColorCode) {
 		case _4_BAND:
 			bands = new Color[3];
-			bands[0] = COLOR_DIGITS[(int) Math.round(base / 10)];
-			bands[1] = COLOR_DIGITS[(int) Math.round(base % 10)];
+			bands[0] = COLOR_DIGITS[(int) (base / 10)];
+			bands[1] = COLOR_DIGITS[(int) (base % 10)];
 			bands[2] = COLOR_MULTIPLIER[multiplier + 2];
 			break;
 		case _5_BAND:
 			bands = new Color[4];
-			bands[0] = COLOR_DIGITS[(int) Math.round(base / 100)];
-			bands[1] = COLOR_DIGITS[(int) Math.round(base / 10 % 10)];
-			bands[2] = COLOR_DIGITS[(int) Math.round(base % 10)];
+			bands[0] = COLOR_DIGITS[(int) (base / 100)];
+			bands[1] = COLOR_DIGITS[(int) (base / 10 % 10)];
+			bands[2] = COLOR_DIGITS[(int) (base % 10)];
 			bands[3] = COLOR_MULTIPLIER[multiplier + 2];
 			break;
 		default:
