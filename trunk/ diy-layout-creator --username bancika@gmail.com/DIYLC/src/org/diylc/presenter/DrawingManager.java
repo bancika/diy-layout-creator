@@ -107,6 +107,13 @@ public class DrawingManager {
 					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 							RenderingHints.VALUE_ANTIALIAS_ON);
 		}
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+				RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+				RenderingHints.VALUE_COLOR_RENDER_SPEED);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 
 		double zoom = 1d;
 		if (drawOptions.contains(DrawOption.ZOOM)) {
@@ -313,7 +320,7 @@ public class DrawingManager {
 	public Area getComponentArea(IDIYComponent<?> component) {
 		return componentAreaMap.get(component);
 	}
-	
+
 	public void clearComponentAreaMap() {
 		componentAreaMap.clear();
 	}
