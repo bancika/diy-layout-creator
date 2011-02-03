@@ -136,7 +136,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			} while (volatileImage == null || volatileImage.contentsLost());
 		} else {
 			g.drawImage(bufferImage, 0, 0, this);
-			bufferImage.flush();
+//			bufferImage.flush();
 		}
 	}
 
