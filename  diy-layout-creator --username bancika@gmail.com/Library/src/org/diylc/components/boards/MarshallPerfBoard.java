@@ -78,9 +78,25 @@ public class MarshallPerfBoard extends AbstractBoard {
 		g2d.fillRect(2, 2, width - 4, height - 4);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRect(2, 2, width - 4, height - 4);
+
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(width / 2 - 2, width / 2 - 2, 5, 5);
+		g2d.fillOval(width / 3 - 2, width / 3 - 2, 5, 5);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawOval(width / 2 - 2, width / 2 - 2, 5, 5);
+		g2d.drawOval(width / 3 - 2, width / 3 - 2, 5, 5);
+
+		g2d.setColor(Constants.CANVAS_COLOR);
+		g2d.fillOval(2 * width / 3 - 2, width / 3 - 2, 5, 5);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawOval(2 * width / 3 - 2, width / 3 - 2, 5, 5);
+
+		g2d.setColor(Constants.CANVAS_COLOR);
+		g2d.fillOval(width / 3 - 2, 2 * width / 3 - 2, 5, 5);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawOval(width / 3 - 2, 2 * width / 3 - 2, 5, 5);
+
+		g2d.setColor(Constants.CANVAS_COLOR);
+		g2d.fillOval(2 * width / 3 - 2, 2 * width / 3 - 2, 5, 5);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawOval(2 * width / 3 - 2, 2 * width / 3 - 2, 5, 5);
 	}
 }

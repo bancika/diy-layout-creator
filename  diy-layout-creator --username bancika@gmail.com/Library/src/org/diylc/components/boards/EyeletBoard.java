@@ -20,6 +20,8 @@ public class EyeletBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
+	public static Color BOARD_COLOR = Color.decode("#CCFFCC");
+	public static Color BORDER_COLOR = BOARD_COLOR.darker();
 	public static Color EYELET_COLOR = Color.decode("#C3E4ED");
 
 	public static Size SPACING = new Size(0.5d, SizeUnit.in);
@@ -29,6 +31,12 @@ public class EyeletBoard extends AbstractBoard {
 	// private Area copperArea;
 	protected Size spacing = SPACING;
 	protected Color eyeletColor = EYELET_COLOR;
+	
+	public EyeletBoard() {
+		super();
+		this.boardColor = BOARD_COLOR;
+		this.borderColor = BORDER_COLOR;
+	}
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
