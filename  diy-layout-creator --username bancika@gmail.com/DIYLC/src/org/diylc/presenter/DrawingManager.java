@@ -331,7 +331,7 @@ public class DrawingManager {
 
 	public Dimension getCanvasDimensions(Project project, Double zoomLevel, boolean useZoom) {
 		double width = project.getWidth().convertToPixels();
-		int height = project.getHeight().convertToPixels();
+		double height = project.getHeight().convertToPixels();
 		if (useZoom) {
 			width *= zoomLevel;
 			height *= zoomLevel;

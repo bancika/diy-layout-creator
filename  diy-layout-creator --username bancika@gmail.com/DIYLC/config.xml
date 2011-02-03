@@ -1,15 +1,15 @@
 <map>
   <entry>
-    <string>metric</string>
-    <boolean>true</boolean>
+    <string>lastPath</string>
+    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop\oldFiles</string>
   </entry>
   <entry>
     <string>zoom</string>
     <double>1.0</double>
   </entry>
   <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop\oldFiles</string>
+    <string>metric</string>
+    <boolean>false</boolean>
   </entry>
   <entry>
     <string>showTemplatesAtStartup</string>

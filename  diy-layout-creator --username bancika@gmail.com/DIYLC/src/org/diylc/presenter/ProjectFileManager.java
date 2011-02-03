@@ -161,8 +161,8 @@ public class ProjectFileManager {
 		int height = Integer.parseInt(root.getAttribute("Height")) + 1;
 		int boardWidth = (int) (width * Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue());
 		int boardHeight = (int) (height * Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue());
-		int projectWidth = project.getWidth().convertToPixels();
-		int projectHeight = project.getHeight().convertToPixels();
+		int projectWidth = (int) project.getWidth().convertToPixels();
+		int projectHeight = (int) project.getHeight().convertToPixels();
 		int x = (projectWidth - boardWidth) / 2;
 		int y = (projectHeight - boardHeight) / 2;
 		AbstractBoard board;
@@ -178,11 +178,11 @@ public class ProjectFileManager {
 			throw new IllegalArgumentException("Unrecognized board type: " + type);
 		}
 		board.setName("Main board");
-		Point referencePoint = new Point(roundToGrid(x, V1_GRID_SPACING), roundToGrid(y,
-				V1_GRID_SPACING));
+		Point referencePoint = new Point(CalcUtils.roundToGrid(x, V1_GRID_SPACING), CalcUtils
+				.roundToGrid(y, V1_GRID_SPACING));
 		board.setControlPoint(referencePoint, 0);
-		board.setControlPoint(new Point(roundToGrid(x + boardWidth, V1_GRID_SPACING), roundToGrid(y
-				+ boardHeight, V1_GRID_SPACING)), 1);
+		board.setControlPoint(new Point(CalcUtils.roundToGrid(x + boardWidth, V1_GRID_SPACING),
+				CalcUtils.roundToGrid(y + boardHeight, V1_GRID_SPACING)), 1);
 		project.getComponents().add(board);
 
 		NodeList childNodes = root.getChildNodes();
@@ -434,10 +434,5 @@ public class ProjectFileManager {
 		project = (Project) xStream.fromXML(fis);
 		fis.close();
 		return project;
-	}
-
-	public int roundToGrid(int x, Size gridSpacing) {
-		int grid = gridSpacing.convertToPixels();
-		return (Math.round(1f * x / grid) * grid);
 	}
 }

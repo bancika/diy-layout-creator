@@ -122,11 +122,11 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 			int markerLength = (int) (getLength().convertToPixels() * 0.2);
 			g2d.setColor(markerColor);
 			int width = getClosestOdd(getWidth().convertToPixels());
-			g2d.fillRect(getLength().convertToPixels() - markerLength, 0, markerLength, width);
+			g2d.fillRect((int) getLength().convertToPixels() - markerLength, 0, markerLength, width);
 			g2d.setColor(tickColor);
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-			g2d.drawLine(getLength().convertToPixels() - markerLength / 2,
-					(int) (width / 2 - width * 0.15), getLength().convertToPixels() - markerLength
+			g2d.drawLine((int) getLength().convertToPixels() - markerLength / 2,
+					(int) (width / 2 - width * 0.15), (int) getLength().convertToPixels() - markerLength
 							/ 2, (int) (width / 2 + width * 0.15));
 		}
 	}

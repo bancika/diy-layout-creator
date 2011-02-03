@@ -146,6 +146,8 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		Point firstPoint = controlPoints[0];
 		controlPoints = new Point[pinCount.getValue()];
 		controlPoints[0] = firstPoint;
+		int pinSpacing = (int) this.pinSpacing.convertToPixels();
+		int rowSpacing = (int) this.rowSpacing.convertToPixels();
 		// Update control points.
 		int dx1;
 		int dy1;
@@ -155,27 +157,27 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			switch (orientation) {
 			case DEFAULT:
 				dx1 = 0;
-				dy1 = i * pinSpacing.convertToPixels();
-				dx2 = rowSpacing.convertToPixels();
-				dy2 = i * pinSpacing.convertToPixels();
+				dy1 = i * pinSpacing;
+				dx2 = rowSpacing;
+				dy2 = i * pinSpacing;
 				break;
 			case _90:
-				dx1 = -i * pinSpacing.convertToPixels();
+				dx1 = -i * pinSpacing;
 				dy1 = 0;
-				dx2 = -i * pinSpacing.convertToPixels();
-				dy2 = rowSpacing.convertToPixels();
+				dx2 = -i * pinSpacing;
+				dy2 = rowSpacing;
 				break;
 			case _180:
 				dx1 = 0;
-				dy1 = -i * pinSpacing.convertToPixels();
-				dx2 = -rowSpacing.convertToPixels();
-				dy2 = -i * pinSpacing.convertToPixels();
+				dy1 = -i * pinSpacing;
+				dx2 = -rowSpacing;
+				dy2 = -i * pinSpacing;
 				break;
 			case _270:
-				dx1 = i * pinSpacing.convertToPixels();
+				dx1 = i * pinSpacing;
 				dy1 = 0;
-				dx2 = i * pinSpacing.convertToPixels();
-				dy2 = -rowSpacing.convertToPixels();
+				dx2 = i * pinSpacing;
+				dy2 = -rowSpacing;
 				break;
 			default:
 				throw new RuntimeException("Unexpected orientation: " + orientation);
@@ -193,39 +195,41 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			int y = controlPoints[0].y;
 			int width;
 			int height;
-			int pinSize = PIN_SIZE.convertToPixels();
+			int pinSize = (int) PIN_SIZE.convertToPixels();
+			int pinSpacing = (int) this.pinSpacing.convertToPixels();
+			int rowSpacing = (int) this.rowSpacing.convertToPixels();
 			Area indentation = null;
 			int indentationSize = getClosestOdd(INDENT_SIZE.convertToPixels());
 			switch (orientation) {
 			case DEFAULT:
-				width = rowSpacing.convertToPixels() - pinSize;
-				height = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
+				width = rowSpacing - pinSize;
+				height = (pinCount.getValue() / 2) * pinSpacing;
 				x += pinSize / 2;
-				y -= pinSpacing.convertToPixels() / 2;
+				y -= pinSpacing / 2;
 				indentation = new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2, y
 						- indentationSize / 2, indentationSize, indentationSize));
 				break;
 			case _90:
-				width = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
-				height = rowSpacing.convertToPixels() - pinSize;
-				x -= (pinSpacing.convertToPixels() / 2) + width - pinSpacing.convertToPixels();
+				width = (pinCount.getValue() / 2) * pinSpacing;
+				height = rowSpacing - pinSize;
+				x -= (pinSpacing / 2) + width - pinSpacing;
 				y += pinSize / 2;
 				indentation = new Area(new Ellipse2D.Double(x + width - indentationSize / 2, y
 						+ height / 2 - indentationSize / 2, indentationSize, indentationSize));
 				break;
 			case _180:
-				width = rowSpacing.convertToPixels() - pinSize;
-				height = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
-				x -= rowSpacing.convertToPixels() - pinSize / 2;
-				y -= (pinSpacing.convertToPixels() / 2) + height - pinSpacing.convertToPixels();
+				width = rowSpacing - pinSize;
+				height = (pinCount.getValue() / 2) * pinSpacing;
+				x -= rowSpacing - pinSize / 2;
+				y -= (pinSpacing / 2) + height - pinSpacing;
 				indentation = new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2, y
 						+ height - indentationSize / 2, indentationSize, indentationSize));
 				break;
 			case _270:
-				width = (pinCount.getValue() / 2) * pinSpacing.convertToPixels();
-				height = rowSpacing.convertToPixels() - pinSize;
-				x -= pinSpacing.convertToPixels() / 2;
-				y += pinSize / 2 - rowSpacing.convertToPixels();
+				width = (pinCount.getValue() / 2) * pinSpacing;
+				height = rowSpacing - pinSize;
+				x -= pinSpacing / 2;
+				y += pinSize / 2 - rowSpacing;
 				indentation = new Area(new Ellipse2D.Double(x - indentationSize / 2, y + height / 2
 						- indentationSize / 2, indentationSize, indentationSize));
 				break;
@@ -245,7 +249,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
-		int pinSize = PIN_SIZE.convertToPixels() / 2 * 2;
+		int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
 		Area mainArea = getBody()[0];
 		for (Point point : controlPoints) {
 			g2d.setColor(PIN_COLOR);

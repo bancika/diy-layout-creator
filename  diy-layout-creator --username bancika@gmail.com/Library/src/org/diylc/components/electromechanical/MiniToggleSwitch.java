@@ -48,7 +48,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
 	private void updateControlPoints() {
 		Point firstPoint = controlPoints[0];
-		int spacing = SPACING.convertToPixels();
+		int spacing = (int) SPACING.convertToPixels();
 		switch (switchType) {
 		case SPST:
 			controlPoints = new Point[] { firstPoint,
@@ -187,9 +187,9 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 		// so far.
 		drawingObserver.stopTracking();
 		// Draw lugs.
-		int circleDiameter = getClosestOdd(CIRCLE_SIZE.convertToPixels());
-		int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
-		int lugHeight = getClosestOdd(LUG_HEIGHT.convertToPixels());
+		int circleDiameter = getClosestOdd((int) CIRCLE_SIZE.convertToPixels());
+		int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
+		int lugHeight = getClosestOdd((int) LUG_HEIGHT.convertToPixels());
 		for (Point p : controlPoints) {
 			g2d.setColor(CIRCLE_COLOR);
 			g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter,
@@ -202,8 +202,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	public RoundRectangle2D getBody() {
 		if (body == null) {
 			Point firstPoint = controlPoints[0];
-			int margin = MARGIN.convertToPixels();
-			int spacing = SPACING.convertToPixels();
+			int margin = (int) MARGIN.convertToPixels();
+			int spacing = (int) SPACING.convertToPixels();
 			switch (switchType) {
 			case SPST:
 				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin,

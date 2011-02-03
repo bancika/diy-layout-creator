@@ -47,7 +47,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 	}
 
 	protected void updateControlPoints() {
-		int spacing = this.spacing.convertToPixels();
+		int spacing = (int) this.spacing.convertToPixels();
 		switch (orientation) {
 		case DEFAULT:
 			controlPoints[1].setLocation(controlPoints[0].x + spacing, controlPoints[0].y);
@@ -71,7 +71,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 	}
 
 	public Area[] getBody() {
-		int spacing = this.spacing.convertToPixels();
+		int spacing = (int) this.spacing.convertToPixels();
 		int diameter = getClosestOdd(bodyDiameter.convertToPixels());
 		if (body == null) {
 			body = new Area[7];

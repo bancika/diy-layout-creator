@@ -40,9 +40,9 @@ public class EyeletBoard extends AbstractBoard {
 						/ MAX_ALPHA));
 			}
 			Point p = new Point(firstPoint);
-			int diameter = getClosestOdd(EYELET_SIZE.convertToPixels());
-			int holeDiameter = getClosestOdd(HOLE_SIZE.convertToPixels());
-			int spacing = this.spacing.convertToPixels();
+			int diameter = getClosestOdd((int) EYELET_SIZE.convertToPixels());
+			int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
+			int spacing = (int) this.spacing.convertToPixels();
 
 			while (p.y < secondPoint.y - spacing) {
 				p.x = firstPoint.x;

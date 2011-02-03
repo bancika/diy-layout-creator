@@ -33,8 +33,8 @@ public class SolderPad extends AbstractComponent<Void> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
-		int diameter = getClosestOdd(size.convertToPixels());
-		int holeDiameter = getClosestOdd(HOLE_SIZE.convertToPixels());
+		int diameter = getClosestOdd((int) size.convertToPixels());
+		int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
 		if (type == Type.ROUND) {

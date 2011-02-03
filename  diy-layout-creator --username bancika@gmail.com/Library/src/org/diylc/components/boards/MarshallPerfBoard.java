@@ -15,20 +15,24 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Perf Board w/ Pads", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with solder pads")
-public class PerfBoard extends AbstractBoard {
+@ComponentDescriptor(name = "Marshall Style Perf Board", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board as found on some Marshall and Trainwreck amps")
+public class MarshallPerfBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color COPPER_COLOR = Color.decode("#DA8A67");
-
-	public static Size SPACING = new Size(0.1d, SizeUnit.in);
-	public static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);
-	public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
+	public static Color BOARD_COLOR = Color.decode("#CD8500");
+	public static Color BORDER_COLOR = BOARD_COLOR.darker();
+	public static Size SPACING = new Size(3 / 8d, SizeUnit.in);
+	public static Size HOLE_SIZE = new Size(1 / 8d, SizeUnit.in);
 
 	// private Area copperArea;
 	protected Size spacing = SPACING;
-	protected Color padColor = COPPER_COLOR;
+
+	public MarshallPerfBoard() {
+		super();
+		this.boardColor = BOARD_COLOR;
+		this.borderColor = BORDER_COLOR;
+	}
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
@@ -40,7 +44,6 @@ public class PerfBoard extends AbstractBoard {
 						/ MAX_ALPHA));
 			}
 			Point p = new Point(firstPoint);
-			int diameter = getClosestOdd((int) PAD_SIZE.convertToPixels());
 			int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
 			int spacing = (int) this.spacing.convertToPixels();
 
@@ -49,28 +52,15 @@ public class PerfBoard extends AbstractBoard {
 				p.y += spacing;
 				while (p.x < secondPoint.x - spacing) {
 					p.x += spacing;
-					g2d.setColor(padColor);
-					g2d.fillOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
-					g2d.setColor(padColor.darker());
-					g2d.drawOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
 					g2d.setColor(Constants.CANVAS_COLOR);
 					g2d.fillOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter,
 							holeDiameter);
-					g2d.setColor(padColor.darker());
+					g2d.setColor(borderColor);
 					g2d.drawOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter,
 							holeDiameter);
 				}
 			}
 		}
-	}
-
-	@EditableProperty(name = "Pad color")
-	public Color getPadColor() {
-		return padColor;
-	}
-
-	public void setPadColor(Color padColor) {
-		this.padColor = padColor;
 	}
 
 	@EditableProperty
@@ -88,13 +78,9 @@ public class PerfBoard extends AbstractBoard {
 		g2d.fillRect(2, 2, width - 4, height - 4);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRect(2, 2, width - 4, height - 4);
-		g2d.setColor(COPPER_COLOR);
-		g2d.fillOval(width / 4, width / 4, width / 2, width / 2);
-		g2d.setColor(COPPER_COLOR.darker());
-		g2d.drawOval(width / 4, width / 4, width / 2, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
 		g2d.fillOval(width / 2 - 2, width / 2 - 2, 5, 5);
-		g2d.setColor(COPPER_COLOR.darker());
+		g2d.setColor(BORDER_COLOR);
 		g2d.drawOval(width / 2 - 2, width / 2 - 2, 5, 5);
 	}
 }
