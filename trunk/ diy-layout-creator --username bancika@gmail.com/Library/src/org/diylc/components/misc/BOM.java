@@ -73,9 +73,9 @@ public class BOM extends AbstractComponent<Void> {
 			}
 		}
 		// Calculate maximum entry size.
-		int maxEntrySize = maxNameWidth + maxValueWidth + 2 * SPACING.convertToPixels();
-		int columnCount = size.convertToPixels() / maxEntrySize;
-		int columnWidth = size.convertToPixels() / columnCount;
+		int maxEntrySize = maxNameWidth + maxValueWidth + 2 * (int) SPACING.convertToPixels();
+		int columnCount = (int) size.convertToPixels() / maxEntrySize;
+		int columnWidth = (int) size.convertToPixels() / columnCount;
 		int entriesPerColumn = (int) Math.ceil(1.d * bom.size() / columnCount);
 		if (entriesPerColumn == 0) {
 			g2d.drawString(DEFAULT_TEXT, point.x, point.y);

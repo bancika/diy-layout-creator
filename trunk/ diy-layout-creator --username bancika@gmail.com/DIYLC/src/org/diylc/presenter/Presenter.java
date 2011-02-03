@@ -815,8 +815,8 @@ public class Presenter implements IPlugInPort {
 		for (IDIYComponent<?> component : components) {
 			for (int i = 0; i < component.getControlPointCount(); i++) {
 				Point point = new Point(component.getControlPoint(i));
-				point.translate(currentProject.getGridSpacing().convertToPixels(), currentProject
-						.getGridSpacing().convertToPixels());
+				point.translate((int) currentProject.getGridSpacing().convertToPixels(),
+						(int) currentProject.getGridSpacing().convertToPixels());
 				component.setControlPoint(point, i);
 			}
 			addComponent(component, ComponentProcessor.getInstance().extractComponentTypeFrom(

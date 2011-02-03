@@ -24,10 +24,12 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	public static Color GUIDELINE_COLOR = Color.blue;
 	public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
-	protected Point[] controlPoints = new Point[] { new Point(0, 0),
-			new Point(DEFAULT_SIZE.convertToPixels() / 2, 0),
-			new Point(DEFAULT_SIZE.convertToPixels() / 2, DEFAULT_SIZE.convertToPixels()),
-			new Point(DEFAULT_SIZE.convertToPixels(), DEFAULT_SIZE.convertToPixels()) };
+	protected Point[] controlPoints = new Point[] {
+			new Point(0, 0),
+			new Point((int) (DEFAULT_SIZE.convertToPixels() / 2), 0),
+			new Point((int) (DEFAULT_SIZE.convertToPixels() / 2), (int) (DEFAULT_SIZE
+					.convertToPixels())),
+			new Point((int) DEFAULT_SIZE.convertToPixels(), (int) DEFAULT_SIZE.convertToPixels()) };
 
 	protected Color color = getDefaultColor();
 
@@ -107,7 +109,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
 		return VisibilityPolicy.WHEN_SELECTED;
 	}
-	
+
 	@Override
 	public boolean canControlPointOverlap(int index) {
 		// Only shape control points may overlap.

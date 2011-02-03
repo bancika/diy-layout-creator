@@ -103,7 +103,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 	}
 
 	private void updateControlPoints() {
-		int pinSpacing = PIN_SPACING.convertToPixels();
+		int pinSpacing = (int) PIN_SPACING.convertToPixels();
 		// Update control points.
 		int x = controlPoints[0].x;
 		int y = controlPoints[0].y;
@@ -134,10 +134,10 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 			body = new Shape[2];
 			int x = controlPoints[0].x;
 			int y = controlPoints[0].y;
-			int pinSpacing = PIN_SPACING.convertToPixels();
+			int pinSpacing = (int) PIN_SPACING.convertToPixels();
 			int bodyWidth = getClosestOdd(BODY_WIDTH.convertToPixels());
 			int bodyHeight = getClosestOdd(BODY_HEIGHT.convertToPixels());
-			int tabThickness = TAB_THICKNESS.convertToPixels();
+			int tabThickness = (int) TAB_THICKNESS.convertToPixels();
 
 			switch (orientation) {
 			case DEFAULT:
@@ -174,7 +174,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
-		int pinSize = PIN_SIZE.convertToPixels() / 2 * 2;
+		int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
 		Shape mainArea = getBody()[0];
 		Shape tabArea = getBody()[1];
 		Composite oldComposite = g2d.getComposite();
@@ -194,6 +194,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.draw(mainArea);
 
+		// Draw pins.
 		for (Point point : controlPoints) {
 			g2d.setColor(PIN_COLOR);
 			g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);

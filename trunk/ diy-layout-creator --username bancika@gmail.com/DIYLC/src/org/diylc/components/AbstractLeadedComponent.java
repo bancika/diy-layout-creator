@@ -40,7 +40,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	protected Size width;
 	protected Point[] points = new Point[] {
 			new Point((int) (-DEFAULT_SIZE.convertToPixels() / 2), 0),
-			new Point(DEFAULT_SIZE.convertToPixels() / 2, 0) };
+			new Point((int) (DEFAULT_SIZE.convertToPixels() / 2), 0) };
 	protected Color bodyColor = Color.white;
 	protected Color borderColor = Color.black;
 	protected Color labelColor = LABEL_COLOR;
@@ -173,7 +173,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	 * @return default lead thickness. Override this method to change it.
 	 */
 	protected int getLeadThickness() {
-		return LEAD_THICKNESS.convertToPixels();
+		return (int) LEAD_THICKNESS.convertToPixels();
 	}
 
 	/**

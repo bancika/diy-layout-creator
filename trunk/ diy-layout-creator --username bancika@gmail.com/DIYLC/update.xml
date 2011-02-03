@@ -168,6 +168,10 @@
 					<description>Fixed lead alignment issue</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Better scaling, grid lines are more precise</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added resistor schematic symbol</description>
 				</com.diyfever.gui.update.Change>
@@ -178,6 +182,14 @@
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added eyelet/turret component</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added Marshall/Trainwreck style boards</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added few types of trimmers</description>
 				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list

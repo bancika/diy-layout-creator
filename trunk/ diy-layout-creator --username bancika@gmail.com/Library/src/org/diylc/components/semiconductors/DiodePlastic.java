@@ -77,8 +77,8 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d) {
 		g2d.setColor(markerColor);
-		int width = getLength().convertToPixels();
-		int markerWidth = MARKER_WIDTH.convertToPixels();
+		int width = (int) getLength().convertToPixels();
+		int markerWidth = (int) MARKER_WIDTH.convertToPixels();
 		g2d.fillRect(width - markerWidth, 0, markerWidth, getClosestOdd(getWidth()
 				.convertToPixels()));
 	}

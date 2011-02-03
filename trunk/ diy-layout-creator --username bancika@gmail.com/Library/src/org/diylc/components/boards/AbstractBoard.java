@@ -27,7 +27,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
 	protected String value = "";
 	protected Point[] controlPoints = new Point[] { new Point(0, 0),
-			new Point(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels()) };
+			new Point((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels()) };
 	protected Point firstPoint = new Point();
 	protected Point secondPoint = new Point();
 

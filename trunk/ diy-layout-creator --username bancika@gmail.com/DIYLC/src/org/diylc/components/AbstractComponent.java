@@ -53,7 +53,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	 * @param x
 	 * @return
 	 */
-	protected int getClosestOdd(int x) {
-		return (x / 2) * 2 + 1;
+	protected int getClosestOdd(double x) {
+		return ((int) x / 2) * 2 + 1;
 	}
 }

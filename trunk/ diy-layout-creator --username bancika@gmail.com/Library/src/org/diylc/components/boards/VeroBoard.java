@@ -43,18 +43,18 @@ public class VeroBoard extends AbstractBoard {
 						/ MAX_ALPHA));
 			}
 			Point p = new Point(firstPoint);
-			int stripSize = getClosestOdd(STRIP_SIZE.convertToPixels());
-			int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
-			int spacing = this.spacing.convertToPixels();
+			int stripSize = getClosestOdd((int) STRIP_SIZE.convertToPixels());
+			int holeSize = getClosestOdd((int) HOLE_SIZE.convertToPixels());
+			int spacing = (int) this.spacing.convertToPixels();
 
 			while (p.y < secondPoint.y - spacing) {
 				p.x = firstPoint.x;
 				p.y += spacing;
 				g2d.setColor(stripColor);
-				g2d.fillRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
+				g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2,
 						secondPoint.x - spacing - p.x, stripSize);
 				g2d.setColor(stripColor.darker());
-				g2d.drawRect(p.x + SPACING.convertToPixels() / 2, p.y - stripSize / 2,
+				g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2,
 						secondPoint.x - spacing - p.x, stripSize);
 				while (p.x < secondPoint.x - spacing) {
 					p.x += spacing;
