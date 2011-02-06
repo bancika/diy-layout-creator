@@ -50,7 +50,7 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 5);
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 7);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 	public static final String METRIC_KEY = "metric";
 
