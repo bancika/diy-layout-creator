@@ -977,6 +977,11 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
 	}
+	
+	@Override
+	public void refresh() {
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
+	}
 
 	/**
 	 * Updates the selection with the specified {@link ComponentTransferable}.

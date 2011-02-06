@@ -1,14 +1,22 @@
 <map>
   <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop\oldFiles</string>
+    <string>metric</string>
+    <boolean>false</boolean>
   </entry>
   <entry>
     <string>zoom</string>
     <double>1.0</double>
   </entry>
   <entry>
-    <string>metric</string>
+    <string>lastPath</string>
+    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop\oldFiles</string>
+  </entry>
+  <entry>
+    <string>antiAliasing</string>
+    <boolean>false</boolean>
+  </entry>
+  <entry>
+    <string>hiQualityRender</string>
     <boolean>false</boolean>
   </entry>
   <entry>

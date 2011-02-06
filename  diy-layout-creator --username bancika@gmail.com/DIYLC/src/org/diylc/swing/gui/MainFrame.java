@@ -33,10 +33,12 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
+import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
+import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.EditMenuPlugin;
 import org.diylc.swing.plugins.file.FileMenuPlugin;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
@@ -78,6 +80,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		presenter.installPlugin(new ToolBox(this));
 		presenter.installPlugin(new FileMenuPlugin(this));
 		presenter.installPlugin(new EditMenuPlugin(this));
+		presenter.installPlugin(new ConfigPlugin(this));
 		presenter.installPlugin(new LayersMenuPlugin(this));
 		// presenter.installPlugin(new OnlineManager());
 		presenter.installPlugin(new HelpMenuPlugin(this));
@@ -113,7 +116,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		// setGlassPane(new CustomGlassPane());
 		// getGlassPane().setVisible(true);
 	}
-	
+
 	public Presenter getPresenter() {
 		return presenter;
 	}
@@ -235,7 +238,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		if (action == null) {
 			menu.addSeparator();
 		} else {
-			Boolean isCheckBox = (Boolean) action.getValue(IPlugInPort.CHECK_BOX_MENU_ITEM);
+			Boolean isCheckBox = (Boolean) action.getValue(IView.CHECK_BOX_MENU_ITEM);
 			if (isCheckBox != null && isCheckBox) {
 				menu.add(new JCheckBoxMenuItem(action));
 			} else {

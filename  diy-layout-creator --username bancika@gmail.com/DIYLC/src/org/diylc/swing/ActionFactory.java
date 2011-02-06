@@ -16,6 +16,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -28,6 +29,7 @@ import org.diylc.swing.plugins.file.FileFilterEnum;
 import com.diyfever.gui.ButtonDialog;
 import com.diyfever.gui.IDrawingProvider;
 import com.diyfever.gui.export.DrawingExporter;
+import com.diyfever.gui.miscutils.ConfigurationManager;
 import com.rits.cloning.Cloner;
 
 public class ActionFactory {
@@ -131,6 +133,13 @@ public class ActionFactory {
 
 	public BringToFrontAction createBringToFrontAction(IPlugInPort plugInPort) {
 		return new BringToFrontAction(plugInPort);
+	}
+
+	// Config actions.
+
+	public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey,
+			boolean defaultValue) {
+		return new ConfigAction(plugInPort, title, configKey, defaultValue);
 	}
 
 	// File menu actions.
@@ -787,6 +796,33 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Bring to Front triggered");
 			plugInPort.bringSelectionToFront();
+		}
+	}
+
+	public static class ConfigAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		private IPlugInPort plugInPort;
+		private String configKey;
+
+		public ConfigAction(IPlugInPort plugInPort, String title, String configKey,
+				boolean defaultValue) {
+			super();
+			this.plugInPort = plugInPort;
+			this.configKey = configKey;
+			putValue(AbstractAction.NAME, title);
+			putValue(IView.CHECK_BOX_MENU_ITEM, true);
+			putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance().readBoolean(
+					configKey, defaultValue));
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info(getValue(AbstractAction.NAME) + " triggered");
+			ConfigurationManager.getInstance().writeValue(configKey,
+					getValue(AbstractAction.SELECTED_KEY));
+			plugInPort.refresh();
 		}
 	}
 }

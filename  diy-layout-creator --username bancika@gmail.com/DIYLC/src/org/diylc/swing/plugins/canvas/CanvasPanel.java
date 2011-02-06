@@ -34,6 +34,7 @@ import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 
 import com.diyfever.gui.ButtonDialog;
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 /**
  * GUI class used to draw onto.
@@ -52,6 +53,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 	private static boolean USE_HARDWARE_ACCELLERATION = false;
 
 	static final EnumSet<DrawOption> DRAW_OPTIONS = EnumSet.of(DrawOption.GRID,
+			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+	static final EnumSet<DrawOption> DRAW_OPTIONS_ANTI_ALIASING = EnumSet.of(DrawOption.GRID,
 			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
 			DrawOption.CONTROL_POINTS);
 
@@ -75,7 +78,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 	private void initializeDnD() {
 		// Initialize drag source recognizer.
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
-				DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK, new CanvasGestureListener(plugInPort));
+				DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK,
+				new CanvasGestureListener(plugInPort));
 		// Initialize drop target.
 		new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE,
 				new CanvasTargetListener(plugInPort), true);
@@ -104,7 +108,9 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			bufferImage = createImage(getWidth(), getHeight());
 		}
 		Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
-		plugInPort.draw(g2d, DRAW_OPTIONS, null);
+		plugInPort.draw(g2d, ConfigurationManager.getInstance().readBoolean(
+				IPlugInPort.ANTI_ALIASING_KEY, true) ? DRAW_OPTIONS_ANTI_ALIASING : DRAW_OPTIONS,
+				null);
 	}
 
 	@Override
@@ -116,7 +122,9 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			createBufferImage();
 		} else {
 			Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
-			plugInPort.draw(g2d, DRAW_OPTIONS, null);
+			plugInPort.draw(g2d, ConfigurationManager.getInstance().readBoolean(
+					IPlugInPort.ANTI_ALIASING_KEY, true) ? DRAW_OPTIONS_ANTI_ALIASING
+					: DRAW_OPTIONS, null);
 		}
 		if (USE_HARDWARE_ACCELLERATION) {
 			VolatileImage volatileImage = (VolatileImage) bufferImage;
@@ -125,10 +133,11 @@ class CanvasPanel extends JComponent implements Autoscroll {
 					if (volatileImage.contentsLost()) {
 						createBufferImage();
 					}
-//					int validation = volatileImage.validate(screenGraphicsConfiguration);
-//					if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
-//						createBufferImage();
-//					}
+					// int validation =
+					// volatileImage.validate(screenGraphicsConfiguration);
+					// if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
+					// createBufferImage();
+					// }
 					g.drawImage(bufferImage, 0, 0, this);
 				} catch (NullPointerException e) {
 					createBufferImage();
@@ -136,7 +145,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			} while (volatileImage == null || volatileImage.contentsLost());
 		} else {
 			g.drawImage(bufferImage, 0, 0, this);
-//			bufferImage.flush();
+			// bufferImage.flush();
 		}
 	}
 
@@ -154,18 +163,18 @@ class CanvasPanel extends JComponent implements Autoscroll {
 				invalidate();
 			}
 		});
-//		addKeyListener(new KeyAdapter() {
-//
-//			@Override
-//			public void keyPressed(KeyEvent e) {
-//				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-//					plugInPort.deleteSelectedComponents();
-//				}
-//				// plugInPort.mouseMoved(getMousePosition(), e.isControlDown(),
-//				// e.isShiftDown(), e
-//				// .isAltDown());
-//			}
-//		});
+		// addKeyListener(new KeyAdapter() {
+		//
+		// @Override
+		// public void keyPressed(KeyEvent e) {
+		// if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+		// plugInPort.deleteSelectedComponents();
+		// }
+		// // plugInPort.mouseMoved(getMousePosition(), e.isControlDown(),
+		// // e.isShiftDown(), e
+		// // .isAltDown());
+		// }
+		// });
 		addMouseMotionListener(new MouseAdapter() {
 
 			@Override
@@ -217,8 +226,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 								// Save default values.
 								for (PropertyWrapper property : editor.getDefaultedProperties()) {
 									if (property.getValue() != null) {
-										plugInPort.setSelectionDefaultPropertyValue(property.getName(),
-												property.getValue());
+										plugInPort.setSelectionDefaultPropertyValue(property
+												.getName(), property.getValue());
 									}
 								}
 							}

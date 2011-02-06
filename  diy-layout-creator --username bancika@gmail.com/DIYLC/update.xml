@@ -195,6 +195,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added few types of trimmers</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Configurable rendering quality to improve speed</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list
 			</url>

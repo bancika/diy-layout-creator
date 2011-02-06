@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.swing.plugins.edit.ComponentTransferable;
 
 import com.diyfever.gui.simplemq.IMessageListener;
 import com.diyfever.gui.simplemq.MessageDispatcher;
@@ -29,8 +30,9 @@ import com.diyfever.gui.update.VersionNumber;
  * @see EventType
  */
 public interface IPlugInPort {
-
-	public static final String CHECK_BOX_MENU_ITEM = "org.diylc.checkBoxMenuItem";
+	
+	public static final String ANTI_ALIASING_KEY = "antiAliasing";
+	public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as
@@ -328,4 +330,9 @@ public interface IPlugInPort {
 	 * Brings each of the selected components one step to front.
 	 */
 	void bringSelectionToFront();
+	
+	/**
+	 * Causes the display to refresh.
+	 */
+	void refresh();
 }
