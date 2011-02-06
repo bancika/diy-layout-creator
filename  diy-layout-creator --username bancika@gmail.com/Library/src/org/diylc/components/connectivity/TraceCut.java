@@ -35,6 +35,9 @@ public class TraceCut extends AbstractComponent<Void> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		if (checkPointsClipped(g2d.getClip())) {
+			return;
+		}
 		int size = getClosestOdd((int) this.size.convertToPixels());
 		int dotDiameter = size - 6;
 		g2d.setColor(fillColor);

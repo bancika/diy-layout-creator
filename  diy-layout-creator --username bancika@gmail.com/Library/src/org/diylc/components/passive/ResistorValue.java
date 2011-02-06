@@ -23,6 +23,6 @@ public class ResistorValue {
 	
 	@Override
 	public String toString() {
-		return resistance.toString() + " " + power.toString();
+		return resistance.toString() + power.toString();
 	}
 }

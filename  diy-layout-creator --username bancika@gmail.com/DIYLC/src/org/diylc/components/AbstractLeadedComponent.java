@@ -65,6 +65,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		Shape shape = getBodyShape();
 		// If there's no body, just draw the line connecting the ending points.
 		if (shape == null) {
+			if (checkPointsClipped(g2d.getClip())) {
+				return;
+			}
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness()));
 			g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
 					: getLeadColor(componentState));

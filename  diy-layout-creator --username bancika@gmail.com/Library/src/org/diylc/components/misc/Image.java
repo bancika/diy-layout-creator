@@ -42,20 +42,25 @@ public class Image extends AbstractTransparentComponent<Void> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		double s = 1d * scale / DEFAULT_SCALE;
+		Point endPoint = new Point((int) (image.getIconWidth() * s),
+				(int) (image.getIconHeight() * s));
+		if (!g2d.getClip().contains(point) && !g2d.getClip().contains(endPoint)) {
+			return;
+		}
 		Composite oldComposite = g2d.getComposite();
 		if (alpha < MAX_ALPHA) {
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 					/ MAX_ALPHA));
 		}
-		double s = 1d * scale / DEFAULT_SCALE;
+
 		g2d.scale(s, s);
 		g2d.drawImage(image.getImage(), (int) (point.x / s), (int) (point.y / s), null);
 		if (componentState == ComponentState.SELECTED) {
 			g2d.setComposite(oldComposite);
 			g2d.scale(1 / s, 1 / s);
 			g2d.setColor(SELECTION_COLOR);
-			g2d.drawRect(point.x, point.y, (int) (image.getIconWidth() * s), (int) (image
-					.getIconHeight() * s));
+			g2d.drawRect(point.x, point.y, endPoint.x, endPoint.y);
 		}
 	}
 

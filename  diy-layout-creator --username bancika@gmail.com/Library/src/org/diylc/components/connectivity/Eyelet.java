@@ -34,6 +34,9 @@ public class Eyelet extends AbstractComponent<String> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		if (checkPointsClipped(g2d.getClip())) {
+			return;
+		}
 		int diameter = getClosestOdd((int) size.convertToPixels());
 		int holeDiameter = getClosestOdd((int) holeSize.convertToPixels());
 		g2d.setColor(color);

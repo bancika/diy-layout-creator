@@ -147,7 +147,7 @@ public class DrawingManager {
 
 		g2dWrapper.setColor(Constants.CANVAS_COLOR);
 		g2dWrapper.fillRect(0, 0, d.width, d.height);
-		g2d.setClip(new Rectangle(new Point(0, 0), d));
+		g2d.clip(new Rectangle(new Point(0, 0), d));
 
 		GridType gridType = (GridType) ConfigurationManager.getInstance().readObject(
 				ANTIALIASING_KEY, GridType.LINES);
