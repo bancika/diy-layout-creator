@@ -167,6 +167,9 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		if (checkPointsClipped(g2d.getClip())) {
+			return;
+		}
 		Shape body = getBody();
 		// Draw body if available.
 		if (body != null) {

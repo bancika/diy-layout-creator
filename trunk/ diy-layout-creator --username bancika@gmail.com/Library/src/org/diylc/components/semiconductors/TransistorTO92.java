@@ -166,6 +166,9 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		if (checkPointsClipped(g2d.getClip())) {
+			return;
+		}
 		int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
 		Area mainArea = getBody();
 		Composite oldComposite = g2d.getComposite();

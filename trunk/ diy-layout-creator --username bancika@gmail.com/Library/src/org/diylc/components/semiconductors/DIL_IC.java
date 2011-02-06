@@ -249,6 +249,9 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		if (checkPointsClipped(g2d.getClip())) {
+			return;
+		}
 		int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
 		Area mainArea = getBody()[0];
 		for (Point point : controlPoints) {

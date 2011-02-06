@@ -2,6 +2,7 @@ package org.diylc.components;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Shape;
 
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.EditableProperty;
@@ -19,7 +20,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	private static final long serialVersionUID = 1L;
 
 	protected String name = "";
-	
+
 	public static Color SELECTION_COLOR = Color.red;
 	public static Color LABEL_COLOR = Color.black;
 	public static Color LABEL_COLOR_SELECTED = Color.red;
@@ -35,7 +36,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public boolean canControlPointOverlap(int index) {
 		return false;
@@ -55,5 +56,18 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	 */
 	protected int getClosestOdd(double x) {
 		return ((int) x / 2) * 2 + 1;
+	}
+
+	/**
+	 * @param clip
+	 * @return true if none of the control points lie in the clip rectangle.
+	 */
+	protected boolean checkPointsClipped(Shape clip) {
+		for (int i = 0; i < getControlPointCount(); i++) {
+			if (clip.contains(getControlPoint(i))) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

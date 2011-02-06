@@ -243,6 +243,9 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		if (checkPointsClipped(g2d.getClip())) {
+			return;
+		}
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		Shape mainShape = getBody()[0];
 		Shape shaftShape = getBody()[1];

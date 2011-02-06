@@ -63,6 +63,9 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		if (checkPointsClipped(g2d.getClip())) {
+			return;
+		}
 		if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
 			// Do not track guidelines.
 			drawingObserver.stopTracking();

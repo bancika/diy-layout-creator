@@ -107,10 +107,6 @@ class CanvasPanel extends JComponent implements Autoscroll {
 		} else {
 			bufferImage = createImage(getWidth(), getHeight());
 		}
-		Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
-		plugInPort.draw(g2d, ConfigurationManager.getInstance().readBoolean(
-				IPlugInPort.ANTI_ALIASING_KEY, true) ? DRAW_OPTIONS_ANTI_ALIASING : DRAW_OPTIONS,
-				null);
 	}
 
 	@Override
@@ -120,12 +116,12 @@ class CanvasPanel extends JComponent implements Autoscroll {
 		}
 		if (bufferImage == null) {
 			createBufferImage();
-		} else {
-			Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
-			plugInPort.draw(g2d, ConfigurationManager.getInstance().readBoolean(
-					IPlugInPort.ANTI_ALIASING_KEY, true) ? DRAW_OPTIONS_ANTI_ALIASING
-					: DRAW_OPTIONS, null);
 		}
+		Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
+		g2d.setClip(getVisibleRect());
+		plugInPort.draw(g2d, ConfigurationManager.getInstance().readBoolean(
+				IPlugInPort.ANTI_ALIASING_KEY, true) ? DRAW_OPTIONS_ANTI_ALIASING : DRAW_OPTIONS,
+				null);
 		if (USE_HARDWARE_ACCELLERATION) {
 			VolatileImage volatileImage = (VolatileImage) bufferImage;
 			do {
