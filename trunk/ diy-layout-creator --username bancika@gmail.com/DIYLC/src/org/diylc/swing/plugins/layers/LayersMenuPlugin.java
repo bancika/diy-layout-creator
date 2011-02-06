@@ -13,6 +13,7 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IView;
 import org.diylc.swing.ISwingUI;
 
 public class LayersMenuPlugin implements IPlugIn {
@@ -36,7 +37,7 @@ public class LayersMenuPlugin implements IPlugIn {
 							(Boolean) getValue(Action.SELECTED_KEY));
 				}
 			};
-			action.putValue(IPlugInPort.CHECK_BOX_MENU_ITEM, true);
+			action.putValue(IView.CHECK_BOX_MENU_ITEM, true);
 			lockActionMap.put(layer, action);
 			swingUI.injectMenuAction(action, LOCK_LAYERS_TITLE);
 		}

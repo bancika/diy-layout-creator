@@ -21,6 +21,8 @@ public interface IView {
 	public static final int NO_OPTION = 1;
 	public static final int CANCEL_OPTION = 2;
 	public static final int OK_OPTION = 0;
+	
+	public static final String CHECK_BOX_MENU_ITEM = "org.diylc.checkBoxMenuItem";
 
 	void showMessage(String message, String title, int messageType);
 
