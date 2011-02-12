@@ -1,24 +1,20 @@
 <map>
   <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\My Documents\Downloads</string>
+    <string>metric</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>zoom</string>
     <double>1.0</double>
   </entry>
   <entry>
-    <string>metric</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
-    <string>stickyPoints</string>
-    <boolean>true</boolean>
+    <string>lastPath</string>
+    <string>C:\Documents and Settings\Branislav Stojkovic\My Documents\Downloads</string>
   </entry>
   <entry>
     <string>theme</string>
     <org.diylc.core.Theme>
-      <name>White Realistic</name>
+      <name>Light</name>
       <bgColor>
         <red>255</red>
         <green>255</green>
@@ -38,6 +34,10 @@
         <alpha>255</alpha>
       </labelColor>
     </org.diylc.core.Theme>
+  </entry>
+  <entry>
+    <string>stickyPoints</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>antiAliasing</string>

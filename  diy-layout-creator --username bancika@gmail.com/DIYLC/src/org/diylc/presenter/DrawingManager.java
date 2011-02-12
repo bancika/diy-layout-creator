@@ -53,7 +53,7 @@ public class DrawingManager {
 	public static Color CONTROL_POINT_COLOR = Color.black;
 	public static Color SELECTED_CONTROL_POINT_COLOR = Color.green;
 
-	private Theme theme = new Theme("White Realistic", Constants.CANVAS_COLOR, GRID_COLOR, null,
+	private Theme theme = new Theme("Light", Constants.CANVAS_COLOR, GRID_COLOR, null,
 			null, null);
 
 	// Keeps Area object of each drawn component.
