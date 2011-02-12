@@ -26,6 +26,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.utils.Constants;
 
@@ -44,13 +45,16 @@ public class DrawingManager {
 
 	public static int CONTROL_POINT_SIZE = 7;
 
-	public static final String ANTIALIASING_KEY = "anti-aliasing";
 	public static final String ZOOM_KEY = "zoom";
+	public static final String THEME_KEY = "theme";
 	public static boolean DEBUG_COMPONENT_AREAS = false;
 
 	public static Color GRID_COLOR = new Color(240, 240, 240);
 	public static Color CONTROL_POINT_COLOR = Color.black;
 	public static Color SELECTED_CONTROL_POINT_COLOR = Color.green;
+
+	private Theme theme = new Theme("White Realistic", Constants.CANVAS_COLOR, GRID_COLOR, null,
+			null, null);
 
 	// Keeps Area object of each drawn component.
 	private Map<IDIYComponent<?>, Area> componentAreaMap;
@@ -72,6 +76,10 @@ public class DrawingManager {
 		this.messageDispatcher = messageDispatcher;
 		componentAreaMap = new HashMap<IDIYComponent<?>, Area>();
 		lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(THEME_KEY, null);
+		if (theme != null) {
+			this.theme = theme;
+		}
 	}
 
 	/**
@@ -145,12 +153,11 @@ public class DrawingManager {
 		// AffineTransform initialTx = g2d.getTransform();
 		Dimension d = getCanvasDimensions(project, zoom, true);
 
-		g2dWrapper.setColor(Constants.CANVAS_COLOR);
+		g2dWrapper.setColor(theme.getBgColor());
 		g2dWrapper.fillRect(0, 0, d.width, d.height);
 		g2d.clip(new Rectangle(new Point(0, 0), d));
 
-		GridType gridType = (GridType) ConfigurationManager.getInstance().readObject(
-				ANTIALIASING_KEY, GridType.LINES);
+		GridType gridType = GridType.LINES;
 		if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
 			double zoomStep = project.getGridSpacing().convertToPixels() * zoom;
 			if (gridType == GridType.CROSSHAIR) {
@@ -162,7 +169,7 @@ public class DrawingManager {
 						10f, new float[] { 1f, (float) zoomStep - 1 }, 0f));
 			}
 
-			g2dWrapper.setColor(GRID_COLOR);
+			g2dWrapper.setColor(theme.getGridColor());
 			for (double i = zoomStep; i < d.width; i += zoomStep) {
 				g2dWrapper.drawLine((int) i, 0, (int) i, d.height - 1);
 			}
@@ -224,22 +231,24 @@ public class DrawingManager {
 		// Draw control points.
 		if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
 			// Draw unselected points first to make sure they are below.
-			for (IDIYComponent<?> component : project.getComponents()) {
-				for (int i = 0; i < component.getControlPointCount(); i++) {
-					VisibilityPolicy visibilityPolicy = component
-							.getControlPointVisibilityPolicy(i);
-					if ((groupedComponents.contains(component)
-							&& (visibilityPolicy == VisibilityPolicy.ALWAYS || (selectedComponents
-									.contains(component) && visibilityPolicy == VisibilityPolicy.WHEN_SELECTED)) || (!groupedComponents
-							.contains(component)
-							&& !selectedComponents.contains(component) && component
-							.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS))) {
-						g2dWrapper.setColor(CONTROL_POINT_COLOR);
+			if (dragInProgress) {
+				for (IDIYComponent<?> component : project.getComponents()) {
+					for (int i = 0; i < component.getControlPointCount(); i++) {
+						VisibilityPolicy visibilityPolicy = component
+								.getControlPointVisibilityPolicy(i);
+						if ((groupedComponents.contains(component)
+								&& (visibilityPolicy == VisibilityPolicy.ALWAYS || (selectedComponents
+										.contains(component) && visibilityPolicy == VisibilityPolicy.WHEN_SELECTED)) || (!groupedComponents
+								.contains(component)
+								&& !selectedComponents.contains(component) && component
+								.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS))) {
+							g2dWrapper.setColor(CONTROL_POINT_COLOR);
 
-						Point controlPoint = component.getControlPoint(i);
-						int pointSize = CONTROL_POINT_SIZE - 2;
-						g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
-								- pointSize / 2, pointSize, pointSize);
+							Point controlPoint = component.getControlPoint(i);
+							int pointSize = CONTROL_POINT_SIZE - 2;
+							g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
+									- pointSize / 2, pointSize, pointSize);
+						}
 					}
 				}
 			}
@@ -371,6 +380,16 @@ public class DrawingManager {
 
 	public void fireZoomChanged() {
 		messageDispatcher.dispatchMessage(EventType.ZOOM_CHANGED, zoomLevel);
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
+	}
+
+	public Theme getTheme() {
+		return theme;
+	}
+
+	public void setTheme(Theme theme) {
+		this.theme = theme;
+		ConfigurationManager.getInstance().writeValue(THEME_KEY, theme);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 }

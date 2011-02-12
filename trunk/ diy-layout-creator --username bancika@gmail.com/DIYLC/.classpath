@@ -9,9 +9,9 @@
 	<classpathentry kind="lib" path="lib/iText-2.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/cloning-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/objenesis-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/bancika-gui-framework.jar"/>
 	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
 	<classpathentry kind="lib" path="library/main.jar"/>
+	<classpathentry kind="lib" path="lib/bancika-gui-framework.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

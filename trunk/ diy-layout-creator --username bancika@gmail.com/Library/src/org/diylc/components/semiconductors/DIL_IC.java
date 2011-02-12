@@ -19,6 +19,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -307,7 +308,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	public static enum PinCount {
 
-		_4, _8, _10, _12, _14, _16, _24, _32;
+		_4, _8, _10, _12, _14, _16, _18, _20, _22, _24, _26, _28, _30, _32;
 
 		@Override
 		public String toString() {

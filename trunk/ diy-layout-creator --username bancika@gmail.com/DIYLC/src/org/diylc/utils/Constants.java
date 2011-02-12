@@ -7,7 +7,7 @@ import java.awt.Toolkit;
 
 public class Constants {
 
-	public static final int PIXELS_PER_INCH = 150;
+	public static final int PIXELS_PER_INCH = 200;
 	public static final double PIXEL_SIZE = 1d * PIXELS_PER_INCH
 			/ Toolkit.getDefaultToolkit().getScreenResolution();
 

@@ -23,6 +23,7 @@ public interface IView {
 	public static final int OK_OPTION = 0;
 	
 	public static final String CHECK_BOX_MENU_ITEM = "org.diylc.checkBoxMenuItem";
+	public static final String RADIO_BUTTON_GROUP_KEY = "org.diylc.radioButtonGroup";
 
 	void showMessage(String message, String title, int messageType);
 

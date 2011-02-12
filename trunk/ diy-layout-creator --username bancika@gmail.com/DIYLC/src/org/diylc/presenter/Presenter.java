@@ -30,6 +30,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.utils.Constants;
@@ -594,7 +595,12 @@ public class Presenter implements IPlugInPort {
 				}
 			}
 			// Expand control points to include all stuck components.
-			if (!ctrlDown) {
+			boolean sticky = ConfigurationManager.getInstance().readBoolean(
+					IPlugInPort.STICKY_POINTS_KEY, true);
+			if (ctrlDown) {
+				sticky = !sticky;
+			}
+			if (sticky) {
 				includeStuckComponents(controlPointMap);
 			}
 		}
@@ -691,8 +697,9 @@ public class Presenter implements IPlugInPort {
 			int actualDy = 0;
 
 			// For each component, do a simulation of the move to see if any of
-			// them will
-			// overlap.
+			// them will overlap or go out of bounds.
+			int width = (int) currentProject.getWidth().convertToPixels();
+			int height = (int) currentProject.getHeight().convertToPixels();
 			boolean isFirst = true;
 			for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
 				IDIYComponent<?> component = entry.getKey();
@@ -715,8 +722,15 @@ public class Presenter implements IPlugInPort {
 								// Nothing to move.
 								return true;
 							}
-						} else {
-							controlPoints[index].translate(actualDx, actualDy);
+						}
+						// else {
+						controlPoints[index].translate(actualDx, actualDy);
+						if (controlPoints[index].x < 0 || controlPoints[index].y < 0
+								|| controlPoints[index].x > width
+								|| controlPoints[index].y > height) {
+							// At least one control point went out of bounds.
+							return true;
+							// }
 						}
 					}
 					// For control points that may overlap, just write null,
@@ -730,7 +744,7 @@ public class Presenter implements IPlugInPort {
 					for (int j = i + 1; j < controlPoints.length; j++) {
 						if (controlPoints[i] != null && controlPoints[j] != null
 								&& controlPoints[i].equals(controlPoints[j])) {
-							LOG.error("Control points collision detected, cannot make this move.");
+							LOG.warn("Control points collision detected, cannot make this move.");
 							return true;
 						}
 					}
@@ -977,10 +991,20 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
 	}
-	
+
 	@Override
 	public void refresh() {
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
+	}
+
+	@Override
+	public Theme getSelectedTheme() {
+		return drawingManager.getTheme();
+	}
+
+	@Override
+	public void setSelectedTheme(Theme theme) {
+		drawingManager.setTheme(theme);
 	}
 
 	/**
@@ -1000,7 +1024,9 @@ public class Presenter implements IPlugInPort {
 			}
 			controlPointMap.put(component, indices);
 		}
-		includeStuckComponents(controlPointMap);
+		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.STICKY_POINTS_KEY, true)) {
+			includeStuckComponents(controlPointMap);
+		}
 		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents,
 				controlPointMap.keySet());
 	}

@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 
 import com.diyfever.gui.simplemq.IMessageListener;
@@ -30,9 +31,11 @@ import com.diyfever.gui.update.VersionNumber;
  * @see EventType
  */
 public interface IPlugInPort {
-	
+
 	public static final String ANTI_ALIASING_KEY = "antiAliasing";
 	public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
+	public static final String EXPORT_GRID_KEY = "exportGrid";
+	public static final String STICKY_POINTS_KEY = "stickyPoints";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as
@@ -330,9 +333,21 @@ public interface IPlugInPort {
 	 * Brings each of the selected components one step to front.
 	 */
 	void bringSelectionToFront();
-	
+
 	/**
 	 * Causes the display to refresh.
 	 */
 	void refresh();
+
+	/**
+	 * @return currently selected theme.
+	 */
+	Theme getSelectedTheme();
+
+	/**
+	 * Changes the current theme.
+	 * 
+	 * @param theme
+	 */
+	void setSelectedTheme(Theme theme);
 }

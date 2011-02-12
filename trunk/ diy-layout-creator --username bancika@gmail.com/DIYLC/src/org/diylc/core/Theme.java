@@ -12,17 +12,17 @@ public class Theme implements Serializable {
 	private Color gridColor;
 	private Color componentBodyColor;
 	private Color componentBorderColor;
-	private Color componentLabelColor;
+	private Color labelColor;
 
 	public Theme(String name, Color bgColor, Color gridColor, Color componentBodyColor,
-			Color componentBorderColor, Color componentLabelColor) {
+			Color componentBorderColor, Color labelColor) {
 		super();
 		this.name = name;
 		this.bgColor = bgColor;
 		this.gridColor = gridColor;
 		this.componentBodyColor = componentBodyColor;
 		this.componentBorderColor = componentBorderColor;
-		this.componentLabelColor = componentLabelColor;
+		this.labelColor = labelColor;
 	}
 	
 	public String getName() {
@@ -45,8 +45,8 @@ public class Theme implements Serializable {
 		return componentBorderColor;
 	}
 
-	public Color getComponentLabelColor() {
-		return componentLabelColor;
+	public Color getLabelColor() {
+		return labelColor;
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class Theme implements Serializable {
 		result = prime * result
 				+ ((componentBorderColor == null) ? 0 : componentBorderColor.hashCode());
 		result = prime * result
-				+ ((componentLabelColor == null) ? 0 : componentLabelColor.hashCode());
+				+ ((labelColor == null) ? 0 : labelColor.hashCode());
 		result = prime * result + ((gridColor == null) ? 0 : gridColor.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -89,10 +89,10 @@ public class Theme implements Serializable {
 				return false;
 		} else if (!componentBorderColor.equals(other.componentBorderColor))
 			return false;
-		if (componentLabelColor == null) {
-			if (other.componentLabelColor != null)
+		if (labelColor == null) {
+			if (other.labelColor != null)
 				return false;
-		} else if (!componentLabelColor.equals(other.componentLabelColor))
+		} else if (!labelColor.equals(other.labelColor))
 			return false;
 		if (gridColor == null) {
 			if (other.gridColor != null)

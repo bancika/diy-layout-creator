@@ -69,12 +69,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				return;
 			}
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness()));
-			g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
-					: getLeadColor(componentState));
+			Color leadColor = shouldShadeLeads() ? getLeadColor(componentState).darker()
+					: getLeadColor(componentState);
+			g2d.setColor(leadColor);
 			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 			if (shouldShadeLeads()) {
 				g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness() - 2));
-				g2d.setColor(getLeadColor(componentState));
+				leadColor = getLeadColor(componentState);
+				g2d.setColor(leadColor);
 				g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 			}
 			return;
@@ -94,19 +96,23 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 					/ MAX_ALPHA));
 		}
 		if (bodyColor != null) {
-			g2d.setColor(bodyColor);
-			g2d.fill(shape);
+			if (bodyColor != null) {
+				g2d.setColor(bodyColor);
+				g2d.fill(shape);
+			}
 		}
 		decorateComponentBody(g2d);
 		g2d.setComposite(oldComposite);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
+		Color finalBorderColor = componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor;
+		g2d.setColor(finalBorderColor);
 		g2d.draw(shape);
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED : labelColor);
+		Color finalLabelFont = componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED : labelColor;
+		g2d.setColor(finalLabelFont);
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		String label = display == Display.NAME ? getName() : getValue().toString();
 		// Adjust label angle if needed to make sure that it's readable.
@@ -123,8 +129,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		int leadThickness = getClosestOdd(getLeadThickness());
 		double leadLength = (distance - shapeRect.width) / 2 - leadThickness / 2;
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-		g2d.setColor(shouldShadeLeads() ? getLeadColor(componentState).darker()
-				: getLeadColor(componentState));
+		Color leadColor = shouldShadeLeads() ? getLeadColor(componentState).darker()
+				: getLeadColor(componentState);
+		g2d.setColor(leadColor);
 		int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
 		int endY = (int) Math.round(points[0].y + Math.sin(theta) * leadLength);
 		g2d.drawLine(points[0].x, points[0].y, endX, endY);
@@ -133,7 +140,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		g2d.drawLine(points[1].x, points[1].y, endX, endY);
 		if (shouldShadeLeads()) {
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
-			g2d.setColor(getLeadColor(componentState));
+			leadColor = getLeadColor(componentState);
+			g2d.setColor(leadColor);
 			g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + Math.cos(theta)
 					* leadLength), (int) (points[0].y + Math.sin(theta) * leadLength));
 			g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x + Math.cos(theta - Math.PI)

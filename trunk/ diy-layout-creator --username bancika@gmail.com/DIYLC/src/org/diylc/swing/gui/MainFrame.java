@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
@@ -23,6 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
@@ -62,6 +64,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 
 	private JMenuBar mainMenuBar;
 	private Map<String, JMenu> menuMap;
+	private Map<String, ButtonGroup> buttonGroupMap;
 
 	private CanvasPlugin canvasPlugin;
 
@@ -71,6 +74,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		setPreferredSize(new Dimension(800, 600));
 		createBasePanels();
 		menuMap = new HashMap<String, JMenu>();
+		buttonGroupMap = new HashMap<String, ButtonGroup>();
 		setIconImages(Arrays.asList(IconLoader.IconSmall.getImage(), IconLoader.IconMedium
 				.getImage(), IconLoader.IconLarge.getImage()));
 		DialogFactory.getInstance().initialize(this);
@@ -239,8 +243,20 @@ public class MainFrame extends JFrame implements ISwingUI {
 			menu.addSeparator();
 		} else {
 			Boolean isCheckBox = (Boolean) action.getValue(IView.CHECK_BOX_MENU_ITEM);
+			String groupName = (String) action.getValue(IView.RADIO_BUTTON_GROUP_KEY);
 			if (isCheckBox != null && isCheckBox) {
 				menu.add(new JCheckBoxMenuItem(action));
+			} else if (groupName != null) {
+				ButtonGroup group;
+				if (buttonGroupMap.containsKey(groupName)) {
+					group = buttonGroupMap.get(groupName);
+				} else {
+					group = new ButtonGroup();
+					buttonGroupMap.put(groupName, group);
+				}
+				JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
+				group.add(item);
+				menu.add(item);
 			} else {
 				menu.add(action);
 			}

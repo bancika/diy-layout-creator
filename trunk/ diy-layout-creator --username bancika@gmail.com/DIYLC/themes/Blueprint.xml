@@ -1,0 +1,33 @@
+<org.diylc.core.Theme>
+  <name>Blueprint</name>
+  <bgColor>
+    <red>3</red>
+    <green>122</green>
+    <blue>198</blue>
+    <alpha>255</alpha>
+  </bgColor>
+  <gridColor>
+    <red>29</red>
+    <green>140</green>
+    <blue>193</blue>
+    <alpha>255</alpha>
+  </gridColor>
+  <componentBorderColor>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </componentBorderColor>
+  <componentBodyColor>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>0</alpha>
+  </componentBodyColor>
+  <labelColor>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </labelColor>
+</org.diylc.core.Theme>

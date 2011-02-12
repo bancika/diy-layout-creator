@@ -5,12 +5,14 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -26,7 +28,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	public static Size DEFAULT_HEIGHT = new Size(1.2d, SizeUnit.in);
 
 	protected String value = "";
-	protected Point[] controlPoints = new Point[] { new Point(0, 0),
+	protected Point[] controlPoints = new Point[] {
+			new Point(0, 0),
 			new Point((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels()) };
 	protected Point firstPoint = new Point();
 	protected Point secondPoint = new Point();
@@ -37,9 +40,6 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
-		if (checkPointsClipped(g2d.getClip())) {
-			return;
-		}
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();

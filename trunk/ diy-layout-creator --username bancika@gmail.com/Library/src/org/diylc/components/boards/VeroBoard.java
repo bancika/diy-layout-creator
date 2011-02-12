@@ -5,11 +5,13 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -34,8 +36,12 @@ public class VeroBoard extends AbstractBoard {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		Shape clip = g2d.getClip();
+		if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
+				&& !clip.contains(secondPoint.x, firstPoint.y)) {
+			return;
+		}
 		super.draw(g2d, componentState, project, drawingObserver);
-
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
@@ -51,12 +57,12 @@ public class VeroBoard extends AbstractBoard {
 				p.x = firstPoint.x;
 				p.y += spacing;
 				g2d.setColor(stripColor);
-				g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2,
-						secondPoint.x - spacing - p.x, stripSize);
+				g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing - p.x,
+						stripSize);
 				g2d.setColor(stripColor.darker());
-				g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2,
-						secondPoint.x - spacing - p.x, stripSize);
-				while (p.x < secondPoint.x - spacing) {
+				g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing - p.x,
+						stripSize);
+				while (p.x < secondPoint.x - spacing - holeSize) {
 					p.x += spacing;
 					g2d.setColor(Constants.CANVAS_COLOR);
 					g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);

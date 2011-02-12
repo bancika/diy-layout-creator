@@ -30,7 +30,8 @@ public enum IconLoader {
 			"faq.png"), Component("component.png"), Plugin("plugin.png"), Manual("manual.png"), Donate(
 			"donate.png"), Bug("bug.png"), IconLarge("icon_large.png"), IconMedium(
 			"icon_medium.png"), IconSmall("icon_small.png"), DocumentEdit("document_edit.png"), EditComponent(
-			"edit_component.png"), Size("size.png"), Front("front.png"), Back("back.png");
+			"edit_component.png"), Size("size.png"), Front("front.png"), Back("back.png"), Pens(
+			"pens.png");
 
 	protected String name;
 

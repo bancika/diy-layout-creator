@@ -4,11 +4,13 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -33,6 +35,11 @@ public class PerfBoard extends AbstractBoard {
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
 			IDrawingObserver drawingObserver) {
+		Shape clip = g2d.getClip();
+		if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
+				&& !clip.contains(secondPoint.x, firstPoint.y)) {
+			return;
+		}
 		super.draw(g2d, componentState, project, drawingObserver);
 		if (componentState != ComponentState.DRAGGING) {
 			if (alpha < MAX_ALPHA) {
@@ -47,7 +54,7 @@ public class PerfBoard extends AbstractBoard {
 			while (p.y < secondPoint.y - spacing) {
 				p.x = firstPoint.x;
 				p.y += spacing;
-				while (p.x < secondPoint.x - spacing) {
+				while (p.x < secondPoint.x - spacing - diameter) {
 					p.x += spacing;
 					g2d.setColor(padColor);
 					g2d.fillOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);

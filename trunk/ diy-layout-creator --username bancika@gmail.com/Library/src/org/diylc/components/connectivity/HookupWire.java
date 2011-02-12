@@ -29,11 +29,11 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
 
 	@Override
 	protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
-		int thickness = (int) (Math.
-				pow(Math.E, -1.12436 - 0.11594 * gauge.getValue())
+		int thickness = (int) (Math.pow(Math.E, -1.12436 - 0.11594 * gauge.getValue())
 				* Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT));
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color.darker());
+		Color curveColor = componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color.darker();
+		g2d.setColor(curveColor);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
 		g2d.draw(curve);
 		if (componentState == ComponentState.NORMAL) {
