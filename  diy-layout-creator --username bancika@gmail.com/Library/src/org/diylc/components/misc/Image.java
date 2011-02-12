@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 
 import javax.swing.ImageIcon;
 
@@ -12,6 +13,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -45,7 +47,9 @@ public class Image extends AbstractTransparentComponent<Void> {
 		double s = 1d * scale / DEFAULT_SCALE;
 		Point endPoint = new Point((int) (image.getIconWidth() * s),
 				(int) (image.getIconHeight() * s));
-		if (!g2d.getClip().contains(point) && !g2d.getClip().contains(endPoint)) {
+		Shape clip = g2d.getClip();
+		if (!clip.contains(point) && !clip.contains(endPoint)
+				&& !clip.contains(point.x, endPoint.y) && !clip.contains(endPoint.x, point.y)) {
 			return;
 		}
 		Composite oldComposite = g2d.getComposite();

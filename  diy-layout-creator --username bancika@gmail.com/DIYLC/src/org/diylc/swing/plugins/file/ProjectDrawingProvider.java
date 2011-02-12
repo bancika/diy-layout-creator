@@ -9,6 +9,7 @@ import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 
 import com.diyfever.gui.IDrawingProvider;
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 /**
  * {@link IDrawingProvider} implementation that uses {@link IPlugInPort} to draw
@@ -32,6 +33,9 @@ public class ProjectDrawingProvider implements IDrawingProvider {
 		EnumSet<DrawOption> options = EnumSet.of(DrawOption.ANTIALIASING);
 		if (useZoom) {
 			options.add(DrawOption.ZOOM);
+		}
+		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXPORT_GRID_KEY, false)) {
+			options.add(DrawOption.GRID);
 		}
 		plugInPort.draw((Graphics2D) g, options, null);
 	}

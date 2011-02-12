@@ -12,6 +12,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;

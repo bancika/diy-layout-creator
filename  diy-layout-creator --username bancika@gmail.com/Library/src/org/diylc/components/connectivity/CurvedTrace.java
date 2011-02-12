@@ -8,6 +8,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -32,11 +33,12 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 	protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
 		int thickness = (int) size.convertToPixels();
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
+		Color curveColor = componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color;
+		g2d.setColor(curveColor);
 		g2d.draw(curve);
 	}
-	
+
 	@EditableProperty(name = "Width")
 	public Size getSize() {
 		return size;

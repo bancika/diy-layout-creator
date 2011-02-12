@@ -19,6 +19,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -308,8 +309,8 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 		g2d.drawRect(margin, margin, width - 2 * margin, width - 2 * margin);
 		int shaftSize = 11;
 		int slotSize = 2;
-		Area area = new Area(new Ellipse2D.Double(width / 2 - shaftSize / 2, width / 2 - shaftSize / 2,
-				shaftSize, shaftSize));
+		Area area = new Area(new Ellipse2D.Double(width / 2 - shaftSize / 2, width / 2 - shaftSize
+				/ 2, shaftSize, shaftSize));
 		Area slot = new Area(new Rectangle2D.Double(0, width / 2 - slotSize / 2, width, slotSize));
 		slot.transform(AffineTransform.getRotateInstance(Math.PI / 4, width / 2, width / 2));
 		area.subtract(slot);
@@ -317,18 +318,18 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 		g2d.fill(area);
 		g2d.setColor(SHAFT_BORDER_COLOR);
 		g2d.draw(area);
-		
+
 		int pinSize = 3;
 		g2d.setColor(PIN_COLOR);
 		g2d.fillOval(margin - pinSize / 2, 10 - pinSize / 2, pinSize, pinSize);
 		g2d.setColor(PIN_BORDER_COLOR);
 		g2d.drawOval(margin - pinSize / 2, 10 - pinSize / 2, pinSize, pinSize);
-		
+
 		g2d.setColor(PIN_COLOR);
 		g2d.fillOval(margin - pinSize / 2, 21 - pinSize / 2, pinSize, pinSize);
 		g2d.setColor(PIN_BORDER_COLOR);
 		g2d.drawOval(margin - pinSize / 2, 21 - pinSize / 2, pinSize, pinSize);
-		
+
 		g2d.setColor(PIN_COLOR);
 		g2d.fillOval(width - margin - pinSize / 2, width / 2 - pinSize / 2, pinSize, pinSize);
 		g2d.setColor(PIN_BORDER_COLOR);

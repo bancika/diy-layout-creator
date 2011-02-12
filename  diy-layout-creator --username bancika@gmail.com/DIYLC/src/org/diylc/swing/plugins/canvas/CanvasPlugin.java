@@ -112,7 +112,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private RulerScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new RulerScrollPane(getCanvasPanel(), new ProjectDrawingProvider(
-					plugInPort, true), (int) new Size(1d, SizeUnit.cm).convertToPixels(), (int) new Size(1d,
+					plugInPort, true), new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d,
 					SizeUnit.in).convertToPixels());
 			boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY,
 					true);
@@ -271,7 +271,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 					(int) (visibleRect.y * zoomFactor), visibleRect.width, visibleRect.height);
 			canvasPanel.scrollRectToVisible(visibleRect);
 			canvasPanel.revalidate();
-			
+
 			zoomLevel = (Double) params[0];
 			break;
 		case REPAINT:
