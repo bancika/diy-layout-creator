@@ -12,22 +12,4 @@
     <blue>40</blue>
     <alpha>255</alpha>
   </gridColor>
-  <componentBorderColor>
-    <red>255</red>
-    <green>255</green>
-    <blue>255</blue>
-    <alpha>255</alpha>
-  </componentBorderColor>
-  <componentBodyColor>
-    <red>255</red>
-    <green>255</green>
-    <blue>255</blue>
-    <alpha>0</alpha>
-  </componentBodyColor>
-  <labelColor>
-    <red>255</red>
-    <green>255</green>
-    <blue>255</blue>
-    <alpha>255</alpha>
-  </labelColor>
 </org.diylc.core.Theme>

@@ -12,10 +12,4 @@
     <blue>240</blue>
     <alpha>240</alpha>
   </gridColor>
-  <labelColor>
-    <red>0</red>
-    <green>0</green>
-    <blue>0</blue>
-    <alpha>255</alpha>
-  </labelColor>
 </org.diylc.core.Theme>
