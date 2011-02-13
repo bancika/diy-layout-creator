@@ -1,62 +1,20 @@
 <map>
   <entry>
-    <string>metric</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
-    <string>zoom</string>
-    <double>1.0</double>
-  </entry>
-  <entry>
-    <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\My Documents\Downloads</string>
-  </entry>
-  <entry>
     <string>theme</string>
     <org.diylc.core.Theme>
-      <name>Light</name>
+      <name>Blueprint</name>
       <bgColor>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
+        <red>3</red>
+        <green>122</green>
+        <blue>198</blue>
         <alpha>255</alpha>
       </bgColor>
       <gridColor>
-        <red>240</red>
-        <green>240</green>
-        <blue>240</blue>
-        <alpha>240</alpha>
-      </gridColor>
-      <labelColor>
-        <red>0</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>29</red>
+        <green>140</green>
+        <blue>193</blue>
         <alpha>255</alpha>
-      </labelColor>
+      </gridColor>
     </org.diylc.core.Theme>
-  </entry>
-  <entry>
-    <string>stickyPoints</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
-    <string>antiAliasing</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
-    <string>hiQualityRender</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
-    <string>showTemplatesAtStartup</string>
-    <boolean>false</boolean>
-  </entry>
-  <entry>
-    <string>exportGrid</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
-    <string>default.org.diylc.components.semiconductors.TransistorTO92:Orientation</string>
-    <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
   </entry>
 </map>
