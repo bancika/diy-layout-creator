@@ -17,4 +17,12 @@
       </gridColor>
     </org.diylc.core.Theme>
   </entry>
+  <entry>
+    <string>showTemplatesAtStartup</string>
+    <boolean>false</boolean>
+  </entry>
+  <entry>
+    <string>exportGrid</string>
+    <boolean>true</boolean>
+  </entry>
 </map>

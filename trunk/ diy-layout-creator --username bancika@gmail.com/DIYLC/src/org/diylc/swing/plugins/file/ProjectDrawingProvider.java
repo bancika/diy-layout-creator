@@ -21,11 +21,14 @@ public class ProjectDrawingProvider implements IDrawingProvider {
 
 	private IPlugInPort plugInPort;
 	private boolean useZoom;
+	private boolean showGridWhenNeeded;
 
-	public ProjectDrawingProvider(IPlugInPort plugInPort, boolean useZoom) {
+	public ProjectDrawingProvider(IPlugInPort plugInPort, boolean useZoom,
+			boolean showGridWhenNeeded) {
 		super();
 		this.plugInPort = plugInPort;
 		this.useZoom = useZoom;
+		this.showGridWhenNeeded = showGridWhenNeeded;
 	}
 
 	@Override
@@ -34,7 +37,9 @@ public class ProjectDrawingProvider implements IDrawingProvider {
 		if (useZoom) {
 			options.add(DrawOption.ZOOM);
 		}
-		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXPORT_GRID_KEY, false)) {
+		if (showGridWhenNeeded
+				&& ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXPORT_GRID_KEY,
+						false)) {
 			options.add(DrawOption.GRID);
 		}
 		plugInPort.draw((Graphics2D) g, options, null);

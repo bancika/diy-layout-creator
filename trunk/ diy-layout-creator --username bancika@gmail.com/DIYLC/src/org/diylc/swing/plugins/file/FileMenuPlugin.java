@@ -31,7 +31,7 @@ public class FileMenuPlugin implements IPlugIn {
 
 	@Override
 	public void connect(IPlugInPort plugInPort) {
-		this.drawingProvider = new ProjectDrawingProvider(plugInPort, false);
+		this.drawingProvider = new ProjectDrawingProvider(plugInPort, false, true);
 		this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
 
 		ActionFactory actionFactory = ActionFactory.getInstance();
