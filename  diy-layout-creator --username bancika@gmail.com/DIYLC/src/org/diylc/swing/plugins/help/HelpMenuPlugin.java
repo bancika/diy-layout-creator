@@ -5,7 +5,9 @@ import java.util.EnumSet;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -14,6 +16,7 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 
 import com.diyfever.gui.AboutDialog;
+import com.diyfever.gui.LinkLabel;
 import com.diyfever.gui.miscutils.Utils;
 
 /**
@@ -107,7 +110,11 @@ public class HelpMenuPlugin implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Utils.openURL(url);
+			try {
+				Utils.openURL(url);
+			} catch (Exception e1) {
+				Logger.getLogger(LinkLabel.class).error("Could not launch default browser", e1);
+			}
 		}
 	}
 }
