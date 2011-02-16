@@ -614,7 +614,7 @@ public class Presenter implements IPlugInPort {
 	 */
 	private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap) {
 		int oldSize = controlPointMap.size();
-		LOG.debug("Expanding selected component map");
+		LOG.trace("Expanding selected component map");
 		for (IDIYComponent<?> component : currentProject.getComponents()) {
 			ComponentType componentType = ComponentProcessor.getInstance()
 					.extractComponentTypeFrom(
@@ -649,7 +649,7 @@ public class Presenter implements IPlugInPort {
 							}
 						}
 						if (componentMatches) {
-							LOG.debug("Including component: " + component);
+							LOG.trace("Including component: " + component);
 							Set<Integer> indices = new HashSet<Integer>();
 							// For stretchable components just add the
 							// matching component. Otherwise, add all control
@@ -674,10 +674,10 @@ public class Presenter implements IPlugInPort {
 		int newSize = controlPointMap.size();
 		// As long as we're adding new components, do another iteration.
 		if (newSize > oldSize) {
-			LOG.debug("Component count changed, trying one more time.");
+			LOG.trace("Component count changed, trying one more time.");
 			includeStuckComponents(controlPointMap);
 		} else {
-			LOG.debug("Component count didn't change, done with expanding.");
+			LOG.trace("Component count didn't change, done with expanding.");
 		}
 	}
 
