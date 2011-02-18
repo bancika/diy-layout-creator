@@ -950,9 +950,7 @@ public class Presenter implements IPlugInPort {
 				ComponentType componentBeforeType = ComponentProcessor.getInstance()
 						.extractComponentTypeFrom(
 								(Class<? extends IDIYComponent<?>>) componentBefore.getClass());
-				if (componentType.getZOrder() == componentBeforeType.getZOrder()) {
-					Collections.swap(currentProject.getComponents(), index, index - 1);
-				}
+				Collections.swap(currentProject.getComponents(), index, index - 1);
 			}
 		}
 		if (!oldProject.equals(currentProject)) {
@@ -979,9 +977,7 @@ public class Presenter implements IPlugInPort {
 				ComponentType componentAfterType = ComponentProcessor.getInstance()
 						.extractComponentTypeFrom(
 								(Class<? extends IDIYComponent<?>>) componentAfter.getClass());
-				if (componentType.getZOrder() == componentAfterType.getZOrder()) {
-					Collections.swap(currentProject.getComponents(), index, index + 1);
-				}
+				Collections.swap(currentProject.getComponents(), index, index + 1);
 			}
 		}
 		if (!oldProject.equals(currentProject)) {
