@@ -36,6 +36,8 @@ public interface IPlugInPort {
 	public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
 	public static final String EXPORT_GRID_KEY = "exportGrid";
 	public static final String STICKY_POINTS_KEY = "stickyPoints";
+	public static final String METRIC_KEY = "metric";
+	public static final String SNAP_TO_GRID_KEY = "snapToGrid";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as

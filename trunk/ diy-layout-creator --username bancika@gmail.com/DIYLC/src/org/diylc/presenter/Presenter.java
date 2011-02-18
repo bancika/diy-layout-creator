@@ -53,7 +53,6 @@ public class Presenter implements IPlugInPort {
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 7);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
-	public static final String METRIC_KEY = "metric";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
 
@@ -91,8 +90,6 @@ public class Presenter implements IPlugInPort {
 	// Previous mouse location, not scaled for zoom factor.
 	private Point previousDragPoint = null;
 	private Project preDragProject = null;
-
-	private boolean snapToGrid = true;
 
 	public Presenter(IView view) {
 		super();
@@ -361,7 +358,8 @@ public class Presenter implements IPlugInPort {
 			switch (componentTypeSlot.getCreationMethod()) {
 			case SINGLE_CLICK:
 				try {
-					if (snapToGrid) {
+					if (ConfigurationManager.getInstance().readBoolean(
+							IPlugInPort.SNAP_TO_GRID_KEY, true)) {
 						CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
 					}
 					IDIYComponent<?> component = instantiationManager.instantiateComponent(
@@ -385,7 +383,8 @@ public class Presenter implements IPlugInPort {
 			case POINT_BY_POINT:
 				// First click is just to set the controlPointSlot and
 				// componentSlot.
-				if (snapToGrid) {
+				if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY,
+						true)) {
 					CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
 				}
 				if (instantiationManager.getComponentSlot() == null) {
@@ -460,7 +459,7 @@ public class Presenter implements IPlugInPort {
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
 		if (instantiationManager.getComponentTypeSlot() != null) {
-			if (snapToGrid) {
+			if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY, true)) {
 				CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
 			}
 			boolean refresh = false;
@@ -469,7 +468,8 @@ public class Presenter implements IPlugInPort {
 				refresh = instantiationManager.updatePointByPoint(scaledPoint);
 				break;
 			case SINGLE_CLICK:
-				refresh = instantiationManager.updateSingleClick(scaledPoint, snapToGrid,
+				refresh = instantiationManager.updateSingleClick(scaledPoint, ConfigurationManager
+						.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY, true),
 						currentProject.getGridSpacing());
 				break;
 			}
@@ -712,7 +712,8 @@ public class Presenter implements IPlugInPort {
 						if (isFirst) {
 							isFirst = false;
 							controlPoints[index].translate(dx, dy);
-							if (snapToGrid) {
+							if (ConfigurationManager.getInstance().readBoolean(
+									IPlugInPort.SNAP_TO_GRID_KEY, true)) {
 								CalcUtils.snapPointToGrid(controlPoints[index], currentProject
 										.getGridSpacing());
 							}
