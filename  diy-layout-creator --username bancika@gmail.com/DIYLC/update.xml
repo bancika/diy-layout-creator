@@ -233,6 +233,10 @@
 					<description>DIL IC now has more pin options</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Send to Back/Bring to Front are more flexible</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added support for themes</description>
 				</com.diyfever.gui.update.Change>
