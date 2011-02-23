@@ -39,6 +39,8 @@ public class DIYLCStarter {
 		} catch (Exception e) {
 			LOG.error("Could not initialize log4j configuration", e);
 		}
+		
+		LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by " + System.getProperty("java.vm.vendor"));
 
 		LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
 

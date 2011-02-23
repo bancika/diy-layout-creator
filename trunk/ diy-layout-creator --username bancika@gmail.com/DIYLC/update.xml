@@ -248,6 +248,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Snap to Grid may be turned off</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Auto-create solder pads</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list
 			</url>
