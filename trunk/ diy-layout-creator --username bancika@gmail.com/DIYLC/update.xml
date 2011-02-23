@@ -252,6 +252,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Auto-create solder pads</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Continuous component creation</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list
 			</url>

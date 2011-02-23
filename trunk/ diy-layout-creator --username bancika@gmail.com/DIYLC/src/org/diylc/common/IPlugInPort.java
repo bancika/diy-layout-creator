@@ -39,6 +39,7 @@ public interface IPlugInPort {
 	public static final String METRIC_KEY = "metric";
 	public static final String SNAP_TO_GRID_KEY = "snapToGrid";
 	public static final String AUTO_PADS_KEY = "autoCreatePads";
+	public static final String CONTINUOUS_CREATION_KEY = "continuousCreation";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as

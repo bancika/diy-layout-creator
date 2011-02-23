@@ -379,7 +379,12 @@ public class Presenter implements IPlugInPort {
 					LOG.error("Error instatiating component of type: "
 							+ componentTypeSlot.getInstanceClass().getName(), e);
 				}
-				setNewComponentTypeSlot(null);
+				if (ConfigurationManager.getInstance().readBoolean(
+						IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
+					setNewComponentTypeSlot(componentTypeSlot);
+				} else {
+					setNewComponentTypeSlot(null);
+				}
 				break;
 			case POINT_BY_POINT:
 				// First click is just to set the controlPointSlot and
@@ -411,7 +416,12 @@ public class Presenter implements IPlugInPort {
 					}
 					updateSelection(newSelection);
 					messageDispatcher.dispatchMessage(EventType.REPAINT);
-					setNewComponentTypeSlot(null);
+					if (ConfigurationManager.getInstance().readBoolean(
+							IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
+						setNewComponentTypeSlot(componentTypeSlot);
+					} else {
+						setNewComponentTypeSlot(null);
+					}
 				}
 				break;
 			default:

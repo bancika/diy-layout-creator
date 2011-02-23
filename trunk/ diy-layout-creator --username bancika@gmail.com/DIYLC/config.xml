@@ -8,8 +8,8 @@
     <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
   </entry>
   <entry>
-    <string>stickyPoints</string>
-    <boolean>true</boolean>
+    <string>autoCreatePads</string>
+    <boolean>false</boolean>
   </entry>
   <entry>
     <string>theme</string>
@@ -30,20 +30,24 @@
     </org.diylc.core.Theme>
   </entry>
   <entry>
-    <string>autoCreatePads</string>
-    <boolean>false</boolean>
+    <string>stickyPoints</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>antiAliasing</string>
     <boolean>true</boolean>
   </entry>
   <entry>
-    <string>snapToGrid</string>
+    <string>continuousCreation</string>
     <boolean>true</boolean>
   </entry>
   <entry>
     <string>hiQualityRender</string>
     <boolean>false</boolean>
+  </entry>
+  <entry>
+    <string>snapToGrid</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>showTemplatesAtStartup</string>
