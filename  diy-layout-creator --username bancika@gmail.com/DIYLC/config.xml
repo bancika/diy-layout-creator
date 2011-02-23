@@ -1,5 +1,9 @@
 <map>
   <entry>
+    <string>default.org.diylc.components.passive.TrimmerPotentiometer:Type</string>
+    <org.diylc.components.passive.TrimmerPotentiometer_-TrimmerType>FLAT_LARGE</org.diylc.components.passive.TrimmerPotentiometer_-TrimmerType>
+  </entry>
+  <entry>
     <string>lastPath</string>
     <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
   </entry>
@@ -26,12 +30,16 @@
     </org.diylc.core.Theme>
   </entry>
   <entry>
+    <string>autoCreatePads</string>
+    <boolean>false</boolean>
+  </entry>
+  <entry>
     <string>antiAliasing</string>
     <boolean>true</boolean>
   </entry>
   <entry>
     <string>snapToGrid</string>
-    <boolean>false</boolean>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>hiQualityRender</string>

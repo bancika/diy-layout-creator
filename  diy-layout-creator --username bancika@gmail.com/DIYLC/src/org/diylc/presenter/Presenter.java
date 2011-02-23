@@ -27,6 +27,7 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.components.connectivity.SolderPad;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
@@ -364,7 +365,7 @@ public class Presenter implements IPlugInPort {
 					}
 					IDIYComponent<?> component = instantiationManager.instantiateComponent(
 							componentTypeSlot, scaledPoint, currentProject);
-					addComponent(component, componentTypeSlot);
+					addComponent(component, componentTypeSlot, true);
 					// Select the new component
 					// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 					// selectedComponents);
@@ -402,7 +403,7 @@ public class Presenter implements IPlugInPort {
 					// On the second click, add the component to the project.
 					IDIYComponent<?> componentSlot = instantiationManager.getComponentSlot();
 					componentSlot.setControlPoint(scaledPoint, 1);
-					addComponent(componentSlot, componentTypeSlot);
+					addComponent(componentSlot, componentTypeSlot, true);
 					// Select the new component if it's not locked.
 					List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
 					if (!isComponentLocked(componentSlot)) {
@@ -835,7 +836,7 @@ public class Presenter implements IPlugInPort {
 				component.setControlPoint(point, i);
 			}
 			addComponent(component, ComponentProcessor.getInstance().extractComponentTypeFrom(
-					(Class<? extends IDIYComponent<?>>) component.getClass()));
+					(Class<? extends IDIYComponent<?>>) component.getClass()), false);
 		}
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
 				.deepClone(currentProject), "Add");
@@ -1100,7 +1101,8 @@ public class Presenter implements IPlugInPort {
 	 * @param component
 	 * @param componentType
 	 */
-	private void addComponent(IDIYComponent<?> component, ComponentType componentType) {
+	private void addComponent(IDIYComponent<?> component, ComponentType componentType,
+			boolean canCreatePads) {
 		int index = 0;
 		while (index < currentProject.getComponents().size()
 				&& componentType.getZOrder() >= ComponentProcessor.getInstance()
@@ -1113,6 +1115,17 @@ public class Presenter implements IPlugInPort {
 			currentProject.getComponents().add(index, component);
 		} else {
 			currentProject.getComponents().add(component);
+		}
+		if (canCreatePads
+				&& ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_PADS_KEY, false)) {
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				if (component.isControlPointSticky(i)) {
+					SolderPad pad = new SolderPad();
+					pad.setControlPoint(component.getControlPoint(i), 0);
+					addComponent(pad, ComponentProcessor.getInstance().extractComponentTypeFrom(
+							SolderPad.class), false);
+				}
+			}
 		}
 	}
 
