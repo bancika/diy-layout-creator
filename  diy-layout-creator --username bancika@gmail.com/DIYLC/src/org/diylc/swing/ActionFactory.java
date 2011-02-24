@@ -727,19 +727,7 @@ public class ActionFactory {
 				LOG.info("Nothing to edit");
 				return;
 			}
-			PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
-					properties, "Edit Selection");
-			editor.setVisible(true);
-			if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
-				plugInPort.applyPropertiesToSelection(properties);
-			}
-			// Save default values.
-			for (PropertyWrapper property : editor.getDefaultedProperties()) {
-				if (property.getValue() != null) {
-					plugInPort.setSelectionDefaultPropertyValue(property.getName(), property
-							.getValue());
-				}
-			}
+			plugInPort.editSelection();
 		}
 	}
 
