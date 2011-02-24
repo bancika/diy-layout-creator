@@ -483,7 +483,8 @@ public class Presenter implements IPlugInPort {
 		}
 	}
 
-	private void editSelection() {
+	@Override
+	public void editSelection() {
 		List<PropertyWrapper> properties = getMutualSelectionProperties();
 		if (properties != null && !properties.isEmpty()) {
 			Set<PropertyWrapper> defaultedProperties = new HashSet<PropertyWrapper>();
@@ -1192,8 +1193,7 @@ public class Presenter implements IPlugInPort {
 		}
 	}
 
-	@Override
-	public void applyPropertiesToSelection(List<PropertyWrapper> properties) {
+	private void applyPropertiesToSelection(List<PropertyWrapper> properties) {
 		LOG.debug(String.format("applyPropertiesToSelection(%s)", properties));
 		Project oldProject = cloner.deepClone(currentProject);
 		try {

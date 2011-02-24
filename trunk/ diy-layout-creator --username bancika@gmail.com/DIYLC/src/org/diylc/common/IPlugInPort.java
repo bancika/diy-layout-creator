@@ -271,15 +271,9 @@ public interface IPlugInPort {
 	 */
 	List<PropertyWrapper> getMutualSelectionProperties();
 
-	/**
-	 * Applies specified properties to all the selected components. If some of
-	 * the properties are not applicable to some of the selected components an
-	 * exception will be thrown.
-	 * 
-	 * @param properties
-	 */
-	void applyPropertiesToSelection(List<PropertyWrapper> properties);
-
+	
+	void editSelection();
+	
 	/**
 	 * @return a list of editable properties of the current project.
 	 */
