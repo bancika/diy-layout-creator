@@ -254,6 +254,10 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Auto-edit mode</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Continuous component creation</description>
 				</com.diyfever.gui.update.Change>
 			</changes>

@@ -10,6 +10,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -18,6 +20,7 @@ import javax.swing.JPanel;
 
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
@@ -57,6 +60,11 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 
 			@Override
 			public void showMessage(String message, String title, int messageType) {
+			}
+
+			@Override
+			public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+				return false;
 			}
 		});
 		xStream = new XStream(new DomDriver());

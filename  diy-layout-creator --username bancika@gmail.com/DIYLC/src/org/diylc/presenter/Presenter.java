@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
@@ -348,120 +350,160 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
+	public void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown,
+			int clickCount) {
 		LOG.debug(String
 				.format("mouseClicked(%s, %s, %s, %s)", point, ctrlDown, shiftDown, altDown));
 		Point scaledPoint = scalePoint(point);
-		if (instantiationManager.getComponentTypeSlot() != null) {
-			// Keep the reference to component type for later.
-			ComponentType componentTypeSlot = instantiationManager.getComponentTypeSlot();
-			Project oldProject = cloner.deepClone(currentProject);
-			switch (componentTypeSlot.getCreationMethod()) {
-			case SINGLE_CLICK:
-				try {
-					if (ConfigurationManager.getInstance().readBoolean(
-							IPlugInPort.SNAP_TO_GRID_KEY, true)) {
-						CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
-					}
-					IDIYComponent<?> component = instantiationManager.instantiateComponent(
-							componentTypeSlot, scaledPoint, currentProject);
-					addComponent(component, componentTypeSlot, true);
-					// Select the new component
-					// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
-					// selectedComponents);
-					// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-					// calculateSelectionDimension());
-					messageDispatcher.dispatchMessage(EventType.REPAINT);
-					List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
-					newSelection.add(component);
-					updateSelection(newSelection);
-				} catch (Exception e) {
-					LOG.error("Error instatiating component of type: "
-							+ componentTypeSlot.getInstanceClass().getName(), e);
-				}
-				if (ConfigurationManager.getInstance().readBoolean(
-						IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-					setNewComponentTypeSlot(componentTypeSlot);
-				} else {
-					setNewComponentTypeSlot(null);
-				}
-				break;
-			case POINT_BY_POINT:
-				// First click is just to set the controlPointSlot and
-				// componentSlot.
-				if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY,
-						true)) {
-					CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
-				}
-				if (instantiationManager.getComponentSlot() == null) {
+		if (clickCount >= 2) {
+			editSelection();
+		} else {
+			if (instantiationManager.getComponentTypeSlot() != null) {
+				// Keep the reference to component type for later.
+				ComponentType componentTypeSlot = instantiationManager.getComponentTypeSlot();
+				Project oldProject = cloner.deepClone(currentProject);
+				switch (componentTypeSlot.getCreationMethod()) {
+				case SINGLE_CLICK:
 					try {
-						instantiationManager.instatiatePointByPoint(scaledPoint, currentProject);
+						if (ConfigurationManager.getInstance().readBoolean(
+								IPlugInPort.SNAP_TO_GRID_KEY, true)) {
+							CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
+						}
+						IDIYComponent<?> component = instantiationManager.instantiateComponent(
+								componentTypeSlot, scaledPoint, currentProject);
+						addComponent(component, componentTypeSlot, true);
+						// Select the new component
+						// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+						// selectedComponents);
+						// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+						// calculateSelectionDimension());
+						messageDispatcher.dispatchMessage(EventType.REPAINT);
+						List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
+						newSelection.add(component);
+						updateSelection(newSelection);
 					} catch (Exception e) {
-						view.showMessage("Could not create component. Check log for details.",
-								"Error", IView.ERROR_MESSAGE);
-						LOG.error("Could not create component", e);
+						LOG.error("Error instatiating component of type: "
+								+ componentTypeSlot.getInstanceClass().getName(), e);
 					}
-					messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentTypeSlot,
-							instantiationManager.getFirstControlPoint());
-					messageDispatcher.dispatchMessage(EventType.REPAINT);
-				} else {
-					// On the second click, add the component to the project.
-					IDIYComponent<?> componentSlot = instantiationManager.getComponentSlot();
-					componentSlot.setControlPoint(scaledPoint, 1);
-					addComponent(componentSlot, componentTypeSlot, true);
-					// Select the new component if it's not locked.
-					List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
-					if (!isComponentLocked(componentSlot)) {
-						newSelection.add(componentSlot);
+					
+					if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_EDIT_KEY,
+							false)) {
+						editSelection();
 					}
-					updateSelection(newSelection);
-					messageDispatcher.dispatchMessage(EventType.REPAINT);
 					if (ConfigurationManager.getInstance().readBoolean(
 							IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
 						setNewComponentTypeSlot(componentTypeSlot);
 					} else {
 						setNewComponentTypeSlot(null);
 					}
-				}
-				break;
-			default:
-				LOG.error("Unknown creation method: " + componentTypeSlot.getCreationMethod());
-			}
-			// Notify the listeners.
-			if (!oldProject.equals(currentProject)) {
-				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
-						.deepClone(currentProject), "Add " + componentTypeSlot.getName());
-				projectFileManager.notifyFileChange();
-			}
-		} else {
-			List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(
-					selectedComponents);
-			List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
-			// If there's nothing under mouse cursor deselect all.
-			if (components.isEmpty()) {
-				newSelection.clear();
-			} else {
-				IDIYComponent<?> component = components.get(components.size() - 1);
-				// If ctrl is pressed just toggle the component under mouse
-				// cursor.
-				if (ctrlDown) {
-					if (newSelection.contains(component)) {
-						newSelection.removeAll(findAllGroupedComponents(component));
+					break;
+				case POINT_BY_POINT:
+					// First click is just to set the controlPointSlot and
+					// componentSlot.
+					if (ConfigurationManager.getInstance().readBoolean(
+							IPlugInPort.SNAP_TO_GRID_KEY, true)) {
+						CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
+					}
+					if (instantiationManager.getComponentSlot() == null) {
+						try {
+							instantiationManager
+									.instatiatePointByPoint(scaledPoint, currentProject);
+						} catch (Exception e) {
+							view.showMessage("Could not create component. Check log for details.",
+									"Error", IView.ERROR_MESSAGE);
+							LOG.error("Could not create component", e);
+						}
+						messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED,
+								componentTypeSlot, instantiationManager.getFirstControlPoint());
+						messageDispatcher.dispatchMessage(EventType.REPAINT);
 					} else {
+						// On the second click, add the component to the
+						// project.
+						IDIYComponent<?> componentSlot = instantiationManager.getComponentSlot();
+						componentSlot.setControlPoint(scaledPoint, 1);
+						addComponent(componentSlot, componentTypeSlot, true);
+						// Select the new component if it's not locked.
+						List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
+						if (!isComponentLocked(componentSlot)) {
+							newSelection.add(componentSlot);
+						}
+						updateSelection(newSelection);
+						messageDispatcher.dispatchMessage(EventType.REPAINT);
+						
+						if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_EDIT_KEY, false)) {
+							editSelection();
+						}
+						if (ConfigurationManager.getInstance().readBoolean(
+								IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
+							setNewComponentTypeSlot(componentTypeSlot);
+						} else {
+							setNewComponentTypeSlot(null);
+						}
+					}
+					break;
+				default:
+					LOG.error("Unknown creation method: " + componentTypeSlot.getCreationMethod());
+				}
+				// Notify the listeners.
+				if (!oldProject.equals(currentProject)) {
+					messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject,
+							cloner.deepClone(currentProject), "Add " + componentTypeSlot.getName());
+					projectFileManager.notifyFileChange();
+				}
+			} else {
+				List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(
+						selectedComponents);
+				List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
+				// If there's nothing under mouse cursor deselect all.
+				if (components.isEmpty()) {
+					newSelection.clear();
+				} else {
+					IDIYComponent<?> component = components.get(components.size() - 1);
+					// If ctrl is pressed just toggle the component under mouse
+					// cursor.
+					if (ctrlDown) {
+						if (newSelection.contains(component)) {
+							newSelection.removeAll(findAllGroupedComponents(component));
+						} else {
+							newSelection.addAll(findAllGroupedComponents(component));
+						}
+					} else {
+						// Otherwise just select that one component.
+						newSelection.clear();
 						newSelection.addAll(findAllGroupedComponents(component));
 					}
-				} else {
-					// Otherwise just select that one component.
-					newSelection.clear();
-					newSelection.addAll(findAllGroupedComponents(component));
+				}
+				updateSelection(newSelection);
+				// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
+				// selectedComponents);
+				// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
+				// calculateSelectionDimension());
+				messageDispatcher.dispatchMessage(EventType.REPAINT);
+			}
+		}
+	}
+
+	private void editSelection() {
+		List<PropertyWrapper> properties = getMutualSelectionProperties();
+		if (properties != null && !properties.isEmpty()) {
+			Set<PropertyWrapper> defaultedProperties = new HashSet<PropertyWrapper>();
+			boolean edited = view.editProperties(properties, defaultedProperties);
+			if (edited) {
+				try {
+					applyPropertiesToSelection(properties);
+				} catch (Exception e1) {
+					view.showMessage(
+							"Error occured while editing selection. Check the log for details.",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					LOG.error("Error applying properties", e1);
+				}
+				// Save default values.
+				for (PropertyWrapper property : defaultedProperties) {
+					if (property.getValue() != null) {
+						setSelectionDefaultPropertyValue(property.getName(), property.getValue());
+					}
 				}
 			}
-			updateSelection(newSelection);
-			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
-			// selectedComponents);
-			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-			// calculateSelectionDimension());
-			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
 	}
 
@@ -556,7 +598,7 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String.format("dragStarted(%s)", point));
 		if (instantiationManager.getComponentTypeSlot() != null) {
 			LOG.debug("Cannot start drag because a new component is being created.");
-			mouseClicked(point, ctrlDown, shiftDown, altDown);
+			mouseClicked(point, ctrlDown, shiftDown, altDown, 1);
 			return;
 		}
 		dragInProgress = true;
