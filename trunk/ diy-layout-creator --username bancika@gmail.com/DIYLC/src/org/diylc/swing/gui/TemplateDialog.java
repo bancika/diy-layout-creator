@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -34,6 +35,7 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.presenter.Presenter;
 
@@ -76,6 +78,11 @@ public class TemplateDialog extends JDialog {
 			@Override
 			public void showMessage(String message, String title, int messageType) {
 				JOptionPane.showMessageDialog(TemplateDialog.this, message, title, messageType);
+			}
+			
+			@Override
+			public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+				return false;
 			}
 		});
 		// this.presenter.installPlugin(new IPlugIn() {

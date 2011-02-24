@@ -1,5 +1,9 @@
 <map>
   <entry>
+    <string>autoEdit</string>
+    <boolean>true</boolean>
+  </entry>
+  <entry>
     <string>default.org.diylc.components.passive.TrimmerPotentiometer:Type</string>
     <org.diylc.components.passive.TrimmerPotentiometer_-TrimmerType>FLAT_LARGE</org.diylc.components.passive.TrimmerPotentiometer_-TrimmerType>
   </entry>

@@ -1,5 +1,10 @@
 package org.diylc.core;
 
+import java.util.List;
+import java.util.Set;
+
+import org.diylc.common.PropertyWrapper;
+
 
 /**
  * Base interface for the main GUI component.
@@ -28,4 +33,6 @@ public interface IView {
 	void showMessage(String message, String title, int messageType);
 
 	int showConfirmDialog(String message, String title, int optionType, int messageType);
+	
+	boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties);
 }

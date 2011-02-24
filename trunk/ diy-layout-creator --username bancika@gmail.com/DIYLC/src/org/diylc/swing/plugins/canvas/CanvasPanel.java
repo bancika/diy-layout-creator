@@ -25,11 +25,14 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 
@@ -42,6 +45,8 @@ import com.diyfever.gui.miscutils.ConfigurationManager;
  * @author Branislav Stojkovic
  */
 class CanvasPanel extends JComponent implements Autoscroll {
+
+	private static final Logger LOG = Logger.getLogger(CanvasPanel.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -185,53 +190,61 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
-					if (e.getClickCount() == 2) {
-						List<PropertyWrapper> properties = plugInPort
-								.getMutualSelectionProperties();
-						if (properties == null || properties.isEmpty()) {
-							// properties = plugInPort.getProjectProperties();
-							// PropertyEditorDialog editor =
-							// DialogFactory.getInstance()
-							// .createPropertyEditorDialog(properties,
-							// "Edit Project");
-							// editor.setVisible(true);
-							// if
-							// (ButtonDialog.OK.equals(editor.getSelectedButtonCaption()))
-							// {
-							// plugInPort.applyPropertiesToProject(properties);
-							// // Save default values.
-							// for (PropertyWrapper property :
-							// editor.getDefaultedProperties()) {
-							// if (property.getValue() != null) {
-							// plugInPort.setProjectDefaultPropertyValue(property.getName(),
-							// property.getValue());
-							// }
-							// }
-							// }
-						} else {
-							PropertyEditorDialog editor = DialogFactory.getInstance()
-									.createPropertyEditorDialog(properties, "Edit Selection");
-							editor.setVisible(true);
-							if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
-								try {
-									plugInPort.applyPropertiesToSelection(properties);
-								} catch (Exception e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								// Save default values.
-								for (PropertyWrapper property : editor.getDefaultedProperties()) {
-									if (property.getValue() != null) {
-										plugInPort.setSelectionDefaultPropertyValue(property
-												.getName(), property.getValue());
-									}
-								}
-							}
-						}
-					} else {
-						plugInPort.mouseClicked(e.getPoint(), e.isControlDown(), e.isShiftDown(), e
-								.isAltDown());
-					}
+					// if (e.getClickCount() == 2) {
+					// List<PropertyWrapper> properties = plugInPort
+					// .getMutualSelectionProperties();
+					// if (properties == null || properties.isEmpty()) {
+					// // properties = plugInPort.getProjectProperties();
+					// // PropertyEditorDialog editor =
+					// // DialogFactory.getInstance()
+					// // .createPropertyEditorDialog(properties,
+					// // "Edit Project");
+					// // editor.setVisible(true);
+					// // if
+					// //
+					// (ButtonDialog.OK.equals(editor.getSelectedButtonCaption()))
+					// // {
+					// // plugInPort.applyPropertiesToProject(properties);
+					// // // Save default values.
+					// // for (PropertyWrapper property :
+					// // editor.getDefaultedProperties()) {
+					// // if (property.getValue() != null) {
+					// //
+					// plugInPort.setProjectDefaultPropertyValue(property.getName(),
+					// // property.getValue());
+					// // }
+					// // }
+					// // }
+					// } else {
+					// PropertyEditorDialog editor = DialogFactory.getInstance()
+					// .createPropertyEditorDialog(properties,
+					// "Edit Selection");
+					// editor.setVisible(true);
+					// if
+					// (ButtonDialog.OK.equals(editor.getSelectedButtonCaption()))
+					// {
+					// try {
+					// plugInPort.applyPropertiesToSelection(properties);
+					// } catch (Exception e1) {
+					// JOptionPane.showMessageDialog(CanvasPanel.this,
+					// "Error occured while editing selection. Check the log for details.",
+					// "Error", JOptionPane.ERROR_MESSAGE);
+					// LOG.error("Error applying properties", e1);
+					// }
+					// // Save default values.
+					// for (PropertyWrapper property :
+					// editor.getDefaultedProperties()) {
+					// if (property.getValue() != null) {
+					// plugInPort.setSelectionDefaultPropertyValue(property
+					// .getName(), property.getValue());
+					// }
+					// }
+					// }
+					// }
+					// } else {
+					plugInPort.mouseClicked(e.getPoint(), e.isControlDown(), e.isShiftDown(), e
+							.isAltDown(), e.getClickCount());
+					// }
 				}
 			}
 		});

@@ -11,7 +11,9 @@ import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -35,10 +37,12 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.EditMenuPlugin;
@@ -47,6 +51,8 @@ import org.diylc.swing.plugins.help.HelpMenuPlugin;
 import org.diylc.swing.plugins.layers.LayersMenuPlugin;
 import org.diylc.swing.plugins.statusbar.StatusBar;
 import org.diylc.swing.plugins.toolbox.ToolBox;
+
+import com.diyfever.gui.ButtonDialog;
 
 public class MainFrame extends JFrame implements ISwingUI {
 
@@ -194,6 +200,15 @@ public class MainFrame extends JFrame implements ISwingUI {
 	@Override
 	public int showConfirmDialog(String message, String title, int optionType, int messageType) {
 		return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
+	}
+
+	@Override
+	public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+		PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
+				properties, "Edit Selection");
+		editor.setVisible(true);
+		defaultedProperties.addAll(editor.getDefaultedProperties());
+		return ButtonDialog.OK.equals(editor.getSelectedButtonCaption());
 	}
 
 	private JMenu findOrCreateMenu(String menuName) {

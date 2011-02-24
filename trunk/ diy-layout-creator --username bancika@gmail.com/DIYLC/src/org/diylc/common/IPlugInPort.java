@@ -40,6 +40,7 @@ public interface IPlugInPort {
 	public static final String SNAP_TO_GRID_KEY = "snapToGrid";
 	public static final String AUTO_PADS_KEY = "autoCreatePads";
 	public static final String CONTINUOUS_CREATION_KEY = "continuousCreation";
+	public static final String AUTO_EDIT_KEY = "autoEdit";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as
@@ -163,8 +164,9 @@ public interface IPlugInPort {
 	 * @param ctrlDown
 	 * @param shiftDown
 	 * @param altDown
+	 * @param clickCount
 	 */
-	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
+	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown, int clickCount);
 
 	/**
 	 * Notifies the presenter that mouse is moved.

@@ -51,6 +51,8 @@ public class ConfigPlugin implements IPlugIn {
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Auto-Create Pads", IPlugInPort.AUTO_PADS_KEY, false), CONFIG_MENU);
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
+				"Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, false), CONFIG_MENU);
+		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Continuous Creation", IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);
 		File themeDir = new File("themes");
 		if (themeDir.exists()) {
