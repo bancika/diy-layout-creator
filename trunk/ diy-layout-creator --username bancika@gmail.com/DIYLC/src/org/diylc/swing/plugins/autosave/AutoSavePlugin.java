@@ -47,8 +47,7 @@ public class AutoSavePlugin implements IPlugIn {
 					}
 				}
 				// Set abnormal flag to true, GUI side of the app must flip to
-				// false
-				// when app closes regularly.
+				// false when app closes regularly.
 				ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, true);
 			}
 		});
