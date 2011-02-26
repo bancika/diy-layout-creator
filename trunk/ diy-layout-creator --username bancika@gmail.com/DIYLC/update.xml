@@ -238,6 +238,10 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Auto-save project and restore if app crashes</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added support for themes</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>

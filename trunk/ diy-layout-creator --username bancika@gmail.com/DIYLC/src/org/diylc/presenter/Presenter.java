@@ -242,10 +242,10 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void saveProjectToFile(String fileName) {
+	public void saveProjectToFile(String fileName, boolean isBackup) {
 		LOG.info(String.format("saveProjectToFile(%s)", fileName));
 		try {
-			projectFileManager.serializeProjectToFile(currentProject, fileName);
+			projectFileManager.serializeProjectToFile(currentProject, fileName, isBackup);
 		} catch (Exception ex) {
 			LOG.error("Could not save file", ex);
 			view.showMessage("Could not save file " + fileName + ". Check the log for details.",
@@ -385,7 +385,7 @@ public class Presenter implements IPlugInPort {
 						LOG.error("Error instatiating component of type: "
 								+ componentTypeSlot.getInstanceClass().getName(), e);
 					}
-					
+
 					if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_EDIT_KEY,
 							false)) {
 						editSelection();
@@ -429,8 +429,9 @@ public class Presenter implements IPlugInPort {
 						}
 						updateSelection(newSelection);
 						messageDispatcher.dispatchMessage(EventType.REPAINT);
-						
-						if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_EDIT_KEY, false)) {
+
+						if (ConfigurationManager.getInstance().readBoolean(
+								IPlugInPort.AUTO_EDIT_KEY, false)) {
 							editSelection();
 						}
 						if (ConfigurationManager.getInstance().readBoolean(

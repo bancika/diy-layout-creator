@@ -41,6 +41,7 @@ public interface IPlugInPort {
 	public static final String AUTO_PADS_KEY = "autoCreatePads";
 	public static final String CONTINUOUS_CREATION_KEY = "continuousCreation";
 	public static final String AUTO_EDIT_KEY = "autoEdit";
+	public static final String ABNORMAL_EXIT_KEY = "abnormalExit";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as
@@ -96,8 +97,9 @@ public interface IPlugInPort {
 	 * Saves the current project into the specified file.
 	 * 
 	 * @param fileName
+	 * @param isBackup 
 	 */
-	void saveProjectToFile(String fileName);
+	void saveProjectToFile(String fileName, boolean isBackup);
 
 	/**
 	 * @return the current file name.

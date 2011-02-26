@@ -43,6 +43,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
+import org.diylc.swing.plugins.autosave.AutoSavePlugin;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.EditMenuPlugin;
@@ -53,6 +54,7 @@ import org.diylc.swing.plugins.statusbar.StatusBar;
 import org.diylc.swing.plugins.toolbox.ToolBox;
 
 import com.diyfever.gui.ButtonDialog;
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 public class MainFrame extends JFrame implements ISwingUI {
 
@@ -99,6 +101,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		canvasPlugin = new CanvasPlugin(this);
 		presenter.installPlugin(canvasPlugin);
 		presenter.installPlugin(new FramePlugin());
+		presenter.installPlugin(new AutoSavePlugin(this));
 
 		presenter.createNewProject();
 
@@ -107,6 +110,8 @@ public class MainFrame extends JFrame implements ISwingUI {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				if (presenter.allowFileAction()) {
+					ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY,
+							false);
 					dispose();
 					presenter.dispose();
 					System.exit(0);
@@ -116,6 +121,8 @@ public class MainFrame extends JFrame implements ISwingUI {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (presenter.allowFileAction()) {
+					ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY,
+							false);
 					dispose();
 					presenter.dispose();
 					System.exit(0);
@@ -203,7 +210,8 @@ public class MainFrame extends JFrame implements ISwingUI {
 	}
 
 	@Override
-	public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+	public boolean editProperties(List<PropertyWrapper> properties,
+			Set<PropertyWrapper> defaultedProperties) {
 		PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
 				properties, "Edit Selection");
 		editor.setVisible(true);

@@ -1,9 +1,5 @@
 <map>
   <entry>
-    <string>autoEdit</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
     <string>default.org.diylc.components.passive.TrimmerPotentiometer:Type</string>
     <org.diylc.components.passive.TrimmerPotentiometer_-TrimmerType>FLAT_LARGE</org.diylc.components.passive.TrimmerPotentiometer_-TrimmerType>
   </entry>
@@ -12,8 +8,12 @@
     <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
   </entry>
   <entry>
-    <string>autoCreatePads</string>
+    <string>abnormalExit</string>
     <boolean>false</boolean>
+  </entry>
+  <entry>
+    <string>stickyPoints</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>theme</string>
@@ -34,15 +34,11 @@
     </org.diylc.core.Theme>
   </entry>
   <entry>
-    <string>stickyPoints</string>
-    <boolean>true</boolean>
-  </entry>
-  <entry>
     <string>antiAliasing</string>
     <boolean>true</boolean>
   </entry>
   <entry>
-    <string>continuousCreation</string>
+    <string>snapToGrid</string>
     <boolean>true</boolean>
   </entry>
   <entry>
@@ -50,15 +46,23 @@
     <boolean>false</boolean>
   </entry>
   <entry>
-    <string>snapToGrid</string>
+    <string>exportGrid</string>
     <boolean>true</boolean>
+  </entry>
+  <entry>
+    <string>autoEdit</string>
+    <boolean>false</boolean>
+  </entry>
+  <entry>
+    <string>autoCreatePads</string>
+    <boolean>false</boolean>
+  </entry>
+  <entry>
+    <string>continuousCreation</string>
+    <boolean>false</boolean>
   </entry>
   <entry>
     <string>showTemplatesAtStartup</string>
     <boolean>false</boolean>
-  </entry>
-  <entry>
-    <string>exportGrid</string>
-    <boolean>true</boolean>
   </entry>
 </map>
