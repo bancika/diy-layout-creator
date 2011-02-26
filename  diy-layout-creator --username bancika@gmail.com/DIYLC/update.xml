@@ -229,6 +229,10 @@
 					<description>Ruler ticks don't always match with the grid</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Micro symbol doesn't get exported to PDF</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>DIL IC now has more pin options</description>
 				</com.diyfever.gui.update.Change>
@@ -243,6 +247,10 @@
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added support for themes</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added tube socket</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
