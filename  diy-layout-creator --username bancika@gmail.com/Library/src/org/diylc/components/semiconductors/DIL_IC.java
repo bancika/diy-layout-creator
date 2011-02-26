@@ -308,7 +308,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	public static enum PinCount {
 
-		_4, _8, _10, _12, _14, _16, _18, _20, _22, _24, _26, _28, _30, _32;
+		_4, _6, _8, _10, _12, _14, _16, _18, _20, _22, _24, _26, _28, _30, _32;
 
 		@Override
 		public String toString() {
