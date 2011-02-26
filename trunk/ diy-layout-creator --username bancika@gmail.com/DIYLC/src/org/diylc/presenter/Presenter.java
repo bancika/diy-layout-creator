@@ -766,27 +766,26 @@ public class Presenter implements IPlugInPort {
 					if (entry.getValue().contains(index)) {
 						if (isFirst) {
 							isFirst = false;
-							controlPoints[index].translate(dx, dy);
+							Point testPoint = new Point(controlPoints[index]);
+							testPoint.translate(dx, dy);
 							if (ConfigurationManager.getInstance().readBoolean(
 									IPlugInPort.SNAP_TO_GRID_KEY, true)) {
-								CalcUtils.snapPointToGrid(controlPoints[index], currentProject
+								CalcUtils.snapPointToGrid(testPoint, currentProject
 										.getGridSpacing());
 							}
-							actualDx = controlPoints[index].x - component.getControlPoint(index).x;
-							actualDy = controlPoints[index].y - component.getControlPoint(index).y;
+							actualDx = testPoint.x - component.getControlPoint(index).x;
+							actualDy = testPoint.y - component.getControlPoint(index).y;
 							if (actualDx == 0 && actualDy == 0) {
 								// Nothing to move.
 								return true;
 							}
 						}
-						// else {
 						controlPoints[index].translate(actualDx, actualDy);
 						if (controlPoints[index].x < 0 || controlPoints[index].y < 0
 								|| controlPoints[index].x > width
 								|| controlPoints[index].y > height) {
 							// At least one control point went out of bounds.
 							return true;
-							// }
 						}
 					}
 					// For control points that may overlap, just write null,
@@ -800,7 +799,7 @@ public class Presenter implements IPlugInPort {
 					for (int j = i + 1; j < controlPoints.length; j++) {
 						if (controlPoints[i] != null && controlPoints[j] != null
 								&& controlPoints[i].equals(controlPoints[j])) {
-							LOG.warn("Control points collision detected, cannot make this move.");
+							// Control points collision detected, cannot make this move.
 							return true;
 						}
 					}
