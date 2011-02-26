@@ -761,7 +761,7 @@ public class ActionFactory {
 		public SendToBackAction(IPlugInPort plugInPort) {
 			super();
 			this.plugInPort = plugInPort;
-			putValue(AbstractAction.NAME, "Send to Back");
+			putValue(AbstractAction.NAME, "Send Backward");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Back.getIcon());
 		}
 
@@ -781,7 +781,7 @@ public class ActionFactory {
 		public BringToFrontAction(IPlugInPort plugInPort) {
 			super();
 			this.plugInPort = plugInPort;
-			putValue(AbstractAction.NAME, "Bring to Front");
+			putValue(AbstractAction.NAME, "Bring Forward");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Front.getIcon());
 		}
 
