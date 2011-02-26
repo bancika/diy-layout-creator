@@ -234,7 +234,7 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Send to Back/Bring to Front are more flexible</description>
+					<description>Send to Back/Bring to Front are more flexible and renamed to match what they do</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
