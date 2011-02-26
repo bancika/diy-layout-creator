@@ -268,7 +268,7 @@ public class ActionFactory {
 						@Override
 						public Void doInBackground() throws Exception {
 							LOG.debug("Saving to " + file.getAbsolutePath());
-							plugInPort.saveProjectToFile(file.getAbsolutePath());
+							plugInPort.saveProjectToFile(file.getAbsolutePath(), false);
 							return null;
 						}
 
@@ -289,7 +289,7 @@ public class ActionFactory {
 					@Override
 					public Void doInBackground() throws Exception {
 						LOG.debug("Saving to " + plugInPort.getCurrentFileName());
-						plugInPort.saveProjectToFile(plugInPort.getCurrentFileName());
+						plugInPort.saveProjectToFile(plugInPort.getCurrentFileName(), false);
 						return null;
 					}
 
@@ -336,7 +336,7 @@ public class ActionFactory {
 					@Override
 					public Void doInBackground() throws Exception {
 						LOG.debug("Saving to " + file.getAbsolutePath());
-						plugInPort.saveProjectToFile(file.getAbsolutePath());
+						plugInPort.saveProjectToFile(file.getAbsolutePath(), false);
 						return null;
 					}
 

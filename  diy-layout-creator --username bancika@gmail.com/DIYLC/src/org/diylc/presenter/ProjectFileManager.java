@@ -87,15 +87,20 @@ public class ProjectFileManager {
 		fireFileStatusChanged();
 	}
 
-	public void serializeProjectToFile(Project project, String fileName) throws IOException {
-		LOG.info(String.format("saveProjectToFile(%s)", fileName));
+	public void serializeProjectToFile(Project project, String fileName, boolean isBackup)
+			throws IOException {
+		if (!isBackup) {
+			LOG.info(String.format("saveProjectToFile(%s)", fileName));
+		}
 		FileOutputStream fos;
 		fos = new FileOutputStream(fileName);
 		xStream.toXML(project, fos);
 		fos.close();
-		this.currentFileName = fileName;
-		this.modified = false;
-		fireFileStatusChanged();
+		if (!isBackup) {
+			this.currentFileName = fileName;
+			this.modified = false;
+			fireFileStatusChanged();
+		}
 	}
 
 	public Project deserializeProjectFromFile(String fileName, List<String> warnings)
