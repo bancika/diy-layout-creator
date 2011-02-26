@@ -19,7 +19,6 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
-import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -57,7 +56,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	// pinSpacing.convertToPixels()),
 	// new Point(3 * pinSpacing.convertToPixels(), 3 *
 	// pinSpacing.convertToPixels()) };
-	transient private Area body[];
+	transient private Area[] body;
 
 	public DIL_IC() {
 		super();
@@ -80,7 +79,8 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
-		// Reset body shape;
+		updateControlPoints();
+		// Reset body shape.
 		body = null;
 	}
 
