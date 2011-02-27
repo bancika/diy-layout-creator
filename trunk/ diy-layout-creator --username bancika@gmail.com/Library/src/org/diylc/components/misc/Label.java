@@ -132,7 +132,7 @@ public class Label extends AbstractComponent<Void> {
 	}
 
 	public void setFontSize(int size) {
-		// font = font.deriveFont((float) size);
+		font = font.deriveFont((float) size);
 	}
 
 	@Override
