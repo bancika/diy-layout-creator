@@ -29,14 +29,13 @@ import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 
 import com.diyfever.gui.miscutils.ConfigurationManager;
+import com.diyfever.gui.miscutils.IConfigListener;
 import com.diyfever.gui.ruler.IRulerListener;
 import com.diyfever.gui.ruler.RulerScrollPane;
 
 public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 	private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
-
-	private static final String WHEEL_ZOOM = "wheelZoom";
 
 	private RulerScrollPane scrollPane;
 	private CanvasPanel canvasPanel;
@@ -112,11 +111,20 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private RulerScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new RulerScrollPane(getCanvasPanel(), new ProjectDrawingProvider(
-					plugInPort, true, false), new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d,
-					SizeUnit.in).convertToPixels());
+					plugInPort, true, false), new Size(1d, SizeUnit.cm).convertToPixels(),
+					new Size(1d, SizeUnit.in).convertToPixels());
 			boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY,
 					true);
-			boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(WHEEL_ZOOM, false);
+			boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(
+					IPlugInPort.WHEEL_ZOOM_KEY, false);
+			ConfigurationManager.getInstance().addConfigListener(IPlugInPort.WHEEL_ZOOM_KEY,
+					new IConfigListener() {
+
+						@Override
+						public void valueChanged(String key, Object value) {
+							scrollPane.setWheelScrollingEnabled((Boolean) value);
+						}
+					});
 			scrollPane.setMetric(metric);
 			scrollPane.setWheelScrollingEnabled(!wheelZoom);
 			scrollPane.addUnitListener(new IRulerListener() {
@@ -126,30 +134,32 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 					plugInPort.setMetric(isMetric);
 				}
 			});
-			if (wheelZoom) {
-				scrollPane.addMouseWheelListener(new MouseWheelListener() {
+			scrollPane.addMouseWheelListener(new MouseWheelListener() {
 
-					@Override
-					public void mouseWheelMoved(MouseWheelEvent e) {
-						double d = plugInPort.getZoomLevel();
-						Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
-						if (e.getWheelRotation() > 0) {
-							int i = availableZoomLevels.length - 1;
-							while (i > 0 && availableZoomLevels[i] >= d) {
-								i--;
-							}
-							plugInPort.setZoomLevel(availableZoomLevels[i]);
-						} else {
-							int i = 0;
-							while (i < availableZoomLevels.length - 1
-									&& availableZoomLevels[i] <= d) {
-								i++;
-							}
-							plugInPort.setZoomLevel(availableZoomLevels[i]);
-						}
+				@Override
+				public void mouseWheelMoved(MouseWheelEvent e) {
+					boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(
+							IPlugInPort.WHEEL_ZOOM_KEY, false);
+					if (!wheelZoom) {
+						return;
 					}
-				});
-			}
+					double d = plugInPort.getZoomLevel();
+					Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
+					if (e.getWheelRotation() > 0) {
+						int i = availableZoomLevels.length - 1;
+						while (i > 0 && availableZoomLevels[i] >= d) {
+							i--;
+						}
+						plugInPort.setZoomLevel(availableZoomLevels[i]);
+					} else {
+						int i = 0;
+						while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= d) {
+							i++;
+						}
+						plugInPort.setZoomLevel(availableZoomLevels[i]);
+					}
+				}
+			});
 		}
 		return scrollPane;
 	}
