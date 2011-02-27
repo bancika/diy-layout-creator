@@ -135,8 +135,7 @@
 					<description>Added axial electrolytic capacitor</description>
 				</com.diyfever.gui.update.Change>
 			</changes>
-			<url>http://code.google.com/p/diy-layout-creator/downloads/list
-			</url>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>
 		<com.diyfever.gui.update.Version>
 			<versionNumber>
@@ -200,8 +199,7 @@
 					<description>Configurable rendering quality to improve speed</description>
 				</com.diyfever.gui.update.Change>
 			</changes>
-			<url>http://code.google.com/p/diy-layout-creator/downloads/list
-			</url>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>
 		<com.diyfever.gui.update.Version>
 			<versionNumber>
@@ -209,7 +207,7 @@
 				<minor>0</minor>
 				<build>7</build>
 			</versionNumber>
-			<releaseDate>2011-02-07 20:00:00.000 CET</releaseDate>
+			<releaseDate>2011-02-27 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<com.diyfever.gui.update.Change>
@@ -273,8 +271,31 @@
 					<description>Continuous component creation</description>
 				</com.diyfever.gui.update.Change>
 			</changes>
-			<url>http://code.google.com/p/diy-layout-creator/downloads/list
-			</url>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
+		</com.diyfever.gui.update.Version>
+		<com.diyfever.gui.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>0</minor>
+				<build>8</build>
+			</versionNumber>
+			<releaseDate>2011-02-27 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description></description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description></description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Switchable wheel zoom</description>
+				</com.diyfever.gui.update.Change>
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

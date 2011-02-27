@@ -54,6 +54,10 @@
     <boolean>false</boolean>
   </entry>
   <entry>
+    <string>wheelZoom</string>
+    <boolean>false</boolean>
+  </entry>
+  <entry>
     <string>autoCreatePads</string>
     <boolean>false</boolean>
   </entry>

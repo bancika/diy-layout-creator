@@ -54,6 +54,8 @@ public class ConfigPlugin implements IPlugIn {
 				"Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, false), CONFIG_MENU);
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Continuous Creation", IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);
+		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
+				"Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY, false), CONFIG_MENU);
 		File themeDir = new File("themes");
 		if (themeDir.exists()) {
 			XStream xStream = new XStream(new DomDriver());

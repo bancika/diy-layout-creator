@@ -42,6 +42,7 @@ public interface IPlugInPort {
 	public static final String CONTINUOUS_CREATION_KEY = "continuousCreation";
 	public static final String AUTO_EDIT_KEY = "autoEdit";
 	public static final String ABNORMAL_EXIT_KEY = "abnormalExit";
+	public static final String WHEEL_ZOOM_KEY = "wheelZoom";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as
