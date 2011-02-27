@@ -122,7 +122,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 						@Override
 						public void valueChanged(String key, Object value) {
-							scrollPane.setWheelScrollingEnabled((Boolean) value);
+							scrollPane.setWheelScrollingEnabled(!(Boolean) value);
 						}
 					});
 			scrollPane.setMetric(metric);
