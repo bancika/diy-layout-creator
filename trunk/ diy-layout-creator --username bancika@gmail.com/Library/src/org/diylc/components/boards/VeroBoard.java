@@ -7,11 +7,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 
+import org.diylc.common.OrientationHV;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
-import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -32,6 +32,7 @@ public class VeroBoard extends AbstractBoard {
 
 	protected Size spacing = SPACING;
 	protected Color stripColor = STRIP_COLOR;
+	protected OrientationHV orientation = OrientationHV.HORIZONTAL;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
@@ -53,21 +54,41 @@ public class VeroBoard extends AbstractBoard {
 			int holeSize = getClosestOdd((int) HOLE_SIZE.convertToPixels());
 			int spacing = (int) this.spacing.convertToPixels();
 
-			while (p.y < secondPoint.y - spacing) {
-				p.x = firstPoint.x;
-				p.y += spacing;
-				g2d.setColor(stripColor);
-				g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing - p.x,
-						stripSize);
-				g2d.setColor(stripColor.darker());
-				g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing - p.x,
-						stripSize);
-				while (p.x < secondPoint.x - spacing - holeSize) {
-					p.x += spacing;
-					g2d.setColor(Constants.CANVAS_COLOR);
-					g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+			if (orientation == OrientationHV.HORIZONTAL) {
+				while (p.y < secondPoint.y - spacing) {
+					p.x = firstPoint.x;
+					p.y += spacing;
+					g2d.setColor(stripColor);
+					g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing
+							- p.x, stripSize);
 					g2d.setColor(stripColor.darker());
-					g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+					g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing
+							- p.x, stripSize);
+					while (p.x < secondPoint.x - spacing - holeSize) {
+						p.x += spacing;
+						g2d.setColor(Constants.CANVAS_COLOR);
+						g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+						g2d.setColor(stripColor.darker());
+						g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+					}
+				}
+			} else {
+				while (p.x < secondPoint.x - spacing) {
+					p.x += spacing;
+					p.y = firstPoint.y;
+					g2d.setColor(stripColor);
+					g2d.fillRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, secondPoint.y
+							- spacing - p.y);
+					g2d.setColor(stripColor.darker());
+					g2d.drawRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, secondPoint.y
+							- spacing - p.y);
+					while (p.y < secondPoint.y - spacing - holeSize) {
+						p.y += spacing;
+						g2d.setColor(Constants.CANVAS_COLOR);
+						g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+						g2d.setColor(stripColor.darker());
+						g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+					}
 				}
 			}
 			g2d.setComposite(oldComposite);
@@ -90,6 +111,15 @@ public class VeroBoard extends AbstractBoard {
 
 	public void setSpacing(Size spacing) {
 		this.spacing = spacing;
+	}
+
+	@EditableProperty
+	public OrientationHV getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(OrientationHV orientation) {
+		this.orientation = orientation;
 	}
 
 	@Override
