@@ -33,6 +33,11 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 		this.bodyColor = BODY_COLOR;
 		this.borderColor = BORDER_COLOR;
 	}
+	
+	@Override
+	protected boolean supportsStandingMode() {
+		return true;
+	}
 
 	@EditableProperty
 	public Capacitance getValue() {

@@ -294,6 +294,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Switchable wheel zoom</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Automatic standing resistors, capacitors and diodes</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>
