@@ -1,51 +1,33 @@
 package org.diylc.swing.gui.editor;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.BorderFactory;
-import javax.swing.JColorChooser;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import org.diylc.common.PropertyWrapper;
 
+import com.diyfever.gui.FontChooserComboBox;
 
-public class FontEditor extends JLabel {
+public class FontEditor extends FontChooserComboBox {
 
 	private static final long serialVersionUID = 1L;
 
-	public FontEditor(final PropertyWrapper property) {
-		super("Click to edit");
-		setOpaque(true);
-		setHorizontalAlignment(SwingConstants.CENTER);
-		setBorder(BorderFactory.createEtchedBorder());
-		setBackground((Color) property.getValue());
-		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		addMouseListener(new MouseAdapter() {
+	private final PropertyWrapper property;
+
+	public FontEditor(PropertyWrapper property) {
+		this.property = property;
+		setSelectedItem(((Font) property.getValue()).getName());
+		addItemListener(new ItemListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
-//				JFo
-				Color newColor = JColorChooser.showDialog(FontEditor.this, "Choose Color",
-						getBackground());
-				if (newColor != null) {
-					property.setValue(newColor);
-					setBackground(newColor);
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					Font oldFont = (Font) FontEditor.this.property.getValue();
+					Font newFont = new Font(getSelectedItem().toString(), oldFont.getStyle(),
+							oldFont.getSize());
+					FontEditor.this.property.setValue(newFont);
 				}
 			}
 		});
-	}
-	
-	@Override
-	public void setBackground(Color bg) {
-		if (bg.getRed() < 127 || bg.getBlue() < 127 || bg.getGreen() < 127) {
-			setForeground(Color.white);
-		} else {
-			setForeground(Color.black);
-		}
-		super.setBackground(bg);
 	}
 }
