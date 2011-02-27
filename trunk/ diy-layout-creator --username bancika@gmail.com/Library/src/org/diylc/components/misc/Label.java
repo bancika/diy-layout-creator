@@ -12,7 +12,6 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
-import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -71,6 +70,69 @@ public class Label extends AbstractComponent<Void> {
 		int y = (height - textHeight) / 2 + fontMetrics.getAscent();
 
 		g2d.drawString("Abc", x, y);
+	}
+
+	@EditableProperty
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
+
+	// Bold and italic fields are named to be alphabetically after Font. This is
+	// important!
+
+	@EditableProperty(name = "Font Bold")
+	public boolean getBold() {
+		return font.isBold();
+	}
+
+	public void setBold(boolean bold) {
+		if (bold) {
+			if (font.isItalic()) {
+				font = font.deriveFont(Font.BOLD + Font.ITALIC);
+			} else {
+				font = font.deriveFont(Font.BOLD);
+			}
+		} else {
+			if (font.isItalic()) {
+				font = font.deriveFont(Font.ITALIC);
+			} else {
+				font = font.deriveFont(Font.PLAIN);
+			}
+		}
+	}
+
+	@EditableProperty(name = "Font Italic")
+	public boolean getItalic() {
+		return font.isItalic();
+	}
+
+	public void setItalic(boolean italic) {
+		if (italic) {
+			if (font.isBold()) {
+				font = font.deriveFont(Font.BOLD + Font.ITALIC);
+			} else {
+				font = font.deriveFont(Font.ITALIC);
+			}
+		} else {
+			if (font.isBold()) {
+				font = font.deriveFont(Font.BOLD);
+			} else {
+				font = font.deriveFont(Font.PLAIN);
+			}
+		}
+	}
+
+	@EditableProperty(name = "Font Size")
+	public int getFontSize() {
+		return font.getSize();
+	}
+
+	public void setFontSize(int size) {
+		// font = font.deriveFont((float) size);
 	}
 
 	@Override

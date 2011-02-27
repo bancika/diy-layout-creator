@@ -2,6 +2,7 @@ package org.diylc.swing.gui.editor;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -43,6 +44,15 @@ public class FieldEditorFactory {
 		if (Boolean.class.isAssignableFrom(property.getType())
 				|| boolean.class.isAssignableFrom(property.getType())) {
 			BooleanEditor editor = new BooleanEditor(property);
+			return editor;
+		}
+		if (Font.class.isAssignableFrom(property.getType())) {
+			FontEditor editor = new FontEditor(property);
+			return editor;
+		}
+		if (Integer.class.isAssignableFrom(property.getType())
+				|| int.class.isAssignableFrom(property.getType())) {
+			IntEditor editor = new IntEditor(property);
 			return editor;
 		}
 		LOG.error("Unrecognized parameter type: " + property.getType().getName());
