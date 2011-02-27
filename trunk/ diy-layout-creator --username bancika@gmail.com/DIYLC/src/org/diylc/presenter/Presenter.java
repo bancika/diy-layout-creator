@@ -245,6 +245,7 @@ public class Presenter implements IPlugInPort {
 	public void saveProjectToFile(String fileName, boolean isBackup) {
 		LOG.info(String.format("saveProjectToFile(%s)", fileName));
 		try {
+			currentProject.setFileVersion(CURRENT_VERSION);
 			projectFileManager.serializeProjectToFile(currentProject, fileName, isBackup);
 		} catch (Exception ex) {
 			LOG.error("Could not save file", ex);
