@@ -68,6 +68,9 @@ public class ProjectFileManager {
 	}
 
 	private XStream xStream;
+	// Legacy deserializer for 3.0.1 through 3.0.7, loads Points referenced in
+	// pixels.
+	private XStream xStreamOld;
 
 	private String currentFileName = null;
 	private boolean modified = false;
@@ -78,6 +81,9 @@ public class ProjectFileManager {
 		super();
 		this.xStream = new XStream(new DomDriver());
 		xStream.autodetectAnnotations(true);
+		xStream.registerConverter(new PointConverter());
+		this.xStreamOld = new XStream(new DomDriver());
+		xStreamOld.autodetectAnnotations(true);
 		this.messageDispatcher = messageDispatcher;
 	}
 
@@ -436,7 +442,14 @@ public class ProjectFileManager {
 	private Project parseV3File(String fileName) throws IOException {
 		Project project;
 		FileInputStream fis = new FileInputStream(fileName);
-		project = (Project) xStream.fromXML(fis);
+		try {
+			project = (Project) xStream.fromXML(fis);
+		} catch (Exception e) {
+			LOG.warn("Could not open with the new xStream, trying the old one");
+			fis.close();
+			fis = new FileInputStream(fileName);
+			project = (Project) xStreamOld.fromXML(fis);
+		}
 		fis.close();
 		return project;
 	}

@@ -48,9 +48,14 @@ public class IconImageConverter implements Converter {
 		writer.addAttribute("width", Integer.toString(width));
 		writer.addAttribute("height", Integer.toString(height));
 		StringBuilder dataBuilder = new StringBuilder();
+		int n = 0;
 		for (int pixel : pixels) {
 			dataBuilder.append(Integer.toString(pixel, 16));
 			dataBuilder.append(",");
+			n++;
+			if (n % 16 == 0) {
+				dataBuilder.append("\n");
+			}
 		}
 		writer.addAttribute("data", dataBuilder.toString());
 	}
@@ -61,11 +66,15 @@ public class IconImageConverter implements Converter {
 		int height = Integer.parseInt(reader.getAttribute("height"));
 		LOG.debug("Reading image from file: " + width + "x" + height);
 		int[] pixels = new int[width * height];
-		String data = reader.getAttribute("data");
+		String data = reader.getAttribute("data").replace("\n", "");
 		String[] splitData = data.split(",");
-		for (int i = 0; i < splitData.length; i++) {
+		for (int i = 0; i < Math.min(splitData.length, pixels.length); i++) {
 			if (!splitData[i].isEmpty()) {
-				pixels[i] = Integer.parseInt(splitData[i], 16);
+				try {
+					pixels[i] = Integer.parseInt(splitData[i].trim(), 16);
+				} catch (Exception e) {
+					pixels[i] = 0;
+				}
 			}
 		}
 

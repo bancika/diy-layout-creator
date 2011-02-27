@@ -11,6 +11,8 @@ import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+import com.diyfever.gui.update.VersionNumber;
+
 /**
  * Entity class that defines a project. Contains project properties and a
  * collection of components.This class is serialized to file. Some filed getters
@@ -27,6 +29,8 @@ public class Project implements Serializable {
 	public static Size DEFAULT_HEIGHT = new Size(21d, SizeUnit.cm);
 	public static Size DEFAULT_GRID_SPACING = new Size(0.1d, SizeUnit.in);
 
+	private VersionNumber fileVersion;
+	
 	private String title;
 	private String author;
 	private String description;
@@ -122,6 +126,14 @@ public class Project implements Serializable {
 
 	public Set<Integer> getLockedLayers() {
 		return lockedLayers;
+	}
+	
+	public VersionNumber getFileVersion() {
+		return fileVersion;
+	}
+	
+	public void setFileVersion(VersionNumber fileVersion) {
+		this.fileVersion = fileVersion;
 	}
 
 	@Override
