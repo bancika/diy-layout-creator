@@ -25,7 +25,7 @@ class CanvasSourceListener implements DragSourceListener {
 
 	@Override
 	public void dragDropEnd(DragSourceDropEvent dsde) {
-//		presenter.dragEnded(null);
+		presenter.dragEnded(null);
 	}
 
 	@Override
