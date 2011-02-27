@@ -41,21 +41,22 @@ public class ConfigPlugin implements IPlugIn {
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Anti-Aliasing", IPlugInPort.ANTI_ALIASING_KEY, true), CONFIG_MENU);
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Hi-Quality Rendering", IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Export Grid", IPlugInPort.EXPORT_GRID_KEY, false), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Snap to Grid", IPlugInPort.SNAP_TO_GRID_KEY, true), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Auto-Create Pads", IPlugInPort.AUTO_PADS_KEY, false), CONFIG_MENU);
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, false), CONFIG_MENU);
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Continuous Creation", IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
+				"Export Grid", IPlugInPort.EXPORT_GRID_KEY, false), CONFIG_MENU);
+		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
+				"Hi-Quality Rendering", IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
+		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY, false), CONFIG_MENU);
+		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
+				"Snap to Grid", IPlugInPort.SNAP_TO_GRID_KEY, true), CONFIG_MENU);
+		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
+				"Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
+
 		File themeDir = new File("themes");
 		if (themeDir.exists()) {
 			XStream xStream = new XStream(new DomDriver());
