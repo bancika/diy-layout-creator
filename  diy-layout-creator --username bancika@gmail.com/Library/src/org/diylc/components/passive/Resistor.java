@@ -38,6 +38,11 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 		this.bodyColor = BODY_COLOR;
 		this.borderColor = BORDER_COLOR;
 	}
+	
+	@Override
+	protected boolean supportsStandingMode() {
+		return true;
+	}
 
 	@EditableProperty(validatorClass = PositiveMeasureValidator.class)
 	public Resistance getValue() {
