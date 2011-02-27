@@ -201,8 +201,10 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 					/ MAX_ALPHA));
 		}
-		g2d.setColor(BODY_COLOR);
-		g2d.fill(body);
+		if (componentState != ComponentState.DRAGGING) {
+			g2d.setColor(BODY_COLOR);
+			g2d.fill(body);
+		}
 		g2d.setComposite(oldComposite);
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
