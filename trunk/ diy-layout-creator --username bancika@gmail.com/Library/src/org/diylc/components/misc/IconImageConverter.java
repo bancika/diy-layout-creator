@@ -69,7 +69,7 @@ public class IconImageConverter implements Converter {
 		String data = reader.getAttribute("data").replace("\n", "");
 		String[] splitData = data.split(",");
 		for (int i = 0; i < Math.min(splitData.length, pixels.length); i++) {
-			if (!splitData[i].isEmpty()) {
+			if (!splitData[i].trim().isEmpty()) {
 				try {
 					pixels[i] = Integer.parseInt(splitData[i].trim(), 16);
 				} catch (Exception e) {
