@@ -22,6 +22,20 @@ User interface can be separated into 4 major components:
   # *Main menu* offers file operations, such as saving, loading and exporting, clipboard operations, etc.
   # *Status bar*: shows context related information, zoom control, update information and memory consumption.
 
+===Configuring the application===
+
+Application configuration may be changed from *Config* menu. It contains the following items:
+
+  * *Anti-Aliasing*: when checked, objects and text will look smoother but it takes more time to render anti-aliased graphics. If you suffer from performance issues, try turning this option off.
+  * *Auto-Create Pads*: when checked, application will automatically create solder pads whenever a component is added to the layout.
+  * *Auto-Edit Mode*: when checked, the component edit dialog will appear after each component is created, the same way version 1.x works.
+  * *Continuous Creation*: when checked, the last selected component type will remain active after you create a component, allowing you to create many components of the same type rapidly.
+  * *Export Grid*: when checked, grid lines will be exported to a file or printer.
+  * *Hi-Quality Rendering*: when checked, image quality will improve slightly, but it may decrease performance.
+  * *Snap to Grid*: when checked, drag & drop operations will snap control points to the grid instead of following the mouse cursor pixel by pixel.
+  * *Sticky Points*: when checked, components are allowed to stick to each other when moved. Hold Ctrl key while dragging to temporarily toggle the Sticky Point mode. See [Manual#Control points] for more info on control points.
+  * *Theme*: allows selecting a theme. Themes are read from *themes* directory under the DIYLC root and they include background color and grid line color. You can create your own themes by adding an XML file to themes directory. It's easiest to start with a copy of one of the existing files.
+
 ===Adding components to the drawing===
 
 This sections explains how to add an existing component to the project. To learn how to develop your own components follow [http://code.google.com/p/diy-layout-creator/wiki/Components this tutorial]. To instantiate a component, follow these steps:
