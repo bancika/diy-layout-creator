@@ -32,6 +32,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 			new Point((int) DEFAULT_SIZE.convertToPixels(), (int) DEFAULT_SIZE.convertToPixels()) };
 
 	protected Color color = getDefaultColor();
+	protected PointCount pointCount = PointCount.FOUR;
 
 	/**
 	 * Draws the specified curve onto graphics.
@@ -99,14 +100,35 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 		g2d.setComposite(oldComposite);
 	}
 
+	@EditableProperty(name = "Point Count")
+	public PointCount getPointCount() {
+		return pointCount;
+	}
+
+	public void setPointCount(PointCount pointCount) {
+		this.pointCount = pointCount;
+		// Reset control points.
+		for (int i = 0; i < getControlPointCount(); i++) {
+			setControlPoint(getControlPoint(i), i);
+		}
+	}
+
 	@Override
 	public int getControlPointCount() {
-		return controlPoints.length;
+		switch (pointCount) {
+		case TWO:
+			return 2;
+		case THREE:
+			return 3;
+		case FOUR:
+			return 4;
+		}
+		return 0;
 	}
 
 	@Override
 	public boolean isControlPointSticky(int index) {
-		return index == 0 || index == 3;
+		return index == 0 || index == getControlPointCount() - 1;
 	}
 
 	@Override
@@ -117,17 +139,91 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	@Override
 	public boolean canControlPointOverlap(int index) {
 		// Only shape control points may overlap.
-		return index == 1 || index == 2;
+		switch (pointCount) {
+		case TWO:
+			return false;
+		case THREE:
+			return index == 1;
+		case FOUR:
+			return index == 1 || index == 2;
+		}
+		return false;
 	}
 
 	@Override
 	public Point getControlPoint(int index) {
+		if (index == 0) {
+			return controlPoints[0];
+		}
+		switch (pointCount) {
+		case TWO:
+			switch (index) {
+			case 1:
+				return controlPoints[3];
+			}
+		case THREE:
+			switch (index) {
+			case 1:
+				return controlPoints[1];
+			case 2:
+				return controlPoints[3];
+			}
+		case FOUR:
+			switch (index) {
+			case 1:
+				return controlPoints[1];
+			case 2:
+				return controlPoints[2];
+			case 3:
+				return controlPoints[3];
+			}
+		}
 		return controlPoints[index];
 	}
 
 	@Override
 	public void setControlPoint(Point point, int index) {
-		controlPoints[index].setLocation(point);
+		if (index == 0) {
+			controlPoints[0].setLocation(point);
+		} else {
+			switch (pointCount) {
+			case TWO:
+				switch (index) {
+				case 1:
+					Point center = new Point((point.x + controlPoints[0].x) / 2,
+							(point.y + controlPoints[0].y) / 2);
+					controlPoints[1].setLocation(center);
+					controlPoints[2].setLocation(center);
+					controlPoints[3].setLocation(point);
+					break;
+				}
+				break;
+			case THREE:
+				switch (index) {
+				case 1:
+					controlPoints[1].setLocation(point);
+					controlPoints[2].setLocation(point);
+					break;
+				case 2:
+					controlPoints[3].setLocation(point);
+					break;
+				}
+				break;
+			case FOUR:
+				switch (index) {
+				case 1:
+					controlPoints[1].setLocation(point);
+					break;
+				case 2:
+					controlPoints[2].setLocation(point);
+					break;
+				case 3:
+					controlPoints[3].setLocation(point);
+					break;
+				}
+				break;
+			}
+		}
 	}
 
 	@EditableProperty
@@ -139,4 +235,12 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 		this.color = color;
 	}
 
+	enum PointCount {
+		TWO, THREE, FOUR;
+
+		@Override
+		public String toString() {
+			return name().substring(0, 1) + name().substring(1).toLowerCase();
+		}
+	}
 }

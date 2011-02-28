@@ -288,7 +288,7 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description></description>
+					<description>Curved traces and wires can have 2, 3 and 4 control points</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
