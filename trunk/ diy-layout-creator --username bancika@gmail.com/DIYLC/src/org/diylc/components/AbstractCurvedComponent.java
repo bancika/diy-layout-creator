@@ -102,6 +102,9 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 
 	@EditableProperty(name = "Point Count")
 	public PointCount getPointCount() {
+		if (pointCount == null) {
+			pointCount = PointCount.FOUR;
+		}
 		return pointCount;
 	}
 
@@ -115,7 +118,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 
 	@Override
 	public int getControlPointCount() {
-		switch (pointCount) {
+		switch (getPointCount()) {
 		case TWO:
 			return 2;
 		case THREE:
@@ -139,7 +142,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 	@Override
 	public boolean canControlPointOverlap(int index) {
 		// Only shape control points may overlap.
-		switch (pointCount) {
+		switch (getPointCount()) {
 		case TWO:
 			return false;
 		case THREE:
@@ -155,7 +158,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 		if (index == 0) {
 			return controlPoints[0];
 		}
-		switch (pointCount) {
+		switch (getPointCount()) {
 		case TWO:
 			switch (index) {
 			case 1:
@@ -186,7 +189,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 		if (index == 0) {
 			controlPoints[0].setLocation(point);
 		} else {
-			switch (pointCount) {
+			switch (getPointCount()) {
 			case TWO:
 				switch (index) {
 				case 1:

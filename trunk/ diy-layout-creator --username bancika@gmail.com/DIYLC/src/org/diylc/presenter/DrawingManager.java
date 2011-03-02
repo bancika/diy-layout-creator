@@ -47,7 +47,7 @@ public class DrawingManager {
 
 	public static final String ZOOM_KEY = "zoom";
 	public static final String THEME_KEY = "theme";
-	public static boolean DEBUG_COMPONENT_AREAS = false;
+	public static String DEBUG_COMPONENT_AREAS = "org.diylc.debugComponentAreas";
 
 	public static Color GRID_COLOR = new Color(240, 240, 240);
 	public static Color CONTROL_POINT_COLOR = Color.black;
@@ -70,11 +70,16 @@ public class DrawingManager {
 
 	private MessageDispatcher<EventType> messageDispatcher;
 
+	private boolean debugComponentAreas;
+
 	public DrawingManager(MessageDispatcher<EventType> messageDispatcher) {
 		super();
 		this.messageDispatcher = messageDispatcher;
 		componentAreaMap = new HashMap<IDIYComponent<?>, Area>();
 		lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
+		String debugComponentAreasStr = System.getProperty(DEBUG_COMPONENT_AREAS);
+		debugComponentAreas = debugComponentAreasStr != null
+				&& debugComponentAreasStr.equalsIgnoreCase("true");
 		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(THEME_KEY, null);
 		if (theme != null) {
 			this.theme = theme;
@@ -221,7 +226,7 @@ public class DrawingManager {
 				failedComponents.add(component);
 			}
 			Area area = g2dWrapper.finishedDrawingComponent();
-			if (trackArea) {
+			if (trackArea && area != null && !area.isEmpty()) {
 				componentAreaMap.put(component, area);
 				lastDrawnStateMap.put(component, state);
 			}
@@ -319,7 +324,7 @@ public class DrawingManager {
 		}
 
 		// Draw component area for test
-		if (DEBUG_COMPONENT_AREAS) {
+		if (debugComponentAreas) {
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 			g2d.setColor(Color.red);
 			for (Area area : componentAreaMap.values()) {
