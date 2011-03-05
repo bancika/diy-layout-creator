@@ -133,8 +133,8 @@ public class MockDIYComponent implements IDIYComponent<Capacitance> {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color : color.darker());
 		g2d.fillRect(leftTopCorner.x, leftTopCorner.y, 200, 50);
 	}

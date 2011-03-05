@@ -41,14 +41,14 @@ public class EyeletBoard extends AbstractBoard {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		Shape clip = g2d.getClip();
 		if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
 				&& !clip.contains(secondPoint.x, firstPoint.y)) {
 			return;
 		}
-		super.draw(g2d, componentState, project, drawingObserver);
+		super.draw(g2d, componentState, outlineMode, project, drawingObserver);
 		if (componentState != ComponentState.DRAGGING) {
 			if (alpha < MAX_ALPHA) {
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha

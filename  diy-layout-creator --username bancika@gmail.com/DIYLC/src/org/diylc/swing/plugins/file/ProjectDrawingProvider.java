@@ -33,16 +33,19 @@ public class ProjectDrawingProvider implements IDrawingProvider {
 
 	@Override
 	public void draw(Graphics g) {
-		EnumSet<DrawOption> options = EnumSet.of(DrawOption.ANTIALIASING);
+		EnumSet<DrawOption> drawOptions = EnumSet.of(DrawOption.ANTIALIASING);
 		if (useZoom) {
-			options.add(DrawOption.ZOOM);
+			drawOptions.add(DrawOption.ZOOM);
 		}
 		if (showGridWhenNeeded
 				&& ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXPORT_GRID_KEY,
 						false)) {
-			options.add(DrawOption.GRID);
+			drawOptions.add(DrawOption.GRID);
 		}
-		plugInPort.draw((Graphics2D) g, options, null);
+		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
+			drawOptions.add(DrawOption.OUTLINE_MODE);
+		}
+		plugInPort.draw((Graphics2D) g, drawOptions, null);
 	}
 
 	@Override

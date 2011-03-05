@@ -159,8 +159,8 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		for (Area shape : getBody()) {
 			if (shape != null) {

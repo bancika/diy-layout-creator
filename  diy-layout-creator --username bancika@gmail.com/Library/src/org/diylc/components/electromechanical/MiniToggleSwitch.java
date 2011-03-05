@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
@@ -20,6 +21,9 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", description = "Panel mounted mini toggle switch", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW")
 public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> {
@@ -166,8 +170,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
@@ -179,27 +183,40 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 						/ MAX_ALPHA));
 			}
-			g2d.setColor(BODY_COLOR);
+			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
 			g2d.fill(body);
 			g2d.setComposite(oldComposite);
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-			g2d.setColor(componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
+			Color finalBorderColor;
+			if (outlineMode) {
+				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				finalBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
+						.getOutlineColor();
+			} else {
+				finalBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+						: BORDER_COLOR;
+			}
+			g2d.setColor(finalBorderColor);
 			g2d.draw(body);
 		}
 		// Do not track these changes because the whole switch has been tracked
 		// so far.
 		drawingObserver.stopTracking();
 		// Draw lugs.
-		int circleDiameter = getClosestOdd((int) CIRCLE_SIZE.convertToPixels());
-		int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
-		int lugHeight = getClosestOdd((int) LUG_HEIGHT.convertToPixels());
-		for (Point p : controlPoints) {
-			g2d.setColor(CIRCLE_COLOR);
-			g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter,
-					circleDiameter);
-			g2d.setColor(LUG_COLOR);
-			g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+		if (!outlineMode) {
+			int circleDiameter = getClosestOdd((int) CIRCLE_SIZE.convertToPixels());
+			int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
+			int lugHeight = getClosestOdd((int) LUG_HEIGHT.convertToPixels());
+			for (Point p : controlPoints) {
+				g2d.setColor(CIRCLE_COLOR);
+				g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter,
+						circleDiameter);
+				g2d.setColor(LUG_COLOR);
+				g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+			}
 		}
 	}
 

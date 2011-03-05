@@ -13,7 +13,6 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
-import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -42,8 +41,8 @@ public class Image extends AbstractTransparentComponent<Void> {
 	private byte scale = 50;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		double s = 1d * scale / DEFAULT_SCALE;
 		Point endPoint = new Point((int) (image.getIconWidth() * s),
 				(int) (image.getIconHeight() * s));

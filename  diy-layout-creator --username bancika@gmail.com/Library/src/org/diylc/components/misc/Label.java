@@ -30,8 +30,8 @@ public class Label extends AbstractComponent<Void> {
 	private boolean center = true;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : color);
 		g2d.setFont(font);
 		FontMetrics fontMetrics = g2d.getFontMetrics();

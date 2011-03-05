@@ -5,8 +5,8 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Shape;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
@@ -17,6 +17,9 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 public abstract class AbstractBoard extends AbstractTransparentComponent<String> {
 
@@ -38,7 +41,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 	protected Color borderColor = BORDER_COLOR;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
 			IDrawingObserver drawingObserver) {
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		if (componentState != ComponentState.DRAGGING) {

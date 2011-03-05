@@ -53,6 +53,8 @@ public class ConfigPlugin implements IPlugIn {
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY, false), CONFIG_MENU);
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
+				"Outline Mode", IPlugInPort.OUTLINE_KEY, false), CONFIG_MENU);
+		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Snap to Grid", IPlugInPort.SNAP_TO_GRID_KEY, true), CONFIG_MENU);
 		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
 				"Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);

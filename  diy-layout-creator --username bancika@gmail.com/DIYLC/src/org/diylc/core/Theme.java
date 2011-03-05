@@ -10,12 +10,14 @@ public class Theme implements Serializable {
 	private String name;
 	private Color bgColor;
 	private Color gridColor;
+	private Color outlineColor;
 
-	public Theme(String name, Color bgColor, Color gridColor) {
+	public Theme(String name, Color bgColor, Color gridColor, Color outlineColor) {
 		super();
 		this.name = name;
 		this.bgColor = bgColor;
 		this.gridColor = gridColor;
+		this.outlineColor = outlineColor;
 	}
 
 	public String getName() {
@@ -30,12 +32,17 @@ public class Theme implements Serializable {
 		return gridColor;
 	}
 
+	public Color getOutlineColor() {
+		return outlineColor;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((bgColor == null) ? 0 : bgColor.hashCode());
 		result = prime * result + ((gridColor == null) ? 0 : gridColor.hashCode());
+		result = prime * result + ((outlineColor == null) ? 0 : outlineColor.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -58,6 +65,11 @@ public class Theme implements Serializable {
 			if (other.gridColor != null)
 				return false;
 		} else if (!gridColor.equals(other.gridColor))
+			return false;
+		if (outlineColor == null) {
+			if (other.outlineColor != null)
+				return false;
+		} else if (!outlineColor.equals(other.outlineColor))
 			return false;
 		if (name == null) {
 			if (other.name != null)

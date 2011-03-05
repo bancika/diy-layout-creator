@@ -800,7 +800,8 @@ public class Presenter implements IPlugInPort {
 					for (int j = i + 1; j < controlPoints.length; j++) {
 						if (controlPoints[i] != null && controlPoints[j] != null
 								&& controlPoints[i].equals(controlPoints[j])) {
-							// Control points collision detected, cannot make this move.
+							// Control points collision detected, cannot make
+							// this move.
 							return true;
 						}
 					}
@@ -1171,13 +1172,25 @@ public class Presenter implements IPlugInPort {
 			currentProject.getComponents().add(component);
 		}
 		if (canCreatePads
-				&& ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_PADS_KEY, false)) {
+				&& ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_PADS_KEY, false)
+				&& !(component instanceof SolderPad)) {
+			ComponentType padType = ComponentProcessor.getInstance().extractComponentTypeFrom(
+					SolderPad.class);
 			for (int i = 0; i < component.getControlPointCount(); i++) {
 				if (component.isControlPointSticky(i)) {
-					SolderPad pad = new SolderPad();
-					pad.setControlPoint(component.getControlPoint(i), 0);
-					addComponent(pad, ComponentProcessor.getInstance().extractComponentTypeFrom(
-							SolderPad.class), false);
+					try {
+						IDIYComponent<?> pad = instantiationManager.instantiateComponent(padType,
+								component.getControlPoint(i), currentProject);
+						pad.setControlPoint(component.getControlPoint(i), 0);
+						addComponent(pad, padType, false);
+					} catch (Exception e) {
+						LOG.warn("Could not auto-create solder pad", e);
+					}
+					// SolderPad pad = new SolderPad();
+					// pad.setControlPoint(component.getControlPoint(i), 0);
+					// addComponent(pad,
+					// ComponentProcessor.getInstance().extractComponentTypeFrom(
+					// SolderPad.class), false);
 				}
 			}
 		}

@@ -7,6 +7,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.CreationMethod;
@@ -18,6 +19,9 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT)
 public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
@@ -86,16 +90,25 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 	}
 
 	@Override
-	protected void decorateComponentBody(Graphics2D g2d) {
+	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
 		if (polarized) {
 			int totalDiameter = getClosestOdd(getLength().convertToPixels());
-			Area area = new Area(getBodyShape());
-			area
-					.subtract(new Area(new Rectangle2D.Double(0, 0, totalDiameter * 0.8,
-							totalDiameter)));
-			g2d.setColor(markerColor);
-			g2d.fill(area);
-			g2d.setColor(tickColor);
+			if (!outlineMode) {
+				Area area = new Area(getBodyShape());
+				area.subtract(new Area(new Rectangle2D.Double(0, 0, totalDiameter * 0.8,
+						totalDiameter)));
+				g2d.setColor(markerColor);
+				g2d.fill(area);
+			}
+			Color finalTickColor;
+			if (outlineMode) {
+				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				finalTickColor = theme.getOutlineColor();
+			} else {
+				finalTickColor = tickColor;
+			}
+			g2d.setColor(finalTickColor);
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
 			g2d.drawLine((int) (totalDiameter * 0.9), totalDiameter / 2
 					- (int) (totalDiameter * 0.05), (int) (totalDiameter * 0.9), totalDiameter / 2

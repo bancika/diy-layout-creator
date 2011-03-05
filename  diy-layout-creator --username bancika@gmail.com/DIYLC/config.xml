@@ -5,7 +5,7 @@
   </entry>
   <entry>
     <string>lastPath</string>
-    <string>C:\Documents and Settings\Branislav Stojkovic\Desktop</string>
+    <string>C:\Documents and Settings\Branislav Stojkovic\My Documents\Downloads</string>
   </entry>
   <entry>
     <string>abnormalExit</string>
@@ -31,6 +31,12 @@
         <blue>240</blue>
         <alpha>240</alpha>
       </gridColor>
+      <outlineColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </outlineColor>
     </org.diylc.core.Theme>
   </entry>
   <entry>
@@ -44,6 +50,10 @@
   <entry>
     <string>hiQualityRender</string>
     <boolean>false</boolean>
+  </entry>
+  <entry>
+    <string>outline</string>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>exportGrid</string>
@@ -63,11 +73,11 @@
   </entry>
   <entry>
     <string>autoCreatePads</string>
-    <boolean>false</boolean>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>continuousCreation</string>
-    <boolean>false</boolean>
+    <boolean>true</boolean>
   </entry>
   <entry>
     <string>showTemplatesAtStartup</string>
