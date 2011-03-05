@@ -21,6 +21,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.VolatileImage;
 import java.util.EnumSet;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -47,11 +48,11 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 	private static boolean USE_HARDWARE_ACCELLERATION = false;
 
-	static final EnumSet<DrawOption> DRAW_OPTIONS = EnumSet.of(DrawOption.GRID,
-			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
-	static final EnumSet<DrawOption> DRAW_OPTIONS_ANTI_ALIASING = EnumSet.of(DrawOption.GRID,
-			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
-			DrawOption.CONTROL_POINTS);
+//	static final EnumSet<DrawOption> DRAW_OPTIONS = EnumSet.of(DrawOption.GRID,
+//			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+//	static final EnumSet<DrawOption> DRAW_OPTIONS_ANTI_ALIASING = EnumSet.of(DrawOption.GRID,
+//			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
+//			DrawOption.CONTROL_POINTS);
 
 	public CanvasPanel(IPlugInPort plugInPort) {
 		super();
@@ -114,9 +115,15 @@ class CanvasPanel extends JComponent implements Autoscroll {
 		}
 		Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
 		g2d.setClip(getVisibleRect());
-		plugInPort.draw(g2d, ConfigurationManager.getInstance().readBoolean(
-				IPlugInPort.ANTI_ALIASING_KEY, true) ? DRAW_OPTIONS_ANTI_ALIASING : DRAW_OPTIONS,
-				null);
+		Set<DrawOption> drawOptions = EnumSet.of(DrawOption.GRID, DrawOption.SELECTION,
+				DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
+			drawOptions.add(DrawOption.ANTIALIASING);
+		}
+		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
+			drawOptions.add(DrawOption.OUTLINE_MODE);
+		}
+		plugInPort.draw(g2d, drawOptions, null);
 		if (USE_HARDWARE_ACCELLERATION) {
 			VolatileImage volatileImage = (VolatileImage) bufferImage;
 			do {

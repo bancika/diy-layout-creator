@@ -32,5 +32,9 @@ public enum DrawOption {
 	/**
 	 * Anti-aliasing is used when drawing.
 	 */
-	ANTIALIASING;
+	ANTIALIASING,
+	/**
+	 * Draw components in outline mode.
+	 */
+	OUTLINE_MODE;
 }

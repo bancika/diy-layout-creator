@@ -87,7 +87,7 @@ public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> 
 	}
 
 	@Override
-	protected void decorateComponentBody(Graphics2D g2d) {
+	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
 		if (polarized) {
 			// Draw + sign.
 			g2d.setColor(getBorderColor());

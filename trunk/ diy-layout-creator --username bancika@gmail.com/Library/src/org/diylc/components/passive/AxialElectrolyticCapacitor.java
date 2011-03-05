@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.CreationMethod;
@@ -16,6 +17,9 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor (axial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc", zOrder = IDIYComponent.COMPONENT)
 public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> {
@@ -118,15 +122,24 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 	}
 
 	@Override
-	protected void decorateComponentBody(Graphics2D g2d) {
+	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
 		if (polarized) {
-			int markerLength = (int) (getLength().convertToPixels() * 0.2);
-			g2d.setColor(markerColor);
 			int width = getClosestOdd(getWidth().convertToPixels());
-			g2d
-					.fillRect((int) getLength().convertToPixels() - markerLength, 0, markerLength,
-							width);
-			g2d.setColor(tickColor);
+			int markerLength = (int) (getLength().convertToPixels() * 0.2);
+			if (!outlineMode) {
+				g2d.setColor(markerColor);
+				g2d.fillRect((int) getLength().convertToPixels() - markerLength, 0, markerLength,
+						width);
+			}
+			Color finalTickColor;
+			if (outlineMode) {
+				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				finalTickColor = theme.getOutlineColor();
+			} else {
+				finalTickColor = tickColor;
+			}
+			g2d.setColor(finalTickColor);
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
 			g2d.drawLine((int) getLength().convertToPixels() - markerLength / 2,
 					(int) (width / 2 - width * 0.15), (int) getLength().convertToPixels()

@@ -46,14 +46,14 @@ public class DrawingManager {
 	public static int CONTROL_POINT_SIZE = 7;
 
 	public static final String ZOOM_KEY = "zoom";
-	public static final String THEME_KEY = "theme";
+
 	public static String DEBUG_COMPONENT_AREAS = "org.diylc.debugComponentAreas";
 
-	public static Color GRID_COLOR = new Color(240, 240, 240);
-	public static Color CONTROL_POINT_COLOR = Color.black;
+	public static Color CONTROL_POINT_COLOR = Color.blue;
 	public static Color SELECTED_CONTROL_POINT_COLOR = Color.green;
 
-	private Theme theme = new Theme("Light", Constants.CANVAS_COLOR, GRID_COLOR);
+	private Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+			IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 
 	// Keeps Area object of each drawn component.
 	private Map<IDIYComponent<?>, Area> componentAreaMap;
@@ -80,10 +80,6 @@ public class DrawingManager {
 		String debugComponentAreasStr = System.getProperty(DEBUG_COMPONENT_AREAS);
 		debugComponentAreas = debugComponentAreasStr != null
 				&& debugComponentAreasStr.equalsIgnoreCase("true");
-		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(THEME_KEY, null);
-		if (theme != null) {
-			this.theme = theme;
-		}
 	}
 
 	/**
@@ -220,7 +216,8 @@ public class DrawingManager {
 			}
 			// Draw the component through the g2dWrapper.
 			try {
-				component.draw(g2dWrapper, state, project, g2dWrapper);
+				component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE),
+						project, g2dWrapper);
 			} catch (Exception e) {
 				LOG.error("Error drawing " + component.getName(), e);
 				failedComponents.add(component);
@@ -235,7 +232,7 @@ public class DrawingManager {
 		// Draw control points.
 		if (drawOptions.contains(DrawOption.CONTROL_POINTS)) {
 			// Draw unselected points first to make sure they are below.
-			if (dragInProgress) {
+			if (dragInProgress || drawOptions.contains(DrawOption.OUTLINE_MODE)) {
 				for (IDIYComponent<?> component : project.getComponents()) {
 					for (int i = 0; i < component.getControlPointCount(); i++) {
 						VisibilityPolicy visibilityPolicy = component
@@ -247,7 +244,6 @@ public class DrawingManager {
 								&& !selectedComponents.contains(component) && component
 								.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS))) {
 							g2dWrapper.setColor(CONTROL_POINT_COLOR);
-
 							Point controlPoint = component.getControlPoint(i);
 							int pointSize = CONTROL_POINT_SIZE - 2;
 							g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
@@ -283,7 +279,8 @@ public class DrawingManager {
 			g2dWrapper.startedDrawingComponent();
 			g2dWrapper.setComposite(slotComposite);
 			try {
-				componentSlot.draw(g2dWrapper, ComponentState.NORMAL, project, g2dWrapper);
+				componentSlot.draw(g2dWrapper, ComponentState.NORMAL, drawOptions
+						.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
 			} catch (Exception e) {
 				LOG.error("Error drawing " + componentSlot.getName(), e);
 				failedComponents.add(componentSlot);
@@ -393,7 +390,7 @@ public class DrawingManager {
 
 	public void setTheme(Theme theme) {
 		this.theme = theme;
-		ConfigurationManager.getInstance().writeValue(THEME_KEY, theme);
+		ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY, theme);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 }

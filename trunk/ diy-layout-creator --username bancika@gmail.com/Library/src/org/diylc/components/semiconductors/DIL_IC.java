@@ -12,6 +12,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
@@ -19,11 +20,15 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "IC with rectangular housing and two parallel rows of pins", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class DIL_IC extends AbstractTransparentComponent<String> {
@@ -248,38 +253,69 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
-		int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
 		Area mainArea = getBody()[0];
-		for (Point point : controlPoints) {
-			g2d.setColor(PIN_COLOR);
-			g2d.fillRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-			g2d.setColor(PIN_BORDER_COLOR);
-			g2d.drawRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+		if (!outlineMode) {
+			int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
+			for (Point point : controlPoints) {
+				g2d.setColor(PIN_COLOR);
+				g2d.fillRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+				g2d.setColor(PIN_BORDER_COLOR);
+				g2d.drawRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+			}
 		}
 		Composite oldComposite = g2d.getComposite();
 		if (alpha < MAX_ALPHA) {
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 					/ MAX_ALPHA));
 		}
-		g2d.setColor(BODY_COLOR);
+		g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
 		g2d.fill(mainArea);
 		g2d.setComposite(oldComposite);
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
+
+		Color finalBorderColor;
+		if (outlineMode) {
+			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			finalBorderColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
+					.getOutlineColor();
+		} else {
+			finalBorderColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR;
+		}
+		g2d.setColor(finalBorderColor);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-		g2d.draw(mainArea);
-		if (getBody()[1] != null) {
-			g2d.setColor(INDENT_COLOR);
-			g2d.fill(getBody()[1]);
+		if (outlineMode) {
+			Area area = new Area(mainArea);
+			area.subtract(getBody()[1]);
+			g2d.draw(area);
+		} else {
+			g2d.draw(mainArea);
+			if (getBody()[1] != null) {
+				g2d.setColor(INDENT_COLOR);
+				g2d.fill(getBody()[1]);
+			}
 		}
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
-		g2d.setColor(LABEL_COLOR);
+		Color finalLabelColor;
+		if (outlineMode) {
+			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			finalLabelColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED : theme
+					.getOutlineColor();
+		} else {
+			finalLabelColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+					: LABEL_COLOR;
+		}
+		g2d.setColor(finalLabelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
 		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
 		int textHeight = (int) (rect.getHeight());

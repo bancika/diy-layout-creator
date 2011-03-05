@@ -83,13 +83,15 @@ public class LED extends AbstractLeadedComponent<String> {
 	}
 
 	@Override
-	protected void decorateComponentBody(Graphics2D g2d) {
-		int size = getClosestOdd((int) (getLength().convertToPixels() * 1.2));
-		int innerSize = getClosestOdd(getLength().convertToPixels());
-		int x = (size - innerSize) / 2;
-		Shape s = new Ellipse2D.Double(x, x, innerSize, innerSize);
-		g2d.setColor(getBorderColor());
-		g2d.draw(s);
+	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
+		if (!outlineMode) {
+			int size = getClosestOdd((int) (getLength().convertToPixels() * 1.2));
+			int innerSize = getClosestOdd(getLength().convertToPixels());
+			int x = (size - innerSize) / 2;
+			Shape s = new Ellipse2D.Double(x, x, innerSize, innerSize);
+			g2d.setColor(getBorderColor());
+			g2d.draw(s);
+		}
 	}
 
 	@EditableProperty(name = "Size")

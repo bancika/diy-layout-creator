@@ -13,14 +13,19 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.Display;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 /**
  * Base class for all leaded components such as resistors or capacitors. Has two
@@ -45,7 +50,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	protected Color bodyColor = Color.white;
 	protected Color borderColor = Color.black;
 	protected Color labelColor = LABEL_COLOR;
-	protected Display display = Display.NAME;
+	protected Display display = Display.VALUE;
 
 	protected AbstractLeadedComponent() {
 		super();
@@ -60,8 +65,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		double distance = points[0].distance(points[1]);
 		Shape shape = getBodyShape();
 		// If there's no body, just draw the line connecting the ending points.
@@ -74,13 +79,32 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			int width = getClosestOdd(this.width.convertToPixels());
 			Shape body = new Ellipse2D.Double(points[0].x - width / 2, points[0].y - width / 2,
 					width, width);
-			g2d.setColor(bodyColor);
+			Composite oldComposite = g2d.getComposite();
+			if (alpha < MAX_ALPHA) {
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
+						/ MAX_ALPHA));
+			}
+			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
 			g2d.fill(body);
-			Color finalBorderColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor;
+			g2d.setComposite(oldComposite);
+			Color finalBorderColor;
+			if (outlineMode) {
+				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				finalBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
+						.getOutlineColor();
+			} else {
+				finalBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+						: borderColor;
+			}
+
 			g2d.setColor(finalBorderColor);
 			g2d.draw(body);
-			drawLead(g2d, componentState);
+			if (!outlineMode) {
+				drawLead(g2d, componentState);
+			}
 		} else {
 			// Normal mode with component body in the center and two lead parts.
 			Rectangle shapeRect = shape.getBounds();
@@ -99,23 +123,42 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			}
 			if (bodyColor != null) {
 				if (bodyColor != null) {
-					g2d.setColor(bodyColor);
+					g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
 					g2d.fill(shape);
 				}
 			}
-			decorateComponentBody(g2d);
+			decorateComponentBody(g2d, outlineMode);
 			g2d.setComposite(oldComposite);
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-			Color finalBorderColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor;
+			Color finalBorderColor;
+			if (outlineMode) {
+				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				finalBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
+						.getOutlineColor();
+			} else {
+				finalBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+						: borderColor;
+			}
 			g2d.setColor(finalBorderColor);
 			g2d.draw(shape);
 			// Draw label.
 			g2d.setFont(LABEL_FONT);
-			Color finalLabelFont = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-					: labelColor;
-			g2d.setColor(finalLabelFont);
+			Color finalLabelColor;
+			if (outlineMode) {
+				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				finalLabelColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED : theme
+						.getOutlineColor();
+			} else {
+				finalLabelColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+						: labelColor;
+			}
+			g2d.setColor(finalLabelColor);
 			FontMetrics fontMetrics = g2d.getFontMetrics();
 			String label = display == Display.NAME ? getName() : getValue().toString();
 			// Adjust label angle if needed to make sure that it's readable.
@@ -128,30 +171,31 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 					calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));
 
 			// Go back to the original transformation to draw leads.
-			g2d.setTransform(oldTransform);
-			int leadThickness = getClosestOdd(getLeadThickness());
-			double leadLength = (distance - shapeRect.width) / 2 - leadThickness / 2;
-			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-			Color leadColor = shouldShadeLeads() ? getLeadColor(componentState).darker()
-					: getLeadColor(componentState);
-			g2d.setColor(leadColor);
-			int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
-			int endY = (int) Math.round(points[0].y + Math.sin(theta) * leadLength);
-			g2d.drawLine(points[0].x, points[0].y, endX, endY);
-			endX = (int) (points[1].x + Math.cos(theta - Math.PI) * leadLength);
-			endY = (int) Math.round(points[1].y + Math.sin(theta - Math.PI) * leadLength);
-			g2d.drawLine(points[1].x, points[1].y, endX, endY);
-			if (shouldShadeLeads()) {
-				g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
-				leadColor = getLeadColor(componentState);
+			if (!outlineMode) {
+				g2d.setTransform(oldTransform);
+				int leadThickness = getClosestOdd(getLeadThickness());
+				double leadLength = (distance - shapeRect.width) / 2 - leadThickness / 2;
+				g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
+				Color leadColor = shouldShadeLeads() ? getLeadColor(componentState).darker()
+						: getLeadColor(componentState);
 				g2d.setColor(leadColor);
-				g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + Math.cos(theta)
-						* leadLength), (int) (points[0].y + Math.sin(theta) * leadLength));
-				g2d
-						.drawLine(points[1].x, points[1].y, (int) (points[1].x + Math.cos(theta
-								- Math.PI)
-								* leadLength), (int) (points[1].y + Math.sin(theta - Math.PI)
-								* leadLength));
+				int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
+				int endY = (int) Math.round(points[0].y + Math.sin(theta) * leadLength);
+				g2d.drawLine(points[0].x, points[0].y, endX, endY);
+				endX = (int) (points[1].x + Math.cos(theta - Math.PI) * leadLength);
+				endY = (int) Math.round(points[1].y + Math.sin(theta - Math.PI) * leadLength);
+				g2d.drawLine(points[1].x, points[1].y, endX, endY);
+				if (shouldShadeLeads()) {
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
+					leadColor = getLeadColor(componentState);
+					g2d.setColor(leadColor);
+					g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + Math.cos(theta)
+							* leadLength), (int) (points[0].y + Math.sin(theta) * leadLength));
+					g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x + Math.cos(theta
+							- Math.PI)
+							* leadLength), (int) (points[1].y + Math.sin(theta - Math.PI)
+							* leadLength));
+				}
 			}
 		}
 	}
@@ -170,7 +214,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 		}
 	}
 
-	protected void decorateComponentBody(Graphics2D g2d) {
+	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
 		// Do nothing.
 	}
 

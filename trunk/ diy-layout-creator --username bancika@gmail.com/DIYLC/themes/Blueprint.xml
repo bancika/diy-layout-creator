@@ -12,4 +12,10 @@
     <blue>193</blue>
     <alpha>255</alpha>
   </gridColor>
+  <outlineColor>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </outlineColor>
 </org.diylc.core.Theme>

@@ -5,13 +5,18 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "Diode (plastic)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Plastic diode, like most rectifier, zener, schottky, etc.", zOrder = IDIYComponent.COMPONENT)
 public class DiodePlastic extends AbstractLeadedComponent<String> {
@@ -20,7 +25,7 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 
 	public static Size DEFAULT_WIDTH = new Size(1d / 4, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
-	public static Size MARKER_WIDTH = new Size(1.5d, SizeUnit.mm);
+	public static Size MARKER_WIDTH = new Size(1d, SizeUnit.mm);
 	public static Color BODY_COLOR = Color.darkGray;
 	public static Color MARKER_COLOR = Color.decode("#DDDDDD");
 	public static Color LABEL_COLOR = Color.white;
@@ -80,8 +85,16 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 	}
 
 	@Override
-	protected void decorateComponentBody(Graphics2D g2d) {
-		g2d.setColor(markerColor);
+	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
+		Color finalMarkerColor;
+		if (outlineMode) {
+			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			finalMarkerColor = theme.getOutlineColor();
+		} else {
+			finalMarkerColor = markerColor;
+		}
+		g2d.setColor(finalMarkerColor);
 		int width = (int) getLength().convertToPixels();
 		int markerWidth = (int) MARKER_WIDTH.convertToPixels();
 		g2d.fillRect(width - markerWidth, 0, markerWidth, getClosestOdd(getWidth()

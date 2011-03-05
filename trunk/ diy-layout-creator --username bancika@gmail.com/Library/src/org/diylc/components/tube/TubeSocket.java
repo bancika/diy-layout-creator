@@ -9,6 +9,7 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
@@ -16,11 +17,15 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes", instanceNamePrefix = "V", description = "Various types of tube/valve sockets", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class TubeSocket extends AbstractTransparentComponent<String> {
@@ -186,8 +191,8 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		// g2d.setColor(Color.black);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		// for (int i = 0; i < controlPoints.length; i++) {
@@ -202,22 +207,34 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 					/ MAX_ALPHA));
 		}
 		if (componentState != ComponentState.DRAGGING) {
-			g2d.setColor(BODY_COLOR);
+			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
 			g2d.fill(body);
 		}
 		g2d.setComposite(oldComposite);
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
+		Color finalBorderColor;
+		if (outlineMode) {
+			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			finalBorderColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
+					.getOutlineColor();
+		} else {
+			finalBorderColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR;
+		}
+		g2d.setColor(finalBorderColor);
 		g2d.draw(body);
 		// Draw pins
-		int pinSize = getClosestOdd(PIN_SIZE.convertToPixels());
-		for (int i = 1; i < controlPoints.length; i++) {
-			g2d.setColor(PIN_COLOR);
-			g2d.fillOval(controlPoints[i].x - pinSize / 2, controlPoints[i].y - pinSize / 2,
-					pinSize, pinSize);
-			g2d.setColor(PIN_BORDER_COLOR);
-			g2d.drawOval(controlPoints[i].x - pinSize / 2, controlPoints[i].y - pinSize / 2,
-					pinSize, pinSize);
+		if (!outlineMode) {
+			int pinSize = getClosestOdd(PIN_SIZE.convertToPixels());
+			for (int i = 1; i < controlPoints.length; i++) {
+				g2d.setColor(PIN_COLOR);
+				g2d.fillOval(controlPoints[i].x - pinSize / 2, controlPoints[i].y - pinSize / 2,
+						pinSize, pinSize);
+				g2d.setColor(PIN_BORDER_COLOR);
+				g2d.drawOval(controlPoints[i].x - pinSize / 2, controlPoints[i].y - pinSize / 2,
+						pinSize, pinSize);
+			}
 		}
 	}
 
