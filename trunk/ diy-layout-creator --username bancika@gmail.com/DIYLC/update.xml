@@ -327,6 +327,10 @@
 					<description>Ctrl+click should not cleanup selection when clicked on the canvas</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increased PNG export resolution</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Outline mode that resembles PCB silkscreen</description>
 				</com.diyfever.gui.update.Change>
