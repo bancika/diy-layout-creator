@@ -458,7 +458,9 @@ public class Presenter implements IPlugInPort {
 				List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
 				// If there's nothing under mouse cursor deselect all.
 				if (components.isEmpty()) {
-					newSelection.clear();
+					if (!ctrlDown) {
+						newSelection.clear();
+					}
 				} else {
 					IDIYComponent<?> component = components.get(components.size() - 1);
 					// If ctrl is pressed just toggle the component under mouse
