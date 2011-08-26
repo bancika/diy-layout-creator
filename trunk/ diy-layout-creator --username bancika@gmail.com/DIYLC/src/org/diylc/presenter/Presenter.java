@@ -892,6 +892,10 @@ public class Presenter implements IPlugInPort {
 						(int) currentProject.getGridSpacing().convertToPixels());
 				component.setControlPoint(point, i);
 			}
+			component.setName(instantiationManager.createUniqueName(ComponentProcessor
+					.getInstance().extractComponentTypeFrom(
+							(Class<? extends IDIYComponent<?>>) component.getClass()),
+					currentProject));
 			addComponent(component, ComponentProcessor.getInstance().extractComponentTypeFrom(
 					(Class<? extends IDIYComponent<?>>) component.getClass()), false);
 		}
