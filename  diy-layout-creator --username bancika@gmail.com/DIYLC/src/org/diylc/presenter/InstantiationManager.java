@@ -130,21 +130,7 @@ public class InstantiationManager {
 		// Instantiate the component.
 		IDIYComponent<?> component = componentType.getInstanceClass().newInstance();
 
-		// Find the next available componentName for the component.
-		int i = 0;
-		boolean exists = true;
-		while (exists) {
-			i++;
-			String name = componentType.getNamePrefix() + i;
-			exists = false;
-			for (IDIYComponent<?> c : currentProject.getComponents()) {
-				if (c.getName().equals(name)) {
-					exists = true;
-					break;
-				}
-			}
-		}
-		component.setName(componentType.getNamePrefix() + i);
+		component.setName(createUniqueName(componentType, currentProject));
 
 		// Translate them to the desired location.
 		if (point != null) {
@@ -159,6 +145,23 @@ public class InstantiationManager {
 		fillWithDefaultProperties(component);
 
 		return component;
+	}
+	
+	public String createUniqueName(ComponentType componentType, Project currentProject) {
+		int i = 0;
+		boolean exists = true;
+		while (exists) {
+			i++;
+			String name = componentType.getNamePrefix() + i;
+			exists = false;
+			for (IDIYComponent<?> c : currentProject.getComponents()) {
+				if (c.getName().equals(name)) {
+					exists = true;
+					break;
+				}
+			}
+		}
+		return componentType.getNamePrefix() + i;
 	}
 
 	/**
