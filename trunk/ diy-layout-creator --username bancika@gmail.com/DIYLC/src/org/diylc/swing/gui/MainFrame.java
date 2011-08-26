@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -101,7 +105,21 @@ public class MainFrame extends JFrame implements ISwingUI {
 		canvasPlugin = new CanvasPlugin(this);
 		presenter.installPlugin(canvasPlugin);
 		presenter.installPlugin(new FramePlugin());
-		presenter.installPlugin(new AutoSavePlugin(this));
+
+		try {
+			File testFile = new File("test.tmp");
+			Writer out = new OutputStreamWriter(new FileOutputStream(testFile));
+			out.write("This is a test");
+			out.close();
+			testFile.delete();
+			presenter.installPlugin(new AutoSavePlugin(this));
+		} catch (Exception e) {
+			showMessage(
+					"The current user does not have permissions to access folder "
+							+ new File(".").getAbsolutePath()
+							+ ".\nAuto-save feature will not be available, contact your system administrator.",
+					"Warning", IView.WARNING_MESSAGE);
+		}
 
 		presenter.createNewProject();
 

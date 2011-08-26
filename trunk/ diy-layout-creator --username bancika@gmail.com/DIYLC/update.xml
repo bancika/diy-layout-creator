@@ -336,6 +336,10 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Do not attempt to write auto-save files if user does not have permissions to create files</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Allow zero ohm resistors</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
