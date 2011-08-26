@@ -1062,14 +1062,7 @@ public class Presenter implements IPlugInPort {
 		drawingManager.setTheme(theme);
 	}
 
-	/**
-	 * Updates the selection with the specified {@link ComponentTransferable}.
-	 * Also, updates control point map with all components that are stuck to the
-	 * newly selected components.
-	 * 
-	 * @param newSelection
-	 */
-	private void updateSelection(List<IDIYComponent<?>> newSelection) {
+	public void updateSelection(List<IDIYComponent<?>> newSelection) {
 		this.selectedComponents = newSelection;
 		Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		for (IDIYComponent<?> component : selectedComponents) {

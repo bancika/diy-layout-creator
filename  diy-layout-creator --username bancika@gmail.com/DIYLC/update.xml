@@ -334,6 +334,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Outline mode that resembles PCB silkscreen</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Double click on a component button in the toolbar selects all components of that type</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>

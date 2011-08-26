@@ -157,7 +157,8 @@ public class ComponentProcessor {
 	}
 
 	/**
-	 * Returns properties mutual for all the selected components.
+	 * Returns properties that have the same value for all the selected
+	 * components.
 	 * 
 	 * @param selectedComponents
 	 * @return
