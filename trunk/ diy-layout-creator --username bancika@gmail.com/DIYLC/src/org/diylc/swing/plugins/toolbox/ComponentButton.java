@@ -7,11 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IDIYComponent;
 
 /**
  * {@link JButton} that displays component type icon and instantiates the
@@ -37,22 +42,43 @@ class ComponentButton extends JButton {
 
 		setToolTipText("<html><b>" + componentType.getName() + "</b><br>"
 				+ componentType.getDescription() + "<br>Author: " + componentType.getAuthor()
+				+ "<br><br>Double click to select all components of this type"
 				+ "</html>");
 		// initializeDnD();
-		addActionListener(new ActionListener() {
-
+		addMouseListener(new MouseAdapter() {
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				// plugInPort.setCursorIcon(componentType.getIcon());
-				plugInPort.setNewComponentTypeSlot(componentType);
-				// try {
-				// plugInPort.instantiateComponent(componentType
-				// .getComponentInstanceClass(), null);
-				// } catch (Exception e1) {
-				// e1.printStackTrace();
-				// }
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 1) {
+					plugInPort.setNewComponentTypeSlot(componentType);	
+				} else {
+					List<IDIYComponent<?>> components = plugInPort.getCurrentProject().getComponents();
+					List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
+					for (IDIYComponent<?> component : components) {
+						if (componentType.getInstanceClass().equals(component.getClass())) {
+							newSelection.add(component);
+						}
+					}
+					plugInPort.updateSelection(newSelection);
+					plugInPort.setNewComponentTypeSlot(null);
+					plugInPort.refresh();
+				}
 			}
 		});
+//		addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// plugInPort.setCursorIcon(componentType.getIcon());
+//				plugInPort.setNewComponentTypeSlot(componentType);
+//				// try {
+//				// plugInPort.instantiateComponent(componentType
+//				// .getComponentInstanceClass(), null);
+//				// } catch (Exception e1) {
+//				// e1.printStackTrace();
+//				// }
+//			}
+//		});
 		addKeyListener(new KeyAdapter() {
 
 			@Override

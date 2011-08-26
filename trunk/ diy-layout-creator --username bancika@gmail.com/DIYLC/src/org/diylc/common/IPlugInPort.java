@@ -191,6 +191,15 @@ public interface IPlugInPort {
 	 * @return
 	 */
 	List<IDIYComponent<?>> getSelectedComponents();
+	
+	/**
+	 * Updates the selection with the specified list of component. Also, updates
+	 * control point map with all components that are stuck to the newly
+	 * selected components.
+	 * 
+	 * @param newSelection
+	 */
+	void updateSelection(List<IDIYComponent<?>> newSelection);
 
 	/**
 	 * Selects all components in the project.
