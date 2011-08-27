@@ -1,7 +1,6 @@
 package org.diylc.common;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.diylc.core.IPropertyValidator;
 
@@ -16,12 +15,13 @@ public class PropertyWrapper implements Cloneable {
 	private String name;
 	private Class<?> type;
 	private Object value;
-	private Method setter;
-	private Method getter;
+	private String setter;
+	private String getter;
 	private boolean defaultable;
 	private IPropertyValidator validator;
+	private boolean unique = true;
 
-	public PropertyWrapper(String name, Class<?> type, Method getter, Method setter,
+	public PropertyWrapper(String name, Class<?> type, String getter, String setter,
 			boolean defaultable, IPropertyValidator validator) {
 		super();
 		this.name = name;
@@ -33,8 +33,8 @@ public class PropertyWrapper implements Cloneable {
 	}
 
 	public void readFrom(Object object) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		this.value = getter.invoke(object);
+			InvocationTargetException, SecurityException, NoSuchMethodException {
+		this.value = object.getClass().getMethod(getter).invoke(object);
 	}
 
 	// public void readUniqueFrom(IDIYComponent component)
@@ -47,8 +47,8 @@ public class PropertyWrapper implements Cloneable {
 	// }
 
 	public void writeTo(Object object) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		setter.invoke(object, value);
+			InvocationTargetException, SecurityException, NoSuchMethodException {
+		object.getClass().getMethod(setter, this.value.getClass()).invoke(object, this.value);
 	}
 
 	public String getName() {
@@ -73,6 +73,14 @@ public class PropertyWrapper implements Cloneable {
 
 	public IPropertyValidator getValidator() {
 		return validator;
+	}
+	
+	public boolean isUnique() {
+		return unique;
+	}
+	
+	public void setUnique(boolean unique) {
+		this.unique = unique;
 	}
 
 	// @Override

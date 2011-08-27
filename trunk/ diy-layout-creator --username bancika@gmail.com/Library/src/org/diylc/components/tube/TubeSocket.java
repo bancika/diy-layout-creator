@@ -105,7 +105,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 			break;
 		case B9A:
 			pinCount = 9;
-			pinCircleDiameter = getClosestOdd(new Size(14d, SizeUnit.mm).convertToPixels());
+			pinCircleDiameter = getClosestOdd(new Size(21d, SizeUnit.mm).convertToPixels());
 			hasEmptySpace = true;
 			break;
 		default:

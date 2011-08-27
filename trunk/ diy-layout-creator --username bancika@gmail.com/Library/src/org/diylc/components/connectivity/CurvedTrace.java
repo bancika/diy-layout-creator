@@ -8,7 +8,6 @@ import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -40,11 +39,11 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 	}
 
 	@EditableProperty(name = "Width")
-	public Size getSize() {
+	public Size getThickness() {
 		return size;
 	}
 
-	public void setSize(Size size) {
+	public void setThickness(Size size) {
 		this.size = size;
 	}
 

@@ -324,7 +324,11 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Ctrl+click should not cleanup selection when clicked on the canvas</description>
+					<description>Component edit dialog should show mutual properties when components of different types are selected (e.g. curved trace and straight trace witdth)</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Ctrl+click should not clear selection when clicked on the canvas</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>

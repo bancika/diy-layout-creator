@@ -141,8 +141,8 @@ public class ComponentProcessor {
 						Method setter = clazz.getMethod("set" + method.getName().substring(3),
 								method.getReturnType());
 						PropertyWrapper property = new PropertyWrapper(name,
-								method.getReturnType(), method, setter, annotation.defaultable(),
-								validator);
+								method.getReturnType(), method.getName(), setter.getName(),
+								annotation.defaultable(), validator);
 						properties.add(property);
 					}
 				} catch (NoSuchMethodException e) {
