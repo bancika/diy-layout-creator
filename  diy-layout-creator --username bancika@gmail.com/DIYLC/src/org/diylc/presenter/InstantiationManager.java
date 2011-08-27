@@ -173,9 +173,11 @@ public class InstantiationManager {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException 
+	 * @throws SecurityException 
 	 */
 	public void fillWithDefaultProperties(Object object) throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+			IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
 		// Extract properties.
 		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
 				object.getClass());
