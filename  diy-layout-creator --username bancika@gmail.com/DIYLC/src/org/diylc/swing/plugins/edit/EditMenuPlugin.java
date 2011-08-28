@@ -12,6 +12,7 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.Project;
+import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 
@@ -21,7 +22,8 @@ import com.diyfever.gui.undo.UndoHandler;
 public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
 	private static final String EDIT_TITLE = "Edit";
-	
+	private static final String RENUMBER_TITLE = "Renumber Selection";
+
 	private IPlugInPort plugInPort;
 	private ISwingUI swingUI;
 
@@ -36,6 +38,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.UngroupAction ungroupAction;
 	private ActionFactory.SendToBackAction sendToBackAction;
 	private ActionFactory.BringToFrontAction bringToFrontAction;
+	private ActionFactory.RenumberAction renumberXAxisAction;
+	private ActionFactory.RenumberAction renumberYAxisAction;
 
 	private UndoHandler<Project> undoHandler;
 
@@ -115,14 +119,14 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		}
 		return ungroupAction;
 	}
-	
+
 	public ActionFactory.SendToBackAction getSendToBackAction() {
 		if (sendToBackAction == null) {
 			sendToBackAction = ActionFactory.getInstance().createSendToBackAction(plugInPort);
 		}
 		return sendToBackAction;
 	}
-	
+
 	public ActionFactory.BringToFrontAction getBringToFrontAction() {
 		if (bringToFrontAction == null) {
 			bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
@@ -130,10 +134,26 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		return bringToFrontAction;
 	}
 
+	public ActionFactory.RenumberAction getRenumberXAxisAction() {
+		if (renumberXAxisAction == null) {
+			renumberXAxisAction = ActionFactory.getInstance()
+					.createRenumberAction(plugInPort, true);
+		}
+		return renumberXAxisAction;
+	}
+
+	public ActionFactory.RenumberAction getRenumberYAxisAction() {
+		if (renumberYAxisAction == null) {
+			renumberYAxisAction = ActionFactory.getInstance().createRenumberAction(plugInPort,
+					false);
+		}
+		return renumberYAxisAction;
+	}
+
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
-		
+
 		ActionFactory actionFactory = ActionFactory.getInstance();
 
 		swingUI.injectMenuAction(undoHandler.getUndoAction(), EDIT_TITLE);
@@ -151,8 +171,12 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectMenuAction(getSendToBackAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getBringToFrontAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
+		swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(), EDIT_TITLE);
+		swingUI.injectMenuAction(getRenumberXAxisAction(), RENUMBER_TITLE);
+		swingUI.injectMenuAction(getRenumberYAxisAction(), RENUMBER_TITLE);
+		swingUI.injectMenuAction(null, EDIT_TITLE);
 		swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
-		
+
 		refreshActions();
 	}
 

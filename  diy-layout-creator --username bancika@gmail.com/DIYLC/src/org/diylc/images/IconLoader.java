@@ -31,7 +31,7 @@ public enum IconLoader {
 			"donate.png"), Bug("bug.png"), IconLarge("icon_large.png"), IconMedium(
 			"icon_medium.png"), IconSmall("icon_small.png"), DocumentEdit("document_edit.png"), EditComponent(
 			"edit_component.png"), Size("size.png"), Front("front.png"), Back("back.png"), Pens(
-			"pens.png");
+			"pens.png"), Sort("sort.png");
 
 	protected String name;
 
