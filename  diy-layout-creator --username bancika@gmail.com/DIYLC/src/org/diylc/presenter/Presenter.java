@@ -1213,7 +1213,9 @@ public class Presenter implements IPlugInPort {
 			for (IDIYComponent<?> component : selectedComponents) {
 				drawingManager.invalidateComponent(component);
 				for (PropertyWrapper property : properties) {
-					property.writeTo(component);
+					if (property.isChanged()) {
+						property.writeTo(component);
+					}
 				}
 			}
 		} catch (Exception e) {

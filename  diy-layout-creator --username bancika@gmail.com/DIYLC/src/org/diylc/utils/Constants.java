@@ -22,4 +22,6 @@ public class Constants {
 			240, 240, 240), Color.black);
 
 	public static final Color TRANSPARENT_COLOR = new Color(0, 0, 0, 0);
+	
+	public static final Color MULTI_VALUE_COLOR = Color.yellow;
 }
