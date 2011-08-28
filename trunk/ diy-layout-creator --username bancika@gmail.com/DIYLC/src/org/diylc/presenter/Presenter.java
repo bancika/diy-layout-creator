@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1064,6 +1065,70 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void setSelectedTheme(Theme theme) {
 		drawingManager.setTheme(theme);
+	}
+
+	@Override
+	public void renumberSelectedComponents(final boolean xAxisFirst) {
+		if (getSelectedComponents().isEmpty()) {
+			return;
+		}
+		Project oldProject = cloner.deepClone(currentProject);
+		List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>(getSelectedComponents());
+		// Sort components by their location.
+		Collections.sort(components, new Comparator<IDIYComponent<?>>() {
+
+			@Override
+			public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
+				Area area1 = drawingManager.getComponentArea(o1);
+				Area area2 = drawingManager.getComponentArea(o2);
+				if (area1 != null && area2 != null) {
+					Point point1 = area1.getBounds().getLocation();
+					Point point2 = area2.getBounds().getLocation();
+					if (xAxisFirst) {
+						if (point1.y < point2.y) {
+							return -1;
+						} else if (point1.y > point2.y) {
+							return 1;
+						} else {
+							if (point1.x < point1.x) {
+								return -1;
+							} else if (point1.x > point1.x) {
+								return 1;
+							}
+						}
+					} else {
+						if (point1.x < point2.x) {
+							return -1;
+						} else if (point1.x > point2.x) {
+							return 1;
+						} else {
+							if (point1.y < point1.y) {
+								return -1;
+							} else if (point1.y > point1.y) {
+								return 1;
+							}
+						}
+					}
+				}
+				return 0;
+			}
+		});
+		// Clear names.
+		for (IDIYComponent<?> component : components) {
+			component.setName("");
+		}
+		// Assign new ones.
+		for (IDIYComponent<?> component : components) {
+			component.setName(instantiationManager.createUniqueName(ComponentProcessor
+					.getInstance().extractComponentTypeFrom(
+							(Class<? extends IDIYComponent<?>>) component.getClass()),
+					currentProject));
+		}
+
+		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
+				.deepClone(currentProject), "Renumber selection");
+		projectFileManager.notifyFileChange();
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
 	public void updateSelection(List<IDIYComponent<?>> newSelection) {

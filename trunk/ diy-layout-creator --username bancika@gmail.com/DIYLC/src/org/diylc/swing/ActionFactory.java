@@ -146,6 +146,10 @@ public class ActionFactory {
 	public ThemeAction createThemeAction(IPlugInPort plugInPort, Theme theme) {
 		return new ThemeAction(plugInPort, theme);
 	}
+	
+	public RenumberAction createRenumberAction(IPlugInPort plugInPort, boolean xAxisFirst) {
+		return new RenumberAction(plugInPort, xAxisFirst);
+	}
 
 	// File menu actions.
 
@@ -840,6 +844,27 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info(getValue(AbstractAction.NAME) + " triggered");
 			plugInPort.setSelectedTheme(theme);
+		}
+	}
+	
+	public static class RenumberAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		private IPlugInPort plugInPort;
+		private boolean xAxisFirst;
+
+		public RenumberAction(IPlugInPort plugInPort, boolean xAxisFirst) {
+			super();
+			this.plugInPort = plugInPort;
+			this.xAxisFirst = xAxisFirst;
+			putValue(AbstractAction.NAME, xAxisFirst ? "X Axis First" : "Y Axis First");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info(getValue(AbstractAction.NAME) + " triggered");
+			plugInPort.renumberSelectedComponents(xAxisFirst);
 		}
 	}
 }

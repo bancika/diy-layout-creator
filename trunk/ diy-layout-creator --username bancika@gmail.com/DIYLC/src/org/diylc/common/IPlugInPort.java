@@ -100,7 +100,7 @@ public interface IPlugInPort {
 	 * Saves the current project into the specified file.
 	 * 
 	 * @param fileName
-	 * @param isBackup 
+	 * @param isBackup
 	 */
 	void saveProjectToFile(String fileName, boolean isBackup);
 
@@ -171,7 +171,8 @@ public interface IPlugInPort {
 	 * @param altDown
 	 * @param clickCount
 	 */
-	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown, int clickCount);
+	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown,
+			int clickCount);
 
 	/**
 	 * Notifies the presenter that mouse is moved.
@@ -191,7 +192,7 @@ public interface IPlugInPort {
 	 * @return
 	 */
 	List<IDIYComponent<?>> getSelectedComponents();
-	
+
 	/**
 	 * Updates the selection with the specified list of component. Also, updates
 	 * control point map with all components that are stuck to the newly
@@ -285,9 +286,8 @@ public interface IPlugInPort {
 	 */
 	List<PropertyWrapper> getMutualSelectionProperties();
 
-	
 	void editSelection();
-	
+
 	/**
 	 * @return a list of editable properties of the current project.
 	 */
@@ -364,4 +364,11 @@ public interface IPlugInPort {
 	 * @param theme
 	 */
 	void setSelectedTheme(Theme theme);
+
+	/**
+	 * Renumbers all the selected components.
+	 * 
+	 * @param xAxisFirst
+	 */
+	void renumberSelectedComponents(boolean xAxisFirst);
 }
