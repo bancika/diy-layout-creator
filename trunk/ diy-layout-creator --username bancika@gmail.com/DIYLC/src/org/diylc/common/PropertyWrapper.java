@@ -49,7 +49,7 @@ public class PropertyWrapper implements Cloneable {
 
 	public void writeTo(Object object) throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException, SecurityException, NoSuchMethodException {
-		object.getClass().getMethod(setter, this.value.getClass()).invoke(object, this.value);
+		object.getClass().getMethod(setter, type).invoke(object, this.value);
 	}
 
 	public String getName() {
