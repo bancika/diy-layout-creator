@@ -45,6 +45,7 @@ public interface IPlugInPort {
 	public static final String WHEEL_ZOOM_KEY = "wheelZoom";
 	public static final String OUTLINE_KEY = "outline";
 	public static final String THEME_KEY = "theme";
+	public static final String RECENT_COMPONENTS_KEY = "recentComponents";
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as

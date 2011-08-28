@@ -2,10 +2,12 @@ package org.diylc.presenter;
 
 import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -22,6 +24,8 @@ import com.rits.cloning.Cloner;
 public class InstantiationManager {
 
 	private static final Logger LOG = Logger.getLogger(InstantiationManager.class);
+
+	private static final int MAX_RECENT_COMPONENTS = 16;
 
 	private Cloner cloner;
 
@@ -123,6 +127,7 @@ public class InstantiationManager {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	public IDIYComponent<?> instantiateComponent(ComponentType componentType, Point point,
 			Project currentProject) throws Exception {
 		LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
@@ -144,9 +149,26 @@ public class InstantiationManager {
 
 		fillWithDefaultProperties(component);
 
+		// Write to recent components
+		List<String> recentComponentTypes = (List<String>) ConfigurationManager.getInstance()
+				.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, new ArrayList<ComponentType>());
+		String className = componentType.getInstanceClass().getName();
+		if (recentComponentTypes.size() == 0 || !recentComponentTypes.get(0).equals(className)) {
+			// Remove if it's already somewhere in the list.
+			recentComponentTypes.remove(className);
+			// Add to the end of the list.
+			recentComponentTypes.add(0, className);
+			// Trim the list if necessary.
+			if (recentComponentTypes.size() > MAX_RECENT_COMPONENTS) {
+				recentComponentTypes.remove(recentComponentTypes.size() - 1);
+			}
+			ConfigurationManager.getInstance().writeValue(IPlugInPort.RECENT_COMPONENTS_KEY,
+					recentComponentTypes);
+		}
+
 		return component;
 	}
-	
+
 	public String createUniqueName(ComponentType componentType, Project currentProject) {
 		int i = 0;
 		boolean exists = true;
@@ -173,11 +195,12 @@ public class InstantiationManager {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException 
-	 * @throws SecurityException 
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
 	 */
 	public void fillWithDefaultProperties(Object object) throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
+			IllegalAccessException, InvocationTargetException, SecurityException,
+			NoSuchMethodException {
 		// Extract properties.
 		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
 				object.getClass());
