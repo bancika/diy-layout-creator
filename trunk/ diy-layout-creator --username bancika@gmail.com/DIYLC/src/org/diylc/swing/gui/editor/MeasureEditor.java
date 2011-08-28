@@ -1,6 +1,7 @@
 package org.diylc.swing.gui.editor;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.JComboBox;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.core.measures.Unit;
+import org.diylc.utils.Constants;
 
 import com.diyfever.gui.DoubleTextField;
 
@@ -21,11 +23,16 @@ public class MeasureEditor extends Container {
 
 	private static final long serialVersionUID = 1L;
 
+	private Color oldBg;
+	private DoubleTextField valueField;
+	private JComboBox unitBox;
+
 	@SuppressWarnings("unchecked")
 	public MeasureEditor(final PropertyWrapper property) {
 		setLayout(new BorderLayout());
 		AbstractMeasure measure = ((AbstractMeasure) property.getValue());
-		DoubleTextField valueField = new DoubleTextField(measure.getValue());
+		valueField = new DoubleTextField(measure.getValue());
+		oldBg = valueField.getBackground();
 		valueField.addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY,
 				new PropertyChangeListener() {
 
@@ -36,6 +43,9 @@ public class MeasureEditor extends Container {
 									.getValue()).clone();
 							newMeasure.setValue((Double) evt.getNewValue());
 							property.setValue(newMeasure);
+							property.setChanged(true);
+							valueField.setBackground(oldBg);
+							unitBox.setBackground(oldBg);
 						} catch (CloneNotSupportedException ex) {
 						}
 					}
@@ -43,7 +53,7 @@ public class MeasureEditor extends Container {
 		add(valueField, BorderLayout.CENTER);
 		try {
 			Method method = measure.getUnit().getClass().getMethod("values");
-			final JComboBox unitBox = new JComboBox((Object[]) method.invoke(measure.getUnit()));
+			unitBox = new JComboBox((Object[]) method.invoke(measure.getUnit()));
 			unitBox.setSelectedItem(measure.getUnit());
 			unitBox.addActionListener(new ActionListener() {
 
@@ -54,11 +64,19 @@ public class MeasureEditor extends Container {
 								.getValue()).clone();
 						newMeasure.setUnit((Enum<? extends Unit>) unitBox.getSelectedItem());
 						property.setValue(newMeasure);
+						property.setChanged(true);
+						valueField.setBackground(oldBg);
+						unitBox.setBackground(oldBg);
 					} catch (CloneNotSupportedException ex) {
 					}
 				}
 			});
 			add(unitBox, BorderLayout.EAST);
+
+			if (!property.isUnique()) {
+				valueField.setBackground(Constants.MULTI_VALUE_COLOR);
+				unitBox.setBackground(Constants.MULTI_VALUE_COLOR);
+			}
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

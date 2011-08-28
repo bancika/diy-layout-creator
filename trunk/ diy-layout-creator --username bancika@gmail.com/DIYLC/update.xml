@@ -324,6 +324,10 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Component edit dialog allows changing property values even when they are not the same. Boxes are marked yellow to designate multi-valued state.</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Component edit dialog should show mutual properties when components of different types are selected (e.g. curved trace and straight trace witdth)</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>

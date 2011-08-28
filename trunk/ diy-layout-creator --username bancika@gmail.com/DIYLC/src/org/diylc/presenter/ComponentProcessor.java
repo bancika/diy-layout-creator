@@ -182,6 +182,19 @@ public class ComponentProcessor {
 				property.readFrom(component);
 			}
 			properties.retainAll(newProperties);
+			// Try to find matching properties in old and new lists and see if
+			// their values match.
+			for (PropertyWrapper oldProperty : properties) {
+				if (newProperties.contains(oldProperty)) {
+					PropertyWrapper newProperty = newProperties.get(newProperties
+							.indexOf(oldProperty));
+					if ((newProperty.getValue() != null && newProperty.getValue() == null)
+							|| !newProperty.getValue().equals(oldProperty.getValue())) {
+						// Values don't match, so the property is not unique valued.
+						oldProperty.setUnique(false);
+					}
+				}
+			}
 			// for (PropertyWrapper property : properties) {
 			// try {
 			// property.readUniqueFrom(component);

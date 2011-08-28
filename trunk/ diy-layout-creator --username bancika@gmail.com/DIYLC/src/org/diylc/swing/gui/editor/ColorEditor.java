@@ -12,13 +12,14 @@ import javax.swing.SwingConstants;
 
 import org.diylc.common.PropertyWrapper;
 
-
-public class ColorEditor extends JLabel {
+public class ColorEditor extends JLabel  {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String title = "Click to edit";
+
 	public ColorEditor(final PropertyWrapper property) {
-		super("Click to edit");
+		super(property.isUnique() ? title : ("(multi value) " + title));
 		setOpaque(true);
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setBorder(BorderFactory.createEtchedBorder());
@@ -31,13 +32,14 @@ public class ColorEditor extends JLabel {
 				Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color",
 						getBackground());
 				if (newColor != null) {
+					property.setChanged(true);
 					property.setValue(newColor);
 					setBackground(newColor);
 				}
 			}
 		});
 	}
-	
+
 	@Override
 	public void setBackground(Color bg) {
 		if (bg.getRed() < 127 || bg.getBlue() < 127 || bg.getGreen() < 127) {

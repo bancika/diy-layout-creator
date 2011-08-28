@@ -20,6 +20,7 @@ public class PropertyWrapper implements Cloneable {
 	private boolean defaultable;
 	private IPropertyValidator validator;
 	private boolean unique = true;
+	private boolean changed = false;
 
 	public PropertyWrapper(String name, Class<?> type, String getter, String setter,
 			boolean defaultable, IPropertyValidator validator) {
@@ -82,6 +83,14 @@ public class PropertyWrapper implements Cloneable {
 	public void setUnique(boolean unique) {
 		this.unique = unique;
 	}
+	
+	public boolean isChanged() {
+		return changed;
+	}
+	
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
 
 	// @Override
 	// public Object clone() throws CloneNotSupportedException {
@@ -103,7 +112,6 @@ public class PropertyWrapper implements Cloneable {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((setter == null) ? 0 : setter.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
@@ -137,11 +145,6 @@ public class PropertyWrapper implements Cloneable {
 			if (other.type != null)
 				return false;
 		} else if (!type.equals(other.type))
-			return false;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
 			return false;
 		return true;
 	}
