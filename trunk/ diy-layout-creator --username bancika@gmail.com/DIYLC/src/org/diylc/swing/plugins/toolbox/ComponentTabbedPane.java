@@ -1,6 +1,7 @@
 package org.diylc.swing.plugins.toolbox;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
@@ -15,10 +16,16 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComparatorFactory;
+import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.Presenter;
+
+import com.diyfever.gui.miscutils.ConfigurationManager;
+import com.diyfever.gui.miscutils.IConfigListener;
 
 /**
  * Tabbed pane that shows all available components categorized into tabs.
@@ -27,14 +34,18 @@ import org.diylc.presenter.Presenter;
  */
 class ComponentTabbedPane extends JTabbedPane {
 
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger LOG = Logger.getLogger(ComponentTabbedPane.class);
+
 	public static int SCROLL_STEP = Presenter.ICON_SIZE + ComponentButton.MARGIN * 2 + 2;
 
-	private static final long serialVersionUID = 1L;
 	private final IPlugInPort plugInPort;
 
 	public ComponentTabbedPane(IPlugInPort plugInPort) {
 		super();
 		this.plugInPort = plugInPort;
+		addTab("Recently Used", createRecentComponentsPanel());
 		Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
 		List<String> categories = new ArrayList<String>(componentTypes.keySet());
 		Collections.sort(categories);
@@ -94,13 +105,15 @@ class ComponentTabbedPane extends JTabbedPane {
 		return panel;
 	}
 
-//	private JScrollPane createComponentScrollBar(List<ComponentType> componentTypes) {
-//		JScrollPane scrollPane = new JScrollPane(createComponentPanel(componentTypes));
-//		scrollPane.setOpaque(false);
-//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-//		return scrollPane;
-//	}
+	// private JScrollPane createComponentScrollBar(List<ComponentType>
+	// componentTypes) {
+	// JScrollPane scrollPane = new
+	// JScrollPane(createComponentPanel(componentTypes));
+	// scrollPane.setOpaque(false);
+	// scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+	// scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+	// return scrollPane;
+	// }
 
 	private Component createComponentPanel(List<ComponentType> componentTypes) {
 		Container toolbar = new Container();
@@ -111,6 +124,46 @@ class ComponentTabbedPane extends JTabbedPane {
 			JButton button = new ComponentButton(plugInPort, componentType);
 			toolbar.add(button);
 		}
+
 		return toolbar;
+	}
+
+	private Component createRecentComponentsPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setOpaque(false);
+
+		final Container toolbar = new Container();
+		toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.X_AXIS));
+		refreshRecentComponentsToolbar(toolbar, (List<String>) ConfigurationManager.getInstance()
+				.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, new ArrayList<String>()));
+		ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RECENT_COMPONENTS_KEY,
+				new IConfigListener() {
+
+					@Override
+					public void valueChanged(String key, Object value) {
+						refreshRecentComponentsToolbar(toolbar, (List<String>) value);
+						toolbar.invalidate();
+					}
+				});
+
+		panel.add(toolbar, BorderLayout.CENTER);
+
+		return panel;
+	}
+
+	private void refreshRecentComponentsToolbar(Container toolbar,
+			List<String> recentComponentClassList) {
+		toolbar.removeAll();
+		for (String componentClassName : recentComponentClassList) {
+			ComponentType componentType;
+			try {
+				componentType = ComponentProcessor.getInstance().extractComponentTypeFrom(
+						(Class<? extends IDIYComponent<?>>) Class.forName(componentClassName));
+				JButton button = new ComponentButton(plugInPort, componentType);
+				toolbar.add(button);
+			} catch (ClassNotFoundException e) {
+				LOG.error("Could not create recent component button for " + componentClassName, e);
+			}
+		}
 	}
 }
