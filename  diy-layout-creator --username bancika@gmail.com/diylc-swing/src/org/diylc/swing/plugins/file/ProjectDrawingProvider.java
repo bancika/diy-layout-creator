@@ -5,11 +5,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.EnumSet;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
-
-import com.diyfever.gui.IDrawingProvider;
-import com.diyfever.gui.miscutils.ConfigurationManager;
+import org.diylc.swingframework.IDrawingProvider;
 
 /**
  * {@link IDrawingProvider} implementation that uses {@link IPlugInPort} to draw

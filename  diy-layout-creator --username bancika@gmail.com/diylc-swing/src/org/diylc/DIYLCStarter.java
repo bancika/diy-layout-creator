@@ -8,12 +8,11 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.PropertyInjector;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
-import com.diyfever.gui.miscutils.PropertyInjector;
 
 /**
  * Main class that runs DIYLC.

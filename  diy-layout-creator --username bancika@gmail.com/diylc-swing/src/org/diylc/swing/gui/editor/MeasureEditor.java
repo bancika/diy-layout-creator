@@ -15,9 +15,8 @@ import javax.swing.JComboBox;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.core.measures.Unit;
+import org.diylc.swingframework.DoubleTextField;
 import org.diylc.utils.Constants;
-
-import com.diyfever.gui.DoubleTextField;
 
 public class MeasureEditor extends Container {
 

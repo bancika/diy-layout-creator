@@ -8,6 +8,8 @@ import java.awt.datatransfer.FlavorListener;
 import java.awt.datatransfer.Transferable;
 import java.util.EnumSet;
 
+import org.diylc.appframework.undo.IUndoListener;
+import org.diylc.appframework.undo.UndoHandler;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -15,9 +17,6 @@ import org.diylc.core.Project;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
-
-import com.diyfever.gui.undo.IUndoListener;
-import com.diyfever.gui.undo.UndoHandler;
 
 public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 

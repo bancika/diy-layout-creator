@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.diylc.appframework.simplemq.IMessageListener;
+import org.diylc.appframework.simplemq.MessageDispatcher;
+import org.diylc.appframework.update.VersionNumber;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-
-import com.diyfever.gui.simplemq.IMessageListener;
-import com.diyfever.gui.simplemq.MessageDispatcher;
-import com.diyfever.gui.update.VersionNumber;
 
 /**
  * Interface for communication between plug-ins and the application. Plug-ins

@@ -6,9 +6,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.diylc.common.PropertyWrapper;
+import org.diylc.swingframework.DoubleTextField;
 import org.diylc.utils.Constants;
-
-import com.diyfever.gui.DoubleTextField;
 
 public class IntEditor extends DoubleTextField {
 

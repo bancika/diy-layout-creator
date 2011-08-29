@@ -15,8 +15,7 @@ import org.diylc.swing.plugins.online.presenter.LibraryPresenter;
 import org.diylc.swing.plugins.online.view.LoginDialog;
 import org.diylc.swing.plugins.online.view.NewUserDialog;
 import org.diylc.swing.plugins.online.view.UploadDialog;
-
-import com.diyfever.gui.ProgressDialog;
+import org.diylc.swingframework.ProgressDialog;
 
 public class OnlineManager implements IPlugIn {
 

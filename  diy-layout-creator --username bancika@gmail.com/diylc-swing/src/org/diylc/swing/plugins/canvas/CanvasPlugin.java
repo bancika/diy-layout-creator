@@ -16,6 +16,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -27,11 +29,8 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
-import com.diyfever.gui.miscutils.IConfigListener;
-import com.diyfever.gui.ruler.IRulerListener;
-import com.diyfever.gui.ruler.RulerScrollPane;
+import org.diylc.swingframework.ruler.IRulerListener;
+import org.diylc.swingframework.ruler.RulerScrollPane;
 
 public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 

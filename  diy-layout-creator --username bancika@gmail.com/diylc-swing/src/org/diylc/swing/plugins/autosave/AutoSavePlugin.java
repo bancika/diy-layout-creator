@@ -7,12 +7,11 @@ import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
 
 public class AutoSavePlugin implements IPlugIn {
 

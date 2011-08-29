@@ -1,7 +1,6 @@
 package org.diylc.swing.plugins.toolbox;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
@@ -17,15 +16,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.Presenter;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
-import com.diyfever.gui.miscutils.IConfigListener;
 
 /**
  * Tabbed pane that shows all available components categorized into tabs.

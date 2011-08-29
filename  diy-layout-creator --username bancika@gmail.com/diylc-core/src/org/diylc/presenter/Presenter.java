@@ -23,6 +23,11 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.JarScanner;
+import org.diylc.appframework.miscutils.Utils;
+import org.diylc.appframework.simplemq.MessageDispatcher;
+import org.diylc.appframework.update.VersionNumber;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
@@ -38,11 +43,6 @@ import org.diylc.core.Theme;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-import com.diyfever.gui.miscutils.ConfigurationManager;
-import com.diyfever.gui.miscutils.JarScanner;
-import com.diyfever.gui.miscutils.Utils;
-import com.diyfever.gui.simplemq.MessageDispatcher;
-import com.diyfever.gui.update.VersionNumber;
 import com.rits.cloning.Cloner;
 
 /**

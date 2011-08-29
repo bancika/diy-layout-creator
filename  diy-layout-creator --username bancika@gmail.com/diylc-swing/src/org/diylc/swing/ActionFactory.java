@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
@@ -26,11 +27,10 @@ import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swing.plugins.file.BomEntry;
 import org.diylc.swing.plugins.file.BomMaker;
 import org.diylc.swing.plugins.file.FileFilterEnum;
+import org.diylc.swingframework.ButtonDialog;
+import org.diylc.swingframework.IDrawingProvider;
+import org.diylc.swingframework.export.DrawingExporter;
 
-import com.diyfever.gui.ButtonDialog;
-import com.diyfever.gui.IDrawingProvider;
-import com.diyfever.gui.export.DrawingExporter;
-import com.diyfever.gui.miscutils.ConfigurationManager;
 import com.rits.cloning.Cloner;
 
 public class ActionFactory {

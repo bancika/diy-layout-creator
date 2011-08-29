@@ -14,7 +14,7 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.diyfever.gui.ButtonDialog;
+import org.diylc.swingframework.ButtonDialog;
 
 public class UploadDialog extends ButtonDialog {
 

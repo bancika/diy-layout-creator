@@ -27,6 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
@@ -36,12 +38,9 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
-
-import com.diyfever.gui.MemoryBar;
-import com.diyfever.gui.miscutils.ConfigurationManager;
-import com.diyfever.gui.miscutils.PercentageListCellRenderer;
-import com.diyfever.gui.miscutils.Utils;
-import com.diyfever.gui.update.UpdateLabel;
+import org.diylc.swingframework.MemoryBar;
+import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
+import org.diylc.swingframework.update.UpdateLabel;
 
 public class StatusBar extends JPanel implements IPlugIn {
 

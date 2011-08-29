@@ -24,8 +24,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ValidationException;
-
-import com.diyfever.gui.ButtonDialog;
+import org.diylc.swingframework.ButtonDialog;
 
 public class PropertyEditorDialog extends ButtonDialog {
 
