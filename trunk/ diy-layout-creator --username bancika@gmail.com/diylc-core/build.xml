@@ -1,4 +1,4 @@
-<project name="diylc" basedir="." default="jar">
+<project name="diylc-core" basedir="." default="jar">
 	<property name="src.dir" value="src" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
