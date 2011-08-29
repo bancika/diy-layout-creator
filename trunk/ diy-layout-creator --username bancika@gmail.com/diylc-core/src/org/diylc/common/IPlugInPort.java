@@ -12,7 +12,6 @@ import java.util.Set;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-import org.diylc.swing.plugins.edit.ComponentTransferable;
 
 import com.diyfever.gui.simplemq.IMessageListener;
 import com.diyfever.gui.simplemq.MessageDispatcher;
