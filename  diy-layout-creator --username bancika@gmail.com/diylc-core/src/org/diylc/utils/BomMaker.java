@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.file;
+package org.diylc.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

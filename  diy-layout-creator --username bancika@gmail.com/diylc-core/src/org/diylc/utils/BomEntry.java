@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.file;
+package org.diylc.utils;
 
 public class BomEntry {
 

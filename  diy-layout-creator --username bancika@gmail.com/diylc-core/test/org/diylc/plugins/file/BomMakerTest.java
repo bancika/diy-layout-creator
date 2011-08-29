@@ -10,8 +10,8 @@ import org.diylc.components.MockDIYComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
-import org.diylc.swing.plugins.file.BomEntry;
-import org.diylc.swing.plugins.file.BomMaker;
+import org.diylc.utils.BomEntry;
+import org.diylc.utils.BomMaker;
 import org.junit.Test;
 
 public class BomMakerTest {

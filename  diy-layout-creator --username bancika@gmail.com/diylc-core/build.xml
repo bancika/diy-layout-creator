@@ -5,7 +5,6 @@
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
-	<property name="main.class" value="org.diylc.DIYLCStarter" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -60,7 +59,6 @@
 		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Main-Class" value="${main.class}" />
 				<attribute name="Class-Path" value="${manifest.class.path}" />
 			</manifest>
 		</jar>
