@@ -12,7 +12,8 @@
 	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
 	<classpathentry kind="lib" path="library/main.jar"/>
-	<classpathentry kind="lib" path="lib/bancika-gui-framework.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
+	<classpathentry kind="lib" path="lib/app-framework.jar"/>
+	<classpathentry kind="lib" path="lib/swing-framework.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
