@@ -10,8 +10,7 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComponentZOrderFiler;
-
-import com.diyfever.gui.IDrawingProvider;
+import org.diylc.swingframework.IDrawingProvider;
 
 /**
  * {@link IDrawingProvider} implementation that uses {@link IPlugInPort} to draw

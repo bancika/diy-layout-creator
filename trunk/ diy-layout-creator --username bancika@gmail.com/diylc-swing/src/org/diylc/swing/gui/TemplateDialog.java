@@ -33,13 +33,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.presenter.Presenter;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
 
 public class TemplateDialog extends JDialog {
 

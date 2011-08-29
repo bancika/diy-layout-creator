@@ -24,8 +24,8 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
+import org.diylc.swingframework.IFileChooserAccessory;
 
-import com.diyfever.gui.IFileChooserAccessory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 

@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.GridType;
@@ -29,9 +31,6 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.utils.Constants;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
-import com.diyfever.gui.simplemq.MessageDispatcher;
 
 /**
  * Utility that deals with painting {@link Project} on the {@link Graphics2D}

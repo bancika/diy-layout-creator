@@ -27,10 +27,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
 
 /**
  * GUI class used to draw onto.

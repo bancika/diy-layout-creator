@@ -17,9 +17,8 @@ import javax.swing.JScrollPane;
 
 import org.diylc.images.IconLoader;
 import org.diylc.swing.gui.DialogFactory;
-
-import com.diyfever.gui.export.TableExporter;
-import com.diyfever.gui.objecttable.ObjectListTable;
+import org.diylc.swingframework.export.TableExporter;
+import org.diylc.swingframework.objecttable.ObjectListTable;
 
 public class BomDialog extends JDialog {
 

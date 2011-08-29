@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -25,8 +26,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "Transistor (TO-220 package)", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "Transistors with metal tab for heat sink mounting", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class TransistorTO220 extends AbstractTransparentComponent<String> {

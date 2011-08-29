@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.diyfever.gui.ButtonDialog;
+import org.diylc.swingframework.ButtonDialog;
 
 public class NewUserDialog extends ButtonDialog {
 

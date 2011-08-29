@@ -9,6 +9,7 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -24,8 +25,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes", instanceNamePrefix = "V", description = "Various types of tube/valve sockets", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class TubeSocket extends AbstractTransparentComponent<String> {

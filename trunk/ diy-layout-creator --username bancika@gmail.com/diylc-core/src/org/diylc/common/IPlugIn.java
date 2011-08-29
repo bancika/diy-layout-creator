@@ -1,6 +1,6 @@
 package org.diylc.common;
 
-import com.diyfever.gui.simplemq.IMessageListener;
+import org.diylc.appframework.simplemq.IMessageListener;
 
 /**
  * Interface for plug-ins.

@@ -8,6 +8,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -16,11 +17,9 @@ import org.diylc.swing.plugins.file.BomEntry;
 import org.diylc.swing.plugins.online.view.LoginDialog;
 import org.diylc.swing.plugins.online.view.NewUserDialog;
 import org.diylc.swing.plugins.online.view.UploadDialog;
-
-import com.diyfever.gui.AboutDialog;
-import com.diyfever.gui.IFileChooserAccessory;
-import com.diyfever.gui.ProgressDialog;
-import com.diyfever.gui.miscutils.ConfigurationManager;
+import org.diylc.swingframework.AboutDialog;
+import org.diylc.swingframework.IFileChooserAccessory;
+import org.diylc.swingframework.ProgressDialog;
 
 public class DialogFactory {
 

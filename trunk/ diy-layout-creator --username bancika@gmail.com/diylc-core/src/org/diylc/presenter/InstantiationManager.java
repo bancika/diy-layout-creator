@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
@@ -13,7 +14,6 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.measures.Size;
 
-import com.diyfever.gui.miscutils.ConfigurationManager;
 import com.rits.cloning.Cloner;
 
 /**

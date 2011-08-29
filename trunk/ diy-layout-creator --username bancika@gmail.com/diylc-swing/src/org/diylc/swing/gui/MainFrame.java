@@ -36,6 +36,7 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -56,9 +57,7 @@ import org.diylc.swing.plugins.help.HelpMenuPlugin;
 import org.diylc.swing.plugins.layers.LayersMenuPlugin;
 import org.diylc.swing.plugins.statusbar.StatusBar;
 import org.diylc.swing.plugins.toolbox.ToolBox;
-
-import com.diyfever.gui.ButtonDialog;
-import com.diyfever.gui.miscutils.ConfigurationManager;
+import org.diylc.swingframework.ButtonDialog;
 
 public class MainFrame extends JFrame implements ISwingUI {
 

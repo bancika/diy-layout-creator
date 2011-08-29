@@ -6,12 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.diylc.appframework.update.VersionNumber;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-
-import com.diyfever.gui.update.VersionNumber;
 
 /**
  * Entity class that defines a project. Contains project properties and a

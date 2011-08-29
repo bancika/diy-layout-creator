@@ -6,9 +6,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import org.diylc.common.PropertyWrapper;
+import org.diylc.swingframework.FontChooserComboBox;
 import org.diylc.utils.Constants;
-
-import com.diyfever.gui.FontChooserComboBox;
 
 public class FontEditor extends FontChooserComboBox {
 

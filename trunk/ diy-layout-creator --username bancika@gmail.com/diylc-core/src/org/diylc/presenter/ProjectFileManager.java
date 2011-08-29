@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.common.EventType;
 import org.diylc.common.Orientation;
 import org.diylc.components.boards.AbstractBoard;
@@ -47,7 +48,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.diyfever.gui.simplemq.MessageDispatcher;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 

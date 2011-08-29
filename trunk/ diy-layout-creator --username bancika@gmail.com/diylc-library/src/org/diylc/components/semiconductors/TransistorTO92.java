@@ -11,6 +11,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -26,8 +27,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-
-import com.diyfever.gui.miscutils.ConfigurationManager;
 
 @ComponentDescriptor(name = "Transistor (TO-92 package)", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "Transistor with small plastic or epoxy body", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class TransistorTO92 extends AbstractTransparentComponent<String> {
