@@ -19,8 +19,8 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.swing.plugins.file.BomEntry;
-import org.diylc.swing.plugins.file.BomMaker;
+import org.diylc.utils.BomEntry;
+import org.diylc.utils.BomMaker;
 
 @ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.TEXT, stretchable = false)
 public class BOM extends AbstractComponent<Void> {
