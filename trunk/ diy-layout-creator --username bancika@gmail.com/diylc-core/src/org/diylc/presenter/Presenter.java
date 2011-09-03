@@ -585,7 +585,9 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void selectAll() {
 		LOG.info("selectAll()");
-		updateSelection(new ArrayList<IDIYComponent<?>>(currentProject.getComponents()));
+		List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(currentProject.getComponents());
+		newSelection.removeAll(getLockedComponents());
+		updateSelection(newSelection);
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 		// selectedComponents);
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
