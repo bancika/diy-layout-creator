@@ -369,5 +369,21 @@
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>
+		<com.diyfever.gui.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>1</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2011-08-28 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increased PNG export resolution to 300dpi</description>
+				</com.diyfever.gui.update.Change>
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
+		</com.diyfever.gui.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
