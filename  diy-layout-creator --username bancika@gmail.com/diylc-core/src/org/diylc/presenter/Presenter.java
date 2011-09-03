@@ -1078,34 +1078,45 @@ public class Presenter implements IPlugInPort {
 
 			@Override
 			public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-				Area area1 = drawingManager.getComponentArea(o1);
-				Area area2 = drawingManager.getComponentArea(o2);
-				if (area1 != null && area2 != null) {
-					Point point1 = area1.getBounds().getLocation();
-					Point point2 = area2.getBounds().getLocation();
-					if (xAxisFirst) {
-						if (point1.y < point2.y) {
-							return -1;
-						} else if (point1.y > point2.y) {
-							return 1;
-						} else {
-							if (point1.x < point1.x) {
-								return -1;
-							} else if (point1.x > point1.x) {
-								return 1;
-							}
-						}
+				int sumX1 = 0;
+				int sumY1 = 0;
+				int sumX2 = 0;
+				int sumY2 = 0;
+				for (int i = 0; i < o1.getControlPointCount(); i++) {
+					sumX1 += o1.getControlPoint(i).getX();
+					sumY1 += o1.getControlPoint(i).getY();
+				}
+				for (int i = 0; i < o2.getControlPointCount(); i++) {
+					sumX2 += o2.getControlPoint(i).getX();
+					sumY2 += o2.getControlPoint(i).getY();
+				}
+				sumX1 /= o1.getControlPointCount();
+				sumY1 /= o1.getControlPointCount();
+				sumX2 /= o2.getControlPointCount();
+				sumY2 /= o2.getControlPointCount();
+
+				if (xAxisFirst) {
+					if (sumY1 < sumY2) {
+						return -1;
+					} else if (sumY1 > sumY2) {
+						return 1;
 					} else {
-						if (point1.x < point2.x) {
+						if (sumX1 < sumX2) {
 							return -1;
-						} else if (point1.x > point2.x) {
+						} else if (sumX1 > sumX2) {
 							return 1;
-						} else {
-							if (point1.y < point1.y) {
-								return -1;
-							} else if (point1.y > point1.y) {
-								return 1;
-							}
+						}
+					}
+				} else {
+					if (sumX1 < sumX2) {
+						return -1;
+					} else if (sumX1 > sumX2) {
+						return 1;
+					} else {
+						if (sumY1 < sumY2) {
+							return -1;
+						} else if (sumY1 > sumY2) {
+							return 1;
 						}
 					}
 				}

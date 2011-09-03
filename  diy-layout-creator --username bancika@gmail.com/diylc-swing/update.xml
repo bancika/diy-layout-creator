@@ -378,6 +378,10 @@
 			<releaseDate>2011-08-28 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
+			    <com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Renumber function sometimes doesn't work as expected</description>
+				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increased PNG export resolution to 300dpi</description>
