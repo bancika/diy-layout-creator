@@ -29,6 +29,7 @@ public class SolderPad extends AbstractComponent<Void> {
 	private Color color = COLOR;
 	private Point point = new Point(0, 0);
 	private Type type = Type.ROUND;
+	private Size holeSize = HOLE_SIZE;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
@@ -36,8 +37,8 @@ public class SolderPad extends AbstractComponent<Void> {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
-		int diameter = getClosestOdd((int) size.convertToPixels());
-		int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
+		int diameter = getClosestOdd((int) getSize().convertToPixels());
+		int holeDiameter = getClosestOdd((int) getHoleSize().convertToPixels());
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
 		if (type == Type.ROUND) {
@@ -68,6 +69,18 @@ public class SolderPad extends AbstractComponent<Void> {
 
 	public void setSize(Size size) {
 		this.size = size;
+	}
+
+	@EditableProperty(name = "Hole")
+	public Size getHoleSize() {
+		if (holeSize == null) {
+			holeSize = HOLE_SIZE;
+		}
+		return holeSize;
+	}
+
+	public void setHoleSize(Size holeSize) {
+		this.holeSize = holeSize;
 	}
 
 	@Override

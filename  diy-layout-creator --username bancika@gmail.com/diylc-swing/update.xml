@@ -394,6 +394,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better lead and label rendering when lead spacing is smaller than component body</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Adjustable solder pad hole size</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>
