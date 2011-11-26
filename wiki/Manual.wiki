@@ -1,4 +1,4 @@
-#summary End user manual for non-developers.
+#summary Eindgebruiker handleiding voor niet-ontwikkelaars
 #labels Featured,Phase-Deploy
 
 ===System requirements===
