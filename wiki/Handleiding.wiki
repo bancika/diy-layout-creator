@@ -91,11 +91,11 @@ Merk op dat:
 
 Statusbalk bevat drie verschillende functies:
 
- *Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma. 
- *Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.) 
+ * Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma. 
+ * Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.) 
 
- *Zoemregeling* staat u toe om binnen of uit te zoemen.
+ * Zoemregeling* staat u toe om binnen of uit te zoemen.
 
- *Automatisch Bijwerken* kennisgeving. Wanneer de lamp is ingeschakeld, zijn er updates beschikbaar zijn. Klik erop voor meer informatie.   
+ * Automatisch Bijwerken* kennisgeving. Wanneer de lamp is ingeschakeld, zijn er updates beschikbaar zijn. Klik erop voor meer informatie.   
  
- *Geheugenbalk* is het oranje icoontje aan de rechterkant, het toont de hoeveelheid geheugen bezet door de applicatie. Beweeg de muis over het naar meer informatie, of klik op het om te proberen terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
+ * Geheugenbalk* is het oranje icoontje aan de rechterkant, het toont de hoeveelheid geheugen bezet door de applicatie. Beweeg de muis over het naar meer informatie, of klik op het om te proberen terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
