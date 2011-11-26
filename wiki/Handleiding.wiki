@@ -1,4 +1,4 @@
-# Eindgebruiker handleiding voor niet-ontwikkelaars
+#summary Eindgebruiker handleiding voor niet-ontwikkelaars
 ===Systeemvereisten===
 
  * Java JRE/JDK 1.6.0_10 of nieuwer
