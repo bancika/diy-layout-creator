@@ -91,7 +91,7 @@ Merk op dat:
 
 Statusbalk bevat drie verschillende functies:
 
-  Informatiebalk toont context gerelateerde informatie en begeleiding via de toepassingsprogramma.
+  * Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma.
 
   Selectie Grootte toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.)
 
