@@ -21,23 +21,23 @@ Het gebruikersinterface kan in 4 belangrijke componenten worden gescheiden:
 
 Toepassing configuratie kan worden veranderd van Config menu.Het bevat de volgende items:
 
-* Anti-Aliasing:* Indien aangevinkt, zal objecten en tekst gladder, maar het kost meer tijd om anti-aliasing graphics te maken. Als u last heeft van problemen met de prestaties, kunt u deze optie uit te schakelen.
+ * *Anti-Aliasing:* Indien aangevinkt, zal objecten en tekst gladder, maar het kost meer tijd om anti-aliasing graphics te maken. Als u last heeft van problemen met de prestaties, kunt u deze optie uit te schakelen.
 
-* Auto-Create Pads:* Indien aangevinkt, de toepassing zalautomatisch soldeereilanden wanneer een component wordt toegevoegd aan de lay-out.
+ * *Auto-Create Pads:* Indien aangevinkt, de toepassing zalautomatisch soldeereilanden wanneer een component wordt toegevoegd aan de lay-out.
 
-* Auto-Edit Mode:* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
+ * *Auto-Edit Mode:* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
 
-* Voortdurende schepping:* Indien aangevinkt, de laatstegeselecteerde component type zal actief blijven nadat u eenonderdeel, zodat u snel een groot aantal onderdelen vanhetzelfde type.
+ * *Voortdurende schepping:* Indien aangevinkt, de laatstegeselecteerde component type zal actief blijven nadat u eenonderdeel, zodat u snel een groot aantal onderdelen vanhetzelfde type.
 
-* Export Grid:* Indien aangevinkt, zal rasterlijnen worden geëxporteerd naar een bestand of printer.
+ * *Export Grid:* Indien aangevinkt, zal rasterlijnen worden geëxporteerd naar een bestand of printer.
 
-* Hi-Quality Rendering:* Indien aangevinkt, zal de beeldkwaliteitiets te verbeteren, maar het kan de prestatie verlagen.
+ * *Hi-Quality Rendering:* Indien aangevinkt, zal de beeldkwaliteitiets te verbeteren, maar het kan de prestatie verlagen.
 
-* Snap to Grid:* Indien aangevinkt, zal drag & drop operaties snapcontrole punten aan het net in plaats van de muiscursor pixel per pixel.
+ * *Snap to Grid:* Indien aangevinkt, zal drag & drop operaties snapcontrole punten aan het net in plaats van de muiscursor pixel per pixel.
 
-* Sticky Punten:* Indien aangevinkt, worden componententoegestaan ​​om aan elkaar plakken wanneer ze worden verplaatst. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk teschakelen voor de Sticky Point-modus. Zie Control points  voor meer info over de controle punten.
+ * *Sticky Punten:* Indien aangevinkt, worden componententoegestaan ​​om aan elkaar plakken wanneer ze worden verplaatst. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk teschakelen voor de Sticky Point-modus. Zie Control points  voor meer info over de controle punten.
 
-* Thema*: laat een thema te selecteren. Thema's worden gelezenvan thema's directory onder de DIYLC wortel en zij omvattenachtergrondkleur en het rooster lijn kleur. U kunt uw eigenthema's door het toevoegen van een XML-bestand om thema'sdirectory. Het is het gemakkelijkst om te beginnen met een kopievan een van de bestaande bestanden.
+ * *Thema*: laat een thema te selecteren. Thema's worden gelezenvan thema's directory onder de DIYLC wortel en zij omvattenachtergrondkleur en het rooster lijn kleur. U kunt uw eigenthema's door het toevoegen van een XML-bestand om thema'sdirectory. Het is het gemakkelijkst om te beginnen met een kopievan een van de bestaande bestanden.
 
 ===Het toevoegen van componenten aan de tekening===
 
@@ -89,14 +89,14 @@ Merk op dat:
 
 ===Het gebruiken van de statusbalk===
 
-Statusbalk bevat drie verschillende functies:
+ * *Statusbalk* bevat drie verschillende functies:
 
-* Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma.
+ * *Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma.
 
-* Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.)
+ * *Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.)
 
-* Zoemregeling* staat u toe om binnen of uit te zoemen.
+ * *Zoemregeling* staat u toe om binnen of uit te zoemen.
 
-* Automatisch Bijwerken* kennisgeving. Wanneer de lamp is ingeschakeld, zijn er updates beschikbaar zijn. Klik erop voor meer informatie.
+ * *Automatisch Bijwerken* kennisgeving. Wanneer de lamp is ingeschakeld, zijn er updates beschikbaar zijn. Klik erop voor meer informatie.
 
-* Geheugenbalk* is het oranje icoontje aan de rechterkant, het toont de hoeveelheid geheugen bezet door de applicatie. Beweeg de muis over het naar meer informatie, of klik op het om te proberen terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
+ * *Geheugenbalk* is het oranje icoontje aan de rechterkant, het toont de hoeveelheid geheugen bezet door de applicatie. Beweeg de muis over het naar meer informatie, of klik op het om te proberen terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
