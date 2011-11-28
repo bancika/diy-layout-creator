@@ -95,7 +95,7 @@ Merk op dat:
 
  * *Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.)
 
- * *Zoemregeling* staat u toe om binnen of uit te zoemen.
+ * *Zoomregeling* staat u toe om binnen of uit te zoomen.
 
  * *Automatisch Bijwerken* kennisgeving. Wanneer de lamp is ingeschakeld, zijn er updates beschikbaar zijn. Klik erop voor meer informatie.
 
