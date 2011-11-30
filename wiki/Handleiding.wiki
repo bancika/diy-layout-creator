@@ -37,7 +37,7 @@ Toepassing configuratie kan worden veranderd van Config menu.Het bevat de
 
  * *Sticky Punten:* Indien aangevinkt, worden componententoegestaan ​​om aan elkaar plakken wanneer ze worden verplaatst. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk teschakelen voor de Sticky Point-modus. Zie Control points  voor meer info over de controle punten.
 
- * *Thema*: laat een thema te selecteren. Thema's worden gelezenvan thema's directory onder de DIYLC wortel en zij omvattenachtergrondkleur en het rooster lijn kleur. U kunt uw eigenthema's door het toevoegen van een XML-bestand om thema'sdirectory. Het is het gemakkelijkst om te beginnen met een kopievan een van de bestaande bestanden.
+ * *Thema*: laat een thema te selecteren. Thema's worden gelezenvan thema's directory onder de DIYLC map en zij omvattenachtergrondkleur en het rooster lijn kleur. U kunt uw eigenthema's door het toevoegen van een XML-bestand om thema'sdirectory. Het is het gemakkelijkst om te beginnen met een kopievan een van de bestaande bestanden.
 
 ===Het toevoegen van componenten aan de tekening===
 
