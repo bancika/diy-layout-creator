@@ -7,7 +7,7 @@
  * Zip hulpprogramma om het archief uit te pakken(7-zip, WinZip, Total Commander, enz.) 
 ===Het uitvoeren van de toepassing===
  * Op Windows uitvoert u gewoon het programma de diylc.exe.
- * Op * Linux / Unix* of * Mac* is, opent u de terminal, verander de map naar diylc3 (cd '<'pad naar diylc3'>') en tikt u * ./ run.sh* in.
+ * Op * Linux / Unix* of * Mac* is, opent u de terminal, verander de map naar diylc3 (cd '<'pad naar diylc3'>') en tikt u * ./run.sh* in.
 ===Gebruikersinterface===
 
 Het gebruikersinterface kan in 4 belangrijke componenten worden gescheiden:
