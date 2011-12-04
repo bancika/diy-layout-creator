@@ -4,7 +4,7 @@
  * Java JRE/JDK 1.6.0_10 of nieuwer
  * 256MB vrije werkgeheugen
  * 10 MB beschikbare schijfruimte
- * Zip hulpprogramma om het archief uit te pakken(7-zip, WinZip, Total Commander, enz.) 
+ * Zip hulpprogramma om het archief uit te pakken(7-zip, WinZip, Total Commander, enz.) 
 ===Het uitvoeren van de toepassing===
  * Op Windows uitvoert u gewoon het programma de diylc.exe.
  * Op * Linux / Unix* of * Mac* is, opent u de terminal, verander de map naar diylc3 (cd '<'pad naar diylc3'>') en tikt u * ./run.sh* in.
@@ -12,32 +12,32 @@
 
 Het gebruikersinterface kan in 4 belangrijke componenten worden gescheiden:
 
-  # *Canvas (Doek/Ontwerp-oppervlak)* wordt gebruikt als WYSIWYG redacteur voor het project.
-  # *Toolbox (Gereedschapskist)* geeft en lijst van alle beschikbare componenten en staat u toe om de component dat u wilt plukken te toevoegen.
-  # *Main Menu (Hoofdmenu)* biedt bestands operaties, zoals het opslaan, laden, exporteren en klembord operaties, enz. 
-  # *Status Bar (Statusbalk)* toont context verwante informatie, zoomcontrole, updateinformatie en geheugenconsumptie.
+  # *Ontwerp Oppervlak* wordt gebruikt als WYSIWYG bewerker voor het project.
+  # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om de component dat u wilt plukken te toevoegen.
+  # *Hoofdmenu* biedt bestands operaties, zoals het openen, opslaan, exporteren en klembord operaties, enz. 
+  # *Statusbalk* toont context verwante informatie, zoomcontrole, updateinformatie en geheugenconsumptie.
 
-===Configureren van de toepassing===
+===Configureren van de toepassing===
 
-Toepassing configuratie kan worden veranderd van Config menu.Het bevat de volgende items:
+Toepassing configuratie kan worden veranderd van Configuratie menu. Het bevat de volgende opties:
 
- * *Anti-Aliasing:* Indien aangevinkt, zal objecten en tekst gladder, maar het kost meer tijd om anti-aliasing graphics te maken. Als u last heeft van problemen met de prestaties, kunt u deze optie uit te schakelen.
+ * *Anti-Aliasing* Indien aangevinkt, zal objecten en tekst gladder, maar het kost meer tijd om anti-aliasing grafiek te maken. Als u last heeft van problemen met de prestaties, kunt u deze optie uit te schakelen.
 
- * *Auto-Create Pads:* Indien aangevinkt, de toepassing zalautomatisch soldeereilanden wanneer een component wordt toegevoegd aan de lay-out.
+ * *Automatisch-Aanmaken van Soldeer Kussens* Indien aangevinkt, de toepassing zal automatisch soldeereilanden maken wanneer een component wordt toegevoegd aan de tekening.
 
- * *Auto-Edit Mode:* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
+ * *Automatisch-Bewerken Modus* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
 
- * *Voortdurende schepping:* Indien aangevinkt, de laatstegeselecteerde component type zal actief blijven nadat u eenonderdeel, zodat u snel een groot aantal onderdelen vanhetzelfde type.
+ * *Voortdurende Schepping* wanneer aangevinkt, zal de laatst geselecteerde component soort actief blijven nadat ze geplaatst werd, zodat u snel een groot aantal onderdelen van hetzelfde type kunt plaatsen.
 
- * *Export Grid:* Indien aangevinkt, zal rasterlijnen worden geëxporteerd naar een bestand of printer.
+ * *Raster Exporteren* Indien aangevinkt, zal rasterlijnen worden geëxporteerd naar een bestand of printer.
 
- * *Hi-Quality Rendering:* Indien aangevinkt, zal de beeldkwaliteitiets te verbeteren, maar het kan de prestatie verlagen.
+ * *Hoge Kwaliteit Rendering* Indien aangevinkt, zal de beeld kwaliteit verbeteren, maar het kan de prestatie verlagen.
 
- * *Snap to Grid:* Indien aangevinkt, zal drag & drop operaties snapcontrole punten aan het net in plaats van de muiscursor pixel per pixel.
+ * *Snap to Grid* Wanneer aangevinkt, slepen & neerzetten operaties zal de controle punten in plaats uitgelijnd op het raster van het volgen van de muis cursor beeldelement voor beeldelement.
 
- * *Sticky Punten:* Indien aangevinkt, worden componententoegestaan ​​om aan elkaar plakken wanneer ze worden verplaatst. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk teschakelen voor de Sticky Point-modus. Zie Control points  voor meer info over de controle punten.
+* *Kleverig Punten* indien aangevinkt, worden componenten toegestaan om aan elkaar plakken wanneer ze worden verplaatst. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk te schakelen voor de Kleverig Punt-modus. Zie “Controle Punten” voor meer info over de controle punten.
 
- * *Thema*: laat een thema te selecteren. Thema's worden gelezenvan thema's directory onder de DIYLC map en zij omvattenachtergrondkleur en het rooster lijn kleur. U kunt uw eigenthema's door het toevoegen van een XML-bestand om thema'sdirectory. Het is het gemakkelijkst om te beginnen met een kopievan een van de bestaande bestanden.
+ * *Thema* laat een thema te selecteren. Thema's worden gelezen van thema's directory onder de DIYLC map en zij omvatten achtergrondkleur en het rooster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's directory. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
 
 ===Het toevoegen van componenten aan de tekening===
 
@@ -51,37 +51,37 @@ Deze sectie wordt uitgelegd hoe u een bestaande component toe te voegen aan het 
 
 ===Verplaatsen van componenten===
 
-De gemakkelijkste manier om een component te verplaatsen over het doek is om het te verplaatsen door erop te klikken, en het verplaatsen van de muis naar de gewenste locatie. Wanneer de aanwijzer op een component is, zal het veranderen in een hand pointer en de statusbalk de naam van de component die zal worden gesleept laten zien.
+De gemakkelijkste manier om een component te verplaatsen over het Ontwerp Oppervlak is om het te verplaatsen door te klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component zal het veranderen in een hand aanwijzer, en de status balk de naam van de component die zal worden gesleept laten zien.
 
 Merk op dat:
 
- * Als er meer dan een onderdeel is geselecteerd, worden allemaal verplaatst worden worden
+ * Als er meer dan een onderdeel is geselecteerd, worden allemaal verplaatst.
 
- * Herplaatsen van een (of meer) componenten zal bewegen / strekken alle onderdelen die vast zitten voor hen. Statusbalk informeert u welke onderdelen zullen worden getroffen.Houd Ctrl om de geselecteerde componenten los met en alleen verplaatsen.
+ * De beweging van een (of meer) componenten zal bewegen / strekken alle onderdelen die vast zitten voor hen. De statusbalk informeert u welke onderdelen zullen worden getroffen. Houd Ctrl ingedrukt om de geselecteerde componenten te scheiden, en verplaats ze alleen.
 
 ===Controle Punten===
 
 Een component kan een of meer controle punten. Controle punten hebben een tweeledig doel:
 
- * Hiermee kan het veranderen component plaatsing of het uiterlijk door het slepen van het controlepunt op het doek. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen, de component moet worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende controle-punten hebben te scheiden, en om controle over de controle-punten die worden gesleept hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn, en u allemaal selecteer, kunt u hun controle-punten op hetzelfde moment allemaal slepen.
+ * Hiermee kan het veranderen component plaatsing of het uiterlijk door het slepen van het controlepunt op het Ontwerp Oppervlak. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen, de component moet worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende controle-punten hebben te scheiden, en om controle over de controle-punten die worden gesleept hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn, en u allemaal selecteer, kunt u hun controle-punten op hetzelfde moment allemaal slepen.
 
 Merk op dat:
 
- * Statusbalk lijst ​​alle onderdelen op die worden beïnvloed door de slepen & neerzetten werking.
+ * Statusbalk lijst alle onderdelen op die worden beïnvloed door de slepen & neerzetten werking.
 
  * U kunt alleen controle punten slepen als ze groen worden. 
 
 ===Bewerken van component eigenschappen===
 
- * Dubbelklikken op een component opent de component bewerker - dialoogvenster dat lijst alle bewerkbare eigenschappen van de geselecteerde component(en). ..
+ * Dubbelklikken op een component opent de component bewerker - dialoogvenster dat lijst alle bewerkbare eigenschappen van de geselecteerde component(en).
 
- * Controle van de "standaard" selectievakje aan de rechterkant zal gebruik maken van de standaard waarde voor die eigenschap. Met andere woorden, waarin alle elementen ontstaan ​​na dat die waarde zullen erven.
+ * Controle van de "standaard" selectievakje aan de rechterkant zal gebruik maken van de standaard waarde voor die eigenschap. Met andere woorden, waarin alle elementen ontstaan na dat die waarde zullen erven.
 
- * Dozen die wijzigen maatregelen (grootte, weerstand, capaciteit, enz.) kan wiskundige uitdrukkingen als constanten nemen. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch worden geconverteerd naar decimale. Zelfs meer ingewikkelde uitdrukkingen met haakjes en 4 elementaire numerieke operatoren zijn mogelijk te maken.
+ * Gegensvelden die wijzigen maatregelen (grootte, weerstand, capaciteit, enz.) kan wiskundige uitdrukkingen als constanten nemen. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch worden geconverteerd naar decimale. Zelfs meer ingewikkelde uitdrukkingen met haakjes en 4 elementaire numerieke operatoren zijn mogelijk te maken.
 
 ===Groeperen componenten samen===
 
-Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel Draw. Het idee is om bij elkaar te houden twee of meer componenten en / verplaatsen bewerken / te verwijderen op hetzelfde moment. Om de groep componenten, selecteert u ze en drukt u op Ctrl + G (of selecteer "Group Selection" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de editor met alle onderlinge eigenschappen van de geselecteerde componenten en laat ze te bewerken op hetzelfde moment. Merk op dat, terwijl de componenten zijn gegroepeerd, kun je niet hun individuele controlepunten slepen. Tot groep opheffen de componenten, selecteert u ze en drukt u op Ctrl + U (of selecteer "Groep opheffen Selection" uit het menu).
+Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel Draw. Het idee is om bij elkaar te houden twee of meer componenten en / verplaatsen bewerken / te verwijderen op hetzelfde moment. Om de groep componenten, selecteert u ze en drukt u op Ctrl+G (of selecteer “Selectie Groeperen" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de bewerker met alle onderlinge eigenschappen van de geselecteerde componenten en laat ze te bewerken op hetzelfde moment. Merk op dat, terwijl de componenten zijn gegroepeerd, kun je niet hun individuele controlepunten slepen. Tot opheffen de groepering van de componenten, selecteert u ze en drukt u op Ctrl+U (of selecteer "Selectie Groepering Opheffen" uit het menu).
 
 Merk op dat:
 
@@ -89,14 +89,14 @@ Merk op dat:
 
 ===Het gebruiken van de statusbalk===
 
- * *Statusbalk* bevat drie verschillende functies:
+Statusbalk bevat drie verschillende functies:
 
- * *Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma.
+ * * Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma. 
 
- * *Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.)
+ * *Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.) 
 
  * *Zoomregeling* staat u toe om binnen of uit te zoomen.
 
- * *Automatisch Bijwerken* kennisgeving. Wanneer de lamp is ingeschakeld, zijn er updates beschikbaar zijn. Klik erop voor meer informatie.
+ * *Automatisch Actualiseren* kennisgeving, wanneer de lamp is ingeschakeld, zijn er updates beschikbaar zijn. Klik erop voor meer informatie.   
 
  * *Geheugenbalk* is het oranje icoontje aan de rechterkant, het toont de hoeveelheid geheugen bezet door de applicatie. Beweeg de muis over het naar meer informatie, of klik op het om te proberen terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
