@@ -1,140 +1,153 @@
 #summary Menu options in English, Dutch and German
-||English||Dutch||German||
-||User manual for non-developers||Gebruikershandleiding voor niet-ontwikkelaars||Handbuch für Nicht-Programmierer||
-||Main Menu||Hoofdmenu||Hauptmenü||
-||File||Bestand||Datei||
-||+New||Nieuw||Neu||
-||+Open||Openen||Öffnen||
-||+Save||Opslaan||Speichern||
-||+Save As||Opslaan als||Speichern unter||
-||+Export to PDF||Exporteren als PDF||Exportieren als PDF||
-||+Export to PNG||Exporteren als PNG||Exportieren als PNG||
-||+Print||Afdrukken||Drucken||
-||+Trace Mask||Spoor Masker||Leiterbahn-Maske||
-||++Export to PDF||Exporteren als PDF||Exportieren als PDF||
-||++Export to PNG||Exporteren als PNG||Exportieren als PNG||
-||++Print||Afdrukken||Drucken||
-||+Create B.O.M||Stuklijst Aanmaken||Stückliste Erstellen||
-||+Exit||Afsluiten||Beenden||
-||Edit||Bewerken||Bearbeiten||
-||+Undo||Ongedaan Maken||Rückgängig||
-||+Redo||Opniew||Wiederherstellen||
-||+Cut||Knippen||Schnitten||
-||+Copy||Kopiëren||Kopieren||
-||+Paste||Plakken||Einfűgen||
-||+Select All||Alles selecteren||Alles Wählen||
-||+Edit Selection||Selectie Bewerken||Auswahl Bearbeiten||
-||+Delete Selection||Selectie Verwijderen ||Auswahl Löschen||
-||+Group Selection||Selectie Groeperen||Auswahl Gruppieren||
-||+Ungroup Selection||Selectie Groepering Opheffen||Auswahl Gruppierung Aufheben||
-||+Send Backward||Naar achteren||Weiter Nach Hinter||
-||+Bring Forward||Naar voren||Weiter Nach Vorn||
-||+Renumber Selection||Selectie Hernummeren||Auswahl Wieder Nummerieren||
-||++X Axis First||X-as Eerst||X-Achse Zuerst||
-||++Y Axis First||Y-as Eerst||Y-Achse Zuerst||
-||+Edit Project||Project Bewerken ||Projekt Bearbeiten||
-||||||||
-||Configuration||Configuratie||Konfiguration||
-||+Anti-Aliasing||Antialiasing||Antialiasing||
-||+Auto-Create Pads||Automatisch-Aanmaken van Soldeer Kussens||Automatisches Erstellen Lötpads.||
-||Auto-Edit Mode||Automatisch-Bewerken Modus||Automatische Bearbeiten-Modus.||
-||+Continuous Creation||Voortdurende Schepping||Kontinuierliche Schöpfung.||
-||+Export Grid||Raster Exporteren ||Raster Exportieren||
-||+High-Quality Rendering||Hoge Kwaliteit Rendering||Hochwertige Rendering||
-||+Mousewheel Zoom||Muiswiel Zoom||Mausrad Zoom||
-||+Outline Mode||Schets Modus||Gliederungsmodus||
-||+Snap to Grid||Vangen aan Raster||Am Raster Vangen||
-||+Sticky Points||Kleverig Punten||Klebepunkte||
-||+Theme||Thema||Thema||
-||++Light||Licht||Hell||
-||++Dark||Donker||Dunkel||
-||++Blueprint||Blauwdruk||Entwurf||
-||Lock Layers||Laagen Vergrendelen||Laagen Sperren||
-||+Chassis ||Onderstel||Gehäuse||
-||+Board||Schakelkaart ||Leiterplatte||
-||+Trace||Spoor||Leiterbahn||
-||+Component||Component||Komponente||
-||+Text||Tekst||Text||
-||Help||Hulp||Hilfe||
-||+User Manual||Gebruikershandleiding||Handbuch||
-||+FAQ||Vaak Gestelde Vragen||Häufig Gestellte Fragen||
-||+Component API||Component API||Anwendungs-API ||
-||+Plugin API||Invoegtoepassing API||Plug-in-API||
-||+Submit a Bug||Verstuur een programmafout||Eines Fehlers Senden||
-||+Donate||Doneren||Spenden||
-||+About||Over||Űber||
-||Component Menu||Component Menu||Component-Menü||
-||Recently Used||Onlangs Gebruikte||Kürzlich Verwendet||
-||Boards||Schakelkaarten||Leiterplatten||
-||Connectivity||Connectiviteit||Konnektivität||
-||Electromechanical||Elektromechanische||Elektromechanische||
-||Miscellaneous||Diversen||Sonstiges||
-||Passive||Passief||Passiv||
-||Semiconductors||Halfgeleiders||Halbleiteren||
-||Tubes/Valves||Buizen||Elektroröhren||
-||Component Editing||Component Bewerken||Component Bearbeitung||
-||Alpha||Alpha||Alpha||
-||AWG||AWG||AWG||
-||Base||Basis||Basis||
-||Body||Lichaam||Körper||
-||Border||Grens||Rahmen||
-||Colour||Kleur||Farbe||
-||Colour Code||Kleurcode||Farbcode||
-||Diameter||Diameter||Durchmesser||
-||Display||Tonen||Anzeigen||
-||Eyelet Colour||Oogje Kleur||Öse farbe||
-||Fill||Vullen||Füllen||
-||Font||Lettertype||Schriftart||
-||Font Bold||Vet Lettertype||Fettschrift||
-||Font Italic||Cursief Lettertype||Kursiv||
-||Font Size||Tekengrootte||Schriftgröße||
-||Hole Size||Gat Maat||Lochgrösse||
-||Image||Afbeelding||Bild ||
-||Label Position||Etiket Positie||Etikettenposition||
-||Length||Lengte||Länge||
-||Lug Size||SoldeerLip Maat||Lötfahne Größe||
-||Marker||Markeer||Marker||
-||Name||Naam||Name||
-||Orientation||Oriëntatie||Orientierung||
-||Pad Colour||Kussen Kleur||Lötpad Farbe||
-||Pin Spacing||Speld Afstand||Anschlussstift Abstand||
-||Pins||Spelden||Anschlussstifte||
-||Point Count||Punt Telling||Punkte||
-||Polarised||Gepolariseerde||Polarisierte||
-||Power||Vermogen||Macht||
-||Resistance||Weerstand ||Widerstand||
-||Row Spacing||Rijen afstand||Reihenabstand||
-||Scale||Schaal||Maßstab||
-||Size||Maat||Größe||
-||Spacing||Afstand||Abstand||
-||Strip Colour||Stroop Kleur||Streife Farbe||
-||Tab||Tab||Kühlkörper||
-||Tab Border||Tab Grens||Kühlkörper-Rahmen||
-||Taper||Karakteristiek||Verjüngung||
-||Text||Tekst||Text||
-||Tick||Teek||Zecke||
-||Type||Type||Typ||
-||Value||Waarde||Wert||
-||Voltage||Spanning||Spannung||
-||Width||Breedte||Breite||
-||Messages||Berichten||Nachrichten||
-||#MB of #MB free||#MB van #MB vrij||#MB von #MB frei||
-||Auto-scroll||Automatisch Schuiven||Automatischer Bildlauf||
-||Cancel||Annuleren||Abbrechen||
-||Click to edit||Klik om te bewerken||Klicken Sie zum Bearbeiten||
-||Click to load image file||Klik op de afbeelding bestand te laden||Klicken Sie das Bild-Datei zu laden.||
-||Click to calculate selection size||Klik om de selectie grootte te berekenen||Klicken Sie um die Größe der Auswahl zu berechnen.||
-||Click to run the garbage collector||Klik om de "Garbage Collector" in werking te stellen||Klicken Sie den Garbage Collector zu Ausführen||
-||Double-click to edit text||Dubbelklik om tekst te bewerken||Doppelklicken Sie, um Text zu bearbeiten||
-||Edit Selection||Bewerk Selectie||Auswahl Bearbeiten||
-||Information||Informatie||Informationen||
-||Max #Mb is available||Max #Mb beschikbaar||Max #Mb verfügbar||
-||Message||Bericht||Nachricht||
-||No components show in Bill of Materials||Geen onderdelen om te laten zien in de stuklijst||Kein Komponenten in  Stückliste||
-||No updates available, click to check again||Geen updates beschikbaar, klik om opnieuw te controleren||Keine Updates verfügbar, klicken Sie noch einmal zu überprüfen||
-||OK||OK||OK||
-||Selection is empty||Selectie is leeg||Die Auswahl ist Leer||
-||Selection size||Selectie grootte||Berechnung der Größe der Auswahl||
-||Zoom||Zoom||Zoom||
-||Selection ? and ?.||Selectie ? en ?||Auswahl ? und ?||
-||Selection: (?) Hold CTRL and drag to unstick from ?||Selectie: (?) Houd CTRL ingedrukt en sleep, te scheiden van ?.||Auswahl: (?) Halten Sie STRG gedrückt, und ziehen Sie, um aus ? zu trennen.||
+﻿||English||Dutch||
+||User manual for non-developers||Gebruikershandleiding voor niet-ontwikkelaars||
+||Main Menu||-||
+||File||Bestand||
+||+New||Nieuw||
+||+Open||Openen||
+||+Save||Opslaan||
+||+Save As||Opslaan als||
+||+Export to PDF||Exporteren als PDF||
+||+Export to PNG||Exporteren als PNG||
+||+Print||Afdrukken||
+||+Trace Mask||Spoor Masker||
+||++Export to PDF||Exporteren als PDF||
+||++Export to PNG||Exporteren als PNG||
+||++Print||Afdrukken||
+||+Create B.O.M||Stuklijst Aanmaken||
+||+Exit||Afsluiten||
+||-||-||
+||Edit||Bewerken||
+||+Undo||Ongedaan Maken||
+||+Redo||Opniew||
+||+Cut||Knippen||
+||+Copy||Kopiëren||
+||+Paste||Plakken||
+||+Select All||Alles selecteren||
+||+Edit Selection||Selectie Bewerken||
+||+Delete Selection||Selectie Verwijderen ||
+||+Group Selection||Selectie Groeperen||
+||+Ungroup Selection||Selectie Groepering Opheffen||
+||+Send Backward||Naar achteren||
+||+Bring Forward||Naar voren||
+||+Renumber Selection||Selectie Hernummeren||
+||++X Axis First||X-as Eerst||
+||++Y Axis First||Y-as Eerst||
+||+Edit Project||Project Bewerken ||
+||-||-||
+||Configuration||Configuratie||
+||+Anti-Aliasing||Antialiasing||
+||+Auto-Create Pads||Automatisch-Aanmaken van Soldeer Kussens||
+||Auto-Edit Mode||Automatisch-Bewerken Modus||
+||+Continuous Creation||Voortdurende Schepping||
+||+Export Grid||Raster Exporteren ||
+||+High-Quality Rendering||Hoge Kwaliteit Rendering||
+||+Mousewheel Zoom||Muiswiel Zoom||
+||+Outline Mode||Schets Modus||
+||+Snap to Grid||Vangen aan Raster||
+||+Sticky Points||Kleverig Punten||
+||+Theme||Thema||
+||++Light||Licht||
+||++Dark||Donker||
+||++Blueprint||Blauwdruk||
+||-||-||
+||Lock Layers||Laagen Vergrendelen||
+||+Chassis ||Onderstel||
+||+Board||Schakelkaart ||
+||+Trace||Spoor||
+||+Component||Component||
+||+Text||Tekst||
+||-||-||
+||Help||Hulp||
+||+User Manual||Gebruikershandleiding||
+||+FAQ||Vaak Gestelde Vragen||
+||+Component API||Component API||
+||+Plugin API||Invoegtoepassing API||
+||+Submit a Bug||Verstuur een programmafout||
+||+Donate||Doneren||
+||+About||Over||
+||-||-||
+||Component Menu||-||
+||Recently Used||Onlangs Gebruikte||
+||Boards||Schakelkaarten||
+||Connectivity||Connectiviteit||
+||Electromechanical||Elektromechanische||
+||Miscellaneous||Diversen||
+||Passive||Passief||
+||Semiconductors||Halfgeleiders||
+||Tubes/Valves||Buizen||
+||-||-||
+||Component editing menus||||
+||Alpha||Alpha||
+||AWG||AWG||
+||Base||Basis||
+||Body||Lichaam||
+||Border||Grens||
+||Colour||Kleur||
+||Colour Code||Kleurcode||
+||Diameter||Diameter||
+||Display||Tonen||
+||Eyelet Colour||Oogje Kleur||
+||Fill||Vullen||
+||Font||Lettertype||
+||Font Bold||Vet Lettertype||
+||Font Italic||Cursief Lettertype||
+||Font Size||Tekengrootte||
+||Hole Size||Gat Maat||
+||Image||Afbeelding||
+||Label Position||Etiket Positie||
+||Length||Lengte||
+||Lug Size
+(size of solder tag on Potentiometer)||SoldeerLip Maat||
+||Marker
+(polarity marker on electrolytic capacitor)||Markeer||
+||Name||Naam||
+||Orientation||Oriëntatie||
+||Pad Colour||Kussen Kleur||
+||Pin Spacing||Speld Afstand||
+||Pins||Spelden||
+||Point Count
+(no of points on bendy wires and jumpers)||Punt Telling||
+||Polarised||Gepolariseerde||
+||Power||Vermogen||
+||Resistance||Weerstand ||
+||Row Spacing
+(Separation of rows of pins on IC)||Rijen afstand||
+||Scale||Schaal||
+||Size||Maat||
+||Spacing||Afstand||
+||Strip Colour||Stroop Kleur||
+||Tab 
+(heatsink tab on large transistor like TO220)
+||Tab||
+||Tab Border||Tab Grens||
+||Taper||Karakteristiek||
+||Text||Tekst||
+||Tick
+(It's on an electrolytic capacitor but doesn't appear to do anything and I don't know what it is!)||Teek||
+||Type||Type||
+||Value||Waarde||
+||Voltage||Spanning||
+||Width||Breedte||
+||||||
+||Messages||||
+||?MB of ?MB free||?MB van ?MB vrij||
+||Auto-scroll||Automatisch Schuiven||
+||Cancel||Annuleren||
+||Click to edit||Klik om te bewerken||
+||Click to load image file||Klik op de afbeelding bestand te laden||
+||Click to calculate selection size||Klik om de selectie grootte te berekenen||
+||Click to run the garbage collector||Klik om de “Garbage Collector” in werking te stellen||
+||Double-click to edit text||Dubbelklik om tekst te bewerken||
+||Edit Selection||Bewerk Selectie||
+||Information||Informatie||
+||Max ?Mb is available||Max ?Mb beschikbaar||
+||Message||Bericht||
+||No components show in Bill of Materials||Geen onderdelen om te laten zien in de stuklijst||
+||No updates available, click to check again||Geen updates beschikbaar, klik om opnieuw te controleren||
+||OK||OK||
+||Selection is empty||Selectie is leeg||
+||Selection size||Selectie grootte||
+||Zoom||Zoom||
+||Selection ? and ?.||Selectie ? en ?||
+||Selection: (?) Hold CTRL and drag to unstick from ?||Selectie: (?) Houd CTRL ingedrukt en sleep, te scheiden van ?.||
