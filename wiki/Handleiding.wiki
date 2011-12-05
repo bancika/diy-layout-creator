@@ -13,7 +13,7 @@
 Het gebruikersinterface kan in 4 belangrijke componenten worden gescheiden:
 
   # *Canvas* wordt gebruikt als WYSIWYG bewerker voor het project.
-  # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om de component die u wilt gebruiken te voegen.
+  # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om de component die u wilt gebruiken toe te voegen.
   # *Hoofdmenu* biedt bestands bewerkingen, zoals het openen, opslaan, exporteren en klembord operaties, enz. 
   # *Statusbalk* toont context verwante informatie, zoomcontrole, updateinformatie en geheugengebruik.
 
