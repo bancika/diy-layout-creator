@@ -41,13 +41,13 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
 ===Het toevoegen van componenten aan de tekening===
 
-Deze sectie wordt uitgelegd hoe u een bestaande component toe te voegen aan het project. Om te leren hoe je je eigen componenten te ontwikkelen volgen deze handleiding . Te instantiëren een component, gaat u als volgt te werk: 
+In deze sectie wordt uitgelegd hoe u een bestaande component aan het project te voegen. Om te leren hoe je je eigen componenten te ontwikkelen, volgen deze handleiding. Te instantiëren een component, gaat u als volgt te werk: 
 
- * Zoek de component in de gereedschapskist. Componenten zijn onderverdeeld in verschillende tabbladen, dus zorg ervoor dat u op zoek bent naar de juiste is.
+ * Zoek de component in de gereedschapskist. Componenten zijn in verschillende tabbladen  onderverdeeld, dus zorg ervoor dat u op zoek naar de juiste bent.
 
  * Klik op de knop die de gewenste component toont. Merk op dat de tekst in de statusbalk verandert in deze actie weer te geven.
 
- * Klik op de gewenste locatie op het canvas om de component te creëren. Sommige componenten (soldeer kussenen, spoor snijdt, enz.) zal worden gemaakt op een enkele klik, anderen (zoals weerstanden, draadbruggen, enz.) vereist twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk zal u door het proces. Onderdeel zal worden opgesteld doorzichtig tot de creatie proces is afgerond.
+ * Klik op de gewenste locatie op het canvas om de component te creëren. Sommige componenten (soldeer kussenen, spoor snijdt, enz.) zal op een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisten twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leiden u door het proces. Onderdeel zal worden doorzichtig opgesteld tot de creatie proces afgerond is.
 
 ===Verplaatsen van componenten===
 
