@@ -97,34 +97,27 @@
 ||Image||Afbeelding||
 ||Label Position||Etiket Positie||
 ||Length||Lengte||
-||Lug Size
-(size of solder tag on Potentiometer)||SoldeerLip Maat||
-||Marker
-(polarity marker on electrolytic capacitor)||Markeer||
+||Lug Size (size of solder tag on Potentiometer)||SoldeerLip Maat||
+||Marker (polarity marker on electrolytic capacitor)||Markeer||
 ||Name||Naam||
 ||Orientation||Oriëntatie||
 ||Pad Colour||Kussen Kleur||
 ||Pin Spacing||Speld Afstand||
 ||Pins||Spelden||
-||Point Count
-(no of points on bendy wires and jumpers)||Punt Telling||
+||Point Count (no of points on bendy wires and jumpers)||Punt Telling||
 ||Polarised||Gepolariseerde||
 ||Power||Vermogen||
 ||Resistance||Weerstand ||
-||Row Spacing
-(Separation of rows of pins on IC)||Rijen afstand||
+||Row Spacing (Separation of rows of pins on IC)||Rijen afstand||
 ||Scale||Schaal||
 ||Size||Maat||
 ||Spacing||Afstand||
 ||Strip Colour||Stroop Kleur||
-||Tab 
-(heatsink tab on large transistor like TO220)
-||Tab||
+||Tab (heatsink tab on large transistor like TO220)||Tab||
 ||Tab Border||Tab Grens||
 ||Taper||Karakteristiek||
 ||Text||Tekst||
-||Tick
-(It's on an electrolytic capacitor but doesn't appear to do anything and I don't know what it is!)||Teek||
+||Tick (It's on an electrolytic capacitor but doesn't appear to do anything and I don't know what it is!)||Teek||
 ||Type||Type||
 ||Value||Waarde||
 ||Voltage||Spanning||
@@ -151,3 +144,4 @@
 ||Zoom||Zoom||
 ||Selection ? and ?.||Selectie ? en ?||
 ||Selection: (?) Hold CTRL and drag to unstick from ?||Selectie: (?) Houd CTRL ingedrukt en sleep, te scheiden van ?.||
+||-||-||
