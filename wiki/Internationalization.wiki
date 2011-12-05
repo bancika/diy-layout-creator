@@ -1,4 +1,4 @@
-#summary Menu options in English, Dutch and German
+#summary Menu options in English and Dutch
 ﻿||English||Dutch||
 ||User manual for non-developers||Gebruikershandleiding voor niet-ontwikkelaars||
 ||Main Menu||-||
