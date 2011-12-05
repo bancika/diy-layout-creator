@@ -19,17 +19,17 @@ Het gebruikersinterface kan in 4 belangrijke componenten worden gescheiden:
 
 ===Configureren van de toepassing===
 
-Toepassing configuratie kan worden veranderd van Configuratie menu. Het bevat de volgende opties:
+Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de volgende opties:
 
  * *Anti-Aliasing* indien aangevinkt, zullen objecten en tekst er minder geblokt uitzien, maar het kost meer tijd om dit weer te geven. Als u last heeft van verminderde prestaties, kunt u deze optie uitschakelen.
 
- * *Automatisch-Aanmaken van Soldeer Kussens* indien aangevinkt, de toepassing zal automatisch soldeereilanden maken wanneer een component wordt toegevoegd aan de tekening.
+ * *Automatisch-Aanmaken van Soldeer Kussens* indien aangevinkt, de toepassing zal automatisch soldeereilanden maken wanneer een component wordt aan de tekening toegevoegd.
 
  * *Automatisch-Bewerken Modus* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
 
  * *Voortdurende Schepping* wanneer aangevinkt, zal de laatst geselecteerde component soort actief blijven nadat ze geplaatst werd, zodat u snel een groot aantal onderdelen van hetzelfde type kunt plaatsen.
 
- * *Raster Exporteren* Indien aangevinkt, zal rasterlijnen worden geëxporteerd naar een bestand of printer.
+ * *Raster Exporteren* Indien aangevinkt, zullen rasterlijnen naar een bestand of printer worden geëxporteerd.
 
  * *Hoge Kwaliteit Rendering* Indien aangevinkt, zal de beeld kwaliteit verbeteren, maar het kan de prestatie verlagen.
 
