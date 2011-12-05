@@ -12,7 +12,7 @@
 
 Het gebruikersinterface kan in 4 belangrijke componenten worden gescheiden:
 
-  # *Ontwerp Oppervlak* wordt gebruikt als WYSIWYG bewerker voor het project.
+  # *Canvas* wordt gebruikt als WYSIWYG bewerker voor het project.
   # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om de component dat u wilt plukken te toevoegen.
   # *Hoofdmenu* biedt bestands operaties, zoals het openen, opslaan, exporteren en klembord operaties, enz. 
   # *Statusbalk* toont context verwante informatie, zoomcontrole, updateinformatie en geheugenconsumptie.
@@ -51,7 +51,7 @@ Deze sectie wordt uitgelegd hoe u een bestaande component toe te voegen aan het 
 
 ===Verplaatsen van componenten===
 
-De gemakkelijkste manier om een component te verplaatsen over het Ontwerp Oppervlak is om het te verplaatsen door te klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component zal het veranderen in een hand aanwijzer, en de status balk de naam van de component die zal worden gesleept laten zien.
+De gemakkelijkste manier om een component te verplaatsen over het Ontwerp Canvas is om het te verplaatsen door te klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component zal het veranderen in een hand aanwijzer, en de status balk de naam van de component die zal worden gesleept laten zien.
 
 Merk op dat:
 
@@ -63,7 +63,7 @@ Merk op dat:
 
 Een component kan een of meer controle punten. Controle punten hebben een tweeledig doel:
 
- * Hiermee kan het veranderen component plaatsing of het uiterlijk door het slepen van het controlepunt op het Ontwerp Oppervlak. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen, de component moet worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende controle-punten hebben te scheiden, en om controle over de controle-punten die worden gesleept hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn, en u allemaal selecteer, kunt u hun controle-punten op hetzelfde moment allemaal slepen.
+ * Hiermee kan het veranderen component plaatsing of het uiterlijk door het slepen van het controlepunt op het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen, de component moet worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende controle-punten hebben te scheiden, en om controle over de controle-punten die worden gesleept hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn, en u allemaal selecteer, kunt u hun controle-punten op hetzelfde moment allemaal slepen.
 
 Merk op dat:
 
