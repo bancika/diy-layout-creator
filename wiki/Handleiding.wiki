@@ -63,7 +63,7 @@ Merk op dat:
 
 Een component kan een of meer Controle Punten hebben. Controle punten hebben een tweeledig doel:
 
- * Het veranderen van de positie of de uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet  de component worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende Controle Punten hebben te scheiden, en controle over de Controle Punten die moeten geseleept worden te hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn en u allemaal selecteer, kunt u hun Controle Punten op hetzelfde moment allemaal slepen.
+ * het veranderen van de positie of de uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet  de component worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende Controle Punten hebben te scheiden, en controle over de Controle Punten die moeten geseleept worden te hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn en u allemaal selecteer, kunt u hun Controle Punten op hetzelfde moment allemaal slepen.
 
 Merk op dat:
 
@@ -75,9 +75,9 @@ Merk op dat:
 
  * Dubbelklikken op een component opent de component-bewerker – een dialoogvenster dat lijst alle bewerkbare eigenschappen van de geselecteerde component(en).
 
- * Controle van de "standaard" selectievakje aan de rechterkant zal gebruik maken van de standaard waarde voor die eigenschap. Met andere woorden, waarin alle elementen ontstaan na dat die waarde zullen erven.
+ * Aanvinken van de "standaard" selectievakje aan het rechterkant, zal die waarde de standaard voor die eigenschap maken. Met andere woorden, alle Componenten die daarna worden gemaakt, die waarde zullen erven.
 
- * Gegensvelden die nemen maatregelen (grootte, weerstand, capaciteit, enz.) kunnen wiskundige uitdrukkingen als constanten nemen. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch naar decimale worden geconverteerd. Zelfs meer ingewikkelde uitdrukkingen met haakjes en 4 elementaire numerieke operatoren zijn mogelijk te maken.
+ * Gegensvelden die nemen maatregelen (grootte, weerstand, capaciteit, enz.) kunnen wiskundige uitdrukkingen als constanten nemen. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch naar decimale worden geconverteerd. Zelfs meer ingewikkelde uitdrukkingen met haakjes en vier elementaire numerieke operatoren zijn mogelijk te maken.
 
 ===Groeperen van componenten===
 
@@ -85,7 +85,7 @@ Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel 
 
 Merk op dat:
 
- * Geneste groepen worden momenteel niet ondersteund. Als u twee groepen van componenten samen groep, zult u met een grote groep in plaats van een groep die twee groepen bevat maken.
+ * Geneste groepen worden momenteel niet ondersteund. Als u twee groepen van componenten samen groep, zult u  een grote groep maken, in plaats van een groep die twee groepen bevat.
 
 ===Het gebruiken van de statusbalk===
 
