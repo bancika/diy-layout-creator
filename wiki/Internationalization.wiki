@@ -124,7 +124,7 @@
 ||Click to edit||Klik om te bewerken||Klicken Sie zum Bearbeiten||
 ||Click to load image file||Klik op de afbeelding bestand te laden||Klicken Sie das Bild-Datei zu laden.||
 ||Click to calculate selection size||Klik om de selectie grootte te berekenen||Klicken Sie um die Größe der Auswahl zu berechnen.||
-||Click to run the garbage collector||Klik om de saneerder in werking te stellen||Klicken Sie den Garbage Collector zu Ausführen||
+||Click to run the garbage collector||Klik om de "Garbage Collector" in werking te stellen||Klicken Sie den Garbage Collector zu Ausführen||
 ||Double-click to edit text||Dubbelklik om tekst te bewerken||Doppelklicken Sie, um Text zu bearbeiten||
 ||Edit Selection||Bewerk Selectie||Auswahl Bearbeiten||
 ||Information||Informatie||Informationen||
