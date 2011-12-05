@@ -13,17 +13,17 @@
 Het gebruikersinterface kan in 4 belangrijke componenten worden gescheiden:
 
   # *Canvas* wordt gebruikt als WYSIWYG bewerker voor het project.
-  # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om de component dat u wilt plukken te toevoegen.
-  # *Hoofdmenu* biedt bestands operaties, zoals het openen, opslaan, exporteren en klembord operaties, enz. 
-  # *Statusbalk* toont context verwante informatie, zoomcontrole, updateinformatie en geheugenconsumptie.
+  # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om de component die u wilt gebruiken te voegen.
+  # *Hoofdmenu* biedt bestands bewerkingen, zoals het openen, opslaan, exporteren en klembord operaties, enz. 
+  # *Statusbalk* toont context verwante informatie, zoomcontrole, updateinformatie en geheugengebruik.
 
 ===Configureren van de toepassing===
 
 Toepassing configuratie kan worden veranderd van Configuratie menu. Het bevat de volgende opties:
 
- * *Anti-Aliasing* Indien aangevinkt, zal objecten en tekst gladder, maar het kost meer tijd om anti-aliasing grafiek te maken. Als u last heeft van problemen met de prestaties, kunt u deze optie uit te schakelen.
+ * *Anti-Aliasing* indien aangevinkt, zullen objecten en tekst er minder geblokt uitzien, maar het kost meer tijd om dit weer te geven. Als u last heeft van verminderde prestaties, kunt u deze optie uitschakelen.
 
- * *Automatisch-Aanmaken van Soldeer Kussens* Indien aangevinkt, de toepassing zal automatisch soldeereilanden maken wanneer een component wordt toegevoegd aan de tekening.
+ * *Automatisch-Aanmaken van Soldeer Kussens* indien aangevinkt, de toepassing zal automatisch soldeereilanden maken wanneer een component wordt toegevoegd aan de tekening.
 
  * *Automatisch-Bewerken Modus* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
 
