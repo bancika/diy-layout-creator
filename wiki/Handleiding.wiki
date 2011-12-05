@@ -33,11 +33,11 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
  * *Hoge Kwaliteit Rendering* Indien aangevinkt, zal de beeld kwaliteit verbeteren, maar het kan de prestatie verlagen.
 
- * *Snap to Grid* Wanneer aangevinkt, slepen & neerzetten operaties zal de controle punten in plaats uitgelijnd op het raster van het volgen van de muis cursor beeldelement voor beeldelement.
+ * *Snap to Grid* Wanneer aangevinkt, slepen & neerzetten operaties vangen de controle punten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
 
-* *Kleverig Punten* indien aangevinkt, worden componenten toegestaan om aan elkaar plakken wanneer ze worden verplaatst. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk te schakelen voor de Kleverig Punt-modus. Zie “Controle Punten” voor meer info over de controle punten.
+* *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie “Controle Punten” voor meer info over de controle punten.
 
- * *Thema* laat een thema te selecteren. Thema's worden gelezen van thema's directory onder de DIYLC map en zij omvatten achtergrondkleur en het rooster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's directory. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
+ * *Thema* laat een thema te selecteren. Thema's worden van thema's map onder de DIYLC map  gelezen en zij omvatten achtergrondkleur en het rooster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's map. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
 
 ===Het toevoegen van componenten aan de tekening===
 
