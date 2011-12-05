@@ -81,7 +81,7 @@ Merk op dat:
 
 ===Groeperen van componenten===
 
-Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel Draw. Het idee is om bij elkaar te houden twee of meer componenten en / verplaatsen bewerken / te verwijderen op hetzelfde moment. Om de groep componenten, selecteert u ze en drukt u op Ctrl+G (of selecteer “Selectie Groeperen" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de bewerker met alle onderlinge eigenschappen van de geselecteerde componenten en laat ze te bewerken op hetzelfde moment. Merk op dat, terwijl de componenten zijn gegroepeerd, kun je niet hun individuele controlepunten slepen. Tot opheffen de groepering van de componenten, selecteert u ze en drukt u op Ctrl+U (of selecteer "Selectie Groepering Opheffen" uit het menu).
+Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel Draw. Het idee is om twee of meer componenten bij elkaar te houden, en hen op hetzelfde moment te verplaatsen/bewerken/verwijderen.Om componenten te groeperen, selecteert u hen en drukt u op Ctrl+G (of selecteer “Selectie Groeperen" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de bewerker met alle wederzijdse eigenschappen van de geselecteerde componenten, en maakt het bewerken van ze allemaal op hetzelfde moment mogelijk. Merk op dat, terwijl de componenten zijn gegroepeerd, kunt u niet hun individuele controlepunten slepen. Tot opheffen de groepering van de componenten, selecteert u ze en drukt u op Ctrl+U (of selecteer "Selectie Groepering Opheffen" uit het menu).
 
 Merk op dat:
 
