@@ -33,9 +33,9 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
  * *Hoge Kwaliteit Rendering* Indien aangevinkt, zal de beeld kwaliteit verbeteren, maar het kan de prestatie verlagen.
 
- * *Snap to Grid* Wanneer aangevinkt, slepen & neerzetten operaties vangen de controle punten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
+ * *Snap to Grid* Wanneer aangevinkt, slepen & neerzetten operaties vangen de Controle Punten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
 
-* *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie “Controle Punten” voor meer info over de controle punten.
+* *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie “Controle Punten” voor meer info over de Controle Punten.
 
  * *Thema* laat een thema te selecteren. Thema's worden van thema's map onder de DIYLC map  gelezen en zij omvatten achtergrondkleur en het rooster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's map. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
 
@@ -47,11 +47,11 @@ In deze sectie wordt uitgelegd hoe u een bestaande component aan het project te 
 
  * Klik op de knop die de gewenste component toont. Merk op dat de tekst in de statusbalk verandert in deze actie weer te geven.
 
- * Klik op de gewenste locatie op het canvas om de component te creëren. Sommige componenten (soldeer kussenen, spoor snijdt, enz.) zal op een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisten twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leiden u door het proces. Onderdeel zal worden doorzichtig opgesteld tot de creatie proces afgerond is.
+ * Klik op de gewenste locatie op het Canvas om de component te creëren. Sommige componenten (soldeer kussenen, spoor snijdt, enz.) zal op een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisten twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leiden u door het proces. Onderdeel zal worden doorzichtig opgesteld tot de creatie proces afgerond is.
 
 ===Verplaatsen van componenten===
 
-De gemakkelijkste manier om een component over het canvas te bewegen, is om het door te klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie te verplaatsen. Wanneer de muisaanwijzer zich boven een component vind, zal het in een hand aanwijzer veranderen, en de statusbalk de naam van de component die zal worden gesleept laten zien.
+De gemakkelijkste manier om een component over het Canvas te bewegen, is door te klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component vind, zal het in een hand aanwijzer veranderen, en de statusbalk toont de namen van de componenten die zullen worden verplaatst.
 
 Merk op dat:
 
@@ -61,15 +61,15 @@ Merk op dat:
 
 ===Controle Punten===
 
-Een component kan een of meer controle punten hebben. Controle punten hebben een tweeledig doel:
+Een component kan een of meer Controle Punten hebben. Controle punten hebben een tweeledig doel:
 
- * Hiermee kan het veranderen component plaatsing of het uiterlijk door het slepen van het controlepunt op het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen, de component moet worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende controle-punten hebben te scheiden, en om controle over de controle-punten die worden gesleept hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn, en u allemaal selecteer, kunt u hun controle-punten op hetzelfde moment allemaal slepen.
+ * Het veranderen van de positie of de uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet  de component worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende Controle Punten hebben te scheiden, en controle over de Controle Punten die moeten geseleept worden te hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn en u allemaal selecteer, kunt u hun Controle Punten op hetzelfde moment allemaal slepen.
 
 Merk op dat:
 
- * Statusbalk lijst alle onderdelen op die worden beïnvloed door de slepen & neerzetten werking.
+ * Statusbalk lijst alle componenten die worden door de slepen & neerzetten werking beïnvloed.
 
- * U kunt alleen controle punten slepen als ze groen worden. 
+ * U kunt alleen Controle Punten slepen als ze groen worden. 
 
 ===Bewerken van component eigenschappen===
 
@@ -95,7 +95,7 @@ Statusbalk bevat drie verschillende functies:
 
  * *Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.) 
 
- * *Zoomregeling* staat u toe om binnen- of uit- te zoomen.
+ * *Zoomregeling* staat u toe in- of uit- te zoomen.
 
  * *Automatisch Actualiseren* kennisgeving, wanneer de lamp ingeschakeld is, zijn er updates beschikbaar. Klik erop voor meer informatie.   
 
