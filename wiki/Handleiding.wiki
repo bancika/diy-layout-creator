@@ -51,17 +51,17 @@ In deze sectie wordt uitgelegd hoe u een bestaande component aan het project te 
 
 ===Verplaatsen van componenten===
 
-De gemakkelijkste manier om een component te verplaatsen over het Ontwerp Canvas is om het te verplaatsen door te klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component zal het veranderen in een hand aanwijzer, en de status balk de naam van de component die zal worden gesleept laten zien.
+De gemakkelijkste manier om een component over het Canvas te verplaatsen, is om het door te klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie te verplaatsen. Wanneer de muisaanwijzer zich boven een component vind, zal het in een hand aanwijzer veranderen, en de status balk de naam van de component die zal worden gesleept laten zien.
 
 Merk op dat:
 
- * Als er meer dan een onderdeel is geselecteerd, worden allemaal verplaatst.
+ * Als er meer dan een onderdeel geselecteerd is, worden allemaal verplaatst.
 
- * De beweging van een (of meer) componenten zal bewegen / strekken alle onderdelen die vast zitten voor hen. De statusbalk informeert u welke onderdelen zullen worden getroffen. Houd Ctrl ingedrukt om de geselecteerde componenten te scheiden, en verplaats ze alleen.
+ * De beweging van een (of meer) componenten zal alle onderdelen die vast zitten voor hen bewegen/strekken. De statusbalk informeert u welke onderdelen zullen worden getroffen. Houd Ctrl ingedrukt om de geselecteerde componenten te scheiden, ze alleen te verplaatsen.
 
 ===Controle Punten===
 
-Een component kan een of meer controle punten. Controle punten hebben een tweeledig doel:
+Een component kan een of meer controle punten hebben. Controle punten hebben een tweeledig doel:
 
  * Hiermee kan het veranderen component plaatsing of het uiterlijk door het slepen van het controlepunt op het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen, de component moet worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende controle-punten hebben te scheiden, en om controle over de controle-punten die worden gesleept hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn, en u allemaal selecteer, kunt u hun controle-punten op hetzelfde moment allemaal slepen.
 
@@ -73,19 +73,19 @@ Merk op dat:
 
 ===Bewerken van component eigenschappen===
 
- * Dubbelklikken op een component opent de component bewerker - dialoogvenster dat lijst alle bewerkbare eigenschappen van de geselecteerde component(en).
+ * Dubbelklikken op een component opent de component-bewerker – een dialoogvenster dat lijst alle bewerkbare eigenschappen van de geselecteerde component(en).
 
  * Controle van de "standaard" selectievakje aan de rechterkant zal gebruik maken van de standaard waarde voor die eigenschap. Met andere woorden, waarin alle elementen ontstaan na dat die waarde zullen erven.
 
  * Gegensvelden die wijzigen maatregelen (grootte, weerstand, capaciteit, enz.) kan wiskundige uitdrukkingen als constanten nemen. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch worden geconverteerd naar decimale. Zelfs meer ingewikkelde uitdrukkingen met haakjes en 4 elementaire numerieke operatoren zijn mogelijk te maken.
 
-===Groeperen componenten samen===
+===Groeperen van componenten===
 
 Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel Draw. Het idee is om bij elkaar te houden twee of meer componenten en / verplaatsen bewerken / te verwijderen op hetzelfde moment. Om de groep componenten, selecteert u ze en drukt u op Ctrl+G (of selecteer “Selectie Groeperen" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de bewerker met alle onderlinge eigenschappen van de geselecteerde componenten en laat ze te bewerken op hetzelfde moment. Merk op dat, terwijl de componenten zijn gegroepeerd, kun je niet hun individuele controlepunten slepen. Tot opheffen de groepering van de componenten, selecteert u ze en drukt u op Ctrl+U (of selecteer "Selectie Groepering Opheffen" uit het menu).
 
 Merk op dat:
 
- * Geneste groepen worden momenteel niet ondersteund. Als u groep twee groepen van componenten samen zult u eindigen met een grote groep in plaats van een groep die twee groepen bevat.
+ * Geneste groepen worden momenteel niet ondersteund. Als u twee groepen van componenten samen groep, zult u met een grote groep in plaats van een groep die twee groepen bevat maken.
 
 ===Het gebruiken van de statusbalk===
 
@@ -95,8 +95,8 @@ Statusbalk bevat drie verschillende functies:
 
  * *Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.) 
 
- * *Zoomregeling* staat u toe om binnen of uit te zoomen.
+ * *Zoomregeling* staat u toe om binnen- of uit- te zoomen.
 
- * *Automatisch Actualiseren* kennisgeving, wanneer de lamp is ingeschakeld, zijn er updates beschikbaar zijn. Klik erop voor meer informatie.   
+ * *Automatisch Actualiseren* kennisgeving, wanneer de lamp ingeschakeld is, zijn er updates beschikbaar. Klik erop voor meer informatie.   
 
- * *Geheugenbalk* is het oranje icoontje aan de rechterkant, het toont de hoeveelheid geheugen bezet door de applicatie. Beweeg de muis over het naar meer informatie, of klik op het om te proberen terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
+ * *Geheugenbalk* is het oranje icoontje aan de rechterkant. Het toont de hoeveelheid geheugen dat de applicatie aan het gebruiken is. Beweeg de muis over het naar meer informatie, of klik op het om te proberen terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
