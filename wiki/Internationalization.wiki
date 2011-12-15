@@ -1,5 +1,5 @@
 #summary Menu options in English and Dutch
-||English||Dutch||
+||English||Nederlands||
 ||User manual for non-developers||Gebruikershandleiding voor niet-ontwikkelaars||
 ||Main Menu||-||
 ||File||Bestand||
@@ -98,7 +98,7 @@
 ||Label Position||Label Positie||
 ||Length||Lengte||
 ||Lug Size||Soldeerlip Maat||
-||Marker||Merkpunt||
+||Marker||Markering||
 ||Name||Naam||
 ||Orientation||Oriëntatie||
 ||Pad Colour||Soldeer Eilandje Kleur||
@@ -112,7 +112,7 @@
 ||Scale||Schaal||
 ||Size||Maat||
 ||Spacing||Afstand||
-||Strip Colour||Stroop Kleur||
+||Strip Colour||Koperspoor Kleur||
 ||Tab ||Tab||
 ||Tab Border||Tab Grens||
 ||Taper||Karakteristiek||
