@@ -10,7 +10,7 @@
  * Op * Linux / Unix* of * Mac* is, opent u de terminal, verander de map naar diylc3 (cd '<'pad naar diylc3'>') en tikt u * ./run.sh* in.
 ===Gebruikersinterface===
 
-Het gebruikersinterface kan in 4 belangrijke componenten worden gescheiden:
+Het gebruikersinterface kan in 4 belangrijke onderdelen worden gescheiden:
 
   # *Canvas* wordt gebruikt als WYSIWYG bewerker voor het project.
   # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om de component die u wilt gebruiken toe te voegen.
@@ -23,21 +23,21 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
  * *Anti-Aliasing* indien aangevinkt, zullen objecten en tekst er minder geblokt uitzien, maar het kost meer tijd om dit weer te geven. Als u last heeft van verminderde prestaties, kunt u deze optie uitschakelen.
 
- * *Automatisch-Aanmaken van Soldeer Kussens* indien aangevinkt, de toepassing zal automatisch soldeereilanden maken wanneer een component wordt aan de tekening toegevoegd.
+ * *Automatisch Aanmaken van Soldeereilandjes* indien aangevinkt, de toepassing zal automatisch soldeereilandjes maken wanneer een component wordt aan de tekening toegevoegd.
 
- * *Automatisch-Bewerken Modus* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
+ * *Automatisch Bewerken Modus* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
 
- * *Voortdurende Schepping* wanneer aangevinkt, zal de laatst geselecteerde component soort actief blijven nadat ze geplaatst werd, zodat u snel een groot aantal onderdelen van hetzelfde type kunt plaatsen.
+ * *Doorgaan met Invoegen* wanneer aangevinkt, zal de laatst geselecteerde component-soort actief blijven nadat ze geplaatst werd, zodat u snel een groot aantal componenten van hetzelfde type kunt plaatsen.
 
  * *Raster Exporteren* Indien aangevinkt, zullen rasterlijnen naar een bestand of printer worden geëxporteerd.
 
  * *Hoge Kwaliteit Rendering* Indien aangevinkt, zal de beeld kwaliteit verbeteren, maar het kan de prestatie verlagen.
 
- * *Snap to Grid* Wanneer aangevinkt, slepen & neerzetten operaties vangen de Controle Punten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
+ * *Uitlijnen op Raster* Wanneer aangevinkt, slepen & neerzetten operaties vangen de Controle Punten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
 
 * *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie “Controle Punten” voor meer info over de Controle Punten.
 
- * *Thema* laat een thema te selecteren. Thema's worden van thema's map onder de DIYLC map  gelezen en zij omvatten achtergrondkleur en het rooster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's map. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
+ * *Thema* laat een thema te selecteren. Thema's worden van de thema's map onder de DIYLC map  gelezen en zij omvatten achtergrondkleur en het raster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's map. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
 
 ===Het toevoegen van componenten aan de tekening===
 
