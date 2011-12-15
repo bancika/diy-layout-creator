@@ -25,7 +25,7 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
  * *Automatisch Aanmaken van Soldeereilandjes* indien aangevinkt, de toepassing zal automatisch soldeereilandjes maken wanneer een component wordt aan de tekening toegevoegd.
 
- * *Automatisch Bewerken Modus* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk onderdeel is gemaakt, op dezelfde manier versie 1.x werkt.
+ * *Automatisch Bewerken Modus* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk component is gemaakt, op dezelfde manier versie 1.x werkt.
 
  * *Doorgaan met Invoegen* wanneer aangevinkt, zal de laatst geselecteerde component-soort actief blijven nadat ze geplaatst werd, zodat u snel een groot aantal componenten van hetzelfde type kunt plaatsen.
 
@@ -41,29 +41,29 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
 ===Het toevoegen van componenten aan de tekening===
 
-In deze sectie wordt uitgelegd hoe u een bestaande component aan het project te voegen. Om te leren hoe je je eigen componenten te ontwikkelen, volgen deze handleiding. Te instantiëren een component, gaat u als volgt te werk: 
+In deze sectie wordt uitgelegd, hoe u een bestaande component aan het project mag voegen Om te leren hoe u uw eigen componenten te ontwikkelen, volgen deze handleiding. Te instantiëren een component, gaat u als volgt te werk: 
 
- * Zoek de component in de gereedschapskist. Componenten zijn in verschillende tabbladen  onderverdeeld, dus zorg ervoor dat u op zoek naar de juiste bent.
+ * Zoek de component in de gereedschapskist. Componenten zijn in verschillende tabbladen onderverdeeld, dus zorgt u dat u de juiste tabblad gebruik.
 
  * Klik op de knop die de gewenste component toont. Merk op dat de tekst in de statusbalk verandert in deze actie weer te geven.
 
- * Klik op de gewenste locatie op het Canvas om de component te creëren. Sommige componenten (soldeer kussenen, spoor snijdt, enz.) zal op een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisten twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leiden u door het proces. Onderdeel zal worden doorzichtig opgesteld tot de creatie proces afgerond is.
+ * Klik op de gewenste locatie op het Canvas om de component te creëren. Sommige componenten (Soldeereilandjes, printbaan snee, enz.) zal op een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisten twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leiden u door het proces. Onderdeel zal worden doorzichtig opgesteld tot de creatie proces afgerond is.
 
 ===Verplaatsen van componenten===
 
-De gemakkelijkste manier om een component over het Canvas te bewegen, is door te klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component vind, zal het in een hand aanwijzer veranderen, en de statusbalk toont de namen van de componenten die zullen worden verplaatst.
+De gemakkelijkste manier om een component over het Canvas te bewegen, is  klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component vind, zal het in een hand aanwijzer veranderen, en de statusbalk toont de namen van de componenten die zullen worden verplaatst.
 
 Merk op dat:
 
- * Als er meer dan een onderdeel geselecteerd is, worden allemaal verplaatst.
+ * Als er meer dan een component geselecteerd is, worden allemaal verplaatst.
 
- * De beweging van een (of meer) componenten zal alle onderdelen die vast zitten voor hen bewegen/strekken. De statusbalk informeert u welke onderdelen zullen worden getroffen. Houd Ctrl ingedrukt om de geselecteerde componenten te scheiden, ze alleen te verplaatsen.
+ * De beweging van een (of meer) componenten zal alle compnenten die vast zitten voor hen bewegen/strekken. De statusbalk informeert u welke onderdelen zullen worden getroffen. Houdt u Ctrl ingedrukt om de geselecteerde componenten los te maken, en zij alleen te verplaatsen.
 
 ===Controle Punten===
 
 Een component kan een of meer Controle Punten hebben. Controle punten hebben een tweeledig doel:
 
- * het veranderen van de positie of de uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet  de component worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende Controle Punten hebben te scheiden, en controle over de Controle Punten die moeten geseleept worden te hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn en u allemaal selecteer, kunt u hun Controle Punten op hetzelfde moment allemaal slepen.
+ * het veranderen van de positie of de uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet de component worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende Controle Punten hebben te scheiden, en controle over de Controle Punten die moeten geseleept worden te hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn en u allemaal selecteer, kunt u hun Controle Punten op hetzelfde moment allemaal slepen.
 
 Merk op dat:
 
@@ -81,11 +81,12 @@ Merk op dat:
 
 ===Groeperen van componenten===
 
-Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel Draw. Het idee is om twee of meer componenten bij elkaar te houden, en hen op hetzelfde moment te verplaatsen/bewerken/verwijderen.Om componenten te groeperen, selecteert u hen en drukt u op Ctrl+G (of selecteer “Selectie Groeperen" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de bewerker met alle wederzijdse eigenschappen van de geselecteerde componenten, en maakt het bewerken van ze allemaal op hetzelfde moment mogelijk. Merk op dat, terwijl de componenten zijn gegroepeerd, kunt u niet hun individuele controlepunten slepen. Tot opheffen de groepering van de componenten, selecteert u ze en drukt u op Ctrl+U (of selecteer "Selectie Groepering Opheffen" uit het menu).
+Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel Draw. Het idee is om twee of meer componenten bij elkaar te houden, en hen op hetzelfde moment te verplaatsen/bewerken/verwijderen. Om componenten te groeperen, selecteert u hen en drukt u op Ctrl+G (of selecteer “Geselecteerde Items Groeperen" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de bewerker met alle wederzijdse eigenschappen van de geselecteerde componenten, en maakt het bewerken van ze allemaal op hetzelfde moment mogelijk. Merk op dat, terwijl de componenten zijn gegroepeerd, kunt u niet hun individuele controlepunten slepen. 
+Om de geselecteerde groep te opheffen, selecteert u ze, en drukt u op Ctrl+U (of selecteert u "Geselecteerde Groep Opheffen" uit het menu).
 
 Merk op dat:
 
- * Geneste groepen worden momenteel niet ondersteund. Als u twee groepen van componenten samen groep, zult u  een grote groep maken, in plaats van een groep die twee groepen bevat.
+ * Geneste groepen worden momenteel niet ondersteund. Als u twee groepen van componenten samen groep, zult u een grote groep maken, in plaats van een groep die twee groepen bevat.
 
 ===Het gebruiken van de statusbalk===
 
@@ -93,10 +94,10 @@ Statusbalk bevat drie verschillende functies:
 
  * * Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma. 
 
- * *Selectie Grootte* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen grootte-eenheden (in. of cm.) 
+ * *Selectie Afmetingen* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen afmeting eenheden (in. of cm.) 
 
- * *Zoomregeling* staat u toe in- of uit- te zoomen.
+  * *Zoomregeling* staat u toe om in- of uit- te zoomen.
 
- * *Automatisch Actualiseren* kennisgeving, wanneer de lamp ingeschakeld is, zijn er updates beschikbaar. Klik erop voor meer informatie.   
+ * *Automatisch Actualiseren* kennisgeving, wanneer de lamp ingeschakeld is, zijn er updates beschikbaar. Klik erop om meer informatie te krijgen.   
 
  * *Geheugenbalk* is het oranje icoontje aan de rechterkant. Het toont de geheugenverbruik. Voor het verkrijgen van meer informatie, zet de muisaanwijzer erop. Klik erop om terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
