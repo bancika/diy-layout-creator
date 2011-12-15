@@ -35,7 +35,7 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
  * *Uitlijnen op Raster* Wanneer aangevinkt, slepen & neerzetten operaties vangen de Controle Punten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
 
-* *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie “Controle Punten” voor meer info over de Controle Punten.
+ * *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie “Controle Punten” voor meer info over de Controle Punten.
 
  * *Thema* laat een thema te selecteren. Thema's worden van de thema's map onder de DIYLC map  gelezen en zij omvatten achtergrondkleur en het raster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's map. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
 
