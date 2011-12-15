@@ -1,5 +1,5 @@
 #summary Menu options in English and Dutch
-﻿||English||Dutch||
+||English||Dutch||
 ||User manual for non-developers||Gebruikershandleiding voor niet-ontwikkelaars||
 ||Main Menu||-||
 ||File||Bestand||
@@ -37,7 +37,7 @@
 ||-||-||
 ||Configuration||Configuratie||
 ||+Anti-Aliasing||Antialiasing||
-||+Auto-Create Pads||Automatisch-Aanmaken van Soldeer Kussens||
+||+Auto-Create Pads||Automatisch-Aanmaken van Soldeer Eilandjes||
 ||Auto-Edit Mode||Automatisch-Bewerken Modus||
 ||+Continuous Creation||Voortdurende Schepping||
 ||+Export Grid||Raster Exporteren ||
@@ -51,16 +51,16 @@
 ||++Dark||Donker||
 ||++Blueprint||Blauwdruk||
 ||-||-||
-||Lock Layers||Laagen Vergrendelen||
-||+Chassis ||Onderstel||
-||+Board||Schakelkaart ||
+||Lock Layers||Lagen Vergrendelen||
+||+Chassis ||Chassis||
+||+Board||Printplaat||
 ||+Trace||Spoor||
 ||+Component||Component||
 ||+Text||Tekst||
 ||-||-||
 ||Help||Hulp||
 ||+User Manual||Gebruikershandleiding||
-||+FAQ||Vaak Gestelde Vragen||
+||+FAQ||Veel Gestelde Vragen||
 ||+Component API||Component API||
 ||+Plugin API||Invoegtoepassing API||
 ||+Submit a Bug||Verstuur een programmafout||
@@ -69,7 +69,7 @@
 ||-||-||
 ||Component Menu||-||
 ||Recently Used||Onlangs Gebruikte||
-||Boards||Schakelkaarten||
+||Boards||Printplaaten||
 ||Connectivity||Connectiviteit||
 ||Electromechanical||Elektromechanische||
 ||Miscellaneous||Diversen||
@@ -77,7 +77,7 @@
 ||Semiconductors||Halfgeleiders||
 ||Tubes/Valves||Buizen||
 ||-||-||
-||Component editing menus||||
+||Component editing menus||-||
 ||Alpha||Alpha||
 ||AWG||AWG||
 ||Base||Basis||
@@ -95,41 +95,41 @@
 ||Font Size||Tekengrootte||
 ||Hole Size||Gat Maat||
 ||Image||Afbeelding||
-||Label Position||Etiket Positie||
+||Label Position||Label Positie||
 ||Length||Lengte||
-||Lug Size (size of solder tag on Potentiometer)||SoldeerLip Maat||
-||Marker (polarity marker on electrolytic capacitor)||Markeer||
+||Lug Size||Soldeerlip Maat||
+||Marker||Merkpunt||
 ||Name||Naam||
 ||Orientation||Oriëntatie||
-||Pad Colour||Kussen Kleur||
-||Pin Spacing||Speld Afstand||
-||Pins||Spelden||
-||Point Count (no of points on bendy wires and jumpers)||Punt Telling||
+||Pad Colour||Soldeer Eilandje Kleur||
+||Pin Spacing||Pin Afstand||
+||Pins||Pinnen||
+||Point Count||Punten Aantal||
 ||Polarised||Gepolariseerde||
 ||Power||Vermogen||
 ||Resistance||Weerstand ||
-||Row Spacing (Separation of rows of pins on IC)||Rijen afstand||
+||Row Spacing||Rijen afstand||
 ||Scale||Schaal||
 ||Size||Maat||
 ||Spacing||Afstand||
 ||Strip Colour||Stroop Kleur||
-||Tab (heatsink tab on large transistor like TO220)||Tab||
+||Tab ||Tab||
 ||Tab Border||Tab Grens||
 ||Taper||Karakteristiek||
 ||Text||Tekst||
-||Tick (It's on an electrolytic capacitor but doesn't appear to do anything and I don't know what it is!)||Teek||
+||Tick||Teek||
 ||Type||Type||
 ||Value||Waarde||
 ||Voltage||Spanning||
 ||Width||Breedte||
-||||||
-||Messages||||
+||-||-||
+||Messages||-||
 ||?MB of ?MB free||?MB van ?MB vrij||
-||Auto-scroll||Automatisch Schuiven||
+||Auto-scroll||Auto-scroll||
 ||Cancel||Annuleren||
 ||Click to edit||Klik om te bewerken||
-||Click to load image file||Klik op de afbeelding bestand te laden||
-||Click to calculate selection size||Klik om de selectie grootte te berekenen||
+||Click to load image file||Klik op afbeelding te laden||
+||Click to calculate selection size||Klik om de selectie afmetingen te berekenen||
 ||Click to run the garbage collector||Klik om de “Garbage Collector” in werking te stellen||
 ||Double-click to edit text||Dubbelklik om tekst te bewerken||
 ||Edit Selection||Bewerk Selectie||
@@ -140,8 +140,7 @@
 ||No updates available, click to check again||Geen updates beschikbaar, klik om opnieuw te controleren||
 ||OK||OK||
 ||Selection is empty||Selectie is leeg||
-||Selection size||Selectie grootte||
+||Selection size||Selectie afmetingen||
 ||Zoom||Zoom||
 ||Selection ? and ?.||Selectie ? en ?||
 ||Selection: (?) Hold CTRL and drag to unstick from ?||Selectie: (?) Houd CTRL ingedrukt en sleep, te scheiden van ?.||
-||-||-||
