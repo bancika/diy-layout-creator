@@ -1,7 +1,7 @@
 #summary Menu options in English and Dutch
 ||English||Nederlands||
 ||User manual for non-developers||Gebruikershandleiding voor niet-ontwikkelaars||
-||Main Menu||-||
+||Main Menu||Hoofdmenu||
 ||File||Bestand||
 ||+New||Nieuw||
 ||+Open||Openen||
@@ -10,7 +10,7 @@
 ||+Export to PDF||Exporteren als PDF||
 ||+Export to PNG||Exporteren als PNG||
 ||+Print||Afdrukken||
-||+Trace Mask||Spoor Masker||
+||+Trace Mask||Sporenmasker||
 ||++Export to PDF||Exporteren als PDF||
 ||++Export to PNG||Exporteren als PNG||
 ||++Print||Afdrukken||
@@ -19,15 +19,15 @@
 ||-||-||
 ||Edit||Bewerken||
 ||+Undo||Ongedaan Maken||
-||+Redo||Opniew||
+||+Redo||Opniew Uitvoeren||
 ||+Cut||Knippen||
 ||+Copy||Kopiëren||
 ||+Paste||Plakken||
 ||+Select All||Alles selecteren||
 ||+Edit Selection||Selectie Bewerken||
 ||+Delete Selection||Selectie Verwijderen ||
-||+Group Selection||Selectie Groeperen||
-||+Ungroup Selection||Selectie Groepering Opheffen||
+||+Group Selection||Geselecteerde Items Groeperen||
+||+Ungroup Selection||Geselecteerde Groep Opheffen||
 ||+Send Backward||Naar achteren||
 ||+Bring Forward||Naar voren||
 ||+Renumber Selection||Selectie Hernummeren||
@@ -37,14 +37,14 @@
 ||-||-||
 ||Configuration||Configuratie||
 ||+Anti-Aliasing||Antialiasing||
-||+Auto-Create Pads||Automatisch-Aanmaken van Soldeer Eilandjes||
+||+Auto-Create Pads||Automatisch Aanmaken van Soldeereilandjes||
 ||Auto-Edit Mode||Automatisch-Bewerken Modus||
-||+Continuous Creation||Voortdurende Schepping||
+||+Continuous Creation||Doorgaan met Invoegen||
 ||+Export Grid||Raster Exporteren ||
 ||+High-Quality Rendering||Hoge Kwaliteit Rendering||
 ||+Mousewheel Zoom||Muiswiel Zoom||
-||+Outline Mode||Schets Modus||
-||+Snap to Grid||Vangen aan Raster||
+||+Outline Mode||Omtrek Modus||
+||+Snap to Grid||Uitlijnen op Raster||
 ||+Sticky Points||Kleverig Punten||
 ||+Theme||Thema||
 ||++Light||Licht||
@@ -63,37 +63,37 @@
 ||+FAQ||Veel Gestelde Vragen||
 ||+Component API||Component API||
 ||+Plugin API||Invoegtoepassing API||
-||+Submit a Bug||Verstuur een programmafout||
+||+Submit a Bug||Bug Rapporteren||
 ||+Donate||Doneren||
 ||+About||Over||
 ||-||-||
-||Component Menu||-||
+||Component Menu||Componenten Menu||
 ||Recently Used||Onlangs Gebruikte||
-||Boards||Printplaaten||
+||Boards||Printplaten||
 ||Connectivity||Connectiviteit||
-||Electromechanical||Elektromechanische||
+||Electromechanical||Elektromechanisch||
 ||Miscellaneous||Diversen||
 ||Passive||Passief||
 ||Semiconductors||Halfgeleiders||
 ||Tubes/Valves||Buizen||
 ||-||-||
-||Component editing menus||-||
+||Component editing menus||Componenten Bewerken Menu||
 ||Alpha||Alpha||
 ||AWG||AWG||
 ||Base||Basis||
 ||Body||Lichaam||
-||Border||Grens||
+||Border||Rand||
 ||Colour||Kleur||
 ||Colour Code||Kleurcode||
 ||Diameter||Diameter||
 ||Display||Tonen||
-||Eyelet Colour||Oogje Kleur||
+||Eyelet Colour||Ring Kleur||
 ||Fill||Vullen||
 ||Font||Lettertype||
 ||Font Bold||Vet Lettertype||
 ||Font Italic||Cursief Lettertype||
 ||Font Size||Tekengrootte||
-||Hole Size||Gat Maat||
+||Hole Size||Gat Diameter||
 ||Image||Afbeelding||
 ||Label Position||Label Positie||
 ||Length||Lengte||
@@ -101,20 +101,20 @@
 ||Marker||Markering||
 ||Name||Naam||
 ||Orientation||Oriëntatie||
-||Pad Colour||Soldeer Eilandje Kleur||
-||Pin Spacing||Pin Afstand||
-||Pins||Pinnen||
+||Pad Colour||Soldeereilandje Kleur||
+||Pin Spacing||Ruimte Tussen Pennen||
+||Pins||Pennen||
 ||Point Count||Punten Aantal||
-||Polarised||Gepolariseerde||
+||Polarised||Gepolariseerd||
 ||Power||Vermogen||
 ||Resistance||Weerstand ||
-||Row Spacing||Rijen afstand||
+||Row Spacing||Rij Afstand||
 ||Scale||Schaal||
 ||Size||Maat||
-||Spacing||Afstand||
-||Strip Colour||Koperspoor Kleur||
+||Spacing||Tussenruimte||
+||Strip Colour||Kleur Printbaan||
 ||Tab ||Tab||
-||Tab Border||Tab Grens||
+||Tab Border||Tab Rand||
 ||Taper||Karakteristiek||
 ||Text||Tekst||
 ||Tick||Teek||
@@ -122,13 +122,13 @@
 ||Value||Waarde||
 ||Voltage||Spanning||
 ||Width||Breedte||
-||-||-||
-||Messages||-||
+||||||
+||Messages||Berichten||
 ||?MB of ?MB free||?MB van ?MB vrij||
 ||Auto-scroll||Auto-scroll||
 ||Cancel||Annuleren||
 ||Click to edit||Klik om te bewerken||
-||Click to load image file||Klik op afbeelding te laden||
+||Click to load image file||Klik om afbeelding te laden||
 ||Click to calculate selection size||Klik om de selectie afmetingen te berekenen||
 ||Click to run the garbage collector||Klik om de “Garbage Collector” in werking te stellen||
 ||Double-click to edit text||Dubbelklik om tekst te bewerken||
@@ -143,4 +143,4 @@
 ||Selection size||Selectie afmetingen||
 ||Zoom||Zoom||
 ||Selection ? and ?.||Selectie ? en ?||
-||Selection: (?) Hold CTRL and drag to unstick from ?||Selectie: (?) Houd CTRL ingedrukt en sleep, te scheiden van ?.||
+||Selection: (?) Hold CTRL and drag to unstick from ?||Selectie: (?) Houd CTRL ingedrukt en sleep, om los te maken van ?.||
