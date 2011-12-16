@@ -6,26 +6,26 @@
  * 10 MB beschikbare schijfruimte
  * Zip hulpprogramma om het archief uit te pakken(7-zip, WinZip, Total Commander, enz.) 
 ===Het uitvoeren van de toepassing===
- * Op Windows uitvoert u gewoon het programma de diylc.exe.
- * Op * Linux / Unix* of * Mac* is, opent u de terminal, verander de map naar diylc3 (cd '<'pad naar diylc3'>') en tikt u * ./run.sh* in.
+ * Onder Windows voert u gewoon het programma de diylc.exe uit.
+ * Onder * Linux / Unix* of * Mac*, opent u de terminal, verander de map naar diylc3 (cd '<'pad naar diylc3'>') en tikt u * ./run.sh* in.
 ===Gebruikersinterface===
 
-Het gebruikersinterface kan in 4 belangrijke onderdelen worden gescheiden:
+Het gebruikersinterface kan in 4 belangrijke onderdelen worden ondergedeeld:
 
   # *Canvas* wordt gebruikt als WYSIWYG bewerker voor het project.
-  # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om de component die u wilt gebruiken toe te voegen.
+  # *Gereedschapskist* geeft en lijst van alle beschikbare componenten en staat u toe om het component die u wilt gebruiken toe te voegen.
   # *Hoofdmenu* biedt bestands bewerkingen, zoals het openen, opslaan, exporteren en klembord operaties, enz. 
   # *Statusbalk* toont context verwante informatie, zoomcontrole, updateinformatie en geheugengebruik.
 
 ===Configureren van de toepassing===
 
-Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de volgende opties:
+De applicatie kan vanuit dit menu worden geconfigureerd. Het bevat de volgende opties:
 
  * *Anti-Aliasing* indien aangevinkt, zullen objecten en tekst er minder geblokt uitzien, maar het kost meer tijd om dit weer te geven. Als u last heeft van verminderde prestaties, kunt u deze optie uitschakelen.
 
- * *Automatisch Aanmaken van Soldeereilandjes* indien aangevinkt, de toepassing zal automatisch soldeereilandjes maken wanneer een component wordt aan de tekening toegevoegd.
+ * *Automatisch Aanmaken van Soldeereilandjes* indien aangevinkt, de toepassing zal automatisch soldeereilandjes maken wanneer een component aan de tekening wordt  toegevoegd.
 
- * *Automatisch Bewerken Modus* Indien aangevinkt, de component te bewerkendialoogvenster verschijnt nadat elk component is gemaakt, op dezelfde manier versie 1.x werkt.
+ * *Automatisch Bewerken Modus* Indien aangevinkt, verschijnt het component bewerkenings dialoogvenster nadat elk component is gemaakt, op dezelfde manier versie werkt 1.x.
 
  * *Doorgaan met Invoegen* wanneer aangevinkt, zal de laatst geselecteerde component-soort actief blijven nadat ze geplaatst werd, zodat u snel een groot aantal componenten van hetzelfde type kunt plaatsen.
 
@@ -33,71 +33,71 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
  * *Hoge Kwaliteit Rendering* Indien aangevinkt, zal de beeld kwaliteit verbeteren, maar het kan de prestatie verlagen.
 
- * *Uitlijnen op Raster* Wanneer aangevinkt, slepen & neerzetten operaties vangen de Controlepunten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
+ * *Uitlijnen op Raster* Wanneer aangevinkt, gebruiken “slepen & neerzetten” operaties de Controlepunten op het raster als ankerpunt, in plaats vandat ze de muis cursor beeldelement voor beeldelement volgen.
 
- * *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie "Controlepunten” voor meer info over de Controlepunten.
+ * *Kleverig Punten* indien aangevinkt, blijven componenten aan elkaar plakken wanneer ze verplaatst worden. Houdt u de Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus in of uit te schakelen. Zie "Controlepunten” voor meer info over de Controlepunten.
 
- * *Thema* laat een thema te selecteren. Thema's worden van de thema's map onder de DIYLC map  gelezen en zij omvatten achtergrondkleur en het raster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's map. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
+ * *Thema* laat u een thema selecteren. Thema's worden van de thema's map in de DIYLC map gelezen. Zij omvatten achtergrondkleur en de raster lijn kleur. U kunt uw eigen thema's toevoegen in de vorm van een XML-bestand in de thema's map. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
 
 ===Het toevoegen van componenten aan de tekening===
 
-In deze sectie wordt uitgelegd, hoe u een bestaande component aan het project mag voegen. Om te leren hoe u uw eigen componenten mag ontwikkelen, volgt u  dit handleiding. Om een component te creëren, gaat u als volgt te werk: 
+In deze sectie wordt uitgelegd, hoe u een bestaande component aan het project mag voegen. Om te leren hoe u uw eigen componenten mag ontwikkelen, volgt u deze handleiding. Om een component te creëren, gaat u als volgt te werk: 
 
- * Zoek de component in de gereedschapskist. Componenten zijn in verschillende tabbladen onderverdeeld, dus zorgt u dat u de juiste tabblad gebruik.
+ * Zoek het component in de gereedschapskist. Componenten zijn in verschillende tabbladen onderverdeeld, dus zorg u dat u het juiste tabblad gebruikt.
 
- * Klik op de knop dat de gewenste component toont. Merk op dat de tekst in de statusbalk verklaart wat nu te doen.
+ * Klik op de knop dat het gewenste component toont. Merk op dat de tekst in de statusbalk verklaart wat nu te doen.
 
- * Klik op de gewenste locatie op het Canvas om de component te creëren. Sommige componenten (Soldeereilandjes, printbaan snee, enz.) zal op een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisten twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leiden u door het proces. De component zal doorzichtig worden, totdat de creatie proces voltooid is.
+ * Klik op de gewenste locatie op het Canvas om het component te creëren. Sommige componenten (Soldeereilandjes, printbaan snee, enz.) zullen met een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisen twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leid u door het proces. Het component zal doorzichtig worden, totdat het creatie proces is voltooid.
 
 ===Verplaatsen van componenten===
 
-De gemakkelijkste manier om een component te verplaatsen, is door klikken & slepen naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component vind, zal het in een hand aanwijzer veranderen, en de statusbalk toont de namen van de componenten die zullen worden verplaatst.
+De gemakkelijkste manier om een component te verplaatsen, is door klikken & slepen naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component vindt, zal hij in een hand aanwijzer veranderen, en de statusbalk toont de namen van de componenten die zullen worden verplaatst.
 
 Merk op dat:
 
- * Als er meer dan een component geselecteerd is, worden allemaal verplaatst.
+ * Als er meer dan een component geselecteerd is, worden ze allemaal verplaatst.
 
- * De beweging van een (of meer) componenten zal alle compnenten die vast zitten voor hen bewegen/strekken. De statusbalk informeert u welke onderdelen zullen worden getroffen. Houdt u Ctrl ingedrukt om de geselecteerde componenten los te maken, en zij alleen te verplaatsen.
+ * De beweging van een (of meer) componenten zal alle compnenten die vast zitten samen bewegen/uitstrekken. De statusbalk informeert u welke onderdelen het betreft. Houdt u Ctrl ingedrukt om de geselecteerde componenten los te maken, en hen individueel te verplaatsen.
 
 ===Controlepunten===
 
 Een component kan een of meer Controlepunten hebben. Controlepuntem hebben een tweeledig doel:
 
- * Het veranderen van de positie of de uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet de component worden geselecteerd.  Dit maakt het makkelijker twee componenten die overlappende Controlepunten hebben los te maken, en te hebben controle over de Controlepunten die moeten worden gesleept. Dit werkt ook wanneer meerdere componenten worden geselecteerd. Indien twee of meerdere componenten vast aan elkaar zijn en u allemaal selecteer, kunt u hun Controlepunten op hetzelfde moment allemaal slepen.
+ * Het veranderen van de positie of het uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet het component worden geselecteerd.  Dit maakt het makkelijker twee componenten die overlappende Controlepunten hebben los te maken, en controle te hebben over de Controlepunten die moeten worden gesleept. Dit werkt ook wanneer meerdere componenten worden geselecteerd. Indien twee of meerdere componenten vast aan elkaar zitten en u hen allemaal selecteert, kunt u hun Controlepunten op het zelfde moment allemaal tegelijks slepen.
 
 Merk op dat:
 
- * Statusbalk lijst alle componenten die worden door de slepen & neerzetten werking beïnvloed.
+ * Statusbalk geeft alle componenten die door slepen & neerzetten worden beïnvloed.
 
  * U kunt alleen Controlepunten slepen als ze groen worden. 
 
 ===Bewerken van component eigenschappen===
 
- * Dubbelklikken op een component opent de component-bewerker – een dialoogvenster dat lijst alle bewerkbare eigenschappen van de geselecteerde component(en).
+ * Dubbelklikken op een component opent de component-bewerker – een dialoogvenster dat alle bewerkbare eigenschappen van de geselecteerde component(en) geeft.
 
- * Aanvinken van de "standaard" selectievakje aan het rechterkant, zal die waarde de standaard voor die eigenschap maken. Met andere woorden, alle Componenten die daarna worden gemaakt, die waarde zullen erven.
+ * Aanvinken van het "standaard" selectievakje aan de rechterkant, zal die waarde de standaard voor die eigenschap maken. Met andere woorden, alle Componenten die daarna worden gemaakt, zullen die waarde erven.
 
- * Gegensvelden die nemen maatregelen (grootte, weerstand, capaciteit, enz.) kunnen wiskundige uitdrukkingen als constanten nemen. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch naar decimale worden geconverteerd. Zelfs meer ingewikkelde uitdrukkingen met haakjes en vier elementaire numerieke operatoren zijn mogelijk te maken.
+ * Gegensvelden die maatregelen eigenschappen vragen (grootte, weerstand, capaciteit, enz.) accepteren ook wiskundige uitdrukkingen als constanten. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch naar decimale worden geconverteerd. Zelfs meer ingewikkelde uitdrukkingen met haakjes en vier elementaire numerieke operatoren zijn mogelijk te maken.
 
 ===Groeperen van componenten===
 
-Component groepen gedragen zich op een vergelijkbare manier om groepen in Corel Draw. Het idee is om twee of meer componenten bij elkaar te houden, en hen op hetzelfde moment te verplaatsen/bewerken/verwijderen. Om componenten te groeperen, selecteert u hen en drukt u op Ctrl+G (of selecteer “Geselecteerde Items Groeperen" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de bewerker met alle wederzijdse eigenschappen van de geselecteerde componenten, en maakt het bewerken van ze allemaal op hetzelfde moment mogelijk. Merk op dat, terwijl de componenten zijn gegroepeerd, kunt u niet hun individuele controlepunten slepen. 
-Om de geselecteerde groep te opheffen, selecteert u ze, en drukt u op Ctrl+U (of selecteert u "Geselecteerde Groep Opheffen" uit het menu).
+Component groepen gedragen zich op een vergelijkbare manier als groepen in Corel Draw. Het idee is om twee of meer componenten bij elkaar te houden, en hen op hetzelfde moment te verplaatsen/bewerken/verwijderen. Om componenten te groeperen, selecteert u hen en drukt u op Ctrl+G (of selecteer “Geselecteerde Items Groeperen" uit het menu). Dubbelklikken op een van de gegroepeerde componenten opent de bewerker met alle wederzijdse eigenschappen van de geselecteerde componenten, en maakt het bewerken van ze allemaal op hetzelfde moment mogelijk. Merk op dat, terwijl de componenten zijn gegroepeerd, u niet hun individuele controlepunten kunt slepen. 
+Om de geselecteerde groep op te opheffen, selecteert u ze, en drukt u op Ctrl+U (of selecteert u "Geselecteerde Groep Opheffen" uit het menu).
 
 Merk op dat:
 
- * Geneste groepen worden momenteel niet ondersteund. Als u twee groepen van componenten samen groep, zult u een grote groep maken, in plaats van een groep die twee groepen bevat.
+ * Geneste groepen worden momenteel niet ondersteund. Als u twee groepen van componenten samen groept, zult u een grote groep maken, in plaats van een groep die twee groepen bevat.
 
 ===Het gebruiken van de statusbalk===
 
 Statusbalk bevat drie verschillende functies:
 
- * * Informatiebalk* toont context gerelateerde informatie en begeleiding via de toepassingsprogramma. 
+ * * Informatiebalk* toont context gerelateerde informatie en begeleiding via  het toepassingsprogramma. 
 
- * *Selectie Afmetingen* toont de afmetingen van de minimale begrenzende rechthoek dat alle geselecteerde componenten bevat. Het maakt gebruik van de gekozen afmeting eenheden (in. of cm.) 
+ * *Selectie Afmetingen* toont de afmetingen van de minimale begrenzende rechthoek die alle geselecteerde componenten bevat. Het maakt gebruik van de standaard meeteenheid (in. of cm.)
 
   * *Zoomregeling* staat u toe om in- of uit- te zoomen.
 
  * *Automatisch Actualiseren* kennisgeving, wanneer de lamp ingeschakeld is, zijn er updates beschikbaar. Klik erop om meer informatie te krijgen.   
 
- * *Geheugenbalk* is het oranje icoontje aan de rechterkant. Het toont de geheugenverbruik. Voor het verkrijgen van meer informatie, zet de muisaanwijzer erop. Klik erop om terug te winnen zoveel geheugen als mogelijk. Kleur rood als het geheugen verbruik hoog is. 
+ * *Geheugenbalk* is het oranje icoontje aan de rechterkant. Het toont de geheugen gebruik. Om meer informatie te verkrijgen, zet u de muisaanwijzer erop. Klik erop om zoveel mogelijk geheugen vrij te maken. De kleur is rood als het geheugen verbruik hoog is. 
