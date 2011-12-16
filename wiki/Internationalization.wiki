@@ -43,7 +43,7 @@
 ||+Export Grid||Raster Exporteren ||
 ||+High-Quality Rendering||Hoge Kwaliteit Rendering||
 ||+Mousewheel Zoom||Muiswiel Zoom||
-||+Outline Mode||Omtrek Modus||
+||+Outline Mode||Omtrekmodus||
 ||+Snap to Grid||Uitlijnen op Raster||
 ||+Sticky Points||Kleverig Punten||
 ||+Theme||Thema||
@@ -67,7 +67,7 @@
 ||+Donate||Doneren||
 ||+About||Over||
 ||-||-||
-||Component Menu||Componenten Menu||
+||Component Menu||Componentenmenu||
 ||Recently Used||Onlangs Gebruikte||
 ||Boards||Printplaten||
 ||Connectivity||Connectiviteit||
@@ -95,10 +95,10 @@
 ||Font Size||Tekengrootte||
 ||Hole Size||Gat Diameter||
 ||Image||Afbeelding||
-||Label Position||Label Positie||
+||Label Position||Labelpositie||
 ||Length||Lengte||
 ||Lug Size||Soldeerlip Maat||
-||Marker||Markering||
+||Marker||Merkering||
 ||Name||Naam||
 ||Orientation||Oriëntatie||
 ||Pad Colour||Soldeereilandje Kleur||
@@ -108,12 +108,12 @@
 ||Polarised||Gepolariseerd||
 ||Power||Vermogen||
 ||Resistance||Weerstand ||
-||Row Spacing||Rij Afstand||
+||Row Spacing||Tussenruimte Rijen||
 ||Scale||Schaal||
 ||Size||Maat||
 ||Spacing||Tussenruimte||
 ||Strip Colour||Kleur Printbaan||
-||Tab ||Tab||
+||Tab||Tab||
 ||Tab Border||Tab Rand||
 ||Taper||Karakteristiek||
 ||Text||Tekst||
