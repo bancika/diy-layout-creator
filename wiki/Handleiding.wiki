@@ -33,25 +33,25 @@ Toepassing configuratie kan van Configuratie menu worden veranderd. Het bevat de
 
  * *Hoge Kwaliteit Rendering* Indien aangevinkt, zal de beeld kwaliteit verbeteren, maar het kan de prestatie verlagen.
 
- * *Uitlijnen op Raster* Wanneer aangevinkt, slepen & neerzetten operaties vangen de Controle Punten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
+ * *Uitlijnen op Raster* Wanneer aangevinkt, slepen & neerzetten operaties vangen de Controlepunten op het raster, in plaats van het volgen van de muis cursor beeldelement voor beeldelement.
 
- * *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie “Controle Punten” voor meer info over de Controle Punten.
+ * *Kleverig Punten* indien aangevinkt, worden componenten aan elkaar plakken wanneer ze verplaatst worden. Houd Ctrl-toets ingedrukt terwijl u sleept om tijdelijk de Kleverig Punt-modus te schakelen. Zie "Controlepunten” voor meer info over de Controlepunten.
 
  * *Thema* laat een thema te selecteren. Thema's worden van de thema's map onder de DIYLC map  gelezen en zij omvatten achtergrondkleur en het raster lijn kleur. U kunt uw eigen thema's door het toevoegen van een XML-bestand om thema's map. Het is het gemakkelijkst om te beginnen met een kopie van een van de bestaande bestanden.
 
 ===Het toevoegen van componenten aan de tekening===
 
-In deze sectie wordt uitgelegd, hoe u een bestaande component aan het project mag voegen Om te leren hoe u uw eigen componenten te ontwikkelen, volgen deze handleiding. Te instantiëren een component, gaat u als volgt te werk: 
+In deze sectie wordt uitgelegd, hoe u een bestaande component aan het project mag voegen. Om te leren hoe u uw eigen componenten mag ontwikkelen, volgt u  dit handleiding. Om een component te creëren, gaat u als volgt te werk: 
 
  * Zoek de component in de gereedschapskist. Componenten zijn in verschillende tabbladen onderverdeeld, dus zorgt u dat u de juiste tabblad gebruik.
 
- * Klik op de knop die de gewenste component toont. Merk op dat de tekst in de statusbalk verandert in deze actie weer te geven.
+ * Klik op de knop dat de gewenste component toont. Merk op dat de tekst in de statusbalk verklaart wat nu te doen.
 
- * Klik op de gewenste locatie op het Canvas om de component te creëren. Sommige componenten (Soldeereilandjes, printbaan snee, enz.) zal op een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisten twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leiden u door het proces. Onderdeel zal worden doorzichtig opgesteld tot de creatie proces afgerond is.
+ * Klik op de gewenste locatie op het Canvas om de component te creëren. Sommige componenten (Soldeereilandjes, printbaan snee, enz.) zal op een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisten twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leiden u door het proces. De component zal doorzichtig worden, totdat de creatie proces voltooid is.
 
 ===Verplaatsen van componenten===
 
-De gemakkelijkste manier om een component over het Canvas te bewegen, is  klikken op zijn lichaam en het bewegen van de muis naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component vind, zal het in een hand aanwijzer veranderen, en de statusbalk toont de namen van de componenten die zullen worden verplaatst.
+De gemakkelijkste manier om een component te verplaatsen, is door klikken & slepen naar de gewenste locatie. Wanneer de muisaanwijzer zich boven een component vind, zal het in een hand aanwijzer veranderen, en de statusbalk toont de namen van de componenten die zullen worden verplaatst.
 
 Merk op dat:
 
@@ -59,17 +59,17 @@ Merk op dat:
 
  * De beweging van een (of meer) componenten zal alle compnenten die vast zitten voor hen bewegen/strekken. De statusbalk informeert u welke onderdelen zullen worden getroffen. Houdt u Ctrl ingedrukt om de geselecteerde componenten los te maken, en zij alleen te verplaatsen.
 
-===Controle Punten===
+===Controlepunten===
 
-Een component kan een of meer Controle Punten hebben. Controle punten hebben een tweeledig doel:
+Een component kan een of meer Controlepunten hebben. Controlepuntem hebben een tweeledig doel:
 
- * het veranderen van de positie of de uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet de component worden geselecteerd, dit maakt het makkelijker twee componenten die overlappende Controle Punten hebben te scheiden, en controle over de Controle Punten die moeten geseleept worden te hebben. Dit werkt ook met meervoudige selectie. Indien twee of meerdere componenten vast aan elkaar zijn en u allemaal selecteer, kunt u hun Controle Punten op hetzelfde moment allemaal slepen.
+ * Het veranderen van de positie of de uiterlijk van een component, door het slepen van een controle punt over het Canvas. Bijvoorbeeld, het slepen van een eindpunt van een weerstand. Om een controlepunt te slepen moet de component worden geselecteerd.  Dit maakt het makkelijker twee componenten die overlappende Controlepunten hebben los te maken, en te hebben controle over de Controlepunten die moeten worden gesleept. Dit werkt ook wanneer meerdere componenten worden geselecteerd. Indien twee of meerdere componenten vast aan elkaar zijn en u allemaal selecteer, kunt u hun Controlepunten op hetzelfde moment allemaal slepen.
 
 Merk op dat:
 
  * Statusbalk lijst alle componenten die worden door de slepen & neerzetten werking beïnvloed.
 
- * U kunt alleen Controle Punten slepen als ze groen worden. 
+ * U kunt alleen Controlepunten slepen als ze groen worden. 
 
 ===Bewerken van component eigenschappen===
 
