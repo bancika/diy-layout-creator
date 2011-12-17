@@ -47,7 +47,7 @@ In deze sectie wordt uitgelegd, hoe u een bestaande component aan het project ma
 
  * Klik op de knop dat het gewenste component toont. Merk op dat de tekst in de statusbalk verklaart wat nu te doen.
 
- * Klik op de gewenste locatie op het Canvas om het component te creëren. Sommige componenten (Soldeereilandjes, printbaan snee, enz.) zullen met een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisen twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leid u door het proces. Het component zal doorzichtig worden, totdat het creatie proces is voltooid.
+ * Klik op de gewenste locatie op het Canvas om het component te creëren. Sommige componenten (Soldeereilandjes, printbanen, enz.) zullen met een enkele klik worden gemaakt, anderen (zoals weerstanden, draadbruggen, enz.) vereisen twee klikken om beide eindpunten in te stellen. Instructies in de statusbalk leid u door het proces. Het component zal doorzichtig worden, totdat het creatie proces is voltooid.
 
 ===Verplaatsen van componenten===
 
@@ -75,9 +75,9 @@ Merk op dat:
 
  * Dubbelklikken op een component opent de component-bewerker – een dialoogvenster dat alle bewerkbare eigenschappen van de geselecteerde component(en) geeft.
 
- * Aanvinken van het "standaard" selectievakje aan de rechterkant, zal die waarde de standaard voor die eigenschap maken. Met andere woorden, alle Componenten die daarna worden gemaakt, zullen die waarde erven.
+ * Aanvinken van het "standaard" selectievakje aan de rechterkant, zal die waarde de standaard instelling voor die eigenschap maken. Met andere woorden, alle Componenten die daarna worden gemaakt, zullen die waarde erven.
 
- * Gegensvelden die maatregelen eigenschappen vragen (grootte, weerstand, capaciteit, enz.) accepteren ook wiskundige uitdrukkingen als constanten. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch naar decimale worden geconverteerd. Zelfs meer ingewikkelde uitdrukkingen met haakjes en vier elementaire numerieke operatoren zijn mogelijk te maken.
+ * Gegevensvelden die waarden vragen (grootte, weerstand, capaciteit, enz.), accepteren constanten of wiskundige uitdrukkingen. Zo kunt u bijvoorbeeld 3/32 tikken, en het zal automatisch naar decimale worden geconverteerd. Zelfs meer ingewikkelde uitdrukkingen met haakjes en vier elementaire numerieke operatoren zijn mogelijk te maken.
 
 ===Groeperen van componenten===
 
