@@ -24,6 +24,7 @@ import java.awt.geom.Area;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
@@ -64,6 +65,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 	private AffineTransform originalTx;
 	private Font originalFont;
 	private AffineTransform currentTx;
+	private AffineTransform initialTx;
 	private Area currentArea;
 	private Shape lastShape;
 
@@ -91,6 +93,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 		originalComposite = canvasGraphics.getComposite();
 		originalFont = canvasGraphics.getFont();
 		currentTx = new AffineTransform();
+		initialTx = canvasGraphics.getTransform(); 
 		lastShape = null;
 		startTracking();
 	}
@@ -179,7 +182,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 						width, thickness);
 				Area area = new Area(rect);
 				area.transform(AffineTransform.getRotateInstance(theta, midX, midY));
-//				area.transform(currentTx);
+				// area.transform(currentTx);
 				appendShape(area);
 				// Set the prev point to line end
 				prevPoint = nextPoint;
@@ -294,8 +297,11 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 		if (drawingComponent && trackingAllowed) {
 			FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
 			Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
-			appendShape(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(),
-					rect.getHeight()));
+			Point2D point = new Point2D.Double(x, y);
+			//currentTx.transform(point, point);
+			Rectangle2D finalRec = new Rectangle2D.Double(rect.getX() + point.getX(), rect.getY() + point.getY(), rect
+					.getWidth(), rect.getHeight());
+			appendShape(finalRec);
 		}
 	}
 
@@ -434,7 +440,19 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 	@Override
 	public void setTransform(AffineTransform Tx) {
 		canvasGraphics.setTransform(Tx);
-		currentTx = Tx;
+		currentTx = new AffineTransform(Tx);
+		try {
+			// Invert the tx that was set before we started drawing the component.
+			// We're left only component tx.
+			AffineTransform inverseInitialTx = initialTx.createInverse();
+			Point2D p = new Point2D.Double(currentTx.getTranslateX(), currentTx.getTranslateY());
+			inverseInitialTx.transform(p, p);
+			currentTx.concatenate(inverseInitialTx);
+			double[] matrix = new double[6];
+			currentTx.getMatrix(matrix);
+			currentTx.setTransform(matrix[0], matrix[1], matrix[2], matrix[3], p.getX(), p.getY());
+		} catch (NoninvertibleTransformException e) {
+		}
 	}
 
 	@Override

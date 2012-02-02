@@ -205,26 +205,29 @@ public class DrawingManager {
 			// Do not track the area if component is not invalidated and was
 			// drawn in the same state.
 			boolean trackArea = lastDrawnStateMap.get(component) != state;
-			g2dWrapper.startedDrawingComponent();
-			if (!trackArea) {
-				g2dWrapper.stopTracking();
-			}
-			// Draw locked components in a new composite.
-			if (lockedComponents.contains(component)) {
-				g2d.setComposite(lockedComposite);
-			}
-			// Draw the component through the g2dWrapper.
-			try {
-				component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE),
-						project, g2dWrapper);
-			} catch (Exception e) {
-				LOG.error("Error drawing " + component.getName(), e);
-				failedComponents.add(component);
-			}
-			Area area = g2dWrapper.finishedDrawingComponent();
-			if (trackArea && area != null && !area.isEmpty()) {
-				componentAreaMap.put(component, area);
-				lastDrawnStateMap.put(component, state);
+			
+			synchronized (g2d) {
+				g2dWrapper.startedDrawingComponent();
+				if (!trackArea) {
+					g2dWrapper.stopTracking();
+				}
+				// Draw locked components in a new composite.
+				if (lockedComponents.contains(component)) {
+					g2d.setComposite(lockedComposite);
+				}
+				// Draw the component through the g2dWrapper.
+				try {
+					component.draw(g2dWrapper, state,
+							drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
+				} catch (Exception e) {
+					LOG.error("Error drawing " + component.getName(), e);
+					failedComponents.add(component);
+				}
+				Area area = g2dWrapper.finishedDrawingComponent();
+				if (trackArea && area != null && !area.isEmpty()) {
+					componentAreaMap.put(component, area);
+					lastDrawnStateMap.put(component, state);
+				}
 			}
 		}
 
