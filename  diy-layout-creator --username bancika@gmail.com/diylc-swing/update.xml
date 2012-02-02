@@ -375,9 +375,13 @@
 				<minor>1</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2011-08-28 20:00:00.000 CET</releaseDate>
+			<releaseDate>2012-02-01 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
+				<com.diyfever.gui.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Selection sometimes highlights wrong component(s)</description>
+				</com.diyfever.gui.update.Change>
 			    <com.diyfever.gui.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Renumber function sometimes doesn't work as expected</description>
@@ -393,6 +397,10 @@
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better lead and label rendering when lead spacing is smaller than component body</description>
+				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow more than 32 pins for IC</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
