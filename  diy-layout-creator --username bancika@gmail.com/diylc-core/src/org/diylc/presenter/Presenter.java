@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.dnd.DnDConstants;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Modifier;
@@ -93,6 +94,7 @@ public class Presenter implements IPlugInPort {
 	// Previous mouse location, not scaled for zoom factor.
 	private Point previousDragPoint = null;
 	private Project preDragProject = null;
+	private int dragAction;
 
 	public Presenter(IView view) {
 		super();
@@ -366,8 +368,7 @@ public class Presenter implements IPlugInPort {
 				switch (componentTypeSlot.getCreationMethod()) {
 				case SINGLE_CLICK:
 					try {
-						if (ConfigurationManager.getInstance().readBoolean(
-								IPlugInPort.SNAP_TO_GRID_KEY, true)) {
+						if (isSnapToGrid()) {
 							CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
 						}
 						IDIYComponent<?> component = instantiationManager.instantiateComponent(
@@ -401,8 +402,7 @@ public class Presenter implements IPlugInPort {
 				case POINT_BY_POINT:
 					// First click is just to set the controlPointSlot and
 					// componentSlot.
-					if (ConfigurationManager.getInstance().readBoolean(
-							IPlugInPort.SNAP_TO_GRID_KEY, true)) {
+					if (isSnapToGrid()) {
 						CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
 					}
 					if (instantiationManager.getComponentSlot() == null) {
@@ -517,7 +517,7 @@ public class Presenter implements IPlugInPort {
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		Point scaledPoint = scalePoint(point);
 		if (instantiationManager.getComponentTypeSlot() != null) {
-			if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY, true)) {
+			if (isSnapToGrid()) {
 				CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
 			}
 			boolean refresh = false;
@@ -526,8 +526,7 @@ public class Presenter implements IPlugInPort {
 				refresh = instantiationManager.updatePointByPoint(scaledPoint);
 				break;
 			case SINGLE_CLICK:
-				refresh = instantiationManager.updateSingleClick(scaledPoint, ConfigurationManager
-						.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY, true),
+				refresh = instantiationManager.updateSingleClick(scaledPoint, isSnapToGrid(),
 						currentProject.getGridSpacing());
 				break;
 			}
@@ -601,21 +600,22 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void dragStarted(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
-		LOG.debug(String.format("dragStarted(%s)", point));
+	public void dragStarted(Point point, int dragAction) {
+		LOG.debug(String.format("dragStarted(%s, %s)", point, dragAction));
 		if (instantiationManager.getComponentTypeSlot() != null) {
 			LOG.debug("Cannot start drag because a new component is being created.");
-			mouseClicked(point, ctrlDown, shiftDown, altDown, 1);
+			mouseClicked(point, dragAction == DnDConstants.ACTION_COPY, dragAction == DnDConstants.ACTION_LINK, dragAction == DnDConstants.ACTION_MOVE, 1);
 			return;
 		}
-		dragInProgress = true;
+		this.dragInProgress = true;
+		this.dragAction = dragAction;
 		preDragProject = cloner.deepClone(currentProject);
 		Point scaledPoint = scalePoint(point);
-		previousDragPoint = scaledPoint;
+		this.previousDragPoint = scaledPoint;
 		List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
-		if (!controlPointMap.isEmpty()) {
+		if (!this.controlPointMap.isEmpty()) {
 			// If we're dragging control points reset selection.
-			updateSelection(new ArrayList<IDIYComponent<?>>(controlPointMap.keySet()));
+			updateSelection(new ArrayList<IDIYComponent<?>>(this.controlPointMap.keySet()));
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 			// selectedComponents);
 			// messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
@@ -651,19 +651,25 @@ public class Presenter implements IPlugInPort {
 					for (int i = 0; i < c.getControlPointCount(); i++) {
 						pointIndices.add(i);
 					}
-					controlPointMap.put(c, pointIndices);
+					this.controlPointMap.put(c, pointIndices);
 				}
 			}
 			// Expand control points to include all stuck components.
 			boolean sticky = ConfigurationManager.getInstance().readBoolean(
 					IPlugInPort.STICKY_POINTS_KEY, true);
-			if (ctrlDown) {
+			if (this.dragAction == IPlugInPort.DND_TOGGLE_STICKY) {
 				sticky = !sticky;
 			}
 			if (sticky) {
 				includeStuckComponents(controlPointMap);
 			}
 		}
+	}
+	
+	@Override
+	public void dragActionChanged(int dragAction) {
+		LOG.debug("dragActionChanged(" + dragAction + ")");
+		this.dragAction = dragAction;
 	}
 
 	/**
@@ -740,6 +746,14 @@ public class Presenter implements IPlugInPort {
 			LOG.trace("Component count didn't change, done with expanding.");
 		}
 	}
+	
+	private boolean isSnapToGrid() {
+		boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(
+				IPlugInPort.SNAP_TO_GRID_KEY, true);
+		if (this.dragAction == IPlugInPort.DND_TOGGLE_SNAP)
+			snapToGrid = !snapToGrid;
+		return snapToGrid;
+	}
 
 	@Override
 	public boolean dragOver(Point point) {
@@ -773,8 +787,7 @@ public class Presenter implements IPlugInPort {
 							isFirst = false;
 							Point testPoint = new Point(controlPoints[index]);
 							testPoint.translate(dx, dy);
-							if (ConfigurationManager.getInstance().readBoolean(
-									IPlugInPort.SNAP_TO_GRID_KEY, true)) {
+							if (isSnapToGrid()) {
 								CalcUtils.snapPointToGrid(testPoint, currentProject
 										.getGridSpacing());
 							}
