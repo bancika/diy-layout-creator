@@ -21,8 +21,7 @@ class CanvasGestureListener implements DragGestureListener {
 
 	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
-		presenter.dragStarted(dge.getDragOrigin(), dge.getTriggerEvent().isControlDown(), dge
-				.getTriggerEvent().isShiftDown(), dge.getTriggerEvent().isAltDown());
+		presenter.dragStarted(dge.getDragOrigin(), dge.getDragAction());
 		dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(),
 				new CanvasSourceListener(presenter));
 	}

@@ -91,5 +91,6 @@ class CanvasTargetListener implements DropTargetListener {
 
 	@Override
 	public void dropActionChanged(DropTargetDragEvent dtde) {
+		presenter.dragActionChanged(dtde.getDropAction());
 	}
 }
