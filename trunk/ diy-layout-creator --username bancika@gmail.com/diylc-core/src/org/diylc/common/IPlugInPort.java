@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.dnd.DnDConstants;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,9 @@ public interface IPlugInPort {
 	public static final String OUTLINE_KEY = "outline";
 	public static final String THEME_KEY = "theme";
 	public static final String RECENT_COMPONENTS_KEY = "recentComponents";
+	
+	public static final int DND_TOGGLE_STICKY = 0x1;
+	public static final int DND_TOGGLE_SNAP = 0x40000000;
 
 	/**
 	 * Returns size of the canvas that takes project dimensions into account as
@@ -212,11 +216,9 @@ public interface IPlugInPort {
 	 * Note: point coordinates are scaled for zoom factor.
 	 * 
 	 * @param point
-	 * @param ctrlDown
-	 * @param shiftDown
-	 * @param altDown
+	 * @param dragAction
 	 */
-	void dragStarted(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
+	void dragStarted(Point point, int dragAction);
 
 	/**
 	 * Checks if it's possible to drop over the specified point.
@@ -227,6 +229,13 @@ public interface IPlugInPort {
 	 * @return
 	 */
 	boolean dragOver(Point point);
+
+	/**
+	 * Changes the current drag action during the dragging.
+	 * 
+	 * @param dragAction
+	 */
+	void dragActionChanged(int dragAction);
 
 	/**
 	 * Notification that drag has been ended in the specified point.
