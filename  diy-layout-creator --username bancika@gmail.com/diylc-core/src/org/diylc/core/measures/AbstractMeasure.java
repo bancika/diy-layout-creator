@@ -76,6 +76,6 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
 
 	@Override
 	public String toString() {
-		return format.format(value) + " " + unit;
+		return format.format(value) + unit;
 	}
 }
