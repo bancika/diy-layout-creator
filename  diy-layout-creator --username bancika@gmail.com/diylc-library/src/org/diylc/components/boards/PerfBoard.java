@@ -67,6 +67,7 @@ public class PerfBoard extends AbstractBoard {
 							holeDiameter);
 				}
 			}
+			super.drawCoordinates(g2d, spacing);
 		}
 	}
 

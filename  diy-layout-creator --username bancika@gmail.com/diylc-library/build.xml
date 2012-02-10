@@ -16,7 +16,7 @@
 	<target name="compile">
 		<mkdir dir="${classes.dir}" />
 		<echo>Compile with JDK ${java.runtime.version}</echo>
-		<javac encoding="8859_1" srcdir="${basedir}/${src.dir}" destdir="${classes.dir}" classpathref="class.path" />
+		<javac encoding="8859_1" srcdir="${basedir}/${src.dir}" destdir="${classes.dir}" classpathref="class.path" debug="true" />
 	</target>
 
 	<target name="resource.copy">
@@ -46,7 +46,7 @@
 
 	<target name="jar" depends="clean, lib.copy, resource.copy, compile">
 		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}" />
-		<copy todir="../DIYLC/library" overwrite="true">
+		<copy todir="../diylc-swing/library" overwrite="true">
 			<fileset dir="${jar.dir}" includes="${ant.project.name}.jar" />
 		</copy>
 	</target>

@@ -92,6 +92,7 @@ public class VeroBoard extends AbstractBoard {
 				}
 			}
 			g2d.setComposite(oldComposite);
+			super.drawCoordinates(g2d, spacing);
 		}
 	}
 

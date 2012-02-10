@@ -66,6 +66,7 @@ public class MarshallPerfBoard extends AbstractBoard {
 							holeDiameter);
 				}
 			}
+			super.drawCoordinates(g2d, spacing);
 		}
 	}
 
