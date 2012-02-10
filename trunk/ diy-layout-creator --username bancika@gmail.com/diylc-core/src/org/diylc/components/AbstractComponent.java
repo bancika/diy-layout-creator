@@ -2,8 +2,15 @@ package org.diylc.components;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 
+import org.diylc.common.HorizontalAlignment;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.EditableProperty;
 
@@ -69,5 +76,44 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 			}
 		}
 		return true;
+	}
+
+	protected void drawCenteredText(Graphics2D g2d, String text, int x, int y,
+			HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment) {
+		FontMetrics fontMetrics = g2d.getFontMetrics();
+		Rectangle stringBounds = fontMetrics.getStringBounds(text, g2d).getBounds();
+
+		Font font = g2d.getFont();
+		FontRenderContext renderContext = g2d.getFontRenderContext();
+		GlyphVector glyphVector = font.createGlyphVector(renderContext, text);
+		Rectangle visualBounds = glyphVector.getVisualBounds().getBounds();
+
+		int textX = 0;
+		switch (horizontalAlignment) {
+		case CENTER:
+			textX = x - stringBounds.width / 2;
+			break;
+		case LEFT:
+			textX = x;
+			break;
+		case RIGHT:
+			textX = x - stringBounds.width;
+			break;
+		}
+
+		int textY = 0;
+		switch (verticalAlignment) {
+		case TOP:
+			textY = y + stringBounds.height;
+			break;
+		case CENTER:
+			textY = y - visualBounds.height / 2 - visualBounds.y;
+			break;
+		case BOTTOM:
+			textY = y - visualBounds.y;
+			break;
+		}
+
+		g2d.drawString(text, textX, textY);
 	}
 }

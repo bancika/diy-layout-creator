@@ -17,4 +17,10 @@ public class BlankBoard extends AbstractBoard {
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRect(2, 2, width - 4, height - 4);
 	}
+	
+	@Override
+	public boolean getDrawCoordinates() {
+		// Override to prevent editing.
+		return super.getDrawCoordinates();
+	}
 }

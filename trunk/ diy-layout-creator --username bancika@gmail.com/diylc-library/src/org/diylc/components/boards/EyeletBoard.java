@@ -75,6 +75,7 @@ public class EyeletBoard extends AbstractBoard {
 							holeDiameter);
 				}
 			}
+			super.drawCoordinates(g2d, spacing);
 		}
 	}
 

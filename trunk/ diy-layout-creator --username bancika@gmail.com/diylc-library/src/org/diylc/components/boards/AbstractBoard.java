@@ -6,7 +6,9 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
@@ -22,6 +24,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
 	public static Color BOARD_COLOR = Color.decode("#F8EBB3");
 	public static Color BORDER_COLOR = BOARD_COLOR.darker();
+	public static Color COORDINATE_COLOR = Color.gray.brighter();
+	public static float COORDINATE_FONT_SIZE = 9f;
 	public static Size DEFAULT_WIDTH = new Size(1.5d, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1.2d, SizeUnit.in);
 
@@ -34,10 +38,12 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
 	protected Color boardColor = BOARD_COLOR;
 	protected Color borderColor = BORDER_COLOR;
+	protected Color coordinateColor = COORDINATE_COLOR;
+	protected Boolean drawCoordinates = true;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-			IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+			Project project, IDrawingObserver drawingObserver) {
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
@@ -59,6 +65,44 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 		drawingObserver.stopTracking();
 	}
 
+	protected void drawCoordinates(Graphics2D g2d, int spacing) {
+		if (!getDrawCoordinates())
+			return;
+		Point p = new Point(firstPoint);
+		g2d.setColor(coordinateColor);
+		g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE));
+
+		int t = 1;
+		while (p.y < secondPoint.y - spacing) {
+			p.y += spacing;
+			super.drawCenteredText(g2d, getCoordinateLabel(t++), p.x + 2, p.y,
+					HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+		}
+
+		p = new Point(firstPoint);
+		t = 1;
+		while (p.x < secondPoint.x - spacing) {
+			p.x += spacing;
+			super.drawCenteredText(g2d, getCoordinateLabel(t++), p.x, p.y - 2,
+					HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+		}
+	}
+
+	private String getCoordinateLabel(int coordinate) {
+		String result = "";
+		while (coordinate > 0) {
+			int digit = coordinate % 26;
+			coordinate /= 26;
+			if (digit == 0) {
+				result = 'Z' + result;
+				coordinate--;
+			} else {
+				result = (char) ((int) 'A' + digit - 1) + result;
+			}
+		}
+		return result;
+	}
+
 	@EditableProperty(name = "Color")
 	public Color getBoardColor() {
 		return boardColor;
@@ -68,6 +112,16 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 		this.boardColor = boardColor;
 	}
 
+	@EditableProperty(name = "Coordinate Color")
+	public Color getCoordinateColor() {
+		// Null protection for older files
+		return coordinateColor == null ? COORDINATE_COLOR : coordinateColor;
+	}
+
+	public void setCoordinateColor(Color coordinateColor) {
+		this.coordinateColor = coordinateColor;
+	}
+
 	@EditableProperty(name = "Border")
 	public Color getBorderColor() {
 		return borderColor;
@@ -75,6 +129,16 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
+	}
+
+	@EditableProperty(name = "Draw Coordinates")
+	public boolean getDrawCoordinates() {
+		// Null protection for older files
+		return drawCoordinates == null || drawCoordinates;
+	}
+
+	public void setDrawCoordinates(boolean drawCoordinates) {
+		this.drawCoordinates = drawCoordinates;
 	}
 
 	@Override
