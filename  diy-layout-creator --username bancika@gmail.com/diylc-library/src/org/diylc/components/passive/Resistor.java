@@ -27,6 +27,8 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
 	public static Color BODY_COLOR = Color.decode("#82CFFD");
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
+	public static int BAND_SPACING = 5;
+	public static int FIRST_BAND = 4;
 
 	private Resistance value = new Resistance(123d, ResistanceUnit.K);
 	private Power power = Power.HALF;
@@ -37,7 +39,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 		this.bodyColor = BODY_COLOR;
 		this.borderColor = BORDER_COLOR;
 	}
-	
+
 	@Override
 	protected boolean supportsStandingMode() {
 		return true;
@@ -110,12 +112,22 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 		}
 		int height = getClosestOdd(getWidth().convertToPixels());
 		Color[] bands = value.getColorCode(colorCode);
-		int x = 4;
+		int x = FIRST_BAND;
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
 		for (int i = 0; i < bands.length; i++) {
 			g2d.setColor(bands[i]);
 			g2d.drawLine(x, 1, x, height - 1);
-			x += 5;
+			x += BAND_SPACING;
 		}
+	}
+
+	@Override
+	protected int getLabelOffset(int bodyWidth, int labelWidth) {
+		Color[] bands = value.getColorCode(colorCode);
+		int bandArea = FIRST_BAND + BAND_SPACING * (bands.length - 1);
+		// Only offset the label if overlaping with the band area.
+		if (labelWidth > bodyWidth - 2 * bandArea)
+			return bandArea / 2;
+		return 0;
 	}
 }

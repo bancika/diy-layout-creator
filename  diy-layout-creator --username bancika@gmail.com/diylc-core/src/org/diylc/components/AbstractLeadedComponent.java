@@ -195,13 +195,16 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			g2d.setColor(finalLabelColor);
 			FontMetrics fontMetrics = g2d.getFontMetrics();
 			String label = display == Display.NAME ? getName() : getValue().toString();
+			Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
+			// Don't offset in outline mode.
+			int offset = outlineMode ? 0 : getLabelOffset((int) shapeRect.getWidth(), (int) textRect.getWidth());
 			// Adjust label angle if needed to make sure that it's readable.
 			if ((theta >= Math.PI / 2 && theta <= Math.PI)
 					|| (theta < -Math.PI / 2 && theta > -Math.PI)) {
 				g2d.rotate(Math.PI, shapeRect.width / 2, shapeRect.height / 2);
-			}
-			Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
-			g2d.drawString(label, (int) (shapeRect.width - textRect.getWidth()) / 2,
+				offset = -offset;
+			}			
+			g2d.drawString(label, (int) (shapeRect.width - textRect.getWidth()) / 2 + offset,
 					calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));
 			g2d.setTransform(oldTransform);
 		}
@@ -236,6 +239,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
 	protected boolean supportsStandingMode() {
 		return false;
+	}
+	
+	protected int getLabelOffset(int bodyWidth, int labelWidth) {
+		return 0;
 	}
 
 	/**

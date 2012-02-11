@@ -31,7 +31,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	public static Color SELECTION_COLOR = Color.red;
 	public static Color LABEL_COLOR = Color.black;
 	public static Color LABEL_COLOR_SELECTED = Color.red;
-	public static Font LABEL_FONT = new Font("Tahoma", Font.PLAIN, 13);
+	public static Font LABEL_FONT = new Font("Tahoma", Font.PLAIN, 14);
 
 	@EditableProperty(defaultable = false)
 	@Override
