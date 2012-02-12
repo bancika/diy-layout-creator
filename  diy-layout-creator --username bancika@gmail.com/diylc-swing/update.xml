@@ -434,6 +434,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved import from v1 file format</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Imperial ruler is divided to .1" instead of 1/4"</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>
