@@ -2,7 +2,7 @@ package org.diylc.core.measures;
 
 public enum ResistanceUnit implements Unit {
 
-	R(1, "\u03a9"), K(1e3, "K"), M(1e6, "M");
+	R(1, "R"), K(1e3, "K"), M(1e6, "M");
 
 	double factor;
 	String display;
