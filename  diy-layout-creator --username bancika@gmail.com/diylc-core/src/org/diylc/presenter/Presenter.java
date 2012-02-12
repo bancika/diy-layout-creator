@@ -341,7 +341,7 @@ public class Presenter implements IPlugInPort {
 	 * 
 	 * @return
 	 */
-	private List<IDIYComponent<?>> findComponentsAt(Point point) {
+	public List<IDIYComponent<?>> findComponentsAtScaled(Point point) {
 		List<IDIYComponent<?>> components = drawingManager.findComponentsAt(point, currentProject);
 		Iterator<IDIYComponent<?>> iterator = components.iterator();
 		while (iterator.hasNext()) {
@@ -349,6 +349,13 @@ public class Presenter implements IPlugInPort {
 				iterator.remove();
 			}
 		}
+		return components;
+	}
+
+	@Override
+	public List<IDIYComponent<?>> findComponentsAt(Point point) {
+		Point scaledPoint = scalePoint(point);
+		List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
 		return components;
 	}
 
@@ -455,14 +462,14 @@ public class Presenter implements IPlugInPort {
 			} else {
 				List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(
 						selectedComponents);
-				List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
+				List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
 				// If there's nothing under mouse cursor deselect all.
 				if (components.isEmpty()) {
 					if (!ctrlDown) {
 						newSelection.clear();
 					}
 				} else {
-					IDIYComponent<?> component = components.get(components.size() - 1);
+					IDIYComponent<?> component = components.get(0);
 					// If ctrl is pressed just toggle the component under mouse
 					// cursor.
 					if (ctrlDown) {
@@ -584,7 +591,8 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void selectAll() {
 		LOG.info("selectAll()");
-		List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(currentProject.getComponents());
+		List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(currentProject
+				.getComponents());
 		newSelection.removeAll(getLockedComponents());
 		updateSelection(newSelection);
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
@@ -604,7 +612,9 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String.format("dragStarted(%s, %s)", point, dragAction));
 		if (instantiationManager.getComponentTypeSlot() != null) {
 			LOG.debug("Cannot start drag because a new component is being created.");
-			mouseClicked(point, dragAction == DnDConstants.ACTION_COPY, dragAction == DnDConstants.ACTION_LINK, dragAction == DnDConstants.ACTION_MOVE, 1);
+			mouseClicked(point, dragAction == DnDConstants.ACTION_COPY,
+					dragAction == DnDConstants.ACTION_LINK, dragAction == DnDConstants.ACTION_MOVE,
+					1);
 			return;
 		}
 		this.dragInProgress = true;
@@ -612,7 +622,7 @@ public class Presenter implements IPlugInPort {
 		preDragProject = cloner.deepClone(currentProject);
 		Point scaledPoint = scalePoint(point);
 		this.previousDragPoint = scaledPoint;
-		List<IDIYComponent<?>> components = findComponentsAt(scaledPoint);
+		List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
 		if (!this.controlPointMap.isEmpty()) {
 			// If we're dragging control points reset selection.
 			updateSelection(new ArrayList<IDIYComponent<?>>(this.controlPointMap.keySet()));
@@ -631,7 +641,7 @@ public class Presenter implements IPlugInPort {
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		} else {
 			// Take the last component, i.e. the top order component.
-			IDIYComponent<?> component = components.get(components.size() - 1);
+			IDIYComponent<?> component = components.get(0);
 			// If the component under the cursor is not already selected, make
 			// it into the only selected component.
 			if (!selectedComponents.contains(component)) {
@@ -665,7 +675,7 @@ public class Presenter implements IPlugInPort {
 			}
 		}
 	}
-	
+
 	@Override
 	public void dragActionChanged(int dragAction) {
 		LOG.debug("dragActionChanged(" + dragAction + ")");
@@ -746,7 +756,7 @@ public class Presenter implements IPlugInPort {
 			LOG.trace("Component count didn't change, done with expanding.");
 		}
 	}
-	
+
 	private boolean isSnapToGrid() {
 		boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(
 				IPlugInPort.SNAP_TO_GRID_KEY, true);

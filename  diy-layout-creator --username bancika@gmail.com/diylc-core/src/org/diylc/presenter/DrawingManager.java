@@ -362,7 +362,7 @@ public class DrawingManager {
 		for (int i = 0; i < project.getComponents().size(); i++) {
 			Area area = componentAreaMap.get(project.getComponents().get(i));
 			if (area != null && area.contains(point)) {
-				components.add(project.getComponents().get(i));
+				components.add(0, project.getComponents().get(i));
 			}
 		}
 		return components;
