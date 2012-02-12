@@ -432,7 +432,7 @@
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Smarter resistor labels; try not to overlap label with bands</description>
+					<description>Smarter resistor labels; try not to overlap label with color code bands</description>
 				</com.diyfever.gui.update.Change>
 				<com.diyfever.gui.update.Change>
 					<changeType>IMPROVEMENT</changeType>
