@@ -4,7 +4,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.dnd.DnDConstants;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ import org.diylc.core.Theme;
  * @see IMessageListener
  * @see EventType
  */
-public interface IPlugInPort {
+public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor {
 
 	public static final String ANTI_ALIASING_KEY = "antiAliasing";
 	public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
@@ -45,7 +44,7 @@ public interface IPlugInPort {
 	public static final String OUTLINE_KEY = "outline";
 	public static final String THEME_KEY = "theme";
 	public static final String RECENT_COMPONENTS_KEY = "recentComponents";
-	
+
 	public static final int DND_TOGGLE_STICKY = 0x1;
 	public static final int DND_TOGGLE_SNAP = 0x40000000;
 
@@ -162,89 +161,6 @@ public interface IPlugInPort {
 	 *            new zoom leve
 	 */
 	void setZoomLevel(double zoomLevel);
-
-	/**
-	 * Notifies the presenter that mouse is clicked.
-	 * 
-	 * Note: point coordinates are display based, i.e. scaled for zoom factor.
-	 * 
-	 * @param point
-	 * @param ctrlDown
-	 * @param shiftDown
-	 * @param altDown
-	 * @param clickCount
-	 */
-	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown,
-			int clickCount);
-
-	/**
-	 * Notifies the presenter that mouse is moved.
-	 * 
-	 * Note: point coordinates are display based, i.e. scaled for zoom factor.
-	 * 
-	 * @param point
-	 * @param ctrlDown
-	 * @param shiftDown
-	 * @param altDown
-	 */
-	void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
-
-	/**
-	 * Returns the current {@link ComponentTransferable}.
-	 * 
-	 * @return
-	 */
-	List<IDIYComponent<?>> getSelectedComponents();
-
-	/**
-	 * Updates the selection with the specified list of component. Also, updates
-	 * control point map with all components that are stuck to the newly
-	 * selected components.
-	 * 
-	 * @param newSelection
-	 */
-	void updateSelection(List<IDIYComponent<?>> newSelection);
-
-	/**
-	 * Selects all components in the project.
-	 */
-	void selectAll();
-
-	/**
-	 * Notification that drag has been started from the specified point.
-	 * 
-	 * Note: point coordinates are scaled for zoom factor.
-	 * 
-	 * @param point
-	 * @param dragAction
-	 */
-	void dragStarted(Point point, int dragAction);
-
-	/**
-	 * Checks if it's possible to drop over the specified point.
-	 * 
-	 * Note: point coordinates are scaled for zoom factor.
-	 * 
-	 * @param point
-	 * @return
-	 */
-	boolean dragOver(Point point);
-
-	/**
-	 * Changes the current drag action during the dragging.
-	 * 
-	 * @param dragAction
-	 */
-	void dragActionChanged(int dragAction);
-
-	/**
-	 * Notification that drag has been ended in the specified point.
-	 * 
-	 * Note: point coordinates are scaled for zoom factor.
-	 * 
-	 * @param point
-	 */
-	void dragEnded(Point point);
 
 	/**
 	 * Returns current version number.

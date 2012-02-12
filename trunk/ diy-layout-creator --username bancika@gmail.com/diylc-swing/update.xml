@@ -417,7 +417,11 @@
 			</versionNumber>
 			<releaseDate>2012-02-01 20:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>				
+			<changes>		
+				<com.diyfever.gui.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Select components from context menu even when they are under other components</description>
+				</com.diyfever.gui.update.Change>		
 				<com.diyfever.gui.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ctrl+Shift toggles "Snap to Grid" option</description>

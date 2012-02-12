@@ -1,17 +1,24 @@
 package org.diylc.swing.plugins.canvas;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
@@ -22,8 +29,10 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
@@ -39,6 +48,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private RulerScrollPane scrollPane;
 	private CanvasPanel canvasPanel;
 	private JPopupMenu popupMenu;
+	private JMenu selectionMenu;
 
 	private ActionFactory.CutAction cutAction;
 	private ActionFactory.CopyAction copyAction;
@@ -99,7 +109,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 						getSendToBackAction().setEnabled(enabled);
 						getBringToFrontAction().setEnabled(enabled);
 
-						getPopupMenu().show(canvasPanel, e.getX(), e.getY());
+						showPopupAt(e.getX(), e.getY());
 					}
 				}
 			});
@@ -163,9 +173,16 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 		return scrollPane;
 	}
 
+	private void showPopupAt(int x, int y) {
+		updateSelectionMenu(x, y);
+		getPopupMenu().show(canvasPanel, x, y);
+	}
+
 	public JPopupMenu getPopupMenu() {
 		if (popupMenu == null) {
 			popupMenu = new JPopupMenu();
+			popupMenu.add(getSelectionMenu());
+			popupMenu.addSeparator();
 			popupMenu.add(getCutAction());
 			popupMenu.add(getCopyAction());
 			popupMenu.add(getPasteAction());
@@ -180,6 +197,33 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.add(ActionFactory.getInstance().createEditProjectAction(plugInPort));
 		}
 		return popupMenu;
+	}
+
+	public JMenu getSelectionMenu() {
+		if (selectionMenu == null) {
+			selectionMenu = new JMenu("Select");
+			selectionMenu.setIcon(IconLoader.ElementsSelection.getIcon());
+		}
+		return selectionMenu;
+	}
+
+	private void updateSelectionMenu(int x, int y) {
+		getSelectionMenu().removeAll();
+		for (IDIYComponent<?> component : plugInPort.findComponentsAt(new Point(x, y))) {
+			JMenuItem item = new JMenuItem(component.getName());
+			final IDIYComponent<?> finalComponent = component;
+			item.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
+					newSelection.add(finalComponent);
+					plugInPort.updateSelection(newSelection);
+					plugInPort.refresh();
+				}
+			});
+			getSelectionMenu().add(item);
+		}
 	}
 
 	public ActionFactory.CutAction getCutAction() {
