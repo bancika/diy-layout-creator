@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +18,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.simplemq.MessageDispatcher;
+import org.diylc.common.Display;
 import org.diylc.common.EventType;
 import org.diylc.common.Orientation;
+import org.diylc.components.AbstractComponent;
+import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.boards.AbstractBoard;
 import org.diylc.components.boards.BlankBoard;
 import org.diylc.components.boards.PerfBoard;
@@ -28,9 +33,11 @@ import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.connectivity.Jumper;
 import org.diylc.components.connectivity.SolderPad;
 import org.diylc.components.misc.Label;
+import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialElectrolytic;
 import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
+import org.diylc.components.passive.Taper;
 import org.diylc.components.semiconductors.DIL_IC;
 import org.diylc.components.semiconductors.DiodePlastic;
 import org.diylc.components.semiconductors.LED;
@@ -236,7 +243,7 @@ public class ProjectFileManager {
 					label.setText(valueAttr);
 					label.setCenter(false);
 					label.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr,
-							y1Attr), 0);
+							y1Attr + 1), 0);
 					component = label;
 				} else if (nodeName.equalsIgnoreCase("pad")) {
 					LOG.debug("Recognized " + nodeName);
@@ -270,6 +277,8 @@ public class ProjectFileManager {
 					HookupWire wire = new HookupWire();
 					Point midPoint = new Point((point1.x + point2.x) / 2, (point1.y + point2.y) / 2);
 					wire.setName(nameAttr);
+					String colorAttr = node.getAttributes().getNamedItem("Color").getNodeValue();
+					wire.setColor(parseV1Color(colorAttr));
 					wire.setControlPoint(point1, 0);
 					wire.setControlPoint(midPoint, 1);
 					wire.setControlPoint(midPoint, 2);
@@ -284,8 +293,8 @@ public class ProjectFileManager {
 					} catch (Exception e) {
 						LOG.debug("Could not set value of " + nameAttr);
 					}
-					resistor.setLength(new Size(6d, SizeUnit.mm));
-					resistor.setWidth(new Size(2d, SizeUnit.mm));
+					resistor.setLength(new Size(6.35d, SizeUnit.mm));
+					resistor.setWidth(new Size(2.2d, SizeUnit.mm));
 					resistor.setControlPoint(point1, 0);
 					resistor.setControlPoint(point2, 1);
 					component = resistor;
@@ -312,15 +321,20 @@ public class ProjectFileManager {
 					} catch (Exception e) {
 						LOG.debug("Could not set value of " + nameAttr);
 					}
-					String sizeAttr = node.getAttributes().getNamedItem("Size").getNodeValue();
-					if (sizeAttr.equalsIgnoreCase("small")) {
-						capacitor.setLength(new Size(3.5d, SizeUnit.mm));
-					} else if (sizeAttr.equalsIgnoreCase("medium")) {
+					try {
+						String sizeAttr = node.getAttributes().getNamedItem("Size").getNodeValue();
+						if (sizeAttr.equalsIgnoreCase("small")) {
+							capacitor.setLength(new Size(3.5d, SizeUnit.mm));
+						} else if (sizeAttr.equalsIgnoreCase("medium")) {
+							capacitor.setLength(new Size(5d, SizeUnit.mm));
+						} else if (sizeAttr.equalsIgnoreCase("large")) {
+							capacitor.setLength(new Size(7d, SizeUnit.mm));
+						} else {
+							capacitor.setLength(new Size(4d, SizeUnit.mm));
+						}
+					} catch (Exception e) {
 						capacitor.setLength(new Size(5d, SizeUnit.mm));
-					} else if (sizeAttr.equalsIgnoreCase("large")) {
-						capacitor.setLength(new Size(7d, SizeUnit.mm));
-					} else {
-						capacitor.setLength(new Size(4d, SizeUnit.mm));
+						LOG.debug("Could not set size of " + nameAttr);
 					}
 					capacitor.setControlPoint(point1, 0);
 					capacitor.setControlPoint(point2, 1);
@@ -374,18 +388,27 @@ public class ProjectFileManager {
 				} else if (nodeName.equalsIgnoreCase("ic")) {
 					LOG.debug("Recognized " + nodeName);
 					DIL_IC ic = new DIL_IC();
-					if (x1Attr + 3 == x2Attr) {
-						if (y1Attr < y2Attr) {
-							ic
-									.setPinCount(DIL_IC.PinCount.valueOf("_" + 2
-											* (y2Attr - y1Attr + 1)));
-						} else {
-							ic.setOrientation(Orientation._180);
-							ic
-									.setPinCount(DIL_IC.PinCount.valueOf("_" + 2
-											* (y1Attr - y2Attr + 1)));
-						}
+					int pinCount = 8;
+					int rowSpace = 3;
+					if (x1Attr < x2Attr && y1Attr < y2Attr) {
+						pinCount = (y2Attr - y1Attr + 1) * 2;
+						rowSpace = x2Attr - x1Attr;
+						ic.setOrientation(Orientation.DEFAULT);
+					} else if (x1Attr > x2Attr && y1Attr < y2Attr) {
+						pinCount = (x1Attr - x2Attr + 1) * 2;
+						rowSpace = y2Attr - y1Attr;
+						ic.setOrientation(Orientation._90);
+					} else if (x1Attr > x2Attr && y1Attr > y2Attr) {
+						rowSpace = x1Attr - x2Attr;
+						pinCount = (y1Attr - y2Attr + 1) * 2;
+						ic.setOrientation(Orientation._180);
+					} else if (x1Attr < x2Attr && y1Attr > y2Attr) {
+						rowSpace = y1Attr - y2Attr;
+						pinCount = (x2Attr - x1Attr + 1) * 2;
+						ic.setOrientation(Orientation._270);
 					}
+					ic.setRowSpacing(new Size(0.1 * rowSpace, SizeUnit.in));
+					ic.setPinCount(DIL_IC.PinCount.valueOf("_" + pinCount));
 					ic.setName(nameAttr);
 					// Translate control points.
 					for (int j = 0; j < ic.getControlPointCount(); j++) {
@@ -395,6 +418,58 @@ public class ProjectFileManager {
 					}
 					ic.setValue(valueAttr);
 					component = ic;
+				} else if (nodeName.equalsIgnoreCase("pot")) {
+					LOG.debug("Recognized " + nodeName);
+					PotentiometerPanel pot = new PotentiometerPanel();
+					pot.setBodyDiameter(new Size(14d, SizeUnit.mm));
+					pot.setSpacing(new Size(0.2, SizeUnit.in));
+					pot.setName(nameAttr);
+					try {
+						pot.setResistance(Resistance.parseResistance(valueAttr));
+					} catch (Exception e) {
+						LOG.debug("Could not set value of " + nameAttr);
+					}
+					String taperAttr = node.getAttributes().getNamedItem("Taper").getNodeValue();
+					if ("Linear".equals(taperAttr)) {
+						pot.setTaper(Taper.LIN);
+					} else if ("Audio".equals(taperAttr)) {
+						pot.setTaper(Taper.LOG);
+					} else if ("Reverse Audio".equals(taperAttr)) {
+						pot.setTaper(Taper.REV_LOG);
+					}
+					// Pin spacing, we'll need to move pot around a bit.
+					int delta = Constants.PIXELS_PER_INCH / 5;
+					if (x1Attr < x2Attr) {
+						pot.setOrientation(Orientation.DEFAULT);
+						for (int j = 0; j < pot.getControlPointCount(); j++) {
+							Point p = new Point(pot.getControlPoint(j));
+							p.translate(point1.x - delta, point1.y);
+							pot.setControlPoint(p, j);
+						}
+					} else if (x1Attr > x2Attr) {
+						pot.setOrientation(Orientation._180);
+						for (int j = 0; j < pot.getControlPointCount(); j++) {
+							Point p = new Point(pot.getControlPoint(j));
+							p.translate(point1.x + delta, point1.y);
+							pot.setControlPoint(p, j);
+						}
+					} else if (y1Attr < y2Attr) {
+						pot.setOrientation(Orientation._90);
+						for (int j = 0; j < pot.getControlPointCount(); j++) {
+							Point p = new Point(pot.getControlPoint(j));
+							p.translate(point1.x, point1.y - delta);
+							pot.setControlPoint(p, j);
+						}
+					} else if (y1Attr > y2Attr) {
+						pot.setOrientation(Orientation._270);
+						for (int j = 0; j < pot.getControlPointCount(); j++) {
+							Point p = new Point(pot.getControlPoint(j));
+							p.translate(point1.x, point1.y + delta);
+							pot.setControlPoint(p, j);
+						}
+						;
+					}
+					component = pot;
 				} else {
 					String message = "Could not recognize component type " + nodeName;
 					LOG.debug(message);
@@ -403,6 +478,12 @@ public class ProjectFileManager {
 					}
 				}
 				if (component != null) {
+					if (component instanceof AbstractLeadedComponent<?>) {
+						((AbstractLeadedComponent<?>) component).setDisplay(Display.NAME);
+					}
+					if (component instanceof AbstractTransparentComponent<?>) {
+						((AbstractTransparentComponent<?>) component).setAlpha((byte) 100);
+					}
 					project.getComponents().add(component);
 				}
 			}
@@ -417,6 +498,18 @@ public class ProjectFileManager {
 		point.translate((int) (x * Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue()),
 				(int) (y * Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue()));
 		return point;
+	}
+
+	private Color parseV1Color(String color) {
+		if ("brown".equals(color.toLowerCase()))
+			return new Color(139, 69, 19);
+		try {
+			Field field = Color.class.getDeclaredField(color.toLowerCase());
+			return (Color) field.get(null);
+		} catch (Exception e) {
+			LOG.error("Could not parse color \"" + color + "\"", e);
+			return Color.black;
+		}
 	}
 
 	private Project parseV2File(Element root) {
