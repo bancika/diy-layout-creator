@@ -446,6 +446,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow finer grid spacing up to 0.5mm (0.02")</description>
 				</com.diyfever.gui.update.Change>
+				<com.diyfever.gui.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Do not hard-code voltage and power ratings</description>
+				</com.diyfever.gui.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</com.diyfever.gui.update.Version>

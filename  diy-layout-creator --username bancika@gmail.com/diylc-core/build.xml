@@ -65,7 +65,7 @@
 		<copy todir="../diylc-swing/lib" overwrite="true">
 			<fileset dir="${jar.dir}" includes="${ant.project.name}.jar" />
 		</copy>
-		<copy todir="../library/lib" overwrite="true">
+		<copy todir="../diylc-library/lib" overwrite="true">
 			<fileset dir="${jar.dir}" includes="${ant.project.name}.jar" />
 		</copy>
 	</target>

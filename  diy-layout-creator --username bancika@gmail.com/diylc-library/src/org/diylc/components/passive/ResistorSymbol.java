@@ -9,6 +9,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.PowerUnit;
 import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
@@ -23,7 +24,10 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 	public static Size DEFAULT_WIDTH = new Size(0.08, SizeUnit.in);
 
 	private Resistance value = new Resistance(100d, ResistanceUnit.K);
+	@Deprecated
 	private Power power = Power.HALF;
+	private org.diylc.core.measures.Power powerNew = new org.diylc.core.measures.Power(0.5,
+			PowerUnit.W);
 
 	@EditableProperty
 	public Resistance getValue() {
@@ -34,14 +38,31 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 		this.value = value;
 	}
 	
-	@EditableProperty
+	@Deprecated
 	public Power getPower() {
 		return power;
 	}
 	
+	@Deprecated
 	public void setPower(Power power) {
 		this.power = power;
 	}
+	
+	@EditableProperty(name = "Power rating")
+	public org.diylc.core.measures.Power getPowerNew() {
+		// Backward compatibility
+		if (powerNew == null) {
+			powerNew = power.convertToNewFormat();
+			// Clear old value, don't need it anymore
+			power = null;
+		}
+		return powerNew;
+	}
+
+	public void setPowerNew(org.diylc.core.measures.Power powerNew) {
+		this.powerNew = powerNew;
+	}
+
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.rotate(-Math.PI / 4, width / 2, height / 2);

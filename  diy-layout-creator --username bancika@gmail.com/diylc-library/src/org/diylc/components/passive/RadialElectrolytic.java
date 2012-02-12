@@ -20,6 +20,7 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT)
@@ -34,7 +35,10 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 	public static Color TICK_COLOR = Color.white;
 
 	private Capacitance value = new Capacitance(1d, CapacitanceUnit.uF);
+	@Deprecated
 	private Voltage voltage = Voltage._63V;
+	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(63d,
+			VoltageUnit.V);
 
 	private Color markerColor = MARKER_COLOR;
 	private Color tickColor = TICK_COLOR;
@@ -55,13 +59,29 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 		this.value = value;
 	}
 
-	@EditableProperty
+	@Deprecated
 	public Voltage getVoltage() {
 		return voltage;
 	}
 
+	@Deprecated
 	public void setVoltage(Voltage voltage) {
 		this.voltage = voltage;
+	}
+	
+	@EditableProperty(name = "Voltage")
+	public org.diylc.core.measures.Voltage getVoltageNew() {
+		// Backward comptibility
+		if (voltageNew == null) {
+			voltageNew = voltage.convertToNewFormat();
+			voltage = null;
+			// Clear old value, don't need it anymore
+		}
+		return voltageNew;
+	}
+
+	public void setVoltageNew(org.diylc.core.measures.Voltage voltageNew) {
+		this.voltageNew = voltageNew;
 	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {

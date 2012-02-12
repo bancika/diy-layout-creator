@@ -14,6 +14,7 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.core.measures.VoltageUnit;
 
 @ComponentDescriptor(name = "Film Capacitor (axial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Axial film capacitor, similar to Mallory 150s", zOrder = IDIYComponent.COMPONENT)
 public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
@@ -26,7 +27,10 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Capacitance value = new Capacitance(22d, CapacitanceUnit.nF);
+	@Deprecated
 	private Voltage voltage = Voltage._63V;
+	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(63d,
+			VoltageUnit.V);
 
 	public AxialFilmCapacitor() {
 		super();
@@ -48,15 +52,30 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 		this.value = value;
 	}
 	
-	@EditableProperty
+	@Deprecated
 	public Voltage getVoltage() {
 		return voltage;
 	}
 
+	@Deprecated
 	public void setVoltage(Voltage voltage) {
 		this.voltage = voltage;
 	}
 
+	@EditableProperty(name = "Voltage")
+	public org.diylc.core.measures.Voltage getVoltageNew() {
+		// Backward comptibility
+		if (voltageNew == null) {
+			voltageNew = voltage.convertToNewFormat();
+			voltage = null;
+			// Clear old value, don't need it anymore
+		}
+		return voltageNew;
+	}
+
+	public void setVoltageNew(org.diylc.core.measures.Voltage voltageNew) {
+		this.voltageNew = voltageNew;
+	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.rotate(-Math.PI / 4, width / 2, height / 2);
