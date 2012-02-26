@@ -37,6 +37,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.components.connectivity.SolderPad;
+import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
@@ -55,7 +56,7 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 2, 0);
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 3, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
@@ -1078,6 +1079,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void refresh() {
+		LOG.info("refresh()");
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
@@ -1093,6 +1095,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void renumberSelectedComponents(final boolean xAxisFirst) {
+		LOG.info("renumberSelectedComponents(" + xAxisFirst + ")");
 		if (getSelectedComponents().isEmpty()) {
 			return;
 		}
@@ -1181,6 +1184,66 @@ public class Presenter implements IPlugInPort {
 		}
 		messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents,
 				controlPointMap.keySet());
+	}
+
+	@Override
+	public void expandSelection(ExpansionMode expansionMode) {
+		List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(
+				this.selectedComponents);
+		// Find control points of all selected components and all types
+		Set<String> selectedNamePrefixes = new HashSet<String>();
+		if (expansionMode == ExpansionMode.SAME_TYPE) {
+			for (IDIYComponent<?> component : getSelectedComponents()) {
+				selectedNamePrefixes.add(ComponentProcessor.getInstance().extractComponentTypeFrom(
+						(Class<? extends IDIYComponent<?>>) component.getClass()).getNamePrefix());
+			}
+		}
+		// Now try to find components that intersect with at least one component
+		// in the pool.
+		for (IDIYComponent<?> component : getCurrentProject().getComponents()) {
+			// Skip already selected components or ones that cannot be stuck to
+			// other components.
+			Area area = drawingManager.getComponentArea(component);
+			if (newSelection.contains(component) || !component.isControlPointSticky(0) || area == null)
+				continue;
+			boolean matches = false;
+			for (IDIYComponent<?> selectedComponent : this.selectedComponents) {				
+				Area selectedArea = drawingManager.getComponentArea(selectedComponent);
+				if (selectedArea == null)
+					continue;
+				Area intersection = new Area(area);
+				intersection.intersect(selectedArea);
+				if (!intersection.isEmpty()) {
+					matches = true;
+					break;
+				}
+			}
+
+			if (matches) {
+				switch (expansionMode) {
+				case ALL:
+				case IMMEDIATE:
+					newSelection.add(component);
+					break;
+				case SAME_TYPE:
+					if (selectedNamePrefixes.contains(ComponentProcessor.getInstance()
+							.extractComponentTypeFrom(
+									(Class<? extends IDIYComponent<?>>) component.getClass())
+							.getNamePrefix())) {
+						newSelection.add(component);
+					}
+					break;
+				}
+			}
+		}
+
+		int oldSize = this.getSelectedComponents().size();
+		updateSelection(newSelection);
+		// Go deeper if possible.
+		if (newSelection.size() > oldSize && expansionMode != ExpansionMode.IMMEDIATE) {
+			expandSelection(expansionMode);
+		}
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
 	/**

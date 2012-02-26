@@ -3,6 +3,7 @@ package org.diylc.common;
 import java.awt.Point;
 import java.util.List;
 
+import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 
 public interface ISelectionProcessor {
@@ -31,6 +32,14 @@ public interface ISelectionProcessor {
 	 * @return
 	 */
 	List<IDIYComponent<?>> findComponentsAt(Point point);
+
+	/**
+	 * Expands the current selection to include surrounding components.
+	 * Options are controlled with <code>expansionMode</code> flag.
+	 * 
+	 * @param expansionMode
+	 */
+	void expandSelection(ExpansionMode expansionMode);
 
 	/**
 	 * Selects all components in the project.

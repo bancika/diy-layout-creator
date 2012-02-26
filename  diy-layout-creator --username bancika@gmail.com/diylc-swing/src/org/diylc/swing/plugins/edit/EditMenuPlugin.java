@@ -13,6 +13,7 @@ import org.diylc.appframework.undo.UndoHandler;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.ExpansionMode;
 import org.diylc.core.Project;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
@@ -22,6 +23,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
 	private static final String EDIT_TITLE = "Edit";
 	private static final String RENUMBER_TITLE = "Renumber Selection";
+	private static final String EXPAND_TITLE = "Expand Selection";
 
 	private IPlugInPort plugInPort;
 	private ISwingUI swingUI;
@@ -39,6 +41,9 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.BringToFrontAction bringToFrontAction;
 	private ActionFactory.RenumberAction renumberXAxisAction;
 	private ActionFactory.RenumberAction renumberYAxisAction;
+	private ActionFactory.ExpandSelectionAction expandSelectionAllAction;
+	private ActionFactory.ExpandSelectionAction expandSelectionImmediateAction;
+	private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
 
 	private UndoHandler<Project> undoHandler;
 
@@ -149,6 +154,30 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		return renumberYAxisAction;
 	}
 
+	public ActionFactory.ExpandSelectionAction getExpandSelectionAllAction() {
+		if (expandSelectionAllAction == null) {
+			expandSelectionAllAction = ActionFactory.getInstance().createExpandSelectionAction(
+					plugInPort, ExpansionMode.ALL);
+		}
+		return expandSelectionAllAction;
+	}
+
+	public ActionFactory.ExpandSelectionAction getExpandSelectionImmediateAction() {
+		if (expandSelectionImmediateAction == null) {
+			expandSelectionImmediateAction = ActionFactory.getInstance().createExpandSelectionAction(
+					plugInPort, ExpansionMode.IMMEDIATE);
+		}
+		return expandSelectionImmediateAction;
+	}
+
+	public ActionFactory.ExpandSelectionAction getExpandSelectionSameTypeAction() {
+		if (expandSelectionSameTypeAction == null) {
+			expandSelectionSameTypeAction = ActionFactory.getInstance().createExpandSelectionAction(
+					plugInPort, ExpansionMode.SAME_TYPE);
+		}
+		return expandSelectionSameTypeAction;
+	}
+
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
@@ -173,6 +202,10 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(), EDIT_TITLE);
 		swingUI.injectMenuAction(getRenumberXAxisAction(), RENUMBER_TITLE);
 		swingUI.injectMenuAction(getRenumberYAxisAction(), RENUMBER_TITLE);
+		swingUI.injectSubmenu(EXPAND_TITLE, IconLoader.BranchAdd.getIcon(), EDIT_TITLE);
+		swingUI.injectMenuAction(getExpandSelectionAllAction(), EXPAND_TITLE);
+		swingUI.injectMenuAction(getExpandSelectionImmediateAction(), EXPAND_TITLE);
+		swingUI.injectMenuAction(getExpandSelectionSameTypeAction(), EXPAND_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
 		swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
 
@@ -209,6 +242,9 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		getEditSelectionAction().setEnabled(enabled);
 		getDeleteSelectionAction().setEnabled(enabled);
 		getGroupAction().setEnabled(enabled);
+		getExpandSelectionAllAction().setEnabled(enabled);
+		getExpandSelectionImmediateAction().setEnabled(enabled);
+		getExpandSelectionSameTypeAction().setEnabled(enabled);
 		getUngroupAction().setEnabled(enabled);
 		getSendToBackAction().setEnabled(enabled);
 		getBringToFrontAction().setEnabled(enabled);
