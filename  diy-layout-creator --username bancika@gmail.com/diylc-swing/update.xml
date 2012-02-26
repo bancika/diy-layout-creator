@@ -1,6 +1,6 @@
 <java.util.Arrays_-ArrayList>
-	<a class="com.diyfever.gui.update.Version-array">
-		<com.diyfever.gui.update.Version>
+	<a class="org.diylc.appframework.update.Version-array">
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>0</minor>
@@ -9,71 +9,71 @@
 			<releaseDate>2011-01-27 21:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Copy/paste between two instances of the application</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Parsing numerical values in countries that use comma as decimal separator</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Dragging sticky points affects selectability of objects</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Click is sometimes not registered while adding a new component</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed NPE when using default values</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow shape control points of curves to overlap</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Added DIL IC first pin indentation</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Added transparency to the potentiometer</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Reduced number of layers</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Import from v1 files can now read label and electrolytic capacitor components and trace/pad colors</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Added worker thread for longer file operation, so GUI doesn't freeze</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added right click menu on the canvas</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "send to back" and "bring to front" options</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added label component</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added image component</description>
-				</com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list
 			</url>
-		</com.diyfever.gui.update.Version>
-		<com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>0</minor>
@@ -82,62 +82,62 @@
 			<releaseDate>2011-01-30 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Curved trace does not show control points</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Potentiometer draws wrong at 180 degrees</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Reset component selection when tab is changed</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Resistor can show color bands</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Electrolytic capacitor has a new icon and new looks</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Solder pad can be square</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Added keyboard shortcuts to some menu options</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>V1 file importer can recognize hookup wire and transistors</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added support for creating and loading templates</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added TO-92 transistor</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added TO-220 transistor</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added LED</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added axial electrolytic capacitor</description>
-				</com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</com.diyfever.gui.update.Version>
-		<com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>0</minor>
@@ -146,62 +146,62 @@
 			<releaseDate>2011-02-07 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Copy/paste doesn't work for some components (potentiometer, transistor, etc)</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Resistor color codes are sometimes wrong</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Resistors can specify power handling</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Capacitors can specify voltage handling</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Fixed lead alignment issue</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better scaling, grid lines are more precise</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved performance</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added resistor schematic symbol</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added capacitor schematic symbol</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added eyelet/turret component</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added Marshall/Trainwreck style boards</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added few types of trimmers</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Configurable rendering quality to improve speed</description>
-				</com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</com.diyfever.gui.update.Version>
-		<com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>0</minor>
@@ -210,70 +210,70 @@
 			<releaseDate>2011-02-27 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Resistor and capacitor symbols are not clickable</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Boards sometimes render holes/pads on the edge</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Download link doesn't work on Mac</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Ruler ticks don't always match with the grid</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Micro symbol doesn't get exported to PDF</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>DIL IC now has more pin options</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Send to Back/Bring to Front are more flexible and renamed to match what they do</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Auto-save project and restore if app crashes</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added support for themes</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added tube socket</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Sticky points may be turned off</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Snap to Grid may be turned off</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Auto-create solder pads</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Auto-edit mode</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Continuous component creation</description>
-				</com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</com.diyfever.gui.update.Version>
-		<com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>0</minor>
@@ -282,34 +282,34 @@
 			<releaseDate>2011-03-03 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Sometimes it's not possible to click on a component, especially when layout is large</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Curved traces and wires can have 2, 3 and 4 control points</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Switchable wheel zoom</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Automatic standing resistors, capacitors and diodes</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Vertical vero board</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Label has editable font</description>
-				</com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</com.diyfever.gui.update.Version>
-		<com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>0</minor>
@@ -318,58 +318,58 @@
 			<releaseDate>2011-08-28 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Auto-created solder pads aren't assigned with default settings and name</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Component edit dialog allows changing property values even when they are not the same. Boxes are marked yellow to designate multi-valued state.</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Component edit dialog should show mutual properties when components of different types are selected (e.g. curved trace and straight trace width)</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ctrl+click should not clear selection when clicked on the canvas</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increased PNG export resolution</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Auto-increment component names when copy-pasting</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Do not attempt to write auto-save files if user does not have permissions to create files</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow zero ohm resistors</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Outline mode that resembles PCB silkscreen</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Double click on a component button in the toolbar selects all components of that type</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Renumber selected components by X or Y axis</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Recently used components in the toolbar for easy navigation</description>
-				</com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</com.diyfever.gui.update.Version>
-		<com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>1</minor>
@@ -378,38 +378,38 @@
 			<releaseDate>2012-02-01 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Selection sometimes highlights wrong component(s)</description>
-				</com.diyfever.gui.update.Change>
-			    <com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+			    <org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Renumber function sometimes doesn't work as expected</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increased PNG export resolution to 300dpi</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Select All should not include locked components</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better lead and label rendering when lead spacing is smaller than component body</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow more than 32 pins for IC</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Adjustable solder pad hole size</description>
-				</com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</com.diyfever.gui.update.Version>
-		<com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>2</minor>
@@ -418,42 +418,42 @@
 			<releaseDate>2012-02-19 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>		
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Select components from context menu even when they are under other components</description>
-				</com.diyfever.gui.update.Change>		
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ctrl+Shift toggles "Snap to Grid" option</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Perfboards can show hole coordinates</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Smarter resistor labels; try not to overlap label with color code bands</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved import from v1 file format</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Imperial ruler is divided to .1" instead of 1/4"</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow finer grid spacing up to 0.5mm (0.02")</description>
-				</com.diyfever.gui.update.Change>
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Do not hard-code voltage and power ratings</description>
-				</com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</com.diyfever.gui.update.Version>
-		<com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
 				<minor>3</minor>
@@ -462,16 +462,16 @@
 			<releaseDate>2012-02-25 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>		
-				<com.diyfever.gui.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Expand selection feature, useful for debugging</description>
-				</com.diyfever.gui.update.Change>	
-				<com.diyfever.gui.update.Change>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Limit length of text in the status bar using "and X more" suffix</description>
-				</com.diyfever.gui.update.Change>										
+				</org.diylc.appframework.update.Change>										
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</com.diyfever.gui.update.Version>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
