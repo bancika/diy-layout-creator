@@ -16,6 +16,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Theme;
@@ -128,6 +129,11 @@ public class ActionFactory {
 		return new DeleteSelectionAction(plugInPort);
 	}
 
+	public ExpandSelectionAction createExpandSelectionAction(IPlugInPort plugInPort,
+			ExpansionMode expansionMode) {
+		return new ExpandSelectionAction(plugInPort, expansionMode);
+	}
+
 	public SendToBackAction createSendToBackAction(IPlugInPort plugInPort) {
 		return new SendToBackAction(plugInPort);
 	}
@@ -142,11 +148,11 @@ public class ActionFactory {
 			boolean defaultValue) {
 		return new ConfigAction(plugInPort, title, configKey, defaultValue);
 	}
-	
+
 	public ThemeAction createThemeAction(IPlugInPort plugInPort, Theme theme) {
 		return new ThemeAction(plugInPort, theme);
 	}
-	
+
 	public RenumberAction createRenumberAction(IPlugInPort plugInPort, boolean xAxisFirst) {
 		return new RenumberAction(plugInPort, xAxisFirst);
 	}
@@ -756,6 +762,40 @@ public class ActionFactory {
 		}
 	}
 
+	public static class ExpandSelectionAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		private IPlugInPort plugInPort;
+		private ExpansionMode expansionMode;
+
+		public ExpandSelectionAction(IPlugInPort plugInPort, ExpansionMode expansionMode) {
+			super();
+			this.plugInPort = plugInPort;
+			this.expansionMode = expansionMode;
+			switch (expansionMode) {
+			case ALL:
+				putValue(AbstractAction.NAME, "All Connected");
+				break;
+			case IMMEDIATE:
+				putValue(AbstractAction.NAME, "Immediate Only");
+				break;
+			case SAME_TYPE:
+				putValue(AbstractAction.NAME, "Same Type Only");
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Expand Selection triggered: " + expansionMode);
+			plugInPort.expandSelection(expansionMode);
+		}
+	}
+
 	public static class SendToBackAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -846,7 +886,7 @@ public class ActionFactory {
 			plugInPort.setSelectedTheme(theme);
 		}
 	}
-	
+
 	public static class RenumberAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;

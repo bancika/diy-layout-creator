@@ -29,6 +29,7 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -49,6 +50,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private CanvasPanel canvasPanel;
 	private JPopupMenu popupMenu;
 	private JMenu selectionMenu;
+	private JMenu expandMenu;
 
 	private ActionFactory.CutAction cutAction;
 	private ActionFactory.CopyAction copyAction;
@@ -59,6 +61,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.UngroupAction ungroupAction;
 	private ActionFactory.SendToBackAction sendToBackAction;
 	private ActionFactory.BringToFrontAction bringToFrontAction;
+	private ActionFactory.ExpandSelectionAction expandSelectionAllAction;
+	private ActionFactory.ExpandSelectionAction expandSelectionImmediateAction;
+	private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
 
 	private IPlugInPort plugInPort;
 	private ISwingUI swingUI;
@@ -104,6 +109,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 						}
 						getEditSelectionAction().setEnabled(enabled);
 						getDeleteSelectionAction().setEnabled(enabled);
+						getExpandSelectionAllAction().setEnabled(enabled);
+						getExpandSelectionImmediateAction().setEnabled(enabled);
+						getExpandSelectionSameTypeAction().setEnabled(enabled);
 						getGroupAction().setEnabled(enabled);
 						getUngroupAction().setEnabled(enabled);
 						getSendToBackAction().setEnabled(enabled);
@@ -193,6 +201,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.add(getUngroupAction());
 			popupMenu.add(getSendToBackAction());
 			popupMenu.add(getBringToFrontAction());
+			popupMenu.add(getExpandMenu());
 			popupMenu.addSeparator();
 			popupMenu.add(ActionFactory.getInstance().createEditProjectAction(plugInPort));
 		}
@@ -205,6 +214,17 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			selectionMenu.setIcon(IconLoader.ElementsSelection.getIcon());
 		}
 		return selectionMenu;
+	}
+
+	public JMenu getExpandMenu() {
+		if (expandMenu == null) {
+			expandMenu = new JMenu("Expand Selection");
+			expandMenu.setIcon(IconLoader.BranchAdd.getIcon());		
+			expandMenu.add(getExpandSelectionAllAction());
+			expandMenu.add(getExpandSelectionImmediateAction());
+			expandMenu.add(getExpandSelectionSameTypeAction());
+		}
+		return expandMenu;
 	}
 
 	private void updateSelectionMenu(int x, int y) {
@@ -288,6 +308,30 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
 		}
 		return bringToFrontAction;
+	}
+
+	public ActionFactory.ExpandSelectionAction getExpandSelectionAllAction() {
+		if (expandSelectionAllAction == null) {
+			expandSelectionAllAction = ActionFactory.getInstance().createExpandSelectionAction(
+					plugInPort, ExpansionMode.ALL);
+		}
+		return expandSelectionAllAction;
+	}
+
+	public ActionFactory.ExpandSelectionAction getExpandSelectionImmediateAction() {
+		if (expandSelectionImmediateAction == null) {
+			expandSelectionImmediateAction = ActionFactory.getInstance()
+					.createExpandSelectionAction(plugInPort, ExpansionMode.IMMEDIATE);
+		}
+		return expandSelectionImmediateAction;
+	}
+
+	public ActionFactory.ExpandSelectionAction getExpandSelectionSameTypeAction() {
+		if (expandSelectionSameTypeAction == null) {
+			expandSelectionSameTypeAction = ActionFactory.getInstance()
+					.createExpandSelectionAction(plugInPort, ExpansionMode.SAME_TYPE);
+		}
+		return expandSelectionSameTypeAction;
 	}
 
 	@Override
