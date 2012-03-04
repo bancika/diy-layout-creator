@@ -131,7 +131,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 		g2d.setColor(BODY_COLOR);
 		g2d.fill(area);
 		g2d.setColor(BORDER_COLOR);
-		g2d.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		//g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g2d.draw(area);
 	}
 
