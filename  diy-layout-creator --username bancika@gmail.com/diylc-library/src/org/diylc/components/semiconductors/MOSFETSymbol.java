@@ -10,7 +10,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "MOSFET Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "BJT NPN and PNP transistor", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "MOSFET Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "MOSFET transistor", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class MOSFETSymbol extends AbstractTransistorSymbol {
 
 	private static final long serialVersionUID = 1L;
