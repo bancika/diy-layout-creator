@@ -113,6 +113,11 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 		drawCenteredText(g2d, display == Display.VALUE ? getValue() : getName(), x,
 				controlPoints[0].y + pinSpacing, HorizontalAlignment.CENTER,
 				VerticalAlignment.CENTER);
+		// Draw +/- markers
+		drawCenteredText(g2d, "-", controlPoints[0].x + pinSpacing, controlPoints[0].y,
+				HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+		drawCenteredText(g2d, "+", controlPoints[1].x + pinSpacing, controlPoints[1].y,
+				HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 	}
 
 	@Override
