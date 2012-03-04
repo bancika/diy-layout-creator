@@ -487,6 +487,10 @@
 					<description>IC Symbol</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Line connector</description>
+				</org.diylc.appframework.update.Change>					
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>IC component can display name or value</description>
 				</org.diylc.appframework.update.Change>	
