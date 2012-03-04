@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -50,6 +51,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	private Size pinSpacing = new Size(0.1d, SizeUnit.in);
 	private Size rowSpacing = new Size(0.3d, SizeUnit.in);
 	private Point[] controlPoints = new Point[] { new Point(0, 0) };
+	protected Display display = Display.NAME;
 	// new Point(0, pinSpacing.convertToPixels()),
 	// new Point(0, 2 * pinSpacing.convertToPixels()),
 	// new Point(0, 3 * pinSpacing.convertToPixels()),
@@ -119,6 +121,18 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		updateControlPoints();
 		// Reset body shape;
 		body = null;
+	}
+	
+	@EditableProperty
+	public Display getDisplay() {
+		if (display == null) {
+			display = Display.VALUE;
+		}
+		return display;
+	}
+	
+	public void setDisplay(Display display) {
+		this.display = display;
 	}
 
 	@Override
@@ -316,14 +330,15 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		}
 		g2d.setColor(finalLabelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
+		String label = display == Display.NAME ? getName() : getValue();
+		Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
 		int textHeight = (int) (rect.getHeight());
 		int textWidth = (int) (rect.getWidth());
 		// Center text horizontally and vertically
 		Rectangle bounds = mainArea.getBounds();
 		int x = bounds.x + (bounds.width - textWidth) / 2;
 		int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
-		g2d.drawString(getName(), x, y);
+		g2d.drawString(label, x, y);
 	}
 
 	@Override
