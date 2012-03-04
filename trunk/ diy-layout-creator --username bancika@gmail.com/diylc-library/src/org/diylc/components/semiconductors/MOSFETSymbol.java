@@ -26,10 +26,10 @@ public class MOSFETSymbol extends AbstractTransistorSymbol {
 
 			GeneralPath polyline = new GeneralPath();
 
-			polyline.moveTo(x + pinSpacing / 2, y - pinSpacing);
-			polyline.lineTo(x + pinSpacing / 2, y + pinSpacing);
-			polyline.moveTo(x + pinSpacing, y - pinSpacing);
-			polyline.lineTo(x + pinSpacing, y + pinSpacing);
+			polyline.moveTo(x + pinSpacing / 2, y - pinSpacing + 1);
+			polyline.lineTo(x + pinSpacing / 2, y + pinSpacing - 1);
+			polyline.moveTo(x + pinSpacing, y - pinSpacing + 1);
+			polyline.lineTo(x + pinSpacing, y + pinSpacing - 1);
 			body[0] = polyline;
 
 			polyline = new GeneralPath();
@@ -64,10 +64,12 @@ public class MOSFETSymbol extends AbstractTransistorSymbol {
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setColor(COLOR);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+		g2d.drawLine(width * 2 / 5, height / 4 + 1, width * 2 / 5, height * 3 / 4 - 1);
+		g2d.drawLine(width * 3 / 5, height / 4 + 1, width * 3 / 5, height * 3 / 4 - 1);
+
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-		g2d.drawLine(width / 5, height / 2, width / 2, height / 2);
-		g2d.drawLine(width / 2, height / 4, width / 2, height * 3 / 4);
-		g2d.drawLine(width * 3 / 5, height / 4, width * 3 / 5, height * 3 / 4);
+		g2d.drawLine(width / 5, height / 2, width * 2 / 5, height / 2);
 
 		g2d.drawLine(width * 4 / 5, 1, width * 4 / 5, height / 4);
 		g2d.drawLine(width * 4 / 5, height / 4, width * 3 / 5, height / 4);
