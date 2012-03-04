@@ -261,13 +261,15 @@ public class StatusBar extends JPanel implements IPlugIn {
 				statusText = "<html>Drag control point(s) of " + formattedNames + "</html>";
 			} else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
 				StringBuilder builder = new StringBuilder();
-				builder.append(Utils.toCommaString(selectedComponentNames.subList(0, 20)));
+				builder.append(Utils.toCommaString(selectedComponentNames.subList(0, Math.min(20,
+						selectedComponentNames.size()))));
 				if (selectedComponentNames.size() > 20) {
 					builder.append(" and " + (selectedComponentNames.size() - 20) + " more");
 				}
 				if (!stuckComponentNames.isEmpty()) {
 					builder.append(" (hold <b>Ctrl</b> and drag to unstuck from ");
-					builder.append(Utils.toCommaString(stuckComponentNames.subList(0, 5)));					
+					builder.append(Utils.toCommaString(stuckComponentNames.subList(0, Math.min(5,
+							stuckComponentNames.size()))));
 					if (stuckComponentNames.size() > 5) {
 						builder.append(" and " + (stuckComponentNames.size() - 5) + " more");
 					}
