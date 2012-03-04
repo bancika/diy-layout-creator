@@ -130,7 +130,13 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 		g2d.setColor(BODY_COLOR);
 		g2d.fill(area);
 		g2d.setColor(BORDER_COLOR);
-		//g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		g2d.setFont(LABEL_FONT.deriveFont(8f));
+		drawCenteredText(g2d, "-", 3 * margin, height / 3, HorizontalAlignment.CENTER,
+				VerticalAlignment.CENTER);
+		drawCenteredText(g2d, "+", 3 * margin + 1, height * 2 / 3, HorizontalAlignment.CENTER,
+				VerticalAlignment.CENTER);
+		// g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND,
+		// BasicStroke.JOIN_ROUND));
 		g2d.draw(area);
 	}
 
