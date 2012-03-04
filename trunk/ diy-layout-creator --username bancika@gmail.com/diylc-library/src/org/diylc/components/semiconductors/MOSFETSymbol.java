@@ -8,11 +8,14 @@ import java.awt.geom.GeneralPath;
 import org.diylc.common.ObjectCache;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "MOSFET Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "BJT NPN and PNP transistor", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class MOSFETSymbol extends AbstractTransistorSymbol {
 
 	private static final long serialVersionUID = 1L;
+	
+	protected FETPolarity polarity = FETPolarity.NEGATIVE;
 
 	public Shape[] getBody() {
 		if (body == null) {
@@ -44,7 +47,7 @@ public class MOSFETSymbol extends AbstractTransistorSymbol {
 			body[1] = polyline;
 
 			Polygon arrow;
-			if (polarity == TransistorPolarity.PNP) {
+			if (polarity == FETPolarity.NEGATIVE) {
 				arrow = new Polygon(new int[] { x + pinSpacing * 8 / 6, x + pinSpacing * 8 / 6,
 						x + pinSpacing * 12 / 6 }, new int[] { y + pinSpacing * 6 / 5,
 						y + pinSpacing * 4 / 5, y + pinSpacing }, 3);
@@ -71,5 +74,16 @@ public class MOSFETSymbol extends AbstractTransistorSymbol {
 		
 		g2d.drawLine(width * 4 / 5, height - 1, width * 4 / 5, height * 3 / 4);
 		g2d.drawLine(width * 4 / 5, height * 3 / 4, width * 3 / 5, height * 3 / 4);
+	}
+	
+	@EditableProperty
+	public FETPolarity getPolarity() {
+		return polarity;
+	}
+
+	public void setPolarity(FETPolarity polarity) {
+		this.polarity = polarity;
+		// Invalidate body
+		body = null;
 	}
 }

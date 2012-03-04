@@ -28,8 +28,7 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 
 	public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
 	public static Color COLOR = Color.black;
-
-	protected TransistorPolarity polarity = TransistorPolarity.NPN;
+	
 	protected String value = "";
 	protected Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0),
 			new Point(0, 0) };
@@ -142,17 +141,6 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 	@Override
 	public void setControlPoint(Point point, int index) {
 		controlPoints[index].setLocation(point);
-		// Invalidate body
-		body = null;
-	}
-
-	@EditableProperty
-	public TransistorPolarity getPolarity() {
-		return polarity;
-	}
-
-	public void setPolarity(TransistorPolarity polarity) {
-		this.polarity = polarity;
 		// Invalidate body
 		body = null;
 	}
