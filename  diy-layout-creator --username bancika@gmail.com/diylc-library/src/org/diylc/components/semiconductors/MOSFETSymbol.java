@@ -3,9 +3,7 @@ package org.diylc.components.semiconductors;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
-import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.core.IDIYComponent;
