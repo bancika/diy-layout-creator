@@ -10,11 +10,11 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "MOSFET Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "MOSFET transistor", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "MOSFET Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "MOSFET transistor schematic symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class MOSFETSymbol extends AbstractTransistorSymbol {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected FETPolarity polarity = FETPolarity.NEGATIVE;
 
 	public Shape[] getBody() {
@@ -30,14 +30,14 @@ public class MOSFETSymbol extends AbstractTransistorSymbol {
 			polyline.lineTo(x + pinSpacing / 2, y + pinSpacing);
 			polyline.moveTo(x + pinSpacing, y - pinSpacing);
 			polyline.lineTo(x + pinSpacing, y + pinSpacing);
-			polyline.moveTo(x + pinSpacing, y - pinSpacing);
-			polyline.lineTo(x + pinSpacing * 2, y - pinSpacing);
-			polyline.moveTo(x + pinSpacing, y + pinSpacing);
-			polyline.lineTo(x + pinSpacing * 2, y + pinSpacing);
 			body[0] = polyline;
 
 			polyline = new GeneralPath();
 
+			polyline.moveTo(x + pinSpacing, y - pinSpacing);
+			polyline.lineTo(x + pinSpacing * 2, y - pinSpacing);
+			polyline.moveTo(x + pinSpacing, y + pinSpacing);
+			polyline.lineTo(x + pinSpacing * 2, y + pinSpacing);
 			polyline.moveTo(x, y);
 			polyline.lineTo(x + pinSpacing / 2, y);
 			polyline.moveTo(x + pinSpacing * 2, y - pinSpacing * 2);
@@ -68,15 +68,15 @@ public class MOSFETSymbol extends AbstractTransistorSymbol {
 		g2d.drawLine(width / 5, height / 2, width / 2, height / 2);
 		g2d.drawLine(width / 2, height / 4, width / 2, height * 3 / 4);
 		g2d.drawLine(width * 3 / 5, height / 4, width * 3 / 5, height * 3 / 4);
-		
+
 		g2d.drawLine(width * 4 / 5, 1, width * 4 / 5, height / 4);
 		g2d.drawLine(width * 4 / 5, height / 4, width * 3 / 5, height / 4);
-		
+
 		g2d.drawLine(width * 4 / 5, height - 1, width * 4 / 5, height * 3 / 4);
 		g2d.drawLine(width * 4 / 5, height * 3 / 4, width * 3 / 5, height * 3 / 4);
 	}
-	
-	@EditableProperty
+
+	@EditableProperty(name = "Channel")
 	public FETPolarity getPolarity() {
 		return polarity;
 	}

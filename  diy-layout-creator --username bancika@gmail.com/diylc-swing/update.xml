@@ -489,7 +489,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>MOSFET Symbol</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>JFET Symbol</description>
+				</org.diylc.appframework.update.Change>						
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Line connector</description>
