@@ -473,5 +473,33 @@
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>4</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2012-02-25 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>IC Symbol</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>IC component can display name or value</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>"Index out of bounds" exception when selecting components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Application breaks when resistance is set to 0 ohms</description>
+				</org.diylc.appframework.update.Change>																	
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
