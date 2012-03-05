@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -45,7 +46,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 	protected Color bodyColor = BODY_COLOR;
 	protected Color borderColor = BORDER_COLOR;
 	protected Display display = Display.NAME;
-	transient private Shape body;
+	transient private Shape[] body;
 
 	public ICSymbol() {
 		super();
@@ -64,8 +65,11 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 					/ MAX_ALPHA));
 		}
+
+		Shape[] body = getBody();
+
 		g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
-		g2d.fill(getBody());
+		g2d.fill(body[0]);
 		g2d.setComposite(oldComposite);
 		Color finalBorderColor;
 		if (outlineMode) {
@@ -78,21 +82,10 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 		g2d.setColor(finalBorderColor);
 		// Draw contacts
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-		g2d.drawLine(controlPoints[0].x, controlPoints[0].y, controlPoints[0].x + pinSpacing / 2,
-				controlPoints[0].y);
-		g2d.drawLine(controlPoints[1].x, controlPoints[1].y, controlPoints[1].x + pinSpacing / 2,
-				controlPoints[1].y);
-		g2d.drawLine(controlPoints[2].x, controlPoints[2].y, controlPoints[2].x - pinSpacing / 2,
-				controlPoints[2].y);
-		if (icPointCount == ICPointCount._5) {
-			g2d.drawLine(controlPoints[3].x, controlPoints[3].y, controlPoints[3].x,
-					controlPoints[3].y + pinSpacing * 3 / 4);
-			g2d.drawLine(controlPoints[4].x, controlPoints[4].y, controlPoints[4].x,
-					controlPoints[4].y - pinSpacing * 3 / 4);
-		}
+		g2d.draw(body[1]);
 		// Draw triangle
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-		g2d.draw(getBody());
+		g2d.draw(body[0]);
 		// Draw label
 		g2d.setFont(LABEL_FONT);
 		Color finalLabelColor;
@@ -169,14 +162,31 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 		controlPoints[4].y = y + pinSpacing * 3;
 	}
 
-	public Shape getBody() {
+	public Shape[] getBody() {
 		if (body == null) {
+			body = new Shape[2];
 			int pinSpacing = (int) PIN_SPACING.convertToPixels();
 			int x = controlPoints[0].x;
 			int y = controlPoints[0].y;
-			body = new Polygon(new int[] { x + pinSpacing / 2, x + pinSpacing * 11 / 2,
+			Shape triangle = new Polygon(new int[] { x + pinSpacing / 2, x + pinSpacing * 11 / 2,
 					x + pinSpacing / 2 }, new int[] { y - pinSpacing * 3 / 2, y + pinSpacing,
 					y + pinSpacing * 7 / 2 }, 3);
+			body[0] = triangle;
+
+			GeneralPath polyline = new GeneralPath();
+			polyline.moveTo(controlPoints[0].x, controlPoints[0].y);
+			polyline.lineTo(controlPoints[0].x + pinSpacing / 2, controlPoints[0].y);
+			polyline.moveTo(controlPoints[1].x, controlPoints[1].y);
+			polyline.lineTo(controlPoints[1].x + pinSpacing / 2, controlPoints[1].y);
+			polyline.moveTo(controlPoints[2].x, controlPoints[2].y);
+			polyline.lineTo(controlPoints[2].x - pinSpacing / 2, controlPoints[2].y);
+			if (icPointCount == ICPointCount._5) {
+				polyline.moveTo(controlPoints[3].x, controlPoints[3].y);
+				polyline.lineTo(controlPoints[3].x, controlPoints[3].y + pinSpacing * 3 / 4);
+				polyline.moveTo(controlPoints[4].x, controlPoints[4].y);
+				polyline.lineTo(controlPoints[4].x, controlPoints[4].y - pinSpacing * 3 / 4);
+			}
+			body[1] = polyline;
 		}
 		return body;
 	}
@@ -216,6 +226,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 	public void setIcPointCount(ICPointCount icPointCount) {
 		this.icPointCount = icPointCount;
 		updateControlPoints();
+		body = null;
 	}
 
 	@EditableProperty(name = "Body")
