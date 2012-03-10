@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,7 +25,6 @@ import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.common.Display;
 import org.diylc.common.EventType;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractComponent;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.boards.AbstractBoard;
@@ -107,7 +110,8 @@ public class ProjectFileManager {
 		}
 		FileOutputStream fos;
 		fos = new FileOutputStream(fileName);
-		xStream.toXML(project, fos);
+		Writer writer = new OutputStreamWriter(fos, "UTF-8");
+		xStream.toXML(project, writer);
 		fos.close();
 		if (!isBackup) {
 			this.currentFileName = fileName;
@@ -536,7 +540,8 @@ public class ProjectFileManager {
 		Project project;
 		FileInputStream fis = new FileInputStream(fileName);
 		try {
-			project = (Project) xStream.fromXML(fis);
+			Reader reader = new InputStreamReader(fis, "UTF-8");  
+			project = (Project) xStream.fromXML(reader);
 		} catch (Exception e) {
 			LOG.warn("Could not open with the new xStream, trying the old one");
 			fis.close();
