@@ -111,7 +111,7 @@ public class ProjectFileManager {
 		FileOutputStream fos;
 		fos = new FileOutputStream(fileName);
 		Writer writer = new OutputStreamWriter(fos, "UTF-8");
-		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
 		xStream.toXML(project, writer);
 		fos.close();
 		if (!isBackup) {
