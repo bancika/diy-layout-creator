@@ -34,7 +34,7 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 			new Point(0, 0) };
 	protected Color color = COLOR;
 	protected Display display = Display.NAME;
-	protected Shape[] body;
+	transient protected Shape[] body;
 
 	public AbstractTransistorSymbol() {
 		super();

@@ -488,6 +488,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>BJT Symbol</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>MOSFET Symbol</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
@@ -506,6 +510,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>"Index out of bounds" exception logs when selecting components</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Loading files fails because encoding is not recognized</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Application breaks when resistance is set to 0 ohms</description>
