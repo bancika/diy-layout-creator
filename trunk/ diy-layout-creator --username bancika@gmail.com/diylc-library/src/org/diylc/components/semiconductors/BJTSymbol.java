@@ -28,8 +28,8 @@ public class BJTSymbol extends AbstractTransistorSymbol {
 
 			GeneralPath polyline = new GeneralPath();
 
-			polyline.moveTo(x + pinSpacing / 2, y - pinSpacing * 3 / 2);
-			polyline.lineTo(x + pinSpacing / 2, y + pinSpacing * 3 / 2);
+			polyline.moveTo(x + pinSpacing / 2, y - pinSpacing);
+			polyline.lineTo(x + pinSpacing / 2, y + pinSpacing);
 
 			body[0] = polyline;
 
@@ -37,32 +37,31 @@ public class BJTSymbol extends AbstractTransistorSymbol {
 
 			polyline.moveTo(x, y);
 			polyline.lineTo(x + pinSpacing / 2, y);
-			polyline.moveTo(x + pinSpacing / 2, y - pinSpacing * 7 / 8);
-			polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 3 / 2);
+			polyline.moveTo(x + pinSpacing / 2, y - pinSpacing / 2);
+			polyline.lineTo(x + pinSpacing * 2, y - pinSpacing);
 			polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 2);
-			polyline.moveTo(x + pinSpacing / 2, y + pinSpacing * 7 / 8);
-			polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 3 / 2);
+			polyline.moveTo(x + pinSpacing / 2, y + pinSpacing / 2);
+			polyline.lineTo(x + pinSpacing * 2, y + pinSpacing);
 			polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 2);
 			body[1] = polyline;
 
 			Area arrow;
 			double theta;
 			if (polarity == BJTPolarity.NPN) {
-				theta = Math.atan(5.0 / 12);
+				theta = Math.atan(1.0 / 3);
 				arrow = new Area(new Polygon(new int[] { x + pinSpacing, x + pinSpacing,
-						x + pinSpacing * 10 / 6 }, new int[] {
-						y - pinSpacing / 5 + pinSpacing * 7 / 8,
-						y + pinSpacing / 5 + pinSpacing * 7 / 8, y + pinSpacing * 7 / 8 }, 3));
+						x + pinSpacing * 10 / 6 }, new int[] { y - pinSpacing / 5 + pinSpacing / 2,
+						y + pinSpacing / 5 + pinSpacing / 2, y + pinSpacing / 2 }, 3));
 				arrow.transform(AffineTransform.getRotateInstance(theta, x + pinSpacing / 2, y
-						+ pinSpacing * 7 / 8));
+						+ pinSpacing / 2));
 			} else {
-				theta = -Math.atan(5.0 / 12);
+				theta = -Math.atan(1.0 / 3);
 				arrow = new Area(new Polygon(new int[] { x + pinSpacing, x + pinSpacing * 10 / 6,
-						x + pinSpacing * 10 / 6 }, new int[] { y - pinSpacing * 7 / 8,
-						y - pinSpacing / 5 - pinSpacing * 7 / 8,
-						y + pinSpacing / 5 - pinSpacing * 7 / 8 }, 3));
+						x + pinSpacing * 10 / 6 }, new int[] { y - pinSpacing / 2,
+						y - pinSpacing / 5 - pinSpacing / 2, y + pinSpacing / 5 - pinSpacing / 2 },
+						3));
 				arrow.transform(AffineTransform.getRotateInstance(theta, x + pinSpacing / 2, y
-						- pinSpacing * 7 / 8));
+						- pinSpacing / 2));
 			}
 			body[2] = arrow;
 		}
