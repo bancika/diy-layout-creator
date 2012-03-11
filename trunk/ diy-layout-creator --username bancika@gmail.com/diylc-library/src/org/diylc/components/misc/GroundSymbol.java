@@ -57,7 +57,7 @@ public class GroundSymbol extends AbstractComponent<Void> {
 		int margin = 3 * width / 32;
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.setColor(COLOR);
-		g2d.drawLine(width / 2, margin, width / 2, margin * 3 + height / 5);
+		g2d.drawLine(width / 2, margin * 2, width / 2, margin * 3 + height / 5);
 		for (int i = 0; i < 5; i++) {
 			g2d.drawLine(margin * (i + 1), margin * (3 + i) + height / 5, width - margin * (i + 1),
 					margin * (3 + i) + height / 5);
