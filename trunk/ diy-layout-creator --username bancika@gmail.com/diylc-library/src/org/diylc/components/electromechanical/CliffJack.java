@@ -244,8 +244,35 @@ public class CliffJack extends AbstractTransparentComponent<String> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		// TODO Auto-generated method stub
+		int bodyWidth = getClosestOdd(width * 3 / 5);
+		int tailWidth = getClosestOdd(width * 3 / 9);
 
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRoundRect((width - tailWidth) / 2, height / 2, tailWidth, height / 2 - 2 * 32
+				/ height, 3 * 32 / width, 4 * 32 / width);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRoundRect((width - tailWidth) / 2, height / 2, tailWidth, height / 2 - 2 * 32
+				/ height, 3 * 32 / width, 4 * 32 / width);
+
+		g2d.setColor(NUT_COLOR);
+		g2d.fillRoundRect((width - tailWidth) / 2, 2 * 32 / height, tailWidth, height / 2,
+				3 * 32 / width, 4 * 32 / width);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRoundRect((width - tailWidth) / 2, 2 * 32 / height, tailWidth, height / 2,
+				3 * 32 / width, 4 * 32 / width);
+
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRect((width - bodyWidth) / 2, height / 7 + 1, bodyWidth, height * 5 / 7);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRect((width - bodyWidth) / 2, height / 7 + 1, bodyWidth, height * 5 / 7);
+
+		g2d.setColor(METAL_COLOR);
+		int pinX1 = getClosestOdd((width - bodyWidth * 3 / 4) / 2);
+		int pinX2 = getClosestOdd((width + bodyWidth * 3 / 4) / 2) - 1;
+		g2d.drawLine(pinX1, width * 2 / 8, pinX1, width * 3 / 8);
+		g2d.drawLine(pinX1, width * 5 / 8, pinX1, width * 6 / 8);
+		g2d.drawLine(pinX2, width * 2 / 8, pinX2, width * 3 / 8);
+		g2d.drawLine(pinX2, width * 5 / 8, pinX2, width * 6 / 8);
 	}
 
 	@Override
