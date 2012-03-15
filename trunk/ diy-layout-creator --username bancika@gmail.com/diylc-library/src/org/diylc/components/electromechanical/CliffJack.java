@@ -39,7 +39,7 @@ public class CliffJack extends AbstractTransparentComponent<String> {
 	private static Size SPACING = new Size(0.3d, SizeUnit.in);
 	private static Size PIN_WIDTH = new Size(0.1d, SizeUnit.in);
 	private static Size PIN_THICKNESS = new Size(0.02d, SizeUnit.in);
-	private static Color BODY_COLOR = Color.decode("#555555");
+	private static Color BODY_COLOR = Color.decode("#666666");
 	private static Color NUT_COLOR = Color.decode("#999999");
 	private static Color BORDER_COLOR = Color.black;
 	private static Color LABEL_COLOR = Color.lightGray;
