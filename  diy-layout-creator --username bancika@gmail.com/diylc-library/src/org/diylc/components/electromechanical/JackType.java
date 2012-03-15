@@ -1,8 +1,8 @@
-package org.diylc.components.semiconductors;
+package org.diylc.components.electromechanical;
 
-public enum FETPolarity {
+public enum JackType {
 
-	NEGATIVE, POSITIVE;
+	MONO, STEREO;
 
 	@Override
 	public String toString() {

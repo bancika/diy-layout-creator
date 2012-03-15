@@ -532,6 +532,10 @@
 			<changes>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Cliff-style closed 1/4" jack</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Ground Symbol</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>

@@ -23,7 +23,7 @@ public class GroundSymbol extends AbstractComponent<Void> {
 	private static final long serialVersionUID = 1L;
 
 	public static Color COLOR = Color.black;
-	public static Size SIZE = new Size(0.1d, SizeUnit.in);
+	public static Size SIZE = new Size(0.15d, SizeUnit.in);
 
 	private Point point = new Point(0, 0);
 	private Color color = COLOR;

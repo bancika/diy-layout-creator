@@ -33,12 +33,11 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	private static Size MARGIN = new Size(0.08d, SizeUnit.in);
 	private static Size CIRCLE_SIZE = new Size(0.09d, SizeUnit.in);
 	private static Size LUG_WIDTH = new Size(0.060d, SizeUnit.in);
-	private static Size LUG_HEIGHT = new Size(0.03d, SizeUnit.in);
+	private static Size LUG_THICKNESS = new Size(0.02d, SizeUnit.in);
 
 	private static Color BODY_COLOR = Color.decode("#3299CC");
 	private static Color BORDER_COLOR = BODY_COLOR.darker();
-	private static Color CIRCLE_COLOR = Color.red;
-	private static Color LUG_COLOR = Color.decode("#00B2EE");
+	private static Color CIRCLE_COLOR = Color.decode("#FFFFAA");
 
 	protected Point[] controlPoints = new Point[] { new Point(0, 0) };
 	transient protected RoundRectangle2D body;
@@ -205,17 +204,17 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 		// so far.
 		drawingObserver.stopTracking();
 		// Draw lugs.
-		if (!outlineMode) {
-			int circleDiameter = getClosestOdd((int) CIRCLE_SIZE.convertToPixels());
-			int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
-			int lugHeight = getClosestOdd((int) LUG_HEIGHT.convertToPixels());
-			for (Point p : controlPoints) {
+		int circleDiameter = getClosestOdd((int) CIRCLE_SIZE.convertToPixels());
+		int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
+		int lugHeight = getClosestOdd((int) LUG_THICKNESS.convertToPixels());
+		for (Point p : controlPoints) {
+			if (!outlineMode) {
 				g2d.setColor(CIRCLE_COLOR);
 				g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter,
 						circleDiameter);
-				g2d.setColor(LUG_COLOR);
-				g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
 			}
+			g2d.setColor(METAL_COLOR);
+			g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
 		}
 	}
 
@@ -261,9 +260,12 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 		g2d.fillRoundRect(width / 4, 1, width / 2, height - 2, circleSize, circleSize);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRoundRect(width / 4, 1, width / 2, height - 2, circleSize, circleSize);
-		g2d.setColor(CIRCLE_COLOR);
 		for (int i = 1; i <= 3; i++) {
+			g2d.setColor(CIRCLE_COLOR);
 			g2d.fillOval(width / 2 - circleSize / 2, i * height / 4 - 3, circleSize, circleSize);
+			g2d.setColor(METAL_COLOR);
+			g2d.drawLine(width / 2 - circleSize / 2 + 1, i * height / 4 - 1, width / 2 + circleSize
+					/ 2 - 1, i * height / 4 - 1);
 		}
 	}
 }
