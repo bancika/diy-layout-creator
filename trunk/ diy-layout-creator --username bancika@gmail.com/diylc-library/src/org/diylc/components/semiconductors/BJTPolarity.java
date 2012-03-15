@@ -2,20 +2,10 @@ package org.diylc.components.semiconductors;
 
 public enum BJTPolarity {
 
-	NPN("NPN"), PNP("PNP");
-
-	private String title;
-
-	private BJTPolarity(String title) {
-		this.title = title;
-	}
-
-	public String getTitle() {
-		return title;
-	}
+	NPN, PNP;
 
 	@Override
 	public String toString() {
-		return title;
+		return name();
 	}
 }
