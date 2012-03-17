@@ -44,6 +44,7 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 
 	private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
 	private String value = "";
+	private DCPolarity polarity = DCPolarity.CENTER_NEGATIVE;
 	transient private Shape[] body;
 
 	public PlasticDCJack() {
@@ -156,13 +157,15 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 		g2d.setColor(METAL_COLOR.darker());
 		g2d.draw(body[3]);
 
-		if (!outlineMode) {
+		if (!outlineMode && getPolarity() != DCPolarity.NONE) {
 			int spacing = (int) SPACING.convertToPixels();
 			g2d.setColor(MARKING_COLOR);
 			g2d.setFont(LABEL_FONT.deriveFont(12f));
-			drawCenteredText(g2d, "+", controlPoints[0].x, controlPoints[0].y - spacing * 7 / 16,
+			drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-",
+					controlPoints[0].x, controlPoints[0].y - spacing * 7 / 16,
 					HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-			drawCenteredText(g2d, "_", controlPoints[2].x, controlPoints[2].y - spacing * 3 / 4,
+			drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+",
+					controlPoints[2].x, controlPoints[2].y - spacing * 3 / 4,
 					HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 		}
 	}
@@ -228,5 +231,17 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 	@Override
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	@EditableProperty
+	public DCPolarity getPolarity() {
+		if (polarity == null) {
+			polarity = DCPolarity.CENTER_NEGATIVE;
+		}
+		return polarity;
+	}
+
+	public void setPolarity(DCPolarity polarity) {
+		this.polarity = polarity;
 	}
 }
