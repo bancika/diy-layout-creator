@@ -31,8 +31,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic", description = "Cliff-style enclosed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
-public class CliffJack extends AbstractTransparentComponent<String> {
+@ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic", description = "Cliff-style closed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
+public class CliffJack1_4 extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,18 +42,18 @@ public class CliffJack extends AbstractTransparentComponent<String> {
 	private static Color BODY_COLOR = Color.decode("#666666");
 	private static Color NUT_COLOR = Color.decode("#999999");
 	private static Color BORDER_COLOR = Color.black;
-	private static Color LABEL_COLOR = Color.lightGray;
-	private static Size BODY_WIDTH = new Size(0.8d, SizeUnit.in);
-	private static Size BODY_LENGTH = new Size(1d, SizeUnit.in);
+	private static Color LABEL_COLOR = Color.white;
+	private static Size BODY_WIDTH = new Size(3/4d, SizeUnit.in);
+	private static Size BODY_LENGTH = new Size(0.9d, SizeUnit.in);
 	private static Size TAIL_LENGTH = new Size(0.1d, SizeUnit.in);
 
 	private Point[] controlPoints = new Point[] { new Point(0, 0) };
 	private JackType type = JackType.MONO;
 	private Orientation orientation = Orientation.DEFAULT;
-	private Shape[] body;
+	transient private Shape[] body;
 	private String value = "";
 
-	public CliffJack() {
+	public CliffJack1_4() {
 		super();
 		updateControlPoints();
 	}
@@ -209,8 +209,21 @@ public class CliffJack extends AbstractTransparentComponent<String> {
 			// g2d.setPaint(oldPaint);
 			g2d.setComposite(oldComposite);
 		}
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR);
+		
+		Color finalBorderColor;
+		if (outlineMode) {
+			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			finalBorderColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
+					.getOutlineColor();
+		} else {
+			finalBorderColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+					: BORDER_COLOR;
+		}
+		
+		g2d.setColor(finalBorderColor);
 		for (int i = 0; i < body.length - 1; i++) {
 			g2d.draw(body[i]);
 		}
@@ -249,17 +262,17 @@ public class CliffJack extends AbstractTransparentComponent<String> {
 
 		g2d.setColor(BODY_COLOR);
 		g2d.fillRoundRect((width - tailWidth) / 2, height / 2, tailWidth, height / 2 - 2 * 32
-				/ height, 3 * 32 / width, 4 * 32 / width);
+				/ height, 4 * 32 / width, 4 * 32 / width);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRoundRect((width - tailWidth) / 2, height / 2, tailWidth, height / 2 - 2 * 32
-				/ height, 3 * 32 / width, 4 * 32 / width);
+				/ height, 4 * 32 / width, 4 * 32 / width);
 
 		g2d.setColor(NUT_COLOR);
 		g2d.fillRoundRect((width - tailWidth) / 2, 2 * 32 / height, tailWidth, height / 2,
-				3 * 32 / width, 4 * 32 / width);
+				4 * 32 / width, 4 * 32 / width);
 		g2d.setColor(BORDER_COLOR);
 		g2d.drawRoundRect((width - tailWidth) / 2, 2 * 32 / height, tailWidth, height / 2,
-				3 * 32 / width, 4 * 32 / width);
+				4 * 32 / width, 4 * 32 / width);
 
 		g2d.setColor(BODY_COLOR);
 		g2d.fillRect((width - bodyWidth) / 2, height / 7 + 1, bodyWidth, height * 5 / 7);
