@@ -11,8 +11,10 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -36,8 +38,9 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 	private static Size SPACING = new Size(0.1d, SizeUnit.in);
 	private static Size DIAMETER = new Size(0.5d, SizeUnit.in);
 	private static Color BODY_COLOR = Color.decode("#666666");
-	private static Color PHENOLIC_COLOR = Color.decode("#E28F00");
+	private static Color PHENOLIC_COLOR = Color.decode("#CD8500");
 	private static Color BORDER_COLOR = Color.black;
+	private static Color MARKING_COLOR = Color.lightGray;
 
 	private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
 	private String value = "";
@@ -152,6 +155,14 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 		g2d.fill(body[3]);
 		g2d.setColor(METAL_COLOR.darker());
 		g2d.draw(body[3]);
+
+		int spacing = (int) SPACING.convertToPixels();
+		g2d.setColor(MARKING_COLOR);
+		g2d.setFont(LABEL_FONT.deriveFont(12f));
+		drawCenteredText(g2d, "+", controlPoints[0].x, controlPoints[0].y - spacing * 7 / 16,
+				HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+		drawCenteredText(g2d, "_", controlPoints[2].x, controlPoints[2].y - spacing * 3 / 4,
+				HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 	}
 
 	@Override
