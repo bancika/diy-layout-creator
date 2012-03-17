@@ -527,7 +527,7 @@
 				<minor>5</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2012-03-09 20:00:00.000 CET</releaseDate>
+			<releaseDate>2012-03-15 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>		
 				<org.diylc.appframework.update.Change>
@@ -542,6 +542,22 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ground Symbol</description>
 				</org.diylc.appframework.update.Change>					
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>6</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2012-03-15 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Plastic DC jack</description>
+				</org.diylc.appframework.update.Change>									
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
