@@ -156,13 +156,15 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 		g2d.setColor(METAL_COLOR.darker());
 		g2d.draw(body[3]);
 
-		int spacing = (int) SPACING.convertToPixels();
-		g2d.setColor(MARKING_COLOR);
-		g2d.setFont(LABEL_FONT.deriveFont(12f));
-		drawCenteredText(g2d, "+", controlPoints[0].x, controlPoints[0].y - spacing * 7 / 16,
-				HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-		drawCenteredText(g2d, "_", controlPoints[2].x, controlPoints[2].y - spacing * 3 / 4,
-				HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+		if (!outlineMode) {
+			int spacing = (int) SPACING.convertToPixels();
+			g2d.setColor(MARKING_COLOR);
+			g2d.setFont(LABEL_FONT.deriveFont(12f));
+			drawCenteredText(g2d, "+", controlPoints[0].x, controlPoints[0].y - spacing * 7 / 16,
+					HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+			drawCenteredText(g2d, "_", controlPoints[2].x, controlPoints[2].y - spacing * 3 / 4,
+					HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+		}
 	}
 
 	@Override
