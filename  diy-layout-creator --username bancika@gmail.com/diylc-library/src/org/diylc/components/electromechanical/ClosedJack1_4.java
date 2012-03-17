@@ -291,8 +291,8 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
 
 	@Override
 	public void setControlPoint(Point point, int index) {
-		controlPoints[index] = point;
-		updateControlPoints();
+		controlPoints[index].setLocation(point);
+		body = null;
 	}
 
 	@Override
