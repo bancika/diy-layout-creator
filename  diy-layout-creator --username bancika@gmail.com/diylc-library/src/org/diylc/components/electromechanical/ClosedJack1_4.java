@@ -204,25 +204,11 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
 						/ MAX_ALPHA));
 			}
 			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
-			// GradientPaint gradient;
-			// if (orientation == Orientation.DEFAULT || orientation ==
-			// Orientation._180) {
-			// gradient = new GradientPaint(bounds.x, bounds.y, BORDER_COLOR,
-			// bounds.x, bounds.y
-			// + bounds.height / 2, BODY_COLOR, true);
-			// } else {
-			// gradient = new GradientPaint(bounds.x, bounds.y, BORDER_COLOR,
-			// bounds.x
-			// + bounds.width / 2, bounds.y, BODY_COLOR, true);
-			// }
-			// Paint oldPaint = g2d.getPaint();
-			// g2d.setPaint(gradient);
 			g2d.fill(body[0]);
 			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : SHAFT_COLOR);
 			g2d.fill(body[1]);
 			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : METAL_COLOR);
 			g2d.fill(body[3]);
-			// g2d.setPaint(oldPaint);
 			g2d.setComposite(oldComposite);
 		}
 
