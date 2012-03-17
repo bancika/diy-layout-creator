@@ -56,7 +56,7 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 4, 1);
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 5, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
@@ -1204,10 +1204,11 @@ public class Presenter implements IPlugInPort {
 			// Skip already selected components or ones that cannot be stuck to
 			// other components.
 			Area area = drawingManager.getComponentArea(component);
-			if (newSelection.contains(component) || !component.isControlPointSticky(0) || area == null)
+			if (newSelection.contains(component) || !component.isControlPointSticky(0)
+					|| area == null)
 				continue;
 			boolean matches = false;
-			for (IDIYComponent<?> selectedComponent : this.selectedComponents) {				
+			for (IDIYComponent<?> selectedComponent : this.selectedComponents) {
 				Area selectedArea = drawingManager.getComponentArea(selectedComponent);
 				if (selectedArea == null)
 					continue;
