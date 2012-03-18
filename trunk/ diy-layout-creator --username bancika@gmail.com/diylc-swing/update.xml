@@ -555,6 +555,10 @@
 			<name></name>
 			<changes>		
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Fonts are exported to PDF</description>
+				</org.diylc.appframework.update.Change>					
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Plastic DC jack</description>
 				</org.diylc.appframework.update.Change>									
