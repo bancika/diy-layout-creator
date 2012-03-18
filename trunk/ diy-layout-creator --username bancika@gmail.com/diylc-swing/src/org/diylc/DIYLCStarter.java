@@ -24,7 +24,7 @@ import org.diylc.swing.gui.TemplateDialog;
  */
 public class DIYLCStarter {
 
-	private static final Logger LOG = Logger.getLogger(Presenter.class);
+	private static final Logger LOG = Logger.getLogger(DIYLCStarter.class);
 
 	/**
 	 * @param args
@@ -38,8 +38,10 @@ public class DIYLCStarter {
 		} catch (Exception e) {
 			LOG.error("Could not initialize log4j configuration", e);
 		}
-		
-		LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by " + System.getProperty("java.vm.vendor"));
+
+		LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
+				+ System.getProperty("java.vm.vendor"));
+		LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 
 		LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
 
