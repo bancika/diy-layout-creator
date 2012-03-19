@@ -177,8 +177,6 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
 			Project project, IDrawingObserver drawingObserver) {
 		Shape[] body = getBody();
 
-		// Rectangle bounds = body.getBounds();
-
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
@@ -187,26 +185,12 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
 						/ MAX_ALPHA));
 			}
 			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
-			// GradientPaint gradient;
-			// if (orientation == Orientation.DEFAULT || orientation ==
-			// Orientation._180) {
-			// gradient = new GradientPaint(bounds.x, bounds.y, BORDER_COLOR,
-			// bounds.x, bounds.y
-			// + bounds.height / 2, BODY_COLOR, true);
-			// } else {
-			// gradient = new GradientPaint(bounds.x, bounds.y, BORDER_COLOR,
-			// bounds.x
-			// + bounds.width / 2, bounds.y, BODY_COLOR, true);
-			// }
-			// Paint oldPaint = g2d.getPaint();
-			// g2d.setPaint(gradient);
 			for (int i = 0; i < body.length - 1; i++) {
 				// Nut is brighter colored.
 				if (i == body.length - 2)
 					g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : NUT_COLOR);
 				g2d.fill(body[i]);
 			}
-			// g2d.setPaint(oldPaint);
 			g2d.setComposite(oldComposite);
 		}
 		

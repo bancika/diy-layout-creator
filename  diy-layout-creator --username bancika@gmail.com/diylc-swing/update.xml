@@ -561,7 +561,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Plastic DC jack</description>
-				</org.diylc.appframework.update.Change>									
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Humbucker Pickup</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
