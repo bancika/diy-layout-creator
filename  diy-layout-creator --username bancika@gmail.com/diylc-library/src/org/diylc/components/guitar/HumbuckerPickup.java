@@ -31,7 +31,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Humbucker Pickup", category = "Guitar", author = "Branislav Stojkovic", description = "PAF-style humbucker guitar pickup", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PCKP")
+@ComponentDescriptor(name = "Humbucker Pickup", category = "Guitar", author = "Branislav Stojkovic", description = "PAF-style humbucker guitar pickup", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP")
 public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
@@ -188,8 +188,22 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		// TODO Auto-generated method stub
+		int baseWidth = 16 * width / 32;
+		int baseLength = 27 * width / 32;
 
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRoundRect((width - baseWidth / 4) / 2, 0, baseWidth / 4, height - 1,
+				2 * width / 32, 2 * width / 32);
+		g2d.setColor(BODY_COLOR.darker());
+		g2d.drawRoundRect((width - baseWidth / 4) / 2, 0, baseWidth / 4, height - 1,
+				2 * width / 32, 2 * width / 32);
+
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth,
+				baseLength, 4 * width / 32, 4 * width / 32);
+		g2d.setColor(BODY_COLOR.darker());
+		g2d.drawRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth,
+				baseLength, 4 * width / 32, 4 * width / 32);
 	}
 
 	@Override
