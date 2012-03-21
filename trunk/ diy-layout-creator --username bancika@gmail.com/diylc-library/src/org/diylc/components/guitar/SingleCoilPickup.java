@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -31,24 +32,22 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Humbucker Pickup", category = "Guitar", author = "Branislav Stojkovic", description = "PAF-style humbucker guitar pickup", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP")
-public class HumbuckerPickup extends AbstractTransparentComponent<String> {
+@ComponentDescriptor(name = "Strat Single Coil Pickup", category = "Guitar", author = "Branislav Stojkovic", description = "Strat-style single coil guitar pickup", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP")
+public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static Color BODY_COLOR = Color.lightGray;
-	private static Color POINT_COLOR = Color.darkGray;
-	private static Size WIDTH = new Size(36.5d, SizeUnit.mm);
-	private static Size LENGTH = new Size(68.58d, SizeUnit.mm);
-	private static Size LIP_WIDTH = new Size(12.7d, SizeUnit.mm);
-	private static Size LIP_LENGTH = new Size(7.9d, SizeUnit.mm);
-	private static Size EDGE_RADIUS = new Size(4d, SizeUnit.mm);
-	private static Size POINT_MARGIN = new Size(5d, SizeUnit.mm);
+	private static Color BODY_COLOR = Color.darkGray;
+	private static Color POINT_COLOR = Color.lightGray;
+	private static Size WIDTH = new Size(15.5d, SizeUnit.mm);
+	private static Size LENGTH = new Size(83.82d, SizeUnit.mm);
+	private static Size LIP_WIDTH = new Size(5d, SizeUnit.mm);
+	private static Size LIP_LENGTH = new Size(20d, SizeUnit.mm);
 	private static Size POINT_SIZE = new Size(3d, SizeUnit.mm);
-	private static Size LIP_HOLE_SIZE = new Size(1.5d, SizeUnit.mm);
+	private static Size HOLE_SIZE = new Size(2d, SizeUnit.mm);
+	private static Size HOLE_MARGIN = new Size(4d, SizeUnit.mm);
 	private static Size POLE_SIZE = new Size(3d, SizeUnit.mm);
-	private static Size POLE_SPACING = new Size(10.1d, SizeUnit.mm);
-	private static Size COIL_SPACING = new Size(18d, SizeUnit.mm);
+	private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);
 
 	private String value = "";
 	private Point controlPoint = new Point(0, 0);
@@ -70,9 +69,8 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 			}
 			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
 			g2d.fill(body[0]);
-			g2d.fill(body[1]);
 			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-			g2d.fill(body[2]);
+			g2d.fill(body[1]);
 			g2d.setComposite(oldComposite);
 		}
 
@@ -85,15 +83,14 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 					.getOutlineColor();
 		} else {
 			finalBorderColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color.darker();
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color
+					.brighter();
 		}
 
 		g2d.setColor(finalBorderColor);
 		g2d.draw(body[0]);
-		g2d.draw(body[1]);
 		if (!outlineMode) {
-			g2d.setColor(color.darker());
-			g2d.draw(body[3]);
+			g2d.draw(body[2]);
 		}
 
 		Color finalLabelColor;
@@ -117,7 +114,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
 	public Shape[] getBody() {
 		if (body == null) {
-			body = new Shape[4];
+			body = new Shape[3];
 
 			int x = controlPoint.x;
 			int y = controlPoint.y;
@@ -125,44 +122,37 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 			int length = (int) LENGTH.convertToPixels();
 			int lipWidth = (int) LIP_WIDTH.convertToPixels();
 			int lipLength = (int) LIP_LENGTH.convertToPixels();
-			int edgeRadius = (int) EDGE_RADIUS.convertToPixels();
-			int pointMargin = (int) POINT_MARGIN.convertToPixels();
 			int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
-			int lipHoleSize = getClosestOdd(LIP_HOLE_SIZE.convertToPixels());
+			int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
+			int holeMargin = getClosestOdd(HOLE_MARGIN.convertToPixels());
 
-			body[0] = new Area(new RoundRectangle2D.Double(x + pointMargin - length, y
-					- pointMargin, length, width, edgeRadius, edgeRadius));
-			body[1] = new Area(new RoundRectangle2D.Double(x + pointMargin - length - lipLength, y
-					- pointMargin + width / 2 - lipWidth / 2, length + 2 * lipLength, lipWidth,
-					edgeRadius / 2, edgeRadius / 2));
-			Area lipArea = new Area(body[1]);
-			lipArea.subtract(new Area(body[0]));
-			lipArea.subtract(new Area(new Ellipse2D.Double(
-					x + pointMargin - length - lipLength / 2, y - pointMargin + width / 2
-							- lipHoleSize / 2, lipHoleSize, lipHoleSize)));
-			lipArea.subtract(new Area(new Ellipse2D.Double(x + pointMargin + lipLength / 2, y
-					- pointMargin + width / 2 - lipHoleSize / 2, lipHoleSize, lipHoleSize)));
-			body[1] = lipArea;
-			body[2] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2,
+			Area mainArea = new Area(new RoundRectangle2D.Double(x - length / 2, y - lipWidth / 2
+					- width, length, width, width, width));
+			mainArea.add(new Area(new Polygon(new int[] { x - length / 2 + width / 2,
+					x + length / 2 - width / 2, x + lipLength / 2, x - lipLength / 2 }, new int[] {
+					y - lipWidth / 2, y - lipWidth / 2, y + lipWidth / 2, y + lipWidth / 2 }, 4)));
+			// Cutout holes
+			mainArea.subtract(new Area(new Ellipse2D.Double(x - length / 2 + holeMargin - holeSize
+					/ 2, y - lipWidth / 2 - width / 2 - holeSize / 2, holeSize, holeSize)));
+			mainArea.subtract(new Area(new Ellipse2D.Double(x + length / 2 - holeMargin - holeSize
+					/ 2, y - lipWidth / 2 - width / 2 - holeSize / 2, holeSize, holeSize)));
+
+			body[0] = mainArea;
+
+			body[1] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2,
 					pointSize, pointSize));
 
 			int poleSize = (int) POLE_SIZE.convertToPixels();
 			int poleSpacing = (int) POLE_SPACING.convertToPixels();
-			int coilSpacing = (int) COIL_SPACING.convertToPixels();
-			int coilMargin = (width - coilSpacing) / 2;
 			int poleMargin = (length - poleSpacing * 5) / 2;
 			Area poleArea = new Area();
 			for (int i = 0; i < 6; i++) {
-				Ellipse2D pole = new Ellipse2D.Double(x + pointMargin - length + poleMargin + i
-						* poleSpacing - poleSize / 2, y - pointMargin + coilMargin - poleSize / 2,
-						poleSize, poleSize);
-				poleArea.add(new Area(pole));
-				pole = new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing
-						- poleSize / 2, y - pointMargin + width - coilMargin - poleSize / 2,
-						poleSize, poleSize);
+				Ellipse2D pole = new Ellipse2D.Double(
+						x - length / 2 + poleMargin + i * poleSpacing, y - lipWidth / 2 - width / 2
+								- poleSize / 2, poleSize, poleSize);
 				poleArea.add(new Area(pole));
 			}
-			body[3] = poleArea;
+			body[2] = poleArea;
 
 			// Rotate if needed
 			if (orientation != Orientation.DEFAULT) {
@@ -190,22 +180,18 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		int baseWidth = 16 * width / 32;
-		int baseLength = 27 * width / 32;
-
+		int bodyWidth = 8 * width / 32;
+		int bodyLength = 30 * width / 32;
 		g2d.setColor(BODY_COLOR);
-		g2d.fillRoundRect((width - baseWidth / 4) / 2, 0, baseWidth / 4, height - 1,
-				2 * width / 32, 2 * width / 32);
-		g2d.setColor(BODY_COLOR.darker());
-		g2d.drawRoundRect((width - baseWidth / 4) / 2, 0, baseWidth / 4, height - 1,
-				2 * width / 32, 2 * width / 32);
-
-		g2d.setColor(BODY_COLOR);
-		g2d.fillRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth,
-				baseLength, 4 * width / 32, 4 * width / 32);
-		g2d.setColor(BODY_COLOR.darker());
-		g2d.drawRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth,
-				baseLength, 4 * width / 32, 4 * width / 32);
+		g2d.fillRoundRect((width - bodyWidth) / 2, (height - bodyLength) / 2, bodyWidth,
+				bodyLength, bodyWidth, bodyWidth);
+		g2d.fillPolygon(new int[] { width * 9 / 16, width * 9 / 16, width * 11 / 16, width * 11 / 16 },
+				new int[] { (height - bodyLength) / 2, (height + bodyLength) / 2, height * 5 / 8,
+						height * 3 / 8 }, 4);
+		
+		g2d.setColor(Color.lightGray);
+		g2d.drawLine(width / 2, 4 * width / 32, width / 2, 4 * width / 32);
+		g2d.drawLine(width / 2, height - 4 * width / 32, width / 2, height - 4 * width / 32);
 	}
 
 	@Override
