@@ -564,7 +564,11 @@
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Humbucker Pickup</description>
+					<description>Humbucker pickup</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Single coil pickup</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
