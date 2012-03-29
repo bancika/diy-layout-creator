@@ -56,7 +56,7 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 7, 0);
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 8, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
@@ -1034,13 +1034,18 @@ public class Presenter implements IPlugInPort {
 			int index = currentProject.getComponents().indexOf(component);
 			if (index < 0) {
 				LOG.warn("Component not found in the project: " + component.getName());
-			} else if (index > 0) {
-				IDIYComponent<?> componentBefore = currentProject.getComponents().get(index - 1);
-				ComponentType componentBeforeType = ComponentProcessor.getInstance()
-						.extractComponentTypeFrom(
-								(Class<? extends IDIYComponent<?>>) componentBefore.getClass());
-				Collections.swap(currentProject.getComponents(), index, index - 1);
-			}
+			} else
+				while (index > 0) {
+					IDIYComponent<?> componentBefore = currentProject.getComponents()
+							.get(index - 1);
+					ComponentType componentBeforeType = ComponentProcessor.getInstance()
+							.extractComponentTypeFrom(
+									(Class<? extends IDIYComponent<?>>) componentBefore.getClass());
+					if (componentBeforeType.getZOrder() < componentType.getZOrder())
+						break;
+					Collections.swap(currentProject.getComponents(), index, index - 1);
+					index--;
+				}
 		}
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
@@ -1061,13 +1066,17 @@ public class Presenter implements IPlugInPort {
 			int index = currentProject.getComponents().indexOf(component);
 			if (index < 0) {
 				LOG.warn("Component not found in the project: " + component.getName());
-			} else if (index < currentProject.getComponents().size() - 1) {
-				IDIYComponent<?> componentAfter = currentProject.getComponents().get(index + 1);
-				ComponentType componentAfterType = ComponentProcessor.getInstance()
-						.extractComponentTypeFrom(
-								(Class<? extends IDIYComponent<?>>) componentAfter.getClass());
-				Collections.swap(currentProject.getComponents(), index, index + 1);
-			}
+			} else
+				while (index < currentProject.getComponents().size() - 1) {
+					IDIYComponent<?> componentAfter = currentProject.getComponents().get(index + 1);
+					ComponentType componentAfterType = ComponentProcessor.getInstance()
+							.extractComponentTypeFrom(
+									(Class<? extends IDIYComponent<?>>) componentAfter.getClass());
+					if (componentAfterType.getZOrder() > componentType.getZOrder())
+						break;
+					Collections.swap(currentProject.getComponents(), index, index + 1);
+					index++;
+				}
 		}
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, cloner
