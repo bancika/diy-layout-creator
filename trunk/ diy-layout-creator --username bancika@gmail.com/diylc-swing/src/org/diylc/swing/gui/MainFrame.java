@@ -360,7 +360,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 					fileName = "Untitled";
 				}
 				String modified = (Boolean) params[1] ? " (modified)" : "";
-				setTitle(String.format("DIYLC %s beta - %s %s", plugInPort
+				setTitle(String.format("DIYLC %s - %s %s", plugInPort
 						.getCurrentVersionNumber(), fileName, modified));
 			}
 		}
