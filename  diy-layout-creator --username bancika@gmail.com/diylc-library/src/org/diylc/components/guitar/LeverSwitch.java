@@ -45,7 +45,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
 	private static Size HOLE_SIZE = new Size(2d, SizeUnit.mm);
 	private static Size HOLE_SPACING = new Size(41.2d, SizeUnit.mm);
 	private static Size TERMINAL_WIDTH = new Size(2d, SizeUnit.mm);
-	private static Size TERMINAL_LENGTH = new Size(4d, SizeUnit.mm);
+	private static Size TERMINAL_LENGTH = new Size(0.1d, SizeUnit.in);
 	private static Size TERMINAL_SPACING = new Size(0.1d, SizeUnit.in);
 
 	private String value = "";
