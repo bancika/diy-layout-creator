@@ -3,6 +3,7 @@ package org.diylc.presenter;
 import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -172,15 +173,19 @@ public class InstantiationManager {
 	public String createUniqueName(ComponentType componentType, Project currentProject) {
 		int i = 0;
 		boolean exists = true;
+		List<IDIYComponent<?>> components = currentProject.getComponents();
+		String[] takenNames = new String[components.size()];
+		for (int j = 0; j < currentProject.getComponents().size(); j++) {
+			takenNames[j] = components.get(i).getName();
+		}
+		Arrays.sort(takenNames);
 		while (exists) {
 			i++;
 			String name = componentType.getNamePrefix() + i;
 			exists = false;
-			for (IDIYComponent<?> c : currentProject.getComponents()) {
-				if (c.getName().equals(name)) {
-					exists = true;
-					break;
-				}
+			if (Arrays.binarySearch(takenNames, name) >= 0) {
+				exists = true;
+				break;
 			}
 		}
 		return componentType.getNamePrefix() + i;
