@@ -144,6 +144,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			g.drawImage(bufferImage, 0, 0, this);
 			// bufferImage.flush();
 		}
+		g2d.dispose();
 	}
 
 	@Override
