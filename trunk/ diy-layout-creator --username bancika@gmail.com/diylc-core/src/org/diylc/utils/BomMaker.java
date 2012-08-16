@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.diylc.common.ComponentType;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.BomPolicy;
+import org.diylc.presenter.ComponentProcessor;
 
 public class BomMaker {
 
@@ -26,15 +29,27 @@ public class BomMaker {
 	public List<BomEntry> createBom(List<IDIYComponent<?>> components) {
 		Map<String, BomEntry> entryMap = new HashMap<String, BomEntry>();
 		for (IDIYComponent<?> component : components) {
+			ComponentType type = ComponentProcessor.getInstance()
+					.extractComponentTypeFrom(
+							(Class<? extends IDIYComponent<?>>) component
+									.getClass());
+			if (type.getBomPolicy() == BomPolicy.NEVER_SHOW)
+				continue;
 			String name = component.getName();
-			String value = component.getValue() == null ? null : component.getValue().toString();
+			String value = component.getValue() == null ? null : component
+					.getValue().toString();
 			if ((name != null) && (value != null)) {
-				String key = name + "|" + value;
+				String key = type.getName() + "|" + value;
 				if (entryMap.containsKey(key)) {
 					BomEntry entry = entryMap.get(key);
 					entry.setQuantity(entry.getQuantity() + 1);
+					if (type.getBomPolicy() == BomPolicy.SHOW_ALL_NAMES) {
+						entry.setName(entry.getName() + ", " + name);
+					}				
 				} else {
-					entryMap.put(key, new BomEntry(name, value, 1));
+					entryMap.put(key, new BomEntry(type.getName(), type
+							.getBomPolicy() == BomPolicy.SHOW_ALL_NAMES ? name
+							: type.getName(), value, 1));
 				}
 			}
 		}

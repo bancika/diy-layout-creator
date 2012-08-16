@@ -20,6 +20,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IPropertyValidator;
+import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
@@ -70,6 +71,7 @@ public class ComponentProcessor {
 		Icon icon;
 		double zOrder;
 		boolean stretchable;
+		BomPolicy bomPolicy;
 		if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
 			ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
 			name = annotation.name();
@@ -80,6 +82,7 @@ public class ComponentProcessor {
 			author = annotation.author();
 			zOrder = annotation.zOrder();
 			stretchable = annotation.stretchable();
+			bomPolicy = annotation.bomPolicy();
 		} else {
 			name = clazz.getSimpleName();
 			description = "";
@@ -89,6 +92,7 @@ public class ComponentProcessor {
 			author = "Unknown";
 			zOrder = IDIYComponent.COMPONENT;
 			stretchable = true;
+			bomPolicy = BomPolicy.SHOW_ALL_NAMES;
 		}
 		icon = null;
 		// Draw component icon.
@@ -108,7 +112,7 @@ public class ComponentProcessor {
 			e.printStackTrace();
 		}
 		ComponentType componentType = new ComponentType(name, description, creationMethod,
-				category, namePrefix, author, icon, clazz, zOrder, stretchable);
+				category, namePrefix, author, icon, clazz, zOrder, stretchable, bomPolicy);
 		componentTypeMap.put(clazz.getName(), componentType);
 		return componentType;
 	}
