@@ -2,16 +2,22 @@ package org.diylc.utils;
 
 public class BomEntry {
 
+	private String type;
 	private String name;
 	private String value;
 	private Integer quantity;
 	private String notes;
 
-	public BomEntry(String name, String value, int quantity) {
+	public BomEntry(String type, String name, String value, int quantity) {
 		super();
+		this.type = type;
 		this.name = name;
 		this.value = value;
 		this.quantity = quantity;
+	}
+	
+	public String getType() {
+		return type;
 	}
 
 	public String getName() {
@@ -50,6 +56,7 @@ public class BomEntry {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((notes == null) ? 0 : notes.hashCode());
 		result = prime * result + quantity;
@@ -66,6 +73,11 @@ public class BomEntry {
 		if (getClass() != obj.getClass())
 			return false;
 		BomEntry other = (BomEntry) obj;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;

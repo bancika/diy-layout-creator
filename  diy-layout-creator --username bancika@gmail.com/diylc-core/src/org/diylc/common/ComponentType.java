@@ -4,6 +4,7 @@ import javax.swing.Icon;
 
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.BomPolicy;
 
 /**
  * Entity class used to describe a component type.
@@ -24,10 +25,12 @@ public class ComponentType {
 	private Class<? extends IDIYComponent<?>> instanceClass;
 	private double zOrder;
 	private boolean stretchable;
+	private BomPolicy bomPolicy;
 
 	public ComponentType(String name, String description, CreationMethod creationMethod,
 			String category, String namePrefix, String author, Icon icon,
-			Class<? extends IDIYComponent<?>> instanceClass, double zOrder, boolean stretchable) {
+			Class<? extends IDIYComponent<?>> instanceClass, double zOrder, 
+					boolean stretchable, BomPolicy bomPolicy) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -39,6 +42,7 @@ public class ComponentType {
 		this.instanceClass = instanceClass;
 		this.zOrder = zOrder;
 		this.stretchable = stretchable;
+		this.bomPolicy = bomPolicy;
 	}
 
 	public String getName() {
@@ -79,6 +83,10 @@ public class ComponentType {
 
 	public boolean isStretchable() {
 		return stretchable;
+	}
+	
+	public BomPolicy getBomPolicy() {
+		return bomPolicy;
 	}
 
 	@Override

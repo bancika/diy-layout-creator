@@ -14,7 +14,7 @@ import org.diylc.core.IDIYComponent;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ComponentDescriptor {
-
+	
 	/**
 	 * @return component type name.
 	 */
@@ -58,5 +58,10 @@ public @interface ComponentDescriptor {
 	 *         move together with it.
 	 */
 	boolean stretchable() default true;
+	
+	/**
+	 * @return controls what should be shown the BOM 
+	 */
+	BomPolicy bomPolicy() default BomPolicy.SHOW_ALL_NAMES;
 
 }

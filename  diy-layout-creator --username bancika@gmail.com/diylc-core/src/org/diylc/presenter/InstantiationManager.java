@@ -14,6 +14,7 @@ import org.diylc.common.Orientation;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.Size;
 
 import com.rits.cloning.Cloner;
