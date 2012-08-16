@@ -263,8 +263,8 @@ public class StatusBar extends JPanel implements IPlugIn {
 				StringBuilder builder = new StringBuilder();
 				builder.append(Utils.toCommaString(selectedComponentNames.subList(0, Math.min(20,
 						selectedComponentNames.size()))));
-				if (selectedComponentNames.size() > 20) {
-					builder.append(" and " + (selectedComponentNames.size() - 20) + " more");
+				if (selectedComponentNames.size() > 15) {
+					builder.append(" and " + (selectedComponentNames.size() - 15) + " more");
 				}
 				if (!stuckComponentNames.isEmpty()) {
 					builder.append(" (hold <b>Ctrl</b> and drag to unstuck from ");

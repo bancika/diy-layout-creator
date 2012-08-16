@@ -17,14 +17,17 @@ public class AutoSavePlugin implements IPlugIn {
 
 	private static final String AUTO_SAVE_FILE_NAME = "autoSave.diy";
 
+	protected static final long autoSaveFrequency = 60 * 1000;
+
 	private ExecutorService executor;
 
 	private IPlugInPort plugInPort;
 	private IView view;
+	private long lastSave = 0;
 
 	public AutoSavePlugin(IView view) {
 		this.view = view;
-		executor = Executors.newSingleThreadExecutor();
+		executor = Executors.newSingleThreadExecutor();		
 	}
 
 	@Override
@@ -34,20 +37,23 @@ public class AutoSavePlugin implements IPlugIn {
 
 			@Override
 			public void run() {
-				boolean wasAbnormal = ConfigurationManager.getInstance().readBoolean(
-						IPlugInPort.ABNORMAL_EXIT_KEY, false);
+				boolean wasAbnormal = ConfigurationManager.getInstance()
+						.readBoolean(IPlugInPort.ABNORMAL_EXIT_KEY, false);
 				if (wasAbnormal && new File(AUTO_SAVE_FILE_NAME).exists()) {
 					int decision = view
 							.showConfirmDialog(
 									"It appears that aplication was not closed normally in the previous session. Do you want to open the last auto-saved file?",
-									"Auto-Save", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE);
+									"Auto-Save", IView.YES_NO_OPTION,
+									IView.QUESTION_MESSAGE);
 					if (decision == IView.YES_OPTION) {
-						AutoSavePlugin.this.plugInPort.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
+						AutoSavePlugin.this.plugInPort
+								.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
 					}
 				}
 				// Set abnormal flag to true, GUI side of the app must flip to
 				// false when app closes regularly.
-				ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, true);
+				ConfigurationManager.getInstance().writeValue(
+						IPlugInPort.ABNORMAL_EXIT_KEY, true);
 			}
 		});
 	}
@@ -64,7 +70,11 @@ public class AutoSavePlugin implements IPlugIn {
 
 				@Override
 				public void run() {
-					plugInPort.saveProjectToFile(AUTO_SAVE_FILE_NAME, true);
+					Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+					if (System.currentTimeMillis() - lastSave > autoSaveFrequency) {
+						lastSave = System.currentTimeMillis();
+						plugInPort.saveProjectToFile(AUTO_SAVE_FILE_NAME, true);
+					}
 				}
 			});
 		}
