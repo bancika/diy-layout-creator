@@ -607,6 +607,10 @@
 					<description>Right click rotates component while laying out on the canvas</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added DIY file association for Windows (run associations.bat)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>More usable "Bring to Forward" and "Send to Backward"</description>
 				</org.diylc.appframework.update.Change>
