@@ -620,7 +620,7 @@ public class Presenter implements IPlugInPort {
 		}
 		this.dragInProgress = true;
 		this.dragAction = dragAction;
-		preDragProject = cloner.deepClone(currentProject);
+		this.preDragProject = cloner.deepClone(currentProject);
 		Point scaledPoint = scalePoint(point);
 		this.previousDragPoint = scaledPoint;
 		List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
