@@ -601,7 +601,11 @@
 			</versionNumber>
 			<releaseDate>2012-03-27 20:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>		
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Right click rotates component while laying out on the canvas</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>More usable "Bring to Forward" and "Send to Backward"</description>
