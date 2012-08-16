@@ -85,7 +85,7 @@ public class ProjectFileManager {
 	private XStream xStreamOld;
 
 	private String currentFileName = null;
-	private boolean modified = false;
+	private boolean modified = false;	
 
 	private MessageDispatcher<EventType> messageDispatcher;
 
@@ -105,7 +105,7 @@ public class ProjectFileManager {
 		fireFileStatusChanged();
 	}
 
-	public void serializeProjectToFile(Project project, String fileName, boolean isBackup)
+	public synchronized void serializeProjectToFile(Project project, String fileName, boolean isBackup)
 			throws IOException {
 		if (!isBackup) {
 			LOG.info(String.format("saveProjectToFile(%s)", fileName));
