@@ -46,8 +46,8 @@ class ComponentButton extends JButton {
 		addMouseListener(new MouseAdapter() {
 			
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 1) {
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
 					plugInPort.setNewComponentTypeSlot(componentType);	
 				} else {
 					List<IDIYComponent<?>> components = plugInPort.getCurrentProject().getComponents();
@@ -60,7 +60,7 @@ class ComponentButton extends JButton {
 					plugInPort.updateSelection(newSelection);
 					plugInPort.setNewComponentTypeSlot(null);
 					plugInPort.refresh();
-				}
+				}				
 			}
 		});
 //		addActionListener(new ActionListener() {
