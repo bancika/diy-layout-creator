@@ -10,12 +10,13 @@ public interface IMouseProcessor {
 	 * Note: point coordinates are display based, i.e. scaled for zoom factor.
 	 * 
 	 * @param point
+	 * @param button
 	 * @param ctrlDown
 	 * @param shiftDown
 	 * @param altDown
 	 * @param clickCount
 	 */
-	void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown,
+	void mouseClicked(Point point, int button, boolean ctrlDown, boolean shiftDown, boolean altDown,
 			int clickCount);
 
 	/**

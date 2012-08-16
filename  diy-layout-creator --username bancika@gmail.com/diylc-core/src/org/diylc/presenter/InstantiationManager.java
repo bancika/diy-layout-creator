@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.Orientation;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -24,7 +25,8 @@ import com.rits.cloning.Cloner;
  */
 public class InstantiationManager {
 
-	private static final Logger LOG = Logger.getLogger(InstantiationManager.class);
+	private static final Logger LOG = Logger
+			.getLogger(InstantiationManager.class);
 
 	private static final int MAX_RECENT_COMPONENTS = 16;
 
@@ -55,8 +57,8 @@ public class InstantiationManager {
 		return potentialControlPoint;
 	}
 
-	public void setComponentTypeSlot(ComponentType componentTypeSlot, Project currentProject)
-			throws Exception {
+	public void setComponentTypeSlot(ComponentType componentTypeSlot,
+			Project currentProject) throws Exception {
 		this.componentTypeSlot = componentTypeSlot;
 		if (componentTypeSlot == null) {
 			this.componentSlot = null;
@@ -66,8 +68,8 @@ public class InstantiationManager {
 				this.componentSlot = null;
 				break;
 			case SINGLE_CLICK:
-				this.componentSlot = instantiateComponent(componentTypeSlot, new Point(0, 0),
-						currentProject);
+				this.componentSlot = instantiateComponent(componentTypeSlot,
+						new Point(0, 0), currentProject);
 				break;
 			}
 		}
@@ -75,9 +77,11 @@ public class InstantiationManager {
 		this.potentialControlPoint = null;
 	}
 
-	public void instatiatePointByPoint(Point scaledPoint, Project currentProject) throws Exception {
+	public void instatiatePointByPoint(Point scaledPoint, Project currentProject)
+			throws Exception {
 		firstControlPoint = scaledPoint;
-		componentSlot = instantiateComponent(componentTypeSlot, firstControlPoint, currentProject);
+		componentSlot = instantiateComponent(componentTypeSlot,
+				firstControlPoint, currentProject);
 
 		// Set the other control point to the same location, we'll
 		// move it later when mouse moves.
@@ -100,7 +104,8 @@ public class InstantiationManager {
 		return changeMade;
 	}
 
-	public boolean updateSingleClick(Point scaledPoint, boolean snapToGrid, Size gridSpacing) {
+	public boolean updateSingleClick(Point scaledPoint, boolean snapToGrid,
+			Size gridSpacing) {
 		if (potentialControlPoint == null) {
 			potentialControlPoint = new Point(0, 0);
 		}
@@ -129,12 +134,14 @@ public class InstantiationManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public IDIYComponent<?> instantiateComponent(ComponentType componentType, Point point,
-			Project currentProject) throws Exception {
-		LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
+	public IDIYComponent<?> instantiateComponent(ComponentType componentType,
+			Point point, Project currentProject) throws Exception {
+		LOG.info("Instatiating component of type: "
+				+ componentType.getInstanceClass().getName());
 
 		// Instantiate the component.
-		IDIYComponent<?> component = componentType.getInstanceClass().newInstance();
+		IDIYComponent<?> component = componentType.getInstanceClass()
+				.newInstance();
 
 		component.setName(createUniqueName(componentType, currentProject));
 
@@ -151,10 +158,12 @@ public class InstantiationManager {
 		fillWithDefaultProperties(component);
 
 		// Write to recent components
-		List<String> recentComponentTypes = (List<String>) ConfigurationManager.getInstance()
-				.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, new ArrayList<ComponentType>());
+		List<String> recentComponentTypes = (List<String>) ConfigurationManager
+				.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY,
+						new ArrayList<ComponentType>());
 		String className = componentType.getInstanceClass().getName();
-		if (recentComponentTypes.size() == 0 || !recentComponentTypes.get(0).equals(className)) {
+		if (recentComponentTypes.size() == 0
+				|| !recentComponentTypes.get(0).equals(className)) {
 			// Remove if it's already somewhere in the list.
 			recentComponentTypes.remove(className);
 			// Add to the end of the list.
@@ -163,14 +172,15 @@ public class InstantiationManager {
 			if (recentComponentTypes.size() > MAX_RECENT_COMPONENTS) {
 				recentComponentTypes.remove(recentComponentTypes.size() - 1);
 			}
-			ConfigurationManager.getInstance().writeValue(IPlugInPort.RECENT_COMPONENTS_KEY,
-					recentComponentTypes);
+			ConfigurationManager.getInstance().writeValue(
+					IPlugInPort.RECENT_COMPONENTS_KEY, recentComponentTypes);
 		}
 
 		return component;
 	}
 
-	public String createUniqueName(ComponentType componentType, Project currentProject) {
+	public String createUniqueName(ComponentType componentType,
+			Project currentProject) {
 		int i = 0;
 		boolean exists = true;
 		List<IDIYComponent<?>> components = currentProject.getComponents();
@@ -203,17 +213,19 @@ public class InstantiationManager {
 	 * @throws NoSuchMethodException
 	 * @throws SecurityException
 	 */
-	public void fillWithDefaultProperties(Object object) throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException, SecurityException,
-			NoSuchMethodException {
+	public void fillWithDefaultProperties(Object object)
+			throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException, SecurityException, NoSuchMethodException {
 		// Extract properties.
-		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
-				object.getClass());
+		List<PropertyWrapper> properties = ComponentProcessor.getInstance()
+				.extractProperties(object.getClass());
 		// Override with default values if available.
 		for (PropertyWrapper property : properties) {
-			Object defaultValue = ConfigurationManager.getInstance().readObject(
-					Presenter.DEFAULTS_KEY_PREFIX + object.getClass().getName() + ":"
-							+ property.getName(), null);
+			Object defaultValue = ConfigurationManager.getInstance()
+					.readObject(
+							Presenter.DEFAULTS_KEY_PREFIX
+									+ object.getClass().getName() + ":"
+									+ property.getName(), null);
 			if (defaultValue != null) {
 				property.setValue(cloner.deepClone(defaultValue));
 				property.writeTo(object);
@@ -221,4 +233,35 @@ public class InstantiationManager {
 		}
 	}
 
+	public void tryToRotateComponentSlot() {
+		if (this.componentSlot == null) {
+			LOG.debug("Component slot is empty, cannot rotate");
+			return;
+		}
+		List<PropertyWrapper> properties = ComponentProcessor.getInstance()
+				.extractProperties(this.componentTypeSlot.getInstanceClass());
+		PropertyWrapper angleProperty = null;
+		for (PropertyWrapper propertyWrapper : properties) {
+			if (propertyWrapper.getType().getName().equals(
+					Orientation.class.getName())) {
+				angleProperty = propertyWrapper;
+				break;
+			}
+		}
+		if (angleProperty == null) {
+			LOG
+					.debug("Component in the slot does not have a property of type Orientation, cannot rotate");
+			return;
+		}
+		try {
+			angleProperty.readFrom(this.componentSlot);
+			Orientation value = (Orientation) angleProperty.getValue();
+			value.ordinal();
+			angleProperty.setValue(Orientation.values()[(value.ordinal() + 1)
+					% Orientation.values().length]);
+			angleProperty.writeTo(this.componentSlot);
+		} catch (Exception e) {
+			LOG.warn("Error trying to rotate the component", e);
+		}
+	}
 }

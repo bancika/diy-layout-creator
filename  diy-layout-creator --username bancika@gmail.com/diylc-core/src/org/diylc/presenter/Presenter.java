@@ -361,15 +361,21 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void mouseClicked(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown,
+	public void mouseClicked(Point point, int button, boolean ctrlDown, boolean shiftDown, boolean altDown,
 			int clickCount) {
 		LOG.debug(String
-				.format("mouseClicked(%s, %s, %s, %s)", point, ctrlDown, shiftDown, altDown));
+				.format("mouseClicked(%s, %s, %s, %s, %s)", point, button, ctrlDown, shiftDown, altDown));
 		Point scaledPoint = scalePoint(point);
 		if (clickCount >= 2) {
 			editSelection();
 		} else {
 			if (instantiationManager.getComponentTypeSlot() != null) {
+				// Try to rotate the component on right click while creating.
+				if (button == IPlugInPort.BUTTON3) {
+					instantiationManager.tryToRotateComponentSlot();
+					messageDispatcher.dispatchMessage(EventType.REPAINT);
+					return;
+				}
 				// Keep the reference to component type for later.
 				ComponentType componentTypeSlot = instantiationManager.getComponentTypeSlot();
 				Project oldProject = cloner.deepClone(currentProject);
@@ -379,8 +385,7 @@ public class Presenter implements IPlugInPort {
 						if (isSnapToGrid()) {
 							CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
 						}
-						IDIYComponent<?> component = instantiationManager.instantiateComponent(
-								componentTypeSlot, scaledPoint, currentProject);
+						IDIYComponent<?> component = instantiationManager.getComponentSlot();
 						addComponent(component, componentTypeSlot, true);
 						// Select the new component
 						// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
@@ -613,7 +618,7 @@ public class Presenter implements IPlugInPort {
 		LOG.debug(String.format("dragStarted(%s, %s)", point, dragAction));
 		if (instantiationManager.getComponentTypeSlot() != null) {
 			LOG.debug("Cannot start drag because a new component is being created.");
-			mouseClicked(point, dragAction == DnDConstants.ACTION_COPY,
+			mouseClicked(point, IPlugInPort.BUTTON1, dragAction == DnDConstants.ACTION_COPY,
 					dragAction == DnDConstants.ACTION_LINK, dragAction == DnDConstants.ACTION_MOVE,
 					1);
 			return;
@@ -1444,6 +1449,11 @@ public class Presenter implements IPlugInPort {
 			}
 			drawingManager.fireZoomChanged();
 		}
+	}
+	
+	@Override
+	public ComponentType getNewComponentTypeSlot() {	
+		return instantiationManager.getComponentTypeSlot();
 	}
 
 	@Override
