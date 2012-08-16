@@ -15,6 +15,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
@@ -22,7 +23,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.BomEntry;
 import org.diylc.utils.BomMaker;
 
-@ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.TEXT, stretchable = false)
+@ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.TEXT, stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW)
 public class BOM extends AbstractComponent<Void> {
 
 	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);
@@ -49,14 +50,20 @@ public class BOM extends AbstractComponent<Void> {
 		}
 		g2d.setFont(LABEL_FONT);
 		g2d.setColor(componentState == ComponentState.DRAGGING
-				|| componentState == ComponentState.SELECTED ? SELECTION_COLOR : COLOR);
+				|| componentState == ComponentState.SELECTED ? SELECTION_COLOR : COLOR);		
 		// Determine maximum name length and maximum value length to calculate
-		// number of columns.
+		// number of columns.		
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		int maxNameWidth = 0;
 		int maxValueWidth = 0;
 		int maxHeight = 0;
 		for (BomEntry entry : bom) {
+			String valueStr;
+			if (entry.getValue() == null || entry.getValue().trim().isEmpty()) {
+				valueStr = "qty " + entry.getQuantity().toString();
+			} else {
+				valueStr = entry.getValue().toString();
+			}
 			Rectangle2D stringBounds = fontMetrics.getStringBounds(entry.getName(), g2d);
 			if (stringBounds.getWidth() > maxNameWidth) {
 				maxNameWidth = (int) stringBounds.getWidth();
@@ -64,7 +71,7 @@ public class BOM extends AbstractComponent<Void> {
 			if (stringBounds.getHeight() > maxHeight) {
 				maxHeight = (int) stringBounds.getHeight();
 			}
-			stringBounds = fontMetrics.getStringBounds(entry.getValue().toString(), g2d);
+			stringBounds = fontMetrics.getStringBounds(valueStr, g2d);
 			if (stringBounds.getWidth() > maxValueWidth) {
 				maxValueWidth = (int) stringBounds.getWidth();
 			}
@@ -75,6 +82,8 @@ public class BOM extends AbstractComponent<Void> {
 		// Calculate maximum entry size.
 		int maxEntrySize = maxNameWidth + maxValueWidth + 2 * (int) SPACING.convertToPixels();
 		int columnCount = (int) size.convertToPixels() / maxEntrySize;
+		if (columnCount == 0)
+			columnCount = 1;
 		int columnWidth = (int) size.convertToPixels() / columnCount;
 		int entriesPerColumn = (int) Math.ceil(1.d * bom.size() / columnCount);
 		if (entriesPerColumn == 0) {
@@ -82,13 +91,20 @@ public class BOM extends AbstractComponent<Void> {
 			return;
 		}
 		for (int i = 0; i < bom.size(); i++) {
+			String valueStr;
+			BomEntry entry = bom.get(i);
+			if (entry.getValue() == null || entry.getValue().trim().isEmpty()) {
+				valueStr = "qty " + entry.getQuantity().toString();
+			} else {
+				valueStr = entry.getValue().toString();
+			}
 			int columnIndex = i / entriesPerColumn;
 			int rowIndex = i % entriesPerColumn;
 			int x = point.x + columnIndex * columnWidth;
 			int y = point.y + rowIndex * maxHeight;
-			g2d.drawString(bom.get(i).getName(), x, y);
+			g2d.drawString(entry.getName(), x, y);
 			x += maxNameWidth + SPACING.convertToPixels();
-			g2d.drawString(bom.get(i).getValue().toString(), x, y);
+			g2d.drawString(valueStr, x, y);
 		}
 	}
 
