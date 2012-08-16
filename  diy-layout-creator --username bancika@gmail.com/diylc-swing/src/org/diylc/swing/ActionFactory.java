@@ -25,12 +25,11 @@ import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.file.BomDialog;
-import org.diylc.swing.plugins.file.BomEntry;
-import org.diylc.swing.plugins.file.BomMaker;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.IDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
+import org.diylc.utils.BomEntry;
 
 import com.rits.cloning.Cloner;
 
@@ -380,7 +379,7 @@ public class ActionFactory {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("CreateBomAction triggered");
-			List<BomEntry> bom = BomMaker.getInstance().createBom(
+			List<BomEntry> bom = org.diylc.utils.BomMaker.getInstance().createBom(
 					plugInPort.getCurrentProject().getComponents());
 			BomDialog dialog = DialogFactory.getInstance().createBomDialog(bom);
 			dialog.setVisible(true);

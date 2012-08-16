@@ -13,13 +13,13 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.file.BomDialog;
-import org.diylc.swing.plugins.file.BomEntry;
 import org.diylc.swing.plugins.online.view.LoginDialog;
 import org.diylc.swing.plugins.online.view.NewUserDialog;
 import org.diylc.swing.plugins.online.view.UploadDialog;
 import org.diylc.swingframework.AboutDialog;
 import org.diylc.swingframework.IFileChooserAccessory;
 import org.diylc.swingframework.ProgressDialog;
+import org.diylc.utils.BomEntry;
 
 public class DialogFactory {
 

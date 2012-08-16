@@ -19,6 +19,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swingframework.export.TableExporter;
 import org.diylc.swingframework.objecttable.ObjectListTable;
+import org.diylc.utils.BomEntry;
 
 public class BomDialog extends JDialog {
 

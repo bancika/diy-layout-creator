@@ -642,6 +642,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Click on a component in the toolbar sometimes doesn't register</description>
 				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Remove junk from BOM (eyelets, wires, traces)</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
