@@ -39,11 +39,13 @@ public class DIYLCStarter {
 			LOG.error("Could not initialize log4j configuration", e);
 		}
 
-		LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
-				+ System.getProperty("java.vm.vendor"));
-		LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
+		LOG.debug("Java version: " + System.getProperty("java.runtime.version")
+				+ " by " + System.getProperty("java.vm.vendor"));
+		LOG.debug("OS: " + System.getProperty("os.name") + " "
+				+ System.getProperty("os.version"));
 
-		LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
+		LOG.info("Starting DIYLC with working directory "
+				+ System.getProperty("user.dir"));
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -54,13 +56,17 @@ public class DIYLCStarter {
 		MainFrame mainFrame = new MainFrame();
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
-
-		boolean showTemplates = ConfigurationManager.getInstance().readBoolean(
-				TemplateDialog.SHOW_TEMPLATES_KEY, true);
-		if (showTemplates) {
-			TemplateDialog templateDialog = new TemplateDialog(mainFrame, mainFrame.getPresenter());
-			if (!templateDialog.getFiles().isEmpty()) {
-				templateDialog.setVisible(true);
+		if (args.length > 0) {
+			mainFrame.getPresenter().loadProjectFromFile(args[0]);
+		} else {
+			boolean showTemplates = ConfigurationManager.getInstance()
+					.readBoolean(TemplateDialog.SHOW_TEMPLATES_KEY, true);
+			if (showTemplates) {
+				TemplateDialog templateDialog = new TemplateDialog(mainFrame,
+						mainFrame.getPresenter());
+				if (!templateDialog.getFiles().isEmpty()) {
+					templateDialog.setVisible(true);
+				}
 			}
 		}
 
