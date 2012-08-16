@@ -609,7 +609,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Faster copy-paste functionality</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>			
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved auto-save not to slow down the app</description>
+				</org.diylc.appframework.update.Change>		
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
