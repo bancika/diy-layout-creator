@@ -47,11 +47,13 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 	private static boolean USE_HARDWARE_ACCELLERATION = false;
 
-//	static final EnumSet<DrawOption> DRAW_OPTIONS = EnumSet.of(DrawOption.GRID,
-//			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
-//	static final EnumSet<DrawOption> DRAW_OPTIONS_ANTI_ALIASING = EnumSet.of(DrawOption.GRID,
-//			DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
-//			DrawOption.CONTROL_POINTS);
+	// static final EnumSet<DrawOption> DRAW_OPTIONS =
+	// EnumSet.of(DrawOption.GRID,
+	// DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+	// static final EnumSet<DrawOption> DRAW_OPTIONS_ANTI_ALIASING =
+	// EnumSet.of(DrawOption.GRID,
+	// DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
+	// DrawOption.CONTROL_POINTS);
 
 	public CanvasPanel(IPlugInPort plugInPort) {
 		super();
@@ -59,7 +61,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 		setFocusable(true);
 		initializeListeners();
 		initializeDnD();
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
 		GraphicsDevice[] devices = graphicsEnvironment.getScreenDevices();
 		screenGraphicsConfiguration = devices[0].getDefaultConfiguration();
 
@@ -72,7 +75,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 	private void initializeDnD() {
 		// Initialize drag source recognizer.
-		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
+		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+				this,
 				DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK,
 				new CanvasGestureListener(plugInPort));
 		// Initialize drop target.
@@ -96,8 +100,8 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 	protected void createBufferImage() {
 		if (USE_HARDWARE_ACCELLERATION) {
-			bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(getWidth(),
-					getHeight());
+			bufferImage = screenGraphicsConfiguration
+					.createCompatibleVolatileImage(getWidth(), getHeight());
 			((VolatileImage) bufferImage).validate(screenGraphicsConfiguration);
 		} else {
 			bufferImage = createImage(getWidth(), getHeight());
@@ -114,12 +118,15 @@ class CanvasPanel extends JComponent implements Autoscroll {
 		}
 		Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
 		g2d.setClip(getVisibleRect());
-		Set<DrawOption> drawOptions = EnumSet.of(DrawOption.GRID, DrawOption.SELECTION,
-				DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
-		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
+		Set<DrawOption> drawOptions = EnumSet.of(DrawOption.GRID,
+				DrawOption.SELECTION, DrawOption.ZOOM,
+				DrawOption.CONTROL_POINTS);
+		if (ConfigurationManager.getInstance().readBoolean(
+				IPlugInPort.ANTI_ALIASING_KEY, true)) {
 			drawOptions.add(DrawOption.ANTIALIASING);
 		}
-		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
+		if (ConfigurationManager.getInstance().readBoolean(
+				IPlugInPort.OUTLINE_KEY, false)) {
 			drawOptions.add(DrawOption.OUTLINE_MODE);
 		}
 		plugInPort.draw(g2d, drawOptions, null);
@@ -178,33 +185,35 @@ class CanvasPanel extends JComponent implements Autoscroll {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				setCursor(plugInPort.getCursorAt(e.getPoint()));
-				plugInPort.mouseMoved(e.getPoint(), e.isControlDown(), e.isShiftDown(), e
-						.isAltDown());
+				plugInPort.mouseMoved(e.getPoint(), e.isControlDown(), e
+						.isShiftDown(), e.isAltDown());
 			}
 		});
-//		addMouseListener(new MouseAdapter() {
-//
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				if (e.getButton() == MouseEvent.BUTTON1) {
-//					plugInPort.mouseClicked(e.getPoint(), e.getButton(), e.isControlDown(), e.isShiftDown(), e
-//							.isAltDown(), e.getClickCount());
-//				}
-//			}
-//		});
+		addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					plugInPort.mouseClicked(e.getPoint(), e.getButton(), e
+							.isControlDown(), e.isShiftDown(), e.isAltDown(), e
+							.getClickCount());
+				}
+			}
+		});
 	}
 
 	// Autoscroll
 
 	@Override
 	public void autoscroll(Point cursorLocn) {
-		scrollRectToVisible(new Rectangle(cursorLocn.x - 15, cursorLocn.y - 15, 30, 30));
+		scrollRectToVisible(new Rectangle(cursorLocn.x - 15, cursorLocn.y - 15,
+				30, 30));
 	}
 
 	@Override
 	public Insets getAutoscrollInsets() {
 		Rectangle rect = getVisibleRect();
-		return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15, rect.x + rect.width
-				+ 15);
+		return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15,
+				rect.x + rect.width + 15);
 	}
 }
