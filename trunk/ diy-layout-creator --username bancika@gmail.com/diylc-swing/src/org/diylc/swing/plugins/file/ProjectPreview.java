@@ -61,6 +61,11 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 			@Override
 			public void showMessage(String message, String title, int messageType) {
 			}
+			
+			@Override
+			public File promptFileSave() {
+				return null;
+			}
 
 			@Override
 			public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {

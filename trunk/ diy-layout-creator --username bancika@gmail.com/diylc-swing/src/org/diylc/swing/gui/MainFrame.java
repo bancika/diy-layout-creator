@@ -52,6 +52,7 @@ import org.diylc.swing.plugins.autosave.AutoSavePlugin;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.EditMenuPlugin;
+import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swing.plugins.file.FileMenuPlugin;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
 import org.diylc.swing.plugins.layers.LayersMenuPlugin;
@@ -336,6 +337,13 @@ public class MainFrame extends JFrame implements ISwingUI {
 			}
 		};
 		worker.execute();
+	}
+	
+	@Override
+	public File promptFileSave() {
+		return DialogFactory.getInstance().showSaveDialog(
+				FileFilterEnum.DIY.getFilter(), null,
+				FileFilterEnum.DIY.getExtensions()[0], null);
 	}
 
 	class FramePlugin implements IPlugIn {
