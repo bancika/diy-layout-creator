@@ -57,7 +57,7 @@
 	</manifestclasspath>
 
 	<target name="jar" depends="clean, lib.copy, resource.copy, compile">
-		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+		<jar destfile="${jar.dir}/diylc.jar" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Main-Class" value="${main.class}" />
