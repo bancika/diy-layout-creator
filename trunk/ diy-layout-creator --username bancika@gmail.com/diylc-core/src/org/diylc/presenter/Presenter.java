@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -246,12 +247,22 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public boolean allowFileAction() {
 		if (projectFileManager.isModified()) {
-			int response = view
-					.showConfirmDialog(
-							"There are unsaved changes. Are you sure you want to abandon these changes?",
-							"Warning", IView.YES_NO_OPTION,
-							IView.WARNING_MESSAGE);
-			return response == IView.YES_OPTION;
+			int response = view.showConfirmDialog(
+					"There are unsaved changes. Would you like to save them?",
+					"Warning", IView.YES_NO_CANCEL_OPTION,
+					IView.WARNING_MESSAGE);
+			if (response == IView.YES_OPTION) {
+				if (this.getCurrentFileName() == null) {
+					File file = view.promptFileSave();
+					if (file == null) {
+						return false;
+					}
+					saveProjectToFile(file.getAbsolutePath(), false);
+				} else {
+					saveProjectToFile(this.getCurrentFileName(), false);
+				}
+			}
+			return response != IView.CANCEL_OPTION;
 		}
 		return true;
 	}
@@ -558,24 +569,24 @@ public class Presenter implements IPlugInPort {
 		if (controlPointMap.isEmpty()) {
 			return false;
 		}
-		
+
 		// Expand control points to include all stuck components.
 		boolean sticky = ConfigurationManager.getInstance().readBoolean(
 				IPlugInPort.STICKY_POINTS_KEY, true);
 		if (ctrlDown) {
 			sticky = !sticky;
 		}
-		
+
 		if (sticky) {
 			includeStuckComponents(controlPointMap);
 		}
-		
+
 		boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(
 				IPlugInPort.SNAP_TO_GRID_KEY, true);
 		if (shiftDown) {
 			snapToGrid = !snapToGrid;
 		}
-		
+
 		int d;
 		if (snapToGrid) {
 			d = (int) currentProject.getGridSpacing().convertToPixels();
@@ -912,7 +923,8 @@ public class Presenter implements IPlugInPort {
 			int dx = (scaledPoint.x - previousDragPoint.x);
 			int dy = (scaledPoint.y - previousDragPoint.y);
 
-			Point actualD = moveSelectedComponents(this.controlPointMap, dx, dy, isSnapToGrid());
+			Point actualD = moveSelectedComponents(this.controlPointMap, dx,
+					dy, isSnapToGrid());
 			if (actualD == null)
 				return true;
 
@@ -936,7 +948,8 @@ public class Presenter implements IPlugInPort {
 	}
 
 	private Point moveSelectedComponents(
-			Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid) {
+			Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx,
+			int dy, boolean snapToGrid) {
 		// After we make the transfer and snap to grid, calculate actual dx
 		// and dy. We'll use them to translate the previous drag point.
 		int actualDx = 0;
