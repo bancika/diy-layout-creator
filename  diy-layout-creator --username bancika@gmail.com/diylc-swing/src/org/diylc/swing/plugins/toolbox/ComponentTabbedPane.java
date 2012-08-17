@@ -39,6 +39,8 @@ class ComponentTabbedPane extends JTabbedPane {
 	public static int SCROLL_STEP = Presenter.ICON_SIZE + ComponentButton.MARGIN * 2 + 2;
 
 	private final IPlugInPort plugInPort;
+	private Container recentToolbar;
+	private List<String> pendingRecentComponents = null;
 
 	public ComponentTabbedPane(IPlugInPort plugInPort) {
 		super();
@@ -56,6 +58,12 @@ class ComponentTabbedPane extends JTabbedPane {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				ComponentTabbedPane.this.plugInPort.setNewComponentTypeSlot(null);
+				// Refresh recent components if needed
+				if (pendingRecentComponents != null) {					
+					refreshRecentComponentsToolbar(getRecentToolbar(), pendingRecentComponents);
+					getRecentToolbar().invalidate();
+					pendingRecentComponents = null;
+				}
 			}
 		});
 	}
@@ -112,6 +120,14 @@ class ComponentTabbedPane extends JTabbedPane {
 	// scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 	// return scrollPane;
 	// }
+	
+	public Container getRecentToolbar() {
+		if (recentToolbar == null) {
+			recentToolbar = new Container();
+			recentToolbar.setLayout(new BoxLayout(recentToolbar, BoxLayout.X_AXIS));
+		}
+		return recentToolbar;
+	}
 
 	private Component createComponentPanel(List<ComponentType> componentTypes) {
 		Container toolbar = new Container();
@@ -130,8 +146,7 @@ class ComponentTabbedPane extends JTabbedPane {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
 
-		final Container toolbar = new Container();
-		toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.X_AXIS));
+		final Container toolbar = getRecentToolbar();		
 		refreshRecentComponentsToolbar(toolbar, (List<String>) ConfigurationManager.getInstance()
 				.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, new ArrayList<String>()));
 		ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RECENT_COMPONENTS_KEY,
@@ -139,8 +154,8 @@ class ComponentTabbedPane extends JTabbedPane {
 
 					@Override
 					public void valueChanged(String key, Object value) {
-						refreshRecentComponentsToolbar(toolbar, (List<String>) value);
-						toolbar.invalidate();
+						// Cache the new list, we'll refresh when there's a chance
+						pendingRecentComponents = (List<String>) value;
 					}
 				});
 
