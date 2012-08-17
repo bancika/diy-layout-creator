@@ -80,6 +80,11 @@ public class TemplateDialog extends JDialog {
 			}
 			
 			@Override
+			public File promptFileSave() {
+				return null;
+			}
+			
+			@Override
 			public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
 				return false;
 			}
