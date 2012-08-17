@@ -654,6 +654,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved "Recently Used" toolbox, doesn't jump as you click</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Control number of "Recently Used" items from config.properties</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
