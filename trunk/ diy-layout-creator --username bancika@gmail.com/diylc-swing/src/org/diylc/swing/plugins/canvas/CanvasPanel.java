@@ -45,7 +45,7 @@ class CanvasPanel extends JComponent implements Autoscroll {
 	private Image bufferImage;
 	private GraphicsConfiguration screenGraphicsConfiguration;
 
-	private static boolean USE_HARDWARE_ACCELLERATION = false;
+	public static boolean USE_HARDWARE_ACCELLERATION = false;
 
 	// static final EnumSet<DrawOption> DRAW_OPTIONS =
 	// EnumSet.of(DrawOption.GRID,
