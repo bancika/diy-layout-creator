@@ -69,8 +69,7 @@ public class DIYLCStarter {
 				}
 			}
 		}
-
-		url = DIYLCStarter.class.getResource("/config.properties");
+		
 		properties = new Properties();
 		try {
 			LOG.info("Injecting default properties.");
