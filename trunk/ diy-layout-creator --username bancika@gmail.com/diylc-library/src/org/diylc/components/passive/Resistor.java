@@ -31,7 +31,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	public static int BAND_SPACING = 5;
 	public static int FIRST_BAND = 4;
 
-	private Resistance value = new Resistance(123d, ResistanceUnit.K);
+	private Resistance value = new Resistance(100d, ResistanceUnit.K);
 	@Deprecated
 	private Power power = Power.HALF;
 	private org.diylc.core.measures.Power powerNew = new org.diylc.core.measures.Power(0.5,
