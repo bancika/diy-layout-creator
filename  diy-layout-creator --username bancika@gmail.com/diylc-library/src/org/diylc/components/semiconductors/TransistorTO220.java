@@ -11,6 +11,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -53,6 +54,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 	private Color borderColor = BORDER_COLOR;
 	private Color tabColor = TAB_COLOR;
 	private Color tabBorderColor = TAB_BORDER_COLOR;
+	private Display display = Display.NAME;
 
 	public TransistorTO220() {
 		super();
@@ -246,15 +248,16 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 					: LABEL_COLOR;
 		}
 		g2d.setColor(finalLabelColor);
+		String label = (getDisplay() == Display.NAME) ? getName() : getValue();
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
+		Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
 		int textHeight = (int) (rect.getHeight());
 		int textWidth = (int) (rect.getWidth());
 		// Center text horizontally and vertically
 		Rectangle bounds = mainArea.getBounds();
 		int x = bounds.x + (bounds.width - textWidth) / 2;
 		int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
-		g2d.drawString(getName(), x, y);
+		g2d.drawString(label, x, y);
 	}
 
 	@Override
@@ -303,5 +306,17 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 
 	public void setTabBorderColor(Color tabBorderColor) {
 		this.tabBorderColor = tabBorderColor;
+	}
+	
+	@EditableProperty
+	public Display getDisplay() {
+		if (display == null) {
+			display = Display.NAME;
+		}
+		return display;
+	}
+
+	public void setDisplay(Display display) {
+		this.display = display;
 	}
 }
