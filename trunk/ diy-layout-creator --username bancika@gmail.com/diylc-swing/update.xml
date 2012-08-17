@@ -662,6 +662,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Faster component placement, auto-focus on "Value" box</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Transistors can show name or value</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
