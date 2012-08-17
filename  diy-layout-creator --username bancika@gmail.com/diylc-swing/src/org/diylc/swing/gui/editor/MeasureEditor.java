@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
@@ -92,5 +93,21 @@ public class MeasureEditor extends Container {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void requestFocus() {
+		this.valueField.requestFocus();
+	}
+	
+	@Override
+	public boolean requestFocusInWindow() {
+		return this.valueField.requestFocusInWindow();
+	}
+	
+	@Override
+	public synchronized void addKeyListener(KeyListener l) {
+		this.valueField.addKeyListener(l);
+		this.unitBox.addKeyListener(l);
 	}
 }

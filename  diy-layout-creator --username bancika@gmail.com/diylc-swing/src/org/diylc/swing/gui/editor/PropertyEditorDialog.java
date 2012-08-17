@@ -28,7 +28,8 @@ import org.diylc.swingframework.ButtonDialog;
 
 public class PropertyEditorDialog extends ButtonDialog {
 
-	private static final Logger LOG = Logger.getLogger(PropertyEditorDialog.class);
+	private static final Logger LOG = Logger
+			.getLogger(PropertyEditorDialog.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,9 +37,12 @@ public class PropertyEditorDialog extends ButtonDialog {
 
 	private List<PropertyWrapper> properties;
 	private Set<PropertyWrapper> defaultedProperties;
+	private Component componentToFocus = null;
 
-	public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title) {
-		super(owner, title, new String[] { ButtonDialog.OK, ButtonDialog.CANCEL });
+	public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties,
+			String title) {
+		super(owner, title,
+				new String[] { ButtonDialog.OK, ButtonDialog.CANCEL });
 
 		LOG.debug("Creating property editor for: " + properties);
 
@@ -73,8 +77,9 @@ public class PropertyEditorDialog extends ButtonDialog {
 				try {
 					property.getValidator().validate(property.getValue());
 				} catch (ValidationException ve) {
-					JOptionPane.showMessageDialog(PropertyEditorDialog.this, "Input error for \""
-							+ property.getName() + "\": " + ve.getMessage(), "Error",
+					JOptionPane.showMessageDialog(PropertyEditorDialog.this,
+							"Input error for \"" + property.getName() + "\": "
+									+ ve.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
@@ -126,6 +131,11 @@ public class PropertyEditorDialog extends ButtonDialog {
 				editorPanel.add(createDefaultCheckBox(property), gbc);
 			}
 
+			// Make value field focused
+			if (property.getName().equalsIgnoreCase("value")) {
+				componentToFocus = editor;
+			}
+
 			gbc.gridy++;
 		}
 
@@ -153,13 +163,24 @@ public class PropertyEditorDialog extends ButtonDialog {
 		return defaultedProperties;
 	}
 
-	public static boolean showFor(JFrame owner, List<PropertyWrapper> properties, String title) {
-		PropertyEditorDialog editor = new PropertyEditorDialog(owner, properties, title);
+	public static boolean showFor(JFrame owner,
+			List<PropertyWrapper> properties, String title) {
+		PropertyEditorDialog editor = new PropertyEditorDialog(owner,
+				properties, title);
 		editor.setVisible(true);
 		if (OK.equals(editor.getSelectedButtonCaption())) {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void setVisible(boolean b) {
+		if (b && componentToFocus != null) {
+			componentToFocus.requestFocusInWindow();
+			componentToFocus = null;
+		}
+		super.setVisible(b);
 	}
 
 	@Override
