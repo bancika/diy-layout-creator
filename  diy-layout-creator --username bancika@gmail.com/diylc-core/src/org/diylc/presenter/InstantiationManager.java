@@ -28,7 +28,7 @@ public class InstantiationManager {
 	private static final Logger LOG = Logger
 			.getLogger(InstantiationManager.class);
 
-	private static final int MAX_RECENT_COMPONENTS = 16;
+	public static int MAX_RECENT_COMPONENTS = 16;
 
 	private Cloner cloner;
 
