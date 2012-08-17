@@ -28,7 +28,7 @@ import org.diylc.core.Theme;
  * @see IMessageListener
  * @see EventType
  */
-public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor {
+public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor {
 
 	public static final String ANTI_ALIASING_KEY = "antiAliasing";
 	public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
