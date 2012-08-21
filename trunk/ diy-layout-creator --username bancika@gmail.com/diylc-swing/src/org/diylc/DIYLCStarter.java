@@ -62,9 +62,8 @@ public class DIYLCStarter {
 					.showConfirmDialog(
 							null,
 							"It is not recommended to run DIYLC by clicking on the diylc.jar file.\n" +
-							"Please use diylc.exe on Windows and run.sh on OSX/Linux because they\n" +
-							"will configure your Java for the best performance and reliability.\n" +
-							"Do you want to continue using the application?",
+							"Please use diylc.exe on Windows or run.sh on OSX/Linux to ensure the best" +
+							"performance and reliability. Do you want to continue?",
 							"DIYLC", JOptionPane.YES_NO_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 			if (response != JOptionPane.YES_OPTION) {
