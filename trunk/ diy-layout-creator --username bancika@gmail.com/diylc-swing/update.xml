@@ -708,7 +708,7 @@
 			<changes>				
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Some components can be placed in any layer using Send to Back/Bring to Front</description>
+					<description>Some components (like Image) can be placed in any layer using Send to Back/Bring to Front</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
