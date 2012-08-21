@@ -15,10 +15,10 @@ public class Resistance extends AbstractMeasure<ResistanceUnit> {
 			Color.decode("#FFB90F"), Color.black, Color.decode("#8B4513"), Color.red, Color.orange,
 			Color.yellow, Color.decode("#76EE00"), Color.blue };
 
-	public Resistance() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+//	public Resistance() {
+//		super();
+//		// TODO Auto-generated constructor stub
+//	}
 
 	public Resistance(Double value, ResistanceUnit multiplier) {
 		super(value, multiplier);

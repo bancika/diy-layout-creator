@@ -4,19 +4,29 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.EditableProperty;
 
+import com.rits.cloning.CloningException;
+
 /**
  * Abstract implementation of {@link IDIYComponent} that contains component name
  * and toString.
+ * 
+ * IMPORTANT: to improve performance, all fields except for <code>Point</code>
+ * and <code>Point</code> arrays should be immutable. Failing to comply with
+ * this can result in annoying and hard to trace bugs.
  * 
  * @author Branislav Stojkovic
  * 
@@ -80,9 +90,11 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	}
 
 	protected void drawCenteredText(Graphics2D g2d, String text, int x, int y,
-			HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment) {
+			HorizontalAlignment horizontalAlignment,
+			VerticalAlignment verticalAlignment) {
 		FontMetrics fontMetrics = g2d.getFontMetrics();
-		Rectangle stringBounds = fontMetrics.getStringBounds(text, g2d).getBounds();
+		Rectangle stringBounds = fontMetrics.getStringBounds(text, g2d)
+				.getBounds();
 
 		Font font = g2d.getFont();
 		FontRenderContext renderContext = g2d.getFontRenderContext();
@@ -116,5 +128,56 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 		}
 
 		g2d.drawString(text, textX, textY);
+	}
+
+	@SuppressWarnings("unchecked")
+	public IDIYComponent<T> clone() throws CloneNotSupportedException {
+		try {
+			// Instantiate object of the same type
+			AbstractComponent<T> newInstance = (AbstractComponent<T>) this
+					.getClass().getConstructors()[0].newInstance();
+			Class<?> clazz = this.getClass();
+			while (AbstractComponent.class.isAssignableFrom(clazz)) {
+				Field[] fields = clazz.getDeclaredFields();
+				clazz = clazz.getSuperclass();
+				// fields = this.getClass().getDeclaredFields();
+				// Copy over all non-static, non-final fields that are declared
+				// in
+				// AbstractComponent or one of it's child classes
+				for (Field field : fields) {
+					if (!Modifier.isStatic(field.getModifiers())
+							&& !Modifier.isFinal(field.getModifiers())) {
+						field.setAccessible(true);
+						Object value = field.get(this);
+
+						// Deep copy point arrays.
+						// TODO: something nicer
+						if (value != null
+								&& value.getClass().isArray()
+								&& value.getClass().getComponentType()
+										.isAssignableFrom(Point.class)) {
+							Object newArray = Array.newInstance(value
+									.getClass().getComponentType(), Array
+									.getLength(value));
+							for (int i = 0; i < Array.getLength(value); i++) {
+								Point p = (Point) Array.get(value, i);
+								Array.set(newArray, i, new Point(p));
+							}
+							value = newArray;
+						}
+						// Deep copy points.
+						// TODO: something nicer
+						if (value != null && value instanceof Point) {
+							value = new Point((Point) value);
+						}
+
+						field.set(newInstance, value);
+					}
+				}
+			}
+			return newInstance;
+		} catch (Exception e) {
+			throw new CloningException("Could not clone the component", e);
+		}
 	}
 }

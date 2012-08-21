@@ -4,6 +4,13 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.Format;
 
+/***
+ * Immutable measure class.
+ * 
+ * @author bancika
+ *
+ * @param <T>
+ */
 public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -13,8 +20,8 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
 	protected Double value;
 	protected T unit;
 
-	public AbstractMeasure() {
-	}
+//	public AbstractMeasure() {
+//	}
 
 	public AbstractMeasure(Double value, T unit) {
 		super();
@@ -26,22 +33,22 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
 		return value;
 	}
 
-	public void setValue(Double value) {
-		this.value = value;
-	}
+//	public void setValue(Double value) {
+//		this.value = value;
+//	}
 
 	public T getUnit() {
 		return unit;
 	}
 
-	public void setUnit(T multiplier) {
-		this.unit = multiplier;
-	}
+//	public void setUnit(T multiplier) {
+//		this.unit = multiplier;
+//	}
 	
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
+//	@Override
+//	public Object clone() throws CloneNotSupportedException {
+//		return super.clone();
+//	}
 
 	@Override
 	public int hashCode() {

@@ -2,8 +2,10 @@ package org.diylc.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.diylc.appframework.update.VersionNumber;
@@ -210,15 +212,37 @@ public class Project implements Serializable {
 		}
 	}
 
-	// @Override
-	// public Project clone() throws CloneNotSupportedException {
-	// List<IDIYComponent> clonedComponents = new
-	// ArrayList<IDIYComponent>();
-	// for (IDIYComponent component : components) {
-	// clonedComponents.add(component.clone());
-	// }
-	// Project project = new Project(title, author, description,
-	// width.clone(), height.clone(), clonedComponents);
-	// return project;
-	// }
+	@Override
+	public Project clone()  {
+		Project project = new Project();
+		project.setTitle(this.getTitle());
+		project.setAuthor(this.getAuthor());
+		project.setDescription(this.getDescription());
+		project.setFileVersion(this.getFileVersion());
+		project.setGridSpacing(this.getGridSpacing());
+		project.setHeight(this.getHeight());
+		project.setWidth(this.getWidth());
+		project.getLockedLayers().addAll(this.getLockedLayers());		
+		
+		Map<IDIYComponent<?>, IDIYComponent<?>> cloneMap = new HashMap<IDIYComponent<?>, IDIYComponent<?>>();
+		
+		for (IDIYComponent<?> component : this.components) {
+			try {
+				IDIYComponent<?> clone = component.clone();
+				project.getComponents().add(clone);
+				cloneMap.put(component, clone);
+			} catch (CloneNotSupportedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		for (Set<IDIYComponent<?>> group : this.groups) {
+			Set<IDIYComponent<?>> cloneGroup = new HashSet<IDIYComponent<?>>();
+			for (IDIYComponent<?> component : group) {
+				cloneGroup.add(cloneMap.get(component));
+			}
+			project.groups.add(cloneGroup);
+		}
+		return project;
+	}
 }

@@ -107,7 +107,8 @@ public interface IDIYComponent<T> extends Serializable {
 	 * @param project
 	 * @param drawingObserver
 	 */
-	void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
+	void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
 			IDrawingObserver drawingObserver);
 
 	/**
@@ -119,4 +120,11 @@ public interface IDIYComponent<T> extends Serializable {
 	 * @param height
 	 */
 	void drawIcon(Graphics2D g2d, int width, int height);
+
+	/**
+	 * Clones the component.
+	 * 
+	 * @return
+	 */
+	IDIYComponent<T> clone() throws CloneNotSupportedException;
 }
