@@ -47,8 +47,6 @@ import org.diylc.core.Theme;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-import com.rits.cloning.Cloner;
-
 /**
  * The main presenter class, contains core app logic and drawing routines.
  * 
@@ -58,7 +56,7 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 9,
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 10,
 			0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
@@ -79,7 +77,7 @@ public class Presenter implements IPlugInPort {
 	private Set<IDIYComponent<?>> lockedComponents;
 
 	// Utilities
-	private Cloner cloner;
+	//private Cloner cloner;
 	private DrawingManager drawingManager;
 	private ProjectFileManager projectFileManager;
 	private InstantiationManager instantiationManager;
@@ -109,7 +107,7 @@ public class Presenter implements IPlugInPort {
 		selectedComponents = new ArrayList<IDIYComponent<?>>();
 		lockedComponents = new HashSet<IDIYComponent<?>>();
 		currentProject = new Project();
-		cloner = new Cloner();
+		//cloner = new Cloner();
 		drawingManager = new DrawingManager(messageDispatcher);
 		projectFileManager = new ProjectFileManager(messageDispatcher);
 		instantiationManager = new InstantiationManager();
@@ -412,7 +410,7 @@ public class Presenter implements IPlugInPort {
 				// Keep the reference to component type for later.
 				ComponentType componentTypeSlot = instantiationManager
 						.getComponentTypeSlot();
-				Project oldProject = cloner.deepClone(currentProject);
+				Project oldProject = currentProject.clone();
 				switch (componentTypeSlot.getCreationMethod()) {
 				case SINGLE_CLICK:
 					try {
@@ -505,8 +503,7 @@ public class Presenter implements IPlugInPort {
 				// Notify the listeners.
 				if (!oldProject.equals(currentProject)) {
 					messageDispatcher.dispatchMessage(
-							EventType.PROJECT_MODIFIED, oldProject, cloner
-									.deepClone(currentProject), "Add "
+							EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Add "
 									+ componentTypeSlot.getName());
 					projectFileManager.notifyFileChange();
 				}
@@ -612,10 +609,10 @@ public class Presenter implements IPlugInPort {
 			return false;
 		}
 
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		moveSelectedComponents(controlPointMap, dx, dy, snapToGrid);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-				oldProject, cloner.deepClone(currentProject), "Move Selection");
+				oldProject, currentProject.clone(), "Move Selection");
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		return true;
 	}
@@ -760,7 +757,7 @@ public class Presenter implements IPlugInPort {
 		}
 		this.dragInProgress = true;
 		this.dragAction = dragAction;
-		this.preDragProject = cloner.deepClone(currentProject);
+		this.preDragProject = currentProject.clone();
 		Point scaledPoint = scalePoint(point);
 		this.previousDragPoint = scaledPoint;
 		List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
@@ -1067,7 +1064,7 @@ public class Presenter implements IPlugInPort {
 
 		if (!preDragProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-					preDragProject, cloner.deepClone(currentProject), "Drag");
+					preDragProject, currentProject.clone(), "Drag");
 			projectFileManager.notifyFileChange();
 		}
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1077,7 +1074,7 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void pasteComponents(List<IDIYComponent<?>> components) {
 		LOG.info(String.format("addComponents(%s)", components));
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		for (IDIYComponent<?> component : components) {
 			for (int i = 0; i < component.getControlPointCount(); i++) {
 				Point point = new Point(component.getControlPoint(i));
@@ -1096,7 +1093,7 @@ public class Presenter implements IPlugInPort {
 									.getClass()), false);
 		}
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-				oldProject, cloner.deepClone(currentProject), "Add");
+				oldProject, currentProject.clone(), "Add");
 		projectFileManager.notifyFileChange();
 		updateSelection(new ArrayList<IDIYComponent<?>>(components));
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1109,7 +1106,7 @@ public class Presenter implements IPlugInPort {
 			LOG.debug("Nothing to delete");
 			return;
 		}
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		// Remove selected components from any groups.
 		ungroupComponents(selectedComponents);
 		// Remove from area map.
@@ -1118,7 +1115,7 @@ public class Presenter implements IPlugInPort {
 		}
 		currentProject.getComponents().removeAll(selectedComponents);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-				oldProject, cloner.deepClone(currentProject), "Delete");
+				oldProject, currentProject.clone(), "Delete");
 		projectFileManager.notifyFileChange();
 		updateSelection(EMPTY_SELECTION);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1160,7 +1157,7 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void groupSelectedComponents() {
 		LOG.info("groupSelectedComponents()");
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		// First remove the selected components from other groups.
 		ungroupComponents(selectedComponents);
 		// Then group them together.
@@ -1170,7 +1167,7 @@ public class Presenter implements IPlugInPort {
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-					oldProject, cloner.deepClone(currentProject), "Group");
+					oldProject, currentProject.clone(), "Group");
 			projectFileManager.notifyFileChange();
 		}
 	}
@@ -1178,13 +1175,13 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void ungroupSelectedComponents() {
 		LOG.info("ungroupSelectedComponents()");
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		ungroupComponents(selectedComponents);
 		// Notify the listeners.
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-					oldProject, cloner.deepClone(currentProject), "Ungroup");
+					oldProject, currentProject.clone(), "Ungroup");
 			projectFileManager.notifyFileChange();
 		}
 	}
@@ -1206,7 +1203,7 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void sendSelectionToBack() {
 		LOG.info("sendSelectionToBack()");
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		for (IDIYComponent<?> component : selectedComponents) {
 			ComponentType componentType = ComponentProcessor.getInstance()
 					.extractComponentTypeFrom(
@@ -1235,7 +1232,7 @@ public class Presenter implements IPlugInPort {
 		}
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-					oldProject, cloner.deepClone(currentProject),
+					oldProject, currentProject.clone(),
 					"Send to Back");
 			projectFileManager.notifyFileChange();
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1245,7 +1242,7 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void bringSelectionToFront() {
 		LOG.info("bringSelectionToFront()");
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		for (IDIYComponent<?> component : selectedComponents) {
 			ComponentType componentType = ComponentProcessor.getInstance()
 					.extractComponentTypeFrom(
@@ -1274,7 +1271,7 @@ public class Presenter implements IPlugInPort {
 		}
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-					oldProject, cloner.deepClone(currentProject),
+					oldProject, currentProject.clone(),
 					"Bring to Front");
 			projectFileManager.notifyFileChange();
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1303,7 +1300,7 @@ public class Presenter implements IPlugInPort {
 		if (getSelectedComponents().isEmpty()) {
 			return;
 		}
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>(
 				getSelectedComponents());
 		// Sort components by their location.
@@ -1369,7 +1366,7 @@ public class Presenter implements IPlugInPort {
 		}
 
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-				oldProject, cloner.deepClone(currentProject),
+				oldProject, currentProject.clone(),
 				"Renumber selection");
 		projectFileManager.notifyFileChange();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1593,7 +1590,7 @@ public class Presenter implements IPlugInPort {
 
 	private void applyPropertiesToSelection(List<PropertyWrapper> properties) {
 		LOG.debug(String.format("applyPropertiesToSelection(%s)", properties));
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		try {
 			for (IDIYComponent<?> component : selectedComponents) {
 				drawingManager.invalidateComponent(component);
@@ -1613,7 +1610,7 @@ public class Presenter implements IPlugInPort {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-						oldProject, cloner.deepClone(currentProject),
+						oldProject, currentProject.clone(),
 						"Edit Selection");
 				projectFileManager.notifyFileChange();
 			}
@@ -1641,7 +1638,7 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void applyPropertiesToProject(List<PropertyWrapper> properties) {
 		LOG.debug(String.format("applyPropertiesToProject(%s)", properties));
-		Project oldProject = cloner.deepClone(currentProject);
+		Project oldProject = currentProject.clone();
 		try {
 			for (PropertyWrapper property : properties) {
 				property.writeTo(currentProject);
@@ -1656,7 +1653,7 @@ public class Presenter implements IPlugInPort {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-						oldProject, cloner.deepClone(currentProject),
+						oldProject, currentProject.clone(),
 						"Edit Project");
 				projectFileManager.notifyFileChange();
 			}

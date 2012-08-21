@@ -6,10 +6,10 @@ public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> 
 
 	private static final long serialVersionUID = 1L;
 
-	public Size() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+//	public Size() {
+//		super();
+//		// TODO Auto-generated constructor stub
+//	}
 
 	public Size(Double value, SizeUnit unit) {
 		super(value, unit);
