@@ -12,6 +12,7 @@ import java.awt.font.GlyphVector;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.VerticalAlignment;
@@ -88,11 +89,9 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	}
 
 	protected void drawCenteredText(Graphics2D g2d, String text, int x, int y,
-			HorizontalAlignment horizontalAlignment,
-			VerticalAlignment verticalAlignment) {
+			HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment) {
 		FontMetrics fontMetrics = g2d.getFontMetrics();
-		Rectangle stringBounds = fontMetrics.getStringBounds(text, g2d)
-				.getBounds();
+		Rectangle stringBounds = fontMetrics.getStringBounds(text, g2d).getBounds();
 
 		Font font = g2d.getFont();
 		FontRenderContext renderContext = g2d.getFontRenderContext();
@@ -132,16 +131,15 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	public IDIYComponent<T> clone() throws CloneNotSupportedException {
 		try {
 			// Instantiate object of the same type
-			AbstractComponent<T> newInstance = (AbstractComponent<T>) this
-					.getClass().getConstructors()[0].newInstance();
+			AbstractComponent<T> newInstance = (AbstractComponent<T>) this.getClass()
+					.getConstructors()[0].newInstance();
 			Class<?> clazz = this.getClass();
 			while (AbstractComponent.class.isAssignableFrom(clazz)) {
 				Field[] fields = clazz.getDeclaredFields();
 				clazz = clazz.getSuperclass();
 				// fields = this.getClass().getDeclaredFields();
 				// Copy over all non-static, non-final fields that are declared
-				// in
-				// AbstractComponent or one of it's child classes
+				// in AbstractComponent or one of it's child classes
 				for (Field field : fields) {
 					if (!Modifier.isStatic(field.getModifiers())
 							&& !Modifier.isFinal(field.getModifiers())) {
@@ -154,9 +152,8 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 								&& value.getClass().isArray()
 								&& value.getClass().getComponentType()
 										.isAssignableFrom(Point.class)) {
-							Object newArray = Array.newInstance(value
-									.getClass().getComponentType(), Array
-									.getLength(value));
+							Object newArray = Array.newInstance(
+									value.getClass().getComponentType(), Array.getLength(value));
 							for (int i = 0; i < Array.getLength(value); i++) {
 								Point p = (Point) Array.get(value, i);
 								Array.set(newArray, i, new Point(p));
@@ -175,7 +172,51 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 			}
 			return newInstance;
 		} catch (Exception e) {
-			throw new CloneNotSupportedException("Could not clone the component. Reason: " + e.getMessage());
+			throw new CloneNotSupportedException("Could not clone the component. Reason: "
+					+ e.getMessage());
 		}
+	}
+
+	@Override
+	public boolean equalsTo(IDIYComponent<?> other) {
+		if (other == null)
+			return false;
+		if (!other.getClass().equals(this.getClass()))
+			return false;
+		Class<?> clazz = this.getClass();
+		while (AbstractComponent.class.isAssignableFrom(clazz)) {
+			Field[] fields = clazz.getDeclaredFields();
+			clazz = clazz.getSuperclass();
+			// fields = this.getClass().getDeclaredFields();
+			// Copy over all non-static, non-final fields that are declared
+			// in
+			// AbstractComponent or one of it's child classes
+			for (Field field : fields) {
+				if (!Modifier.isStatic(field.getModifiers())
+						&& !Modifier.isFinal(field.getModifiers())) {
+					field.setAccessible(true);
+					try {
+						Object value = field.get(this);
+						Object otherValue = field.get(other);
+						if (!compareObjects(value, otherValue))
+							return false;
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	private boolean compareObjects(Object o1, Object o2) {
+		if (o1 == null && o2 == null)
+			return true;
+		if (o1 == null || o2 == null)
+			return false;
+		if (o1.getClass().isArray()) {
+			return Arrays.equals((Object[])o1, (Object[])o2);
+		}
+		return o1.equals(o2);
 	}
 }
