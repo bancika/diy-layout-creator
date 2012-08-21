@@ -677,5 +677,25 @@
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>10</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2012-08-20 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved overall performance</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Should be more stable under OSX and not crash unexpectedly</description>
+				</org.diylc.appframework.update.Change>		
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
