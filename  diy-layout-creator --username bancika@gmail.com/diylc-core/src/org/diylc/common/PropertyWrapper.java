@@ -22,8 +22,8 @@ public class PropertyWrapper implements Cloneable {
 	private boolean unique = true;
 	private boolean changed = false;
 
-	public PropertyWrapper(String name, Class<?> type, String getter, String setter,
-			boolean defaultable, IPropertyValidator validator) {
+	public PropertyWrapper(String name, Class<?> type, String getter,
+			String setter, boolean defaultable, IPropertyValidator validator) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -33,8 +33,9 @@ public class PropertyWrapper implements Cloneable {
 		this.validator = validator;
 	}
 
-	public void readFrom(Object object) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException, SecurityException, NoSuchMethodException {
+	public void readFrom(Object object) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException,
+			SecurityException, NoSuchMethodException {
 		this.value = object.getClass().getMethod(getter).invoke(object);
 	}
 
@@ -47,8 +48,9 @@ public class PropertyWrapper implements Cloneable {
 	// }
 	// }
 
-	public void writeTo(Object object) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException, SecurityException, NoSuchMethodException {
+	public void writeTo(Object object) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException,
+			SecurityException, NoSuchMethodException {
 		object.getClass().getMethod(setter, type).invoke(object, this.value);
 	}
 
@@ -75,19 +77,19 @@ public class PropertyWrapper implements Cloneable {
 	public IPropertyValidator getValidator() {
 		return validator;
 	}
-	
+
 	public boolean isUnique() {
 		return unique;
 	}
-	
+
 	public void setUnique(boolean unique) {
 		this.unique = unique;
 	}
-	
+
 	public boolean isChanged() {
 		return changed;
 	}
-	
+
 	public void setChanged(boolean changed) {
 		this.changed = changed;
 	}
@@ -102,6 +104,15 @@ public class PropertyWrapper implements Cloneable {
 	// }
 	// return new Property(name, type, value);
 	// }
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		PropertyWrapper clone = new PropertyWrapper(this.name, this.type, this.getter,
+				this.setter, this.defaultable, this.validator);
+		clone.value = this.value;
+		clone.changed = this.changed;
+		clone.unique = this.unique;
+		return clone;
+	}
 
 	@Override
 	public int hashCode() {

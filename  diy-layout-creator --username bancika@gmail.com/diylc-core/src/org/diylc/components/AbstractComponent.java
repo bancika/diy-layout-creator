@@ -18,8 +18,6 @@ import org.diylc.common.VerticalAlignment;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.EditableProperty;
 
-import com.rits.cloning.CloningException;
-
 /**
  * Abstract implementation of {@link IDIYComponent} that contains component name
  * and toString.
@@ -177,7 +175,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 			}
 			return newInstance;
 		} catch (Exception e) {
-			throw new CloningException("Could not clone the component", e);
+			throw new CloneNotSupportedException("Could not clone the component. Reason: " + e.getMessage());
 		}
 	}
 }
