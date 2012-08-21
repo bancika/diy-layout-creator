@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class Project implements Serializable {
 	public static Size DEFAULT_GRID_SPACING = new Size(0.1d, SizeUnit.in);
 
 	private VersionNumber fileVersion;
-	
+
 	private String title;
 	private String author;
 	private String description;
@@ -128,11 +129,11 @@ public class Project implements Serializable {
 	public Set<Integer> getLockedLayers() {
 		return lockedLayers;
 	}
-	
+
 	public VersionNumber getFileVersion() {
 		return fileVersion;
 	}
-	
+
 	public void setFileVersion(VersionNumber fileVersion) {
 		this.fileVersion = fileVersion;
 	}
@@ -167,8 +168,18 @@ public class Project implements Serializable {
 		if (components == null) {
 			if (other.components != null)
 				return false;
-		} else if (!components.equals(other.components))
+		} else if (components.size() != other.components.size()) {
 			return false;
+		} else {
+			Iterator<IDIYComponent<?>> i1 = components.iterator();
+			Iterator<IDIYComponent<?>> i2 = other.components.iterator();
+			while (i1.hasNext()) {
+				IDIYComponent<?> c1 = i1.next();
+				IDIYComponent<?> c2 = i2.next();
+				if (!c1.equalsTo(c2))
+					return false;
+			}
+		}
 		if (description == null) {
 			if (other.description != null)
 				return false;
@@ -213,7 +224,7 @@ public class Project implements Serializable {
 	}
 
 	@Override
-	public Project clone()  {
+	public Project clone() {
 		Project project = new Project();
 		project.setTitle(this.getTitle());
 		project.setAuthor(this.getAuthor());
@@ -222,10 +233,10 @@ public class Project implements Serializable {
 		project.setGridSpacing(this.getGridSpacing());
 		project.setHeight(this.getHeight());
 		project.setWidth(this.getWidth());
-		project.getLockedLayers().addAll(this.getLockedLayers());		
-		
+		project.getLockedLayers().addAll(this.getLockedLayers());
+
 		Map<IDIYComponent<?>, IDIYComponent<?>> cloneMap = new HashMap<IDIYComponent<?>, IDIYComponent<?>>();
-		
+
 		for (IDIYComponent<?> component : this.components) {
 			try {
 				IDIYComponent<?> clone = component.clone();
@@ -235,7 +246,7 @@ public class Project implements Serializable {
 				throw new RuntimeException(e);
 			}
 		}
-		
+
 		for (Set<IDIYComponent<?>> group : this.groups) {
 			Set<IDIYComponent<?>> cloneGroup = new HashSet<IDIYComponent<?>>();
 			for (IDIYComponent<?> component : group) {
