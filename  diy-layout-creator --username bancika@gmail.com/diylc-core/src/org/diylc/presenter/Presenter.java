@@ -56,8 +56,8 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3, 10,
-			0);
+	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3,
+			11, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections
@@ -77,7 +77,7 @@ public class Presenter implements IPlugInPort {
 	private Set<IDIYComponent<?>> lockedComponents;
 
 	// Utilities
-	//private Cloner cloner;
+	// private Cloner cloner;
 	private DrawingManager drawingManager;
 	private ProjectFileManager projectFileManager;
 	private InstantiationManager instantiationManager;
@@ -107,7 +107,7 @@ public class Presenter implements IPlugInPort {
 		selectedComponents = new ArrayList<IDIYComponent<?>>();
 		lockedComponents = new HashSet<IDIYComponent<?>>();
 		currentProject = new Project();
-		//cloner = new Cloner();
+		// cloner = new Cloner();
 		drawingManager = new DrawingManager(messageDispatcher);
 		projectFileManager = new ProjectFileManager(messageDispatcher);
 		instantiationManager = new InstantiationManager();
@@ -503,7 +503,8 @@ public class Presenter implements IPlugInPort {
 				// Notify the listeners.
 				if (!oldProject.equals(currentProject)) {
 					messageDispatcher.dispatchMessage(
-							EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Add "
+							EventType.PROJECT_MODIFIED, oldProject,
+							currentProject.clone(), "Add "
 									+ componentTypeSlot.getName());
 					projectFileManager.notifyFileChange();
 				}
@@ -1222,8 +1223,9 @@ public class Presenter implements IPlugInPort {
 							.extractComponentTypeFrom(
 									(Class<? extends IDIYComponent<?>>) componentBefore
 											.getClass());
-					if (componentBeforeType.getZOrder() < componentType
-							.getZOrder())
+					if (!componentType.isFlexibleZOrder()
+							&& componentBeforeType.getZOrder() < componentType
+									.getZOrder())
 						break;
 					Collections.swap(currentProject.getComponents(), index,
 							index - 1);
@@ -1232,8 +1234,7 @@ public class Presenter implements IPlugInPort {
 		}
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-					oldProject, currentProject.clone(),
-					"Send to Back");
+					oldProject, currentProject.clone(), "Send to Back");
 			projectFileManager.notifyFileChange();
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
@@ -1261,8 +1262,9 @@ public class Presenter implements IPlugInPort {
 							.extractComponentTypeFrom(
 									(Class<? extends IDIYComponent<?>>) componentAfter
 											.getClass());
-					if (componentAfterType.getZOrder() > componentType
-							.getZOrder())
+					if (!componentType.isFlexibleZOrder()
+							&& componentAfterType.getZOrder() > componentType
+									.getZOrder())
 						break;
 					Collections.swap(currentProject.getComponents(), index,
 							index + 1);
@@ -1271,8 +1273,7 @@ public class Presenter implements IPlugInPort {
 		}
 		if (!oldProject.equals(currentProject)) {
 			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-					oldProject, currentProject.clone(),
-					"Bring to Front");
+					oldProject, currentProject.clone(), "Bring to Front");
 			projectFileManager.notifyFileChange();
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
 		}
@@ -1366,8 +1367,7 @@ public class Presenter implements IPlugInPort {
 		}
 
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-				oldProject, currentProject.clone(),
-				"Renumber selection");
+				oldProject, currentProject.clone(), "Renumber selection");
 		projectFileManager.notifyFileChange();
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
@@ -1535,15 +1535,15 @@ public class Presenter implements IPlugInPort {
 	 */
 	private void addComponent(IDIYComponent<?> component,
 			ComponentType componentType, boolean canCreatePads) {
-		int index = 0;
-		while (index < currentProject.getComponents().size()
-				&& componentType.getZOrder() >= ComponentProcessor
+		int index = currentProject.getComponents().size();
+		while (index > 0
+				&& componentType.getZOrder() < ComponentProcessor
 						.getInstance()
 						.extractComponentTypeFrom(
 								(Class<? extends IDIYComponent<?>>) currentProject
-										.getComponents().get(index).getClass())
+										.getComponents().get(index - 1).getClass())
 						.getZOrder()) {
-			index++;
+			index--;
 		}
 		if (index < currentProject.getComponents().size()) {
 			currentProject.getComponents().add(index, component);
@@ -1610,8 +1610,7 @@ public class Presenter implements IPlugInPort {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-						oldProject, currentProject.clone(),
-						"Edit Selection");
+						oldProject, currentProject.clone(), "Edit Selection");
 				projectFileManager.notifyFileChange();
 			}
 			messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1653,8 +1652,7 @@ public class Presenter implements IPlugInPort {
 			// Notify the listeners.
 			if (!oldProject.equals(currentProject)) {
 				messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
-						oldProject, currentProject.clone(),
-						"Edit Project");
+						oldProject, currentProject.clone(), "Edit Project");
 				projectFileManager.notifyFileChange();
 			}
 			drawingManager.fireZoomChanged();

@@ -14,7 +14,7 @@ import org.diylc.core.IDIYComponent;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ComponentDescriptor {
-	
+
 	/**
 	 * @return component type name.
 	 */
@@ -54,13 +54,20 @@ public @interface ComponentDescriptor {
 	double zOrder();
 
 	/**
+	 * @return true if the component may go beyond it's predefined layer. In
+	 *         that case, <code>zOrder</code> is used as initial z order of the
+	 *         component.
+	 */
+	boolean flexibleZOrder() default false;
+
+	/**
 	 * @return when false, moving one control point will cause all the others to
 	 *         move together with it.
 	 */
 	boolean stretchable() default true;
-	
+
 	/**
-	 * @return controls what should be shown the BOM 
+	 * @return controls what should be shown the BOM
 	 */
 	BomPolicy bomPolicy() default BomPolicy.SHOW_ALL_NAMES;
 
