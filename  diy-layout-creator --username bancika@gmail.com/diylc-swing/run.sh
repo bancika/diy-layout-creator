@@ -1,1 +1,0 @@
-java -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true -cp diylc.jar:lib org.diylc.DIYLCStarter
