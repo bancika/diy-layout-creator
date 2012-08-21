@@ -16,8 +16,6 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.measures.Size;
 
-import com.rits.cloning.Cloner;
-
 /**
  * Manages component instantiation.
  * 
@@ -30,15 +28,12 @@ public class InstantiationManager {
 
 	public static int MAX_RECENT_COMPONENTS = 16;
 
-	private Cloner cloner;
-
 	private ComponentType componentTypeSlot;
 	private IDIYComponent<?> componentSlot;
 	private Point firstControlPoint;
 	private Point potentialControlPoint;
 
 	public InstantiationManager() {
-		cloner = new Cloner();
 	}
 
 	public ComponentType getComponentTypeSlot() {
@@ -227,7 +222,7 @@ public class InstantiationManager {
 									+ object.getClass().getName() + ":"
 									+ property.getName(), null);
 			if (defaultValue != null) {
-				property.setValue(cloner.deepClone(defaultValue));
+				property.setValue(defaultValue);
 				property.writeTo(object);
 			}
 		}

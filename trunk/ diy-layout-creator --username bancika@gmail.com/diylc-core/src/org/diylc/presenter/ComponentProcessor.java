@@ -24,8 +24,6 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-import com.rits.cloning.Cloner;
-
 /**
  * Utility class with component processing methods.
  * 
@@ -42,8 +40,6 @@ public class ComponentProcessor {
 	private Map<String, IPropertyValidator> propertyValidatorCache;
 	private Map<String, ComponentType> componentTypeMap;
 
-	private Cloner cloner;
-
 	public static ComponentProcessor getInstance() {
 		if (instance == null) {
 			instance = new ComponentProcessor();
@@ -53,7 +49,6 @@ public class ComponentProcessor {
 
 	private ComponentProcessor() {
 		super();
-		this.cloner = new Cloner();
 		this.propertyCache = new HashMap<String, List<PropertyWrapper>>();
 		this.componentTypeMap = new HashMap<String, ComponentType>();
 		this.propertyValidatorCache = new HashMap<String, IPropertyValidator>();
@@ -132,7 +127,7 @@ public class ComponentProcessor {
 	 */
 	public List<PropertyWrapper> extractProperties(Class<?> clazz) {
 		if (propertyCache.containsKey(clazz.getName())) {
-			return cloner.deepClone(propertyCache.get(clazz.getName()));
+			return cloneProperties(propertyCache.get(clazz.getName()));
 		}
 		List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
 		for (Method method : clazz.getMethods()) {
@@ -167,7 +162,19 @@ public class ComponentProcessor {
 		}
 
 		propertyCache.put(clazz.getName(), properties);
-		return cloner.deepClone(properties);
+		return cloneProperties(properties);
+	}
+	
+	private List<PropertyWrapper> cloneProperties(List<PropertyWrapper> properties) {
+		List<PropertyWrapper> result = new ArrayList<PropertyWrapper>(properties.size());
+		for (PropertyWrapper propertyWrapper : properties) {
+			try {
+				result.add((PropertyWrapper) propertyWrapper.clone());
+			} catch (CloneNotSupportedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return result;
 	}
 
 	/**
