@@ -24,12 +24,13 @@ public class ComponentType {
 	private Icon icon;
 	private Class<? extends IDIYComponent<?>> instanceClass;
 	private double zOrder;
+	private boolean flexibleZOrder;
 	private boolean stretchable;
 	private BomPolicy bomPolicy;
 
 	public ComponentType(String name, String description, CreationMethod creationMethod,
 			String category, String namePrefix, String author, Icon icon,
-			Class<? extends IDIYComponent<?>> instanceClass, double zOrder, 
+			Class<? extends IDIYComponent<?>> instanceClass, double zOrder, boolean flexibleZOrder,
 					boolean stretchable, BomPolicy bomPolicy) {
 		super();
 		this.name = name;
@@ -41,6 +42,7 @@ public class ComponentType {
 		this.icon = icon;
 		this.instanceClass = instanceClass;
 		this.zOrder = zOrder;
+		this.flexibleZOrder = flexibleZOrder;
 		this.stretchable = stretchable;
 		this.bomPolicy = bomPolicy;
 	}
@@ -79,6 +81,10 @@ public class ComponentType {
 
 	public double getZOrder() {
 		return zOrder;
+	}
+	
+	public boolean isFlexibleZOrder() {
+		return flexibleZOrder;
 	}
 
 	public boolean isStretchable() {
