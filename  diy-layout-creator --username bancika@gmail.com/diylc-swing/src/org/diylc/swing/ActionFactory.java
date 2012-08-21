@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -31,14 +32,11 @@ import org.diylc.swingframework.IDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.utils.BomEntry;
 
-import com.rits.cloning.Cloner;
-
 public class ActionFactory {
 
 	private static final Logger LOG = Logger.getLogger(ActionFactory.class);
 
 	private static ActionFactory instance;
-	private static Cloner cloner = new Cloner();
 
 	public static ActionFactory getInstance() {
 		if (instance == null) {
@@ -64,7 +62,8 @@ public class ActionFactory {
 		return new SaveAction(plugInPort, swingUI);
 	}
 
-	public SaveAsAction createSaveAsAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+	public SaveAsAction createSaveAsAction(IPlugInPort plugInPort,
+			ISwingUI swingUI) {
 		return new SaveAsAction(plugInPort, swingUI);
 	}
 
@@ -72,11 +71,13 @@ public class ActionFactory {
 		return new CreateBomAction(plugInPort);
 	}
 
-	public ExportPDFAction createExportPDFAction(IDrawingProvider drawingProvider, ISwingUI swingUI) {
+	public ExportPDFAction createExportPDFAction(
+			IDrawingProvider drawingProvider, ISwingUI swingUI) {
 		return new ExportPDFAction(drawingProvider, swingUI);
 	}
 
-	public ExportPNGAction createExportPNGAction(IDrawingProvider drawingProvider, ISwingUI swingUI) {
+	public ExportPNGAction createExportPNGAction(
+			IDrawingProvider drawingProvider, ISwingUI swingUI) {
 		return new ExportPNGAction(drawingProvider, swingUI);
 	}
 
@@ -90,17 +91,18 @@ public class ActionFactory {
 
 	// Edit menu actions.
 
-	public CutAction createCutAction(IPlugInPort plugInPort, Clipboard clipboard,
-			ClipboardOwner clipboardOwner) {
+	public CutAction createCutAction(IPlugInPort plugInPort,
+			Clipboard clipboard, ClipboardOwner clipboardOwner) {
 		return new CutAction(plugInPort, clipboard, clipboardOwner);
 	}
 
-	public CopyAction createCopyAction(IPlugInPort plugInPort, Clipboard clipboard,
-			ClipboardOwner clipboardOwner) {
+	public CopyAction createCopyAction(IPlugInPort plugInPort,
+			Clipboard clipboard, ClipboardOwner clipboardOwner) {
 		return new CopyAction(plugInPort, clipboard, clipboardOwner);
 	}
 
-	public PasteAction createPasteAction(IPlugInPort plugInPort, Clipboard clipboard) {
+	public PasteAction createPasteAction(IPlugInPort plugInPort,
+			Clipboard clipboard) {
 		return new PasteAction(plugInPort, clipboard);
 	}
 
@@ -124,12 +126,13 @@ public class ActionFactory {
 		return new EditSelectionAction(plugInPort);
 	}
 
-	public DeleteSelectionAction createDeleteSelectionAction(IPlugInPort plugInPort) {
+	public DeleteSelectionAction createDeleteSelectionAction(
+			IPlugInPort plugInPort) {
 		return new DeleteSelectionAction(plugInPort);
 	}
 
-	public ExpandSelectionAction createExpandSelectionAction(IPlugInPort plugInPort,
-			ExpansionMode expansionMode) {
+	public ExpandSelectionAction createExpandSelectionAction(
+			IPlugInPort plugInPort, ExpansionMode expansionMode) {
 		return new ExpandSelectionAction(plugInPort, expansionMode);
 	}
 
@@ -143,8 +146,8 @@ public class ActionFactory {
 
 	// Config actions.
 
-	public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey,
-			boolean defaultValue) {
+	public ConfigAction createConfigAction(IPlugInPort plugInPort,
+			String title, String configKey, boolean defaultValue) {
 		return new ConfigAction(plugInPort, title, configKey, defaultValue);
 	}
 
@@ -152,7 +155,8 @@ public class ActionFactory {
 		return new ThemeAction(plugInPort, theme);
 	}
 
-	public RenumberAction createRenumberAction(IPlugInPort plugInPort, boolean xAxisFirst) {
+	public RenumberAction createRenumberAction(IPlugInPort plugInPort,
+			boolean xAxisFirst) {
 		return new RenumberAction(plugInPort, xAxisFirst);
 	}
 
@@ -168,9 +172,10 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "New");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
-					ActionEvent.CTRL_MASK));
-			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlainYellow.getIcon());
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlainYellow
+					.getIcon());
 		}
 
 		@Override
@@ -180,9 +185,10 @@ public class ActionFactory {
 				return;
 			}
 			plugInPort.createNewProject();
-			List<PropertyWrapper> properties = plugInPort.getProjectProperties();
-			PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
-					properties, "Edit Project");
+			List<PropertyWrapper> properties = plugInPort
+					.getProjectProperties();
+			PropertyEditorDialog editor = DialogFactory.getInstance()
+					.createPropertyEditorDialog(properties, "Edit Project");
 			editor.setVisible(true);
 			if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
 				plugInPort.applyPropertiesToProject(properties);
@@ -190,8 +196,8 @@ public class ActionFactory {
 			// Save default values.
 			for (PropertyWrapper property : editor.getDefaultedProperties()) {
 				if (property.getValue() != null) {
-					plugInPort.setProjectDefaultPropertyValue(property.getName(), property
-							.getValue());
+					plugInPort.setProjectDefaultPropertyValue(property
+							.getName(), property.getValue());
 				}
 			}
 		}
@@ -209,8 +215,8 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			this.swingUI = swingUI;
 			putValue(AbstractAction.NAME, "Open");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.FolderOut.getIcon());
 		}
 
@@ -221,8 +227,8 @@ public class ActionFactory {
 				return;
 			}
 			final File file = DialogFactory.getInstance().showOpenDialog(
-					FileFilterEnum.DIY.getFilter(), null, FileFilterEnum.DIY.getExtensions()[0],
-					null);
+					FileFilterEnum.DIY.getFilter(), null,
+					FileFilterEnum.DIY.getExtensions()[0], null);
 			if (file != null) {
 				swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -239,7 +245,8 @@ public class ActionFactory {
 
 					@Override
 					public void failed(Exception e) {
-						swingUI.showMessage("Could not open file. " + e.getMessage(), "Error",
+						swingUI.showMessage("Could not open file. "
+								+ e.getMessage(), "Error",
 								ISwingUI.ERROR_MESSAGE);
 					}
 				});
@@ -259,8 +266,8 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			this.swingUI = swingUI;
 			putValue(AbstractAction.NAME, "Save");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
 		}
 
@@ -277,7 +284,8 @@ public class ActionFactory {
 						@Override
 						public Void doInBackground() throws Exception {
 							LOG.debug("Saving to " + file.getAbsolutePath());
-							plugInPort.saveProjectToFile(file.getAbsolutePath(), false);
+							plugInPort.saveProjectToFile(
+									file.getAbsolutePath(), false);
 							return null;
 						}
 
@@ -287,8 +295,9 @@ public class ActionFactory {
 
 						@Override
 						public void failed(Exception e) {
-							swingUI.showMessage("Could not save to file. " + e.getMessage(),
-									"Error", ISwingUI.ERROR_MESSAGE);
+							swingUI.showMessage("Could not save to file. "
+									+ e.getMessage(), "Error",
+									ISwingUI.ERROR_MESSAGE);
 						}
 					});
 				}
@@ -297,8 +306,10 @@ public class ActionFactory {
 
 					@Override
 					public Void doInBackground() throws Exception {
-						LOG.debug("Saving to " + plugInPort.getCurrentFileName());
-						plugInPort.saveProjectToFile(plugInPort.getCurrentFileName(), false);
+						LOG.debug("Saving to "
+								+ plugInPort.getCurrentFileName());
+						plugInPort.saveProjectToFile(plugInPort
+								.getCurrentFileName(), false);
 						return null;
 					}
 
@@ -308,7 +319,8 @@ public class ActionFactory {
 
 					@Override
 					public void failed(Exception e) {
-						swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error",
+						swingUI.showMessage("Could not save to file. "
+								+ e.getMessage(), "Error",
 								ISwingUI.ERROR_MESSAGE);
 					}
 				});
@@ -328,8 +340,9 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			this.swingUI = swingUI;
 			putValue(AbstractAction.NAME, "Save As");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-					ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_S, ActionEvent.CTRL_MASK
+							| ActionEvent.SHIFT_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
 		}
 
@@ -337,15 +350,16 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("SaveAsAction triggered");
 			final File file = DialogFactory.getInstance().showSaveDialog(
-					FileFilterEnum.DIY.getFilter(), null, FileFilterEnum.DIY.getExtensions()[0],
-					null);
+					FileFilterEnum.DIY.getFilter(), null,
+					FileFilterEnum.DIY.getExtensions()[0], null);
 			if (file != null) {
 				swingUI.executeBackgroundTask(new ITask<Void>() {
 
 					@Override
 					public Void doInBackground() throws Exception {
 						LOG.debug("Saving to " + file.getAbsolutePath());
-						plugInPort.saveProjectToFile(file.getAbsolutePath(), false);
+						plugInPort.saveProjectToFile(file.getAbsolutePath(),
+								false);
 						return null;
 					}
 
@@ -355,7 +369,8 @@ public class ActionFactory {
 
 					@Override
 					public void failed(Exception e) {
-						swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error",
+						swingUI.showMessage("Could not save to file. "
+								+ e.getMessage(), "Error",
 								ISwingUI.ERROR_MESSAGE);
 					}
 				});
@@ -379,8 +394,8 @@ public class ActionFactory {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("CreateBomAction triggered");
-			List<BomEntry> bom = org.diylc.utils.BomMaker.getInstance().createBom(
-					plugInPort.getCurrentProject().getComponents());
+			List<BomEntry> bom = org.diylc.utils.BomMaker.getInstance()
+					.createBom(plugInPort.getCurrentProject().getComponents());
 			BomDialog dialog = DialogFactory.getInstance().createBomDialog(bom);
 			dialog.setVisible(true);
 		}
@@ -393,7 +408,8 @@ public class ActionFactory {
 		private IDrawingProvider drawingProvider;
 		private ISwingUI swingUI;
 
-		public ExportPDFAction(IDrawingProvider drawingProvider, ISwingUI swingUI) {
+		public ExportPDFAction(IDrawingProvider drawingProvider,
+				ISwingUI swingUI) {
 			super();
 			this.drawingProvider = drawingProvider;
 			this.swingUI = swingUI;
@@ -405,8 +421,8 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("ExportPDFAction triggered");
 			final File file = DialogFactory.getInstance().showSaveDialog(
-					FileFilterEnum.PDF.getFilter(), null, FileFilterEnum.PDF.getExtensions()[0],
-					null);
+					FileFilterEnum.PDF.getFilter(), null,
+					FileFilterEnum.PDF.getExtensions()[0], null);
 			if (file != null) {
 				swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -424,7 +440,8 @@ public class ActionFactory {
 
 					@Override
 					public void failed(Exception e) {
-						swingUI.showMessage("Could not export to PDF. " + e.getMessage(), "Error",
+						swingUI.showMessage("Could not export to PDF. "
+								+ e.getMessage(), "Error",
 								ISwingUI.ERROR_MESSAGE);
 					}
 				});
@@ -439,7 +456,8 @@ public class ActionFactory {
 		private IDrawingProvider drawingProvider;
 		private ISwingUI swingUI;
 
-		public ExportPNGAction(IDrawingProvider drawingProvider, ISwingUI swingUI) {
+		public ExportPNGAction(IDrawingProvider drawingProvider,
+				ISwingUI swingUI) {
 			super();
 			this.drawingProvider = drawingProvider;
 			this.swingUI = swingUI;
@@ -451,8 +469,8 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("ExportPNGAction triggered");
 			final File file = DialogFactory.getInstance().showSaveDialog(
-					FileFilterEnum.PNG.getFilter(), null, FileFilterEnum.PNG.getExtensions()[0],
-					null);
+					FileFilterEnum.PNG.getFilter(), null,
+					FileFilterEnum.PNG.getExtensions()[0], null);
 			if (file != null) {
 				swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -470,7 +488,8 @@ public class ActionFactory {
 
 					@Override
 					public void failed(Exception e) {
-						swingUI.showMessage("Could not export to PNG. " + e.getMessage(), "Error",
+						swingUI.showMessage("Could not export to PNG. "
+								+ e.getMessage(), "Error",
 								ISwingUI.ERROR_MESSAGE);
 					}
 				});
@@ -488,8 +507,8 @@ public class ActionFactory {
 			super();
 			this.drawingProvider = drawingProvider;
 			putValue(AbstractAction.NAME, "Print...");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Print.getIcon());
 		}
 
@@ -536,22 +555,24 @@ public class ActionFactory {
 		private Clipboard clipboard;
 		private ClipboardOwner clipboardOwner;
 
-		public CutAction(IPlugInPort plugInPort, Clipboard clipboard, ClipboardOwner clipboardOwner) {
+		public CutAction(IPlugInPort plugInPort, Clipboard clipboard,
+				ClipboardOwner clipboardOwner) {
 			super();
 			this.plugInPort = plugInPort;
 			this.clipboard = clipboard;
 			this.clipboardOwner = clipboardOwner;
 			putValue(AbstractAction.NAME, "Cut");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Cut.getIcon());
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Cut triggered");
-			clipboard.setContents(new ComponentTransferable(cloner.deepClone(plugInPort
-					.getSelectedComponents())), clipboardOwner);
+			clipboard.setContents(new ComponentTransferable(
+					cloneComponents(plugInPort.getSelectedComponents())),
+					clipboardOwner);
 			plugInPort.deleteSelectedComponents();
 		}
 	}
@@ -564,22 +585,24 @@ public class ActionFactory {
 		private Clipboard clipboard;
 		private ClipboardOwner clipboardOwner;
 
-		public CopyAction(IPlugInPort plugInPort, Clipboard clipboard, ClipboardOwner clipboardOwner) {
+		public CopyAction(IPlugInPort plugInPort, Clipboard clipboard,
+				ClipboardOwner clipboardOwner) {
 			super();
 			this.plugInPort = plugInPort;
 			this.clipboard = clipboard;
 			this.clipboardOwner = clipboardOwner;
 			putValue(AbstractAction.NAME, "Copy");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_C, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Copy.getIcon());
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Copy triggered");
-			clipboard.setContents(new ComponentTransferable(cloner.deepClone(plugInPort
-					.getSelectedComponents())), clipboardOwner);
+			clipboard.setContents(new ComponentTransferable(
+					cloneComponents(plugInPort.getSelectedComponents())),
+					clipboardOwner);
 		}
 	}
 
@@ -595,8 +618,8 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			this.clipboard = clipboard;
 			putValue(AbstractAction.NAME, "Paste");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_V, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Paste.getIcon());
 		}
 
@@ -607,11 +630,25 @@ public class ActionFactory {
 			try {
 				List<IDIYComponent<?>> components = (List<IDIYComponent<?>>) clipboard
 						.getData(ComponentTransferable.listFlavor);
-				plugInPort.pasteComponents(cloner.deepClone(components));
+				plugInPort.pasteComponents(cloneComponents(components));
 			} catch (Exception ex) {
 				LOG.error("Coule not paste.", ex);
 			}
 		}
+	}
+
+	private static List<IDIYComponent<?>> cloneComponents(
+			List<IDIYComponent<?>> components) {
+		List<IDIYComponent<?>> result = new ArrayList<IDIYComponent<?>>(
+				components.size());
+		for (IDIYComponent<?> component : components) {
+			try {
+				result.add(component.clone());
+			} catch (CloneNotSupportedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return result;
 	}
 
 	public static class SelectAllAction extends AbstractAction {
@@ -624,8 +661,8 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Select All");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_A, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Selection.getIcon());
 		}
 
@@ -646,8 +683,8 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Group Selection");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Group.getIcon());
 		}
 
@@ -668,8 +705,8 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Ungroup Selection");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U,
-					ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_U, ActionEvent.CTRL_MASK));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Ungroup.getIcon());
 		}
 
@@ -690,15 +727,17 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Edit Project");
-			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentEdit.getIcon());
+			putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentEdit
+					.getIcon());
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Edit Project triggered");
-			List<PropertyWrapper> properties = plugInPort.getProjectProperties();
-			PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
-					properties, "Edit Project");
+			List<PropertyWrapper> properties = plugInPort
+					.getProjectProperties();
+			PropertyEditorDialog editor = DialogFactory.getInstance()
+					.createPropertyEditorDialog(properties, "Edit Project");
 			editor.setVisible(true);
 			if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
 				plugInPort.applyPropertiesToProject(properties);
@@ -706,8 +745,8 @@ public class ActionFactory {
 			// Save default values.
 			for (PropertyWrapper property : editor.getDefaultedProperties()) {
 				if (property.getValue() != null) {
-					plugInPort.setProjectDefaultPropertyValue(property.getName(), property
-							.getValue());
+					plugInPort.setProjectDefaultPropertyValue(property
+							.getName(), property.getValue());
 				}
 			}
 		}
@@ -723,15 +762,17 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Edit Selection");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
-					ActionEvent.CTRL_MASK));
-			putValue(AbstractAction.SMALL_ICON, IconLoader.EditComponent.getIcon());
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.SMALL_ICON, IconLoader.EditComponent
+					.getIcon());
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Edit Selection triggered");
-			List<PropertyWrapper> properties = plugInPort.getMutualSelectionProperties();
+			List<PropertyWrapper> properties = plugInPort
+					.getMutualSelectionProperties();
 			if (properties == null || properties.isEmpty()) {
 				LOG.info("Nothing to edit");
 				return;
@@ -750,7 +791,8 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Delete Selection");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_DELETE, 0));
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Delete.getIcon());
 		}
 
@@ -768,7 +810,8 @@ public class ActionFactory {
 		private IPlugInPort plugInPort;
 		private ExpansionMode expansionMode;
 
-		public ExpandSelectionAction(IPlugInPort plugInPort, ExpansionMode expansionMode) {
+		public ExpandSelectionAction(IPlugInPort plugInPort,
+				ExpansionMode expansionMode) {
 			super();
 			this.plugInPort = plugInPort;
 			this.expansionMode = expansionMode;
@@ -842,15 +885,15 @@ public class ActionFactory {
 		private IPlugInPort plugInPort;
 		private String configKey;
 
-		public ConfigAction(IPlugInPort plugInPort, String title, String configKey,
-				boolean defaultValue) {
+		public ConfigAction(IPlugInPort plugInPort, String title,
+				String configKey, boolean defaultValue) {
 			super();
 			this.plugInPort = plugInPort;
 			this.configKey = configKey;
 			putValue(AbstractAction.NAME, title);
 			putValue(IView.CHECK_BOX_MENU_ITEM, true);
-			putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance().readBoolean(
-					configKey, defaultValue));
+			putValue(AbstractAction.SELECTED_KEY, ConfigurationManager
+					.getInstance().readBoolean(configKey, defaultValue));
 		}
 
 		@Override
@@ -875,8 +918,8 @@ public class ActionFactory {
 			this.theme = theme;
 			putValue(AbstractAction.NAME, theme.getName());
 			putValue(IView.RADIO_BUTTON_GROUP_KEY, "theme");
-			putValue(AbstractAction.SELECTED_KEY, plugInPort.getSelectedTheme().getName().equals(
-					theme.getName()));
+			putValue(AbstractAction.SELECTED_KEY, plugInPort.getSelectedTheme()
+					.getName().equals(theme.getName()));
 		}
 
 		@Override
@@ -897,7 +940,8 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			this.xAxisFirst = xAxisFirst;
-			putValue(AbstractAction.NAME, xAxisFirst ? "X Axis First" : "Y Axis First");
+			putValue(AbstractAction.NAME, xAxisFirst ? "X Axis First"
+					: "Y Axis First");
 		}
 
 		@Override

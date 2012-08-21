@@ -40,8 +40,12 @@ public class MeasureEditor extends Container {
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
 						try {
-							Constructor ctor = measure.getClass().getConstructors()[0];
-							AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ctor.newInstance((Double) evt.getNewValue(), measure.getUnit());
+							Constructor ctor = measure.getClass()
+									.getConstructors()[0];
+							AbstractMeasure<?> oldMeasure = (AbstractMeasure<?>) property.getValue();
+							AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ctor
+									.newInstance((Double) evt.getNewValue(),
+											oldMeasure.getUnit());
 							property.setValue(newMeasure);
 							property.setChanged(true);
 							valueField.setBackground(oldBg);
@@ -72,7 +76,11 @@ public class MeasureEditor extends Container {
 				public void actionPerformed(ActionEvent evt) {
 					try {
 						Constructor ctor = measure.getClass().getConstructors()[0];
-						AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ctor.newInstance((Enum<? extends Unit>) unitBox.getSelectedItem());
+						AbstractMeasure<?> oldMeasure = (AbstractMeasure<?>) property.getValue();
+						AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ctor
+								.newInstance(oldMeasure.getValue(),
+										(Enum<? extends Unit>) unitBox
+												.getSelectedItem());
 						property.setValue(newMeasure);
 						property.setChanged(true);
 						valueField.setBackground(oldBg);
@@ -115,17 +123,17 @@ public class MeasureEditor extends Container {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void requestFocus() {
 		this.valueField.requestFocus();
 	}
-	
+
 	@Override
 	public boolean requestFocusInWindow() {
 		return this.valueField.requestFocusInWindow();
 	}
-	
+
 	@Override
 	public synchronized void addKeyListener(KeyListener l) {
 		this.valueField.addKeyListener(l);
