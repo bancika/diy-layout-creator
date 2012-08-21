@@ -13,7 +13,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/app-framework"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/swing-framework"/>
-	<classpathentry kind="lib" path="lib/cloning-1.8.1.jar"/>
-	<classpathentry kind="lib" path="lib/objenesis-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
