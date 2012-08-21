@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.net.URL;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
@@ -25,6 +26,8 @@ import org.diylc.swing.gui.TemplateDialog;
 public class DIYLCStarter {
 
 	private static final Logger LOG = Logger.getLogger(DIYLCStarter.class);
+
+	private static final String SCRIPT_RUN = "org.diylc.scriptRun";
 
 	/**
 	 * @param args
@@ -52,6 +55,22 @@ public class DIYLCStarter {
 		} catch (Exception e) {
 			LOG.error("Could not set Look&Feel", e);
 		}
+		
+		String val = System.getProperty(SCRIPT_RUN);
+		if (!"true".equals(val)) {
+			int response = JOptionPane
+					.showConfirmDialog(
+							null,
+							"It is not recommended to run DIYLC by clicking on the diylc.jar file.\n" +
+							"Please use diylc.exe on Windows and run.sh on OSX/Linux because they\n" +
+							"will configure your Java for the best performance and reliability.\n" +
+							"Do you want to continue using the application?",
+							"DIYLC", JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE);
+			if (response != JOptionPane.YES_OPTION) {
+				System.exit(0);
+			}
+		}
 
 		MainFrame mainFrame = new MainFrame();
 		mainFrame.setLocationRelativeTo(null);
@@ -69,7 +88,7 @@ public class DIYLCStarter {
 				}
 			}
 		}
-		
+
 		properties = new Properties();
 		try {
 			LOG.info("Injecting default properties.");
