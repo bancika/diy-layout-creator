@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -30,7 +31,7 @@ public class MeasureEditor extends Container {
 	@SuppressWarnings("unchecked")
 	public MeasureEditor(final PropertyWrapper property) {
 		setLayout(new BorderLayout());
-		AbstractMeasure measure = ((AbstractMeasure) property.getValue());
+		final AbstractMeasure measure = ((AbstractMeasure) property.getValue());
 		valueField = new DoubleTextField(measure.getValue());
 		oldBg = valueField.getBackground();
 		valueField.addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY,
@@ -39,14 +40,24 @@ public class MeasureEditor extends Container {
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
 						try {
-							AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ((AbstractMeasure) property
-									.getValue()).clone();
-							newMeasure.setValue((Double) evt.getNewValue());
+							Constructor ctor = measure.getClass().getConstructors()[0];
+							AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ctor.newInstance((Double) evt.getNewValue(), measure.getUnit());
 							property.setValue(newMeasure);
 							property.setChanged(true);
 							valueField.setBackground(oldBg);
 							unitBox.setBackground(oldBg);
-						} catch (CloneNotSupportedException ex) {
+						} catch (IllegalArgumentException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InstantiationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
 				});
@@ -58,16 +69,26 @@ public class MeasureEditor extends Container {
 			unitBox.addActionListener(new ActionListener() {
 
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent evt) {
 					try {
-						AbstractMeasure<Enum<? extends Unit>> newMeasure = (AbstractMeasure<Enum<? extends Unit>>) ((AbstractMeasure) property
-								.getValue()).clone();
-						newMeasure.setUnit((Enum<? extends Unit>) unitBox.getSelectedItem());
+						Constructor ctor = measure.getClass().getConstructors()[0];
+						AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ctor.newInstance((Enum<? extends Unit>) unitBox.getSelectedItem());
 						property.setValue(newMeasure);
 						property.setChanged(true);
 						valueField.setBackground(oldBg);
 						unitBox.setBackground(oldBg);
-					} catch (CloneNotSupportedException ex) {
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 			});

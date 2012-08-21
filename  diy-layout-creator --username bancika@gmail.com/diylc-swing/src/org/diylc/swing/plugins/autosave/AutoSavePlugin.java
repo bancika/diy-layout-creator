@@ -27,7 +27,7 @@ public class AutoSavePlugin implements IPlugIn {
 
 	public AutoSavePlugin(IView view) {
 		this.view = view;
-		executor = Executors.newSingleThreadExecutor();		
+		executor = Executors.newSingleThreadExecutor();
 	}
 
 	@Override
@@ -66,17 +66,18 @@ public class AutoSavePlugin implements IPlugIn {
 	@Override
 	public void processMessage(EventType eventType, Object... params) {
 		if (eventType == EventType.PROJECT_MODIFIED) {
-			executor.execute(new Runnable() {
+			if (System.currentTimeMillis() - lastSave > autoSaveFrequency) {
+				executor.execute(new Runnable() {
 
-				@Override
-				public void run() {
-					Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-					if (System.currentTimeMillis() - lastSave > autoSaveFrequency) {
+					@Override
+					public void run() {
+						Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+
 						lastSave = System.currentTimeMillis();
 						plugInPort.saveProjectToFile(AUTO_SAVE_FILE_NAME, true);
 					}
-				}
-			});
+				});
+			}
 		}
 	}
 }
