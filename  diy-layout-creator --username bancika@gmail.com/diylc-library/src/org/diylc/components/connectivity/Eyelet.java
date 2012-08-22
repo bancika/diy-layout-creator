@@ -17,7 +17,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Eyelet", category = "Connectivity", author = "Branislav Stojkovic", description = "Eyelet or turret terminal", instanceNamePrefix = "Eyelet", stretchable = false, zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME)
+@ComponentDescriptor(name = "Eyelet", category = "Connectivity", author = "Branislav Stojkovic", description = "Eyelet or turret terminal", instanceNamePrefix = "Eyelet", stretchable = false, zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false)
 public class Eyelet extends AbstractComponent<String> {
 
 	private static final long serialVersionUID = 1L;

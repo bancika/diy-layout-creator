@@ -32,7 +32,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Strat Single Coil Pickup", category = "Guitar", author = "Branislav Stojkovic", description = "Strat-style single coil guitar pickup", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP")
+@ComponentDescriptor(name = "Strat Single Coil Pickup", category = "Guitar", author = "Branislav Stojkovic", description = "Strat-style single coil guitar pickup", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false)
 public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;

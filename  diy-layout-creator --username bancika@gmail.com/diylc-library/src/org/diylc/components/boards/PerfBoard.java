@@ -17,7 +17,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Perf Board w/ Pads", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with solder pads", bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME)
+@ComponentDescriptor(name = "Perf Board w/ Pads", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with solder pads", bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false)
 public class PerfBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;

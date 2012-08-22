@@ -23,7 +23,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.BomEntry;
 import org.diylc.utils.BomMaker;
 
-@ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.TEXT, stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW)
+@ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "", instanceNamePrefix = "BOM", zOrder = IDIYComponent.TEXT, stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
 public class BOM extends AbstractComponent<Void> {
 
 	public static Size DEFAULT_SIZE = new Size(10d, SizeUnit.cm);

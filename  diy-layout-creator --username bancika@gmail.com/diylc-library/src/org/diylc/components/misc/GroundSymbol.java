@@ -18,7 +18,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Ground Symbol", author = "Branislav Stojkovic", category = "Misc", instanceNamePrefix = "GND", description = "Ground schematic symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW)
+@ComponentDescriptor(name = "Ground Symbol", author = "Branislav Stojkovic", category = "Misc", instanceNamePrefix = "GND", description = "Ground schematic symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
 public class GroundSymbol extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;

@@ -29,7 +29,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "9V Battery Snap", category = "Electromechanical", author = "Branislav Stojkovic", description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "BTR")
+@ComponentDescriptor(name = "9V Battery Snap", category = "Electromechanical", author = "Branislav Stojkovic", description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "BTR", autoEdit = false)
 public class BatterySnap9V extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
