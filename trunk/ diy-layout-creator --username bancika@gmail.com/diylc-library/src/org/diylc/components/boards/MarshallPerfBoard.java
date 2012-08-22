@@ -17,7 +17,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Marshall Style Perf Board", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board as found on some Marshall and Trainwreck amps", bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME)
+@ComponentDescriptor(name = "Marshall Style Perf Board", category = "Boards", author = "Branislav Stojkovic", zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board as found on some Marshall and Trainwreck amps", bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false)
 public class MarshallPerfBoard extends AbstractBoard {
 
 	private static final long serialVersionUID = 1L;

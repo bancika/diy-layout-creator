@@ -31,7 +31,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic", description = "Cliff-style closed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
+@ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic", description = "Cliff-style closed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false)
 public class CliffJack1_4 extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;

@@ -17,7 +17,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic", description = "Designates the place where a trace on the vero board needs to be cut", instanceNamePrefix = "Cut", stretchable = false, zOrder = IDIYComponent.BOARD + 1, bomPolicy = BomPolicy.NEVER_SHOW)
+@ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic", description = "Designates the place where a trace on the vero board needs to be cut", instanceNamePrefix = "Cut", stretchable = false, zOrder = IDIYComponent.BOARD + 1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
 public class TraceCut extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;

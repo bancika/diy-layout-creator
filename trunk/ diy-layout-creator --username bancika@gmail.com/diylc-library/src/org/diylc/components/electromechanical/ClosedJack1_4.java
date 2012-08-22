@@ -31,7 +31,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic", description = "Enclosed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
+@ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic", description = "Enclosed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false)
 public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
