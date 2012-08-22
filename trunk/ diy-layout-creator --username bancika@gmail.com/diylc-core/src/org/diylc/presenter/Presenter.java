@@ -57,7 +57,7 @@ public class Presenter implements IPlugInPort {
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3,
-			11, 0);
+			12, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections
@@ -436,8 +436,9 @@ public class Presenter implements IPlugInPort {
 										.getName(), e);
 					}
 
-					if (ConfigurationManager.getInstance().readBoolean(
-							IPlugInPort.AUTO_EDIT_KEY, false)) {
+					if (componentTypeSlot.isAutoEdit()
+							&& ConfigurationManager.getInstance().readBoolean(
+									IPlugInPort.AUTO_EDIT_KEY, false)) {
 						editSelection();
 					}
 					if (ConfigurationManager.getInstance().readBoolean(
@@ -484,8 +485,10 @@ public class Presenter implements IPlugInPort {
 						updateSelection(newSelection);
 						messageDispatcher.dispatchMessage(EventType.REPAINT);
 
-						if (ConfigurationManager.getInstance().readBoolean(
-								IPlugInPort.AUTO_EDIT_KEY, false)) {
+						if (componentTypeSlot.isAutoEdit()
+								&& ConfigurationManager.getInstance()
+										.readBoolean(IPlugInPort.AUTO_EDIT_KEY,
+												false)) {
 							editSelection();
 						}
 						if (ConfigurationManager.getInstance().readBoolean(
@@ -1541,8 +1544,8 @@ public class Presenter implements IPlugInPort {
 						.getInstance()
 						.extractComponentTypeFrom(
 								(Class<? extends IDIYComponent<?>>) currentProject
-										.getComponents().get(index - 1).getClass())
-						.getZOrder()) {
+										.getComponents().get(index - 1)
+										.getClass()).getZOrder()) {
 			index--;
 		}
 		if (index < currentProject.getComponents().size()) {
