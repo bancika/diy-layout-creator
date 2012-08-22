@@ -71,4 +71,10 @@ public @interface ComponentDescriptor {
 	 */
 	BomPolicy bomPolicy() default BomPolicy.SHOW_ALL_NAMES;
 
+	/**
+	 * @return when true, component editor dialog should be shown in Auto-Edit
+	 *         mode.
+	 */
+	boolean autoEdit() default true;
+
 }

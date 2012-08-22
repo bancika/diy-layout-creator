@@ -70,6 +70,7 @@ public class ComponentProcessor {
 		boolean flexibleZOrder;
 		boolean stretchable;
 		BomPolicy bomPolicy;
+		boolean autoEdit;
 		if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
 			ComponentDescriptor annotation = clazz
 					.getAnnotation(ComponentDescriptor.class);
@@ -83,6 +84,7 @@ public class ComponentProcessor {
 			flexibleZOrder = annotation.flexibleZOrder();
 			stretchable = annotation.stretchable();
 			bomPolicy = annotation.bomPolicy();
+			autoEdit = annotation.autoEdit();
 		} else {
 			name = clazz.getSimpleName();
 			description = "";
@@ -94,6 +96,7 @@ public class ComponentProcessor {
 			flexibleZOrder = false;
 			stretchable = true;
 			bomPolicy = BomPolicy.SHOW_ALL_NAMES;
+			autoEdit = true;
 		}
 		icon = null;
 		// Draw component icon.
@@ -114,7 +117,7 @@ public class ComponentProcessor {
 		}
 		ComponentType componentType = new ComponentType(name, description,
 				creationMethod, category, namePrefix, author, icon, clazz,
-				zOrder, flexibleZOrder, stretchable, bomPolicy);
+				zOrder, flexibleZOrder, stretchable, bomPolicy, autoEdit);
 		componentTypeMap.put(clazz.getName(), componentType);
 		return componentType;
 	}
