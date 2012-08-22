@@ -730,6 +730,14 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Rectangle selection triggers file (modified) state</description>
 				</org.diylc.appframework.update.Change>			
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Auto-Edit opens the editor on for components that make sense (e.g. NOT for traces, solder pads, etc)</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Better sorting in the BOM (e.g. R2 should go before R10)</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
