@@ -5,6 +5,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.ImageIcon;
 
@@ -42,29 +43,31 @@ public class Image extends AbstractTransparentComponent<Void> {
 	private byte scale = 50;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		double s = 1d * scale / DEFAULT_SCALE;
-		Point endPoint = new Point((int) (image.getIconWidth() * s),
-				(int) (image.getIconHeight() * s));
-		Shape clip = g2d.getClip();
-		if (!clip.contains(point) && !clip.contains(endPoint)
-				&& !clip.contains(point.x, endPoint.y) && !clip.contains(endPoint.x, point.y)) {
+		Shape clip = g2d.getClip().getBounds();
+		if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(),
+				image.getIconWidth() * s, image.getIconHeight() * s))) {
+			System.console().writer().print("escape");
 			return;
 		}
 		Composite oldComposite = g2d.getComposite();
 		if (alpha < MAX_ALPHA) {
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-					/ MAX_ALPHA));
+			g2d.setComposite(AlphaComposite.getInstance(
+					AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
 		}
 
 		g2d.scale(s, s);
-		g2d.drawImage(image.getImage(), (int) (point.x / s), (int) (point.y / s), null);
+		g2d.drawImage(image.getImage(), (int) (point.x / s),
+				(int) (point.y / s), null);
 		if (componentState == ComponentState.SELECTED) {
 			g2d.setComposite(oldComposite);
 			g2d.scale(1 / s, 1 / s);
 			g2d.setColor(SELECTION_COLOR);
-			g2d.drawRect(point.x, point.y, endPoint.x, endPoint.y);
+			g2d.drawRect(point.x, point.y, (int) (image.getIconWidth() * s),
+					(int) (image.getIconHeight() * s));
 		}
 	}
 
