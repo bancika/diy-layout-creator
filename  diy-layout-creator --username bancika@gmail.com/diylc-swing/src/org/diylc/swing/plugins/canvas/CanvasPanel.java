@@ -193,11 +193,9 @@ class CanvasPanel extends JComponent implements Autoscroll {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					plugInPort.mouseClicked(e.getPoint(), e.getButton(), e
-							.isControlDown(), e.isShiftDown(), e.isAltDown(), e
-							.getClickCount());
-				}
+				plugInPort.mouseClicked(e.getPoint(), e.getButton(), e
+						.isControlDown(), e.isShiftDown(), e.isAltDown(), e
+						.getClickCount());
 			}
 		});
 	}

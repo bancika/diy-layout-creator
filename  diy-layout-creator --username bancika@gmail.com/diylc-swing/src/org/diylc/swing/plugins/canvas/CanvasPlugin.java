@@ -31,7 +31,6 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.CreationMethod;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
@@ -102,10 +101,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (plugInPort.getNewComponentTypeSlot() != null && plugInPort.getNewComponentTypeSlot().getCreationMethod() == CreationMethod.SINGLE_CLICK) {
-						plugInPort.mouseClicked(e.getPoint(), e.getButton(),
-								false, false, false, e.getClickCount());
-					} else if (e.isPopupTrigger()) {
+					if (plugInPort.getNewComponentTypeSlot() == null && e.isPopupTrigger()) {
 						// Enable actions.
 						boolean enabled = !plugInPort.getSelectedComponents()
 								.isEmpty();
