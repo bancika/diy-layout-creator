@@ -733,7 +733,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Two components are created instead of one</description>
-				</org.diylc.appframework.update.Change>		
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Undo-Redo repeated several times messes up selection</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Auto-Edit opens the editor on for components that make sense (e.g. NOT for traces, solder pads, etc)</description>
