@@ -355,6 +355,7 @@ public class DrawingManager {
 
 	public void clearComponentAreaMap() {
 		componentAreaMap.clear();
+		lastDrawnStateMap.clear();
 	}
 
 	public List<IDIYComponent<?>> findComponentsAt(Point point, Project project) {
