@@ -739,6 +739,14 @@
 					<description>Undo-Redo repeated several times messes up selection</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Loading DIY file that contains images sometimes breaks</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Image disappears while scrolling if not completely in the visible area</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Auto-Edit opens the editor on for components that make sense (e.g. NOT for traces, solder pads, etc)</description>
 				</org.diylc.appframework.update.Change>		
