@@ -37,18 +37,20 @@ public class MarshallPerfBoard extends AbstractBoard {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		Shape clip = g2d.getClip();
-		if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
+		if (checkPointsClipped(clip)
+				&& !clip.contains(firstPoint.x, secondPoint.y)
 				&& !clip.contains(secondPoint.x, firstPoint.y)) {
 			return;
 		}
 		super.draw(g2d, componentState, outlineMode, project, drawingObserver);
 		if (componentState != ComponentState.DRAGGING) {
 			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-						/ MAX_ALPHA));
+				g2d.setComposite(AlphaComposite.getInstance(
+						AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
 			}
 			Point p = new Point(firstPoint);
 			int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
@@ -60,11 +62,11 @@ public class MarshallPerfBoard extends AbstractBoard {
 				while (p.x < secondPoint.x - spacing - holeDiameter) {
 					p.x += spacing;
 					g2d.setColor(Constants.CANVAS_COLOR);
-					g2d.fillOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter,
-							holeDiameter);
+					g2d.fillOval(p.x - holeDiameter / 2,
+							p.y - holeDiameter / 2, holeDiameter, holeDiameter);
 					g2d.setColor(borderColor);
-					g2d.drawOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter,
-							holeDiameter);
+					g2d.drawOval(p.x - holeDiameter / 2,
+							p.y - holeDiameter / 2, holeDiameter, holeDiameter);
 				}
 			}
 			super.drawCoordinates(g2d, spacing);
@@ -82,29 +84,40 @@ public class MarshallPerfBoard extends AbstractBoard {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
+		int factor = 32 / width;
 		g2d.setColor(BOARD_COLOR);
-		g2d.fillRect(2, 2, width - 4, height - 4);
+		g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4
+				/ factor);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawRect(2, 2, width - 4, height - 4);
+		g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4
+				/ factor);
 
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(width / 3 - 2, width / 3 - 2, 5, 5);
+		g2d.fillOval(width / 3 - 2 / factor, width / 3 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawOval(width / 3 - 2, width / 3 - 2, 5, 5);
+		g2d.drawOval(width / 3 - 2 / factor, width / 3 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(2 * width / 3 - 2, width / 3 - 2, 5, 5);
+		g2d.fillOval(2 * width / 3 - 2 / factor, width / 3 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawOval(2 * width / 3 - 2, width / 3 - 2, 5, 5);
+		g2d.drawOval(2 * width / 3 - 2 / factor, width / 3 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(width / 3 - 2, 2 * width / 3 - 2, 5, 5);
+		g2d.fillOval(width / 3 - 2 / factor, 2 * width / 3 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawOval(width / 3 - 2, 2 * width / 3 - 2, 5, 5);
+		g2d.drawOval(width / 3 - 2 / factor, 2 * width / 3 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(2 * width / 3 - 2, 2 * width / 3 - 2, 5, 5);
+		g2d.fillOval(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawOval(2 * width / 3 - 2, 2 * width / 3 - 2, 5, 5);
+		g2d.drawOval(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 	}
 }
