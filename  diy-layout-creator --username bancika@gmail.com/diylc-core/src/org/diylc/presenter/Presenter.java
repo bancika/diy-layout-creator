@@ -57,7 +57,7 @@ public class Presenter implements IPlugInPort {
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3,
-			12, 0);
+			13, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections
@@ -274,9 +274,11 @@ public class Presenter implements IPlugInPort {
 					isBackup);
 		} catch (Exception ex) {
 			LOG.error("Could not save file", ex);
-			view.showMessage("Could not save file " + fileName
-					+ ". Check the log for details.", "Error",
-					IView.ERROR_MESSAGE);
+			if (!isBackup) {
+				view.showMessage("Could not save file " + fileName
+						+ ". Check the log for details.", "Error",
+						IView.ERROR_MESSAGE);
+			}
 		}
 	}
 
