@@ -771,6 +771,10 @@
 					<description>Polygon Ground Fill component</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Editable BOM color</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Block user actions during long operations (print, export, etc)</description>
 				</org.diylc.appframework.update.Change>					
