@@ -13,10 +13,11 @@ public class BlankBoard extends AbstractBoard {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
+		int factor = 32 / width;
 		g2d.setColor(BOARD_COLOR);
-		g2d.fillRect(2, 2, width - 4, height - 4);
+		g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawRect(2, 2, width - 4, height - 4);
+		g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
 	}
 	
 	@Override

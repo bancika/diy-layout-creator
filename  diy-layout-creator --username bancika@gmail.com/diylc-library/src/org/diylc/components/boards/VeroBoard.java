@@ -36,10 +36,12 @@ public class VeroBoard extends AbstractBoard {
 	protected OrientationHV orientation = OrientationHV.HORIZONTAL;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		Shape clip = g2d.getClip();
-		if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
+		if (checkPointsClipped(clip)
+				&& !clip.contains(firstPoint.x, secondPoint.y)
 				&& !clip.contains(secondPoint.x, firstPoint.y)) {
 			return;
 		}
@@ -47,8 +49,8 @@ public class VeroBoard extends AbstractBoard {
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-						/ MAX_ALPHA));
+				g2d.setComposite(AlphaComposite.getInstance(
+						AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
 			}
 			Point p = new Point(firstPoint);
 			int stripSize = getClosestOdd((int) STRIP_SIZE.convertToPixels());
@@ -60,17 +62,19 @@ public class VeroBoard extends AbstractBoard {
 					p.x = firstPoint.x;
 					p.y += spacing;
 					g2d.setColor(stripColor);
-					g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing
-							- p.x, stripSize);
+					g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2,
+							secondPoint.x - spacing - p.x, stripSize);
 					g2d.setColor(stripColor.darker());
-					g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing
-							- p.x, stripSize);
+					g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2,
+							secondPoint.x - spacing - p.x, stripSize);
 					while (p.x < secondPoint.x - spacing - holeSize) {
 						p.x += spacing;
 						g2d.setColor(Constants.CANVAS_COLOR);
-						g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+						g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2,
+								holeSize, holeSize);
 						g2d.setColor(stripColor.darker());
-						g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+						g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2,
+								holeSize, holeSize);
 					}
 				}
 			} else {
@@ -78,17 +82,19 @@ public class VeroBoard extends AbstractBoard {
 					p.x += spacing;
 					p.y = firstPoint.y;
 					g2d.setColor(stripColor);
-					g2d.fillRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, secondPoint.y
-							- spacing - p.y);
+					g2d.fillRect(p.x - stripSize / 2, p.y + spacing / 2,
+							stripSize, secondPoint.y - spacing - p.y);
 					g2d.setColor(stripColor.darker());
-					g2d.drawRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, secondPoint.y
-							- spacing - p.y);
+					g2d.drawRect(p.x - stripSize / 2, p.y + spacing / 2,
+							stripSize, secondPoint.y - spacing - p.y);
 					while (p.y < secondPoint.y - spacing - holeSize) {
 						p.y += spacing;
 						g2d.setColor(Constants.CANVAS_COLOR);
-						g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+						g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2,
+								holeSize, holeSize);
 						g2d.setColor(stripColor.darker());
-						g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
+						g2d.drawOval(p.x - holeSize / 2, p.y - holeSize / 2,
+								holeSize, holeSize);
 					}
 				}
 			}
@@ -126,19 +132,26 @@ public class VeroBoard extends AbstractBoard {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
+		int factor = 32 / width;
 		g2d.setColor(BOARD_COLOR);
-		g2d.fillRect(2, 2, width - 4, height - 4);
+		g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4
+				/ factor);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawRect(2, 2, width - 4, height - 4);
+		g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4
+				/ factor);
 		g2d.setColor(STRIP_COLOR);
-		g2d.fillRect(4, width / 4, width - 8, width / 2);
+		g2d.fillRect(4 / factor, width / 4, width - 8 / factor, width / 2);
 		g2d.setColor(STRIP_COLOR.darker());
-		g2d.drawRect(4, width / 4, width - 8, width / 2);
+		g2d.drawRect(4 / factor, width / 4, width - 8 / factor, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(width / 3 - 2, width / 2 - 2, 5, 5);
-		g2d.fillOval(2 * width / 3 - 2, width / 2 - 2, 5, 5);
+		g2d.fillOval(width / 3 - 2 / factor, width / 2 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
+		g2d.fillOval(2 * width / 3 - 2 / factor, width / 2 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 		g2d.setColor(STRIP_COLOR.darker());
-		g2d.drawOval(width / 3 - 2, width / 2 - 2, 5, 5);
-		g2d.drawOval(2 * width / 3 - 2, width / 2 - 2, 5, 5);
+		g2d.drawOval(width / 3 - 2 / factor, width / 2 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
+		g2d.drawOval(2 * width / 3 - 2 / factor, width / 2 - 2 / factor,
+				getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 	}
 }

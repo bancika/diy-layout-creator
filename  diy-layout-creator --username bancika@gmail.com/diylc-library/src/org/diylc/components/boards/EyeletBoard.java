@@ -100,17 +100,18 @@ public class EyeletBoard extends AbstractBoard {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
+		int factor = 32 / width;
 		g2d.setColor(BOARD_COLOR);
-		g2d.fillRect(2, 2, width - 4, height - 4);
+		g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawRect(2, 2, width - 4, height - 4);
+		g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
 		g2d.setColor(EYELET_COLOR);
 		g2d.fillOval(width / 4, width / 4, width / 2, width / 2);
 		g2d.setColor(EYELET_COLOR.darker());
 		g2d.drawOval(width / 4, width / 4, width / 2, width / 2);
 		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval(width / 2 - 2, width / 2 - 2, 5, 5);
+		g2d.fillOval(width / 2 - 2 / factor, width / 2 - 2 / factor, getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 		g2d.setColor(EYELET_COLOR.darker());
-		g2d.drawOval(width / 2 - 2, width / 2 - 2, 5, 5);
+		g2d.drawOval(width / 2 - 2 / factor, width / 2 - 2 / factor, getClosestOdd(5.0 / factor), getClosestOdd(5.0 / factor));
 	}
 }
