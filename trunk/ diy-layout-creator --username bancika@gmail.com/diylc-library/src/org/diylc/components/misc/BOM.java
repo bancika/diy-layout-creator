@@ -35,6 +35,7 @@ public class BOM extends AbstractComponent<Void> {
 	private Size size = DEFAULT_SIZE;
 
 	private Point point = new Point(0, 0);
+	private Color color = COLOR;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
@@ -50,7 +51,7 @@ public class BOM extends AbstractComponent<Void> {
 		}
 		g2d.setFont(LABEL_FONT);
 		g2d.setColor(componentState == ComponentState.DRAGGING
-				|| componentState == ComponentState.SELECTED ? SELECTION_COLOR : COLOR);		
+				|| componentState == ComponentState.SELECTED ? SELECTION_COLOR : color);		
 		// Determine maximum name length and maximum value length to calculate
 		// number of columns.		
 		FontMetrics fontMetrics = g2d.getFontMetrics();
@@ -173,6 +174,18 @@ public class BOM extends AbstractComponent<Void> {
 
 	public void setSize(Size size) {
 		this.size = size;
+	}
+	
+	@EditableProperty
+	public Color getColor() {
+		if (color == null) {
+			color = COLOR;
+		}
+		return color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	@Override
