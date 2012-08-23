@@ -769,7 +769,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Polygon Ground Fill component</description>
-				</org.diylc.appframework.update.Change>						
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Block user actions during long operations (print, export, etc)</description>
+				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>

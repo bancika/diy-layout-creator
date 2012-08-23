@@ -148,7 +148,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 			}
 		});
 
-		// setGlassPane(new CustomGlassPane());
+		setGlassPane(new CustomGlassPane());
 		// getGlassPane().setVisible(true);
 	}
 
@@ -313,10 +313,10 @@ public class MainFrame extends JFrame implements ISwingUI {
 		menu.add(submenu);
 		menuMap.put(name, submenu);
 	}
-
+	
 	@Override
 	public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
-		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		getGlassPane().setVisible(true);
 		SwingWorker<T, Void> worker = new SwingWorker<T, Void>() {
 
 			@Override
@@ -333,7 +333,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 					LOG.error("Task failed", e);
 					task.failed(e);
 				}
-				setCursor(Cursor.getDefaultCursor());
+				getGlassPane().setVisible(false);
 			}
 		};
 		worker.execute();
