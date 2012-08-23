@@ -1395,6 +1395,7 @@ public class Presenter implements IPlugInPort {
 
 	@Override
 	public void expandSelection(ExpansionMode expansionMode) {
+		LOG.info(String.format("expandSelection(%s)", expansionMode));
 		List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(
 				this.selectedComponents);
 		// Find control points of all selected components and all types
