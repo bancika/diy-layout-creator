@@ -1,42 +1,56 @@
 package org.diylc.swing.gui;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Cursor;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseListener;
 
-import javax.swing.Icon;
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
-public class CustomGlassPane extends JComponent {
+public class CustomGlassPane extends JPanel implements MouseListener,
+		KeyListener {
 
-	private static final long serialVersionUID = 1L;
-	private Icon icon;
+	public static final CustomGlassPane GLASS_PANE = new CustomGlassPane();
+	
+	private static final long serialVersionUID = -5344758920442881290L;
 
 	public CustomGlassPane() {
-		super();
-		addMouseMotionListener(new MouseMotionAdapter() {
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				if (icon != null) {
-					repaint();
-				}
-			}
-		});
-	}
-
-	public void setCursorIcon(Icon icon) {
-		this.icon = icon;
+		addKeyListener(this);
+		addMouseListener(this);
+		setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		setOpaque(false);
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		Point cursor = getMousePosition();
-		if ((icon != null) && (cursor != null)) {
-			Graphics2D g2d = (Graphics2D) g;
-			icon.paintIcon(this, g2d, cursor.x + 10, cursor.y + 10);
-		}
+	public void mouseClicked(final MouseEvent pArg0) {
+	}
+
+	@Override
+	public void mouseEntered(final MouseEvent pArg0) {
+	}
+
+	@Override
+	public void mouseExited(final MouseEvent pArg0) {
+	}
+
+	@Override
+	public void mousePressed(final MouseEvent pArg0) {
+	}
+
+	@Override
+	public void mouseReleased(final MouseEvent pArg0) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
 	}
 }
