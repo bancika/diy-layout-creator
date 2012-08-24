@@ -61,6 +61,11 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 	public void setVoltage(Voltage voltage) {
 		this.voltage = voltage;
 	}
+	
+	@Override
+	public String getValueForDisplay() {
+		return getValue().toString() + " " + getVoltageNew().toString();
+	}
 
 	@EditableProperty(name = "Voltage")
 	public org.diylc.core.measures.Voltage getVoltageNew() {

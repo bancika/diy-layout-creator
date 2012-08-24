@@ -197,7 +197,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 		g2d.drawString(getName(), (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
 
 		// Draw value.
-		rect = fontMetrics.getStringBounds(getValue().toString(), g2d);
+		rect = fontMetrics.getStringBounds(getValueForDisplay(), g2d);
 
 		textHeight = (int) rect.getHeight();
 		textWidth = (int) rect.getWidth();
@@ -205,7 +205,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 		x = (panelWidth - textWidth) / 2;
 		y = panelHeight / 2 + fontMetrics.getAscent();
 
-		g2d.drawString(getValue().toString(), (int) (bodyRect.getX() + x),
+		g2d.drawString(getValueForDisplay(), (int) (bodyRect.getX() + x),
 				(int) (bodyRect.getY() + y));
 	}
 

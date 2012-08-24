@@ -58,6 +58,11 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
+	
+	@Override
+	public String getValueForDisplay() {
+		return getValue().toString() + " " + getVoltageNew().toString();
+	}
 
 	@Deprecated
 	public Voltage getVoltage() {
