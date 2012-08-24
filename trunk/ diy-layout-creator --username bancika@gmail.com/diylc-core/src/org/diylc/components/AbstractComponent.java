@@ -63,6 +63,11 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 	public String toString() {
 		return name;
 	}
+	
+	@Override
+	public String getValueForDisplay() {
+		return getValue() == null ? "" : getValue().toString();
+	}
 
 	/**
 	 * Returns the closest odd number, i.e. x when x is odd, or x + 1 when x is

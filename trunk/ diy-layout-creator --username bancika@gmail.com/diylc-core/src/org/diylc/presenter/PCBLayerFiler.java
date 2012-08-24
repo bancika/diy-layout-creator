@@ -15,12 +15,11 @@ public class PCBLayerFiler implements IComponentFiler {
 		this.layer = layer;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean testComponent(IDIYComponent<?> component) {
 		Class<?> clazz = component.getClass();
 		try {
-			Method m = clazz.getMethod("getLayer", null);
+			Method m = clazz.getMethod("getLayer");
 			PCBLayer l = (PCBLayer) m.invoke(component);
 			return layer == l;
 		} catch (Exception e) {
