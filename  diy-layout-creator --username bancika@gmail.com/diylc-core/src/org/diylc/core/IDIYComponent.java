@@ -107,7 +107,8 @@ public interface IDIYComponent<T> extends Serializable {
 	 * @param project
 	 * @param drawingObserver
 	 */
-	void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
+	void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
 			IDrawingObserver drawingObserver);
 
 	/**
@@ -126,6 +127,11 @@ public interface IDIYComponent<T> extends Serializable {
 	 * @return
 	 */
 	IDIYComponent<T> clone() throws CloneNotSupportedException;
+
+	/**
+	 * @return full value for BOM.
+	 */
+	String getValueForDisplay();
 
 	/**
 	 * Checks if two components are equal.

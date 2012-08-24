@@ -64,8 +64,7 @@ public class BomMaker {
 			if (type.getBomPolicy() == BomPolicy.NEVER_SHOW)
 				continue;
 			String name = component.getName();
-			String value = component.getValue() == null ? null : component
-					.getValue().toString();
+			String value = component.getValueForDisplay();
 			if ((name != null) && (value != null)) {
 				String key = type.getName() + "|" + value;
 				if (entryMap.containsKey(key)) {
