@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -31,6 +32,7 @@ public class SolderPad extends AbstractComponent<Void> {
 	private Point point = new Point(0, 0);
 	private Type type = Type.ROUND;
 	private Size holeSize = HOLE_SIZE;
+	private PCBLayer layer = PCBLayer._1;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
@@ -82,6 +84,18 @@ public class SolderPad extends AbstractComponent<Void> {
 
 	public void setHoleSize(Size holeSize) {
 		this.holeSize = holeSize;
+	}
+	
+	@EditableProperty
+	public PCBLayer getLayer() {
+		if (layer == null) {
+			layer = PCBLayer._1;
+		}
+		return layer;
+	}
+	
+	public void setLayer(PCBLayer layer) {
+		this.layer = layer;
 	}
 
 	@Override
