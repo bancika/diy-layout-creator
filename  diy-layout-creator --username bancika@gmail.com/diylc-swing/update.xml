@@ -780,6 +780,10 @@
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Show voltage and power ratings in the BOM where applicable</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Block user actions during long operations (print, export, etc)</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
