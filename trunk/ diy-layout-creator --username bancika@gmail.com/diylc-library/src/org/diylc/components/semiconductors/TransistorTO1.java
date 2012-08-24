@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -29,19 +30,21 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Transistor (TO-92 package)", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "Transistor with small plastic or epoxy body", stretchable = false, zOrder = IDIYComponent.COMPONENT)
-public class TransistorTO92 extends AbstractTransparentComponent<String> {
+@ComponentDescriptor(name = "Transistor (TO-1 package)", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "Transistor with small metal body", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+public class TransistorTO1 extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color BODY_COLOR = Color.gray;
-	public static Color BORDER_COLOR = Color.gray.darker();
+	public static Color BODY_COLOR = Color.decode("#D0E0EF");
+	public static Color BORDER_COLOR = BODY_COLOR.darker();
 	public static Color PIN_COLOR = Color.decode("#00B2EE");
 	public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
-	public static Color LABEL_COLOR = Color.white;
+	public static Color LABEL_COLOR = Color.black;
 	public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
 	public static Size PIN_SPACING = new Size(0.05d, SizeUnit.in);
-	public static Size BODY_DIAMETER = new Size(0.2d, SizeUnit.in);
+	public static Size BODY_DIAMETER = new Size(0.24d, SizeUnit.in);
+	public static Size BODY_LENGTH = new Size(0.4d, SizeUnit.in);
+	public static Size EDGE_RADIUS = new Size(2d, SizeUnit.mm);
 
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
@@ -55,7 +58,7 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 	private boolean folded = false;
 	private Size pinSpacing = PIN_SPACING;
 
-	public TransistorTO92() {
+	public TransistorTO1() {
 		super();
 		updateControlPoints();
 	}
@@ -76,32 +79,6 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
-		updateControlPoints();
-		// Reset body shape;
-		body = null;
-	}
-
-	@EditableProperty
-	public boolean getFolded() {
-		return folded;
-	}
-
-	public void setFolded(boolean folded) {
-		this.folded = folded;
-		// Reset body shape;
-		body = null;
-	}
-	
-	@EditableProperty
-	public Size getPinSpacing() {
-		if (pinSpacing == null) {
-			pinSpacing = new Size(0.1, SizeUnit.in);
-		}
-		return pinSpacing;
-	}
-	
-	public void setPinSpacing(Size pinSpacing) {
-		this.pinSpacing = pinSpacing;
 		updateControlPoints();
 		// Reset body shape;
 		body = null;
@@ -140,19 +117,23 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		int y = controlPoints[0].y;
 		switch (orientation) {
 		case DEFAULT:
-			controlPoints[1].setLocation(x, y + pinSpacing);
+			controlPoints[1].setLocation(x - (folded ? 0 : pinSpacing), y
+					+ pinSpacing);
 			controlPoints[2].setLocation(x, y + 2 * pinSpacing);
 			break;
 		case _90:
-			controlPoints[1].setLocation(x - pinSpacing, y);
+			controlPoints[1].setLocation(x - pinSpacing, y
+					- (folded ? 0 : pinSpacing));
 			controlPoints[2].setLocation(x - 2 * pinSpacing, y);
 			break;
 		case _180:
-			controlPoints[1].setLocation(x, y - pinSpacing);
+			controlPoints[1].setLocation(x + (folded ? 0 : pinSpacing), y
+					- pinSpacing);
 			controlPoints[2].setLocation(x, y - 2 * pinSpacing);
 			break;
 		case _270:
-			controlPoints[1].setLocation(x + pinSpacing, y);
+			controlPoints[1].setLocation(x + pinSpacing, y
+					+ (folded ? 0 : pinSpacing));
 			controlPoints[2].setLocation(x + 2 * pinSpacing, y);
 			break;
 		default:
@@ -165,66 +146,35 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 			int x = (controlPoints[0].x + controlPoints[1].x + controlPoints[2].x) / 3;
 			int y = (controlPoints[0].y + controlPoints[1].y + controlPoints[2].y) / 3;
 			int bodyDiameter = getClosestOdd(BODY_DIAMETER.convertToPixels());
+			int bodyLength = getClosestOdd(BODY_LENGTH.convertToPixels());
+			int edgeRadius = (int) EDGE_RADIUS.convertToPixels();
 
 			if (folded) {
 				switch (orientation) {
 				case DEFAULT:
-					body = new Area(new Rectangle2D.Double(x - bodyDiameter, y
-							- bodyDiameter / 2, bodyDiameter, bodyDiameter));
+					body = new Area(new RoundRectangle2D.Double(x - bodyLength, y - bodyDiameter / 2, bodyLength, bodyDiameter, edgeRadius, edgeRadius));
+					body.add(new Area(new Rectangle2D.Double(x - bodyLength / 2, y - bodyDiameter / 2, bodyLength / 2, bodyDiameter)));
 					break;
 				case _90:
-					body = new Area(new Rectangle2D.Double(
-							x - bodyDiameter / 2, y - bodyDiameter,
-							bodyDiameter, bodyDiameter));
+					body = new Area(new RoundRectangle2D.Double(x - bodyDiameter / 2, y - bodyLength, bodyDiameter, bodyLength, edgeRadius, edgeRadius));
+					body.add(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyLength / 2, bodyDiameter, bodyLength / 2)));
 					break;
 				case _180:
-					body = new Area(new Rectangle2D.Double(x, y - bodyDiameter
-							/ 2, bodyDiameter, bodyDiameter));
+					body = new Area(new RoundRectangle2D.Double(x, y - bodyDiameter / 2, bodyLength, bodyDiameter, edgeRadius, edgeRadius));
+					body.add(new Area(new Rectangle2D.Double(x, y - bodyDiameter / 2, bodyLength / 2, bodyDiameter)));
 					break;
 				case _270:
-					body = new Area(
-							new Rectangle2D.Double(x - bodyDiameter / 2, y,
-									bodyDiameter, bodyDiameter));
+					body = new Area(new RoundRectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyLength, edgeRadius, edgeRadius));
+					body.add(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyLength / 2)));
 					break;
 				default:
-					throw new RuntimeException("Unexpected orientation: "
-							+ orientation);
+					throw new RuntimeException("Unexpected orientation: " + orientation);
 				}
 			} else {
-				switch (orientation) {
-				case DEFAULT:
-					body = new Area(new Ellipse2D.Double(x - bodyDiameter / 2,
-							y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
-					body.subtract(new Area(new Rectangle2D.Double(x
-							- bodyDiameter, y - bodyDiameter / 2,
-							3 * bodyDiameter / 4, bodyDiameter)));
-					break;
-				case _90:
-					body = new Area(new Ellipse2D.Double(x - bodyDiameter / 2,
-							y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
-					body.subtract(new Area(new Rectangle2D.Double(x
-							- bodyDiameter / 2, y - bodyDiameter, bodyDiameter,
-							3 * bodyDiameter / 4)));
-					break;
-				case _180:
-					body = new Area(new Ellipse2D.Double(x - bodyDiameter / 2,
-							y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
-					body.subtract(new Area(new Rectangle2D.Double(x
-							+ bodyDiameter / 4, y - bodyDiameter / 2,
-							3 * bodyDiameter / 4, bodyDiameter)));
-					break;
-				case _270:
-					body = new Area(new Ellipse2D.Double(x - bodyDiameter / 2,
-							y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
-					body.subtract(new Area(new Rectangle2D.Double(x
-							- bodyDiameter / 2, y + bodyDiameter / 4,
-							bodyDiameter, 3 * bodyDiameter / 4)));
-					break;
-				default:
-					throw new RuntimeException("Unexpected orientation: "
-							+ orientation);
-				}
+				body = new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y
+						- bodyDiameter / 2, bodyDiameter, bodyDiameter));
 			}
+
 		}
 		return body;
 	}
@@ -303,13 +253,9 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		int margin = 3 * width / 32;
+		int margin = 2 * width / 32;
 		Area area = new Area(new Ellipse2D.Double(margin / 2, margin, width - 2
 				* margin, width - 2 * margin));
-		// area.subtract(new Area(new Rectangle2D.Double(0, 0, 2 * margin,
-		// height)));
-		area.intersect(new Area(new Rectangle2D.Double(2 * margin, 0, width,
-				height)));
 		g2d.setColor(BODY_COLOR);
 		g2d.fill(area);
 		g2d.setColor(BORDER_COLOR);
@@ -325,6 +271,30 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		this.bodyColor = bodyColor;
 	}
 
+	@EditableProperty
+	public boolean getFolded() {
+		return folded;
+	}
+
+	public void setFolded(boolean folded) {
+		this.folded = folded;
+		updateControlPoints();
+		// Reset body shape;
+		body = null;
+	}
+	
+	@EditableProperty
+	public Size getPinSpacing() {
+		return pinSpacing;
+	}
+	
+	public void setPinSpacing(Size pinSpacing) {
+		this.pinSpacing = pinSpacing;
+		updateControlPoints();
+		// Reset body shape;
+		body = null;
+	}
+
 	@EditableProperty(name = "Border")
 	public Color getBorderColor() {
 		return borderColor;
@@ -336,9 +306,6 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 	
 	@EditableProperty(name = "Label")
 	public Color getLabelColor() {
-		if (labelColor == null) {
-			labelColor = LABEL_COLOR;
-		}
 		return labelColor;
 	}
 	
