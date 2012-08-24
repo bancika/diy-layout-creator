@@ -39,7 +39,7 @@ public class BomMaker {
 			public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
 				String name1 = o1.getName();
 				String name2 = o2.getName();
-				Pattern p = Pattern.compile("(\\D*)(\\d*)");
+				Pattern p = Pattern.compile("(\\D+)(\\d+)");
 				Matcher m1 = p.matcher(name1);
 				Matcher m2 = p.matcher(name2);
 				if (m1.matches() && m2.matches()) {
