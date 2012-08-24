@@ -514,7 +514,7 @@ public class ActionFactory {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			LOG.info("ExportPNGAction triggered");
+			LOG.info("PrintAction triggered");
 			try {
 				DrawingExporter.getInstance().print(this.drawingProvider);
 			} catch (PrinterException e1) {
@@ -539,6 +539,7 @@ public class ActionFactory {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LOG.info("ExitAction triggered");
 			if (plugInPort.allowFileAction()) {
 				System.exit(0);
 			}
