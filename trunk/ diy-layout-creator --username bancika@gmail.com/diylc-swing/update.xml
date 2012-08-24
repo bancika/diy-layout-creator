@@ -776,6 +776,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>TO-1 transistor component</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Multi-layer PCB support; outputs each layer's trace mask to a separate page</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
@@ -785,6 +789,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Show voltage and power ratings in the BOM where applicable</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Folded TO-92 transistors</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
