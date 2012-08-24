@@ -57,6 +57,11 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	public void setValue(Resistance value) {
 		this.value = value;
 	}
+	
+	@Override
+	public String getValueForDisplay() {
+		return getValue().toString() + " " + getPowerNew().toString();
+	}
 
 	@Deprecated
 	public Power getPower() {

@@ -47,6 +47,11 @@ public class RadialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 		this.value = value;
 	}
 	
+	@Override
+	public String getValueForDisplay() {
+		return getValue().toString() + " " + getVoltageNew().toString();
+	}
+	
 	@Deprecated
 	public Voltage getVoltage() {
 		return voltage;

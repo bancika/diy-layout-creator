@@ -38,6 +38,11 @@ public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> 
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
+	
+	@Override
+	public String getValueForDisplay() {
+		return getValue().toString() + " " + getVoltageNew().toString();
+	}
 
 	@Deprecated
 	public Voltage getVoltage() {

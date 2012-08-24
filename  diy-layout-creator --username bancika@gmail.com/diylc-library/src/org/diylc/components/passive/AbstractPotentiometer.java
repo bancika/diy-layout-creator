@@ -10,7 +10,7 @@ import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.ResistanceUnit;
 
 public abstract class AbstractPotentiometer extends
-		AbstractTransparentComponent<PotentiometerValue> {
+		AbstractTransparentComponent<Resistance> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,25 +44,21 @@ public abstract class AbstractPotentiometer extends
 	public boolean isControlPointSticky(int index) {
 		return true;
 	}
+	
+	@Override
+	public String getValueForDisplay() {
+		return resistance.toString() + " " + taper.toString();
+	}
 
 	@EditableProperty
-	public Resistance getResistance() {
+	@Override
+	public Resistance getValue() {
 		return resistance;
 	}
 
-	public void setResistance(Resistance resistance) {
-		this.resistance = resistance;
-	}
-
 	@Override
-	public PotentiometerValue getValue() {
-		return new PotentiometerValue(resistance, taper);
-	}
-
-	@Override
-	public void setValue(PotentiometerValue value) {
-		this.resistance = value.getResistance();
-		this.taper = value.getTaper();
+	public void setValue(Resistance value) {
+		this.resistance = value;
 	}
 
 	@EditableProperty

@@ -14,6 +14,7 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.core.measures.VoltageUnit;
 
 @ComponentDescriptor(name = "Ceramic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Standard radial ceramic capacitor", zOrder = IDIYComponent.COMPONENT)
 public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacitance> {
@@ -26,7 +27,10 @@ public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacita
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private Capacitance value = new Capacitance(470d, CapacitanceUnit.pF);
+	@Deprecated
 	private Voltage voltage = Voltage._63V;
+	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(63d,
+			VoltageUnit.V);
 
 	public RadialCeramicDiskCapacitor() {
 		super();
@@ -41,6 +45,26 @@ public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacita
 
 	public void setValue(Capacitance value) {
 		this.value = value;
+	}
+	
+	@Override
+	public String getValueForDisplay() {
+		return getValue().toString() + " " + getVoltageNew().toString();
+	}
+	
+	@EditableProperty(name = "Voltage")
+	public org.diylc.core.measures.Voltage getVoltageNew() {
+		// Backward comptibility
+		if (voltageNew == null) {
+			voltageNew = voltage.convertToNewFormat();
+			voltage = null;
+			// Clear old value, don't need it anymore
+		}
+		return voltageNew;
+	}
+
+	public void setVoltageNew(org.diylc.core.measures.Voltage voltageNew) {
+		this.voltageNew = voltageNew;
 	}
 	
 	@EditableProperty
