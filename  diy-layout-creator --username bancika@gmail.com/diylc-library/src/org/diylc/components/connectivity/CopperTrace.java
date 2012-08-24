@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
@@ -26,6 +27,7 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 
 	private Color leadColor = COLOR;
 	private Size thickness = THICKNESS;
+	private PCBLayer layer = PCBLayer._1;
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -63,6 +65,18 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 		this.thickness = thickness;
 	}
 	
+	@EditableProperty
+	public PCBLayer getLayer() {
+		if (layer == null) {
+			layer = PCBLayer._1;
+		}
+		return layer;
+	}
+	
+	public void setLayer(PCBLayer layer) {
+		this.layer = layer;
+	}
+
 	@Override
 	protected int getLeadThickness() {
 		return (int) getThickness().convertToPixels();

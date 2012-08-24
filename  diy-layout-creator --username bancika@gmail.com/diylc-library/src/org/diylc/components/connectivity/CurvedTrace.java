@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.CubicCurve2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -23,6 +24,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 	public static Size SIZE = new Size(1d, SizeUnit.mm);
 
 	protected Size size = SIZE;
+	private PCBLayer layer = PCBLayer._1;
 
 	@Override
 	protected Color getDefaultColor() {
@@ -46,6 +48,18 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 
 	public void setThickness(Size size) {
 		this.size = size;
+	}
+	
+	@EditableProperty
+	public PCBLayer getLayer() {
+		if (layer == null) {
+			layer = PCBLayer._1;
+		}
+		return layer;
+	}
+	
+	public void setLayer(PCBLayer layer) {
+		this.layer = layer;
 	}
 
 	@Override
