@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -43,18 +45,26 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 	public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
 	public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
 	public static Size BODY_WIDTH = new Size(0.4d, SizeUnit.in);
-	public static Size BODY_HEIGHT = new Size(4.5d, SizeUnit.mm);
+	public static Size BODY_THICKNESS = new Size(4.5d, SizeUnit.mm);
+	public static Size BODY_HEIGHT = new Size(9d, SizeUnit.mm);
 	public static Size TAB_THICKNESS = new Size(1d, SizeUnit.mm);
+	public static Size TAB_HEIGHT = new Size(6.2d, SizeUnit.mm);
+	public static Size TAB_HOLE_DIAMETER = new Size(3.6d, SizeUnit.mm);
+	public static Size LEAD_LENGTH = new Size(3.5d, SizeUnit.mm);
+	public static Size LEAD_THICKNESS = new Size(0.8d, SizeUnit.mm);
 
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
-	private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
+	private Point[] controlPoints = new Point[] { new Point(0, 0),
+			new Point(0, 0), new Point(0, 0) };
 	transient private Shape[] body;
 	private Color bodyColor = BODY_COLOR;
 	private Color borderColor = BORDER_COLOR;
 	private Color tabColor = TAB_COLOR;
 	private Color tabBorderColor = TAB_BORDER_COLOR;
 	private Display display = Display.NAME;
+	private boolean folded = false;
+	private Size leadLength = LEAD_LENGTH;
 
 	public TransistorTO220() {
 		super();
@@ -142,44 +152,109 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 			int y = controlPoints[0].y;
 			int pinSpacing = (int) PIN_SPACING.convertToPixels();
 			int bodyWidth = getClosestOdd(BODY_WIDTH.convertToPixels());
+			int bodyThickness = getClosestOdd(BODY_THICKNESS.convertToPixels());
 			int bodyHeight = getClosestOdd(BODY_HEIGHT.convertToPixels());
 			int tabThickness = (int) TAB_THICKNESS.convertToPixels();
+			int tabHeight = (int) TAB_HEIGHT.convertToPixels();
+			int tabHoleDiameter = (int) TAB_HOLE_DIAMETER.convertToPixels();
+			double leadLength = getLeadLength().convertToPixels();
 
 			switch (orientation) {
 			case DEFAULT:
-				body[0] = new Rectangle2D.Double(x - bodyHeight / 2,
-						y + pinSpacing - bodyWidth / 2, bodyHeight, bodyWidth);
-				body[1] = new Rectangle2D.Double(x + bodyHeight / 2 - tabThickness, y + pinSpacing
-						- bodyWidth / 2, tabThickness, bodyWidth);
+				if (folded) {
+					body[0] = new Rectangle2D.Double(x + leadLength, y
+							+ pinSpacing - bodyWidth / 2, bodyHeight, bodyWidth);
+					body[1] = new Area(new Rectangle2D.Double(x + leadLength
+							+ bodyHeight, y + pinSpacing - bodyWidth / 2,
+							tabHeight, bodyWidth));
+					((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x
+							+ leadLength + bodyHeight + tabHeight / 2
+							- tabHoleDiameter / 2, y + pinSpacing
+							- tabHoleDiameter / 2, tabHoleDiameter,
+							tabHoleDiameter)));
+				} else {
+					body[0] = new Rectangle2D.Double(x - bodyThickness / 2, y
+							+ pinSpacing - bodyWidth / 2, bodyThickness,
+							bodyWidth);
+					body[1] = new Rectangle2D.Double(x + bodyThickness / 2
+							- tabThickness, y + pinSpacing - bodyWidth / 2,
+							tabThickness, bodyWidth);
+				}
 				break;
 			case _90:
-				body[0] = new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2,
-						y - bodyHeight / 2, bodyWidth, bodyHeight);
-				body[1] = new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + bodyHeight / 2
-						- tabThickness, bodyWidth, tabThickness);
+				if (folded) {
+					body[0] = new Rectangle2D.Double(x - pinSpacing - bodyWidth
+							/ 2, y + leadLength, bodyWidth, bodyHeight);
+					body[1] = new Area(new Rectangle2D.Double(x - pinSpacing
+							- bodyWidth / 2, y + leadLength + bodyHeight,
+							bodyWidth, tabHeight));
+					((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x
+							- pinSpacing - tabHoleDiameter / 2, y + leadLength
+							+ bodyHeight + tabHeight / 2 - tabHoleDiameter / 2,
+							tabHoleDiameter, tabHoleDiameter)));
+				} else {
+					body[0] = new Rectangle2D.Double(x - pinSpacing - bodyWidth
+							/ 2, y - bodyThickness / 2, bodyWidth,
+							bodyThickness);
+					body[1] = new Rectangle2D.Double(x - pinSpacing - bodyWidth
+							/ 2, y + bodyThickness / 2 - tabThickness,
+							bodyWidth, tabThickness);
+				}
 				break;
 			case _180:
-				body[0] = new Rectangle2D.Double(x - bodyHeight / 2,
-						y - pinSpacing - bodyWidth / 2, bodyHeight, bodyWidth);
-				body[1] = new Rectangle2D.Double(x - bodyHeight / 2,
-						y - pinSpacing - bodyWidth / 2, tabThickness, bodyWidth);
+				if (folded) {
+					body[0] = new Rectangle2D.Double(x - leadLength
+							- bodyHeight, y - pinSpacing - bodyWidth / 2,
+							bodyHeight, bodyWidth);
+					body[1] = new Area(new Rectangle2D.Double(x - leadLength
+							- bodyHeight - tabHeight, y - pinSpacing
+							- bodyWidth / 2, tabHeight, bodyWidth));
+					((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x
+							- leadLength - bodyHeight - tabHeight / 2
+							- tabHoleDiameter / 2, y - pinSpacing
+							- tabHoleDiameter / 2, tabHoleDiameter,
+							tabHoleDiameter)));
+				} else {
+					body[0] = new Rectangle2D.Double(x - bodyThickness / 2, y
+							- pinSpacing - bodyWidth / 2, bodyThickness,
+							bodyWidth);
+					body[1] = new Rectangle2D.Double(x - bodyThickness / 2, y
+							- pinSpacing - bodyWidth / 2, tabThickness,
+							bodyWidth);
+				}
 				break;
 			case _270:
-				body[0] = new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2,
-						y - bodyHeight / 2, bodyWidth, bodyHeight);
-				body[1] = new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2,
-						y - bodyHeight / 2, bodyWidth, tabThickness);
+				if (folded) {
+					body[0] = new Rectangle2D.Double(x + pinSpacing - bodyWidth
+							/ 2, y - leadLength - bodyHeight, bodyWidth,
+							bodyHeight);
+					body[1] = new Area(new Rectangle2D.Double(x + pinSpacing
+							- bodyWidth / 2, y - leadLength - bodyHeight
+							- tabHeight, bodyWidth, tabHeight));
+					((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x
+							+ pinSpacing - tabHoleDiameter / 2, y - leadLength
+							- bodyHeight - tabHeight / 2 - tabHoleDiameter / 2,
+							tabHoleDiameter, tabHoleDiameter)));
+				} else {
+					body[0] = new Rectangle2D.Double(x + pinSpacing - bodyWidth
+							/ 2, y - bodyThickness / 2, bodyWidth,
+							bodyThickness);
+					body[1] = new Rectangle2D.Double(x + pinSpacing - bodyWidth
+							/ 2, y - bodyThickness / 2, bodyWidth, tabThickness);
+				}
 				break;
 			default:
-				throw new RuntimeException("Unexpected orientation: " + orientation);
+				throw new RuntimeException("Unexpected orientation: "
+						+ orientation);
 			}
 		}
 		return body;
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
@@ -188,15 +263,15 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 		Shape tabArea = getBody()[1];
 		Composite oldComposite = g2d.getComposite();
 		if (alpha < MAX_ALPHA) {
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-					/ MAX_ALPHA));
+			g2d.setComposite(AlphaComposite.getInstance(
+					AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
 		}
 		g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
 		g2d.fill(mainArea);
 		Color finalTabColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			Theme theme = (Theme) ConfigurationManager.getInstance()
+					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalTabColor = theme.getOutlineColor();
 		} else {
 			finalTabColor = tabColor;
@@ -211,25 +286,89 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 		}
 		Color finalBorderColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			Theme theme = (Theme) ConfigurationManager.getInstance()
+					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalBorderColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
-					.getOutlineColor();
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+					: theme.getOutlineColor();
 		} else {
 			finalBorderColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor;
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+					: borderColor;
 		}
 		g2d.setColor(finalBorderColor);
 		g2d.draw(mainArea);
+		if (folded) {
+			g2d.draw(tabArea);
+		}
 
 		// Draw pins.
 		if (!outlineMode) {
-			for (Point point : controlPoints) {
-				g2d.setColor(PIN_COLOR);
-				g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-				g2d.setColor(PIN_BORDER_COLOR);
-				g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+			if (folded) {
+				int leadThickness = getClosestOdd(LEAD_THICKNESS
+						.convertToPixels());
+				int leadLength = (int) getLeadLength().convertToPixels();
+				for (Point point : controlPoints) {
+					switch (orientation) {
+					case DEFAULT:
+						g2d.setStroke(ObjectCache.getInstance()
+								.fetchBasicStroke(leadThickness));
+						g2d.setColor(METAL_COLOR.darker());
+						g2d.drawLine(point.x, point.y, point.x + leadLength
+								- leadThickness / 2, point.y);
+						g2d.setStroke(ObjectCache.getInstance()
+								.fetchBasicStroke(leadThickness - 2));
+						g2d.setColor(METAL_COLOR);
+						g2d.drawLine(point.x, point.y, point.x + leadLength
+								- leadThickness / 2, point.y);
+						break;
+					case _90:
+						g2d.setStroke(ObjectCache.getInstance()
+								.fetchBasicStroke(leadThickness));
+						g2d.setColor(METAL_COLOR.darker());
+						g2d.drawLine(point.x, point.y, point.x, point.y
+								+ leadLength - leadThickness / 2);
+						g2d.setStroke(ObjectCache.getInstance()
+								.fetchBasicStroke(leadThickness - 2));
+						g2d.setColor(METAL_COLOR);
+						g2d.drawLine(point.x, point.y, point.x, point.y
+								+ leadLength - leadThickness / 2);
+						break;
+					case _180:
+						g2d.setStroke(ObjectCache.getInstance()
+								.fetchBasicStroke(leadThickness));
+						g2d.setColor(METAL_COLOR.darker());
+						g2d.drawLine(point.x, point.y, point.x - leadLength
+								- leadThickness / 2, point.y);
+						g2d.setStroke(ObjectCache.getInstance()
+								.fetchBasicStroke(leadThickness - 2));
+						g2d.setColor(METAL_COLOR);
+						g2d.drawLine(point.x, point.y, point.x - leadLength
+								- leadThickness / 2, point.y);
+						break;
+					case _270:
+						g2d.setStroke(ObjectCache.getInstance()
+								.fetchBasicStroke(leadThickness));
+						g2d.setColor(METAL_COLOR.darker());
+						g2d.drawLine(point.x, point.y, point.x, point.y
+								- leadLength);
+						g2d.setStroke(ObjectCache.getInstance()
+								.fetchBasicStroke(leadThickness - 2));
+						g2d.setColor(METAL_COLOR);
+						g2d.drawLine(point.x, point.y, point.x, point.y
+								- leadLength);
+						break;
+					}
+				}
+			} else {
+				for (Point point : controlPoints) {
+					g2d.setColor(PIN_COLOR);
+					g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2,
+							pinSize, pinSize);
+					g2d.setColor(PIN_BORDER_COLOR);
+					g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2,
+							pinSize, pinSize);
+				}
 			}
 		}
 
@@ -237,11 +376,11 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 		g2d.setFont(LABEL_FONT);
 		Color finalLabelColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			Theme theme = (Theme) ConfigurationManager.getInstance()
+					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalLabelColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED : theme
-					.getOutlineColor();
+					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+					: theme.getOutlineColor();
 		} else {
 			finalLabelColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
@@ -256,20 +395,39 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 		// Center text horizontally and vertically
 		Rectangle bounds = mainArea.getBounds();
 		int x = bounds.x + (bounds.width - textWidth) / 2;
-		int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+		int y = bounds.y + (bounds.height - textHeight) / 2
+				+ fontMetrics.getAscent();
 		g2d.drawString(label, x, y);
 	}
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		g2d.setColor(BODY_COLOR);
 		int margin = 2 * width / 32;
-		int thickness = 7 * width / 32;
-		g2d.fillRect(margin, (height - thickness) / 2, width - margin * 2, thickness);
+		int bodySize = width * 5 / 10;
+		int tabSize = bodySize * 6 / 10;
+		int holeSize = 5 * width / 32;
+		Area a = new Area(new Rectangle2D.Double((width - bodySize) / 2,
+				margin, bodySize, tabSize));
+		a.subtract(new Area(new Ellipse2D.Double(width / 2 - holeSize / 2,
+				margin + tabSize / 2 - holeSize / 2, holeSize, holeSize)));
 		g2d.setColor(TAB_COLOR);
-		g2d.fillRect(margin, (height + thickness) / 2 - margin - 1, width - margin * 2, margin);
+		g2d.fill(a);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawRect(margin, (height - thickness) / 2, width - margin * 2, thickness);
+		g2d.draw(a);		
+		g2d.setColor(BODY_COLOR);
+		g2d.fillRect((width - bodySize) / 2, margin + tabSize, bodySize,
+				bodySize);
+		g2d.setColor(BORDER_COLOR);
+		g2d.drawRect((width - bodySize) / 2, margin + tabSize, bodySize,
+				bodySize);
+		g2d.setColor(METAL_COLOR);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+		g2d.drawLine(width / 2, margin + tabSize + bodySize, width / 2, height
+				- margin);
+		g2d.drawLine(width / 2 - bodySize / 3, margin + tabSize + bodySize,
+				width / 2 - bodySize / 3, height - margin);
+		g2d.drawLine(width / 2 + bodySize / 3, margin + tabSize + bodySize,
+				width / 2 + bodySize / 3, height - margin);
 	}
 
 	@EditableProperty(name = "Body")
@@ -299,6 +457,31 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 		this.tabColor = tabColor;
 	}
 
+	@EditableProperty
+	public boolean getFolded() {
+		return folded;
+	}
+
+	public void setFolded(boolean folded) {
+		this.folded = folded;
+		// Invalidate the body
+		this.body = null;
+	}
+
+	@EditableProperty(name = "Lead length")
+	public Size getLeadLength() {
+		if (leadLength == null) {
+			leadLength = LEAD_LENGTH;
+		}
+		return leadLength;
+	}
+
+	public void setLeadLength(Size leadLength) {
+		this.leadLength = leadLength;
+		// Invalidate the body
+		this.body = null;
+	}
+
 	@EditableProperty(name = "Tab border")
 	public Color getTabBorderColor() {
 		return tabBorderColor;
@@ -307,7 +490,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 	public void setTabBorderColor(Color tabBorderColor) {
 		this.tabBorderColor = tabBorderColor;
 	}
-	
+
 	@EditableProperty
 	public Display getDisplay() {
 		if (display == null) {
