@@ -801,5 +801,25 @@
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>14</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2012-08-27 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Folded electrolytic transistors</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Editable pin spacing for all radial components</description>
+				</org.diylc.appframework.update.Change>						
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
