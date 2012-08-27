@@ -92,7 +92,7 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		body = null;
 	}
 	
-	@EditableProperty
+	@EditableProperty(name="Pin spacing")
 	public Size getPinSpacing() {
 		if (pinSpacing == null) {
 			pinSpacing = new Size(0.1, SizeUnit.in);

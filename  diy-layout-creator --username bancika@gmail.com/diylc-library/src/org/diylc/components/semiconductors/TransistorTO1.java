@@ -283,7 +283,7 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 		body = null;
 	}
 	
-	@EditableProperty
+	@EditableProperty(name="Pin spacing")
 	public Size getPinSpacing() {
 		return pinSpacing;
 	}
