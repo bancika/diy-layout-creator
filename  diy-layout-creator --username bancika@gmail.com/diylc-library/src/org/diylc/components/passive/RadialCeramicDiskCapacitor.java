@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.components.AbstractRadialComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -17,11 +17,11 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.VoltageUnit;
 
 @ComponentDescriptor(name = "Ceramic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Standard radial ceramic capacitor", zOrder = IDIYComponent.COMPONENT)
-public class RadialCeramicDiskCapacitor extends AbstractLeadedComponent<Capacitance> {
+public class RadialCeramicDiskCapacitor extends AbstractRadialComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Size DEFAULT_WIDTH = new Size(1d / 2, SizeUnit.in);
+	public static Size DEFAULT_WIDTH = new Size(1d / 4, SizeUnit.in);
 	public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
 	public static Color BODY_COLOR = Color.decode("#F0E68C");
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
