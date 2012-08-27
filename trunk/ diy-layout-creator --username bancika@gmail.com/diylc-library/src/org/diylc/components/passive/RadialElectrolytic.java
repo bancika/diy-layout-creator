@@ -6,11 +6,12 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.components.AbstractRadialComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Theme;
@@ -24,25 +25,29 @@ import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT)
-public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
+public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Size DEFAULT_SIZE = new Size(1d / 2, SizeUnit.in);
+	public static Size DEFAULT_SIZE = new Size(1d / 4, SizeUnit.in);
 	public static Color BODY_COLOR = Color.decode("#EAADEA");
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 	public static Color MARKER_COLOR = Color.gray;
 	public static Color TICK_COLOR = Color.white;
+	public static Size HEIGHT = new Size(0.4d, SizeUnit.in);
+	public static Size EDGE_RADIUS = new Size(1d, SizeUnit.mm);
 
 	private Capacitance value = new Capacitance(1d, CapacitanceUnit.uF);
 	@Deprecated
 	private Voltage voltage = Voltage._63V;
-	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(63d,
-			VoltageUnit.V);
+	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(
+			63d, VoltageUnit.V);
 
 	private Color markerColor = MARKER_COLOR;
 	private Color tickColor = TICK_COLOR;
 	private boolean polarized = true;
+	private boolean folded = false;
+	private Size height = HEIGHT;
 
 	public RadialElectrolytic() {
 		super();
@@ -58,7 +63,7 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
-	
+
 	@Override
 	public String getValueForDisplay() {
 		return getValue().toString() + " " + getVoltageNew().toString();
@@ -73,7 +78,7 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 	public void setVoltage(Voltage voltage) {
 		this.voltage = voltage;
 	}
-	
+
 	@EditableProperty(name = "Voltage")
 	public org.diylc.core.measures.Voltage getVoltageNew() {
 		// Backward comptibility
@@ -92,16 +97,18 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setColor(BODY_COLOR);
 		int margin = 3;
-		Ellipse2D body = new Ellipse2D.Double(margin, margin, getClosestOdd(width - 2 * margin),
-				getClosestOdd(width - 2 * margin));
+		Ellipse2D body = new Ellipse2D.Double(margin, margin,
+				getClosestOdd(width - 2 * margin), getClosestOdd(width - 2
+						* margin));
 		g2d.fill(body);
 		Area marker = new Area(body);
-		marker.subtract(new Area(new Rectangle2D.Double(margin, margin, width - 4 * margin,
-				getClosestOdd(width - 2 * margin))));
+		marker.subtract(new Area(new Rectangle2D.Double(margin, margin, width
+				- 4 * margin, getClosestOdd(width - 2 * margin))));
 		g2d.setColor(MARKER_COLOR);
 		g2d.fill(marker);
 		g2d.setColor(TICK_COLOR);
-		g2d.drawLine(width - 2 * margin, height / 2 - 2, width - 2 * margin, height / 2 + 2);
+		g2d.drawLine(width - 2 * margin, height / 2 - 2, width - 2 * margin,
+				height / 2 + 2);
 		g2d.setColor(BORDER_COLOR);
 		g2d.draw(body);
 		// g2d.setColor(COVER_COLOR.darker());
@@ -115,28 +122,50 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
+		int height = (int) getHeight().convertToPixels();
 		if (polarized) {
 			int totalDiameter = getClosestOdd(getLength().convertToPixels());
 			if (!outlineMode) {
-				Area area = new Area(getBodyShape());
-				area.subtract(new Area(new Rectangle2D.Double(0, 0, totalDiameter * 0.8,
-						totalDiameter)));
-				g2d.setColor(markerColor);
-				g2d.fill(area);
+				if (folded) {
+					Area area = new Area(getBodyShape());
+					area.subtract(new Area(new Rectangle2D.Double(0, -height,
+							totalDiameter * 0.8, height * 2)));
+					g2d.setColor(markerColor);
+					g2d.fill(area);
+				} else {
+					Area area = new Area(getBodyShape());
+					area.subtract(new Area(new Rectangle2D.Double(0, 0,
+							totalDiameter * 0.8, totalDiameter)));
+					g2d.setColor(markerColor);
+					g2d.fill(area);
+				}
 			}
 			Color finalTickColor;
 			if (outlineMode) {
-				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				Theme theme = (Theme) ConfigurationManager.getInstance()
+						.readObject(IPlugInPort.THEME_KEY,
+								Constants.DEFAULT_THEME);
 				finalTickColor = theme.getOutlineColor();
 			} else {
 				finalTickColor = tickColor;
 			}
 			g2d.setColor(finalTickColor);
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-			g2d.drawLine((int) (totalDiameter * 0.9), totalDiameter / 2
-					- (int) (totalDiameter * 0.05), (int) (totalDiameter * 0.9), totalDiameter / 2
-					+ (int) (totalDiameter * 0.05));
+			if (folded) {
+				int tickLength = height / 7;
+				for (int i = 0; i < 3; i++) {
+					g2d.drawLine((int) (totalDiameter * 0.92), -height / 2
+							+ tickLength + i * tickLength * 2,
+							(int) (totalDiameter * 0.92), -height / 2
+									+ tickLength + i * tickLength * 2
+									+ tickLength);
+				}
+			} else {
+				g2d.drawLine((int) (totalDiameter * 0.9), totalDiameter / 2
+						- (int) (totalDiameter * 0.05),
+						(int) (totalDiameter * 0.9), totalDiameter / 2
+								+ (int) (totalDiameter * 0.05));
+			}
 		}
 		// int coverDiameter = getClosestOdd(totalDiameter * 3 / 4);
 		// g2d.setColor(coverColor);
@@ -200,9 +229,35 @@ public class RadialElectrolytic extends AbstractLeadedComponent<Capacitance> {
 		this.polarized = polarized;
 	}
 
+	@EditableProperty
+	public boolean getFolded() {
+		return folded;
+	}
+
+	public void setFolded(boolean folded) {
+		this.folded = folded;
+	}
+
+	@EditableProperty
+	public Size getHeight() {
+		return height;
+	}
+
+	public void setHeight(Size height) {
+		this.height = height;
+	}
+
 	@Override
 	protected Shape getBodyShape() {
-		return new Ellipse2D.Double(0f, 0f, getClosestOdd(getLength().convertToPixels()),
-				getClosestOdd(getLength().convertToPixels()));
+		double height = (int) getHeight().convertToPixels();
+		double diameter = (int) getLength().convertToPixels();
+		if (folded) {
+			return new RoundRectangle2D.Double(0f, -height / 2
+					- LEAD_THICKNESS.convertToPixels() / 2,
+					getClosestOdd(diameter), getClosestOdd(height), EDGE_RADIUS
+							.convertToPixels(), EDGE_RADIUS.convertToPixels());
+		}
+		return new Ellipse2D.Double(0f, 0f, getClosestOdd(diameter),
+				getClosestOdd(diameter));
 	}
 }
