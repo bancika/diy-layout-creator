@@ -254,6 +254,9 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
 
 	@EditableProperty
 	public Size getHeight() {
+		if (height == null) {
+			height = HEIGHT;
+		}
 		return height;
 	}
 
