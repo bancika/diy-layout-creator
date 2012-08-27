@@ -52,7 +52,7 @@ public class BomMaker {
 					}
 					return new Integer(value1).compareTo(value2);
 				}				
-				return 0;
+				return name1.compareToIgnoreCase(name2);
 			}			
 		});
 		for (IDIYComponent<?> component : sortedComponents) {
