@@ -40,7 +40,7 @@ class ComponentButton extends JButton {
 
 		setToolTipText("<html><b>" + componentType.getName() + "</b><br>"
 				+ componentType.getDescription() + "<br>Author: " + componentType.getAuthor()
-				+ "<br><br>Double click to select all components of this type"
+				+ "<br><br>Right click to select all components of this type"
 				+ "</html>");
 		// initializeDnD();
 		addMouseListener(new MouseAdapter() {
