@@ -28,12 +28,18 @@ public class Label extends AbstractComponent<Void> {
 	private String text = DEFAULT_TEXT;
 	private Font font = LABEL_FONT;
 	private Color color = LABEL_COLOR;
-	private boolean center = true;
+	@Deprecated
+	private boolean center;
+	private HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center;
+	private VerticalAlignment verticalAlignment = VerticalAlignment.Center;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
-		g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : color);
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
+		g2d
+				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
+						: color);
 		g2d.setFont(font);
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);
@@ -41,15 +47,35 @@ public class Label extends AbstractComponent<Void> {
 		int textHeight = (int) rect.getHeight();
 		int textWidth = (int) rect.getWidth();
 
-		int x;
-		int y;
-		if (center) {
-			// Center text horizontally and vertically
-			x = point.x - textWidth / 2;
+		int x = point.x;
+		int y = point.y;
+		switch (verticalAlignment) {
+		case Center:
 			y = point.y - textHeight / 2 + fontMetrics.getAscent();
-		} else {
+			break;
+		case Top:
+			y = point.y - textHeight + fontMetrics.getAscent();			
+			break;
+		case Bottom:
+			y = point.y + fontMetrics.getAscent();
+			break;
+		default:
+			throw new RuntimeException("Unexpected alignment: "
+					+ verticalAlignment);
+		}
+		switch (horizontalAlignment) {
+		case Center:
+			x = point.x - textWidth / 2;
+			break;
+		case Left:
 			x = point.x;
-			y = point.y - textHeight;
+			break;
+		case Right:
+			x = point.x - textWidth;
+			break;
+		default:
+			throw new RuntimeException("Unexpected alignment: "
+					+ horizontalAlignment);
 		}
 
 		g2d.drawString(text, x, y);
@@ -58,7 +84,8 @@ public class Label extends AbstractComponent<Void> {
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setColor(LABEL_COLOR);
-		g2d.setFont(LABEL_FONT.deriveFont(13f * width / 32).deriveFont(Font.PLAIN));
+		g2d.setFont(LABEL_FONT.deriveFont(13f * width / 32).deriveFont(
+				Font.PLAIN));
 
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		Rectangle2D rect = fontMetrics.getStringBounds("Abc", g2d);
@@ -179,12 +206,25 @@ public class Label extends AbstractComponent<Void> {
 		this.color = color;
 	}
 
-	public boolean getCenter() {
-		return center;
+	@EditableProperty(name = "Vertical alignment")
+	public VerticalAlignment getVerticalAlignment() {
+		return verticalAlignment;
 	}
 
-	public void setCenter(boolean center) {
-		this.center = center;
+	public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
+		this.verticalAlignment = verticalAlignment;
+	}
+
+	@EditableProperty(name = "Horizontal alignment")
+	public HorizontalAlignment getHorizontalAlignment() {
+		if (horizontalAlignment == null) {
+			horizontalAlignment = HorizontalAlignment.Center;
+		}
+		return horizontalAlignment;
+	}
+
+	public void setHorizontalAlignment(HorizontalAlignment alignment) {
+		this.horizontalAlignment = alignment;
 	}
 
 	@Override
@@ -199,5 +239,13 @@ public class Label extends AbstractComponent<Void> {
 
 	@Override
 	public void setValue(Void value) {
+	}
+
+	public enum HorizontalAlignment {
+		Left, Center, Right;
+	}
+
+	public enum VerticalAlignment {
+		Top, Center, Bottom;
 	}
 }
