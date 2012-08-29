@@ -109,6 +109,10 @@ public class ComponentProcessor {
 			Graphics2D g2d = (Graphics2D) image.getGraphics();
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+					RenderingHints.VALUE_RENDER_QUALITY);
+			g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+					RenderingHints.VALUE_STROKE_PURE);
 			componentInstance.drawIcon(g2d, Presenter.ICON_SIZE,
 					Presenter.ICON_SIZE);
 			icon = new ImageIcon(image);
