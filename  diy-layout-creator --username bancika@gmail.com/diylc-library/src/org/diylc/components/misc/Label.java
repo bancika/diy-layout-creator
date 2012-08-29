@@ -180,7 +180,7 @@ public class Label extends AbstractComponent<Void> {
 
 	@Override
 	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-		return VisibilityPolicy.NEVER;
+		return VisibilityPolicy.WHEN_SELECTED;
 	}
 
 	@Override
