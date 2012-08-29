@@ -828,6 +828,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Label vertical and horizontal alignment can be changed</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Editable pin spacing for all radial components</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>
