@@ -307,13 +307,42 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		int margin = 2 * width / 32;
-		Area area = new Area(new Ellipse2D.Double(margin / 2, margin, width - 2
-				* margin, width - 2 * margin));
+		int sizeLarge = getClosestOdd(width * 3d / 4);
+		int sizeInner = getClosestOdd(width * 5d / 10);
+		int sizeSmall = getClosestOdd(width / 3d);
+		int hole = 4 * width / 32;
+		Area area = new Area(new Ellipse2D.Double((width - sizeLarge) / 2,
+				(height - sizeLarge) / 2, sizeLarge, sizeLarge));
+//		int[] x = new int[] { width / 2 + sizeSmall / 2,
+//				width / 2 + sizeLarge / 2, width / 2 + sizeSmall / 2,
+//				width / 2 - sizeSmall / 2, width / 2 - sizeLarge / 2,
+//				width / 2 - sizeSmall / 2 };
+//		int[] y = new int[] { height / 8, height / 2, height * 7 / 8,
+//				height * 7 / 8, height / 2, height / 8 };
+//		Area p = new Area(new Polygon(x, y, x.length));
+//		AffineTransform t = AffineTransform.getTranslateInstance(width / 2,
+//				height / 2);
+//		t.concatenate(AffineTransform.getScaleInstance(1.05, 1.05));
+//		t.concatenate(AffineTransform.getTranslateInstance(-width / 2,
+//				-height / 2));
+//		p.transform(t);
+//		area.add(new Area(p));
+		area.add(new Area(new Ellipse2D.Double((width - sizeSmall) / 2, height
+				/ 8 - sizeSmall / 2, sizeSmall, sizeSmall)));
+		area.add(new Area(new Ellipse2D.Double((width - sizeSmall) / 2, height
+				* 7 / 8 - sizeSmall / 2, sizeSmall, sizeSmall)));
+		area.subtract(new Area(new Ellipse2D.Double((width - hole) / 2, height
+				/ 8 - hole / 2, hole, hole)));
+		area.subtract(new Area(new Ellipse2D.Double((width - hole) / 2, height
+				* 7 / 8 - hole / 2, hole, hole)));
+		area.transform(AffineTransform.getRotateInstance(Math.PI / 4,
+				width / 2, height / 2));
 		g2d.setColor(BODY_COLOR);
 		g2d.fill(area);
 		g2d.setColor(BORDER_COLOR);
 		g2d.draw(area);
+		g2d.drawOval((width - sizeInner) / 2, (height - sizeInner) / 2, sizeInner,
+				sizeInner);
 	}
 
 	@EditableProperty(name = "Body")
