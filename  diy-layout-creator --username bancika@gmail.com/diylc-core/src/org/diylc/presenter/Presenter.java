@@ -1533,6 +1533,23 @@ public class Presenter implements IPlugInPort {
 		return dimension;
 	}
 
+//	@Override
+//	public Rectangle2D getSelectedAreaRect() {
+//		if (selectedComponents.isEmpty()) {
+//			return null;
+//		}
+//		Area area = new Area();
+//		for (IDIYComponent<?> component : selectedComponents) {
+//			Area componentArea = drawingManager.getComponentArea(component);
+//			if (componentArea != null) {
+//				area.add(componentArea);
+//			} else {
+//				LOG.warn("No area found for: " + component.getName());
+//			}
+//		}
+//		return area.getBounds2D();
+//	}
+
 	/**
 	 * Adds a component to the project taking z-order into account.
 	 * 
