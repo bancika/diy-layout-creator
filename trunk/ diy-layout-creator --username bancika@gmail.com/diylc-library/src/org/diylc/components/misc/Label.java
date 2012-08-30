@@ -51,7 +51,7 @@ public class Label extends AbstractComponent<Void> {
 
 		int x = point.x;
 		int y = point.y;
-		switch (verticalAlignment) {
+		switch (getVerticalAlignment()) {
 		case CENTER:
 			y = point.y - textHeight / 2 + fontMetrics.getAscent();
 			break;
@@ -63,9 +63,9 @@ public class Label extends AbstractComponent<Void> {
 			break;
 		default:
 			throw new RuntimeException("Unexpected alignment: "
-					+ verticalAlignment);
+					+ getVerticalAlignment());
 		}
-		switch (horizontalAlignment) {
+		switch (getHorizontalAlignment()) {
 		case CENTER:
 			x = point.x - textWidth / 2;
 			break;
@@ -77,7 +77,7 @@ public class Label extends AbstractComponent<Void> {
 			break;
 		default:
 			throw new RuntimeException("Unexpected alignment: "
-					+ horizontalAlignment);
+					+ getHorizontalAlignment());
 		}
 
 		g2d.drawString(text, x, y);
