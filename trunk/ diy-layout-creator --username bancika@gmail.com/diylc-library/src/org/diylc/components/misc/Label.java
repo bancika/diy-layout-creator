@@ -210,13 +210,13 @@ public class Label extends AbstractComponent<Void> {
 
 	@EditableProperty(name = "Vertical alignment")
 	public VerticalAlignment getVerticalAlignment() {
+		if (verticalAlignment == null) {
+			verticalAlignment = VerticalAlignment.CENTER;
+		}
 		return verticalAlignment;
 	}
 
 	public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
-		if (verticalAlignment == null) {
-			verticalAlignment = VerticalAlignment.CENTER;
-		}
 		this.verticalAlignment = verticalAlignment;
 	}
 
