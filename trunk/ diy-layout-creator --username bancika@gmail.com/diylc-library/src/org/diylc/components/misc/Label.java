@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.common.HorizontalAlignment;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -30,8 +32,8 @@ public class Label extends AbstractComponent<Void> {
 	private Color color = LABEL_COLOR;
 	@Deprecated
 	private boolean center;
-	private HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center;
-	private VerticalAlignment verticalAlignment = VerticalAlignment.Center;
+	private HorizontalAlignment horizontalAlignment = HorizontalAlignment.CENTER;
+	private VerticalAlignment verticalAlignment = VerticalAlignment.CENTER;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState,
@@ -50,13 +52,13 @@ public class Label extends AbstractComponent<Void> {
 		int x = point.x;
 		int y = point.y;
 		switch (verticalAlignment) {
-		case Center:
+		case CENTER:
 			y = point.y - textHeight / 2 + fontMetrics.getAscent();
 			break;
-		case Top:
+		case TOP:
 			y = point.y - textHeight + fontMetrics.getAscent();			
 			break;
-		case Bottom:
+		case BOTTOM:
 			y = point.y + fontMetrics.getAscent();
 			break;
 		default:
@@ -64,13 +66,13 @@ public class Label extends AbstractComponent<Void> {
 					+ verticalAlignment);
 		}
 		switch (horizontalAlignment) {
-		case Center:
+		case CENTER:
 			x = point.x - textWidth / 2;
 			break;
-		case Left:
+		case LEFT:
 			x = point.x;
 			break;
-		case Right:
+		case RIGHT:
 			x = point.x - textWidth;
 			break;
 		default:
@@ -212,13 +214,16 @@ public class Label extends AbstractComponent<Void> {
 	}
 
 	public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
+		if (verticalAlignment == null) {
+			verticalAlignment = VerticalAlignment.CENTER;
+		}
 		this.verticalAlignment = verticalAlignment;
 	}
 
 	@EditableProperty(name = "Horizontal alignment")
 	public HorizontalAlignment getHorizontalAlignment() {
 		if (horizontalAlignment == null) {
-			horizontalAlignment = HorizontalAlignment.Center;
+			horizontalAlignment = HorizontalAlignment.CENTER;
 		}
 		return horizontalAlignment;
 	}
@@ -239,13 +244,5 @@ public class Label extends AbstractComponent<Void> {
 
 	@Override
 	public void setValue(Void value) {
-	}
-
-	public enum HorizontalAlignment {
-		Left, Center, Right;
-	}
-
-	public enum VerticalAlignment {
-		Top, Center, Bottom;
 	}
 }

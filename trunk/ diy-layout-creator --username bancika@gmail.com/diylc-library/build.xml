@@ -49,6 +49,9 @@
 		<copy todir="../diylc-swing/library" overwrite="true">
 			<fileset dir="${jar.dir}" includes="${ant.project.name}.jar" />
 		</copy>
+		<copy todir="../diylc-core/library" overwrite="true">
+			<fileset dir="${jar.dir}" includes="${ant.project.name}.jar" />
+		</copy>
 	</target>
 
 	<target name="javadoc">
