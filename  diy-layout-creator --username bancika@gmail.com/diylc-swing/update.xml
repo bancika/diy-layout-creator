@@ -815,6 +815,10 @@
 					<description>Ruler jumps when scrolling</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Error when importing V1 files that contain potentiometers</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Miniature and ultra-miniature PCB mount relays</description>
 				</org.diylc.appframework.update.Change>	
