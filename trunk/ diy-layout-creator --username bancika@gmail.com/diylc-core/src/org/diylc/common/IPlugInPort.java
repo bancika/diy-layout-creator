@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -274,6 +275,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 	 *         on the user preference.
 	 */
 	Point2D calculateSelectionDimension();
+	
+//	/**
+//	 * @return the smallest rectangle that encloses the selection
+//	 */
+//	Rectangle2D getSelectedAreaRect();
 
 	/**
 	 * Sends each of the selected components one step back.
