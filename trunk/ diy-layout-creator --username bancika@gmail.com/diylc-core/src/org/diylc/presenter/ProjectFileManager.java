@@ -24,7 +24,9 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.common.Display;
 import org.diylc.common.EventType;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.boards.AbstractBoard;
@@ -247,9 +249,10 @@ public class ProjectFileManager {
 						label.setColor(color);
 					}
 					label.setText(valueAttr);
-					label.setCenter(false);
+					label.setHorizontalAlignment(HorizontalAlignment.LEFT);
+					label.setVerticalAlignment(VerticalAlignment.CENTER);
 					label.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr,
-							y1Attr + 1), 0);
+							y1Attr), 0);
 					component = label;
 				} else if (nodeName.equalsIgnoreCase("pad")) {
 					LOG.debug("Recognized " + nodeName);
@@ -431,7 +434,7 @@ public class ProjectFileManager {
 					pot.setSpacing(new Size(0.2, SizeUnit.in));
 					pot.setName(nameAttr);
 					try {
-						pot.setResistance(Resistance.parseResistance(valueAttr));
+						pot.setValue(Resistance.parseResistance(valueAttr));
 					} catch (Exception e) {
 						LOG.debug("Could not set value of " + nameAttr);
 					}
