@@ -224,12 +224,12 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.add(getPasteAction());
 			popupMenu.addSeparator();
 			popupMenu.add(getEditSelectionAction());
-			popupMenu.add(getDeleteSelectionAction());
-			popupMenu.add(getSaveAsTemplateAction());
+			popupMenu.add(getDeleteSelectionAction());			
 			popupMenu.add(getGroupAction());
 			popupMenu.add(getUngroupAction());
 			popupMenu.add(getSendToBackAction());
 			popupMenu.add(getBringToFrontAction());
+			popupMenu.add(getSaveAsTemplateAction());
 			popupMenu.add(getExpandMenu());
 			popupMenu.addSeparator();
 			popupMenu.add(ActionFactory.getInstance().createEditProjectAction(
