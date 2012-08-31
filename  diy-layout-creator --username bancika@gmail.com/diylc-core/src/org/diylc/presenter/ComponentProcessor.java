@@ -111,8 +111,8 @@ public class ComponentProcessor {
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
 					RenderingHints.VALUE_RENDER_QUALITY);
-			g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-					RenderingHints.VALUE_STROKE_PURE);
+//			g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+//					RenderingHints.VALUE_STROKE_PURE);
 			componentInstance.drawIcon(g2d, Presenter.ICON_SIZE,
 					Presenter.ICON_SIZE);
 			icon = new ImageIcon(image);
