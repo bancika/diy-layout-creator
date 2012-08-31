@@ -37,15 +37,15 @@ class ComponentButtonFactory {
 
 	private static final long serialVersionUID = 1L;
 
-	public static int MARGIN = 4;
+	public static int MARGIN = 3;
 
 	public static JButton create(final IPlugInPort plugInPort,
 			final ComponentType componentType, final JPopupMenu menu) {
 		JButton button = DropDownButtonFactory.createDropDownButton(
 				componentType.getIcon(), menu);
 
-		button.setBorder(BorderFactory.createEmptyBorder(MARGIN, MARGIN,
-				MARGIN, MARGIN));
+		button.setBorder(BorderFactory.createEmptyBorder(MARGIN + 1,
+				MARGIN + 1, MARGIN, MARGIN));
 
 		// mainButton.setBorder(BorderFactory.createEmptyBorder());
 		// dropDownButton.setBorder(BorderFactory.createEmptyBorder());
