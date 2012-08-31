@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
@@ -129,6 +130,11 @@ public class ActionFactory {
 	public DeleteSelectionAction createDeleteSelectionAction(
 			IPlugInPort plugInPort) {
 		return new DeleteSelectionAction(plugInPort);
+	}
+
+	public SaveAsTemplateAction createSaveAsTemplateAction(
+			IPlugInPort plugInPort) {
+		return new SaveAsTemplateAction(plugInPort);
 	}
 
 	public ExpandSelectionAction createExpandSelectionAction(
@@ -801,6 +807,32 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Delete Selection triggered");
 			plugInPort.deleteSelectedComponents();
+		}
+	}
+
+	public static class SaveAsTemplateAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		private IPlugInPort plugInPort;
+
+		public SaveAsTemplateAction(IPlugInPort plugInPort) {
+			super();
+			this.plugInPort = plugInPort;
+			putValue(AbstractAction.NAME, "Save as Template");
+			putValue(AbstractAction.SMALL_ICON, IconLoader.Briefcase_Add
+					.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Save as template triggered");
+			String templateName = JOptionPane.showInputDialog(null,
+					"Template name:", "Save as Template",
+					JOptionPane.PLAIN_MESSAGE);
+			if (templateName != null && !templateName.trim().isEmpty()) {
+				plugInPort.saveSelectedComponentAsTemplate(templateName);
+			}
 		}
 	}
 
