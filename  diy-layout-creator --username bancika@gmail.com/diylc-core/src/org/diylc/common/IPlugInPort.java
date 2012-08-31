@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +14,7 @@ import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.VersionNumber;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.Template;
 import org.diylc.core.Theme;
 
 /**
@@ -29,7 +29,7 @@ import org.diylc.core.Theme;
  * @see IMessageListener
  * @see EventType
  */
-public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor {
+public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, ITemplateProcessor {
 
 	public static final String ANTI_ALIASING_KEY = "antiAliasing";
 	public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
@@ -241,8 +241,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 	/**
 	 * Sets the new component slot. Specified component type will be used to
 	 * instantiate new component.
+	 * 
+	 * @param componentType
+	 * @param template
 	 */
-	void setNewComponentTypeSlot(ComponentType componentType);
+	void setNewComponentTypeSlot(ComponentType componentType, Template template);
 
 	/**
 	 * Changes default size notation, true for metric, false for imperial.

@@ -43,6 +43,7 @@ import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
+import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -57,7 +58,7 @@ public class Presenter implements IPlugInPort {
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3,
-			14, 0);
+			15, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections
@@ -203,7 +204,7 @@ public class Presenter implements IPlugInPort {
 		LOG.info("createNewFile()");
 		try {
 			Project project = new Project();
-			instantiationManager.fillWithDefaultProperties(project);
+			instantiationManager.fillWithDefaultProperties(project, null);
 			loadProject(project, true);
 			projectFileManager.startNewFile();
 		} catch (Exception e) {
@@ -412,6 +413,7 @@ public class Presenter implements IPlugInPort {
 				// Keep the reference to component type for later.
 				ComponentType componentTypeSlot = instantiationManager
 						.getComponentTypeSlot();
+				Template template = instantiationManager.getTemplate();
 				Project oldProject = currentProject.clone();
 				switch (componentTypeSlot.getCreationMethod()) {
 				case SINGLE_CLICK:
@@ -445,9 +447,9 @@ public class Presenter implements IPlugInPort {
 					}
 					if (ConfigurationManager.getInstance().readBoolean(
 							IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-						setNewComponentTypeSlot(componentTypeSlot);
+						setNewComponentTypeSlot(componentTypeSlot, template);
 					} else {
-						setNewComponentTypeSlot(null);
+						setNewComponentTypeSlot(null, null);
 					}
 					break;
 				case POINT_BY_POINT:
@@ -495,9 +497,9 @@ public class Presenter implements IPlugInPort {
 						}
 						if (ConfigurationManager.getInstance().readBoolean(
 								IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-							setNewComponentTypeSlot(componentTypeSlot);
+							setNewComponentTypeSlot(componentTypeSlot, template);
 						} else {
-							setNewComponentTypeSlot(null);
+							setNewComponentTypeSlot(null, null);
 						}
 					}
 					break;
@@ -1533,22 +1535,22 @@ public class Presenter implements IPlugInPort {
 		return dimension;
 	}
 
-//	@Override
-//	public Rectangle2D getSelectedAreaRect() {
-//		if (selectedComponents.isEmpty()) {
-//			return null;
-//		}
-//		Area area = new Area();
-//		for (IDIYComponent<?> component : selectedComponents) {
-//			Area componentArea = drawingManager.getComponentArea(component);
-//			if (componentArea != null) {
-//				area.add(componentArea);
-//			} else {
-//				LOG.warn("No area found for: " + component.getName());
-//			}
-//		}
-//		return area.getBounds2D();
-//	}
+	// @Override
+	// public Rectangle2D getSelectedAreaRect() {
+	// if (selectedComponents.isEmpty()) {
+	// return null;
+	// }
+	// Area area = new Area();
+	// for (IDIYComponent<?> component : selectedComponents) {
+	// Area componentArea = drawingManager.getComponentArea(component);
+	// if (componentArea != null) {
+	// area.add(componentArea);
+	// } else {
+	// LOG.warn("No area found for: " + component.getName());
+	// }
+	// }
+	// return area.getBounds2D();
+	// }
 
 	/**
 	 * Adds a component to the project taking z-order into account.
@@ -1583,7 +1585,7 @@ public class Presenter implements IPlugInPort {
 				if (component.isControlPointSticky(i)) {
 					try {
 						IDIYComponent<?> pad = instantiationManager
-								.instantiateComponent(padType, component
+								.instantiateComponent(padType, null, component
 										.getControlPoint(i), currentProject);
 						pad.setControlPoint(component.getControlPoint(i), 0);
 						addComponent(pad, padType, false);
@@ -1688,11 +1690,12 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void setNewComponentTypeSlot(ComponentType componentType) {
+	public void setNewComponentTypeSlot(ComponentType componentType,
+			Template template) {
 		LOG.info(String.format("setNewComponentSlot(%s)",
 				componentType == null ? null : componentType.getName()));
 		try {
-			instantiationManager.setComponentTypeSlot(componentType,
+			instantiationManager.setComponentTypeSlot(componentType, template,
 					currentProject);
 			if (componentType != null) {
 				updateSelection(EMPTY_SELECTION);
@@ -1711,6 +1714,107 @@ public class Presenter implements IPlugInPort {
 					.showMessage(
 							"Could not set component type slot. Check log for details.",
 							"Error", IView.ERROR_MESSAGE);
+		}
+	}
+
+	@Override
+	public void saveSelectedComponentAsTemplate(String templateName) {
+		LOG.info(String.format("saveSelectedComponentAsTemplate(%s)",
+				templateName));
+		if (selectedComponents.size() != 1) {
+			throw new RuntimeException(
+					"Can only save a single component at a time.");
+		}
+		IDIYComponent<?> component = selectedComponents.iterator().next();
+		ComponentType type = ComponentProcessor.getInstance()
+				.extractComponentTypeFrom(
+						(Class<? extends IDIYComponent<?>>) component
+								.getClass());
+		Map<String, List<Template>> templateMap = (Map<String, List<Template>>) ConfigurationManager
+				.getInstance().readObject(TEMPLATES_KEY, null);
+		if (templateMap == null) {
+			templateMap = new HashMap<String, List<Template>>();
+		}
+		String key = type.getCategory() + "." + type.getName();
+		List<Template> templates = templateMap.get(key);
+		if (templates == null) {
+			templates = new ArrayList<Template>();
+			templateMap.put(key, templates);
+		}
+		List<PropertyWrapper> properties = ComponentProcessor.getInstance()
+				.extractProperties(component.getClass());
+		Map<String, Object> values = new HashMap<String, Object>();
+		for (PropertyWrapper property : properties) {
+			if (property.getName().equalsIgnoreCase("name")) {
+				continue;
+			}
+			try {
+				property.readFrom(component);
+				values.put(property.getName(), property.getValue());
+			} catch (Exception e) {
+			}
+		}
+		Template template = new Template(templateName, values);
+		boolean exists = false;
+		for (Template t : templates) {
+			if (t.getName().equalsIgnoreCase(templateName)) {
+				exists = true;
+				break;
+			}
+		}
+
+		if (exists) {
+			int result = view.showConfirmDialog(
+					"Template with that name already exists. Overwrite?",
+					"Save as Template", IView.YES_NO_OPTION,
+					IView.WARNING_MESSAGE);
+			if (result != IView.YES_OPTION) {
+				return;
+			}
+			// Delete the existing template
+			Iterator<Template> i = templates.iterator();
+			while (i.hasNext()) {
+				Template t = i.next();
+				if (t.getName().equalsIgnoreCase(templateName)) {
+					i.remove();
+				}
+			}
+		}
+
+		templates.add(template);
+
+		ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY,
+				templateMap);
+	}
+
+	@Override
+	public List<Template> getTemplatesFor(String categoryName,
+			String componentTypeName) {
+		Map<String, List<Template>> templateMap = (Map<String, List<Template>>) ConfigurationManager
+				.getInstance().readObject(TEMPLATES_KEY, null);
+		if (templateMap != null) {
+			return templateMap.get(categoryName + "." + componentTypeName);
+		}
+		return null;
+	}
+
+	@Override
+	public void deleteTemplate(String categoryName, String componentTypeName,
+			String templateName) {
+		Map<String, List<Template>> templateMap = (Map<String, List<Template>>) ConfigurationManager
+				.getInstance().readObject(TEMPLATES_KEY, null);
+		if (templateMap != null) {
+			List<Template> templates = templateMap.get(categoryName + "."
+					+ componentTypeName);
+			if (templates != null) {
+				Iterator<Template> i = templates.iterator();
+				while (i.hasNext()) {
+					Template t = i.next();
+					if (t.getName().equalsIgnoreCase(templateName)) {
+						i.remove();
+					}
+				}
+			}
 		}
 	}
 
