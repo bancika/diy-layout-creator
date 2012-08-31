@@ -6,11 +6,14 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.OrientationHV;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -25,7 +28,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic", description = "Panel mounted mini toggle switch", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", autoEdit = false)
-public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> {
+public class MiniToggleSwitch extends
+		AbstractTransparentComponent<ToggleSwitchType> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,9 +44,10 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	private static Color CIRCLE_COLOR = Color.decode("#FFFFAA");
 
 	protected Point[] controlPoints = new Point[] { new Point(0, 0) };
-	transient protected RoundRectangle2D body;
+	transient protected Shape body;
 	protected String name;
 	protected ToggleSwitchType switchType = ToggleSwitchType.DPDT;
+	private OrientationHV orientation = OrientationHV.VERTICAL;
 
 	public MiniToggleSwitch() {
 		super();
@@ -63,55 +68,82 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 					new Point(firstPoint.x, firstPoint.y + 2 * spacing) };
 			break;
 		case DPDT:
-			controlPoints = new Point[] { firstPoint,
+			controlPoints = new Point[] {
+					firstPoint,
 					new Point(firstPoint.x, firstPoint.y + spacing),
 					new Point(firstPoint.x, firstPoint.y + 2 * spacing),
 					new Point(firstPoint.x + spacing, firstPoint.y),
 					new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing) };
+					new Point(firstPoint.x + spacing, firstPoint.y + 2
+							* spacing) };
 			break;
 		case _3PDT:
-			controlPoints = new Point[] { firstPoint,
+			controlPoints = new Point[] {
+					firstPoint,
 					new Point(firstPoint.x, firstPoint.y + spacing),
 					new Point(firstPoint.x, firstPoint.y + 2 * spacing),
 					new Point(firstPoint.x + spacing, firstPoint.y),
 					new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing),
+					new Point(firstPoint.x + spacing, firstPoint.y + 2
+							* spacing),
 					new Point(firstPoint.x + 2 * spacing, firstPoint.y),
-					new Point(firstPoint.x + 2 * spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2 * spacing) };
+					new Point(firstPoint.x + 2 * spacing, firstPoint.y
+							+ spacing),
+					new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2
+							* spacing) };
 			break;
 		case _4PDT:
-			controlPoints = new Point[] { firstPoint,
+			controlPoints = new Point[] {
+					firstPoint,
 					new Point(firstPoint.x, firstPoint.y + spacing),
 					new Point(firstPoint.x, firstPoint.y + 2 * spacing),
 					new Point(firstPoint.x + spacing, firstPoint.y),
 					new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing),
+					new Point(firstPoint.x + spacing, firstPoint.y + 2
+							* spacing),
 					new Point(firstPoint.x + 2 * spacing, firstPoint.y),
-					new Point(firstPoint.x + 2 * spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2 * spacing),
+					new Point(firstPoint.x + 2 * spacing, firstPoint.y
+							+ spacing),
+					new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2
+							* spacing),
 					new Point(firstPoint.x + 3 * spacing, firstPoint.y),
-					new Point(firstPoint.x + 3 * spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + 3 * spacing, firstPoint.y + 2 * spacing) };
+					new Point(firstPoint.x + 3 * spacing, firstPoint.y
+							+ spacing),
+					new Point(firstPoint.x + 3 * spacing, firstPoint.y + 2
+							* spacing) };
 			break;
 		case _5PDT:
-			controlPoints = new Point[] { firstPoint,
+			controlPoints = new Point[] {
+					firstPoint,
 					new Point(firstPoint.x, firstPoint.y + spacing),
 					new Point(firstPoint.x, firstPoint.y + 2 * spacing),
 					new Point(firstPoint.x + spacing, firstPoint.y),
 					new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing),
+					new Point(firstPoint.x + spacing, firstPoint.y + 2
+							* spacing),
 					new Point(firstPoint.x + 2 * spacing, firstPoint.y),
-					new Point(firstPoint.x + 2 * spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2 * spacing),
+					new Point(firstPoint.x + 2 * spacing, firstPoint.y
+							+ spacing),
+					new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2
+							* spacing),
 					new Point(firstPoint.x + 3 * spacing, firstPoint.y),
-					new Point(firstPoint.x + 3 * spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + 3 * spacing, firstPoint.y + 2 * spacing),
+					new Point(firstPoint.x + 3 * spacing, firstPoint.y
+							+ spacing),
+					new Point(firstPoint.x + 3 * spacing, firstPoint.y + 2
+							* spacing),
 					new Point(firstPoint.x + 4 * spacing, firstPoint.y),
-					new Point(firstPoint.x + 4 * spacing, firstPoint.y + spacing),
-					new Point(firstPoint.x + 4 * spacing, firstPoint.y + 2 * spacing) };
+					new Point(firstPoint.x + 4 * spacing, firstPoint.y
+							+ spacing),
+					new Point(firstPoint.x + 4 * spacing, firstPoint.y + 2
+							* spacing) };
 			break;
+		}
+		AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2,
+				firstPoint.x, firstPoint.y);
+		if (getOrientation() == OrientationHV.HORIZONTAL) {
+			for (int i = 1; i < controlPoints.length; i++) {
+				xform.transform(controlPoints[i], controlPoints[i]);
+			}
 		}
 	}
 
@@ -167,9 +199,25 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 		body = null;
 	}
 
+	@EditableProperty
+	public OrientationHV getOrientation() {
+		if (orientation == null) {
+			orientation = OrientationHV.VERTICAL;
+		}
+		return orientation;
+	}
+
+	public void setOrientation(OrientationHV orientation) {
+		this.orientation = orientation;
+		updateControlPoints();
+		// Reset body shape.
+		body = null;
+	}
+
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
@@ -178,20 +226,23 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 		if (body != null) {
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-						/ MAX_ALPHA));
+				g2d.setComposite(AlphaComposite.getInstance(
+						AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
 			}
-			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
+			g2d
+					.setColor(outlineMode ? Constants.TRANSPARENT_COLOR
+							: BODY_COLOR);
 			g2d.fill(body);
 			g2d.setComposite(oldComposite);
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 			Color finalBorderColor;
 			if (outlineMode) {
-				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				Theme theme = (Theme) ConfigurationManager.getInstance()
+						.readObject(IPlugInPort.THEME_KEY,
+								Constants.DEFAULT_THEME);
 				finalBorderColor = componentState == ComponentState.SELECTED
-						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
-						.getOutlineColor();
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+						: theme.getOutlineColor();
 			} else {
 				finalBorderColor = componentState == ComponentState.SELECTED
 						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
@@ -210,46 +261,60 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 		for (Point p : controlPoints) {
 			if (!outlineMode) {
 				g2d.setColor(CIRCLE_COLOR);
-				g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter,
+				g2d.fillOval(p.x - circleDiameter / 2,
+						p.y - circleDiameter / 2, circleDiameter,
 						circleDiameter);
 			}
 			g2d.setColor(METAL_COLOR);
-			g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+			g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth,
+					lugHeight);
 		}
 	}
 
-	public RoundRectangle2D getBody() {
+	public Shape getBody() {
 		if (body == null) {
 			Point firstPoint = controlPoints[0];
 			int margin = (int) MARGIN.convertToPixels();
 			int spacing = (int) SPACING.convertToPixels();
 			switch (switchType) {
 			case SPST:
-				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin,
-						2 * margin, 2 * margin + spacing, margin, margin);
+				body = new RoundRectangle2D.Double(firstPoint.x - margin,
+						firstPoint.y - margin, 2 * margin,
+						2 * margin + spacing, margin, margin);
 				break;
 			case SPDT:
-				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin,
-						2 * margin, 2 * margin + 2 * spacing, margin, margin);
+				body = new RoundRectangle2D.Double(firstPoint.x - margin,
+						firstPoint.y - margin, 2 * margin, 2 * margin + 2
+								* spacing, margin, margin);
 				break;
 			case DPDT:
-				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
-						* margin + spacing, 2 * margin + 2 * spacing, margin, margin);
+				body = new RoundRectangle2D.Double(firstPoint.x - margin,
+						firstPoint.y - margin, 2 * margin + spacing, 2 * margin
+								+ 2 * spacing, margin, margin);
 				break;
 			case _3PDT:
-				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
-						* margin + 2 * spacing, 2 * margin + 2 * spacing, margin, margin);
+				body = new RoundRectangle2D.Double(firstPoint.x - margin,
+						firstPoint.y - margin, 2 * margin + 2 * spacing, 2
+								* margin + 2 * spacing, margin, margin);
 				break;
 			case _4PDT:
-				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
-						* margin + 3 * spacing, 2 * margin + 2 * spacing, margin, margin);
+				body = new RoundRectangle2D.Double(firstPoint.x - margin,
+						firstPoint.y - margin, 2 * margin + 3 * spacing, 2
+								* margin + 2 * spacing, margin, margin);
 				break;
 			case _5PDT:
-				body = new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2
-						* margin + 4 * spacing, 2 * margin + 2 * spacing, margin, margin);
+				body = new RoundRectangle2D.Double(firstPoint.x - margin,
+						firstPoint.y - margin, 2 * margin + 4 * spacing, 2
+								* margin + 2 * spacing, margin, margin);
 				break;
 			}
-		}
+			if (getOrientation() == OrientationHV.HORIZONTAL) {
+				AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2,
+						firstPoint.x, firstPoint.y);	
+				body = new Area(body);
+				((Area)body).transform(xform);
+			}
+		}		
 		return body;
 	}
 
@@ -257,15 +322,18 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		int circleSize = 5 * width / 32;
 		g2d.setColor(BODY_COLOR);
-		g2d.fillRoundRect(width / 4, 1, width / 2, height - 2, circleSize, circleSize);
+		g2d.fillRoundRect(width / 4, 1, width / 2, height - 2, circleSize,
+				circleSize);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawRoundRect(width / 4, 1, width / 2, height - 2, circleSize, circleSize);
+		g2d.drawRoundRect(width / 4, 1, width / 2, height - 2, circleSize,
+				circleSize);
 		for (int i = 1; i <= 3; i++) {
 			g2d.setColor(CIRCLE_COLOR);
-			g2d.fillOval(width / 2 - circleSize / 2, i * height / 4 - 3, circleSize, circleSize);
+			g2d.fillOval(width / 2 - circleSize / 2, i * height / 4 - 3,
+					circleSize, circleSize);
 			g2d.setColor(METAL_COLOR);
-			g2d.drawLine(width / 2 - circleSize / 2 + 1, i * height / 4 - 1, width / 2 + circleSize
-					/ 2 - 1, i * height / 4 - 1);
+			g2d.drawLine(width / 2 - circleSize / 2 + 1, i * height / 4 - 1,
+					width / 2 + circleSize / 2 - 1, i * height / 4 - 1);
 		}
 	}
 }
