@@ -59,6 +59,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.PasteAction pasteAction;
 	private ActionFactory.EditSelectionAction editSelectionAction;
 	private ActionFactory.DeleteSelectionAction deleteSelectionAction;
+	private ActionFactory.SaveAsTemplateAction saveAsTemplateAction;
 	private ActionFactory.GroupAction groupAction;
 	private ActionFactory.UngroupAction ungroupAction;
 	private ActionFactory.SendToBackAction sendToBackAction;
@@ -101,7 +102,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (plugInPort.getNewComponentTypeSlot() == null && e.isPopupTrigger()) {
+					if (plugInPort.getNewComponentTypeSlot() == null
+							&& e.isPopupTrigger()) {
 						// Enable actions.
 						boolean enabled = !plugInPort.getSelectedComponents()
 								.isEmpty();
@@ -124,6 +126,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 						getUngroupAction().setEnabled(enabled);
 						getSendToBackAction().setEnabled(enabled);
 						getBringToFrontAction().setEnabled(enabled);
+
+						getSaveAsTemplateAction().setEnabled(
+								plugInPort.getSelectedComponents().size() == 1);
 
 						showPopupAt(e.getX(), e.getY());
 					}
@@ -220,6 +225,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.addSeparator();
 			popupMenu.add(getEditSelectionAction());
 			popupMenu.add(getDeleteSelectionAction());
+			popupMenu.add(getSaveAsTemplateAction());
 			popupMenu.add(getGroupAction());
 			popupMenu.add(getUngroupAction());
 			popupMenu.add(getSendToBackAction());
@@ -309,6 +315,14 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 					.createDeleteSelectionAction(plugInPort);
 		}
 		return deleteSelectionAction;
+	}
+
+	public ActionFactory.SaveAsTemplateAction getSaveAsTemplateAction() {
+		if (saveAsTemplateAction == null) {
+			saveAsTemplateAction = ActionFactory.getInstance()
+					.createSaveAsTemplateAction(plugInPort);
+		}
+		return saveAsTemplateAction;
 	}
 
 	public ActionFactory.GroupAction getGroupAction() {

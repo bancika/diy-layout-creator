@@ -32,7 +32,7 @@ public enum IconLoader {
 			"icon_medium.png"), IconSmall("icon_small.png"), DocumentEdit("document_edit.png"), EditComponent(
 			"edit_component.png"), Size("size.png"), Front("front.png"), Back("back.png"), Pens(
 			"pens.png"), Sort("sort.png"), ElementsSelection("elements_selection.png"), BranchAdd(
-			"branch_add.png");
+			"branch_add.png"), Briefcase_Add("briefcase_add.png");
 
 	protected String name;
 

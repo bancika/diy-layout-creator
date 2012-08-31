@@ -10,6 +10,9 @@
 	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
 	<classpathentry kind="lib" path="library/main.jar" sourcepath="/diylc-library"/>
+	<classpathentry kind="lib" path="lib/org-openide-awt.jar"/>
+	<classpathentry kind="lib" path="lib/org-openide-util.jar"/>
+	<classpathentry kind="lib" path="lib/org-openide-util-lookup.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/app-framework"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/swing-framework"/>
