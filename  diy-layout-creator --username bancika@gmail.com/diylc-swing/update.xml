@@ -857,6 +857,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added support for component templates</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Hidden "default" checkboxes from the editor because templates cover that functionality. If you need them back however, uncomment org.diylc.swing.gui.editor.PropertyEditorDialog.SHOW_DEFAULT_BOXES=true in the config.properties file</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
