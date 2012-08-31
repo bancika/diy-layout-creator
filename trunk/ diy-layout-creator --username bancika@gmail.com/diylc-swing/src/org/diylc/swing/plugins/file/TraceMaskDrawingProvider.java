@@ -54,7 +54,7 @@ public class TraceMaskDrawingProvider implements IDrawingProvider {
 				.getComponents()) {
 			Class<?> clazz = c.getClass();
 			try {
-				Method m = clazz.getMethod("getLayer", null);
+				Method m = clazz.getMethod("getLayer");
 				PCBLayer l = (PCBLayer) m.invoke(c);
 				layers.add(l);
 			} catch (Exception e) {
