@@ -4,7 +4,9 @@ import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -14,6 +16,7 @@ import org.diylc.common.Orientation;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.Template;
 import org.diylc.core.measures.Size;
 
 /**
@@ -29,6 +32,7 @@ public class InstantiationManager {
 	public static int MAX_RECENT_COMPONENTS = 16;
 
 	private ComponentType componentTypeSlot;
+	private Template template;
 	private IDIYComponent<?> componentSlot;
 	private Point firstControlPoint;
 	private Point potentialControlPoint;
@@ -38,6 +42,10 @@ public class InstantiationManager {
 
 	public ComponentType getComponentTypeSlot() {
 		return componentTypeSlot;
+	}
+
+	public Template getTemplate() {
+		return template;
 	}
 
 	public IDIYComponent<?> getComponentSlot() {
@@ -53,8 +61,9 @@ public class InstantiationManager {
 	}
 
 	public void setComponentTypeSlot(ComponentType componentTypeSlot,
-			Project currentProject) throws Exception {
+			Template template, Project currentProject) throws Exception {
 		this.componentTypeSlot = componentTypeSlot;
+		this.template = template;
 		if (componentTypeSlot == null) {
 			this.componentSlot = null;
 		} else {
@@ -64,7 +73,7 @@ public class InstantiationManager {
 				break;
 			case SINGLE_CLICK:
 				this.componentSlot = instantiateComponent(componentTypeSlot,
-						new Point(0, 0), currentProject);
+						template, new Point(0, 0), currentProject);
 				break;
 			}
 		}
@@ -75,7 +84,7 @@ public class InstantiationManager {
 	public void instatiatePointByPoint(Point scaledPoint, Project currentProject)
 			throws Exception {
 		firstControlPoint = scaledPoint;
-		componentSlot = instantiateComponent(componentTypeSlot,
+		componentSlot = instantiateComponent(componentTypeSlot, template,
 				firstControlPoint, currentProject);
 
 		// Set the other control point to the same location, we'll
@@ -130,7 +139,8 @@ public class InstantiationManager {
 
 	@SuppressWarnings("unchecked")
 	public IDIYComponent<?> instantiateComponent(ComponentType componentType,
-			Point point, Project currentProject) throws Exception {
+			Template template, Point point, Project currentProject)
+			throws Exception {
 		LOG.info("Instatiating component of type: "
 				+ componentType.getInstanceClass().getName());
 
@@ -150,7 +160,7 @@ public class InstantiationManager {
 			}
 		}
 
-		fillWithDefaultProperties(component);
+		fillWithDefaultProperties(component, template);
 
 		// Write to recent components
 		List<String> recentComponentTypes = (List<String>) ConfigurationManager
@@ -175,7 +185,7 @@ public class InstantiationManager {
 	}
 
 	public String createUniqueName(ComponentType componentType,
-			Project currentProject) {		
+			Project currentProject) {
 		boolean exists = true;
 		List<IDIYComponent<?>> components = currentProject.getComponents();
 		String[] takenNames = new String[components.size()];
@@ -189,7 +199,7 @@ public class InstantiationManager {
 			String name = componentType.getNamePrefix() + i;
 			exists = false;
 			if (Arrays.binarySearch(takenNames, name) >= 0) {
-				exists = true;	
+				exists = true;
 			}
 		}
 		return componentType.getNamePrefix() + i;
@@ -201,20 +211,23 @@ public class InstantiationManager {
 	 * objects.
 	 * 
 	 * @param object
+	 * @param template
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
 	 * @throws SecurityException
 	 */
-	public void fillWithDefaultProperties(Object object)
+	public void fillWithDefaultProperties(Object object, Template template)
 			throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException, SecurityException, NoSuchMethodException {
 		// Extract properties.
 		List<PropertyWrapper> properties = ComponentProcessor.getInstance()
 				.extractProperties(object.getClass());
+		Map<String, PropertyWrapper> propertyCache = new HashMap<String, PropertyWrapper>();
 		// Override with default values if available.
 		for (PropertyWrapper property : properties) {
+			propertyCache.put(property.getName(), property);
 			Object defaultValue = ConfigurationManager.getInstance()
 					.readObject(
 							Presenter.DEFAULTS_KEY_PREFIX
@@ -223,6 +236,18 @@ public class InstantiationManager {
 			if (defaultValue != null) {
 				property.setValue(defaultValue);
 				property.writeTo(object);
+			}
+		}
+		if (template != null) {
+			for (Map.Entry<String, Object> pair : template.getValues().entrySet()) {
+				PropertyWrapper property = propertyCache.get(pair.getKey());
+				if (property == null) {
+					LOG.warn("Cannot find property " + pair.getKey());
+				} else {
+					LOG.debug("Filling value from template for " + pair.getKey());
+					property.setValue(pair.getValue());
+					property.writeTo(object);
+				}
 			}
 		}
 	}

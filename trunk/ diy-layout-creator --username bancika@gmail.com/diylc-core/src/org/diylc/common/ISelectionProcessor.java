@@ -44,5 +44,5 @@ public interface ISelectionProcessor {
 	/**
 	 * Selects all components in the project.
 	 */
-	void selectAll();
+	void selectAll();	
 }
