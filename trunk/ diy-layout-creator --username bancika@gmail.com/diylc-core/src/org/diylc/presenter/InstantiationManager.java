@@ -13,6 +13,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
+import org.diylc.common.OrientationHV;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -239,12 +240,14 @@ public class InstantiationManager {
 			}
 		}
 		if (template != null) {
-			for (Map.Entry<String, Object> pair : template.getValues().entrySet()) {
+			for (Map.Entry<String, Object> pair : template.getValues()
+					.entrySet()) {
 				PropertyWrapper property = propertyCache.get(pair.getKey());
 				if (property == null) {
 					LOG.warn("Cannot find property " + pair.getKey());
 				} else {
-					LOG.debug("Filling value from template for " + pair.getKey());
+					LOG.debug("Filling value from template for "
+							+ pair.getKey());
 					property.setValue(pair.getValue());
 					property.writeTo(object);
 				}
@@ -262,7 +265,9 @@ public class InstantiationManager {
 		PropertyWrapper angleProperty = null;
 		for (PropertyWrapper propertyWrapper : properties) {
 			if (propertyWrapper.getType().getName().equals(
-					Orientation.class.getName())) {
+					Orientation.class.getName())
+					|| propertyWrapper.getType().getName().equals(
+							OrientationHV.class.getName())) {
 				angleProperty = propertyWrapper;
 				break;
 			}
@@ -274,10 +279,18 @@ public class InstantiationManager {
 		}
 		try {
 			angleProperty.readFrom(this.componentSlot);
-			Orientation value = (Orientation) angleProperty.getValue();
-			value.ordinal();
-			angleProperty.setValue(Orientation.values()[(value.ordinal() + 1)
-					% Orientation.values().length]);
+			Object value = angleProperty.getValue();
+			if (value instanceof Orientation) {
+				angleProperty
+						.setValue(Orientation.values()[(((Orientation) value)
+								.ordinal() + 1)
+								% Orientation.values().length]);
+			} else if (value instanceof OrientationHV) {
+				angleProperty
+						.setValue(OrientationHV.values()[(((OrientationHV) value)
+								.ordinal() + 1)
+								% OrientationHV.values().length]);
+			}
 			angleProperty.writeTo(this.componentSlot);
 		} catch (Exception e) {
 			LOG.warn("Error trying to rotate the component", e);
