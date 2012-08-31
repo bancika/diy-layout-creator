@@ -33,6 +33,7 @@ public class PropertyEditorDialog extends ButtonDialog {
 
 	private static final long serialVersionUID = 1L;
 
+	public static boolean SHOW_DEFAULT_BOXES = false;
 	private static final String DEFAULT_BOX_TOOLTIP = "<html>If this box is checked application will use the current value as a<br>default when creating new components of the same type</html>";
 
 	private List<PropertyWrapper> properties;
@@ -128,7 +129,9 @@ public class PropertyEditorDialog extends ButtonDialog {
 				gbc.fill = GridBagConstraints.NONE;
 				gbc.weightx = 0;
 
-				editorPanel.add(createDefaultCheckBox(property), gbc);
+				if (SHOW_DEFAULT_BOXES) {
+					editorPanel.add(createDefaultCheckBox(property), gbc);
+				}
 			}
 
 			// Make value field focused
