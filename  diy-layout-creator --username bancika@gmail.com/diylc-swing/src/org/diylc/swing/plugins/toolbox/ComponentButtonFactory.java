@@ -16,7 +16,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
@@ -151,15 +153,23 @@ class ComponentButtonFactory {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				plugInPort.deleteTemplate(componentType.getCategory(),
-						componentType.getName(), template.getName());
-				e.consume();
 				// Hide the menu
 				Container c = item.getParent();
 				if (c != null && c instanceof JPopupMenu) {
 					JPopupMenu m = (JPopupMenu) c;
 					m.setVisible(false);
 				}
+				int result = JOptionPane.showConfirmDialog(SwingUtilities
+						.getRoot(item),
+						"Are you sure you want to delete template \""
+								+ template.getName() + "\"", "Delete",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (result != JOptionPane.YES_OPTION) {
+					return;
+				}
+				plugInPort.deleteTemplate(componentType.getCategory(),
+						componentType.getName(), template.getName());
+				e.consume();
 			}
 		});
 		item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
