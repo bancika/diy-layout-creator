@@ -44,6 +44,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.ExpandSelectionAction expandSelectionAllAction;
 	private ActionFactory.ExpandSelectionAction expandSelectionImmediateAction;
 	private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
+	private ActionFactory.SaveAsTemplateAction saveAsTemplateAction;
 
 	private UndoHandler<Project> undoHandler;
 
@@ -177,6 +178,13 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		}
 		return expandSelectionSameTypeAction;
 	}
+	
+	public ActionFactory.SaveAsTemplateAction getSaveAsTemplateAction() {
+		if (saveAsTemplateAction == null) {
+			saveAsTemplateAction = ActionFactory.getInstance().createSaveAsTemplateAction(plugInPort);
+		}
+		return saveAsTemplateAction;
+	}
 
 	@Override
 	public void connect(IPlugInPort plugInPort) {
@@ -199,6 +207,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectMenuAction(getSendToBackAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getBringToFrontAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
+		swingUI.injectMenuAction(getSaveAsTemplateAction(), EDIT_TITLE);
 		swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(), EDIT_TITLE);
 		swingUI.injectMenuAction(getRenumberXAxisAction(), RENUMBER_TITLE);
 		swingUI.injectMenuAction(getRenumberYAxisAction(), RENUMBER_TITLE);
