@@ -58,7 +58,7 @@ public class Presenter implements IPlugInPort {
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3,
-			15, 0);
+			16, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections
@@ -405,7 +405,7 @@ public class Presenter implements IPlugInPort {
 		} else {
 			if (instantiationManager.getComponentTypeSlot() != null) {
 				// Try to rotate the component on right click while creating.
-				if (button == IPlugInPort.BUTTON3) {
+				if (button != IPlugInPort.BUTTON1) {
 					instantiationManager.tryToRotateComponentSlot();
 					messageDispatcher.dispatchMessage(EventType.REPAINT);
 					return;
