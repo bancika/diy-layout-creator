@@ -111,9 +111,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 			// Go back to the original transformation to draw leads.
 			if (!outlineMode) {
 				AffineTransform textTransform = g2d.getTransform();
-				if (length.convertToPixels() > points[0].distance(points[1])) {
-					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-				}
+//				if (length.convertToPixels() > points[0].distance(points[1])) {
+//					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+//				}
 				int leadThickness = getClosestOdd(getLeadThickness());
 				double leadLength = (distance - calculatePinSpacing(shapeRect)) / 2 - leadThickness / 2;
 				g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
