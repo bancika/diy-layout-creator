@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.HorizontalAlignment;
+import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
@@ -34,6 +35,7 @@ public class Label extends AbstractComponent<Void> {
 	private boolean center;
 	private HorizontalAlignment horizontalAlignment = HorizontalAlignment.CENTER;
 	private VerticalAlignment verticalAlignment = VerticalAlignment.CENTER;
+	private Orientation orientation = Orientation.DEFAULT;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState,
@@ -56,7 +58,7 @@ public class Label extends AbstractComponent<Void> {
 			y = point.y - textHeight / 2 + fontMetrics.getAscent();
 			break;
 		case TOP:
-			y = point.y - textHeight + fontMetrics.getAscent();			
+			y = point.y - textHeight + fontMetrics.getAscent();
 			break;
 		case BOTTOM:
 			y = point.y + fontMetrics.getAscent();
@@ -80,6 +82,17 @@ public class Label extends AbstractComponent<Void> {
 					+ getHorizontalAlignment());
 		}
 
+		switch (getOrientation()) {
+		case _90:
+			g2d.rotate(Math.PI / 2, point.x, point.y);
+			break;
+		case _180:
+			g2d.rotate(Math.PI, point.x, point.y);
+			break;
+		case _270:
+			g2d.rotate(Math.PI * 3 / 2, point.x, point.y);
+			break;
+		}
 		g2d.drawString(text, x, y);
 	}
 
@@ -154,6 +167,18 @@ public class Label extends AbstractComponent<Void> {
 				font = font.deriveFont(Font.PLAIN);
 			}
 		}
+	}
+
+	@EditableProperty
+	public Orientation getOrientation() {
+		if (orientation == null) {
+			orientation = Orientation.DEFAULT;
+		}
+		return orientation;
+	}
+
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;
 	}
 
 	@EditableProperty(name = "Font Size")
