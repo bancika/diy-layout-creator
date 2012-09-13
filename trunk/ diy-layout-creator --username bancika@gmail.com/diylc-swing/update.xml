@@ -883,12 +883,20 @@
 					<description>Ability to rotate text</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Connector dot component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Radial components become transparent by themself</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ability to flip standing diodes</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow zero sized holes on solder pads</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
