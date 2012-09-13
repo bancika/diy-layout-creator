@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -18,21 +17,17 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic", description = "Copper solder pad, round or square", instanceNamePrefix = "Pad", stretchable = false, zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
-public class SolderPad extends AbstractComponent<Void> {
+@ComponentDescriptor(name = "Dot", category = "Connectivity", author = "Branislav Stojkovic", description = "Connector dot", instanceNamePrefix = "Dot", stretchable = false, zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+public class Dot extends AbstractComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Size SIZE = new Size(0.09d, SizeUnit.in);
-	public static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
+	public static Size SIZE = new Size(1d, SizeUnit.mm);
 	public static Color COLOR = Color.black;
 
 	private Size size = SIZE;
 	private Color color = COLOR;
 	private Point point = new Point(0, 0);
-	private Type type = Type.ROUND;
-	private Size holeSize = HOLE_SIZE;
-	private PCBLayer layer = PCBLayer._1;
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState,
@@ -42,34 +37,19 @@ public class SolderPad extends AbstractComponent<Void> {
 			return;
 		}
 		int diameter = getClosestOdd((int) getSize().convertToPixels());
-		int holeDiameter = getClosestOdd((int) getHoleSize().convertToPixels());
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
 				: color);
-		if (type == Type.ROUND) {
-			g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2,
-					diameter, diameter);
-		} else {
-			g2d.fillRect(point.x - diameter / 2, point.y - diameter / 2,
-					diameter, diameter);
-		}
-		if (getHoleSize().getValue() > 0) {
-			g2d.setColor(Constants.CANVAS_COLOR);
-			g2d.fillOval(point.x - holeDiameter / 2,
-					point.y - holeDiameter / 2, holeDiameter, holeDiameter);
-		}
+		g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter,
+				diameter);
 	}
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
-		int diameter = getClosestOdd(width / 2);
-		int holeDiameter = 5;
+		int diameter = 7 * width / 32;
 		g2d.setColor(COLOR);
 		g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter,
 				diameter);
-		g2d.setColor(Constants.CANVAS_COLOR);
-		g2d.fillOval((width - holeDiameter) / 2, (height - holeDiameter) / 2,
-				holeDiameter, holeDiameter);
 	}
 
 	@EditableProperty
@@ -79,30 +59,6 @@ public class SolderPad extends AbstractComponent<Void> {
 
 	public void setSize(Size size) {
 		this.size = size;
-	}
-
-	@EditableProperty(name = "Hole")
-	public Size getHoleSize() {
-		if (holeSize == null) {
-			holeSize = HOLE_SIZE;
-		}
-		return holeSize;
-	}
-
-	public void setHoleSize(Size holeSize) {
-		this.holeSize = holeSize;
-	}
-
-	@EditableProperty
-	public PCBLayer getLayer() {
-		if (layer == null) {
-			layer = PCBLayer._1;
-		}
-		return layer;
-	}
-
-	public void setLayer(PCBLayer layer) {
-		this.layer = layer;
 	}
 
 	@Override
@@ -144,15 +100,6 @@ public class SolderPad extends AbstractComponent<Void> {
 		this.color = color;
 	}
 
-	@EditableProperty
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
 	@Override
 	public Void getValue() {
 		return null;
@@ -160,14 +107,5 @@ public class SolderPad extends AbstractComponent<Void> {
 
 	@Override
 	public void setValue(Void value) {
-	}
-
-	static enum Type {
-		ROUND, SQUARE;
-
-		@Override
-		public String toString() {
-			return name().substring(0, 1) + name().substring(1).toLowerCase();
-		}
 	}
 }
