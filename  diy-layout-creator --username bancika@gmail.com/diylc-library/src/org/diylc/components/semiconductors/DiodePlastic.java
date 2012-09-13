@@ -32,6 +32,7 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 
 	private String value = "";
 	private Color markerColor = MARKER_COLOR;
+	private boolean flipStanding = false;
 
 	public DiodePlastic() {
 		super();
@@ -39,10 +40,24 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 		this.bodyColor = BODY_COLOR;
 		this.borderColor = BORDER_COLOR;
 	}
-	
+
 	@Override
 	protected boolean supportsStandingMode() {
 		return true;
+	}
+
+	@Override
+	public Color getStandingBodyColor() {
+		return getFlipStanding() ? getMarkerColor() : getBodyColor();
+	}
+
+	@EditableProperty(name = "Reverse (standing)")
+	public boolean getFlipStanding() {
+		return flipStanding;
+	}
+
+	public void setFlipStanding(boolean flipStanding) {
+		this.flipStanding = flipStanding;
 	}
 
 	@EditableProperty
@@ -87,8 +102,8 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
 		Color finalMarkerColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			Theme theme = (Theme) ConfigurationManager.getInstance()
+					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalMarkerColor = theme.getOutlineColor();
 		} else {
 			finalMarkerColor = markerColor;
@@ -96,8 +111,8 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 		g2d.setColor(finalMarkerColor);
 		int width = (int) getLength().convertToPixels();
 		int markerWidth = (int) MARKER_WIDTH.convertToPixels();
-		g2d.fillRect(width - markerWidth, 0, markerWidth, getClosestOdd(getWidth()
-				.convertToPixels()));
+		g2d.fillRect(width - markerWidth, 0, markerWidth,
+				getClosestOdd(getWidth().convertToPixels()));
 	}
 
 	@EditableProperty(name = "Marker")
