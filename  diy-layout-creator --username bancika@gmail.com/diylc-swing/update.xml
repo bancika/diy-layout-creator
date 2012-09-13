@@ -885,6 +885,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Radial components become transparent by themself</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Ability to flip standing diodes</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
