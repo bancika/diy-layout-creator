@@ -83,7 +83,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 						/ MAX_ALPHA));
 			}
-			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
+			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getStandingBodyColor());
 			g2d.fill(body);
 			g2d.setComposite(oldComposite);
 			Color finalBorderColor;
@@ -346,6 +346,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
 	public void setBodyColor(Color bodyColor) {
 		this.bodyColor = bodyColor;
+	}
+	
+	public Color getStandingBodyColor() {
+		return bodyColor;
 	}
 
 	@EditableProperty(name = "Border")
