@@ -98,6 +98,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					canvasPanel.requestFocus();
+					mouseReleased(e);
 				}
 
 				@Override
