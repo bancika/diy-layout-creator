@@ -299,8 +299,30 @@ public class Presenter implements IPlugInPort {
 		if (componentTypes == null) {
 			LOG.info("Loading component types.");
 			componentTypes = new HashMap<String, List<ComponentType>>();
-			List<Class<?>> componentTypeClasses = JarScanner.getInstance()
-					.scanFolder("library/", IDIYComponent.class);
+			// On Mac we use ":" to split paths, so check for that
+			String[] classPath = System.getProperty("java.class.path").split(
+					System.getProperty("java.class.path").contains(";") ? ";"
+							: ":");
+			Set<Class<?>> componentTypeClasses = new HashSet<Class<?>>();
+			for (String path : classPath) {
+				path = path.replace('\\', '/');
+				File f = new File(path);
+				try {
+					if (f.isDirectory()) {
+						LOG.info("Scanning folder for components: "
+								+ f.getAbsolutePath());
+						componentTypeClasses.addAll(JarScanner.getInstance()
+								.scanFolder(path, IDIYComponent.class));
+					} else {
+						LOG.info("Scanning JAR for components: "
+								+ f.getAbsolutePath());
+						componentTypeClasses.addAll(JarScanner.getInstance()
+								.scanJar(f, IDIYComponent.class));
+					}
+				} catch (Exception e) {
+					LOG.warn("Could not scan path " + path, e);
+				}
+			}
 			for (Class<?> clazz : componentTypeClasses) {
 				if (!Modifier.isAbstract(clazz.getModifiers())) {
 					ComponentType componentType = ComponentProcessor
