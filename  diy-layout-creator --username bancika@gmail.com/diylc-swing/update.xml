@@ -920,7 +920,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Outline mode for switches, trimmers, potentiometers and transistors</description>
+					<description>Outline mode for switches, jacks, trimmers, potentiometers and transistors</description>
 				</org.diylc.appframework.update.Change>							
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
