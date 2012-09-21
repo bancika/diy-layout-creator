@@ -222,6 +222,8 @@ public class MiniToggleSwitch extends
 			return;
 		}
 		Shape body = getBody();
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+				IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 		// Draw body if available.
 		if (body != null) {
 			Composite oldComposite = g2d.getComposite();
@@ -237,9 +239,6 @@ public class MiniToggleSwitch extends
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 			Color finalBorderColor;
 			if (outlineMode) {
-				Theme theme = (Theme) ConfigurationManager.getInstance()
-						.readObject(IPlugInPort.THEME_KEY,
-								Constants.DEFAULT_THEME);
 				finalBorderColor = componentState == ComponentState.SELECTED
 						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
 						: theme.getOutlineColor();
@@ -259,15 +258,19 @@ public class MiniToggleSwitch extends
 		int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
 		int lugHeight = getClosestOdd((int) LUG_THICKNESS.convertToPixels());
 		for (Point p : controlPoints) {
-			if (!outlineMode) {
+			if (outlineMode) {
+				g2d.setColor(theme.getOutlineColor());
+				g2d.drawRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth,
+						lugHeight);
+			} else {
 				g2d.setColor(CIRCLE_COLOR);
 				g2d.fillOval(p.x - circleDiameter / 2,
 						p.y - circleDiameter / 2, circleDiameter,
 						circleDiameter);
+				g2d.setColor(METAL_COLOR);
+				g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth,
+						lugHeight);
 			}
-			g2d.setColor(METAL_COLOR);
-			g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth,
-					lugHeight);
 		}
 	}
 
@@ -309,12 +312,12 @@ public class MiniToggleSwitch extends
 				break;
 			}
 			if (getOrientation() == OrientationHV.HORIZONTAL) {
-				AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2,
-						firstPoint.x, firstPoint.y);	
+				AffineTransform xform = AffineTransform.getRotateInstance(
+						-Math.PI / 2, firstPoint.x, firstPoint.y);
 				body = new Area(body);
-				((Area)body).transform(xform);
+				((Area) body).transform(xform);
 			}
-		}		
+		}
 		return body;
 	}
 
