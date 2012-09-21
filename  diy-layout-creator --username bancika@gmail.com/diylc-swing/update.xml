@@ -917,7 +917,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Editable label color for leaded components</description>
-				</org.diylc.appframework.update.Change>						
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Outline mode for trimmers, potentiometers and transistors</description>
+				</org.diylc.appframework.update.Change>							
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
