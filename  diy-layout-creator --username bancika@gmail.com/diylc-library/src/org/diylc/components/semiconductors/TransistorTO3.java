@@ -250,9 +250,9 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 		g2d.fill(mainArea);
 		g2d.setComposite(oldComposite);
 		Color finalBorderColor;
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+				IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalBorderColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
 					: theme.getOutlineColor();
@@ -266,23 +266,22 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 		g2d.draw(mainArea);
 		g2d.draw(innerArea);
 
-		if (!outlineMode) {
-			for (Point point : controlPoints) {
+		for (Point point : controlPoints) {
+			if (!outlineMode) {
 				g2d.setColor(PIN_COLOR);
 				g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2,
 						pinSize, pinSize);
-				g2d.setColor(PIN_BORDER_COLOR);
-				g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2,
-						pinSize, pinSize);
 			}
+			g2d.setColor(outlineMode ? theme.getOutlineColor()
+					: PIN_BORDER_COLOR);
+			g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize,
+					pinSize);
 		}
 
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
 		Color finalLabelColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalLabelColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
 					: theme.getOutlineColor();
@@ -313,20 +312,20 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 		int hole = 4 * width / 32;
 		Area area = new Area(new Ellipse2D.Double((width - sizeLarge) / 2,
 				(height - sizeLarge) / 2, sizeLarge, sizeLarge));
-//		int[] x = new int[] { width / 2 + sizeSmall / 2,
-//				width / 2 + sizeLarge / 2, width / 2 + sizeSmall / 2,
-//				width / 2 - sizeSmall / 2, width / 2 - sizeLarge / 2,
-//				width / 2 - sizeSmall / 2 };
-//		int[] y = new int[] { height / 8, height / 2, height * 7 / 8,
-//				height * 7 / 8, height / 2, height / 8 };
-//		Area p = new Area(new Polygon(x, y, x.length));
-//		AffineTransform t = AffineTransform.getTranslateInstance(width / 2,
-//				height / 2);
-//		t.concatenate(AffineTransform.getScaleInstance(1.05, 1.05));
-//		t.concatenate(AffineTransform.getTranslateInstance(-width / 2,
-//				-height / 2));
-//		p.transform(t);
-//		area.add(new Area(p));
+		// int[] x = new int[] { width / 2 + sizeSmall / 2,
+		// width / 2 + sizeLarge / 2, width / 2 + sizeSmall / 2,
+		// width / 2 - sizeSmall / 2, width / 2 - sizeLarge / 2,
+		// width / 2 - sizeSmall / 2 };
+		// int[] y = new int[] { height / 8, height / 2, height * 7 / 8,
+		// height * 7 / 8, height / 2, height / 8 };
+		// Area p = new Area(new Polygon(x, y, x.length));
+		// AffineTransform t = AffineTransform.getTranslateInstance(width / 2,
+		// height / 2);
+		// t.concatenate(AffineTransform.getScaleInstance(1.05, 1.05));
+		// t.concatenate(AffineTransform.getTranslateInstance(-width / 2,
+		// -height / 2));
+		// p.transform(t);
+		// area.add(new Area(p));
 		area.add(new Area(new Ellipse2D.Double((width - sizeSmall) / 2, height
 				/ 8 - sizeSmall / 2, sizeSmall, sizeSmall)));
 		area.add(new Area(new Ellipse2D.Double((width - sizeSmall) / 2, height
@@ -341,8 +340,8 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 		g2d.fill(area);
 		g2d.setColor(BORDER_COLOR);
 		g2d.draw(area);
-		g2d.drawOval((width - sizeInner) / 2, (height - sizeInner) / 2, sizeInner,
-				sizeInner);
+		g2d.drawOval((width - sizeInner) / 2, (height - sizeInner) / 2,
+				sizeInner, sizeInner);
 	}
 
 	@EditableProperty(name = "Body")

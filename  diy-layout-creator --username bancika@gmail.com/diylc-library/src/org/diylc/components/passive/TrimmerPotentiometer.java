@@ -12,6 +12,8 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.core.ComponentState;
@@ -19,10 +21,12 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Trimmer Potentiometer", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR", description = "Various types of board mounted trimmer potentiometers", zOrder = IDIYComponent.COMPONENT, stretchable = false)
 public class TrimmerPotentiometer extends AbstractPotentiometer {
@@ -50,7 +54,8 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 	protected TrimmerType type = TrimmerType.FLAT_SMALL;
 
 	public TrimmerPotentiometer() {
-		controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
+		controlPoints = new Point[] { new Point(0, 0), new Point(0, 0),
+				new Point(0, 0) };
 		updateControlPoints();
 	}
 
@@ -176,8 +181,10 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 		default:
 			break;
 		}
-		controlPoints[1].setLocation(controlPoints[0].x + dx1, controlPoints[0].y + dy1);
-		controlPoints[2].setLocation(controlPoints[0].x + dx2, controlPoints[0].y + dy2);
+		controlPoints[1].setLocation(controlPoints[0].x + dx1,
+				controlPoints[0].y + dy1);
+		controlPoints[2].setLocation(controlPoints[0].x + dx2,
+				controlPoints[0].y + dy2);
 	}
 
 	public Shape[] getBody() {
@@ -186,12 +193,14 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 
 			// Calculate the center point as center of the minimum bounding
 			// rectangle.
-			int centerX = (Math.max(Math.max(controlPoints[0].x, controlPoints[1].x),
-					controlPoints[2].x) + Math.min(
-					Math.min(controlPoints[0].x, controlPoints[1].x), controlPoints[2].x)) / 2;
-			int centerY = (Math.max(Math.max(controlPoints[0].y, controlPoints[1].y),
-					controlPoints[2].y) + Math.min(
-					Math.min(controlPoints[0].y, controlPoints[1].y), controlPoints[2].y)) / 2;
+			int centerX = (Math.max(Math.max(controlPoints[0].x,
+					controlPoints[1].x), controlPoints[2].x) + Math.min(Math
+					.min(controlPoints[0].x, controlPoints[1].x),
+					controlPoints[2].x)) / 2;
+			int centerY = (Math.max(Math.max(controlPoints[0].y,
+					controlPoints[1].y), controlPoints[2].y) + Math.min(Math
+					.min(controlPoints[0].y, controlPoints[1].y),
+					controlPoints[2].y)) / 2;
 
 			// Calculate body dimensions based on the selected type.
 			int length = 0;
@@ -202,11 +211,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 				length = getClosestOdd(FLAT_BODY_SIZE.convertToPixels());
 				width = length;
 				int shaftSize = getClosestOdd(FLAT_SHAFT_SIZE.convertToPixels());
-				Area shaft = new Area(new Ellipse2D.Double(centerX - shaftSize / 2, centerY
-						- shaftSize / 2, shaftSize, shaftSize));
-				Area slot = new Area(new Rectangle2D.Double(centerX - shaftSize / 2, centerY
-						- shaftSize / 8, shaftSize, shaftSize / 4));
-				slot.transform(AffineTransform.getRotateInstance(Math.PI / 4, centerX, centerY));
+				Area shaft = new Area(new Ellipse2D.Double(centerX - shaftSize
+						/ 2, centerY - shaftSize / 2, shaftSize, shaftSize));
+				Area slot = new Area(new Rectangle2D.Double(centerX - shaftSize
+						/ 2, centerY - shaftSize / 8, shaftSize, shaftSize / 4));
+				slot.transform(AffineTransform.getRotateInstance(Math.PI / 4,
+						centerX, centerY));
 				shaft.subtract(slot);
 				body[1] = shaft;
 				break;
@@ -216,13 +226,14 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 				width = getClosestOdd(VERTICAL_BODY_WIDTH.convertToPixels());
 				break;
 			}
-			if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
+			if (orientation == Orientation.DEFAULT
+					|| orientation == Orientation._180) {
 				int p = length;
 				length = width;
 				width = p;
 			}
-			body[0] = new Rectangle2D.Double(centerX - length / 2, centerY - width / 2, length,
-					width);
+			body[0] = new Rectangle2D.Double(centerX - length / 2, centerY
+					- width / 2, length, width);
 		}
 		return body;
 	}
@@ -241,48 +252,75 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		Shape mainShape = getBody()[0];
 		Shape shaftShape = getBody()[1];
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+				IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 		if (mainShape != null) {
 			g2d.setColor(bodyColor);
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-						/ MAX_ALPHA));
+				g2d.setComposite(AlphaComposite.getInstance(
+						AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
 			}
-			g2d.fill(mainShape);
-			if (shaftShape != null) {
+			if (!outlineMode) {
+				g2d.fill(mainShape);
+			}
+			if (!outlineMode && shaftShape != null) {
 				g2d.setColor(SHAFT_COLOR);
 				g2d.fill(shaftShape);
 				g2d.setColor(SHAFT_BORDER_COLOR);
 				g2d.draw(shaftShape);
 			}
 			g2d.setComposite(oldComposite);
-			g2d.setColor(componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
+			Color finalBorderColor;
+			if (outlineMode) {
+				finalBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+						: theme.getOutlineColor();
+			} else {
+				finalBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+						: borderColor;
+			}
+			g2d.setColor(finalBorderColor);
 			g2d.draw(mainShape);
 		}
 
 		// Draw pins.
 		int pinSize = getClosestOdd(PIN_SIZE.convertToPixels());
 		for (Point point : controlPoints) {
-			g2d.setColor(PIN_COLOR);
-			g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-			g2d.setColor(PIN_BORDER_COLOR);
-			g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+			if (!outlineMode) {
+				g2d.setColor(PIN_COLOR);
+				g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2,
+						pinSize, pinSize);
+			}
+			g2d.setColor(outlineMode ? theme.getOutlineColor()
+					: PIN_BORDER_COLOR);
+			g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize,
+					pinSize);
 		}
 
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
-		g2d
-				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
-						: LABEL_COLOR);
+		Color finalLabelColor;
+		if (outlineMode) {
+			finalLabelColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+					: theme.getOutlineColor();
+		} else {
+			finalLabelColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+					: LABEL_COLOR;
+		}
+		g2d.setColor(finalLabelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		Rectangle2D bodyRect = getBody()[0].getBounds2D();
 		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
@@ -295,7 +333,8 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 		int x = (panelWidth - textWidth) / 2;
 		int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();
 
-		g2d.drawString(getName(), (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
+		g2d.drawString(getName(), (int) (bodyRect.getX() + x), (int) (bodyRect
+				.getY() + y));
 	}
 
 	@Override
@@ -308,10 +347,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 		g2d.drawRect(margin, margin, width - 2 * margin, width - 2 * margin);
 		int shaftSize = 11;
 		int slotSize = 2;
-		Area area = new Area(new Ellipse2D.Double(width / 2 - shaftSize / 2, width / 2 - shaftSize
-				/ 2, shaftSize, shaftSize));
-		Area slot = new Area(new Rectangle2D.Double(0, width / 2 - slotSize / 2, width, slotSize));
-		slot.transform(AffineTransform.getRotateInstance(Math.PI / 4, width / 2, width / 2));
+		Area area = new Area(new Ellipse2D.Double(width / 2 - shaftSize / 2,
+				width / 2 - shaftSize / 2, shaftSize, shaftSize));
+		Area slot = new Area(new Rectangle2D.Double(0,
+				width / 2 - slotSize / 2, width, slotSize));
+		slot.transform(AffineTransform.getRotateInstance(Math.PI / 4,
+				width / 2, width / 2));
 		area.subtract(slot);
 		g2d.setColor(SHAFT_COLOR);
 		g2d.fill(area);
@@ -330,9 +371,11 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 		g2d.drawOval(margin - pinSize / 2, 21 - pinSize / 2, pinSize, pinSize);
 
 		g2d.setColor(PIN_COLOR);
-		g2d.fillOval(width - margin - pinSize / 2, width / 2 - pinSize / 2, pinSize, pinSize);
+		g2d.fillOval(width - margin - pinSize / 2, width / 2 - pinSize / 2,
+				pinSize, pinSize);
 		g2d.setColor(PIN_BORDER_COLOR);
-		g2d.drawOval(width - margin - pinSize / 2, width / 2 - pinSize / 2, pinSize, pinSize);
+		g2d.drawOval(width - margin - pinSize / 2, width / 2 - pinSize / 2,
+				pinSize, pinSize);
 	}
 
 	@EditableProperty(name = "Body")
@@ -369,7 +412,8 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 
 		@Override
 		public String toString() {
-			return name().substring(0, 1) + name().substring(1).toLowerCase().replace("_", " ");
+			return name().substring(0, 1)
+					+ name().substring(1).toLowerCase().replace("_", " ");
 		}
 	}
 }

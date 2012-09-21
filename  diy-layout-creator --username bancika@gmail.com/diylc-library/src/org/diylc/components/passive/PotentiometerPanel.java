@@ -10,6 +10,8 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.core.ComponentState;
@@ -17,10 +19,12 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Potentiometer (panel mount)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR", description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT, stretchable = false)
 public class PotentiometerPanel extends AbstractPotentiometer {
@@ -42,7 +46,8 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 	transient protected Area[] body = null;
 
 	public PotentiometerPanel() {
-		controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
+		controlPoints = new Point[] { new Point(0, 0), new Point(0, 0),
+				new Point(0, 0) };
 		updateControlPoints();
 	}
 
@@ -50,20 +55,28 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 		int spacing = (int) this.spacing.convertToPixels();
 		switch (orientation) {
 		case DEFAULT:
-			controlPoints[1].setLocation(controlPoints[0].x + spacing, controlPoints[0].y);
-			controlPoints[2].setLocation(controlPoints[0].x + 2 * spacing, controlPoints[0].y);
+			controlPoints[1].setLocation(controlPoints[0].x + spacing,
+					controlPoints[0].y);
+			controlPoints[2].setLocation(controlPoints[0].x + 2 * spacing,
+					controlPoints[0].y);
 			break;
 		case _90:
-			controlPoints[1].setLocation(controlPoints[0].x, controlPoints[0].y + spacing);
-			controlPoints[2].setLocation(controlPoints[0].x, controlPoints[0].y + 2 * spacing);
+			controlPoints[1].setLocation(controlPoints[0].x, controlPoints[0].y
+					+ spacing);
+			controlPoints[2].setLocation(controlPoints[0].x, controlPoints[0].y
+					+ 2 * spacing);
 			break;
 		case _180:
-			controlPoints[1].setLocation(controlPoints[0].x - spacing, controlPoints[0].y);
-			controlPoints[2].setLocation(controlPoints[0].x - 2 * spacing, controlPoints[0].y);
+			controlPoints[1].setLocation(controlPoints[0].x - spacing,
+					controlPoints[0].y);
+			controlPoints[2].setLocation(controlPoints[0].x - 2 * spacing,
+					controlPoints[0].y);
 			break;
 		case _270:
-			controlPoints[1].setLocation(controlPoints[0].x, controlPoints[0].y - spacing);
-			controlPoints[2].setLocation(controlPoints[0].x, controlPoints[0].y - 2 * spacing);
+			controlPoints[1].setLocation(controlPoints[0].x, controlPoints[0].y
+					- spacing);
+			controlPoints[2].setLocation(controlPoints[0].x, controlPoints[0].y
+					- 2 * spacing);
 			break;
 		default:
 			break;
@@ -80,49 +93,55 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 			int lugDiameter = getClosestOdd(this.lugDiameter.convertToPixels());
 			int holeDiameter = getClosestOdd(this.lugDiameter.convertToPixels() / 2);
 			for (int i = 0; i < 3; i++) {
-				Area area = new Area(new Ellipse2D.Double(controlPoints[i].x - lugDiameter / 2,
-						controlPoints[i].y - lugDiameter / 2, lugDiameter, lugDiameter));
+				Area area = new Area(new Ellipse2D.Double(controlPoints[i].x
+						- lugDiameter / 2,
+						controlPoints[i].y - lugDiameter / 2, lugDiameter,
+						lugDiameter));
 				body[4 + i] = area;
 			}
 
 			switch (orientation) {
 			case DEFAULT:
-				body[3] = new Area(new Ellipse2D.Double(
-						controlPoints[0].x + spacing - diameter / 2, controlPoints[0].y - spacing
-								/ 2 - diameter, diameter, diameter));
+				body[3] = new Area(new Ellipse2D.Double(controlPoints[0].x
+						+ spacing - diameter / 2, controlPoints[0].y - spacing
+						/ 2 - diameter, diameter, diameter));
 				for (int i = 0; i < 3; i++) {
 					body[i] = new Area(new Rectangle2D.Double(
-							controlPoints[i].x - holeDiameter / 2, controlPoints[i].y
-									- (spacing + diameter) / 2, holeDiameter,
-							(spacing + diameter) / 2));
-				}
-				break;
-			case _90:
-				body[3] = new Area(new Ellipse2D.Double(controlPoints[0].x + spacing / 2,
-						controlPoints[0].y + spacing - diameter / 2, diameter, diameter));
-				for (int i = 0; i < 3; i++) {
-					body[i] = new Area(new Rectangle2D.Double(controlPoints[i].x,
-							controlPoints[i].y - holeDiameter / 2, (spacing + diameter) / 2,
-							holeDiameter));
-				}
-				break;
-			case _180:
-				body[3] = new Area(new Ellipse2D.Double(
-						controlPoints[0].x - spacing - diameter / 2, controlPoints[0].y + spacing
-								/ 2, diameter, diameter));
-				for (int i = 0; i < 3; i++) {
-					body[i] = new Area(new Rectangle2D.Double(
-							controlPoints[i].x - holeDiameter / 2, controlPoints[i].y,
+							controlPoints[i].x - holeDiameter / 2,
+							controlPoints[i].y - (spacing + diameter) / 2,
 							holeDiameter, (spacing + diameter) / 2));
 				}
 				break;
-			case _270:
-				body[3] = new Area(new Ellipse2D.Double(
-						controlPoints[0].x - spacing / 2 - diameter, controlPoints[0].y - spacing
-								- diameter / 2, diameter, diameter));
+			case _90:
+				body[3] = new Area(new Ellipse2D.Double(controlPoints[0].x
+						+ spacing / 2, controlPoints[0].y + spacing - diameter
+						/ 2, diameter, diameter));
 				for (int i = 0; i < 3; i++) {
-					body[i] = new Area(new Rectangle2D.Double(controlPoints[i].x
-							- (spacing + diameter) / 2, controlPoints[i].y - holeDiameter / 2,
+					body[i] = new Area(new Rectangle2D.Double(
+							controlPoints[i].x, controlPoints[i].y
+									- holeDiameter / 2,
+							(spacing + diameter) / 2, holeDiameter));
+				}
+				break;
+			case _180:
+				body[3] = new Area(new Ellipse2D.Double(controlPoints[0].x
+						- spacing - diameter / 2, controlPoints[0].y + spacing
+						/ 2, diameter, diameter));
+				for (int i = 0; i < 3; i++) {
+					body[i] = new Area(new Rectangle2D.Double(
+							controlPoints[i].x - holeDiameter / 2,
+							controlPoints[i].y, holeDiameter,
+							(spacing + diameter) / 2));
+				}
+				break;
+			case _270:
+				body[3] = new Area(new Ellipse2D.Double(controlPoints[0].x
+						- spacing / 2 - diameter, controlPoints[0].y - spacing
+						- diameter / 2, diameter, diameter));
+				for (int i = 0; i < 3; i++) {
+					body[i] = new Area(new Rectangle2D.Double(
+							controlPoints[i].x - (spacing + diameter) / 2,
+							controlPoints[i].y - holeDiameter / 2,
 							(spacing + diameter) / 2, holeDiameter));
 				}
 				break;
@@ -136,8 +155,9 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 			}
 			// Make holes in the lugs.
 			for (int i = 0; i < 3; i++) {
-				body[4 + i].subtract(new Area(new Ellipse2D.Double(controlPoints[i].x
-						- holeDiameter / 2, controlPoints[i].y - holeDiameter / 2, holeDiameter,
+				body[4 + i].subtract(new Area(new Ellipse2D.Double(
+						controlPoints[i].x - holeDiameter / 2,
+						controlPoints[i].y - holeDiameter / 2, holeDiameter,
 						holeDiameter)));
 			}
 		}
@@ -158,30 +178,51 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+				IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 		for (Area shape : getBody()) {
 			if (shape != null) {
 				g2d.setColor(bodyColor);
 				Composite oldComposite = g2d.getComposite();
 				if (alpha < MAX_ALPHA) {
-					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-							/ MAX_ALPHA));
+					g2d.setComposite(AlphaComposite.getInstance(
+							AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
 				}
-				g2d.fill(shape);
+				if (!outlineMode) {
+					g2d.fill(shape);
+				}
 				g2d.setComposite(oldComposite);
-				g2d.setColor(componentState == ComponentState.SELECTED
-						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-						: borderColor);
+				Color finalBorderColor;
+				if (outlineMode) {
+					finalBorderColor = componentState == ComponentState.SELECTED
+							|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+							: theme.getOutlineColor();
+				} else {
+					finalBorderColor = componentState == ComponentState.SELECTED
+							|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+							: borderColor;
+				}
+				g2d.setColor(finalBorderColor);
 				g2d.draw(shape);
 			}
 		}
 		// Draw caption.
 		g2d.setFont(LABEL_FONT);
-		g2d
-				.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED
-						: LABEL_COLOR);
+		Color finalLabelColor;
+		if (outlineMode) {
+			finalLabelColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+					: theme.getOutlineColor();
+		} else {
+			finalLabelColor = componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+					: LABEL_COLOR;
+		}
+		g2d.setColor(finalLabelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		Rectangle2D bodyRect = getBody()[3].getBounds2D();
 		Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
@@ -194,7 +235,8 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 		int x = (panelWidth - textWidth) / 2;
 		int y = panelHeight / 2 - textHeight + fontMetrics.getAscent();
 
-		g2d.drawString(getName(), (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
+		g2d.drawString(getName(), (int) (bodyRect.getX() + x), (int) (bodyRect
+				.getY() + y));
 
 		// Draw value.
 		rect = fontMetrics.getStringBounds(getValueForDisplay(), g2d);
@@ -214,19 +256,27 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 		int margin = 4 * width / 32;
 		int spacing = width / 3 - 1;
 		g2d.setColor(BORDER_COLOR);
-		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2 * width / 32));
-		g2d.drawLine(width / 2 - spacing, height / 2, width / 2 - spacing, height - margin);
-		g2d.drawLine(width / 2 + spacing, height / 2, width / 2 + spacing, height - margin);
+		g2d.setStroke(ObjectCache.getInstance()
+				.fetchBasicStroke(2 * width / 32));
+		g2d.drawLine(width / 2 - spacing, height / 2, width / 2 - spacing,
+				height - margin);
+		g2d.drawLine(width / 2 + spacing, height / 2, width / 2 + spacing,
+				height - margin);
 		g2d.drawLine(width / 2, height / 2, width / 2, height - margin);
-		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(4 * width / 32));
-		g2d.drawLine(width / 2 - spacing, height - margin, width / 2 - spacing, height - margin);
-		g2d.drawLine(width / 2 + spacing, height - margin, width / 2 + spacing, height - margin);
+		g2d.setStroke(ObjectCache.getInstance()
+				.fetchBasicStroke(4 * width / 32));
+		g2d.drawLine(width / 2 - spacing, height - margin, width / 2 - spacing,
+				height - margin);
+		g2d.drawLine(width / 2 + spacing, height - margin, width / 2 + spacing,
+				height - margin);
 		g2d.drawLine(width / 2, height - margin, width / 2, height - margin);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.setColor(BODY_COLOR);
-		g2d.fillOval(margin, margin / 2, width - 2 * margin, height - 2 * margin);
+		g2d.fillOval(margin, margin / 2, width - 2 * margin, height - 2
+				* margin);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawOval(margin, margin / 2, width - 2 * margin, height - 2 * margin);
+		g2d.drawOval(margin, margin / 2, width - 2 * margin, height - 2
+				* margin);
 	}
 
 	@EditableProperty
