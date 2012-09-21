@@ -83,6 +83,7 @@
 				<include name="lib/**/*.jar" />
 				<include name="library/**/*.jar" />
 			</jarfileset>	
+			<javaproperty name="apple.laf.useScreenMenuBar" value="true"/>
 			<!--<documenttype name="DIYLC Project"
 			                    extensions="diylc" 
 			                    role="Editor"/>-->
