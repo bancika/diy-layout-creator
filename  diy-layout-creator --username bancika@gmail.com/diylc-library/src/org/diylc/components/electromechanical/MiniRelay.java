@@ -294,22 +294,23 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
 		g2d.fill(mainArea);
 		g2d.setComposite(oldComposite);
 
-		if (!outlineMode) {
-			int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-			for (Point point : controlPoints) {
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+				IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+		int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
+		for (Point point : controlPoints) {
+			if (!outlineMode) {
 				g2d.setColor(PIN_COLOR);
 				g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2,
 						pinSize, pinSize);
-				g2d.setColor(PIN_BORDER_COLOR);
-				g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2,
-						pinSize, pinSize);
 			}
+			g2d.setColor(outlineMode ? theme.getOutlineColor()
+					: PIN_BORDER_COLOR);
+			g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize,
+					pinSize);
 		}
 
 		Color finalBorderColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalBorderColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
 					: theme.getOutlineColor();
@@ -335,8 +336,6 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
 		g2d.setFont(LABEL_FONT);
 		Color finalLabelColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalLabelColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
 					: theme.getOutlineColor();
