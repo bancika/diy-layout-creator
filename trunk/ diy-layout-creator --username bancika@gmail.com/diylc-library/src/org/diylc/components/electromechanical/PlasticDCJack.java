@@ -42,7 +42,8 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 	private static Color BORDER_COLOR = Color.black;
 	private static Color MARKING_COLOR = Color.lightGray;
 
-	private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
+	private Point[] controlPoints = new Point[] { new Point(0, 0),
+			new Point(0, 0), new Point(0, 0) };
 	private String value = "";
 	private DCPolarity polarity = DCPolarity.CENTER_NEGATIVE;
 	transient private Shape[] body;
@@ -71,23 +72,24 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 			int y = controlPoints[0].y;
 			int spacing = (int) SPACING.convertToPixels();
 			int diameter = getClosestOdd(DIAMETER.convertToPixels());
-			body[0] = new Ellipse2D.Double(x - diameter / 2, y + spacing - diameter / 2, diameter,
-					diameter);
+			body[0] = new Ellipse2D.Double(x - diameter / 2, y + spacing
+					- diameter / 2, diameter, diameter);
 
 			int rectWidth = (int) (diameter / Math.sqrt(2)) - 2;
-			body[1] = new Rectangle(x - rectWidth / 2, y + spacing - rectWidth / 2, rectWidth,
-					rectWidth);
+			body[1] = new Rectangle(x - rectWidth / 2, y + spacing - rectWidth
+					/ 2, rectWidth, rectWidth);
 
 			int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
 			int lugThickness = getClosestOdd(LUG_THICKNESS.convertToPixels());
 
 			Point groundPoint = controlPoints[controlPoints.length - 1];
-			Area groundLug = new Area(new Ellipse2D.Double(groundPoint.x + spacing - lugWidth / 2,
-					groundPoint.y - lugWidth / 2, lugWidth, lugWidth));
-			groundLug.add(new Area(new Rectangle(groundPoint.x, groundPoint.y - lugWidth / 2,
-					spacing, lugWidth)));
-			groundLug.subtract(new Area(new Ellipse2D.Double(
-					groundPoint.x + spacing - lugWidth / 6, groundPoint.y - lugWidth / 6,
+			Area groundLug = new Area(new Ellipse2D.Double(groundPoint.x
+					+ spacing - lugWidth / 2, groundPoint.y - lugWidth / 2,
+					lugWidth, lugWidth));
+			groundLug.add(new Area(new Rectangle(groundPoint.x, groundPoint.y
+					- lugWidth / 2, spacing, lugWidth)));
+			groundLug.subtract(new Area(new Ellipse2D.Double(groundPoint.x
+					+ spacing - lugWidth / 6, groundPoint.y - lugWidth / 6,
 					lugWidth / 3, lugWidth / 3)));
 			body[2] = groundLug;
 
@@ -95,11 +97,14 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 			for (int i = 0; i < controlPoints.length; i++) {
 				Point point = controlPoints[i];
 				if (i == getControlPointCount() - 1) {
-					lugArea.add(new Area(new Rectangle(point.x - lugThickness / 2, point.y
-							- lugWidth / 2, lugThickness, lugWidth)));
+					lugArea.add(new Area(
+							new Rectangle(point.x - lugThickness / 2, point.y
+									- lugWidth / 2, lugThickness, lugWidth)));
 				} else {
-					lugArea.add(new Area(new Rectangle(point.x - lugWidth / 2, point.y
-							- lugThickness / 2, lugWidth, lugThickness)));
+					lugArea
+							.add(new Area(new Rectangle(point.x - lugWidth / 2,
+									point.y - lugThickness / 2, lugWidth,
+									lugThickness)));
 				}
 			}
 			body[3] = lugArea;
@@ -108,18 +113,21 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		Shape[] body = getBody();
 
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		if (componentState != ComponentState.DRAGGING) {
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
-						/ MAX_ALPHA));
+				g2d.setComposite(AlphaComposite.getInstance(
+						AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
 			}
-			g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
+			g2d
+					.setColor(outlineMode ? Constants.TRANSPARENT_COLOR
+							: BODY_COLOR);
 			g2d.fill(body[0]);
 			if (!outlineMode) {
 				g2d.setColor(PHENOLIC_COLOR);
@@ -128,16 +136,17 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 			g2d.setComposite(oldComposite);
 		}
 
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+				IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 		Color finalBorderColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalBorderColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : theme
-					.getOutlineColor();
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+					: theme.getOutlineColor();
 		} else {
 			finalBorderColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR;
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+					: BORDER_COLOR;
 		}
 
 		g2d.setColor(finalBorderColor);
@@ -150,21 +159,25 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 			g2d.fill(body[2]);
 			g2d.setColor(METAL_COLOR.darker());
 			g2d.draw(body[2]);
+
+			g2d.setColor(METAL_COLOR);
+			g2d.fill(body[3]);
 		}
 
-		g2d.setColor(METAL_COLOR);
-		g2d.fill(body[3]);
-		g2d.setColor(METAL_COLOR.darker());
+		g2d.setColor(outlineMode ? theme.getOutlineColor() : METAL_COLOR
+				.darker());
 		g2d.draw(body[3]);
 
 		if (!outlineMode && getPolarity() != DCPolarity.NONE) {
 			int spacing = (int) SPACING.convertToPixels();
 			g2d.setColor(MARKING_COLOR);
 			g2d.setFont(LABEL_FONT.deriveFont(12f));
-			drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-",
+			drawCenteredText(g2d,
+					getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-",
 					controlPoints[0].x, controlPoints[0].y - spacing * 7 / 16,
 					HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-			drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+",
+			drawCenteredText(g2d,
+					getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+",
 					controlPoints[2].x, controlPoints[2].y - spacing * 3 / 4,
 					HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 		}
@@ -175,25 +188,32 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 		int margin = 2 * 32 / width;
 		int diameter = getClosestOdd(width - margin);
 		g2d.setColor(BODY_COLOR);
-		g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
+		g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter,
+				diameter);
 		g2d.setColor(BORDER_COLOR);
-		g2d.drawOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
-		int rectWidth = getClosestOdd(((width - 2 * margin) / Math.sqrt(2)) - margin / 2);
+		g2d.drawOval((width - diameter) / 2, (height - diameter) / 2, diameter,
+				diameter);
+		int rectWidth = getClosestOdd(((width - 2 * margin) / Math.sqrt(2))
+				- margin / 2);
 		g2d.setColor(PHENOLIC_COLOR);
-		g2d.fillRect((width - rectWidth) / 2, (height - rectWidth) / 2, rectWidth, rectWidth);
+		g2d.fillRect((width - rectWidth) / 2, (height - rectWidth) / 2,
+				rectWidth, rectWidth);
 		g2d.setColor(PHENOLIC_COLOR.darker());
-		g2d.drawRect((width - rectWidth) / 2, (height - rectWidth) / 2, rectWidth, rectWidth);
+		g2d.drawRect((width - rectWidth) / 2, (height - rectWidth) / 2,
+				rectWidth, rectWidth);
 		int lugWidth = 4 * 32 / width;
 		g2d.setColor(METAL_COLOR);
-		g2d.drawLine((width - lugWidth) / 2, height / 3, (width + lugWidth) / 2, height / 3);
-		g2d
-				.drawLine(width * 2 / 3, (height - lugWidth) / 2, width * 2 / 3,
-						(height + lugWidth) / 2);
-		g2d.fillOval((width - lugWidth) / 2, height * 2 / 3 - lugWidth / 2, lugWidth, lugWidth);
-		g2d.fillRect(width / 2 - lugWidth * 3 / 2, height * 2 / 3 - lugWidth / 2, lugWidth * 3 / 2,
-				lugWidth);
+		g2d.drawLine((width - lugWidth) / 2, height / 3,
+				(width + lugWidth) / 2, height / 3);
+		g2d.drawLine(width * 2 / 3, (height - lugWidth) / 2, width * 2 / 3,
+				(height + lugWidth) / 2);
+		g2d.fillOval((width - lugWidth) / 2, height * 2 / 3 - lugWidth / 2,
+				lugWidth, lugWidth);
+		g2d.fillRect(width / 2 - lugWidth * 3 / 2, height * 2 / 3 - lugWidth
+				/ 2, lugWidth * 3 / 2, lugWidth);
 		g2d.setColor(PHENOLIC_COLOR);
-		g2d.fillOval((width - margin) / 2, height * 2 / 3 - margin / 2, margin, margin);
+		g2d.fillOval((width - margin) / 2, height * 2 / 3 - margin / 2, margin,
+				margin);
 	}
 
 	@Override
