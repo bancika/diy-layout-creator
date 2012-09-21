@@ -152,23 +152,38 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 			if (folded) {
 				switch (orientation) {
 				case DEFAULT:
-					body = new Area(new RoundRectangle2D.Double(x - bodyLength, y - bodyDiameter / 2, bodyLength, bodyDiameter, edgeRadius, edgeRadius));
-					body.add(new Area(new Rectangle2D.Double(x - bodyLength / 2, y - bodyDiameter / 2, bodyLength / 2, bodyDiameter)));
+					body = new Area(new RoundRectangle2D.Double(x - bodyLength,
+							y - bodyDiameter / 2, bodyLength, bodyDiameter,
+							edgeRadius, edgeRadius));
+					body.add(new Area(new Rectangle2D.Double(
+							x - bodyLength / 2, y - bodyDiameter / 2,
+							bodyLength / 2, bodyDiameter)));
 					break;
 				case _90:
-					body = new Area(new RoundRectangle2D.Double(x - bodyDiameter / 2, y - bodyLength, bodyDiameter, bodyLength, edgeRadius, edgeRadius));
-					body.add(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyLength / 2, bodyDiameter, bodyLength / 2)));
+					body = new Area(new RoundRectangle2D.Double(x
+							- bodyDiameter / 2, y - bodyLength, bodyDiameter,
+							bodyLength, edgeRadius, edgeRadius));
+					body.add(new Area(new Rectangle2D.Double(x - bodyDiameter
+							/ 2, y - bodyLength / 2, bodyDiameter,
+							bodyLength / 2)));
 					break;
 				case _180:
-					body = new Area(new RoundRectangle2D.Double(x, y - bodyDiameter / 2, bodyLength, bodyDiameter, edgeRadius, edgeRadius));
-					body.add(new Area(new Rectangle2D.Double(x, y - bodyDiameter / 2, bodyLength / 2, bodyDiameter)));
+					body = new Area(new RoundRectangle2D.Double(x, y
+							- bodyDiameter / 2, bodyLength, bodyDiameter,
+							edgeRadius, edgeRadius));
+					body.add(new Area(new Rectangle2D.Double(x, y
+							- bodyDiameter / 2, bodyLength / 2, bodyDiameter)));
 					break;
 				case _270:
-					body = new Area(new RoundRectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyLength, edgeRadius, edgeRadius));
-					body.add(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyLength / 2)));
+					body = new Area(new RoundRectangle2D.Double(x
+							- bodyDiameter / 2, y, bodyDiameter, bodyLength,
+							edgeRadius, edgeRadius));
+					body.add(new Area(new Rectangle2D.Double(x - bodyDiameter
+							/ 2, y, bodyDiameter, bodyLength / 2)));
 					break;
 				default:
-					throw new RuntimeException("Unexpected orientation: " + orientation);
+					throw new RuntimeException("Unexpected orientation: "
+							+ orientation);
 				}
 			} else {
 				body = new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y
@@ -197,9 +212,9 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 		g2d.fill(mainArea);
 		g2d.setComposite(oldComposite);
 		Color finalBorderColor;
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+				IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalBorderColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
 					: theme.getOutlineColor();
@@ -212,23 +227,22 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.draw(mainArea);
 
-		if (!outlineMode) {
-			for (Point point : controlPoints) {
+		for (Point point : controlPoints) {
+			if (!outlineMode) {
 				g2d.setColor(PIN_COLOR);
 				g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2,
 						pinSize, pinSize);
-				g2d.setColor(PIN_BORDER_COLOR);
-				g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2,
-						pinSize, pinSize);
 			}
+			g2d.setColor(outlineMode ? theme.getOutlineColor()
+					: PIN_BORDER_COLOR);
+			g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize,
+					pinSize);
 		}
 
 		// Draw label.
 		g2d.setFont(LABEL_FONT);
 		Color finalLabelColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalLabelColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
 					: theme.getOutlineColor();
@@ -282,12 +296,12 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 		// Reset body shape;
 		body = null;
 	}
-	
-	@EditableProperty(name="Pin spacing")
+
+	@EditableProperty(name = "Pin spacing")
 	public Size getPinSpacing() {
 		return pinSpacing;
 	}
-	
+
 	public void setPinSpacing(Size pinSpacing) {
 		this.pinSpacing = pinSpacing;
 		updateControlPoints();
@@ -303,12 +317,12 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
 	}
-	
+
 	@EditableProperty(name = "Label")
 	public Color getLabelColor() {
 		return labelColor;
 	}
-	
+
 	public void setLabelColor(Color labelColor) {
 		this.labelColor = labelColor;
 	}

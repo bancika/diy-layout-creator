@@ -285,9 +285,9 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 			g2d.draw(tabArea);
 		}
 		Color finalBorderColor;
+		Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
+				IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalBorderColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
 					: theme.getOutlineColor();
@@ -303,69 +303,82 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 		}
 
 		// Draw pins.
-		if (!outlineMode) {
-			if (folded) {
-				int leadThickness = getClosestOdd(LEAD_THICKNESS
-						.convertToPixels());
-				int leadLength = (int) getLeadLength().convertToPixels();
-				for (Point point : controlPoints) {
-					switch (orientation) {
-					case DEFAULT:
-						g2d.setStroke(ObjectCache.getInstance()
-								.fetchBasicStroke(leadThickness));
-						g2d.setColor(METAL_COLOR.darker());
-						g2d.drawLine(point.x, point.y, point.x + leadLength
-								- leadThickness / 2, point.y);
-						g2d.setStroke(ObjectCache.getInstance()
-								.fetchBasicStroke(leadThickness - 2));
-						g2d.setColor(METAL_COLOR);
-						g2d.drawLine(point.x, point.y, point.x + leadLength
-								- leadThickness / 2, point.y);
-						break;
-					case _90:
-						g2d.setStroke(ObjectCache.getInstance()
-								.fetchBasicStroke(leadThickness));
-						g2d.setColor(METAL_COLOR.darker());
-						g2d.drawLine(point.x, point.y, point.x, point.y
-								+ leadLength - leadThickness / 2);
-						g2d.setStroke(ObjectCache.getInstance()
-								.fetchBasicStroke(leadThickness - 2));
-						g2d.setColor(METAL_COLOR);
-						g2d.drawLine(point.x, point.y, point.x, point.y
-								+ leadLength - leadThickness / 2);
-						break;
-					case _180:
-						g2d.setStroke(ObjectCache.getInstance()
-								.fetchBasicStroke(leadThickness));
-						g2d.setColor(METAL_COLOR.darker());
-						g2d.drawLine(point.x, point.y, point.x - leadLength
-								- leadThickness / 2, point.y);
-						g2d.setStroke(ObjectCache.getInstance()
-								.fetchBasicStroke(leadThickness - 2));
-						g2d.setColor(METAL_COLOR);
-						g2d.drawLine(point.x, point.y, point.x - leadLength
-								- leadThickness / 2, point.y);
-						break;
-					case _270:
-						g2d.setStroke(ObjectCache.getInstance()
-								.fetchBasicStroke(leadThickness));
-						g2d.setColor(METAL_COLOR.darker());
-						g2d.drawLine(point.x, point.y, point.x, point.y
-								- leadLength);
-						g2d.setStroke(ObjectCache.getInstance()
-								.fetchBasicStroke(leadThickness - 2));
-						g2d.setColor(METAL_COLOR);
-						g2d.drawLine(point.x, point.y, point.x, point.y
-								- leadLength);
-						break;
-					}
-				}
+
+		if (folded) {
+			int leadThickness = getClosestOdd(LEAD_THICKNESS.convertToPixels());
+			int leadLength = (int) getLeadLength().convertToPixels();
+			Color finalPinColor;
+			Color finalPinBorderColor;
+			if (outlineMode) {
+				finalPinColor = new Color(0, 0, 0, 0);
+				finalPinBorderColor = componentState == ComponentState.SELECTED
+						|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+						: theme.getOutlineColor();
 			} else {
+				finalPinColor = METAL_COLOR;
+				finalPinBorderColor = METAL_COLOR.darker();
+			}
+			for (Point point : controlPoints) {
+				switch (orientation) {
+				case DEFAULT:
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+							leadThickness));
+					g2d.setColor(finalPinBorderColor);
+					g2d.drawLine(point.x, point.y, point.x + leadLength
+							- leadThickness / 2, point.y);
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+							leadThickness - 2));
+					g2d.setColor(finalPinColor);
+					g2d.drawLine(point.x, point.y, point.x + leadLength
+							- leadThickness / 2, point.y);
+					break;
+				case _90:
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+							leadThickness));
+					g2d.setColor(finalPinBorderColor);
+					g2d.drawLine(point.x, point.y, point.x, point.y
+							+ leadLength - leadThickness / 2);
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+							leadThickness - 2));
+					g2d.setColor(finalPinColor);
+					g2d.drawLine(point.x, point.y, point.x, point.y
+							+ leadLength - leadThickness / 2);
+					break;
+				case _180:
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+							leadThickness));
+					g2d.setColor(finalPinBorderColor);
+					g2d.drawLine(point.x, point.y, point.x - leadLength
+							- leadThickness / 2, point.y);
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+							leadThickness - 2));
+					g2d.setColor(finalPinColor);
+					g2d.drawLine(point.x, point.y, point.x - leadLength
+							- leadThickness / 2, point.y);
+					break;
+				case _270:
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+							leadThickness));
+					g2d.setColor(finalPinBorderColor);
+					g2d.drawLine(point.x, point.y, point.x, point.y
+							- leadLength);
+					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
+							leadThickness - 2));
+					g2d.setColor(finalPinColor);
+					g2d.drawLine(point.x, point.y, point.x, point.y
+							- leadLength);
+					break;
+				}
+			}
+		} else {
+			if (!outlineMode) {
 				for (Point point : controlPoints) {
+
 					g2d.setColor(PIN_COLOR);
 					g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2,
 							pinSize, pinSize);
-					g2d.setColor(PIN_BORDER_COLOR);
+					g2d.setColor(outlineMode ? theme.getOutlineColor()
+							: PIN_BORDER_COLOR);
 					g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2,
 							pinSize, pinSize);
 				}
@@ -376,8 +389,6 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 		g2d.setFont(LABEL_FONT);
 		Color finalLabelColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalLabelColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
 					: theme.getOutlineColor();
@@ -413,7 +424,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 		g2d.setColor(TAB_COLOR);
 		g2d.fill(a);
 		g2d.setColor(BORDER_COLOR);
-		g2d.draw(a);		
+		g2d.draw(a);
 		g2d.setColor(BODY_COLOR);
 		g2d.fillRect((width - bodySize) / 2, margin + tabSize, bodySize,
 				bodySize);
