@@ -9,7 +9,9 @@ import java.awt.dnd.DnDConstants;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import javax.swing.JOptionPane;
 
@@ -293,6 +297,25 @@ public class Presenter implements IPlugInPort {
 		return projectFileManager.isModified();
 	}
 
+	private String getClasspath() {
+		try {
+			URL url = Presenter.class.getResource("Presenter.class");
+			String name = url.toString();
+			name = name.substring(0, name.length()
+					- "org/diylc/presenter/Presenter.class".length());
+			name += "META-INF/MANIFEST.MF";
+			url = new URL(name);
+			InputStream is = url.openStream();
+			Manifest manifest = new Manifest();
+			manifest.read(is);
+			Attributes attributes = manifest.getMainAttributes();
+			Object value = attributes.get(Attributes.Name.CLASS_PATH);
+			return value.toString();
+		} catch (Exception e) {
+			throw new RuntimeException("Could not get classpath", e);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, List<ComponentType>> getComponentTypes() {
@@ -300,9 +323,8 @@ public class Presenter implements IPlugInPort {
 			LOG.info("Loading component types.");
 			componentTypes = new HashMap<String, List<ComponentType>>();
 			// On Mac we use ":" to split paths, so check for that
-			String[] classPath = System.getProperty("java.class.path").split(
-					System.getProperty("java.class.path").contains(";") ? ";"
-							: ":");
+			String cp = getClasspath();
+			String[] classPath = cp.split(" ");
 			Set<Class<?>> componentTypeClasses = new HashSet<Class<?>>();
 			for (String path : classPath) {
 				path = path.replace('\\', '/');
