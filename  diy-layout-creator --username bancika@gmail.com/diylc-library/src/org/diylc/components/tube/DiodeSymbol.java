@@ -1,6 +1,5 @@
 package org.diylc.components.tube;
 
-import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
@@ -9,12 +8,14 @@ import java.awt.geom.GeneralPath;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IPropertyValidator;
+import org.diylc.core.ValidationException;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "Triode Symbol", author = "Branislav Stojkovic", category = "Tubes", instanceNamePrefix = "V", description = "Triode tube symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT)
-public class TriodeSymbol extends AbstractTubeSymbol {
+@ComponentDescriptor(name = "Diode Symbol", author = "Branislav Stojkovic", category = "Tubes", instanceNamePrefix = "V", description = "Diode tube symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+public class DiodeSymbol extends AbstractTubeSymbol {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +24,7 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 
 	protected boolean directlyHeated = false;
 
-	public TriodeSymbol() {
+	public DiodeSymbol() {
 		super();
 		updateControlPoints();
 	}
@@ -37,16 +38,6 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 
 			// electrodes
 			GeneralPath polyline = new GeneralPath();
-
-			// grid
-			polyline.moveTo(x + pinSpacing * 5 / 4, y);
-			polyline.lineTo(x + pinSpacing * 7 / 4, y);
-			polyline.moveTo(x + pinSpacing * 9 / 4, y);
-			polyline.lineTo(x + pinSpacing * 11 / 4, y);
-			polyline.moveTo(x + pinSpacing * 13 / 4, y);
-			polyline.lineTo(x + pinSpacing * 15 / 4, y);
-			polyline.moveTo(x + pinSpacing * 17 / 4, y);
-			polyline.lineTo(x + pinSpacing * 19 / 4, y);
 
 			// plate
 			polyline.moveTo(x + pinSpacing * 3 / 2, y - pinSpacing);
@@ -69,10 +60,6 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 
 			// connectors
 			polyline = new GeneralPath();
-
-			// grid
-			polyline.moveTo(x, y);
-			polyline.lineTo(x + pinSpacing, y);
 
 			// plate
 			polyline.moveTo(controlPoints[1].x, controlPoints[1].y);
@@ -131,11 +118,6 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 
 		g2d.drawOval(1, 1, width - 1 - 2 * width / 32, height - 1 - 2 * width
 				/ 32);
-
-		g2d.drawLine(0, height / 2, width / 8, height / 2);
-		g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND,
-				BasicStroke.JOIN_BEVEL, 0, new float[] { 3f }, 6f));
-		g2d.drawLine(width / 8, height / 2, width * 7 / 8, height / 2);
 	}
 
 	@Override
@@ -177,24 +159,25 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 	@Override
 	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
 		if (directlyHeated) {
-			return index != 3 ? VisibilityPolicy.WHEN_SELECTED
+			return index > 0 && index != 3 ? VisibilityPolicy.WHEN_SELECTED
 					: VisibilityPolicy.NEVER;
 		} else if (showHeaters) {
-			return VisibilityPolicy.WHEN_SELECTED;
+			return index > 0 ? VisibilityPolicy.WHEN_SELECTED
+					: VisibilityPolicy.NEVER;
 		} else {
-			return index < 3 ? VisibilityPolicy.WHEN_SELECTED
+			return index < 3 && index > 0 ? VisibilityPolicy.WHEN_SELECTED
 					: VisibilityPolicy.NEVER;
 		}
 	}
 
 	@Override
 	public boolean isControlPointSticky(int index) {
-		if (directlyHeated) {
-			return index != 3;
-		} else if (showHeaters) {
-			return true;
+		if (directlyHeated)
+			return index > 0 && index != 3;
+		else if (showHeaters) {
+			return index > 0;
 		} else {
-			return index < 3;
+			return index > 0 && index < 3;
 		}
 	}
 
@@ -214,5 +197,19 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 		this.directlyHeated = directlyHeated;
 		// Invalidate body
 		body = null;
+	}
+
+	public class HeaterValidator implements IPropertyValidator {
+
+		@Override
+		public void validate(Object value) throws ValidationException {
+			if (value != null && value instanceof Boolean) {
+				boolean b = (Boolean) value;
+				if (!b && getDirectlyHeated()) {
+					throw new ValidationException(
+							"Must show heaters for directly heated tubes.");
+				}
+			}
+		}
 	}
 }
