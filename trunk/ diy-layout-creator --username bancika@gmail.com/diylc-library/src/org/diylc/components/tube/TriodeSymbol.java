@@ -12,7 +12,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 
-@ComponentDescriptor(name = "Triode Symbol", author = "Branislav Stojkovic", category = "Tubes", instanceNamePrefix = "V", description = "Triode tube section", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Triode Symbol", author = "Branislav Stojkovic", category = "Tubes", instanceNamePrefix = "V", description = "Triode tube symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class TriodeSymbol extends AbstractTubeSymbol {
 
 	private static final long serialVersionUID = 1L;
@@ -114,14 +114,6 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 		g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_BEVEL, 0, new float[] { 3f }, 6f));
 		g2d.drawLine(width / 8, height / 2, width * 7 / 8, height / 2);
-
-		// g2d.drawLine(width * 3 / 4, 1, width * 3 / 4, height / 4);
-		// g2d.drawLine(width / 3, height / 3 + 1, width * 3 / 4, height / 4);
-		//
-		// g2d.drawLine(width * 3 / 4, height - 1, width * 3 / 4, height * 3 /
-		// 4);
-		// g2d.drawLine(width / 3, height * 2 / 3 - 1, width * 3 / 4,
-		// height * 3 / 4);
 	}
 
 	@Override
@@ -173,7 +165,7 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 	@Override
 	public boolean isControlPointSticky(int index) {
 		if (showHeaters) {
-			return index < 5;
+			return true;
 		} else {
 			return index < 3;
 		}
