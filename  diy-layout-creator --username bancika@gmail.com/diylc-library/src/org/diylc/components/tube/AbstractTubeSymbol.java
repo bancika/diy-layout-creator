@@ -119,7 +119,7 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
 		this.display = display;
 	}
 
-	@EditableProperty(name = "Show heaters")
+	@EditableProperty(name = "Heaters")
 	public boolean getShowHeaters() {
 		return showHeaters;
 	}
