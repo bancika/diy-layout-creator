@@ -171,6 +171,8 @@ public class PentodeSymbol extends AbstractTubeSymbol {
 		g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_BEVEL, 0, new float[] { 3f }, 6f));
 		g2d.drawLine(width / 8, height / 2, width * 7 / 8, height / 2);
+		g2d.drawLine(width / 8, height * 3 / 8, width * 7 / 8, height * 3 / 8);
+		g2d.drawLine(width / 8, height * 5 / 8, width * 7 / 8, height * 5 / 8);
 	}
 
 	@Override
