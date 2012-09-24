@@ -1,4 +1,4 @@
-<project name="diylc-swing" basedir="." default="jar">	
+<project name="diylc-swing" basedir="." default="mac">	
 	
 	<property name="src.dir" value="src" />
 
