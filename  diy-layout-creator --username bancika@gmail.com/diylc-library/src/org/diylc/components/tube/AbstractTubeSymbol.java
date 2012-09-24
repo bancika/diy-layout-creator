@@ -1,4 +1,4 @@
-package org.diylc.components.semiconductors;
+package org.diylc.components.tube;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -16,54 +16,46 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class AbstractTransistorSymbol extends AbstractComponent<String> {
+public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
 
 	private static final long serialVersionUID = 1L;
 
 	public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
 	public static Color COLOR = Color.black;
-	
+
 	protected String value = "";
-	protected Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0),
-			new Point(0, 0) };
+
 	protected Color color = COLOR;
 	protected Display display = Display.NAME;
 	transient protected Shape[] body;
-
-	public AbstractTransistorSymbol() {
-		super();
-		updateControlPoints();
-	}
+	protected boolean showHeaters;
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
-		int pinSpacing = (int) PIN_SPACING.convertToPixels();
 		Color finalColor;
-		if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
+		if (componentState == ComponentState.SELECTED
+				|| componentState == ComponentState.DRAGGING) {
 			finalColor = SELECTION_COLOR;
 		} else if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			Theme theme = (Theme) ConfigurationManager.getInstance()
+					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalColor = theme.getOutlineColor();
 		} else {
 			finalColor = color;
 		}
 		g2d.setColor(finalColor);
 
-		// Draw transistor
-
-		int x = controlPoints[0].x;
-		int y = controlPoints[0].y;
+		// Draw tube
 
 		Shape[] body = getBody();
 
@@ -73,53 +65,29 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.draw(body[1]);
 
-		g2d.fill(body[2]);
+		if (body[2] != null) {
+			g2d.draw(body[2]);
+		}
 
 		// Draw label
 		g2d.setFont(LABEL_FONT);
 		Color finalLabelColor;
 		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-					IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+			Theme theme = (Theme) ConfigurationManager.getInstance()
+					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 			finalLabelColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED : theme
-					.getOutlineColor();
+					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+					: theme.getOutlineColor();
 		} else {
 			finalLabelColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
 					: LABEL_COLOR;
 		}
 		g2d.setColor(finalLabelColor);
-		drawCenteredText(g2d, display == Display.VALUE ? getValue() : getName(),
-				x + pinSpacing * 2, y, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-	}
-
-	@Override
-	public Point getControlPoint(int index) {
-		return controlPoints[index];
-	}
-
-	@Override
-	public int getControlPointCount() {
-		return controlPoints.length;
-	}
-
-	private void updateControlPoints() {
-		int pinSpacing = (int) PIN_SPACING.convertToPixels();
-		// Update control points.
-		int x = controlPoints[0].x;
-		int y = controlPoints[0].y;
-
-		controlPoints[1].x = x + pinSpacing * 2;
-		controlPoints[1].y = y - pinSpacing * 2;
-
-		controlPoints[2].x = x + pinSpacing * 2;
-		controlPoints[2].y = y + pinSpacing * 2;
-	}
-
-	@Override
-	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-		return VisibilityPolicy.WHEN_SELECTED;
+		Point p = getTextLocation();
+		drawCenteredText(g2d,
+				display == Display.VALUE ? getValue() : getName(), p.x, p.y,
+				HorizontalAlignment.LEFT, VerticalAlignment.TOP);
 	}
 
 	@EditableProperty
@@ -131,18 +99,6 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 	@Override
 	public void setValue(String value) {
 		this.value = value;
-	}
-
-	@Override
-	public boolean isControlPointSticky(int index) {
-		return true;
-	}
-
-	@Override
-	public void setControlPoint(Point point, int index) {
-		controlPoints[index].setLocation(point);
-		// Invalidate body
-		body = null;
 	}
 
 	@EditableProperty
@@ -163,11 +119,24 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 		this.display = display;
 	}
 
+	@EditableProperty(name = "Show heaters")
+	public boolean getShowHeaters() {
+		return showHeaters;
+	}
+
+	public void setShowHeaters(boolean showHeaters) {
+		this.showHeaters = showHeaters;
+		// Invalidate body
+		body = null;
+	}
+
 	/**
-	 * Returns transistor shape consisting of 3 parts, in this order: main body,
-	 * connectors, polarity arrow.
+	 * Returns transistor shape consisting of 3 parts, in this order:
+	 * electrodes, connectors, bulb.
 	 * 
 	 * @return
 	 */
 	protected abstract Shape[] getBody();
+	
+	protected abstract Point getTextLocation();
 }
