@@ -7,7 +7,6 @@ import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Resistance;
-import org.diylc.core.measures.ResistanceUnit;
 
 public abstract class AbstractPotentiometer extends
 		AbstractTransparentComponent<Resistance> {
@@ -16,7 +15,7 @@ public abstract class AbstractPotentiometer extends
 
 	protected Point[] controlPoints;
 
-	protected Resistance resistance = new Resistance(100d, ResistanceUnit.K);
+	protected Resistance resistance = null;
 	protected Orientation orientation = Orientation.DEFAULT;
 	protected Taper taper = Taper.LIN;
 
@@ -44,10 +43,11 @@ public abstract class AbstractPotentiometer extends
 	public boolean isControlPointSticky(int index) {
 		return true;
 	}
-	
+
 	@Override
 	public String getValueForDisplay() {
-		return resistance.toString() + " " + taper.toString();
+		return (resistance == null ? "" : resistance.toString()) + " "
+				+ taper.toString();
 	}
 
 	@EditableProperty

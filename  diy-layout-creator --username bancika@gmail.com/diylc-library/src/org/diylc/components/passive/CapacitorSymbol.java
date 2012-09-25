@@ -10,10 +10,8 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
-import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.core.measures.VoltageUnit;
 
 @ComponentDescriptor(name = "Capacitor (schematic symbol)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Capacitor schematic symbol with an optional polarity sign", zOrder = IDIYComponent.COMPONENT)
 public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> {
@@ -23,11 +21,10 @@ public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> 
 	public static Size DEFAULT_LENGTH = new Size(0.05, SizeUnit.in);
 	public static Size DEFAULT_WIDTH = new Size(0.15, SizeUnit.in);
 
-	private Capacitance value = new Capacitance(22d, CapacitanceUnit.nF);
+	private Capacitance value = null;
 	@Deprecated
 	private Voltage voltage = Voltage._63V;
-	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(63d,
-			VoltageUnit.V);
+	private org.diylc.core.measures.Voltage voltageNew = null;
 	private boolean polarized = false;
 
 	@EditableProperty
@@ -38,7 +35,7 @@ public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> 
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
-	
+
 	@Override
 	public String getValueForDisplay() {
 		return getValue().toString() + " " + getVoltageNew().toString();
@@ -56,12 +53,6 @@ public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> 
 
 	@EditableProperty(name = "Voltage")
 	public org.diylc.core.measures.Voltage getVoltageNew() {
-		// Backward compatibility
-		if (voltageNew == null) {
-			voltageNew = voltage.convertToNewFormat();
-			voltage = null;
-			// Clear old value, don't need it anymore
-		}
 		return voltageNew;
 	}
 

@@ -18,10 +18,8 @@ import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
-import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT)
@@ -37,11 +35,10 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
 	public static Size HEIGHT = new Size(0.4d, SizeUnit.in);
 	public static Size EDGE_RADIUS = new Size(1d, SizeUnit.mm);
 
-	private Capacitance value = new Capacitance(1d, CapacitanceUnit.uF);
+	private Capacitance value = null;
 	@Deprecated
 	private Voltage voltage = Voltage._63V;
-	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(
-			63d, VoltageUnit.V);
+	private org.diylc.core.measures.Voltage voltageNew = null;
 
 	private Color markerColor = MARKER_COLOR;
 	private Color tickColor = TICK_COLOR;
@@ -82,12 +79,6 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
 
 	@EditableProperty(name = "Voltage")
 	public org.diylc.core.measures.Voltage getVoltageNew() {
-		// Backward comptibility
-		if (voltageNew == null) {
-			voltageNew = voltage.convertToNewFormat();
-			voltage = null;
-			// Clear old value, don't need it anymore
-		}
 		return voltageNew;
 	}
 

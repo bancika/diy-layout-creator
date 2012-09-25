@@ -11,7 +11,6 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.PowerUnit;
 import org.diylc.core.measures.Resistance;
-import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
@@ -23,7 +22,7 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 	public static Size DEFAULT_LENGTH = new Size(0.3, SizeUnit.in);
 	public static Size DEFAULT_WIDTH = new Size(0.08, SizeUnit.in);
 
-	private Resistance value = new Resistance(100d, ResistanceUnit.K);
+	private Resistance value = null;
 	@Deprecated
 	private Power power = Power.HALF;
 	private org.diylc.core.measures.Power powerNew = new org.diylc.core.measures.Power(0.5,
