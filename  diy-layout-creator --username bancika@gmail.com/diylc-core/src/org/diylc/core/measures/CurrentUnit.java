@@ -1,13 +1,13 @@
 package org.diylc.core.measures;
 
-public enum InductanceUnit implements Unit {
+public enum CurrentUnit implements Unit {
 
-	pH(1, "pH"), nH(1e3, "nH"), uH(1e6, "uH"), mH(1e9, "mH"), H(1e12, "H");
+	uA(1e-6, "uA"), mA(1e-3, "mA"), A(1, "A");
 
 	double factor;
 	String display;
 
-	private InductanceUnit(double factor, String display) {
+	private CurrentUnit(double factor, String display) {
 		this.factor = factor;
 		this.display = display;
 	}

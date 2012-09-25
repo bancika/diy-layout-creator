@@ -2,7 +2,7 @@ package org.diylc.core.measures;
 
 public enum VoltageUnit implements Unit {
 
-	MV(1e-1, "mV"), V(1, "V"), KV(1e3, "KV");
+	MV(1e-3, "mV"), V(1, "V"), KV(1e3, "KV");
 
 	double factor;
 	String display;
