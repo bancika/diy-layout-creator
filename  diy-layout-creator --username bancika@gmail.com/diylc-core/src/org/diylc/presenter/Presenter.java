@@ -9,9 +9,7 @@ import java.awt.dnd.DnDConstants;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.io.File;
-import java.io.InputStream;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,8 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 
 import javax.swing.JOptionPane;
 
@@ -62,7 +58,7 @@ public class Presenter implements IPlugInPort {
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
 	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3,
-			17, 0);
+			18, 0);
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections
@@ -297,34 +293,13 @@ public class Presenter implements IPlugInPort {
 		return projectFileManager.isModified();
 	}
 
-	private String getClasspath() {
-		try {
-			URL url = Presenter.class.getResource("Presenter.class");
-			String name = url.toString();
-			name = name.substring(0, name.length()
-					- "org/diylc/presenter/Presenter.class".length());
-			name += "META-INF/MANIFEST.MF";
-			url = new URL(name);
-			InputStream is = url.openStream();
-			Manifest manifest = new Manifest();
-			manifest.read(is);
-			Attributes attributes = manifest.getMainAttributes();
-			Object value = attributes.get(Attributes.Name.CLASS_PATH);
-			return value.toString();
-		} catch (Exception e) {
-			throw new RuntimeException("Could not get classpath", e);
-		}
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, List<ComponentType>> getComponentTypes() {
 		if (componentTypes == null) {
 			LOG.info("Loading component types.");
 			componentTypes = new HashMap<String, List<ComponentType>>();
-			// On Mac we use ":" to split paths, so check for that
-			String cp = getClasspath();
-			String[] classPath = cp.split(" ");
+			String[] classPath = Utils.getClasspath(Presenter.class);
 			Set<Class<?>> componentTypeClasses = new HashSet<Class<?>>();
 			for (String path : classPath) {
 				path = path.replace('\\', '/');
