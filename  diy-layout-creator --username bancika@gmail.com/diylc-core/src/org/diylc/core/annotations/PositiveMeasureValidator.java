@@ -8,6 +8,8 @@ public class PositiveMeasureValidator implements IPropertyValidator {
 
 	@Override
 	public void validate(Object value) throws ValidationException {
+		if (value == null)
+			return;
 		if (value instanceof AbstractMeasure) {
 			AbstractMeasure measure = (AbstractMeasure) value;
 			if (measure.getValue() < 0) {

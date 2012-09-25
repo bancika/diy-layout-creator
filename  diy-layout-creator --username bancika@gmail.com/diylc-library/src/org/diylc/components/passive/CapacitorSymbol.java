@@ -9,6 +9,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -27,7 +28,7 @@ public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> 
 	private org.diylc.core.measures.Voltage voltageNew = null;
 	private boolean polarized = false;
 
-	@EditableProperty
+	@EditableProperty(validatorClass = PositiveMeasureValidator.class)
 	public Capacitance getValue() {
 		return value;
 	}

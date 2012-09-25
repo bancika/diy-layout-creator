@@ -9,6 +9,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Current;
 import org.diylc.core.measures.Inductance;
 import org.diylc.core.measures.Resistance;
@@ -28,7 +29,7 @@ public class InductorSymbol extends AbstractSchematicLeadedSymbol<Inductance> {
 	private Resistance resistance = null;
 	private boolean core = false;
 
-	@EditableProperty
+	@EditableProperty(validatorClass = PositiveMeasureValidator.class)
 	public Inductance getValue() {
 		return value;
 	}
