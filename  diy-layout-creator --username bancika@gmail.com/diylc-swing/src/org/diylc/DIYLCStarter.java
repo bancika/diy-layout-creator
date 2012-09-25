@@ -2,6 +2,7 @@ package org.diylc;
 
 import java.io.FileInputStream;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -11,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
@@ -46,7 +48,8 @@ public class DIYLCStarter {
 				+ " by " + System.getProperty("java.vm.vendor"));
 		LOG.debug("OS: " + System.getProperty("os.name") + " "
 				+ System.getProperty("os.version"));
-		LOG.debug("Classpath: " + System.getProperty("java.class.path"));
+		String[] classPath = Utils.getClasspath(Presenter.class);
+		LOG.debug("Classpath: " + Arrays.toString(classPath));
 
 		LOG.info("Starting DIYLC with working directory "
 				+ System.getProperty("user.dir"));
