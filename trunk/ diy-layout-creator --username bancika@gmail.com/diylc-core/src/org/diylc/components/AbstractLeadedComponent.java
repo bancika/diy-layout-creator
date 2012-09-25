@@ -50,7 +50,7 @@ public abstract class AbstractLeadedComponent<T> extends
 	protected Color bodyColor = Color.white;
 	protected Color borderColor = Color.black;
 	protected Color labelColor = LABEL_COLOR;
-	protected Display display = Display.VALUE;
+	protected Display display = Display.NAME;
 
 	protected AbstractLeadedComponent() {
 		super();
@@ -156,10 +156,20 @@ public abstract class AbstractLeadedComponent<T> extends
 			}
 			// Transform graphics to draw the body in the right place and at the
 			// right angle.
-			AffineTransform oldTransform = g2d.getTransform();
-			g2d.translate((points[0].x + points[1].x - shapeRect.width) / 2,
-					(points[0].y + points[1].y - shapeRect.height) / 2);
-			g2d.rotate(theta, shapeRect.width / 2, shapeRect.height / 2);
+			AffineTransform oldTransform = null;
+			double width;
+			double length;
+			if (useShapeRectAsPosition()) {
+				width = shapeRect.getHeight();
+				length = shapeRect.getWidth();
+			} else {
+				width = getWidth().convertToPixels();
+				length = getLength().convertToPixels();
+			}
+			oldTransform = g2d.getTransform();
+			g2d.translate((points[0].x + points[1].x - length) / 2,
+					(points[0].y + points[1].y - width) / 2);
+			g2d.rotate(theta, length / 2, width / 2);
 			// Draw body.
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
@@ -238,7 +248,9 @@ public abstract class AbstractLeadedComponent<T> extends
 
 			// Draw label.
 			g2d.setFont(LABEL_FONT);
-			g2d.translate(shapeRect.x, shapeRect.y);
+			if (useShapeRectAsPosition()) {
+				g2d.translate(shapeRect.x, shapeRect.y);
+			}
 			Color finalLabelColor;
 			if (outlineMode) {
 				Theme theme = (Theme) ConfigurationManager.getInstance()
@@ -254,21 +266,21 @@ public abstract class AbstractLeadedComponent<T> extends
 			}
 			g2d.setColor(finalLabelColor);
 			FontMetrics fontMetrics = g2d.getFontMetrics();
-			String label = display == Display.NAME ? getName() : getValue()
-					.toString();
+			String label = display == Display.NAME ? getName()
+					: (getValue() == null ? "" : getValue().toString());
 			Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
 			// Don't offset in outline mode.
-			int offset = outlineMode ? 0 : getLabelOffset((int) shapeRect
-					.getWidth(), (int) textRect.getWidth());
+			int offset = outlineMode ? 0 : getLabelOffset((int) length,
+					(int) width);
 			// Adjust label angle if needed to make sure that it's readable.
 			if ((theta >= Math.PI / 2 && theta <= Math.PI)
 					|| (theta < -Math.PI / 2 && theta > -Math.PI)) {
-				g2d.rotate(Math.PI, shapeRect.width / 2, shapeRect.height / 2);
+				g2d.rotate(Math.PI, length / 2, width / 2);
 				offset = -offset;
 			}
-			g2d.drawString(label, (int) (shapeRect.width - textRect.getWidth())
-					/ 2 + offset, calculateLabelYCoordinate(shapeRect,
-					textRect, fontMetrics));
+			g2d.drawString(label, (int) (length - textRect.getWidth()) / 2
+					+ offset, calculateLabelYCoordinate(shapeRect, textRect,
+					fontMetrics));
 			g2d.setTransform(oldTransform);
 		}
 	}
@@ -328,6 +340,19 @@ public abstract class AbstractLeadedComponent<T> extends
 	 *         transformed and should be referenced to (0, 0).
 	 */
 	protected abstract Shape getBodyShape();
+
+	/**
+	 * Controls how component shape should be placed relative to start and end
+	 * point.
+	 * 
+	 * @return
+	 *         <code>true<code> if shape rect should be used to center the component or <code>false</code>
+	 *         to place the component relative to <code>length</code> and
+	 *         <code>width</code> values.
+	 */
+	protected boolean useShapeRectAsPosition() {
+		return true;
+	}
 
 	/**
 	 * @return default lead thickness. Override this method to change it.
