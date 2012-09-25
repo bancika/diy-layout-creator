@@ -15,14 +15,13 @@ import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
-import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor (axial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc", zOrder = IDIYComponent.COMPONENT)
-public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> {
+public class AxialElectrolyticCapacitor extends
+		AbstractLeadedComponent<Capacitance> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,11 +32,10 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 	public static Color MARKER_COLOR = Color.gray;
 	public static Color TICK_COLOR = Color.white;
 
-	private Capacitance value = new Capacitance(1d, CapacitanceUnit.uF);
+	private Capacitance value = null;
 	@Deprecated
 	private Voltage voltage = Voltage._63V;
-	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(63d,
-			VoltageUnit.V);
+	private org.diylc.core.measures.Voltage voltageNew = null;
 
 	private Color markerColor = MARKER_COLOR;
 	private Color tickColor = TICK_COLOR;
@@ -57,7 +55,7 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 	public void setValue(Capacitance value) {
 		this.value = value;
 	}
-	
+
 	@Override
 	public String getValueForDisplay() {
 		return getValue().toString() + " " + getVoltageNew().toString();
@@ -72,15 +70,9 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 	public void setVoltage(Voltage voltage) {
 		this.voltage = voltage;
 	}
-	
+
 	@EditableProperty(name = "Voltage")
 	public org.diylc.core.measures.Voltage getVoltageNew() {
-		// Backward comptibility
-		if (voltageNew == null) {
-			voltageNew = voltage.convertToNewFormat();
-			voltage = null;
-			// Clear old value, don't need it anymore
-		}
 		return voltageNew;
 	}
 
@@ -152,22 +144,27 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 			int markerLength = (int) (getLength().convertToPixels() * 0.2);
 			if (!outlineMode) {
 				g2d.setColor(markerColor);
-				g2d.fillRect((int) getLength().convertToPixels() - markerLength, 0, markerLength,
-						width);
+				g2d.fillRect(
+						(int) getLength().convertToPixels() - markerLength, 0,
+						markerLength, width);
 			}
 			Color finalTickColor;
 			if (outlineMode) {
-				Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-						IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+				Theme theme = (Theme) ConfigurationManager.getInstance()
+						.readObject(IPlugInPort.THEME_KEY,
+								Constants.DEFAULT_THEME);
 				finalTickColor = theme.getOutlineColor();
 			} else {
 				finalTickColor = tickColor;
 			}
 			g2d.setColor(finalTickColor);
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-			g2d.drawLine((int) getLength().convertToPixels() - markerLength / 2,
-					(int) (width / 2 - width * 0.15), (int) getLength().convertToPixels()
-							- markerLength / 2, (int) (width / 2 + width * 0.15));
+			g2d.drawLine(
+					(int) getLength().convertToPixels() - markerLength / 2,
+					(int) (width / 2 - width * 0.15), (int) getLength()
+							.convertToPixels()
+							- markerLength / 2,
+					(int) (width / 2 + width * 0.15));
 		}
 	}
 }

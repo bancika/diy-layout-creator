@@ -11,10 +11,8 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Capacitance;
-import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.core.measures.VoltageUnit;
 
 @ComponentDescriptor(name = "Film Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C", description = "Radial film capacitor, similar to Sprague Orange Drop", zOrder = IDIYComponent.COMPONENT)
 public class RadialFilmCapacitor extends AbstractRadialComponent<Capacitance> {
@@ -26,11 +24,10 @@ public class RadialFilmCapacitor extends AbstractRadialComponent<Capacitance> {
 	public static Color BODY_COLOR = Color.decode("#FF8000");
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
-	private Capacitance value = new Capacitance(123d, CapacitanceUnit.nF);
+	private Capacitance value = null;
 	@Deprecated
 	private Voltage voltage = Voltage._63V;
-	private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(
-			63d, VoltageUnit.V);
+	private org.diylc.core.measures.Voltage voltageNew = null;
 
 	public RadialFilmCapacitor() {
 		super();
@@ -64,12 +61,6 @@ public class RadialFilmCapacitor extends AbstractRadialComponent<Capacitance> {
 
 	@EditableProperty(name = "Voltage")
 	public org.diylc.core.measures.Voltage getVoltageNew() {
-		// Backward comptibility
-		if (voltageNew == null) {
-			voltageNew = voltage.convertToNewFormat();
-			voltage = null;
-			// Clear old value, don't need it anymore
-		}
 		return voltageNew;
 	}
 

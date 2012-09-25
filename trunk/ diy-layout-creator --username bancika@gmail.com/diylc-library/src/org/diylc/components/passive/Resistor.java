@@ -13,13 +13,11 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
-import org.diylc.core.measures.PowerUnit;
 import org.diylc.core.measures.Resistance;
-import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "", zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "Resistor layout symbol", zOrder = IDIYComponent.COMPONENT)
 public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	private static final long serialVersionUID = 1L;
@@ -31,11 +29,10 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 	public static int BAND_SPACING = 5;
 	public static int FIRST_BAND = 4;
 
-	private Resistance value = new Resistance(100d, ResistanceUnit.K);
+	private Resistance value = null;
 	@Deprecated
 	private Power power = Power.HALF;
-	private org.diylc.core.measures.Power powerNew = new org.diylc.core.measures.Power(0.5,
-			PowerUnit.W);
+	private org.diylc.core.measures.Power powerNew = null;
 	private ResistorColorCode colorCode = ResistorColorCode._5_BAND;
 
 	public Resistor() {
@@ -75,12 +72,6 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	@EditableProperty(name = "Power rating")
 	public org.diylc.core.measures.Power getPowerNew() {
-		// Backward compatibility
-		if (powerNew == null) {
-			powerNew = power.convertToNewFormat();
-			// Clear old value, don't need it anymore
-			power = null;
-		}
 		return powerNew;
 	}
 
@@ -131,8 +122,8 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
-		// int width = getWidth().convertToPixels();
-		if (colorCode == ResistorColorCode.NONE || outlineMode) {
+		// int width = getWidth().convertToPixels();		
+		if (colorCode == ResistorColorCode.NONE || outlineMode || value == null) {
 			return;
 		}
 		int height = getClosestOdd(getWidth().convertToPixels());
@@ -148,6 +139,8 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
 	@Override
 	protected int getLabelOffset(int bodyWidth, int labelWidth) {
+		if (value == null)
+			return 0;
 		Color[] bands = value.getColorCode(colorCode);
 		int bandArea = FIRST_BAND + BAND_SPACING * (bands.length - 1);
 		// Only offset the label if overlaping with the band area.
