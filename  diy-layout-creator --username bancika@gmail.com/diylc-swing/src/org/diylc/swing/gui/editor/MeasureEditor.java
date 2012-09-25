@@ -11,6 +11,8 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import javax.swing.JComboBox;
 
@@ -32,7 +34,8 @@ public class MeasureEditor extends Container {
 	public MeasureEditor(final PropertyWrapper property) {
 		setLayout(new BorderLayout());
 		final AbstractMeasure measure = ((AbstractMeasure) property.getValue());
-		valueField = new DoubleTextField(measure.getValue());
+		valueField = new DoubleTextField(measure == null ? null : measure
+				.getValue());
 		oldBg = valueField.getBackground();
 		valueField.addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY,
 				new PropertyChangeListener() {
@@ -40,12 +43,11 @@ public class MeasureEditor extends Container {
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
 						try {
-							Constructor ctor = measure.getClass()
+							Constructor ctor = property.getType()
 									.getConstructors()[0];
-							AbstractMeasure<?> oldMeasure = (AbstractMeasure<?>) property.getValue();
 							AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ctor
 									.newInstance((Double) evt.getNewValue(),
-											oldMeasure.getUnit());
+											unitBox.getSelectedItem());
 							property.setValue(newMeasure);
 							property.setChanged(true);
 							valueField.setBackground(oldBg);
@@ -67,18 +69,19 @@ public class MeasureEditor extends Container {
 				});
 		add(valueField, BorderLayout.CENTER);
 		try {
-			Method method = measure.getUnit().getClass().getMethod("values");
-			unitBox = new JComboBox((Object[]) method.invoke(measure.getUnit()));
-			unitBox.setSelectedItem(measure.getUnit());
+			Type type = ((ParameterizedType) property.getType()
+					.getGenericSuperclass()).getActualTypeArguments()[0];
+			Method method = ((Class<?>) type).getMethod("values");
+			unitBox = new JComboBox((Object[]) method.invoke(null));
+			unitBox.setSelectedItem(measure == null ? null : measure.getUnit());
 			unitBox.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent evt) {
 					try {
-						Constructor ctor = measure.getClass().getConstructors()[0];
-						AbstractMeasure<?> oldMeasure = (AbstractMeasure<?>) property.getValue();
+						Constructor ctor = property.getType().getConstructors()[0];
 						AbstractMeasure<?> newMeasure = (AbstractMeasure<?>) ctor
-								.newInstance(oldMeasure.getValue(),
+								.newInstance(valueField.getValue(),
 										(Enum<? extends Unit>) unitBox
 												.getSelectedItem());
 						property.setValue(newMeasure);
