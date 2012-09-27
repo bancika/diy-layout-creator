@@ -26,7 +26,7 @@ public class PCBText extends AbstractComponent<Void> {
 
 	public static String DEFAULT_TEXT = "Double click to edit text";
 
-	public static Font DEFAULT_FONT = new Font("Courier New", Font.BOLD, 14);
+	public static Font DEFAULT_FONT = new Font("Courier New", Font.BOLD, 15);
 
 	private static final long serialVersionUID = 1L;
 
@@ -106,8 +106,8 @@ public class PCBText extends AbstractComponent<Void> {
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setColor(LABEL_COLOR);
-		g2d.setFont(LABEL_FONT.deriveFont(13f * width / 32).deriveFont(
-				Font.PLAIN));
+		g2d.setFont(DEFAULT_FONT.deriveFont(15f * width / 32).deriveFont(
+				Font.BOLD));
 
 		FontMetrics fontMetrics = g2d.getFontMetrics();
 		Rectangle2D rect = fontMetrics.getStringBounds("Abc", g2d);
@@ -118,6 +118,8 @@ public class PCBText extends AbstractComponent<Void> {
 		// Center text horizontally and vertically.
 		int x = (width - textWidth) / 2 + 1;
 		int y = (height - textHeight) / 2 + fontMetrics.getAscent();
+		g2d.scale(-1, 1);
+		g2d.translate(-width, 0);
 
 		g2d.drawString("Abc", x, y);
 	}
