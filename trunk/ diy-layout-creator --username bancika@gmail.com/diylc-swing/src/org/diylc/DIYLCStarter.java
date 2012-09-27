@@ -48,8 +48,6 @@ public class DIYLCStarter {
 				+ " by " + System.getProperty("java.vm.vendor"));
 		LOG.debug("OS: " + System.getProperty("os.name") + " "
 				+ System.getProperty("os.version"));
-		String[] classPath = Utils.getClasspath(Presenter.class);
-		LOG.debug("Classpath: " + Arrays.toString(classPath));
 
 		LOG.info("Starting DIYLC with working directory "
 				+ System.getProperty("user.dir"));
