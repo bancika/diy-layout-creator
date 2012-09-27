@@ -973,7 +973,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Cannot save a component template if value is not set</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Mirrored text for PCB artwork</description>
+				</org.diylc.appframework.update.Change>											
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
