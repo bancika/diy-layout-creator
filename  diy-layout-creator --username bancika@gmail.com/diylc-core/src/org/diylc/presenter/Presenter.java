@@ -26,7 +26,6 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.VersionNumber;
@@ -299,29 +298,35 @@ public class Presenter implements IPlugInPort {
 		if (componentTypes == null) {
 			LOG.info("Loading component types.");
 			componentTypes = new HashMap<String, List<ComponentType>>();
-			String[] classPath = Utils.getClasspath(Presenter.class);
-			Set<Class<?>> componentTypeClasses = new HashSet<Class<?>>();
-			for (String path : classPath) {
-				path = path.replace('\\', '/');
-				File f = new File(path);
-				try {
-					if (f.isDirectory()) {
-						LOG.info("Scanning folder for components: "
-								+ f.getAbsolutePath());
-						componentTypeClasses.addAll(JarScanner.getInstance()
-								.scanFolder(path, IDIYComponent.class));
-					} else {
-						LOG.info("Scanning JAR for components: "
-								+ f.getAbsolutePath());
-						componentTypeClasses.addAll(JarScanner.getInstance()
-								.scanJar(f, IDIYComponent.class));
-					}
-				} catch (Exception e) {
-					LOG.warn("Could not scan path " + path, e);
-				}
+			Set<Class<?>> componentTypeClasses = null;
+			try {
+				componentTypeClasses = Utils.getClasses("org.diylc.components");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			// for (String path : classPath) {
+			// path = path.replace('\\', '/');
+			// File f = new File(path);
+			// try {
+			// if (f.isDirectory()) {
+			// LOG.info("Scanning folder for components: "
+			// + f.getAbsolutePath());
+			// componentTypeClasses.addAll(JarScanner.getInstance()
+			// .scanFolder(path, IDIYComponent.class));
+			// } else {
+			// LOG.info("Scanning JAR for components: "
+			// + f.getAbsolutePath());
+			// componentTypeClasses.addAll(JarScanner.getInstance()
+			// .scanJar(f, IDIYComponent.class));
+			// }
+			// } catch (Exception e) {
+			// LOG.warn("Could not scan path " + path, e);
+			// }
+			// }
 			for (Class<?> clazz : componentTypeClasses) {
-				if (!Modifier.isAbstract(clazz.getModifiers())) {
+				if (!Modifier.isAbstract(clazz.getModifiers())
+						&& IDIYComponent.class.isAssignableFrom(clazz)) {
 					ComponentType componentType = ComponentProcessor
 							.getInstance().extractComponentTypeFrom(
 									(Class<? extends IDIYComponent<?>>) clazz);
