@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -39,8 +40,8 @@ public class DiodeSymbol extends AbstractDiodeSymbol {
 		double width = getWidth().convertToPixels();
 		int bandSize = (int) BAND_SIZE.convertToPixels();
 		g2d.setColor(getBodyColor());
-		g2d
-				.fillRect((int) (width / Math.sqrt(2)) + 1, 0, bandSize,
-						(int) width);
+		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(bandSize));
+		g2d.drawLine((int) (width / Math.sqrt(2)) + bandSize, 0, (int) (width
+				/ Math.sqrt(2) + bandSize), (int) width);
 	}
 }
