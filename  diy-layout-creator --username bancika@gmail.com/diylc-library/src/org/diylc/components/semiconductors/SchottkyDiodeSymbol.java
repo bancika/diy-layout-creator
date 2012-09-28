@@ -10,8 +10,8 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Zener diode (schematic symbol)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Zener diode schematic symbol", zOrder = IDIYComponent.COMPONENT)
-public class ZenerDiodeSymbol extends AbstractDiodeSymbol {
+@ComponentDescriptor(name = "Schottky diode (schematic symbol)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Schottky diode schematic symbol", zOrder = IDIYComponent.COMPONENT)
+public class SchottkyDiodeSymbol extends AbstractDiodeSymbol {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,34 +37,38 @@ public class ZenerDiodeSymbol extends AbstractDiodeSymbol {
 		int finSize = 2 * width / 32;
 		g2d.drawLine((int) ((width - size) / 2 + size / Math.sqrt(2)),
 				(height - size) / 2, (int) ((width - size) / 2 + size
+						/ Math.sqrt(2) + finSize), (height - size) / 2);
+		g2d.drawLine(
+				(int) ((width - size) / 2 + size / Math.sqrt(2) + finSize),
+				(height - size) / 2, (int) ((width - size) / 2 + size
 						/ Math.sqrt(2) + finSize), (height - size) / 2
-						- finSize);
+						+ finSize);
+
 		g2d.drawLine((int) ((width - size) / 2 + size / Math.sqrt(2)),
 				(height + size) / 2, (int) ((width - size) / 2 + size
+						/ Math.sqrt(2) - finSize), (height + size) / 2);
+		g2d.drawLine(
+				(int) ((width - size) / 2 + size / Math.sqrt(2) - finSize),
+				(height + size) / 2, (int) ((width - size) / 2 + size
 						/ Math.sqrt(2) - finSize), (height + size) / 2
-						+ finSize);
+						- finSize);
 	}
 
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
 		double width = getWidth().convertToPixels();
-		double finSize = width / 5;
+		int finSize = (int) (width / 6);
 		int bandSize = (int) BAND_SIZE.convertToPixels();
 		g2d.setColor(getBodyColor());
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(bandSize));
-		// g2d.drawLine((int) (width / Math.sqrt(2)) + bandSize, 0, (int) (width
-		// / Math.sqrt(2) + bandSize), (int) width);
-		// g2d.drawLine((int) (width / Math.sqrt(2)) + bandSize, 0, (int) (width
-		// / Math.sqrt(2) + bandSize + finSize), -(int) finSize);
-		// g2d.drawLine((int) (width / Math.sqrt(2) + bandSize), (int) width,
-		// (int) (width / Math.sqrt(2) + bandSize - finSize),
-		// (int) (width + finSize));
-
 		g2d.drawPolyline(new int[] {
-				(int) (width / Math.sqrt(2) + bandSize + finSize),
+				(int) (width / Math.sqrt(2) + bandSize) + finSize + 1,
+				(int) (width / Math.sqrt(2) + bandSize) + finSize + 1,
 				(int) (width / Math.sqrt(2) + bandSize),
 				(int) (width / Math.sqrt(2) + bandSize),
-				(int) (width / Math.sqrt(2) + bandSize - finSize) }, new int[] {
-				(int) -finSize, 0, (int) width, (int) (width + finSize) }, 4);
+				(int) (width / Math.sqrt(2) + bandSize) - finSize - 1,
+				(int) (width / Math.sqrt(2) + bandSize) - finSize - 1 },
+				new int[] { (int) finSize, 0, 0, (int) width, (int) width,
+						(int) (width - finSize) }, 6);
 	}
 }

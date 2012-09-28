@@ -19,7 +19,7 @@ public class DiodeSymbol extends AbstractDiodeSymbol {
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		int size = width * 3 / 8;
-		int bandSize = 2 * width / 32;
+		int bandSize = 1;
 		g2d.rotate(-Math.PI / 4, width / 2, height / 2);
 		g2d.setColor(LEAD_COLOR);
 		g2d.drawLine(0, height / 2, (width - size) / 2, height / 2);
