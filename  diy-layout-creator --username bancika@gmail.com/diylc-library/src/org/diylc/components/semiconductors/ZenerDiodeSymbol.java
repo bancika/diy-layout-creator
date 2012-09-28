@@ -10,8 +10,8 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Diode (schematic symbol)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Diode schematic symbol", zOrder = IDIYComponent.COMPONENT)
-public class DiodeSymbol extends AbstractDiodeSymbol {
+@ComponentDescriptor(name = "Zener diode (schematic symbol)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Zener diode schematic symbol", zOrder = IDIYComponent.COMPONENT)
+public class ZenerDiodeSymbol extends AbstractDiodeSymbol {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,15 +34,30 @@ public class DiodeSymbol extends AbstractDiodeSymbol {
 		g2d.drawLine((int) ((width - size) / 2 + size / Math.sqrt(2)),
 				(height - size) / 2, (int) ((width - size) / 2 + size
 						/ Math.sqrt(2)), (height + size) / 2);
+		int finSize = 2 * width / 32;
+		g2d.drawLine((int) ((width - size) / 2 + size / Math.sqrt(2)),
+				(height - size) / 2, (int) ((width - size) / 2 + size
+						/ Math.sqrt(2) + finSize), (height - size) / 2
+						- finSize);
+		g2d.drawLine((int) ((width - size) / 2 + size / Math.sqrt(2)),
+				(height + size) / 2, (int) ((width - size) / 2 + size
+						/ Math.sqrt(2) - finSize), (height + size) / 2
+						+ finSize);
 	}
 
 	@Override
 	protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
 		double width = getWidth().convertToPixels();
+		double finSize = width / 5;
 		int bandSize = (int) BAND_SIZE.convertToPixels();
 		g2d.setColor(getBodyColor());
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(bandSize));
 		g2d.drawLine((int) (width / Math.sqrt(2)) + bandSize, 0, (int) (width
 				/ Math.sqrt(2) + bandSize), (int) width);
+		g2d.drawLine((int) (width / Math.sqrt(2)) + bandSize, 0, (int) (width
+				/ Math.sqrt(2) + bandSize + finSize), -(int) finSize);
+		g2d.drawLine((int) (width / Math.sqrt(2) + bandSize), (int) width,
+				(int) (width / Math.sqrt(2) + bandSize - finSize),
+				(int) (width + finSize));
 	}
 }
