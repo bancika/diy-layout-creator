@@ -14,6 +14,7 @@
 	</target>
 
 	<target name="compile">
+		<ant antfile="../diylc-core/build.xml" target="jar" inheritAll="false"/>
 		<mkdir dir="${classes.dir}" />
 		<echo>Compile with JDK ${java.runtime.version}</echo>
 		<javac encoding="8859_1" srcdir="${basedir}/${src.dir}" destdir="${classes.dir}" classpathref="class.path" debug="true" />
