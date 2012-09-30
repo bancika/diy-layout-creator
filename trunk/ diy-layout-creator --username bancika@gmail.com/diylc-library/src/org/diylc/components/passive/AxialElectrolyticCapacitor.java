@@ -59,7 +59,7 @@ public class AxialElectrolyticCapacitor extends
 
 	@Override
 	public String getValueForDisplay() {
-		return getValue().toString() + " " + getVoltageNew().toString();
+		return getValue().toString() + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
 	}
 
 	@Deprecated

@@ -24,6 +24,8 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
+import com.sun.corba.se.impl.ior.OldPOAObjectKeyTemplate;
+
 /**
  * Utility class with component processing methods.
  * 
@@ -31,8 +33,7 @@ import org.diylc.core.annotations.EditableProperty;
  */
 public class ComponentProcessor {
 
-	private static final Logger LOG = Logger
-			.getLogger(ComponentProcessor.class);
+	private static final Logger LOG = Logger.getLogger(ComponentProcessor.class);
 
 	private static ComponentProcessor instance;
 
@@ -54,8 +55,7 @@ public class ComponentProcessor {
 		this.propertyValidatorCache = new HashMap<String, IPropertyValidator>();
 	}
 
-	public ComponentType extractComponentTypeFrom(
-			Class<? extends IDIYComponent<?>> clazz) {
+	public ComponentType extractComponentTypeFrom(Class<? extends IDIYComponent<?>> clazz) {
 		if (componentTypeMap.containsKey(clazz.getName())) {
 			return componentTypeMap.get(clazz.getName());
 		}
@@ -72,8 +72,7 @@ public class ComponentProcessor {
 		BomPolicy bomPolicy;
 		boolean autoEdit;
 		if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
-			ComponentDescriptor annotation = clazz
-					.getAnnotation(ComponentDescriptor.class);
+			ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
 			name = annotation.name();
 			description = annotation.description();
 			creationMethod = annotation.creationMethod();
@@ -101,27 +100,24 @@ public class ComponentProcessor {
 		icon = null;
 		// Draw component icon.
 		try {
-			IDIYComponent<?> componentInstance = (IDIYComponent<?>) clazz
-					.newInstance();
-			Image image = new BufferedImage(Presenter.ICON_SIZE,
-					Presenter.ICON_SIZE,
+			IDIYComponent<?> componentInstance = (IDIYComponent<?>) clazz.newInstance();
+			Image image = new BufferedImage(Presenter.ICON_SIZE, Presenter.ICON_SIZE,
 					java.awt.image.BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) image.getGraphics();
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-					RenderingHints.VALUE_RENDER_QUALITY);
-//			g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-//					RenderingHints.VALUE_STROKE_PURE);
-			componentInstance.drawIcon(g2d, Presenter.ICON_SIZE,
-					Presenter.ICON_SIZE);
+			g2d
+					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+							RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			// g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+			// RenderingHints.VALUE_STROKE_PURE);
+			componentInstance.drawIcon(g2d, Presenter.ICON_SIZE, Presenter.ICON_SIZE);
 			icon = new ImageIcon(image);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		ComponentType componentType = new ComponentType(name, description,
-				creationMethod, category, namePrefix, author, icon, clazz,
-				zOrder, flexibleZOrder, stretchable, bomPolicy, autoEdit);
+		ComponentType componentType = new ComponentType(name, description, creationMethod,
+				category, namePrefix, author, icon, clazz, zOrder, flexibleZOrder, stretchable,
+				bomPolicy, autoEdit);
 		componentTypeMap.put(clazz.getName(), componentType);
 		return componentType;
 	}
@@ -142,8 +138,7 @@ public class ComponentProcessor {
 				try {
 					if (method.isAnnotationPresent(EditableProperty.class)
 							&& !method.isAnnotationPresent(Deprecated.class)) {
-						EditableProperty annotation = method
-								.getAnnotation(EditableProperty.class);
+						EditableProperty annotation = method.getAnnotation(EditableProperty.class);
 						String name;
 						if (annotation.name().equals("")) {
 							name = method.getName().substring(3);
@@ -152,18 +147,16 @@ public class ComponentProcessor {
 						}
 						IPropertyValidator validator = getPropertyValidator(annotation
 								.validatorClass());
-						Method setter = clazz.getMethod("set"
-								+ method.getName().substring(3), method
-								.getReturnType());
+						Method setter = clazz.getMethod("set" + method.getName().substring(3),
+								method.getReturnType());
 						PropertyWrapper property = new PropertyWrapper(name,
-								method.getReturnType(), method.getName(),
-								setter.getName(), annotation.defaultable(),
-								validator);
+								method.getReturnType(), method.getName(), setter.getName(),
+								annotation.defaultable(), validator);
 						properties.add(property);
 					}
 				} catch (NoSuchMethodException e) {
-					LOG.debug("No matching setter found for \""
-							+ method.getName() + "\". Skipping...");
+					LOG.debug("No matching setter found for \"" + method.getName()
+							+ "\". Skipping...");
 				}
 			}
 		}
@@ -171,7 +164,7 @@ public class ComponentProcessor {
 		propertyCache.put(clazz.getName(), properties);
 		return cloneProperties(properties);
 	}
-	
+
 	private List<PropertyWrapper> cloneProperties(List<PropertyWrapper> properties) {
 		List<PropertyWrapper> result = new ArrayList<PropertyWrapper>(properties.size());
 		for (PropertyWrapper propertyWrapper : properties) {
@@ -205,8 +198,7 @@ public class ComponentProcessor {
 		}
 		for (int i = 1; i < selectedComponents.size(); i++) {
 			IDIYComponent<?> component = selectedComponents.get(i);
-			List<PropertyWrapper> newProperties = extractProperties(component
-					.getClass());
+			List<PropertyWrapper> newProperties = extractProperties(component.getClass());
 			for (PropertyWrapper property : newProperties) {
 				property.readFrom(component);
 			}
@@ -215,14 +207,15 @@ public class ComponentProcessor {
 			// their values match.
 			for (PropertyWrapper oldProperty : properties) {
 				if (newProperties.contains(oldProperty)) {
-					PropertyWrapper newProperty = newProperties
-							.get(newProperties.indexOf(oldProperty));
-					if ((newProperty.getValue() != null && newProperty
-							.getValue() == null)
-							|| !newProperty.getValue().equals(
-									oldProperty.getValue())) {
-						// Values don't match, so the property is not unique
-						// valued.
+					PropertyWrapper newProperty = newProperties.get(newProperties
+							.indexOf(oldProperty));
+					if (newProperty.getValue() != null && newProperty.getValue() != null) {
+						if (!newProperty.getValue().equals(oldProperty.getValue()))
+							// Values don't match, so the property is not unique
+							// valued.
+							oldProperty.setUnique(false);
+					} else if ((newProperty.getValue() == null && oldProperty.getValue() != null)
+							|| (newProperty.getValue() != null && oldProperty.getValue() == null)) {
 						oldProperty.setUnique(false);
 					}
 				}
@@ -236,13 +229,11 @@ public class ComponentProcessor {
 			// }
 			// }
 		}
-		Collections.sort(properties, ComparatorFactory.getInstance()
-				.getPropertyNameComparator());
+		Collections.sort(properties, ComparatorFactory.getInstance().getPropertyNameComparator());
 		return properties;
 	}
 
-	private IPropertyValidator getPropertyValidator(
-			Class<? extends IPropertyValidator> clazz) {
+	private IPropertyValidator getPropertyValidator(Class<? extends IPropertyValidator> clazz) {
 		if (propertyValidatorCache.containsKey(clazz.getName())) {
 			return propertyValidatorCache.get(clazz.getName());
 		}
@@ -250,8 +241,7 @@ public class ComponentProcessor {
 		try {
 			validator = clazz.newInstance();
 		} catch (Exception e) {
-			LOG.error("Could not instantiate validator for " + clazz.getName(),
-					e);
+			LOG.error("Could not instantiate validator for " + clazz.getName(), e);
 			return null;
 		}
 		propertyValidatorCache.put(clazz.getName(), validator);

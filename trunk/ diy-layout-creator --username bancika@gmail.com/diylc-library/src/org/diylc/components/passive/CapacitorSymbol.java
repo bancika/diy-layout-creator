@@ -39,7 +39,7 @@ public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> 
 
 	@Override
 	public String getValueForDisplay() {
-		return getValue().toString() + " " + getVoltageNew().toString();
+		return getValue().toString() + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
 	}
 
 	@Deprecated

@@ -39,7 +39,7 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 	
 	@Override
 	public String getValueForDisplay() {
-		return getValue().toString() + " " + getPowerNew().toString();
+		return getValue().toString() + (getPowerNew() == null ? "" : " " + getPowerNew().toString());
 	}
 	
 	@Deprecated
