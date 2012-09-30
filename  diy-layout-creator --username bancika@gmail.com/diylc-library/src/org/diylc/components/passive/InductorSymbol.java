@@ -58,7 +58,7 @@ public class InductorSymbol extends AbstractSchematicLeadedSymbol<Inductance> {
 
 	@Override
 	public String getValueForDisplay() {
-		return getValue().toString() + " " + getCurrent().toString();
+		return getValue().toString() + (getCurrent() == null ? "" : " " + getCurrent().toString());
 	}
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
