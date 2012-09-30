@@ -7,7 +7,6 @@ import java.awt.Shape;
 
 import org.diylc.components.AbstractSchematicLeadedSymbol;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
@@ -25,7 +24,7 @@ public abstract class AbstractDiodeSymbol extends AbstractSchematicLeadedSymbol<
 		this.borderColor = null;
 	}
 
-	@EditableProperty(validatorClass = PositiveMeasureValidator.class)
+	@EditableProperty
 	public String getValue() {
 		return value;
 	}
