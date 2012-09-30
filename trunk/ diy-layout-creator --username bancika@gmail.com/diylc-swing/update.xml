@@ -1013,7 +1013,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>LED symbol</description>
-				</org.diylc.appframework.update.Change>										
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Bring back default check boxes in the editor</description>
+				</org.diylc.appframework.update.Change>											
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
