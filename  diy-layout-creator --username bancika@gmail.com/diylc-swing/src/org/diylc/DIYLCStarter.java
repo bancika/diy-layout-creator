@@ -1,5 +1,6 @@
 package org.diylc;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
 import java.util.Arrays;
@@ -57,15 +58,15 @@ public class DIYLCStarter {
 		} catch (Exception e) {
 			LOG.error("Could not set Look&Feel", e);
 		}
-		
+
 		String val = System.getProperty(SCRIPT_RUN);
 		if (!"true".equals(val)) {
 			int response = JOptionPane
 					.showConfirmDialog(
 							null,
-							"It is not recommended to run DIYLC by clicking on the diylc.jar file.\n" +
-							"Please use diylc.exe on Windows or run.sh on OSX/Linux to ensure the best\n" +
-							"performance and reliability. Do you want to continue?",
+							"It is not recommended to run DIYLC by clicking on the diylc.jar file.\n"
+									+ "Please use diylc.exe on Windows or run.sh on OSX/Linux to ensure the best\n"
+									+ "performance and reliability. Do you want to continue?",
 							"DIYLC", JOptionPane.YES_NO_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 			if (response != JOptionPane.YES_OPTION) {
@@ -93,8 +94,11 @@ public class DIYLCStarter {
 		properties = new Properties();
 		try {
 			LOG.info("Injecting default properties.");
-			properties.load(new FileInputStream("config.properties"));
-			PropertyInjector.injectProperties(properties);
+			File f = new File("config.properties");
+			if (f.exists()) {
+				properties.load(new FileInputStream(f));
+				PropertyInjector.injectProperties(properties);
+			}
 		} catch (Exception e) {
 			LOG.error("Could not read config.properties file", e);
 		}
