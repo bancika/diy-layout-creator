@@ -24,8 +24,6 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-import com.sun.corba.se.impl.ior.OldPOAObjectKeyTemplate;
-
 /**
  * Utility class with component processing methods.
  * 
