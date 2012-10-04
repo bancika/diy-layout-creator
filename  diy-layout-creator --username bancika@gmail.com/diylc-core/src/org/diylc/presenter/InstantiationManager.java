@@ -233,6 +233,16 @@ public class InstantiationManager {
 				component.setControlPoint(controlPoint, j);
 			}
 		}
+		// Make the component into shape from the template
+		if (template != null && template.getPoints() != null
+				&& template.getPoints().size() >= component
+						.getControlPointCount()) {
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				Point p = new Point(component.getControlPoint(0));
+				p.translate(template.getPoints().get(i).x, template.getPoints().get(i).y);
+				component.setControlPoint(p, i);
+			}
+		}
 
 		fillWithDefaultProperties(component, template);
 

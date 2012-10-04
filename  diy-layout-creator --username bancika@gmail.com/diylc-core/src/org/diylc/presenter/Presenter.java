@@ -1741,7 +1741,7 @@ public class Presenter implements IPlugInPort {
 				templateName));
 		if (selectedComponents.size() != 1) {
 			throw new RuntimeException(
-					"Can only save a single component at a time.");
+					"Can only save a single component as a template at once.");
 		}
 		IDIYComponent<?> component = selectedComponents.iterator().next();
 		ComponentType type = ComponentProcessor.getInstance()
@@ -1772,7 +1772,19 @@ public class Presenter implements IPlugInPort {
 			} catch (Exception e) {
 			}
 		}
-		Template template = new Template(templateName, values);
+		List<Point> points = new ArrayList<Point>();
+		
+		for (int i = 0; i< component.getControlPointCount(); i++) {
+			Point p = new Point(component.getControlPoint(i));
+			points.add(p);
+		}
+		int x = points.iterator().next().x;
+		int y = points.iterator().next().y;
+		for (Point point : points) {
+			point.translate(-x, -y);
+		}
+		
+		Template template = new Template(templateName, values, points);
 		boolean exists = false;
 		for (Template t : templates) {
 			if (t.getName().equalsIgnoreCase(templateName)) {
