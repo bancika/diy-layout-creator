@@ -1052,7 +1052,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Component templates save shape of the component (for wires and such)</description>
+					<description>Component templates save shape of the component (for wires, traces and such)</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
