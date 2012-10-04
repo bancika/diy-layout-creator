@@ -51,8 +51,8 @@ public class DrawingManager {
 	public static Color CONTROL_POINT_COLOR = Color.blue;
 	public static Color SELECTED_CONTROL_POINT_COLOR = Color.green;
 
-	private Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
-			IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+	private Theme theme = (Theme) ConfigurationManager.getInstance()
+			.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 
 	// Keeps Area object of each drawn component.
 	private Map<IDIYComponent<?>, Area> componentAreaMap;
@@ -60,8 +60,10 @@ public class DrawingManager {
 	// determine which components are invalidated when they are not in the map.
 	private Map<IDIYComponent<?>, ComponentState> lastDrawnStateMap;
 
-	private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
-	private Composite lockedComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
+	private Composite slotComposite = AlphaComposite.getInstance(
+			AlphaComposite.SRC_OVER, 0.3f);
+	private Composite lockedComposite = AlphaComposite.getInstance(
+			AlphaComposite.SRC_OVER, 0.3f);
 	private List<IDIYComponent<?>> failedComponents = new ArrayList<IDIYComponent<?>>();
 
 	private double zoomLevel = 1d;// ConfigurationManager.getInstance().readDouble(ZOOM_KEY,
@@ -76,7 +78,8 @@ public class DrawingManager {
 		this.messageDispatcher = messageDispatcher;
 		componentAreaMap = new HashMap<IDIYComponent<?>, Area>();
 		lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
-		String debugComponentAreasStr = System.getProperty(DEBUG_COMPONENT_AREAS);
+		String debugComponentAreasStr = System
+				.getProperty(DEBUG_COMPONENT_AREAS);
 		debugComponentAreas = debugComponentAreasStr != null
 				&& debugComponentAreasStr.equalsIgnoreCase("true");
 	}
@@ -99,10 +102,12 @@ public class DrawingManager {
 	 * @return
 	 */
 	public List<IDIYComponent<?>> drawProject(Graphics2D g2d, Project project,
-			Set<DrawOption> drawOptions, IComponentFiler filter, Rectangle selectionRect,
-			List<IDIYComponent<?>> selectedComponents, Set<IDIYComponent<?>> lockedComponents,
-			Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
-			IDIYComponent<?> componentSlot, boolean dragInProgress) {
+			Set<DrawOption> drawOptions, IComponentFiler filter,
+			Rectangle selectionRect, List<IDIYComponent<?>> selectedComponents,
+			Set<IDIYComponent<?>> lockedComponents,
+			Set<IDIYComponent<?>> groupedComponents,
+			List<Point> controlPointSlot, List<IDIYComponent<?>> componentSlot,
+			boolean dragInProgress) {
 		failedComponents.clear();
 		if (project == null) {
 			return failedComponents;
@@ -110,9 +115,8 @@ public class DrawingManager {
 		G2DWrapper g2dWrapper = new G2DWrapper(g2d);
 
 		if (drawOptions.contains(DrawOption.ANTIALIASING)) {
-			g2d
-					.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		} else {
@@ -121,25 +125,29 @@ public class DrawingManager {
 			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 					RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 		}
-		if (ConfigurationManager.getInstance()
-				.readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
+		if (ConfigurationManager.getInstance().readBoolean(
+				IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
 			g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
 					RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 			g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
 					RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+			g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+					RenderingHints.VALUE_RENDER_QUALITY);
+			g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+					RenderingHints.VALUE_DITHER_ENABLE);
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//			g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-//					RenderingHints.VALUE_STROKE_PURE);
+			// g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+			// RenderingHints.VALUE_STROKE_PURE);
 		} else {
 			g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
 					RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
 			g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
 					RenderingHints.VALUE_COLOR_RENDER_SPEED);
-			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-			g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+			g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+					RenderingHints.VALUE_RENDER_SPEED);
+			g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+					RenderingHints.VALUE_DITHER_DISABLE);
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		}
@@ -162,12 +170,14 @@ public class DrawingManager {
 		if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
 			double zoomStep = project.getGridSpacing().convertToPixels() * zoom;
 			if (gridType == GridType.CROSSHAIR) {
-				g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-						10f, new float[] { (float) zoomStep / 2, (float) zoomStep / 2 },
+				g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT,
+						BasicStroke.JOIN_MITER, 10f, new float[] {
+								(float) zoomStep / 2, (float) zoomStep / 2 },
 						(float) zoomStep / 4));
 			} else if (gridType == GridType.DOT) {
-				g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-						10f, new float[] { 1f, (float) zoomStep - 1 }, 0f));
+				g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT,
+						BasicStroke.JOIN_MITER, 10f, new float[] { 1f,
+								(float) zoomStep - 1 }, 0f));
 			}
 
 			g2dWrapper.setColor(theme.getGridColor());
@@ -207,7 +217,7 @@ public class DrawingManager {
 			// Do not track the area if component is not invalidated and was
 			// drawn in the same state.
 			boolean trackArea = lastDrawnStateMap.get(component) != state;
-			
+
 			synchronized (g2d) {
 				g2dWrapper.startedDrawingComponent();
 				if (!trackArea) {
@@ -219,8 +229,9 @@ public class DrawingManager {
 				}
 				// Draw the component through the g2dWrapper.
 				try {
-					component.draw(g2dWrapper, state,
-							drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
+					component.draw(g2dWrapper, state, drawOptions
+							.contains(DrawOption.OUTLINE_MODE), project,
+							g2dWrapper);
 				} catch (Exception e) {
 					LOG.error("Error drawing " + component.getName(), e);
 					failedComponents.add(component);
@@ -250,8 +261,9 @@ public class DrawingManager {
 							g2dWrapper.setColor(CONTROL_POINT_COLOR);
 							Point controlPoint = component.getControlPoint(i);
 							int pointSize = CONTROL_POINT_SIZE - 2;
-							g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
-									- pointSize / 2, pointSize, pointSize);
+							g2dWrapper.fillOval(controlPoint.x - pointSize / 2,
+									controlPoint.y - pointSize / 2, pointSize,
+									pointSize);
 						}
 					}
 				}
@@ -266,13 +278,16 @@ public class DrawingManager {
 						Point controlPoint = component.getControlPoint(i);
 						int pointSize = CONTROL_POINT_SIZE;
 
-						g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
-						g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y
-								- pointSize / 2, pointSize, pointSize);
+						g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR
+								.darker());
+						g2dWrapper.fillOval(controlPoint.x - pointSize / 2,
+								controlPoint.y - pointSize / 2, pointSize,
+								pointSize);
 						g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
-						g2dWrapper.fillOval(controlPoint.x - CONTROL_POINT_SIZE / 2 + 1,
-								controlPoint.y - CONTROL_POINT_SIZE / 2 + 1,
-								CONTROL_POINT_SIZE - 2, CONTROL_POINT_SIZE - 2);
+						g2dWrapper.fillOval(controlPoint.x - CONTROL_POINT_SIZE
+								/ 2 + 1, controlPoint.y - CONTROL_POINT_SIZE
+								/ 2 + 1, CONTROL_POINT_SIZE - 2,
+								CONTROL_POINT_SIZE - 2);
 					}
 				}
 			}
@@ -282,12 +297,17 @@ public class DrawingManager {
 		if (componentSlot != null) {
 			g2dWrapper.startedDrawingComponent();
 			g2dWrapper.setComposite(slotComposite);
-			try {
-				componentSlot.draw(g2dWrapper, ComponentState.NORMAL, drawOptions
-						.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
-			} catch (Exception e) {
-				LOG.error("Error drawing " + componentSlot.getName(), e);
-				failedComponents.add(componentSlot);
+			for (IDIYComponent<?> component : componentSlot) {
+				try {
+
+					component.draw(g2dWrapper, ComponentState.NORMAL,
+							drawOptions.contains(DrawOption.OUTLINE_MODE),
+							project, g2dWrapper);
+
+				} catch (Exception e) {
+					LOG.error("Error drawing " + component.getName(), e);
+					failedComponents.add(component);
+				}
 			}
 			g2dWrapper.finishedDrawingComponent();
 		}
@@ -297,12 +317,13 @@ public class DrawingManager {
 			for (Point point : controlPointSlot) {
 				if (point != null) {
 					g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
-					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2, point.y
-							- CONTROL_POINT_SIZE / 2, CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
+					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2,
+							point.y - CONTROL_POINT_SIZE / 2,
+							CONTROL_POINT_SIZE, CONTROL_POINT_SIZE);
 					g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
-					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2 + 1, point.y
-							- CONTROL_POINT_SIZE / 2 + 1, CONTROL_POINT_SIZE - 2,
-							CONTROL_POINT_SIZE - 2);
+					g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2 + 1,
+							point.y - CONTROL_POINT_SIZE / 2 + 1,
+							CONTROL_POINT_SIZE - 2, CONTROL_POINT_SIZE - 2);
 				}
 			}
 		}
@@ -316,7 +337,8 @@ public class DrawingManager {
 		// }
 
 		// At the end draw selection rectangle if needed.
-		if (drawOptions.contains(DrawOption.SELECTION) && (selectionRect != null)) {
+		if (drawOptions.contains(DrawOption.SELECTION)
+				&& (selectionRect != null)) {
 			g2d.setColor(Color.white);
 			g2d.draw(selectionRect);
 			g2d.setColor(Color.black);
@@ -371,7 +393,8 @@ public class DrawingManager {
 		return components;
 	}
 
-	public Dimension getCanvasDimensions(Project project, Double zoomLevel, boolean useZoom) {
+	public Dimension getCanvasDimensions(Project project, Double zoomLevel,
+			boolean useZoom) {
 		double width = project.getWidth().convertToPixels();
 		double height = project.getHeight().convertToPixels();
 		if (useZoom) {
@@ -395,7 +418,8 @@ public class DrawingManager {
 
 	public void setTheme(Theme theme) {
 		this.theme = theme;
-		ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY, theme);
+		ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY,
+				theme);
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 }
