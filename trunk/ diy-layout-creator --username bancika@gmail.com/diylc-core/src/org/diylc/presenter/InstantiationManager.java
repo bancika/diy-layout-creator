@@ -15,6 +15,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
@@ -34,9 +35,14 @@ public class InstantiationManager {
 
 	private ComponentType componentTypeSlot;
 	private Template template;
-	private IDIYComponent<?> componentSlot;
+	private List<IDIYComponent<?>> componentSlot;
 	private Point firstControlPoint;
 	private Point potentialControlPoint;
+
+	private static final ComponentType clipboardType = new ComponentType(
+			"Clipboard contents", "Components from the clipboard",
+			CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false,
+			false, null, false);
 
 	public InstantiationManager() {
 	}
@@ -49,7 +55,7 @@ public class InstantiationManager {
 		return template;
 	}
 
-	public IDIYComponent<?> getComponentSlot() {
+	public List<IDIYComponent<?>> getComponentSlot() {
 		return componentSlot;
 	}
 
@@ -90,8 +96,8 @@ public class InstantiationManager {
 
 		// Set the other control point to the same location, we'll
 		// move it later when mouse moves.
-		componentSlot.setControlPoint(firstControlPoint, 0);
-		componentSlot.setControlPoint(firstControlPoint, 1);
+		componentSlot.get(0).setControlPoint(firstControlPoint, 0);
+		componentSlot.get(0).setControlPoint(firstControlPoint, 1);
 	}
 
 	/**
@@ -103,16 +109,81 @@ public class InstantiationManager {
 	public boolean updatePointByPoint(Point scaledPoint) {
 		boolean changeMade = !scaledPoint.equals(potentialControlPoint);
 		potentialControlPoint = scaledPoint;
-		if (componentSlot != null) {
-			componentSlot.setControlPoint(scaledPoint, 1);
+		if (componentSlot != null && !componentSlot.isEmpty()) {
+			componentSlot.get(0).setControlPoint(scaledPoint, 1);
 		}
 		return changeMade;
 	}
 
+	public void pasteComponents(List<IDIYComponent<?>> components,
+			Point scaledPoint, boolean snapToGrid, Size gridSpacing) {
+		// Adjust location of components so they are centered under the mouse
+		// cursor
+		int minX = Integer.MAX_VALUE;
+		int maxX = Integer.MIN_VALUE;
+		int minY = Integer.MAX_VALUE;
+		int maxY = Integer.MIN_VALUE;
+		for (IDIYComponent<?> component : components) {
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				Point p = component.getControlPoint(i);
+				if (p.x > maxX) {
+					maxX = p.x;
+				}
+				if (p.x < minX) {
+					minX = p.x;
+				}
+				if (p.y > maxY) {
+					maxY = p.y;
+				}
+				if (p.y < minY) {
+					minY = p.y;
+				}
+			}
+		}
+		int x = (minX + maxX) / 2;
+		int y = (minY + maxY) / 2;
+		if (snapToGrid) {
+			x = CalcUtils.roundToGrid(x, gridSpacing);
+			x = CalcUtils.roundToGrid(x, gridSpacing);
+		}
+		for (IDIYComponent<?> component : components) {
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				Point p = component.getControlPoint(i);
+				p.translate(-x, -y);
+				component.setControlPoint(p, i);
+			}
+		}
+
+		// Update component slot
+		this.componentSlot = new ArrayList<IDIYComponent<?>>(components);
+
+		// Update the component type slot so the app knows that something's
+		// being instantiated.
+		this.componentTypeSlot = clipboardType;
+
+		if (snapToGrid) {
+			scaledPoint = new Point(scaledPoint);
+			CalcUtils.snapPointToGrid(scaledPoint, gridSpacing);
+		}
+		// Update the location according to mouse location
+		updateSingleClick(scaledPoint, snapToGrid, gridSpacing);
+	}
+
+	/**
+	 * Updates location of component slot based on the new mouse location.
+	 * 
+	 * @param scaledPoint
+	 * @param snapToGrid
+	 * @param gridSpacing
+	 * @return true if we need to refresh the canvas
+	 */
 	public boolean updateSingleClick(Point scaledPoint, boolean snapToGrid,
 			Size gridSpacing) {
 		if (potentialControlPoint == null) {
 			potentialControlPoint = new Point(0, 0);
+		}
+		if (scaledPoint == null) {
+			scaledPoint = new Point(0, 0);
 		}
 		int dx = scaledPoint.x - potentialControlPoint.x;
 		int dy = scaledPoint.y - potentialControlPoint.y;
@@ -129,19 +200,21 @@ public class InstantiationManager {
 			LOG.error("Component slot should not be null!");
 		} else {
 			Point p = new Point();
-			for (int i = 0; i < componentSlot.getControlPointCount(); i++) {
-				p.setLocation(componentSlot.getControlPoint(i));
-				p.translate(dx, dy);
-				componentSlot.setControlPoint(p, i);
+			for (IDIYComponent<?> component : componentSlot) {
+				for (int i = 0; i < component.getControlPointCount(); i++) {
+					p.setLocation(component.getControlPoint(i));
+					p.translate(dx, dy);
+					component.setControlPoint(p, i);
+				}
 			}
 		}
 		return true;
 	}
 
 	@SuppressWarnings("unchecked")
-	public IDIYComponent<?> instantiateComponent(ComponentType componentType,
-			Template template, Point point, Project currentProject)
-			throws Exception {
+	public List<IDIYComponent<?>> instantiateComponent(
+			ComponentType componentType, Template template, Point point,
+			Project currentProject) throws Exception {
 		LOG.info("Instatiating component of type: "
 				+ componentType.getInstanceClass().getName());
 
@@ -182,7 +255,9 @@ public class InstantiationManager {
 					IPlugInPort.RECENT_COMPONENTS_KEY, recentComponentTypes);
 		}
 
-		return component;
+		List<IDIYComponent<?>> list = new ArrayList<IDIYComponent<?>>();
+		list.add(component);
+		return list;
 	}
 
 	public String createUniqueName(ComponentType componentType,
