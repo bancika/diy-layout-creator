@@ -1050,6 +1050,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Copy paste functionality improved</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Component templates save shape of the component (for wires and such)</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
