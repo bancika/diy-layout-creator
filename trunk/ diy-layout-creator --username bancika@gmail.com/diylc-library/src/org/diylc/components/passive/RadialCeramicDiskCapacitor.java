@@ -59,7 +59,7 @@ public class RadialCeramicDiskCapacitor extends AbstractRadialComponent<Capacita
 		this.voltageNew = voltageNew;
 	}
 	
-	@EditableProperty
+	@Deprecated
 	public Voltage getVoltage() {
 		return voltage;
 	}
