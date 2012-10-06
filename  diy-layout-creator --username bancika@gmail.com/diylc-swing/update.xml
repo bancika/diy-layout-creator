@@ -1048,6 +1048,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Two Voltage properties for ceramic capacitors</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Copy paste functionality improved</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
