@@ -1047,8 +1047,12 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
+					<changeType>BUG_FIX</changeType>
 					<description>Two Voltage properties for ceramic capacitors</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Cannot create ceramic capacitor if there's a default value for voltage</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
