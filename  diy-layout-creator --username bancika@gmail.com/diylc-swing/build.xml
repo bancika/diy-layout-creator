@@ -88,6 +88,7 @@
 				<include name="library/**/*.jar" />
 			</jarfileset>	
 			<resourcefileset dir="${basedir}">
+				<include name="update.xml" />
 				<include name="templates**/*.diy" />
 				<include name="themes**/*.xml" />
 			</resourcefileset>
