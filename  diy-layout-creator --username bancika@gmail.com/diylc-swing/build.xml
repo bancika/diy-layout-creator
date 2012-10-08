@@ -75,15 +75,22 @@
 		<jarbundler bundleid="org.diylc"
 				dir="${jar.dir}"				
 	            name="DIYLC"
+				version="3.22.0"
 	            mainclass="${main.class}" 	            
 				stubfile="JavaApplicationStub"
 				vmoptions="-Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true"
-				icon="icons/diylc.icns">	
+				icon="icons/diylc.icns"
+				workingdirectory="$APP_PACKAGE/Contents/Resources"
+				infostring="DIY Layout Creator by bancika (diylc.org)">	
 			<jarfileset dir="${jar.dir}">
 				<include name="diylc.jar" />
 				<include name="lib/**/*.jar" />
 				<include name="library/**/*.jar" />
 			</jarfileset>	
+			<resourcefileset dir="${basedir}">
+				<include name="templates**/*.diy" />
+				<include name="themes**/*.xml" />
+			</resourcefileset>
 			<javaproperty name="apple.laf.useScreenMenuBar" value="true"/>
 			<!--<documenttype name="DIYLC Project"
 			                    extensions="diylc" 
