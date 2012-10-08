@@ -148,4 +148,9 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 			return bandArea / 2;
 		return 0;
 	}
+	
+	@EditableProperty(name = "Reverse (standing)")
+	public boolean getFlipStanding() {
+		return super.getFlipStanding();
+	}
 }

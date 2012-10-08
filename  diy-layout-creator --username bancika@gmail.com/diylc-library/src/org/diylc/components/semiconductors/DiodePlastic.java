@@ -31,8 +31,7 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 	public static Color BORDER_COLOR = BODY_COLOR.darker();
 
 	private String value = "";
-	private Color markerColor = MARKER_COLOR;
-	private boolean flipStanding = false;
+	private Color markerColor = MARKER_COLOR;		
 
 	public DiodePlastic() {
 		super();
@@ -48,16 +47,12 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 
 	@Override
 	public Color getStandingBodyColor() {
-		return getFlipStanding() ? getMarkerColor() : getBodyColor();
+		return getFlipStanding() ? getBodyColor() : getMarkerColor();
 	}
 
 	@EditableProperty(name = "Reverse (standing)")
 	public boolean getFlipStanding() {
-		return flipStanding;
-	}
-
-	public void setFlipStanding(boolean flipStanding) {
-		this.flipStanding = flipStanding;
+		return super.getFlipStanding();
 	}
 
 	@EditableProperty

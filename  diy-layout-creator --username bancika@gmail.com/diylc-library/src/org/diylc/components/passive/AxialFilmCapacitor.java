@@ -99,4 +99,9 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 		return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(),
 				getClosestOdd(getWidth().convertToPixels()));
 	}
+	
+	@EditableProperty(name = "Reverse (standing)")
+	public boolean getFlipStanding() {
+		return super.getFlipStanding();
+	}
 }
