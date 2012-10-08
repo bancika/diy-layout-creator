@@ -8,8 +8,12 @@ import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
+import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
@@ -47,6 +52,9 @@ import org.diylc.core.Theme;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 /**
  * The main presenter class, contains core app logic and drawing routines.
  * 
@@ -56,8 +64,21 @@ public class Presenter implements IPlugInPort {
 
 	private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-	public static final VersionNumber CURRENT_VERSION = new VersionNumber(3,
-			22, 0);
+	public static VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 0);
+	// Read the latest version from the local update.xml file
+	static {
+		try {
+			BufferedInputStream in = new BufferedInputStream(
+					new FileInputStream("update.xml"));
+			XStream xStream = new XStream(new DomDriver());
+			List<Version> allVersions = (List<Version>) xStream.fromXML(in);
+			in.close();
+			CURRENT_VERSION = allVersions.get(allVersions.size() - 1)
+					.getVersionNumber();
+		} catch (IOException e) {
+			LOG.error("Could not find version number, using default", e);
+		}
+	}
 	public static final String DEFAULTS_KEY_PREFIX = "default.";
 
 	public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections
@@ -1773,8 +1794,8 @@ public class Presenter implements IPlugInPort {
 			}
 		}
 		List<Point> points = new ArrayList<Point>();
-		
-		for (int i = 0; i< component.getControlPointCount(); i++) {
+
+		for (int i = 0; i < component.getControlPointCount(); i++) {
 			Point p = new Point(component.getControlPoint(i));
 			points.add(p);
 		}
@@ -1783,7 +1804,7 @@ public class Presenter implements IPlugInPort {
 		for (Point point : points) {
 			point.translate(-x, -y);
 		}
-		
+
 		Template template = new Template(templateName, values, points);
 		boolean exists = false;
 		for (Template t : templates) {
