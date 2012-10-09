@@ -151,7 +151,7 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 				y += pinOffset;
 				break;
 			case _180:
-				x += pinOffset;
+				x -= pinOffset;
 				break;
 			case _270:
 				y -= pinOffset;
