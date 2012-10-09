@@ -51,6 +51,7 @@ public abstract class AbstractLeadedComponent<T> extends
 	protected Color borderColor = Color.black;
 	protected Color labelColor = LABEL_COLOR;
 	protected Display display = Display.NAME;
+	private boolean flipStanding = false;
 
 	protected AbstractLeadedComponent() {
 		super();
@@ -78,8 +79,10 @@ public abstract class AbstractLeadedComponent<T> extends
 			// When ending points are too close draw the component in standing
 			// mode.
 			int width = getClosestOdd(this.width.convertToPixels());
-			Shape body = new Ellipse2D.Double(points[0].x - width / 2,
-					points[0].y - width / 2, width, width);
+			Shape body = new Ellipse2D.Double((getFlipStanding() ? points[1]
+					: points[0]).x
+					- width / 2, (getFlipStanding() ? points[1] : points[0]).y
+					- width / 2, width, width);
 			Composite oldComposite = g2d.getComposite();
 			if (alpha < MAX_ALPHA) {
 				g2d.setComposite(AlphaComposite.getInstance(
@@ -455,5 +458,19 @@ public abstract class AbstractLeadedComponent<T> extends
 
 	public void setLabelColor(Color labelColor) {
 		this.labelColor = labelColor;
+	}
+
+	/**
+	 * Override this method with @EditableProperty annotation in child classes
+	 * where standing mode is supported
+	 * 
+	 * @return
+	 */
+	public boolean getFlipStanding() {
+		return flipStanding;
+	}
+
+	public void setFlipStanding(boolean flipStanding) {
+		this.flipStanding = flipStanding;
 	}
 }
