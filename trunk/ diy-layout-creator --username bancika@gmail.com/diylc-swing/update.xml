@@ -1075,6 +1075,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>TO-3 transistor rotation is wrong for 180 degrees</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Clearer standing component (mainly diode) reversion</description>
 				</org.diylc.appframework.update.Change>
