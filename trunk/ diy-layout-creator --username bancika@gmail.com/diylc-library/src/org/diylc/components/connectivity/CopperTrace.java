@@ -25,9 +25,13 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 	public static Size THICKNESS = new Size(1d, SizeUnit.mm);
 	public static Color COLOR = Color.black;
 
-	private Color leadColor = COLOR;
 	private Size thickness = THICKNESS;
 	private PCBLayer layer = PCBLayer._1;
+	
+	public CopperTrace() {
+		super();
+		this.leadColor = COLOR;
+	}
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -37,9 +41,9 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 	}
 
 	@Override
-	protected Color getLeadColor(ComponentState componentState) {
+	protected Color getLeadColorForPainting(ComponentState componentState) {
 		return componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : leadColor;
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : getLeadColor();
 	}
 	
 	@Override
@@ -47,13 +51,10 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
 		return VisibilityPolicy.WHEN_SELECTED;
 	}
 
+	@Override
 	@EditableProperty(name = "Color")
 	public Color getLeadColor() {
 		return leadColor;
-	}
-
-	public void setLeadColor(Color leadColor) {
-		this.leadColor = leadColor;
 	}
 
 	@EditableProperty(name = "Width")

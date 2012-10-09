@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
+import org.diylc.common.Display;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
@@ -42,9 +43,14 @@ public class Line extends AbstractLeadedComponent<Void> {
 	}
 
 	@Override
-	public Color getLeadColor(ComponentState componentState) {
+	public Color getLeadColorForPainting(ComponentState componentState) {
 		return componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color;
+	}
+
+	@Override
+	public Color getLeadColor() {
+		return super.getLeadColor();
 	}
 
 	@EditableProperty
@@ -102,5 +108,23 @@ public class Line extends AbstractLeadedComponent<Void> {
 	@Override
 	protected Size getDefaultLength() {
 		return null;
+	}
+	
+	@Deprecated
+	@Override
+	public Color getLabelColor() {
+		return super.getLabelColor();
+	}
+
+	@Deprecated
+	@Override
+	public String getName() {
+		return super.getName();
+	}
+
+	@Deprecated
+	@Override
+	public Display getDisplay() {
+		return super.getDisplay();
 	}
 }
