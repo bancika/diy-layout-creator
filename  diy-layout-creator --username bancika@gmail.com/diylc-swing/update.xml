@@ -1094,6 +1094,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ctrl + right click on component type in toolbox appends components of that type to selection</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Editable lead color; changed default lead color</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
