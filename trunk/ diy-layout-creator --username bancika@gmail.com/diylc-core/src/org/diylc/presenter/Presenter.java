@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -472,7 +471,7 @@ public class Presenter implements IPlugInPort {
 								.getComponentSlot();
 						List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
 						for (IDIYComponent<?> component : componentSlot) {
-							addComponent(component, componentTypeSlot, true);
+							addComponent(component, true);
 							newSelection.add(component);
 						}
 						// Select the new component
@@ -530,7 +529,7 @@ public class Presenter implements IPlugInPort {
 						componentSlot.get(0).setControlPoint(scaledPoint, 1);
 						List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
 						for (IDIYComponent<?> component : componentSlot) {
-							addComponent(component, componentTypeSlot, true);
+							addComponent(component, true);
 							// Select the new component if it's not locked.
 							if (!isComponentLocked(component)) {
 								newSelection.add(component);
@@ -1594,13 +1593,13 @@ public class Presenter implements IPlugInPort {
 	 * Adds a component to the project taking z-order into account.
 	 * 
 	 * @param component
-	 * @param componentType
 	 */
-	private void addComponent(IDIYComponent<?> component,
-			ComponentType componentType, boolean canCreatePads) {
+	private void addComponent(IDIYComponent<?> component, boolean canCreatePads) {
 		int index = currentProject.getComponents().size();
 		while (index > 0
-				&& componentType.getZOrder() < ComponentProcessor
+				&& ComponentProcessor.getInstance().extractComponentTypeFrom(
+						(Class<? extends IDIYComponent<?>>) component
+								.getClass()).getZOrder() < ComponentProcessor
 						.getInstance()
 						.extractComponentTypeFrom(
 								(Class<? extends IDIYComponent<?>>) currentProject
@@ -1627,7 +1626,7 @@ public class Presenter implements IPlugInPort {
 										component.getControlPoint(i),
 										currentProject).get(0);
 						pad.setControlPoint(component.getControlPoint(i), 0);
-						addComponent(pad, padType, false);
+						addComponent(pad, false);
 					} catch (Exception e) {
 						LOG.warn("Could not auto-create solder pad", e);
 					}
