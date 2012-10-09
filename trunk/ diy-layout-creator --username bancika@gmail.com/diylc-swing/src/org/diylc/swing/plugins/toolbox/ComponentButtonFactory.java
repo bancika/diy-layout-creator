@@ -79,6 +79,10 @@ class ComponentButtonFactory {
 							newSelection.add(component);
 						}
 					}
+					// Ctrl appends selection
+					if (e.isControlDown()) {
+						newSelection.addAll(plugInPort.getSelectedComponents());
+					}
 					plugInPort.updateSelection(newSelection);
 					plugInPort.setNewComponentTypeSlot(null, null);
 					plugInPort.refresh();
