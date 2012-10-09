@@ -146,6 +146,26 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 					}
 				}
 			});
+
+			canvasPanel.addMouseMotionListener(new MouseAdapter() {
+
+				@Override
+				public void mouseMoved(MouseEvent e) {
+					canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
+					plugInPort.mouseMoved(e.getPoint(), e.isControlDown(), e
+							.isShiftDown(), e.isAltDown());
+				}
+			});
+			
+			canvasPanel.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					plugInPort.mouseClicked(e.getPoint(), e.getButton(), e
+							.isControlDown(), e.isShiftDown(), e.isAltDown(), e
+							.getClickCount());
+				}
+			});
 		}
 		return canvasPanel;
 	}
@@ -225,7 +245,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.add(getPasteAction());
 			popupMenu.addSeparator();
 			popupMenu.add(getEditSelectionAction());
-			popupMenu.add(getDeleteSelectionAction());			
+			popupMenu.add(getDeleteSelectionAction());
 			popupMenu.add(getGroupAction());
 			popupMenu.add(getUngroupAction());
 			popupMenu.add(getSendToBackAction());
