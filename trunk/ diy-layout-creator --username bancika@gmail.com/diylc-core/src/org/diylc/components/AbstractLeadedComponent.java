@@ -38,7 +38,8 @@ public abstract class AbstractLeadedComponent<T> extends
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color LEAD_COLOR = Color.decode("#236B8E");
+	public static Color LEAD_COLOR = Color.decode("#CCCCCC");
+	public static Color LEAD_COLOR_ICON = LEAD_COLOR.darker().darker();
 	public static Size LEAD_THICKNESS = new Size(0.6d, SizeUnit.mm);
 	public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
@@ -50,6 +51,7 @@ public abstract class AbstractLeadedComponent<T> extends
 	protected Color bodyColor = Color.white;
 	protected Color borderColor = Color.black;
 	protected Color labelColor = LABEL_COLOR;
+	protected Color leadColor = LEAD_COLOR;
 	protected Display display = Display.NAME;
 	private boolean flipStanding = false;
 
@@ -129,8 +131,9 @@ public abstract class AbstractLeadedComponent<T> extends
 						/ 2 - leadThickness / 2;
 				g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
 						leadThickness));
-				Color leadColor = shouldShadeLeads() ? getLeadColor(
-						componentState).darker() : getLeadColor(componentState);
+				Color leadColor = shouldShadeLeads() ? getLeadColorForPainting(
+						componentState).darker()
+						: getLeadColorForPainting(componentState);
 				g2d.setColor(leadColor);
 				int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
 				int endY = (int) Math.round(points[0].y + Math.sin(theta)
@@ -144,7 +147,7 @@ public abstract class AbstractLeadedComponent<T> extends
 				if (shouldShadeLeads()) {
 					g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
 							leadThickness - 2));
-					leadColor = getLeadColor(componentState);
+					leadColor = getLeadColorForPainting(componentState);
 					g2d.setColor(leadColor);
 					g2d.drawLine(points[0].x, points[0].y,
 							(int) (points[0].x + Math.cos(theta) * leadLength),
@@ -291,14 +294,15 @@ public abstract class AbstractLeadedComponent<T> extends
 	private void drawLead(Graphics2D g2d, ComponentState componentState) {
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
 				getLeadThickness()));
-		Color leadColor = shouldShadeLeads() ? getLeadColor(componentState)
-				.darker() : getLeadColor(componentState);
+		Color leadColor = shouldShadeLeads() ? getLeadColorForPainting(
+				componentState).darker()
+				: getLeadColorForPainting(componentState);
 		g2d.setColor(leadColor);
 		g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 		if (shouldShadeLeads()) {
 			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(
 					getLeadThickness() - 2));
-			leadColor = getLeadColor(componentState);
+			leadColor = getLeadColorForPainting(componentState);
 			g2d.setColor(leadColor);
 			g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
 		}
@@ -367,10 +371,22 @@ public abstract class AbstractLeadedComponent<T> extends
 	/**
 	 * @return default lead color. Override this method to change it.
 	 */
-	protected Color getLeadColor(ComponentState componentState) {
+	protected Color getLeadColorForPainting(ComponentState componentState) {
 		return componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-				: LEAD_COLOR;
+				: getLeadColor();
+	}
+
+	@EditableProperty(name = "Lead color")
+	public Color getLeadColor() {
+		if (leadColor == null) {
+			leadColor = LEAD_COLOR_ICON;
+		}
+		return leadColor;
+	}
+
+	public void setLeadColor(Color leadColor) {
+		this.leadColor = leadColor;
 	}
 
 	protected int calculatePinSpacing(Rectangle shapeRect) {

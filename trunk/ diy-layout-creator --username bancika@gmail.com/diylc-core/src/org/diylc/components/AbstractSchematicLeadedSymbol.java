@@ -21,6 +21,7 @@ public abstract class AbstractSchematicLeadedSymbol<T> extends AbstractLeadedCom
 		super();
 		// We don't want to fill the body, so use null.
 		this.bodyColor = null;
+		this.leadColor = LEAD_COLOR;
 		this.borderColor = COLOR;
 	}
 
@@ -65,8 +66,8 @@ public abstract class AbstractSchematicLeadedSymbol<T> extends AbstractLeadedCom
 	}
 
 	@Override
-	protected Color getLeadColor(ComponentState componentState) {
+	protected Color getLeadColorForPainting(ComponentState componentState) {
 		return componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : LEAD_COLOR;
+				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : getLeadColor();
 	}
 }
