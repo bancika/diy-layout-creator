@@ -66,7 +66,7 @@ public class DiodePlastic extends AbstractLeadedComponent<String> {
 
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.rotate(-Math.PI / 4, width / 2, height / 2);
-		g2d.setColor(LEAD_COLOR);
+		g2d.setColor(LEAD_COLOR_ICON);
 		g2d.drawLine(0, height / 2, width, height / 2);
 		g2d.setColor(BODY_COLOR);
 		g2d.fillRect(6, height / 2 - 3, width - 12, 6);
