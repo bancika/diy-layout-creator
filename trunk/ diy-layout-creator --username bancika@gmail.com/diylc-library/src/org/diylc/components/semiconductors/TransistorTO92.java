@@ -91,15 +91,15 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		// Reset body shape;
 		body = null;
 	}
-	
-	@EditableProperty(name="Pin spacing")
+
+	@EditableProperty(name = "Pin spacing")
 	public Size getPinSpacing() {
 		if (pinSpacing == null) {
 			pinSpacing = new Size(0.1, SizeUnit.in);
 		}
 		return pinSpacing;
 	}
-	
+
 	public void setPinSpacing(Size pinSpacing) {
 		this.pinSpacing = pinSpacing;
 		updateControlPoints();
@@ -314,6 +314,12 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		g2d.fill(area);
 		g2d.setColor(BORDER_COLOR);
 		g2d.draw(area);
+		g2d.setColor(PIN_COLOR);
+		int pinSize = 2 * width / 32;
+		for (int i = 0; i < 3; i++) {
+			g2d.fillOval(width / 2 - pinSize / 2, (height / 4) * (i + 1),
+					pinSize, pinSize);
+		}
 	}
 
 	@EditableProperty(name = "Body")
@@ -333,7 +339,7 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
 	}
-	
+
 	@EditableProperty(name = "Label")
 	public Color getLabelColor() {
 		if (labelColor == null) {
@@ -341,7 +347,7 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 		}
 		return labelColor;
 	}
-	
+
 	public void setLabelColor(Color labelColor) {
 		this.labelColor = labelColor;
 	}
