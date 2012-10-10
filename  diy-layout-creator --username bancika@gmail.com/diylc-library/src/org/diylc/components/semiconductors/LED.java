@@ -45,7 +45,7 @@ public class LED extends AbstractLeadedComponent<String> {
 	public void drawIcon(Graphics2D g2d, int width, int height) {
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.rotate(-Math.PI / 4, width / 2, height / 2);
-		g2d.setColor(LEAD_COLOR);
+		g2d.setColor(LEAD_COLOR_ICON);
 		g2d.drawLine(0, height / 2, width, height / 2);
 
 		int margin = 4 * width / 32;
