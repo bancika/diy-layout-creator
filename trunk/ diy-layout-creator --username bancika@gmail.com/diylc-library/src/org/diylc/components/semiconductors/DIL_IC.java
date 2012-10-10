@@ -30,7 +30,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "DIL IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "IC with rectangular housing and two parallel rows of pins", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "DIP IC", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "Dual-in-line package IC", stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class DIL_IC extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
@@ -52,6 +52,10 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	private Size rowSpacing = new Size(0.3d, SizeUnit.in);
 	private Point[] controlPoints = new Point[] { new Point(0, 0) };
 	protected Display display = Display.NAME;
+	private Color bodyColor = BODY_COLOR;
+	private Color borderColor = BORDER_COLOR;
+	private Color labelColor = LABEL_COLOR;
+	private Color indentColor = INDENT_COLOR;
 	// new Point(0, pinSpacing.convertToPixels()),
 	// new Point(0, 2 * pinSpacing.convertToPixels()),
 	// new Point(0, 3 * pinSpacing.convertToPixels()),
@@ -286,7 +290,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha
 					/ MAX_ALPHA));
 		}
-		g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
+		g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
 		g2d.fill(mainArea);
 		g2d.setComposite(oldComposite);
 
@@ -299,7 +303,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 					.getOutlineColor();
 		} else {
 			finalBorderColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : BORDER_COLOR;
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : getBorderColor();
 		}
 		g2d.setColor(finalBorderColor);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -310,7 +314,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		} else {
 			g2d.draw(mainArea);
 			if (getBody()[1] != null) {
-				g2d.setColor(INDENT_COLOR);
+				g2d.setColor(getIndentColor());
 				g2d.fill(getBody()[1]);
 			}
 		}
@@ -326,7 +330,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		} else {
 			finalLabelColor = componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-					: LABEL_COLOR;
+					: getLabelColor();
 		}
 		g2d.setColor(finalLabelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
@@ -354,6 +358,54 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 			g2d.fillRect(width / 6 - pinSize, (height / 5) * (i + 1) - 1, pinSize, pinSize);
 			g2d.fillRect(5 * width / 6 + 1, (height / 5) * (i + 1) - 1, pinSize, pinSize);
 		}
+	}
+	
+	@EditableProperty(name = "Body")
+	public Color getBodyColor() {
+		if (bodyColor == null) {
+			bodyColor = BODY_COLOR;
+		}
+		return bodyColor;
+	}
+
+	public void setBodyColor(Color bodyColor) {
+		this.bodyColor = bodyColor;
+	}
+
+	@EditableProperty(name = "Border")
+	public Color getBorderColor() {
+		if (borderColor == null) {
+			borderColor = BORDER_COLOR;
+		}
+		return borderColor;
+	}
+
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
+	}
+
+	@EditableProperty(name = "Label")
+	public Color getLabelColor() {
+		if (labelColor == null) {
+			labelColor = LABEL_COLOR;
+		}
+		return labelColor;
+	}
+
+	public void setLabelColor(Color labelColor) {
+		this.labelColor = labelColor;
+	}
+	
+	@EditableProperty(name = "Indent")
+	public Color getIndentColor() {
+		if (indentColor == null) {
+			indentColor = INDENT_COLOR;
+		}
+		return indentColor;
+	}
+	
+	public void setIndentColor(Color indentColor) {
+		this.indentColor = indentColor;
 	}
 
 	public static enum PinCount {
