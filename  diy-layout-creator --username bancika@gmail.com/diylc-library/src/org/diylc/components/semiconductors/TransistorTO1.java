@@ -274,6 +274,12 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 		g2d.fill(area);
 		g2d.setColor(BORDER_COLOR);
 		g2d.draw(area);
+		g2d.setColor(PIN_COLOR);
+		int pinSize = 2 * width / 32;
+		for (int i = 0; i < 3; i++) {
+			g2d.fillOval((i == 1 ? width * 3 / 8 : width / 2) - pinSize / 2,
+					(height / 4) * (i + 1), pinSize, pinSize);
+		}
 	}
 
 	@EditableProperty(name = "Body")
