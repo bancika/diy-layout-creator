@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.ImageIcon;
 
+import org.diylc.appframework.miscutils.IconImageConverter;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -50,7 +51,6 @@ public class Image extends AbstractTransparentComponent<Void> {
 		Shape clip = g2d.getClip().getBounds();
 		if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(),
 				image.getIconWidth() * s, image.getIconHeight() * s))) {
-			System.console().writer().print("escape");
 			return;
 		}
 		Composite oldComposite = g2d.getComposite();
