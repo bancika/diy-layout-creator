@@ -706,6 +706,13 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown,
 			boolean altDown) {
+		
+		if (shiftDown) {
+			dragAction = IPlugInPort.DND_TOGGLE_SNAP;
+		} else {
+			dragAction = 0;
+		}
+		
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		this.previousScaledPoint = scalePoint(point);
 		if (instantiationManager.getComponentTypeSlot() != null) {
