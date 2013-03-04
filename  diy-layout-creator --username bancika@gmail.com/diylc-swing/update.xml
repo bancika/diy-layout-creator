@@ -1127,6 +1127,10 @@
 					<description>Paste throws an error</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Potentiometer doesn't update when size only is changed</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Faster startup when using image component templates</description>
 				</org.diylc.appframework.update.Change>				
