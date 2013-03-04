@@ -297,6 +297,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 
 	public void setBodyDiameter(Size bodyDiameter) {
 		this.bodyDiameter = bodyDiameter;
+		body = null;
 	}
 
 	@EditableProperty(name = "Lug size")
@@ -306,6 +307,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 
 	public void setLugDiameter(Size lugDiameter) {
 		this.lugDiameter = lugDiameter;
+		body = null;
 	}
 
 	@EditableProperty(name = "Body")
