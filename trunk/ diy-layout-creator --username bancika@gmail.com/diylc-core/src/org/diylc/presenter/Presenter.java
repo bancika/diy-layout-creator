@@ -1739,6 +1739,11 @@ public class Presenter implements IPlugInPort {
 			Template template) {
 		LOG.info(String.format("setNewComponentSlot(%s)",
 				componentType == null ? null : componentType.getName()));
+		if (componentType != null && componentType.getInstanceClass() == null) {
+			LOG.info("Cannot set new component type slot for type " + componentType.getName());
+			setNewComponentTypeSlot(null, null);
+			return;
+		}
 		try {
 			instantiationManager.setComponentTypeSlot(componentType, template,
 					currentProject);
