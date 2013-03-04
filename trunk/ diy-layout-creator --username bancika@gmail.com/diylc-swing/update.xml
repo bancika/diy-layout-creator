@@ -1115,13 +1115,21 @@
 				<minor>24</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2012-10-08 20:00:00.000 CET</releaseDate>
+			<releaseDate>2013-03-04 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>				
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Snap to grid after releasing Ctrl button and creating a new component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Paste throws an error</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Faster startup when using image component templates</description>
-				</org.diylc.appframework.update.Change>
+				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
