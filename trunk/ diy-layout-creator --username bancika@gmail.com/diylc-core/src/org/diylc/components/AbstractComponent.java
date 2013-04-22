@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -90,7 +91,27 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 				return false;
 			}
 		}
-		return true;
+		int minX = Integer.MAX_VALUE;
+		int minY = Integer.MAX_VALUE;
+		int maxX = Integer.MIN_VALUE;
+		int maxY = Integer.MIN_VALUE;
+		for (int i = 0; i < getControlPointCount(); i++) {
+			Point p = getControlPoint(i);
+			if (minX > p.x) {
+				minX = p.x;
+			}
+			if (maxX < p.x) {
+				maxX = p.x;
+			}
+			if (minY > p.y) {
+				minY = p.y;
+			}
+			if (maxY < p.y) {
+				maxY = p.y;
+			}
+		}
+		Rectangle2D rect = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);		
+		return clip.intersects(rect);
 	}
 
 	protected void drawCenteredText(Graphics2D g2d, String text, int x, int y,
