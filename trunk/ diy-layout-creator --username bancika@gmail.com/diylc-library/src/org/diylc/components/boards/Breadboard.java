@@ -17,7 +17,6 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Breadboard", category = "Boards", author = "Branislav Stojkovic", description = "Prototyping solderless breadboard", instanceNamePrefix = "BB", stretchable = false, zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false)
 public class Breadboard extends AbstractComponent<Void> {
