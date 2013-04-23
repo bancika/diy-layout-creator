@@ -1148,12 +1148,28 @@
 			<changes>				
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Large components disappear when none of the edges is in the visible are of the screen</description>
+					<description>Large components disappear when none of the edges is in the visible area of the screen</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Breadboard component</description>
 				</org.diylc.appframework.update.Change>				
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>26</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2013-04-22 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Large components disappear when none of the edges is in the visible area of the screen</description>
+				</org.diylc.appframework.update.Change>		
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
