@@ -111,7 +111,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 			}
 		}
 		Rectangle2D rect = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);		
-		return clip.intersects(rect);
+		return !clip.intersects(rect);
 	}
 
 	protected void drawCenteredText(Graphics2D g2d, String text, int x, int y,
