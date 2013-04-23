@@ -706,13 +706,13 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown,
 			boolean altDown) {
-		
+
 		if (shiftDown) {
 			dragAction = IPlugInPort.DND_TOGGLE_SNAP;
 		} else {
 			dragAction = 0;
 		}
-		
+
 		Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		this.previousScaledPoint = scalePoint(point);
 		if (instantiationManager.getComponentTypeSlot() != null) {
@@ -1023,7 +1023,64 @@ public class Presenter implements IPlugInPort {
 		// them will overlap or go out of bounds.
 		int width = (int) currentProject.getWidth().convertToPixels();
 		int height = (int) currentProject.getHeight().convertToPixels();
-		boolean isFirst = true;
+
+		if (controlPointMap.size() == 1) {
+			// Determine how much we should move the components by trying to
+			// move the center point of the affected rectangle to preserve
+			// spacing.
+			// int minX = Integer.MAX_VALUE;
+			// int minY = Integer.MAX_VALUE;
+			// int maxX = Integer.MIN_VALUE;
+			// int maxY = Integer.MIN_VALUE;
+			// for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry :
+			// controlPointMap
+			// .entrySet()) {
+			// for (int i : entry.getValue()) {
+			// Point p = entry.getKey().getControlPoint(i);
+			// if (minX > p.x) {
+			// minX = p.x;
+			// }
+			// if (maxX < p.x) {
+			// maxX = p.x;
+			// }
+			// if (minY > p.y) {
+			// minY = p.y;
+			// }
+			// if (maxY < p.y) {
+			// maxY = p.y;
+			// }
+			// }
+			// }
+			// int centerX = (maxX + minX) / 2;
+			// int centerY = (maxY + minY) / 2;
+
+			Map.Entry<IDIYComponent<?>, Set<Integer>> entry = controlPointMap
+					.entrySet().iterator().next();
+
+			Point firstPoint = entry.getKey().getControlPoint(
+					entry.getValue().toArray(new Integer[] {})[0]);
+			Point testPoint = new Point(firstPoint);
+			testPoint.translate(dx, dy);
+			if (snapToGrid) {
+				CalcUtils.snapPointToGrid(testPoint, currentProject
+						.getGridSpacing());
+			}
+
+			actualDx = testPoint.x - firstPoint.x;
+			actualDy = testPoint.y - firstPoint.y;
+		} else {
+			actualDx = CalcUtils.roundToGrid(dx, currentProject
+					.getGridSpacing());
+			actualDy = CalcUtils.roundToGrid(dy, currentProject
+					.getGridSpacing());
+		}
+
+		if (actualDx == 0 && actualDy == 0) {
+			// Nothing to move.
+			return null;
+		}
+
+		// Validate if moving can be done.
 		for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap
 				.entrySet()) {
 			IDIYComponent<?> component = entry.getKey();
@@ -1034,23 +1091,6 @@ public class Presenter implements IPlugInPort {
 				// When the first point is moved, calculate how much it
 				// actually moved after snapping.
 				if (entry.getValue().contains(index)) {
-					if (isFirst) {
-						isFirst = false;
-						Point testPoint = new Point(controlPoints[index]);
-						testPoint.translate(dx, dy);
-						if (snapToGrid) {
-							CalcUtils.snapPointToGrid(testPoint, currentProject
-									.getGridSpacing());
-						}
-						actualDx = testPoint.x
-								- component.getControlPoint(index).x;
-						actualDy = testPoint.y
-								- component.getControlPoint(index).y;
-						if (actualDx == 0 && actualDy == 0) {
-							// Nothing to move.
-							return null;
-						}
-					}
 					controlPoints[index].translate(actualDx, actualDy);
 					if (controlPoints[index].x < 0
 							|| controlPoints[index].y < 0
@@ -1079,7 +1119,7 @@ public class Presenter implements IPlugInPort {
 			}
 		}
 
-		// Update all points.
+		// Update all points to new location.
 		for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap
 				.entrySet()) {
 			IDIYComponent<?> c = entry.getKey();
@@ -1740,7 +1780,8 @@ public class Presenter implements IPlugInPort {
 		LOG.info(String.format("setNewComponentSlot(%s)",
 				componentType == null ? null : componentType.getName()));
 		if (componentType != null && componentType.getInstanceClass() == null) {
-			LOG.info("Cannot set new component type slot for type " + componentType.getName());
+			LOG.info("Cannot set new component type slot for type "
+					+ componentType.getName());
 			setNewComponentTypeSlot(null, null);
 			return;
 		}
