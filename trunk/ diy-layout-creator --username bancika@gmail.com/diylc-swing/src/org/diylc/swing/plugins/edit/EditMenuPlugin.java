@@ -45,6 +45,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.ExpandSelectionAction expandSelectionImmediateAction;
 	private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
 	private ActionFactory.SaveAsTemplateAction saveAsTemplateAction;
+	private ActionFactory.RotateSelectionAction rotateClockwiseAction;
+	private ActionFactory.RotateSelectionAction rotateCounterClockwiseAction;
 
 	private UndoHandler<Project> undoHandler;
 
@@ -77,64 +79,72 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
 	public ActionFactory.CutAction getCutAction() {
 		if (cutAction == null) {
-			cutAction = ActionFactory.getInstance().createCutAction(plugInPort, clipboard, this);
+			cutAction = ActionFactory.getInstance().createCutAction(plugInPort,
+					clipboard, this);
 		}
 		return cutAction;
 	}
 
 	public ActionFactory.CopyAction getCopyAction() {
 		if (copyAction == null) {
-			copyAction = ActionFactory.getInstance().createCopyAction(plugInPort, clipboard, this);
+			copyAction = ActionFactory.getInstance().createCopyAction(
+					plugInPort, clipboard, this);
 		}
 		return copyAction;
 	}
 
 	public ActionFactory.PasteAction getPasteAction() {
 		if (pasteAction == null) {
-			pasteAction = ActionFactory.getInstance().createPasteAction(plugInPort, clipboard);
+			pasteAction = ActionFactory.getInstance().createPasteAction(
+					plugInPort, clipboard);
 		}
 		return pasteAction;
 	}
 
 	public ActionFactory.EditSelectionAction getEditSelectionAction() {
 		if (editSelectionAction == null) {
-			editSelectionAction = ActionFactory.getInstance().createEditSelectionAction(plugInPort);
+			editSelectionAction = ActionFactory.getInstance()
+					.createEditSelectionAction(plugInPort);
 		}
 		return editSelectionAction;
 	}
 
 	public ActionFactory.DeleteSelectionAction getDeleteSelectionAction() {
 		if (deleteSelectionAction == null) {
-			deleteSelectionAction = ActionFactory.getInstance().createDeleteSelectionAction(
-					plugInPort);
+			deleteSelectionAction = ActionFactory.getInstance()
+					.createDeleteSelectionAction(plugInPort);
 		}
 		return deleteSelectionAction;
 	}
 
 	public ActionFactory.GroupAction getGroupAction() {
 		if (groupAction == null) {
-			groupAction = ActionFactory.getInstance().createGroupAction(plugInPort);
+			groupAction = ActionFactory.getInstance().createGroupAction(
+					plugInPort);
 		}
 		return groupAction;
 	}
 
 	public ActionFactory.UngroupAction getUngroupAction() {
 		if (ungroupAction == null) {
-			ungroupAction = ActionFactory.getInstance().createUngroupAction(plugInPort);
+			ungroupAction = ActionFactory.getInstance().createUngroupAction(
+					plugInPort);
 		}
 		return ungroupAction;
 	}
 
 	public ActionFactory.SendToBackAction getSendToBackAction() {
 		if (sendToBackAction == null) {
-			sendToBackAction = ActionFactory.getInstance().createSendToBackAction(plugInPort);
+			sendToBackAction = ActionFactory.getInstance()
+					.createSendToBackAction(plugInPort);
 		}
 		return sendToBackAction;
 	}
 
 	public ActionFactory.BringToFrontAction getBringToFrontAction() {
 		if (bringToFrontAction == null) {
-			bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
+			bringToFrontAction = ActionFactory.getInstance()
+					.createBringToFrontAction(plugInPort);
 		}
 		return bringToFrontAction;
 	}
@@ -149,41 +159,60 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
 	public ActionFactory.RenumberAction getRenumberYAxisAction() {
 		if (renumberYAxisAction == null) {
-			renumberYAxisAction = ActionFactory.getInstance().createRenumberAction(plugInPort,
-					false);
+			renumberYAxisAction = ActionFactory.getInstance()
+					.createRenumberAction(plugInPort, false);
 		}
 		return renumberYAxisAction;
 	}
 
 	public ActionFactory.ExpandSelectionAction getExpandSelectionAllAction() {
 		if (expandSelectionAllAction == null) {
-			expandSelectionAllAction = ActionFactory.getInstance().createExpandSelectionAction(
-					plugInPort, ExpansionMode.ALL);
+			expandSelectionAllAction = ActionFactory.getInstance()
+					.createExpandSelectionAction(plugInPort, ExpansionMode.ALL);
 		}
 		return expandSelectionAllAction;
 	}
 
 	public ActionFactory.ExpandSelectionAction getExpandSelectionImmediateAction() {
 		if (expandSelectionImmediateAction == null) {
-			expandSelectionImmediateAction = ActionFactory.getInstance().createExpandSelectionAction(
-					plugInPort, ExpansionMode.IMMEDIATE);
+			expandSelectionImmediateAction = ActionFactory.getInstance()
+					.createExpandSelectionAction(plugInPort,
+							ExpansionMode.IMMEDIATE);
 		}
 		return expandSelectionImmediateAction;
 	}
 
 	public ActionFactory.ExpandSelectionAction getExpandSelectionSameTypeAction() {
 		if (expandSelectionSameTypeAction == null) {
-			expandSelectionSameTypeAction = ActionFactory.getInstance().createExpandSelectionAction(
-					plugInPort, ExpansionMode.SAME_TYPE);
+			expandSelectionSameTypeAction = ActionFactory.getInstance()
+					.createExpandSelectionAction(plugInPort,
+							ExpansionMode.SAME_TYPE);
 		}
 		return expandSelectionSameTypeAction;
 	}
-	
+
 	public ActionFactory.SaveAsTemplateAction getSaveAsTemplateAction() {
 		if (saveAsTemplateAction == null) {
-			saveAsTemplateAction = ActionFactory.getInstance().createSaveAsTemplateAction(plugInPort);
+			saveAsTemplateAction = ActionFactory.getInstance()
+					.createSaveAsTemplateAction(plugInPort);
 		}
 		return saveAsTemplateAction;
+	}
+
+	public ActionFactory.RotateSelectionAction getRotateClockwiseAction() {
+		if (rotateClockwiseAction == null) {
+			rotateClockwiseAction = ActionFactory.getInstance()
+					.createRotateSelectionAction(plugInPort, 1);
+		}
+		return rotateClockwiseAction;
+	}
+
+	public ActionFactory.RotateSelectionAction getRotateCounterclockwiseAction() {
+		if (rotateCounterClockwiseAction == null) {
+			rotateCounterClockwiseAction = ActionFactory.getInstance()
+					.createRotateSelectionAction(plugInPort, -1);
+		}
+		return rotateCounterClockwiseAction;
 	}
 
 	@Override
@@ -199,31 +228,40 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectMenuAction(getCopyAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getPasteAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
-		swingUI.injectMenuAction(actionFactory.createSelectAllAction(plugInPort), EDIT_TITLE);
+		swingUI.injectMenuAction(actionFactory
+				.createSelectAllAction(plugInPort), EDIT_TITLE);
 		swingUI.injectMenuAction(getEditSelectionAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getDeleteSelectionAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getRotateClockwiseAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getRotateCounterclockwiseAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getGroupAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getUngroupAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getSendToBackAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getBringToFrontAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
 		swingUI.injectMenuAction(getSaveAsTemplateAction(), EDIT_TITLE);
-		swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(), EDIT_TITLE);
+		swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(),
+				EDIT_TITLE);
 		swingUI.injectMenuAction(getRenumberXAxisAction(), RENUMBER_TITLE);
 		swingUI.injectMenuAction(getRenumberYAxisAction(), RENUMBER_TITLE);
-		swingUI.injectSubmenu(EXPAND_TITLE, IconLoader.BranchAdd.getIcon(), EDIT_TITLE);
+		swingUI.injectSubmenu(EXPAND_TITLE, IconLoader.BranchAdd.getIcon(),
+				EDIT_TITLE);
 		swingUI.injectMenuAction(getExpandSelectionAllAction(), EXPAND_TITLE);
-		swingUI.injectMenuAction(getExpandSelectionImmediateAction(), EXPAND_TITLE);
-		swingUI.injectMenuAction(getExpandSelectionSameTypeAction(), EXPAND_TITLE);
+		swingUI.injectMenuAction(getExpandSelectionImmediateAction(),
+				EXPAND_TITLE);
+		swingUI.injectMenuAction(getExpandSelectionSameTypeAction(),
+				EXPAND_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
-		swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
+		swingUI.injectMenuAction(actionFactory
+				.createEditProjectAction(plugInPort), EDIT_TITLE);
 
 		refreshActions();
 	}
 
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
-		return EnumSet.of(EventType.SELECTION_CHANGED, EventType.PROJECT_MODIFIED);
+		return EnumSet.of(EventType.SELECTION_CHANGED,
+				EventType.PROJECT_MODIFIED);
 	}
 
 	@Override
@@ -233,7 +271,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 			refreshActions();
 			break;
 		case PROJECT_MODIFIED:
-			undoHandler.stateChanged((Project) params[0], (Project) params[1], (String) params[2]);
+			undoHandler.stateChanged((Project) params[0], (Project) params[1],
+					(String) params[2]);
 			break;
 		}
 	}
@@ -243,8 +282,10 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		getCutAction().setEnabled(enabled);
 		getCopyAction().setEnabled(enabled);
 		try {
-			getPasteAction().setEnabled(
-					clipboard.isDataFlavorAvailable(ComponentTransferable.listFlavor));
+			getPasteAction()
+					.setEnabled(
+							clipboard
+									.isDataFlavorAvailable(ComponentTransferable.listFlavor));
 		} catch (Exception e) {
 			getPasteAction().setEnabled(false);
 		}
