@@ -67,6 +67,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private ActionFactory.ExpandSelectionAction expandSelectionAllAction;
 	private ActionFactory.ExpandSelectionAction expandSelectionImmediateAction;
 	private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
+	private ActionFactory.RotateSelectionAction rotateClockwiseAction;
+	private ActionFactory.RotateSelectionAction rotateCounterclockwiseAction;
 
 	private IPlugInPort plugInPort;
 	private ISwingUI swingUI;
@@ -246,6 +248,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.addSeparator();
 			popupMenu.add(getEditSelectionAction());
 			popupMenu.add(getDeleteSelectionAction());
+			popupMenu.add(getRotateClockwiseAction());
+			popupMenu.add(getRotateCounterclockwiseAction());
 			popupMenu.add(getGroupAction());
 			popupMenu.add(getUngroupAction());
 			popupMenu.add(getSendToBackAction());
@@ -336,6 +340,20 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 					.createDeleteSelectionAction(plugInPort);
 		}
 		return deleteSelectionAction;
+	}
+	
+	public ActionFactory.RotateSelectionAction getRotateClockwiseAction() {
+		if (rotateClockwiseAction == null) {
+			rotateClockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, 1);
+		}
+		return rotateClockwiseAction;
+	}
+	
+	public ActionFactory.RotateSelectionAction getRotateCounterclockwiseAction() {
+		if (rotateCounterclockwiseAction == null) {
+			rotateCounterclockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, -1);
+		}
+		return rotateCounterclockwiseAction;
 	}
 
 	public ActionFactory.SaveAsTemplateAction getSaveAsTemplateAction() {

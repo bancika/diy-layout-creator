@@ -142,6 +142,11 @@ public class ActionFactory {
 		return new ExpandSelectionAction(plugInPort, expansionMode);
 	}
 
+	public RotateSelectionAction createRotateSelectionAction(
+			IPlugInPort plugInPort, int direction) {
+		return new RotateSelectionAction(plugInPort, direction);
+	}
+
 	public SendToBackAction createSendToBackAction(IPlugInPort plugInPort) {
 		return new SendToBackAction(plugInPort);
 	}
@@ -868,6 +873,39 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Expand Selection triggered: " + expansionMode);
 			plugInPort.expandSelection(expansionMode);
+		}
+	}
+
+	public static class RotateSelectionAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		private IPlugInPort plugInPort;
+		private int direction;
+
+		public RotateSelectionAction(IPlugInPort plugInPort, int direction) {
+			super();
+			this.plugInPort = plugInPort;
+			this.direction = direction;
+			if (direction > 0) {
+				putValue(AbstractAction.NAME, "Rotate Clockwise");
+				putValue(AbstractAction.SMALL_ICON, IconLoader.RotateCW
+						.getIcon());
+				putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke
+						.getKeyStroke(KeyEvent.VK_RIGHT, ActionEvent.ALT_MASK));
+			} else {
+				putValue(AbstractAction.NAME, "Rotate Counterclockwise");
+				putValue(AbstractAction.SMALL_ICON, IconLoader.RotateCCW
+						.getIcon());
+				putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke
+						.getKeyStroke(KeyEvent.VK_LEFT, ActionEvent.ALT_MASK));
+			}
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("Rotate Selection triggered: " + direction);
+			plugInPort.rotateSelection(direction);
 		}
 	}
 
