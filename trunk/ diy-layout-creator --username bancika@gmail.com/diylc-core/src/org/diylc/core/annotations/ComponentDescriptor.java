@@ -76,5 +76,11 @@ public @interface ComponentDescriptor {
 	 *         mode.
 	 */
 	boolean autoEdit() default true;
+	
+	/**
+	 * @return true if component may be rotated, false otherwise
+	 * @return
+	 */
+	boolean rotatable() default true;
 
 }
