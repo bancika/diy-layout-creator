@@ -28,11 +28,12 @@ public class ComponentType {
 	private boolean stretchable;
 	private BomPolicy bomPolicy;
 	private boolean autoEdit;
+	private boolean rotatable;
 
 	public ComponentType(String name, String description, CreationMethod creationMethod,
 			String category, String namePrefix, String author, Icon icon,
 			Class<? extends IDIYComponent<?>> instanceClass, double zOrder, boolean flexibleZOrder,
-					boolean stretchable, BomPolicy bomPolicy, boolean autoEdit) {
+					boolean stretchable, BomPolicy bomPolicy, boolean autoEdit, boolean rotatable) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -47,6 +48,7 @@ public class ComponentType {
 		this.stretchable = stretchable;
 		this.bomPolicy = bomPolicy;
 		this.autoEdit = autoEdit;
+		this.rotatable = rotatable;
 	}
 
 	public String getName() {
@@ -99,6 +101,10 @@ public class ComponentType {
 	
 	public boolean isAutoEdit() {
 		return autoEdit;
+	}
+	
+	public boolean isRotatable() {
+		return rotatable;
 	}
 
 	@Override

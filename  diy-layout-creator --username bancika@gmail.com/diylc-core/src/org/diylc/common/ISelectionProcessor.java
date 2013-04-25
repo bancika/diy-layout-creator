@@ -34,8 +34,8 @@ public interface ISelectionProcessor {
 	List<IDIYComponent<?>> findComponentsAt(Point point);
 
 	/**
-	 * Expands the current selection to include surrounding components.
-	 * Options are controlled with <code>expansionMode</code> flag.
+	 * Expands the current selection to include surrounding components. Options
+	 * are controlled with <code>expansionMode</code> flag.
 	 * 
 	 * @param expansionMode
 	 */
@@ -44,5 +44,13 @@ public interface ISelectionProcessor {
 	/**
 	 * Selects all components in the project.
 	 */
-	void selectAll();	
+	void selectAll();
+
+	/**
+	 * Rotates selection for 90 degrees.
+	 * 
+	 * @param direction
+	 *            1 for clockwise, -1 for counter-clockwise
+	 */
+	void rotateSelection(int direction);
 }

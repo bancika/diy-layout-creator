@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
@@ -40,6 +41,8 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.common.IKeyProcessor;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.Orientation;
+import org.diylc.common.OrientationHV;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.components.connectivity.SolderPad;
 import org.diylc.core.ExpansionMode;
@@ -625,6 +628,28 @@ public class Presenter implements IPlugInPort {
 			return false;
 		}
 
+		boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(
+				IPlugInPort.SNAP_TO_GRID_KEY, true);
+		if (shiftDown) {
+			snapToGrid = !snapToGrid;
+		}
+
+		if (altDown) {
+			Project oldProject = null;
+			if (key == IKeyProcessor.VK_RIGHT) {
+				oldProject = currentProject.clone();
+				rotateComponents(this.selectedComponents, 1, snapToGrid);
+			} else if (key == IKeyProcessor.VK_LEFT) {
+				oldProject = currentProject.clone();
+				rotateComponents(this.selectedComponents, -1, snapToGrid);
+			} else
+				return false;
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
+					oldProject, currentProject.clone(), "Rotate Selection");
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+			return true;
+		}
+
 		// Expand control points to include all stuck components.
 		boolean sticky = ConfigurationManager.getInstance().readBoolean(
 				IPlugInPort.STICKY_POINTS_KEY, true);
@@ -634,12 +659,6 @@ public class Presenter implements IPlugInPort {
 
 		if (sticky) {
 			includeStuckComponents(controlPointMap);
-		}
-
-		boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(
-				IPlugInPort.SNAP_TO_GRID_KEY, true);
-		if (shiftDown) {
-			snapToGrid = !snapToGrid;
 		}
 
 		int d;
@@ -1025,35 +1044,6 @@ public class Presenter implements IPlugInPort {
 		int height = (int) currentProject.getHeight().convertToPixels();
 
 		if (controlPointMap.size() == 1) {
-			// Determine how much we should move the components by trying to
-			// move the center point of the affected rectangle to preserve
-			// spacing.
-			// int minX = Integer.MAX_VALUE;
-			// int minY = Integer.MAX_VALUE;
-			// int maxX = Integer.MIN_VALUE;
-			// int maxY = Integer.MIN_VALUE;
-			// for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry :
-			// controlPointMap
-			// .entrySet()) {
-			// for (int i : entry.getValue()) {
-			// Point p = entry.getKey().getControlPoint(i);
-			// if (minX > p.x) {
-			// minX = p.x;
-			// }
-			// if (maxX < p.x) {
-			// maxX = p.x;
-			// }
-			// if (minY > p.y) {
-			// minY = p.y;
-			// }
-			// if (maxY < p.y) {
-			// maxY = p.y;
-			// }
-			// }
-			// }
-			// int centerX = (maxX + minX) / 2;
-			// int centerY = (maxY + minY) / 2;
-
 			Map.Entry<IDIYComponent<?>, Set<Integer>> entry = controlPointMap
 					.entrySet().iterator().next();
 
@@ -1131,6 +1121,133 @@ public class Presenter implements IPlugInPort {
 			}
 		}
 		return new Point(actualDx, actualDy);
+	}
+
+	@Override
+	public void rotateSelection(int direction) {
+		if (!selectedComponents.isEmpty()) {
+			Project oldProject = currentProject.clone();
+			rotateComponents(this.selectedComponents, direction, isSnapToGrid());
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
+					oldProject, currentProject.clone(), "Rotate Selection");
+			messageDispatcher.dispatchMessage(EventType.REPAINT);
+		}
+	}
+
+	/**
+	 * 
+	 * @param direction
+	 *            1 for clockwise, -1 for counter-clockwise
+	 */
+	private void rotateComponents(List<IDIYComponent<?>> components,
+			int direction, boolean snapToGrid) {
+		Point center = getCenterOf(components, snapToGrid);
+
+		AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2
+				* direction, center.x, center.y);
+
+		// Update all points to new location.
+		for (IDIYComponent<?> component : components) {
+			drawingManager.invalidateComponent(component);
+			ComponentType type = ComponentProcessor.getInstance()
+					.extractComponentTypeFrom(
+							(Class<? extends IDIYComponent<?>>) component
+									.getClass());
+			if (type.isRotatable()) {
+				for (int index = 0; index < component.getControlPointCount(); index++) {
+					Point p = new Point(component.getControlPoint(index));
+					rotate.transform(p, p);
+					component.setControlPoint(p, index);
+				}
+				// If component has orientation, change it too
+				List<PropertyWrapper> newProperties = ComponentProcessor
+						.getInstance().extractProperties(component.getClass());
+				for (PropertyWrapper property : newProperties) {
+					if (property.getType() == Orientation.class) {
+						try {
+							property.readFrom(component);
+							Orientation orientation = (Orientation) property
+									.getValue();
+							Orientation[] values = Orientation.values();
+							int newIndex = orientation.ordinal() + direction;
+							if (newIndex < 0)
+								newIndex = values.length - 1;
+							else if (newIndex >= values.length)
+								newIndex = 0;
+							property.setValue(values[newIndex]);
+							property.writeTo(component);
+						} catch (Exception e) {
+							LOG.error(
+									"Could not change component orientation for "
+											+ component.getName(), e);
+						}
+					} else if (property.getType() == OrientationHV.class) {
+						try {
+							property.readFrom(component);
+							OrientationHV orientation = (OrientationHV) property
+									.getValue();
+							property
+									.setValue(OrientationHV.values()[1 - orientation
+											.ordinal()]);
+							property.writeTo(component);
+						} catch (Exception e) {
+							LOG.error(
+									"Could not change component orientation for "
+											+ component.getName(), e);
+						}
+					}
+				}
+			} else {
+				// Non-rotatable
+				Point componentCenter = getCenterOf(Arrays
+						.asList(new IDIYComponent<?>[] { component }), false);
+				Point rotatedComponentCenter = new Point();
+				rotate.transform(componentCenter, rotatedComponentCenter);
+				for (int index = 0; index < component.getControlPointCount(); index++) {
+					Point p = new Point(component.getControlPoint(index));
+					p.translate(rotatedComponentCenter.x - componentCenter.x,
+							rotatedComponentCenter.y - componentCenter.y);
+					component.setControlPoint(p, index);
+				}
+			}
+		}
+	}
+
+	private Point getCenterOf(List<IDIYComponent<?>> components,
+			boolean snapToGrid) {
+		// Determine center of rotation
+		int minX = Integer.MAX_VALUE;
+		int minY = Integer.MAX_VALUE;
+		int maxX = Integer.MIN_VALUE;
+		int maxY = Integer.MIN_VALUE;
+		for (IDIYComponent<?> component : components) {
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				Point p = component.getControlPoint(i);
+				if (minX > p.x) {
+					minX = p.x;
+				}
+				if (maxX < p.x) {
+					maxX = p.x;
+				}
+				if (minY > p.y) {
+					minY = p.y;
+				}
+				if (maxY < p.y) {
+					maxY = p.y;
+				}
+			}
+		}
+		int centerX = (maxX + minX) / 2;
+		int centerY = (maxY + minY) / 2;
+
+		if (snapToGrid) {
+			CalcUtils
+					.roundToGrid(centerX, this.currentProject.getGridSpacing());
+			CalcUtils
+					.roundToGrid(centerY, this.currentProject.getGridSpacing());
+		}
+
+		return new Point(centerX, centerY);
 	}
 
 	@Override

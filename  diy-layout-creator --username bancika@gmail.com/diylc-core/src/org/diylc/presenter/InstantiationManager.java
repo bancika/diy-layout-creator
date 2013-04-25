@@ -42,7 +42,7 @@ public class InstantiationManager {
 	private static final ComponentType clipboardType = new ComponentType(
 			"Clipboard contents", "Components from the clipboard",
 			CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false,
-			false, null, false);
+			false, null, false, true);
 
 	public InstantiationManager() {
 	}
