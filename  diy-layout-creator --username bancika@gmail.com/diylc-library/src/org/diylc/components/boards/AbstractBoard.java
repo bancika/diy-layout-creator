@@ -56,13 +56,13 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 					- firstPoint.y);
 			g2d.setComposite(oldComposite);
 		}
+		// Do not track any changes that follow because the whole board has been
+		// tracked so far.
+		drawingObserver.stopTracking();
 		g2d.setColor(componentState == ComponentState.SELECTED
 				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
 		g2d.drawRect(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y
 				- firstPoint.y);
-		// Do not track any changes that follow because the whole board has been
-		// tracked so far.
-		drawingObserver.stopTracking();
 	}
 
 	protected void drawCoordinates(Graphics2D g2d, int spacing) {
