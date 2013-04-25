@@ -12,7 +12,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "BJT Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "Bipolar junction transistor schematic symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "BJT Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "Q", description = "Bipolar junction transistor schematic symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT, rotatable = false)
 public class BJTSymbol extends AbstractTransistorSymbol {
 
 	private static final long serialVersionUID = 1L;
@@ -49,19 +49,22 @@ public class BJTSymbol extends AbstractTransistorSymbol {
 			double theta;
 			if (polarity == BJTPolarity.NPN) {
 				theta = Math.atan(1.0 / 3);
-				arrow = new Area(new Polygon(new int[] { x + pinSpacing, x + pinSpacing,
-						x + pinSpacing * 10 / 6 }, new int[] { y - pinSpacing / 5 + pinSpacing / 2,
-						y + pinSpacing / 5 + pinSpacing / 2, y + pinSpacing / 2 }, 3));
-				arrow.transform(AffineTransform.getRotateInstance(theta, x + pinSpacing / 2, y
-						+ pinSpacing / 2));
+				arrow = new Area(new Polygon(new int[] { x + pinSpacing,
+						x + pinSpacing, x + pinSpacing * 10 / 6 },
+						new int[] { y - pinSpacing / 5 + pinSpacing / 2,
+								y + pinSpacing / 5 + pinSpacing / 2,
+								y + pinSpacing / 2 }, 3));
+				arrow.transform(AffineTransform.getRotateInstance(theta, x
+						+ pinSpacing / 2, y + pinSpacing / 2));
 			} else {
 				theta = -Math.atan(1.0 / 3);
-				arrow = new Area(new Polygon(new int[] { x + pinSpacing, x + pinSpacing * 10 / 6,
-						x + pinSpacing * 10 / 6 }, new int[] { y - pinSpacing / 2,
-						y - pinSpacing / 5 - pinSpacing / 2, y + pinSpacing / 5 - pinSpacing / 2 },
-						3));
-				arrow.transform(AffineTransform.getRotateInstance(theta, x + pinSpacing / 2, y
-						- pinSpacing / 2));
+				arrow = new Area(new Polygon(new int[] { x + pinSpacing,
+						x + pinSpacing * 10 / 6, x + pinSpacing * 10 / 6 },
+						new int[] { y - pinSpacing / 2,
+								y - pinSpacing / 5 - pinSpacing / 2,
+								y + pinSpacing / 5 - pinSpacing / 2 }, 3));
+				arrow.transform(AffineTransform.getRotateInstance(theta, x
+						+ pinSpacing / 2, y - pinSpacing / 2));
 			}
 			body[2] = arrow;
 		}
@@ -82,7 +85,8 @@ public class BJTSymbol extends AbstractTransistorSymbol {
 		g2d.drawLine(width / 3, height / 3 + 1, width * 3 / 4, height / 4);
 
 		g2d.drawLine(width * 3 / 4, height - 1, width * 3 / 4, height * 3 / 4);
-		g2d.drawLine(width / 3, height * 2 / 3 - 1, width * 3 / 4, height * 3 / 4);
+		g2d.drawLine(width / 3, height * 2 / 3 - 1, width * 3 / 4,
+				height * 3 / 4);
 	}
 
 	@EditableProperty(name = "Polarity")

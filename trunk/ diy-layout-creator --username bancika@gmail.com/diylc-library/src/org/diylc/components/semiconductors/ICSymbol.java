@@ -30,7 +30,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "IC Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "IC symbol with 3 or 5 contacts", stretchable = false, zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "IC Symbol", author = "Branislav Stojkovic", category = "Semiconductors", instanceNamePrefix = "IC", description = "IC symbol with 3 or 5 contacts", stretchable = false, zOrder = IDIYComponent.COMPONENT, rotatable = false)
 public class ICSymbol extends AbstractTransparentComponent<String> {
 
 	private static final long serialVersionUID = 1L;
