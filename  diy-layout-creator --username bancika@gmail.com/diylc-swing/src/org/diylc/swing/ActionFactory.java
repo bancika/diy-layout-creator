@@ -8,6 +8,7 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Theme;
 import org.diylc.images.IconLoader;
+import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
@@ -57,6 +59,10 @@ public class ActionFactory {
 
 	public OpenAction createOpenAction(IPlugInPort plugInPort, ISwingUI swingUI) {
 		return new OpenAction(plugInPort, swingUI);
+	}
+	
+	public ImportAction createImportAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+		return new ImportAction(plugInPort, swingUI);
 	}
 
 	public SaveAction createSaveAction(IPlugInPort plugInPort, ISwingUI swingUI) {
@@ -247,6 +253,86 @@ public class ActionFactory {
 					public Void doInBackground() throws Exception {
 						LOG.debug("Opening from " + file.getAbsolutePath());
 						plugInPort.loadProjectFromFile(file.getAbsolutePath());
+						return null;
+					}
+
+					@Override
+					public void complete(Void result) {
+					}
+
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage("Could not open file. "
+								+ e.getMessage(), "Error",
+								ISwingUI.ERROR_MESSAGE);
+					}
+				});
+			}
+		}
+	}
+	
+	public static class ImportAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		private IPlugInPort plugInPort;
+		private ISwingUI swingUI;
+		private Presenter presenter;
+
+		public ImportAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+			super();
+			this.plugInPort = plugInPort;
+			this.swingUI = swingUI;
+			this.presenter = new Presenter(new IView() {
+
+				@Override
+				public int showConfirmDialog(String message, String title, int optionType,
+						int messageType) {
+					return JOptionPane.showConfirmDialog(null, message, title,
+							optionType, messageType);
+				}
+
+				@Override
+				public void showMessage(String message, String title, int messageType) {
+					JOptionPane.showMessageDialog(null, message, title, messageType);
+				}
+				
+				@Override
+				public File promptFileSave() {
+					return null;
+				}
+				
+				@Override
+				public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+					return false;
+				}
+			});
+			putValue(AbstractAction.NAME, "Import");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+			putValue(AbstractAction.SMALL_ICON, IconLoader.ElementInto.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOG.info("ImportAction triggered");
+
+			final File file = DialogFactory.getInstance().showOpenDialog(
+					FileFilterEnum.DIY.getFilter(), null,
+					FileFilterEnum.DIY.getExtensions()[0], null);
+			if (file != null) {
+				swingUI.executeBackgroundTask(new ITask<Void>() {
+
+					@Override
+					public Void doInBackground() throws Exception {
+						LOG.debug("Opening from " + file.getAbsolutePath());
+						// Load project in temp presenter
+						presenter.loadProjectFromFile(file.getAbsolutePath());
+						// Grab all components and paste them into the main presenter
+						plugInPort.pasteComponents(presenter.getCurrentProject().getComponents());
+						// Cleanup components in the temp presenter, don't need them anymore
+						presenter.selectAll();
+						presenter.deleteSelectedComponents();
 						return null;
 					}
 

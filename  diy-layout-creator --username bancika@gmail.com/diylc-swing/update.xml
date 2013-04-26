@@ -1189,7 +1189,11 @@
 			</versionNumber>
 			<releaseDate>2013-04-25 20:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>				
+			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to import existing DIY files into a project</description>
+				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added primitive shapes - ellipse, polygon and (rounded) rectangle</description>
