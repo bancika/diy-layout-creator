@@ -1191,6 +1191,10 @@
 			<name></name>
 			<changes>	
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Moving multiple components doesn't honor snap to grid OFF setting</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ability to import existing DIY files into a project</description>
 				</org.diylc.appframework.update.Change>				
