@@ -140,8 +140,8 @@ public class InstantiationManager {
 				}
 			}
 		}
-		int x = (minX + maxX) / 2;
-		int y = (minY + maxY) / 2;
+		int x = minX;
+		int y = minY;
 		if (snapToGrid) {
 			x = CalcUtils.roundToGrid(x, gridSpacing);
 			x = CalcUtils.roundToGrid(x, gridSpacing);
