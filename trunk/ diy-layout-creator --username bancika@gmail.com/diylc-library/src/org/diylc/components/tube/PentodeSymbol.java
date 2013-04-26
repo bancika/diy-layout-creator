@@ -13,7 +13,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "Pentode Symbol", author = "Branislav Stojkovic", category = "Tubes", instanceNamePrefix = "V", description = "Pentode tube symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT, rotatable = false)
+@ComponentDescriptor(name = "Pentode Symbol", author = "Branislav Stojkovic", category = "Schematics", instanceNamePrefix = "V", description = "Pentode tube symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT, rotatable = false)
 public class PentodeSymbol extends AbstractTubeSymbol {
 
 	private static final long serialVersionUID = 1L;

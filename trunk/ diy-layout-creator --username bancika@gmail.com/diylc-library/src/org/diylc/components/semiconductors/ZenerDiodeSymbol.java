@@ -10,7 +10,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Zener diode (schematic symbol)", author = "Branislav Stojkovic", category = "Semiconductors", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Zener diode schematic symbol", zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Zener diode (schematic symbol)", author = "Branislav Stojkovic", category = "Schematics", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Zener diode schematic symbol", zOrder = IDIYComponent.COMPONENT)
 public class ZenerDiodeSymbol extends AbstractDiodeSymbol {
 
 	private static final long serialVersionUID = 1L;
