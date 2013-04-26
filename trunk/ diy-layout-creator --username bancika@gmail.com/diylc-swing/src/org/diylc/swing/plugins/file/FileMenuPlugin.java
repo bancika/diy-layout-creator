@@ -37,6 +37,7 @@ public class FileMenuPlugin implements IPlugIn {
 		ActionFactory actionFactory = ActionFactory.getInstance();
 		swingUI.injectMenuAction(actionFactory.createNewAction(plugInPort), FILE_TITLE);
 		swingUI.injectMenuAction(actionFactory.createOpenAction(plugInPort, swingUI), FILE_TITLE);
+		swingUI.injectMenuAction(actionFactory.createImportAction(plugInPort, swingUI), FILE_TITLE);
 		swingUI.injectMenuAction(actionFactory.createSaveAction(plugInPort, swingUI), FILE_TITLE);
 		swingUI.injectMenuAction(actionFactory.createSaveAsAction(plugInPort, swingUI), FILE_TITLE);
 		swingUI.injectMenuAction(null, FILE_TITLE);
