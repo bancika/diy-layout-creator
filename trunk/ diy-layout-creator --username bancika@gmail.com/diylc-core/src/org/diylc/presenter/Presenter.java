@@ -687,7 +687,7 @@ public class Presenter implements IPlugInPort {
 		}
 
 		Project oldProject = currentProject.clone();
-		moveSelectedComponents(controlPointMap, dx, dy, snapToGrid);
+		moveComponents(controlPointMap, dx, dy, snapToGrid);
 		messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
 				oldProject, currentProject.clone(), "Move Selection");
 		messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1007,7 +1007,7 @@ public class Presenter implements IPlugInPort {
 			int dx = (scaledPoint.x - previousDragPoint.x);
 			int dy = (scaledPoint.y - previousDragPoint.y);
 
-			Point actualD = moveSelectedComponents(this.controlPointMap, dx,
+			Point actualD = moveComponents(this.controlPointMap, dx,
 					dy, isSnapToGrid());
 			if (actualD == null)
 				return true;
@@ -1031,7 +1031,7 @@ public class Presenter implements IPlugInPort {
 		return true;
 	}
 
-	private Point moveSelectedComponents(
+	private Point moveComponents(
 			Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx,
 			int dy, boolean snapToGrid) {
 		// After we make the transfer and snap to grid, calculate actual dx
@@ -1058,11 +1058,14 @@ public class Presenter implements IPlugInPort {
 
 			actualDx = testPoint.x - firstPoint.x;
 			actualDy = testPoint.y - firstPoint.y;
-		} else {
+		} else if (snapToGrid) {
 			actualDx = CalcUtils.roundToGrid(dx, currentProject
 					.getGridSpacing());
 			actualDy = CalcUtils.roundToGrid(dy, currentProject
 					.getGridSpacing());
+		} else {
+			actualDx = dx;
+			actualDy = dy;
 		}
 
 		if (actualDx == 0 && actualDy == 0) {
