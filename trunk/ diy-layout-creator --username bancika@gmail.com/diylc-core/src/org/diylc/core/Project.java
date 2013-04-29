@@ -214,8 +214,8 @@ public class Project implements Serializable {
 		public void validate(Object value) throws ValidationException {
 			super.validate(value);
 			Size size = (Size) value;
-			if (size.compareTo(new Size(0.5d, SizeUnit.mm)) < 0) {
-				throw new ValidationException("must be at least 0.5mm");
+			if (size.compareTo(new Size(0.1d, SizeUnit.mm)) < 0) {
+				throw new ValidationException("must be at least 0.1mm");
 			}
 			if (size.compareTo(new Size(1d, SizeUnit.in)) > 0) {
 				throw new ValidationException("must be less than 1in");
