@@ -34,7 +34,7 @@ public class TraceCut extends AbstractComponent<Void> {
 	private Color fillColor = FILL_COLOR;
 	private Color borderColor = BORDER_COLOR;
 	private Color boardColor = AbstractBoard.BOARD_COLOR;
-	private boolean cutBetweenHoles = false;
+	private Boolean cutBetweenHoles = true;
 	private Size holeSpacing = VeroBoard.SPACING;
 
 	protected Point point = new Point(0, 0);
@@ -46,10 +46,10 @@ public class TraceCut extends AbstractComponent<Void> {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
-		int size = getClosestOdd((int) this.size.convertToPixels());
-		int holeSpacing = getClosestOdd(this.holeSpacing.convertToPixels());
+		int size = getClosestOdd((int) this.size.convertToPixels());		
 		int cutWidth = getClosestOdd((int) CUT_WIDTH.convertToPixels());
-		if (cutBetweenHoles) {
+		if (getCutBetweenHoles()) {
+			int holeSpacing = getClosestOdd(getHoleSpacing().convertToPixels());
 			g2d
 			.setColor(componentState == ComponentState.SELECTED
 					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
@@ -147,6 +147,9 @@ public class TraceCut extends AbstractComponent<Void> {
 
 	@EditableProperty(name = "Cut between holes")
 	public boolean getCutBetweenHoles() {
+		if (cutBetweenHoles == null) {
+			cutBetweenHoles = false;
+		}
 		return cutBetweenHoles;
 	}
 	
@@ -156,6 +159,9 @@ public class TraceCut extends AbstractComponent<Void> {
 	
 	@EditableProperty(name = "Board")
 	public Color getBoardColor() {
+		if (boardColor == null) {
+			boardColor = AbstractBoard.BOARD_COLOR;
+		}
 		return boardColor;
 	}
 	
@@ -165,6 +171,9 @@ public class TraceCut extends AbstractComponent<Void> {
 	
 	@EditableProperty(name = "Hole spacing")
 	public Size getHoleSpacing() {
+		if (holeSpacing == null) {
+			holeSpacing = VeroBoard.SPACING;
+		}
 		return holeSpacing;
 	}
 	
