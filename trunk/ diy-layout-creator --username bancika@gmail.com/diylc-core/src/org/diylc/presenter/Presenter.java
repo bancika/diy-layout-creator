@@ -578,25 +578,25 @@ public class Presenter implements IPlugInPort {
 						newSelection.clear();
 					}
 				} else {
-					IDIYComponent<?> component = components.get(0);
+					IDIYComponent<?> topComponent = components.get(0);
 					// If ctrl is pressed just toggle the component under mouse
 					// cursor.
 					if (ctrlDown) {
-						if (newSelection.contains(component)) {
+						if (newSelection.contains(topComponent)) {
 							newSelection
-									.removeAll(findAllGroupedComponents(component));
+									.removeAll(findAllGroupedComponents(topComponent));
 						} else {
 							newSelection
-									.addAll(findAllGroupedComponents(component));
+									.addAll(findAllGroupedComponents(topComponent));
 						}
 					} else {
 						// Otherwise just select that one component.
 						if (button == BUTTON1
-								|| !selectedComponents.contains(component)) {
+								|| !newSelection.contains(topComponent)) {
 							newSelection.clear();
 						}
 						newSelection
-								.addAll(findAllGroupedComponents(component));
+								.addAll(findAllGroupedComponents(topComponent));
 					}
 				}
 				updateSelection(newSelection);
@@ -612,8 +612,11 @@ public class Presenter implements IPlugInPort {
 	@Override
 	public boolean keyPressed(int key, boolean ctrlDown, boolean shiftDown,
 			boolean altDown) {
+		if (key != VK_DOWN && key != VK_LEFT && key != VK_UP && key != VK_RIGHT) {
+			return false;
+		}
 		LOG.debug(String.format("keyPressed(%s, %s, %s, %s)", key, ctrlDown,
-				shiftDown, altDown));
+				shiftDown, altDown));		
 		Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		// If there aren't any control points, try to add all the selected
 		// components with all their control points. That will allow the
