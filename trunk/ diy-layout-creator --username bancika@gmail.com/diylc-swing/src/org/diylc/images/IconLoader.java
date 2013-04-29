@@ -37,8 +37,9 @@ public enum IconLoader {
 			"document_edit.png"), EditComponent("edit_component.png"), Size(
 			"size.png"), Front("front.png"), Back("back.png"), Pens("pens.png"), Sort(
 			"sort.png"), ElementsSelection("elements_selection.png"), BranchAdd(
-			"branch_add.png"), Briefcase_Add("briefcase_add.png"), RotateCW(
-			"rotate_cw.png"), RotateCCW("rotate_ccw.png"), ElementInto("element_into.png");
+			"branch_add.png"), BriefcaseAdd("briefcase_add.png"), BriefcaseInto(
+			"briefcase_into.png"), RotateCW("rotate_cw.png"), RotateCCW(
+			"rotate_ccw.png"), ElementInto("element_into.png");
 
 	protected String name;
 

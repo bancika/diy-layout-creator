@@ -233,11 +233,11 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectMenuAction(getEditSelectionAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getDeleteSelectionAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getRotateClockwiseAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getRotateCounterclockwiseAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getGroupAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getUngroupAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getRotateCounterclockwiseAction(), EDIT_TITLE);		
 		swingUI.injectMenuAction(getSendToBackAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getBringToFrontAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getGroupAction(), EDIT_TITLE);
+		swingUI.injectMenuAction(getUngroupAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
 		swingUI.injectMenuAction(getSaveAsTemplateAction(), EDIT_TITLE);
 		swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(),
@@ -298,6 +298,9 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		getUngroupAction().setEnabled(enabled);
 		getSendToBackAction().setEnabled(enabled);
 		getBringToFrontAction().setEnabled(enabled);
+		getRotateClockwiseAction().setEnabled(enabled);
+		getRotateCounterclockwiseAction().setEnabled(enabled);
+		getSaveAsTemplateAction().setEnabled(enabled);
 	}
 
 	// ClipboardOwner

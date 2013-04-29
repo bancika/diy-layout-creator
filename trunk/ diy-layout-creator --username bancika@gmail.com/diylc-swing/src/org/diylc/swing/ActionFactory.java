@@ -22,6 +22,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
+import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
@@ -60,8 +61,9 @@ public class ActionFactory {
 	public OpenAction createOpenAction(IPlugInPort plugInPort, ISwingUI swingUI) {
 		return new OpenAction(plugInPort, swingUI);
 	}
-	
-	public ImportAction createImportAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+
+	public ImportAction createImportAction(IPlugInPort plugInPort,
+			ISwingUI swingUI) {
 		return new ImportAction(plugInPort, swingUI);
 	}
 
@@ -270,7 +272,7 @@ public class ActionFactory {
 			}
 		}
 	}
-	
+
 	public static class ImportAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -286,31 +288,35 @@ public class ActionFactory {
 			this.presenter = new Presenter(new IView() {
 
 				@Override
-				public int showConfirmDialog(String message, String title, int optionType,
-						int messageType) {
+				public int showConfirmDialog(String message, String title,
+						int optionType, int messageType) {
 					return JOptionPane.showConfirmDialog(null, message, title,
 							optionType, messageType);
 				}
 
 				@Override
-				public void showMessage(String message, String title, int messageType) {
-					JOptionPane.showMessageDialog(null, message, title, messageType);
+				public void showMessage(String message, String title,
+						int messageType) {
+					JOptionPane.showMessageDialog(null, message, title,
+							messageType);
 				}
-				
+
 				@Override
 				public File promptFileSave() {
 					return null;
 				}
-				
+
 				@Override
-				public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+				public boolean editProperties(List<PropertyWrapper> properties,
+						Set<PropertyWrapper> defaultedProperties) {
 					return false;
 				}
 			});
 			putValue(AbstractAction.NAME, "Import");
 			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
 					KeyEvent.VK_I, ActionEvent.CTRL_MASK));
-			putValue(AbstractAction.SMALL_ICON, IconLoader.ElementInto.getIcon());
+			putValue(AbstractAction.SMALL_ICON, IconLoader.ElementInto
+					.getIcon());
 		}
 
 		@Override
@@ -328,9 +334,12 @@ public class ActionFactory {
 						LOG.debug("Opening from " + file.getAbsolutePath());
 						// Load project in temp presenter
 						presenter.loadProjectFromFile(file.getAbsolutePath());
-						// Grab all components and paste them into the main presenter
-						plugInPort.pasteComponents(presenter.getCurrentProject().getComponents());
-						// Cleanup components in the temp presenter, don't need them anymore
+						// Grab all components and paste them into the main
+						// presenter
+						plugInPort.pasteComponents(presenter
+								.getCurrentProject().getComponents());
+						// Cleanup components in the temp presenter, don't need
+						// them anymore
 						presenter.selectAll();
 						presenter.deleteSelectedComponents();
 						return null;
@@ -911,7 +920,7 @@ public class ActionFactory {
 			super();
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Save as Template");
-			putValue(AbstractAction.SMALL_ICON, IconLoader.Briefcase_Add
+			putValue(AbstractAction.SMALL_ICON, IconLoader.BriefcaseAdd
 					.getIcon());
 		}
 
@@ -1006,6 +1015,8 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Send Backward");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Back.getIcon());
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
 		}
 
 		@Override
@@ -1026,6 +1037,8 @@ public class ActionFactory {
 			this.plugInPort = plugInPort;
 			putValue(AbstractAction.NAME, "Bring Forward");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.Front.getIcon());
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+					KeyEvent.VK_UP, ActionEvent.ALT_MASK));
 		}
 
 		@Override
