@@ -1218,6 +1218,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Moved all schematic symbols to a dedicated category</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow grid spacing as little as 0.1mm</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>
