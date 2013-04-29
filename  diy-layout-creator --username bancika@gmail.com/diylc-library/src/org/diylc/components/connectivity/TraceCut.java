@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import org.diylc.common.Display;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.boards.AbstractBoard;
+import org.diylc.components.boards.VeroBoard;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -24,6 +25,7 @@ public class TraceCut extends AbstractComponent<Void> {
 	private static final long serialVersionUID = 1L;
 
 	public static Size SIZE = new Size(0.07d, SizeUnit.in);
+	public static Size CUT_WIDTH = new Size(0.5d, SizeUnit.mm);
 	public static Color FILL_COLOR = Color.white;
 	public static Color BORDER_COLOR = Color.red;
 	public static Color SELECTION_COLOR = Color.blue;
@@ -31,26 +33,42 @@ public class TraceCut extends AbstractComponent<Void> {
 	private Size size = SIZE;
 	private Color fillColor = FILL_COLOR;
 	private Color borderColor = BORDER_COLOR;
+	private Color boardColor = AbstractBoard.BOARD_COLOR;
+	private boolean cutBetweenHoles = false;
+	private Size holeSpacing = VeroBoard.SPACING;
 
 	protected Point point = new Point(0, 0);
 
 	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-			Project project, IDrawingObserver drawingObserver) {
+	public void draw(Graphics2D g2d, ComponentState componentState,
+			boolean outlineMode, Project project,
+			IDrawingObserver drawingObserver) {
 		if (checkPointsClipped(g2d.getClip())) {
 			return;
 		}
 		int size = getClosestOdd((int) this.size.convertToPixels());
-		int dotDiameter = size - 6;
-		g2d.setColor(fillColor);
-		g2d.fillRect(point.x - size / 2, point.y - size / 2, size, size);
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
-		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-		g2d.drawRect(point.x - size / 2, point.y - size / 2, size, size);
-		g2d
-				.fillOval(point.x - dotDiameter / 2, point.y - dotDiameter / 2, dotDiameter,
-						dotDiameter);
+		int holeSpacing = getClosestOdd(this.holeSpacing.convertToPixels());
+		int cutWidth = getClosestOdd((int) CUT_WIDTH.convertToPixels());
+		if (cutBetweenHoles) {
+			g2d
+			.setColor(componentState == ComponentState.SELECTED
+					|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+					: boardColor);
+			g2d.fillRect(point.x - holeSpacing / 2 - cutWidth / 2, point.y - size / 2 - 1,
+					cutWidth, size + 2);
+		} else {
+			int dotDiameter = size - 6;
+			g2d.setColor(fillColor);
+			g2d.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+			g2d
+					.setColor(componentState == ComponentState.SELECTED
+							|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+							: borderColor);
+			g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+			g2d.drawRect(point.x - size / 2, point.y - size / 2, size, size);
+			g2d.fillOval(point.x - dotDiameter / 2, point.y - dotDiameter / 2,
+					dotDiameter, dotDiameter);
+		}
 	}
 
 	@Override
@@ -62,8 +80,8 @@ public class TraceCut extends AbstractComponent<Void> {
 		g2d.setColor(BORDER_COLOR);
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 		g2d.drawRect((width - size) / 2, (height - size) / 2, size, size);
-		g2d.fillOval((width - dotDiameter) / 2, (height - dotDiameter) / 2, dotDiameter,
-				dotDiameter);
+		g2d.fillOval((width - dotDiameter) / 2, (height - dotDiameter) / 2,
+				dotDiameter, dotDiameter);
 	}
 
 	@Override
@@ -125,6 +143,33 @@ public class TraceCut extends AbstractComponent<Void> {
 
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
+	}
+
+	@EditableProperty(name = "Cut between holes")
+	public boolean getCutBetweenHoles() {
+		return cutBetweenHoles;
+	}
+	
+	public void setCutBetweenHoles(boolean cutBetweenHoles) {
+		this.cutBetweenHoles = cutBetweenHoles;
+	}
+	
+	@EditableProperty(name = "Board")
+	public Color getBoardColor() {
+		return boardColor;
+	}
+	
+	public void setBoardColor(Color boardColor) {
+		this.boardColor = boardColor;
+	}
+	
+	@EditableProperty(name = "Hole spacing")
+	public Size getHoleSpacing() {
+		return holeSpacing;
+	}
+	
+	public void setHoleSpacing(Size holeSpacing) {
+		this.holeSpacing = holeSpacing;
 	}
 
 	@Deprecated
