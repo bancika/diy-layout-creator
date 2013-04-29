@@ -591,7 +591,10 @@ public class Presenter implements IPlugInPort {
 						}
 					} else {
 						// Otherwise just select that one component.
-						newSelection.clear();
+						if (button == BUTTON1
+								|| !selectedComponents.contains(component)) {
+							newSelection.clear();
+						}
 						newSelection
 								.addAll(findAllGroupedComponents(component));
 					}
@@ -1007,8 +1010,8 @@ public class Presenter implements IPlugInPort {
 			int dx = (scaledPoint.x - previousDragPoint.x);
 			int dy = (scaledPoint.y - previousDragPoint.y);
 
-			Point actualD = moveComponents(this.controlPointMap, dx,
-					dy, isSnapToGrid());
+			Point actualD = moveComponents(this.controlPointMap, dx, dy,
+					isSnapToGrid());
 			if (actualD == null)
 				return true;
 
@@ -2019,6 +2022,60 @@ public class Presenter implements IPlugInPort {
 			return templateMap.get(categoryName + "." + componentTypeName);
 		}
 		return null;
+	}
+
+	@Override
+	public List<Template> getTemplatesForSelection() {
+		if (this.selectedComponents.isEmpty()) {
+			throw new RuntimeException("No components selected");
+		}
+		ComponentType selectedType = ComponentProcessor
+				.getInstance()
+				.extractComponentTypeFrom(
+						(Class<? extends IDIYComponent<?>>) this.selectedComponents
+								.get(0).getClass());
+		for (int i = 1; i < this.selectedComponents.size(); i++) {
+			ComponentType newType = ComponentProcessor
+					.getInstance()
+					.extractComponentTypeFrom(
+							(Class<? extends IDIYComponent<?>>) this.selectedComponents
+									.get(i).getClass());
+			if (newType.getInstanceClass() != selectedType.getInstanceClass()) {
+				throw new RuntimeException(
+						"Template can be applied on multiple components of the same type only");
+			}
+		}
+		return getTemplatesFor(selectedType.getCategory(), selectedType
+				.getName());
+	}
+
+	@Override
+	public void applyTemplateToSelection(Template template) {
+		LOG.debug(String.format("applyTemplateToSelection(%s)", template
+				.getName()));
+
+		Project oldProject = currentProject.clone();
+
+		for (IDIYComponent<?> component : this.selectedComponents) {
+			try {
+				drawingManager.invalidateComponent(component);
+				this.instantiationManager.loadComponentShapeFromTemplate(
+						component, template);
+				this.instantiationManager.fillWithDefaultProperties(component,
+						template);
+			} catch (Exception e) {
+				LOG.warn("Could not apply templates to " + component.getName(),
+						e);
+			}
+		}
+
+		// Notify the listeners.
+		if (!oldProject.equals(currentProject)) {
+			messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED,
+					oldProject, currentProject.clone(), "Edit Selection");
+			projectFileManager.notifyFileChange();
+		}
+		messageDispatcher.dispatchMessage(EventType.REPAINT);
 	}
 
 	@Override
