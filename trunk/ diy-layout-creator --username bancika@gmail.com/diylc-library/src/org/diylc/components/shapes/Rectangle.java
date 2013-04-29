@@ -19,7 +19,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Rectangle", author = "Branislav Stojkovic", category = "Shapes", instanceNamePrefix = "RECT", description = "Ractangular area, with or withouth rounded edges", zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+@ComponentDescriptor(name = "Rectangle", author = "Branislav Stojkovic", category = "Shapes", instanceNamePrefix = "RECT", description = "Ractangular area, with or withouth rounded edges", zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false)
 public class Rectangle extends AbstractTransparentComponent<Void> {
 
 	private static final long serialVersionUID = 1L;

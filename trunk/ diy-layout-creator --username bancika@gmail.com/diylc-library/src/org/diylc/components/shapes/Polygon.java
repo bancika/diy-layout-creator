@@ -20,7 +20,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Polygon", author = "Branislav Stojkovic", category = "Shapes", instanceNamePrefix = "POLY", description = "Polygonal area", zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+@ComponentDescriptor(name = "Polygon", author = "Branislav Stojkovic", category = "Shapes", instanceNamePrefix = "POLY", description = "Polygonal area", zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false)
 public class Polygon extends AbstractTransparentComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
