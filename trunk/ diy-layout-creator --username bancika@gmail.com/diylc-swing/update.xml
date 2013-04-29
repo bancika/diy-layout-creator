@@ -1216,6 +1216,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Trace cuts can be placed between two holes for tighter layouts (double click trace to find "Cut between holes")</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Moved all schematic symbols to a dedicated category</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
