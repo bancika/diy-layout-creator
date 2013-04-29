@@ -233,16 +233,8 @@ public class InstantiationManager {
 				component.setControlPoint(controlPoint, j);
 			}
 		}
-		// Make the component into shape from the template
-		if (template != null && template.getPoints() != null
-				&& template.getPoints().size() >= component
-						.getControlPointCount()) {
-			for (int i = 0; i < component.getControlPointCount(); i++) {
-				Point p = new Point(component.getControlPoint(0));
-				p.translate(template.getPoints().get(i).x, template.getPoints().get(i).y);
-				component.setControlPoint(p, i);
-			}
-		}
+
+		loadComponentShapeFromTemplate(component, template);
 
 		fillWithDefaultProperties(component, template);
 
@@ -336,6 +328,27 @@ public class InstantiationManager {
 					property.setValue(pair.getValue());
 					property.writeTo(object);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Uses stored control points from the template to shape component.
+	 * 
+	 * @param component
+	 * @param template
+	 */
+	public void loadComponentShapeFromTemplate(IDIYComponent<?> component,
+			Template template) {
+		if (template != null
+				&& template.getPoints() != null
+				&& template.getPoints().size() >= component
+						.getControlPointCount()) {
+			for (int i = 0; i < component.getControlPointCount(); i++) {
+				Point p = new Point(component.getControlPoint(0));
+				p.translate(template.getPoints().get(i).x, template.getPoints()
+						.get(i).y);
+				component.setControlPoint(p, i);
 			}
 		}
 	}

@@ -12,6 +12,10 @@ public interface ITemplateProcessor {
 
 	List<Template> getTemplatesFor(String categoryName, String componentTypeName);
 	
+	List<Template> getTemplatesForSelection();
+	
+	void applyTemplateToSelection(Template template);
+	
 	void deleteTemplate(String categoryName, String componentTypeName, String templateName);
 
 	public class TemplateAlreadyExistsException extends Exception {
