@@ -100,17 +100,24 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			canvasPanel = new CanvasPanel(plugInPort);
 			canvasPanel.addMouseListener(new MouseAdapter() {
 
+				private boolean processedPressed = false;
+
 				@Override
 				public void mousePressed(MouseEvent e) {
 					canvasPanel.requestFocus();
 					mouseReleased(e);
+					processedPressed = true;
 				}
 
 				@Override
 				public void mouseReleased(final MouseEvent e) {
-					plugInPort.mouseClicked(e.getPoint(), e.getButton(), e
-							.isControlDown(), e.isShiftDown(), e.isAltDown(), e
-							.getClickCount());
+					if (processedPressed) {
+						processedPressed = false;
+					} else {
+						plugInPort.mouseClicked(e.getPoint(), e.getButton(), e
+								.isControlDown(), e.isShiftDown(), e
+								.isAltDown(), e.getClickCount());
+					}
 					// Invoke the rest of the code later so we get the chance to
 					// process selection messages.
 					SwingUtilities.invokeLater(new Runnable() {
@@ -174,14 +181,6 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 					canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
 					plugInPort.mouseMoved(e.getPoint(), e.isControlDown(), e
 							.isShiftDown(), e.isAltDown());
-				}
-			});
-
-			canvasPanel.addMouseListener(new MouseAdapter() {
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-
 				}
 			});
 		}
