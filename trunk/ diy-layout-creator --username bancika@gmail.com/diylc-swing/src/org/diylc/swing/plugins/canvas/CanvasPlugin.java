@@ -111,6 +111,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 				@Override
 				public void mouseReleased(final MouseEvent e) {
+					// Do not send mouseClicked on release if it was already
+					// process on pressed.
 					if (processedPressed) {
 						processedPressed = false;
 					} else {
