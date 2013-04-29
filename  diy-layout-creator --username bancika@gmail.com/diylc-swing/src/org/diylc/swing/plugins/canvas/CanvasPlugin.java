@@ -23,6 +23,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -33,6 +34,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Template;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.images.IconLoader;
@@ -53,6 +55,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 	private JPopupMenu popupMenu;
 	private JMenu selectionMenu;
 	private JMenu expandMenu;
+	private JMenu applyTemplateMenu;
 
 	private ActionFactory.CutAction cutAction;
 	private ActionFactory.CopyAction copyAction;
@@ -104,37 +107,52 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 				}
 
 				@Override
-				public void mouseReleased(MouseEvent e) {
-					if (plugInPort.getNewComponentTypeSlot() == null
-							&& e.isPopupTrigger()) {
-						// Enable actions.
-						boolean enabled = !plugInPort.getSelectedComponents()
-								.isEmpty();
-						getCutAction().setEnabled(enabled);
-						getCopyAction().setEnabled(enabled);
-						try {
-							getPasteAction()
-									.setEnabled(
-											clipboard
-													.isDataFlavorAvailable(ComponentTransferable.listFlavor));
-						} catch (Exception ex) {
-							getPasteAction().setEnabled(false);
+				public void mouseReleased(final MouseEvent e) {
+					plugInPort.mouseClicked(e.getPoint(), e.getButton(), e
+							.isControlDown(), e.isShiftDown(), e.isAltDown(), e
+							.getClickCount());
+					// Invoke the rest of the code later so we get the chance to
+					// process selection messages.
+					SwingUtilities.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							if (plugInPort.getNewComponentTypeSlot() == null
+									&& e.isPopupTrigger()) {
+								// Enable actions.
+								boolean enabled = !plugInPort
+										.getSelectedComponents().isEmpty();
+								getCutAction().setEnabled(enabled);
+								getCopyAction().setEnabled(enabled);
+								try {
+									getPasteAction()
+											.setEnabled(
+													clipboard
+															.isDataFlavorAvailable(ComponentTransferable.listFlavor));
+								} catch (Exception ex) {
+									getPasteAction().setEnabled(false);
+								}
+								getEditSelectionAction().setEnabled(enabled);
+								getDeleteSelectionAction().setEnabled(enabled);
+								getExpandSelectionAllAction().setEnabled(
+										enabled);
+								getExpandSelectionImmediateAction().setEnabled(
+										enabled);
+								getExpandSelectionSameTypeAction().setEnabled(
+										enabled);
+								getGroupAction().setEnabled(enabled);
+								getUngroupAction().setEnabled(enabled);
+								getSendToBackAction().setEnabled(enabled);
+								getBringToFrontAction().setEnabled(enabled);
+
+								getSaveAsTemplateAction().setEnabled(
+										plugInPort.getSelectedComponents()
+												.size() == 1);
+
+								showPopupAt(e.getX(), e.getY());
+							}
 						}
-						getEditSelectionAction().setEnabled(enabled);
-						getDeleteSelectionAction().setEnabled(enabled);
-						getExpandSelectionAllAction().setEnabled(enabled);
-						getExpandSelectionImmediateAction().setEnabled(enabled);
-						getExpandSelectionSameTypeAction().setEnabled(enabled);
-						getGroupAction().setEnabled(enabled);
-						getUngroupAction().setEnabled(enabled);
-						getSendToBackAction().setEnabled(enabled);
-						getBringToFrontAction().setEnabled(enabled);
-
-						getSaveAsTemplateAction().setEnabled(
-								plugInPort.getSelectedComponents().size() == 1);
-
-						showPopupAt(e.getX(), e.getY());
-					}
+					});
 				}
 			});
 
@@ -158,14 +176,12 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 							.isShiftDown(), e.isAltDown());
 				}
 			});
-			
+
 			canvasPanel.addMouseListener(new MouseAdapter() {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					plugInPort.mouseClicked(e.getPoint(), e.getButton(), e
-							.isControlDown(), e.isShiftDown(), e.isAltDown(), e
-							.getClickCount());
+
 				}
 			});
 		}
@@ -234,6 +250,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 	private void showPopupAt(int x, int y) {
 		updateSelectionMenu(x, y);
+		updateApplyTemplateMenu();
 		getPopupMenu().show(canvasPanel, x, y);
 	}
 
@@ -255,6 +272,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 			popupMenu.add(getSendToBackAction());
 			popupMenu.add(getBringToFrontAction());
 			popupMenu.add(getSaveAsTemplateAction());
+			popupMenu.add(getApplyTemplateMenu());
 			popupMenu.add(getExpandMenu());
 			popupMenu.addSeparator();
 			popupMenu.add(ActionFactory.getInstance().createEditProjectAction(
@@ -282,6 +300,14 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 		return expandMenu;
 	}
 
+	public JMenu getApplyTemplateMenu() {
+		if (applyTemplateMenu == null) {
+			applyTemplateMenu = new JMenu("Apply Template");
+			applyTemplateMenu.setIcon(IconLoader.BriefcaseInto.getIcon());
+		}
+		return applyTemplateMenu;
+	}
+
 	private void updateSelectionMenu(int x, int y) {
 		getSelectionMenu().removeAll();
 		for (IDIYComponent<?> component : plugInPort
@@ -299,6 +325,36 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 				}
 			});
 			getSelectionMenu().add(item);
+		}
+	}
+
+	private void updateApplyTemplateMenu() {
+		getApplyTemplateMenu().removeAll();
+		List<Template> templates = null;
+
+		try {
+			templates = plugInPort.getTemplatesForSelection();
+		} catch (Exception e) {
+			LOG.info("Could not get templates for selection");
+			getApplyTemplateMenu().setEnabled(false);
+		}
+
+		if (templates == null)
+			return;
+
+		getApplyTemplateMenu().setEnabled(templates.size() > 0);
+
+		for (Template template : templates) {
+			JMenuItem item = new JMenuItem(template.getName());
+			final Template finalTemplate = template;
+			item.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					plugInPort.applyTemplateToSelection(finalTemplate);
+				}
+			});
+			getApplyTemplateMenu().add(item);
 		}
 	}
 
@@ -341,17 +397,19 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 		}
 		return deleteSelectionAction;
 	}
-	
+
 	public ActionFactory.RotateSelectionAction getRotateClockwiseAction() {
 		if (rotateClockwiseAction == null) {
-			rotateClockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, 1);
+			rotateClockwiseAction = ActionFactory.getInstance()
+					.createRotateSelectionAction(plugInPort, 1);
 		}
 		return rotateClockwiseAction;
 	}
-	
+
 	public ActionFactory.RotateSelectionAction getRotateCounterclockwiseAction() {
 		if (rotateCounterclockwiseAction == null) {
-			rotateCounterclockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, -1);
+			rotateCounterclockwiseAction = ActionFactory.getInstance()
+					.createRotateSelectionAction(plugInPort, -1);
 		}
 		return rotateCounterclockwiseAction;
 	}
