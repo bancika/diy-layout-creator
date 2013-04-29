@@ -19,7 +19,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Ellipse", author = "Branislav Stojkovic", category = "Shapes", instanceNamePrefix = "ELL", description = "Elliptical area", zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+@ComponentDescriptor(name = "Ellipse", author = "Branislav Stojkovic", category = "Shapes", instanceNamePrefix = "ELL", description = "Elliptical area", zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false)
 public class Ellipse extends AbstractTransparentComponent<Void> {
 
 	private static final long serialVersionUID = 1L;
