@@ -376,20 +376,22 @@ public class InstantiationManager {
 			return;
 		}
 		try {
-			angleProperty.readFrom(this.componentSlot);
-			Object value = angleProperty.getValue();
-			if (value instanceof Orientation) {
-				angleProperty
-						.setValue(Orientation.values()[(((Orientation) value)
-								.ordinal() + 1)
-								% Orientation.values().length]);
-			} else if (value instanceof OrientationHV) {
-				angleProperty
-						.setValue(OrientationHV.values()[(((OrientationHV) value)
-								.ordinal() + 1)
-								% OrientationHV.values().length]);
+			for (IDIYComponent<?> component : this.componentSlot) {
+				angleProperty.readFrom(component);
+				Object value = angleProperty.getValue();
+				if (value instanceof Orientation) {
+					angleProperty
+							.setValue(Orientation.values()[(((Orientation) value)
+									.ordinal() + 1)
+									% Orientation.values().length]);
+				} else if (value instanceof OrientationHV) {
+					angleProperty
+							.setValue(OrientationHV.values()[(((OrientationHV) value)
+									.ordinal() + 1)
+									% OrientationHV.values().length]);
+				}
+				angleProperty.writeTo(component);
 			}
-			angleProperty.writeTo(this.componentSlot);
 		} catch (Exception e) {
 			LOG.warn("Error trying to rotate the component", e);
 		}
