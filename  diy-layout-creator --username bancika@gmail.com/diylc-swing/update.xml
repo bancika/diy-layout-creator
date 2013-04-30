@@ -1199,6 +1199,10 @@
 					<description>Do not change selection on right click when right clicking on one of the selected components</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Right click rotation during component creation throws an error</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ability to import existing DIY files into a project</description>
 				</org.diylc.appframework.update.Change>				
