@@ -8,39 +8,30 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import org.diylc.common.ObjectCache;
-import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.measures.Size;
-import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Polygon", author = "Branislav Stojkovic", category = "Shapes", instanceNamePrefix = "POLY", description = "Polygonal area", zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false)
-public class Polygon extends AbstractTransparentComponent<Void> {
+public class Polygon extends AbstractShape {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Color COLOR = Color.white;
-	public static Color BORDER_COLOR = Color.black;
-	public static Size DEFAULT_WIDTH = new Size(1.5d, SizeUnit.in);
-	public static Size DEFAULT_HEIGHT = new Size(1.2d, SizeUnit.in);
-
-	protected Point[] controlPoints = new Point[] {
-			new Point(0, 0),
-			new Point(0, (int) DEFAULT_HEIGHT.convertToPixels()),
-			new Point((int) DEFAULT_WIDTH.convertToPixels(),
-					(int) DEFAULT_HEIGHT.convertToPixels()),
-			new Point((int) DEFAULT_WIDTH.convertToPixels(), 0) };
-
-	protected Color color = COLOR;
-	protected Color borderColor = BORDER_COLOR;
-	protected Size borderThickness = new Size(0.2d, SizeUnit.mm);
 	protected PointCount pointCount = PointCount._4;
+	
+	public Polygon() {
+		super();
+		this.controlPoints = new Point[] {
+				new Point(0, 0),
+				new Point(0, (int) DEFAULT_HEIGHT.convertToPixels()),
+				new Point((int) DEFAULT_WIDTH.convertToPixels(),
+						(int) DEFAULT_HEIGHT.convertToPixels()),
+				new Point((int) DEFAULT_WIDTH.convertToPixels(), 0) };
+	}
 
 	@Override
 	public void draw(Graphics2D g2d, ComponentState componentState,
@@ -73,58 +64,6 @@ public class Polygon extends AbstractTransparentComponent<Void> {
 		g2d.drawPolygon(xPoints, yPoints, controlPoints.length);
 	}
 
-	@EditableProperty(name = "Color")
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	@EditableProperty(name = "Border")
-	public Color getBorderColor() {
-		return borderColor;
-	}
-
-	public void setBorderColor(Color borderColor) {
-		this.borderColor = borderColor;
-	}
-	
-	@EditableProperty(name = "Border thickness")
-	public Size getBorderThickness() {
-		return borderThickness;
-	}
-	
-	public void setBorderThickness(Size borderThickness) {
-		this.borderThickness = borderThickness;
-	}
-
-	@Override
-	public int getControlPointCount() {
-		return controlPoints.length;
-	}
-
-	@Override
-	public Point getControlPoint(int index) {
-		return controlPoints[index];
-	}
-
-	@Override
-	public boolean isControlPointSticky(int index) {
-		return false;
-	}
-
-	@Override
-	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-		return VisibilityPolicy.WHEN_SELECTED;
-	}
-
-	@Override
-	public void setControlPoint(Point point, int index) {
-		controlPoints[index].setLocation(point);
-	}
-
 	@EditableProperty(name = "Edges")
 	public PointCount getPointCount() {
 		return pointCount;
@@ -145,18 +84,7 @@ public class Polygon extends AbstractTransparentComponent<Void> {
 			}
 		}
 		this.pointCount = pointCount;
-	}
-
-	@Deprecated
-	@Override
-	public Void getValue() {
-		return null;
-	}
-
-	@Deprecated
-	@Override
-	public void setValue(Void value) {
-	}
+	}	
 
 	@Override
 	public void drawIcon(Graphics2D g2d, int width, int height) {
