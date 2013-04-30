@@ -616,7 +616,7 @@ public class Presenter implements IPlugInPort {
 			return false;
 		}
 		LOG.debug(String.format("keyPressed(%s, %s, %s, %s)", key, ctrlDown,
-				shiftDown, altDown));		
+				shiftDown, altDown));
 		Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
 		// If there aren't any control points, try to add all the selected
 		// components with all their control points. That will allow the
@@ -818,11 +818,23 @@ public class Presenter implements IPlugInPort {
 	}
 
 	@Override
-	public void selectAll() {
+	public void selectAll(int layer) {
 		LOG.info("selectAll()");
 		List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(
 				currentProject.getComponents());
 		newSelection.removeAll(getLockedComponents());
+		if (layer > 0) {
+			Iterator<IDIYComponent<?>> i = newSelection.iterator();
+			while (i.hasNext()) {
+				IDIYComponent<?> c = i.next();
+				ComponentType type = ComponentProcessor.getInstance()
+						.extractComponentTypeFrom(
+								(Class<? extends IDIYComponent<?>>) c
+										.getClass());
+				if ((int) type.getZOrder() != layer)
+					i.remove();
+			}
+		}
 		updateSelection(newSelection);
 		// messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
 		// selectedComponents);
