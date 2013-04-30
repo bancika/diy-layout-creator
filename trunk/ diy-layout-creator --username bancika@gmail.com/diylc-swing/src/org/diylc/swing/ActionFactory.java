@@ -340,7 +340,7 @@ public class ActionFactory {
 								.getCurrentProject().getComponents());
 						// Cleanup components in the temp presenter, don't need
 						// them anymore
-						presenter.selectAll();
+						presenter.selectAll(0);
 						presenter.deleteSelectedComponents();
 						return null;
 					}
@@ -776,7 +776,7 @@ public class ActionFactory {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("Select All triggered");
-			plugInPort.selectAll();
+			plugInPort.selectAll(0);
 		}
 	}
 

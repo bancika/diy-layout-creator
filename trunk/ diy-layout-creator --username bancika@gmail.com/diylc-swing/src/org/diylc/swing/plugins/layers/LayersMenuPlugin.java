@@ -18,16 +18,18 @@ import org.diylc.swing.ISwingUI;
 
 public class LayersMenuPlugin implements IPlugIn {
 
-	private static final String LOCK_LAYERS_TITLE = "Lock Layers";
+	private static final String LOCK_LAYERS_TITLE = "Layers";
 
 	private IPlugInPort plugInPort;
 	private Map<Layer, Action> lockActionMap;
+	private Map<Integer, Action> selectAllActionMap;
 
 	public LayersMenuPlugin(ISwingUI swingUI) {
 		lockActionMap = new HashMap<Layer, Action>();
+		selectAllActionMap = new HashMap<Integer, Action>();
 		for (Layer layer : Layer.values()) {
 			final int zOrder = layer.getZOrder();
-			AbstractAction action = new AbstractAction(layer.getTitle()) {
+			AbstractAction lockAction = new AbstractAction("Lock") {
 
 				private static final long serialVersionUID = 1L;
 
@@ -35,11 +37,27 @@ public class LayersMenuPlugin implements IPlugIn {
 				public void actionPerformed(ActionEvent e) {
 					LayersMenuPlugin.this.plugInPort.setLayerLocked(zOrder,
 							(Boolean) getValue(Action.SELECTED_KEY));
+					selectAllActionMap.get(zOrder).setEnabled(
+							!(Boolean) getValue(Action.SELECTED_KEY));
 				}
 			};
-			action.putValue(IView.CHECK_BOX_MENU_ITEM, true);
-			lockActionMap.put(layer, action);
-			swingUI.injectMenuAction(action, LOCK_LAYERS_TITLE);
+			lockAction.putValue(IView.CHECK_BOX_MENU_ITEM, true);
+			lockActionMap.put(layer, lockAction);
+
+			AbstractAction selectAllAction = new AbstractAction("Select All") {
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					LayersMenuPlugin.this.plugInPort.selectAll(zOrder);
+				}
+			};
+			selectAllActionMap.put(zOrder, selectAllAction);
+
+			swingUI.injectSubmenu(layer.title, null, LOCK_LAYERS_TITLE);
+			swingUI.injectMenuAction(lockAction, layer.title);
+			swingUI.injectMenuAction(selectAllAction, layer.title);
 		}
 	}
 
@@ -66,9 +84,10 @@ public class LayersMenuPlugin implements IPlugIn {
 	}
 
 	static enum Layer {
-		CHASSIS("Chassis", IDIYComponent.CHASSIS), BOARD("Board", IDIYComponent.BOARD), TRACE(
-				"Trace", IDIYComponent.TRACE), COMPONENT("Component", IDIYComponent.COMPONENT), TEXT(
-				"Text", IDIYComponent.TEXT);
+		CHASSIS("Chassis", IDIYComponent.CHASSIS), BOARD("Board",
+				IDIYComponent.BOARD), TRACE("Trace", IDIYComponent.TRACE), COMPONENT(
+				"Component", IDIYComponent.COMPONENT), TEXT("Text",
+				IDIYComponent.TEXT);
 
 		String title;
 		int zOrder;
