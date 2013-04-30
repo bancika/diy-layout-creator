@@ -43,8 +43,11 @@ public interface ISelectionProcessor {
 
 	/**
 	 * Selects all components in the project.
+	 * 
+	 * @param int layer if > 0, designates which layer to select. If <= 0 we
+	 *        should select all regardless of layer
 	 */
-	void selectAll();
+	void selectAll(int layer);
 
 	/**
 	 * Rotates selection for 90 degrees.
