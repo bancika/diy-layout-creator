@@ -12,9 +12,9 @@
 	<classpathentry kind="lib" path="lib/org-openide-awt.jar"/>
 	<classpathentry kind="lib" path="lib/org-openide-util.jar"/>
 	<classpathentry kind="lib" path="lib/org-openide-util-lookup.jar"/>
+	<classpathentry kind="lib" path="lib/app-framework.jar"/>
+	<classpathentry kind="lib" path="lib/swing-framework.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/app-framework"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/swing-framework"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
