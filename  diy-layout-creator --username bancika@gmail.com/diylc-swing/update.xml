@@ -1239,22 +1239,6 @@
 				<minor>28</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2013-04-30 20:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>					
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Select all within a layer</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>3</major>
-				<minor>29</minor>
-				<build>0</build>
-			</versionNumber>
 			<releaseDate>2013-08-15 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>					
@@ -1265,9 +1249,13 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Issue with component selection</description>
+				</org.diylc.appframework.update.Change>				
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Select all within a layer</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
-		</org.diylc.appframework.update.Version>
+		</org.diylc.appframework.update.Version>		
 	</a>
 </java.util.Arrays_-ArrayList>
