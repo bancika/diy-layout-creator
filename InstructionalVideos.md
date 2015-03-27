@@ -1,0 +1,1 @@
+<wiki:gadget url="http://google-code-project-hosting-gadgets.googlecode.com/svn/trunk/video/gcVideo.xml" up\_video="http://www.youtube.com/watch?v=3se2BkXJaiE" height="480" width="640" />
