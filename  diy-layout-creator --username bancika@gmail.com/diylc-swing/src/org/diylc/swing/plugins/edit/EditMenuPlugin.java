@@ -261,7 +261,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 	@Override
 	public EnumSet<EventType> getSubscribedEventTypes() {
 		return EnumSet.of(EventType.SELECTION_CHANGED,
-				EventType.PROJECT_MODIFIED);
+				EventType.PROJECT_MODIFIED, EventType.PROJECT_LOADED);
 	}
 
 	@Override
@@ -273,6 +273,9 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		case PROJECT_MODIFIED:
 			undoHandler.stateChanged((Project) params[0], (Project) params[1],
 					(String) params[2]);
+			break;
+		case PROJECT_LOADED:
+			undoHandler.reset();
 			break;
 		}
 	}

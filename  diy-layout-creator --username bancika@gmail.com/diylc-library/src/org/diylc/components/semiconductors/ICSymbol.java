@@ -102,7 +102,15 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 		}
 		g2d.setColor(finalLabelColor);
 		int x = (controlPoints[0].x + controlPoints[2].x) / 2;
-		drawCenteredText(g2d, display == Display.VALUE ? getValue() : getName(), x,
+		String label="";
+		label = display == Display.VALUE ? getValue() : getName();
+		if (display==Display.NONE) {
+			label="";
+		}
+		if (display==Display.BOTH) {
+			label=getName()+"  "+(getValue() == null ? "" : getValue().toString());
+		}
+		drawCenteredText(g2d, label, x,
 				controlPoints[0].y + pinSpacing, HorizontalAlignment.CENTER,
 				VerticalAlignment.CENTER);
 		// Draw +/- markers

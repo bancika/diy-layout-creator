@@ -18,6 +18,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.misc.Label;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -44,6 +45,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public static int EDGE_RADIUS = 6;
 	public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
 	public static Size INDENT_SIZE = new Size(0.07d, SizeUnit.in);
+	public static DisplayNumbers DISPLAY_NUMBERS = DisplayNumbers.NO;
 
 	private String value = "";
 	private Orientation orientation = Orientation.DEFAULT;
@@ -56,6 +58,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	private Color borderColor = BORDER_COLOR;
 	private Color labelColor = LABEL_COLOR;
 	private Color indentColor = INDENT_COLOR;
+	private DisplayNumbers displayNumbers = DISPLAY_NUMBERS;
 	// new Point(0, pinSpacing.convertToPixels()),
 	// new Point(0, 2 * pinSpacing.convertToPixels()),
 	// new Point(0, 3 * pinSpacing.convertToPixels()),
@@ -334,7 +337,14 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		}
 		g2d.setColor(finalLabelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-		String label = display == Display.NAME ? getName() : getValue();
+		String label="";
+		label = (getDisplay() == Display.NAME) ? getName() : getValue();
+		if (getDisplay() ==Display.NONE) {
+			label="";
+		}
+		if (getDisplay() ==Display.BOTH) {
+			label=getName()+"  "+(getValue() == null ? "" : getValue().toString());
+		}
 		Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
 		int textHeight = (int) (rect.getHeight());
 		int textWidth = (int) (rect.getWidth());
@@ -343,6 +353,60 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 		int x = bounds.x + (bounds.width - textWidth) / 2;
 		int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
 		g2d.drawString(label, x, y);
+		
+		//draw pin numbers
+		int pinNo=0;
+		int j=0;
+		int k=0;
+		int pinSize=(int)PIN_SIZE.convertToPixels();
+		for (Point point : controlPoints) {
+			pinNo++;
+			
+			//determine points relative to rotation
+			int textX1=point.x-2*pinSize;
+			int textY1=point.y+pinSize/2;
+			int textX2=point.x+pinSize;
+			int textY2=point.y+pinSize/2;
+			if (orientation==Orientation._90) {
+				textX2=textX2-pinSize-pinSize/2;
+				textY2=textY2+pinSize;
+				textX1=textX1+2*pinSize-pinSize/2;
+				textY1=textY1-pinSize;
+			}
+			if (orientation==Orientation._180) {
+				textX1=textX1+3*pinSize;
+				textX2=textX2-3*pinSize;
+			}
+			if (orientation==Orientation._270) {
+				textX1 = textX1+pinSize+pinSize/2;
+				textY1 = textY1+pinSize;
+				textX2 = textX2-pinSize-pinSize/2;
+				textY2 = textY2-pinSize;
+			}
+			
+			g2d.setFont(LABEL_FONT.deriveFont((float)(Label.LABEL_FONT.getSize2D()*0.66)));
+			if (displayNumbers==DisplayNumbers.DIP){
+				if (pinNo>pinCount.getValue()/2) {
+					g2d.drawString(Integer.toString(pinCount.getValue()-j), textX1, textY1);
+					j++;
+				}
+				else
+				{
+				g2d.drawString(Integer.toString(pinNo), textX2, textY2);
+				}
+			}
+			if (displayNumbers==DisplayNumbers.CONNECTOR){
+				if (pinNo>pinCount.getValue()/2) {
+					k++;
+					g2d.drawString(Integer.toString(pinNo-(pinCount.getValue()/2)+k), textX1, textY1);
+				}
+				else
+				{
+				g2d.drawString(Integer.toString(pinNo+j), textX2, textY2);
+				j++;
+				}
+			}
+		}
 	}
 
 	@Override
@@ -407,6 +471,15 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 	public void setIndentColor(Color indentColor) {
 		this.indentColor = indentColor;
 	}
+	
+	@EditableProperty(name = "Display pin numbers")
+	public DisplayNumbers getDisplayNumbers() {
+		return displayNumbers;
+	}
+	
+	public void setDisplayNumbers(DisplayNumbers numbers) {
+		this.displayNumbers=numbers;
+	}
 
 	public static enum PinCount {
 
@@ -419,6 +492,16 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
 		public int getValue() {
 			return Integer.parseInt(toString());
+		}
+	}
+	
+	public enum DisplayNumbers {
+
+		NO, DIP, CONNECTOR;
+
+		@Override
+		public String toString() {
+			return name();
 		}
 	}
 }

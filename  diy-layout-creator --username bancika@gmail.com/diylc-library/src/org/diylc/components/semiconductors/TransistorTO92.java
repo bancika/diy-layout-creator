@@ -288,7 +288,14 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 					: getLabelColor();
 		}
 		g2d.setColor(finalLabelColor);
-		String label = (getDisplay() == Display.NAME) ? getName() : getValue();
+		String label="";
+		label = (getDisplay() == Display.NAME) ? getName() : getValue();
+		if (display==Display.NONE) {
+			label="";
+		}
+		if (display==Display.BOTH) {
+			label=getName()+"  "+getValue();
+		}
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
 		Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
 		int textHeight = (int) (rect.getHeight());

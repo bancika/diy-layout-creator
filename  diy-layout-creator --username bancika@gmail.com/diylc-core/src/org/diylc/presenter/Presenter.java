@@ -591,7 +591,7 @@ public class Presenter implements IPlugInPort {
 						}
 					} else {
 						// Otherwise just select that one component.
-						if (button == BUTTON1
+						if (button == BUTTON1 || (button == BUTTON3 && newSelection.size() == 1)
 								|| !newSelection.contains(topComponent)) {
 							newSelection.clear();
 						}

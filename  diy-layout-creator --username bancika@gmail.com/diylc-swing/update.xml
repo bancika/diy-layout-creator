@@ -1256,6 +1256,46 @@
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
+		</org.diylc.appframework.update.Version>	
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>29</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2016-04-20 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>					
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Issue with losing saved user configuration</description>
+				</org.diylc.appframework.update.Change>				
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Issue with disabled "Save as Template" context menu item problem, as well as issue with strange rotation and probably few more</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Undo steps kept after opening a new file</description>
+				</org.diylc.appframework.update.Change>					
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Transistors can be rotated and flipped vertically</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>DIL ICs can show pin numbers</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Display both component value and name or neither of them</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Potentiometer schematic symbol added</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>http://code.google.com/p/diy-layout-creator/downloads/list</url>
 		</org.diylc.appframework.update.Version>		
 	</a>
 </java.util.Arrays_-ArrayList>

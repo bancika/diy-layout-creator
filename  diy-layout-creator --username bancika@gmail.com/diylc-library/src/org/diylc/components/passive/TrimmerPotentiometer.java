@@ -13,6 +13,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -45,9 +46,11 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 	public static Color PIN_COLOR = Color.decode("#00B2EE");
 	public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
 	public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
+	protected static Display DISPLAY = Display.NAME;	
 
 	protected Color bodyColor = BODY_COLOR;
 	protected Color borderColor = BORDER_COLOR;
+	protected static Display display = DISPLAY;
 	// Array of 7 elements: 3 lug connectors, 1 pot body and 3 lugs
 	transient protected Shape[] body = null;
 
@@ -333,7 +336,16 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 		int x = (panelWidth - textWidth) / 2;
 		int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();
 
-		g2d.drawString(getName(), (int) (bodyRect.getX() + x), (int) (bodyRect
+		String label="";
+		label = (getDisplay() == Display.NAME) ? getName() : getValue().toString();
+		if (getDisplay() ==Display.NONE) {
+			label="";
+		}
+		if (getDisplay() ==Display.BOTH) {
+			label=getName()+"  "+(getValue() == null ? "" : getValue().toString());
+		}
+
+		g2d.drawString(label, (int) (bodyRect.getX() + x), (int) (bodyRect
 				.getY() + y));
 	}
 
@@ -385,6 +397,18 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 
 	public void setBodyColor(Color bodyColor) {
 		this.bodyColor = bodyColor;
+	}
+	
+	@EditableProperty
+	public Display getDisplay() {
+		if (display == null) {
+			display = Display.VALUE;
+		}
+		return display;
+	}
+	
+	public void setDisplay(Display display) {
+		this.display = display;
 	}
 
 	@EditableProperty(name = "Border")

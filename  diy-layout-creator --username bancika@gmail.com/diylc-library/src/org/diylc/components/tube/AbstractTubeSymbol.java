@@ -85,8 +85,16 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
 		}
 		g2d.setColor(finalLabelColor);
 		Point p = getTextLocation();
+		String label="";
+		label = display == Display.VALUE ? getValue() : getName();
+		if (display==Display.NONE) {
+			label="";
+		}
+		if (display==Display.BOTH) {
+			label=getName()+"  "+(getValue() == null ? "" : getValue().toString());
+		}
 		drawCenteredText(g2d,
-				display == Display.VALUE ? getValue() : getName(), p.x, p.y,
+				label, p.x, p.y,
 				HorizontalAlignment.LEFT, VerticalAlignment.TOP);
 	}
 

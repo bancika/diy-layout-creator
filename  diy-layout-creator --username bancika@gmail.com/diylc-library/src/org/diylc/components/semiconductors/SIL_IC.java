@@ -320,7 +320,14 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
 		}
 		g2d.setColor(finalLabelColor);
 		FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-		String label = display == Display.NAME ? getName() : getValue();
+		String label="";
+		label = (getDisplay() == Display.NAME) ? getName() : getValue();
+		if (getDisplay() ==Display.NONE) {
+			label="";
+		}
+		if (getDisplay() ==Display.BOTH) {
+			label=getName()+"  "+(getValue() == null ? "" : getValue().toString());
+		}
 		Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
 		int textHeight = (int) (rect.getHeight());
 		int textWidth = (int) (rect.getWidth());

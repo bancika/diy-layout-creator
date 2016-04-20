@@ -2,7 +2,7 @@ package org.diylc.common;
 
 public enum Display {
 
-	NAME, VALUE;
+	NAME, VALUE, NONE, BOTH;
 
 	@Override
 	public String toString() {

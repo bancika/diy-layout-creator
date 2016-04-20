@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -28,11 +29,13 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 
 	public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
 	public static Color COLOR = Color.black;
-	
+
+	public static SymbolFlipping FLIPPING = SymbolFlipping.NONE;
 	protected String value = "";
 	protected Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0),
 			new Point(0, 0) };
 	protected Color color = COLOR;
+	protected SymbolFlipping flipping = FLIPPING;
 	protected Display display = Display.NAME;
 	transient protected Shape[] body;
 
@@ -67,6 +70,32 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 
 		Shape[] body = getBody();
 
+		int rotation=0;
+		//determine rotation using control points
+		if (controlPoints[1].x==controlPoints[2].x)
+		{
+			if (controlPoints[0].x>controlPoints[1].x)
+			{
+				rotation=180;
+			}
+		}
+		if (controlPoints[1].y==controlPoints[2].y)
+		{
+			rotation=90;
+			if (controlPoints[0].y>controlPoints[1].y)
+			{
+				rotation=270;
+			}
+		}
+		AffineTransform old = g2d.getTransform();
+		g2d.rotate(Math.toRadians(rotation),controlPoints[0].x,controlPoints[0].y);
+		
+		if (this.flipping==SymbolFlipping.Y){
+			g2d.translate(0,controlPoints[0].y);
+			g2d.scale(1, -1);
+			g2d.translate(0, -1*controlPoints[0].y);
+		}
+		
 		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
 		g2d.draw(body[0]);
 
@@ -74,6 +103,7 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 		g2d.draw(body[1]);
 
 		g2d.fill(body[2]);
+		g2d.setTransform(old);
 
 		// Draw label
 		g2d.setFont(LABEL_FONT);
@@ -90,7 +120,16 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 					: LABEL_COLOR;
 		}
 		g2d.setColor(finalLabelColor);
-		drawCenteredText(g2d, display == Display.VALUE ? getValue() : getName(),
+		String label="";
+		label = display == Display.NAME ? getName()
+				: (getValue() == null ? "" : getValue().toString());
+		if (display==Display.NONE) {
+			label="";
+		}
+		if (display==Display.BOTH) {
+			label=getName()+"  "+(getValue() == null ? "" : getValue().toString());
+		}
+		drawCenteredText(g2d, label,
 				x + pinSpacing * 2, y, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 	}
 
@@ -143,6 +182,15 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 		controlPoints[index].setLocation(point);
 		// Invalidate body
 		body = null;
+	}
+	
+	@EditableProperty
+	public SymbolFlipping getFlipping() {
+		return flipping;
+	}
+	
+	public void setFlipping(SymbolFlipping flipping) {
+		this.flipping = flipping;
 	}
 
 	@EditableProperty
