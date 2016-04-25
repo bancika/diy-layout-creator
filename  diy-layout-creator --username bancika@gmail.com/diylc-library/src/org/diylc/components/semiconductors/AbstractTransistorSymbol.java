@@ -1,10 +1,13 @@
 package org.diylc.components.semiconductors;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -35,7 +38,7 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 	protected Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0),
 			new Point(0, 0) };
 	protected Color color = COLOR;
-	protected SymbolFlipping flipping = FLIPPING;
+	protected SymbolFlipping flip = FLIPPING;
 	protected Display display = Display.NAME;
 	transient protected Shape[] body;
 
@@ -90,7 +93,7 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 		AffineTransform old = g2d.getTransform();
 		g2d.rotate(Math.toRadians(rotation),controlPoints[0].x,controlPoints[0].y);
 		
-		if (this.flipping==SymbolFlipping.Y){
+		if (this.flip==SymbolFlipping.Y){
 			g2d.translate(0,controlPoints[0].y);
 			g2d.scale(1, -1);
 			g2d.translate(0, -1*controlPoints[0].y);
@@ -129,8 +132,13 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 		if (display==Display.BOTH) {
 			label=getName()+"  "+(getValue() == null ? "" : getValue().toString());
 		}
+		
+		FontMetrics fontMetrics = g2d.getFontMetrics();
+		Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
+		Rectangle shapeRect = body[0].getBounds().union(body[1].getBounds()).union(body[2].getBounds());
+		
 		drawCenteredText(g2d, label,
-				x + pinSpacing * 2, y, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+				getLabelX(shapeRect, textRect, fontMetrics, outlineMode), getLabelY(shapeRect, textRect, fontMetrics, outlineMode), HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 	}
 
 	@Override
@@ -141,6 +149,14 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 	@Override
 	public int getControlPointCount() {
 		return controlPoints.length;
+	}
+	
+	protected int getLabelX(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
+		return controlPoints[0].x + (int) PIN_SPACING.convertToPixels() * 2;
+	}
+	
+	protected int getLabelY(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
+		return controlPoints[0].y;
 	}
 
 	private void updateControlPoints() {
@@ -185,12 +201,12 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 	}
 	
 	@EditableProperty
-	public SymbolFlipping getFlipping() {
-		return flipping;
+	public SymbolFlipping getFlip() {
+		return flip;
 	}
 	
-	public void setFlipping(SymbolFlipping flipping) {
-		this.flipping = flipping;
+	public void setFlip(SymbolFlipping flip) {
+		this.flip = flip;
 	}
 
 	@EditableProperty

@@ -6,6 +6,13 @@ public enum SymbolFlipping {
 
 	@Override
 	public String toString() {
-		return name();
+		switch (this) {
+		case Y:
+			return "Y-axis";
+		case NONE:
+			return "None";
+		default:
+			return name();
+		}
 	}
 }
