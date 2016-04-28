@@ -75,13 +75,13 @@
 		<jarbundler bundleid="org.diylc"
 				dir="${jar.dir}"				
 	            name="DIYLC"
-				version="3.22.0"
+				version="3.30.0"
 	            mainclass="${main.class}" 	            
 				stubfile="JavaApplicationStub"
 				vmoptions="-Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true"
 				icon="icons/diylc.icns"
 				workingdirectory="$APP_PACKAGE/Contents/Resources"
-				infostring="DIY Layout Creator by bancika (diylc.org)">	
+				infostring="DIY Layout Creator by bancika (diy-fever.com)">	
 			<jarfileset dir="${jar.dir}">
 				<include name="diylc.jar" />
 				<include name="lib/**/*.jar" />
