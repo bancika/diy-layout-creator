@@ -1,4 +1,4 @@
-<project name="diylc-swing" basedir="." default="mac">	
+<project name="diylc-swing" basedir="." default="complete">	
 	
 	<property name="src.dir" value="src" />
 
@@ -7,6 +7,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
+	<property name="diylc.version" value="3.31.0" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -75,7 +76,7 @@
 		<jarbundler bundleid="org.diylc"
 				dir="${jar.dir}"				
 	            name="DIYLC"
-				version="3.30.0"
+				version="${diylc.version}"
 	            mainclass="${main.class}" 	            
 				stubfile="JavaApplicationStub"
 				vmoptions="-Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true"
@@ -96,7 +97,25 @@
 			<!--<documenttype name="DIYLC Project"
 			                    extensions="diylc" 
 			                    role="Editor"/>-->
-		</jarbundler>
+		</jarbundler>			
+	</target>
+	
+	<target name="complete" depends="mac">
+		<zip destfile="${build.dir}/diylc-${diylc.version}.zip">
+				    <fileset dir="${jar.dir}" includes="diylc.jar"/>
+				    <zipfileset dir="${jar.dir}/lib" prefix="lib"/>
+					<zipfileset dir="${jar.dir}/library/" prefix="library"/>
+					<zipfileset dir="templates" prefix="templates"/>
+					<zipfileset dir="themes" prefix="themes"/>
+					<zipfileset dir="." includes="update.xml"/>
+					<zipfileset dir="." includes="run.sh"/>
+					<zipfileset dir="." includes="diylc.l4j.ini"/>
+					<zipfileset dir="." includes="associations.bat"/>
+					<zipfileset dir="." includes="diylc.exe"/>
+				  </zip>
+		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
+			 <zipfileset dir="${jar.dir}/DIYLC.app" prefix="DIYLC.app"/>
+			</zip>
 	</target>
 
 	<target name="javadoc">

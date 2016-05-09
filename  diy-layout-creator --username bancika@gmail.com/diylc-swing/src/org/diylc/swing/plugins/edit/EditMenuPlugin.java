@@ -228,12 +228,12 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectMenuAction(getCopyAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getPasteAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
-		swingUI.injectMenuAction(actionFactory
-				.createSelectAllAction(plugInPort), EDIT_TITLE);
+		swingUI.injectMenuAction(
+				actionFactory.createSelectAllAction(plugInPort), EDIT_TITLE);
 		swingUI.injectMenuAction(getEditSelectionAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getDeleteSelectionAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getRotateClockwiseAction(), EDIT_TITLE);
-		swingUI.injectMenuAction(getRotateCounterclockwiseAction(), EDIT_TITLE);		
+		swingUI.injectMenuAction(getRotateCounterclockwiseAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getSendToBackAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getBringToFrontAction(), EDIT_TITLE);
 		swingUI.injectMenuAction(getGroupAction(), EDIT_TITLE);
@@ -252,8 +252,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 		swingUI.injectMenuAction(getExpandSelectionSameTypeAction(),
 				EXPAND_TITLE);
 		swingUI.injectMenuAction(null, EDIT_TITLE);
-		swingUI.injectMenuAction(actionFactory
-				.createEditProjectAction(plugInPort), EDIT_TITLE);
+		swingUI.injectMenuAction(
+				actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
 
 		refreshActions();
 	}
@@ -275,7 +275,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 					(String) params[2]);
 			break;
 		case PROJECT_LOADED:
-			undoHandler.reset();
+			if ((Boolean) params[1])
+				undoHandler.reset();
 			break;
 		}
 	}
