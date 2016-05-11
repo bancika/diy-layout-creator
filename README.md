@@ -1,4 +1,14 @@
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- github -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-5439084447140820"
+     data-ad-slot="5662991434"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 <p align="justify"><strong>DIYLC is provided free of charge and can be used and redistributed freely. However, it takes a lot of time and effort to build and maintain it, as well as to respond to all your questions and feature requests. Time I could have spent doing stuff that pays, playing guitar or simply enjoying my free time. If you find DIYLC useful and want to support the project, please consider making a small PayPal donation. Every little bit counts! If you have some extra parts, transistors, tubes, ICs, caps, anything useful for a fellow DIYer, I'll gladly accept a donation in parts.</strong> </p>
 
 <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=25161" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>
