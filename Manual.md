@@ -1,6 +1,6 @@
 ### System requirements ###
 
-  * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.6.0\_10 or newer
+  * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.6.0_45-b06 or newer
   * 256MB free RAM memory
   * 10MB free hard drive space
   * Zip utility to unpack the archive (7-zip, WinZip, Total Commander, etc)
