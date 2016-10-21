@@ -18,6 +18,9 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 class DropDownButton extends JButton {
+
+	private static final long serialVersionUID = 1L;
+	
 	private boolean mouseInButton = false;
 	private boolean mouseInArrowArea = false;
 	private Map<String, Icon> regIcons = new HashMap<String, Icon>(5);
@@ -157,61 +160,62 @@ class DropDownButton extends JButton {
 	}
 
 	private void resetIcons() {
-		Icon icon = this.regIcons.get("normal");
+		Icon icon = this.regIcons.get(ICON_NORMAL);
 		if (null != icon) {
 			this.setIcon(icon);
 		}
-		if (null != (icon = this.regIcons.get("pressed"))) {
+		if (null != (icon = this.regIcons.get(ICON_PRESSED))) {
 			this.setPressedIcon(icon);
 		}
-		if (null != (icon = this.regIcons.get("rollover"))) {
+		if (null != (icon = this.regIcons.get(ICON_ROLLOVER))) {
 			this.setRolloverIcon(icon);
 		}
-		if (null != (icon = this.regIcons.get("rolloverSelected"))) {
+		if (null != (icon = this.regIcons.get(ICON_ROLLOVER_SELECTED))) {
 			this.setRolloverSelectedIcon(icon);
 		}
-		if (null != (icon = this.regIcons.get("selected"))) {
+		if (null != (icon = this.regIcons.get(ICON_SELECTED))) {
 			this.setSelectedIcon(icon);
 		}
-		if (null != (icon = this.regIcons.get("disabled"))) {
+		if (null != (icon = this.regIcons.get(ICON_DISABLED))) {
 			this.setDisabledIcon(icon);
 		}
-		if (null != (icon = this.regIcons.get("disabledSelected"))) {
+		if (null != (icon = this.regIcons.get(ICON_DISABLED_SELECTED))) {
 			this.setDisabledSelectedIcon(icon);
 		}
 	}
 
 	private Icon _getRolloverIcon() {
 		Icon icon = null;
-		icon = this.arrowIcons.get(this.mouseInArrowArea ? "rollover"
-				: "rolloverLine");
+		icon = this.arrowIcons.get(this.mouseInArrowArea ? ICON_ROLLOVER
+				: ICON_ROLLOVER_LINE);
 		if (null == icon) {
-			Icon orig = this.regIcons.get("rollover");
+			Icon orig = this.regIcons.get(ICON_ROLLOVER);
 			if (null == orig) {
-				orig = this.regIcons.get("normal");
+				orig = this.regIcons.get(ICON_NORMAL);
 			}
 			icon = new IconWithArrow(orig, !this.mouseInArrowArea);
-			this.arrowIcons.put(this.mouseInArrowArea ? "rollover"
-					: "rolloverLine", icon);
+			this.arrowIcons.put(this.mouseInArrowArea ? ICON_ROLLOVER
+					: ICON_ROLLOVER_LINE, icon);
 		}
 		return icon;
 	}
 
 	private Icon _getRolloverSelectedIcon() {
 		Icon icon = null;
-		icon = this.arrowIcons.get(this.mouseInArrowArea ? "rolloverSelected"
-				: "rolloverSelectedLine");
+		icon = this.arrowIcons
+				.get(this.mouseInArrowArea ? ICON_ROLLOVER_SELECTED
+						: ICON_ROLLOVER_SELECTED_LINE);
 		if (null == icon) {
-			Icon orig = this.regIcons.get("rolloverSelected");
+			Icon orig = this.regIcons.get(ICON_ROLLOVER_SELECTED);
 			if (null == orig) {
-				orig = this.regIcons.get("rollover");
+				orig = this.regIcons.get(ICON_ROLLOVER);
 			}
 			if (null == orig) {
-				orig = this.regIcons.get("normal");
+				orig = this.regIcons.get(ICON_NORMAL);
 			}
 			icon = new IconWithArrow(orig, !this.mouseInArrowArea);
-			this.arrowIcons.put(this.mouseInArrowArea ? "rolloverSelected"
-					: "rolloverSelectedLine", icon);
+			this.arrowIcons.put(this.mouseInArrowArea ? ICON_ROLLOVER_SELECTED
+					: ICON_ROLLOVER_SELECTED_LINE, icon);
 		}
 		return icon;
 	}
@@ -236,11 +240,11 @@ class DropDownButton extends JButton {
 	@Override
 	public void setIcon(Icon icon) {
 		assert (null != icon);
-		Icon arrow = this.updateIcons(icon, "normal");
-		this.arrowIcons.remove("rolloverLine");
-		this.arrowIcons.remove("rolloverSelectedLine");
-		this.arrowIcons.remove("rollover");
-		this.arrowIcons.remove("rolloverSelected");
+		Icon arrow = this.updateIcons(icon, ICON_NORMAL);
+		this.arrowIcons.remove(ICON_ROLLOVER_LINE);
+		this.arrowIcons.remove(ICON_ROLLOVER_SELECTED_LINE);
+		this.arrowIcons.remove(ICON_ROLLOVER);
+		this.arrowIcons.remove(ICON_ROLLOVER_SELECTED);
 		super.setIcon(this.hasPopupMenu() ? arrow : icon);
 	}
 
@@ -261,40 +265,40 @@ class DropDownButton extends JButton {
 
 	@Override
 	public void setPressedIcon(Icon icon) {
-		Icon arrow = this.updateIcons(icon, "pressed");
+		Icon arrow = this.updateIcons(icon, ICON_PRESSED);
 		super.setPressedIcon(this.hasPopupMenu() ? arrow : icon);
 	}
 
 	@Override
 	public void setSelectedIcon(Icon icon) {
-		Icon arrow = this.updateIcons(icon, "selected");
+		Icon arrow = this.updateIcons(icon, ICON_SELECTED);
 		super.setSelectedIcon(this.hasPopupMenu() ? arrow : icon);
 	}
 
 	@Override
 	public void setRolloverIcon(Icon icon) {
-		Icon arrow = this.updateIcons(icon, "rollover");
-		this.arrowIcons.remove("rolloverLine");
-		this.arrowIcons.remove("rolloverSelectedLine");
+		Icon arrow = this.updateIcons(icon, ICON_ROLLOVER);
+		this.arrowIcons.remove(ICON_ROLLOVER_LINE);
+		this.arrowIcons.remove(ICON_ROLLOVER_SELECTED_LINE);
 		super.setRolloverIcon(this.hasPopupMenu() ? arrow : icon);
 	}
 
 	@Override
 	public void setRolloverSelectedIcon(Icon icon) {
-		Icon arrow = this.updateIcons(icon, "rolloverSelected");
-		this.arrowIcons.remove("rolloverSelectedLine");
+		Icon arrow = this.updateIcons(icon, ICON_ROLLOVER_SELECTED);
+		this.arrowIcons.remove(ICON_ROLLOVER_SELECTED_LINE);
 		super.setRolloverSelectedIcon(this.hasPopupMenu() ? arrow : icon);
 	}
 
 	@Override
 	public void setDisabledIcon(Icon icon) {
-		Icon arrow = this.updateIcons(icon, "disabled");
+		Icon arrow = this.updateIcons(icon, ICON_DISABLED);
 		super.setDisabledIcon(this.hasPopupMenu() ? arrow : icon);
 	}
 
 	@Override
 	public void setDisabledSelectedIcon(Icon icon) {
-		Icon arrow = this.updateIcons(icon, "disabledSelected");
+		Icon arrow = this.updateIcons(icon, ICON_DISABLED_SELECTED);
 		super.setDisabledSelectedIcon(this.hasPopupMenu() ? arrow : icon);
 	}
 
@@ -308,6 +312,9 @@ class DropDownButton extends JButton {
 	}
 
 	private class Model extends DefaultButtonModel {
+
+		private static final long serialVersionUID = 1L;
+		
 		private boolean _pressed;
 
 		private Model() {
