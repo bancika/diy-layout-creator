@@ -12,31 +12,79 @@ import com.diyfever.httpproxy.ProxyFactory;
 
 public class OnlinePresenter {
 
+	private static String USERNAME_KEY = "cloud.Username";
+	private static String TOKEN_KEY = "cloud.token";
+
 	private final static Logger LOG = Logger.getLogger(OnlinePresenter.class);
 
 	private ServiceAPI service;
 	private String serviceUrl;
 	private String machineId;
 
-	public OnlinePresenter() {
+	private CloudListener listener;
+
+	private boolean loggedIn = false;
+
+	public OnlinePresenter(CloudListener listener) {
 		serviceUrl = ConfigurationManager.getInstance().readString(
 				ServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api");
 		ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
 		service = factory.createProxy(ServiceAPI.class, serviceUrl);
+		this.listener = listener;
 	}
-	
-	public boolean login(String username, String password) {
+
+	public boolean logIn(String username, String password) {
+		LOG.info("Trying to log in to cloud as " + username);
 		String res = service.login(username, password, getMachineId());
-		if (res.equals("Error"))
-		{
+		if (res.equals("Error")) {
+			LOG.info("Log in failed");
 			return false;
-		}
-		else {
+		} else {
+			LOG.info("Log in success");
+			ConfigurationManager.getInstance().writeValue(USERNAME_KEY,
+					username);
+			ConfigurationManager.getInstance().writeValue(TOKEN_KEY, res);
+			listener.loggedIn();
+			this.loggedIn = true;
 			return true;
 		}
 	}
 
-	public String getMachineId() {
+	public boolean tryLogInWithToken() {
+		String username = ConfigurationManager.getInstance().readString(
+				USERNAME_KEY, null);
+		String token = ConfigurationManager.getInstance().readString(TOKEN_KEY,
+				null);
+
+		if (username != null && token != null) {
+			LOG.info("Trying to log in to cloud using a token as " + username);
+			String res = service
+					.loginWithToken(username, token, getMachineId());
+			if (res.equals("Error")) {
+				LOG.info("Log in failed");
+				return false;
+			} else {
+				LOG.info("Log in success");
+				listener.loggedIn();
+				this.loggedIn = true;
+				return true;
+			}
+		} else
+			return false;
+	}
+
+	public void logOut() {
+		LOG.info("Logged out");
+		ConfigurationManager.getInstance().writeValue(TOKEN_KEY, null);
+		this.loggedIn = false;
+		listener.loggedOut();
+	}
+
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+	private String getMachineId() {
 		if (machineId == null) {
 			try {
 				InetAddress ip = InetAddress.getLocalHost();
@@ -57,6 +105,7 @@ public class OnlinePresenter {
 			} catch (Exception e) {
 				machineId = "Generic";
 			}
+			LOG.info("Local machine id: " + machineId);
 		}
 		return machineId;
 	}
