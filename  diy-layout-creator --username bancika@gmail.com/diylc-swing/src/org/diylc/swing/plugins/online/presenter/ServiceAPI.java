@@ -13,7 +13,7 @@ import com.diyfever.httpproxy.ParamName;
  * @author bancika
  * 
  */
-public interface IServiceAPI {
+public interface ServiceAPI {
 	
 	public static final String URL_KEY = "serviceUrl";
 	
