@@ -30,10 +30,14 @@ public class OnlinePresenter {
 				ServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api");
 		ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
 		service = factory.createProxy(ServiceAPI.class, serviceUrl);
+		if (service == null)
+			LOG.warn("Service proxy not created!");
 		this.listener = listener;
 	}
 
 	public boolean logIn(String username, String password) {
+		if (service == null)
+			return false;
 		LOG.info("Trying to log in to cloud as " + username);
 		String res = service.login(username, password, getMachineId());
 		if (res.equals("Error")) {
@@ -51,6 +55,9 @@ public class OnlinePresenter {
 	}
 
 	public boolean tryLogInWithToken() {
+		if (service == null)
+			return false;
+
 		String username = ConfigurationManager.getInstance().readString(
 				USERNAME_KEY, null);
 		String token = ConfigurationManager.getInstance().readString(TOKEN_KEY,
