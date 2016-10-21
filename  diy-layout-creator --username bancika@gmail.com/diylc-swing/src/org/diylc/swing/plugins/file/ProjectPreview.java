@@ -10,8 +10,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -20,10 +18,9 @@ import javax.swing.JPanel;
 
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
-import org.diylc.common.PropertyWrapper;
-import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
+import org.diylc.swing.gui.DummyView;
 import org.diylc.swingframework.IFileChooserAccessory;
 
 import com.thoughtworks.xstream.XStream;
@@ -36,7 +33,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * 
  * @author Branislav Stojkovic
  */
-public class ProjectPreview extends JPanel implements PropertyChangeListener, IFileChooserAccessory {
+public class ProjectPreview extends JPanel implements PropertyChangeListener,
+		IFileChooserAccessory {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,28 +48,7 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 		super();
 
 		setPreferredSize(new Dimension(140, 128));
-		presenter = new Presenter(new IView() {
-
-			@Override
-			public int showConfirmDialog(String message, String title, int optionType,
-					int messageType) {
-				return 0;
-			}
-
-			@Override
-			public void showMessage(String message, String title, int messageType) {
-			}
-			
-			@Override
-			public File promptFileSave() {
-				return null;
-			}
-
-			@Override
-			public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
-				return false;
-			}
-		});
+		presenter = new Presenter(new DummyView());
 		xStream = new XStream(new DomDriver());
 
 		emptyProject = new Project();
@@ -154,7 +131,8 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 			presenter.draw(g2d, EnumSet.noneOf(DrawOption.class), null);
 
 			g2d.setColor(Color.black);
-			g2d.drawRect(0, 0, d.width - (int) (1 / zoomRatio), d.height - (int) (1 / zoomRatio));
+			g2d.drawRect(0, 0, d.width - (int) (1 / zoomRatio), d.height
+					- (int) (1 / zoomRatio));
 		}
 	}
 

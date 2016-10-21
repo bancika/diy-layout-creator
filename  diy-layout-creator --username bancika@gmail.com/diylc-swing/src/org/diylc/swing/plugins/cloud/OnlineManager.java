@@ -1,37 +1,41 @@
-package org.diylc.swing.plugins.online;
+package org.diylc.swing.plugins.cloud;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.EnumSet;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
-import javax.swing.SwingWorker;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
+import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.plugins.online.presenter.CloudListener;
-import org.diylc.swing.plugins.online.presenter.OnlinePresenter;
-import org.diylc.swing.plugins.online.view.LoginDialog;
-import org.diylc.swing.plugins.online.view.NewUserDialog;
-import org.diylc.swing.plugins.online.view.UploadDialog;
+import org.diylc.swing.gui.DummyView;
+import org.diylc.swing.plugins.cloud.presenter.CloudListener;
+import org.diylc.swing.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.swing.plugins.cloud.view.LoginDialog;
+import org.diylc.swing.plugins.cloud.view.NewUserDialog;
+import org.diylc.swing.plugins.cloud.view.UploadDialog;
+import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.ProgressDialog;
 
 public class OnlineManager implements IPlugIn, CloudListener {
 
-	private static final String ONLINE_TITLE = "Project Cloud";
+	private static final String ONLINE_TITLE = "DIY Cloud";
 
 	private final static Logger LOG = Logger.getLogger(OnlineManager.class);
 
 	private ISwingUI swingUI;
 	private IPlugInPort plugInPort;
-	private OnlinePresenter onlinePresenter;
+	private IPlugInPort thumbnailPresenter;
+	private CloudPresenter onlinePresenter;
 
 	private LibraryAction libraryAction;
 
@@ -47,6 +51,8 @@ public class OnlineManager implements IPlugIn, CloudListener {
 		super();
 
 		this.swingUI = swingUI;
+		this.thumbnailPresenter = new Presenter(new DummyView());
+				
 		swingUI.injectMenuAction(getLibraryAction(), ONLINE_TITLE);
 		swingUI.injectMenuAction(null, ONLINE_TITLE);
 		swingUI.injectMenuAction(getLoginAction(), ONLINE_TITLE);
@@ -56,7 +62,7 @@ public class OnlineManager implements IPlugIn, CloudListener {
 		swingUI.injectMenuAction(getManageProjectsAction(), ONLINE_TITLE);
 		swingUI.injectMenuAction(null, ONLINE_TITLE);
 		swingUI.injectMenuAction(getManageAccountAction(), ONLINE_TITLE);
-		swingUI.injectMenuAction(getLogOutAction(), ONLINE_TITLE);
+		swingUI.injectMenuAction(getLogOutAction(), ONLINE_TITLE);		
 
 		// default state
 		getUploadAction().setEnabled(false);
@@ -67,30 +73,33 @@ public class OnlineManager implements IPlugIn, CloudListener {
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
-		this.onlinePresenter = new OnlinePresenter(this);
+		this.onlinePresenter = new CloudPresenter(this);
 
 		initialize();
 	}
 
 	private void initialize() {
-		SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+		this.swingUI.executeBackgroundTask(new ITask<Boolean>() {
 
 			@Override
-			protected Boolean doInBackground() throws Exception {
+			public Boolean doInBackground() throws Exception {
 				return onlinePresenter.tryLogInWithToken();
 			}
 
 			@Override
-			protected void done() {
+			public void failed(Exception e) {
+			}
+
+			@Override
+			public void complete(Boolean result) {
 				try {
-					if (get())
+					if (result)
 						loggedIn();
 				} catch (Exception e) {
 					LOG.error("Error while trying to login with token", e);
 				}
 			}
-		};
-		worker.execute();
+		});
 	}
 
 	public LibraryAction getLibraryAction() {
@@ -130,7 +139,8 @@ public class OnlineManager implements IPlugIn, CloudListener {
 
 	public UploadAction getUploadAction() {
 		if (uploadAction == null) {
-			uploadAction = new UploadAction();
+			uploadAction = new UploadAction(this.thumbnailPresenter,
+					this.swingUI, this.onlinePresenter);
 		}
 		return uploadAction;
 	}
@@ -158,7 +168,7 @@ public class OnlineManager implements IPlugIn, CloudListener {
 		public LibraryAction() {
 			super();
 			putValue(AbstractAction.NAME, "Browse The Cloud");
-			putValue(AbstractAction.SMALL_ICON, IconLoader.Chest.getIcon());
+			putValue(AbstractAction.SMALL_ICON, IconLoader.Cloud.getIcon());
 		}
 
 		@Override
@@ -241,7 +251,7 @@ public class OnlineManager implements IPlugIn, CloudListener {
 		public ManageAccountAction() {
 			super();
 			putValue(AbstractAction.NAME, "Manage Account");
-			putValue(AbstractAction.SMALL_ICON, IconLoader.IdCard.getIcon());
+			putValue(AbstractAction.SMALL_ICON, IconLoader.IdCardEdit.getIcon());
 		}
 
 		@Override
@@ -256,17 +266,51 @@ public class OnlineManager implements IPlugIn, CloudListener {
 
 		private static final long serialVersionUID = 1L;
 
-		public UploadAction() {
+		private IPlugInPort plugInPort;
+		private ISwingUI swingUI;
+		private CloudPresenter onlinePresenter;
+
+		public UploadAction(IPlugInPort plugInPort, ISwingUI swingUI, CloudPresenter onlinePresenter) {
 			super();
-			putValue(AbstractAction.NAME, "Upload Project");
-			putValue(AbstractAction.SMALL_ICON, IconLoader.Upload.getIcon());
+			this.plugInPort = plugInPort;
+			this.swingUI = swingUI;
+			this.onlinePresenter = onlinePresenter;
+			putValue(AbstractAction.NAME, "Upload A Project");
+			putValue(AbstractAction.SMALL_ICON, IconLoader.CloudUp.getIcon());
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			UploadDialog dialog = DialogFactory.getInstance()
-					.createUploadDialog();
-			dialog.setVisible(true);
+			LOG.info("UploadAction triggered");
+
+			final File file = DialogFactory.getInstance().showOpenDialog(
+					FileFilterEnum.DIY.getFilter(), null,
+					FileFilterEnum.DIY.getExtensions()[0], null);
+			if (file != null) {
+				swingUI.executeBackgroundTask(new ITask<Void>() {
+
+					@Override
+					public Void doInBackground() throws Exception {
+						LOG.debug("Uploading from " + file.getAbsolutePath());
+						plugInPort.loadProjectFromFile(file.getAbsolutePath());
+						return null;
+					}
+
+					@Override
+					public void complete(Void result) {
+						UploadDialog dialog = DialogFactory.getInstance()
+								.createUploadDialog(UploadAction.this.plugInPort, UploadAction.this.onlinePresenter);
+						dialog.setVisible(true);
+					}
+
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage(
+								"Could not open file. " + e.getMessage(),
+								"Error", ISwingUI.ERROR_MESSAGE);
+					}
+				});
+			}
 		}
 	}
 
@@ -276,8 +320,8 @@ public class OnlineManager implements IPlugIn, CloudListener {
 
 		public ManageProjectsAction() {
 			super();
-			putValue(AbstractAction.NAME, "Manage Projects");
-			putValue(AbstractAction.SMALL_ICON, IconLoader.Wrench.getIcon());
+			putValue(AbstractAction.NAME, "Manage My Projects");
+			putValue(AbstractAction.SMALL_ICON, IconLoader.CloudGear.getIcon());
 		}
 
 		@Override

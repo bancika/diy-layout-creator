@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.online.view;
+package org.diylc.swing.plugins.cloud.view;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.diylc.swing.plugins.online.model.UserEntity;
+import org.diylc.swing.plugins.cloud.model.UserEntity;
 import org.diylc.swingframework.ButtonDialog;
 
 public class NewUserDialog extends ButtonDialog {

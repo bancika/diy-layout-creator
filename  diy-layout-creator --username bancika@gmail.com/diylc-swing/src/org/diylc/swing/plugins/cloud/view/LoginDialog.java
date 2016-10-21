@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.online.view;
+package org.diylc.swing.plugins.cloud.view;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;

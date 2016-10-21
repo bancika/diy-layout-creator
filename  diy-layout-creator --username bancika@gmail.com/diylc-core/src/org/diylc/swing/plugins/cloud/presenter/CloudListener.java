@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.online.presenter;
+package org.diylc.swing.plugins.cloud.presenter;
 
 public interface CloudListener {
 

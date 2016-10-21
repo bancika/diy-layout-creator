@@ -9,14 +9,16 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
+import org.diylc.swing.plugins.cloud.model.UserEntity;
+import org.diylc.swing.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.swing.plugins.cloud.view.LoginDialog;
+import org.diylc.swing.plugins.cloud.view.NewUserDialog;
+import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.file.BomDialog;
-import org.diylc.swing.plugins.online.model.UserEntity;
-import org.diylc.swing.plugins.online.view.LoginDialog;
-import org.diylc.swing.plugins.online.view.NewUserDialog;
-import org.diylc.swing.plugins.online.view.UploadDialog;
 import org.diylc.swingframework.AboutDialog;
 import org.diylc.swingframework.IFileChooserAccessory;
 import org.diylc.swingframework.ProgressDialog;
@@ -56,9 +58,10 @@ public class DialogFactory {
 		}
 	}
 
-	public PropertyEditorDialog createPropertyEditorDialog(List<PropertyWrapper> properties,
-			String title) {
-		PropertyEditorDialog editor = new PropertyEditorDialog(mainFrame, properties, title);
+	public PropertyEditorDialog createPropertyEditorDialog(
+			List<PropertyWrapper> properties, String title) {
+		PropertyEditorDialog editor = new PropertyEditorDialog(mainFrame,
+				properties, title);
 		return editor;
 	}
 
@@ -67,28 +70,33 @@ public class DialogFactory {
 		return dialog;
 	}
 
-	public File showOpenDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
-			IFileChooserAccessory accessory) {
+	public File showOpenDialog(FileFilter fileFilter, File initialFile,
+			String defaultExtension, IFileChooserAccessory accessory) {
 		JFileChooser openFileChooser = new JFileChooser();
-		initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory);
+		initializeFileChooser(openFileChooser, fileFilter, initialFile,
+				defaultExtension, accessory);
 
 		int result = openFileChooser.showOpenDialog(mainFrame);
 
-		return processFileChooserResult(result, openFileChooser, defaultExtension);
+		return processFileChooserResult(result, openFileChooser,
+				defaultExtension);
 	}
 
-	public File showSaveDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
-			IFileChooserAccessory accessory) {
+	public File showSaveDialog(FileFilter fileFilter, File initialFile,
+			String defaultExtension, IFileChooserAccessory accessory) {
 		JFileChooser saveFileChooser = new OverwritePromptFileChooser();
-		initializeFileChooser(saveFileChooser, fileFilter, initialFile, defaultExtension, accessory);
+		initializeFileChooser(saveFileChooser, fileFilter, initialFile,
+				defaultExtension, accessory);
 
 		int result = saveFileChooser.showSaveDialog(mainFrame);
 
-		return processFileChooserResult(result, saveFileChooser, defaultExtension);
+		return processFileChooserResult(result, saveFileChooser,
+				defaultExtension);
 	}
 
-	private void initializeFileChooser(JFileChooser fileChooser, FileFilter fileFilter,
-			File initialFile, String defaultExtension, IFileChooserAccessory accessory) {
+	private void initializeFileChooser(JFileChooser fileChooser,
+			FileFilter fileFilter, File initialFile, String defaultExtension,
+			IFileChooserAccessory accessory) {
 		if (accessory != null) {
 			accessory.install(fileChooser);
 		}
@@ -96,7 +104,8 @@ public class DialogFactory {
 			fileChooser.removeChoosableFileFilter(filter);
 		}
 		if (fileChooser instanceof OverwritePromptFileChooser) {
-			((OverwritePromptFileChooser) fileChooser).setFileFilter(fileFilter, defaultExtension);
+			((OverwritePromptFileChooser) fileChooser).setFileFilter(
+					fileFilter, defaultExtension);
 		} else {
 			fileChooser.setFileFilter(fileFilter);
 		}
@@ -116,18 +125,19 @@ public class DialogFactory {
 			if (fileChooser.getSelectedFile().getAbsolutePath().contains(".")) {
 				return fileChooser.getSelectedFile();
 			} else {
-				return new File(fileChooser.getSelectedFile().getAbsoluteFile() + "."
-						+ defaultExtension);
+				return new File(fileChooser.getSelectedFile().getAbsoluteFile()
+						+ "." + defaultExtension);
 			}
 		} else {
 			return null;
 		}
 	}
 
-	public AboutDialog createAboutDialog(String appName, Icon icon, String version, String author,
-			String url, String mail, String htmlContent) {
-		AboutDialog dialog = new AboutDialog(mainFrame, appName, icon, version, author, url, mail,
-				htmlContent);
+	public AboutDialog createAboutDialog(String appName, Icon icon,
+			String version, String author, String url, String mail,
+			String htmlContent) {
+		AboutDialog dialog = new AboutDialog(mainFrame, appName, icon, version,
+				author, url, mail, htmlContent);
 		return dialog;
 	}
 
@@ -141,15 +151,15 @@ public class DialogFactory {
 		return dialog;
 	}
 
-	public UploadDialog createUploadDialog() {
-		UploadDialog dialog = new UploadDialog(mainFrame);
+	public UploadDialog createUploadDialog(IPlugInPort plugInPort, CloudPresenter presenter) {
+		UploadDialog dialog = new UploadDialog(mainFrame, plugInPort, presenter);
 		return dialog;
 	}
 
-	public ProgressDialog createProgressDialog(String title, String[] buttonCaptions,
-			String description, boolean useProgress) {
-		ProgressDialog dialog = new ProgressDialog(mainFrame, title, buttonCaptions, description,
-				useProgress);
+	public ProgressDialog createProgressDialog(String title,
+			String[] buttonCaptions, String description, boolean useProgress) {
+		ProgressDialog dialog = new ProgressDialog(mainFrame, title,
+				buttonCaptions, description, useProgress);
 		return dialog;
 	}
 }

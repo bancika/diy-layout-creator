@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.online.model;
+package org.diylc.swing.plugins.cloud.model;
 
 import java.io.File;
 import java.util.List;

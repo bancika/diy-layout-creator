@@ -1,21 +1,21 @@
-package org.diylc.swing.plugins.online.presenter;
+package org.diylc.swing.plugins.cloud.presenter;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.swing.plugins.online.model.ServiceAPI;
+import org.diylc.swing.plugins.cloud.model.ServiceAPI;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
 
-public class OnlinePresenter {
+public class CloudPresenter {
 
 	private static String USERNAME_KEY = "cloud.Username";
 	private static String TOKEN_KEY = "cloud.token";
 
-	private final static Logger LOG = Logger.getLogger(OnlinePresenter.class);
+	private final static Logger LOG = Logger.getLogger(CloudPresenter.class);
 
 	private ServiceAPI service;
 	private String serviceUrl;
@@ -25,7 +25,7 @@ public class OnlinePresenter {
 
 	private boolean loggedIn = false;
 
-	public OnlinePresenter(CloudListener listener) {
+	public CloudPresenter(CloudListener listener) {
 		serviceUrl = ConfigurationManager.getInstance().readString(
 				ServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api");
 		ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
