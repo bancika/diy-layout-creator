@@ -1,11 +1,6 @@
 package org.diylc.swing.plugins.online.model;
 
-import java.awt.event.ActionEvent;
 import java.io.Serializable;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JOptionPane;
 
 public class ProjectEntity implements Serializable {
 
@@ -16,18 +11,26 @@ public class ProjectEntity implements Serializable {
 	private String description;
 	private String owner;
 	private String category;
+	private String updated;
+	private String thumbnailUrl;
+	private String downloadUrl;
 
 	public ProjectEntity() {
 		super();
 	}
 
-	public ProjectEntity(int id, String name, String description, String owner, String category) {
+	public ProjectEntity(int id, String name, String description, String owner,
+			String category, String updated, String thumbnailUrl,
+			String downloadUrl) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.owner = owner;
 		this.category = category;
+		this.updated = updated;
+		this.thumbnailUrl = thumbnailUrl;
+		this.downloadUrl = downloadUrl;
 	}
 
 	public int getId() {
@@ -70,28 +73,59 @@ public class ProjectEntity implements Serializable {
 		this.category = category;
 	}
 
-	public Action getDownload() {
-
-		Action a = new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, name);
-			}
-		};
-		a.putValue(AbstractAction.NAME, "Download");
-		return a;
+	public String getUpdated() {
+		return updated;
 	}
 
+	public void setUpdated(String updated) {
+		this.updated = updated;
+	}
+
+	public String getThumbnailUrl() {
+		return thumbnailUrl;
+	}
+
+	public void setThumbnailUrl(String thumbnailUrl) {
+		this.thumbnailUrl = thumbnailUrl;
+	}
+
+	public String getDownloadUrl() {
+		return downloadUrl;
+	}
+
+	public void setDownloadUrl(String downloadUrl) {
+		this.downloadUrl = downloadUrl;
+	}
+
+	// public Action getDownload() {
+	//
+	// Action a = new AbstractAction() {
+	//
+	// @Override
+	// public void actionPerformed(ActionEvent e) {
+	// JOptionPane.showMessageDialog(null, name);
+	// }
+	// };
+	// a.putValue(AbstractAction.NAME, "Download");
+	// return a;
+	// }
+	//
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((category == null) ? 0 : category.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((category == null) ? 0 : category.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((downloadUrl == null) ? 0 : downloadUrl.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
+		result = prime * result
+				+ ((thumbnailUrl == null) ? 0 : thumbnailUrl.hashCode());
+		result = prime * result + ((updated == null) ? 0 : updated.hashCode());
 		return result;
 	}
 
@@ -114,6 +148,11 @@ public class ProjectEntity implements Serializable {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
+		if (downloadUrl == null) {
+			if (other.downloadUrl != null)
+				return false;
+		} else if (!downloadUrl.equals(other.downloadUrl))
+			return false;
 		if (id != other.id)
 			return false;
 		if (name == null) {
@@ -126,11 +165,21 @@ public class ProjectEntity implements Serializable {
 				return false;
 		} else if (!owner.equals(other.owner))
 			return false;
+		if (thumbnailUrl == null) {
+			if (other.thumbnailUrl != null)
+				return false;
+		} else if (!thumbnailUrl.equals(other.thumbnailUrl))
+			return false;
+		if (updated == null) {
+			if (other.updated != null)
+				return false;
+		} else if (!updated.equals(other.updated))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return name;
+		return name + " by " + owner + " updated on " + updated;
 	}
 }

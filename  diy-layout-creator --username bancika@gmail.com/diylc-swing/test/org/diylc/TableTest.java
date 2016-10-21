@@ -22,8 +22,8 @@ public class TableTest {
 		BasicConfigurator.configure();
 
 		List<ProjectEntity> projects = new ArrayList<ProjectEntity>();
-		projects.add(new ProjectEntity(1, "first", "some text", "bane", "none"));
-		projects.add(new ProjectEntity(2, "second", "anoter text", "bisera", "none"));
+		projects.add(new ProjectEntity(1, "first", "some text", "bane", "none", "", "", ""));
+		projects.add(new ProjectEntity(2, "second", "anoter text", "bisera", "none", "", "", ""));
 
 		ObjectListTable<ProjectEntity> t = new ObjectListTable<ProjectEntity>(ProjectEntity.class,
 				new String[] { "getName", "getDescription", "getCategory", "getOwner",

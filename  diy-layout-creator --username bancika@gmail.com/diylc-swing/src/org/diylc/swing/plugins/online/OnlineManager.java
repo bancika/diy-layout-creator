@@ -45,15 +45,15 @@ public class OnlineManager implements IPlugIn {
 
 			@Override
 			protected Void doInBackground() throws Exception {
-				libraryPresenter.connectDb();
+				//libraryPresenter.connectDb();
 				return null;
 			}
 
 			@Override
 			protected void done() {
-				if (libraryPresenter.isLoggedIn()) {
-
-				}
+				// if (libraryPresenter.isLoggedIn()) {
+				//
+				// }
 			}
 		};
 		worker.execute();
