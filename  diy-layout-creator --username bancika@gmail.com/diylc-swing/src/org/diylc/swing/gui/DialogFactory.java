@@ -13,6 +13,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.file.BomDialog;
+import org.diylc.swing.plugins.online.model.UserEntity;
 import org.diylc.swing.plugins.online.view.LoginDialog;
 import org.diylc.swing.plugins.online.view.NewUserDialog;
 import org.diylc.swing.plugins.online.view.UploadDialog;
@@ -130,8 +131,8 @@ public class DialogFactory {
 		return dialog;
 	}
 
-	public NewUserDialog createNewUserDialog() {
-		NewUserDialog dialog = new NewUserDialog(mainFrame);
+	public NewUserDialog createNewUserDialog(UserEntity existingUser) {
+		NewUserDialog dialog = new NewUserDialog(mainFrame, existingUser);
 		return dialog;
 	}
 

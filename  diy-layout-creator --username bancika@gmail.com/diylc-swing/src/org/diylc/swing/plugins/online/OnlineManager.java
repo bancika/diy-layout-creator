@@ -10,8 +10,9 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.images.IconLoader;
+import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.plugins.online.presenter.LibraryPresenter;
+import org.diylc.swing.plugins.online.presenter.OnlinePresenter;
 import org.diylc.swing.plugins.online.view.LoginDialog;
 import org.diylc.swing.plugins.online.view.NewUserDialog;
 import org.diylc.swing.plugins.online.view.UploadDialog;
@@ -19,25 +20,29 @@ import org.diylc.swingframework.ProgressDialog;
 
 public class OnlineManager implements IPlugIn {
 
-	private static final String ONLINE_TITLE = "Online";
+	private static final String ONLINE_TITLE = "Project Cloud";
 
 	private IPlugInPort plugInPort;
-	private LibraryPresenter libraryPresenter;
+	private OnlinePresenter onlinePresenter;	
+
+	public OnlineManager(ISwingUI swingUI) {
+		super();
+		
+//		plugInPort.injectMenuAction(new LibraryAction(), ONLINE_TITLE);
+//		plugInPort.injectMenuAction(null, ONLINE_TITLE);
+		swingUI.injectMenuAction(new LoginAction(), ONLINE_TITLE);
+		swingUI.injectMenuAction(new CreateAccountAction(), ONLINE_TITLE);
+		swingUI.injectMenuAction(null, ONLINE_TITLE);
+		swingUI.injectMenuAction(new UploadAction(), ONLINE_TITLE);
+		swingUI.injectMenuAction(new ManageProjectsAction(), ONLINE_TITLE);
+	}
 
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
-		this.libraryPresenter = new LibraryPresenter();
+		this.onlinePresenter = new OnlinePresenter();
 
 		initialize();
-
-//		plugInPort.injectMenuAction(new LibraryAction(), ONLINE_TITLE);
-//		plugInPort.injectMenuAction(null, ONLINE_TITLE);
-//		plugInPort.injectMenuAction(new LoginAction(), ONLINE_TITLE);
-//		plugInPort.injectMenuAction(new CreateAccountAction(), ONLINE_TITLE);
-//		plugInPort.injectMenuAction(null, ONLINE_TITLE);
-//		plugInPort.injectMenuAction(new UploadAction(), ONLINE_TITLE);
-//		plugInPort.injectMenuAction(new ManageProjectsAction(), ONLINE_TITLE);
 	}
 
 	private void initialize() {
@@ -89,7 +94,7 @@ public class OnlineManager implements IPlugIn {
 
 		public LoginAction() {
 			super();
-			putValue(AbstractAction.NAME, "Log in");
+			putValue(AbstractAction.NAME, "Log In");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.IdCard.getIcon());
 		}
 
@@ -97,6 +102,7 @@ public class OnlineManager implements IPlugIn {
 		public void actionPerformed(ActionEvent e) {
 			LoginDialog dialog = DialogFactory.getInstance().createLoginDialog();
 			dialog.setVisible(true);
+			onlinePresenter.login(dialog.getName(), dialog.getPassword());
 		}
 	}
 
@@ -112,7 +118,7 @@ public class OnlineManager implements IPlugIn {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			NewUserDialog dialog = DialogFactory.getInstance().createNewUserDialog();
+			NewUserDialog dialog = DialogFactory.getInstance().createNewUserDialog(null);
 			dialog.setVisible(true);
 		}
 	}

@@ -39,7 +39,7 @@ public enum IconLoader {
 			"sort.png"), ElementsSelection("elements_selection.png"), BranchAdd(
 			"branch_add.png"), BriefcaseAdd("briefcase_add.png"), BriefcaseInto(
 			"briefcase_into.png"), RotateCW("rotate_cw.png"), RotateCCW(
-			"rotate_ccw.png"), ElementInto("element_into.png");
+			"rotate_ccw.png"), ElementInto("element_into.png"), Arrow("arrow.png");
 
 	protected String name;
 

@@ -12,10 +12,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.diylc.swing.plugins.online.model.UserEntity;
 import org.diylc.swingframework.ButtonDialog;
 
 public class NewUserDialog extends ButtonDialog {
@@ -28,17 +30,24 @@ public class NewUserDialog extends ButtonDialog {
 	private JPasswordField passwordField;
 	private JPasswordField confirmPasswordField;
 	private JTextField emailField;
+	private JTextField websiteField;
+	private JTextArea bioArea;
 
 	private String userName;
 	private String password;
 	private String email;
+	private String website;
+	private String bio;
 
-	public NewUserDialog(JFrame owner) {
+	private UserEntity existingEntity;
+
+	public NewUserDialog(JFrame owner, UserEntity existingEntity) {
 		super(owner, "New Account", new String[] { OK, CANCEL });
 		setMinimumSize(new Dimension(240, 32));
 		layoutGui();
 		refreshState();
 		userNameField.setText(System.getProperty("user.name"));
+		this.existingEntity = existingEntity;
 	}
 
 	public String getUserName() {
@@ -51,6 +60,14 @@ public class NewUserDialog extends ButtonDialog {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public String getBio() {
+		return bio;
 	}
 
 	@Override
@@ -78,6 +95,12 @@ public class NewUserDialog extends ButtonDialog {
 			gbc.gridy = 3;
 			mainPanel.add(new JLabel("eMail:"), gbc);
 
+			gbc.gridy = 4;
+			mainPanel.add(new JLabel("Website:"), gbc);
+
+			gbc.gridy = 5;
+			mainPanel.add(new JLabel("Short Bio:"), gbc);
+
 			gbc.gridx = 1;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1;
@@ -93,6 +116,12 @@ public class NewUserDialog extends ButtonDialog {
 
 			gbc.gridy = 3;
 			mainPanel.add(getEmailField(), gbc);
+
+			gbc.gridy = 4;
+			mainPanel.add(getWebsiteField(), gbc);
+
+			gbc.gridy = 5;
+			mainPanel.add(getBioArea(), gbc);
 		}
 		return mainPanel;
 	}
@@ -100,38 +129,46 @@ public class NewUserDialog extends ButtonDialog {
 	private void refreshState() {
 		this.userName = getUserNameField().getText();
 		String password = new String(getPasswordField().getPassword());
-		String confirmPassword = new String(getConfirmPasswordField().getPassword());
+		String confirmPassword = new String(getConfirmPasswordField()
+				.getPassword());
 		if (password.equals(confirmPassword)) {
 			this.password = password;
 		} else {
 			this.password = null;
 		}
 		this.email = getEmailField().getText();
+		this.website = getWebsiteField().getText();
+		this.bio = getBioArea().getText();
 		JButton okButton = getButton(OK);
-		okButton.setEnabled((this.userName.length() > 0) && (this.password != null)
-				&& (this.password.length() > 0));
+		okButton.setEnabled((this.userName.length() > 0)
+				&& (this.password != null) && (this.password.length() > 0));
 	}
 
 	private JTextField getUserNameField() {
 		if (userNameField == null) {
 			userNameField = new JTextField();
-			userNameField.getDocument().addDocumentListener(new DocumentListener() {
+			if (existingEntity != null) {
+				userNameField.setText(existingEntity.getUserName());
+				userNameField.setEditable(false);
+			}
+			userNameField.getDocument().addDocumentListener(
+					new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+						@Override
+						public void removeUpdate(DocumentEvent e) {
+							refreshState();
+						}
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+						@Override
+						public void insertUpdate(DocumentEvent e) {
+							refreshState();
+						}
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
+						@Override
+						public void changedUpdate(DocumentEvent e) {
+							refreshState();
+						}
+					});
 		}
 		return userNameField;
 	}
@@ -139,23 +176,24 @@ public class NewUserDialog extends ButtonDialog {
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.getDocument().addDocumentListener(new DocumentListener() {
+			passwordField.getDocument().addDocumentListener(
+					new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+						@Override
+						public void removeUpdate(DocumentEvent e) {
+							refreshState();
+						}
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+						@Override
+						public void insertUpdate(DocumentEvent e) {
+							refreshState();
+						}
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
+						@Override
+						public void changedUpdate(DocumentEvent e) {
+							refreshState();
+						}
+					});
 		}
 		return passwordField;
 	}
@@ -163,23 +201,24 @@ public class NewUserDialog extends ButtonDialog {
 	private JPasswordField getConfirmPasswordField() {
 		if (confirmPasswordField == null) {
 			confirmPasswordField = new JPasswordField();
-			confirmPasswordField.getDocument().addDocumentListener(new DocumentListener() {
+			confirmPasswordField.getDocument().addDocumentListener(
+					new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+						@Override
+						public void removeUpdate(DocumentEvent e) {
+							refreshState();
+						}
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+						@Override
+						public void insertUpdate(DocumentEvent e) {
+							refreshState();
+						}
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
+						@Override
+						public void changedUpdate(DocumentEvent e) {
+							refreshState();
+						}
+					});
 		}
 		return confirmPasswordField;
 	}
@@ -187,7 +226,63 @@ public class NewUserDialog extends ButtonDialog {
 	private JTextField getEmailField() {
 		if (emailField == null) {
 			emailField = new JTextField();
-			emailField.getDocument().addDocumentListener(new DocumentListener() {
+			if (existingEntity != null)
+				emailField.setText(existingEntity.getEmail());
+			emailField.getDocument().addDocumentListener(
+					new DocumentListener() {
+
+						@Override
+						public void removeUpdate(DocumentEvent e) {
+							refreshState();
+						}
+
+						@Override
+						public void insertUpdate(DocumentEvent e) {
+							refreshState();
+						}
+
+						@Override
+						public void changedUpdate(DocumentEvent e) {
+							refreshState();
+						}
+					});
+		}
+		return emailField;
+	}
+
+	public JTextField getWebsiteField() {
+		if (websiteField == null) {
+			websiteField = new JTextField();
+			if (existingEntity != null)
+				websiteField.setText(existingEntity.getWebsite());
+			websiteField.getDocument().addDocumentListener(
+					new DocumentListener() {
+
+						@Override
+						public void removeUpdate(DocumentEvent e) {
+							refreshState();
+						}
+
+						@Override
+						public void insertUpdate(DocumentEvent e) {
+							refreshState();
+						}
+
+						@Override
+						public void changedUpdate(DocumentEvent e) {
+							refreshState();
+						}
+					});
+		}
+		return websiteField;
+	}
+
+	public JTextArea getBioArea() {
+		if (bioArea == null) {
+			bioArea = new JTextArea();
+			if (existingEntity != null)
+				bioArea.setText(existingEntity.getBio());
+			bioArea.getDocument().addDocumentListener(new DocumentListener() {
 
 				@Override
 				public void removeUpdate(DocumentEvent e) {
@@ -205,6 +300,6 @@ public class NewUserDialog extends ButtonDialog {
 				}
 			});
 		}
-		return emailField;
+		return bioArea;
 	}
 }

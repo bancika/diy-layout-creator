@@ -25,7 +25,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.images.IconLoader;
-import org.openide.awt.DropDownButtonFactory;
+import org.diylc.swing.plugins.toolbox.openide.DropDownButtonFactory;
 
 /**
  * {@link JButton} that displays component type icon and instantiates the
@@ -107,8 +107,8 @@ class ComponentButtonFactory {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				plugInPort.keyPressed(e.getKeyCode(), e.isControlDown(), e
-						.isShiftDown(), e.isAltDown());
+				plugInPort.keyPressed(e.getKeyCode(), e.isControlDown(),
+						e.isShiftDown(), e.isAltDown());
 			}
 		});
 		// addKeyListener(new KeyAdapter() {
@@ -163,8 +163,8 @@ class ComponentButtonFactory {
 					JPopupMenu m = (JPopupMenu) c;
 					m.setVisible(false);
 				}
-				int result = JOptionPane.showConfirmDialog(SwingUtilities
-						.getRoot(item),
+				int result = JOptionPane.showConfirmDialog(
+						SwingUtilities.getRoot(item),
 						"Are you sure you want to delete template \""
 								+ template.getName() + "\"", "Delete",
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);

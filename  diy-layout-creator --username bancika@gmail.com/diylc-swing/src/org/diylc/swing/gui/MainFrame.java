@@ -56,6 +56,7 @@ import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swing.plugins.file.FileMenuPlugin;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
 import org.diylc.swing.plugins.layers.LayersMenuPlugin;
+import org.diylc.swing.plugins.online.OnlineManager;
 import org.diylc.swing.plugins.statusbar.StatusBar;
 import org.diylc.swing.plugins.toolbox.ToolBox;
 import org.diylc.swingframework.ButtonDialog;
@@ -98,7 +99,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		presenter.installPlugin(new EditMenuPlugin(this));
 		presenter.installPlugin(new ConfigPlugin(this));
 		presenter.installPlugin(new LayersMenuPlugin(this));
-		// presenter.installPlugin(new OnlineManager());
+		presenter.installPlugin(new OnlineManager(this));
 		presenter.installPlugin(new HelpMenuPlugin(this));
 
 		presenter.installPlugin(new StatusBar(this));

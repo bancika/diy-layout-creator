@@ -1,9 +1,7 @@
-package org.diylc.swing.plugins.online.presenter;
+package org.diylc.swing.plugins.online.model;
 
 import java.io.File;
 import java.util.List;
-
-import org.diylc.swing.plugins.online.model.ProjectEntity;
 
 import com.diyfever.httpproxy.ParamName;
 
@@ -123,7 +121,7 @@ public interface ServiceAPI {
 			@ParamName("diylcVersion") String diylcVersion,
 			@ParamName("keywords") String keywords,
 			@ParamName("thumbnail") File thumbnail,
-			@ParamName("thumbnail") File project);
+			@ParamName("project") File project);
 
 	/**
 	 * @return a {@link List} of available categories.
