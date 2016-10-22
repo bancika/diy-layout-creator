@@ -42,7 +42,7 @@ public enum IconLoader {
 			"rotate_ccw.png"), ElementInto("element_into.png"), Arrow(
 			"arrow.png"), Cloud("cloud.png"), CloudUp("cloud_up.png"), CloudGear(
 			"cloud_gear.png"), IdCardEdit("id_card_edit.png"), KeyEdit(
-			"key_edit.png");
+			"key_edit.png"), Find("find.png"), Dashboard("dashboard.png");
 
 	protected String name;
 

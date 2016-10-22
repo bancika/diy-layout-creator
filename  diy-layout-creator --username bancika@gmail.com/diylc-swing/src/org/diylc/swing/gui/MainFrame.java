@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -330,8 +331,11 @@ public class MainFrame extends JFrame implements ISwingUI {
 				try {
 					T result = get();
 					task.complete(result);
-				} catch (Exception e) {
-					LOG.error("Task failed", e);
+				} catch (ExecutionException e) {
+					LOG.error("Background task execution failed", e);
+					task.failed(e);
+				} catch (InterruptedException e) {
+					LOG.error("Background task execution interrupted", e);
 					task.failed(e);
 				}
 				getGlassPane().setVisible(false);

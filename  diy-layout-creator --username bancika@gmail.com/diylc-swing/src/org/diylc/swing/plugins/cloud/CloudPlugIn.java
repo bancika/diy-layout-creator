@@ -23,6 +23,7 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
+import org.diylc.swing.plugins.cloud.view.CloudBrowserFrame;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
 import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
@@ -186,6 +187,9 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			CloudBrowserFrame frame = DialogFactory.getInstance()
+					.createCloudBrowserFrame(plugInPort, cloudPresenter);
+			frame.setVisible(true);
 		}
 	}
 
