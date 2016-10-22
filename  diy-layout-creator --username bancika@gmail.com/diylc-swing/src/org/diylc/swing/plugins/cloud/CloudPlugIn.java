@@ -14,15 +14,16 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
+import org.diylc.plugins.cloud.model.UserEntity;
+import org.diylc.plugins.cloud.presenter.CloudException;
+import org.diylc.plugins.cloud.presenter.CloudListener;
+import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
-import org.diylc.swing.plugins.cloud.presenter.CloudException;
-import org.diylc.swing.plugins.cloud.presenter.CloudListener;
-import org.diylc.swing.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
-import org.diylc.swing.plugins.cloud.view.NewUserDialog;
+import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
@@ -47,6 +48,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 	private ManageAccountAction manageAccountAction;
 
 	private UploadAction uploadAction;
+	private ChangePasswordAction changePasswordAction;
 	private ManageProjectsAction manageProjectsAction;
 
 	public CloudPlugIn(ISwingUI swingUI) {
@@ -64,6 +66,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 		swingUI.injectMenuAction(getManageProjectsAction(), ONLINE_TITLE);
 		swingUI.injectMenuAction(null, ONLINE_TITLE);
 		swingUI.injectMenuAction(getManageAccountAction(), ONLINE_TITLE);
+		swingUI.injectMenuAction(getChangePasswordAction(), ONLINE_TITLE);
 		swingUI.injectMenuAction(getLogOutAction(), ONLINE_TITLE);
 
 		// default state
@@ -145,6 +148,14 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 			uploadAction = new UploadAction();
 		}
 		return uploadAction;
+	}
+	
+	public ChangePasswordAction getChangePasswordAction() {
+		if (changePasswordAction == null)
+		{
+			changePasswordAction = new ChangePasswordAction();
+		}
+		return changePasswordAction;
 	}
 
 	public ManageProjectsAction getManageProjectsAction() {
@@ -247,8 +258,8 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			NewUserDialog dialog = DialogFactory.getInstance()
-					.createNewUserDialog(null);
+			UserEditDialog dialog = DialogFactory.getInstance()
+					.createUserEditDialog(null);
 			dialog.setVisible(true);
 		}
 	}
@@ -265,9 +276,63 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			NewUserDialog dialog = DialogFactory.getInstance()
-					.createNewUserDialog(null);
-			dialog.setVisible(true);
+			swingUI.executeBackgroundTask(new ITask<UserEntity>() {
+
+				@Override
+				public UserEntity doInBackground() throws Exception {
+					return cloudPresenter.getUserDetails();
+				}
+
+				@Override
+				public void failed(Exception e) {
+					swingUI.showMessage(
+							"Failed to retreive user details from the server.",
+							"Cloud Error", IView.ERROR_MESSAGE);
+				}
+
+				@Override
+				public void complete(UserEntity result) {
+					UserEditDialog dialog = DialogFactory.getInstance()
+							.createUserEditDialog(result);
+					dialog.setVisible(true);
+				}
+			});
+		}
+	}
+	
+	class ChangePasswordAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public ChangePasswordAction() {
+			super();
+			putValue(AbstractAction.NAME, "Change Password");
+			putValue(AbstractAction.SMALL_ICON, IconLoader.KeyEdit.getIcon());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			swingUI.executeBackgroundTask(new ITask<UserEntity>() {
+
+				@Override
+				public UserEntity doInBackground() throws Exception {
+					return cloudPresenter.getUserDetails();
+				}
+
+				@Override
+				public void failed(Exception e) {
+					swingUI.showMessage(
+							"Failed to retreive user details from the server.",
+							"Cloud Error", IView.ERROR_MESSAGE);
+				}
+
+				@Override
+				public void complete(UserEntity result) {
+					UserEditDialog dialog = DialogFactory.getInstance()
+							.createUserEditDialog(result);
+					dialog.setVisible(true);
+				}
+			});
 		}
 	}
 

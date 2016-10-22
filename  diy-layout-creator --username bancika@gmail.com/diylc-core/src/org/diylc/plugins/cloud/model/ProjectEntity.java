@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.cloud.model;
+package org.diylc.plugins.cloud.model;
 
 import java.io.Serializable;
 

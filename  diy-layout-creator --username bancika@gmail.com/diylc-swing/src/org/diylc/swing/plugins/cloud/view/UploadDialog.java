@@ -26,8 +26,8 @@ import javax.swing.event.ChangeListener;
 
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
-import org.diylc.swing.plugins.cloud.presenter.CloudException;
-import org.diylc.swing.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.plugins.cloud.presenter.CloudException;
+import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swingframework.ButtonDialog;
 
 public class UploadDialog extends ButtonDialog {
@@ -87,43 +87,38 @@ public class UploadDialog extends ButtonDialog {
 			gbc.gridheight = 1;
 			gbc.gridx = 1;
 			gbc.weightx = 0;
+			gbc.insets = new Insets(4, 2, 2, 2);
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			mainPanel.add(new JLabel("Project Name: "), gbc);
+			
+			gbc.gridy = 1;
+			mainPanel.add(new JLabel("Category:"), gbc);
+			
+			gbc.gridy = 2;
+			mainPanel.add(new JLabel("Description: "), gbc);
+			
+			gbc.gridy = 3;
+			mainPanel.add(new JLabel("Keywords: "), gbc);
 
 			gbc.gridx = 2;
+			gbc.gridy = 0;
 			gbc.weightx = 1;
+			gbc.insets = new Insets(2, 2, 2, 2);
 			mainPanel.add(getNameField(), gbc);
 
-			gbc.gridx = 1;
 			gbc.gridy = 1;
-			gbc.weightx = 0;
-			mainPanel.add(new JLabel("Category:"), gbc);
-
-			gbc.gridx = 2;
-			gbc.weightx = 1;
 			mainPanel.add(getCategoryBox(), gbc);
 
-			gbc.gridx = 1;
 			gbc.gridy = 2;
-			gbc.weightx = 0;
-
-			mainPanel.add(new JLabel("Description: "), gbc);
-
-			gbc.gridx = 2;
 			gbc.weightx = 1;
 			gbc.weighty = 1;
 			gbc.fill = GridBagConstraints.BOTH;
 			mainPanel.add(getDescriptionArea(), gbc);
-
-			gbc.gridx = 1;
+			
 			gbc.gridy = 3;
-			gbc.weightx = 0;
-			gbc.weighty = 0;
-			gbc.fill = GridBagConstraints.HORIZONTAL;
-			mainPanel.add(new JLabel("Keywords: "), gbc);
-
-			gbc.gridx = 2;
+			gbc.weighty = 0;			
 			gbc.weightx = 1;
+			gbc.fill = GridBagConstraints.HORIZONTAL;			
 			mainPanel.add(getKeywordsField(), gbc);
 
 			gbc.gridx = 0;

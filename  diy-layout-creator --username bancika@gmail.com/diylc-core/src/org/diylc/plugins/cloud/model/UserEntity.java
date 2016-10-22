@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.cloud.model;
+package org.diylc.plugins.cloud.model;
 
 import java.io.Serializable;
 
@@ -6,48 +6,27 @@ public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
-	private String userName;
-	private String password;
+	private String username;
 	private String email;
 	private String website;
 	private String bio;
 
-	public UserEntity(int id, String userName, String password, String email,
-			String website, String bio) {
+	public UserEntity(String userName, String email, String website, String bio) {
 		super();
-		this.id = id;
-		this.userName = userName;
-		this.password = password;
+		this.username = username;
 		this.email = email;
 		this.website = website;
 		this.bio = bio;
 	}
 
-	public int getId() {
-		return id;
+	public String getUsername() {
+		return username;
 	}
-
-	public void setId(int id) {
-		this.id = id;
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
+	
 	public String getEmail() {
 		return email;
 	}
@@ -78,11 +57,8 @@ public class UserEntity implements Serializable {
 		int result = 1;
 		result = prime * result + ((bio == null) ? 0 : bio.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + id;
 		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result
-				+ ((userName == null) ? 0 : userName.hashCode());
+				+ ((username == null) ? 0 : username.hashCode());
 		result = prime * result + ((website == null) ? 0 : website.hashCode());
 		return result;
 	}
@@ -106,17 +82,10 @@ public class UserEntity implements Serializable {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (id != other.id)
-			return false;
-		if (password == null) {
-			if (other.password != null)
+		if (username == null) {
+			if (other.username != null)
 				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (userName == null) {
-			if (other.userName != null)
-				return false;
-		} else if (!userName.equals(other.userName))
+		} else if (!username.equals(other.username))
 			return false;
 		if (website == null) {
 			if (other.website != null)
@@ -128,7 +97,7 @@ public class UserEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserEntity [userName=" + userName + "]";
+		return "UserEntity [userName=" + username + "]";
 	}
 
 }

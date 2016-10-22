@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.cloud.model;
+package org.diylc.plugins.cloud.model;
 
 import java.io.File;
 import java.util.List;
@@ -12,9 +12,9 @@ import com.diyfever.httpproxy.ParamName;
  * 
  */
 public interface ServiceAPI {
-	
+
 	public static final String URL_KEY = "serviceUrl";
-	
+
 	/**
 	 * Creates a user with the specified details.
 	 * 
@@ -60,6 +60,19 @@ public interface ServiceAPI {
 	 */
 	String login(@ParamName("username") String username,
 			@ParamName("password") String password,
+			@ParamName("machineId") String machineId);
+
+	/***
+	 * Retrieves current user's details.
+	 * 
+	 * @param username
+	 * @param password
+	 * @param machineId
+	 * @return string with an error message if it fails, or an instance of
+	 *         {@link UserEntity} if it succeeds.
+	 */
+	Object getUserDetails(@ParamName("username") String username,
+			@ParamName("token") String token,
 			@ParamName("machineId") String machineId);
 
 	/***
@@ -127,7 +140,7 @@ public interface ServiceAPI {
 	 * @return a {@link List} of available categories.
 	 */
 	List<String> getCategories();
-	
+
 	/**
 	 * @return a {@link List} of available sortings.
 	 */

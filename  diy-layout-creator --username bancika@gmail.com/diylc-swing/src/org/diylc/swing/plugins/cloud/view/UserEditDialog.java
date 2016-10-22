@@ -17,12 +17,12 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.diylc.swing.plugins.cloud.model.UserEntity;
+import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.swingframework.ButtonDialog;
 
-public class NewUserDialog extends ButtonDialog {
+public class UserEditDialog extends ButtonDialog {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;	
 
 	private JPanel mainPanel;
 
@@ -41,13 +41,15 @@ public class NewUserDialog extends ButtonDialog {
 
 	private UserEntity existingEntity;
 
-	public NewUserDialog(JFrame owner, UserEntity existingEntity) {
-		super(owner, "New Account", new String[] { OK, CANCEL });
+	public UserEditDialog(JFrame owner, UserEntity existingEntity) {
+		super(owner, existingEntity == null ? "New Account" : "Manage Account",
+				new String[] { OK, CANCEL });
+		
+		this.existingEntity = existingEntity;
+		
 		setMinimumSize(new Dimension(240, 32));
 		layoutGui();
-		refreshState();
-		userNameField.setText(System.getProperty("user.name"));
-		this.existingEntity = existingEntity;
+		refreshState();	
 	}
 
 	public String getUserName() {
@@ -77,20 +79,22 @@ public class NewUserDialog extends ButtonDialog {
 			mainPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
 			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.anchor = GridBagConstraints.LINE_START;
+			gbc.anchor = GridBagConstraints.NORTHWEST;
 			gbc.fill = GridBagConstraints.NONE;
-			gbc.insets = new Insets(2, 2, 2, 2);
+			gbc.insets = new Insets(4, 2, 2, 2);
 
 			gbc.gridx = 0;
 
 			gbc.gridy = 0;
 			mainPanel.add(new JLabel("User Name:"), gbc);
 
-			gbc.gridy = 1;
-			mainPanel.add(new JLabel("Password:"), gbc);
+			if (existingEntity == null) {
+				gbc.gridy = 1;
+				mainPanel.add(new JLabel("Password:"), gbc);
 
-			gbc.gridy = 2;
-			mainPanel.add(new JLabel("Confirm Password:"), gbc);
+				gbc.gridy = 2;
+				mainPanel.add(new JLabel("Confirm Password:"), gbc);
+			}
 
 			gbc.gridy = 3;
 			mainPanel.add(new JLabel("eMail:"), gbc);
@@ -103,16 +107,19 @@ public class NewUserDialog extends ButtonDialog {
 
 			gbc.gridx = 1;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.insets = new Insets(2, 2, 2, 2);
 			gbc.weightx = 1;
 
 			gbc.gridy = 0;
 			mainPanel.add(getUserNameField(), gbc);
 
-			gbc.gridy = 1;
-			mainPanel.add(getPasswordField(), gbc);
+			if (existingEntity == null) {
+				gbc.gridy = 1;
+				mainPanel.add(getPasswordField(), gbc);
 
-			gbc.gridy = 2;
-			mainPanel.add(getConfirmPasswordField(), gbc);
+				gbc.gridy = 2;
+				mainPanel.add(getConfirmPasswordField(), gbc);
+			}
 
 			gbc.gridy = 3;
 			mainPanel.add(getEmailField(), gbc);
@@ -148,7 +155,7 @@ public class NewUserDialog extends ButtonDialog {
 		if (userNameField == null) {
 			userNameField = new JTextField();
 			if (existingEntity != null) {
-				userNameField.setText(existingEntity.getUserName());
+				userNameField.setText(existingEntity.getUsername());
 				userNameField.setEditable(false);
 			}
 			userNameField.getDocument().addDocumentListener(
@@ -282,6 +289,9 @@ public class NewUserDialog extends ButtonDialog {
 			bioArea = new JTextArea();
 			if (existingEntity != null)
 				bioArea.setText(existingEntity.getBio());
+			bioArea.setFont(getUserNameField().getFont());
+			bioArea.setBorder(getUserNameField().getBorder());
+			bioArea.setPreferredSize(new Dimension(192, 69));
 			bioArea.getDocument().addDocumentListener(new DocumentListener() {
 
 				@Override

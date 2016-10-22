@@ -1,17 +1,15 @@
-package org.diylc.swing.plugins.cloud.presenter;
+package org.diylc.plugins.cloud.presenter;
 
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.swing.plugins.cloud.model.ServiceAPI;
+import org.diylc.plugins.cloud.model.ServiceAPI;
+import org.diylc.plugins.cloud.model.UserEntity;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
@@ -158,6 +156,27 @@ public class CloudPresenter {
 			throw new CloudException(e);
 		}
 
+	}
+
+	public UserEntity getUserDetails() throws CloudException {
+		String username = ConfigurationManager.getInstance().readString(
+				USERNAME_KEY, null);
+		String token = ConfigurationManager.getInstance().readString(TOKEN_KEY,
+				null);
+
+		Object res;
+		try {
+			res = service.getUserDetails(username, token, getMachineId());
+		} catch (Exception e) {
+			throw new CloudException(e);
+		}
+		if (res instanceof String)
+			throw new CloudException(res.toString());
+		if (res instanceof UserEntity)
+			return (UserEntity) res;
+		throw new CloudException(
+				"Unexpected server response received for category list: "
+						+ res.getClass().getName());
 	}
 
 	private String getMachineId() {

@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.cloud.presenter;
+package org.diylc.plugins.cloud.presenter;
 
 public class CloudException extends Exception {
 

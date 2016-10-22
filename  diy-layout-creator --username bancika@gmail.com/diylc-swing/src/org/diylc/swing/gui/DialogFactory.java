@@ -11,12 +11,12 @@ import javax.swing.filechooser.FileFilter;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.plugins.cloud.model.UserEntity;
+import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
-import org.diylc.swing.plugins.cloud.model.UserEntity;
-import org.diylc.swing.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
-import org.diylc.swing.plugins.cloud.view.NewUserDialog;
+import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swingframework.AboutDialog;
@@ -141,8 +141,8 @@ public class DialogFactory {
 		return dialog;
 	}
 
-	public NewUserDialog createNewUserDialog(UserEntity existingUser) {
-		NewUserDialog dialog = new NewUserDialog(mainFrame, existingUser);
+	public UserEditDialog createUserEditDialog(UserEntity existingUser) {
+		UserEditDialog dialog = new UserEditDialog(mainFrame, existingUser);
 		return dialog;
 	}
 
