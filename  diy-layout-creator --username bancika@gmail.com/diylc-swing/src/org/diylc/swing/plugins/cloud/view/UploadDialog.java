@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.EnumSet;
 
 import javax.swing.BorderFactory;
@@ -25,6 +26,7 @@ import javax.swing.event.ChangeListener;
 
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
+import org.diylc.swing.plugins.cloud.presenter.CloudException;
 import org.diylc.swing.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swingframework.ButtonDialog;
 
@@ -37,9 +39,13 @@ public class UploadDialog extends ButtonDialog {
 			+ BULLET
 			+ "All content uploaded to DIY Cloud is shared under Creative Commons 3.0 Licence.<br>"
 			+ BULLET
-			+ "Only finished and resonably verified projects may be uploaded to the library.<br>"
+			+ "Only finished and resonably verified projects may be uploaded to the DIY Cloud.<br>"
 			+ BULLET
-			+ "Uploaded content may be reviewed and/or removed by the administrators.<br>"
+			+ "Please provide a meaningful project description to make it possible for others to find the project.<br>"
+			+ BULLET
+			+ "If you are building on top of someone else's work, please leave credits in the description.<br>"
+			+ BULLET
+			+ "Uploaded content may be reviewed, edited and removed by the administrators if it is not up to standards.<br>"
 			+ "</html>";
 
 	private JPanel mainPanel;
@@ -52,12 +58,15 @@ public class UploadDialog extends ButtonDialog {
 	private JTextField keywordsField;
 
 	private IPlugInPort plugInPort;
+	private CloudPresenter cloudPresenter;	
 
-	public UploadDialog(JFrame owner, IPlugInPort plugInPort) {
+	public UploadDialog(JFrame owner, IPlugInPort plugInPort,
+			CloudPresenter cloudPresenter) {
 		super(owner, "Upload A Project", new String[] { OK, CANCEL });
 		this.plugInPort = plugInPort;
+		this.cloudPresenter = cloudPresenter;
 		layoutGui();
-		refreshState();
+		getButton(OK).setEnabled(false);
 	}
 
 	@Override
@@ -67,20 +76,65 @@ public class UploadDialog extends ButtonDialog {
 			mainPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
 			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.anchor = GridBagConstraints.LINE_START;
+			gbc.anchor = GridBagConstraints.NORTHWEST;
 			gbc.insets = new Insets(2, 2, 2, 2);
 
 			gbc.gridx = 0;
 			gbc.gridy = 0;
+			gbc.gridheight = 4;
 			mainPanel.add(getThumbnailPanel(), gbc);
 
+			gbc.gridheight = 1;
+			gbc.gridx = 1;
+			gbc.weightx = 0;
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			mainPanel.add(new JLabel("Project Name: "), gbc);
+
+			gbc.gridx = 2;
+			gbc.weightx = 1;
+			mainPanel.add(getNameField(), gbc);
+
+			gbc.gridx = 1;
 			gbc.gridy = 1;
+			gbc.weightx = 0;
+			mainPanel.add(new JLabel("Category:"), gbc);
+
+			gbc.gridx = 2;
+			gbc.weightx = 1;
+			mainPanel.add(getCategoryBox(), gbc);
+
+			gbc.gridx = 1;
+			gbc.gridy = 2;
+			gbc.weightx = 0;
+
+			mainPanel.add(new JLabel("Description: "), gbc);
+
+			gbc.gridx = 2;
 			gbc.weightx = 1;
 			gbc.weighty = 1;
 			gbc.fill = GridBagConstraints.BOTH;
+			mainPanel.add(getDescriptionArea(), gbc);
+
+			gbc.gridx = 1;
+			gbc.gridy = 3;
+			gbc.weightx = 0;
+			gbc.weighty = 0;
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			mainPanel.add(new JLabel("Keywords: "), gbc);
+
+			gbc.gridx = 2;
+			gbc.weightx = 1;
+			mainPanel.add(getKeywordsField(), gbc);
+
+			gbc.gridx = 0;
+			gbc.gridy = 4;
+			gbc.weightx = 1;
+			gbc.weighty = 1;
+			gbc.gridwidth = 3;
+			gbc.fill = GridBagConstraints.BOTH;
 			mainPanel.add(getTermsLabel(), gbc);
 
-			gbc.gridy = 2;
+			gbc.gridy = 5;
 			gbc.anchor = GridBagConstraints.CENTER;
 			gbc.fill = GridBagConstraints.NONE;
 			gbc.weightx = 0;
@@ -90,10 +144,6 @@ public class UploadDialog extends ButtonDialog {
 		return mainPanel;
 	}
 
-	private void refreshState() {
-		getButton(OK).setEnabled(getAgreeBox().isSelected());
-	}
-
 	private JCheckBox getAgreeBox() {
 		if (agreeBox == null) {
 			agreeBox = new JCheckBox("I agree to these terms");
@@ -101,7 +151,7 @@ public class UploadDialog extends ButtonDialog {
 
 				@Override
 				public void stateChanged(ChangeEvent e) {
-					refreshState();
+					getButton(OK).setEnabled(getAgreeBox().isSelected());
 				}
 			});
 		}
@@ -121,7 +171,7 @@ public class UploadDialog extends ButtonDialog {
 		return termsLabel;
 	}
 
-	public JPanel getThumbnailPanel() {
+	private JPanel getThumbnailPanel() {
 		if (thumbnailPanel == null) {
 			thumbnailPanel = new JPanel(new GridBagLayout());
 
@@ -141,27 +191,7 @@ public class UploadDialog extends ButtonDialog {
 				public void paint(Graphics g) {
 					super.paint(g);
 
-					Graphics2D g2d = (Graphics2D) g;
-					Dimension d = UploadDialog.this.plugInPort
-							.getCanvasDimensions(false);
-
-					Rectangle rect = getBounds();
-
-					g2d.setColor(Color.white);
-					g2d.fill(rect);
-
-					double projectRatio = d.getWidth() / d.getHeight();
-					double actualRatio = rect.getWidth() / rect.getHeight();
-					double zoomRatio;
-					if (projectRatio > actualRatio) {
-						zoomRatio = rect.getWidth() / d.getWidth();
-					} else {
-						zoomRatio = rect.getHeight() / d.getHeight();
-					}
-
-					g2d.scale(zoomRatio, zoomRatio);
-					UploadDialog.this.plugInPort.draw(g2d,
-							EnumSet.noneOf(DrawOption.class), null);
+					paintThumbnail(g, getBounds());
 				}
 			}, gbc);
 			Dimension d = UploadDialog.this.plugInPort
@@ -177,19 +207,99 @@ public class UploadDialog extends ButtonDialog {
 		return thumbnailPanel;
 	}
 
-	public JTextField getNameField() {
+	private JTextField getNameField() {
+		if (nameField == null) {
+			nameField = new JTextField();
+
+			// set default from the project
+			for (int i = 0; i < plugInPort.getProjectProperties().size(); i++)
+				if (plugInPort.getProjectProperties().get(i).getName()
+						.equals("Title"))
+					nameField.setText(plugInPort.getProjectProperties().get(i)
+							.getValue().toString());
+		}
 		return nameField;
 	}
 
-	public JComboBox getCategoryBox() {
+	private JComboBox getCategoryBox() {
+		if (categoryBox == null) {
+			try {
+				categoryBox = new JComboBox(cloudPresenter.getCategories());
+			} catch (CloudException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return categoryBox;
 	}
 
-	public JTextArea getDescriptionArea() {
+	private JTextArea getDescriptionArea() {
+		if (descriptionArea == null) {
+			descriptionArea = new JTextArea();
+
+			// set default from the project
+			for (int i = 0; i < plugInPort.getProjectProperties().size(); i++)
+				if (plugInPort.getProjectProperties().get(i).getName()
+						.equals("Description"))
+					descriptionArea.setText(plugInPort.getProjectProperties()
+							.get(i).getValue().toString());
+			descriptionArea.setBorder(getNameField().getBorder());
+			descriptionArea.setFont(getNameField().getFont());
+		}
 		return descriptionArea;
 	}
 
-	public JTextField getKeywordsField() {
+	private JTextField getKeywordsField() {
+		if (keywordsField == null) {
+			keywordsField = new JTextField();
+		}
 		return keywordsField;
+	}
+
+	public String getName() {
+		return getNameField().getText();
+	}
+
+	public String getDescription() {
+		return getDescriptionArea().getText();
+	}
+
+	public String getCategory() {
+		return getCategoryBox().getSelectedItem().toString();
+	}
+
+	public BufferedImage getThumbnail() {
+		BufferedImage thumbnailImage = new BufferedImage(getThumbnailPanel()
+				.getWidth(), getThumbnailPanel().getHeight(),
+				BufferedImage.TYPE_INT_RGB);
+		Graphics2D cg = thumbnailImage.createGraphics();
+		paintThumbnail(cg, new Rectangle(thumbnailImage.getWidth(), thumbnailImage.getHeight()));
+		return thumbnailImage;
+	}
+	
+	private void paintThumbnail(Graphics g, Rectangle rect) {
+		Graphics2D g2d = (Graphics2D) g;
+		Dimension d = UploadDialog.this.plugInPort
+				.getCanvasDimensions(false);
+
+		g2d.setColor(Color.white);
+		g2d.fill(rect);
+
+		double projectRatio = d.getWidth() / d.getHeight();
+		double actualRatio = rect.getWidth() / rect.getHeight();
+		double zoomRatio;
+		if (projectRatio > actualRatio) {
+			zoomRatio = rect.getWidth() / d.getWidth();
+		} else {
+			zoomRatio = rect.getHeight() / d.getHeight();
+		}
+
+		g2d.scale(zoomRatio, zoomRatio);
+		UploadDialog.this.plugInPort.draw(g2d,
+				EnumSet.noneOf(DrawOption.class), null);
+	}
+
+	public String getKeywords() {
+		return getKeywordsField().getText();
 	}
 }

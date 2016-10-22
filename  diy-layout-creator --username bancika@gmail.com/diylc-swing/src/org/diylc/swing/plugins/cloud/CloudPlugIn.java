@@ -288,21 +288,41 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 					FileFilterEnum.DIY.getFilter(), null,
 					FileFilterEnum.DIY.getExtensions()[0], null);
 			if (file != null) {
-				swingUI.executeBackgroundTask(new ITask<Void>() {
+				swingUI.executeBackgroundTask(new ITask<File>() {
 
 					@Override
-					public Void doInBackground() throws Exception {
+					public File doInBackground() throws Exception {
 						LOG.debug("Uploading from " + file.getAbsolutePath());
 						thumbnailPresenter.loadProjectFromFile(file
 								.getAbsolutePath());
-						return null;
+						return file;
 					}
 
 					@Override
-					public void complete(Void result) {
+					public void complete(File result) {
 						UploadDialog dialog = DialogFactory.getInstance()
-								.createUploadDialog(thumbnailPresenter);
+								.createUploadDialog(thumbnailPresenter,
+										cloudPresenter);
 						dialog.setVisible(true);
+						if (ButtonDialog.OK.equals(dialog
+								.getSelectedButtonCaption())) {
+							try {
+								cloudPresenter.upload(dialog.getName(), dialog
+										.getCategory(),
+										dialog.getDescription(), dialog
+												.getKeywords(), plugInPort
+												.getCurrentVersionNumber()
+												.toString(), dialog
+												.getThumbnail(), result);
+								swingUI.showMessage(
+										"The project has been uploaded to the cloud successfully. Thank you for your contribution!",
+										"Upload Success",
+										IView.INFORMATION_MESSAGE);
+							} catch (Exception e) {
+								swingUI.showMessage(e.getMessage(),
+										"Upload Error", IView.ERROR_MESSAGE);
+							}
+						}
 					}
 
 					@Override

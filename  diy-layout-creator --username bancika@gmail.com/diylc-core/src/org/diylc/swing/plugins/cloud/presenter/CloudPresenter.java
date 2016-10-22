@@ -1,7 +1,15 @@
 package org.diylc.swing.plugins.cloud.presenter;
 
+import java.awt.Image;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ComboBoxModel;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -15,7 +23,10 @@ public class CloudPresenter {
 	private static String USERNAME_KEY = "cloud.Username";
 	private static String TOKEN_KEY = "cloud.token";
 
+	private static String ERROR = "Error";
+
 	private final static Logger LOG = Logger.getLogger(CloudPresenter.class);
+	private static final Object SUCCESS = "Success";
 
 	private ServiceAPI service;
 	private String serviceUrl;
@@ -27,7 +38,7 @@ public class CloudPresenter {
 
 	public CloudPresenter(CloudListener listener) {
 		serviceUrl = ConfigurationManager.getInstance().readString(
-				ServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api");
+				ServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1");
 		ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
 		service = factory.createProxy(ServiceAPI.class, serviceUrl);
 		if (service == null)
@@ -48,7 +59,7 @@ public class CloudPresenter {
 			throw new CloudException(e);
 		}
 
-		if (res == null || res.equals("Error")) {
+		if (res == null || res.equals(ERROR)) {
 			LOG.info("Login failed");
 			return false;
 		} else {
@@ -79,7 +90,7 @@ public class CloudPresenter {
 			} catch (Exception e) {
 				throw new CloudException(e);
 			}
-			if (res == null || res.equals("Error")) {
+			if (res == null || res.equals(ERROR)) {
 				LOG.info("Login failed");
 				return false;
 			} else {
@@ -101,6 +112,45 @@ public class CloudPresenter {
 
 	public boolean isLoggedIn() {
 		return loggedIn;
+	}
+
+	public String[] getCategories() throws CloudException {
+		Object res;
+		try {
+			res = service.getCategories();
+			if (res != null && res.equals(ERROR))
+				throw new CloudException(
+						"Could not fetch categories from the server.");
+			List<Object> cats = (List<Object>) res;
+			return cats.toArray(new String[0]);
+		} catch (Exception e) {
+			throw new CloudException(e);
+		}
+	}
+
+	public void upload(String projectName, String category, String description,
+			String keywords, String diylcVersion, RenderedImage thumbnail,
+			File project) throws IOException, CloudException {
+		String username = ConfigurationManager.getInstance().readString(
+				USERNAME_KEY, null);
+		String token = ConfigurationManager.getInstance().readString(TOKEN_KEY,
+				null);
+
+		if (username == null || token == null)
+			throw new CloudException("Login failed. Please try to login again.");
+
+		File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
+		if (ImageIO.write(thumbnail, "png", thumbnailFile)) {
+			try {
+				String res = service.upload(username, token, getMachineId(),
+						projectName, category, description, diylcVersion,
+						keywords, thumbnailFile, project);
+				if (!res.equals(SUCCESS))
+					throw new CloudException(res);
+			} catch (Exception e) {
+				throw new CloudException(e);
+			}
+		}
 	}
 
 	private String getMachineId() {

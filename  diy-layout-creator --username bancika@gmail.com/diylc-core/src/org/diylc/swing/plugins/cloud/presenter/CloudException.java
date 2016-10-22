@@ -8,4 +8,8 @@ public class CloudException extends Exception {
 		super(e);
 	}
 
+	public CloudException(String string) {
+		super(string);
+	}
+
 }
