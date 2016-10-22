@@ -12,6 +12,8 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
+import org.diylc.presenter.Presenter;
+import org.diylc.swing.gui.DummyView;
 
 public class AutoSavePlugin implements IPlugIn {
 
@@ -39,17 +41,28 @@ public class AutoSavePlugin implements IPlugIn {
 			public void run() {
 				boolean wasAbnormal = ConfigurationManager.getInstance()
 						.readBoolean(IPlugInPort.ABNORMAL_EXIT_KEY, false);
-				if (wasAbnormal && new File(AUTO_SAVE_FILE_NAME).exists()) {
-					int decision = view
-							.showConfirmDialog(
-									"It appears that aplication was not closed normally in the previous session. Do you want to open the last auto-saved file?",
-									"Auto-Save", IView.YES_NO_OPTION,
-									IView.QUESTION_MESSAGE);
-					if (decision == IView.YES_OPTION) {
-						AutoSavePlugin.this.plugInPort
-								.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
-					}
-				}
+				File autoSaved = new File(AUTO_SAVE_FILE_NAME);
+				if (autoSaved.exists())
+					if (wasAbnormal) {
+						IPlugInPort testPresenter = new Presenter(
+								new DummyView());
+						testPresenter.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
+						// Only prompt if there is something saved in the
+						// auto-saved file.
+						if (!testPresenter.getCurrentProject().getComponents()
+								.isEmpty()) {
+							int decision = view
+									.showConfirmDialog(
+											"It appears that aplication was not closed normally in the previous session. Do you want to open the last auto-saved file?",
+											"Auto-Save", IView.YES_NO_OPTION,
+											IView.QUESTION_MESSAGE);
+							if (decision == IView.YES_OPTION) {
+								AutoSavePlugin.this.plugInPort
+										.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
+							}
+						}
+					} else
+						autoSaved.delete();
 				// Set abnormal flag to true, GUI side of the app must flip to
 				// false when app closes regularly.
 				ConfigurationManager.getInstance().writeValue(
