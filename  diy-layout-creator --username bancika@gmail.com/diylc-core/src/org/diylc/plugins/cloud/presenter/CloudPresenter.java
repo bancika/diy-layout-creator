@@ -158,6 +158,20 @@ public class CloudPresenter {
 
 	}
 
+	public void createUserAccount(String username, String password,
+			String email, String website, String bio) throws CloudException {
+		try {
+			String res = service.createUser(username, password, email, website,
+					bio);
+			if (res == null)
+				throw new CloudException("Could not create user account.");
+			if (!SUCCESS.equals(res))
+				throw new CloudException(res);
+		} catch (Exception e) {
+			throw new CloudException(e);
+		}
+	}
+
 	public UserEntity getUserDetails() throws CloudException {
 		String username = ConfigurationManager.getInstance().readString(
 				USERNAME_KEY, null);

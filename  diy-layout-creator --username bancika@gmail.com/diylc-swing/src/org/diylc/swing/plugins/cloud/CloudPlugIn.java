@@ -258,7 +258,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			UserEditDialog dialog = DialogFactory.getInstance()
+			final UserEditDialog dialog = DialogFactory.getInstance()
 					.createUserEditDialog(null);
 			dialog.setVisible(true);
 			if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
@@ -266,7 +266,9 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
 					@Override
 					public Void doInBackground() throws Exception {
-
+						cloudPresenter.createUserAccount(dialog.getUserName(),
+								dialog.getPassword(), dialog.getEmail(),
+								dialog.getWebsite(), dialog.getBio());
 						return null;
 					}
 
