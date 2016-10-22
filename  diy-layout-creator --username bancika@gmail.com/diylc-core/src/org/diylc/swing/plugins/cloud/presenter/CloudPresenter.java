@@ -35,16 +35,24 @@ public class CloudPresenter {
 		this.listener = listener;
 	}
 
-	public boolean logIn(String username, String password) {
+	public boolean logIn(String username, String password)
+			throws CloudException {
 		if (service == null)
 			return false;
-		LOG.info("Trying to log in to cloud as " + username);
-		String res = service.login(username, password, getMachineId());
-		if (res.equals("Error")) {
-			LOG.info("Log in failed");
+		LOG.info("Trying to login to cloud as " + username);
+
+		String res;
+		try {
+			res = service.login(username, password, getMachineId());
+		} catch (Exception e) {
+			throw new CloudException(e);
+		}
+
+		if (res == null || res.equals("Error")) {
+			LOG.info("Login failed");
 			return false;
 		} else {
-			LOG.info("Log in success");
+			LOG.info("Login success");
 			ConfigurationManager.getInstance().writeValue(USERNAME_KEY,
 					username);
 			ConfigurationManager.getInstance().writeValue(TOKEN_KEY, res);
@@ -54,7 +62,7 @@ public class CloudPresenter {
 		}
 	}
 
-	public boolean tryLogInWithToken() {
+	public boolean tryLogInWithToken() throws CloudException {
 		if (service == null)
 			return false;
 
@@ -64,14 +72,18 @@ public class CloudPresenter {
 				null);
 
 		if (username != null && token != null) {
-			LOG.info("Trying to log in to cloud using a token as " + username);
-			String res = service
-					.loginWithToken(username, token, getMachineId());
-			if (res.equals("Error")) {
-				LOG.info("Log in failed");
+			LOG.info("Trying to login to cloud using a token as " + username);
+			String res;
+			try {
+				res = service.loginWithToken(username, token, getMachineId());
+			} catch (Exception e) {
+				throw new CloudException(e);
+			}
+			if (res == null || res.equals("Error")) {
+				LOG.info("Login failed");
 				return false;
 			} else {
-				LOG.info("Log in success");
+				LOG.info("Login success");
 				listener.loggedIn();
 				this.loggedIn = true;
 				return true;

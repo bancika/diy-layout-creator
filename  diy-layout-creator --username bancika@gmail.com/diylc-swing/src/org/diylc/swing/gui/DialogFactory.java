@@ -151,8 +151,8 @@ public class DialogFactory {
 		return dialog;
 	}
 
-	public UploadDialog createUploadDialog(IPlugInPort plugInPort, CloudPresenter presenter) {
-		UploadDialog dialog = new UploadDialog(mainFrame, plugInPort, presenter);
+	public UploadDialog createUploadDialog(IPlugInPort plugInPort) {
+		UploadDialog dialog = new UploadDialog(mainFrame, plugInPort);
 		return dialog;
 	}
 

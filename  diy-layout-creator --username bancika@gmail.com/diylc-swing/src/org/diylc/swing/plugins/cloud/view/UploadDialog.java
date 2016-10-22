@@ -12,10 +12,13 @@ import java.util.EnumSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -30,7 +33,7 @@ public class UploadDialog extends ButtonDialog {
 	private static final long serialVersionUID = 1L;
 
 	private static final String BULLET = "&nbsp;&nbsp;&nbsp;&#8226;&nbsp;";
-	private static final String TERMS_HTML = "<html><b>Terms of Service</b><br><br>"
+	private static final String TERMS_HTML = "<html>"
 			+ BULLET
 			+ "All content uploaded to DIY Cloud is shared under Creative Commons 3.0 Licence.<br>"
 			+ BULLET
@@ -43,14 +46,16 @@ public class UploadDialog extends ButtonDialog {
 	private JLabel termsLabel;
 	private JCheckBox agreeBox;
 	private JPanel thumbnailPanel;
+	private JTextField nameField;
+	private JComboBox categoryBox;
+	private JTextArea descriptionArea;
+	private JTextField keywordsField;
 
 	private IPlugInPort plugInPort;
-	private CloudPresenter presenter;
 
-	public UploadDialog(JFrame owner, IPlugInPort plugInPort, CloudPresenter presenter) {
+	public UploadDialog(JFrame owner, IPlugInPort plugInPort) {
 		super(owner, "Upload A Project", new String[] { OK, CANCEL });
 		this.plugInPort = plugInPort;
-		this.presenter = presenter;
 		layoutGui();
 		refreshState();
 	}
@@ -170,5 +175,21 @@ public class UploadDialog extends ButtonDialog {
 			thumbnailPanel.setBorder(BorderFactory.createEtchedBorder());
 		}
 		return thumbnailPanel;
+	}
+
+	public JTextField getNameField() {
+		return nameField;
+	}
+
+	public JComboBox getCategoryBox() {
+		return categoryBox;
+	}
+
+	public JTextArea getDescriptionArea() {
+		return descriptionArea;
+	}
+
+	public JTextField getKeywordsField() {
+		return keywordsField;
 	}
 }

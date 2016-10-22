@@ -17,6 +17,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
+import org.diylc.swing.plugins.cloud.presenter.CloudException;
 import org.diylc.swing.plugins.cloud.presenter.CloudListener;
 import org.diylc.swing.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
@@ -26,16 +27,16 @@ import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.ProgressDialog;
 
-public class OnlineManager implements IPlugIn, CloudListener {
+public class CloudPlugIn implements IPlugIn, CloudListener {
 
 	private static final String ONLINE_TITLE = "DIY Cloud";
 
-	private final static Logger LOG = Logger.getLogger(OnlineManager.class);
+	private final static Logger LOG = Logger.getLogger(CloudPlugIn.class);
 
 	private ISwingUI swingUI;
 	private IPlugInPort plugInPort;
 	private IPlugInPort thumbnailPresenter;
-	private CloudPresenter onlinePresenter;
+	private CloudPresenter cloudPresenter;
 
 	private LibraryAction libraryAction;
 
@@ -47,12 +48,12 @@ public class OnlineManager implements IPlugIn, CloudListener {
 	private UploadAction uploadAction;
 	private ManageProjectsAction manageProjectsAction;
 
-	public OnlineManager(ISwingUI swingUI) {
+	public CloudPlugIn(ISwingUI swingUI) {
 		super();
 
 		this.swingUI = swingUI;
 		this.thumbnailPresenter = new Presenter(new DummyView());
-				
+
 		swingUI.injectMenuAction(getLibraryAction(), ONLINE_TITLE);
 		swingUI.injectMenuAction(null, ONLINE_TITLE);
 		swingUI.injectMenuAction(getLoginAction(), ONLINE_TITLE);
@@ -62,7 +63,7 @@ public class OnlineManager implements IPlugIn, CloudListener {
 		swingUI.injectMenuAction(getManageProjectsAction(), ONLINE_TITLE);
 		swingUI.injectMenuAction(null, ONLINE_TITLE);
 		swingUI.injectMenuAction(getManageAccountAction(), ONLINE_TITLE);
-		swingUI.injectMenuAction(getLogOutAction(), ONLINE_TITLE);		
+		swingUI.injectMenuAction(getLogOutAction(), ONLINE_TITLE);
 
 		// default state
 		getUploadAction().setEnabled(false);
@@ -73,7 +74,7 @@ public class OnlineManager implements IPlugIn, CloudListener {
 	@Override
 	public void connect(IPlugInPort plugInPort) {
 		this.plugInPort = plugInPort;
-		this.onlinePresenter = new CloudPresenter(this);
+		this.cloudPresenter = new CloudPresenter(this);
 
 		initialize();
 	}
@@ -83,11 +84,12 @@ public class OnlineManager implements IPlugIn, CloudListener {
 
 			@Override
 			public Boolean doInBackground() throws Exception {
-				return onlinePresenter.tryLogInWithToken();
+				return cloudPresenter.tryLogInWithToken();
 			}
 
 			@Override
 			public void failed(Exception e) {
+				LOG.error("Error while trying to login using token");
 			}
 
 			@Override
@@ -139,8 +141,7 @@ public class OnlineManager implements IPlugIn, CloudListener {
 
 	public UploadAction getUploadAction() {
 		if (uploadAction == null) {
-			uploadAction = new UploadAction(this.thumbnailPresenter,
-					this.swingUI, this.onlinePresenter);
+			uploadAction = new UploadAction();
 		}
 		return uploadAction;
 	}
@@ -193,15 +194,22 @@ public class OnlineManager implements IPlugIn, CloudListener {
 			do {
 				dialog.setVisible(true);
 				if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
-					if (onlinePresenter.logIn(dialog.getUserName(),
-							dialog.getPassword())) {
+					try {
+						if (cloudPresenter.logIn(dialog.getUserName(),
+								dialog.getPassword())) {
+							swingUI.showMessage(
+									"You have successfully logged into the system. You will remain logged in from this machine until logged out.",
+									"Login Successful",
+									IView.INFORMATION_MESSAGE);
+							break;
+						} else {
+							swingUI.showMessage(
+									"Could not login. Possible reasons are wrong credentials or lack of internet connection.",
+									"Login Error", IView.ERROR_MESSAGE);
+						}
+					} catch (CloudException e1) {
 						swingUI.showMessage(
-								"You have successfully logged into the system. You will remain logged in on this machine until logged out.",
-								"Login Successful", IView.INFORMATION_MESSAGE);
-						break;
-					} else {
-						swingUI.showMessage(
-								"Could not login. Possible reasons are wrong credentials or lack of internet connection.",
+								"Could not login. Error: " + e1.getMessage(),
 								"Login Error", IView.ERROR_MESSAGE);
 					}
 				} else
@@ -222,7 +230,7 @@ public class OnlineManager implements IPlugIn, CloudListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			onlinePresenter.logOut();
+			cloudPresenter.logOut();
 		}
 	}
 
@@ -266,15 +274,8 @@ public class OnlineManager implements IPlugIn, CloudListener {
 
 		private static final long serialVersionUID = 1L;
 
-		private IPlugInPort plugInPort;
-		private ISwingUI swingUI;
-		private CloudPresenter onlinePresenter;
-
-		public UploadAction(IPlugInPort plugInPort, ISwingUI swingUI, CloudPresenter onlinePresenter) {
+		public UploadAction() {
 			super();
-			this.plugInPort = plugInPort;
-			this.swingUI = swingUI;
-			this.onlinePresenter = onlinePresenter;
 			putValue(AbstractAction.NAME, "Upload A Project");
 			putValue(AbstractAction.SMALL_ICON, IconLoader.CloudUp.getIcon());
 		}
@@ -292,14 +293,15 @@ public class OnlineManager implements IPlugIn, CloudListener {
 					@Override
 					public Void doInBackground() throws Exception {
 						LOG.debug("Uploading from " + file.getAbsolutePath());
-						plugInPort.loadProjectFromFile(file.getAbsolutePath());
+						thumbnailPresenter.loadProjectFromFile(file
+								.getAbsolutePath());
 						return null;
 					}
 
 					@Override
 					public void complete(Void result) {
 						UploadDialog dialog = DialogFactory.getInstance()
-								.createUploadDialog(UploadAction.this.plugInPort, UploadAction.this.onlinePresenter);
+								.createUploadDialog(thumbnailPresenter);
 						dialog.setVisible(true);
 					}
 

@@ -1,2 +1,6 @@
 /bin/
 /.apt_generated
+/log/
+/build/
+autoSave.diy
+config.xml

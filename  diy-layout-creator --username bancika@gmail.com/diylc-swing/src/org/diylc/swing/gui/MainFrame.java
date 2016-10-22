@@ -50,7 +50,7 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.autosave.AutoSavePlugin;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
-import org.diylc.swing.plugins.cloud.OnlineManager;
+import org.diylc.swing.plugins.cloud.CloudPlugIn;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.EditMenuPlugin;
 import org.diylc.swing.plugins.file.FileFilterEnum;
@@ -99,7 +99,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		presenter.installPlugin(new EditMenuPlugin(this));
 		presenter.installPlugin(new ConfigPlugin(this));
 		presenter.installPlugin(new LayersMenuPlugin(this));
-		presenter.installPlugin(new OnlineManager(this));
+		presenter.installPlugin(new CloudPlugIn(this));
 		presenter.installPlugin(new HelpMenuPlugin(this));
 
 		presenter.installPlugin(new StatusBar(this));
