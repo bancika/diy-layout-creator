@@ -58,7 +58,7 @@ public class UploadDialog extends ButtonDialog {
 	private JTextField keywordsField;
 
 	private IPlugInPort plugInPort;
-	private CloudPresenter cloudPresenter;	
+	private CloudPresenter cloudPresenter;
 
 	public UploadDialog(JFrame owner, IPlugInPort plugInPort,
 			CloudPresenter cloudPresenter) {
@@ -90,13 +90,13 @@ public class UploadDialog extends ButtonDialog {
 			gbc.insets = new Insets(4, 2, 2, 2);
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			mainPanel.add(new JLabel("Project Name: "), gbc);
-			
+
 			gbc.gridy = 1;
 			mainPanel.add(new JLabel("Category:"), gbc);
-			
+
 			gbc.gridy = 2;
 			mainPanel.add(new JLabel("Description: "), gbc);
-			
+
 			gbc.gridy = 3;
 			mainPanel.add(new JLabel("Keywords: "), gbc);
 
@@ -114,11 +114,11 @@ public class UploadDialog extends ButtonDialog {
 			gbc.weighty = 1;
 			gbc.fill = GridBagConstraints.BOTH;
 			mainPanel.add(getDescriptionArea(), gbc);
-			
+
 			gbc.gridy = 3;
-			gbc.weighty = 0;			
+			gbc.weighty = 0;
 			gbc.weightx = 1;
-			gbc.fill = GridBagConstraints.HORIZONTAL;			
+			gbc.fill = GridBagConstraints.HORIZONTAL;
 			mainPanel.add(getKeywordsField(), gbc);
 
 			gbc.gridx = 0;
@@ -268,14 +268,15 @@ public class UploadDialog extends ButtonDialog {
 				.getWidth(), getThumbnailPanel().getHeight(),
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D cg = thumbnailImage.createGraphics();
-		paintThumbnail(cg, new Rectangle(thumbnailImage.getWidth(), thumbnailImage.getHeight()));
+
+		paintThumbnail(cg, new Rectangle(thumbnailImage.getWidth(),
+				thumbnailImage.getHeight()));
 		return thumbnailImage;
 	}
-	
+
 	private void paintThumbnail(Graphics g, Rectangle rect) {
 		Graphics2D g2d = (Graphics2D) g;
-		Dimension d = UploadDialog.this.plugInPort
-				.getCanvasDimensions(false);
+		Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false);
 
 		g2d.setColor(Color.white);
 		g2d.fill(rect);
@@ -291,7 +292,7 @@ public class UploadDialog extends ButtonDialog {
 
 		g2d.scale(zoomRatio, zoomRatio);
 		UploadDialog.this.plugInPort.draw(g2d,
-				EnumSet.noneOf(DrawOption.class), null);
+				EnumSet.of(DrawOption.ANTIALIASING), null);
 	}
 
 	public String getKeywords() {

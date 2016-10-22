@@ -22,6 +22,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
+import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
 import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
@@ -149,10 +150,9 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 		}
 		return uploadAction;
 	}
-	
+
 	public ChangePasswordAction getChangePasswordAction() {
-		if (changePasswordAction == null)
-		{
+		if (changePasswordAction == null) {
 			changePasswordAction = new ChangePasswordAction();
 		}
 		return changePasswordAction;
@@ -261,6 +261,31 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 			UserEditDialog dialog = DialogFactory.getInstance()
 					.createUserEditDialog(null);
 			dialog.setVisible(true);
+			if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
+				swingUI.executeBackgroundTask(new ITask<Void>() {
+
+					@Override
+					public Void doInBackground() throws Exception {
+
+						return null;
+					}
+
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage(
+								"Failed to create the account. Error: "
+										+ e.getMessage(), "Cloud Error",
+								IView.ERROR_MESSAGE);
+					}
+
+					@Override
+					public void complete(Void result) {
+						swingUI.showMessage(
+								"Cloud account created successfully.", "Cloud",
+								IView.ERROR_MESSAGE);
+					}
+				});
+			}
 		}
 	}
 
@@ -276,30 +301,45 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			swingUI.executeBackgroundTask(new ITask<UserEntity>() {
+			try {
+				final UserEditDialog dialog = DialogFactory.getInstance()
+						.createUserEditDialog(cloudPresenter.getUserDetails());
+				dialog.setVisible(true);
+				if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
+					swingUI.executeBackgroundTask(new ITask<Void>() {
 
-				@Override
-				public UserEntity doInBackground() throws Exception {
-					return cloudPresenter.getUserDetails();
-				}
+						@Override
+						public Void doInBackground() throws Exception {
+							cloudPresenter.updateUserDetails(dialog.getEmail(),
+									dialog.getWebsite(), dialog.getBio());
+							return null;
+						}
 
-				@Override
-				public void failed(Exception e) {
-					swingUI.showMessage(
-							"Failed to retreive user details from the server.",
-							"Cloud Error", IView.ERROR_MESSAGE);
-				}
+						@Override
+						public void failed(Exception e) {
+							swingUI.showMessage(
+									"Failed to update the account. Error: "
+											+ e.getMessage(), "Cloud Error",
+									IView.ERROR_MESSAGE);
+						}
 
-				@Override
-				public void complete(UserEntity result) {
-					UserEditDialog dialog = DialogFactory.getInstance()
-							.createUserEditDialog(result);
-					dialog.setVisible(true);
+						@Override
+						public void complete(Void result) {
+							swingUI.showMessage(
+									"Cloud account updated successfully.",
+									"Cloud", IView.INFORMATION_MESSAGE);
+						}
+					});
 				}
-			});
+			} catch (CloudException e1) {
+				swingUI.showMessage(
+						"Failed to retreive user details from the server. Error: "
+								+ e1.getMessage(), "Cloud Error",
+						IView.ERROR_MESSAGE);
+			}
 		}
 	}
-	
+
 	class ChangePasswordAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -312,27 +352,34 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			swingUI.executeBackgroundTask(new ITask<UserEntity>() {
+			final ChangePasswordDialog dialog = DialogFactory.getInstance()
+					.createChangePasswordDialog();
+			dialog.setVisible(true);
+			if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
+				swingUI.executeBackgroundTask(new ITask<Void>() {
 
-				@Override
-				public UserEntity doInBackground() throws Exception {
-					return cloudPresenter.getUserDetails();
-				}
+					@Override
+					public Void doInBackground() throws Exception {
+						cloudPresenter.updatePassword(dialog.getOldPassword(),
+								dialog.getNewPassword());
+						return null;
+					}
 
-				@Override
-				public void failed(Exception e) {
-					swingUI.showMessage(
-							"Failed to retreive user details from the server.",
-							"Cloud Error", IView.ERROR_MESSAGE);
-				}
+					@Override
+					public void failed(Exception e) {
+						swingUI.showMessage(
+								"Failed to update the password. Error: "
+										+ e.getMessage(), "Cloud Error",
+								IView.ERROR_MESSAGE);
+					}
 
-				@Override
-				public void complete(UserEntity result) {
-					UserEditDialog dialog = DialogFactory.getInstance()
-							.createUserEditDialog(result);
-					dialog.setVisible(true);
-				}
-			});
+					@Override
+					public void complete(Void result) {
+						swingUI.showMessage("Password updated.", "Cloud",
+								IView.INFORMATION_MESSAGE);
+					}
+				});
+			}
 		}
 	}
 

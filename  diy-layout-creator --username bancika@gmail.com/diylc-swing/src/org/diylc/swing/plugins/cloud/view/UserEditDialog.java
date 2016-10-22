@@ -22,7 +22,7 @@ import org.diylc.swingframework.ButtonDialog;
 
 public class UserEditDialog extends ButtonDialog {
 
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 
 	private JPanel mainPanel;
 
@@ -44,12 +44,12 @@ public class UserEditDialog extends ButtonDialog {
 	public UserEditDialog(JFrame owner, UserEntity existingEntity) {
 		super(owner, existingEntity == null ? "New Account" : "Manage Account",
 				new String[] { OK, CANCEL });
-		
+
 		this.existingEntity = existingEntity;
-		
+
 		setMinimumSize(new Dimension(240, 32));
 		layoutGui();
-		refreshState();	
+		refreshState();
 	}
 
 	public String getUserName() {
@@ -69,7 +69,7 @@ public class UserEditDialog extends ButtonDialog {
 	}
 
 	public String getBio() {
-		return bio;
+		return bio.replace("\n", "<br>");
 	}
 
 	@Override
@@ -148,7 +148,8 @@ public class UserEditDialog extends ButtonDialog {
 		this.bio = getBioArea().getText();
 		JButton okButton = getButton(OK);
 		okButton.setEnabled((this.userName.length() > 0)
-				&& (this.password != null) && (this.password.length() > 0));
+				&& (this.existingEntity != null || ((this.password != null) && (this.password
+						.length() > 0))));
 	}
 
 	private JTextField getUserNameField() {
@@ -288,7 +289,7 @@ public class UserEditDialog extends ButtonDialog {
 		if (bioArea == null) {
 			bioArea = new JTextArea();
 			if (existingEntity != null)
-				bioArea.setText(existingEntity.getBio());
+				bioArea.setText(existingEntity.getBio().replace("<br>", "\n"));
 			bioArea.setFont(getUserNameField().getFont());
 			bioArea.setBorder(getUserNameField().getBorder());
 			bioArea.setPreferredSize(new Dimension(192, 69));

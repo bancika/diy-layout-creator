@@ -179,6 +179,39 @@ public class CloudPresenter {
 						+ res.getClass().getName());
 	}
 
+	public void updatePassword(String oldPassword, String newPassword)
+			throws CloudException {
+		String username = ConfigurationManager.getInstance().readString(
+				USERNAME_KEY, null);
+
+		String res;
+		try {
+			res = service.updatePassword(username, oldPassword, newPassword);
+		} catch (Exception e) {
+			throw new CloudException(e);
+		}
+		if (!res.equals(SUCCESS))
+			throw new CloudException(res);
+	}
+
+	public void updateUserDetails(String email, String website, String bio)
+			throws CloudException {
+		String username = ConfigurationManager.getInstance().readString(
+				USERNAME_KEY, null);
+		String token = ConfigurationManager.getInstance().readString(TOKEN_KEY,
+				null);
+
+		String res;
+		try {
+			res = service.updateUserDetails(username, token, getMachineId(),
+					email, website, bio);
+		} catch (Exception e) {
+			throw new CloudException(e);
+		}
+		if (!res.equals(SUCCESS))
+			throw new CloudException(res);
+	}
+
 	private String getMachineId() {
 		if (machineId == null) {
 			try {

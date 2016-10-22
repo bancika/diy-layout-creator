@@ -43,7 +43,7 @@ public interface ServiceAPI {
 	 * @return "Success" if the operation is successful or error message if it
 	 *         failed.
 	 */
-	String updateUser(@ParamName("username") String username,
+	String updateUserDetails(@ParamName("username") String username,
 			@ParamName("token") String token,
 			@ParamName("machineId") String machineId,
 			@ParamName("email") String email,
@@ -88,6 +88,20 @@ public interface ServiceAPI {
 	String loginWithToken(@ParamName("username") String username,
 			@ParamName("token") String token,
 			@ParamName("machineId") String machineId);
+
+	/***
+	 * Updates password of the current user using token to authenticate.
+	 * 
+	 * @param username
+	 * @param token
+	 * @param machineId
+	 * @param password
+	 * @return "Success" if the login is successful or error message if it
+	 *         failed.
+	 */
+	String updatePassword(@ParamName("username") String username,
+			@ParamName("oldPassword") String oldPassword,
+			@ParamName("newPassword") String newPassword);
 
 	/***
 	 * Searches for projects that meet the specified search criteria. Supports
