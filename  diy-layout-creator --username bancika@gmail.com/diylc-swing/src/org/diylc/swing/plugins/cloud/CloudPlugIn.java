@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.EnumSet;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 
 import org.apache.log4j.Logger;
@@ -307,17 +308,26 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 						if (ButtonDialog.OK.equals(dialog
 								.getSelectedButtonCaption())) {
 							try {
-								cloudPresenter.upload(dialog.getName(), dialog
-										.getCategory(),
-										dialog.getDescription(), dialog
-												.getKeywords(), plugInPort
-												.getCurrentVersionNumber()
-												.toString(), dialog
-												.getThumbnail(), result);
-								swingUI.showMessage(
-										"The project has been uploaded to the cloud successfully. Thank you for your contribution!",
-										"Upload Success",
-										IView.INFORMATION_MESSAGE);
+								File thumbnailFile = File.createTempFile(
+										"upload-thumbnail", ".png");
+								if (ImageIO.write(dialog.getThumbnail(), "png",
+										thumbnailFile)) {
+									cloudPresenter.upload(dialog.getName(),
+											dialog.getCategory(), dialog
+													.getDescription(), dialog
+													.getKeywords(), plugInPort
+													.getCurrentVersionNumber()
+													.toString(), thumbnailFile,
+											result);
+									swingUI.showMessage(
+											"The project has been uploaded to the cloud successfully. Thank you for your contribution!",
+											"Upload Success",
+											IView.INFORMATION_MESSAGE);
+								} else {
+									swingUI.showMessage(
+											"Could not prepare temporary files to be uploaded to the cloud.",
+											"Upload Error", IView.ERROR_MESSAGE);
+								}
 							} catch (Exception e) {
 								swingUI.showMessage(e.getMessage(),
 										"Upload Error", IView.ERROR_MESSAGE);
