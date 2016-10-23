@@ -14,44 +14,44 @@ import org.diylc.swing.plugins.statusbar.StatusBar;
 
 
 public class ToolBox implements IPlugIn {
-	
-	private static final Logger LOG = Logger.getLogger(StatusBar.class);
-	
-	private ISwingUI swingUI;
-	private IPlugInPort plugInPort;
-	
-	private ComponentTabbedPane componentTabbedPane;
 
-	public ToolBox(ISwingUI swingUI) {
-		this.swingUI = swingUI;
-	}
+  private static final Logger LOG = Logger.getLogger(StatusBar.class);
 
-	@Override
-	public void connect(IPlugInPort plugInPort) {
-		this.plugInPort = plugInPort;
-		try {
-			swingUI.injectGUIComponent(getComponentTabbedPane(), SwingConstants.TOP);
-		} catch (BadPositionException e) {
-			LOG.error("Could not install the toolbox", e);
-		}
-	}
-	
-	public ComponentTabbedPane getComponentTabbedPane() {
-		if (componentTabbedPane == null) {
-			componentTabbedPane = new ComponentTabbedPane(plugInPort);
-		}
-		return componentTabbedPane;
-	}
+  private ISwingUI swingUI;
+  private IPlugInPort plugInPort;
 
-	@Override
-	public EnumSet<EventType> getSubscribedEventTypes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private ComponentTabbedPane componentTabbedPane;
 
-	@Override
-	public void processMessage(EventType eventType, Object... params) {
-		// TODO Auto-generated method stub
+  public ToolBox(ISwingUI swingUI) {
+    this.swingUI = swingUI;
+  }
 
-	}
+  @Override
+  public void connect(IPlugInPort plugInPort) {
+    this.plugInPort = plugInPort;
+    try {
+      swingUI.injectGUIComponent(getComponentTabbedPane(), SwingConstants.TOP);
+    } catch (BadPositionException e) {
+      LOG.error("Could not install the toolbox", e);
+    }
+  }
+
+  public ComponentTabbedPane getComponentTabbedPane() {
+    if (componentTabbedPane == null) {
+      componentTabbedPane = new ComponentTabbedPane(plugInPort);
+    }
+    return componentTabbedPane;
+  }
+
+  @Override
+  public EnumSet<EventType> getSubscribedEventTypes() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void processMessage(EventType eventType, Object... params) {
+    // TODO Auto-generated method stub
+
+  }
 }

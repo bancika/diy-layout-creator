@@ -11,40 +11,40 @@ import org.diylc.utils.Constants;
 
 public class StringEditor extends JTextField {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private Color oldBg = getBackground();
+  private Color oldBg = getBackground();
 
-	private final PropertyWrapper property;
+  private final PropertyWrapper property;
 
-	public StringEditor(PropertyWrapper property) {
-		super(property.getValue() == null ? "" : (String) property.getValue());
-		this.property = property;
-		getDocument().addDocumentListener(new DocumentListener() {
+  public StringEditor(PropertyWrapper property) {
+    super(property.getValue() == null ? "" : (String) property.getValue());
+    this.property = property;
+    getDocument().addDocumentListener(new DocumentListener() {
 
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				textChanged();
-			}
+      @Override
+      public void changedUpdate(DocumentEvent e) {
+        textChanged();
+      }
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				textChanged();
-			}
+      @Override
+      public void insertUpdate(DocumentEvent e) {
+        textChanged();
+      }
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				textChanged();
-			}
-		});
-		if (!property.isUnique()) {
-			setBackground(Constants.MULTI_VALUE_COLOR);
-		}
-	}
+      @Override
+      public void removeUpdate(DocumentEvent e) {
+        textChanged();
+      }
+    });
+    if (!property.isUnique()) {
+      setBackground(Constants.MULTI_VALUE_COLOR);
+    }
+  }
 
-	private void textChanged() {
-		property.setChanged(true);
-		setBackground(oldBg);
-		property.setValue(getText());
-	}
+  private void textChanged() {
+    property.setChanged(true);
+    setBackground(oldBg);
+    property.setValue(getText());
+  }
 }

@@ -38,162 +38,151 @@ import org.diylc.common.IPlugInPort;
  */
 class CanvasPanel extends JComponent implements Autoscroll {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private IPlugInPort plugInPort;
+  private IPlugInPort plugInPort;
 
-	private Image bufferImage;
-	private GraphicsConfiguration screenGraphicsConfiguration;
+  private Image bufferImage;
+  private GraphicsConfiguration screenGraphicsConfiguration;
 
-	public static boolean USE_HARDWARE_ACCELLERATION = false;
+  public static boolean USE_HARDWARE_ACCELLERATION = false;
 
-	// static final EnumSet<DrawOption> DRAW_OPTIONS =
-	// EnumSet.of(DrawOption.GRID,
-	// DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
-	// static final EnumSet<DrawOption> DRAW_OPTIONS_ANTI_ALIASING =
-	// EnumSet.of(DrawOption.GRID,
-	// DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
-	// DrawOption.CONTROL_POINTS);
+  // static final EnumSet<DrawOption> DRAW_OPTIONS =
+  // EnumSet.of(DrawOption.GRID,
+  // DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+  // static final EnumSet<DrawOption> DRAW_OPTIONS_ANTI_ALIASING =
+  // EnumSet.of(DrawOption.GRID,
+  // DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
+  // DrawOption.CONTROL_POINTS);
 
-	public CanvasPanel(IPlugInPort plugInPort) {
-		super();
-		this.plugInPort = plugInPort;
-		setFocusable(true);
-		initializeListeners();
-		initializeDnD();
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		GraphicsDevice[] devices = graphicsEnvironment.getScreenDevices();
-		screenGraphicsConfiguration = devices[0].getDefaultConfiguration();
+  public CanvasPanel(IPlugInPort plugInPort) {
+    super();
+    this.plugInPort = plugInPort;
+    setFocusable(true);
+    initializeListeners();
+    initializeDnD();
+    GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] devices = graphicsEnvironment.getScreenDevices();
+    screenGraphicsConfiguration = devices[0].getDefaultConfiguration();
 
-		initializeActions();
-	}
+    initializeActions();
+  }
 
-	public void invalidateCache() {
-		bufferImage = null;
-	}
+  public void invalidateCache() {
+    bufferImage = null;
+  }
 
-	private void initializeDnD() {
-		// Initialize drag source recognizer.
-		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-				this,
-				DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK,
-				new CanvasGestureListener(plugInPort));
-		// Initialize drop target.
-		new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE,
-				new CanvasTargetListener(plugInPort), true);
-	}
+  private void initializeDnD() {
+    // Initialize drag source recognizer.
+    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
+        DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK, new CanvasGestureListener(plugInPort));
+    // Initialize drop target.
+    new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CanvasTargetListener(plugInPort), true);
+  }
 
-	private void initializeActions() {
-		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearSlot");
-		getActionMap().put("clearSlot", new AbstractAction() {
+  private void initializeActions() {
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearSlot");
+    getActionMap().put("clearSlot", new AbstractAction() {
 
-			private static final long serialVersionUID = 1L;
+      private static final long serialVersionUID = 1L;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				CanvasPanel.this.plugInPort.setNewComponentTypeSlot(null, null);
-			}
-		});
-	}
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        CanvasPanel.this.plugInPort.setNewComponentTypeSlot(null, null);
+      }
+    });
+  }
 
-	protected void createBufferImage() {
-		if (USE_HARDWARE_ACCELLERATION) {
-			bufferImage = screenGraphicsConfiguration
-					.createCompatibleVolatileImage(getWidth(), getHeight());
-			((VolatileImage) bufferImage).validate(screenGraphicsConfiguration);
-		} else {
-			bufferImage = createImage(getWidth(), getHeight());
-		}
-	}
+  protected void createBufferImage() {
+    if (USE_HARDWARE_ACCELLERATION) {
+      bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(getWidth(), getHeight());
+      ((VolatileImage) bufferImage).validate(screenGraphicsConfiguration);
+    } else {
+      bufferImage = createImage(getWidth(), getHeight());
+    }
+  }
 
-	@Override
-	public void paint(Graphics g) {
-		if (plugInPort == null) {
-			return;
-		}
-		if (bufferImage == null) {
-			createBufferImage();
-		}
-		Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
-		g2d.setClip(getVisibleRect());
-		Set<DrawOption> drawOptions = EnumSet.of(DrawOption.GRID,
-				DrawOption.SELECTION, DrawOption.ZOOM,
-				DrawOption.CONTROL_POINTS);
-		if (ConfigurationManager.getInstance().readBoolean(
-				IPlugInPort.ANTI_ALIASING_KEY, true)) {
-			drawOptions.add(DrawOption.ANTIALIASING);
-		}
-		if (ConfigurationManager.getInstance().readBoolean(
-				IPlugInPort.OUTLINE_KEY, false)) {
-			drawOptions.add(DrawOption.OUTLINE_MODE);
-		}
-		plugInPort.draw(g2d, drawOptions, null);
-		if (USE_HARDWARE_ACCELLERATION) {
-			VolatileImage volatileImage = (VolatileImage) bufferImage;
-			do {
-				try {
-					if (volatileImage.contentsLost()) {
-						createBufferImage();
-					}
-					// int validation =
-					// volatileImage.validate(screenGraphicsConfiguration);
-					// if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
-					// createBufferImage();
-					// }
-					g.drawImage(bufferImage, 0, 0, this);
-				} catch (NullPointerException e) {
-					createBufferImage();
-				}
-			} while (volatileImage == null || volatileImage.contentsLost());
-		} else {
-			g.drawImage(bufferImage, 0, 0, this);
-			// bufferImage.flush();
-		}
-		g2d.dispose();
-	}
+  @Override
+  public void paint(Graphics g) {
+    if (plugInPort == null) {
+      return;
+    }
+    if (bufferImage == null) {
+      createBufferImage();
+    }
+    Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
+    g2d.setClip(getVisibleRect());
+    Set<DrawOption> drawOptions =
+        EnumSet.of(DrawOption.GRID, DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
+      drawOptions.add(DrawOption.ANTIALIASING);
+    }
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
+      drawOptions.add(DrawOption.OUTLINE_MODE);
+    }
+    plugInPort.draw(g2d, drawOptions, null);
+    if (USE_HARDWARE_ACCELLERATION) {
+      VolatileImage volatileImage = (VolatileImage) bufferImage;
+      do {
+        try {
+          if (volatileImage.contentsLost()) {
+            createBufferImage();
+          }
+          // int validation =
+          // volatileImage.validate(screenGraphicsConfiguration);
+          // if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
+          // createBufferImage();
+          // }
+          g.drawImage(bufferImage, 0, 0, this);
+        } catch (NullPointerException e) {
+          createBufferImage();
+        }
+      } while (volatileImage == null || volatileImage.contentsLost());
+    } else {
+      g.drawImage(bufferImage, 0, 0, this);
+      // bufferImage.flush();
+    }
+    g2d.dispose();
+  }
 
-	@Override
-	public void update(Graphics g) {
-		paint(g);
-	}
+  @Override
+  public void update(Graphics g) {
+    paint(g);
+  }
 
-	private void initializeListeners() {
-		addComponentListener(new ComponentAdapter() {
+  private void initializeListeners() {
+    addComponentListener(new ComponentAdapter() {
 
-			@Override
-			public void componentResized(ComponentEvent e) {
-				invalidateCache();
-				invalidate();
-			}
-		});
-		// addKeyListener(new KeyAdapter() {
-		//
-		// @Override
-		// public void keyPressed(KeyEvent e) {
-		// if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-		// plugInPort.deleteSelectedComponents();
-		// }
-		// // plugInPort.mouseMoved(getMousePosition(), e.isControlDown(),
-		// // e.isShiftDown(), e
-		// // .isAltDown());
-		// }
-		// });		
-	}
+      @Override
+      public void componentResized(ComponentEvent e) {
+        invalidateCache();
+        invalidate();
+      }
+    });
+    // addKeyListener(new KeyAdapter() {
+    //
+    // @Override
+    // public void keyPressed(KeyEvent e) {
+    // if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+    // plugInPort.deleteSelectedComponents();
+    // }
+    // // plugInPort.mouseMoved(getMousePosition(), e.isControlDown(),
+    // // e.isShiftDown(), e
+    // // .isAltDown());
+    // }
+    // });
+  }
 
-	// Autoscroll
+  // Autoscroll
 
-	@Override
-	public void autoscroll(Point cursorLocn) {
-		scrollRectToVisible(new Rectangle(cursorLocn.x - 15, cursorLocn.y - 15,
-				30, 30));
-	}
+  @Override
+  public void autoscroll(Point cursorLocn) {
+    scrollRectToVisible(new Rectangle(cursorLocn.x - 15, cursorLocn.y - 15, 30, 30));
+  }
 
-	@Override
-	public Insets getAutoscrollInsets() {
-		Rectangle rect = getVisibleRect();
-		return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15,
-				rect.x + rect.width + 15);
-	}
+  @Override
+  public Insets getAutoscrollInsets() {
+    Rectangle rect = getVisibleRect();
+    return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15, rect.x + rect.width + 15);
+  }
 }

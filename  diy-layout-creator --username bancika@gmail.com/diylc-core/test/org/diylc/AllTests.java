@@ -8,7 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(Suite.class)
-@SuiteClasses( { BomMakerTest.class, ClassProcessorTest.class })
+@SuiteClasses({BomMakerTest.class, ClassProcessorTest.class})
 public class AllTests {
 
 }

@@ -7,33 +7,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Repository for object that may be reused, such as {@link Stroke} or
- * {@link AlphaComposite}.
+ * Repository for object that may be reused, such as {@link Stroke} or {@link AlphaComposite}.
  * 
  * @author Branislav Stojkovic
  */
 public class ObjectCache {
 
-	private static ObjectCache instance;
+  private static ObjectCache instance;
 
-	public static ObjectCache getInstance() {
-		if (instance == null) {
-			instance = new ObjectCache();
-		}
-		return instance;
-	}
+  public static ObjectCache getInstance() {
+    if (instance == null) {
+      instance = new ObjectCache();
+    }
+    return instance;
+  }
 
-	private ObjectCache() {
-	}
+  private ObjectCache() {}
 
-	private Map<Integer, Stroke> basicStrokeMap = new HashMap<Integer, Stroke>();
+  private Map<Integer, Stroke> basicStrokeMap = new HashMap<Integer, Stroke>();
 
-	public Stroke fetchBasicStroke(int width) {
-		if (basicStrokeMap.containsKey(width)) {
-			return basicStrokeMap.get(width);
-		}
-		Stroke stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-		basicStrokeMap.put(width, stroke);
-		return stroke;
-	}
+  public Stroke fetchBasicStroke(int width) {
+    if (basicStrokeMap.containsKey(width)) {
+      return basicStrokeMap.get(width);
+    }
+    Stroke stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    basicStrokeMap.put(width, stroke);
+    return stroke;
+  }
 }

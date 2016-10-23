@@ -22,287 +22,287 @@ import org.diylc.swingframework.ButtonDialog;
 
 public class UserEditDialog extends ButtonDialog {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private JPanel mainPanel;
+  private JPanel mainPanel;
 
-	private JTextField userNameField;
-	private JPasswordField passwordField;
-	private JPasswordField confirmPasswordField;
-	private JTextField emailField;
-	private JTextField websiteField;
-	private JTextArea bioArea;
+  private JTextField userNameField;
+  private JPasswordField passwordField;
+  private JPasswordField confirmPasswordField;
+  private JTextField emailField;
+  private JTextField websiteField;
+  private JTextArea bioArea;
 
-	private String userName;
-	private String password;
-	private String email;
-	private String website;
-	private String bio;
+  private String userName;
+  private String password;
+  private String email;
+  private String website;
+  private String bio;
 
-	private UserEntity existingEntity;
+  private UserEntity existingEntity;
 
-	public UserEditDialog(JFrame owner, UserEntity existingEntity) {
-		super(owner, existingEntity == null ? "New Account" : "Manage Account", new String[] { OK, CANCEL });
+  public UserEditDialog(JFrame owner, UserEntity existingEntity) {
+    super(owner, existingEntity == null ? "New Account" : "Manage Account", new String[] {OK, CANCEL});
 
-		this.existingEntity = existingEntity;
+    this.existingEntity = existingEntity;
 
-		setMinimumSize(new Dimension(240, 32));
-		layoutGui();
-		refreshState();
-	}
+    setMinimumSize(new Dimension(240, 32));
+    layoutGui();
+    refreshState();
+  }
 
-	public String getUserName() {
-		return userName;
-	}
+  public String getUserName() {
+    return userName;
+  }
 
-	public String getPassword() {
-		return password;
-	}
+  public String getPassword() {
+    return password;
+  }
 
-	public String getEmail() {
-		return email;
-	}
+  public String getEmail() {
+    return email;
+  }
 
-	public String getWebsite() {
-		return website;
-	}
+  public String getWebsite() {
+    return website;
+  }
 
-	public String getBio() {
-		return bio.replace("\n", "<br>");
-	}
+  public String getBio() {
+    return bio.replace("\n", "<br>");
+  }
 
-	@Override
-	protected JComponent getMainComponent() {
-		if (mainPanel == null) {
-			mainPanel = new JPanel(new GridBagLayout());
-			mainPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+  @Override
+  protected JComponent getMainComponent() {
+    if (mainPanel == null) {
+      mainPanel = new JPanel(new GridBagLayout());
+      mainPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.anchor = GridBagConstraints.NORTHWEST;
-			gbc.fill = GridBagConstraints.NONE;
-			gbc.insets = new Insets(4, 2, 2, 2);
+      GridBagConstraints gbc = new GridBagConstraints();
+      gbc.anchor = GridBagConstraints.NORTHWEST;
+      gbc.fill = GridBagConstraints.NONE;
+      gbc.insets = new Insets(4, 2, 2, 2);
 
-			gbc.gridx = 0;
+      gbc.gridx = 0;
 
-			gbc.gridy = 0;
-			mainPanel.add(new JLabel("User Name:"), gbc);
+      gbc.gridy = 0;
+      mainPanel.add(new JLabel("User Name:"), gbc);
 
-			if (existingEntity == null) {
-				gbc.gridy = 1;
-				mainPanel.add(new JLabel("Password:"), gbc);
+      if (existingEntity == null) {
+        gbc.gridy = 1;
+        mainPanel.add(new JLabel("Password:"), gbc);
 
-				gbc.gridy = 2;
-				mainPanel.add(new JLabel("Confirm Password:"), gbc);
-			}
+        gbc.gridy = 2;
+        mainPanel.add(new JLabel("Confirm Password:"), gbc);
+      }
 
-			gbc.gridy = 3;
-			mainPanel.add(new JLabel("eMail:"), gbc);
+      gbc.gridy = 3;
+      mainPanel.add(new JLabel("eMail:"), gbc);
 
-			gbc.gridy = 4;
-			mainPanel.add(new JLabel("Website:"), gbc);
+      gbc.gridy = 4;
+      mainPanel.add(new JLabel("Website:"), gbc);
 
-			gbc.gridy = 5;
-			mainPanel.add(new JLabel("Short Bio:"), gbc);
+      gbc.gridy = 5;
+      mainPanel.add(new JLabel("Short Bio:"), gbc);
 
-			gbc.gridx = 1;
-			gbc.fill = GridBagConstraints.HORIZONTAL;
-			gbc.insets = new Insets(2, 2, 2, 2);
-			gbc.weightx = 1;
+      gbc.gridx = 1;
+      gbc.fill = GridBagConstraints.HORIZONTAL;
+      gbc.insets = new Insets(2, 2, 2, 2);
+      gbc.weightx = 1;
 
-			gbc.gridy = 0;
-			mainPanel.add(getUserNameField(), gbc);
+      gbc.gridy = 0;
+      mainPanel.add(getUserNameField(), gbc);
 
-			if (existingEntity == null) {
-				gbc.gridy = 1;
-				mainPanel.add(getPasswordField(), gbc);
+      if (existingEntity == null) {
+        gbc.gridy = 1;
+        mainPanel.add(getPasswordField(), gbc);
 
-				gbc.gridy = 2;
-				mainPanel.add(getConfirmPasswordField(), gbc);
-			}
+        gbc.gridy = 2;
+        mainPanel.add(getConfirmPasswordField(), gbc);
+      }
 
-			gbc.gridy = 3;
-			mainPanel.add(getEmailField(), gbc);
+      gbc.gridy = 3;
+      mainPanel.add(getEmailField(), gbc);
 
-			gbc.gridy = 4;
-			mainPanel.add(getWebsiteField(), gbc);
+      gbc.gridy = 4;
+      mainPanel.add(getWebsiteField(), gbc);
 
-			gbc.gridy = 5;
-			mainPanel.add(getBioArea(), gbc);
-		}
-		return mainPanel;
-	}
+      gbc.gridy = 5;
+      mainPanel.add(getBioArea(), gbc);
+    }
+    return mainPanel;
+  }
 
-	private void refreshState() {
-		this.userName = getUserNameField().getText();
-		String password = new String(getPasswordField().getPassword());
-		String confirmPassword = new String(getConfirmPasswordField().getPassword());
-		if (password.equals(confirmPassword)) {
-			this.password = password;
-		} else {
-			this.password = null;
-		}
-		this.email = getEmailField().getText();
-		this.website = getWebsiteField().getText();
-		this.bio = getBioArea().getText();
-		JButton okButton = getButton(OK);
-		okButton.setEnabled((this.userName.length() > 0)
-				&& (this.existingEntity != null || ((this.password != null) && (this.password.length() > 0))));
-	}
+  private void refreshState() {
+    this.userName = getUserNameField().getText();
+    String password = new String(getPasswordField().getPassword());
+    String confirmPassword = new String(getConfirmPasswordField().getPassword());
+    if (password.equals(confirmPassword)) {
+      this.password = password;
+    } else {
+      this.password = null;
+    }
+    this.email = getEmailField().getText();
+    this.website = getWebsiteField().getText();
+    this.bio = getBioArea().getText();
+    JButton okButton = getButton(OK);
+    okButton.setEnabled((this.userName.length() > 0)
+        && (this.existingEntity != null || ((this.password != null) && (this.password.length() > 0))));
+  }
 
-	private JTextField getUserNameField() {
-		if (userNameField == null) {
-			userNameField = new JTextField();
-			if (existingEntity != null) {
-				userNameField.setText(existingEntity.getUsername());
-				userNameField.setEditable(false);
-			}
-			userNameField.getDocument().addDocumentListener(new DocumentListener() {
+  private JTextField getUserNameField() {
+    if (userNameField == null) {
+      userNameField = new JTextField();
+      if (existingEntity != null) {
+        userNameField.setText(existingEntity.getUsername());
+        userNameField.setEditable(false);
+      }
+      userNameField.getDocument().addDocumentListener(new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
-		}
-		return userNameField;
-	}
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+          refreshState();
+        }
+      });
+    }
+    return userNameField;
+  }
 
-	private JPasswordField getPasswordField() {
-		if (passwordField == null) {
-			passwordField = new JPasswordField();
-			passwordField.getDocument().addDocumentListener(new DocumentListener() {
+  private JPasswordField getPasswordField() {
+    if (passwordField == null) {
+      passwordField = new JPasswordField();
+      passwordField.getDocument().addDocumentListener(new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
-		}
-		return passwordField;
-	}
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+          refreshState();
+        }
+      });
+    }
+    return passwordField;
+  }
 
-	private JPasswordField getConfirmPasswordField() {
-		if (confirmPasswordField == null) {
-			confirmPasswordField = new JPasswordField();
-			confirmPasswordField.getDocument().addDocumentListener(new DocumentListener() {
+  private JPasswordField getConfirmPasswordField() {
+    if (confirmPasswordField == null) {
+      confirmPasswordField = new JPasswordField();
+      confirmPasswordField.getDocument().addDocumentListener(new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
-		}
-		return confirmPasswordField;
-	}
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+          refreshState();
+        }
+      });
+    }
+    return confirmPasswordField;
+  }
 
-	private JTextField getEmailField() {
-		if (emailField == null) {
-			emailField = new JTextField();
-			if (existingEntity != null)
-				emailField.setText(existingEntity.getEmail());
-			emailField.getDocument().addDocumentListener(new DocumentListener() {
+  private JTextField getEmailField() {
+    if (emailField == null) {
+      emailField = new JTextField();
+      if (existingEntity != null)
+        emailField.setText(existingEntity.getEmail());
+      emailField.getDocument().addDocumentListener(new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
-		}
-		return emailField;
-	}
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+          refreshState();
+        }
+      });
+    }
+    return emailField;
+  }
 
-	public JTextField getWebsiteField() {
-		if (websiteField == null) {
-			websiteField = new JTextField();
-			if (existingEntity != null)
-				websiteField.setText(existingEntity.getWebsite());
-			websiteField.getDocument().addDocumentListener(new DocumentListener() {
+  public JTextField getWebsiteField() {
+    if (websiteField == null) {
+      websiteField = new JTextField();
+      if (existingEntity != null)
+        websiteField.setText(existingEntity.getWebsite());
+      websiteField.getDocument().addDocumentListener(new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
-		}
-		return websiteField;
-	}
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+          refreshState();
+        }
+      });
+    }
+    return websiteField;
+  }
 
-	public JTextArea getBioArea() {
-		if (bioArea == null) {
-			bioArea = new JTextArea();
-			if (existingEntity != null)
-				bioArea.setText(existingEntity.getBio().replace("<br>", "\n"));
-			bioArea.setFont(getUserNameField().getFont());
-			bioArea.setBorder(getUserNameField().getBorder());
-			bioArea.setPreferredSize(new Dimension(192, 69));
-			bioArea.getDocument().addDocumentListener(new DocumentListener() {
+  public JTextArea getBioArea() {
+    if (bioArea == null) {
+      bioArea = new JTextArea();
+      if (existingEntity != null)
+        bioArea.setText(existingEntity.getBio().replace("<br>", "\n"));
+      bioArea.setFont(getUserNameField().getFont());
+      bioArea.setBorder(getUserNameField().getBorder());
+      bioArea.setPreferredSize(new Dimension(192, 69));
+      bioArea.getDocument().addDocumentListener(new DocumentListener() {
 
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					refreshState();
-				}
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+          refreshState();
+        }
 
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					refreshState();
-				}
-			});
-		}
-		return bioArea;
-	}
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+          refreshState();
+        }
+      });
+    }
+    return bioArea;
+  }
 }

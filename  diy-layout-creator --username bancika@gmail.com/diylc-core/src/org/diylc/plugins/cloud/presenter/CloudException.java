@@ -2,14 +2,14 @@ package org.diylc.plugins.cloud.presenter;
 
 public class CloudException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public CloudException(Exception e) {
-		super(e);
-	}
+  public CloudException(Exception e) {
+    super(e);
+  }
 
-	public CloudException(String string) {
-		super(string);
-	}
+  public CloudException(String string) {
+    super(string);
+  }
 
 }

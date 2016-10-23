@@ -12,11 +12,10 @@ import org.junit.Test;
 
 public class ClassProcessorTest {
 
-	@Test
-	public void testExtractProperties() {
-		List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(
-				MockDIYComponent.class);
-		assertNotNull(properties);
-		assertEquals(4, properties.size());
-	};
+  @Test
+  public void testExtractProperties() {
+    List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(MockDIYComponent.class);
+    assertNotNull(properties);
+    assertEquals(4, properties.size());
+  };
 }

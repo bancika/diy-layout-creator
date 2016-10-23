@@ -12,17 +12,17 @@ import org.diylc.common.IPlugInPort;
  */
 class CanvasGestureListener implements DragGestureListener {
 
-	private IPlugInPort presenter;
+  private IPlugInPort presenter;
 
-	public CanvasGestureListener(IPlugInPort presenter) {
-		super();
-		this.presenter = presenter;
-	}
+  public CanvasGestureListener(IPlugInPort presenter) {
+    super();
+    this.presenter = presenter;
+  }
 
-	@Override
-	public void dragGestureRecognized(DragGestureEvent dge) {
-		presenter.dragStarted(dge.getDragOrigin(), dge.getDragAction());
-		dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(),
-				new CanvasSourceListener(presenter));
-	}
+  @Override
+  public void dragGestureRecognized(DragGestureEvent dge) {
+    presenter.dragStarted(dge.getDragOrigin(), dge.getDragAction());
+    dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(), new CanvasSourceListener(
+        presenter));
+  }
 }

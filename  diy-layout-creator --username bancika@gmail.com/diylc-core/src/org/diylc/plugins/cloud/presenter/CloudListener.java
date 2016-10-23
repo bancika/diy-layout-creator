@@ -2,7 +2,7 @@ package org.diylc.plugins.cloud.presenter;
 
 public interface CloudListener {
 
-	public void loggedIn();
-	
-	public void loggedOut();
+  public void loggedIn();
+
+  public void loggedOut();
 }

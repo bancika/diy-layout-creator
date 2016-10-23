@@ -11,49 +11,46 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.swingframework.IDrawingProvider;
 
 /**
- * {@link IDrawingProvider} implementation that uses {@link IPlugInPort} to draw
- * a project onto the canvas.
+ * {@link IDrawingProvider} implementation that uses {@link IPlugInPort} to draw a project onto the
+ * canvas.
  * 
  * @author Branislav Stojkovic
  */
 public class ProjectDrawingProvider implements IDrawingProvider {
 
-	private IPlugInPort plugInPort;
-	private boolean useZoom;
-	private boolean showGridWhenNeeded;
+  private IPlugInPort plugInPort;
+  private boolean useZoom;
+  private boolean showGridWhenNeeded;
 
-	public ProjectDrawingProvider(IPlugInPort plugInPort, boolean useZoom,
-			boolean showGridWhenNeeded) {
-		super();
-		this.plugInPort = plugInPort;
-		this.useZoom = useZoom;
-		this.showGridWhenNeeded = showGridWhenNeeded;
-	}
+  public ProjectDrawingProvider(IPlugInPort plugInPort, boolean useZoom, boolean showGridWhenNeeded) {
+    super();
+    this.plugInPort = plugInPort;
+    this.useZoom = useZoom;
+    this.showGridWhenNeeded = showGridWhenNeeded;
+  }
 
-	@Override
-	public Dimension getSize() {
-		return plugInPort.getCanvasDimensions(useZoom);
-	}
+  @Override
+  public Dimension getSize() {
+    return plugInPort.getCanvasDimensions(useZoom);
+  }
 
-	@Override
-	public void draw(int page, Graphics g) {
-		EnumSet<DrawOption> drawOptions = EnumSet.of(DrawOption.ANTIALIASING);
-		if (useZoom) {
-			drawOptions.add(DrawOption.ZOOM);
-		}
-		if (showGridWhenNeeded
-				&& ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXPORT_GRID_KEY,
-						false)) {
-			drawOptions.add(DrawOption.GRID);
-		}
-		if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
-			drawOptions.add(DrawOption.OUTLINE_MODE);
-		}
-		plugInPort.draw((Graphics2D) g, drawOptions, null);
-	}
+  @Override
+  public void draw(int page, Graphics g) {
+    EnumSet<DrawOption> drawOptions = EnumSet.of(DrawOption.ANTIALIASING);
+    if (useZoom) {
+      drawOptions.add(DrawOption.ZOOM);
+    }
+    if (showGridWhenNeeded && ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXPORT_GRID_KEY, false)) {
+      drawOptions.add(DrawOption.GRID);
+    }
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
+      drawOptions.add(DrawOption.OUTLINE_MODE);
+    }
+    plugInPort.draw((Graphics2D) g, drawOptions, null);
+  }
 
-	@Override
-	public int getPageCount() {
-		return 1;
-	}
+  @Override
+  public int getPageCount() {
+    return 1;
+  }
 }

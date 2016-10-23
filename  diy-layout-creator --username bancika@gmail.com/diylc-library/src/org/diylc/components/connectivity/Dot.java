@@ -17,95 +17,92 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Dot", category = "Connectivity", author = "Branislav Stojkovic", description = "Connector dot", instanceNamePrefix = "Dot", stretchable = false, zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+@ComponentDescriptor(name = "Dot", category = "Connectivity", author = "Branislav Stojkovic",
+    description = "Connector dot", instanceNamePrefix = "Dot", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
 public class Dot extends AbstractComponent<Void> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public static Size SIZE = new Size(1d, SizeUnit.mm);
-	public static Color COLOR = Color.black;
+  public static Size SIZE = new Size(1d, SizeUnit.mm);
+  public static Color COLOR = Color.black;
 
-	private Size size = SIZE;
-	private Color color = COLOR;
-	private Point point = new Point(0, 0);
+  private Size size = SIZE;
+  private Color color = COLOR;
+  private Point point = new Point(0, 0);
 
-	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState,
-			boolean outlineMode, Project project,
-			IDrawingObserver drawingObserver) {
-		if (checkPointsClipped(g2d.getClip())) {
-			return;
-		}
-		int diameter = getClosestOdd((int) getSize().convertToPixels());
-		g2d.setColor(componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-				: color);
-		g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter,
-				diameter);
-	}
+  @Override
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
+      IDrawingObserver drawingObserver) {
+    if (checkPointsClipped(g2d.getClip())) {
+      return;
+    }
+    int diameter = getClosestOdd((int) getSize().convertToPixels());
+    g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+        : color);
+    g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+  }
 
-	@Override
-	public void drawIcon(Graphics2D g2d, int width, int height) {
-		int diameter = 7 * width / 32;
-		g2d.setColor(COLOR);
-		g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter,
-				diameter);
-	}
+  @Override
+  public void drawIcon(Graphics2D g2d, int width, int height) {
+    int diameter = 7 * width / 32;
+    g2d.setColor(COLOR);
+    g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
+  }
 
-	@EditableProperty
-	public Size getSize() {
-		return size;
-	}
+  @EditableProperty
+  public Size getSize() {
+    return size;
+  }
 
-	public void setSize(Size size) {
-		this.size = size;
-	}
+  public void setSize(Size size) {
+    this.size = size;
+  }
 
-	@Override
-	public String getName() {
-		return super.getName();
-	}
+  @Override
+  public String getName() {
+    return super.getName();
+  }
 
-	@Override
-	public int getControlPointCount() {
-		return 1;
-	}
+  @Override
+  public int getControlPointCount() {
+    return 1;
+  }
 
-	@Override
-	public boolean isControlPointSticky(int index) {
-		return true;
-	}
+  @Override
+  public boolean isControlPointSticky(int index) {
+    return true;
+  }
 
-	@Override
-	public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-		return VisibilityPolicy.NEVER;
-	}
+  @Override
+  public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+    return VisibilityPolicy.NEVER;
+  }
 
-	@Override
-	public Point getControlPoint(int index) {
-		return point;
-	}
+  @Override
+  public Point getControlPoint(int index) {
+    return point;
+  }
 
-	@Override
-	public void setControlPoint(Point point, int index) {
-		this.point.setLocation(point);
-	}
+  @Override
+  public void setControlPoint(Point point, int index) {
+    this.point.setLocation(point);
+  }
 
-	@EditableProperty(name = "Color")
-	public Color getColor() {
-		return color;
-	}
+  @EditableProperty(name = "Color")
+  public Color getColor() {
+    return color;
+  }
 
-	public void setColor(Color color) {
-		this.color = color;
-	}
+  public void setColor(Color color) {
+    this.color = color;
+  }
 
-	@Override
-	public Void getValue() {
-		return null;
-	}
+  @Override
+  public Void getValue() {
+    return null;
+  }
 
-	@Override
-	public void setValue(Void value) {
-	}
+  @Override
+  public void setValue(Void value) {}
 }

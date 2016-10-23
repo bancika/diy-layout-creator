@@ -4,5 +4,5 @@ import org.diylc.core.IDIYComponent;
 
 public interface IComponentFiler {
 
-	boolean testComponent(IDIYComponent<?> component);
+  boolean testComponent(IDIYComponent<?> component);
 }

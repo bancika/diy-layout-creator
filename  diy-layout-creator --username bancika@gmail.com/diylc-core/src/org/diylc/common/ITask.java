@@ -9,26 +9,25 @@ package org.diylc.common;
  */
 public interface ITask<T> {
 
-	/**
-	 * Runs in background thread.
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	T doInBackground() throws Exception;
+  /**
+   * Runs in background thread.
+   * 
+   * @return
+   * @throws Exception
+   */
+  T doInBackground() throws Exception;
 
-	/**
-	 * Called if background thread fails.
-	 * 
-	 * @param e
-	 */
-	void failed(Exception e);
+  /**
+   * Called if background thread fails.
+   * 
+   * @param e
+   */
+  void failed(Exception e);
 
-	/**
-	 * Called if background thread is executed correctly, the result is passed
-	 * as a parameter.
-	 * 
-	 * @param result
-	 */
-	void complete(T result);
+  /**
+   * Called if background thread is executed correctly, the result is passed as a parameter.
+   * 
+   * @param result
+   */
+  void complete(T result);
 }

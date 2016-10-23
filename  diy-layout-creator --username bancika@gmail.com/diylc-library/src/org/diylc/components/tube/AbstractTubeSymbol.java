@@ -23,128 +23,123 @@ import org.diylc.utils.Constants;
 
 public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
-	public static Color COLOR = Color.black;
+  public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
+  public static Color COLOR = Color.black;
 
-	protected String value = "";
+  protected String value = "";
 
-	protected Color color = COLOR;
-	protected Display display = Display.NAME;
-	transient protected Shape[] body;
-	protected boolean showHeaters;
+  protected Color color = COLOR;
+  protected Display display = Display.NAME;
+  transient protected Shape[] body;
+  protected boolean showHeaters;
 
-	@Override
-	public void draw(Graphics2D g2d, ComponentState componentState,
-			boolean outlineMode, Project project,
-			IDrawingObserver drawingObserver) {
-		if (checkPointsClipped(g2d.getClip())) {
-			return;
-		}
-		Color finalColor;
-		if (componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING) {
-			finalColor = SELECTION_COLOR;
-		} else if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-			finalColor = theme.getOutlineColor();
-		} else {
-			finalColor = color;
-		}
-		g2d.setColor(finalColor);
+  @Override
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
+      IDrawingObserver drawingObserver) {
+    if (checkPointsClipped(g2d.getClip())) {
+      return;
+    }
+    Color finalColor;
+    if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
+      finalColor = SELECTION_COLOR;
+    } else if (outlineMode) {
+      Theme theme =
+          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+      finalColor = theme.getOutlineColor();
+    } else {
+      finalColor = color;
+    }
+    g2d.setColor(finalColor);
 
-		// Draw tube
+    // Draw tube
 
-		Shape[] body = getBody();
+    Shape[] body = getBody();
 
-		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-		g2d.draw(body[0]);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+    g2d.draw(body[0]);
 
-		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-		g2d.draw(body[1]);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.draw(body[1]);
 
-		if (body[2] != null) {
-			g2d.draw(body[2]);
-		}
+    if (body[2] != null) {
+      g2d.draw(body[2]);
+    }
 
-		// Draw label
-		g2d.setFont(LABEL_FONT);
-		Color finalLabelColor;
-		if (outlineMode) {
-			Theme theme = (Theme) ConfigurationManager.getInstance()
-					.readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-			finalLabelColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-					: theme.getOutlineColor();
-		} else {
-			finalLabelColor = componentState == ComponentState.SELECTED
-					|| componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-					: LABEL_COLOR;
-		}
-		g2d.setColor(finalLabelColor);
-		Point p = getTextLocation();
-		String label="";
-		label = display == Display.VALUE ? getValue() : getName();
-		if (display==Display.NONE) {
-			label="";
-		}
-		if (display==Display.BOTH) {
-			label=getName()+"  "+(getValue() == null ? "" : getValue().toString());
-		}
-		drawCenteredText(g2d,
-				label, p.x, p.y,
-				HorizontalAlignment.LEFT, VerticalAlignment.TOP);
-	}
+    // Draw label
+    g2d.setFont(LABEL_FONT);
+    Color finalLabelColor;
+    if (outlineMode) {
+      Theme theme =
+          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+      finalLabelColor =
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+              : theme.getOutlineColor();
+    } else {
+      finalLabelColor =
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+              : LABEL_COLOR;
+    }
+    g2d.setColor(finalLabelColor);
+    Point p = getTextLocation();
+    String label = "";
+    label = display == Display.VALUE ? getValue() : getName();
+    if (display == Display.NONE) {
+      label = "";
+    }
+    if (display == Display.BOTH) {
+      label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
+    }
+    drawCenteredText(g2d, label, p.x, p.y, HorizontalAlignment.LEFT, VerticalAlignment.TOP);
+  }
 
-	@EditableProperty
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+  @EditableProperty
+  @Override
+  public String getValue() {
+    return this.value;
+  }
 
-	@Override
-	public void setValue(String value) {
-		this.value = value;
-	}
+  @Override
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-	@EditableProperty
-	public Color getColor() {
-		return color;
-	}
+  @EditableProperty
+  public Color getColor() {
+    return color;
+  }
 
-	public void setColor(Color color) {
-		this.color = color;
-	}
+  public void setColor(Color color) {
+    this.color = color;
+  }
 
-	@EditableProperty
-	public Display getDisplay() {
-		return display;
-	}
+  @EditableProperty
+  public Display getDisplay() {
+    return display;
+  }
 
-	public void setDisplay(Display display) {
-		this.display = display;
-	}
+  public void setDisplay(Display display) {
+    this.display = display;
+  }
 
-	@EditableProperty(name = "Heaters")
-	public boolean getShowHeaters() {
-		return showHeaters;
-	}
+  @EditableProperty(name = "Heaters")
+  public boolean getShowHeaters() {
+    return showHeaters;
+  }
 
-	public void setShowHeaters(boolean showHeaters) {
-		this.showHeaters = showHeaters;
-		// Invalidate body
-		body = null;
-	}
+  public void setShowHeaters(boolean showHeaters) {
+    this.showHeaters = showHeaters;
+    // Invalidate body
+    body = null;
+  }
 
-	/**
-	 * Returns transistor shape consisting of 3 parts, in this order:
-	 * electrodes, connectors, bulb.
-	 * 
-	 * @return
-	 */
-	protected abstract Shape[] getBody();
-	
-	protected abstract Point getTextLocation();
+  /**
+   * Returns transistor shape consisting of 3 parts, in this order: electrodes, connectors, bulb.
+   * 
+   * @return
+   */
+  protected abstract Shape[] getBody();
+
+  protected abstract Point getTextLocation();
 }

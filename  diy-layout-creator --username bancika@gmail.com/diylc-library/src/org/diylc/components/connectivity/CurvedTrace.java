@@ -15,69 +15,71 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity", instanceNamePrefix = "Trace", description = "Curved copper trace with two control points", zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+@ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity",
+    instanceNamePrefix = "Trace", description = "Curved copper trace with two control points",
+    zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
 public class CurvedTrace extends AbstractCurvedComponent<Void> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public static Color COLOR = Color.black;
-	public static Size SIZE = new Size(1d, SizeUnit.mm);
+  public static Color COLOR = Color.black;
+  public static Size SIZE = new Size(1d, SizeUnit.mm);
 
-	protected Size size = SIZE;
-	private PCBLayer layer = PCBLayer._1;
+  protected Size size = SIZE;
+  private PCBLayer layer = PCBLayer._1;
 
-	@Override
-	protected Color getDefaultColor() {
-		return COLOR;
-	}
+  @Override
+  protected Color getDefaultColor() {
+    return COLOR;
+  }
 
-	@Override
-	protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
-		int thickness = (int) size.convertToPixels();
-		g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
-		Color curveColor = componentState == ComponentState.SELECTED
-				|| componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color;
-		g2d.setColor(curveColor);
-		g2d.draw(curve);
-	}
+  @Override
+  protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
+    int thickness = (int) size.convertToPixels();
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
+    Color curveColor =
+        componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+            : color;
+    g2d.setColor(curveColor);
+    g2d.draw(curve);
+  }
 
-	@EditableProperty(name = "Width")
-	public Size getThickness() {
-		return size;
-	}
+  @EditableProperty(name = "Width")
+  public Size getThickness() {
+    return size;
+  }
 
-	public void setThickness(Size size) {
-		this.size = size;
-	}
-	
-	@EditableProperty
-	public PCBLayer getLayer() {
-		if (layer == null) {
-			layer = PCBLayer._1;
-		}
-		return layer;
-	}
-	
-	public void setLayer(PCBLayer layer) {
-		this.layer = layer;
-	}
+  public void setThickness(Size size) {
+    this.size = size;
+  }
 
-	@Override
-	public Void getValue() {
-		return null;
-	}
+  @EditableProperty
+  public PCBLayer getLayer() {
+    if (layer == null) {
+      layer = PCBLayer._1;
+    }
+    return layer;
+  }
 
-	@Override
-	public void setValue(Void value) {
-	}
+  public void setLayer(PCBLayer layer) {
+    this.layer = layer;
+  }
 
-	@Override
-	public Byte getAlpha() {
-		return super.getAlpha();
-	}
+  @Override
+  public Void getValue() {
+    return null;
+  }
 
-	@Override
-	public void setAlpha(Byte alpha) {
-		super.setAlpha(alpha);
-	}
+  @Override
+  public void setValue(Void value) {}
+
+  @Override
+  public Byte getAlpha() {
+    return super.getAlpha();
+  }
+
+  @Override
+  public void setAlpha(Byte alpha) {
+    super.setAlpha(alpha);
+  }
 }

@@ -12,41 +12,40 @@ import javax.swing.SwingConstants;
 
 import org.diylc.common.PropertyWrapper;
 
-public class ColorEditor extends JLabel  {
+public class ColorEditor extends JLabel {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private static final String title = "Click to edit";
+  private static final String title = "Click to edit";
 
-	public ColorEditor(final PropertyWrapper property) {
-		super(property.isUnique() ? title : ("(multi value) " + title));
-		setOpaque(true);
-		setHorizontalAlignment(SwingConstants.CENTER);
-		setBorder(BorderFactory.createEtchedBorder());
-		setBackground((Color) property.getValue());
-		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		addMouseListener(new MouseAdapter() {
+  public ColorEditor(final PropertyWrapper property) {
+    super(property.isUnique() ? title : ("(multi value) " + title));
+    setOpaque(true);
+    setHorizontalAlignment(SwingConstants.CENTER);
+    setBorder(BorderFactory.createEtchedBorder());
+    setBackground((Color) property.getValue());
+    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    addMouseListener(new MouseAdapter() {
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color",
-						getBackground());
-				if (newColor != null) {
-					property.setChanged(true);
-					property.setValue(newColor);
-					setBackground(newColor);
-				}
-			}
-		});
-	}
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color", getBackground());
+        if (newColor != null) {
+          property.setChanged(true);
+          property.setValue(newColor);
+          setBackground(newColor);
+        }
+      }
+    });
+  }
 
-	@Override
-	public void setBackground(Color bg) {
-		if (bg.getRed() < 127 || bg.getBlue() < 127 || bg.getGreen() < 127) {
-			setForeground(Color.white);
-		} else {
-			setForeground(Color.black);
-		}
-		super.setBackground(bg);
-	}
+  @Override
+  public void setBackground(Color bg) {
+    if (bg.getRed() < 127 || bg.getBlue() < 127 || bg.getGreen() < 127) {
+      setForeground(Color.white);
+    } else {
+      setForeground(Color.black);
+    }
+    super.setBackground(bg);
+  }
 }

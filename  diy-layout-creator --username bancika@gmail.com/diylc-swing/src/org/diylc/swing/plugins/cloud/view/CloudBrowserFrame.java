@@ -51,412 +51,409 @@ import org.diylc.swing.plugins.file.FileFilterEnum;
 
 public class CloudBrowserFrame extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private static final Logger LOG = Logger.getLogger(CloudBrowserFrame.class);
+  private static final Logger LOG = Logger.getLogger(CloudBrowserFrame.class);
 
-	private JPanel mainPanel;
-	private JTabbedPane tabbedPane;
-	private JPanel dashboardPanel;
-	private JPanel browsePanel;
+  private JPanel mainPanel;
+  private JTabbedPane tabbedPane;
+  private JPanel dashboardPanel;
+  private JPanel browsePanel;
 
-	private JPanel searchPanel;
-	private JTextField searchField;
-	private JComboBox categoryBox;
-	private JComboBox sortBox;
-	private JButton goButton;
+  private JPanel searchPanel;
+  private JTextField searchField;
+  private JComboBox categoryBox;
+  private JComboBox sortBox;
+  private JButton goButton;
 
-	private JScrollPane resultsScrollPane;
-	private JPanel resultsPanel;
+  private JScrollPane resultsScrollPane;
+  private JPanel resultsPanel;
 
-	private IPlugInPort plugInPort;
-	private CloudPresenter cloudPresenter;
+  private IPlugInPort plugInPort;
+  private CloudPresenter cloudPresenter;
 
-	private int pageNumber;
-	private int itemsPerPage = 10;
+  private int pageNumber;
+  private int itemsPerPage = 10;
 
-	public CloudBrowserFrame(JFrame owner, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
-		super("DIY Cloud Browser");
-		this.setIconImage(IconLoader.Cloud.getImage());
-		this.setPreferredSize(new Dimension(800, 600));
-		this.plugInPort = plugInPort;
-		this.cloudPresenter = cloudPresenter;
+  public CloudBrowserFrame(JFrame owner, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
+    super("DIY Cloud Browser");
+    this.setIconImage(IconLoader.Cloud.getImage());
+    this.setPreferredSize(new Dimension(800, 600));
+    this.plugInPort = plugInPort;
+    this.cloudPresenter = cloudPresenter;
 
-		setContentPane(getMainPanel());
-		this.pack();
-		this.setLocationRelativeTo(owner);
-		this.setGlassPane(new CustomGlassPane());
-	}
+    setContentPane(getMainPanel());
+    this.pack();
+    this.setLocationRelativeTo(owner);
+    this.setGlassPane(new CustomGlassPane());
+  }
 
-	public JPanel getMainPanel() {
-		if (mainPanel == null) {
-			mainPanel = new JPanel(new GridBagLayout());
-			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.anchor = GridBagConstraints.NORTHWEST;
-			gbc.insets = new Insets(2, 2, 2, 2);
+  public JPanel getMainPanel() {
+    if (mainPanel == null) {
+      mainPanel = new JPanel(new GridBagLayout());
+      GridBagConstraints gbc = new GridBagConstraints();
+      gbc.anchor = GridBagConstraints.NORTHWEST;
+      gbc.insets = new Insets(2, 2, 2, 2);
 
-			gbc.gridx = 0;
-			gbc.gridy = 0;
-			gbc.fill = GridBagConstraints.BOTH;
-			gbc.weightx = 1;
-			gbc.weighty = 1;
-			mainPanel.add(getTabbedPane(), gbc);
-		}
-		return mainPanel;
-	}
+      gbc.gridx = 0;
+      gbc.gridy = 0;
+      gbc.fill = GridBagConstraints.BOTH;
+      gbc.weightx = 1;
+      gbc.weighty = 1;
+      mainPanel.add(getTabbedPane(), gbc);
+    }
+    return mainPanel;
+  }
 
-	private JTabbedPane getTabbedPane() {
-		if (tabbedPane == null) {
-			tabbedPane = new JTabbedPane();
-			tabbedPane.addTab("Dashboard", IconLoader.Dashboard.getIcon(), getDashboardPanel());
-			tabbedPane.addTab("Search For Projects", IconLoader.Find.getIcon(), getBrowsePanel());
-			tabbedPane.addChangeListener(new ChangeListener() {
+  private JTabbedPane getTabbedPane() {
+    if (tabbedPane == null) {
+      tabbedPane = new JTabbedPane();
+      tabbedPane.addTab("Dashboard", IconLoader.Dashboard.getIcon(), getDashboardPanel());
+      tabbedPane.addTab("Search For Projects", IconLoader.Find.getIcon(), getBrowsePanel());
+      tabbedPane.addChangeListener(new ChangeListener() {
 
-				@Override
-				public void stateChanged(ChangeEvent e) {
-					if (getTabbedPane().getSelectedIndex() == 1)
-						getSearchField().requestFocus();
-				}
-			});
-		}
-		return tabbedPane;
-	}
+        @Override
+        public void stateChanged(ChangeEvent e) {
+          if (getTabbedPane().getSelectedIndex() == 1)
+            getSearchField().requestFocus();
+        }
+      });
+    }
+    return tabbedPane;
+  }
 
-	private JPanel getDashboardPanel() {
-		if (dashboardPanel == null) {
-			dashboardPanel = new JPanel();
-		}
-		return dashboardPanel;
-	}
+  private JPanel getDashboardPanel() {
+    if (dashboardPanel == null) {
+      dashboardPanel = new JPanel();
+    }
+    return dashboardPanel;
+  }
 
-	private JPanel getBrowsePanel() {
-		if (browsePanel == null) {
-			browsePanel = new JPanel(new GridBagLayout());
-			GridBagConstraints gbc = new GridBagConstraints();
-			browsePanel.setBackground(Color.white);
-			gbc.anchor = GridBagConstraints.NORTH;
-			gbc.insets = new Insets(2, 2, 2, 2);
-			gbc.gridx = 0;
-			gbc.gridy = 0;
-			gbc.fill = GridBagConstraints.HORIZONTAL;
-			gbc.weightx = 1;
-			browsePanel.add(getSearchPanel(), gbc);
+  private JPanel getBrowsePanel() {
+    if (browsePanel == null) {
+      browsePanel = new JPanel(new GridBagLayout());
+      GridBagConstraints gbc = new GridBagConstraints();
+      browsePanel.setBackground(Color.white);
+      gbc.anchor = GridBagConstraints.NORTH;
+      gbc.insets = new Insets(2, 2, 2, 2);
+      gbc.gridx = 0;
+      gbc.gridy = 0;
+      gbc.fill = GridBagConstraints.HORIZONTAL;
+      gbc.weightx = 1;
+      browsePanel.add(getSearchPanel(), gbc);
 
-			// gbc.gridy = 1;
-			// gbc.fill = GridBagConstraints.HORIZONTAL;
-			// browsePanel.add(new JSeparator(), gbc);
+      // gbc.gridy = 1;
+      // gbc.fill = GridBagConstraints.HORIZONTAL;
+      // browsePanel.add(new JSeparator(), gbc);
 
-			gbc.gridy = 1;
-			gbc.weighty = 1;
-			gbc.fill = GridBagConstraints.BOTH;
-			browsePanel.add(getResultsScrollPane(), gbc);
-		}
-		return browsePanel;
-	}
+      gbc.gridy = 1;
+      gbc.weighty = 1;
+      gbc.fill = GridBagConstraints.BOTH;
+      browsePanel.add(getResultsScrollPane(), gbc);
+    }
+    return browsePanel;
+  }
 
-	private JPanel getSearchPanel() {
-		if (searchPanel == null) {
-			searchPanel = new JPanel(new GridBagLayout());
-			searchPanel.setBackground(Color.white);
-			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.anchor = GridBagConstraints.LINE_START;
-			gbc.insets = new Insets(2, 2, 2, 2);
+  private JPanel getSearchPanel() {
+    if (searchPanel == null) {
+      searchPanel = new JPanel(new GridBagLayout());
+      searchPanel.setBackground(Color.white);
+      GridBagConstraints gbc = new GridBagConstraints();
+      gbc.anchor = GridBagConstraints.LINE_START;
+      gbc.insets = new Insets(2, 2, 2, 2);
 
-			gbc.gridx = 0;
-			gbc.gridy = 0;
-			gbc.fill = GridBagConstraints.BOTH;
-			gbc.weightx = 0;
-			searchPanel.add(new JLabel("Search For:"), gbc);
+      gbc.gridx = 0;
+      gbc.gridy = 0;
+      gbc.fill = GridBagConstraints.BOTH;
+      gbc.weightx = 0;
+      searchPanel.add(new JLabel("Search For:"), gbc);
 
-			gbc.gridx = 1;
-			gbc.weightx = 1;
-			searchPanel.add(getSearchField(), gbc);
+      gbc.gridx = 1;
+      gbc.weightx = 1;
+      searchPanel.add(getSearchField(), gbc);
 
-			gbc.gridx = 2;
-			gbc.weightx = 0;
-			searchPanel.add(new JLabel("Filter By Category:"), gbc);
+      gbc.gridx = 2;
+      gbc.weightx = 0;
+      searchPanel.add(new JLabel("Filter By Category:"), gbc);
 
-			gbc.gridx = 3;
-			gbc.weightx = 1;
-			searchPanel.add(getCategoryBox(), gbc);
+      gbc.gridx = 3;
+      gbc.weightx = 1;
+      searchPanel.add(getCategoryBox(), gbc);
 
-			gbc.gridx = 4;
-			gbc.weightx = 0;
-			searchPanel.add(new JLabel("Sort By:"), gbc);
+      gbc.gridx = 4;
+      gbc.weightx = 0;
+      searchPanel.add(new JLabel("Sort By:"), gbc);
 
-			gbc.gridx = 5;
-			searchPanel.add(getSortBox(), gbc);
+      gbc.gridx = 5;
+      searchPanel.add(getSortBox(), gbc);
 
-			gbc.gridx = 6;
-			searchPanel.add(getGoButton(), gbc);
-		}
-		return searchPanel;
-	}
+      gbc.gridx = 6;
+      searchPanel.add(getGoButton(), gbc);
+    }
+    return searchPanel;
+  }
 
-	private JTextField getSearchField() {
-		if (searchField == null) {
-			searchField = new JTextField();
-		}
-		return searchField;
-	}
+  private JTextField getSearchField() {
+    if (searchField == null) {
+      searchField = new JTextField();
+    }
+    return searchField;
+  }
 
-	private JComboBox getCategoryBox() {
-		if (categoryBox == null) {
-			try {
-				categoryBox = new JComboBox(cloudPresenter.getCategories());
-			} catch (CloudException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return categoryBox;
-	}
+  private JComboBox getCategoryBox() {
+    if (categoryBox == null) {
+      try {
+        categoryBox = new JComboBox(cloudPresenter.getCategories());
+      } catch (CloudException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    return categoryBox;
+  }
 
-	private JComboBox getSortBox() {
-		if (sortBox == null) {
-			try {
-				sortBox = new JComboBox(cloudPresenter.getSortings());
-			} catch (CloudException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return sortBox;
-	}
+  private JComboBox getSortBox() {
+    if (sortBox == null) {
+      try {
+        sortBox = new JComboBox(cloudPresenter.getSortings());
+      } catch (CloudException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    return sortBox;
+  }
 
-	private JScrollPane getResultsScrollPane() {
-		if (resultsScrollPane == null) {
-			resultsScrollPane = new JScrollPane(getResultsPanel());
-			resultsScrollPane.getVerticalScrollBar().setUnitIncrement(16);
-			resultsScrollPane.setBorder(null);
-		}
-		return resultsScrollPane;
-	}
+  private JScrollPane getResultsScrollPane() {
+    if (resultsScrollPane == null) {
+      resultsScrollPane = new JScrollPane(getResultsPanel());
+      resultsScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+      resultsScrollPane.setBorder(null);
+    }
+    return resultsScrollPane;
+  }
 
-	private JPanel getResultsPanel() {
-		if (resultsPanel == null) {
-			resultsPanel = new JPanel(new GridBagLayout());
-			resultsPanel.setBackground(Color.white);
-		}
-		return resultsPanel;
-	}
+  private JPanel getResultsPanel() {
+    if (resultsPanel == null) {
+      resultsPanel = new JPanel(new GridBagLayout());
+      resultsPanel.setBackground(Color.white);
+    }
+    return resultsPanel;
+  }
 
-	public JButton getGoButton() {
-		if (goButton == null) {
-			goButton = new JButton("Go", IconLoader.DataFind.getIcon());
-			goButton.addActionListener(new ActionListener() {
+  public JButton getGoButton() {
+    if (goButton == null) {
+      goButton = new JButton("Go", IconLoader.DataFind.getIcon());
+      goButton.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					CloudBrowserFrame.this.pageNumber = 1;
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          CloudBrowserFrame.this.pageNumber = 1;
 
-					executeBackgroundTask(new ITask<List<ProjectEntity>>() {
+          executeBackgroundTask(new ITask<List<ProjectEntity>>() {
 
-						@Override
-						public List<ProjectEntity> doInBackground() throws Exception {
-							return cloudPresenter.search(getSearchField().getText(),
-									getCategoryBox().getSelectedItem() == null ? "" : getCategoryBox()
-											.getSelectedItem().toString(), getSortBox().getSelectedItem() == null ? ""
-											: getSortBox().getSelectedItem().toString(),
-									CloudBrowserFrame.this.pageNumber, CloudBrowserFrame.this.itemsPerPage);
-						}
+            @Override
+            public List<ProjectEntity> doInBackground() throws Exception {
+              return cloudPresenter.search(getSearchField().getText(), getCategoryBox().getSelectedItem() == null ? ""
+                  : getCategoryBox().getSelectedItem().toString(), getSortBox().getSelectedItem() == null ? ""
+                  : getSortBox().getSelectedItem().toString(), CloudBrowserFrame.this.pageNumber,
+                  CloudBrowserFrame.this.itemsPerPage);
+            }
 
-						@Override
-						public void failed(Exception e) {
-							showMessage("Search failed. Error: " + e.getMessage(), "Search Failed", IView.ERROR_MESSAGE);
-						}
+            @Override
+            public void failed(Exception e) {
+              showMessage("Search failed. Error: " + e.getMessage(), "Search Failed", IView.ERROR_MESSAGE);
+            }
 
-						@Override
-						public void complete(List<ProjectEntity> result) {
-							getResultsPanel().removeAll();
-							int count = 0;
-							for (Iterator<ProjectEntity> i = result.iterator(); i.hasNext();) {
-								ProjectEntity project = i.next();
-								addProjectToDisplay(project, count++, i.hasNext());
-							}
-						}
-					});
-				}
-			});
-		}
-		return goButton;
-	}
+            @Override
+            public void complete(List<ProjectEntity> result) {
+              getResultsPanel().removeAll();
+              int count = 0;
+              for (Iterator<ProjectEntity> i = result.iterator(); i.hasNext();) {
+                ProjectEntity project = i.next();
+                addProjectToDisplay(project, count++, i.hasNext());
+              }
+            }
+          });
+        }
+      });
+    }
+    return goButton;
+  }
 
-	public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
-		getGlassPane().setVisible(true);
-		SwingWorker<T, Void> worker = new SwingWorker<T, Void>() {
+  public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
+    getGlassPane().setVisible(true);
+    SwingWorker<T, Void> worker = new SwingWorker<T, Void>() {
 
-			@Override
-			protected T doInBackground() throws Exception {
-				return task.doInBackground();
-			}
+      @Override
+      protected T doInBackground() throws Exception {
+        return task.doInBackground();
+      }
 
-			@Override
-			protected void done() {
-				try {
-					T result = get();
-					task.complete(result);
-				} catch (ExecutionException e) {
-					LOG.error("Background task execution failed", e);
-					task.failed(e);
-				} catch (InterruptedException e) {
-					LOG.error("Background task execution interrupted", e);
-					task.failed(e);
-				}
-				getGlassPane().setVisible(false);
-			}
-		};
-		worker.execute();
-	}
+      @Override
+      protected void done() {
+        try {
+          T result = get();
+          task.complete(result);
+        } catch (ExecutionException e) {
+          LOG.error("Background task execution failed", e);
+          task.failed(e);
+        } catch (InterruptedException e) {
+          LOG.error("Background task execution interrupted", e);
+          task.failed(e);
+        }
+        getGlassPane().setVisible(false);
+      }
+    };
+    worker.execute();
+  }
 
-	private void addProjectToDisplay(final ProjectEntity project, int location, boolean hasNext) {
-		JLabel thumbnailLabel = new JLabel(downloadImage(project.getThumbnailUrl()));
-		JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
-		nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
-		JLabel descriptionLabel = new JLabel("<html>" + project.getDescription() + "</html>");
-		JLabel categoryLabel = new JLabel("Category: " + project.getCategory());
-		JLabel authorLabel = new JLabel("<html>by: <b>" + project.getOwner() + "</b></html>");
-		JLabel updatedLabel = new JLabel("Last updated: " + project.getUpdated());
-		JButton downloadButton = new JButton(IconLoader.CloudDownload.getIcon());
+  private void addProjectToDisplay(final ProjectEntity project, int location, boolean hasNext) {
+    JLabel thumbnailLabel = new JLabel(downloadImage(project.getThumbnailUrl()));
+    JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
+    nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
+    JLabel descriptionLabel = new JLabel("<html>" + project.getDescription() + "</html>");
+    JLabel categoryLabel = new JLabel("Category: " + project.getCategory());
+    JLabel authorLabel = new JLabel("<html>by: <b>" + project.getOwner() + "</b></html>");
+    JLabel updatedLabel = new JLabel("Last updated: " + project.getUpdated());
+    JButton downloadButton = new JButton(IconLoader.CloudDownload.getIcon());
 
-		downloadButton.setBorderPainted(false);
-		// downloadButton.setFocusPainted(false);
-		downloadButton.setContentAreaFilled(false);
-		downloadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		downloadButton.addActionListener(new ActionListener() {
+    downloadButton.setBorderPainted(false);
+    // downloadButton.setFocusPainted(false);
+    downloadButton.setContentAreaFilled(false);
+    downloadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    downloadButton.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final File file = DialogFactory.getInstance().showSaveDialog(CloudBrowserFrame.this,
-						FileFilterEnum.DIY.getFilter(), new File(project.getName() + ".diy"),
-						FileFilterEnum.DIY.getExtensions()[0], null);
-				if (file != null) {
-					CloudBrowserFrame.this.executeBackgroundTask(new ITask<Void>() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        final File file =
+            DialogFactory.getInstance().showSaveDialog(CloudBrowserFrame.this, FileFilterEnum.DIY.getFilter(),
+                new File(project.getName() + ".diy"), FileFilterEnum.DIY.getExtensions()[0], null);
+        if (file != null) {
+          CloudBrowserFrame.this.executeBackgroundTask(new ITask<Void>() {
 
-						@Override
-						public Void doInBackground() throws Exception {
-							LOG.debug("Downloading project to to " + file.getAbsolutePath());
-							URL website = new URL(project.getDownloadUrl());
-							ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-							FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
-							fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-							fos.close();
-							return null;
-						}
+            @Override
+            public Void doInBackground() throws Exception {
+              LOG.debug("Downloading project to to " + file.getAbsolutePath());
+              URL website = new URL(project.getDownloadUrl());
+              ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+              FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+              fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+              fos.close();
+              return null;
+            }
 
-						@Override
-						public void complete(Void result) {
-							if (CloudBrowserFrame.this.showConfirmDialog(
-									"Project downloaded to " + file.getAbsolutePath() + ".\nDo you want to open it?",
-									"Cloud", ISwingUI.YES_NO_OPTION, ISwingUI.INFORMATION_MESSAGE) == IView.YES_OPTION) {
-								if (!plugInPort.allowFileAction()) {
-									return;
-								}
+            @Override
+            public void complete(Void result) {
+              if (CloudBrowserFrame.this.showConfirmDialog("Project downloaded to " + file.getAbsolutePath()
+                  + ".\nDo you want to open it?", "Cloud", ISwingUI.YES_NO_OPTION, ISwingUI.INFORMATION_MESSAGE) == IView.YES_OPTION) {
+                if (!plugInPort.allowFileAction()) {
+                  return;
+                }
 
-								CloudBrowserFrame.this.executeBackgroundTask(new ITask<Void>() {
+                CloudBrowserFrame.this.executeBackgroundTask(new ITask<Void>() {
 
-									@Override
-									public Void doInBackground() throws Exception {
-										LOG.debug("Opening from " + file.getAbsolutePath());
-										plugInPort.loadProjectFromFile(file.getAbsolutePath());
-										return null;
-									}
+                  @Override
+                  public Void doInBackground() throws Exception {
+                    LOG.debug("Opening from " + file.getAbsolutePath());
+                    plugInPort.loadProjectFromFile(file.getAbsolutePath());
+                    return null;
+                  }
 
-									@Override
-									public void complete(Void result) {
-									}
+                  @Override
+                  public void complete(Void result) {}
 
-									@Override
-									public void failed(Exception e) {
-										CloudBrowserFrame.this.showMessage("Could not open file. " + e.getMessage(),
-												"Error", ISwingUI.ERROR_MESSAGE);
-									}
-								});
-							}
-						}
+                  @Override
+                  public void failed(Exception e) {
+                    CloudBrowserFrame.this.showMessage("Could not open file. " + e.getMessage(), "Error",
+                        ISwingUI.ERROR_MESSAGE);
+                  }
+                });
+              }
+            }
 
-						@Override
-						public void failed(Exception e) {
-							CloudBrowserFrame.this.showMessage("Could not save to file. " + e.getMessage(), "Error",
-									ISwingUI.ERROR_MESSAGE);
-						}
-					});
-				}
-			}
-		});
+            @Override
+            public void failed(Exception e) {
+              CloudBrowserFrame.this.showMessage("Could not save to file. " + e.getMessage(), "Error",
+                  ISwingUI.ERROR_MESSAGE);
+            }
+          });
+        }
+      }
+    });
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.NORTHWEST;
-		gbc.insets = new Insets(2, 2, 2, 2);
-		gbc.gridx = 0;
-		gbc.gridy = location * 5;
-		gbc.fill = GridBagConstraints.NONE;
-		gbc.gridheight = 4;
-		gbc.weightx = 0;
-		getResultsPanel().add(thumbnailLabel, gbc);
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.insets = new Insets(2, 2, 2, 2);
+    gbc.gridx = 0;
+    gbc.gridy = location * 5;
+    gbc.fill = GridBagConstraints.NONE;
+    gbc.gridheight = 4;
+    gbc.weightx = 0;
+    getResultsPanel().add(thumbnailLabel, gbc);
 
-		gbc.gridheight = 1;
-		gbc.gridx = 1;
-		gbc.weightx = 1;
-		gbc.insets = new Insets(2, 6, 2, 2);
-		getResultsPanel().add(nameLabel, gbc);
+    gbc.gridheight = 1;
+    gbc.gridx = 1;
+    gbc.weightx = 1;
+    gbc.insets = new Insets(2, 6, 2, 2);
+    getResultsPanel().add(nameLabel, gbc);
 
-		gbc.gridx = 2;
-		gbc.anchor = GridBagConstraints.NORTHEAST;
-		gbc.insets = new Insets(2, 2, 2, 8);
-		getResultsPanel().add(authorLabel, gbc);
+    gbc.gridx = 2;
+    gbc.anchor = GridBagConstraints.NORTHEAST;
+    gbc.insets = new Insets(2, 2, 2, 8);
+    getResultsPanel().add(authorLabel, gbc);
 
-		gbc.gridy++;
-		gbc.gridx = 1;
-		gbc.weighty = 1;
-		gbc.anchor = GridBagConstraints.NORTHWEST;
-		gbc.insets = new Insets(2, 6, 2, 2);
-		getResultsPanel().add(descriptionLabel, gbc);
+    gbc.gridy++;
+    gbc.gridx = 1;
+    gbc.weighty = 1;
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.insets = new Insets(2, 6, 2, 2);
+    getResultsPanel().add(descriptionLabel, gbc);
 
-		gbc.gridy++;
-		gbc.gridx = 1;
-		gbc.weighty = 0;
-		getResultsPanel().add(categoryLabel, gbc);
+    gbc.gridy++;
+    gbc.gridx = 1;
+    gbc.weighty = 0;
+    getResultsPanel().add(categoryLabel, gbc);
 
-		gbc.gridx = 2;
-		gbc.gridheight = 2;
-		gbc.insets = new Insets(2, 2, 2, 2);
-		gbc.anchor = GridBagConstraints.SOUTHEAST;
-		getResultsPanel().add(downloadButton, gbc);
+    gbc.gridx = 2;
+    gbc.gridheight = 2;
+    gbc.insets = new Insets(2, 2, 2, 2);
+    gbc.anchor = GridBagConstraints.SOUTHEAST;
+    getResultsPanel().add(downloadButton, gbc);
 
-		gbc.gridy++;
-		gbc.gridx = 1;
-		gbc.gridheight = 1;
-		gbc.insets = new Insets(2, 6, 2, 2);
-		gbc.anchor = GridBagConstraints.NORTHWEST;
-		getResultsPanel().add(updatedLabel, gbc);
+    gbc.gridy++;
+    gbc.gridx = 1;
+    gbc.gridheight = 1;
+    gbc.insets = new Insets(2, 6, 2, 2);
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    getResultsPanel().add(updatedLabel, gbc);
 
-		if (hasNext) {
-			gbc.gridx = 0;
-			gbc.gridy++;
-			gbc.gridwidth = 3;
-			gbc.fill = GridBagConstraints.HORIZONTAL;
-			gbc.weightx = 1;
-			gbc.insets = new Insets(2, 2, 2, 2);
-			getResultsPanel().add(new JSeparator(), gbc);
-		}
-	}
+    if (hasNext) {
+      gbc.gridx = 0;
+      gbc.gridy++;
+      gbc.gridwidth = 3;
+      gbc.fill = GridBagConstraints.HORIZONTAL;
+      gbc.weightx = 1;
+      gbc.insets = new Insets(2, 2, 2, 2);
+      getResultsPanel().add(new JSeparator(), gbc);
+    }
+  }
 
-	public void showMessage(String message, String title, int messageType) {
-		JOptionPane.showMessageDialog(this, message, title, messageType);
-	}
+  public void showMessage(String message, String title, int messageType) {
+    JOptionPane.showMessageDialog(this, message, title, messageType);
+  }
 
-	public int showConfirmDialog(String message, String title, int optionType, int messageType) {
-		return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
-	}
+  public int showConfirmDialog(String message, String title, int optionType, int messageType) {
+    return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
+  }
 
-	private Icon downloadImage(String imageUrl) {
-		Image image = null;
-		try {
-			URL url = new URL(imageUrl);
-			image = ImageIO.read(url);
-		} catch (IOException e) {
-		}
-		return new ImageIcon(image);
-	}
+  private Icon downloadImage(String imageUrl) {
+    Image image = null;
+    try {
+      URL url = new URL(imageUrl);
+      image = ImageIO.read(url);
+    } catch (IOException e) {
+    }
+    return new ImageIcon(image);
+  }
 }

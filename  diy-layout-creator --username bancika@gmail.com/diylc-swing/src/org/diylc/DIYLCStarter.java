@@ -28,79 +28,72 @@ import org.diylc.swing.gui.TemplateDialog;
  */
 public class DIYLCStarter {
 
-	private static final Logger LOG = Logger.getLogger(DIYLCStarter.class);
+  private static final Logger LOG = Logger.getLogger(DIYLCStarter.class);
 
-	private static final String SCRIPT_RUN = "org.diylc.scriptRun";
+  private static final String SCRIPT_RUN = "org.diylc.scriptRun";
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		URL url = DIYLCStarter.class.getResource("log4j.properties");
-		Properties properties = new Properties();
-		try {
-			properties.load(url.openStream());
-			PropertyConfigurator.configure(properties);
-		} catch (Exception e) {
-			LOG.error("Could not initialize log4j configuration", e);
-		}
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    URL url = DIYLCStarter.class.getResource("log4j.properties");
+    Properties properties = new Properties();
+    try {
+      properties.load(url.openStream());
+      PropertyConfigurator.configure(properties);
+    } catch (Exception e) {
+      LOG.error("Could not initialize log4j configuration", e);
+    }
 
-		LOG.debug("Java version: " + System.getProperty("java.runtime.version")
-				+ " by " + System.getProperty("java.vm.vendor"));
-		LOG.debug("OS: " + System.getProperty("os.name") + " "
-				+ System.getProperty("os.version"));
+    LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
+        + System.getProperty("java.vm.vendor"));
+    LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 
-		LOG.info("Starting DIYLC with working directory "
-				+ System.getProperty("user.dir"));
+    LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
 
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			LOG.error("Could not set Look&Feel", e);
-		}
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (Exception e) {
+      LOG.error("Could not set Look&Feel", e);
+    }
 
-		String val = System.getProperty(SCRIPT_RUN);
-		if (!"true".equals(val)) {
-			int response = JOptionPane
-					.showConfirmDialog(
-							null,
-							"It is not recommended to run DIYLC by clicking on the diylc.jar file.\n"
-									+ "Please use diylc.exe on Windows or run.sh on OSX/Linux to ensure the best\n"
-									+ "performance and reliability. Do you want to continue?",
-							"DIYLC", JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE);
-			if (response != JOptionPane.YES_OPTION) {
-				System.exit(0);
-			}
-		}
+    String val = System.getProperty(SCRIPT_RUN);
+    if (!"true".equals(val)) {
+      int response =
+          JOptionPane.showConfirmDialog(null, "It is not recommended to run DIYLC by clicking on the diylc.jar file.\n"
+              + "Please use diylc.exe on Windows or run.sh on OSX/Linux to ensure the best\n"
+              + "performance and reliability. Do you want to continue?", "DIYLC", JOptionPane.YES_NO_OPTION,
+              JOptionPane.WARNING_MESSAGE);
+      if (response != JOptionPane.YES_OPTION) {
+        System.exit(0);
+      }
+    }
 
-		MainFrame mainFrame = new MainFrame();
-		mainFrame.setLocationRelativeTo(null);
-		mainFrame.setVisible(true);
-		if (args.length > 0) {
-			mainFrame.getPresenter().loadProjectFromFile(args[0]);
-		} else {
-			boolean showTemplates = ConfigurationManager.getInstance()
-					.readBoolean(TemplateDialog.SHOW_TEMPLATES_KEY, true);
-			if (showTemplates) {
-				TemplateDialog templateDialog = new TemplateDialog(mainFrame,
-						mainFrame.getPresenter());
-				if (!templateDialog.getFiles().isEmpty()) {
-					templateDialog.setVisible(true);
-				}
-			}
-		}
+    MainFrame mainFrame = new MainFrame();
+    mainFrame.setLocationRelativeTo(null);
+    mainFrame.setVisible(true);
+    if (args.length > 0) {
+      mainFrame.getPresenter().loadProjectFromFile(args[0]);
+    } else {
+      boolean showTemplates = ConfigurationManager.getInstance().readBoolean(TemplateDialog.SHOW_TEMPLATES_KEY, true);
+      if (showTemplates) {
+        TemplateDialog templateDialog = new TemplateDialog(mainFrame, mainFrame.getPresenter());
+        if (!templateDialog.getFiles().isEmpty()) {
+          templateDialog.setVisible(true);
+        }
+      }
+    }
 
-		properties = new Properties();
-		try {
-			LOG.info("Injecting default properties.");
-			File f = new File("config.properties");
-			if (f.exists()) {
-				properties.load(new FileInputStream(f));
-				PropertyInjector.injectProperties(properties);
-			}
-		} catch (Exception e) {
-			LOG.error("Could not read config.properties file", e);
-		}
-	}
+    properties = new Properties();
+    try {
+      LOG.info("Injecting default properties.");
+      File f = new File("config.properties");
+      if (f.exists()) {
+        properties.load(new FileInputStream(f));
+        PropertyInjector.injectProperties(properties);
+      }
+    } catch (Exception e) {
+      LOG.error("Could not read config.properties file", e);
+    }
+  }
 }

@@ -24,67 +24,75 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class ConfigPlugin implements IPlugIn {
 
-	private static final Logger LOG = Logger.getLogger(ConfigPlugin.class);
+  private static final Logger LOG = Logger.getLogger(ConfigPlugin.class);
 
-	private static final String CONFIG_MENU = "Config";
-	private static final String THEME_MENU = "Theme";
+  private static final String CONFIG_MENU = "Config";
+  private static final String THEME_MENU = "Theme";
 
-	private ISwingUI swingUI;
+  private ISwingUI swingUI;
 
-	public ConfigPlugin(ISwingUI swingUI) {
-		super();
-		this.swingUI = swingUI;
-	}
+  public ConfigPlugin(ISwingUI swingUI) {
+    super();
+    this.swingUI = swingUI;
+  }
 
-	@Override
-	public void connect(IPlugInPort plugInPort) {
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Anti-Aliasing", IPlugInPort.ANTI_ALIASING_KEY, true), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Auto-Create Pads", IPlugInPort.AUTO_PADS_KEY, false), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, true), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Continuous Creation", IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Export Grid", IPlugInPort.EXPORT_GRID_KEY, false), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Hi-Quality Rendering", IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY, false), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Outline Mode", IPlugInPort.OUTLINE_KEY, false), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Snap to Grid", IPlugInPort.SNAP_TO_GRID_KEY, true), CONFIG_MENU);
-		swingUI.injectMenuAction(ActionFactory.getInstance().createConfigAction(plugInPort,
-				"Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
+  @Override
+  public void connect(IPlugInPort plugInPort) {
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance()
+            .createConfigAction(plugInPort, "Anti-Aliasing", IPlugInPort.ANTI_ALIASING_KEY, true), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance()
+            .createConfigAction(plugInPort, "Auto-Create Pads", IPlugInPort.AUTO_PADS_KEY, false), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, true),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Continuous Creation",
+            IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Export Grid", IPlugInPort.EXPORT_GRID_KEY, false),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Hi-Quality Rendering",
+            IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY,
+            false), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Outline Mode", IPlugInPort.OUTLINE_KEY, false),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Snap to Grid", IPlugInPort.SNAP_TO_GRID_KEY, true),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance()
+            .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
 
-		File themeDir = new File("themes");
-		if (themeDir.exists()) {
-			XStream xStream = new XStream(new DomDriver());
-			swingUI.injectSubmenu(THEME_MENU, IconLoader.Pens.getIcon(), CONFIG_MENU);
-			for (File file : themeDir.listFiles()) {
-				if (file.getName().toLowerCase().endsWith(".xml")) {
-					try {
-						InputStream in = new FileInputStream(file);
-						Theme theme = (Theme) xStream.fromXML(in);
-						LOG.debug("Found theme: " + theme.getName());
-						swingUI.injectMenuAction(ActionFactory.getInstance().createThemeAction(
-								plugInPort, theme), THEME_MENU);
-					} catch (Exception e) {
-						LOG.error("Could not load theme file " + file.getName(), e);
-					}
-				}
-			}
-		}
-	}
+    File themeDir = new File("themes");
+    if (themeDir.exists()) {
+      XStream xStream = new XStream(new DomDriver());
+      swingUI.injectSubmenu(THEME_MENU, IconLoader.Pens.getIcon(), CONFIG_MENU);
+      for (File file : themeDir.listFiles()) {
+        if (file.getName().toLowerCase().endsWith(".xml")) {
+          try {
+            InputStream in = new FileInputStream(file);
+            Theme theme = (Theme) xStream.fromXML(in);
+            LOG.debug("Found theme: " + theme.getName());
+            swingUI.injectMenuAction(ActionFactory.getInstance().createThemeAction(plugInPort, theme), THEME_MENU);
+          } catch (Exception e) {
+            LOG.error("Could not load theme file " + file.getName(), e);
+          }
+        }
+      }
+    }
+  }
 
-	@Override
-	public EnumSet<EventType> getSubscribedEventTypes() {
-		return EnumSet.noneOf(EventType.class);
-	}
+  @Override
+  public EnumSet<EventType> getSubscribedEventTypes() {
+    return EnumSet.noneOf(EventType.class);
+  }
 
-	@Override
-	public void processMessage(EventType eventType, Object... params) {
-	}
+  @Override
+  public void processMessage(EventType eventType, Object... params) {}
 }

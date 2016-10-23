@@ -16,35 +16,32 @@ import org.diylc.common.IPlugInPort;
  */
 class CanvasSourceListener implements DragSourceListener {
 
-	private IPlugInPort presenter;
+  private IPlugInPort presenter;
 
-	public CanvasSourceListener(IPlugInPort presenter) {
-		super();
-		this.presenter = presenter;
-	}
+  public CanvasSourceListener(IPlugInPort presenter) {
+    super();
+    this.presenter = presenter;
+  }
 
-	@Override
-	public void dragDropEnd(DragSourceDropEvent dsde) {
-		presenter.dragEnded(null);
-	}
+  @Override
+  public void dragDropEnd(DragSourceDropEvent dsde) {
+    presenter.dragEnded(null);
+  }
 
-	@Override
-	public void dragEnter(DragSourceDragEvent dsde) {
-	}
+  @Override
+  public void dragEnter(DragSourceDragEvent dsde) {}
 
-	@Override
-	public void dragExit(DragSourceEvent dse) {
-	}
+  @Override
+  public void dragExit(DragSourceEvent dse) {}
 
-	@Override
-	public void dragOver(DragSourceDragEvent dsde) {
-		Point p = dsde.getDragSourceContext().getComponent().getMousePosition();
-		if (p != null) {
-			dsde.getDragSourceContext().getComponent().firePropertyChange("dragPoint", p.x, p.y);
-		}
-	}
+  @Override
+  public void dragOver(DragSourceDragEvent dsde) {
+    Point p = dsde.getDragSourceContext().getComponent().getMousePosition();
+    if (p != null) {
+      dsde.getDragSourceContext().getComponent().firePropertyChange("dragPoint", p.x, p.y);
+    }
+  }
 
-	@Override
-	public void dropActionChanged(DragSourceDragEvent dsde) {
-	}
+  @Override
+  public void dropActionChanged(DragSourceDragEvent dsde) {}
 }

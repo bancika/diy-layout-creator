@@ -7,5 +7,5 @@ package org.diylc.core;
  */
 public enum ComponentState {
 
-	NORMAL, SELECTED, LOCKED, DRAGGING
+  NORMAL, SELECTED, LOCKED, DRAGGING
 }

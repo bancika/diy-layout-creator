@@ -11,24 +11,24 @@ import org.diylc.utils.Constants;
 
 public class IntEditor extends DoubleTextField {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private Color oldBg = getBackground();
+  private Color oldBg = getBackground();
 
-	public IntEditor(final PropertyWrapper property) {
-		setLayout(new BorderLayout());
-		setValue((double) (Integer) property.getValue());
-		addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY, new PropertyChangeListener() {
+  public IntEditor(final PropertyWrapper property) {
+    setLayout(new BorderLayout());
+    setValue((double) (Integer) property.getValue());
+    addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY, new PropertyChangeListener() {
 
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				property.setChanged(true);
-				setBackground(oldBg);
-				property.setValue(((Double) evt.getNewValue()).intValue());
-			}
-		});
-		if (!property.isUnique()) {
-			setBackground(Constants.MULTI_VALUE_COLOR);
-		}
-	}
+      @Override
+      public void propertyChange(PropertyChangeEvent evt) {
+        property.setChanged(true);
+        setBackground(oldBg);
+        property.setValue(((Double) evt.getNewValue()).intValue());
+      }
+    });
+    if (!property.isUnique()) {
+      setBackground(Constants.MULTI_VALUE_COLOR);
+    }
+  }
 }

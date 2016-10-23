@@ -28,147 +28,129 @@ import org.diylc.utils.BomEntry;
 
 public class DialogFactory {
 
-	private static DialogFactory instance;
+  private static DialogFactory instance;
 
-	private static final String PATH_KEY = "lastPath";
+  private static final String PATH_KEY = "lastPath";
 
-	public static DialogFactory getInstance() {
-		if (instance == null) {
-			instance = new DialogFactory();
-		}
-		return instance;
-	}
+  public static DialogFactory getInstance() {
+    if (instance == null) {
+      instance = new DialogFactory();
+    }
+    return instance;
+  }
 
-	private JFrame mainFrame;
-	private File lastDirectory;
+  private JFrame mainFrame;
+  private File lastDirectory;
 
-	private DialogFactory() {
-	}
+  private DialogFactory() {}
 
-	/**
-	 * Sets the frame to be used as dialog parent. This should be called prior
-	 * to any other methods in this class.
-	 * 
-	 * @param mainFrame
-	 */
-	public void initialize(JFrame mainFrame) {
-		this.mainFrame = mainFrame;
-		String lastDirectoryPath = (String) ConfigurationManager.getInstance()
-				.readString(PATH_KEY, null);
-		if (lastDirectoryPath != null) {
-			lastDirectory = new File(lastDirectoryPath);
-		}
-	}
+  /**
+   * Sets the frame to be used as dialog parent. This should be called prior to any other methods in
+   * this class.
+   * 
+   * @param mainFrame
+   */
+  public void initialize(JFrame mainFrame) {
+    this.mainFrame = mainFrame;
+    String lastDirectoryPath = (String) ConfigurationManager.getInstance().readString(PATH_KEY, null);
+    if (lastDirectoryPath != null) {
+      lastDirectory = new File(lastDirectoryPath);
+    }
+  }
 
-	public PropertyEditorDialog createPropertyEditorDialog(
-			List<PropertyWrapper> properties, String title) {
-		PropertyEditorDialog editor = new PropertyEditorDialog(mainFrame,
-				properties, title);
-		return editor;
-	}
+  public PropertyEditorDialog createPropertyEditorDialog(List<PropertyWrapper> properties, String title) {
+    PropertyEditorDialog editor = new PropertyEditorDialog(mainFrame, properties, title);
+    return editor;
+  }
 
-	public BomDialog createBomDialog(List<BomEntry> bom) {
-		BomDialog dialog = new BomDialog(mainFrame, bom);
-		return dialog;
-	}
+  public BomDialog createBomDialog(List<BomEntry> bom) {
+    BomDialog dialog = new BomDialog(mainFrame, bom);
+    return dialog;
+  }
 
-	public File showOpenDialog(FileFilter fileFilter, File initialFile,
-			String defaultExtension, IFileChooserAccessory accessory) {
-		JFileChooser openFileChooser = new JFileChooser();
-		initializeFileChooser(openFileChooser, fileFilter, initialFile,
-				defaultExtension, accessory);
+  public File showOpenDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
+      IFileChooserAccessory accessory) {
+    JFileChooser openFileChooser = new JFileChooser();
+    initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory);
 
-		int result = openFileChooser.showOpenDialog(mainFrame);
+    int result = openFileChooser.showOpenDialog(mainFrame);
 
-		return processFileChooserResult(result, openFileChooser,
-				defaultExtension);
-	}
+    return processFileChooserResult(result, openFileChooser, defaultExtension);
+  }
 
-	public File showSaveDialog(Window owner, FileFilter fileFilter, File initialFile,
-			String defaultExtension, IFileChooserAccessory accessory) {
-		JFileChooser saveFileChooser = new OverwritePromptFileChooser();
-		initializeFileChooser(saveFileChooser, fileFilter, initialFile,
-				defaultExtension, accessory);
+  public File showSaveDialog(Window owner, FileFilter fileFilter, File initialFile, String defaultExtension,
+      IFileChooserAccessory accessory) {
+    JFileChooser saveFileChooser = new OverwritePromptFileChooser();
+    initializeFileChooser(saveFileChooser, fileFilter, initialFile, defaultExtension, accessory);
 
-		int result = saveFileChooser.showSaveDialog(owner);
+    int result = saveFileChooser.showSaveDialog(owner);
 
-		return processFileChooserResult(result, saveFileChooser,
-				defaultExtension);
-	}
+    return processFileChooserResult(result, saveFileChooser, defaultExtension);
+  }
 
-	private void initializeFileChooser(JFileChooser fileChooser,
-			FileFilter fileFilter, File initialFile, String defaultExtension,
-			IFileChooserAccessory accessory) {
-		if (accessory != null) {
-			accessory.install(fileChooser);
-		}
-		for (FileFilter filter : fileChooser.getChoosableFileFilters()) {
-			fileChooser.removeChoosableFileFilter(filter);
-		}
-		if (fileChooser instanceof OverwritePromptFileChooser) {
-			((OverwritePromptFileChooser) fileChooser).setFileFilter(
-					fileFilter, defaultExtension);
-		} else {
-			fileChooser.setFileFilter(fileFilter);
-		}
-		if (lastDirectory != null) {
-			fileChooser.setCurrentDirectory(lastDirectory);
-		}
-		fileChooser.setSelectedFile(initialFile);
-	}
+  private void initializeFileChooser(JFileChooser fileChooser, FileFilter fileFilter, File initialFile,
+      String defaultExtension, IFileChooserAccessory accessory) {
+    if (accessory != null) {
+      accessory.install(fileChooser);
+    }
+    for (FileFilter filter : fileChooser.getChoosableFileFilters()) {
+      fileChooser.removeChoosableFileFilter(filter);
+    }
+    if (fileChooser instanceof OverwritePromptFileChooser) {
+      ((OverwritePromptFileChooser) fileChooser).setFileFilter(fileFilter, defaultExtension);
+    } else {
+      fileChooser.setFileFilter(fileFilter);
+    }
+    if (lastDirectory != null) {
+      fileChooser.setCurrentDirectory(lastDirectory);
+    }
+    fileChooser.setSelectedFile(initialFile);
+  }
 
-	private File processFileChooserResult(int result, JFileChooser fileChooser,
-			String defaultExtension) {
-		fileChooser.setAccessory(null);
-		if (result == JFileChooser.APPROVE_OPTION) {
-			lastDirectory = fileChooser.getCurrentDirectory();
-			ConfigurationManager.getInstance().writeValue(PATH_KEY,
-					lastDirectory.getAbsolutePath());
-			if (fileChooser.getSelectedFile().getAbsolutePath().contains(".")) {
-				return fileChooser.getSelectedFile();
-			} else {
-				return new File(fileChooser.getSelectedFile().getAbsoluteFile()
-						+ "." + defaultExtension);
-			}
-		} else {
-			return null;
-		}
-	}
+  private File processFileChooserResult(int result, JFileChooser fileChooser, String defaultExtension) {
+    fileChooser.setAccessory(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      lastDirectory = fileChooser.getCurrentDirectory();
+      ConfigurationManager.getInstance().writeValue(PATH_KEY, lastDirectory.getAbsolutePath());
+      if (fileChooser.getSelectedFile().getAbsolutePath().contains(".")) {
+        return fileChooser.getSelectedFile();
+      } else {
+        return new File(fileChooser.getSelectedFile().getAbsoluteFile() + "." + defaultExtension);
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public AboutDialog createAboutDialog(String appName, Icon icon,
-			String version, String author, String url, String mail,
-			String htmlContent) {
-		AboutDialog dialog = new AboutDialog(mainFrame, appName, icon, version,
-				author, url, mail, htmlContent);
-		return dialog;
-	}
+  public AboutDialog createAboutDialog(String appName, Icon icon, String version, String author, String url,
+      String mail, String htmlContent) {
+    AboutDialog dialog = new AboutDialog(mainFrame, appName, icon, version, author, url, mail, htmlContent);
+    return dialog;
+  }
 
-	public UserEditDialog createUserEditDialog(UserEntity existingUser) {
-		UserEditDialog dialog = new UserEditDialog(mainFrame, existingUser);
-		return dialog;
-	}
+  public UserEditDialog createUserEditDialog(UserEntity existingUser) {
+    UserEditDialog dialog = new UserEditDialog(mainFrame, existingUser);
+    return dialog;
+  }
 
-	public LoginDialog createLoginDialog() {
-		LoginDialog dialog = new LoginDialog(mainFrame);
-		return dialog;
-	}
+  public LoginDialog createLoginDialog() {
+    LoginDialog dialog = new LoginDialog(mainFrame);
+    return dialog;
+  }
 
-	public UploadDialog createUploadDialog(IPlugInPort plugInPort,
-			CloudPresenter cloudPresenter) {
-		UploadDialog dialog = new UploadDialog(mainFrame, plugInPort,
-				cloudPresenter);
-		return dialog;
-	}
+  public UploadDialog createUploadDialog(IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
+    UploadDialog dialog = new UploadDialog(mainFrame, plugInPort, cloudPresenter);
+    return dialog;
+  }
 
-	public ChangePasswordDialog createChangePasswordDialog() {
-		ChangePasswordDialog dialog = new ChangePasswordDialog(mainFrame);
-		return dialog;
-	}
+  public ChangePasswordDialog createChangePasswordDialog() {
+    ChangePasswordDialog dialog = new ChangePasswordDialog(mainFrame);
+    return dialog;
+  }
 
-	public ProgressDialog createProgressDialog(String title,
-			String[] buttonCaptions, String description, boolean useProgress) {
-		ProgressDialog dialog = new ProgressDialog(mainFrame, title,
-				buttonCaptions, description, useProgress);
-		return dialog;
-	}
+  public ProgressDialog createProgressDialog(String title, String[] buttonCaptions, String description,
+      boolean useProgress) {
+    ProgressDialog dialog = new ProgressDialog(mainFrame, title, buttonCaptions, description, useProgress);
+    return dialog;
+  }
 }

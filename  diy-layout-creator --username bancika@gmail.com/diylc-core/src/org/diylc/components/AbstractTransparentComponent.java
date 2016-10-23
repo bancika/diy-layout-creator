@@ -4,18 +4,18 @@ import org.diylc.core.annotations.EditableProperty;
 
 public abstract class AbstractTransparentComponent<T> extends AbstractComponent<T> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public static byte MAX_ALPHA = 127;
+  public static byte MAX_ALPHA = 127;
 
-	protected byte alpha = MAX_ALPHA;
+  protected byte alpha = MAX_ALPHA;
 
-	@EditableProperty
-	public Byte getAlpha() {
-		return alpha;
-	}
+  @EditableProperty
+  public Byte getAlpha() {
+    return alpha;
+  }
 
-	public void setAlpha(Byte alpha) {
-		this.alpha = alpha;
-	}
+  public void setAlpha(Byte alpha) {
+    this.alpha = alpha;
+  }
 }

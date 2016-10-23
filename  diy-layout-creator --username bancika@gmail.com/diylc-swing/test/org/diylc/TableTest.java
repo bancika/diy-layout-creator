@@ -14,42 +14,42 @@ import org.diylc.swingframework.objecttable.ObjectListTable;
 
 public class TableTest {
 
-	/**
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
-		BasicConfigurator.configure();
+  /**
+   * @param args
+   * @throws Exception
+   */
+  public static void main(String[] args) throws Exception {
+    BasicConfigurator.configure();
 
-		List<ProjectEntity> projects = new ArrayList<ProjectEntity>();
-		projects.add(new ProjectEntity(1, "first", "some text", "bane", "none", "", "", ""));
-		projects.add(new ProjectEntity(2, "second", "anoter text", "bisera", "none", "", "", ""));
+    List<ProjectEntity> projects = new ArrayList<ProjectEntity>();
+    projects.add(new ProjectEntity(1, "first", "some text", "bane", "none", "", "", ""));
+    projects.add(new ProjectEntity(2, "second", "anoter text", "bisera", "none", "", "", ""));
 
-		ObjectListTable<ProjectEntity> t = new ObjectListTable<ProjectEntity>(ProjectEntity.class,
-				new String[] { "getName", "getDescription", "getCategory", "getOwner",
-						"action:Download" }, new IActionProcessor<ProjectEntity>() {
+    ObjectListTable<ProjectEntity> t =
+        new ObjectListTable<ProjectEntity>(ProjectEntity.class, new String[] {"getName", "getDescription",
+            "getCategory", "getOwner", "action:Download"}, new IActionProcessor<ProjectEntity>() {
 
-					@Override
-					public void actionExecuted(ProjectEntity value, String actionColumnName) {
-						System.out.println("row clicked: " + actionColumnName + " - " + value);
-					}
+          @Override
+          public void actionExecuted(ProjectEntity value, String actionColumnName) {
+            System.out.println("row clicked: " + actionColumnName + " - " + value);
+          }
 
-					@Override
-					public Icon getActionIcon(String actionColumnName) {
-						return null;
-					}
+          @Override
+          public Icon getActionIcon(String actionColumnName) {
+            return null;
+          }
 
-					@Override
-					public String getActionLabel(String actionColumnName) {
-						return "get me";
-					}
-				});
-		t.setData(projects);
-		JFrame f = new JFrame();
-		f.add(new JScrollPane(t));
-		f.pack();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);
-	}
+          @Override
+          public String getActionLabel(String actionColumnName) {
+            return "get me";
+          }
+        });
+    t.setData(projects);
+    JFrame f = new JFrame();
+    f.add(new JScrollPane(t));
+    f.pack();
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    f.setVisible(true);
+  }
 
 }

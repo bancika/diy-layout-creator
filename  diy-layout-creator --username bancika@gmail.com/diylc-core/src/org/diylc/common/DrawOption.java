@@ -11,30 +11,29 @@ import java.awt.Graphics;
  */
 public enum DrawOption {
 
-	/**
-	 * Selection rectangle will be drawn when needed and selected components may
-	 * be rendered differently.
-	 */
-	SELECTION,
-	/**
-	 * Selected zoom level will be applied to scale the {@link Graphics} before
-	 * drawing.
-	 */
-	ZOOM,
-	/**
-	 * Grid lines are drawn.
-	 */
-	GRID,
-	/**
-	 * Control points are drawn.
-	 */
-	CONTROL_POINTS,
-	/**
-	 * Anti-aliasing is used when drawing.
-	 */
-	ANTIALIASING,
-	/**
-	 * Draw components in outline mode.
-	 */
-	OUTLINE_MODE;
+  /**
+   * Selection rectangle will be drawn when needed and selected components may be rendered
+   * differently.
+   */
+  SELECTION,
+  /**
+   * Selected zoom level will be applied to scale the {@link Graphics} before drawing.
+   */
+  ZOOM,
+  /**
+   * Grid lines are drawn.
+   */
+  GRID,
+  /**
+   * Control points are drawn.
+   */
+  CONTROL_POINTS,
+  /**
+   * Anti-aliasing is used when drawing.
+   */
+  ANTIALIASING,
+  /**
+   * Draw components in outline mode.
+   */
+  OUTLINE_MODE;
 }
