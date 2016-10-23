@@ -1,5 +1,6 @@
 package org.diylc.swing.gui;
 
+import java.awt.Window;
 import java.io.File;
 import java.util.List;
 
@@ -16,10 +17,9 @@ import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
-import org.diylc.swing.plugins.cloud.view.CloudBrowserFrame;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
-import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
+import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swingframework.AboutDialog;
 import org.diylc.swingframework.IFileChooserAccessory;
@@ -84,13 +84,13 @@ public class DialogFactory {
 				defaultExtension);
 	}
 
-	public File showSaveDialog(FileFilter fileFilter, File initialFile,
+	public File showSaveDialog(Window owner, FileFilter fileFilter, File initialFile,
 			String defaultExtension, IFileChooserAccessory accessory) {
 		JFileChooser saveFileChooser = new OverwritePromptFileChooser();
 		initializeFileChooser(saveFileChooser, fileFilter, initialFile,
 				defaultExtension, accessory);
 
-		int result = saveFileChooser.showSaveDialog(mainFrame);
+		int result = saveFileChooser.showSaveDialog(owner);
 
 		return processFileChooserResult(result, saveFileChooser,
 				defaultExtension);
@@ -163,13 +163,6 @@ public class DialogFactory {
 	public ChangePasswordDialog createChangePasswordDialog() {
 		ChangePasswordDialog dialog = new ChangePasswordDialog(mainFrame);
 		return dialog;
-	}
-
-	public CloudBrowserFrame createCloudBrowserFrame(IPlugInPort plugInPort,
-			CloudPresenter cloudPresenter) {
-		CloudBrowserFrame frame = new CloudBrowserFrame(mainFrame, plugInPort,
-				cloudPresenter);
-		return frame;
 	}
 
 	public ProgressDialog createProgressDialog(String title,

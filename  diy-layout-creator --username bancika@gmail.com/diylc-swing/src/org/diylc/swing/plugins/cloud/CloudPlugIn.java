@@ -14,7 +14,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
-import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.plugins.cloud.presenter.CloudException;
 import org.diylc.plugins.cloud.presenter.CloudListener;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
@@ -25,8 +24,8 @@ import org.diylc.swing.gui.DummyView;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
 import org.diylc.swing.plugins.cloud.view.CloudBrowserFrame;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
-import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
+import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.ProgressDialog;
@@ -52,6 +51,8 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 	private UploadAction uploadAction;
 	private ChangePasswordAction changePasswordAction;
 	private ManageProjectsAction manageProjectsAction;
+
+	private CloudBrowserFrame cloudBrowser;
 
 	public CloudPlugIn(ISwingUI swingUI) {
 		super();
@@ -108,6 +109,14 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 				}
 			}
 		});
+	}
+
+	public CloudBrowserFrame getCloudBrowser() {
+		if (cloudBrowser == null) {
+			cloudBrowser = new CloudBrowserFrame(swingUI.getOwnerFrame(),
+					plugInPort, cloudPresenter);
+		}
+		return cloudBrowser;
 	}
 
 	public LibraryAction getLibraryAction() {
@@ -186,10 +195,9 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			CloudBrowserFrame frame = DialogFactory.getInstance()
-					.createCloudBrowserFrame(plugInPort, cloudPresenter);
-			frame.setVisible(true);
+		public void actionPerformed(ActionEvent e) {			
+			getCloudBrowser().setVisible(true);
+			getCloudBrowser().requestFocus();
 		}
 	}
 

@@ -60,8 +60,7 @@ public class UploadDialog extends ButtonDialog {
 	private IPlugInPort plugInPort;
 	private CloudPresenter cloudPresenter;
 
-	public UploadDialog(JFrame owner, IPlugInPort plugInPort,
-			CloudPresenter cloudPresenter) {
+	public UploadDialog(JFrame owner, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
 		super(owner, "Upload A Project", new String[] { OK, CANCEL });
 		this.plugInPort = plugInPort;
 		this.cloudPresenter = cloudPresenter;
@@ -158,8 +157,7 @@ public class UploadDialog extends ButtonDialog {
 			termsLabel = new JLabel();
 			termsLabel.setOpaque(true);
 			termsLabel.setBackground(UIManager.getColor("ToolTip.background"));
-			termsLabel.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createEtchedBorder(),
+			termsLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
 					BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 			termsLabel.setText(TERMS_HTML);
 		}
@@ -189,14 +187,11 @@ public class UploadDialog extends ButtonDialog {
 					paintThumbnail(g, getBounds());
 				}
 			}, gbc);
-			Dimension d = UploadDialog.this.plugInPort
-					.getCanvasDimensions(false);
+			Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false);
 			if (d.height > d.width)
-				thumbnailPanel.setPreferredSize(new Dimension(192 * d.width
-						/ d.height, 192));
+				thumbnailPanel.setPreferredSize(new Dimension(192 * d.width / d.height, 192));
 			else
-				thumbnailPanel.setPreferredSize(new Dimension(192, 192
-						* d.height / d.width));
+				thumbnailPanel.setPreferredSize(new Dimension(192, 192 * d.height / d.width));
 			thumbnailPanel.setBorder(BorderFactory.createEtchedBorder());
 		}
 		return thumbnailPanel;
@@ -208,10 +203,8 @@ public class UploadDialog extends ButtonDialog {
 
 			// set default from the project
 			for (int i = 0; i < plugInPort.getProjectProperties().size(); i++)
-				if (plugInPort.getProjectProperties().get(i).getName()
-						.equals("Title"))
-					nameField.setText(plugInPort.getProjectProperties().get(i)
-							.getValue().toString());
+				if (plugInPort.getProjectProperties().get(i).getName().equals("Title"))
+					nameField.setText(plugInPort.getProjectProperties().get(i).getValue().toString());
 		}
 		return nameField;
 	}
@@ -234,10 +227,8 @@ public class UploadDialog extends ButtonDialog {
 
 			// set default from the project
 			for (int i = 0; i < plugInPort.getProjectProperties().size(); i++)
-				if (plugInPort.getProjectProperties().get(i).getName()
-						.equals("Description"))
-					descriptionArea.setText(plugInPort.getProjectProperties()
-							.get(i).getValue().toString());
+				if (plugInPort.getProjectProperties().get(i).getName().equals("Description"))
+					descriptionArea.setText(plugInPort.getProjectProperties().get(i).getValue().toString());
 			descriptionArea.setBorder(getNameField().getBorder());
 			descriptionArea.setFont(getNameField().getFont());
 		}
@@ -264,13 +255,11 @@ public class UploadDialog extends ButtonDialog {
 	}
 
 	public BufferedImage getThumbnail() {
-		BufferedImage thumbnailImage = new BufferedImage(getThumbnailPanel()
-				.getWidth(), getThumbnailPanel().getHeight(),
-				BufferedImage.TYPE_INT_RGB);
+		BufferedImage thumbnailImage = new BufferedImage(getThumbnailPanel().getWidth(), getThumbnailPanel()
+				.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics2D cg = thumbnailImage.createGraphics();
 
-		paintThumbnail(cg, new Rectangle(thumbnailImage.getWidth(),
-				thumbnailImage.getHeight()));
+		paintThumbnail(cg, new Rectangle(thumbnailImage.getWidth(), thumbnailImage.getHeight()));
 		return thumbnailImage;
 	}
 
@@ -291,8 +280,7 @@ public class UploadDialog extends ButtonDialog {
 		}
 
 		g2d.scale(zoomRatio, zoomRatio);
-		UploadDialog.this.plugInPort.draw(g2d,
-				EnumSet.of(DrawOption.ANTIALIASING), null);
+		UploadDialog.this.plugInPort.draw(g2d, EnumSet.of(DrawOption.ANTIALIASING), null);
 	}
 
 	public String getKeywords() {

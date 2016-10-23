@@ -9,8 +9,12 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,6 +33,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
@@ -38,7 +44,10 @@ import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudException;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.CustomGlassPane;
+import org.diylc.swing.gui.DialogFactory;
+import org.diylc.swing.plugins.file.FileFilterEnum;
 
 public class CloudBrowserFrame extends JFrame {
 
@@ -66,8 +75,7 @@ public class CloudBrowserFrame extends JFrame {
 	private int pageNumber;
 	private int itemsPerPage = 10;
 
-	public CloudBrowserFrame(JFrame owner, IPlugInPort plugInPort,
-			CloudPresenter cloudPresenter) {
+	public CloudBrowserFrame(JFrame owner, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
 		super("DIY Cloud Browser");
 		this.setIconImage(IconLoader.Cloud.getImage());
 		this.setPreferredSize(new Dimension(800, 600));
@@ -100,10 +108,16 @@ public class CloudBrowserFrame extends JFrame {
 	private JTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
 			tabbedPane = new JTabbedPane();
-			tabbedPane.addTab("Dashboard", IconLoader.Dashboard.getIcon(),
-					getDashboardPanel());
-			tabbedPane.addTab("Search For Projects", IconLoader.Find.getIcon(),
-					getBrowsePanel());
+			tabbedPane.addTab("Dashboard", IconLoader.Dashboard.getIcon(), getDashboardPanel());
+			tabbedPane.addTab("Search For Projects", IconLoader.Find.getIcon(), getBrowsePanel());
+			tabbedPane.addChangeListener(new ChangeListener() {
+
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					if (getTabbedPane().getSelectedIndex() == 1)
+						getSearchField().requestFocus();
+				}
+			});
 		}
 		return tabbedPane;
 	}
@@ -119,6 +133,7 @@ public class CloudBrowserFrame extends JFrame {
 		if (browsePanel == null) {
 			browsePanel = new JPanel(new GridBagLayout());
 			GridBagConstraints gbc = new GridBagConstraints();
+			browsePanel.setBackground(Color.white);
 			gbc.anchor = GridBagConstraints.NORTH;
 			gbc.insets = new Insets(2, 2, 2, 2);
 			gbc.gridx = 0;
@@ -126,6 +141,10 @@ public class CloudBrowserFrame extends JFrame {
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1;
 			browsePanel.add(getSearchPanel(), gbc);
+
+			// gbc.gridy = 1;
+			// gbc.fill = GridBagConstraints.HORIZONTAL;
+			// browsePanel.add(new JSeparator(), gbc);
 
 			gbc.gridy = 1;
 			gbc.weighty = 1;
@@ -138,6 +157,7 @@ public class CloudBrowserFrame extends JFrame {
 	private JPanel getSearchPanel() {
 		if (searchPanel == null) {
 			searchPanel = new JPanel(new GridBagLayout());
+			searchPanel.setBackground(Color.white);
 			GridBagConstraints gbc = new GridBagConstraints();
 			gbc.anchor = GridBagConstraints.LINE_START;
 			gbc.insets = new Insets(2, 2, 2, 2);
@@ -194,7 +214,12 @@ public class CloudBrowserFrame extends JFrame {
 
 	private JComboBox getSortBox() {
 		if (sortBox == null) {
-			sortBox = new JComboBox();
+			try {
+				sortBox = new JComboBox(cloudPresenter.getSortings());
+			} catch (CloudException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return sortBox;
 	}
@@ -203,6 +228,7 @@ public class CloudBrowserFrame extends JFrame {
 		if (resultsScrollPane == null) {
 			resultsScrollPane = new JScrollPane(getResultsPanel());
 			resultsScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+			resultsScrollPane.setBorder(null);
 		}
 		return resultsScrollPane;
 	}
@@ -227,36 +253,26 @@ public class CloudBrowserFrame extends JFrame {
 					executeBackgroundTask(new ITask<List<ProjectEntity>>() {
 
 						@Override
-						public List<ProjectEntity> doInBackground()
-								throws Exception {
-							return cloudPresenter.search(getSearchField()
-									.getText(), getCategoryBox()
-									.getSelectedItem() == null ? ""
-									: getCategoryBox().getSelectedItem()
-											.toString(),
-									getSortBox().getSelectedItem() == null ? ""
-											: getSortBox().getSelectedItem()
-													.toString(),
-									CloudBrowserFrame.this.pageNumber,
-									CloudBrowserFrame.this.itemsPerPage);
+						public List<ProjectEntity> doInBackground() throws Exception {
+							return cloudPresenter.search(getSearchField().getText(),
+									getCategoryBox().getSelectedItem() == null ? "" : getCategoryBox()
+											.getSelectedItem().toString(), getSortBox().getSelectedItem() == null ? ""
+											: getSortBox().getSelectedItem().toString(),
+									CloudBrowserFrame.this.pageNumber, CloudBrowserFrame.this.itemsPerPage);
 						}
 
 						@Override
 						public void failed(Exception e) {
-							showMessage(
-									"Search failed. Error: " + e.getMessage(),
-									"Search Failed", IView.ERROR_MESSAGE);
+							showMessage("Search failed. Error: " + e.getMessage(), "Search Failed", IView.ERROR_MESSAGE);
 						}
 
 						@Override
 						public void complete(List<ProjectEntity> result) {
 							getResultsPanel().removeAll();
 							int count = 0;
-							for (Iterator<ProjectEntity> i = result.iterator(); i
-									.hasNext();) {
+							for (Iterator<ProjectEntity> i = result.iterator(); i.hasNext();) {
 								ProjectEntity project = i.next();
-								addProjectToDisplay(project, count++,
-										i.hasNext());
+								addProjectToDisplay(project, count++, i.hasNext());
 							}
 						}
 					});
@@ -293,27 +309,81 @@ public class CloudBrowserFrame extends JFrame {
 		worker.execute();
 	}
 
-	private void addProjectToDisplay(ProjectEntity project, int location,
-			boolean hasNext) {
-		JLabel thumbnailLabel = new JLabel(
-				downloadImage(project.getThumbnailUrl()));
-		JLabel nameLabel = new JLabel("<html><b>" + project.getName()
-				+ "</b></html>");
+	private void addProjectToDisplay(final ProjectEntity project, int location, boolean hasNext) {
+		JLabel thumbnailLabel = new JLabel(downloadImage(project.getThumbnailUrl()));
+		JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
 		nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
-		JLabel descriptionLabel = new JLabel("<html>"
-				+ project.getDescription() + "</html>");
+		JLabel descriptionLabel = new JLabel("<html>" + project.getDescription() + "</html>");
 		JLabel categoryLabel = new JLabel("Category: " + project.getCategory());
-		JLabel authorLabel = new JLabel("<html>by: <b>" + project.getOwner()
-				+ "</b></html>");
-		JLabel updatedLabel = new JLabel("Last updated: "
-				+ project.getUpdated());
+		JLabel authorLabel = new JLabel("<html>by: <b>" + project.getOwner() + "</b></html>");
+		JLabel updatedLabel = new JLabel("Last updated: " + project.getUpdated());
 		JButton downloadButton = new JButton(IconLoader.CloudDownload.getIcon());
 
 		downloadButton.setBorderPainted(false);
 		// downloadButton.setFocusPainted(false);
 		downloadButton.setContentAreaFilled(false);
-		downloadButton
-				.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		downloadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		downloadButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final File file = DialogFactory.getInstance().showSaveDialog(CloudBrowserFrame.this,
+						FileFilterEnum.DIY.getFilter(), new File(project.getName() + ".diy"),
+						FileFilterEnum.DIY.getExtensions()[0], null);
+				if (file != null) {
+					CloudBrowserFrame.this.executeBackgroundTask(new ITask<Void>() {
+
+						@Override
+						public Void doInBackground() throws Exception {
+							LOG.debug("Downloading project to to " + file.getAbsolutePath());
+							URL website = new URL(project.getDownloadUrl());
+							ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+							FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+							fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+							fos.close();
+							return null;
+						}
+
+						@Override
+						public void complete(Void result) {
+							if (CloudBrowserFrame.this.showConfirmDialog(
+									"Project downloaded to " + file.getAbsolutePath() + ".\nDo you want to open it?",
+									"Cloud", ISwingUI.YES_NO_OPTION, ISwingUI.INFORMATION_MESSAGE) == IView.YES_OPTION) {
+								if (!plugInPort.allowFileAction()) {
+									return;
+								}
+
+								CloudBrowserFrame.this.executeBackgroundTask(new ITask<Void>() {
+
+									@Override
+									public Void doInBackground() throws Exception {
+										LOG.debug("Opening from " + file.getAbsolutePath());
+										plugInPort.loadProjectFromFile(file.getAbsolutePath());
+										return null;
+									}
+
+									@Override
+									public void complete(Void result) {
+									}
+
+									@Override
+									public void failed(Exception e) {
+										CloudBrowserFrame.this.showMessage("Could not open file. " + e.getMessage(),
+												"Error", ISwingUI.ERROR_MESSAGE);
+									}
+								});
+							}
+						}
+
+						@Override
+						public void failed(Exception e) {
+							CloudBrowserFrame.this.showMessage("Could not save to file. " + e.getMessage(), "Error",
+									ISwingUI.ERROR_MESSAGE);
+						}
+					});
+				}
+			}
+		});
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -328,14 +398,19 @@ public class CloudBrowserFrame extends JFrame {
 		gbc.gridheight = 1;
 		gbc.gridx = 1;
 		gbc.weightx = 1;
+		gbc.insets = new Insets(2, 6, 2, 2);
 		getResultsPanel().add(nameLabel, gbc);
 
 		gbc.gridx = 2;
+		gbc.anchor = GridBagConstraints.NORTHEAST;
+		gbc.insets = new Insets(2, 2, 2, 8);
 		getResultsPanel().add(authorLabel, gbc);
 
 		gbc.gridy++;
 		gbc.gridx = 1;
 		gbc.weighty = 1;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
+		gbc.insets = new Insets(2, 6, 2, 2);
 		getResultsPanel().add(descriptionLabel, gbc);
 
 		gbc.gridy++;
@@ -345,11 +420,15 @@ public class CloudBrowserFrame extends JFrame {
 
 		gbc.gridx = 2;
 		gbc.gridheight = 2;
+		gbc.insets = new Insets(2, 2, 2, 2);
+		gbc.anchor = GridBagConstraints.SOUTHEAST;
 		getResultsPanel().add(downloadButton, gbc);
 
 		gbc.gridy++;
 		gbc.gridx = 1;
 		gbc.gridheight = 1;
+		gbc.insets = new Insets(2, 6, 2, 2);
+		gbc.anchor = GridBagConstraints.NORTHWEST;
 		getResultsPanel().add(updatedLabel, gbc);
 
 		if (hasNext) {
@@ -358,12 +437,17 @@ public class CloudBrowserFrame extends JFrame {
 			gbc.gridwidth = 3;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1;
+			gbc.insets = new Insets(2, 2, 2, 2);
 			getResultsPanel().add(new JSeparator(), gbc);
 		}
 	}
 
 	public void showMessage(String message, String title, int messageType) {
 		JOptionPane.showMessageDialog(this, message, title, messageType);
+	}
+
+	public int showConfirmDialog(String message, String title, int optionType, int messageType) {
+		return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
 	}
 
 	private Icon downloadImage(String imageUrl) {

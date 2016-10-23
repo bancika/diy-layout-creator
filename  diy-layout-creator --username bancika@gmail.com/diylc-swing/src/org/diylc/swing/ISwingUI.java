@@ -3,6 +3,7 @@ package org.diylc.swing;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.JPopupMenu.Separator;
 
@@ -35,7 +36,8 @@ public interface ISwingUI extends IView {
 	 * @throws BadPositionException
 	 *             in case invalid position is specified
 	 */
-	void injectGUIComponent(JComponent component, int position) throws BadPositionException;
+	void injectGUIComponent(JComponent component, int position)
+			throws BadPositionException;
 
 	/**
 	 * Injects a custom menu action into application's main menu. If
@@ -59,6 +61,17 @@ public interface ISwingUI extends IView {
 	 * @param parentMenuName
 	 */
 	void injectSubmenu(String name, Icon icon, String parentMenuName);
-	
+
+	/**
+	 * Runs a task in background while showing busy cursor and a glass pane.
+	 * 
+	 * @param task
+	 */
 	<T extends Object> void executeBackgroundTask(ITask<T> task);
+
+	/**
+	 * @return {@link JFrame} that can be used to reference secondary dialogs
+	 *         and frames
+	 */
+	JFrame getOwnerFrame();
 }

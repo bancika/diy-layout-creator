@@ -88,8 +88,8 @@ public class MainFrame extends JFrame implements ISwingUI {
 		createBasePanels();
 		menuMap = new HashMap<String, JMenu>();
 		buttonGroupMap = new HashMap<String, ButtonGroup>();
-		setIconImages(Arrays.asList(IconLoader.IconSmall.getImage(), IconLoader.IconMedium
-				.getImage(), IconLoader.IconLarge.getImage()));
+		setIconImages(Arrays.asList(IconLoader.IconSmall.getImage(),
+				IconLoader.IconMedium.getImage(), IconLoader.IconLarge.getImage()));
 		DialogFactory.getInstance().initialize(this);
 
 		this.presenter = new Presenter(this);
@@ -176,7 +176,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		// SwingUtilities.invokeLater(new Runnable() {
 		// @Override
 		// public void run() {
-		//					
+		//
 		// }
 		// });
 		// }
@@ -278,8 +278,8 @@ public class MainFrame extends JFrame implements ISwingUI {
 
 	@Override
 	public void injectMenuAction(Action action, String menuName) {
-		LOG.info(String.format("injectMenuAction(%s, %s)", action == null ? "Separator" : action
-				.getValue(Action.NAME), menuName));
+		LOG.info(String.format("injectMenuAction(%s, %s)",
+				action == null ? "Separator" : action.getValue(Action.NAME), menuName));
 		JMenu menu = findOrCreateMenu(menuName);
 		if (action == null) {
 			menu.addSeparator();
@@ -314,7 +314,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 		menu.add(submenu);
 		menuMap.put(name, submenu);
 	}
-	
+
 	@Override
 	public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
 		getGlassPane().setVisible(true);
@@ -342,12 +342,16 @@ public class MainFrame extends JFrame implements ISwingUI {
 		};
 		worker.execute();
 	}
-	
+
+	@Override
+	public JFrame getOwnerFrame() {
+		return this;
+	}
+
 	@Override
 	public File promptFileSave() {
-		return DialogFactory.getInstance().showSaveDialog(
-				FileFilterEnum.DIY.getFilter(), null,
-				FileFilterEnum.DIY.getExtensions()[0], null);
+		return DialogFactory.getInstance().showSaveDialog(this, FileFilterEnum.DIY.getFilter(),
+				null, FileFilterEnum.DIY.getExtensions()[0], null);
 	}
 
 	class FramePlugin implements IPlugIn {
@@ -372,8 +376,8 @@ public class MainFrame extends JFrame implements ISwingUI {
 					fileName = "Untitled";
 				}
 				String modified = (Boolean) params[1] ? " (modified)" : "";
-				setTitle(String.format("DIYLC %s - %s %s", plugInPort
-						.getCurrentVersionNumber(), fileName, modified));
+				setTitle(String.format("DIYLC %s - %s %s", plugInPort.getCurrentVersionNumber(),
+						fileName, modified));
 			}
 		}
 	}

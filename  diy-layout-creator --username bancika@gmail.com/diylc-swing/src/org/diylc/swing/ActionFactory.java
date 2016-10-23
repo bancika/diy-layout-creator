@@ -381,7 +381,7 @@ public class ActionFactory {
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("SaveAction triggered");
 			if (plugInPort.getCurrentFileName() == null) {
-				final File file = DialogFactory.getInstance().showSaveDialog(
+				final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
 						FileFilterEnum.DIY.getFilter(), null,
 						FileFilterEnum.DIY.getExtensions()[0], null);
 				if (file != null) {
@@ -455,7 +455,7 @@ public class ActionFactory {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("SaveAsAction triggered");
-			final File file = DialogFactory.getInstance().showSaveDialog(
+			final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
 					FileFilterEnum.DIY.getFilter(), null,
 					FileFilterEnum.DIY.getExtensions()[0], null);
 			if (file != null) {
@@ -526,7 +526,7 @@ public class ActionFactory {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("ExportPDFAction triggered");
-			final File file = DialogFactory.getInstance().showSaveDialog(
+			final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
 					FileFilterEnum.PDF.getFilter(), null,
 					FileFilterEnum.PDF.getExtensions()[0], null);
 			if (file != null) {
@@ -574,7 +574,7 @@ public class ActionFactory {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LOG.info("ExportPNGAction triggered");
-			final File file = DialogFactory.getInstance().showSaveDialog(
+			final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
 					FileFilterEnum.PNG.getFilter(), null,
 					FileFilterEnum.PNG.getExtensions()[0], null);
 			if (file != null) {

@@ -55,8 +55,8 @@ public class BomDialog extends JDialog {
 	private ObjectListTable<BomEntry> getTable() {
 		if (table == null) {
 			try {
-				table = new ObjectListTable<BomEntry>(BomEntry.class, new String[] { "getName",
-						"getValue", "getQuantity", "getNotes/setNotes" }, null);
+				table = new ObjectListTable<BomEntry>(BomEntry.class, new String[] { "getName", "getValue",
+						"getQuantity", "getNotes/setNotes" }, null);
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
@@ -89,9 +89,8 @@ public class BomDialog extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance().showSaveDialog(
-					FileFilterEnum.EXCEL.getFilter(), null,
-					FileFilterEnum.EXCEL.getExtensions()[0], null);
+			File file = DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(),
+					FileFilterEnum.EXCEL.getFilter(), null, FileFilterEnum.EXCEL.getExtensions()[0], null);
 			if (file != null) {
 				try {
 					TableExporter.getInstance().exportToExcel(getTable(), file);
@@ -115,8 +114,8 @@ public class BomDialog extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.CSV.getFilter(),
-					null, FileFilterEnum.CSV.getExtensions()[0], null);
+			File file = DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(),
+					FileFilterEnum.CSV.getFilter(), null, FileFilterEnum.CSV.getExtensions()[0], null);
 			if (file != null) {
 				try {
 					TableExporter.getInstance().exportToCSV(getTable(), file);
@@ -140,8 +139,8 @@ public class BomDialog extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.HTML.getFilter(),
-					null, FileFilterEnum.HTML.getExtensions()[0], null);
+			File file = DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(),
+					FileFilterEnum.HTML.getFilter(), null, FileFilterEnum.HTML.getExtensions()[0], null);
 			if (file != null) {
 				try {
 					TableExporter.getInstance().exportToHTML(getTable(), file);
@@ -165,8 +164,8 @@ public class BomDialog extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			File file = DialogFactory.getInstance().showSaveDialog(FileFilterEnum.PNG.getFilter(),
-					null, FileFilterEnum.PNG.getExtensions()[0], null);
+			File file = DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(),
+					FileFilterEnum.PNG.getFilter(), null, FileFilterEnum.PNG.getExtensions()[0], null);
 			if (file != null) {
 				try {
 					TableExporter.getInstance().exportToPNG(getTable(), file);

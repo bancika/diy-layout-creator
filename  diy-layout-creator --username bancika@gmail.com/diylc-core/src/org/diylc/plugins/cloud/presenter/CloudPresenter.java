@@ -247,6 +247,14 @@ public class CloudPresenter {
 			throw new CloudException(e);
 		}
 	}
+	
+	public String[] getSortings() throws CloudException {
+		try {
+			return service.getSortings().toArray(new String[0]);
+		} catch (Exception e) {
+			throw new CloudException(e);
+		}
+	}
 
 	private String getMachineId() {
 		if (machineId == null) {

@@ -158,5 +158,5 @@ public interface ServiceAPI {
 	/**
 	 * @return a {@link List} of available sortings.
 	 */
-	List<String> getAvailableSortings();
+	List<String> getSortings();
 }
