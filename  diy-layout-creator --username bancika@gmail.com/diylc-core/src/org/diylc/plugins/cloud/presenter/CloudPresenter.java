@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.model.ServiceAPI;
 import org.diylc.plugins.cloud.model.UserEntity;
 
@@ -224,6 +225,26 @@ public class CloudPresenter {
 		}
 		if (!res.equals(SUCCESS))
 			throw new CloudException(res);
+	}
+
+	public List<ProjectEntity> search(String criteria, String category,
+			String sortOrder, int pageNumber, int itemsPerPage)
+			throws CloudException {
+		try {
+			Object res = service.search(criteria, category, "json", pageNumber,
+					itemsPerPage, sortOrder);
+			if (res == null)
+				throw new CloudException("Failed to retreive search results.");
+			if (res instanceof String)
+				throw new CloudException(res.toString());
+			if (res instanceof List<?>)
+				return (List<ProjectEntity>) res;
+			throw new CloudException(
+					"Unexpected server response received for search results: "
+							+ res.getClass().getName());
+		} catch (Exception e) {
+			throw new CloudException(e);
+		}
 	}
 
 	private String getMachineId() {
