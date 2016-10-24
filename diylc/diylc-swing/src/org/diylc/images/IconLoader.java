@@ -32,7 +32,8 @@ public enum IconLoader {
       "briefcase_into.png"), RotateCW("rotate_cw.png"), RotateCCW("rotate_ccw.png"), ElementInto("element_into.png"), Arrow(
       "arrow.png"), Cloud("cloud.png"), CloudUp("cloud_up.png"), CloudGear("cloud_gear.png"), IdCardEdit(
       "id_card_edit.png"), KeyEdit("key_edit.png"), Find("find.png"), Dashboard("dashboard.png"), DataFind(
-      "data_find.png"), CloudDownload("cloud-download.png");
+      "data_find.png"), CloudDownload("cloud-download.png"), NavLeftBlue("nav_left_blue.png"), NavRightBlue(
+      "nav_right_blue.png");
 
   protected String name;
 

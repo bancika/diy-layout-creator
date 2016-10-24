@@ -209,6 +209,7 @@ public class CloudPresenter {
 
   public List<ProjectEntity> search(String criteria, String category, String sortOrder, int pageNumber, int itemsPerPage)
       throws CloudException {
+    LOG.info(String.format("search(%1$s,%2$s,%3$s,%4$d,%5$d)", criteria, category, sortOrder, pageNumber, itemsPerPage));
     try {
       Object res = service.search(criteria, category, "json", pageNumber, itemsPerPage, sortOrder);
       if (res == null)

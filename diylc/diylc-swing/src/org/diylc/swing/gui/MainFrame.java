@@ -323,14 +323,16 @@ public class MainFrame extends JFrame implements ISwingUI {
         try {
           T result = get();
           task.complete(result);
+          getGlassPane().setVisible(false);
         } catch (ExecutionException e) {
+          getGlassPane().setVisible(false);
           LOG.error("Background task execution failed", e);
           task.failed(e);
         } catch (InterruptedException e) {
+          getGlassPane().setVisible(false);
           LOG.error("Background task execution interrupted", e);
           task.failed(e);
-        }
-        getGlassPane().setVisible(false);
+        }        
       }
     };
     worker.execute();
