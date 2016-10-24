@@ -32,7 +32,7 @@ import org.diylc.swingframework.ProgressDialog;
 
 public class CloudPlugIn implements IPlugIn, CloudListener {
 
-  private static final String ONLINE_TITLE = "DIY Cloud";
+  private static final String ONLINE_TITLE = "The Cloud";
 
   private final static Logger LOG = Logger.getLogger(CloudPlugIn.class);
 
