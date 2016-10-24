@@ -5,13 +5,12 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -28,11 +27,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -46,7 +47,6 @@ import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudException;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.gui.CustomGlassPane;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 
@@ -73,6 +73,12 @@ public class CloudBrowserFrame extends JFrame {
   private IPlugInPort plugInPort;
   private CloudPresenter cloudPresenter;
 
+  private JPanel navigationPanel;
+  private JButton prevPageButton;
+  private JButton nextPageButton;
+  private JLabel pageLabel;
+  private List<ProjectEntity> currentResults;
+
   // search criteria
   private String searchFor;
   private String category;
@@ -90,7 +96,10 @@ public class CloudBrowserFrame extends JFrame {
     setContentPane(getMainPanel());
     this.pack();
     this.setLocationRelativeTo(owner);
-    this.setGlassPane(new CustomGlassPane());
+    this.setGlassPane(new CloudGlassPane());
+
+    JRootPane rootPane = SwingUtilities.getRootPane(getGoButton());
+    rootPane.setDefaultButton(getGoButton());
   }
 
   public JPanel getMainPanel() {
@@ -155,6 +164,15 @@ public class CloudBrowserFrame extends JFrame {
       gbc.weighty = 1;
       gbc.fill = GridBagConstraints.BOTH;
       browsePanel.add(getResultsScrollPane(), gbc);
+
+      gbc.anchor = GridBagConstraints.NORTHWEST;
+      gbc.insets = new Insets(2, 2, 2, 2);
+      gbc.gridx = 0;
+      gbc.gridy++;
+      gbc.fill = GridBagConstraints.BOTH;
+      gbc.weighty = 0;
+      gbc.gridwidth = 3;
+      browsePanel.add(getNavigationPanel(), gbc);
     }
     return browsePanel;
   }
@@ -253,7 +271,7 @@ public class CloudBrowserFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          CloudBrowserFrame.this.pageNumber = 1;
+          setPageNumber(1);
           CloudBrowserFrame.this.searchFor = getSearchField().getText();
           CloudBrowserFrame.this.category =
               getCategoryBox().getSelectedItem() == null ? "" : getCategoryBox().getSelectedItem().toString();
@@ -283,6 +301,7 @@ public class CloudBrowserFrame extends JFrame {
 
       @Override
       public void complete(List<ProjectEntity> result) {
+        CloudBrowserFrame.this.currentResults = result;
         getResultsPanel().removeAll();
         int count = 0;
         for (Iterator<ProjectEntity> i = result.iterator(); i.hasNext();) {
@@ -293,7 +312,7 @@ public class CloudBrowserFrame extends JFrame {
           showNoMatches();
           count++;
         }
-        addNavigationPanel(count);
+        // addNavigationPanel(count);
       }
     });
   }
@@ -443,64 +462,99 @@ public class CloudBrowserFrame extends JFrame {
     getResultsPanel().add(new JSeparator(), gbc);
   }
 
-  private void addNavigationPanel(int location) {
-    JPanel navigationPanel = new JPanel(new GridBagLayout());
-    navigationPanel.setBackground(Color.white);
+  private JPanel getNavigationPanel() {
+    if (navigationPanel == null) {
+      navigationPanel = new JPanel(new GridBagLayout());
+      navigationPanel.setBackground(Color.white);
+      GridBagConstraints gbc = new GridBagConstraints();
+      gbc.anchor = GridBagConstraints.SOUTHWEST;
+      gbc.insets = new Insets(2, 2, 2, 2);
+      gbc.gridx = 0;
+      gbc.weightx = 0;
+      gbc.fill = GridBagConstraints.NONE;
+      navigationPanel.add(getPrevPageButton(), gbc);
 
-    JButton prevPageButton = new JButton(IconLoader.NavLeftBlue.getIcon());
-    prevPageButton.setBorderPainted(false);
-    prevPageButton.setContentAreaFilled(false);
-    prevPageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    prevPageButton.addActionListener(new ActionListener() {
+      gbc.gridx++;
+      gbc.weightx = 1;
+      gbc.anchor = GridBagConstraints.LINE_START;
+      gbc.fill = GridBagConstraints.HORIZONTAL;
+      navigationPanel.add(getPageLabel(), gbc);
 
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (CloudBrowserFrame.this.pageNumber > 1) {
-          CloudBrowserFrame.this.pageNumber--;
-          CloudBrowserFrame.this.search();
-        }
-      }
-    });
+      gbc.gridx++;
+      gbc.weightx = 0;
+      gbc.anchor = GridBagConstraints.SOUTHWEST;
+      gbc.fill = GridBagConstraints.NONE;
+      navigationPanel.add(getNextPageButton(), gbc);
 
-    JButton nextPageButton = new JButton(IconLoader.NavRightBlue.getIcon());
-    nextPageButton.setBorderPainted(false);
-    nextPageButton.setContentAreaFilled(false);
-    nextPageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    nextPageButton.addActionListener(new ActionListener() {
-
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        CloudBrowserFrame.this.pageNumber++;
-        CloudBrowserFrame.this.search();
-      }
-    });
-
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.SOUTHWEST;
-    gbc.insets = new Insets(2, 2, 2, 2);
-    gbc.gridx = 0;
-    gbc.weightx = 0;
-    gbc.fill = GridBagConstraints.NONE;
-    navigationPanel.add(prevPageButton, gbc);
-
-    gbc.gridx++;
-    gbc.weightx = 1;
-    navigationPanel.add(new JLabel(), gbc);
-
-    gbc.gridx++;
-    gbc.weightx = 0;
-    navigationPanel.add(nextPageButton, gbc);
-
-    gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.NORTHWEST;
-    gbc.insets = new Insets(2, 2, 2, 2);
-    gbc.gridx = 0;
-    gbc.gridy = location * 6;
-    gbc.fill = GridBagConstraints.BOTH;
-    gbc.weighty = 100;
-    gbc.gridwidth = 3;
-    getResultsPanel().add(navigationPanel, gbc);
+    }
+    return navigationPanel;
   }
+
+  private JButton getPrevPageButton() {
+    if (prevPageButton == null) {
+      prevPageButton = new JButton(IconLoader.NavLeftBlue.getIcon());
+      prevPageButton.setBorderPainted(false);
+      prevPageButton.setContentAreaFilled(false);
+      prevPageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      prevPageButton.addActionListener(new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          if (CloudBrowserFrame.this.pageNumber > 1) {
+            setPageNumber(CloudBrowserFrame.this.pageNumber - 1);
+            CloudBrowserFrame.this.search();
+          }
+        }
+      });
+    }
+    return prevPageButton;
+  }
+
+  private JButton getNextPageButton() {
+    if (nextPageButton == null) {
+      nextPageButton = new JButton(IconLoader.NavRightBlue.getIcon());
+      nextPageButton.setBorderPainted(false);
+      nextPageButton.setContentAreaFilled(false);
+      nextPageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      nextPageButton.addActionListener(new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          if (CloudBrowserFrame.this.currentResults != null && !CloudBrowserFrame.this.currentResults.isEmpty()) {
+            setPageNumber(CloudBrowserFrame.this.pageNumber + 1);
+            CloudBrowserFrame.this.search();
+          }
+        }
+      });
+    }
+    return nextPageButton;
+  }
+
+  private void setPageNumber(int pageNumber) {
+    this.pageNumber = pageNumber;
+    getPageLabel().setText("Page " + pageNumber);
+  }
+
+  private JLabel getPageLabel() {
+    if (pageLabel == null) {
+      pageLabel = new JLabel();
+      pageLabel.setFont(pageLabel.getFont().deriveFont(12f));
+      pageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    return pageLabel;
+  }
+
+  // private void addNavigationPanel(int location) {
+  // GridBagConstraints gbc = new GridBagConstraints();
+  // gbc.anchor = GridBagConstraints.NORTHWEST;
+  // gbc.insets = new Insets(2, 2, 2, 2);
+  // gbc.gridx = 0;
+  // gbc.gridy = location * 6;
+  // gbc.fill = GridBagConstraints.BOTH;
+  // gbc.weighty = 100;
+  // gbc.gridwidth = 3;
+  // getResultsPanel().add(getNavigationPanel(), gbc);
+  // }
 
   public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
     getGlassPane().setVisible(true);
@@ -513,16 +567,14 @@ public class CloudBrowserFrame extends JFrame {
 
       @Override
       protected void done() {
+        getGlassPane().setVisible(false);
         try {
           T result = get();
           task.complete(result);
-          getGlassPane().setVisible(false);
         } catch (ExecutionException e) {
           LOG.error("Background task execution failed", e);
-          getGlassPane().setVisible(false);
           task.failed(e);
         } catch (InterruptedException e) {
-          getGlassPane().setVisible(false);
           LOG.error("Background task execution interrupted", e);
           task.failed(e);
         }
@@ -539,13 +591,19 @@ public class CloudBrowserFrame extends JFrame {
     return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
   }
 
-  private Icon downloadImage(String imageUrl) {
-    Image image = null;
+  private Icon downloadImage(String imageFile) {
+    // Image image = null;
+    // try {
+    // URL url = new URL(imageUrl);
+    // image = ImageIO.read(url);
+    // } catch (IOException e) {
+    // }
+    // return image == null ? IconLoader.MissingImage.getIcon() : new ImageIcon(image);
     try {
-      URL url = new URL(imageUrl);
-      image = ImageIO.read(url);
-    } catch (IOException e) {
+      BufferedImage img = ImageIO.read(new File(imageFile));
+      return new ImageIcon(img);
+    } catch (Exception e) {
+      return IconLoader.MissingImage.getIcon();
     }
-    return new ImageIcon(image);
   }
 }

@@ -2,9 +2,13 @@ package org.diylc.plugins.cloud.presenter;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -212,12 +216,25 @@ public class CloudPresenter {
     LOG.info(String.format("search(%1$s,%2$s,%3$s,%4$d,%5$d)", criteria, category, sortOrder, pageNumber, itemsPerPage));
     try {
       Object res = service.search(criteria, category, "json", pageNumber, itemsPerPage, sortOrder);
+      // Thread.sleep(2000);
       if (res == null)
         throw new CloudException("Failed to retreive search results.");
       if (res instanceof String)
         throw new CloudException(res.toString());
-      if (res instanceof List<?>)
-        return (List<ProjectEntity>) res;
+      if (res instanceof List<?>) {
+        List<ProjectEntity> projects = (List<ProjectEntity>) res;
+        // Download thumbnails and replace urls with local paths
+        for (int i = 0; i < projects.size(); i++) {
+          String url = projects.get(i).getThumbnailUrl();
+          URL website = new URL(url);
+          ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+          File temp = File.createTempFile("thumbnail", ".png");
+          FileOutputStream fos = new FileOutputStream(temp);
+          fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+          projects.get(i).setThumbnailUrl(temp.getAbsolutePath());          
+        }
+        return projects;
+      }
       throw new CloudException("Unexpected server response received for search results: " + res.getClass().getName());
     } catch (Exception e) {
       throw new CloudException(e);
