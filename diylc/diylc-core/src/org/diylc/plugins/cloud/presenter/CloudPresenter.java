@@ -1,6 +1,5 @@
 package org.diylc.plugins.cloud.presenter;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,8 +12,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
+import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.model.UserEntity;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
@@ -121,6 +120,7 @@ public class CloudPresenter {
         if (res != null && res.equals(ERROR))
           throw new CloudException("Could not fetch categories from the server.");
         if (res instanceof List<?>) {
+          @SuppressWarnings("unchecked")
           List<String> cats = (List<String>) res;
           cats.add(0, "");
           categories = cats.toArray(new String[0]);
@@ -222,6 +222,7 @@ public class CloudPresenter {
       if (res instanceof String)
         throw new CloudException(res.toString());
       if (res instanceof List<?>) {
+        @SuppressWarnings("unchecked")
         List<ProjectEntity> projects = (List<ProjectEntity>) res;
         LOG.info("Received " + projects.size() + " results");
         // Download thumbnails and replace urls with local paths to speed up loading in the main thread
@@ -271,7 +272,6 @@ public class CloudPresenter {
       } catch (Exception e) {
         machineId = "Generic";
       }
-      LOG.info("Local machine id: " + machineId);
     }
     return machineId;
   }
