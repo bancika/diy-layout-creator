@@ -376,4 +376,9 @@ public class MainFrame extends JFrame implements ISwingUI {
     }
   }
 
+  @Override
+  public void bringToFocus() {
+    this.requestFocus();
+  }
+
 }

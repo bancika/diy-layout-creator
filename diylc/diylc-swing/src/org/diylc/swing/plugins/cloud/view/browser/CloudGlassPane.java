@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.cloud.view;
+package org.diylc.swing.plugins.cloud.view.browser;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -19,6 +19,11 @@ import javax.swing.Timer;
 
 import org.diylc.images.IconLoader;
 
+/**
+ * JPanel that shows cloud animation while visible.
+ * 
+ * @author bancika
+ */
 public class CloudGlassPane extends JPanel implements MouseListener, KeyListener {
 
   public static final CloudGlassPane GLASS_PANE = new CloudGlassPane();
@@ -26,7 +31,7 @@ public class CloudGlassPane extends JPanel implements MouseListener, KeyListener
   private static final long serialVersionUID = -5344758920442881290L;
 
   private long startTime;
-  private final int msPerPx = 5;
+  private final int msPerPx = 6;
 
   private Timer animationTimer;
 

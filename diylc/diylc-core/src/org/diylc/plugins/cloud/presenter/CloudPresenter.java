@@ -14,7 +14,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.plugins.cloud.model.ProjectEntity;
-import org.diylc.plugins.cloud.model.ServiceAPI;
+import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.model.UserEntity;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
@@ -30,7 +30,7 @@ public class CloudPresenter {
   private final static Logger LOG = Logger.getLogger(CloudPresenter.class);
   private static final Object SUCCESS = "Success";
 
-  private ServiceAPI service;
+  private IServiceAPI service;
   private String serviceUrl;
   private String machineId;
   private String[] categories;
@@ -41,9 +41,9 @@ public class CloudPresenter {
 
   public CloudPresenter(CloudListener listener) {
     serviceUrl =
-        ConfigurationManager.getInstance().readString(ServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1");
+        ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1");
     ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
-    service = factory.createProxy(ServiceAPI.class, serviceUrl);
+    service = factory.createProxy(IServiceAPI.class, serviceUrl);
     if (service == null)
       LOG.warn("Service proxy not created!");
     this.listener = listener;
@@ -223,7 +223,8 @@ public class CloudPresenter {
         throw new CloudException(res.toString());
       if (res instanceof List<?>) {
         List<ProjectEntity> projects = (List<ProjectEntity>) res;
-        // Download thumbnails and replace urls with local paths
+        LOG.info("Received " + projects.size() + " results");
+        // Download thumbnails and replace urls with local paths to speed up loading in the main thread
         for (int i = 0; i < projects.size(); i++) {
           String url = projects.get(i).getThumbnailUrl();
           URL website = new URL(url);
@@ -231,7 +232,8 @@ public class CloudPresenter {
           File temp = File.createTempFile("thumbnail", ".png");
           FileOutputStream fos = new FileOutputStream(temp);
           fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-          projects.get(i).setThumbnailUrl(temp.getAbsolutePath());          
+          projects.get(i).setThumbnailUrl(temp.getAbsolutePath());  
+          fos.close();
         }
         return projects;
       }

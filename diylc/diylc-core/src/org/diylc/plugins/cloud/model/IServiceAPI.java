@@ -6,12 +6,12 @@ import java.util.List;
 import com.diyfever.httpproxy.ParamName;
 
 /***
- * Interface of DIYLC PHP server located at www.diy-fever.com/diylc/api
+ * Interface of DIYLC PHP server located at www.diy-fever.com/diylc/api/v1
  * 
  * @author bancika
  * 
  */
-public interface ServiceAPI {
+public interface IServiceAPI {
 
   public static final String URL_KEY = "serviceUrl";
 

@@ -22,10 +22,10 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
-import org.diylc.swing.plugins.cloud.view.CloudBrowserFrame;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.cloud.view.UserEditDialog;
+import org.diylc.swing.plugins.cloud.view.browser.CloudBrowserFrame;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.ProgressDialog;
@@ -113,7 +113,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
   public CloudBrowserFrame getCloudBrowser() {
     if (cloudBrowser == null) {
-      cloudBrowser = new CloudBrowserFrame(swingUI.getOwnerFrame(), plugInPort, cloudPresenter);
+      cloudBrowser = new CloudBrowserFrame(swingUI, plugInPort, cloudPresenter);
     }
     return cloudBrowser;
   }

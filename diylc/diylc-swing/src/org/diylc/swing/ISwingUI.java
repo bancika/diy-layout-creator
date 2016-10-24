@@ -69,4 +69,9 @@ public interface ISwingUI extends IView {
    * @return {@link JFrame} that can be used to reference secondary dialogs and frames
    */
   JFrame getOwnerFrame();
+  
+  /**
+   * 
+   */
+  void bringToFocus();
 }
