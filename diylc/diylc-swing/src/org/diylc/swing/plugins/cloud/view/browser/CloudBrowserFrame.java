@@ -67,7 +67,7 @@ public class CloudBrowserFrame extends JFrame {
     this.plugInPort = plugInPort;
     this.cloudPresenter = cloudPresenter;
 
-    setContentPane(getMainPanel());
+    setContentPane(getSearchPanel());
     this.pack();
     this.setLocationRelativeTo(swingUI.getOwnerFrame());
     this.setGlassPane(new CloudGlassPane());
@@ -98,6 +98,7 @@ public class CloudBrowserFrame extends JFrame {
       tabbedPane = new JTabbedPane();
       tabbedPane.addTab("Dashboard", IconLoader.Dashboard.getIcon(), getDashboardPanel());
       tabbedPane.addTab("Search For Projects", IconLoader.Find.getIcon(), getSearchPanel());
+      tabbedPane.setSelectedIndex(1);
       tabbedPane.addChangeListener(new ChangeListener() {
 
         @Override

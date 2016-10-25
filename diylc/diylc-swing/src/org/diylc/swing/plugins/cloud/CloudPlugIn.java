@@ -284,7 +284,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
           @Override
           public void complete(Void result) {
-            swingUI.showMessage("Cloud account created successfully.", "Cloud", IView.ERROR_MESSAGE);
+            swingUI.showMessage("Cloud account created successfully.", "Cloud", IView.INFORMATION_MESSAGE);
           }
         });
       }

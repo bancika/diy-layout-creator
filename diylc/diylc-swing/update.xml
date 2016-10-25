@@ -1337,11 +1337,19 @@
 			</versionNumber>
 			<releaseDate>2016-05-09 20:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>					
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Project Cloud feature introduced with global project sharing functionality</description>
+				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Reduced DIYLC package size</description>
-				</org.diylc.appframework.update.Change>								
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Auto save and recovery made a bit smarter</description>
+				</org.diylc.appframework.update.Change>							
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
