@@ -63,7 +63,7 @@ public class CloudBrowserFrame extends JFrame {
     super("Cloud Surfer");
     this.swingUI = swingUI;
     this.setIconImage(IconLoader.Cloud.getImage());
-    this.setPreferredSize(new Dimension(800, 600));
+    this.setPreferredSize(new Dimension(700, 640));
     this.plugInPort = plugInPort;
     this.cloudPresenter = cloudPresenter;
 
