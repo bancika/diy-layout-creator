@@ -60,7 +60,7 @@ public class CloudBrowserFrame extends JFrame {
   private ISwingUI swingUI;
 
   public CloudBrowserFrame(ISwingUI swingUI, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
-    super("Cloud Surfer");
+    super("Search The Cloud");
     this.swingUI = swingUI;
     this.setIconImage(IconLoader.Cloud.getImage());
     this.setPreferredSize(new Dimension(700, 640));
@@ -136,14 +136,14 @@ public class CloudBrowserFrame extends JFrame {
       gbc.fill = GridBagConstraints.BOTH;
       searchPanel.add(getResultsScrollPane(), gbc);
 
-      gbc.anchor = GridBagConstraints.NORTHWEST;
-      gbc.insets = new Insets(2, 2, 2, 2);
-      gbc.gridx = 0;
-      gbc.gridy++;
-      gbc.fill = GridBagConstraints.BOTH;
-      gbc.weighty = 0;
-      gbc.gridwidth = 3;
-      searchPanel.add(getNavigationPanel(), gbc);
+//      gbc.anchor = GridBagConstraints.NORTHWEST;
+//      gbc.insets = new Insets(2, 2, 2, 2);
+//      gbc.gridx = 0;
+//      gbc.gridy++;
+//      gbc.fill = GridBagConstraints.BOTH;
+//      gbc.weighty = 0;
+//      gbc.gridwidth = 3;
+//      searchPanel.add(getNavigationPanel(), gbc);
     }
     return searchPanel;
   }
@@ -159,7 +159,7 @@ public class CloudBrowserFrame extends JFrame {
           CloudBrowserFrame.this.searchFor = getSearchHeaderPanel().getSearchText();
           CloudBrowserFrame.this.category = getSearchHeaderPanel().getCategory();
           CloudBrowserFrame.this.sort = getSearchHeaderPanel().getSorting();
-
+          getResultsScrollPane().clear();
           search();
         }
       });
@@ -169,7 +169,19 @@ public class CloudBrowserFrame extends JFrame {
 
   private ResultsScrollPanel getResultsScrollPane() {
     if (resultsScrollPane == null) {
-      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort);
+      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, new ILazyProvider<ProjectEntity>() {
+        
+        @Override
+        public void requestMore() {
+          setPageNumber(CloudBrowserFrame.this.pageNumber + 1);
+          CloudBrowserFrame.this.search();
+        }
+
+        @Override
+        public boolean hasMore() {
+          return currentResults.size() == itemsPerPage;
+        }
+      });
     }
     return resultsScrollPane;
   }
@@ -191,17 +203,17 @@ public class CloudBrowserFrame extends JFrame {
       @Override
       public void complete(List<ProjectEntity> result) {
         CloudBrowserFrame.this.currentResults = result;
-        getResultsScrollPane().clear();
-        int count = 0;
+        getResultsScrollPane().startBatch();
+
         for (Iterator<ProjectEntity> i = result.iterator(); i.hasNext();) {
           ProjectEntity project = i.next();
-          getResultsScrollPane().addProjectToDisplay(project, count++);
+          getResultsScrollPane().addProjectToDisplay(project);
         }
-        if (count == 0) {
-          getResultsScrollPane().showNoMatches();
-          count++;
-        } else
-          getResultsScrollPane().finish();
+//        if (count == 0) {
+//          getResultsScrollPane().showNoMatches();
+//          count++;
+//        } else
+          getResultsScrollPane().finishBatch();
       }
     });
   }

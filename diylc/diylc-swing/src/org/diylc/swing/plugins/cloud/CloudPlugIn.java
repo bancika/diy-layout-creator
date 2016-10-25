@@ -188,7 +188,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
     public LibraryAction() {
       super();
-      putValue(AbstractAction.NAME, "Browse The Cloud");
+      putValue(AbstractAction.NAME, "Search The Cloud");
       putValue(AbstractAction.SMALL_ICON, IconLoader.Cloud.getIcon());
     }
 

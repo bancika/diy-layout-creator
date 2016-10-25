@@ -2,7 +2,7 @@ package org.diylc.swing.plugins.cloud.view.browser;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -50,11 +50,18 @@ public class ResultsScrollPanel extends JScrollPane {
 
   private IPlugInPort plugInPort;
 
-  public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort) {
+  private boolean running;
+  private ILazyProvider<ProjectEntity> provider;
+
+  private int location;
+
+  public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort,
+      ILazyProvider<ProjectEntity> provider) {
     super();
     this.mainUI = mainUI;
     this.cloudUI = cloudUI;
     this.plugInPort = plugInPort;
+    this.provider = provider;
 
     this.getVerticalScrollBar().setUnitIncrement(16);
     this.setBorder(null);
@@ -63,6 +70,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
   public void clear() {
     getResultsPanel().removeAll();
+    running = false;
   }
 
   public void showNoMatches() {
@@ -78,7 +86,12 @@ public class ResultsScrollPanel extends JScrollPane {
     getResultsPanel().add(label, gbc);
   }
 
-  public void addProjectToDisplay(final ProjectEntity project, int location) {
+  public void startBatch() {
+    this.getResultsPanel().remove(getLastLabel());
+    this.running = true;
+  }
+
+  public void addProjectToDisplay(final ProjectEntity project) {
     JLabel thumbnailLabel = new JLabel(loadImage(project.getThumbnailUrl()));
     JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
     nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
@@ -111,7 +124,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
             @Override
             public Void doInBackground() throws Exception {
-              LOG.debug("Downloading project to to " + file.getAbsolutePath());
+              LOG.debug("Downloading project to " + file.getAbsolutePath());
               URL website = new URL(project.getDownloadUrl());
               ReadableByteChannel rbc = Channels.newChannel(website.openStream());
               FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
@@ -218,20 +231,35 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.insets = new Insets(2, 2, 2, 2);
     getResultsPanel().add(new JSeparator(), gbc);
 
-    this.lastGridY = gbc.gridy;
+    location++;
   }
 
-  private int lastGridY;
-
-  public void finish() {
+  public void finishBatch() {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.gridx = 0;
-    gbc.gridy = lastGridY;
+    gbc.gridy = location * 6;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.weightx = 0;
     gbc.weighty = 100;
-    getResultsPanel().add(new JLabel(), gbc);
+    getResultsPanel().add(getLastLabel(), gbc);
+  }
+
+  private JLabel lastLabel;
+
+  private JLabel getLastLabel() {
+    if (lastLabel == null) {
+      lastLabel = new JLabel("Load more...") {
+        @Override
+        public void paint(Graphics g) {
+          if (running && provider.hasMore()) {
+            running = false;
+            provider.requestMore();
+          }
+        }
+      };
+    }
+    return lastLabel;
   }
 
   private JPanel getResultsPanel() {
