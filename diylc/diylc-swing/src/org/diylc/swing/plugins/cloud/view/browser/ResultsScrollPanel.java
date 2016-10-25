@@ -2,6 +2,7 @@ package org.diylc.swing.plugins.cloud.view.browser;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -23,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
@@ -76,19 +78,25 @@ public class ResultsScrollPanel extends JScrollPane {
     getResultsPanel().add(label, gbc);
   }
 
-
   public void addProjectToDisplay(final ProjectEntity project, int location) {
     JLabel thumbnailLabel = new JLabel(loadImage(project.getThumbnailUrl()));
     JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
     nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
-    JLabel descriptionLabel = new JLabel("<html>" + project.getDescription() + "</html>");
+    JTextArea descriptionArea = new JTextArea(project.getDescription().replace("<br>", "\n"));
+    descriptionArea.setEditable(false);
+    descriptionArea.setFont(thumbnailLabel.getFont());
+    descriptionArea.setLineWrap(true);
+    descriptionArea.setWrapStyleWord(true);
+    // JLabel descriptionLabel = new JLabel("<html>" + project.getDescription() + "</html>");
+    // JScrollPane descriptionScroll = new JScrollPane(descriptionArea);
+    // descriptionScroll.setBorder(null);
+    // descriptionLabel.setMaximumSize(new Dimension(200, 100));
     JLabel categoryLabel = new JLabel("<html>Category: <b>" + project.getCategory() + "</b></html>");
     JLabel authorLabel = new JLabel("<html>Author: <b>" + project.getOwner() + "</b></html>");
     JLabel updatedLabel = new JLabel("<html>Last updated: <b>" + project.getUpdated() + "</b></html>");
     JButton downloadButton = new JButton(IconLoader.CloudDownload.getIcon());
 
     downloadButton.setBorderPainted(false);
-    // downloadButton.setFocusPainted(false);
     downloadButton.setContentAreaFilled(false);
     downloadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     downloadButton.addActionListener(new ActionListener() {
@@ -96,7 +104,7 @@ public class ResultsScrollPanel extends JScrollPane {
       @Override
       public void actionPerformed(ActionEvent e) {
         final File file =
-            DialogFactory.getInstance().showSaveDialog((JFrame)cloudUI, FileFilterEnum.DIY.getFilter(),
+            DialogFactory.getInstance().showSaveDialog((JFrame) cloudUI, FileFilterEnum.DIY.getFilter(),
                 new File(project.getName() + ".diy"), FileFilterEnum.DIY.getExtensions()[0], null);
         if (file != null) {
           cloudUI.executeBackgroundTask(new ITask<Void>() {
@@ -168,21 +176,21 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.weightx = 1;
     gbc.insets = new Insets(2, 6, 2, 2);
     getResultsPanel().add(nameLabel, gbc);
-    //
-    // gbc.gridx = 2;
-    // gbc.anchor = GridBagConstraints.NORTHEAST;
-    // gbc.insets = new Insets(2, 2, 2, 8);
-    // getResultsPanel().add(authorLabel, gbc);
 
     gbc.gridy++;
     gbc.gridx = 1;
     gbc.weighty = 1;
+    gbc.weightx = 1;
+    gbc.gridwidth = 2;
     gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.fill = GridBagConstraints.BOTH;
     gbc.insets = new Insets(2, 6, 2, 2);
-    getResultsPanel().add(descriptionLabel, gbc);
+    getResultsPanel().add(descriptionArea, gbc);
 
     gbc.gridy++;
     gbc.gridx = 1;
+    gbc.gridwidth = 1;
+    gbc.fill = GridBagConstraints.NONE;
     gbc.weighty = 0;
     getResultsPanel().add(categoryLabel, gbc);
 
@@ -209,6 +217,21 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.weightx = 1;
     gbc.insets = new Insets(2, 2, 2, 2);
     getResultsPanel().add(new JSeparator(), gbc);
+
+    this.lastGridY = gbc.gridy;
+  }
+
+  private int lastGridY;
+
+  public void finish() {
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.gridx = 0;
+    gbc.gridy = lastGridY;
+    gbc.fill = GridBagConstraints.BOTH;
+    gbc.weightx = 0;
+    gbc.weighty = 100;
+    getResultsPanel().add(new JLabel(), gbc);
   }
 
   private JPanel getResultsPanel() {

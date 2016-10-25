@@ -46,7 +46,7 @@ public class CloudBrowserFrame extends JFrame {
   private NavigationPanel navigationPanel;
 
   private IPlugInPort plugInPort;
-  private CloudPresenter cloudPresenter;  
+  private CloudPresenter cloudPresenter;
 
   private List<ProjectEntity> currentResults;
 
@@ -199,7 +199,8 @@ public class CloudBrowserFrame extends JFrame {
         if (count == 0) {
           getResultsScrollPane().showNoMatches();
           count++;
-        }
+        } else
+          getResultsScrollPane().finish();
       }
     });
   }
@@ -230,7 +231,7 @@ public class CloudBrowserFrame extends JFrame {
       });
     }
     return navigationPanel;
-  } 
+  }
 
   private void setPageNumber(int pageNumber) {
     this.pageNumber = pageNumber;
