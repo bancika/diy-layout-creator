@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -14,11 +15,13 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,16 +47,23 @@ public class ResultsScrollPanel extends JScrollPane {
   private static final Logger LOG = Logger.getLogger(ResultsScrollPanel.class);
 
   private JPanel resultsPanel;
+  /**
+   * This label goes at the end of the page. When it gets rendered we know that we need to request
+   * another page.
+   */
+  private JLabel loadMoreLabel;
 
   private ISwingUI mainUI;
   private CloudBrowserFrame cloudUI;
 
   private IPlugInPort plugInPort;
 
-  private boolean running;
+  private int currentLocation;
+  /**
+   * This flag tells us whether the loadMoreLabel should invoke a new data pull or not.
+   */
+  private boolean armed;
   private ILazyProvider<ProjectEntity> provider;
-
-  private int location;
 
   public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort,
       ILazyProvider<ProjectEntity> provider) {
@@ -68,9 +78,18 @@ public class ResultsScrollPanel extends JScrollPane {
     setViewportView(getResultsPanel());
   }
 
-  public void clear() {
+  public void startOver() {
+    currentLocation = 0;
     getResultsPanel().removeAll();
-    running = false;
+    armed = false;
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.gridx = 0;
+    gbc.gridy = 10000;
+    gbc.fill = GridBagConstraints.BOTH;
+    gbc.weightx = 0;
+    gbc.weighty = 100;
+    resultsPanel.add(getLoadMoreLabel(), gbc);
   }
 
   public void showNoMatches() {
@@ -86,12 +105,19 @@ public class ResultsScrollPanel extends JScrollPane {
     getResultsPanel().add(label, gbc);
   }
 
-  public void startBatch() {
-    this.getResultsPanel().remove(getLastLabel());
-    this.running = true;
+  public void addData(List<ProjectEntity> projects) {
+    if (projects == null || projects.isEmpty() && currentLocation == 0) {
+      showNoMatches();
+    } else {
+      for (int i = 0; i < projects.size(); i++) {
+        addProjectToDisplay(projects.get(i));
+        this.currentLocation++;
+      }
+      armed = true;
+    }    
   }
 
-  public void addProjectToDisplay(final ProjectEntity project) {
+  private JComponent addProjectToDisplay(final ProjectEntity project) {
     JLabel thumbnailLabel = new JLabel(loadImage(project.getThumbnailUrl()));
     JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
     nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
@@ -100,10 +126,6 @@ public class ResultsScrollPanel extends JScrollPane {
     descriptionArea.setFont(thumbnailLabel.getFont());
     descriptionArea.setLineWrap(true);
     descriptionArea.setWrapStyleWord(true);
-    // JLabel descriptionLabel = new JLabel("<html>" + project.getDescription() + "</html>");
-    // JScrollPane descriptionScroll = new JScrollPane(descriptionArea);
-    // descriptionScroll.setBorder(null);
-    // descriptionLabel.setMaximumSize(new Dimension(200, 100));
     JLabel categoryLabel = new JLabel("<html>Category: <b>" + project.getCategory() + "</b></html>");
     JLabel authorLabel = new JLabel("<html>Author: <b>" + project.getOwner() + "</b></html>");
     JLabel updatedLabel = new JLabel("<html>Last updated: <b>" + project.getUpdated() + "</b></html>");
@@ -178,7 +200,7 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.insets = new Insets(2, 2, 2, 2);
     gbc.gridx = 0;
-    gbc.gridy = location * 6;
+    gbc.gridy = currentLocation * 6;
     gbc.fill = GridBagConstraints.NONE;
     gbc.gridheight = 5;
     gbc.weightx = 0;
@@ -231,35 +253,26 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.insets = new Insets(2, 2, 2, 2);
     getResultsPanel().add(new JSeparator(), gbc);
 
-    location++;
+    return thumbnailLabel;
   }
 
-  public void finishBatch() {
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.NORTHWEST;
-    gbc.gridx = 0;
-    gbc.gridy = location * 6;
-    gbc.fill = GridBagConstraints.BOTH;
-    gbc.weightx = 0;
-    gbc.weighty = 100;
-    getResultsPanel().add(getLastLabel(), gbc);
-  }
+  private JLabel getLoadMoreLabel() {
+    if (loadMoreLabel == null) {
+      loadMoreLabel = new JLabel("Load more...") {
 
-  private JLabel lastLabel;
+        private static final long serialVersionUID = 1L;
 
-  private JLabel getLastLabel() {
-    if (lastLabel == null) {
-      lastLabel = new JLabel("Load more...") {
         @Override
         public void paint(Graphics g) {
-          if (running && provider.hasMore()) {
-            running = false;
-            provider.requestMore();
+          if (armed && provider.hasMoreData()) {
+            // disarm immediately so we don't trigger successive requests to the provider
+            armed = false;
+            provider.requestMoreData();
           }
         }
       };
     }
-    return lastLabel;
+    return loadMoreLabel;
   }
 
   private JPanel getResultsPanel() {

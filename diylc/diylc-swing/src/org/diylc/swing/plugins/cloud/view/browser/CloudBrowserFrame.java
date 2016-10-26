@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -43,7 +42,6 @@ public class CloudBrowserFrame extends JFrame {
 
   private SearchHeaderPanel searchHeaderPanel;
   private ResultsScrollPanel resultsScrollPane;
-  private NavigationPanel navigationPanel;
 
   private IPlugInPort plugInPort;
   private CloudPresenter cloudPresenter;
@@ -135,15 +133,6 @@ public class CloudBrowserFrame extends JFrame {
       gbc.weighty = 1;
       gbc.fill = GridBagConstraints.BOTH;
       searchPanel.add(getResultsScrollPane(), gbc);
-
-//      gbc.anchor = GridBagConstraints.NORTHWEST;
-//      gbc.insets = new Insets(2, 2, 2, 2);
-//      gbc.gridx = 0;
-//      gbc.gridy++;
-//      gbc.fill = GridBagConstraints.BOTH;
-//      gbc.weighty = 0;
-//      gbc.gridwidth = 3;
-//      searchPanel.add(getNavigationPanel(), gbc);
     }
     return searchPanel;
   }
@@ -155,11 +144,11 @@ public class CloudBrowserFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          setPageNumber(1);
+          CloudBrowserFrame.this.pageNumber = 1;
           CloudBrowserFrame.this.searchFor = getSearchHeaderPanel().getSearchText();
           CloudBrowserFrame.this.category = getSearchHeaderPanel().getCategory();
           CloudBrowserFrame.this.sort = getSearchHeaderPanel().getSorting();
-          getResultsScrollPane().clear();
+          getResultsScrollPane().startOver();
           search();
         }
       });
@@ -170,15 +159,15 @@ public class CloudBrowserFrame extends JFrame {
   private ResultsScrollPanel getResultsScrollPane() {
     if (resultsScrollPane == null) {
       resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, new ILazyProvider<ProjectEntity>() {
-        
+
         @Override
-        public void requestMore() {
-          setPageNumber(CloudBrowserFrame.this.pageNumber + 1);
+        public void requestMoreData() {
+          CloudBrowserFrame.this.pageNumber++;
           CloudBrowserFrame.this.search();
         }
 
         @Override
-        public boolean hasMore() {
+        public boolean hasMoreData() {
           return currentResults.size() == itemsPerPage;
         }
       });
@@ -203,52 +192,9 @@ public class CloudBrowserFrame extends JFrame {
       @Override
       public void complete(List<ProjectEntity> result) {
         CloudBrowserFrame.this.currentResults = result;
-        getResultsScrollPane().startBatch();
-
-        for (Iterator<ProjectEntity> i = result.iterator(); i.hasNext();) {
-          ProjectEntity project = i.next();
-          getResultsScrollPane().addProjectToDisplay(project);
-        }
-//        if (count == 0) {
-//          getResultsScrollPane().showNoMatches();
-//          count++;
-//        } else
-          getResultsScrollPane().finishBatch();
+        getResultsScrollPane().addData(result);
       }
     });
-  }
-
-  private NavigationPanel getNavigationPanel() {
-    if (navigationPanel == null) {
-      navigationPanel = new NavigationPanel();
-      navigationPanel.getPrevPageButton().addActionListener(new ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          if (CloudBrowserFrame.this.pageNumber > 1) {
-            setPageNumber(CloudBrowserFrame.this.pageNumber - 1);
-            CloudBrowserFrame.this.search();
-          }
-        }
-      });
-
-      navigationPanel.getNextPageButton().addActionListener(new ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          if (CloudBrowserFrame.this.currentResults != null && !CloudBrowserFrame.this.currentResults.isEmpty()) {
-            setPageNumber(CloudBrowserFrame.this.pageNumber + 1);
-            CloudBrowserFrame.this.search();
-          }
-        }
-      });
-    }
-    return navigationPanel;
-  }
-
-  private void setPageNumber(int pageNumber) {
-    this.pageNumber = pageNumber;
-    getNavigationPanel().getPageLabel().setText("Page " + pageNumber);
   }
 
   public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
