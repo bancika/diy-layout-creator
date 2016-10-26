@@ -66,6 +66,8 @@ public class ResultsScrollPanel extends JScrollPane {
   private boolean armed;
   private PagingProvider provider;
 
+  private Icon spinnerIcon = IconLoader.Spinning.getIcon();
+
   public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort, PagingProvider provider) {
     super();
     this.mainUI = mainUI;
@@ -109,6 +111,8 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.weightx = 1;
     gbc.weighty = Integer.MAX_VALUE;
     getResultsPanel().add(label, gbc);
+    getLoadMoreLabel().setText("");
+    getLoadMoreLabel().setIcon(null);
   }
 
   public void addData(List<ProjectEntity> projects) {
@@ -121,9 +125,14 @@ public class ResultsScrollPanel extends JScrollPane {
         this.currentLocation++;
       }
       armed = true;
+      if (provider.hasMoreData()) {
+        getLoadMoreLabel().setText("Querying the cloud for more results...");
+        getLoadMoreLabel().setIcon(spinnerIcon);
+      } else {
+        getLoadMoreLabel().setText("No more results.");
+        getLoadMoreLabel().setIcon(null);
+      }
     }
-
-    getLoadMoreLabel().setText(provider.hasMoreData() ? "Loading more data..." : "");
   }
 
   private JComponent addProjectToDisplay(final ProjectEntity project) {
@@ -290,10 +299,7 @@ public class ResultsScrollPanel extends JScrollPane {
               protected void done() {
                 try {
                   List<ProjectEntity> newResults = get();
-                  if (newResults != null && !newResults.isEmpty())
-                    addData(newResults);
-                  else
-                    getLoadMoreLabel().setText("");
+                  addData(newResults);
                 } catch (Exception e) {
                   cloudUI.showMessage("Search failed! Detailed message is in the logs. Please report to the author.",
                       "Search Failed", IView.ERROR_MESSAGE);

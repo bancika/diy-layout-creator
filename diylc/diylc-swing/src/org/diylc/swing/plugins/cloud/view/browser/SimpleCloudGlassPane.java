@@ -37,20 +37,20 @@ public class SimpleCloudGlassPane extends JPanel implements MouseListener, KeyLi
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
-    gbc.anchor = GridBagConstraints.LAST_LINE_START;
+    gbc.anchor = GridBagConstraints.CENTER;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     gbc.weighty = 1;
-    JLabel cloudLabel = new JLabel(IconLoader.CloudBig.getIcon());
+    JLabel cloudLabel = new JLabel(IconLoader.CloudWait.getIcon());
     cloudLabel.setHorizontalAlignment(SwingConstants.CENTER);
     add(cloudLabel, gbc);
-
-    gbc.gridy = 1;
-    gbc.weighty = 1.5;
-    gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-    JLabel label = new JLabel("<html><font size='5' color='#999999'>Querying the cloud...</font></html>");
-    label.setHorizontalAlignment(SwingConstants.CENTER);
-    add(label, gbc);
+//
+//    gbc.gridy = 1;
+//    gbc.weighty = 1.5;
+//    gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+//    JLabel label = new JLabel("<html><font size='5' color='#999999'>Querying the cloud...</font></html>");
+//    label.setHorizontalAlignment(SwingConstants.CENTER);
+//    add(label, gbc);
   }
 
   @Override
