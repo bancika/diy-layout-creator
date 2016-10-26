@@ -28,9 +28,9 @@ import org.diylc.images.IconLoader;
  * 
  * @author bancika
  */
-public class CloudGlassPane extends JPanel implements MouseListener, KeyListener {
+public class AnimatedCloudGlassPane extends JPanel implements MouseListener, KeyListener {
 
-  public static final CloudGlassPane GLASS_PANE = new CloudGlassPane();
+  public static final AnimatedCloudGlassPane GLASS_PANE = new AnimatedCloudGlassPane();
 
   private static final long serialVersionUID = -5344758920442881290L;
 
@@ -42,7 +42,7 @@ public class CloudGlassPane extends JPanel implements MouseListener, KeyListener
 
   private VolatileImage volatileImg;
 
-  public CloudGlassPane() {
+  public AnimatedCloudGlassPane() {
     addKeyListener(this);
     addMouseListener(this);
     setCursor(new Cursor(Cursor.WAIT_CURSOR));

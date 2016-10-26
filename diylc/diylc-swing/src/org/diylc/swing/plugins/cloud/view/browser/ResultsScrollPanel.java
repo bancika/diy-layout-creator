@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -29,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
@@ -36,6 +36,7 @@ import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.model.ProjectEntity;
+import org.diylc.plugins.cloud.presenter.PagingProvider;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.plugins.file.FileFilterEnum;
@@ -63,10 +64,9 @@ public class ResultsScrollPanel extends JScrollPane {
    * This flag tells us whether the loadMoreLabel should invoke a new data pull or not.
    */
   private boolean armed;
-  private ILazyProvider<ProjectEntity> provider;
+  private PagingProvider provider;
 
-  public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort,
-      ILazyProvider<ProjectEntity> provider) {
+  public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort, PagingProvider provider) {
     super();
     this.mainUI = mainUI;
     this.cloudUI = cloudUI;
@@ -78,18 +78,24 @@ public class ResultsScrollPanel extends JScrollPane {
     setViewportView(getResultsPanel());
   }
 
-  public void startOver() {
+  public void clearPrevious() {
     currentLocation = 0;
     getResultsPanel().removeAll();
     armed = false;
+  }
+
+  public void startSearch(List<ProjectEntity> projects) {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.gridx = 0;
     gbc.gridy = 10000;
     gbc.fill = GridBagConstraints.BOTH;
-    gbc.weightx = 0;
+    gbc.weightx = 1;
     gbc.weighty = 100;
+    gbc.gridwidth = 3;
     resultsPanel.add(getLoadMoreLabel(), gbc);
+
+    addData(projects);
   }
 
   public void showNoMatches() {
@@ -109,12 +115,15 @@ public class ResultsScrollPanel extends JScrollPane {
     if (projects == null || projects.isEmpty() && currentLocation == 0) {
       showNoMatches();
     } else {
+      LOG.info("Adding " + projects.size() + " projects to display.");
       for (int i = 0; i < projects.size(); i++) {
         addProjectToDisplay(projects.get(i));
         this.currentLocation++;
       }
       armed = true;
-    }    
+    }
+
+    getLoadMoreLabel().setText(provider.hasMoreData() ? "Loading more data..." : "");
   }
 
   private JComponent addProjectToDisplay(final ProjectEntity project) {
@@ -253,24 +262,50 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.insets = new Insets(2, 2, 2, 2);
     getResultsPanel().add(new JSeparator(), gbc);
 
+    getResultsPanel().invalidate();
+
     return thumbnailLabel;
   }
 
   private JLabel getLoadMoreLabel() {
     if (loadMoreLabel == null) {
-      loadMoreLabel = new JLabel("Load more...") {
+      loadMoreLabel = new JLabel("Loading more data...") {
 
         private static final long serialVersionUID = 1L;
 
         @Override
         public void paint(Graphics g) {
+          super.paint(g);
           if (armed && provider.hasMoreData()) {
             // disarm immediately so we don't trigger successive requests to the provider
             armed = false;
-            provider.requestMoreData();
+            SwingWorker<List<ProjectEntity>, Void> worker = new SwingWorker<List<ProjectEntity>, Void>() {
+
+              @Override
+              protected List<ProjectEntity> doInBackground() throws Exception {
+                return provider.requestMoreData();
+              }
+
+              @Override
+              protected void done() {
+                try {
+                  List<ProjectEntity> newResults = get();
+                  if (newResults != null && !newResults.isEmpty())
+                    addData(newResults);
+                  else
+                    getLoadMoreLabel().setText("");
+                } catch (Exception e) {
+                  cloudUI.showMessage("Search failed! Detailed message is in the logs. Please report to the author.",
+                      "Search Failed", IView.ERROR_MESSAGE);
+                }
+              }
+            };
+            worker.execute();
           }
         }
       };
+      loadMoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      loadMoreLabel.setFont(loadMoreLabel.getFont().deriveFont(10f));
     }
     return loadMoreLabel;
   }

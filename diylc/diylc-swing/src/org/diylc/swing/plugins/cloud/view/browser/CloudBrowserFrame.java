@@ -27,6 +27,7 @@ import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.plugins.cloud.presenter.PagingProvider;
 import org.diylc.swing.ISwingUI;
 
 public class CloudBrowserFrame extends JFrame {
@@ -45,15 +46,7 @@ public class CloudBrowserFrame extends JFrame {
 
   private IPlugInPort plugInPort;
   private CloudPresenter cloudPresenter;
-
-  private List<ProjectEntity> currentResults;
-
-  // search criteria
-  private String searchFor;
-  private String category;
-  private String sort;
-  private int pageNumber;
-  private int itemsPerPage = 10;
+  private PagingProvider pagingProvider;
 
   private ISwingUI swingUI;
 
@@ -64,11 +57,12 @@ public class CloudBrowserFrame extends JFrame {
     this.setPreferredSize(new Dimension(700, 640));
     this.plugInPort = plugInPort;
     this.cloudPresenter = cloudPresenter;
+    this.pagingProvider = new PagingProvider(cloudPresenter);
 
     setContentPane(getSearchPanel());
     this.pack();
     this.setLocationRelativeTo(swingUI.getOwnerFrame());
-    this.setGlassPane(new CloudGlassPane());
+    this.setGlassPane(SimpleCloudGlassPane.GLASS_PANE);
 
     JRootPane rootPane = SwingUtilities.getRootPane(getSearchHeaderPanel().getGoButton());
     rootPane.setDefaultButton(getSearchHeaderPanel().getGoButton());
@@ -144,11 +138,6 @@ public class CloudBrowserFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          CloudBrowserFrame.this.pageNumber = 1;
-          CloudBrowserFrame.this.searchFor = getSearchHeaderPanel().getSearchText();
-          CloudBrowserFrame.this.category = getSearchHeaderPanel().getCategory();
-          CloudBrowserFrame.this.sort = getSearchHeaderPanel().getSorting();
-          getResultsScrollPane().startOver();
           search();
         }
       });
@@ -158,29 +147,19 @@ public class CloudBrowserFrame extends JFrame {
 
   private ResultsScrollPanel getResultsScrollPane() {
     if (resultsScrollPane == null) {
-      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, new ILazyProvider<ProjectEntity>() {
-
-        @Override
-        public void requestMoreData() {
-          CloudBrowserFrame.this.pageNumber++;
-          CloudBrowserFrame.this.search();
-        }
-
-        @Override
-        public boolean hasMoreData() {
-          return currentResults.size() == itemsPerPage;
-        }
-      });
+      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, pagingProvider);
     }
     return resultsScrollPane;
   }
 
   private void search() {
+    getResultsScrollPane().clearPrevious();
     executeBackgroundTask(new ITask<List<ProjectEntity>>() {
 
       @Override
       public List<ProjectEntity> doInBackground() throws Exception {
-        return cloudPresenter.search(searchFor, category, sort, pageNumber, itemsPerPage);
+        return pagingProvider.startSession(getSearchHeaderPanel().getSearchText(),
+            getSearchHeaderPanel().getCategory(), getSearchHeaderPanel().getSorting());
       }
 
       @Override
@@ -191,8 +170,7 @@ public class CloudBrowserFrame extends JFrame {
 
       @Override
       public void complete(List<ProjectEntity> result) {
-        CloudBrowserFrame.this.currentResults = result;
-        getResultsScrollPane().addData(result);
+        getResultsScrollPane().startSearch(result);
       }
     });
   }
