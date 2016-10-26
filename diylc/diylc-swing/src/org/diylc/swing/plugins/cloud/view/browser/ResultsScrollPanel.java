@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -28,7 +30,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.text.DefaultCaret;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
@@ -139,11 +143,21 @@ public class ResultsScrollPanel extends JScrollPane {
     JLabel thumbnailLabel = new JLabel(loadImage(project.getThumbnailUrl()));
     JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
     nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
+
+    // JLabel descriptionArea = new JLabel("<html><p align='justify'>" + project.getDescription() +
+    // "</p></html>");
     JTextArea descriptionArea = new JTextArea(project.getDescription().replace("<br>", "\n"));
     descriptionArea.setEditable(false);
     descriptionArea.setFont(thumbnailLabel.getFont());
     descriptionArea.setLineWrap(true);
     descriptionArea.setWrapStyleWord(true);
+    descriptionArea.setFocusable(false);
+    descriptionArea.setRequestFocusEnabled(false);
+    DefaultCaret caret = (DefaultCaret) descriptionArea.getCaret();
+    caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+    descriptionArea.setEnabled(false);
+    // descriptionArea.setDisabledTextColor(descriptionArea.getSelectionColor());
+
     JLabel categoryLabel = new JLabel("<html>Category: <b>" + project.getCategory() + "</b></html>");
     JLabel authorLabel = new JLabel("<html>Author: <b>" + project.getOwner() + "</b></html>");
     JLabel updatedLabel = new JLabel("<html>Last updated: <b>" + project.getUpdated() + "</b></html>");
@@ -271,9 +285,7 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.insets = new Insets(2, 2, 2, 2);
     getResultsPanel().add(new JSeparator(), gbc);
 
-    getResultsPanel().invalidate();
-
-    return thumbnailLabel;
+    return nameLabel;
   }
 
   private JLabel getLoadMoreLabel() {

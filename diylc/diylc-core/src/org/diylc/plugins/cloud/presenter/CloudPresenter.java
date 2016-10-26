@@ -224,7 +224,7 @@ public class CloudPresenter {
       if (res instanceof List<?>) {
         @SuppressWarnings("unchecked")
         List<ProjectEntity> projects = (List<ProjectEntity>) res;
-        LOG.info("Received " + projects.size() + " results");
+        LOG.info("Received " + projects.size() + " results. Downloading thumbnails...");
         // Download thumbnails and replace urls with local paths to speed up loading in the main thread
         for (int i = 0; i < projects.size(); i++) {
           String url = projects.get(i).getThumbnailUrl();
@@ -236,6 +236,7 @@ public class CloudPresenter {
           projects.get(i).setThumbnailUrl(temp.getAbsolutePath());  
           fos.close();
         }
+        LOG.info("Finished downloading thumbnails.");
         return projects;
       }
       throw new CloudException("Unexpected server response received for search results: " + res.getClass().getName());

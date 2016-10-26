@@ -1,14 +1,17 @@
 package org.diylc.swing.plugins.statusbar;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.diylc.announcements.Announcement;
+import org.diylc.announcements.AnnouncementProvider;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.BadPositionException;
@@ -34,7 +39,9 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
@@ -53,11 +60,13 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   private JComboBox zoomBox;
   private UpdateLabel updateLabel;
+  private JLabel announcementLabel;
   private MemoryBar memoryPanel;
   private JLabel statusLabel;
   private JLabel sizeLabel;
 
   private IPlugInPort plugInPort;
+  private ISwingUI swingUI;
 
   // State variables
   private ComponentType componentSlot;
@@ -67,8 +76,13 @@ public class StatusBar extends JPanel implements IPlugIn {
   private List<String> stuckComponentNames;
   private String statusMessage;
 
+  private AnnouncementProvider announcementProvider;
+
   public StatusBar(ISwingUI swingUI) {
     super();
+    this.swingUI = swingUI;
+
+    this.announcementProvider = new AnnouncementProvider();
 
     setLayout(new GridBagLayout());
 
@@ -77,6 +91,29 @@ public class StatusBar extends JPanel implements IPlugIn {
     } catch (BadPositionException e) {
       LOG.error("Could not install status bar", e);
     }
+
+    swingUI.executeBackgroundTask(new ITask<String>() {
+
+      @Override
+      public String doInBackground() throws Exception {
+        Thread.sleep(1000);
+        return announcementProvider.getCurrentAnnouncements();
+      }
+
+      @Override
+      public void failed(Exception e) {
+        LOG.error("Error while fetching announcements", e);
+      }
+
+      @Override
+      public void complete(String result) {
+        if (result != null && result.length() > 0) {
+          StatusBar.this.swingUI.showMessage(result, "Public Announcements", IView.INFORMATION_MESSAGE);
+          announcementProvider.dismissed();
+        }
+      }
+
+    });
   }
 
   private JComboBox getZoomBox() {
@@ -105,6 +142,45 @@ public class StatusBar extends JPanel implements IPlugIn {
       updateLabel.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
     }
     return updateLabel;
+  }
+
+  public JLabel getAnnouncementLabel() {
+    if (announcementLabel == null) {
+      announcementLabel = new JLabel(IconLoader.Megaphone.getIcon());
+      announcementLabel.setToolTipText("Check for public announcements");
+      announcementLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      announcementLabel.addMouseListener(new MouseAdapter() {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          swingUI.executeBackgroundTask(new ITask<String>() {
+
+            @Override
+            public String doInBackground() throws Exception {
+              return announcementProvider.getCurrentAnnouncements();
+            }
+
+            @Override
+            public void failed(Exception e) {
+              LOG.error("Error while fetching announcements", e);
+              swingUI.showMessage("Could not fetch public announcements.", "Error", IView.ERROR_MESSAGE);
+            }
+
+            @Override
+            public void complete(String result) {
+              if (result != null && result.length() > 0) {
+                swingUI.showMessage(result, "Public Announcements", IView.INFORMATION_MESSAGE);
+                announcementProvider.dismissed();
+              } else
+                swingUI.showMessage("No new public announcements available.", "Public Announcements",
+                    IView.INFORMATION_MESSAGE);
+            }
+
+          });
+        }
+      });
+    }
+    return announcementLabel;
   }
 
   private MemoryBar getMemoryPanel() {
@@ -165,19 +241,25 @@ public class StatusBar extends JPanel implements IPlugIn {
     // 4)));
     zoomPanel.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 
-    gbc.gridx = 1;
+    gbc.gridx++;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.weightx = 0;
     add(zoomPanel, gbc);
 
-    gbc.gridx = 2;
+    gbc.gridx++;
+    gbc.insets = new Insets(0, 2, 0, 2);
     add(getSizeLabel(), gbc);
 
-    gbc.gridx = 3;
+    gbc.gridx++;
+    add(getAnnouncementLabel(), gbc);
+
+    gbc.gridx++;
+    gbc.insets = new Insets(0, 0, 0, 0);
     add(getUpdateLabel(), gbc);
 
-    gbc.gridx = 4;
+    gbc.gridx++;
     gbc.fill = GridBagConstraints.NONE;
+    gbc.insets = new Insets(0, 0, 0, 4);
     add(getMemoryPanel(), gbc);
 
     gbc.gridx = 5;
