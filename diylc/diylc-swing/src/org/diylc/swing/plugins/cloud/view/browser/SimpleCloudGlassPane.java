@@ -3,6 +3,7 @@ package org.diylc.swing.plugins.cloud.view.browser;
 import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -41,6 +42,7 @@ public class SimpleCloudGlassPane extends JPanel implements MouseListener, KeyLi
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     gbc.weighty = 1;
+    gbc.insets = new Insets(0, 0, 80, 0);
     JLabel cloudLabel = new JLabel(IconLoader.CloudWait.getIcon());
     cloudLabel.setHorizontalAlignment(SwingConstants.CENTER);
     add(cloudLabel, gbc);

@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -123,12 +122,20 @@ public class ResultsScrollPanel extends JScrollPane {
     if (projects == null || projects.isEmpty() && currentLocation == 0) {
       showNoMatches();
     } else {
+      final Point old = getViewport().getViewPosition();
       LOG.info("Adding " + projects.size() + " projects to display.");
       for (int i = 0; i < projects.size(); i++) {
         addProjectToDisplay(projects.get(i));
         this.currentLocation++;
       }
       armed = true;
+      SwingUtilities.invokeLater(new Runnable() {
+        
+        @Override
+        public void run() {
+          getViewport().setViewPosition(old); 
+        }
+      });      
       if (provider.hasMoreData()) {
         getLoadMoreLabel().setText("Querying the cloud for more results...");
         getLoadMoreLabel().setIcon(spinnerIcon);

@@ -108,7 +108,7 @@ public class StatusBar extends JPanel implements IPlugIn {
       @Override
       public void complete(String result) {
         if (result != null && result.length() > 0) {
-          StatusBar.this.swingUI.showMessage(result, "Public Announcements", IView.INFORMATION_MESSAGE);
+          StatusBar.this.swingUI.showMessage(result, "Public Announcement", IView.INFORMATION_MESSAGE);
           announcementProvider.dismissed();
         }
       }
@@ -169,7 +169,7 @@ public class StatusBar extends JPanel implements IPlugIn {
             @Override
             public void complete(String result) {
               if (result != null && result.length() > 0) {
-                swingUI.showMessage(result, "Public Announcements", IView.INFORMATION_MESSAGE);
+                swingUI.showMessage(result, "Public Announcement", IView.INFORMATION_MESSAGE);
                 announcementProvider.dismissed();
               } else
                 swingUI.showMessage("No new public announcements available.", "Public Announcements",
