@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.diylc.announcements.Announcement;
 import org.diylc.announcements.AnnouncementProvider;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
@@ -172,7 +170,7 @@ public class StatusBar extends JPanel implements IPlugIn {
                 swingUI.showMessage(result, "Public Announcement", IView.INFORMATION_MESSAGE);
                 announcementProvider.dismissed();
               } else
-                swingUI.showMessage("No new public announcements available.", "Public Announcements",
+                swingUI.showMessage("No new public announcements available.", "Public Announcement",
                     IView.INFORMATION_MESSAGE);
             }
 
@@ -281,7 +279,7 @@ public class StatusBar extends JPanel implements IPlugIn {
         EventType.SELECTION_CHANGED, EventType.STATUS_MESSAGE_CHANGED);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "incomplete-switch"})
   @Override
   public void processMessage(EventType eventType, Object... params) {
     switch (eventType) {

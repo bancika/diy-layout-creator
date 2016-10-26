@@ -9,6 +9,8 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,6 +59,8 @@ public class ResultsScrollPanel extends JScrollPane {
    */
   private JLabel loadMoreLabel;
 
+  private JLabel topLabel;
+
   private ISwingUI mainUI;
   private CloudBrowserFrame cloudUI;
 
@@ -95,16 +99,25 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.gridx = 0;
     gbc.gridy = 10000;
     gbc.fill = GridBagConstraints.BOTH;
-    gbc.weightx = 1;
+    gbc.weightx = 100;
     gbc.weighty = 100;
-    gbc.gridwidth = 3;
+    gbc.gridwidth = 2;
     resultsPanel.add(getLoadMoreLabel(), gbc);
+
+    gbc.gridx = 2;
+    gbc.gridwidth = 1;
+    gbc.weightx = 0;
+    gbc.insets = new Insets(0, 0, 0, 2);
+    gbc.fill = GridBagConstraints.NONE;
+    gbc.anchor = GridBagConstraints.LINE_END;
+    resultsPanel.add(getTopLabel(), gbc);
 
     addData(projects);
   }
 
   public void showNoMatches() {
-    JLabel label = new JLabel("<html><font size='5'>No projects match the search criteria.</font></html>");
+    JLabel label =
+        new JLabel("<html><font size='4' color='#999999'>No projects match the search criteria.</font></html>");
     label.setHorizontalAlignment(SwingConstants.CENTER);
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(2, 2, 2, 2);
@@ -116,6 +129,7 @@ public class ResultsScrollPanel extends JScrollPane {
     getResultsPanel().add(label, gbc);
     getLoadMoreLabel().setText("");
     getLoadMoreLabel().setIcon(null);
+    remove(getTopLabel());
   }
 
   public void addData(List<ProjectEntity> projects) {
@@ -130,12 +144,12 @@ public class ResultsScrollPanel extends JScrollPane {
       }
       armed = true;
       SwingUtilities.invokeLater(new Runnable() {
-        
+
         @Override
         public void run() {
-          getViewport().setViewPosition(old); 
+          getViewport().setViewPosition(old);
         }
-      });      
+      });
       if (provider.hasMoreData()) {
         getLoadMoreLabel().setText("Querying the cloud for more results...");
         getLoadMoreLabel().setIcon(spinnerIcon);
@@ -293,6 +307,20 @@ public class ResultsScrollPanel extends JScrollPane {
     getResultsPanel().add(new JSeparator(), gbc);
 
     return nameLabel;
+  }
+
+  public JLabel getTopLabel() {
+    if (topLabel == null) {
+      topLabel = new JLabel("<html><font color='blue'><u>To the top</u></html>");
+      topLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      topLabel.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          getViewport().setViewPosition(new Point(0, 0));
+        }
+      });
+    }
+    return topLabel;
   }
 
   private JLabel getLoadMoreLabel() {
