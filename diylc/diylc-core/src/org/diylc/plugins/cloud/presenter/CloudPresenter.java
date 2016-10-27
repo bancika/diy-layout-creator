@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.model.UserEntity;
@@ -249,6 +250,24 @@ public class CloudPresenter {
   public String[] getSortings() throws CloudException {
     try {
       return service.getSortings().toArray(new String[0]);
+    } catch (Exception e) {
+      throw new CloudException(e);
+    }
+  }
+
+  public List<CommentEntity> GetComments(int projectId) throws CloudException {
+    try {
+      Object res = service.getComments(projectId);
+      if (res == null)
+        throw new CloudException("Failed to retreive search results.");
+      if (res instanceof String)
+        throw new CloudException(res.toString());
+      if (res instanceof List<?>) {
+        @SuppressWarnings("unchecked")
+        List<CommentEntity> comments = (List<CommentEntity>) res;
+        return comments;
+      }
+      throw new CloudException("Unexpected server response received for comments: " + res.getClass().getName());
     } catch (Exception e) {
       throw new CloudException(e);
     }

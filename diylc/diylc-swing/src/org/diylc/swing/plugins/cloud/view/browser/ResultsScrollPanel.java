@@ -41,6 +41,8 @@ import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.model.ProjectEntity;
+import org.diylc.plugins.cloud.presenter.CloudException;
+import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.PagingProvider;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
@@ -73,14 +75,18 @@ public class ResultsScrollPanel extends JScrollPane {
   private boolean armed;
   private PagingProvider provider;
 
+  private CloudPresenter cloudPresenter;
+
   private Icon spinnerIcon = IconLoader.Spinning.getIcon();
 
-  public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort, PagingProvider provider) {
+  public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort,
+      PagingProvider provider, CloudPresenter cloudPresenter) {
     super();
     this.mainUI = mainUI;
     this.cloudUI = cloudUI;
     this.plugInPort = plugInPort;
     this.provider = provider;
+    this.cloudPresenter = cloudPresenter;
 
     this.getVerticalScrollBar().setUnitIncrement(16);
     this.setBorder(null);
@@ -183,6 +189,17 @@ public class ResultsScrollPanel extends JScrollPane {
         new JLabel(Integer.toString(project.getCommentCount()), IconLoader.Messages.getIcon(), SwingConstants.LEFT);
     commentLabel.setToolTipText("Click to see and add public comments");
     commentLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    commentLabel.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        try {
+          cloudUI.showMessage(cloudPresenter.GetComments(project.getId()).toString(), "Comments", IView.INFORMATION_MESSAGE);
+        } catch (CloudException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+    });
 
     JLabel viewLabel =
         new JLabel(Integer.toString(project.getViewCount()), IconLoader.Eye.getIcon(), SwingConstants.LEFT);

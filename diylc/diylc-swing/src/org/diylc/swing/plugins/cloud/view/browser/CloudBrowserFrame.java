@@ -147,7 +147,7 @@ public class CloudBrowserFrame extends JFrame {
 
   private ResultsScrollPanel getResultsScrollPane() {
     if (resultsScrollPane == null) {
-      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, pagingProvider);
+      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, pagingProvider, cloudPresenter);
     }
     return resultsScrollPane;
   }

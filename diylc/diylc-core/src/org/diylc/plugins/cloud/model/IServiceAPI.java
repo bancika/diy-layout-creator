@@ -133,4 +133,13 @@ public interface IServiceAPI {
    * @return a {@link List} of available sortings.
    */
   List<String> getSortings();
+
+  /**
+   * Returns all available comments for the given projectId.
+   * 
+   * @param projectId
+   * @return string with error message if the error occurred or a list of {@link CommentEntity}
+   *         objects.
+   */
+  Object getComments(@ParamName("projectId") int projectId);
 }
