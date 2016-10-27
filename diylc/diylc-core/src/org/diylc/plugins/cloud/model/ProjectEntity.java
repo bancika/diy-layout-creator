@@ -14,13 +14,15 @@ public class ProjectEntity implements Serializable {
   private String updated;
   private String thumbnailUrl;
   private String downloadUrl;
+  private int viewCount;
+  private int downloadCount;
 
   public ProjectEntity() {
     super();
   }
 
   public ProjectEntity(int id, String name, String description, String owner, String category, String updated,
-      String thumbnailUrl, String downloadUrl) {
+      String thumbnailUrl, String downloadUrl, int viewCount, int downloadCount) {
     super();
     this.id = id;
     this.name = name;
@@ -30,6 +32,8 @@ public class ProjectEntity implements Serializable {
     this.updated = updated;
     this.thumbnailUrl = thumbnailUrl;
     this.downloadUrl = downloadUrl;
+    this.viewCount = viewCount;
+    this.downloadCount = downloadCount;
   }
 
   public int getId() {
@@ -96,31 +100,36 @@ public class ProjectEntity implements Serializable {
     this.downloadUrl = downloadUrl;
   }
 
-  // public Action getDownload() {
-  //
-  // Action a = new AbstractAction() {
-  //
-  // @Override
-  // public void actionPerformed(ActionEvent e) {
-  // JOptionPane.showMessageDialog(null, name);
-  // }
-  // };
-  // a.putValue(AbstractAction.NAME, "Download");
-  // return a;
-  // }
-  //
+  public int getViewCount() {
+    return viewCount;
+  }
+
+  public void setViewCount(int viewCount) {
+    this.viewCount = viewCount;
+  }
+
+  public int getDownloadCount() {
+    return downloadCount;
+  }
+
+  public void setDownloadCount(int downloadCount) {
+    this.downloadCount = downloadCount;
+  } 
+
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((category == null) ? 0 : category.hashCode());
     result = prime * result + ((description == null) ? 0 : description.hashCode());
+    result = prime * result + downloadCount;
     result = prime * result + ((downloadUrl == null) ? 0 : downloadUrl.hashCode());
     result = prime * result + id;
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((owner == null) ? 0 : owner.hashCode());
     result = prime * result + ((thumbnailUrl == null) ? 0 : thumbnailUrl.hashCode());
     result = prime * result + ((updated == null) ? 0 : updated.hashCode());
+    result = prime * result + viewCount;
     return result;
   }
 
@@ -142,6 +151,8 @@ public class ProjectEntity implements Serializable {
       if (other.description != null)
         return false;
     } else if (!description.equals(other.description))
+      return false;
+    if (downloadCount != other.downloadCount)
       return false;
     if (downloadUrl == null) {
       if (other.downloadUrl != null)
@@ -169,6 +180,8 @@ public class ProjectEntity implements Serializable {
       if (other.updated != null)
         return false;
     } else if (!updated.equals(other.updated))
+      return false;
+    if (viewCount != other.viewCount)
       return false;
     return true;
   }

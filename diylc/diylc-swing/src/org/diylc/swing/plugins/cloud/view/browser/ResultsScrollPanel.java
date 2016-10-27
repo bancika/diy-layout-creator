@@ -101,7 +101,7 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.fill = GridBagConstraints.BOTH;
     gbc.weightx = 100;
     gbc.weighty = 100;
-    gbc.gridwidth = 2;
+    gbc.gridwidth = 4;
     resultsPanel.add(getLoadMoreLabel(), gbc);
 
     gbc.gridx = 2;
@@ -178,6 +178,13 @@ public class ResultsScrollPanel extends JScrollPane {
     caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
     descriptionArea.setEnabled(false);
     // descriptionArea.setDisabledTextColor(descriptionArea.getSelectionColor());
+
+    JLabel viewLabel =
+        new JLabel(Integer.toString(project.getViewCount()), IconLoader.Eye.getIcon(), SwingConstants.LEFT);
+    viewLabel.setToolTipText("View count");
+    JLabel downloadLabel =
+        new JLabel(Integer.toString(project.getDownloadCount()), IconLoader.Download.getIcon(), SwingConstants.LEFT);
+    downloadLabel.setToolTipText("Download count");
 
     JLabel categoryLabel = new JLabel("<html>Category: <b>" + project.getCategory() + "</b></html>");
     JLabel authorLabel = new JLabel("<html>Author: <b>" + project.getOwner() + "</b></html>");
@@ -260,30 +267,37 @@ public class ResultsScrollPanel extends JScrollPane {
     getResultsPanel().add(thumbnailLabel, gbc);
 
     gbc.gridheight = 1;
-    gbc.gridx = 1;
-    gbc.weightx = 1;
+    gbc.gridx++;
+    gbc.weightx = 1000;
     gbc.insets = new Insets(2, 6, 2, 2);
     getResultsPanel().add(nameLabel, gbc);
+
+    gbc.gridx++;
+    gbc.weightx = 0;
+    getResultsPanel().add(viewLabel, gbc);
+
+    gbc.gridx++;
+    getResultsPanel().add(downloadLabel, gbc);
 
     gbc.gridy++;
     gbc.gridx = 1;
     gbc.weighty = 1;
     gbc.weightx = 1;
-    gbc.gridwidth = 2;
+    gbc.gridwidth = 4;
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.insets = new Insets(2, 6, 2, 2);
     getResultsPanel().add(descriptionArea, gbc);
 
     gbc.gridy++;
-    gbc.gridx = 1;
     gbc.gridwidth = 1;
     gbc.fill = GridBagConstraints.NONE;
     gbc.weighty = 0;
     getResultsPanel().add(categoryLabel, gbc);
 
-    gbc.gridx = 2;
+    gbc.gridx++;
     gbc.gridheight = 3;
+    gbc.gridwidth = 2;
     gbc.insets = new Insets(2, 2, 2, 2);
     gbc.anchor = GridBagConstraints.SOUTHEAST;
     getResultsPanel().add(downloadButton, gbc);
@@ -300,7 +314,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
     gbc.gridx = 0;
     gbc.gridy++;
-    gbc.gridwidth = 3;
+    gbc.gridwidth = 5;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     gbc.insets = new Insets(2, 2, 2, 2);
