@@ -152,7 +152,22 @@ public class CloudPresenter {
     } catch (Exception e) {
       throw new CloudException(e);
     }
+  }
 
+  public void postComment(int projectId, String comment) throws CloudException {
+    String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
+    String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
+
+    if (username == null || token == null)
+      throw new CloudException("Login failed. Please try to login again.");
+
+    try {
+      String res = service.postComment(username, token, getMachineId(), projectId, comment);
+      if (!res.equals(SUCCESS))
+        throw new CloudException(res);
+    } catch (Exception e) {
+      throw new CloudException(e);
+    }
   }
 
   public void createUserAccount(String username, String password, String email, String website, String bio)
@@ -183,6 +198,10 @@ public class CloudPresenter {
     if (res instanceof UserEntity)
       return (UserEntity) res;
     throw new CloudException("Unexpected server response received for category list: " + res.getClass().getName());
+  }
+
+  public String getCurrentUsername() {
+    return ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
   }
 
   public void updatePassword(String oldPassword, String newPassword) throws CloudException {
@@ -255,7 +274,7 @@ public class CloudPresenter {
     }
   }
 
-  public List<CommentEntity> GetComments(int projectId) throws CloudException {
+  public List<CommentEntity> getComments(int projectId) throws CloudException {
     try {
       Object res = service.getComments(projectId);
       if (res == null)
@@ -272,6 +291,7 @@ public class CloudPresenter {
       throw new CloudException(e);
     }
   }
+
 
   private String getMachineId() {
     if (machineId == null) {

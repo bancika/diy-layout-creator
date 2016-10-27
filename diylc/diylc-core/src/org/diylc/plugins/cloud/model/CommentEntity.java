@@ -1,9 +1,13 @@
 package org.diylc.plugins.cloud.model;
 
-public class CommentEntity {
+import java.io.Serializable;
+
+public class CommentEntity implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private int id;
-  private int userId;
+  private int parentId;
   private String username;
   private String comment;
   private String postedAt;
@@ -16,12 +20,12 @@ public class CommentEntity {
     this.id = id;
   }
 
-  public int getUserId() {
-    return userId;
+  public int getParentId() {
+    return parentId;
   }
 
-  public void setUserId(int userId) {
-    this.userId = userId;
+  public void setParentId(int parentId) {
+    this.parentId = parentId;
   }
 
   public String getUsername() {
@@ -40,12 +44,12 @@ public class CommentEntity {
     this.comment = comment;
   }
 
-  public String getDate() {
+  public String getPostedAt() {
     return postedAt;
   }
 
-  public void setDate(String date) {
-    this.postedAt = date;
+  public void setPostedAt(String postedAt) {
+    this.postedAt = postedAt;
   }
 
   @Override
@@ -53,9 +57,9 @@ public class CommentEntity {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((comment == null) ? 0 : comment.hashCode());
-    result = prime * result + ((postedAt == null) ? 0 : postedAt.hashCode());
     result = prime * result + id;
-    result = prime * result + userId;
+    result = prime * result + parentId;
+    result = prime * result + ((postedAt == null) ? 0 : postedAt.hashCode());
     result = prime * result + ((username == null) ? 0 : username.hashCode());
     return result;
   }
@@ -74,14 +78,14 @@ public class CommentEntity {
         return false;
     } else if (!comment.equals(other.comment))
       return false;
+    if (id != other.id)
+      return false;
+    if (parentId != other.parentId)
+      return false;
     if (postedAt == null) {
       if (other.postedAt != null)
         return false;
     } else if (!postedAt.equals(other.postedAt))
-      return false;
-    if (id != other.id)
-      return false;
-    if (userId != other.userId)
       return false;
     if (username == null) {
       if (other.username != null)

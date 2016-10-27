@@ -125,6 +125,20 @@ public interface IServiceAPI {
       @ParamName("thumbnail") File thumbnail, @ParamName("project") File project);
 
   /**
+   * Posts a comment to the specified project.
+   * 
+   * @param username
+   * @param token
+   * @param machineId
+   * @param projectId
+   * @param comment
+   * @return
+   */
+  String postComment(@ParamName("username") String username, @ParamName("token") String token,
+      @ParamName("machineId") String machineId, @ParamName("projectId") Integer projectId,
+      @ParamName("comment") String comment);
+
+  /**
    * @return a {@link List} of available categories.
    */
   List<String> getCategories();

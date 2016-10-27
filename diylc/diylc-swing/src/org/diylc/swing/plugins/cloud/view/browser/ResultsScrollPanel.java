@@ -40,12 +40,13 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
+import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
-import org.diylc.plugins.cloud.presenter.CloudException;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.PagingProvider;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
+import org.diylc.swing.plugins.cloud.view.CommentDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 
 public class ResultsScrollPanel extends JScrollPane {
@@ -192,12 +193,26 @@ public class ResultsScrollPanel extends JScrollPane {
     commentLabel.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        try {
-          cloudUI.showMessage(cloudPresenter.GetComments(project.getId()).toString(), "Comments", IView.INFORMATION_MESSAGE);
-        } catch (CloudException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-        }
+        cloudUI.executeBackgroundTask(new ITask<List<CommentEntity>>() {
+
+          @Override
+          public List<CommentEntity> doInBackground() throws Exception {
+            return cloudPresenter.getComments(project.getId());
+          }
+
+          @Override
+          public void failed(Exception e) {
+            cloudUI.showMessage("Could not open file. Detailed message is in the logs.", "Cloud Error",
+                IView.ERROR_MESSAGE);
+          }
+
+          @Override
+          public void complete(List<CommentEntity> result) {
+            CommentDialog dialog = new CommentDialog(cloudUI, project, result, cloudPresenter);
+            dialog.setVisible(true);
+          }
+
+        });
       }
     });
 
@@ -262,7 +277,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
                   @Override
                   public void failed(Exception e) {
-                    mainUI.showMessage("Could not open file. Detailed message is in the logs", "Error",
+                    mainUI.showMessage("Could not open file. Detailed message is in the logs.", "Error",
                         ISwingUI.ERROR_MESSAGE);
                   }
                 });
@@ -271,7 +286,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
             @Override
             public void failed(Exception e) {
-              cloudUI.showMessage("Could not save to file. Detailed message is in the logs", "Error",
+              cloudUI.showMessage("Could not save to file. Detailed message is in the logs.", "Error",
                   ISwingUI.ERROR_MESSAGE);
             }
           });
@@ -388,8 +403,8 @@ public class ResultsScrollPanel extends JScrollPane {
                   List<ProjectEntity> newResults = get();
                   addData(newResults);
                 } catch (Exception e) {
-                  cloudUI.showMessage("Search failed! Detailed message is in the logs. Please report to the author.",
-                      "Search Failed", IView.ERROR_MESSAGE);
+                  cloudUI.showMessage("Search failed! Detailed message is in the logs.", "Search Failed",
+                      IView.ERROR_MESSAGE);
                 }
               }
             };

@@ -136,7 +136,7 @@ public class DialogFactory {
   public LoginDialog createLoginDialog() {
     LoginDialog dialog = new LoginDialog(mainFrame);
     return dialog;
-  }
+  }  
 
   public UploadDialog createUploadDialog(IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
     UploadDialog dialog = new UploadDialog(mainFrame, plugInPort, cloudPresenter);

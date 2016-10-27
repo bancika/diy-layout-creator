@@ -11,7 +11,7 @@ public class UserEntity implements Serializable {
   private String website;
   private String bio;
 
-  public UserEntity(String userName, String email, String website, String bio) {
+  public UserEntity(String username, String email, String website, String bio) {
     super();
     this.username = username;
     this.email = email;
