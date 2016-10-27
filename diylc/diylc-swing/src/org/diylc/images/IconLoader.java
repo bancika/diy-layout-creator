@@ -8,8 +8,6 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import com.sun.org.apache.xml.internal.serializer.utils.Messages;
-
 /**
  * Loads image resources as Icons.
  * 
