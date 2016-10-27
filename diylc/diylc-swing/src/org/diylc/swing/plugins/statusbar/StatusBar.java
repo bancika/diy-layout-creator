@@ -95,7 +95,7 @@ public class StatusBar extends JPanel implements IPlugIn {
       @Override
       public String doInBackground() throws Exception {
         Thread.sleep(1000);
-        return announcementProvider.getCurrentAnnouncements();
+        return announcementProvider.getCurrentAnnouncements(false);
       }
 
       @Override
@@ -145,7 +145,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   public JLabel getAnnouncementLabel() {
     if (announcementLabel == null) {
       announcementLabel = new JLabel(IconLoader.Megaphone.getIcon());
-      announcementLabel.setToolTipText("Check for public announcements");
+      announcementLabel.setToolTipText("Click to fetch the most recent public announcement");
       announcementLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
       announcementLabel.addMouseListener(new MouseAdapter() {
 
@@ -155,7 +155,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
             @Override
             public String doInBackground() throws Exception {
-              return announcementProvider.getCurrentAnnouncements();
+              return announcementProvider.getCurrentAnnouncements(true);
             }
 
             @Override

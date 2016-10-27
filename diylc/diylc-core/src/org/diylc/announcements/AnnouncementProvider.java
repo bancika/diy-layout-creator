@@ -37,13 +37,13 @@ public class AnnouncementProvider {
     service = factory.createProxy(IAnnouncementService.class, serviceUrl);
   }
 
-  public String getCurrentAnnouncements() throws ParseException {
+  public String getCurrentAnnouncements(boolean forceLast) throws ParseException {
     announcements = service.getAnnouncements();
     boolean hasUnread = false;
     StringBuilder sb = new StringBuilder("<html>");
     for (int i = 0; i < announcements.size(); i++) {
       Date date = dateFormat.parse(announcements.get(i).getDate());
-      if (lastDate == null || lastDate.before(date)) {
+      if (lastDate == null || lastDate.before(date) || (forceLast && i == announcements.size() - 1)) {
         sb.append("<font size='4'><b>").append(announcements.get(i).getTitle()).append("</b> on ")
             .append(announcements.get(i).getDate()).append("</font>").append("<p>")
             .append(announcements.get(i).getText()).append("</p>");
