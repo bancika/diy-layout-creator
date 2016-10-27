@@ -40,23 +40,25 @@ public class CloudPresenter {
   private boolean loggedIn = false;
 
   public CloudPresenter(CloudListener listener) {
-    serviceUrl =
-        ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1");
-    ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
-    service = factory.createProxy(IServiceAPI.class, serviceUrl);
-    if (service == null)
-      LOG.warn("Service proxy not created!");
     this.listener = listener;
   }
 
+  public IServiceAPI getService() {
+    if (service == null) {
+      serviceUrl =
+          ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1");
+      ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
+      service = factory.createProxy(IServiceAPI.class, serviceUrl);
+    }
+    return service;
+  }
+
   public boolean logIn(String username, String password) throws CloudException {
-    if (service == null)
-      return false;
     LOG.info("Trying to login to cloud as " + username);
 
     String res;
     try {
-      res = service.login(username, password, getMachineId());
+      res = getService().login(username, password, getMachineId());
     } catch (Exception e) {
       throw new CloudException(e);
     }
@@ -75,9 +77,6 @@ public class CloudPresenter {
   }
 
   public boolean tryLogInWithToken() throws CloudException {
-    if (service == null)
-      return false;
-
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
     String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
 
@@ -85,7 +84,7 @@ public class CloudPresenter {
       LOG.info("Trying to login to cloud using a token as " + username);
       String res;
       try {
-        res = service.loginWithToken(username, token, getMachineId());
+        res = getService().loginWithToken(username, token, getMachineId());
       } catch (Exception e) {
         throw new CloudException(e);
       }
@@ -117,7 +116,7 @@ public class CloudPresenter {
     if (categories == null) {
       Object res;
       try {
-        res = service.getCategories();
+        res = getService().getCategories();
         if (res != null && res.equals(ERROR))
           throw new CloudException("Could not fetch categories from the server.");
         if (res instanceof List<?>) {
@@ -145,7 +144,7 @@ public class CloudPresenter {
 
     try {
       String res =
-          service.upload(username, token, getMachineId(), projectName, category, description, diylcVersion, keywords,
+          getService().upload(username, token, getMachineId(), projectName, category, description, diylcVersion, keywords,
               thumbnail, project);
       if (!res.equals(SUCCESS))
         throw new CloudException(res);
@@ -162,7 +161,7 @@ public class CloudPresenter {
       throw new CloudException("Login failed. Please try to login again.");
 
     try {
-      String res = service.postComment(username, token, getMachineId(), projectId, comment);
+      String res = getService().postComment(username, token, getMachineId(), projectId, comment);
       if (!res.equals(SUCCESS))
         throw new CloudException(res);
     } catch (Exception e) {
@@ -173,7 +172,7 @@ public class CloudPresenter {
   public void createUserAccount(String username, String password, String email, String website, String bio)
       throws CloudException {
     try {
-      String res = service.createUser(username, password, email, website, bio);
+      String res = getService().createUser(username, password, email, website, bio);
       if (res == null)
         throw new CloudException("Could not create user account.");
       if (!SUCCESS.equals(res))
@@ -189,7 +188,7 @@ public class CloudPresenter {
 
     Object res;
     try {
-      res = service.getUserDetails(username, token, getMachineId());
+      res = getService().getUserDetails(username, token, getMachineId());
     } catch (Exception e) {
       throw new CloudException(e);
     }
@@ -209,7 +208,7 @@ public class CloudPresenter {
 
     String res;
     try {
-      res = service.updatePassword(username, oldPassword, newPassword);
+      res = getService().updatePassword(username, oldPassword, newPassword);
     } catch (Exception e) {
       throw new CloudException(e);
     }
@@ -223,7 +222,7 @@ public class CloudPresenter {
 
     String res;
     try {
-      res = service.updateUserDetails(username, token, getMachineId(), email, website, bio);
+      res = getService().updateUserDetails(username, token, getMachineId(), email, website, bio);
     } catch (Exception e) {
       throw new CloudException(e);
     }
@@ -235,7 +234,7 @@ public class CloudPresenter {
       throws CloudException {
     LOG.info(String.format("search(%1$s,%2$s,%3$s,%4$d,%5$d)", criteria, category, sortOrder, pageNumber, itemsPerPage));
     try {
-      Object res = service.search(criteria, category, pageNumber, itemsPerPage, sortOrder);
+      Object res = getService().search(criteria, category, pageNumber, itemsPerPage, sortOrder);
       // Thread.sleep(2000);
       if (res == null)
         throw new CloudException("Failed to retreive search results.");
@@ -268,7 +267,7 @@ public class CloudPresenter {
 
   public String[] getSortings() throws CloudException {
     try {
-      return service.getSortings().toArray(new String[0]);
+      return getService().getSortings().toArray(new String[0]);
     } catch (Exception e) {
       throw new CloudException(e);
     }
@@ -276,7 +275,7 @@ public class CloudPresenter {
 
   public List<CommentEntity> getComments(int projectId) throws CloudException {
     try {
-      Object res = service.getComments(projectId);
+      Object res = getService().getComments(projectId);
       if (res == null)
         throw new CloudException("Failed to retreive search results.");
       if (res instanceof String)
