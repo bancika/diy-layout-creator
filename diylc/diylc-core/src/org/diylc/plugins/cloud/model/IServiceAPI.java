@@ -94,7 +94,6 @@ public interface IServiceAPI {
    * 
    * @param criteria
    * @param category
-   * @param format
    * @param page
    * @param itemsPerPage
    * @param sort
@@ -102,8 +101,7 @@ public interface IServiceAPI {
    *         objects.
    */
   Object search(@ParamName("criteria") String criteria, @ParamName("category") String category,
-      @ParamName("format") String format, @ParamName("page") Integer page,
-      @ParamName("itemsPerPage") Integer itemsPerPage, @ParamName("sort") String sort);
+      @ParamName("page") Integer page, @ParamName("itemsPerPage") Integer itemsPerPage, @ParamName("sort") String sort);
 
   /**
    * Uploads a project using token to authenticate.

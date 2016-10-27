@@ -16,24 +16,10 @@ public class ProjectEntity implements Serializable {
   private String downloadUrl;
   private int viewCount;
   private int downloadCount;
+  private int commentCount;
 
   public ProjectEntity() {
     super();
-  }
-
-  public ProjectEntity(int id, String name, String description, String owner, String category, String updated,
-      String thumbnailUrl, String downloadUrl, int viewCount, int downloadCount) {
-    super();
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.owner = owner;
-    this.category = category;
-    this.updated = updated;
-    this.thumbnailUrl = thumbnailUrl;
-    this.downloadUrl = downloadUrl;
-    this.viewCount = viewCount;
-    this.downloadCount = downloadCount;
   }
 
   public int getId() {
@@ -114,13 +100,22 @@ public class ProjectEntity implements Serializable {
 
   public void setDownloadCount(int downloadCount) {
     this.downloadCount = downloadCount;
-  } 
+  }
+
+  public int getCommentCount() {
+    return commentCount;
+  }
+
+  public void setCommentCount(int commentCount) {
+    this.commentCount = commentCount;
+  }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((category == null) ? 0 : category.hashCode());
+    result = prime * result + commentCount;
     result = prime * result + ((description == null) ? 0 : description.hashCode());
     result = prime * result + downloadCount;
     result = prime * result + ((downloadUrl == null) ? 0 : downloadUrl.hashCode());
@@ -146,6 +141,8 @@ public class ProjectEntity implements Serializable {
       if (other.category != null)
         return false;
     } else if (!category.equals(other.category))
+      return false;
+    if (commentCount != other.commentCount)
       return false;
     if (description == null) {
       if (other.description != null)

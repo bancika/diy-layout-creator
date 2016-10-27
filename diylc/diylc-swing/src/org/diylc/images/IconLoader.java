@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import com.sun.org.apache.xml.internal.serializer.utils.Messages;
+
 /**
  * Loads image resources as Icons.
  * 
@@ -34,7 +36,8 @@ public enum IconLoader {
       "id_card_edit.png"), KeyEdit("key_edit.png"), Find("find.png"), Dashboard("dashboard.png"), DataFind(
       "data_find.png"), CloudDownload("cloud-download.png"), NavLeftBlue("nav_left_blue.png"), NavRightBlue(
       "nav_right_blue.png"), MissingImage("missing_image.png"), CloudBg("cloud_bg.png"), CloudBig("cloud_big.png"), CloudWait(
-      "cloud_wait.png"), Spinning("spinning.gif"), Megaphone("megaphone.png"), Download("download.png"), Eye("eye.png");
+      "cloud_wait.png"), Spinning("spinning.gif"), Megaphone("megaphone.png"), Download("download.png"), Eye("eye.png"), Messages(
+      "messages.png");
 
   protected String name;
 

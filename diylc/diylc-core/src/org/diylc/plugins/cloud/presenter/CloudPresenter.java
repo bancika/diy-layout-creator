@@ -215,7 +215,7 @@ public class CloudPresenter {
       throws CloudException {
     LOG.info(String.format("search(%1$s,%2$s,%3$s,%4$d,%5$d)", criteria, category, sortOrder, pageNumber, itemsPerPage));
     try {
-      Object res = service.search(criteria, category, "json", pageNumber, itemsPerPage, sortOrder);
+      Object res = service.search(criteria, category, pageNumber, itemsPerPage, sortOrder);
       // Thread.sleep(2000);
       if (res == null)
         throw new CloudException("Failed to retreive search results.");
@@ -225,7 +225,8 @@ public class CloudPresenter {
         @SuppressWarnings("unchecked")
         List<ProjectEntity> projects = (List<ProjectEntity>) res;
         LOG.info("Received " + projects.size() + " results. Downloading thumbnails...");
-        // Download thumbnails and replace urls with local paths to speed up loading in the main thread
+        // Download thumbnails and replace urls with local paths to speed up loading in the main
+        // thread
         for (int i = 0; i < projects.size(); i++) {
           String url = projects.get(i).getThumbnailUrl();
           URL website = new URL(url);
@@ -233,7 +234,7 @@ public class CloudPresenter {
           File temp = File.createTempFile("thumbnail", ".png");
           FileOutputStream fos = new FileOutputStream(temp);
           fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-          projects.get(i).setThumbnailUrl(temp.getAbsolutePath());  
+          projects.get(i).setThumbnailUrl(temp.getAbsolutePath());
           fos.close();
         }
         LOG.info("Finished downloading thumbnails.");
