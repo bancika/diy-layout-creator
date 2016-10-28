@@ -33,12 +33,7 @@
 			<fileset dir="${basedir}/lib">
 				<exclude name="**/*dll" />
 			</fileset>
-		</copy>
-		<copy todir="${jar.dir}/library" overwrite="true">
-			<fileset dir="${basedir}/library">
-				<exclude name="**/*dll" />
-			</fileset>
-		</copy>
+		</copy>		
 		<copy todir="${jar.dir}" overwrite="true">
 			<fileset dir="${basedir}/lib/" includes="**/*.dll" />
 		</copy>

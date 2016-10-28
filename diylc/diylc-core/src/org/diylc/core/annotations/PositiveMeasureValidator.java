@@ -11,7 +11,7 @@ public class PositiveMeasureValidator implements IPropertyValidator {
     if (value == null)
       return;
     if (value instanceof AbstractMeasure) {
-      AbstractMeasure measure = (AbstractMeasure) value;
+      AbstractMeasure<?> measure = (AbstractMeasure<?>) value;
       if (measure.getValue() < 0) {
         throw new ValidationException("must be greater than zero.");
       }

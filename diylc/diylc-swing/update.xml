@@ -1357,7 +1357,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Changing Display to one trimmer affects all trimmers and does not get saved to the file</description>
-				</org.diylc.appframework.update.Change>									
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Solder pad component should not allow negative size</description>
+				</org.diylc.appframework.update.Change>										
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

@@ -44,7 +44,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.components.connectivity.SolderPad;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
@@ -64,6 +63,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class Presenter implements IPlugInPort {
 
+  private static final String SOLDER_PAD = "SolderPad";
+
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
   public static VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 0);
@@ -72,6 +73,7 @@ public class Presenter implements IPlugInPort {
     try {
       BufferedInputStream in = new BufferedInputStream(new FileInputStream("update.xml"));
       XStream xStream = new XStream(new DomDriver());
+      @SuppressWarnings("unchecked")
       List<Version> allVersions = (List<Version>) xStream.fromXML(in);
       in.close();
       CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
@@ -87,6 +89,10 @@ public class Presenter implements IPlugInPort {
 
   private Project currentProject;
   private Map<String, List<ComponentType>> componentTypes;
+  /**
+   * {@link ComponentType}s that can be autocreated, like Solder Pads
+   */
+  private Map<String, ComponentType> autoCreateTypes;
   // Maps component class names to ComponentType objects.
   private List<IPlugIn> plugIns;
 
@@ -345,6 +351,19 @@ public class Presenter implements IPlugInPort {
       }
     }
     return componentTypes;
+  }
+
+  private Map<String, ComponentType> getAutoCreateTypes() {
+    if (autoCreateTypes == null) {
+      autoCreateTypes = new HashMap<String, ComponentType>();
+      for (Map.Entry<String, List<ComponentType>> entry : getComponentTypes().entrySet()) {
+        for (ComponentType t : entry.getValue()) {
+          if (t.getAutoCreateName() != null)
+            autoCreateTypes.put(t.getAutoCreateName(), t);
+        }
+      }
+    }
+    return autoCreateTypes;
   }
 
   @Override
@@ -670,6 +689,7 @@ public class Presenter implements IPlugInPort {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
 
@@ -746,6 +766,7 @@ public class Presenter implements IPlugInPort {
     return selectedComponents;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void selectAll(int layer) {
     LOG.info("selectAll()");
@@ -852,6 +873,7 @@ public class Presenter implements IPlugInPort {
    * 
    * @param controlPointMap
    */
+  @SuppressWarnings("unchecked")
   private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap) {
     int oldSize = controlPointMap.size();
     LOG.trace("Expanding selected component map");
@@ -1054,6 +1076,7 @@ public class Presenter implements IPlugInPort {
    * 
    * @param direction 1 for clockwise, -1 for counter-clockwise
    */
+  @SuppressWarnings("unchecked")
   private void rotateComponents(List<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
     Point center = getCenterOf(components, snapToGrid);
 
@@ -1286,6 +1309,7 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void sendSelectionToBack() {
     LOG.info("sendSelectionToBack()");
@@ -1316,6 +1340,7 @@ public class Presenter implements IPlugInPort {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void bringSelectionToFront() {
     LOG.info("bringSelectionToFront()");
@@ -1363,6 +1388,7 @@ public class Presenter implements IPlugInPort {
     drawingManager.setTheme(theme);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void renumberSelectedComponents(final boolean xAxisFirst) {
     LOG.info("renumberSelectedComponents(" + xAxisFirst + ")");
@@ -1453,6 +1479,7 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents, controlPointMap.keySet());
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void expandSelection(ExpansionMode expansionMode) {
     LOG.info(String.format("expandSelection(%s)", expansionMode));
@@ -1596,6 +1623,7 @@ public class Presenter implements IPlugInPort {
    * 
    * @param component
    */
+  @SuppressWarnings("unchecked")
   private void addComponent(IDIYComponent<?> component, boolean canCreatePads) {
     int index = currentProject.getComponents().size();
     while (index > 0
@@ -1612,9 +1640,10 @@ public class Presenter implements IPlugInPort {
     } else {
       currentProject.getComponents().add(component);
     }
+
+    ComponentType padType = getAutoCreateTypes().get(SOLDER_PAD);
     if (canCreatePads && ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_PADS_KEY, false)
-        && !(component instanceof SolderPad)) {
-      ComponentType padType = ComponentProcessor.getInstance().extractComponentTypeFrom(SolderPad.class);
+        && padType != null && !(component.getClass().equals(padType.getInstanceClass()))) {
       for (int i = 0; i < component.getControlPointCount(); i++) {
         if (component.isControlPointSticky(i)) {
           try {
@@ -1626,11 +1655,6 @@ public class Presenter implements IPlugInPort {
           } catch (Exception e) {
             LOG.warn("Could not auto-create solder pad", e);
           }
-          // SolderPad pad = new SolderPad();
-          // pad.setControlPoint(component.getControlPoint(i), 0);
-          // addComponent(pad,
-          // ComponentProcessor.getInstance().extractComponentTypeFrom(
-          // SolderPad.class), false);
         }
       }
     }
@@ -1742,6 +1766,7 @@ public class Presenter implements IPlugInPort {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void saveSelectedComponentAsTemplate(String templateName) {
     LOG.info(String.format("saveSelectedComponentAsTemplate(%s)", templateName));
@@ -1818,6 +1843,7 @@ public class Presenter implements IPlugInPort {
     ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, templateMap);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<Template> getTemplatesFor(String categoryName, String componentTypeName) {
     Map<String, List<Template>> templateMap =
@@ -1828,6 +1854,7 @@ public class Presenter implements IPlugInPort {
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<Template> getTemplatesForSelection() {
     if (this.selectedComponents.isEmpty()) {
@@ -1872,6 +1899,7 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void deleteTemplate(String categoryName, String componentTypeName, String templateName) {
     Map<String, List<Template>> templateMap =
@@ -1900,6 +1928,7 @@ public class Presenter implements IPlugInPort {
     return lockedComponents;
   }
 
+  @SuppressWarnings("unchecked")
   private boolean isComponentLocked(IDIYComponent<?> component) {
     ComponentType componentType =
         ComponentProcessor.getInstance().extractComponentTypeFrom(
