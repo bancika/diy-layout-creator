@@ -1,16 +1,9 @@
 package org.diylc.components.shapes;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
 import java.awt.Point;
 
-import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;

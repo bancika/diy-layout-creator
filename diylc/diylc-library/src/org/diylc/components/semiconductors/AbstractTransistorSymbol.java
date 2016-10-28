@@ -52,7 +52,7 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
-    int pinSpacing = (int) PIN_SPACING.convertToPixels();
+
     Color finalColor;
     if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
       finalColor = SELECTION_COLOR;
@@ -66,9 +66,6 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
     g2d.setColor(finalColor);
 
     // Draw transistor
-
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
 
     Shape[] body = getBody();
 

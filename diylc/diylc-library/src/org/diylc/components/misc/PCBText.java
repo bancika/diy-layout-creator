@@ -40,6 +40,7 @@ public class PCBText extends AbstractComponent<Void> {
   private VerticalAlignment verticalAlignment = VerticalAlignment.CENTER;
   private Orientation orientation = Orientation.DEFAULT;
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {

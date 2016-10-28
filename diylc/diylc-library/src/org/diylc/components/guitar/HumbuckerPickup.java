@@ -117,6 +117,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         VerticalAlignment.CENTER);
   }
 
+  @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
     if (body == null) {
       body = new Shape[4];

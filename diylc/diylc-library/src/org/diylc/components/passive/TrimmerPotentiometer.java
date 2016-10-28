@@ -53,7 +53,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 
   protected Color bodyColor = BODY_COLOR;
   protected Color borderColor = BORDER_COLOR;
-  protected static Display display = DISPLAY;
+  protected Display display = DISPLAY;
   // Array of 7 elements: 3 lug connectors, 1 pot body and 3 lugs
   transient protected Shape[] body = null;
 
@@ -327,7 +327,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();
 
     String label = "";
-    label = (getDisplay() == Display.NAME) ? getName() : getValue().toString();
+    label = (getDisplay() == Display.NAME) ? getName() : (getValue() == null ? "" : getValue().toString());
     if (getDisplay() == Display.NONE) {
       label = "";
     }
@@ -387,7 +387,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   @EditableProperty
   public Display getDisplay() {
     if (display == null) {
-      display = Display.VALUE;
+      display = DISPLAY;
     }
     return display;
   }

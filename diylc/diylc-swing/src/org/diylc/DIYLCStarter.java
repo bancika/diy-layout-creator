@@ -3,7 +3,6 @@ package org.diylc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -13,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
-import org.diylc.appframework.miscutils.Utils;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;

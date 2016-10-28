@@ -33,12 +33,14 @@ public class Label extends AbstractComponent<Void> {
   private String text = DEFAULT_TEXT;
   private Font font = LABEL_FONT;
   private Color color = LABEL_COLOR;
+  @SuppressWarnings("unused")
   @Deprecated
   private boolean center;
   private HorizontalAlignment horizontalAlignment = HorizontalAlignment.CENTER;
   private VerticalAlignment verticalAlignment = VerticalAlignment.CENTER;
   private Orientation orientation = Orientation.DEFAULT;
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {

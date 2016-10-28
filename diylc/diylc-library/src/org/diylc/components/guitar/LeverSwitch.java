@@ -115,6 +115,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
     g2d.draw(body[2]);
   }
 
+  @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
     if (body == null) {
       body = new Shape[3];
@@ -199,6 +200,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
     return body;
   }
 
+  @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;

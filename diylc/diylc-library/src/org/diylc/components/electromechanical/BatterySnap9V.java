@@ -89,6 +89,7 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
     g2d.draw(body[2]);
   }
 
+  @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
     if (body == null) {
       body = new Shape[3];
