@@ -2,6 +2,8 @@
 
 <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=25161" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>
 
+<a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_32_Beta">Click here</a> to go to the latest beta version that includes "Project Cloud" feature (and probably few bugs here and there).</a>
+
 <a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_31_0_MP">Click here</a> to go to the latest multi-platform release that works on Windows, Linux, Mac and any other platform that can run Java JRE.</a>
 
 <a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_31_0_OSX">Click here</a> to go to the latest OSX release. Please note that 3rd party apps must be enabled inside OSX for DIYLC to work.</a>
