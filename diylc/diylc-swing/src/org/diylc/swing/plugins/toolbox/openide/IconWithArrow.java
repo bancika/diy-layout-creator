@@ -13,7 +13,6 @@ class IconWithArrow implements Icon {
   private Icon orig;
   private Icon arrow = IconLoader.Arrow.getIcon();
   private boolean paintRollOver;
-  private static final int GAP = 6;
 
   public IconWithArrow(Icon orig, boolean paintRollOver) {
     Parameters.notNull("original icon", orig);

@@ -145,6 +145,7 @@ class ComponentTabbedPane extends JTabbedPane {
     return toolbar;
   }
 
+  @SuppressWarnings("unchecked")
   private Component createRecentComponentsPanel() {
     JPanel panel = new JPanel(new BorderLayout());
     panel.setOpaque(false);
@@ -169,6 +170,7 @@ class ComponentTabbedPane extends JTabbedPane {
     return panel;
   }
 
+  @SuppressWarnings("unchecked")
   private void refreshRecentComponentsToolbar(Container toolbar, List<String> recentComponentClassList) {
     toolbar.removeAll();
     for (String componentClassName : recentComponentClassList) {

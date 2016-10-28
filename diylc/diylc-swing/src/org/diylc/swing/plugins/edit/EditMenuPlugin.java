@@ -240,6 +240,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     return EnumSet.of(EventType.SELECTION_CHANGED, EventType.PROJECT_MODIFIED, EventType.PROJECT_LOADED);
   }
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public void processMessage(EventType eventType, Object... params) {
     switch (eventType) {

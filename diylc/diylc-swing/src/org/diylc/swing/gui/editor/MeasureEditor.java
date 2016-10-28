@@ -9,13 +9,13 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import javax.swing.JComboBox;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.core.measures.Unit;
@@ -26,6 +26,8 @@ public class MeasureEditor extends Container {
 
   private static final long serialVersionUID = 1L;
 
+  private final static Logger LOG = Logger.getLogger(MeasureEditor.class);
+
   private Color oldBg;
   private DoubleTextField valueField;
   private JComboBox unitBox;
@@ -33,7 +35,7 @@ public class MeasureEditor extends Container {
   @SuppressWarnings("unchecked")
   public MeasureEditor(final PropertyWrapper property) {
     setLayout(new BorderLayout());
-    final AbstractMeasure measure = ((AbstractMeasure) property.getValue());
+    final AbstractMeasure<?> measure = ((AbstractMeasure<?>) property.getValue());
     valueField = new DoubleTextField(measure == null ? null : measure.getValue());
     oldBg = valueField.getBackground();
     valueField.addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY, new PropertyChangeListener() {
@@ -41,25 +43,15 @@ public class MeasureEditor extends Container {
       @Override
       public void propertyChange(PropertyChangeEvent evt) {
         try {
-          Constructor ctor = property.getType().getConstructors()[0];
+          Constructor<?> ctor = property.getType().getConstructors()[0];
           AbstractMeasure<?> newMeasure =
               (AbstractMeasure<?>) ctor.newInstance((Double) evt.getNewValue(), unitBox.getSelectedItem());
           property.setValue(newMeasure);
           property.setChanged(true);
           valueField.setBackground(oldBg);
           unitBox.setBackground(oldBg);
-        } catch (IllegalArgumentException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        } catch (InstantiationException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        } catch (IllegalAccessException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        } catch (InvocationTargetException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        } catch (Exception e) {
+          LOG.error("Error while updating property value", e);
         }
       }
     });
@@ -74,7 +66,7 @@ public class MeasureEditor extends Container {
         @Override
         public void actionPerformed(ActionEvent evt) {
           try {
-            Constructor ctor = property.getType().getConstructors()[0];
+            Constructor<?> ctor = property.getType().getConstructors()[0];
             AbstractMeasure<?> newMeasure =
                 (AbstractMeasure<?>) ctor.newInstance(valueField.getValue(),
                     (Enum<? extends Unit>) unitBox.getSelectedItem());
@@ -82,18 +74,8 @@ public class MeasureEditor extends Container {
             property.setChanged(true);
             valueField.setBackground(oldBg);
             unitBox.setBackground(oldBg);
-          } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+          } catch (Exception e) {
+            LOG.error("Error while updating property units", e);
           }
         }
       });
@@ -103,21 +85,8 @@ public class MeasureEditor extends Container {
         valueField.setBackground(Constants.MULTI_VALUE_COLOR);
         unitBox.setBackground(Constants.MULTI_VALUE_COLOR);
       }
-    } catch (IllegalArgumentException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (SecurityException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+    } catch (Exception e) {
+      LOG.error("Error while creating the editor", e);
     }
   }
 

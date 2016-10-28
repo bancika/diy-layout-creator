@@ -28,13 +28,12 @@ import org.diylc.images.IconLoader;
 import org.diylc.swing.plugins.toolbox.openide.DropDownButtonFactory;
 
 /**
- * {@link JButton} that displays component type icon and instantiates the component when clicked.
+ * Factory that creates {@link JButton}s which display component type icons and instantiates the
+ * component when clicked.
  * 
  * @author Branislav Stojkovic
  */
 class ComponentButtonFactory {
-
-  private static final long serialVersionUID = 1L;
 
   public static int MARGIN = 3;
 
@@ -43,14 +42,9 @@ class ComponentButtonFactory {
 
     button.setBorder(BorderFactory.createEmptyBorder(MARGIN + 1, MARGIN + 1, MARGIN, MARGIN));
 
-    // mainButton.setBorder(BorderFactory.createEmptyBorder());
-    // dropDownButton.setBorder(BorderFactory.createEmptyBorder());
-    // setBorder(BorderFactory.createLineBorder(Color.gray));
-
     button.setToolTipText("<html><b>" + componentType.getName() + "</b><br>" + componentType.getDescription()
         + "<br>Author: " + componentType.getAuthor() + "<br><br>Right click to select all components of this type"
         + "</html>");
-    // initializeDnD();
     button.addActionListener(new ActionListener() {
 
       @Override
@@ -81,20 +75,7 @@ class ComponentButtonFactory {
         }
       }
     });
-    // addActionListener(new ActionListener() {
-    //
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    // // plugInPort.setCursorIcon(componentType.getIcon());
-    // plugInPort.setNewComponentTypeSlot(componentType);
-    // // try {
-    // // plugInPort.instantiateComponent(componentType
-    // // .getComponentInstanceClass(), null);
-    // // } catch (Exception e1) {
-    // // e1.printStackTrace();
-    // // }
-    // }
-    // });
+
     button.addKeyListener(new KeyAdapter() {
 
       @Override
@@ -102,26 +83,8 @@ class ComponentButtonFactory {
         plugInPort.keyPressed(e.getKeyCode(), e.isControlDown(), e.isShiftDown(), e.isAltDown());
       }
     });
-    // addKeyListener(new KeyAdapter() {
-    //
-    // @Override
-    // public void keyPressed(KeyEvent e) {
-    // if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-    // plugInPort.setNewComponentSlot(null);
-    // }
-    // }
-    // });
     return button;
   }
-
-  // private void initializeDnD() {
-  // // Initialize drag source recognizer.
-  // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-  // this,
-  // DnDConstants.ACTION_MOVE,
-  // new ToolboxGestureListener(plugInPort, componentType
-  // .getInstanceClass().getName()));
-  // }
 
   public static JMenuItem createTemplateItem(final IPlugInPort plugInPort, final Template template,
       final ComponentType componentType) {

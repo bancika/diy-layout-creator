@@ -447,13 +447,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     return EnumSet.of(EventType.PROJECT_LOADED, EventType.ZOOM_CHANGED, EventType.REPAINT);
   }
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public void processMessage(final EventType eventType, Object... params) {
-    // SwingUtilities.invokeLater(new Runnable() {
-    //
-    // @Override
-    // public void run() {
-    // LOG.debug("event: " + eventType);
     switch (eventType) {
       case PROJECT_LOADED:
         refreshSize();

@@ -21,6 +21,7 @@ class DropDownButton extends JButton {
 
   private static final long serialVersionUID = 1L;
 
+  @SuppressWarnings("unused")
   private boolean mouseInButton = false;
   private boolean mouseInArrowArea = false;
   private Map<String, Icon> regIcons = new HashMap<String, Icon>(5);

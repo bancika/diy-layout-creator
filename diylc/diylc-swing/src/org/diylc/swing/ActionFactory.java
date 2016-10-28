@@ -22,7 +22,6 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
-import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;

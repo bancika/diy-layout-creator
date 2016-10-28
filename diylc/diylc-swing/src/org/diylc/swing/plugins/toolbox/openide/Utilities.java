@@ -6,10 +6,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -20,33 +18,23 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.lang.ref.Reference;
-import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.lang.model.SourceVersion;
-import javax.swing.Icon;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -63,8 +51,6 @@ public final class Utilities {
   public static final int OS_IRIX = 128;
   public static final int OS_SUNOS = 256;
   public static final int OS_TRU64 = 512;
-  @Deprecated
-  public static final int OS_DEC = 1024;
   public static final int OS_OS2 = 2048;
   public static final int OS_MAC = 4096;
   public static final int OS_WIN2000 = 8192;
@@ -75,20 +61,10 @@ public final class Utilities {
   public static final int OS_WINVISTA = 262144;
   public static final int OS_UNIX_OTHER = 524288;
   public static final int OS_OPENBSD = 1048576;
-  @Deprecated
-  public static final int OS_WINDOWS_MASK = 303111;
-  @Deprecated
-  public static final int OS_UNIX_MASK = 1709048;
   public static final int TYPICAL_WINDOWS_TASKBAR_HEIGHT = 27;
-  private static final int TYPICAL_MACOSX_MENU_HEIGHT = 24;
   private static int operatingSystem = -1;
   private static Timer clearIntrospector;
   private static ActionListener doClear;
-  private static final int CTRL_WILDCARD_MASK = 32768;
-  private static final int ALT_WILDCARD_MASK = 65536;
-  private static final Object TRANS_LOCK = new Object();
-  private static Object transLoader;
-  private static RE transExp;
   private static Reference<NamesAndValues> namesAndValues;
   private static Method fileToPath;
   private static Method pathToUri;
@@ -208,28 +184,6 @@ public final class Utilities {
 
   public static BeanInfo getBeanInfo(Class<?> clazz, Class<?> stopClass) throws IntrospectionException {
     return Introspector.getBeanInfo(clazz, stopClass);
-  }
-
-  private static String trimString(String s) {
-    int idx = 0;
-
-    int slen = s.length();
-    if (slen == 0) {
-      return s;
-    }
-    char c;
-    do {
-      c = s.charAt(idx++);
-    } while (((c == '\n') || (c == '\r')) && (idx < slen));
-    s = s.substring(--idx);
-    idx = s.length() - 1;
-    if (idx < 0) {
-      return s;
-    }
-    do {
-      c = s.charAt(idx--);
-    } while (((c == '\n') || (c == '\r')) && (idx >= 0));
-    return s.substring(0, idx + 2);
   }
 
   public static String pureClassName(String fullName) {
@@ -580,7 +534,7 @@ public final class Utilities {
     int INPARAMPENDING = 2;
     int STICK = 4;
     int STICKPENDING = 8;
-    Vector<String> params = new Vector(5, 5);
+    Vector<String> params = new Vector<String>(5, 5);
 
     int state = NULL;
     StringBuilder buff = new StringBuilder(20);
@@ -721,6 +675,7 @@ public final class Utilities {
 
   private static final class NamesAndValues {
     final Map<Integer, String> keyToString;
+    @SuppressWarnings("unused")
     final Map<String, Integer> stringToKey;
 
     NamesAndValues(Map<Integer, String> keyToString, Map<String, Integer> stringToKey) {
@@ -738,8 +693,8 @@ public final class Utilities {
     }
     Field[] fields = KeyEvent.class.getDeclaredFields();
 
-    Map<String, Integer> names = new HashMap(fields.length * 4 / 3 + 5, 0.75F);
-    Map<Integer, String> values = new HashMap(fields.length * 4 / 3 + 5, 0.75F);
+    Map<String, Integer> names = new HashMap<String, Integer>(fields.length * 4 / 3 + 5, 0.75F);
+    Map<Integer, String> values = new HashMap<Integer, String>(fields.length * 4 / 3 + 5, 0.75F);
     for (Field f : fields) {
       if (Modifier.isStatic(f.getModifiers())) {
         String name = f.getName();
@@ -767,7 +722,7 @@ public final class Utilities {
     values.put(Integer.valueOf(657), "MOUSE_WHEEL_DOWN");
 
     NamesAndValues nav = new NamesAndValues(values, names);
-    namesAndValues = new SoftReference(nav);
+    namesAndValues = new SoftReference<NamesAndValues>(nav);
     return nav;
   }
 
@@ -799,37 +754,6 @@ public final class Utilities {
       return sb.toString();
     }
     return keyToString(stroke);
-  }
-
-  private static boolean usableKeyOnMac(int key, int mask) {
-    if (key == 81) {
-      return false;
-    }
-    boolean isMeta = ((mask & 0x4) != 0) || ((mask & 0x80) != 0);
-
-    boolean isAlt = ((mask & 0x8) != 0) || ((mask & 0x200) != 0);
-
-    boolean isOnlyMeta = (isMeta) && ((mask & 0xFEFB) == 0);
-    if (isOnlyMeta) {
-      return (key != 72) && (key != 32) && (key != 9);
-    }
-    if ((key == 68) && (isMeta) && (isAlt)) {
-      return false;
-    }
-    if ((key == 32) && (isMeta) && ((mask & 0x2) != 0)) {
-      return false;
-    }
-    return true;
-  }
-
-  private static int getMenuShortcutKeyMask() {
-    try {
-      if (!GraphicsEnvironment.isHeadless()) {
-        return Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-      }
-    } catch (Throwable ex) {
-    }
-    return 2;
   }
 
   private static boolean addModifiers(StringBuilder buf, int modif) {
@@ -880,54 +804,6 @@ public final class Utilities {
       b = true;
     }
     return b;
-  }
-
-  private static int readModifiers(String s) throws NoSuchElementException {
-    int m = 0;
-    for (int i = 0; i < s.length(); i++) {
-      switch (s.charAt(i)) {
-        case 'C':
-          m |= 0x2;
-
-          break;
-        case 'A':
-          m |= 0x8;
-
-          break;
-        case 'M':
-          m |= 0x4;
-
-          break;
-        case 'S':
-          m |= 0x1;
-
-          break;
-        case 'D':
-          m |= 0x8000;
-
-          break;
-        case 'O':
-          m |= 0x10000;
-
-          break;
-        case 'B':
-        case 'E':
-        case 'F':
-        case 'G':
-        case 'H':
-        case 'I':
-        case 'J':
-        case 'K':
-        case 'L':
-        case 'N':
-        case 'P':
-        case 'Q':
-        case 'R':
-        default:
-          throw new NoSuchElementException(s);
-      }
-    }
-    return m;
   }
 
   private static GraphicsConfiguration getCurrentGraphicsConfiguration() {
@@ -999,27 +875,6 @@ public final class Utilities {
         + (bounds.height - componentSize.height) / 2, componentSize.width, componentSize.height);
   }
 
-  private static void loadTranslationFile(RE re, BufferedReader reader, Set<String[]> results) throws IOException {
-    for (;;) {
-      String line = reader.readLine();
-      if (line == null) {
-        break;
-      }
-      if ((line.length() != 0) && (!line.startsWith("#"))) {
-        String[] pair = re.readPair(line);
-        if (pair == null) {
-          throw new InvalidObjectException("Line is invalid: " + line);
-        }
-        results.add(pair);
-      }
-    }
-  }
-
-  @Deprecated
-  public static Image icon2Image(Icon icon) {
-    return ImageUtilities.icon2Image(icon);
-  }
-
   static {
     try {
       fileToPath = File.class.getMethod("toPath", new Class[0]);
@@ -1078,66 +933,11 @@ public final class Utilities {
     return new File(u);
   }
 
-  @Deprecated
-  public static URL toURL(File f) throws MalformedURLException {
-    if (f == null) {
-      throw new NullPointerException();
-    }
-    if (!f.isAbsolute()) {
-      throw new IllegalArgumentException("Relative path: " + f);
-    }
-    URI uri = toURI(f);
-
-    return uri.toURL();
-  }
-
-  @Deprecated
-  public static File toFile(URL u) {
-    if (u == null) {
-      throw new NullPointerException();
-    }
-    try {
-      URI uri = u.toURI();
-
-      return toFile(uri);
-    } catch (URISyntaxException use) {
-      return null;
-    } catch (IllegalArgumentException iae) {
-    }
-    return null;
-  }
-
   static abstract interface RE {
     public abstract void init(String[] paramArrayOfString1, String[] paramArrayOfString2);
 
     public abstract String convert(String paramString);
 
     public abstract String[] readPair(String paramString);
-  }
-
-  @Deprecated
-  public static class UnorderableException extends RuntimeException {
-    static final long serialVersionUID = 6749951134051806661L;
-    private Collection unorderable;
-    private Map deps;
-
-    public UnorderableException(Collection unorderable, Map deps) {
-      this.unorderable = unorderable;
-      this.deps = deps;
-    }
-
-    public UnorderableException(String message, Collection unorderable, Map deps) {
-      super();
-      this.unorderable = unorderable;
-      this.deps = deps;
-    }
-
-    public Collection getUnorderable() {
-      return this.unorderable;
-    }
-
-    public Map getDeps() {
-      return this.deps;
-    }
   }
 }

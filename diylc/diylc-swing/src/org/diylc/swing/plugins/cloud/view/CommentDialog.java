@@ -22,7 +22,6 @@ import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
-import org.diylc.plugins.cloud.presenter.CloudException;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.plugins.cloud.view.browser.CloudBrowserFrame;
 
