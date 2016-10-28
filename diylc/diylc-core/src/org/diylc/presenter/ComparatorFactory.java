@@ -71,6 +71,7 @@ public class ComparatorFactory {
     if (componentZOrderComparator == null) {
       componentZOrderComparator = new Comparator<IDIYComponent<?>>() {
 
+        @SuppressWarnings("unchecked")
         @Override
         public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
           ComponentType type1 =

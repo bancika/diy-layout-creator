@@ -54,6 +54,7 @@ public class BomMaker {
       }
     });
     for (IDIYComponent<?> component : sortedComponents) {
+      @SuppressWarnings("unchecked")
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());

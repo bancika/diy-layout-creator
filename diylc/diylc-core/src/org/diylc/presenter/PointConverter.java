@@ -32,7 +32,7 @@ public class PointConverter implements Converter {
     return new Point((int) Math.round(x * Constants.PIXELS_PER_INCH), (int) Math.round(y * Constants.PIXELS_PER_INCH));
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("rawtypes")
   @Override
   public boolean canConvert(Class clazz) {
     return Point.class.isAssignableFrom(clazz);
