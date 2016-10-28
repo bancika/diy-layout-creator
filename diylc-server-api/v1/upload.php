@@ -90,8 +90,8 @@ if ($row = $result->fetch_assoc()) {
 	// Find the right category	
 	$sql = "
 	SELECT category_id 
-	FROM diylc_category 
-	WHERE LOWER(name) = LOWER(\"".addslashes($category)."\")";
+	FROM diylc_category_view
+	WHERE LOWER(display_name) = LOWER(\"".addslashes($category)."\")";
 
 	if (!$result = $mysqli->query($sql)) {
 		echo "{\"string\":Error while determining the category.}";

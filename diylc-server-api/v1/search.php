@@ -1,12 +1,10 @@
 <?php
 	
-$className="com.diyfever.diylc.plugins.cloud.model.ProjectEntity";
+$className="org.diylc.plugins.cloud.model.ProjectEntity";
 $criteria=$_REQUEST["criteria"];
 $category=$_REQUEST["category"];
-$format=$_REQUEST["format"];
 $page=$_REQUEST["page"];
 $itemsPerPage=$_REQUEST["itemsPerPage"];
-$isJson=$format==="json";
 $sort=$_REQUEST["sort"];
 if(!$page)
 	$page=1;
@@ -18,7 +16,7 @@ if(!$sort)
 $condition="";
 
 if ($category)
-	$condition = $condition." AND LOWER(c.name) = LOWER('".$category."')";
+	$condition = $condition." AND LOWER(c.search_name) = LOWER('".$category."')";
 if ($criteria)
 	$condition = $condition." AND (LOWER(p.description) LIKE LOWER('%".$criteria."%') OR LOWER(p.name) LIKE LOWER('%".$criteria."%') OR LOWER(p.keywords) LIKE LOWER('%".$criteria."%'))";
 	
@@ -28,9 +26,9 @@ $orderBy = " ORDER BY ";
 if ($sort==="Author")
 	$orderBy = $orderBy." u.name, p.name";	
 else if ($sort==="Category")
-	$orderBy = $orderBy." c.name, p.name";
+	$orderBy = $orderBy." c.search_name, p.name";
 else if ($sort==="Age")
-	$orderBy = $orderBy." p.last_update";
+	$orderBy = $orderBy." p.last_update desc";
 else
 	$orderBy = $orderBy." p.name";
 
@@ -50,99 +48,74 @@ $password=$dbProperties->getProperty("pass");
 $database=$dbProperties->getProperty("db");
 $mysqli = new mysqli(localhost,$username,$password,$database);
 
+function ip_details($IPaddress) 
+{
+	$json       = file_get_contents("http://ip-api.com/json/{$IPaddress}");
+	$details    = json_decode($json);
+	return $details;
+}  
+
+$ip = $_SERVER["REMOTE_ADDR"];
+$location = ip_details($ip);
+
+$sql = "INSERT INTO diylc_search_history (ip, country, criteria, category, sort, search_time) VALUES (\"".$ip."\", \"".$location->country."\",\"".$criteria."\",\"".$category."\",\"".$sort."\",NOW())";
+
+$mysqli->query($sql);
+
+//echo $sql;
+
+//if (!$result = $mysqli->query($sql)) {
+//	echo "{\"string\":Error:".$mysqli->error."}";
+//	exit;
+//}
+
 $sql = "
-SELECT p.project_id, p.name, p.description, c.name AS 'category', u.name AS 'owner', p.last_update 
-FROM diylc_project p, diylc_category c, diylc_user u 
+SELECT p.project_id, p.name, p.description, c.search_name AS 'category', u.name AS 'owner', p.last_update, p.view_count, p.download_count, (SELECT COUNT(*) FROM diylc_comment co WHERE co.project_id = p.project_id) comment_count
+FROM diylc_project p, diylc_category_view c, diylc_user u 
 WHERE p.category_id = c.category_id AND p.owner_user_id = u.user_id ".$condition.$orderBy.$limit;
 
 //echo $sql;
 
 if (!$result = $mysqli->query($sql)) {
-	echo "{\"string\":Error}";
+	echo "{\"string\":Error:".$mysqli->error."}";
 	exit;
 }
 
 $num = $num = $result->num_rows;
 if ($num === 0) {
-	if ($isJson)
-		echo "{\"list\":\"\"}";
-	else {
-		echo "<table width='600px' height='100px'><tr><td align='center' valign='top'><b>No matching projects found.</b></tr></td></table>";
-		echo "<table width='600px'><tr><td align='left'>";
-		
-		if ($page > 1)
-			echo "<a href='".$params."&page=".($page-1)."'><img src='http://diy-fever.com/diylc/api/v1/left-arrow.png'></a>";
-		echo "</td><td align='right'></td></tr></table>";
-	}
+	echo "{\"list\":\"\"}";
 } else {
 	// JSON header
-	if ($isJson)
-		echo "{\"list\":{\"".$className."\":[";
-	else 
-		echo "<table width='600px' border='0' cellspacing='0' cellpadding='1'>";
+	echo "{\"list\":{\"".$className."\":[";
 
 	$i=0;
 	while ($row = $result->fetch_assoc()) {
 	if ($i>0) {
-		if ($isJson)
-			echo ",";
-		else
-			echo "<tr height='8px'></tr>";
+		echo ",";
 	}
 	
 	$time = strtotime($row["last_update"]);
 	$updated = date("Y-m-d", $time);
 
-	if ($isJson)
-	{
-		echo "{";
-		echo "\"id\":".$row["project_id"].",";
-		echo "\"name\":\"".$row["name"]."\",";
-		echo "\"description\":\"".$row["description"]."\",";
-		echo "\"owner\":\"".$row["owner"]."\",";
-		echo "\"category\":\"".$row["category"]."\",";
-		echo "\"updated\":\"".$updated ."\",";		
-		echo "\"thumbnailUrl\":\"http://diy-fever.com/diylc/thumbnails/".$row["project_id"].".png\",";
-		echo "\"downloadUrl\":\"http://diy-fever.com/diylc/uploads/".$row["project_id"].".diy\"";        
-		echo "}";
-	} else {		
-		echo "
-		<tr style='background-color:#999999;color:#FFFFFF;border-spacing:0;padding:0;'>
-			<td rowspan='3' width='1'><img src='http://diy-fever.com/diylc/thumbnails/".$row["project_id"].".png'/></td>
-			<td width='2px'></td>
-			<td height='1px' colspan='2'><b>".$row["name"]."</b></td>
-			<td height='1px' colspan='2' nowrap='1' align='right'>by ".$row["owner"]."</td>
-			<td width='2px'></td>
-		</tr>
-		<tr>
-			<td width='2px'></td>
-			<td valign='top' halign='left' colspan='4'><p align='justify'>".$row["description"]."</p></td>
-			<td style='border-right: 1px solid #999999;' width='2px'></td>
-		</tr>
-		<tr>
-			<td style='border-bottom: 1px solid #999999;' width='2px'></td>
-			<td style='border-bottom: 1px solid #999999;'colspan='3' valign='bottom'>Category: ".$row["category"]."<br>Uploaded on ".$updated."</td>
-			<td style='border-right: 1px solid #999999;border-bottom: 1px solid #999999;' width='1px' colspan='2' valign='bottom' align='right'><a href='http://diy-fever.com/diylc/uploads/".$row["project_id"].".diy'><img src='http://diy-fever.com/diylc/api/v1/download-icon-32.png'/></a></td>
-		</tr>";
-	}
-    $i++;
-  }
-  
-	// JSON footer
- 	if ($isJson)
-		echo "]}}";
-	else {
-		echo "</table>";
-		echo "<br>";
-		
-		echo "<table width='600px'><tr><td align='left'>";
-		if ($page > 1)
-			echo "<a href='".$params."&page=".($page-1)."'><img src='http://diy-fever.com/diylc/api/v1/left-arrow.png'></a>";
-		echo "</td><td align='right'>";
-		if ($num == $itemsPerPage)
-			echo "<a href='".$params."&page=".($page+1)."'><img src='http://diy-fever.com/diylc/api/v1/right-arrow.png'></a>";
-		echo "</td></tr></table>";
-	}
+	
+	echo "{";
+	echo "\"id\":".$row["project_id"].",";
+	echo "\"name\":\"".$row["name"]."\",";
+	echo "\"description\":\"".$row["description"]."\",";
+	echo "\"owner\":\"".$row["owner"]."\",";
+	echo "\"category\":\"".$row["category"]."\",";
+	echo "\"updated\":\"".$updated ."\",";		
+	echo "\"thumbnailUrl\":\"http://diy-fever.com/diylc/api/v1/downloadThumbnail.php?id=".$row["project_id"]."\",";
+	echo "\"downloadUrl\":\"http://diy-fever.com/diylc/api/v1/downloadProject.php?id=".$row["project_id"]."\",";        
+	echo "\"commentCount\":\"".$row["comment_count"]."\",";
+	echo "\"viewCount\":\"".$row["view_count"]."\",";
+	echo "\"downloadCount\":\"".$row["download_count"]."\"";
+	echo "}";
+	
+	$i++;
+}
+
+	echo "]}}";
 }
 
 $result->free();

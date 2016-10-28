@@ -19,7 +19,7 @@ if (strlen($pwd) < 6) {
 	exit;
 }
 if (!$email) {
-	echo "{\"string\":E-mail not provided.}";
+	echo "{\"string\":eMail not provided.}";
 	exit;
 }
 $pwd = hash("ripemd160", $pwd);
@@ -45,10 +45,21 @@ if (!$result = $mysqli->query($sql)) {
 	echo "{\"string\":Error}";
 	exit;
 }
+
+function ip_details($IPaddress) 
+{
+	$json       = file_get_contents("http://ip-api.com/json/{$IPaddress}");
+	$details    = json_decode($json);
+	return $details;
+}  
+
+$ip = $_SERVER["REMOTE_ADDR"];
+$location = ip_details($ip);
+
 	
 $num = $num = $result->num_rows;
 if ($num === 0) {
-	$sql= "INSERT INTO diylc_user (name, password, email, website, bio) VALUES ('".addslashes($name)."', '".$pwd."', '".addslashes($email)."', '".addslashes($website)."', '".addslashes($bio)."')";
+	$sql= "INSERT INTO diylc_user (name, password, email, website, bio, ip, country) VALUES ('".addslashes($name)."', '".$pwd."', '".addslashes($email)."', '".addslashes($website)."', '".addslashes($bio)."', '".$ip."', '".$location->country."')";
 	
 	if ($mysqli->query($sql) === TRUE) {
 		echo "{\"string\":Success}";
