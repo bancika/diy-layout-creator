@@ -3,6 +3,7 @@ package org.diylc.presenter;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.Desktop.Action;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.IAutoCreator;
+import org.diylc.core.annotations.KeywordPolicy;
 
 /**
  * Utility class with component processing methods.
@@ -73,6 +75,7 @@ public class ComponentProcessor {
     boolean autoEdit;
     boolean rotatable;
     IAutoCreator autoCreator = null;
+    KeywordPolicy keywordPolicy;
     if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
       ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
       name = annotation.name();
@@ -87,6 +90,7 @@ public class ComponentProcessor {
       bomPolicy = annotation.bomPolicy();
       autoEdit = annotation.autoEdit();
       rotatable = annotation.rotatable();
+      keywordPolicy = annotation.keywordPolicy();
     } else {
       name = clazz.getSimpleName();
       description = "";
@@ -100,6 +104,7 @@ public class ComponentProcessor {
       bomPolicy = BomPolicy.SHOW_ALL_NAMES;
       autoEdit = true;
       rotatable = true;
+      keywordPolicy = KeywordPolicy.NEVER_SHOW;
     }
     if (clazz.isAnnotationPresent(AutoCreator.class)) {
       AutoCreator annotation = clazz.getAnnotation(AutoCreator.class);
@@ -127,7 +132,7 @@ public class ComponentProcessor {
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
-            flexibleZOrder, stretchable, bomPolicy, autoEdit, rotatable, autoCreator);
+            flexibleZOrder, stretchable, bomPolicy, autoEdit, rotatable, autoCreator, keywordPolicy);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }

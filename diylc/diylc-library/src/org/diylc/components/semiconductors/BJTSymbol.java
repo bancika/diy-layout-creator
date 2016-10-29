@@ -11,10 +11,11 @@ import org.diylc.common.ObjectCache;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "BJT Symbol", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "Q", description = "Bipolar junction transistor schematic symbol", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, rotatable = true)
+    zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class BJTSymbol extends AbstractTransistorSymbol {
 
   private static final long serialVersionUID = 1L;

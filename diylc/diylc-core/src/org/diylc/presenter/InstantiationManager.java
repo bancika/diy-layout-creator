@@ -19,6 +19,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
+import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 
 /**
@@ -40,7 +41,7 @@ public class InstantiationManager {
 
   private static final ComponentType clipboardType = new ComponentType("Clipboard contents",
       "Components from the clipboard", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, false, null,
-      false, true, null);
+      false, true, null, KeywordPolicy.NEVER_SHOW);
 
   public InstantiationManager() {}
 

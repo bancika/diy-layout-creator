@@ -14,13 +14,15 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "TriPad Board", category = "Boards", author = "Hauke Juhls", zOrder = IDIYComponent.BOARD,
     instanceNamePrefix = "Board",
-    description = "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)")
+    description = "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
 public class TriPadBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

@@ -8,14 +8,22 @@ import java.net.NetworkInterface;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.ComponentType;
+import org.diylc.core.IDIYComponent;
+import org.diylc.core.Project;
+import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.model.UserEntity;
+import org.diylc.presenter.ComponentProcessor;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
@@ -144,8 +152,8 @@ public class CloudPresenter {
 
     try {
       String res =
-          getService().upload(username, token, getMachineId(), projectName, category, description, diylcVersion, keywords,
-              thumbnail, project);
+          getService().upload(username, token, getMachineId(), projectName, category, description, diylcVersion,
+              keywords, thumbnail, project);
       if (!res.equals(SUCCESS))
         throw new CloudException(res);
     } catch (Exception e) {
@@ -291,6 +299,25 @@ public class CloudPresenter {
     }
   }
 
+  @SuppressWarnings("unchecked")
+  public String extractKeywords(Project project) {
+    Set<String> words = new HashSet<String>();
+    for (IDIYComponent<?> c : project.getComponents()) {
+      ComponentType cType =
+          ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
+      if (cType.getKeywordPolicy() == KeywordPolicy.SHOW_TYPE_NAME)
+        words.add(cType.getName().toLowerCase());
+      if (cType.getKeywordPolicy() == KeywordPolicy.SHOW_VALUE && c.getValueForDisplay() != null
+          && c.getValueForDisplay().trim().length() > 0)
+        words.add(c.getValueForDisplay().trim().toLowerCase());
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String w : words)
+      sb.append(w).append(",");
+    if (sb.length() > 0)
+      sb.deleteCharAt(sb.length() - 1);
+    return sb.toString();
+  }
 
   private String getMachineId() {
     if (machineId == null) {

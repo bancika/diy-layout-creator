@@ -13,10 +13,11 @@ import org.diylc.core.ValidationException;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Diode Symbol", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "V", description = "Diode tube symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT,
-    rotatable = false)
+    rotatable = false, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class DiodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;

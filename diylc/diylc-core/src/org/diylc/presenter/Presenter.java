@@ -89,7 +89,8 @@ public class Presenter implements IPlugInPort {
   private Project currentProject;
   private Map<String, List<ComponentType>> componentTypes;
   /**
-   * {@link ComponentType}s that can be autocreated, like Solder Pads
+   * {@link List} of {@link IAutoCreator} objects that are capable of creating more components
+   * automatically when a component is created, e.g. Solder Pads.
    */
   private List<IAutoCreator> autoCreators;
   // Maps component class names to ComponentType objects.
@@ -1643,9 +1644,9 @@ public class Presenter implements IPlugInPort {
 
     // Check if we should auto-create something.
     for (IAutoCreator creator : this.getAutoCreators()) {
-      List<IDIYComponent<?>> newComponents = creator.createIfNeeded(component); 
+      List<IDIYComponent<?>> newComponents = creator.createIfNeeded(component);
       if (newComponents != null) {
-        for(IDIYComponent<?> c : newComponents)
+        for (IDIYComponent<?> c : newComponents)
           addComponent(c, false);
       }
     }

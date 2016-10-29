@@ -6,6 +6,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.IAutoCreator;
+import org.diylc.core.annotations.KeywordPolicy;
 
 /**
  * Entity class used to describe a component type.
@@ -31,11 +32,12 @@ public class ComponentType {
   private boolean autoEdit;
   private boolean rotatable;
   private IAutoCreator autoCreator;
+  private KeywordPolicy keywordPolicy;
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
       boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit, boolean rotatable,
-      IAutoCreator autoCreator) {
+      IAutoCreator autoCreator, KeywordPolicy keywordPolicy) {
     super();
     this.name = name;
     this.description = description;
@@ -52,6 +54,7 @@ public class ComponentType {
     this.autoEdit = autoEdit;
     this.rotatable = rotatable;
     this.autoCreator = autoCreator;
+    this.keywordPolicy = keywordPolicy;
   }
 
   public String getName() {
@@ -112,6 +115,10 @@ public class ComponentType {
 
   public IAutoCreator getAutoCreateor() {
     return autoCreator;
+  }
+  
+  public KeywordPolicy getKeywordPolicy() {
+    return keywordPolicy;
   }
 
   @Override

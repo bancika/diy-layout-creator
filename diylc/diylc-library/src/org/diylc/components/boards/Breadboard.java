@@ -15,12 +15,14 @@ import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Breadboard", category = "Boards", author = "Branislav Stojkovic",
     description = "Prototyping solderless breadboard", instanceNamePrefix = "BB", stretchable = false,
-    zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false)
+    zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
 public class Breadboard extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;

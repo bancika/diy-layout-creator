@@ -22,13 +22,14 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes",
     instanceNamePrefix = "V", description = "Various types of tube/valve sockets", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class TubeSocket extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
