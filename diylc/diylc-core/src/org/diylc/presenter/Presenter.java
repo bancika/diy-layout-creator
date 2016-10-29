@@ -50,7 +50,7 @@ import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
-import org.diylc.core.annotations.AutoCreateTag;
+import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
@@ -91,7 +91,7 @@ public class Presenter implements IPlugInPort {
   /**
    * {@link ComponentType}s that can be autocreated, like Solder Pads
    */
-  private Map<AutoCreateTag, ComponentType> autoCreateTypes;
+  private List<IAutoCreator> autoCreators;
   // Maps component class names to ComponentType objects.
   private List<IPlugIn> plugIns;
 
@@ -352,18 +352,19 @@ public class Presenter implements IPlugInPort {
     return componentTypes;
   }
 
-  private Map<AutoCreateTag, ComponentType> getAutoCreateTypes() {
-    if (autoCreateTypes == null) {
-      autoCreateTypes = new HashMap<AutoCreateTag, ComponentType>();
+  public List<IAutoCreator> getAutoCreators() {
+    if (autoCreators == null) {
+      autoCreators = new ArrayList<IAutoCreator>();
       for (Map.Entry<String, List<ComponentType>> entry : getComponentTypes().entrySet()) {
         for (ComponentType t : entry.getValue()) {
-          if (t.getAutoCreateTag() != null)
-            autoCreateTypes.put(t.getAutoCreateTag(), t);
+          if (t.getAutoCreateor() != null)
+            autoCreators.add(t.getAutoCreateor());
         }
       }
     }
-    return autoCreateTypes;
+    return autoCreators;
   }
+
 
   @Override
   public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter) {
@@ -1623,7 +1624,7 @@ public class Presenter implements IPlugInPort {
    * @param component
    */
   @SuppressWarnings("unchecked")
-  private void addComponent(IDIYComponent<?> component, boolean canCreatePads) {
+  private void addComponent(IDIYComponent<?> component, boolean alowAutoCreate) {
     int index = currentProject.getComponents().size();
     while (index > 0
         && ComponentProcessor.getInstance()
@@ -1640,21 +1641,12 @@ public class Presenter implements IPlugInPort {
       currentProject.getComponents().add(component);
     }
 
-    ComponentType padType = getAutoCreateTypes().get(AutoCreateTag.SOLDER_PAD);
-    if (canCreatePads && ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_PADS_KEY, false)
-        && padType != null && !(component.getClass().equals(padType.getInstanceClass()))) {
-      for (int i = 0; i < component.getControlPointCount(); i++) {
-        if (component.isControlPointSticky(i)) {
-          try {
-            IDIYComponent<?> pad =
-                instantiationManager.instantiateComponent(padType, null, component.getControlPoint(i), currentProject)
-                    .get(0);
-            pad.setControlPoint(component.getControlPoint(i), 0);
-            addComponent(pad, false);
-          } catch (Exception e) {
-            LOG.warn("Could not auto-create solder pad", e);
-          }
-        }
+    // Check if we should auto-create something.
+    for (IAutoCreator creator : this.getAutoCreators()) {
+      List<IDIYComponent<?>> newComponents = creator.createIfNeeded(component); 
+      if (newComponents != null) {
+        for(IDIYComponent<?> c : newComponents)
+          addComponent(c, false);
       }
     }
   }

@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.components.connectivity.SolderPad;
+import org.diylc.components.connectivity.SolderPadAutoCreator;
 import org.diylc.core.Theme;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
@@ -43,7 +45,7 @@ public class ConfigPlugin implements IPlugIn {
             .createConfigAction(plugInPort, "Anti-Aliasing", IPlugInPort.ANTI_ALIASING_KEY, true), CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance()
-            .createConfigAction(plugInPort, "Auto-Create Pads", IPlugInPort.AUTO_PADS_KEY, false), CONFIG_MENU);
+            .createConfigAction(plugInPort, "Auto-Create Pads", SolderPadAutoCreator.AUTO_PADS_KEY, false), CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, true),
         CONFIG_MENU);

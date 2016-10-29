@@ -4,8 +4,8 @@ import javax.swing.Icon;
 
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.annotations.AutoCreateTag;
 import org.diylc.core.annotations.BomPolicy;
+import org.diylc.core.annotations.IAutoCreator;
 
 /**
  * Entity class used to describe a component type.
@@ -30,12 +30,12 @@ public class ComponentType {
   private BomPolicy bomPolicy;
   private boolean autoEdit;
   private boolean rotatable;
-  private AutoCreateTag autoCreateTag;
+  private IAutoCreator autoCreator;
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
       boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit, boolean rotatable,
-      AutoCreateTag autoCreateTag) {
+      IAutoCreator autoCreator) {
     super();
     this.name = name;
     this.description = description;
@@ -51,7 +51,7 @@ public class ComponentType {
     this.bomPolicy = bomPolicy;
     this.autoEdit = autoEdit;
     this.rotatable = rotatable;
-    this.autoCreateTag = autoCreateTag;
+    this.autoCreator = autoCreator;
   }
 
   public String getName() {
@@ -110,8 +110,8 @@ public class ComponentType {
     return rotatable;
   }
 
-  public AutoCreateTag getAutoCreateTag() {
-    return autoCreateTag;
+  public IAutoCreator getAutoCreateor() {
+    return autoCreator;
   }
 
   @Override

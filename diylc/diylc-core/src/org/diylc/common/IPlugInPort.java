@@ -36,8 +36,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String EXPORT_GRID_KEY = "exportGrid";
   public static final String STICKY_POINTS_KEY = "stickyPoints";
   public static final String METRIC_KEY = "metric";
-  public static final String SNAP_TO_GRID_KEY = "snapToGrid";
-  public static final String AUTO_PADS_KEY = "autoCreatePads";
+  public static final String SNAP_TO_GRID_KEY = "snapToGrid";  
   public static final String CONTINUOUS_CREATION_KEY = "continuousCreation";
   public static final String AUTO_EDIT_KEY = "autoEdit";
   public static final String ABNORMAL_EXIT_KEY = "abnormalExit";
