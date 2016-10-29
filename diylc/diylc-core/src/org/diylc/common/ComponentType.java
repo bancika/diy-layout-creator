@@ -4,6 +4,7 @@ import javax.swing.Icon;
 
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.AutoCreateTag;
 import org.diylc.core.annotations.BomPolicy;
 
 /**
@@ -29,11 +30,12 @@ public class ComponentType {
   private BomPolicy bomPolicy;
   private boolean autoEdit;
   private boolean rotatable;
-  private String autoCreateName;
+  private AutoCreateTag autoCreateTag;
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
-      boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit, boolean rotatable, String autoCreateName) {
+      boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit, boolean rotatable,
+      AutoCreateTag autoCreateTag) {
     super();
     this.name = name;
     this.description = description;
@@ -49,7 +51,7 @@ public class ComponentType {
     this.bomPolicy = bomPolicy;
     this.autoEdit = autoEdit;
     this.rotatable = rotatable;
-    this.autoCreateName = autoCreateName;
+    this.autoCreateTag = autoCreateTag;
   }
 
   public String getName() {
@@ -107,9 +109,9 @@ public class ComponentType {
   public boolean isRotatable() {
     return rotatable;
   }
-  
-  public String getAutoCreateName() {
-    return autoCreateName;
+
+  public AutoCreateTag getAutoCreateTag() {
+    return autoCreateTag;
   }
 
   @Override

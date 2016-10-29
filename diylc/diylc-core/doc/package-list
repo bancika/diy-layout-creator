@@ -1,0 +1,12 @@
+org.diylc.announcements
+org.diylc.common
+org.diylc.components
+org.diylc.core
+org.diylc.core.annotations
+org.diylc.core.measures
+org.diylc.images
+org.diylc.parsing
+org.diylc.plugins.cloud.model
+org.diylc.plugins.cloud.presenter
+org.diylc.presenter
+org.diylc.utils

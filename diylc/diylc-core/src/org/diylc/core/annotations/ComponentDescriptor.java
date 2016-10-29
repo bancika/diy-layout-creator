@@ -80,4 +80,8 @@ public @interface ComponentDescriptor {
    */
   boolean rotatable() default true;
 
+  AutoCreateTag autoCreateTag() default AutoCreateTag.NONE;
+
+  KeywordPolicy keywordPolicy() default KeywordPolicy.NEVER_SHOW;
+
 }

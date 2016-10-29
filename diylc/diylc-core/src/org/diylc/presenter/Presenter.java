@@ -50,6 +50,7 @@ import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
+import org.diylc.core.annotations.AutoCreateTag;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
@@ -62,8 +63,6 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * @author Branislav Stojkovic
  */
 public class Presenter implements IPlugInPort {
-
-  private static final String SOLDER_PAD = "SolderPad";
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
@@ -92,7 +91,7 @@ public class Presenter implements IPlugInPort {
   /**
    * {@link ComponentType}s that can be autocreated, like Solder Pads
    */
-  private Map<String, ComponentType> autoCreateTypes;
+  private Map<AutoCreateTag, ComponentType> autoCreateTypes;
   // Maps component class names to ComponentType objects.
   private List<IPlugIn> plugIns;
 
@@ -353,13 +352,13 @@ public class Presenter implements IPlugInPort {
     return componentTypes;
   }
 
-  private Map<String, ComponentType> getAutoCreateTypes() {
+  private Map<AutoCreateTag, ComponentType> getAutoCreateTypes() {
     if (autoCreateTypes == null) {
-      autoCreateTypes = new HashMap<String, ComponentType>();
+      autoCreateTypes = new HashMap<AutoCreateTag, ComponentType>();
       for (Map.Entry<String, List<ComponentType>> entry : getComponentTypes().entrySet()) {
         for (ComponentType t : entry.getValue()) {
-          if (t.getAutoCreateName() != null)
-            autoCreateTypes.put(t.getAutoCreateName(), t);
+          if (t.getAutoCreateTag() != null)
+            autoCreateTypes.put(t.getAutoCreateTag(), t);
         }
       }
     }
@@ -1641,7 +1640,7 @@ public class Presenter implements IPlugInPort {
       currentProject.getComponents().add(component);
     }
 
-    ComponentType padType = getAutoCreateTypes().get(SOLDER_PAD);
+    ComponentType padType = getAutoCreateTypes().get(AutoCreateTag.SOLDER_PAD);
     if (canCreatePads && ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_PADS_KEY, false)
         && padType != null && !(component.getClass().equals(padType.getInstanceClass()))) {
       for (int i = 0; i < component.getControlPointCount(); i++) {

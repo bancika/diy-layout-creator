@@ -20,7 +20,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IPropertyValidator;
-import org.diylc.core.annotations.AutoCreated;
+import org.diylc.core.annotations.AutoCreateTag;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -71,7 +71,7 @@ public class ComponentProcessor {
     BomPolicy bomPolicy;
     boolean autoEdit;
     boolean rotatable;
-    String autoCreateName = null;
+    AutoCreateTag autoCreateTag = null;
     if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
       ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
       name = annotation.name();
@@ -86,6 +86,7 @@ public class ComponentProcessor {
       bomPolicy = annotation.bomPolicy();
       autoEdit = annotation.autoEdit();
       rotatable = annotation.rotatable();
+      autoCreateTag = annotation.autoCreateTag();
     } else {
       name = clazz.getSimpleName();
       description = "";
@@ -99,10 +100,7 @@ public class ComponentProcessor {
       bomPolicy = BomPolicy.SHOW_ALL_NAMES;
       autoEdit = true;
       rotatable = true;
-    }
-    if (clazz.isAnnotationPresent(AutoCreated.class)) {
-      AutoCreated annotation = clazz.getAnnotation(AutoCreated.class);
-      autoCreateName = annotation.name();
+      autoCreateTag = AutoCreateTag.NONE;
     }
     icon = null;
     // Draw component icon.
@@ -122,7 +120,7 @@ public class ComponentProcessor {
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
-            flexibleZOrder, stretchable, bomPolicy, autoEdit, rotatable, autoCreateName);
+            flexibleZOrder, stretchable, bomPolicy, autoEdit, rotatable, autoCreateTag);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }

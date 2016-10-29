@@ -1355,6 +1355,10 @@
 					<description>Auto save and recovery made a bit smarter</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Popup dialogs work better with keyboard - Enter confirms, Escape dismisses dialogs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Changing Display to one trimmer affects all trimmers and does not get saved to the file</description>
 				</org.diylc.appframework.update.Change>	
