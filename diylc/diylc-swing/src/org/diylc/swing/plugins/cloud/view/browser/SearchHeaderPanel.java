@@ -23,6 +23,8 @@ public class SearchHeaderPanel extends JPanel {
   private JComboBox sortBox;
   private JButton goButton;
 
+  private boolean initialized = false;
+
   public SearchHeaderPanel() {
     setLayout(new GridBagLayout());
 
@@ -65,13 +67,14 @@ public class SearchHeaderPanel extends JPanel {
     getSearchField().requestFocusInWindow();
   }
 
-  public void updateLists(String[] categories, String[] sortings) {
-    Object selectedCategory = getCategoryBox().getSelectedItem();
-    Object selectedSorting = getSortBox().getSelectedItem();
+  public void initializeLists(String[] categories, String[] sortings) {
     getCategoryBox().setModel(new DefaultComboBoxModel(categories));
     getSortBox().setModel(new DefaultComboBoxModel(sortings));
-    getCategoryBox().setSelectedItem(selectedCategory);
-    getSortBox().setSelectedItem(selectedSorting);
+    initialized = true;
+  }
+
+  public boolean isInitialized() {
+    return initialized;
   }
 
   private JTextField getSearchField() {

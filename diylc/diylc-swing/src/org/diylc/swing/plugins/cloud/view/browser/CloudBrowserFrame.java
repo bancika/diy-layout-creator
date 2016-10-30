@@ -72,7 +72,7 @@ public class CloudBrowserFrame extends JFrame {
   @Override
   public void setVisible(boolean b) {
     super.setVisible(b);
-    if (b) {
+    if (b && !getSearchHeaderPanel().isInitialized()) {
       executeBackgroundTask(new ITask<Pair<String[], String[]>>() {
 
         @Override
@@ -88,7 +88,7 @@ public class CloudBrowserFrame extends JFrame {
 
         @Override
         public void complete(Pair<String[], String[]> result) {
-          getSearchHeaderPanel().updateLists(result.getFirst(), result.getSecond());
+          getSearchHeaderPanel().initializeLists(result.getFirst(), result.getSecond());
         }
       });
     }
