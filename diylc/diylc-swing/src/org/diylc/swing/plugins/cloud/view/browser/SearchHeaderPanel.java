@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -12,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.diylc.images.IconLoader;
-import org.diylc.plugins.cloud.presenter.CloudException;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
 
 public class SearchHeaderPanel extends JPanel {
 
@@ -24,10 +23,7 @@ public class SearchHeaderPanel extends JPanel {
   private JComboBox sortBox;
   private JButton goButton;
 
-  private CloudPresenter cloudPresenter;
-
-  public SearchHeaderPanel(CloudPresenter cloudPresenter) {
-    this.cloudPresenter = cloudPresenter;
+  public SearchHeaderPanel() {
     setLayout(new GridBagLayout());
 
     this.setBackground(Color.white);
@@ -50,7 +46,7 @@ public class SearchHeaderPanel extends JPanel {
     this.add(new JLabel("Filter By Category:"), gbc);
 
     gbc.gridx = 3;
-    gbc.weightx = 0.3;
+    gbc.weightx = 0.5;
     this.add(getCategoryBox(), gbc);
 
     gbc.gridx = 4;
@@ -69,6 +65,15 @@ public class SearchHeaderPanel extends JPanel {
     getSearchField().requestFocusInWindow();
   }
 
+  public void updateLists(String[] categories, String[] sortings) {
+    Object selectedCategory = getCategoryBox().getSelectedItem();
+    Object selectedSorting = getSortBox().getSelectedItem();
+    getCategoryBox().setModel(new DefaultComboBoxModel(categories));
+    getSortBox().setModel(new DefaultComboBoxModel(sortings));
+    getCategoryBox().setSelectedItem(selectedCategory);
+    getSortBox().setSelectedItem(selectedSorting);
+  }
+
   private JTextField getSearchField() {
     if (searchField == null) {
       searchField = new JTextField(60);
@@ -78,24 +83,14 @@ public class SearchHeaderPanel extends JPanel {
 
   private JComboBox getCategoryBox() {
     if (categoryBox == null) {
-      try {
-        categoryBox = new JComboBox(cloudPresenter.getCategories());
-      } catch (CloudException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      categoryBox = new JComboBox();
     }
     return categoryBox;
   }
 
   private JComboBox getSortBox() {
     if (sortBox == null) {
-      try {
-        sortBox = new JComboBox(cloudPresenter.getSortings());
-      } catch (CloudException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      sortBox = new JComboBox();
     }
     return sortBox;
   }

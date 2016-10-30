@@ -13,7 +13,6 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.plugins.cloud.model.UserEntity;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
@@ -138,8 +137,8 @@ public class DialogFactory {
     return dialog;
   }  
 
-  public UploadDialog createUploadDialog(IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
-    UploadDialog dialog = new UploadDialog(mainFrame, plugInPort, cloudPresenter);
+  public UploadDialog createUploadDialog(IPlugInPort plugInPort, String[] categories) {
+    UploadDialog dialog = new UploadDialog(mainFrame, plugInPort, categories);
     return dialog;
   }
 

@@ -26,8 +26,6 @@ import javax.swing.event.ChangeListener;
 
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
-import org.diylc.plugins.cloud.presenter.CloudException;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.utils.KeywordExtractor;
 
@@ -55,12 +53,12 @@ public class UploadDialog extends ButtonDialog {
   private JTextField keywordsField;
 
   private IPlugInPort plugInPort;
-  private CloudPresenter cloudPresenter;
+  private String[] categories;
 
-  public UploadDialog(JFrame owner, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
+  public UploadDialog(JFrame owner, IPlugInPort plugInPort, String[] categories) {
     super(owner, "Upload A Project", new String[] {OK, CANCEL});
     this.plugInPort = plugInPort;
-    this.cloudPresenter = cloudPresenter;
+    this.categories = categories;
     layoutGui();
     getButton(OK).setEnabled(false);
   }
@@ -208,12 +206,7 @@ public class UploadDialog extends ButtonDialog {
 
   private JComboBox getCategoryBox() {
     if (categoryBox == null) {
-      try {
-        categoryBox = new JComboBox(cloudPresenter.getCategories());
-      } catch (CloudException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      categoryBox = new JComboBox(categories);
     }
     return categoryBox;
   }

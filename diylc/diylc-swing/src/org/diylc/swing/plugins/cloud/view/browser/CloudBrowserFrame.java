@@ -29,6 +29,7 @@ import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.PagingProvider;
 import org.diylc.swing.ISwingUI;
+import org.diylc.utils.Pair;
 
 public class CloudBrowserFrame extends JFrame {
 
@@ -66,6 +67,31 @@ public class CloudBrowserFrame extends JFrame {
 
     JRootPane rootPane = SwingUtilities.getRootPane(getSearchHeaderPanel().getGoButton());
     rootPane.setDefaultButton(getSearchHeaderPanel().getGoButton());
+  }
+
+  @Override
+  public void setVisible(boolean b) {
+    super.setVisible(b);
+    if (b) {
+      executeBackgroundTask(new ITask<Pair<String[], String[]>>() {
+
+        @Override
+        public Pair<String[], String[]> doInBackground() throws Exception {
+          return new Pair<String[], String[]>(cloudPresenter.getCategories(), cloudPresenter.getSortings());
+        }
+
+        @Override
+        public void failed(Exception e) {
+          LOG.error("Could not fetch categories and sortings from the cloud", e);
+          showMessage("Could not fetch categories and sortings from the cloud", "Cloud Error", IView.ERROR_MESSAGE);
+        }
+
+        @Override
+        public void complete(Pair<String[], String[]> result) {
+          getSearchHeaderPanel().updateLists(result.getFirst(), result.getSecond());
+        }
+      });
+    }
   }
 
   public JPanel getMainPanel() {
@@ -133,7 +159,7 @@ public class CloudBrowserFrame extends JFrame {
 
   private SearchHeaderPanel getSearchHeaderPanel() {
     if (searchHeaderPanel == null) {
-      searchHeaderPanel = new SearchHeaderPanel(cloudPresenter);
+      searchHeaderPanel = new SearchHeaderPanel();
       searchHeaderPanel.getGoButton().addActionListener(new ActionListener() {
 
         @Override

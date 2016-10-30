@@ -104,7 +104,8 @@ public interface IServiceAPI {
       @ParamName("page") Integer page, @ParamName("itemsPerPage") Integer itemsPerPage, @ParamName("sort") String sort);
 
   /**
-   * Uploads a project using token to authenticate.
+   * Uploads a project using token to authenticate. When projectI is specified, it updates the
+   * existing project instead. In that case, the project must belong to the user.
    * 
    * @param username
    * @param token
@@ -116,13 +117,27 @@ public interface IServiceAPI {
    * @param keywords
    * @param thumbnail
    * @param project
+   * @param projectId
    * @return "Success" if the upload was successful or error message if it failed.
    */
-  String upload(@ParamName("username") String username, @ParamName("token") String token,
+  String uploadProject(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId, @ParamName("projectName") String projectName,
       @ParamName("category") String category, @ParamName("description") String description,
       @ParamName("diylcVersion") String diylcVersion, @ParamName("keywords") String keywords,
-      @ParamName("thumbnail") File thumbnail, @ParamName("project") File project);
+      @ParamName("thumbnail") File thumbnail, @ParamName("project") File project,
+      @ParamName("projectId") Integer projectId);
+  
+  /**
+   *Deletes an existing project.  The project must belong to the user
+   *
+   * @param username
+   * @param token
+   * @param machineId
+   * @param projectId
+   * @return
+   */
+  String deleteProject(@ParamName("username") String username, @ParamName("token") String token,
+      @ParamName("machineId") String machineId, @ParamName("projectId") Integer projectId);
 
   /**
    * Posts a comment to the specified project.

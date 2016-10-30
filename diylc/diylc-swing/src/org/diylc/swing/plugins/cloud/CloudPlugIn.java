@@ -390,28 +390,46 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
           DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
               FileFilterEnum.DIY.getExtensions()[0], null);
       if (file != null) {
-        swingUI.executeBackgroundTask(new ITask<File>() {
+        swingUI.executeBackgroundTask(new ITask<String[]>() {
 
           @Override
-          public File doInBackground() throws Exception {
+          public String[] doInBackground() throws Exception {
             LOG.debug("Uploading from " + file.getAbsolutePath());
             thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
-            return file;
+            return cloudPresenter.getCategories();
           }
 
           @Override
-          public void complete(File result) {
-            UploadDialog dialog = DialogFactory.getInstance().createUploadDialog(thumbnailPresenter, cloudPresenter);
+          public void complete(final String[] result) {
+            final UploadDialog dialog = DialogFactory.getInstance().createUploadDialog(thumbnailPresenter, result);
             dialog.setVisible(true);
             if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
               try {
-                File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
+                final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
                 if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
-                  cloudPresenter.upload(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
-                      dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, result);
-                  swingUI.showMessage(
-                      "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
-                      "Upload Success", IView.INFORMATION_MESSAGE);
+                  swingUI.executeBackgroundTask(new ITask<Void>() {
+
+                    @Override
+                    public Void doInBackground() throws Exception {
+                      cloudPresenter.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
+                          dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file);
+                      return null;
+                    }
+
+                    @Override
+                    public void failed(Exception e) {
+                      swingUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
+                    }
+
+                    @Override
+                    public void complete(Void result) {
+                      swingUI.showMessage(
+                          "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
+                          "Upload Success", IView.INFORMATION_MESSAGE);
+                    }
+                  });
+
+
                 } else {
                   swingUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.", "Upload Error",
                       IView.ERROR_MESSAGE);

@@ -134,7 +134,7 @@ public class CloudPresenter {
     return categories;
   }
 
-  public void upload(String projectName, String category, String description, String keywords, String diylcVersion,
+  public void uploadProject(String projectName, String category, String description, String keywords, String diylcVersion,
       File thumbnail, File project) throws IOException, CloudException {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
     String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
@@ -144,8 +144,8 @@ public class CloudPresenter {
 
     try {
       String res =
-          getService().upload(username, token, getMachineId(), projectName, category, description, diylcVersion,
-              keywords, thumbnail, project);
+          getService().uploadProject(username, token, getMachineId(), projectName, category, description, diylcVersion,
+              keywords, thumbnail, project, null);
       if (!res.equals(SUCCESS))
         throw new CloudException(res);
     } catch (Exception e) {
