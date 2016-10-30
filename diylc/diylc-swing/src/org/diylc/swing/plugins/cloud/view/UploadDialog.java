@@ -238,6 +238,7 @@ public class UploadDialog extends ButtonDialog {
   private JTextField getKeywordsField() {
     if (keywordsField == null) {
       keywordsField = new JTextField();
+      keywordsField.setColumns(32);
       keywordsField.setText(KeywordExtractor.getInstance().extractKeywords(plugInPort.getCurrentProject()));
     }
     return keywordsField;

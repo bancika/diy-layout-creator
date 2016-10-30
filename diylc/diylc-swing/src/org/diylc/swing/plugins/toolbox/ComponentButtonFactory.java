@@ -25,7 +25,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.images.IconLoader;
-import org.diylc.swing.plugins.toolbox.openide.DropDownButtonFactory;
+import org.diylc.swingframework.openide.DropDownButtonFactory;
 
 /**
  * Factory that creates {@link JButton}s which display component type icons and instantiates the
