@@ -9,6 +9,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Current;
 import org.diylc.core.measures.Inductance;
@@ -18,7 +19,8 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Inductor (schematic symbol)", author = "Branislav Stojkovic", category = "Schematics",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",
-    description = "Inductor schematic symbol", zOrder = IDIYComponent.COMPONENT)
+    description = "Inductor schematic symbol", zOrder = IDIYComponent.COMPONENT,
+        keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
 public class InductorSymbol extends AbstractSchematicLeadedSymbol<Inductance> {
 
   private static final long serialVersionUID = 1L;

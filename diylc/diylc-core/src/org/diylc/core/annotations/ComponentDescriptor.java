@@ -80,6 +80,19 @@ public @interface ComponentDescriptor {
    */
   boolean rotatable() default true;
 
+  /**
+   * Defines if and how a component should appear in auto-generated project keywords. See
+   * {@link KeywordPolicy} for more info.
+   * 
+   * @return
+   */
   KeywordPolicy keywordPolicy() default KeywordPolicy.NEVER_SHOW;
+
+  /**
+   * Only used if {@link KeywordPolicy} is set to {@link KeywordPolicy#SHOW_TAG}.
+   * 
+   * @return
+   */
+  String keywordTag() default "";
 
 }

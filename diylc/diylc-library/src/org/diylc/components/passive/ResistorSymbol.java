@@ -9,6 +9,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.PowerUnit;
 import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.Size;
@@ -16,7 +17,8 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Resistor (schematic symbol)", author = "Branislav Stojkovic", category = "Schematics",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R",
-    description = "Resistor schematic symbol", zOrder = IDIYComponent.COMPONENT)
+    description = "Resistor schematic symbol", zOrder = IDIYComponent.COMPONENT,
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
 public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 
   private static final long serialVersionUID = 1L;

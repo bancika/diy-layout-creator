@@ -33,11 +33,12 @@ public class ComponentType {
   private boolean rotatable;
   private IAutoCreator autoCreator;
   private KeywordPolicy keywordPolicy;
+  private String keywordTag;
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
       boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit, boolean rotatable,
-      IAutoCreator autoCreator, KeywordPolicy keywordPolicy) {
+      IAutoCreator autoCreator, KeywordPolicy keywordPolicy, String keywordTag) {
     super();
     this.name = name;
     this.description = description;
@@ -55,6 +56,7 @@ public class ComponentType {
     this.rotatable = rotatable;
     this.autoCreator = autoCreator;
     this.keywordPolicy = keywordPolicy;
+    this.keywordTag = keywordTag;
   }
 
   public String getName() {
@@ -119,6 +121,10 @@ public class ComponentType {
   
   public KeywordPolicy getKeywordPolicy() {
     return keywordPolicy;
+  }
+  
+  public String getKeywordTag() {
+    return keywordTag;
   }
 
   @Override

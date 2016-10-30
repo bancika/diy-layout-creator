@@ -29,6 +29,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.plugins.cloud.presenter.CloudException;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swingframework.ButtonDialog;
+import org.diylc.utils.KeywordExtractor;
 
 public class UploadDialog extends ButtonDialog {
 
@@ -236,8 +237,8 @@ public class UploadDialog extends ButtonDialog {
 
   private JTextField getKeywordsField() {
     if (keywordsField == null) {
-      keywordsField = new JTextField();      
-      keywordsField.setText(cloudPresenter.extractKeywords(plugInPort.getCurrentProject()));
+      keywordsField = new JTextField();
+      keywordsField.setText(KeywordExtractor.getInstance().extractKeywords(plugInPort.getCurrentProject()));
     }
     return keywordsField;
   }

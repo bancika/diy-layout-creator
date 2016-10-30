@@ -25,13 +25,15 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Lever Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Strat-style lever switch", stretchable = false, zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "SW")
+    instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,
+    keywordTag = "Guitar Wiring Diagram")
 public class LeverSwitch extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

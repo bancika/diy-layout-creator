@@ -3,7 +3,6 @@ package org.diylc.presenter;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.Desktop.Action;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -76,6 +75,7 @@ public class ComponentProcessor {
     boolean rotatable;
     IAutoCreator autoCreator = null;
     KeywordPolicy keywordPolicy;
+    String keywordTag;
     if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
       ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
       name = annotation.name();
@@ -91,7 +91,8 @@ public class ComponentProcessor {
       autoEdit = annotation.autoEdit();
       rotatable = annotation.rotatable();
       keywordPolicy = annotation.keywordPolicy();
-    } else {
+      keywordTag = annotation.keywordTag();
+    } else { // default
       name = clazz.getSimpleName();
       description = "";
       creationMethod = CreationMethod.SINGLE_CLICK;
@@ -105,6 +106,7 @@ public class ComponentProcessor {
       autoEdit = true;
       rotatable = true;
       keywordPolicy = KeywordPolicy.NEVER_SHOW;
+      keywordTag = null;
     }
     if (clazz.isAnnotationPresent(AutoCreator.class)) {
       AutoCreator annotation = clazz.getAnnotation(AutoCreator.class);
@@ -132,7 +134,7 @@ public class ComponentProcessor {
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
-            flexibleZOrder, stretchable, bomPolicy, autoEdit, rotatable, autoCreator, keywordPolicy);
+            flexibleZOrder, stretchable, bomPolicy, autoEdit, rotatable, autoCreator, keywordPolicy, keywordTag);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }
