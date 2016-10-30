@@ -17,7 +17,12 @@ public class PagingProvider {
   private List<ProjectEntity> currentResults;
 
   public PagingProvider(CloudPresenter cloudPresenter) {
+    this(cloudPresenter, 10);
+  }
+
+  public PagingProvider(CloudPresenter cloudPresenter, int itemsPerPage) {
     this.cloudPresenter = cloudPresenter;
+    this.itemsPerPage = itemsPerPage;
   }
 
   public List<ProjectEntity> startSession(String searchFor, String category, String sort) throws CloudException {

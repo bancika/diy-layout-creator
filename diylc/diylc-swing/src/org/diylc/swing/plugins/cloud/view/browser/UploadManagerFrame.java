@@ -1,0 +1,124 @@
+package org.diylc.swing.plugins.cloud.view.browser;
+
+import java.awt.Dimension;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+
+import org.apache.log4j.Logger;
+import org.diylc.common.IPlugInPort;
+import org.diylc.common.ITask;
+import org.diylc.core.IView;
+import org.diylc.images.IconLoader;
+import org.diylc.plugins.cloud.model.ProjectEntity;
+import org.diylc.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.swing.ISimpleView;
+import org.diylc.swing.ISwingUI;
+
+public class UploadManagerFrame extends JFrame implements ISimpleView {
+
+  private static final String TITLE = "Manage My Uploads";
+
+  private static final long serialVersionUID = 1L;
+
+  private static final Logger LOG = Logger.getLogger(UploadManagerFrame.class);
+
+  private ResultsScrollPanel resultsScrollPane;
+
+  private IPlugInPort plugInPort;
+  private CloudPresenter cloudPresenter;
+
+  private ISwingUI swingUI;
+
+  public UploadManagerFrame(ISwingUI swingUI, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
+    super(TITLE);
+    this.swingUI = swingUI;
+    this.setIconImage(IconLoader.CloudGear.getImage());
+    this.setPreferredSize(new Dimension(700, 640));
+    this.plugInPort = plugInPort;
+    this.cloudPresenter = cloudPresenter;
+
+    setContentPane(getResultsScrollPane());
+    this.pack();
+    this.setLocationRelativeTo(swingUI.getOwnerFrame());
+    this.setGlassPane(SimpleCloudGlassPane.GLASS_PANE);
+
+    search();
+  }
+
+  private ResultsScrollPanel getResultsScrollPane() {
+    if (resultsScrollPane == null) {
+      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, null, cloudPresenter);
+    }
+    return resultsScrollPane;
+  }
+
+  private void search() {
+    getResultsScrollPane().clearPrevious();
+    executeBackgroundTask(new ITask<List<ProjectEntity>>() {
+
+      @Override
+      public List<ProjectEntity> doInBackground() throws Exception {
+        return cloudPresenter.fetchUserUploads();
+      }
+
+      @Override
+      public void failed(Exception e) {
+        showMessage("Search failed! Detailed message is in the logs. Please report to the author.", "Search Failed",
+            IView.ERROR_MESSAGE);
+      }
+
+      @Override
+      public void complete(List<ProjectEntity> result) {
+        setTitle(TITLE + " - " + result.size() + " Uploads Found");
+        getResultsScrollPane().startSearch(result);
+      }
+    });
+  }
+
+  @Override
+  public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
+    getGlassPane().setVisible(true);
+    SwingWorker<T, Void> worker = new SwingWorker<T, Void>() {
+
+      @Override
+      protected T doInBackground() throws Exception {
+        return task.doInBackground();
+      }
+
+      @Override
+      protected void done() {
+        getGlassPane().setVisible(false);
+        try {
+          T result = get();
+          task.complete(result);
+        } catch (ExecutionException e) {
+          LOG.error("Background task execution failed", e);
+          task.failed(e);
+        } catch (InterruptedException e) {
+          LOG.error("Background task execution interrupted", e);
+          task.failed(e);
+        }
+      }
+    };
+    worker.execute();
+  }
+
+  @Override
+  public void showMessage(String message, String title, int messageType) {
+    JOptionPane.showMessageDialog(this, message, title, messageType);
+  }
+
+  @Override
+  public int showConfirmDialog(String message, String title, int optionType, int messageType) {
+    return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
+  }
+  
+  @Override
+  public JFrame getOwnerFrame() {
+    return this;
+  }
+}

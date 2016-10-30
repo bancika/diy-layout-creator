@@ -134,8 +134,8 @@ public class CloudPresenter {
     return categories;
   }
 
-  public void uploadProject(String projectName, String category, String description, String keywords, String diylcVersion,
-      File thumbnail, File project) throws IOException, CloudException {
+  public void uploadProject(String projectName, String category, String description, String keywords,
+      String diylcVersion, File thumbnail, File project) throws IOException, CloudException {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
     String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
 
@@ -234,35 +234,52 @@ public class CloudPresenter {
       throws CloudException {
     LOG.info(String.format("search(%1$s,%2$s,%3$s,%4$d,%5$d)", criteria, category, sortOrder, pageNumber, itemsPerPage));
     try {
-      Object res = getService().search(criteria, category, pageNumber, itemsPerPage, sortOrder);
-      // Thread.sleep(2000);
-      if (res == null)
-        throw new CloudException("Failed to retreive search results.");
-      if (res instanceof String)
-        throw new CloudException(res.toString());
-      if (res instanceof List<?>) {
-        @SuppressWarnings("unchecked")
-        List<ProjectEntity> projects = (List<ProjectEntity>) res;
-        LOG.info("Received " + projects.size() + " results. Downloading thumbnails...");
-        // Download thumbnails and replace urls with local paths to speed up loading in the main
-        // thread
-        for (int i = 0; i < projects.size(); i++) {
-          String url = projects.get(i).getThumbnailUrl();
-          URL website = new URL(url);
-          ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-          File temp = File.createTempFile("thumbnail", ".png");
-          FileOutputStream fos = new FileOutputStream(temp);
-          fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-          projects.get(i).setThumbnailUrl(temp.getAbsolutePath());
-          fos.close();
-        }
-        LOG.info("Finished downloading thumbnails.");
-        return projects;
-      }
-      throw new CloudException("Unexpected server response received for search results: " + res.getClass().getName());
+      Object res = getService().search(criteria, category, pageNumber, itemsPerPage, sortOrder, null);
+      return processResults(res);
+    } catch (CloudException ce) {
+      throw ce;
     } catch (Exception e) {
       throw new CloudException(e);
     }
+  }
+
+  public List<ProjectEntity> fetchUserUploads() throws CloudException {
+    UserEntity user = getUserDetails();
+    try {
+      Object res = getService().search("", "", 1, Integer.MAX_VALUE, getSortings()[0], user.getUsername());
+      return processResults(res);
+    } catch (CloudException ce) {
+      throw ce;
+    } catch (Exception e) {
+      throw new CloudException(e);
+    }
+  }
+
+  private List<ProjectEntity> processResults(Object res) throws CloudException, IOException {
+    if (res == null)
+      throw new CloudException("Failed to retreive search results.");
+    if (res instanceof String)
+      throw new CloudException(res.toString());
+    if (res instanceof List<?>) {
+      @SuppressWarnings("unchecked")
+      List<ProjectEntity> projects = (List<ProjectEntity>) res;
+      LOG.info("Received " + projects.size() + " results. Downloading thumbnails...");
+      // Download thumbnails and replace urls with local paths to speed up loading in the main
+      // thread
+      for (int i = 0; i < projects.size(); i++) {
+        String url = projects.get(i).getThumbnailUrl();
+        URL website = new URL(url);
+        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+        File temp = File.createTempFile("thumbnail", ".png");
+        FileOutputStream fos = new FileOutputStream(temp);
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        projects.get(i).setThumbnailUrl(temp.getAbsolutePath());
+        fos.close();
+      }
+      LOG.info("Finished downloading thumbnails.");
+      return projects;
+    }
+    throw new CloudException("Unexpected server response received for search results: " + res.getClass().getName());
   }
 
   public String[] getSortings() throws CloudException {

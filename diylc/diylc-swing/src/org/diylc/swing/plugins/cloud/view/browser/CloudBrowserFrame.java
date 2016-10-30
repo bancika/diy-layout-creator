@@ -28,10 +28,13 @@ import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.PagingProvider;
+import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.Pair;
 
-public class CloudBrowserFrame extends JFrame {
+public class CloudBrowserFrame extends JFrame implements ISimpleView {
+
+  private static final String TITLE = "Search The Cloud";
 
   private static final long serialVersionUID = 1L;
 
@@ -52,7 +55,7 @@ public class CloudBrowserFrame extends JFrame {
   private ISwingUI swingUI;
 
   public CloudBrowserFrame(ISwingUI swingUI, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
-    super("Search The Cloud");
+    super(TITLE);
     this.swingUI = swingUI;
     this.setIconImage(IconLoader.Cloud.getImage());
     this.setPreferredSize(new Dimension(700, 640));
@@ -195,12 +198,13 @@ public class CloudBrowserFrame extends JFrame {
       }
 
       @Override
-      public void complete(List<ProjectEntity> result) {
+      public void complete(List<ProjectEntity> result) {        
         getResultsScrollPane().startSearch(result);
       }
     });
   }
 
+  @Override
   public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
     getGlassPane().setVisible(true);
     SwingWorker<T, Void> worker = new SwingWorker<T, Void>() {
@@ -228,11 +232,18 @@ public class CloudBrowserFrame extends JFrame {
     worker.execute();
   }
 
+  @Override
   public void showMessage(String message, String title, int messageType) {
     JOptionPane.showMessageDialog(this, message, title, messageType);
   }
 
+  @Override
   public int showConfirmDialog(String message, String title, int optionType, int messageType) {
     return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
+  }
+  
+  @Override
+  public JFrame getOwnerFrame() {
+    return this;
   }
 }

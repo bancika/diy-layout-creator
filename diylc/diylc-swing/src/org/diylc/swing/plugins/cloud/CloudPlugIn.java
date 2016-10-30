@@ -26,9 +26,9 @@ import org.diylc.swing.plugins.cloud.view.LoginDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.cloud.view.browser.CloudBrowserFrame;
+import org.diylc.swing.plugins.cloud.view.browser.UploadManagerFrame;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
-import org.diylc.swingframework.ProgressDialog;
 
 public class CloudPlugIn implements IPlugIn, CloudListener {
 
@@ -116,6 +116,10 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
       cloudBrowser = new CloudBrowserFrame(swingUI, plugInPort, cloudPresenter);
     }
     return cloudBrowser;
+  }
+
+  public UploadManagerFrame createUploadManagerFrame() {
+    return new UploadManagerFrame(swingUI, plugInPort, cloudPresenter);
   }
 
   public LibraryAction getLibraryAction() {
@@ -455,15 +459,14 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
     public ManageProjectsAction() {
       super();
-      putValue(AbstractAction.NAME, "Manage My Projects");
+      putValue(AbstractAction.NAME, "Manage My Uploads");
       putValue(AbstractAction.SMALL_ICON, IconLoader.CloudGear.getIcon());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      ProgressDialog dialog =
-          DialogFactory.getInstance().createProgressDialog("Test", new String[] {}, "Some text", false);
-      dialog.setVisible(true);
+      UploadManagerFrame frame = createUploadManagerFrame();
+      frame.setVisible(true);
     }
   }
 

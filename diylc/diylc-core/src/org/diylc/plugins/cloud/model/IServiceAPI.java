@@ -97,11 +97,13 @@ public interface IServiceAPI {
    * @param page
    * @param itemsPerPage
    * @param sort
+   * @param username
    * @return string with error message if the error occurred or a list of {@link ProjectEntity}
    *         objects.
    */
   Object search(@ParamName("criteria") String criteria, @ParamName("category") String category,
-      @ParamName("page") Integer page, @ParamName("itemsPerPage") Integer itemsPerPage, @ParamName("sort") String sort);
+      @ParamName("page") Integer page, @ParamName("itemsPerPage") Integer itemsPerPage, @ParamName("sort") String sort,
+      @ParamName("username") String username);
 
   /**
    * Uploads a project using token to authenticate. When projectI is specified, it updates the
@@ -126,9 +128,9 @@ public interface IServiceAPI {
       @ParamName("diylcVersion") String diylcVersion, @ParamName("keywords") String keywords,
       @ParamName("thumbnail") File thumbnail, @ParamName("project") File project,
       @ParamName("projectId") Integer projectId);
-  
+
   /**
-   *Deletes an existing project.  The project must belong to the user
+   * Deletes an existing project. The project must belong to the user
    *
    * @param username
    * @param token

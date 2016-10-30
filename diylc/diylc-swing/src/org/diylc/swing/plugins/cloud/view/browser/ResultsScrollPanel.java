@@ -44,6 +44,7 @@ import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.PagingProvider;
+import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.plugins.cloud.view.CommentDialog;
@@ -65,7 +66,7 @@ public class ResultsScrollPanel extends JScrollPane {
   private JLabel topLabel;
 
   private ISwingUI mainUI;
-  private CloudBrowserFrame cloudUI;
+  private ISimpleView cloudUI;
 
   private IPlugInPort plugInPort;
 
@@ -80,7 +81,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
   private Icon spinnerIcon = IconLoader.Spinning.getIcon();
 
-  public ResultsScrollPanel(ISwingUI mainUI, CloudBrowserFrame cloudUI, IPlugInPort plugInPort,
+  public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort,
       PagingProvider provider, CloudPresenter cloudPresenter) {
     super();
     this.mainUI = mainUI;
@@ -157,7 +158,7 @@ public class ResultsScrollPanel extends JScrollPane {
           getViewport().setViewPosition(old);
         }
       });
-      if (provider.hasMoreData()) {
+      if (provider != null && provider.hasMoreData()) {
         getLoadMoreLabel().setText("Querying the cloud for more results...");
         getLoadMoreLabel().setIcon(spinnerIcon);
       } else {
@@ -387,7 +388,7 @@ public class ResultsScrollPanel extends JScrollPane {
         @Override
         public void paint(Graphics g) {
           super.paint(g);
-          if (armed && provider.hasMoreData()) {
+          if (armed && provider != null && provider.hasMoreData()) {
             // disarm immediately so we don't trigger successive requests to the provider
             armed = false;
             SwingWorker<List<ProjectEntity>, Void> worker = new SwingWorker<List<ProjectEntity>, Void>() {

@@ -23,7 +23,7 @@ import org.diylc.core.IView;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
-import org.diylc.swing.plugins.cloud.view.browser.CloudBrowserFrame;
+import org.diylc.swing.ISimpleView;
 
 public class CommentDialog extends JDialog {
 
@@ -44,19 +44,18 @@ public class CommentDialog extends JDialog {
 
   private int lastPosition = 0;
 
-  private CloudBrowserFrame owner;
+  private ISimpleView owner;
 
-  public CommentDialog(CloudBrowserFrame owner, ProjectEntity project, List<CommentEntity> comments,
+  public CommentDialog(ISimpleView cloudUI, ProjectEntity project, List<CommentEntity> comments,
       CloudPresenter presenter) {
-    super(owner, "Comments on " + project.getName());
-    this.owner = owner;
+    super(cloudUI.getOwnerFrame(), "Comments on " + project.getName());
     this.project = project;
     this.comments = comments;
     this.presenter = presenter;
     setMinimumSize(new Dimension(400, 600));
     setContentPane(getMainPanel());
     pack();
-    setLocationRelativeTo(owner);
+    setLocationRelativeTo(cloudUI.getOwnerFrame());
     setModal(true);
     if (!presenter.isLoggedIn()) {
       getReplyArea().setEnabled(false);
