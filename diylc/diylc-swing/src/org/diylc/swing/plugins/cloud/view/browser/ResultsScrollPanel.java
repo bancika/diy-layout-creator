@@ -81,8 +81,8 @@ public class ResultsScrollPanel extends JScrollPane {
 
   private Icon spinnerIcon = IconLoader.Spinning.getIcon();
 
-  public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort,
-      PagingProvider provider, CloudPresenter cloudPresenter) {
+  public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort, PagingProvider provider,
+      CloudPresenter cloudPresenter) {
     super();
     this.mainUI = mainUI;
     this.cloudUI = cloudUI;
@@ -146,8 +146,8 @@ public class ResultsScrollPanel extends JScrollPane {
     } else {
       final Point old = getViewport().getViewPosition();
       LOG.info("Adding " + projects.size() + " projects to display.");
-      for (int i = 0; i < projects.size(); i++) {
-        addProjectToDisplay(projects.get(i));
+      for (ProjectEntity project : projects) {
+        addProjectToDisplay(project);
         this.currentLocation++;
       }
       armed = true;
@@ -173,8 +173,6 @@ public class ResultsScrollPanel extends JScrollPane {
     JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
     nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
 
-    // JLabel descriptionArea = new JLabel("<html><p align='justify'>" + project.getDescription() +
-    // "</p></html>");
     JTextArea descriptionArea = new JTextArea(project.getDescription().replace("<br>", "\n"));
     descriptionArea.setEditable(false);
     descriptionArea.setFont(thumbnailLabel.getFont());
@@ -185,7 +183,6 @@ public class ResultsScrollPanel extends JScrollPane {
     DefaultCaret caret = (DefaultCaret) descriptionArea.getCaret();
     caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
     descriptionArea.setEnabled(false);
-    // descriptionArea.setDisabledTextColor(descriptionArea.getSelectionColor());
 
     JLabel commentLabel =
         new JLabel(Integer.toString(project.getCommentCount()), IconLoader.Messages.getIcon(), SwingConstants.LEFT);

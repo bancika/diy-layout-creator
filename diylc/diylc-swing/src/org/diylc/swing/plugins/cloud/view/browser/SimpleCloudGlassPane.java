@@ -26,7 +26,6 @@ public class SimpleCloudGlassPane extends JPanel implements MouseListener, KeyLi
 
   private static final long serialVersionUID = -5344758920442881290L;
 
-
   public SimpleCloudGlassPane() {
     addKeyListener(this);
     addMouseListener(this);
@@ -46,13 +45,6 @@ public class SimpleCloudGlassPane extends JPanel implements MouseListener, KeyLi
     JLabel cloudLabel = new JLabel(IconLoader.CloudWait.getIcon());
     cloudLabel.setHorizontalAlignment(SwingConstants.CENTER);
     add(cloudLabel, gbc);
-//
-//    gbc.gridy = 1;
-//    gbc.weighty = 1.5;
-//    gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-//    JLabel label = new JLabel("<html><font size='5' color='#999999'>Querying the cloud...</font></html>");
-//    label.setHorizontalAlignment(SwingConstants.CENTER);
-//    add(label, gbc);
   }
 
   @Override

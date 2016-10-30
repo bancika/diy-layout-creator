@@ -68,8 +68,7 @@ public class CommentDialog extends JDialog {
     if (listPanel == null) {
       listPanel = new JPanel(new GridBagLayout());
       listPanel.setBackground(Color.white);
-      for (int i = 0; i < comments.size(); i++) {
-        CommentEntity c = comments.get(i);
+      for (CommentEntity c : comments) {        
         addComment(c);
 
         GridBagConstraints gbc = new GridBagConstraints();
