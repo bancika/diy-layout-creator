@@ -8,8 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -23,7 +21,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,11 +42,15 @@ import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.PagingProvider;
+import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
+import org.diylc.swing.gui.DummyView;
 import org.diylc.swing.plugins.cloud.view.CommentDialog;
+import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
+import org.diylc.swingframework.ButtonDialog;
 
 public class ResultsScrollPanel extends JScrollPane {
 
@@ -173,11 +174,11 @@ public class ResultsScrollPanel extends JScrollPane {
   }
 
   private JComponent addProjectToDisplay(final ProjectEntity project) {
-    JLabel thumbnailLabel = new JLabel(loadImage(project.getThumbnailUrl()));
-    JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
+    final JLabel thumbnailLabel = new JLabel(loadImage(project.getThumbnailUrl()));
+    final JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
     nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
 
-    JTextArea descriptionArea = new JTextArea(project.getDescription().replace("<br>", "\n"));
+    final JTextArea descriptionArea = new JTextArea(project.getDescription().replace("<br>", "\n"));
     descriptionArea.setEditable(false);
     descriptionArea.setFont(thumbnailLabel.getFont());
     descriptionArea.setLineWrap(true);
@@ -188,7 +189,7 @@ public class ResultsScrollPanel extends JScrollPane {
     caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
     descriptionArea.setEnabled(false);
 
-    JLabel commentLabel =
+    final JLabel commentLabel =
         new JLabel(Integer.toString(project.getCommentCount()), IconLoader.Messages.getIcon(), SwingConstants.LEFT);
     commentLabel.setToolTipText("Click to see and add public comments");
     commentLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -218,27 +219,26 @@ public class ResultsScrollPanel extends JScrollPane {
       }
     });
 
-    JLabel viewLabel =
+    final JLabel viewLabel =
         new JLabel(Integer.toString(project.getViewCount()), IconLoader.Eye.getIcon(), SwingConstants.LEFT);
     viewLabel.setToolTipText("View count");
 
-    JLabel downloadLabel =
+    final JLabel downloadLabel =
         new JLabel(Integer.toString(project.getDownloadCount()), IconLoader.Download.getIcon(), SwingConstants.LEFT);
     downloadLabel.setToolTipText("Download count");
 
-    JLabel categoryLabel = new JLabel("<html>Category: <b>" + project.getCategory() + "</b></html>");
-    JLabel authorLabel = new JLabel("<html>Author: <b>" + project.getOwner() + "</b></html>");
-    JLabel updatedLabel = new JLabel("<html>Last updated: <b>" + project.getUpdated() + "</b></html>");
-    JButton downloadButton = new JButton(IconLoader.CloudDownload.getIcon());
+    final JLabel categoryLabel = new JLabel("<html>Category: <b>" + project.getCategory() + "</b></html>");
+    final JLabel authorLabel = new JLabel("<html>Author: <b>" + project.getOwner() + "</b></html>");
+    final JLabel updatedLabel = new JLabel("<html>Last updated: <b>" + project.getUpdated() + "</b></html>");
 
-    downloadButton.setBorderPainted(false);
-    downloadButton.setContentAreaFilled(false);
+    final JLabel downloadButton = new JLabel(IconLoader.CloudDownload.getIcon());
+    downloadButton.setFocusable(true);
     downloadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     downloadButton.setToolTipText("Download to local drive");
-    downloadButton.addActionListener(new ActionListener() {
+    downloadButton.addMouseListener(new MouseAdapter() {
 
       @Override
-      public void actionPerformed(ActionEvent e) {
+      public void mouseClicked(MouseEvent e) {
         final File file =
             DialogFactory.getInstance().showSaveDialog((JFrame) cloudUI, FileFilterEnum.DIY.getFilter(),
                 new File(project.getName() + ".diy"), FileFilterEnum.DIY.getExtensions()[0], null);
@@ -297,21 +297,144 @@ public class ResultsScrollPanel extends JScrollPane {
       }
     });
 
-    JButton reuploadButton = new JButton(IconLoader.CloudUpload.getIcon());
-    reuploadButton.setContentAreaFilled(false);
+    final JLabel spacerLabel = new JLabel();
+    final JSeparator separator = new JSeparator();
+
+    final JPanel buttonPanel = new JPanel(new FlowLayout());
+    
+    final JLabel editButton = new JLabel(IconLoader.CloudEdit.getIcon());
+    editButton.setFocusable(true);
+    editButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    editButton.setToolTipText("Edit details without changing the project file");
+
+    final JLabel reuploadButton = new JLabel(IconLoader.CloudUpload.getIcon());
+    reuploadButton.setFocusable(true);
     reuploadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     reuploadButton.setToolTipText("Re-upload to the cloud");
+    reuploadButton.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        final Presenter thumbnailPresenter = new Presenter(new DummyView());
+        final File file =
+            DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
+                FileFilterEnum.DIY.getExtensions()[0], null, cloudUI.getOwnerFrame());
+        if (file != null) {
+          LOG.info("Preparing re-upload of project " + project.getName() + "(" + project.getId() + ")");
+          cloudUI.executeBackgroundTask(new ITask<String[]>() {
 
-    JButton deleteButton = new JButton(IconLoader.CloudDelete.getIcon());
-    deleteButton.setContentAreaFilled(false);
+            @Override
+            public String[] doInBackground() throws Exception {
+              LOG.debug("Uploading from " + file.getAbsolutePath());
+              thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
+              return cloudPresenter.getCategories();
+            }
+
+            @Override
+            public void complete(final String[] result) {
+              final UploadDialog dialog =
+                  DialogFactory.getInstance().createUploadDialog(cloudUI.getOwnerFrame(), thumbnailPresenter, result, true);
+              dialog.setVisible(true);
+              if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
+                try {
+                  final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
+                  if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
+                    cloudUI.executeBackgroundTask(new ITask<ProjectEntity>() {
+
+                      @Override
+                      public ProjectEntity doInBackground() throws Exception {
+                        cloudPresenter.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
+                            dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file,
+                            project.getId());
+                        return cloudPresenter.fetchUserUploads(project.getId()).get(0);
+                      }
+
+                      @Override
+                      public void failed(Exception e) {
+                        cloudUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
+                      }
+
+                      @Override
+                      public void complete(ProjectEntity result) {
+                        nameLabel.setText("<html><b>" + project.getName() + "</b></html>");
+                        categoryLabel.setText(result.getCategory());
+                        descriptionArea.setText(result.getDescription().replace("<br>", "\n"));
+                        categoryLabel.setText("<html>Category: <b>" + result.getCategory() + "</b></html>");
+                        updatedLabel.setText("<html>Last updated: <b>" + result.getUpdated() + "</b></html>");
+                        thumbnailLabel.setIcon(new ImageIcon(dialog.getThumbnail()));
+                        cloudUI
+                            .showMessage(
+                                "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
+                                "Upload Success", IView.INFORMATION_MESSAGE);
+                      }
+                    });
+                  } else {
+                    cloudUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.",
+                        "Upload Error", IView.ERROR_MESSAGE);
+                  }
+                } catch (Exception e) {
+                  cloudUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
+                }
+              }
+            }
+
+            @Override
+            public void failed(Exception e) {
+              cloudUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            }
+          });
+        }
+      }
+    });
+
+    final JLabel deleteButton = new JLabel(IconLoader.CloudDelete.getIcon());
+    deleteButton.setFocusable(true);
     deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     deleteButton.setToolTipText("Delete from the cloud");
+    deleteButton.addMouseListener(new MouseAdapter() {
 
-    JPanel buttonPanel = new JPanel(new FlowLayout());
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        if (cloudUI.showConfirmDialog("Are you sure you want to permanently delete project " + project.getName()
+            + " from the cloud?", "Delete Project", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION) {
+          LOG.info("Deleting project " + project.getName() + "(" + project.getId() + ")");
+          cloudUI.executeBackgroundTask(new ITask<Void>() {
+
+            @Override
+            public Void doInBackground() throws Exception {
+              cloudPresenter.deleteProject(project.getId());
+              return null;
+            }
+
+            @Override
+            public void failed(Exception e) {
+              cloudUI.showMessage("Could not delete the project. Detailed message is in the logs.", "Error",
+                  ISwingUI.ERROR_MESSAGE);
+            }
+
+            @Override
+            public void complete(Void result) {
+              getResultsPanel().remove(thumbnailLabel);
+              getResultsPanel().remove(nameLabel);
+              getResultsPanel().remove(spacerLabel);
+              getResultsPanel().remove(commentLabel);
+              getResultsPanel().remove(viewLabel);
+              getResultsPanel().remove(downloadLabel);
+              getResultsPanel().remove(descriptionArea);
+              getResultsPanel().remove(categoryLabel);
+              getResultsPanel().remove(buttonPanel);
+              getResultsPanel().remove(authorLabel);
+              getResultsPanel().remove(updatedLabel);
+              getResultsPanel().remove(separator);
+            }
+          });
+        }
+      }
+    });
+
     buttonPanel.setBackground(Color.white);
-    // buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
     buttonPanel.add(downloadButton);
     if (showEditControls) {
+      buttonPanel.add(editButton);
       buttonPanel.add(reuploadButton);
       buttonPanel.add(deleteButton);
     }
@@ -334,7 +457,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
     gbc.gridx++;
     gbc.weightx = 0.1;
-    getResultsPanel().add(new JLabel(), gbc);
+    getResultsPanel().add(spacerLabel, gbc);
 
     gbc.gridx++;
     gbc.weightx = 0;
@@ -388,7 +511,7 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     gbc.insets = new Insets(2, 2, 2, 2);
-    getResultsPanel().add(new JSeparator(), gbc);
+    getResultsPanel().add(separator, gbc);
 
     return nameLabel;
   }

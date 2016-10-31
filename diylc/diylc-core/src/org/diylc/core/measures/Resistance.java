@@ -50,6 +50,8 @@ public class Resistance extends AbstractMeasure<ResistanceUnit> {
           bands = new Color[] {};
       }
     } else {
+      if (getValue() == null || getUnit() == null)
+        return new Color[] {};
       double base = getValue() * getUnit().getFactor();
       int multiplier = 0;
       while (base > (resistorColorCode == ResistorColorCode._4_BAND ? 99 : 999)) {

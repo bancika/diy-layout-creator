@@ -1365,6 +1365,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Solder pad component should not allow negative size</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed silent error when having a resistor without a valid value (e.g. missing units)</description>
 				</org.diylc.appframework.update.Change>										
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

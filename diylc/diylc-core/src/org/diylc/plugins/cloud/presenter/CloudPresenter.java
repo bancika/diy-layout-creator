@@ -135,7 +135,7 @@ public class CloudPresenter {
   }
 
   public void uploadProject(String projectName, String category, String description, String keywords,
-      String diylcVersion, File thumbnail, File project) throws IOException, CloudException {
+      String diylcVersion, File thumbnail, File project, Integer projectId) throws IOException, CloudException {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
     String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
 
@@ -145,7 +145,23 @@ public class CloudPresenter {
     try {
       String res =
           getService().uploadProject(username, token, getMachineId(), projectName, category, description, diylcVersion,
-              keywords, thumbnail, project, null);
+              keywords, thumbnail, project, projectId);
+      if (!res.equals(SUCCESS))
+        throw new CloudException(res);
+    } catch (Exception e) {
+      throw new CloudException(e);
+    }
+  }
+
+  public void deleteProject(int projectId) throws CloudException {
+    String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
+    String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
+
+    if (username == null || token == null)
+      throw new CloudException("Login failed. Please try to login again.");
+
+    try {
+      String res = getService().deleteProject(username, token, getMachineId(), projectId);
       if (!res.equals(SUCCESS))
         throw new CloudException(res);
     } catch (Exception e) {
@@ -234,7 +250,7 @@ public class CloudPresenter {
       throws CloudException {
     LOG.info(String.format("search(%1$s,%2$s,%3$s,%4$d,%5$d)", criteria, category, sortOrder, pageNumber, itemsPerPage));
     try {
-      Object res = getService().search(criteria, category, pageNumber, itemsPerPage, sortOrder, null);
+      Object res = getService().search(criteria, category, pageNumber, itemsPerPage, sortOrder, null, null);
       return processResults(res);
     } catch (CloudException ce) {
       throw ce;
@@ -243,10 +259,10 @@ public class CloudPresenter {
     }
   }
 
-  public List<ProjectEntity> fetchUserUploads() throws CloudException {
+  public List<ProjectEntity> fetchUserUploads(Integer projectId) throws CloudException {
     UserEntity user = getUserDetails();
     try {
-      Object res = getService().search("", "", 1, Integer.MAX_VALUE, getSortings()[0], user.getUsername());
+      Object res = getService().search("", "", 1, Integer.MAX_VALUE, getSortings()[0], user.getUsername(), projectId);
       return processResults(res);
     } catch (CloudException ce) {
       throw ce;

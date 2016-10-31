@@ -98,12 +98,13 @@ public interface IServiceAPI {
    * @param itemsPerPage
    * @param sort
    * @param username
+   * @param projectId optional parameter used when we want to fetch a particular project
    * @return string with error message if the error occurred or a list of {@link ProjectEntity}
    *         objects.
    */
   Object search(@ParamName("criteria") String criteria, @ParamName("category") String category,
       @ParamName("page") Integer page, @ParamName("itemsPerPage") Integer itemsPerPage, @ParamName("sort") String sort,
-      @ParamName("username") String username);
+      @ParamName("username") String username, @ParamName("projectId") Integer projectId);
 
   /**
    * Uploads a project using token to authenticate. When projectI is specified, it updates the

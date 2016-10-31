@@ -55,8 +55,8 @@ public class UploadDialog extends ButtonDialog {
   private IPlugInPort plugInPort;
   private String[] categories;
 
-  public UploadDialog(JFrame owner, IPlugInPort plugInPort, String[] categories) {
-    super(owner, "Upload A Project", new String[] {OK, CANCEL});
+  public UploadDialog(JFrame owner, IPlugInPort plugInPort, String[] categories, boolean isUpdate) {
+    super(owner, isUpdate ? "Re-Upload A Project" : "Upload A Project", new String[] {OK, CANCEL});
     this.plugInPort = plugInPort;
     this.categories = categories;
     layoutGui();

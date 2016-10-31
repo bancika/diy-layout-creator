@@ -405,7 +405,9 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
           @Override
           public void complete(final String[] result) {
-            final UploadDialog dialog = DialogFactory.getInstance().createUploadDialog(thumbnailPresenter, result);
+            final UploadDialog dialog =
+                DialogFactory.getInstance().createUploadDialog(swingUI.getOwnerFrame(), thumbnailPresenter, result,
+                    false);
             dialog.setVisible(true);
             if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
               try {
@@ -416,7 +418,8 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
                     @Override
                     public Void doInBackground() throws Exception {
                       cloudPresenter.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
-                          dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file);
+                          dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file,
+                          null);
                       return null;
                     }
 
@@ -432,8 +435,6 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
                           "Upload Success", IView.INFORMATION_MESSAGE);
                     }
                   });
-
-
                 } else {
                   swingUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.", "Upload Error",
                       IView.ERROR_MESSAGE);

@@ -62,7 +62,7 @@ public class UploadManagerFrame extends JFrame implements ISimpleView {
 
       @Override
       public List<ProjectEntity> doInBackground() throws Exception {
-        return cloudPresenter.fetchUserUploads();
+        return cloudPresenter.fetchUserUploads(null);
       }
 
       @Override
@@ -73,7 +73,7 @@ public class UploadManagerFrame extends JFrame implements ISimpleView {
 
       @Override
       public void complete(List<ProjectEntity> result) {
-        setTitle(TITLE + " - " + result.size() + " Uploads Found");
+//        setTitle(TITLE + " - " + result.size() + " Uploads Found");
         getResultsScrollPane().startSearch(result);
       }
     });

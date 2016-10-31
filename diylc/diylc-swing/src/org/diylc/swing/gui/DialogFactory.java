@@ -77,6 +77,16 @@ public class DialogFactory {
     return processFileChooserResult(result, openFileChooser, defaultExtension);
   }
 
+  public File showOpenDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
+      IFileChooserAccessory accessory, JFrame ownerFrame) {
+    JFileChooser openFileChooser = new JFileChooser();
+    initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory);
+
+    int result = openFileChooser.showOpenDialog(ownerFrame);
+
+    return processFileChooserResult(result, openFileChooser, defaultExtension);
+  }
+
   public File showSaveDialog(Window owner, FileFilter fileFilter, File initialFile, String defaultExtension,
       IFileChooserAccessory accessory) {
     JFileChooser saveFileChooser = new OverwritePromptFileChooser();
@@ -135,10 +145,10 @@ public class DialogFactory {
   public LoginDialog createLoginDialog() {
     LoginDialog dialog = new LoginDialog(mainFrame);
     return dialog;
-  }  
+  }
 
-  public UploadDialog createUploadDialog(IPlugInPort plugInPort, String[] categories) {
-    UploadDialog dialog = new UploadDialog(mainFrame, plugInPort, categories);
+  public UploadDialog createUploadDialog(JFrame ownerFrame, IPlugInPort plugInPort, String[] categories, boolean isUpdate) {
+    UploadDialog dialog = new UploadDialog(ownerFrame, plugInPort, categories, isUpdate);
     return dialog;
   }
 

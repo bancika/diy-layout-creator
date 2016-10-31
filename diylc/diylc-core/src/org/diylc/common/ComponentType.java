@@ -5,7 +5,6 @@ import javax.swing.Icon;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.BomPolicy;
-import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.annotations.KeywordPolicy;
 
 /**

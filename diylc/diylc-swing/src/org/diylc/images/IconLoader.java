@@ -32,10 +32,11 @@ public enum IconLoader {
       "briefcase_into.png"), RotateCW("rotate_cw.png"), RotateCCW("rotate_ccw.png"), ElementInto("element_into.png"), Arrow(
       "arrow.png"), Cloud("cloud.png"), CloudUp("cloud_up.png"), CloudGear("cloud_gear.png"), IdCardEdit(
       "id_card_edit.png"), KeyEdit("key_edit.png"), Find("find.png"), Dashboard("dashboard.png"), DataFind(
-      "data_find.png"), CloudDownload("cloud_download.png"), CloudDelete("cloud_delete.png"), CloudUpload(
-      "cloud_upload.png"), NavLeftBlue("nav_left_blue.png"), NavRightBlue("nav_right_blue.png"), MissingImage(
-      "missing_image.png"), CloudBg("cloud_bg.png"), CloudBig("cloud_big.png"), CloudWait("cloud_wait.png"), Spinning(
-      "spinning.gif"), Megaphone("megaphone.png"), Download("download.png"), Eye("eye.png"), Messages("messages.png");
+      "data_find.png"), CloudDownload("cloud_download.png"), CloudDelete("cloud_delete.png"), CloudEdit(
+      "cloud_edit.png"), CloudUpload("cloud_upload.png"), NavLeftBlue("nav_left_blue.png"), NavRightBlue(
+      "nav_right_blue.png"), MissingImage("missing_image.png"), CloudBg("cloud_bg.png"), CloudBig("cloud_big.png"), CloudWait(
+      "cloud_wait.png"), Spinning("spinning.gif"), Megaphone("megaphone.png"), Download("download.png"), Eye("eye.png"), Messages(
+      "messages.png");
 
   protected String name;
 
