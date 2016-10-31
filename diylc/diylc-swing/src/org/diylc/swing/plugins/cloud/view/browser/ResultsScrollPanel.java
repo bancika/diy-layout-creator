@@ -349,9 +349,8 @@ public class ResultsScrollPanel extends JScrollPane {
               descriptionArea.setText(result.getDescription());
               categoryLabel.setText("<html>Category: <b>" + result.getCategory() + "</b></html>");
               updatedLabel.setText("<html>Last updated: <b>" + result.getUpdated() + "</b></html>");
-              cloudUI.showMessage(
-                  "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
-                  "Upload Success", IView.INFORMATION_MESSAGE);
+              cloudUI.showMessage("The project has been updated successfully.", "Upload Success",
+                  IView.INFORMATION_MESSAGE);
             }
           });
         }
@@ -375,7 +374,7 @@ public class ResultsScrollPanel extends JScrollPane {
               DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
                   FileFilterEnum.DIY.getExtensions()[0], null, cloudUI.getOwnerFrame());
           if (file != null) {
-            LOG.info("Preparing re-upload of project " + project.getName() + "(" + project.getId() + ")");
+            LOG.info("Preparing replacement for project " + project.getName() + "(" + project.getId() + ")");
             cloudUI.executeBackgroundTask(new ITask<String[]>() {
 
               @Override
@@ -417,10 +416,8 @@ public class ResultsScrollPanel extends JScrollPane {
                           categoryLabel.setText("<html>Category: <b>" + result.getCategory() + "</b></html>");
                           updatedLabel.setText("<html>Last updated: <b>" + result.getUpdated() + "</b></html>");
                           thumbnailLabel.setIcon(new ImageIcon(dialog.getThumbnail()));
-                          cloudUI
-                              .showMessage(
-                                  "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
-                                  "Upload Success", IView.INFORMATION_MESSAGE);
+                          cloudUI.showMessage("The project has been replaced successfully.", "Upload Success",
+                              IView.INFORMATION_MESSAGE);
                         }
                       });
                     } else {
