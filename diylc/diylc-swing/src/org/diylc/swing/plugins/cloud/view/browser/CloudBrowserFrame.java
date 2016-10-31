@@ -176,7 +176,7 @@ public class CloudBrowserFrame extends JFrame implements ISimpleView {
 
   private ResultsScrollPanel getResultsScrollPane() {
     if (resultsScrollPane == null) {
-      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, pagingProvider, cloudPresenter);
+      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, pagingProvider, cloudPresenter, false);
     }
     return resultsScrollPane;
   }

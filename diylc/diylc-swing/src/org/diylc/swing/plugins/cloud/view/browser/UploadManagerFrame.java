@@ -51,7 +51,7 @@ public class UploadManagerFrame extends JFrame implements ISimpleView {
 
   private ResultsScrollPanel getResultsScrollPane() {
     if (resultsScrollPane == null) {
-      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, null, cloudPresenter);
+      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, null, cloudPresenter, true);
     }
     return resultsScrollPane;
   }

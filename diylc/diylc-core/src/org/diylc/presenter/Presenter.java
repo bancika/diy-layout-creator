@@ -312,42 +312,27 @@ public class Presenter implements IPlugInPort {
       Set<Class<?>> componentTypeClasses = null;
       try {
         componentTypeClasses = Utils.getClasses("org.diylc.components");
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      // for (String path : classPath) {
-      // path = path.replace('\\', '/');
-      // File f = new File(path);
-      // try {
-      // if (f.isDirectory()) {
-      // LOG.info("Scanning folder for components: "
-      // + f.getAbsolutePath());
-      // componentTypeClasses.addAll(JarScanner.getInstance()
-      // .scanFolder(path, IDIYComponent.class));
-      // } else {
-      // LOG.info("Scanning JAR for components: "
-      // + f.getAbsolutePath());
-      // componentTypeClasses.addAll(JarScanner.getInstance()
-      // .scanJar(f, IDIYComponent.class));
-      // }
-      // } catch (Exception e) {
-      // LOG.warn("Could not scan path " + path, e);
-      // }
-      // }
-      for (Class<?> clazz : componentTypeClasses) {
-        if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
-          ComponentType componentType =
-              ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
-          List<ComponentType> nestedList;
-          if (componentTypes.containsKey(componentType.getCategory())) {
-            nestedList = componentTypes.get(componentType.getCategory());
-          } else {
-            nestedList = new ArrayList<ComponentType>();
-            componentTypes.put(componentType.getCategory(), nestedList);
+
+        for (Class<?> clazz : componentTypeClasses) {
+          if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
+            ComponentType componentType =
+                ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
+            List<ComponentType> nestedList;
+            if (componentTypes.containsKey(componentType.getCategory())) {
+              nestedList = componentTypes.get(componentType.getCategory());
+            } else {
+              nestedList = new ArrayList<ComponentType>();
+              componentTypes.put(componentType.getCategory(), nestedList);
+            }
+            nestedList.add(componentType);
           }
-          nestedList.add(componentType);
         }
+
+        for (Map.Entry<String, List<ComponentType>> e : componentTypes.entrySet()) {
+          LOG.debug(e.getKey() + ": " + e.getValue());
+        }
+      } catch (Exception e) {
+        LOG.error("Error loading component types", e);
       }
     }
     return componentTypes;
@@ -356,11 +341,17 @@ public class Presenter implements IPlugInPort {
   public List<IAutoCreator> getAutoCreators() {
     if (autoCreators == null) {
       autoCreators = new ArrayList<IAutoCreator>();
-      for (Map.Entry<String, List<ComponentType>> entry : getComponentTypes().entrySet()) {
-        for (ComponentType t : entry.getValue()) {
-          if (t.getAutoCreateor() != null)
-            autoCreators.add(t.getAutoCreateor());
+      Set<Class<?>> classes = null;
+      try {
+        classes = Utils.getClasses("org.diylc.components.autocreate");
+        for (Class<?> clazz : classes) {
+          if (IAutoCreator.class.isAssignableFrom(clazz)) {
+            autoCreators.add((IAutoCreator) clazz.newInstance());
+            LOG.debug("Loaded auto-cretor: " + clazz.getName());
+          }
         }
+      } catch (Exception e) {
+        LOG.error("Error loading auto-creator types", e);
       }
     }
     return autoCreators;

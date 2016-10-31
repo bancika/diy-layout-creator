@@ -2,6 +2,7 @@ package org.diylc.swing.plugins.cloud.view.browser;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -81,14 +82,17 @@ public class ResultsScrollPanel extends JScrollPane {
 
   private Icon spinnerIcon = IconLoader.Spinning.getIcon();
 
+  private boolean showEditControls;
+
   public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort, PagingProvider provider,
-      CloudPresenter cloudPresenter) {
+      CloudPresenter cloudPresenter, boolean showEditControls) {
     super();
     this.mainUI = mainUI;
     this.cloudUI = cloudUI;
     this.plugInPort = plugInPort;
     this.provider = provider;
     this.cloudPresenter = cloudPresenter;
+    this.showEditControls = showEditControls;
 
     this.getVerticalScrollBar().setUnitIncrement(16);
     this.setBorder(null);
@@ -230,6 +234,7 @@ public class ResultsScrollPanel extends JScrollPane {
     downloadButton.setBorderPainted(false);
     downloadButton.setContentAreaFilled(false);
     downloadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    downloadButton.setToolTipText("Download to local drive");
     downloadButton.addActionListener(new ActionListener() {
 
       @Override
@@ -292,6 +297,25 @@ public class ResultsScrollPanel extends JScrollPane {
       }
     });
 
+    JButton reuploadButton = new JButton(IconLoader.CloudUpload.getIcon());
+    reuploadButton.setContentAreaFilled(false);
+    reuploadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    reuploadButton.setToolTipText("Re-upload to the cloud");
+
+    JButton deleteButton = new JButton(IconLoader.CloudDelete.getIcon());
+    deleteButton.setContentAreaFilled(false);
+    deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    deleteButton.setToolTipText("Delete from the cloud");
+
+    JPanel buttonPanel = new JPanel(new FlowLayout());
+    buttonPanel.setBackground(Color.white);
+    // buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+    buttonPanel.add(downloadButton);
+    if (showEditControls) {
+      buttonPanel.add(reuploadButton);
+      buttonPanel.add(deleteButton);
+    }
+
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.insets = new Insets(2, 2, 2, 2);
@@ -309,6 +333,10 @@ public class ResultsScrollPanel extends JScrollPane {
     getResultsPanel().add(nameLabel, gbc);
 
     gbc.gridx++;
+    gbc.weightx = 0.1;
+    getResultsPanel().add(new JLabel(), gbc);
+
+    gbc.gridx++;
     gbc.weightx = 0;
     getResultsPanel().add(commentLabel, gbc);
 
@@ -322,7 +350,7 @@ public class ResultsScrollPanel extends JScrollPane {
     gbc.gridx = 1;
     gbc.weighty = 1;
     gbc.weightx = 1;
-    gbc.gridwidth = 5;
+    gbc.gridwidth = 6;
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.insets = new Insets(2, 6, 2, 2);
@@ -330,19 +358,22 @@ public class ResultsScrollPanel extends JScrollPane {
 
     gbc.gridy++;
     gbc.gridwidth = 1;
+    gbc.weightx = 1;
     gbc.fill = GridBagConstraints.NONE;
     gbc.weighty = 0;
     getResultsPanel().add(categoryLabel, gbc);
 
     gbc.gridx++;
     gbc.gridheight = 3;
-    gbc.gridwidth = 3;
+    gbc.gridwidth = 4;
+    gbc.weightx = 0;
     gbc.insets = new Insets(2, 2, 2, 2);
     gbc.anchor = GridBagConstraints.SOUTHEAST;
-    getResultsPanel().add(downloadButton, gbc);
+    getResultsPanel().add(buttonPanel, gbc);
 
     gbc.gridy++;
     gbc.gridx = 1;
+    gbc.weightx = 1;
     gbc.gridheight = 1;
     gbc.insets = new Insets(2, 6, 2, 2);
     gbc.anchor = GridBagConstraints.NORTHWEST;
