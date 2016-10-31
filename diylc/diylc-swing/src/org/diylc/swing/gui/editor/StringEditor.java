@@ -20,6 +20,7 @@ public class StringEditor extends JTextField {
   public StringEditor(PropertyWrapper property) {
     super(property.getValue() == null ? "" : (String) property.getValue());
     this.property = property;
+    this.setColumns(32);
     getDocument().addDocumentListener(new DocumentListener() {
 
       @Override

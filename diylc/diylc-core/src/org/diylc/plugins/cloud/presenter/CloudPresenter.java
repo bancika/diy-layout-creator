@@ -8,14 +8,18 @@ import java.net.NetworkInterface;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.model.UserEntity;
+import org.diylc.presenter.ComparatorFactory;
+import org.diylc.presenter.ComponentProcessor;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
@@ -153,6 +157,24 @@ public class CloudPresenter {
     }
   }
 
+  public void updateProjectDetails(ProjectEntity project, String diylcVersion) throws IOException, CloudException {
+    String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
+    String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
+
+    if (username == null || token == null)
+      throw new CloudException("Login failed. Please try to login again.");
+
+    try {
+      String res =
+          getService().uploadProject(username, token, getMachineId(), project.getName(), project.getCategoryForDisplay(),
+              project.getDescription(), diylcVersion, project.getKeywords(), null, null, project.getId());
+      if (!res.equals(SUCCESS))
+        throw new CloudException(res);
+    } catch (Exception e) {
+      throw new CloudException(e);
+    }
+  }
+
   public void deleteProject(int projectId) throws CloudException {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
     String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
@@ -282,14 +304,15 @@ public class CloudPresenter {
       LOG.info("Received " + projects.size() + " results. Downloading thumbnails...");
       // Download thumbnails and replace urls with local paths to speed up loading in the main
       // thread
-      for (int i = 0; i < projects.size(); i++) {
-        String url = projects.get(i).getThumbnailUrl();
+      for (ProjectEntity project : projects) {
+        String url = project.getThumbnailUrl();
         URL website = new URL(url);
         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
         File temp = File.createTempFile("thumbnail", ".png");
         FileOutputStream fos = new FileOutputStream(temp);
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        projects.get(i).setThumbnailUrl(temp.getAbsolutePath());
+        project.setThumbnailUrl(temp.getAbsolutePath());
+        project.setCategories(getCategories());
         fos.close();
       }
       LOG.info("Finished downloading thumbnails.");
@@ -322,6 +345,20 @@ public class CloudPresenter {
     } catch (Exception e) {
       throw new CloudException(e);
     }
+  }
+
+  public List<PropertyWrapper> getProjectProperties(ProjectEntity project) {
+    List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(ProjectEntity.class);
+    try {
+      for (PropertyWrapper property : properties) {
+        property.readFrom(project);
+      }
+    } catch (Exception e) {
+      LOG.error("Could not get project entity properties", e);
+      return null;
+    }
+    Collections.sort(properties, ComparatorFactory.getInstance().getDefaultPropertyComparator());
+    return properties;
   }
 
   private String getMachineId() {

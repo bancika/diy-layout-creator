@@ -26,6 +26,7 @@ import javax.swing.event.ChangeListener;
 
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
+import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.utils.KeywordExtractor;
 
@@ -213,7 +214,7 @@ public class UploadDialog extends ButtonDialog {
 
   private JTextArea getDescriptionArea() {
     if (descriptionArea == null) {
-      descriptionArea = new JTextArea();
+      descriptionArea = new HTMLTextArea();
 
       // set default from the project
       for (int i = 0; i < plugInPort.getProjectProperties().size(); i++)
@@ -242,7 +243,7 @@ public class UploadDialog extends ButtonDialog {
   }
 
   public String getDescription() {
-    return getDescriptionArea().getText().replace("\n", "<br>");
+    return getDescriptionArea().getText();
   }
 
   public String getCategory() {

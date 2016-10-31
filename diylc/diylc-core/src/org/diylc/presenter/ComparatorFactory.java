@@ -67,6 +67,27 @@ public class ComparatorFactory {
     return propertyNameComparator;
   }
 
+  /**
+   * Creates a comparator that compares properties by sort order and then by name
+   * @return
+   */
+  public Comparator<PropertyWrapper> getDefaultPropertyComparator() {
+    if (propertyNameComparator == null) {
+      propertyNameComparator = new Comparator<PropertyWrapper>() {
+
+        @Override
+        public int compare(PropertyWrapper o1, PropertyWrapper o2) {
+          int comp = new Integer(o1.getSortOrder()).compareTo(o2.getSortOrder());
+          if (comp != 0)
+            return comp;
+          return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+
+      };
+    }
+    return propertyNameComparator;
+  }
+
   public Comparator<IDIYComponent<?>> getComponentZOrderComparator() {
     if (componentZOrderComparator == null) {
       componentZOrderComparator = new Comparator<IDIYComponent<?>>() {

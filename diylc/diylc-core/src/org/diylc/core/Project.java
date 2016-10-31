@@ -54,7 +54,7 @@ public class Project implements Serializable {
     gridSpacing = DEFAULT_GRID_SPACING;
   }
 
-  @EditableProperty(defaultable = false)
+  @EditableProperty(defaultable = false, sortOrder = 1)
   public String getTitle() {
     return title;
   }
@@ -63,7 +63,7 @@ public class Project implements Serializable {
     this.title = title;
   }
 
-  @EditableProperty
+  @EditableProperty(sortOrder = 3)
   public String getAuthor() {
     return author;
   }
@@ -72,7 +72,7 @@ public class Project implements Serializable {
     this.author = author;
   }
 
-  @EditableProperty(defaultable = false)
+  @EditableProperty(defaultable = false, additionalOptions = EditableProperty.MULTI_LINE, sortOrder = 2)
   public String getDescription() {
     return description;
   }
@@ -81,7 +81,7 @@ public class Project implements Serializable {
     this.description = description;
   }
 
-  @EditableProperty
+  @EditableProperty(sortOrder = 4)
   public Size getWidth() {
     return width;
   }
@@ -90,7 +90,7 @@ public class Project implements Serializable {
     this.width = width;
   }
 
-  @EditableProperty
+  @EditableProperty(sortOrder = 5)
   public Size getHeight() {
     return height;
   }
@@ -99,7 +99,7 @@ public class Project implements Serializable {
     this.height = height;
   }
 
-  @EditableProperty(name = "Grid spacing", validatorClass = SpacingValidator.class)
+  @EditableProperty(name = "Grid spacing", validatorClass = SpacingValidator.class, sortOrder = 6)
   public Size getGridSpacing() {
     return gridSpacing;
   }

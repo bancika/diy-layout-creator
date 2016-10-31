@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.AbstractMeasure;
 
 public class FieldEditorFactory {
@@ -16,6 +17,14 @@ public class FieldEditorFactory {
   private static final Logger LOG = Logger.getLogger(FieldEditorFactory.class);
 
   public static Component createFieldEditor(PropertyWrapper property) {
+    if (property.getType().equals(String.class) && property.getListItems() != null) {
+      StringListEditor editor = new StringListEditor(property);
+      return editor;
+    }
+    if (property.getType().equals(String.class) && EditableProperty.MULTI_LINE.equals(property.getAdditionalOptions())) {
+      MultiLineStringEditor editor = new MultiLineStringEditor(property);
+      return editor;
+    }
     if (property.getType().equals(String.class)) {
       StringEditor editor = new StringEditor(property);
       return editor;

@@ -154,7 +154,7 @@ public class ComponentProcessor {
             Method setter = clazz.getMethod("set" + method.getName().substring(3), method.getReturnType());
             PropertyWrapper property =
                 new PropertyWrapper(name, method.getReturnType(), method.getName(), setter.getName(),
-                    annotation.defaultable(), validator);
+                    annotation.defaultable(), validator, annotation.additionalOptions(), annotation.sortOrder());
             properties.add(property);
           }
         } catch (NoSuchMethodException e) {
@@ -228,7 +228,7 @@ public class ComponentProcessor {
       // }
       // }
     }
-    Collections.sort(properties, ComparatorFactory.getInstance().getPropertyNameComparator());
+    Collections.sort(properties, ComparatorFactory.getInstance().getDefaultPropertyComparator());
     return properties;
   }
 

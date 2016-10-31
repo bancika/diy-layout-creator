@@ -18,6 +18,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.diylc.plugins.cloud.model.UserEntity;
+import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.swingframework.ButtonDialog;
 
 public class UserEditDialog extends ButtonDialog {
@@ -68,7 +69,7 @@ public class UserEditDialog extends ButtonDialog {
   }
 
   public String getBio() {
-    return bio.replace("\n", "<br>");
+    return bio;
   }
 
   @Override
@@ -279,9 +280,9 @@ public class UserEditDialog extends ButtonDialog {
 
   public JTextArea getBioArea() {
     if (bioArea == null) {
-      bioArea = new JTextArea();
+      bioArea = new HTMLTextArea();
       if (existingEntity != null)
-        bioArea.setText(existingEntity.getBio().replace("<br>", "\n"));
+        bioArea.setText(existingEntity.getBio());
       bioArea.setFont(getUserNameField().getFont());
       bioArea.setBorder(getUserNameField().getBorder());
       bioArea.setPreferredSize(new Dimension(192, 69));

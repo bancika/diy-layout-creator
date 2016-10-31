@@ -24,6 +24,7 @@ import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISimpleView;
+import org.diylc.swing.gui.components.HTMLTextArea;
 
 public class CommentDialog extends JDialog {
 
@@ -119,7 +120,7 @@ public class CommentDialog extends JDialog {
 
   private JTextArea getReplyArea() {
     if (replyArea == null) {
-      replyArea = new JTextArea();
+      replyArea = new HTMLTextArea();
       replyArea.setFont(getSendButton().getFont());
     }
     return replyArea;
@@ -132,7 +133,7 @@ public class CommentDialog extends JDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          final String comment = getReplyArea().getText().replace("\n", "<br>");
+          final String comment = getReplyArea().getText();
           if (comment.trim().length() == 0)
             owner.showMessage("Cannot post an empty comment.", "Cloud Error", IView.ERROR_MESSAGE);
 
@@ -179,7 +180,7 @@ public class CommentDialog extends JDialog {
             + c.getPostedAt() + " </html>"), gbc);
     gbc.gridy = lastPosition++;
 
-    JTextArea commentArea = new JTextArea(c.getComment().replace("<br>", "\n"));
+    JTextArea commentArea = new HTMLTextArea(c.getComment());
     commentArea.setEditable(false);
     commentArea.setFont(getSendButton().getFont());
     commentArea.setLineWrap(true);

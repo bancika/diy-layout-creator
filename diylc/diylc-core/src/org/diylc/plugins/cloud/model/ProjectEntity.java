@@ -2,6 +2,8 @@ package org.diylc.plugins.cloud.model;
 
 import java.io.Serializable;
 
+import org.diylc.core.annotations.EditableProperty;
+
 public class ProjectEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -11,12 +13,15 @@ public class ProjectEntity implements Serializable {
   private String description;
   private String owner;
   private String category;
+  private String categoryForDisplay;
   private String updated;
   private String thumbnailUrl;
   private String downloadUrl;
+  private String keywords;
   private int viewCount;
   private int downloadCount;
   private int commentCount;
+  private String[] categories;
 
   public ProjectEntity() {
     super();
@@ -30,6 +35,7 @@ public class ProjectEntity implements Serializable {
     this.id = id;
   }
 
+  @EditableProperty(defaultable = false, sortOrder = 1)
   public String getName() {
     return name;
   }
@@ -38,6 +44,7 @@ public class ProjectEntity implements Serializable {
     this.name = name;
   }
 
+  @EditableProperty(defaultable = false, additionalOptions = EditableProperty.MULTI_LINE, sortOrder = 3)
   public String getDescription() {
     return description;
   }
@@ -53,13 +60,30 @@ public class ProjectEntity implements Serializable {
   public void setOwner(String owner) {
     this.owner = owner;
   }
-
+  
   public String getCategory() {
     return category;
   }
 
   public void setCategory(String category) {
     this.category = category;
+  }
+  
+  @EditableProperty(defaultable = false, sortOrder = 2, additionalOptions = EditableProperty.DYNAMIC_LIST + "getCategories")
+  public String getCategoryForDisplay() {
+    return categoryForDisplay;
+  }
+  
+  public void setCategoryForDisplay(String categoryForDisplay) {
+    this.categoryForDisplay = categoryForDisplay;
+  }
+
+  public String[] getCategories() {
+    return categories;
+  }
+
+  public void setCategories(String[] categories) {
+    this.categories = categories;
   }
 
   public String getUpdated() {
@@ -110,6 +134,15 @@ public class ProjectEntity implements Serializable {
     this.commentCount = commentCount;
   }
 
+  @EditableProperty(defaultable = false, sortOrder = 4)
+  public String getKeywords() {
+    return keywords;
+  }
+
+  public void setKeywords(String keywords) {
+    this.keywords = keywords;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -120,6 +153,7 @@ public class ProjectEntity implements Serializable {
     result = prime * result + downloadCount;
     result = prime * result + ((downloadUrl == null) ? 0 : downloadUrl.hashCode());
     result = prime * result + id;
+    result = prime * result + ((keywords == null) ? 0 : keywords.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((owner == null) ? 0 : owner.hashCode());
     result = prime * result + ((thumbnailUrl == null) ? 0 : thumbnailUrl.hashCode());
@@ -157,6 +191,11 @@ public class ProjectEntity implements Serializable {
     } else if (!downloadUrl.equals(other.downloadUrl))
       return false;
     if (id != other.id)
+      return false;
+    if (keywords == null) {
+      if (other.keywords != null)
+        return false;
+    } else if (!keywords.equals(other.keywords))
       return false;
     if (name == null) {
       if (other.name != null)

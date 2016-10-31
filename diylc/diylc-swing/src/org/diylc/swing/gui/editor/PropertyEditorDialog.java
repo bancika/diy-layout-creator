@@ -92,19 +92,20 @@ public class PropertyEditorDialog extends ButtonDialog {
     GridBagConstraints gbc = new GridBagConstraints();
 
     gbc.gridy = 0;
-    gbc.insets = new Insets(2, 2, 2, 2);
-    gbc.anchor = GridBagConstraints.LINE_START;
+    
+    gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 
     for (PropertyWrapper property : properties) {
       gbc.gridx = 0;
       gbc.fill = GridBagConstraints.NONE;
       gbc.weightx = 0;
-
+      gbc.insets = new Insets(4, 2, 2, 2);
       editorPanel.add(new JLabel(property.getName() + ": "), gbc);
 
       gbc.gridx = 1;
       gbc.fill = GridBagConstraints.HORIZONTAL;
       gbc.weightx = 1;
+      gbc.insets = new Insets(2, 2, 2, 2);
 
       Component editor = FieldEditorFactory.createFieldEditor(property);
       editor.addKeyListener(new KeyAdapter() {

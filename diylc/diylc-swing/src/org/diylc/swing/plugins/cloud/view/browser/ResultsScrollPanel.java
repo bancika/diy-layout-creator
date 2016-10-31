@@ -36,6 +36,7 @@ import javax.swing.text.DefaultCaret;
 import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.model.CommentEntity;
@@ -47,6 +48,8 @@ import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
+import org.diylc.swing.gui.components.HTMLTextArea;
+import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.cloud.view.CommentDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
@@ -178,7 +181,7 @@ public class ResultsScrollPanel extends JScrollPane {
     final JLabel nameLabel = new JLabel("<html><b>" + project.getName() + "</b></html>");
     nameLabel.setFont(nameLabel.getFont().deriveFont(12f));
 
-    final JTextArea descriptionArea = new JTextArea(project.getDescription().replace("<br>", "\n"));
+    final JTextArea descriptionArea = new HTMLTextArea(project.getDescription());
     descriptionArea.setEditable(false);
     descriptionArea.setFont(thumbnailLabel.getFont());
     descriptionArea.setLineWrap(true);
@@ -301,87 +304,141 @@ public class ResultsScrollPanel extends JScrollPane {
     final JSeparator separator = new JSeparator();
 
     final JPanel buttonPanel = new JPanel(new FlowLayout());
-    
+
     final JLabel editButton = new JLabel(IconLoader.CloudEdit.getIcon());
     editButton.setFocusable(true);
     editButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     editButton.setToolTipText("Edit details without changing the project file");
-
-    final JLabel reuploadButton = new JLabel(IconLoader.CloudUpload.getIcon());
-    reuploadButton.setFocusable(true);
-    reuploadButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    reuploadButton.setToolTipText("Re-upload to the cloud");
-    reuploadButton.addMouseListener(new MouseAdapter() {
+    editButton.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        final Presenter thumbnailPresenter = new Presenter(new DummyView());
-        final File file =
-            DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
-                FileFilterEnum.DIY.getExtensions()[0], null, cloudUI.getOwnerFrame());
-        if (file != null) {
-          LOG.info("Preparing re-upload of project " + project.getName() + "(" + project.getId() + ")");
-          cloudUI.executeBackgroundTask(new ITask<String[]>() {
-
-            @Override
-            public String[] doInBackground() throws Exception {
-              LOG.debug("Uploading from " + file.getAbsolutePath());
-              thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
-              return cloudPresenter.getCategories();
+        List<PropertyWrapper> projectProperties = cloudPresenter.getProjectProperties(project);
+        PropertyEditorDialog editor =
+            DialogFactory.getInstance().createPropertyEditorDialog(cloudUI.getOwnerFrame(), projectProperties,
+                "Edit Published Project");
+        editor.setVisible(true);
+        if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
+          // Update the project
+          for (PropertyWrapper property : projectProperties) {
+            try {
+              property.writeTo(project);
+            } catch (Exception ex) {
+              LOG.error("Could not update the project", ex);
+              cloudUI.showMessage("Could not update the project. Detailed message is in the logs.", "Error",
+                  ISwingUI.ERROR_MESSAGE);
+              return;
             }
+          }
+          cloudUI.executeBackgroundTask(new ITask<ProjectEntity>() {
 
             @Override
-            public void complete(final String[] result) {
-              final UploadDialog dialog =
-                  DialogFactory.getInstance().createUploadDialog(cloudUI.getOwnerFrame(), thumbnailPresenter, result, true);
-              dialog.setVisible(true);
-              if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
-                try {
-                  final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
-                  if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
-                    cloudUI.executeBackgroundTask(new ITask<ProjectEntity>() {
-
-                      @Override
-                      public ProjectEntity doInBackground() throws Exception {
-                        cloudPresenter.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
-                            dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file,
-                            project.getId());
-                        return cloudPresenter.fetchUserUploads(project.getId()).get(0);
-                      }
-
-                      @Override
-                      public void failed(Exception e) {
-                        cloudUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
-                      }
-
-                      @Override
-                      public void complete(ProjectEntity result) {
-                        nameLabel.setText("<html><b>" + project.getName() + "</b></html>");
-                        categoryLabel.setText(result.getCategory());
-                        descriptionArea.setText(result.getDescription().replace("<br>", "\n"));
-                        categoryLabel.setText("<html>Category: <b>" + result.getCategory() + "</b></html>");
-                        updatedLabel.setText("<html>Last updated: <b>" + result.getUpdated() + "</b></html>");
-                        thumbnailLabel.setIcon(new ImageIcon(dialog.getThumbnail()));
-                        cloudUI
-                            .showMessage(
-                                "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
-                                "Upload Success", IView.INFORMATION_MESSAGE);
-                      }
-                    });
-                  } else {
-                    cloudUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.",
-                        "Upload Error", IView.ERROR_MESSAGE);
-                  }
-                } catch (Exception e) {
-                  cloudUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
-                }
-              }
+            public ProjectEntity doInBackground() throws Exception {
+              cloudPresenter.updateProjectDetails(project, plugInPort.getCurrentVersionNumber().toString());
+              return cloudPresenter.fetchUserUploads(project.getId()).get(0);
             }
 
             @Override
             public void failed(Exception e) {
-              cloudUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+              cloudUI.showMessage("Could not update the project. Detailed message is in the logs.", "Error",
+                  ISwingUI.ERROR_MESSAGE);
+            }
+
+            @Override
+            public void complete(ProjectEntity result) {
+              nameLabel.setText("<html><b>" + project.getName() + "</b></html>");
+              descriptionArea.setText(result.getDescription());
+              categoryLabel.setText("<html>Category: <b>" + result.getCategory() + "</b></html>");
+              updatedLabel.setText("<html>Last updated: <b>" + result.getUpdated() + "</b></html>");
+              cloudUI.showMessage(
+                  "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
+                  "Upload Success", IView.INFORMATION_MESSAGE);
             }
           });
+        }
+      }
+    });
+
+    final JLabel replaceButton = new JLabel(IconLoader.CloudUpload.getIcon());
+    replaceButton.setFocusable(true);
+    replaceButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    replaceButton.setToolTipText("Replace project with a new version");
+    replaceButton.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        if (cloudUI.showConfirmDialog(
+            "Are you sure you want to replace the project \""
+                + project.getName()
+                + "\" with a new file?\nThis opperation is irreversible. Once replaced, the old version of the project cannot be restored.",
+            "Replace Project", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION) {
+          final Presenter thumbnailPresenter = new Presenter(new DummyView());
+          final File file =
+              DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
+                  FileFilterEnum.DIY.getExtensions()[0], null, cloudUI.getOwnerFrame());
+          if (file != null) {
+            LOG.info("Preparing re-upload of project " + project.getName() + "(" + project.getId() + ")");
+            cloudUI.executeBackgroundTask(new ITask<String[]>() {
+
+              @Override
+              public String[] doInBackground() throws Exception {
+                LOG.debug("Uploading from " + file.getAbsolutePath());
+                thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
+                return cloudPresenter.getCategories();
+              }
+
+              @Override
+              public void complete(final String[] result) {
+                final UploadDialog dialog =
+                    DialogFactory.getInstance().createUploadDialog(cloudUI.getOwnerFrame(), thumbnailPresenter, result,
+                        true);
+                dialog.setVisible(true);
+                if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
+                  try {
+                    final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
+                    if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
+                      cloudUI.executeBackgroundTask(new ITask<ProjectEntity>() {
+
+                        @Override
+                        public ProjectEntity doInBackground() throws Exception {
+                          cloudPresenter.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
+                              dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile,
+                              file, project.getId());
+                          return cloudPresenter.fetchUserUploads(project.getId()).get(0);
+                        }
+
+                        @Override
+                        public void failed(Exception e) {
+                          cloudUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
+                        }
+
+                        @Override
+                        public void complete(ProjectEntity result) {
+                          nameLabel.setText("<html><b>" + project.getName() + "</b></html>");
+                          descriptionArea.setText(result.getDescription());
+                          categoryLabel.setText("<html>Category: <b>" + result.getCategory() + "</b></html>");
+                          updatedLabel.setText("<html>Last updated: <b>" + result.getUpdated() + "</b></html>");
+                          thumbnailLabel.setIcon(new ImageIcon(dialog.getThumbnail()));
+                          cloudUI
+                              .showMessage(
+                                  "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
+                                  "Upload Success", IView.INFORMATION_MESSAGE);
+                        }
+                      });
+                    } else {
+                      cloudUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.",
+                          "Upload Error", IView.ERROR_MESSAGE);
+                    }
+                  } catch (Exception e) {
+                    cloudUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
+                  }
+                }
+              }
+
+              @Override
+              public void failed(Exception e) {
+                cloudUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+              }
+            });
+          }
         }
       }
     });
@@ -394,8 +451,8 @@ public class ResultsScrollPanel extends JScrollPane {
 
       @Override
       public void mouseClicked(MouseEvent e) {
-        if (cloudUI.showConfirmDialog("Are you sure you want to permanently delete project " + project.getName()
-            + " from the cloud?", "Delete Project", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION) {
+        if (cloudUI.showConfirmDialog("Are you sure you want to permanently delete project \"" + project.getName()
+            + "\" from the cloud?", "Delete Project", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION) {
           LOG.info("Deleting project " + project.getName() + "(" + project.getId() + ")");
           cloudUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -435,7 +492,7 @@ public class ResultsScrollPanel extends JScrollPane {
     buttonPanel.add(downloadButton);
     if (showEditControls) {
       buttonPanel.add(editButton);
-      buttonPanel.add(reuploadButton);
+      buttonPanel.add(replaceButton);
       buttonPanel.add(deleteButton);
     }
 

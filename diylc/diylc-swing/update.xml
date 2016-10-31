@@ -1359,6 +1359,14 @@
 					<description>Popup dialogs work better with keyboard - Enter confirms, Escape dismisses dialogs</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Make order of items in the 'Edit Project' dialog more logical</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow multi-line project description</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Changing Display to one trimmer affects all trimmers and does not get saved to the file</description>
 				</org.diylc.appframework.update.Change>	
