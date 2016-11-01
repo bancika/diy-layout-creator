@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import org.diylc.core.annotations.EditableProperty;
 
+/**
+ * Represents a cloud project object, identified by {@link ProjectEntity#id}.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class ProjectEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -60,7 +65,7 @@ public class ProjectEntity implements Serializable {
   public void setOwner(String owner) {
     this.owner = owner;
   }
-  
+
   public String getCategory() {
     return category;
   }
@@ -68,12 +73,13 @@ public class ProjectEntity implements Serializable {
   public void setCategory(String category) {
     this.category = category;
   }
-  
-  @EditableProperty(defaultable = false, sortOrder = 2, additionalOptions = EditableProperty.DYNAMIC_LIST + "getCategories")
+
+  @EditableProperty(defaultable = false, sortOrder = 2, additionalOptions = EditableProperty.DYNAMIC_LIST
+      + "getCategories")
   public String getCategoryForDisplay() {
     return categoryForDisplay;
   }
-  
+
   public void setCategoryForDisplay(String categoryForDisplay) {
     this.categoryForDisplay = categoryForDisplay;
   }

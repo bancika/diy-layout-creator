@@ -2,6 +2,11 @@ package org.diylc.plugins.cloud.model;
 
 import java.io.Serializable;
 
+/**
+ * Represents cloud user details.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class UserEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;

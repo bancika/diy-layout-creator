@@ -26,6 +26,12 @@ import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.gui.components.HTMLTextArea;
 
+/**
+ * {@link JDialog} that shows a list of comments posted to a cloud project and provides controls for
+ * posting more comments.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class CommentDialog extends JDialog {
 
   private static final String JUST_NOW = "just now";
@@ -45,7 +51,7 @@ public class CommentDialog extends JDialog {
 
   private int lastPosition = 0;
 
-  private ISimpleView owner;
+  private ISimpleView cloudUI;
 
   public CommentDialog(ISimpleView cloudUI, ProjectEntity project, List<CommentEntity> comments,
       CloudPresenter presenter) {
@@ -53,6 +59,7 @@ public class CommentDialog extends JDialog {
     this.project = project;
     this.comments = comments;
     this.presenter = presenter;
+    this.cloudUI = cloudUI;
     setMinimumSize(new Dimension(400, 600));
     setContentPane(getMainPanel());
     pack();
@@ -69,7 +76,7 @@ public class CommentDialog extends JDialog {
     if (listPanel == null) {
       listPanel = new JPanel(new GridBagLayout());
       listPanel.setBackground(Color.white);
-      for (CommentEntity c : comments) {        
+      for (CommentEntity c : comments) {
         addComment(c);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -135,9 +142,9 @@ public class CommentDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
           final String comment = getReplyArea().getText();
           if (comment.trim().length() == 0)
-            owner.showMessage("Cannot post an empty comment.", "Cloud Error", IView.ERROR_MESSAGE);
+            cloudUI.showMessage("Cannot post an empty comment.", "Cloud Error", IView.ERROR_MESSAGE);
 
-          owner.executeBackgroundTask(new ITask<Void>() {
+          cloudUI.executeBackgroundTask(new ITask<Void>() {
 
             @Override
             public Void doInBackground() throws Exception {
@@ -147,7 +154,7 @@ public class CommentDialog extends JDialog {
 
             @Override
             public void failed(Exception e) {
-              owner.showMessage("Error posting comment.", "Cloud Error", IView.ERROR_MESSAGE);
+              cloudUI.showMessage("Error posting comment.", "Cloud Error", IView.ERROR_MESSAGE);
             }
 
             @Override

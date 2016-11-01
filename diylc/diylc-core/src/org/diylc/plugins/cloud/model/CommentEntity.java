@@ -2,6 +2,11 @@ package org.diylc.plugins.cloud.model;
 
 import java.io.Serializable;
 
+/**
+ * Represents a single post in the comment section of a cloud project.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class CommentEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;

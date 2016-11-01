@@ -55,6 +55,14 @@ import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 
+/**
+ * Component that is capable of showing a list of {@link ProjectEntity} objects. Can work in paging
+ * mode and pull one page of data at a time.
+ * 
+ * @see {@link PagingProvider}
+ * 
+ * @author Branislav Stojkovic
+ */
 public class ResultsScrollPanel extends JScrollPane {
 
   private static final long serialVersionUID = 1L;

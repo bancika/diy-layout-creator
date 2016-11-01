@@ -8,7 +8,7 @@ import com.diyfever.httpproxy.ParamName;
 /***
  * Interface of DIYLC PHP server located at www.diy-fever.com/diylc/api/v1
  * 
- * @author bancika
+ * @author Branislav Stojkovic
  * 
  */
 public interface IServiceAPI {

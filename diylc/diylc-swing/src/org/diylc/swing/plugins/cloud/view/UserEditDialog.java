@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -128,7 +129,8 @@ public class UserEditDialog extends ButtonDialog {
       mainPanel.add(getWebsiteField(), gbc);
 
       gbc.gridy = 5;
-      mainPanel.add(getBioArea(), gbc);
+      gbc.fill = GridBagConstraints.BOTH;
+      mainPanel.add(new JScrollPane(getBioArea()), gbc);
     }
     return mainPanel;
   }

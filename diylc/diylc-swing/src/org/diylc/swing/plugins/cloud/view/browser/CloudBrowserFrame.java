@@ -32,6 +32,11 @@ import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.Pair;
 
+/**
+ * {@link JFrame} for searching the projects on the cloud.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class CloudBrowserFrame extends JFrame implements ISimpleView {
 
   private static final String TITLE = "Search The Cloud";

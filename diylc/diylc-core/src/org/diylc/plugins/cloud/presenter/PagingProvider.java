@@ -4,6 +4,14 @@ import java.util.List;
 
 import org.diylc.plugins.cloud.model.ProjectEntity;
 
+/**
+ * Used to create paging of the search results. Use
+ * {@link PagingProvider#startSession(String, String, String)} to start the search session and then
+ * {@link PagingProvider#hasMoreData()} returns true if there's more data available and
+ * {@link PagingProvider#requestMoreData()} returns the next page.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class PagingProvider {
 
   private CloudPresenter cloudPresenter;
@@ -17,12 +25,7 @@ public class PagingProvider {
   private List<ProjectEntity> currentResults;
 
   public PagingProvider(CloudPresenter cloudPresenter) {
-    this(cloudPresenter, 10);
-  }
-
-  public PagingProvider(CloudPresenter cloudPresenter, int itemsPerPage) {
     this.cloudPresenter = cloudPresenter;
-    this.itemsPerPage = itemsPerPage;
   }
 
   public List<ProjectEntity> startSession(String searchFor, String category, String sort) throws CloudException {

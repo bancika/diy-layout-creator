@@ -24,6 +24,11 @@ import org.diylc.presenter.ComponentProcessor;
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
 
+/**
+ * Contains all the back-end logic for using the cloud and manipulating projects on the cloud.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class CloudPresenter {
 
   private static String USERNAME_KEY = "cloud.Username";
@@ -119,6 +124,7 @@ public class CloudPresenter {
   public String[] getCategories() throws CloudException {
     if (categories == null) {
       Object res;
+      LOG.info("Fetching categories");
       try {
         res = getService().getCategories();
         if (res != null && res.equals(ERROR))
@@ -146,6 +152,7 @@ public class CloudPresenter {
     if (username == null || token == null)
       throw new CloudException("Login failed. Please try to login again.");
 
+    LOG.info("Uploading a new project: " + projectName);
     try {
       String res =
           getService().uploadProject(username, token, getMachineId(), projectName, category, description, diylcVersion,
@@ -163,11 +170,12 @@ public class CloudPresenter {
 
     if (username == null || token == null)
       throw new CloudException("Login failed. Please try to login again.");
-
+    LOG.info("Updating project with projectId: " + project.getId());
     try {
       String res =
-          getService().uploadProject(username, token, getMachineId(), project.getName(), project.getCategoryForDisplay(),
-              project.getDescription(), diylcVersion, project.getKeywords(), null, null, project.getId());
+          getService().uploadProject(username, token, getMachineId(), project.getName(),
+              project.getCategoryForDisplay(), project.getDescription(), diylcVersion, project.getKeywords(), null,
+              null, project.getId());
       if (!res.equals(SUCCESS))
         throw new CloudException(res);
     } catch (Exception e) {
@@ -182,6 +190,7 @@ public class CloudPresenter {
     if (username == null || token == null)
       throw new CloudException("Login failed. Please try to login again.");
 
+    LOG.info("Deleting project with projectId: " + projectId);
     try {
       String res = getService().deleteProject(username, token, getMachineId(), projectId);
       if (!res.equals(SUCCESS))
@@ -198,6 +207,8 @@ public class CloudPresenter {
     if (username == null || token == null)
       throw new CloudException("Login failed. Please try to login again.");
 
+    LOG.info("Posting a new comment to projectId: " + projectId);
+
     try {
       String res = getService().postComment(username, token, getMachineId(), projectId, comment);
       if (!res.equals(SUCCESS))
@@ -209,6 +220,7 @@ public class CloudPresenter {
 
   public void createUserAccount(String username, String password, String email, String website, String bio)
       throws CloudException {
+    LOG.info("Creating a new user: " + username);
     try {
       String res = getService().createUser(username, password, email, website, bio);
       if (res == null)
@@ -223,7 +235,7 @@ public class CloudPresenter {
   public UserEntity getUserDetails() throws CloudException {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
     String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
-
+    LOG.info("Retreiving user details for: " + username);
     Object res;
     try {
       res = getService().getUserDetails(username, token, getMachineId());
@@ -244,6 +256,7 @@ public class CloudPresenter {
   public void updatePassword(String oldPassword, String newPassword) throws CloudException {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
 
+    LOG.info("Updating password for: " + username);
     String res;
     try {
       res = getService().updatePassword(username, oldPassword, newPassword);
@@ -258,6 +271,7 @@ public class CloudPresenter {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
     String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
 
+    LOG.info("Updating user details for: " + username);
     String res;
     try {
       res = getService().updateUserDetails(username, token, getMachineId(), email, website, bio);
@@ -283,6 +297,7 @@ public class CloudPresenter {
 
   public List<ProjectEntity> fetchUserUploads(Integer projectId) throws CloudException {
     UserEntity user = getUserDetails();
+    LOG.info("Fetching all user uploads for: " + user.getUsername());
     try {
       Object res = getService().search("", "", 1, Integer.MAX_VALUE, getSortings()[0], user.getUsername(), projectId);
       return processResults(res);
@@ -322,6 +337,7 @@ public class CloudPresenter {
   }
 
   public String[] getSortings() throws CloudException {
+    LOG.info("Fetching sortings");
     try {
       return getService().getSortings().toArray(new String[0]);
     } catch (Exception e) {
@@ -330,6 +346,7 @@ public class CloudPresenter {
   }
 
   public List<CommentEntity> getComments(int projectId) throws CloudException {
+    LOG.info("Fetching comments for projectId: " + projectId);
     try {
       Object res = getService().getComments(projectId);
       if (res == null)
