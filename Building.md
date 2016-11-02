@@ -8,27 +8,27 @@ DIYLC consists of three main projects:
 - **diylc-library** contains all the components that come with DIYLC. Depends on diylc-core project.
 - **diylc-swing** contains all the GUI code. Depends on diylc-core project and references diylc-library as a JAR.
 
-<p align='center'><img src='http://www.diy-fever.com/diylc/wiki/eclipse_import_9.png' /></p>
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_9.png' /></p>
 
 ##### Step 0: configure Ant #####
 
 Go wo "Window" -> "Preferences" -> "Ant" -> "Runtime" and add "/diylc-swing/ant-lib/jarbundler-2.2.0" to the "Ant Home Entries" library.
 
-<p align='center'><img src='http://www.diy-fever.com/diylc/wiki/ant_bundler.png' /></p>
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/ant_bundler.png' /></p>
 
 ##### Step 1: build diylc-core #####
 
 Find build.xml file directly in the diylc-core project folder, right click and select "Run As" -> "Ant Build"
 
-<p align='center'><img src='http://www.diy-fever.com/diylc/wiki/build_ant.png' /></p>
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/build_ant.png' /></p>
 
 If the build went fine, you should see something like this in the console.
 
-<p align='center'><img src='http://www.diy-fever.com/diylc/wiki/build_success.png' /></p>
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/build_success.png' /></p>
 
 One common error occurrs when there are multiple Java versions installed and Ant is not configured to use the correct one. In that case, instead of "Run As" -> "Ant Build", click on "Run As" -> "Ant Build..." to open Ant configuration before running the build and make sure that JDK 1.6.0_45 is selected.
 
-<p align='center'><img src='http://www.diy-fever.com/diylc/wiki/ant_jre.png' /></p>
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/ant_jre.png' /></p>
 
 ##### Step 2: build diylc-library #####
 
