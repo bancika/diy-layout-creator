@@ -52,6 +52,6 @@ On "Import Project" screen you will see all projects available in the repository
 
 ##### Step 9 #####
 
-Voila, you're done!
+Voila, you're done! Your "Project Explorer" should show the three projects we just downloaded from the repository.
 
 <p align='center'><img src='http://www.diy-fever.com/diylc/wiki/eclipse_import_9.png' /></p>
