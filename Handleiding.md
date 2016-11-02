@@ -1,6 +1,6 @@
 ### Systeemvereisten ###
 
-  * Java JRE/JDK 1.6.0\_10 of nieuwer
+  * Java JRE/JDK 1.6.0\_45 of nieuwer
   * 256MB vrije werkgeheugen
   * 10 MB beschikbare schijfruimte
   * Zip hulpprogramma om het archief uit te pakken(7-zip, WinZip, Total Commander, enz.)
