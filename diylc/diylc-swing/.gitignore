@@ -2,7 +2,5 @@
 /.apt_generated
 /log/
 /build/
-/library/
-/lib/diylc-core.jar
 autoSave.diy
 config.xml
