@@ -1,6 +1,6 @@
 ### Building the Project ###
 
-This tutorial assumes that you have a newer version of Eclipse with working Ant and Java 1.6.0_45 installed. It also assumes that you have pulled the latest version of the code from the main Git repository.
+This tutorial assumes that you have a newer version of Eclipse with working Ant and Java 1.6.0_45 installed. It also assumes that you have pulled the latest version of the code from the main Git repository. Read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/DownloadingSource.md">this document</a> if you need help with getting the source code.
 
 DIYLC consists of three main projects:
 
