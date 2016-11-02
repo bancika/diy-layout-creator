@@ -4,9 +4,9 @@
 
 ### Prerequisites ###
 
-  * [JDK or JRE](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.6.0\_10 or newer installed.
+  * Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.6.0\_45 installed.
   * Some Java IDE, preferably [Eclipse](http://www.eclipse.org/).
-  * SVN client, [Subclipse](http://subclipse.tigris.org/) is recommended if you're using Eclipse. Follow [this guide](http://code.google.com/p/diy-layout-creator/source/checkout) to learn how to checkout the project from the source control.
+  * Git client, newer Eclipse comes with it out of the box.
   * Decent knowledge of Java language, in specific [generics](http://java.sun.com/j2se/1.5/pdf/generics-tutorial.pdf), [annotations](http://download.oracle.com/javase/tutorial/java/javaOO/annotations.html) and [Graphics2D](http://download.oracle.com/javase/tutorial/2d/overview/index.html). Unlike the previous version, you actually need to write Java code to make the component look and behave the way you want it. This makes it harder for non-programmers to make their own components or customize existing ones, but it allows greater flexibility and performance.
 
 ### Component design guidelines ###
