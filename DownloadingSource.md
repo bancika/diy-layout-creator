@@ -56,4 +56,8 @@ Voila, you're done! Your "Project Explorer" should show the three projects we ju
 
 <p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_9.png' /></p>
 
-Now we can move on to <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/Building.md">building the project</a>.
+##### Step 10: run diylc-swing #####
+
+Now we can run the application. Find "DIYLCStarter.launch" file in diylc-swing project. Right click and select "Run As" -> "DIYLCStarter".
+
+If everything went well, the application should start.
