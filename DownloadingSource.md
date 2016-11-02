@@ -1,6 +1,6 @@
 ### Downloading the Source ###
 
-This section assumes that you are using newer version of Eclipse that comes with a Git client.
+This tutorial assumes that you are using newer version of Eclipse that comes with a Git client. To learn how to build DIYLC, go to this page.
 
 ##### Step 1 #####
 
@@ -46,7 +46,7 @@ It will take a few moments for Git to pull all the source from the remote reposi
 
 ##### Step 8 #####
 
-On "Import Project" screen you will see all projects available in the repository. [diylc-server-api] is the PHP/MySql back end project and is not needed in most cases, so we can leave it out. Click "Finish" to add the remaining three projects to the Eclipse workspace.
+On "Import Project" screen you will see all projects available in the repository. **diylc-server-api** is the PHP/MySql back end project and is not needed in most cases, so we can leave it out. Click "Finish" to add the remaining three projects to the Eclipse workspace.
 
 <p align='center'><img src='http://www.diy-fever.com/diylc/wiki/eclipse_import_8.png' /></p>
 
@@ -55,3 +55,5 @@ On "Import Project" screen you will see all projects available in the repository
 Voila, you're done! Your "Project Explorer" should show the three projects we just downloaded from the repository.
 
 <p align='center'><img src='http://www.diy-fever.com/diylc/wiki/eclipse_import_9.png' /></p>
+
+Now we can move on to <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/Building.md">building the project</a>.
