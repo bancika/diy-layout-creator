@@ -25,7 +25,7 @@ public class PropertyWrapper implements Cloneable {
   private boolean changed = false;
   private String additionalOptions;
   private int sortOrder;
-  private String[] listItems;
+  private Object[] listItems;
 
   public PropertyWrapper(String name, Class<?> type, String getter, String setter, boolean defaultable,
       IPropertyValidator validator, String additionalOptions, int sortOrder) {
@@ -46,7 +46,7 @@ public class PropertyWrapper implements Cloneable {
     if (additionalOptions.startsWith(EditableProperty.DYNAMIC_LIST)) {
       String functionName = additionalOptions.substring(EditableProperty.DYNAMIC_LIST.length());
       Method listMethod = object.getClass().getMethod(functionName);
-      listItems = (String[]) listMethod.invoke(object);
+      listItems = (Object[]) listMethod.invoke(object);
     }
   }
 
@@ -112,11 +112,11 @@ public class PropertyWrapper implements Cloneable {
     return sortOrder;
   }
 
-  public String[] getListItems() {
+  public Object[] getListItems() {
     return listItems;
   }
 
-  public void setOptions(String[] listItems) {
+  public void setOptions(Object[] listItems) {
     this.listItems = listItems;
   }
 

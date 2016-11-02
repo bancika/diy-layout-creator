@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -22,11 +24,14 @@ public class MultiLineStringEditor extends JScrollPane {
 
   private final PropertyWrapper property;
 
+  private static final Border border = new JTextField().getBorder();
+
   public MultiLineStringEditor(PropertyWrapper property) {
     super();
     this.property = property;
     setViewportView(getTextArea());
     setPreferredSize(new Dimension(192, 64));
+    setBorder(border);
   }
 
   public JTextArea getTextArea() {

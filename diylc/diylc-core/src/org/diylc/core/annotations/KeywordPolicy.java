@@ -1,5 +1,12 @@
 package org.diylc.core.annotations;
 
+/**
+ * Tells the system how keywords should be extracted from a component.
+ * 
+ * @see ComponentDescriptor
+ * 
+ * @author Branislav Stojkovic
+ */
 public enum KeywordPolicy {
   /**
    * The component is represented with its type.

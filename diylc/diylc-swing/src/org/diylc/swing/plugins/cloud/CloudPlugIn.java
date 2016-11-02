@@ -15,7 +15,6 @@ import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.presenter.CloudException;
-import org.diylc.plugins.cloud.presenter.CloudListener;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
@@ -30,7 +29,7 @@ import org.diylc.swing.plugins.cloud.view.browser.UploadManagerFrame;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 
-public class CloudPlugIn implements IPlugIn, CloudListener {
+public class CloudPlugIn implements IPlugIn {
 
   private static final String ONLINE_TITLE = "Project Cloud";
 
@@ -39,7 +38,6 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;
   private IPlugInPort thumbnailPresenter;
-  private CloudPresenter cloudPresenter;
 
   private LibraryAction libraryAction;
 
@@ -81,7 +79,6 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
   @Override
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
-    this.cloudPresenter = new CloudPresenter(this);
 
     initialize();
   }
@@ -91,7 +88,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
       @Override
       public Boolean doInBackground() throws Exception {
-        return cloudPresenter.tryLogInWithToken();
+        return CloudPresenter.Instance.tryLogInWithToken();
       }
 
       @Override
@@ -113,13 +110,13 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
   public CloudBrowserFrame getCloudBrowser() {
     if (cloudBrowser == null) {
-      cloudBrowser = new CloudBrowserFrame(swingUI, plugInPort, cloudPresenter);
+      cloudBrowser = new CloudBrowserFrame(swingUI, plugInPort);
     }
     return cloudBrowser;
   }
 
   public UploadManagerFrame createUploadManagerFrame() {
-    return new UploadManagerFrame(swingUI, plugInPort, cloudPresenter);
+    return new UploadManagerFrame(swingUI, plugInPort);
   }
 
   public LibraryAction getLibraryAction() {
@@ -220,11 +217,12 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
         dialog.setVisible(true);
         if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
           try {
-            if (cloudPresenter.logIn(dialog.getUserName(), dialog.getPassword())) {
+            if (CloudPresenter.Instance.logIn(dialog.getUserName(), dialog.getPassword())) {
               swingUI
                   .showMessage(
                       "You have successfully logged into the system. You will remain logged in from this machine until logged out.",
                       "Login Successful", IView.INFORMATION_MESSAGE);
+              loggedIn();
               break;
             } else {
               swingUI.showMessage(
@@ -252,7 +250,8 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      cloudPresenter.logOut();
+      CloudPresenter.Instance.logOut();
+      loggedOut();
     }
   }
 
@@ -275,7 +274,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
           @Override
           public Void doInBackground() throws Exception {
-            cloudPresenter.createUserAccount(dialog.getUserName(), dialog.getPassword(), dialog.getEmail(),
+            CloudPresenter.Instance.createUserAccount(dialog.getUserName(), dialog.getPassword(), dialog.getEmail(),
                 dialog.getWebsite(), dialog.getBio());
             return null;
           }
@@ -308,14 +307,14 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
     @Override
     public void actionPerformed(ActionEvent e) {
       try {
-        final UserEditDialog dialog = DialogFactory.getInstance().createUserEditDialog(cloudPresenter.getUserDetails());
+        final UserEditDialog dialog = DialogFactory.getInstance().createUserEditDialog(CloudPresenter.Instance.getUserDetails());
         dialog.setVisible(true);
         if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
           swingUI.executeBackgroundTask(new ITask<Void>() {
 
             @Override
             public Void doInBackground() throws Exception {
-              cloudPresenter.updateUserDetails(dialog.getEmail(), dialog.getWebsite(), dialog.getBio());
+              CloudPresenter.Instance.updateUserDetails(dialog.getEmail(), dialog.getWebsite(), dialog.getBio());
               return null;
             }
 
@@ -357,7 +356,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
           @Override
           public Void doInBackground() throws Exception {
-            cloudPresenter.updatePassword(dialog.getOldPassword(), dialog.getNewPassword());
+            CloudPresenter.Instance.updatePassword(dialog.getOldPassword(), dialog.getNewPassword());
             return null;
           }
 
@@ -400,7 +399,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
           public String[] doInBackground() throws Exception {
             LOG.debug("Uploading from " + file.getAbsolutePath());
             thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
-            return cloudPresenter.getCategories();
+            return CloudPresenter.Instance.getCategories();
           }
 
           @Override
@@ -417,7 +416,7 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
 
                     @Override
                     public Void doInBackground() throws Exception {
-                      cloudPresenter.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
+                      CloudPresenter.Instance.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
                           dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file,
                           null);
                       return null;
@@ -471,7 +470,6 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
     }
   }
 
-  @Override
   public void loggedIn() {
     getLoginAction().setEnabled(false);
     getCreateAccountAction().setEnabled(false);
@@ -482,7 +480,6 @@ public class CloudPlugIn implements IPlugIn, CloudListener {
     getManageProjectsAction().setEnabled(true);
   }
 
-  @Override
   public void loggedOut() {
     getLoginAction().setEnabled(true);
     getCreateAccountAction().setEnabled(true);

@@ -27,7 +27,7 @@ import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
-import org.diylc.plugins.cloud.presenter.PagingProvider;
+import org.diylc.plugins.cloud.presenter.SearchSession;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.Pair;
@@ -54,19 +54,17 @@ public class CloudBrowserFrame extends JFrame implements ISimpleView {
   private ResultsScrollPanel resultsScrollPane;
 
   private IPlugInPort plugInPort;
-  private CloudPresenter cloudPresenter;
-  private PagingProvider pagingProvider;
+  private SearchSession searchSession;
 
   private ISwingUI swingUI;
 
-  public CloudBrowserFrame(ISwingUI swingUI, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
+  public CloudBrowserFrame(ISwingUI swingUI, IPlugInPort plugInPort) {
     super(TITLE);
     this.swingUI = swingUI;
     this.setIconImage(IconLoader.Cloud.getImage());
     this.setPreferredSize(new Dimension(700, 640));
     this.plugInPort = plugInPort;
-    this.cloudPresenter = cloudPresenter;
-    this.pagingProvider = new PagingProvider(cloudPresenter);
+    this.searchSession = new SearchSession();
 
     setContentPane(getSearchPanel());
     this.pack();
@@ -85,7 +83,7 @@ public class CloudBrowserFrame extends JFrame implements ISimpleView {
 
         @Override
         public Pair<String[], String[]> doInBackground() throws Exception {
-          return new Pair<String[], String[]>(cloudPresenter.getCategories(), cloudPresenter.getSortings());
+          return new Pair<String[], String[]>(CloudPresenter.Instance.getCategories(), CloudPresenter.Instance.getSortings());
         }
 
         @Override
@@ -181,7 +179,7 @@ public class CloudBrowserFrame extends JFrame implements ISimpleView {
 
   private ResultsScrollPanel getResultsScrollPane() {
     if (resultsScrollPane == null) {
-      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, pagingProvider, cloudPresenter, false);
+      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, searchSession, false);
     }
     return resultsScrollPane;
   }
@@ -192,7 +190,7 @@ public class CloudBrowserFrame extends JFrame implements ISimpleView {
 
       @Override
       public List<ProjectEntity> doInBackground() throws Exception {
-        return pagingProvider.startSession(getSearchHeaderPanel().getSearchText(),
+        return searchSession.startSession(getSearchHeaderPanel().getSearchText(),
             getSearchHeaderPanel().getCategory(), getSearchHeaderPanel().getSorting());
       }
 

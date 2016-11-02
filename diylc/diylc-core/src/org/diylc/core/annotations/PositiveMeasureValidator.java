@@ -4,6 +4,12 @@ import org.diylc.core.IPropertyValidator;
 import org.diylc.core.ValidationException;
 import org.diylc.core.measures.AbstractMeasure;
 
+/**
+ * Validates any generic {@link AbstractMeasure} descendants and makes sure that the value is
+ * positive.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class PositiveMeasureValidator implements IPropertyValidator {
 
   @Override

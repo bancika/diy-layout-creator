@@ -49,6 +49,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   protected String name;
   protected ToggleSwitchType switchType = ToggleSwitchType.DPDT;
   private OrientationHV orientation = OrientationHV.VERTICAL;
+  private Size spacing = SPACING;
 
   public MiniToggleSwitch() {
     super();
@@ -57,7 +58,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
   private void updateControlPoints() {
     Point firstPoint = controlPoints[0];
-    int spacing = (int) SPACING.convertToPixels();
+    int spacing = (int) getSpacing().convertToPixels();
     switch (switchType) {
       case SPST:
         controlPoints = new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing)};
@@ -188,6 +189,19 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     // Reset body shape.
     body = null;
   }
+  
+  @EditableProperty
+  public Size getSpacing() {
+    if (spacing == null) {
+      spacing = SPACING;      
+    }
+    return spacing;
+  }
+  
+  public void setSpacing(Size spacing) {
+    this.spacing = spacing;
+    updateControlPoints();
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -244,7 +258,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     if (body == null) {
       Point firstPoint = controlPoints[0];
       int margin = (int) MARGIN.convertToPixels();
-      int spacing = (int) SPACING.convertToPixels();
+      int spacing = (int) getSpacing().convertToPixels();
       switch (switchType) {
         case SPST:
           body =

@@ -34,6 +34,7 @@ public class UserEditDialog extends ButtonDialog {
   private JTextField emailField;
   private JTextField websiteField;
   private JTextArea bioArea;
+  private JScrollPane bioPane;
 
   private String userName;
   private String password;
@@ -130,7 +131,7 @@ public class UserEditDialog extends ButtonDialog {
 
       gbc.gridy = 5;
       gbc.fill = GridBagConstraints.BOTH;
-      mainPanel.add(new JScrollPane(getBioArea()), gbc);
+      mainPanel.add(getBioPane(), gbc);
     }
     return mainPanel;
   }
@@ -254,7 +255,7 @@ public class UserEditDialog extends ButtonDialog {
     return emailField;
   }
 
-  public JTextField getWebsiteField() {
+  private JTextField getWebsiteField() {
     if (websiteField == null) {
       websiteField = new JTextField();
       if (existingEntity != null)
@@ -280,14 +281,23 @@ public class UserEditDialog extends ButtonDialog {
     return websiteField;
   }
 
-  public JTextArea getBioArea() {
+  private JScrollPane getBioPane() {
+    if (bioPane == null) {
+      bioPane = new JScrollPane(getBioArea());
+      bioPane.setPreferredSize(new Dimension(192, 64));
+      bioPane.setBorder(getBioArea().getBorder());
+      getBioArea().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    }
+    return bioPane;
+  }
+
+  private JTextArea getBioArea() {
     if (bioArea == null) {
       bioArea = new HTMLTextArea();
       if (existingEntity != null)
         bioArea.setText(existingEntity.getBio());
       bioArea.setFont(getUserNameField().getFont());
       bioArea.setBorder(getUserNameField().getBorder());
-      bioArea.setPreferredSize(new Dimension(192, 69));
       bioArea.getDocument().addDocumentListener(new DocumentListener() {
 
         @Override

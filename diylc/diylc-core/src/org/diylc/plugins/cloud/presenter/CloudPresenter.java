@@ -30,6 +30,8 @@ import com.diyfever.httpproxy.ProxyFactory;
  * @author Branislav Stojkovic
  */
 public class CloudPresenter {
+  
+  public static final CloudPresenter Instance = new CloudPresenter();
 
   private static String USERNAME_KEY = "cloud.Username";
   private static String TOKEN_KEY = "cloud.token";
@@ -44,15 +46,11 @@ public class CloudPresenter {
   private String machineId;
   private String[] categories;
 
-  private CloudListener listener;
-
   private boolean loggedIn = false;
+  
+  private CloudPresenter() {}
 
-  public CloudPresenter(CloudListener listener) {
-    this.listener = listener;
-  }
-
-  public IServiceAPI getService() {
+  private IServiceAPI getService() {
     if (service == null) {
       serviceUrl =
           ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1");
@@ -79,7 +77,6 @@ public class CloudPresenter {
       LOG.info("Login success");
       ConfigurationManager.getInstance().writeValue(USERNAME_KEY, username);
       ConfigurationManager.getInstance().writeValue(TOKEN_KEY, res);
-      listener.loggedIn();
       this.loggedIn = true;
       return true;
     }
@@ -102,7 +99,6 @@ public class CloudPresenter {
         return false;
       } else {
         LOG.info("Login success");
-        listener.loggedIn();
         this.loggedIn = true;
         return true;
       }
@@ -114,7 +110,6 @@ public class CloudPresenter {
     LOG.info("Logged out");
     ConfigurationManager.getInstance().writeValue(TOKEN_KEY, null);
     this.loggedIn = false;
-    listener.loggedOut();
   }
 
   public boolean isLoggedIn() {

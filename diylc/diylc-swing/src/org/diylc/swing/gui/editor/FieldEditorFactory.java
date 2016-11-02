@@ -12,6 +12,11 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.AbstractMeasure;
 
+/**
+ * Based on {@link PropertyWrapper#getType()}, creates an appropriate {@link Component} that can edit that type.
+ * 
+ * @author Branislav Stojkovic
+ */
 public class FieldEditorFactory {
 
   private static final Logger LOG = Logger.getLogger(FieldEditorFactory.class);

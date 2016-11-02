@@ -9,7 +9,24 @@ import org.diylc.core.IPropertyValidator;
 /**
  * Used to annotate editable component property. Editable property XYZ must have both getter and
  * setter named <code>getXYZ</code> and <code>setXYZ</code> respectively and this annotation must be
- * placed on the getter method.
+ * placed on the getter method. <br>
+ * <br>
+ * In the example below, {@code category} is the property we want to edit and
+ * {@code getCategories()} provides a list of available values for category.
+ * 
+ * <pre>
+ * <code>
+ * &#64;EditableProperty(additionalOptions = EditableProperty.DYNAMIC_LIST
+ *   + "getCategories")
+ * public String getCategory() {
+ *   return category;
+ * }
+ * 
+ * public String[] getCategories() {
+ *   return categories;
+ * }
+ * </code>
+ * </pre>
  * 
  * @author Branislav Stojkovic
  */

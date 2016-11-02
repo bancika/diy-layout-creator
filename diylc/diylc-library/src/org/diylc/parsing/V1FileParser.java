@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
+import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.AbstractTransparentComponent;
@@ -23,6 +24,9 @@ import org.diylc.components.connectivity.CopperTrace;
 import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.connectivity.Jumper;
 import org.diylc.components.connectivity.SolderPad;
+import org.diylc.components.connectivity.TraceCut;
+import org.diylc.components.electromechanical.MiniToggleSwitch;
+import org.diylc.components.electromechanical.ToggleSwitchType;
 import org.diylc.components.misc.Label;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialElectrolytic;
@@ -32,6 +36,7 @@ import org.diylc.components.passive.Taper;
 import org.diylc.components.semiconductors.DIL_IC;
 import org.diylc.components.semiconductors.DiodePlastic;
 import org.diylc.components.semiconductors.LED;
+import org.diylc.components.semiconductors.SIL_IC;
 import org.diylc.components.semiconductors.TransistorTO92;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -149,6 +154,13 @@ public class V1FileParser implements IOldFileParser {
           }
           pad.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr, y1Attr), 0);
           component = pad;
+        } else if (nodeName.equalsIgnoreCase("cut")) {
+          LOG.debug("Recognized " + nodeName);
+          TraceCut cut = new TraceCut();
+          cut.setCutBetweenHoles(false);
+          cut.setName(nameAttr);
+          cut.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr, y1Attr), 0);
+          component = cut;
         } else if (nodeName.equalsIgnoreCase("trace")) {
           LOG.debug("Recognized " + nodeName);
           CopperTrace trace = new CopperTrace();
@@ -303,6 +315,95 @@ public class V1FileParser implements IOldFileParser {
           }
           ic.setRowSpacing(new Size(0.1 * rowSpace, SizeUnit.in));
           ic.setPinCount(DIL_IC.PinCount.valueOf("_" + pinCount));
+          ic.setName(nameAttr);
+          // Translate control points.
+          for (int j = 0; j < ic.getControlPointCount(); j++) {
+            Point p = new Point(ic.getControlPoint(j));
+            p.translate(point1.x, point1.y);
+            ic.setControlPoint(p, j);
+          }
+          ic.setValue(valueAttr);
+          component = ic;
+        } else if (nodeName.equalsIgnoreCase("switch")) {
+          LOG.debug("Recognized " + nodeName);
+          MiniToggleSwitch sw = new MiniToggleSwitch();
+          int sizeX = Math.abs(x1Attr - x2Attr);
+          int sizeY = Math.abs(y1Attr - y2Attr);
+          ToggleSwitchType switchType = null;
+          OrientationHV orientation = null;
+          if (Math.min(sizeX, sizeY) == 0 && Math.max(sizeX, sizeY) == 1) {
+            switchType = ToggleSwitchType.SPST;
+            orientation = sizeX < sizeY ? OrientationHV.VERTICAL : OrientationHV.HORIZONTAL;
+          }
+          if (Math.min(sizeX, sizeY) == 0 && Math.max(sizeX, sizeY) == 2) {
+            switchType = ToggleSwitchType.SPDT;
+            orientation = sizeX < sizeY ? OrientationHV.VERTICAL : OrientationHV.HORIZONTAL;
+          }
+          if (Math.min(sizeX, sizeY) == 1 && Math.max(sizeX, sizeY) == 2) {
+            switchType = ToggleSwitchType.DPDT;
+            orientation = sizeX < sizeY ? OrientationHV.VERTICAL : OrientationHV.HORIZONTAL;
+          }
+          if (Math.min(sizeX, sizeY) == 2 && Math.max(sizeX, sizeY) == 2) {
+            switchType = ToggleSwitchType._3PDT;
+            orientation = OrientationHV.VERTICAL;
+          }
+          if (Math.min(sizeX, sizeY) == 2 && Math.max(sizeX, sizeY) == 3) {
+            switchType = ToggleSwitchType._4PDT;
+            orientation = sizeX < sizeY ? OrientationHV.HORIZONTAL : OrientationHV.VERTICAL;
+          }
+          if (Math.min(sizeX, sizeY) == 2 && Math.max(sizeX, sizeY) == 4) {
+            switchType = ToggleSwitchType._5PDT;
+            orientation = sizeX < sizeY ? OrientationHV.HORIZONTAL : OrientationHV.HORIZONTAL;
+          }
+
+          if (switchType == null || orientation == null) {
+            String message = "Unsupported toggle switch dimensions";
+            LOG.debug(message);
+            if (!warnings.contains(message)) {
+              warnings.add(message);
+            }
+          } else {
+            sw.setName(nameAttr);
+            sw.setOrientation(orientation);
+            sw.setValue(switchType);
+            sw.setSpacing(new Size(0.1, SizeUnit.in));
+            // compensate for potential negative coordinates after the type and orientation have
+            // been set. Make sure that the top left corner is at (0, 0)
+            int dx = 0;
+            int dy = 0;
+            for (int j = 0; j < sw.getControlPointCount(); j++) {
+              Point p = new Point(sw.getControlPoint(j));
+              if (p.x < 0 && p.x < dx)
+                dx = p.x;
+              if (p.y < 0 && p.y < dy)
+                dy = p.y;
+            }
+            // Translate control points.
+            for (int j = 0; j < sw.getControlPointCount(); j++) {
+              Point p = new Point(sw.getControlPoint(j));
+              p.translate(Math.min(point1.x, point2.x) - dx, Math.min(point1.y, point2.y) - dy);
+              sw.setControlPoint(p, j);
+            }
+            component = sw;
+          }
+        } else if (nodeName.equalsIgnoreCase("lineic")) {
+          LOG.debug("Recognized " + nodeName);
+          SIL_IC ic = new SIL_IC();
+          int pinCount = 8;
+          if (x1Attr == x2Attr && y1Attr < y2Attr) {
+            pinCount = (y2Attr - y1Attr + 1);
+            ic.setOrientation(Orientation.DEFAULT);
+          } else if (x1Attr > x2Attr && y1Attr == y2Attr) {
+            pinCount = (x1Attr - x2Attr + 1);
+            ic.setOrientation(Orientation._90);
+          } else if (x1Attr == x2Attr && y1Attr > y2Attr) {
+            pinCount = (y1Attr - y2Attr + 1);
+            ic.setOrientation(Orientation._180);
+          } else if (x1Attr < x2Attr && y1Attr == y2Attr) {
+            pinCount = (x2Attr - x1Attr + 1);
+            ic.setOrientation(Orientation._270);
+          }
+          ic.setPinCount(SIL_IC.PinCount.valueOf("_" + pinCount));
           ic.setName(nameAttr);
           // Translate control points.
           for (int j = 0; j < ic.getControlPointCount(); j++) {

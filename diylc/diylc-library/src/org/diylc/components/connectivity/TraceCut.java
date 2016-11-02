@@ -36,7 +36,7 @@ public class TraceCut extends AbstractComponent<Void> {
   private Color fillColor = FILL_COLOR;
   private Color borderColor = BORDER_COLOR;
   private Color boardColor = AbstractBoard.BOARD_COLOR;
-  private Boolean cutBetweenHoles = true;
+  private Boolean cutBetweenHoles = false;
   private Size holeSpacing = VeroBoard.SPACING;
 
   protected Point point = new Point(0, 0);

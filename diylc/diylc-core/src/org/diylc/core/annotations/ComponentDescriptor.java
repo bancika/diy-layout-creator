@@ -7,7 +7,9 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 
 /**
- * Annotation for {@link IDIYComponent} implementation. Describes component properties.
+ * Annotation that needs to be used for each {@link IDIYComponent} implementation. Describes
+ * component properties and how component should be represented and interact with the rest of the
+ * system.
  * 
  * @author Branislav Stojkovic
  */

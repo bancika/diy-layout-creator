@@ -42,7 +42,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
-import org.diylc.plugins.cloud.presenter.PagingProvider;
+import org.diylc.plugins.cloud.presenter.SearchSession;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
@@ -59,7 +59,7 @@ import org.diylc.swingframework.ButtonDialog;
  * Component that is capable of showing a list of {@link ProjectEntity} objects. Can work in paging
  * mode and pull one page of data at a time.
  * 
- * @see {@link PagingProvider}
+ * @see {@link SearchSession}
  * 
  * @author Branislav Stojkovic
  */
@@ -88,22 +88,19 @@ public class ResultsScrollPanel extends JScrollPane {
    * This flag tells us whether the loadMoreLabel should invoke a new data pull or not.
    */
   private boolean armed;
-  private PagingProvider provider;
-
-  private CloudPresenter cloudPresenter;
-
+  private SearchSession searchSession;
+  
   private Icon spinnerIcon = IconLoader.Spinning.getIcon();
 
   private boolean showEditControls;
 
-  public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort, PagingProvider provider,
-      CloudPresenter cloudPresenter, boolean showEditControls) {
+  public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort, SearchSession searchSession,
+       boolean showEditControls) {
     super();
     this.mainUI = mainUI;
     this.cloudUI = cloudUI;
     this.plugInPort = plugInPort;
-    this.provider = provider;
-    this.cloudPresenter = cloudPresenter;
+    this.searchSession = searchSession;
     this.showEditControls = showEditControls;
 
     this.getVerticalScrollBar().setUnitIncrement(16);
@@ -174,7 +171,7 @@ public class ResultsScrollPanel extends JScrollPane {
           getViewport().setViewPosition(old);
         }
       });
-      if (provider != null && provider.hasMoreData()) {
+      if (searchSession != null && searchSession.hasMoreData()) {
         getLoadMoreLabel().setText("Querying the cloud for more results...");
         getLoadMoreLabel().setIcon(spinnerIcon);
       } else {
@@ -211,7 +208,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
           @Override
           public List<CommentEntity> doInBackground() throws Exception {
-            return cloudPresenter.getComments(project.getId());
+            return CloudPresenter.Instance.getComments(project.getId());
           }
 
           @Override
@@ -222,7 +219,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
           @Override
           public void complete(List<CommentEntity> result) {
-            CommentDialog dialog = new CommentDialog(cloudUI, project, result, cloudPresenter);
+            CommentDialog dialog = new CommentDialog(cloudUI, project, result);
             dialog.setVisible(true);
           }
 
@@ -320,7 +317,7 @@ public class ResultsScrollPanel extends JScrollPane {
     editButton.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        List<PropertyWrapper> projectProperties = cloudPresenter.getProjectProperties(project);
+        List<PropertyWrapper> projectProperties = CloudPresenter.Instance.getProjectProperties(project);
         PropertyEditorDialog editor =
             DialogFactory.getInstance().createPropertyEditorDialog(cloudUI.getOwnerFrame(), projectProperties,
                 "Edit Published Project");
@@ -341,8 +338,8 @@ public class ResultsScrollPanel extends JScrollPane {
 
             @Override
             public ProjectEntity doInBackground() throws Exception {
-              cloudPresenter.updateProjectDetails(project, plugInPort.getCurrentVersionNumber().toString());
-              return cloudPresenter.fetchUserUploads(project.getId()).get(0);
+              CloudPresenter.Instance.updateProjectDetails(project, plugInPort.getCurrentVersionNumber().toString());
+              return CloudPresenter.Instance.fetchUserUploads(project.getId()).get(0);
             }
 
             @Override
@@ -389,7 +386,7 @@ public class ResultsScrollPanel extends JScrollPane {
               public String[] doInBackground() throws Exception {
                 LOG.debug("Uploading from " + file.getAbsolutePath());
                 thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
-                return cloudPresenter.getCategories();
+                return CloudPresenter.Instance.getCategories();
               }
 
               @Override
@@ -406,10 +403,10 @@ public class ResultsScrollPanel extends JScrollPane {
 
                         @Override
                         public ProjectEntity doInBackground() throws Exception {
-                          cloudPresenter.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
+                          CloudPresenter.Instance.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
                               dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile,
                               file, project.getId());
-                          return cloudPresenter.fetchUserUploads(project.getId()).get(0);
+                          return CloudPresenter.Instance.fetchUserUploads(project.getId()).get(0);
                         }
 
                         @Override
@@ -463,7 +460,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
             @Override
             public Void doInBackground() throws Exception {
-              cloudPresenter.deleteProject(project.getId());
+              CloudPresenter.Instance.deleteProject(project.getId());
               return null;
             }
 
@@ -601,14 +598,14 @@ public class ResultsScrollPanel extends JScrollPane {
         @Override
         public void paint(Graphics g) {
           super.paint(g);
-          if (armed && provider != null && provider.hasMoreData()) {
+          if (armed && searchSession != null && searchSession.hasMoreData()) {
             // disarm immediately so we don't trigger successive requests to the provider
             armed = false;
             SwingWorker<List<ProjectEntity>, Void> worker = new SwingWorker<List<ProjectEntity>, Void>() {
 
               @Override
               protected List<ProjectEntity> doInBackground() throws Exception {
-                return provider.requestMoreData();
+                return searchSession.requestMoreData();
               }
 
               @Override

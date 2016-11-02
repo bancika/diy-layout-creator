@@ -42,7 +42,6 @@ public class CommentDialog extends JDialog {
 
   private ProjectEntity project;
   private List<CommentEntity> comments;
-  private CloudPresenter presenter;
 
   private JPanel mainPanel;
   private JPanel listPanel;
@@ -53,19 +52,17 @@ public class CommentDialog extends JDialog {
 
   private ISimpleView cloudUI;
 
-  public CommentDialog(ISimpleView cloudUI, ProjectEntity project, List<CommentEntity> comments,
-      CloudPresenter presenter) {
+  public CommentDialog(ISimpleView cloudUI, ProjectEntity project, List<CommentEntity> comments) {
     super(cloudUI.getOwnerFrame(), "Comments on " + project.getName());
     this.project = project;
     this.comments = comments;
-    this.presenter = presenter;
     this.cloudUI = cloudUI;
     setMinimumSize(new Dimension(400, 600));
     setContentPane(getMainPanel());
     pack();
     setLocationRelativeTo(cloudUI.getOwnerFrame());
     setModal(true);
-    if (!presenter.isLoggedIn()) {
+    if (!CloudPresenter.Instance.isLoggedIn()) {
       getReplyArea().setEnabled(false);
       getReplyArea().setText("Must be logged in to reply.");
       getSendButton().setEnabled(false);
@@ -148,7 +145,7 @@ public class CommentDialog extends JDialog {
 
             @Override
             public Void doInBackground() throws Exception {
-              presenter.postComment(project.getId(), comment);
+              CloudPresenter.Instance.postComment(project.getId(), comment);
               return null;
             }
 
@@ -162,7 +159,7 @@ public class CommentDialog extends JDialog {
               getReplyArea().setText("");
               CommentEntity newComment = new CommentEntity();
               newComment.setPostedAt(JUST_NOW);
-              newComment.setUsername(presenter.getCurrentUsername());
+              newComment.setUsername(CloudPresenter.Instance.getCurrentUsername());
               newComment.setComment(comment);
               addComment(newComment).requestFocusInWindow();
               getListPanel().revalidate();

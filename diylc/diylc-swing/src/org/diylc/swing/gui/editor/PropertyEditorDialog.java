@@ -52,21 +52,6 @@ public class PropertyEditorDialog extends ButtonDialog {
 
     layoutGui();
     setLocationRelativeTo(owner);
-    //
-    // setModal(true);
-    //
-    // JPanel holderPanel = new JPanel();
-    // holderPanel.setLayout(new BorderLayout());
-    // holderPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-    //
-    // holderPanel.add(createEditorFields(), BorderLayout.CENTER);
-    // holderPanel.add(createButtonPanel(), BorderLayout.SOUTH);
-    //
-    // setContentPane(holderPanel);
-    //
-    //
-    // pack();
-    // setLocationRelativeTo(owner);
   }
 
   @Override
@@ -161,15 +146,6 @@ public class PropertyEditorDialog extends ButtonDialog {
 
   public Set<PropertyWrapper> getDefaultedProperties() {
     return defaultedProperties;
-  }
-
-  public static boolean showFor(JFrame owner, List<PropertyWrapper> properties, String title) {
-    PropertyEditorDialog editor = new PropertyEditorDialog(owner, properties, title);
-    editor.setVisible(true);
-    if (OK.equals(editor.getSelectedButtonCaption())) {
-      return true;
-    }
-    return false;
   }
 
   @Override

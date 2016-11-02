@@ -29,17 +29,15 @@ public class UploadManagerFrame extends JFrame implements ISimpleView {
   private ResultsScrollPanel resultsScrollPane;
 
   private IPlugInPort plugInPort;
-  private CloudPresenter cloudPresenter;
 
   private ISwingUI swingUI;
 
-  public UploadManagerFrame(ISwingUI swingUI, IPlugInPort plugInPort, CloudPresenter cloudPresenter) {
+  public UploadManagerFrame(ISwingUI swingUI, IPlugInPort plugInPort) {
     super(TITLE);
     this.swingUI = swingUI;
     this.setIconImage(IconLoader.CloudGear.getImage());
     this.setPreferredSize(new Dimension(700, 640));
     this.plugInPort = plugInPort;
-    this.cloudPresenter = cloudPresenter;
 
     setContentPane(getResultsScrollPane());
     this.pack();
@@ -51,7 +49,7 @@ public class UploadManagerFrame extends JFrame implements ISimpleView {
 
   private ResultsScrollPanel getResultsScrollPane() {
     if (resultsScrollPane == null) {
-      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, null, cloudPresenter, true);
+      resultsScrollPane = new ResultsScrollPanel(swingUI, this, plugInPort, null, true);
     }
     return resultsScrollPane;
   }
@@ -62,7 +60,7 @@ public class UploadManagerFrame extends JFrame implements ISimpleView {
 
       @Override
       public List<ProjectEntity> doInBackground() throws Exception {
-        return cloudPresenter.fetchUserUploads(null);
+        return CloudPresenter.Instance.fetchUserUploads(null);
       }
 
       @Override
