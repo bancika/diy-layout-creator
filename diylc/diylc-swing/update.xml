@@ -1348,7 +1348,7 @@
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Potentiometer symbol can be flipped horizontally</description>
+					<description>Potentiometer and transistor symbols can be flipped horizontally</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
