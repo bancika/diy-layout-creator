@@ -69,26 +69,16 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 
     Shape[] body = getBody();
 
-    int rotation = 0;
-    // determine rotation using control points
-    if (controlPoints[1].x == controlPoints[2].x) {
-      if (controlPoints[0].x > controlPoints[1].x) {
-        rotation = 180;
-      }
-    }
-    if (controlPoints[1].y == controlPoints[2].y) {
-      rotation = 90;
-      if (controlPoints[0].y > controlPoints[1].y) {
-        rotation = 270;
-      }
-    }
     AffineTransform old = g2d.getTransform();
-    g2d.rotate(Math.toRadians(rotation), controlPoints[0].x, controlPoints[0].y);
 
     if (this.flip == SymbolFlipping.Y) {
       g2d.translate(0, controlPoints[0].y);
       g2d.scale(1, -1);
       g2d.translate(0, -1 * controlPoints[0].y);
+    } else if (this.flip == SymbolFlipping.X) {
+      g2d.translate(controlPoints[0].x, 0);
+      g2d.scale(-1, 1);
+      g2d.translate(-1 * controlPoints[0].x, 0);
     }
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
@@ -129,7 +119,8 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
     Rectangle shapeRect = body[0].getBounds().union(body[1].getBounds()).union(body[2].getBounds());
 
     drawCenteredText(g2d, label, getLabelX(shapeRect, textRect, fontMetrics, outlineMode),
-        getLabelY(shapeRect, textRect, fontMetrics, outlineMode), HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+        getLabelY(shapeRect, textRect, fontMetrics, outlineMode), flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
+            : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
   }
 
   @Override
@@ -143,7 +134,9 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
   }
 
   protected int getLabelX(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
-    return controlPoints[0].x + (int) PIN_SPACING.convertToPixels() * 2;
+    int f = flip == SymbolFlipping.X ? -1 : 1;
+    int d = flip == SymbolFlipping.X ? (int) PIN_SPACING.convertToPixels() / 2 : 0;
+    return controlPoints[0].x + f * (int) (PIN_SPACING.convertToPixels() * 1.5 + d);
   }
 
   protected int getLabelY(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
@@ -156,10 +149,12 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
 
-    controlPoints[1].x = x + pinSpacing * 2;
+    int f = flip == SymbolFlipping.X ? -1 : 1;
+
+    controlPoints[1].x = x + f * pinSpacing * 2;
     controlPoints[1].y = y - pinSpacing * 2;
 
-    controlPoints[2].x = x + pinSpacing * 2;
+    controlPoints[2].x = x + f * pinSpacing * 2;
     controlPoints[2].y = y + pinSpacing * 2;
   }
 
@@ -198,6 +193,7 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
 
   public void setFlip(SymbolFlipping flip) {
     this.flip = flip;
+    updateControlPoints();
   }
 
   @EditableProperty

@@ -1345,7 +1345,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added Public Announcements feature</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Potentiometer symbol can be flipped horizontally</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Reduced DIYLC package size</description>
@@ -1368,7 +1372,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Toggle switch spacing can be changed</description>
+					<description>Toggle switch terminal spacing can be changed</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

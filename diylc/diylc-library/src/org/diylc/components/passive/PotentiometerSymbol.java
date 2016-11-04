@@ -12,6 +12,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.components.semiconductors.AbstractTransistorSymbol;
+import org.diylc.components.semiconductors.SymbolFlipping;
 
 @ComponentDescriptor(name = "Potentiometer Symbol", author = "MCbx", category = "Schematics",
     instanceNamePrefix = " VR", description = "Potentiometer symbol", stretchable = false,
@@ -69,32 +70,43 @@ public class PotentiometerSymbol extends AbstractTransistorSymbol {
 
   @Override
   protected int getLabelX(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
-    int pinSpacing = (int) PIN_SPACING.convertToPixels();
-    if (controlPoints[0].x < controlPoints[1].x && controlPoints[0].x < controlPoints[2].x)
-      return controlPoints[1].x + pinSpacing / 3;
-    if (controlPoints[0].y < controlPoints[1].y && controlPoints[0].y < controlPoints[2].y)
-      return controlPoints[0].x - (int) (textRect.getWidth() / 2);
-    if (controlPoints[0].x > controlPoints[1].x && controlPoints[0].x > controlPoints[2].x)
-      return controlPoints[1].x - pinSpacing / 2 - (int) textRect.getWidth();
-    if (controlPoints[0].y > controlPoints[1].y && controlPoints[0].y > controlPoints[2].y)
-      return controlPoints[0].x - (int) (textRect.getWidth() / 2);
-    return 2 * ((int) (shapeRect.getWidth() - textRect.getWidth()) / 2 + (int) shapeRect.getX());
+    int x = super.getLabelX(shapeRect, textRect, fontMetrics, outlineMode);
+    if (getFlip() == SymbolFlipping.X)
+      return x - (int) (PIN_SPACING.convertToPixels() / 2);
+    return x + (int) PIN_SPACING.convertToPixels();
   }
 
-  @Override
-  protected int getLabelY(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
-    int pinSpacing = (int) PIN_SPACING.convertToPixels();
-    if (controlPoints[0].x < controlPoints[1].x && controlPoints[0].x < controlPoints[2].x)
-      return controlPoints[0].y;
-    if (controlPoints[0].y < controlPoints[1].y && controlPoints[0].y < controlPoints[2].y)
-      return controlPoints[1].y + pinSpacing * 2 / 3;
-    if (controlPoints[0].x > controlPoints[1].x && controlPoints[0].x > controlPoints[2].x)
-      return controlPoints[0].y;
-    if (controlPoints[0].y > controlPoints[1].y && controlPoints[0].y > controlPoints[2].y)
-      return controlPoints[1].y - pinSpacing * 2 / 3;
-    return 2 * ((int) (shapeRect.getHeight() - textRect.getHeight()) / 2 + fontMetrics.getAscent() + (int) shapeRect
-        .getY());
-  }
+  // @Override
+  // protected int getLabelX(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics,
+  // boolean outlineMode) {
+  // int pinSpacing = (int) PIN_SPACING.convertToPixels();
+  // if (controlPoints[0].x < controlPoints[1].x && controlPoints[0].x < controlPoints[2].x)
+  // return controlPoints[1].x + pinSpacing / 3;
+  // if (controlPoints[0].y < controlPoints[1].y && controlPoints[0].y < controlPoints[2].y)
+  // return controlPoints[0].x - (int) (textRect.getWidth() / 2);
+  // if (controlPoints[0].x > controlPoints[1].x && controlPoints[0].x > controlPoints[2].x)
+  // return controlPoints[1].x - pinSpacing / 2 - (int) textRect.getWidth();
+  // if (controlPoints[0].y > controlPoints[1].y && controlPoints[0].y > controlPoints[2].y)
+  // return controlPoints[0].x - (int) (textRect.getWidth() / 2);
+  // return 2 * ((int) (shapeRect.getWidth() - textRect.getWidth()) / 2 + (int) shapeRect.getX());
+  // }
+  //
+  // @Override
+  // protected int getLabelY(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics,
+  // boolean outlineMode) {
+  // int pinSpacing = (int) PIN_SPACING.convertToPixels();
+  // if (controlPoints[0].x < controlPoints[1].x && controlPoints[0].x < controlPoints[2].x)
+  // return controlPoints[0].y;
+  // if (controlPoints[0].y < controlPoints[1].y && controlPoints[0].y < controlPoints[2].y)
+  // return controlPoints[1].y + pinSpacing * 2 / 3;
+  // if (controlPoints[0].x > controlPoints[1].x && controlPoints[0].x > controlPoints[2].x)
+  // return controlPoints[0].y;
+  // if (controlPoints[0].y > controlPoints[1].y && controlPoints[0].y > controlPoints[2].y)
+  // return controlPoints[1].y - pinSpacing * 2 / 3;
+  // return 2 * ((int) (shapeRect.getHeight() - textRect.getHeight()) / 2 + fontMetrics.getAscent()
+  // + (int) shapeRect
+  // .getY());
+  // }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
