@@ -97,6 +97,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx2 = 0;
             dy2 = 2 * spacing;
             break;
+          case VERTICAL_OFFSET_BIG_GAP:
+            dx1 = 2 * spacing;
+            dy1 = spacing;
+            dx2 = 0;
+            dy2 = 2 * spacing;
+            break;
         }
         break;
       case _90:
@@ -122,6 +128,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
           case VERTICAL_OFFSET:
             dx1 = -spacing;
             dy1 = spacing;
+            dx2 = -2 * spacing;
+            dy2 = 0;
+            break;
+          case VERTICAL_OFFSET_BIG_GAP:
+            dx1 = -spacing;
+            dy1 = 2 * spacing;
             dx2 = -2 * spacing;
             dy2 = 0;
             break;
@@ -153,6 +165,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx2 = 0;
             dy2 = -2 * spacing;
             break;
+          case VERTICAL_OFFSET_BIG_GAP:
+            dx1 = -2 * spacing;
+            dy1 = -spacing;
+            dx2 = 0;
+            dy2 = -2 * spacing;
+            break;
         }
         break;
       case _270:
@@ -178,6 +196,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
           case VERTICAL_OFFSET:
             dx1 = spacing;
             dy1 = -spacing;
+            dx2 = 2 * spacing;
+            dy2 = 0;
+            break;
+          case VERTICAL_OFFSET_BIG_GAP:
+            dx1 = spacing;
+            dy1 = -2 * spacing;
             dx2 = 2 * spacing;
             dy2 = 0;
             break;
@@ -223,6 +247,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
           break;
         case VERTICAL_INLINE:
         case VERTICAL_OFFSET:
+        case VERTICAL_OFFSET_BIG_GAP:
           length = getClosestOdd(VERTICAL_BODY_LENGTH.convertToPixels());
           width = getClosestOdd(VERTICAL_BODY_WIDTH.convertToPixels());
           break;
@@ -417,7 +442,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   }
 
   public static enum TrimmerType {
-    FLAT_LARGE, FLAT_SMALL, VERTICAL_INLINE, VERTICAL_OFFSET;
+    FLAT_LARGE, FLAT_SMALL, VERTICAL_INLINE, VERTICAL_OFFSET, VERTICAL_OFFSET_BIG_GAP;
 
     @Override
     public String toString() {

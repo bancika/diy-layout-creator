@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.Display;
@@ -27,12 +28,15 @@ import org.diylc.components.connectivity.SolderPad;
 import org.diylc.components.connectivity.TraceCut;
 import org.diylc.components.electromechanical.MiniToggleSwitch;
 import org.diylc.components.electromechanical.ToggleSwitchType;
+import org.diylc.components.misc.BOM;
 import org.diylc.components.misc.Label;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialElectrolytic;
 import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.components.passive.Taper;
+import org.diylc.components.passive.TrimmerPotentiometer;
+import org.diylc.components.passive.TrimmerPotentiometer.TrimmerType;
 import org.diylc.components.semiconductors.DIL_IC;
 import org.diylc.components.semiconductors.DiodePlastic;
 import org.diylc.components.semiconductors.LED;
@@ -181,13 +185,21 @@ public class V1FileParser implements IOldFileParser {
         } else if (nodeName.equalsIgnoreCase("wire")) {
           LOG.debug("Recognized " + nodeName);
           HookupWire wire = new HookupWire();
-          Point midPoint = new Point((point1.x + point2.x) / 2, (point1.y + point2.y) / 2);
+          long seed = Long.parseLong(node.getAttributes().getNamedItem("Seed").getNodeValue());
+          Random r = new Random(seed);
+          randSeed = seed;
+          int d = (int) Math.round(Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2)) / 2);
+          int x2 = (int) (point1.x + Math.round((point2.x - point1.x) * 0.40) + myRandom(d, r));
+          int y2 = (int) (point1.y + Math.round((point2.y - point1.y) * 0.40) + myRandom(d, r));
+          int x3 = (int) (point1.x + Math.round((point2.x - point1.x) * 0.60) + myRandom(d, r));
+          int y3 = (int) (point1.y + Math.round((point2.y - point1.y) * 0.60) + myRandom(d, r));
+
           wire.setName(nameAttr);
           String colorAttr = node.getAttributes().getNamedItem("Color").getNodeValue();
           wire.setColor(parseV1Color(colorAttr));
           wire.setControlPoint(point1, 0);
-          wire.setControlPoint(midPoint, 1);
-          wire.setControlPoint(midPoint, 2);
+          wire.setControlPoint(new Point(x2, y2), 1);
+          wire.setControlPoint(new Point(x3, y3), 2);
           wire.setControlPoint(point2, 3);
           component = wire;
         } else if (nodeName.equalsIgnoreCase("resistor")) {
@@ -464,6 +476,168 @@ public class V1FileParser implements IOldFileParser {
             };
           }
           component = pot;
+        } else if (nodeName.equalsIgnoreCase("trimmer")) {
+          LOG.debug("Recognized " + nodeName);
+          TrimmerPotentiometer trimmer = new TrimmerPotentiometer();
+          trimmer.setName(nameAttr);
+          int sizeX = Math.abs(x1Attr - x2Attr);
+          int sizeY = Math.abs(y1Attr - y2Attr);
+          TrimmerType trimmerType = null;
+          Orientation orientation = null;
+          int dx = 0;
+          int dy = 0;
+          // determine type by size
+          if (Math.min(sizeX, sizeY) == 0 && Math.max(sizeX, sizeY) == 1) {
+            trimmerType = TrimmerType.VERTICAL_INLINE;
+
+            if (y1Attr > y2Attr) {
+              orientation = Orientation.DEFAULT;
+              dy = -1;
+            } else if (x1Attr > x2Attr) {
+              orientation = Orientation._90;
+              dx = 1;
+            } else if (y1Attr < y2Attr) {
+              orientation = Orientation._180;
+              dy = 1;
+            } else if (x1Attr < x2Attr) {
+              orientation = Orientation._270;
+              dx = -1;
+            }
+          } else if (Math.min(sizeX, sizeY) == 1 && Math.max(sizeX, sizeY) == 1) {
+            trimmerType = TrimmerType.VERTICAL_OFFSET;
+
+            if (x1Attr > x2Attr && y1Attr > y2Attr) {
+              orientation = Orientation.DEFAULT;
+              dx = -1;
+              dy = -1;
+            } else if (x1Attr < x2Attr && y1Attr > y2Attr) {
+              orientation = Orientation._90;
+              dx = 1;
+              dy = -1;
+            } else if (x1Attr < x2Attr && y1Attr < y2Attr) {
+              orientation = Orientation._180;
+              dx = 1;
+              dy = 1;
+            } else if (x1Attr > x2Attr && y1Attr < y2Attr) {
+              orientation = Orientation._270;
+              dx = -1;
+              dy = 1;
+            }
+          } else if (Math.min(sizeX, sizeY) == 1 && Math.max(sizeX, sizeY) == 2) {
+            trimmerType = TrimmerType.VERTICAL_OFFSET_BIG_GAP;
+
+            if (x1Attr > x2Attr && y1Attr > y2Attr) {
+              if (sizeX == 2) {
+                orientation = Orientation.DEFAULT;
+                dx = -2;
+                dy = -1;
+              } else {
+                orientation = Orientation._90;
+                dx = 1;
+                dy = -2;
+              }
+            } else if (x1Attr < x2Attr && y1Attr > y2Attr) {
+              if (sizeX == 2) {
+                orientation = Orientation._180;
+                dx = 2;
+                dy = 1;
+              } else {
+                orientation = Orientation._90;
+                dx = 1;
+                dy = -2;
+              }
+            } else if (x1Attr < x2Attr && y1Attr < y2Attr) {
+              if (sizeX == 2) {
+                orientation = Orientation._180;
+                dx = 2;
+                dy = 1;
+              } else {
+                orientation = Orientation._270;
+                dx = -1;
+                dy = 2;
+              }
+            } else if (x1Attr > x2Attr && y1Attr < y2Attr) {
+              if (sizeX == 2) {
+                orientation = Orientation.DEFAULT;
+                dx = -2;
+                dy = -1;
+              } else {
+                orientation = Orientation._270;
+                dx = -1;
+                dy = 2;
+              }
+            }
+          } else if (Math.min(sizeX, sizeY) == 1 && Math.max(sizeX, sizeY) == 4) {
+            trimmerType = TrimmerType.FLAT_LARGE;
+
+            if (x1Attr > x2Attr && y1Attr > y2Attr) {
+              if (sizeX == 4) {
+                orientation = Orientation.DEFAULT;
+                dx = -4;
+                dy = -1;
+              } else {
+                orientation = Orientation._90;
+                dx = 1;
+                dy = -4;
+              }
+            } else if (x1Attr < x2Attr && y1Attr > y2Attr) {
+              if (sizeX == 4) {
+                orientation = Orientation._180;
+                dx = 4;
+                dy = 1;
+              } else {
+                orientation = Orientation._90;
+                dx = 1;
+                dy = -4;
+              }
+            } else if (x1Attr < x2Attr && y1Attr < y2Attr) {
+              if (sizeX == 4) {
+                orientation = Orientation._180;
+                dx = 4;
+                dy = 1;
+              } else {
+                orientation = Orientation._270;
+                dx = -1;
+                dy = 4;
+              }
+            } else if (x1Attr > x2Attr && y1Attr < y2Attr) {
+              if (sizeX == 4) {
+                orientation = Orientation.DEFAULT;
+                dx = -4;
+                dy = -1;
+              } else {
+                orientation = Orientation._270;
+                dx = -1;
+                dy = 4;
+              }
+            }
+          }
+
+          if (trimmerType == null || orientation == null) {
+            String message = "Unsupported trimmer dimensions";
+            LOG.debug(message);
+            if (!warnings.contains(message)) {
+              warnings.add(message);
+            }
+          } else {
+            try {
+              trimmer.setValue(Resistance.parseResistance(valueAttr));
+            } catch (Exception e) {
+              LOG.debug("Could not set value of " + nameAttr);
+            }
+            trimmer.setType(trimmerType);
+            trimmer.setOrientation(orientation);
+            // scale nudges
+            dx *= V1_GRID_SPACING.convertToPixels();
+            dy *= V1_GRID_SPACING.convertToPixels();
+            // Translate control points.
+            for (int j = 0; j < trimmer.getControlPointCount(); j++) {
+              Point p = new Point(trimmer.getControlPoint(j));
+              p.translate(point1.x + dx, point1.y + dy);
+              trimmer.setControlPoint(p, j);
+            }
+            component = trimmer;
+          }
         } else {
           String message = "Could not recognize component type " + nodeName;
           LOG.debug(message);
@@ -482,6 +656,45 @@ public class V1FileParser implements IOldFileParser {
         }
       }
     }
+
+    int minY = y;
+    for (IDIYComponent<?> c : project.getComponents()) {
+      for (int i = 0; i < c.getControlPointCount(); i++) {
+        Point p = c.getControlPoint(i);
+        if (p.y < minY)
+          minY = p.y;
+      }
+    }
+
+    // Add title and credits
+    Label titleLabel = new Label();
+    titleLabel.setColor(Color.blue);
+    titleLabel.setFontSize(24);
+    titleLabel.setText(project.getTitle());
+    titleLabel.setHorizontalAlignment(HorizontalAlignment.CENTER);
+    titleLabel.setControlPoint(
+        new Point(CalcUtils.roundToGrid(x + boardWidth / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
+            (int) (minY - Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue() * 5), V1_GRID_SPACING)), 0);
+    project.getComponents().add(titleLabel);
+
+    Label creditsLabel = new Label();
+    creditsLabel.setFontSize(16);
+    creditsLabel.setText(project.getAuthor());
+    creditsLabel.setHorizontalAlignment(HorizontalAlignment.CENTER);
+    creditsLabel.setControlPoint(
+        new Point(CalcUtils.roundToGrid(x + boardWidth / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
+            (int) (minY - Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue() * 4), V1_GRID_SPACING)), 0);
+    project.getComponents().add(creditsLabel);
+
+    // Add BOM at the bottom
+    BOM bom = new BOM();
+    int bomSize = (int) bom.getSize().convertToPixels();
+    bom.setControlPoint(
+        new Point(CalcUtils.roundToGrid(x + (boardWidth - bomSize) / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
+            (int) (y + boardHeight + 2 * V1_GRID_SPACING.convertToPixels()), V1_GRID_SPACING)), 0);
+    project.getComponents().add(bom);
+
+    // Sort by z-order
     Collections.sort(project.getComponents(), ComparatorFactory.getInstance().getComponentZOrderComparator());
     return project;
   }
@@ -503,6 +716,22 @@ public class V1FileParser implements IOldFileParser {
       LOG.error("Could not parse color \"" + color + "\"", e);
       return Color.black;
     }
+  }
+
+  private int myRandom(int range, Random r) {
+    range = (range * 2) / 3;
+    int rand = r.nextInt(range) - range / 2;
+    if (Math.abs(rand) < range / 3)
+      rand = myRandom(range, r);
+    return rand;
+  }
+
+  private long randSeed = 0;
+
+  private int randInt(int range) {
+    long newSeed = randSeed * 0x08088405 + 1;
+    randSeed = newSeed;
+    return (int) (newSeed * range >> 32);
   }
 
 }
