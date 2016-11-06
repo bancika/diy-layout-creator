@@ -11,14 +11,14 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.KeywordPolicy;
-import org.diylc.components.semiconductors.AbstractTransistorSymbol;
+import org.diylc.components.Abstract3LegSymbol;
 import org.diylc.components.semiconductors.SymbolFlipping;
 
 @ComponentDescriptor(name = "Potentiometer Symbol", author = "MCbx", category = "Schematics",
-    instanceNamePrefix = " VR", description = "Potentiometer symbol", stretchable = false,
+    instanceNamePrefix = "VR", description = "Potentiometer symbol", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Schematic")
-public class PotentiometerSymbol extends AbstractTransistorSymbol {
+public class PotentiometerSymbol extends Abstract3LegSymbol {
 
   private static final long serialVersionUID = 1L;
 

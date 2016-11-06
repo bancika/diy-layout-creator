@@ -1,4 +1,4 @@
-package org.diylc.components.semiconductors;
+package org.diylc.components;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -16,6 +16,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.semiconductors.SymbolFlipping;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -26,7 +27,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class AbstractTransistorSymbol extends AbstractComponent<String> {
+public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -41,7 +42,7 @@ public abstract class AbstractTransistorSymbol extends AbstractComponent<String>
   protected Display display = Display.NAME;
   transient protected Shape[] body;
 
-  public AbstractTransistorSymbol() {
+  public Abstract3LegSymbol() {
     super();
     updateControlPoints();
   }

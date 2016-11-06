@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.diylc.appframework.update.VersionNumber;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.MultiLineText;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -72,7 +73,8 @@ public class Project implements Serializable {
     this.author = author;
   }
 
-  @EditableProperty(defaultable = false, additionalOptions = EditableProperty.MULTI_LINE, sortOrder = 2)
+  @MultiLineText
+  @EditableProperty(defaultable = false, sortOrder = 2)
   public String getDescription() {
     return description;
   }

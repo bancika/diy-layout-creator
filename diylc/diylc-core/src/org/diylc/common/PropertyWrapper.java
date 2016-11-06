@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.diylc.core.IPropertyValidator;
-import org.diylc.core.annotations.EditableProperty;
 
 /**
  * Entity class for editable properties extracted from component objects. Represents a single
@@ -23,12 +22,11 @@ public class PropertyWrapper implements Cloneable {
   private IPropertyValidator validator;
   private boolean unique = true;
   private boolean changed = false;
-  private String additionalOptions;
   private int sortOrder;
-  private Object[] listItems;
+  private Object ownerObject;
 
   public PropertyWrapper(String name, Class<?> type, String getter, String setter, boolean defaultable,
-      IPropertyValidator validator, String additionalOptions, int sortOrder) {
+      IPropertyValidator validator, int sortOrder) {
     super();
     this.name = name;
     this.type = type;
@@ -36,18 +34,14 @@ public class PropertyWrapper implements Cloneable {
     this.setter = setter;
     this.defaultable = defaultable;
     this.validator = validator;
-    this.additionalOptions = additionalOptions;
     this.sortOrder = sortOrder;
+    this.ownerObject = null;
   }
 
   public void readFrom(Object object) throws IllegalArgumentException, IllegalAccessException,
       InvocationTargetException, SecurityException, NoSuchMethodException {
-    this.value = object.getClass().getMethod(getter).invoke(object);
-    if (additionalOptions.startsWith(EditableProperty.DYNAMIC_LIST)) {
-      String functionName = additionalOptions.substring(EditableProperty.DYNAMIC_LIST.length());
-      Method listMethod = object.getClass().getMethod(functionName);
-      listItems = (Object[]) listMethod.invoke(object);
-    }
+    this.ownerObject = object;
+    this.value = getGetter().invoke(object);
   }
 
   // public void readUniqueFrom(IDIYComponent component)
@@ -64,6 +58,10 @@ public class PropertyWrapper implements Cloneable {
     object.getClass().getMethod(setter, type).invoke(object, this.value);
   }
 
+  public Method getGetter() throws SecurityException, NoSuchMethodException {
+    return getOwnerObject().getClass().getMethod(getter);
+  }
+
   public String getName() {
     return name;
   }
@@ -78,6 +76,10 @@ public class PropertyWrapper implements Cloneable {
 
   public void setValue(Object value) {
     this.value = value;
+  }
+
+  public Object getOwnerObject() {
+    return ownerObject;
   }
 
   public boolean isDefaultable() {
@@ -104,20 +106,8 @@ public class PropertyWrapper implements Cloneable {
     this.changed = changed;
   }
 
-  public String getAdditionalOptions() {
-    return additionalOptions;
-  }
-
   public int getSortOrder() {
     return sortOrder;
-  }
-
-  public Object[] getListItems() {
-    return listItems;
-  }
-
-  public void setOptions(Object[] listItems) {
-    this.listItems = listItems;
   }
 
   // @Override
@@ -134,7 +124,7 @@ public class PropertyWrapper implements Cloneable {
   public Object clone() throws CloneNotSupportedException {
     PropertyWrapper clone =
         new PropertyWrapper(this.name, this.type, this.getter, this.setter, this.defaultable, this.validator,
-            this.additionalOptions, this.sortOrder);
+            this.sortOrder);
     clone.value = this.value;
     clone.changed = this.changed;
     clone.unique = this.unique;
@@ -145,7 +135,6 @@ public class PropertyWrapper implements Cloneable {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((additionalOptions == null) ? 0 : additionalOptions.hashCode());
     result = prime * result + (defaultable ? 1231 : 1237);
     result = prime * result + ((getter == null) ? 0 : getter.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -162,11 +151,6 @@ public class PropertyWrapper implements Cloneable {
     if (getClass() != obj.getClass())
       return false;
     PropertyWrapper other = (PropertyWrapper) obj;
-    if (additionalOptions == null) {
-      if (other.additionalOptions != null)
-        return false;
-    } else if (!additionalOptions.equals(other.additionalOptions))
-      return false;
     if (defaultable != other.defaultable)
       return false;
     if (getter == null) {

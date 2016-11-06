@@ -9,11 +9,13 @@ import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.DynamicList;
+import org.diylc.core.annotations.MultiLineText;
 import org.diylc.core.measures.AbstractMeasure;
 
 /**
- * Based on {@link PropertyWrapper#getType()}, creates an appropriate {@link Component} that can edit that type.
+ * Based on {@link PropertyWrapper#getType()}, creates an appropriate {@link Component} that can
+ * edit that type.
  * 
  * @author Branislav Stojkovic
  */
@@ -22,13 +24,21 @@ public class FieldEditorFactory {
   private static final Logger LOG = Logger.getLogger(FieldEditorFactory.class);
 
   public static Component createFieldEditor(PropertyWrapper property) {
-    if (property.getType().equals(String.class) && property.getListItems() != null) {
-      StringListEditor editor = new StringListEditor(property);
-      return editor;
+    try {
+      if (property.getType().equals(String.class) && property.getGetter().isAnnotationPresent(DynamicList.class)) {
+        StringListEditor editor = new StringListEditor(property);
+        return editor;
+      }
+    } catch (Exception e) {
+      LOG.error("Could not determine if a function is annotated with DynamicList", e);
     }
-    if (property.getType().equals(String.class) && EditableProperty.MULTI_LINE.equals(property.getAdditionalOptions())) {
-      MultiLineStringEditor editor = new MultiLineStringEditor(property);
-      return editor;
+    try {
+      if (property.getType().equals(String.class) && property.getGetter().isAnnotationPresent(MultiLineText.class)) {
+        MultiLineStringEditor editor = new MultiLineStringEditor(property);
+        return editor;
+      }
+    } catch (Exception e) {
+      LOG.error("Could not determine if a function is annotated with MultiLineText", e);
     }
     if (property.getType().equals(String.class)) {
       StringEditor editor = new StringEditor(property);

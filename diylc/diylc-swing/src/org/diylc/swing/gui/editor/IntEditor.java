@@ -24,7 +24,7 @@ public class IntEditor extends DoubleTextField {
       public void propertyChange(PropertyChangeEvent evt) {
         property.setChanged(true);
         setBackground(oldBg);
-        property.setValue(((Double) evt.getNewValue()).intValue());
+        property.setValue(evt.getNewValue() == null ? null : ((Double) evt.getNewValue()).intValue());
       }
     });
     if (!property.isUnique()) {

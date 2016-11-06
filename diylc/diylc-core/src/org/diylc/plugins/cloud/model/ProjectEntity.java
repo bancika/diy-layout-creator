@@ -2,7 +2,9 @@ package org.diylc.plugins.cloud.model;
 
 import java.io.Serializable;
 
+import org.diylc.core.annotations.DynamicList;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.MultiLineText;
 
 /**
  * Represents a cloud project object, identified by {@link ProjectEntity#id}.
@@ -49,7 +51,8 @@ public class ProjectEntity implements Serializable {
     this.name = name;
   }
 
-  @EditableProperty(defaultable = false, additionalOptions = EditableProperty.MULTI_LINE, sortOrder = 3)
+  @MultiLineText
+  @EditableProperty(defaultable = false, sortOrder = 3)
   public String getDescription() {
     return description;
   }
@@ -74,8 +77,8 @@ public class ProjectEntity implements Serializable {
     this.category = category;
   }
 
-  @EditableProperty(defaultable = false, sortOrder = 2, additionalOptions = EditableProperty.DYNAMIC_LIST
-      + "getCategories")
+  @DynamicList(availableValueFunction="getCategories")
+  @EditableProperty(defaultable = false, sortOrder = 2)
   public String getCategoryForDisplay() {
     return categoryForDisplay;
   }

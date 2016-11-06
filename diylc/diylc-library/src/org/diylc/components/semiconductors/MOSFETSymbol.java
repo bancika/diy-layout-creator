@@ -6,6 +6,7 @@ import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.components.Abstract3LegSymbol;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -15,7 +16,7 @@ import org.diylc.core.annotations.KeywordPolicy;
     instanceNamePrefix = "Q", description = "MOSFET transistor schematic symbol", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE,
     keywordTag = "Schematic")
-public class MOSFETSymbol extends AbstractTransistorSymbol {
+public class MOSFETSymbol extends Abstract3LegSymbol {
 
   private static final long serialVersionUID = 1L;
 

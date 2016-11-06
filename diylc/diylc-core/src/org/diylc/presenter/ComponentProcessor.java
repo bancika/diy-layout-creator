@@ -139,26 +139,26 @@ public class ComponentProcessor {
       return cloneProperties(propertyCache.get(clazz.getName()));
     }
     List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
-    for (Method method : clazz.getMethods()) {
-      if (method.getName().startsWith("get")) {
+    for (Method getter : clazz.getMethods()) {
+      if (getter.getName().startsWith("get")) {
         try {
-          if (method.isAnnotationPresent(EditableProperty.class) && !method.isAnnotationPresent(Deprecated.class)) {
-            EditableProperty annotation = method.getAnnotation(EditableProperty.class);
+          if (getter.isAnnotationPresent(EditableProperty.class) && !getter.isAnnotationPresent(Deprecated.class)) {
+            EditableProperty annotation = getter.getAnnotation(EditableProperty.class);
             String name;
             if (annotation.name().equals("")) {
-              name = method.getName().substring(3);
+              name = getter.getName().substring(3);
             } else {
               name = annotation.name();
             }
-            IPropertyValidator validator = getPropertyValidator(annotation.validatorClass());
-            Method setter = clazz.getMethod("set" + method.getName().substring(3), method.getReturnType());
+            IPropertyValidator validator = getPropertyValidator(annotation.validatorClass());            
+            Method setter = clazz.getMethod("set" + getter.getName().substring(3), getter.getReturnType());
             PropertyWrapper property =
-                new PropertyWrapper(name, method.getReturnType(), method.getName(), setter.getName(),
-                    annotation.defaultable(), validator, annotation.additionalOptions(), annotation.sortOrder());
+                new PropertyWrapper(name, getter.getReturnType(), getter.getName(), setter.getName(),
+                    annotation.defaultable(), validator, annotation.sortOrder());
             properties.add(property);
           }
         } catch (NoSuchMethodException e) {
-          LOG.debug("No matching setter found for \"" + method.getName() + "\". Skipping...");
+          LOG.debug("No matching setter found for \"" + getter.getName() + "\". Skipping...");
         }
       }
     }

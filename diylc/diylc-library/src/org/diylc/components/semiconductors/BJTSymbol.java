@@ -8,6 +8,7 @@ import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.components.Abstract3LegSymbol;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -17,7 +18,7 @@ import org.diylc.core.annotations.KeywordPolicy;
     instanceNamePrefix = "Q", description = "Bipolar junction transistor schematic symbol", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE,
     keywordTag = "Schematic")
-public class BJTSymbol extends AbstractTransistorSymbol {
+public class BJTSymbol extends Abstract3LegSymbol {
 
   private static final long serialVersionUID = 1L;
 
