@@ -1344,6 +1344,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Transformer core and coil schematic symbols added that can be used to put together custom transformer symbols</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added Public Announcements feature</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>

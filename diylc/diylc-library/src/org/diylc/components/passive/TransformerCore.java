@@ -29,13 +29,13 @@ import org.diylc.utils.Constants;
     category = "Schematics",
     instanceNamePrefix = "T",
     description = "Transformer core symbol. Use multiple instances together with \"Transformer Coil Symbol\"<br>to draw transformer schematics.",
-    stretchable = false, zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG,
+    stretchable = true, zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG,
     creationMethod = CreationMethod.POINT_BY_POINT, keywordTag = "Schematic")
 public class TransformerCore extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;
 
-  public static Size SPACING = new Size(0.03d, SizeUnit.in);
+  public static Size SPACING = new Size(0.025d, SizeUnit.in);
   public static Color COLOR = Color.blue;
 
   private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0)};
@@ -118,10 +118,10 @@ public class TransformerCore extends AbstractComponent<Void> {
     g2d.setColor(COLOR);
 
     GeneralPath polyline = new GeneralPath();
-    polyline.moveTo(width / 8, height / 2);
-    polyline.curveTo(width / 8, height / 4, width * 3 / 8, height / 4, width * 3 / 8, height / 2);
-    polyline.curveTo(width * 3 / 8, height / 4, width * 5 / 8, height / 4, width * 5 / 8, height / 2);
-    polyline.curveTo(width * 5 / 8, height / 4, width * 7 / 8, height / 4, width * 7 / 8, height / 2);
+    polyline.moveTo(0, height * 7 / 16);
+    polyline.lineTo(width, height * 7 / 16);
+    polyline.moveTo(0, height * 9 / 16);
+    polyline.lineTo(width, height * 9 / 16);
 
     g2d.draw(polyline);
   }
