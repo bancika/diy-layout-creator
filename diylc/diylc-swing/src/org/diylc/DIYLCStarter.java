@@ -73,7 +73,7 @@ public class DIYLCStarter {
     if (args.length > 0) {
       mainFrame.getPresenter().loadProjectFromFile(args[0]);
     } else {
-      boolean showTemplates = ConfigurationManager.getInstance().readBoolean(TemplateDialog.SHOW_TEMPLATES_KEY, true);
+      boolean showTemplates = ConfigurationManager.getInstance().readBoolean(TemplateDialog.SHOW_TEMPLATES_KEY, false);
       if (showTemplates) {
         TemplateDialog templateDialog = new TemplateDialog(mainFrame, mainFrame.getPresenter());
         if (!templateDialog.getFiles().isEmpty()) {
