@@ -7,6 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -295,6 +296,7 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
+    g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
     int margin = 3 * width / 32;
     Area area = new Area(new Ellipse2D.Double(margin / 2, margin, width - 2 * margin, width - 2 * margin));
     // area.subtract(new Area(new Rectangle2D.Double(0, 0, 2 * margin,

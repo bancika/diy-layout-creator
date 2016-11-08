@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -296,25 +297,18 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
+    g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
     int sizeLarge = getClosestOdd(width * 3d / 4);
     int sizeInner = getClosestOdd(width * 5d / 10);
     int sizeSmall = getClosestOdd(width / 3d);
     int hole = 4 * width / 32;
     Area area = new Area(new Ellipse2D.Double((width - sizeLarge) / 2, (height - sizeLarge) / 2, sizeLarge, sizeLarge));
-    // int[] x = new int[] { width / 2 + sizeSmall / 2,
-    // width / 2 + sizeLarge / 2, width / 2 + sizeSmall / 2,
-    // width / 2 - sizeSmall / 2, width / 2 - sizeLarge / 2,
-    // width / 2 - sizeSmall / 2 };
-    // int[] y = new int[] { height / 8, height / 2, height * 7 / 8,
-    // height * 7 / 8, height / 2, height / 8 };
-    // Area p = new Area(new Polygon(x, y, x.length));
-    // AffineTransform t = AffineTransform.getTranslateInstance(width / 2,
-    // height / 2);
-    // t.concatenate(AffineTransform.getScaleInstance(1.05, 1.05));
-    // t.concatenate(AffineTransform.getTranslateInstance(-width / 2,
-    // -height / 2));
-    // p.transform(t);
-    // area.add(new Area(p));
+   
+//    Polygon p =
+//        new Polygon(new int[] {(width - sizeSmall) / 2, (width + sizeSmall) / 2, (width + sizeLarge) / 2,
+//            (width + sizeSmall) / 2, (width - sizeSmall) / 2, (width - sizeLarge) / 2}, new int[] {height / 8,
+//            height / 8, height / 2, height * 7 / 8, height * 7 / 8, height / 2}, 6);
+//    area.add(new Area(p));
     area.add(new Area(new Ellipse2D.Double((width - sizeSmall) / 2, height / 8 - sizeSmall / 2, sizeSmall, sizeSmall)));
     area.add(new Area(new Ellipse2D.Double((width - sizeSmall) / 2, height * 7 / 8 - sizeSmall / 2, sizeSmall,
         sizeSmall)));
