@@ -20,10 +20,11 @@ public class Capacitance extends AbstractMeasure<CapacitanceUnit> {
   }
 
   public static Capacitance parseCapacitance(String value) {
+    value = value.replace("*", "");
     for (CapacitanceUnit unit : CapacitanceUnit.values()) {
       if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
-        value = value.substring(0, value.length() - unit.toString().length() - 1).trim();
-        return new Capacitance(Double.parseDouble(value), unit);
+        value = value.substring(0, value.length() - unit.toString().length()).trim();
+        return new Capacitance(parse(value), unit);
       }
     }
     throw new IllegalArgumentException("Could not parse capacitance: " + value);

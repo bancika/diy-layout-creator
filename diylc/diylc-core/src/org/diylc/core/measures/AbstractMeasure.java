@@ -85,4 +85,11 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
   public String toString() {
     return format.format(value) + unit;
   }
+  
+  protected static double parse(String value) {
+    if (value.startsWith("."))
+      value = "0" + value;
+    value = value.replace(",", ".").replace("*", "");
+    return Double.parseDouble(value);
+  }
 }

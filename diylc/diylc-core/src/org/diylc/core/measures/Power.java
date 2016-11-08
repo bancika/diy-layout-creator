@@ -20,10 +20,11 @@ public class Power extends AbstractMeasure<PowerUnit> {
   }
 
   public static Power parseCapacitance(String value) {
+    value = value.replace("*", "");
     for (PowerUnit unit : PowerUnit.values()) {
       if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
-        value = value.substring(0, value.length() - unit.toString().length() - 1).trim();
-        return new Power(Double.parseDouble(value), unit);
+        value = value.substring(0, value.length() - unit.toString().length()).trim();
+        return new Power(parse(value), unit);
       }
     }
     throw new IllegalArgumentException("Could not parse power: " + value);

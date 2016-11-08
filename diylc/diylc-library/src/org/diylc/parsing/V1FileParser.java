@@ -731,7 +731,7 @@ public class V1FileParser implements IOldFileParser {
   private int randInt(int range) {
     long newSeed = randSeed * 0x08088405 + 1;
     randSeed = newSeed;
-    return (int) (newSeed * range >> 32);
+    return (int) ((long)newSeed * range >> 32);
   }
 
 }

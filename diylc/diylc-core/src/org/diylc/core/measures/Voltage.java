@@ -20,10 +20,11 @@ public class Voltage extends AbstractMeasure<VoltageUnit> {
   }
 
   public static Voltage parseCapacitance(String value) {
+    value = value.replace("*", "");
     for (VoltageUnit unit : VoltageUnit.values()) {
       if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
-        value = value.substring(0, value.length() - unit.toString().length() - 1).trim();
-        return new Voltage(Double.parseDouble(value), unit);
+        value = value.substring(0, value.length() - unit.toString().length()).trim();
+        return new Voltage(parse(value), unit);
       }
     }
     throw new IllegalArgumentException("Could not parse voltage: " + value);

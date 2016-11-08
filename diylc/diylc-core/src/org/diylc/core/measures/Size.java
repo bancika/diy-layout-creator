@@ -31,10 +31,11 @@ public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> 
   }
 
   public static Size parseSize(String value) {
+    value = value.replace("*", "");
     for (SizeUnit unit : SizeUnit.values()) {
       if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
-        value = value.substring(0, value.length() - unit.toString().length() - 1).trim();
-        return new Size(Double.parseDouble(value), unit);
+        value = value.substring(0, value.length() - unit.toString().length()).trim();
+        return new Size(parse(value), unit);
       }
     }
     throw new IllegalArgumentException("Could not parse size: " + value);
