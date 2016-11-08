@@ -80,6 +80,7 @@ public class V1FileParser implements IOldFileParser {
     project.setTitle(root.getAttribute("Project"));
     project.setAuthor(root.getAttribute("Credits"));
     project.setGridSpacing(V1_GRID_SPACING);
+    project.setDescription("Automatically converted from V1 format.");
     String type = root.getAttribute("Type");
 
     // Create the board.
