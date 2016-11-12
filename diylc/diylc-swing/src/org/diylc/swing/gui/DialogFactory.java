@@ -74,7 +74,7 @@ public class DialogFactory {
   public File showOpenDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
       IFileChooserAccessory accessory) {
     JFileChooser openFileChooser = new JFileChooser();
-    initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory);
+    initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory, false);
 
     int result = openFileChooser.showOpenDialog(mainFrame);
 
@@ -84,17 +84,27 @@ public class DialogFactory {
   public File showOpenDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
       IFileChooserAccessory accessory, JFrame ownerFrame) {
     JFileChooser openFileChooser = new JFileChooser();
-    initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory);
+    initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory, false);
 
     int result = openFileChooser.showOpenDialog(ownerFrame);
 
     return processFileChooserResult(result, openFileChooser, defaultExtension);
   }
+  
+  public File[] showOpenMultiDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
+      IFileChooserAccessory accessory, JFrame ownerFrame) {
+    JFileChooser openFileChooser = new JFileChooser();
+    initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory, true);
+
+    int result = openFileChooser.showOpenDialog(ownerFrame);
+
+    return processFileMultiChooserResult(result, openFileChooser, defaultExtension);
+  }
 
   public File showSaveDialog(Window owner, FileFilter fileFilter, File initialFile, String defaultExtension,
       IFileChooserAccessory accessory) {
     JFileChooser saveFileChooser = new OverwritePromptFileChooser();
-    initializeFileChooser(saveFileChooser, fileFilter, initialFile, defaultExtension, accessory);
+    initializeFileChooser(saveFileChooser, fileFilter, initialFile, defaultExtension, accessory, false);
 
     int result = saveFileChooser.showSaveDialog(owner);
 
@@ -102,7 +112,7 @@ public class DialogFactory {
   }
 
   private void initializeFileChooser(JFileChooser fileChooser, FileFilter fileFilter, File initialFile,
-      String defaultExtension, IFileChooserAccessory accessory) {
+      String defaultExtension, IFileChooserAccessory accessory, boolean allowMultiSelect) {
     if (accessory != null) {
       accessory.install(fileChooser);
     }
@@ -118,6 +128,8 @@ public class DialogFactory {
       fileChooser.setCurrentDirectory(lastDirectory);
     }
     fileChooser.setSelectedFile(initialFile);
+    if (allowMultiSelect)
+      fileChooser.setMultiSelectionEnabled(true);
   }
 
   private File processFileChooserResult(int result, JFileChooser fileChooser, String defaultExtension) {
@@ -130,6 +142,17 @@ public class DialogFactory {
       } else {
         return new File(fileChooser.getSelectedFile().getAbsoluteFile() + "." + defaultExtension);
       }
+    } else {
+      return null;
+    }
+  }
+  
+  private File[] processFileMultiChooserResult(int result, JFileChooser fileChooser, String defaultExtension) {
+    fileChooser.setAccessory(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      lastDirectory = fileChooser.getCurrentDirectory();
+      ConfigurationManager.getInstance().writeValue(PATH_KEY, lastDirectory.getAbsolutePath());
+      return fileChooser.getSelectedFiles();      
     } else {
       return null;
     }
