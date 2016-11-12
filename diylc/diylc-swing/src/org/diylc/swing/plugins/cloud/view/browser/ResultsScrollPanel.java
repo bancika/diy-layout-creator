@@ -89,13 +89,13 @@ public class ResultsScrollPanel extends JScrollPane {
    */
   private boolean armed;
   private SearchSession searchSession;
-  
+
   private Icon spinnerIcon = IconLoader.Spinning.getIcon();
 
   private boolean showEditControls;
 
   public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort, SearchSession searchSession,
-       boolean showEditControls) {
+      boolean showEditControls) {
     super();
     this.mainUI = mainUI;
     this.cloudUI = cloudUI;
@@ -163,14 +163,21 @@ public class ResultsScrollPanel extends JScrollPane {
         addProjectToDisplay(project);
         this.currentLocation++;
       }
-      armed = true;
+      getResultsPanel().invalidate();
+      getResultsPanel().revalidate();
+
+      // Reset scrollbar position, for some reason it jumps to the last added element
       SwingUtilities.invokeLater(new Runnable() {
 
         @Override
         public void run() {
+          old.translate(0, -16);
           getViewport().setViewPosition(old);
+          LOG.info("Paging mechanism is armed");
+          armed = true;
         }
-      });
+      });     
+
       if (searchSession != null && searchSession.hasMoreData()) {
         getLoadMoreLabel().setText("Querying the cloud for more results...");
         getLoadMoreLabel().setIcon(spinnerIcon);
@@ -403,9 +410,9 @@ public class ResultsScrollPanel extends JScrollPane {
 
                         @Override
                         public ProjectEntity doInBackground() throws Exception {
-                          CloudPresenter.Instance.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
-                              dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile,
-                              file, project.getId());
+                          CloudPresenter.Instance.uploadProject(dialog.getName(), dialog.getCategory(), dialog
+                              .getDescription(), dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(),
+                              thumbnailFile, file, project.getId());
                           return CloudPresenter.Instance.fetchUserUploads(project.getId()).get(0);
                         }
 
@@ -600,6 +607,7 @@ public class ResultsScrollPanel extends JScrollPane {
           super.paint(g);
           if (armed && searchSession != null && searchSession.hasMoreData()) {
             // disarm immediately so we don't trigger successive requests to the provider
+            LOG.info("Paging mechanism is disarmed");
             armed = false;
             SwingWorker<List<ProjectEntity>, Void> worker = new SwingWorker<List<ProjectEntity>, Void>() {
 
