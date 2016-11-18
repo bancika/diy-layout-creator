@@ -2,7 +2,6 @@ package org.diylc;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.net.URL;
 import java.util.Properties;
 
@@ -95,16 +94,6 @@ public class DIYLCStarter {
       LOG.error("Could not read config.properties file", e);
     }
     
-    // batch convert old format to new
-//    File dir = new File("c:\\Users\\bancika\\Downloads\\layouts_v1\\MarkM");
-//    File[] matchingFiles = dir.listFiles(new FilenameFilter() {
-//        public boolean accept(File dir, String name) {
-//            return true;
-//        }
-//    });
-//    for (File file : matchingFiles) {
-//      mainFrame.getPresenter().loadProjectFromFile(file.getAbsolutePath());
-//      mainFrame.getPresenter().saveProjectToFile(file.getParentFile().getAbsolutePath() + "\\converted\\" + file.getName(), false);
-//    }
+
   }
 }

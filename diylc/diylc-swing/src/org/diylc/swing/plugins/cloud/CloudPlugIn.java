@@ -2,7 +2,10 @@ package org.diylc.swing.plugins.cloud;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -307,7 +310,8 @@ public class CloudPlugIn implements IPlugIn {
     @Override
     public void actionPerformed(ActionEvent e) {
       try {
-        final UserEditDialog dialog = DialogFactory.getInstance().createUserEditDialog(CloudPresenter.Instance.getUserDetails());
+        final UserEditDialog dialog =
+            DialogFactory.getInstance().createUserEditDialog(CloudPresenter.Instance.getUserDetails());
         dialog.setVisible(true);
         if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
           swingUI.executeBackgroundTask(new ITask<Void>() {
@@ -389,66 +393,82 @@ public class CloudPlugIn implements IPlugIn {
     public void actionPerformed(ActionEvent e) {
       LOG.info("UploadAction triggered");
 
-      final File file =
-          DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
-              FileFilterEnum.DIY.getExtensions()[0], null);
-      if (file != null) {
-        swingUI.executeBackgroundTask(new ITask<String[]>() {
+      final File[] files =
+          DialogFactory.getInstance().showOpenMultiDialog(FileFilterEnum.DIY.getFilter(), null,
+              FileFilterEnum.DIY.getExtensions()[0], null, swingUI.getOwnerFrame());
+      if (files != null && files.length > 0) {
+        List<ITask<String[]>> tasks = new ArrayList<ITask<String[]>>();
+        final ListIterator<ITask<String[]>> taskIterator = tasks.listIterator();
 
-          @Override
-          public String[] doInBackground() throws Exception {
-            LOG.debug("Uploading from " + file.getAbsolutePath());
-            thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
-            return CloudPresenter.Instance.getCategories();
-          }
+        for (final File file : files) {
+          taskIterator.add(new ITask<String[]>() {
 
-          @Override
-          public void complete(final String[] result) {
-            final UploadDialog dialog =
-                DialogFactory.getInstance().createUploadDialog(swingUI.getOwnerFrame(), thumbnailPresenter, result,
-                    false);
-            dialog.setVisible(true);
-            if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
-              try {
-                final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
-                if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
-                  swingUI.executeBackgroundTask(new ITask<Void>() {
+            @Override
+            public String[] doInBackground() throws Exception {
+              LOG.debug("Uploading from " + file.getAbsolutePath());
+              thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
+              return CloudPresenter.Instance.getCategories();
+            }
 
-                    @Override
-                    public Void doInBackground() throws Exception {
-                      CloudPresenter.Instance.uploadProject(dialog.getName(), dialog.getCategory(), dialog.getDescription(),
-                          dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file,
-                          null);
-                      return null;
-                    }
+            @Override
+            public void complete(final String[] result) {
+              final UploadDialog dialog =
+                  DialogFactory.getInstance().createUploadDialog(swingUI.getOwnerFrame(), thumbnailPresenter, result,
+                      false);
+              dialog.setVisible(true);
+              if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
+                try {
+                  final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
+                  if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
+                    swingUI.executeBackgroundTask(new ITask<Void>() {
 
-                    @Override
-                    public void failed(Exception e) {
-                      swingUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
-                    }
+                      @Override
+                      public Void doInBackground() throws Exception {
+                        CloudPresenter.Instance.uploadProject(dialog.getName(), dialog.getCategory(), dialog
+                            .getDescription(), dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(),
+                            thumbnailFile, file, null);
+                        return null;
+                      }
 
-                    @Override
-                    public void complete(Void result) {
-                      swingUI.showMessage(
-                          "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
-                          "Upload Success", IView.INFORMATION_MESSAGE);
-                    }
-                  });
-                } else {
-                  swingUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.", "Upload Error",
-                      IView.ERROR_MESSAGE);
+                      @Override
+                      public void failed(Exception e) {
+                        swingUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
+                      }
+
+                      @Override
+                      public void complete(Void result) {
+                        swingUI
+                            .showMessage(
+                                "The project has been uploaded to the cloud successfully. Thank you for your contribution!",
+                                "Upload Success", IView.INFORMATION_MESSAGE);
+
+                        synchronized (taskIterator) {
+                          if (taskIterator.hasPrevious())
+                            swingUI.executeBackgroundTask(taskIterator.previous());
+                        }
+                      }
+                    });
+                  } else {
+                    swingUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.",
+                        "Upload Error", IView.ERROR_MESSAGE);
+                  }
+                } catch (Exception e) {
+                  swingUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
                 }
-              } catch (Exception e) {
-                swingUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
               }
             }
-          }
 
-          @Override
-          public void failed(Exception e) {
-            swingUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
-          }
-        });
+            @Override
+            public void failed(Exception e) {
+              swingUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            }
+          });
+        }        
+
+        synchronized (taskIterator) {
+          if (taskIterator.hasPrevious())
+            swingUI.executeBackgroundTask(taskIterator.previous());
+        }
       }
     }
   }
