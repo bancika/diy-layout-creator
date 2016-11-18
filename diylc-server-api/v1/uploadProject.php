@@ -39,11 +39,11 @@ if (!$diylcVersion) {
 	echo "{\"string\":DIYLC version not provided.}";
 	exit;
 }
-if (!$thumbnailFile) {
+if (!$thumbnailFile && !projectId) {
 	echo "{\"string\":Thumbnail file not uploaded.}";
 	exit;
 }
-if (!$projectFile) {
+if (!$projectFile && !projectId) {
 	echo "{\"string\":Project file not uploaded.}";
 	exit;
 }
@@ -55,7 +55,7 @@ if ($projectFile['size'] > 10000000) {
         echo "{\"string\":Project file is too big.}";
 	exit;
 }
-if (getimagesize($thumbnailFile['tmp_name']) == false) {
+if (!projectId && getimagesize($thumbnailFile['tmp_name']) == false) {
         echo "{\"string\":Thumbnail image is not valid.}";
 	exit;
 }
@@ -116,21 +116,22 @@ if ($row = $result->fetch_assoc()) {
 		}
 
 		if (!$result = $mysqli->query($sql) || $mysqli->affected_rows == 0) {
-			echo "{\"string\":\"Error while uploading the project into the database. ".$mysqli->error."\"}";
+			echo "{\"string\":\"Error while uploading the project into the database.".$mysqli->error."\"}";
 			exit;
-		} else {
-			$projectId = $mysqli->insert_id;
+		} else if (!$projectId) {
+			if (!$projectId || !is_numeric($projectId))
+				$projectId = $mysqli->insert_id;
 			// Move the uploaded files
 			if (move_uploaded_file($thumbnailFile['tmp_name'], '/home/diyfever/public_html/diylc/thumbnails/'.$projectId.".png") and	
 			    move_uploaded_file($projectFile['tmp_name'], '/home/diyfever/public_html/diylc/uploads/'.$projectId.".diy"))
 				echo "{\"string\":Success}";
 			else {
 				// delete the entry if we couldn't move the files
-				$sql="DELETE diylc_project WHERE project_id=".$projectId;
+				$sql="UPDATE diylc_project SET deleted = 1 WHERE project_id=".$projectId;
 				$mysqli->query($sql);
 				echo "{\"string\":Error processing uploaded files.}";
 			}
-		}	
+		} else echo "{\"string\":Success}";
 	} else {
 		echo "{\"string\":Invalid category.}";	
 	}

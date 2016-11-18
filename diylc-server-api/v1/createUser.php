@@ -4,7 +4,7 @@ $name=$_REQUEST["username"];
 $pwd=$_REQUEST["password"];
 $email=$_REQUEST["email"];
 $website=$_REQUEST["website"];
-$website=$_REQUEST["bio"];
+$bio=$_REQUEST["bio"];
 
 if (!$name) {
 	echo "{\"string\":Username not provided.}";

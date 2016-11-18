@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2016 at 10:45 AM
--- Server version: 5.6.33
+-- Generation Time: Nov 18, 2016 at 01:08 PM
+-- Server version: 5.6.34
 -- PHP Version: 5.6.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `diylc_category` (
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `category_id` (`category_id`),
   KEY `category_id_2` (`category_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `diylc_category`
@@ -55,7 +55,11 @@ INSERT INTO `diylc_category` (`category_id`, `name`, `sort_order`, `parent_id`) 
 (21, 'Hi-Fi Preamps', 160, 9),
 (20, 'Guitar Preamps', 120, 9),
 (18, 'Guitar Wiring Diagrams', 400, 0),
-(19, 'Other', 1000, 0);
+(19, 'Other', 1000, 0),
+(25, 'Fuzzes', 225, 1),
+(23, 'Power Supplies', 300, 0),
+(24, 'Overdrives', 232, 1),
+(26, 'Tremolos/Vibratos', 238, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -22,7 +22,8 @@ $sql = "
 SELECT c.*, u.name username
 FROM diylc_comment c
 INNER JOIN diylc_user u ON u.user_id = c.user_id
-WHERE project_id = ".$projectId;
+WHERE project_id = ".$projectId."
+ORDER BY posted_at";
 
 //echo $sql;
 

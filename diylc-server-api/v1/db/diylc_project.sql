@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2016 at 10:45 AM
--- Server version: 5.6.33
+-- Generation Time: Nov 18, 2016 at 01:09 PM
+-- Server version: 5.6.34
 -- PHP Version: 5.6.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -38,8 +38,10 @@ CREATE TABLE IF NOT EXISTS `diylc_project` (
   `keywords` varchar(1024) NOT NULL,
   `view_count` int(11) NOT NULL DEFAULT '0',
   `download_count` int(11) NOT NULL DEFAULT '0',
+  `deleted` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`project_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=198 ;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
