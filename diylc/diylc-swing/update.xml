@@ -1405,10 +1405,14 @@
 			</versionNumber>
 			<releaseDate>2016-11-12 20:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>			
+			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Battery schematic symbol</description>
+					<description>Terminal strip component added</description>
+				</org.diylc.appframework.update.Change>				
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Battery schematic symbol added</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

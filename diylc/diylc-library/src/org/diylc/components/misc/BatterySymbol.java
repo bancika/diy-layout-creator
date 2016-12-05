@@ -13,92 +13,103 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.VoltageUnit;
 
-@ComponentDescriptor(name = "Battery (schematic symbol)", author = "N9XYP", category = "Schematics", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "B", description = "Battery schematic symbol", zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Battery (schematic symbol)", author = "N9XYP", category = "Schematics",
+    creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "B", description = "Battery schematic symbol",
+    zOrder = IDIYComponent.COMPONENT)
 public class BatterySymbol extends AbstractSchematicLeadedSymbol<String> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String value = "Battery";
-    
-    public static Size DEFAULT_LENGTH = new Size(0.05, SizeUnit.in); // plate spacing
-    public static Size DEFAULT_WIDTH = new Size(0.15, SizeUnit.in); // plate size
-    
-    private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(9d, VoltageUnit.V);
-    // sets battery voltage to 9V
-    
+  private String value = "Battery";
 
-    @Override
-    public String getValueForDisplay() {
-        return getValue().toString() + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
-    }
+  public static Size DEFAULT_LENGTH = new Size(0.05, SizeUnit.in); // plate spacing
+  public static Size DEFAULT_WIDTH = new Size(0.15, SizeUnit.in); // plate size
+
+  private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(9d, VoltageUnit.V);
+
+  // sets battery voltage to 9V
 
 
-    @EditableProperty
-    public String getValue() {
-        return value;
-    }
+  @Override
+  public String getValueForDisplay() {
+    return getValue().toString() + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
+  }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
 
-    @EditableProperty(name = "Voltage")
-    public org.diylc.core.measures.Voltage getVoltageNew() {
-        return voltageNew;
-    }
+  @EditableProperty
+  public String getValue() {
+    return value;
+  }
 
-    public void setVoltageNew(org.diylc.core.measures.Voltage voltageNew) {
-        this.voltageNew = voltageNew;
-    }
-    
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    @Override
-    protected Size getDefaultWidth() {
-        return DEFAULT_WIDTH;
-    }
-    
-    @Override
-    protected Size getDefaultLength() {
-        return DEFAULT_LENGTH;
-    }
+  @EditableProperty(name = "Voltage")
+  public org.diylc.core.measures.Voltage getVoltageNew() {
+    return voltageNew;
+  }
 
-    @Override
-    protected Shape getBodyShape() {
-        GeneralPath polyline = new GeneralPath();
-        double length = getLength().convertToPixels();    // plate spacing
-        double width = getWidth().convertToPixels();      // plate size
-        polyline.moveTo(0, 0);                            // start point
-        polyline.lineTo(0, width);                        // draw first plate (positive)
-                                                          // 2nd plate width = w/4 + w/2 + w/4
-                                                          // w - w/4 = w/2 pixels
-        polyline.moveTo(length, width / 4);               // start 2nd plate
-        polyline.lineTo(length, width - width / 4);       // draw second plate w/2 pixels (negative)
-        return polyline;
-    }
+  public void setVoltageNew(org.diylc.core.measures.Voltage voltageNew) {
+    this.voltageNew = voltageNew;
+  }
 
-    @Override
-    protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
-            // Draw + sign.
-            g2d.setColor(getBorderColor());
-            int plusSize = getClosestOdd(getWidth().convertToPixels() / 4);  // 1/4 length of plus sign
-            int x = -plusSize;                                               // center point
-            int y = plusSize;                                                // end point
-            g2d.drawLine(x - plusSize / 2, y - plusSize, x + plusSize / 2, y - plusSize); // line from X-center point +- 1/2 length about y-center
-            g2d.drawLine(x, y - plusSize / 2, x, y - plusSize * 3 / 2); // line from y-center point +- 1/2 length about x-center
-    }
 
-    public void drawIcon(Graphics2D g2d, int width, int height) {
-        g2d.rotate(-Math.PI / 4, width / 2, height / 2);
-        g2d.setColor(COLOR);
-        g2d.drawLine(0, height / 2, 13, height / 2);                          // draw leads
-        g2d.drawLine(width - 13, height / 2, width, height / 2);
-        g2d.setColor(COLOR);
-        g2d.drawLine(14, height / 2 - 6, 14, height / 2 + 6);                 // pos plate
-        g2d.drawLine(width - 14, height / 2 - 3, width - 14, height / 2 + 3); // neg plate
-        // plus sign
-        g2d.drawLine(height / 2 - 4, height / 2 - 5, height / 2 - 8, height / 2 - 5);
-        g2d.drawLine(height / 2 - 6, height / 2 - 3, height / 2 - 6, height / 2 - 7);
-    }
+  @Override
+  protected Size getDefaultWidth() {
+    return DEFAULT_WIDTH;
+  }
 
-    
+  @Override
+  protected Size getDefaultLength() {
+    return DEFAULT_LENGTH;
+  }
+
+  @Override
+  protected Shape getBodyShape() {
+    GeneralPath polyline = new GeneralPath();
+    double length = getLength().convertToPixels(); // plate spacing
+    double width = getWidth().convertToPixels(); // plate size
+    polyline.moveTo(0, 0); // start point
+    polyline.lineTo(0, width); // draw first plate (positive)
+                               // 2nd plate width = w/4 + w/2 + w/4
+                               // w - w/4 = w/2 pixels
+    polyline.moveTo(length, width / 4); // start 2nd plate
+    polyline.lineTo(length, width - width / 4); // draw second plate w/2 pixels (negative)
+    return polyline;
+  }
+
+  @Override
+  protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
+    // Draw + sign.
+    g2d.setColor(getBorderColor());
+    int plusSize = getClosestOdd(getWidth().convertToPixels() / 4); // 1/4 length of plus sign
+    int x = -plusSize; // center point
+    int y = plusSize; // end point
+    g2d.drawLine(x - plusSize / 2, y - plusSize, x + plusSize / 2, y - plusSize); // line from
+                                                                                  // X-center point
+                                                                                  // +- 1/2 length
+                                                                                  // about y-center
+    g2d.drawLine(x, y - plusSize / 2, x, y - plusSize * 3 / 2); // line from y-center point +- 1/2
+                                                                // length about x-center
+  }
+
+  public void drawIcon(Graphics2D g2d, int width, int height) {
+    g2d.rotate(-Math.PI / 4, width / 2, height / 2);
+    g2d.setColor(COLOR);
+    g2d.drawLine(0, height / 2, 13 * width / 32, height / 2); // draw leads
+    g2d.drawLine(width - 13 * width / 32, height / 2, width, height / 2);
+    g2d.setColor(COLOR);
+    g2d.drawLine(14 * width / 32, height / 2 - 6 * width / 32, 14 * width / 32, height / 2 + 6 * width / 32); // pos
+                                                                                                              // plate
+    g2d.drawLine(width - 14 * width / 32, height / 2 - 3, width - 14 * width / 32, height / 2 + 3 * width / 32); // neg
+                                                                                                                 // plate
+    // plus sign
+    g2d.drawLine(height / 2 - 4 * width / 32, height / 2 - 5 * width / 32, height / 2 - 8 * width / 32, height / 2 - 5
+        * width / 32);
+    g2d.drawLine(height / 2 - 6 * width / 32, height / 2 - 3 * width / 32, height / 2 - 6 * width / 32, height / 2 - 7
+        * width / 32);
+  }
+
+
 }
