@@ -1,4 +1,4 @@
-package org.diylc.components.connectivity;
+package org.diylc.components.boards;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -27,7 +27,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Terminal Strip", author = "Branislav Stojkovic", category = "Connectivity",
+@ComponentDescriptor(name = "Terminal Strip", author = "Branislav Stojkovic", category = "Boards",
     instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction", stretchable = false,
     zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
 public class TerminalStrip extends AbstractTransparentComponent<String> {

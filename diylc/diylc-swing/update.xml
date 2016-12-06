@@ -1409,6 +1409,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Terminal strip component added</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>SMD capacitor and resistor added</description>
 				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
