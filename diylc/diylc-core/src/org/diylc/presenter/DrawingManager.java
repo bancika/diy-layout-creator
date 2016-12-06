@@ -104,7 +104,15 @@ public class DrawingManager {
     if (project == null) {
       return failedComponents;
     }
-    G2DWrapper g2dWrapper = new G2DWrapper(g2d);
+    
+    double zoom = 1d;
+    if (drawOptions.contains(DrawOption.ZOOM)) {
+      zoom = zoomLevel;
+    } else {
+      zoom = 1 / Constants.PIXEL_SIZE;
+    }
+    
+    G2DWrapper g2dWrapper = new G2DWrapper(g2d, zoom);
 
     if (drawOptions.contains(DrawOption.ANTIALIASING)) {
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -127,13 +135,6 @@ public class DrawingManager {
       g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
       g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
       g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-    }
-
-    double zoom = 1d;
-    if (drawOptions.contains(DrawOption.ZOOM)) {
-      zoom = zoomLevel;
-    } else {
-      zoom = 1 / Constants.PIXEL_SIZE;
     }
 
     // AffineTransform initialTx = g2d.getTransform();

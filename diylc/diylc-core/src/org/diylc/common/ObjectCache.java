@@ -24,9 +24,9 @@ public class ObjectCache {
 
   private ObjectCache() {}
 
-  private Map<Integer, Stroke> basicStrokeMap = new HashMap<Integer, Stroke>();
+  private Map<Float, Stroke> basicStrokeMap = new HashMap<Float, Stroke>();
 
-  public Stroke fetchBasicStroke(int width) {
+  public Stroke fetchBasicStroke(float width) {
     if (basicStrokeMap.containsKey(width)) {
       return basicStrokeMap.get(width);
     }

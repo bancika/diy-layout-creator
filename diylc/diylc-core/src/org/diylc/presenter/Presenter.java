@@ -160,7 +160,7 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public Double[] getAvailableZoomLevels() {
-    return new Double[] {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d};
+    return new Double[] {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
   }
 
   @Override

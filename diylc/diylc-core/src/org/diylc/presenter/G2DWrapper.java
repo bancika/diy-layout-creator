@@ -38,6 +38,7 @@ import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.core.IDrawingObserver;
 
 /**
@@ -68,14 +69,17 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private Area currentArea;
   private Shape lastShape;
 
+  private double zoom;
+
   /**
    * Creates a wrapper around specified {@link Graphics2D} object.
    * 
    * @param canvasGraphics
    */
-  public G2DWrapper(Graphics2D canvasGraphics) {
+  public G2DWrapper(Graphics2D canvasGraphics, double zoom) {
     super();
     this.canvasGraphics = canvasGraphics;
+    this.zoom = zoom;
     currentArea = new Area();
     currentTx = new AffineTransform();
   }
@@ -432,6 +436,10 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void setStroke(Stroke s) {
+    if (this.zoom > 1 && s.getClass() == BasicStroke.class) {
+      BasicStroke bs = (BasicStroke) s;
+      s = ObjectCache.getInstance().fetchBasicStroke((float) (bs.getLineWidth() / zoom));
+    }
     canvasGraphics.setStroke(s);
   }
 
