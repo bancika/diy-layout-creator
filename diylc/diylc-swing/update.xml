@@ -1419,6 +1419,10 @@
 					<description>Battery schematic symbol added</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Tube symbols can be rotated</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Added percent text box next to the slider for editors like Alpha or Scale</description>
 				</org.diylc.appframework.update.Change>

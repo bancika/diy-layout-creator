@@ -3,13 +3,16 @@ package org.diylc.components.tube;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
@@ -34,6 +37,8 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   protected Display display = Display.NAME;
   transient protected Shape[] body;
   protected boolean showHeaters;
+  protected Orientation orientation = Orientation.DEFAULT;
+  protected Point[] controlPoints;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -82,7 +87,9 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
               : LABEL_COLOR;
     }
     g2d.setColor(finalLabelColor);
-    Point p = getTextLocation();
+    
+    Rectangle rect = body[2] != null ? body[2].getBounds() : body[1].getBounds();
+    
     String label = "";
     label = display == Display.VALUE ? getValue() : getName();
     if (display == Display.NONE) {
@@ -91,7 +98,24 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     if (display == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    drawCenteredText(g2d, label, p.x, p.y, HorizontalAlignment.LEFT, VerticalAlignment.TOP);
+    drawCenteredText(g2d, label, rect.x + rect.width, rect.y + rect.height, HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM);
+  }
+  
+  @Override
+  public Point getControlPoint(int index) {
+    return controlPoints[index];
+  }
+
+  @Override
+  public int getControlPointCount() {
+    return controlPoints.length;
+  }
+  
+  @Override
+  public void setControlPoint(Point point, int index) {
+    controlPoints[index].setLocation(point);
+    
+    refreshDrawing();
   }
 
   @EditableProperty
@@ -130,8 +154,41 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
 
   public void setShowHeaters(boolean showHeaters) {
     this.showHeaters = showHeaters;
-    // Invalidate body
+
+    refreshDrawing();
+  }
+
+  @EditableProperty
+  public Orientation getOrientation() {
+    return orientation;
+  }
+
+  public void setOrientation(Orientation orientation) {
+    this.orientation = orientation;
+
+    refreshDrawing();
+  }
+
+  protected void refreshDrawing() {
+    updateControlPoints();
+    // make sure we have a new drawing
     body = null;
+    getBody();
+
+    if (this.orientation == Orientation.DEFAULT)
+      return;
+
+    Point first = this.controlPoints[0];
+    double angle = Double.parseDouble(this.orientation.name().replace("_", ""));
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
+    for (int i = 1; i < this.controlPoints.length; i++) {
+      rotate.transform(this.controlPoints[i], this.controlPoints[i]);
+    }
+    if (this.body != null) {
+      for (int i = 0; i < this.body.length; i++) {
+        this.body[i] = rotate.createTransformedShape(this.body[i]);
+      }
+    }
   }
 
   /**
@@ -142,4 +199,6 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   protected abstract Shape[] getBody();
 
   protected abstract Point getTextLocation();
+
+  protected abstract void updateControlPoints();
 }

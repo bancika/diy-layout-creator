@@ -21,13 +21,12 @@ public class PentodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;
 
-  protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-      new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-
   protected boolean exposeSuppressorGrid = true;
 
   public PentodeSymbol() {
     super();
+    this.controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
+        new Point(0, 0), new Point(0, 0), new Point(0, 0)};
     updateControlPoints();
   }
 
@@ -156,16 +155,6 @@ public class PentodeSymbol extends AbstractTubeSymbol {
     g2d.drawLine(width / 8, height * 5 / 8, width * 7 / 8, height * 5 / 8);
   }
 
-  @Override
-  public Point getControlPoint(int index) {
-    return controlPoints[index];
-  }
-
-  @Override
-  public int getControlPointCount() {
-    return controlPoints.length;
-  }
-
   protected void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
@@ -189,13 +178,6 @@ public class PentodeSymbol extends AbstractTubeSymbol {
 
     controlPoints[6].x = x + pinSpacing * 4;
     controlPoints[6].y = y + pinSpacing * 2;
-  }
-
-  @Override
-  public void setControlPoint(Point point, int index) {
-    controlPoints[index].setLocation(point);
-    // Invalidate body
-    body = null;
   }
 
   @Override
@@ -230,6 +212,7 @@ public class PentodeSymbol extends AbstractTubeSymbol {
 
   public void setExposeSuppressorGrid(boolean exposeSuppressorGrid) {
     this.exposeSuppressorGrid = exposeSuppressorGrid;
-    this.body = null;
+    
+    refreshDrawing();
   }
 }

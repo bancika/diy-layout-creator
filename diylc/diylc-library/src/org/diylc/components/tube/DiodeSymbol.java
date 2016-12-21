@@ -21,14 +21,13 @@ import org.diylc.core.annotations.KeywordPolicy;
 public class DiodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;
-
-  protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-      new Point(0, 0)};
-
+  
   protected boolean directlyHeated = false;
 
   public DiodeSymbol() {
     super();
+    this.controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
+        new Point(0, 0)};
     updateControlPoints();
   }
 
@@ -111,15 +110,6 @@ public class DiodeSymbol extends AbstractTubeSymbol {
   }
 
   @Override
-  public Point getControlPoint(int index) {
-    return controlPoints[index];
-  }
-
-  @Override
-  public int getControlPointCount() {
-    return controlPoints.length;
-  }
-
   protected void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
@@ -137,13 +127,6 @@ public class DiodeSymbol extends AbstractTubeSymbol {
 
     controlPoints[4].x = x + pinSpacing * 4;
     controlPoints[4].y = y + pinSpacing * 3;
-  }
-
-  @Override
-  public void setControlPoint(Point point, int index) {
-    controlPoints[index].setLocation(point);
-    // Invalidate body
-    body = null;
   }
 
   @Override
@@ -181,8 +164,8 @@ public class DiodeSymbol extends AbstractTubeSymbol {
 
   public void setDirectlyHeated(boolean directlyHeated) {
     this.directlyHeated = directlyHeated;
-    // Invalidate body
-    body = null;
+
+    refreshDrawing();
   }
 
   public class HeaterValidator implements IPropertyValidator {
