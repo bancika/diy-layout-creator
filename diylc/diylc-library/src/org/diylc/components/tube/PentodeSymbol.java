@@ -103,9 +103,8 @@ public class PentodeSymbol extends AbstractTubeSymbol {
         polyline.lineTo(x + pinSpacing * 5, y - pinSpacing * 5 / 4);
         polyline.curveTo(x + pinSpacing * 21 / 4, y - pinSpacing * 5 / 4, x + pinSpacing * 21 / 4, y - pinSpacing * 3
             / 4, x + pinSpacing * 5, y - pinSpacing * 3 / 4);
-        polyline.moveTo(x + pinSpacing * 5, y - pinSpacing * 3 / 4);
-        polyline.lineTo(x + pinSpacing * 5, y + pinSpacing * 3 / 8);
-        polyline.lineTo(x + pinSpacing * 4, y + pinSpacing * 3 / 8);
+        polyline.moveTo(x + pinSpacing * 5, y - pinSpacing * 3 / 4);        
+        polyline.curveTo(x + pinSpacing * 5, y + pinSpacing * 3 / 8, x + pinSpacing * 5, y + pinSpacing * 3 / 8, x + pinSpacing * 4, y + pinSpacing * 3 / 8);
       }
 
       // plate
@@ -197,12 +196,6 @@ public class PentodeSymbol extends AbstractTubeSymbol {
     } else {
       return exposeSuppressorGrid ? index < 5 : index < 4;
     }
-  }
-
-  @Override
-  protected Point getTextLocation() {
-    int pinSpacing = (int) PIN_SPACING.convertToPixels();
-    return new Point(controlPoints[0].x + pinSpacing * 5, controlPoints[0].y + pinSpacing);
   }
 
   @EditableProperty(name = "Suppressor grid")

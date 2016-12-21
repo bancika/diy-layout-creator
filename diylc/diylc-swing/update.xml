@@ -1434,6 +1434,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increased maximum zoom range from 200% to 300%</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved pentode symbol without the suppressor grid</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

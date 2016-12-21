@@ -167,12 +167,6 @@ public class TriodeSymbol extends AbstractTubeSymbol {
     }
   }
 
-  @Override
-  protected Point getTextLocation() {
-    int pinSpacing = (int) PIN_SPACING.convertToPixels();
-    return new Point(controlPoints[0].x + pinSpacing * 5, controlPoints[0].y + pinSpacing * 2);
-  }
-
   @EditableProperty(name = "Directly heated")
   public boolean getDirectlyHeated() {
     return directlyHeated;

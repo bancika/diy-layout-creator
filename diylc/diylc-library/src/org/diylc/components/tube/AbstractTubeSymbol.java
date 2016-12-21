@@ -198,7 +198,5 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
    */
   protected abstract Shape[] getBody();
 
-  protected abstract Point getTextLocation();
-
   protected abstract void updateControlPoints();
 }
