@@ -19,6 +19,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PercentEditor;
 
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -43,7 +44,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   private Point point = new Point(0, 0);
   @XStreamConverter(IconImageConverter.class)
   private ImageIcon image = ICON;
-  private byte scale = 50;
+  private byte scale = DEFAULT_SCALE;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -108,6 +109,7 @@ public class Image extends AbstractTransparentComponent<Void> {
     this.image = image;
   }
 
+  @PercentEditor(_100PercentValue = 50)
   @EditableProperty(defaultable = false)
   public byte getScale() {
     return scale;

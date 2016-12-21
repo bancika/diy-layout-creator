@@ -85,6 +85,7 @@ public class PropertyEditorDialog extends ButtonDialog {
       gbc.fill = GridBagConstraints.NONE;
       gbc.weightx = 0;
       gbc.insets = new Insets(4, 2, 2, 2);
+      gbc.anchor = GridBagConstraints.WEST;
       editorPanel.add(new JLabel(property.getName() + ": "), gbc);
 
       gbc.gridx = 1;

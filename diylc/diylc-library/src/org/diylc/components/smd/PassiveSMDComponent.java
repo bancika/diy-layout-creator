@@ -24,6 +24,8 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -165,26 +167,26 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
         case DEFAULT:
           width = smdWidth;
           height = smdLength;
-          x -= smdWidth / 2;
-          y -= pinSize / 2;
+          x = controlPoints[0].x - smdWidth / 2;
+          y = controlPoints[0].y - pinSize / 2;
           break;
         case _90:
           width = smdLength;
           height = smdWidth;
-          x -= width - pinSize / 2;
-          y -= smdWidth / 2;
+          x = controlPoints[1].x - pinSize / 2;
+          y = controlPoints[1].y - smdWidth / 2;
           break;
         case _180:
           width = smdWidth;
           height = smdLength;
-          x -= smdWidth / 2;
-          y -= height - pinSize / 2;
+          x = controlPoints[1].x - smdWidth / 2;
+          y = controlPoints[1].y - pinSize / 2;
           break;
         case _270:
           width = smdLength;
           height = smdWidth;
-          x -= pinSize / 2;
-          y -= smdWidth / 2;
+          x = controlPoints[0].x - pinSize / 2;
+          y = controlPoints[0].y - smdWidth / 2;
           break;
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
@@ -302,13 +304,11 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
     int textWidth = (int) (rect.getWidth());
 
     do {
-      System.out.println("trying font size: " + g2d.getFont().getSize2D());
       g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize2D() - 1));
       fontMetrics = g2d.getFontMetrics(g2d.getFont());
       rect = fontMetrics.getStringBounds(label, g2d);
       textHeight = (int) (rect.getHeight());
       textWidth = (int) (rect.getWidth());
-      System.out.println("width: " + rect.getWidth());
     } while (textWidth > length && g2d.getFont().getSize2D() > 2);
 
     double centerX = textTarget.getX() + textTarget.getWidth() / 2;
@@ -358,7 +358,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
     g2d.setColor(PIN_COLOR);
     g2d.fill(contactArea);
   }
-
+  
   @EditableProperty(name = "Body")
   public Color getBodyColor() {
     return bodyColor;
@@ -391,7 +391,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
 
   public static enum SMDSize {
 
-    _0805(new Size(1.25d, SizeUnit.mm), new Size(2.0d, SizeUnit.mm)), _1206(new Size(1.6d, SizeUnit.mm), new Size(3.2d,
+    _0805(new Size(0.05d, SizeUnit.in), new Size(0.08d, SizeUnit.in)), _1206(new Size(1.6d, SizeUnit.mm), new Size(3.2d,
         SizeUnit.mm)), _1210(new Size(2.5d, SizeUnit.mm), new Size(3.2d, SizeUnit.mm)), _1806(new Size(1.6d,
         SizeUnit.mm), new Size(4.5d, SizeUnit.mm)), _1812(new Size(3.2d, SizeUnit.mm), new Size(4.5d, SizeUnit.mm));
 
