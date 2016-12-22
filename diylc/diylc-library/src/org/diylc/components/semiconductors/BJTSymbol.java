@@ -95,7 +95,8 @@ public class BJTSymbol extends Abstract3LegSymbol {
 
   public void setPolarity(BJTPolarity polarity) {
     this.polarity = polarity;
-    // Invalidate body
-    body = null;
+
+
+    refreshDrawing();
   }
 }

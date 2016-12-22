@@ -90,7 +90,7 @@ public class MOSFETSymbol extends Abstract3LegSymbol {
 
   public void setPolarity(FETPolarity polarity) {
     this.polarity = polarity;
-    // Invalidate body
-    body = null;
+
+    refreshDrawing();
   }
 }

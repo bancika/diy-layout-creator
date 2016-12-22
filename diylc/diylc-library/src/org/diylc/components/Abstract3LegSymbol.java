@@ -14,6 +14,7 @@ import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.semiconductors.SymbolFlipping;
@@ -41,6 +42,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   protected SymbolFlipping flip = FLIPPING;
   protected Display display = Display.NAME;
   transient protected Shape[] body;
+  protected Orientation orientation = Orientation.DEFAULT;
 
   public Abstract3LegSymbol() {
     super();
@@ -183,8 +185,8 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   @Override
   public void setControlPoint(Point point, int index) {
     controlPoints[index].setLocation(point);
-    // Invalidate body
-    body = null;
+
+    refreshDrawing();
   }
 
   @EditableProperty
@@ -194,7 +196,8 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
 
   public void setFlip(SymbolFlipping flip) {
     this.flip = flip;
-    updateControlPoints();
+
+    refreshDrawing();
   }
 
   @EditableProperty
@@ -213,6 +216,42 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
 
   public void setDisplay(Display display) {
     this.display = display;
+  }
+  
+  @EditableProperty
+  public Orientation getOrientation() {
+    if (orientation == null)
+      orientation = Orientation.DEFAULT;
+    
+    return orientation;
+  }
+
+  public void setOrientation(Orientation orientation) {
+    this.orientation = orientation;
+
+    refreshDrawing();
+  }
+  
+  protected void refreshDrawing() {
+    updateControlPoints();
+    // make sure we have a new drawing
+    body = null;
+    getBody();
+
+    if (getOrientation() == Orientation.DEFAULT)
+      return;
+
+    Point first = this.controlPoints[0];
+    double angle = Double.parseDouble(getOrientation().name().replace("_", ""));
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
+    for (int i = 1; i < this.controlPoints.length; i++) {
+      rotate.transform(this.controlPoints[i], this.controlPoints[i]);
+    }
+    if (this.body != null) {
+      for (int i = 0; i < this.body.length; i++) {
+        this.body[i] = rotate.createTransformedShape(this.body[i]);
+      }
+    }
   }
 
   /**
