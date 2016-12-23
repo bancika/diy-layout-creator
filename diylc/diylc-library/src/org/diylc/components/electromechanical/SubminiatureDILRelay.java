@@ -190,7 +190,7 @@ public class SubminiatureDILRelay extends AbstractTransparentComponent<String> {
     int dx2;
     int dy2;
     for (int i = 0; i < pinCount.getValue(); i++) {
-      int spacing = i == 0 ? 0 : sectionSpacing + (i - 1) * pinSpacing;
+      int spacing = i == pinCount.getValue() - 1 ? sectionSpacing + (i - 1) * pinSpacing : i * pinSpacing;
       switch (orientation) {
         case DEFAULT:
           dx1 = 0;
@@ -227,12 +227,8 @@ public class SubminiatureDILRelay extends AbstractTransparentComponent<String> {
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
 
       int pinSize = (int) PIN_SIZE.convertToPixels();
-      int pinSpacing = (int) this.pinSpacing.convertToPixels();
-      int rowSpacing = (int) this.rowSpacing.convertToPixels();
 
       int minX = Integer.MAX_VALUE;
       int maxX = Integer.MIN_VALUE;
@@ -255,29 +251,21 @@ public class SubminiatureDILRelay extends AbstractTransparentComponent<String> {
       int indentationSize = getClosestOdd(INDENT_SIZE.convertToPixels());
       switch (orientation) {
         case DEFAULT:
-          x += pinSize / 2;
-          y -= pinSpacing / 2;
           indentation =
               new Area(new Rectangle2D.Double(minX + width / 2 - indentationSize / 2, minY - indentationSize / 2
                   - pinSize, indentationSize, indentationSize));
           break;
         case _90:
-          x -= (pinSpacing / 2) + width - pinSpacing;
-          y += pinSize / 2;
           indentation =
               new Area(new Rectangle2D.Double(minX + width - indentationSize / 2 + pinSize, minY + height / 2
                   - indentationSize / 2, indentationSize, indentationSize));
           break;
         case _180:
-          x -= rowSpacing - pinSize / 2;
-          y -= (pinSpacing / 2) + height - pinSpacing;
           indentation =
               new Area(new Rectangle2D.Double(minX + width / 2 - indentationSize / 2, minY + height - indentationSize
                   / 2 + pinSize, indentationSize, indentationSize));
           break;
         case _270:
-          x -= pinSpacing / 2;
-          y += pinSize / 2 - rowSpacing;
           indentation =
               new Area(new Rectangle2D.Double(minX - indentationSize / 2 - pinSize, minY + height / 2 - indentationSize
                   / 2, indentationSize, indentationSize));
@@ -291,7 +279,7 @@ public class SubminiatureDILRelay extends AbstractTransparentComponent<String> {
               * pinSize, EDGE_RADIUS, EDGE_RADIUS));
       body[1] = indentation;
       if (indentation != null) {
-         indentation.intersect(body[0]);
+        indentation.intersect(body[0]);
       }
     }
     return body;
