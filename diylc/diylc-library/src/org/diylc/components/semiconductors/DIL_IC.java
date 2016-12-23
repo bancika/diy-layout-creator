@@ -119,6 +119,9 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
   public void setPinSpacing(Size pinSpacing) {
     this.pinSpacing = pinSpacing;
+    updateControlPoints();
+    // Reset body shape;
+    body = null;
   }
 
   @EditableProperty(name = "Row spacing")

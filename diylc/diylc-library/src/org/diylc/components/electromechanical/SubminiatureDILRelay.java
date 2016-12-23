@@ -1,4 +1,4 @@
-package org.diylc.components.semiconductors;
+package org.diylc.components.electromechanical;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -31,47 +30,42 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "SIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
-    instanceNamePrefix = "IC", description = "Single-in-line package IC", stretchable = false,
+@ComponentDescriptor(name = "Subminiature DIL Relay", author = "Branislav Stojkovic", category = "Electromechanical",
+    instanceNamePrefix = "RY", description = "Subminiature DIL relay with one or two poles", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
-public class SIL_IC extends AbstractTransparentComponent<String> {
+public class SubminiatureDILRelay extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color BODY_COLOR = Color.gray;
-  public static Color BORDER_COLOR = Color.gray.darker();
+  public static Color BODY_COLOR = Color.decode("#EDEDD5");
+  public static Color BORDER_COLOR = BODY_COLOR.darker();
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color INDENT_COLOR = Color.gray.darker();
-  public static Color LABEL_COLOR = Color.white;
+  public static Color LABEL_COLOR = Color.darkGray;
   public static int EDGE_RADIUS = 6;
-  public static Size PIN_SIZE = new Size(0.8d, SizeUnit.mm);
-  public static Size INDENT_SIZE = new Size(0.07d, SizeUnit.in);
-  public static Size THICKNESS = new Size(0.13d, SizeUnit.in);
+  public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
+  public static Size INDENT_SIZE = new Size(0.05d, SizeUnit.in);
+
+  public static Size PIN_SPACING = new Size(0.2d, SizeUnit.in);
+  public static Size ROW_SPACING = new Size(0.3d, SizeUnit.in);
+  public static Size SECTION_SPACING = new Size(0.3d, SizeUnit.in);
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
-  private PinCount pinCount = PinCount._8;
-  private Size pinSpacing = new Size(0.1d, SizeUnit.in);
+  private PinCount pinCount = PinCount._4;
+  private Size pinSpacing = PIN_SPACING;
+  private Size rowSpacing = ROW_SPACING;
+  private Size sectionSpacing = SECTION_SPACING;
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
   protected Display display = Display.NAME;
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
   private Color labelColor = LABEL_COLOR;
   private Color indentColor = INDENT_COLOR;
-  // new Point(0, pinSpacing.convertToPixels()),
-  // new Point(0, 2 * pinSpacing.convertToPixels()),
-  // new Point(0, 3 * pinSpacing.convertToPixels()),
-  // new Point(3 * pinSpacing.convertToPixels(), 0),
-  // new Point(3 * pinSpacing.convertToPixels(),
-  // pinSpacing.convertToPixels()),
-  // new Point(3 * pinSpacing.convertToPixels(), 2 *
-  // pinSpacing.convertToPixels()),
-  // new Point(3 * pinSpacing.convertToPixels(), 3 *
-  // pinSpacing.convertToPixels()) };
   transient private Area[] body;
 
-  public SIL_IC() {
+  public SubminiatureDILRelay() {
     super();
     updateControlPoints();
   }
@@ -97,7 +91,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Pins")
+  @EditableProperty(name = "Contacts")
   public PinCount getPinCount() {
     return pinCount;
   }
@@ -116,6 +110,30 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
 
   public void setPinSpacing(Size pinSpacing) {
     this.pinSpacing = pinSpacing;
+    updateControlPoints();
+    // Reset body shape;
+    body = null;
+  }
+
+  @EditableProperty(name = "Row spacing")
+  public Size getRowSpacing() {
+    return rowSpacing;
+  }
+
+  public void setRowSpacing(Size rowSpacing) {
+    this.rowSpacing = rowSpacing;
+    updateControlPoints();
+    // Reset body shape;
+    body = null;
+  }
+
+  @EditableProperty(name = "Section spacing")
+  public Size getSectionSpacing() {
+    return sectionSpacing;
+  }
+
+  public void setSectionSpacing(Size sectionSpacing) {
+    this.sectionSpacing = sectionSpacing;
     updateControlPoints();
     // Reset body shape;
     body = null;
@@ -161,34 +179,48 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
 
   private void updateControlPoints() {
     Point firstPoint = controlPoints[0];
-    controlPoints = new Point[pinCount.getValue()];
+    controlPoints = new Point[pinCount.getValue() * 2];
     controlPoints[0] = firstPoint;
     int pinSpacing = (int) this.pinSpacing.convertToPixels();
+    int sectionSpacing = (int) this.sectionSpacing.convertToPixels();
+    int rowSpacing = (int) this.rowSpacing.convertToPixels();
     // Update control points.
     int dx1;
     int dy1;
+    int dx2;
+    int dy2;
     for (int i = 0; i < pinCount.getValue(); i++) {
+      int spacing = i == 0 ? 0 : sectionSpacing + (i - 1) * pinSpacing;
       switch (orientation) {
         case DEFAULT:
           dx1 = 0;
-          dy1 = i * pinSpacing;
+          dy1 = spacing;
+          dx2 = rowSpacing;
+          dy2 = spacing;
           break;
         case _90:
-          dx1 = -i * pinSpacing;
+          dx1 = -spacing;
           dy1 = 0;
+          dx2 = -spacing;
+          dy2 = rowSpacing;
           break;
         case _180:
           dx1 = 0;
-          dy1 = -i * pinSpacing;
+          dy1 = -spacing;
+          dx2 = -rowSpacing;
+          dy2 = -spacing;
           break;
         case _270:
-          dx1 = i * pinSpacing;
+          dx1 = spacing;
           dy1 = 0;
+          dx2 = spacing;
+          dy2 = -rowSpacing;
           break;
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
       controlPoints[i] = new Point(firstPoint.x + dx1, firstPoint.y + dy1);
+      controlPoints[i + pinCount.getValue()] = new Point(firstPoint.x + dx2, firstPoint.y + dy2);
     }
   }
 
@@ -197,56 +229,69 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
       body = new Area[2];
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;
-      int thickness = getClosestOdd(THICKNESS.convertToPixels());
-      int width;
-      int height;
+
+      int pinSize = (int) PIN_SIZE.convertToPixels();
       int pinSpacing = (int) this.pinSpacing.convertToPixels();
+      int rowSpacing = (int) this.rowSpacing.convertToPixels();
+
+      int minX = Integer.MAX_VALUE;
+      int maxX = Integer.MIN_VALUE;
+      int minY = Integer.MAX_VALUE;
+      int maxY = Integer.MIN_VALUE;
+      for (int i = 0; i < this.controlPoints.length; i++) {
+        if (this.controlPoints[i].x > maxX)
+          maxX = this.controlPoints[i].x;
+        if (this.controlPoints[i].x < minX)
+          minX = this.controlPoints[i].x;
+        if (this.controlPoints[i].y > maxY)
+          maxY = this.controlPoints[i].y;
+        if (this.controlPoints[i].y < minY)
+          minY = this.controlPoints[i].y;
+      }
+      int width = maxX - minX;
+      int height = maxY - minY;
+
       Area indentation = null;
       int indentationSize = getClosestOdd(INDENT_SIZE.convertToPixels());
       switch (orientation) {
         case DEFAULT:
-          width = thickness;
-          height = pinCount.getValue() * pinSpacing;
-          x -= thickness / 2;
+          x += pinSize / 2;
           y -= pinSpacing / 2;
           indentation =
-              new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2, y - indentationSize / 2,
-                  indentationSize, indentationSize));
+              new Area(new Rectangle2D.Double(minX + width / 2 - indentationSize / 2, minY - indentationSize / 2
+                  - pinSize, indentationSize, indentationSize));
           break;
         case _90:
-          width = pinCount.getValue() * pinSpacing;
-          height = thickness;
           x -= (pinSpacing / 2) + width - pinSpacing;
-          y -= thickness / 2;
+          y += pinSize / 2;
           indentation =
-              new Area(new Ellipse2D.Double(x + width - indentationSize / 2, y + height / 2 - indentationSize / 2,
-                  indentationSize, indentationSize));
+              new Area(new Rectangle2D.Double(minX + width - indentationSize / 2 + pinSize, minY + height / 2
+                  - indentationSize / 2, indentationSize, indentationSize));
           break;
         case _180:
-          width = thickness;
-          height = pinCount.getValue() * pinSpacing;
-          x -= thickness / 2;
+          x -= rowSpacing - pinSize / 2;
           y -= (pinSpacing / 2) + height - pinSpacing;
           indentation =
-              new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2, y + height - indentationSize / 2,
-                  indentationSize, indentationSize));
+              new Area(new Rectangle2D.Double(minX + width / 2 - indentationSize / 2, minY + height - indentationSize
+                  / 2 + pinSize, indentationSize, indentationSize));
           break;
         case _270:
-          width = pinCount.getValue() * pinSpacing;
-          height = thickness;
           x -= pinSpacing / 2;
-          y -= thickness / 2;
+          y += pinSize / 2 - rowSpacing;
           indentation =
-              new Area(new Ellipse2D.Double(x - indentationSize / 2, y + height / 2 - indentationSize / 2,
-                  indentationSize, indentationSize));
+              new Area(new Rectangle2D.Double(minX - indentationSize / 2 - pinSize, minY + height / 2 - indentationSize
+                  / 2, indentationSize, indentationSize));
           break;
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      body[0] = new Area(new RoundRectangle2D.Double(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS));
+
+      body[0] =
+          new Area(new RoundRectangle2D.Double(minX - pinSize, minY - pinSize, width + 2 * pinSize, height + 2
+              * pinSize, EDGE_RADIUS, EDGE_RADIUS));
       body[1] = indentation;
       if (indentation != null) {
-        indentation.intersect(body[0]);
+         indentation.intersect(body[0]);
       }
     }
     return body;
@@ -259,6 +304,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
       return;
     }
     Area mainArea = getBody()[0];
+
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
@@ -266,16 +312,6 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);
-
-    if (!outlineMode) {
-      int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-      for (Point point : controlPoints) {
-        g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-        g2d.setColor(PIN_BORDER_COLOR);
-        g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-      }
-    }
 
     Color finalBorderColor;
     if (outlineMode) {
@@ -302,6 +338,17 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
         g2d.fill(getBody()[1]);
       }
     }
+
+    if (!outlineMode) {
+      int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
+      for (Point point : controlPoints) {
+        g2d.setColor(PIN_COLOR);
+        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.setColor(PIN_BORDER_COLOR);
+        g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+      }
+    }
+
     // Draw label.
     g2d.setFont(LABEL_FONT);
     Color finalLabelColor;
@@ -339,16 +386,17 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int radius = 6 * width / 32;
-    int thickness = getClosestOdd(width / 3);
-    g2d.rotate(Math.PI / 4, width / 2, height / 2);
     g2d.setColor(BODY_COLOR);
-    g2d.fillRoundRect((width - thickness) / 2, 0, thickness, height, radius, radius);
+    g2d.fillRoundRect(width / 6, 1, 4 * width / 6, height - 4, radius, radius);
     g2d.setColor(BORDER_COLOR);
-    g2d.drawRoundRect((width - thickness) / 2, 0, thickness, height, radius, radius);
+    g2d.drawRoundRect(width / 6, 1, 4 * width / 6, height - 4, radius, radius);
     int pinSize = 2 * width / 32;
     g2d.setColor(PIN_COLOR);
     for (int i = 0; i < 4; i++) {
-      g2d.fillOval(width / 2 - pinSize / 2, (height / 5) * (i + 1), pinSize, pinSize);
+      if (i == 1)
+        continue;
+      g2d.fillOval(width / 3 - pinSize, (height / 5) * (i + 1) - 1, pinSize, pinSize);
+      g2d.fillOval(2 * width / 3 + 1, (height / 5) * (i + 1) - 1, pinSize, pinSize);
     }
   }
 
@@ -402,15 +450,15 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
 
   public static enum PinCount {
 
-    _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20;
+    _3, _4, _5;
 
     @Override
     public String toString() {
-      return name().replace("_", "");
+      return name().replace("_", "").concat(" per side");
     }
 
     public int getValue() {
-      return Integer.parseInt(toString());
+      return Integer.parseInt(name().replace("_", ""));
     }
   }
 }
