@@ -1409,11 +1409,7 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Terminal strip component added</description>
-				</org.diylc.appframework.update.Change>	
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Subminiature DIL relay added</description>
-				</org.diylc.appframework.update.Change>			
+				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Battery schematic symbol added</description>
