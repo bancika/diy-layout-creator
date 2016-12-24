@@ -2,7 +2,7 @@
 
 <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=25161" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>
 
-<a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_33">Click here</a> to go to the latest version that includes "Project Cloud" feature.</a>
+<a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_33">Click here</a> to go to the latest version for all platforms.</a>
 
 <a href="https://github.com/bancika/diy-layout-creator/tree/wiki">Click here</a> to read the user documentation as well as developer documentation.
 
