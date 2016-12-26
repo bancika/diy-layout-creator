@@ -27,6 +27,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
+import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
@@ -158,6 +159,10 @@ public class ActionFactory {
 
   public ThemeAction createThemeAction(IPlugInPort plugInPort, Theme theme) {
     return new ThemeAction(plugInPort, theme);
+  }
+
+  public ComponentBrowserAction createComponentBrowserAction(String browserType) {
+    return new ComponentBrowserAction(browserType);
   }
 
   public RenumberAction createRenumberAction(IPlugInPort plugInPort, boolean xAxisFirst) {
@@ -1004,6 +1009,30 @@ public class ActionFactory {
       plugInPort.setSelectedTheme(theme);
     }
   }
+
+  public static class ComponentBrowserAction extends AbstractAction {    
+
+    private static final long serialVersionUID = 1L;
+
+    private String browserType;
+
+    public ComponentBrowserAction(String browserType) {
+      super();
+      this.browserType = browserType;
+      putValue(AbstractAction.NAME, browserType);
+      putValue(IView.RADIO_BUTTON_GROUP_KEY, "componentBrowser");
+
+      putValue(AbstractAction.SELECTED_KEY,
+          browserType.equals(ConfigurationManager.getInstance().readString(ConfigPlugin.COMPONENT_BROWSER, ConfigPlugin.SEARCHABLE_TREE)));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info(getValue(AbstractAction.NAME) + " triggered");
+      ConfigurationManager.getInstance().writeValue(ConfigPlugin.COMPONENT_BROWSER, browserType);
+    }
+  }
+
 
   public static class RenumberAction extends AbstractAction {
 

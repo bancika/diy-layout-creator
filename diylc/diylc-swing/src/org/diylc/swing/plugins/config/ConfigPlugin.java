@@ -29,6 +29,10 @@ public class ConfigPlugin implements IPlugIn {
 
   private static final String CONFIG_MENU = "Config";
   private static final String THEME_MENU = "Theme";
+  private static final String COMPONENT_BROWSER_MENU = "Toolbox";
+  public static final String COMPONENT_BROWSER = "componentBrowser";
+  public static final String SEARCHABLE_TREE = "Searchable Tree";
+  public static final String TABBED_TOOLBAR = "Tabbed Toolbar";
 
   private ISwingUI swingUI;
 
@@ -43,8 +47,8 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance()
             .createConfigAction(plugInPort, "Anti-Aliasing", IPlugInPort.ANTI_ALIASING_KEY, true), CONFIG_MENU);
     swingUI.injectMenuAction(
-        ActionFactory.getInstance()
-            .createConfigAction(plugInPort, "Auto-Create Pads", SolderPadAutoCreator.AUTO_PADS_KEY, false), CONFIG_MENU);
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Auto-Create Pads",
+            SolderPadAutoCreator.AUTO_PADS_KEY, false), CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, true),
         CONFIG_MENU);
@@ -87,6 +91,13 @@ public class ConfigPlugin implements IPlugIn {
         }
       }
     }
+
+    swingUI.injectSubmenu(COMPONENT_BROWSER_MENU, IconLoader.Hammer.getIcon(), CONFIG_MENU);
+
+    swingUI.injectMenuAction(ActionFactory.getInstance().createComponentBrowserAction(SEARCHABLE_TREE),
+        COMPONENT_BROWSER_MENU);
+    swingUI.injectMenuAction(ActionFactory.getInstance().createComponentBrowserAction(TABBED_TOOLBAR),
+        COMPONENT_BROWSER_MENU);
   }
 
   @Override

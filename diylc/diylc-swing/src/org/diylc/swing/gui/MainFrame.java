@@ -59,6 +59,7 @@ import org.diylc.swing.plugins.help.HelpMenuPlugin;
 import org.diylc.swing.plugins.layers.LayersMenuPlugin;
 import org.diylc.swing.plugins.statusbar.StatusBar;
 import org.diylc.swing.plugins.toolbox.ToolBox;
+import org.diylc.swing.plugins.tree.ComponentTree;
 import org.diylc.swingframework.ButtonDialog;
 
 public class MainFrame extends JFrame implements ISwingUI {
@@ -95,6 +96,7 @@ public class MainFrame extends JFrame implements ISwingUI {
     this.presenter = new Presenter(this);
 
     presenter.installPlugin(new ToolBox(this));
+    presenter.installPlugin(new ComponentTree(this));
     presenter.installPlugin(new FileMenuPlugin(this));
     presenter.installPlugin(new EditMenuPlugin(this));
     presenter.installPlugin(new ConfigPlugin(this));

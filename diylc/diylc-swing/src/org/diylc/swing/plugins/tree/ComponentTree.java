@@ -1,4 +1,4 @@
-package org.diylc.swing.plugins.toolbox;
+package org.diylc.swing.plugins.tree;
 
 import java.util.EnumSet;
 
@@ -16,16 +16,16 @@ import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.statusbar.StatusBar;
 
 
-public class ToolBox implements IPlugIn {
+public class ComponentTree implements IPlugIn {
 
   private static final Logger LOG = Logger.getLogger(StatusBar.class);
 
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;
 
-  private ComponentTabbedPane componentTabbedPane;
+  private TreePanel treePanel;
 
-  public ToolBox(ISwingUI swingUI) {
+  public ComponentTree(ISwingUI swingUI) {
     this.swingUI = swingUI;
   }
 
@@ -33,29 +33,29 @@ public class ToolBox implements IPlugIn {
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
     try {
-      swingUI.injectGUIComponent(getComponentTabbedPane(), SwingConstants.TOP);
+      swingUI.injectGUIComponent(getTreePanel(), SwingConstants.LEFT);
     } catch (BadPositionException e) {
-      LOG.error("Could not install the toolbox", e);
+      LOG.error("Could not install the component tree", e);
     }
     ConfigurationManager.getInstance().addConfigListener(ConfigPlugin.COMPONENT_BROWSER, new IConfigListener() {
 
       @Override
       public void valueChanged(String key, Object value) {
-        getComponentTabbedPane().setVisible(
-            ConfigPlugin.COMPONENT_BROWSER.equals(key) && ConfigPlugin.TABBED_TOOLBAR.equals(value));
+        getTreePanel().setVisible(
+            ConfigPlugin.COMPONENT_BROWSER.equals(key) && ConfigPlugin.SEARCHABLE_TREE.equals(value));
       }
     });
 
-    getComponentTabbedPane().setVisible(
+    getTreePanel().setVisible(
         ConfigurationManager.getInstance().readString(ConfigPlugin.COMPONENT_BROWSER, ConfigPlugin.SEARCHABLE_TREE)
-            .equals(ConfigPlugin.TABBED_TOOLBAR));
+            .equals(ConfigPlugin.SEARCHABLE_TREE));
   }
 
-  public ComponentTabbedPane getComponentTabbedPane() {
-    if (componentTabbedPane == null) {
-      componentTabbedPane = new ComponentTabbedPane(plugInPort);
+  public TreePanel getTreePanel() {
+    if (treePanel == null) {
+      treePanel = new TreePanel(plugInPort);
     }
-    return componentTabbedPane;
+    return treePanel;
   }
 
   @Override
