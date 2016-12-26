@@ -1403,7 +1403,7 @@
 				<minor>33</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2016-11-12 20:00:00.000 CET</releaseDate>
+			<releaseDate>2016-12-23 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -1442,6 +1442,30 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved pentode symbol without the suppressor grid</description>
 				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>34</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2016-12-23 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>P-90 pickup in both "dog ear" and "soap bar" variations added</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Mini humbucker pickup added</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed broken links in the Help menu</description>
+				</org.diylc.appframework.update.Change>																	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

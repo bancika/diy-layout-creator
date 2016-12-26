@@ -26,12 +26,12 @@ public class HelpMenuPlugin implements IPlugIn {
 
   private static final String HELP_TITLE = "Help";
 
-  public static String MANUAL_URL = "http://code.google.com/p/diy-layout-creator/wiki/Manual";
-  public static String FAQ_URL = "http://code.google.com/p/diy-layout-creator/wiki/FAQ";
-  public static String COMPONENT_URL = "http://code.google.com/p/diy-layout-creator/wiki/ComponentAPI";
-  public static String PLUGIN_URL = "http://code.google.com/p/diy-layout-creator/wiki/PluginAPI";
-  public static String BUG_URL = "http://code.google.com/p/diy-layout-creator/issues/entry";
-  public static String DONATE_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=25161";
+  public static String MANUAL_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/Manual.md";
+  public static String FAQ_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/FAQ.md";
+  public static String COMPONENT_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md";
+  public static String PLUGIN_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/PluginAPI.md";
+  public static String BUG_URL = "https://github.com/bancika/diy-layout-creator/issues";
+  public static String DONATE_URL = "http://diy-fever.com/donate";
 
   private IPlugInPort plugInPort;
   private AboutDialog aboutDialog;

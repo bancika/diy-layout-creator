@@ -32,37 +32,34 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Humbucker Pickup", category = "Guitar", author = "Branislav Stojkovic",
-    description = "PAF-style humbucker guitar pickup", stretchable = false, zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "PKP", autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG,
-    keywordTag = "Guitar Wiring Diagram")
-public class HumbuckerPickup extends AbstractTransparentComponent<String> {
+@ComponentDescriptor(name = "P-90 \"Dog Ear\" Pickup", category = "Guitar", author = "Branislav Stojkovic",
+    description = "Single coil P-90 guitar pickup with \"dog ears\"", stretchable = false,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
+public class P90DogEarPickup extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
-  private static Color BODY_COLOR = Color.lightGray;
+  private static Color BODY_COLOR = Color.decode("#D8C989");;
   private static Color POINT_COLOR = Color.darkGray;
-  public static Color PIN_COLOR = Color.decode("#C3E4ED");
-  private static Size WIDTH = new Size(36.5d, SizeUnit.mm);
-  private static Size LENGTH = new Size(68.58d, SizeUnit.mm);
-  private static Size WIDTH_MINI = new Size(29.3d, SizeUnit.mm);
-  private static Size LENGTH_MINI = new Size(67.4d, SizeUnit.mm);
-  private static Size LIP_WIDTH = new Size(12.7d, SizeUnit.mm);
-  private static Size LIP_LENGTH = new Size(7.9d, SizeUnit.mm);
+  public static Color POLE_COLOR = Color.decode("#C3E4ED");
+  private static Size WIDTH = new Size(41d, SizeUnit.mm);
+  private static Size LENGTH = new Size(86.9d, SizeUnit.mm);
+  private static Size TOTAL_LENGTH = new Size(118.7d, SizeUnit.mm);
+  private static Size LIP_RADIUS = new Size(10d, SizeUnit.mm);
   private static Size EDGE_RADIUS = new Size(4d, SizeUnit.mm);
   private static Size POINT_MARGIN = new Size(5d, SizeUnit.mm);
   private static Size POINT_SIZE = new Size(3d, SizeUnit.mm);
-  private static Size LIP_HOLE_SIZE = new Size(1.5d, SizeUnit.mm);
+  private static Size LIP_HOLE_SIZE = new Size(2.5d, SizeUnit.mm);
+  private static Size LIP_HOLE_SPACING = new Size(97d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(3d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(10.1d, SizeUnit.mm);
-  private static Size COIL_SPACING = new Size(18d, SizeUnit.mm);
 
   private String value = "";
   private Point controlPoint = new Point(0, 0);
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private Color color = BODY_COLOR;
-  private HumbuckerType type;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -100,7 +97,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     g2d.draw(body[0]);
     g2d.draw(body[1]);
     if (!outlineMode) {
-      g2d.setColor(PIN_COLOR);
+      g2d.setColor(POLE_COLOR);
       g2d.fill(body[3]);
       g2d.setColor(color.darker());
       g2d.draw(body[3]);
@@ -132,47 +129,52 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
       int x = controlPoint.x;
       int y = controlPoint.y;
-      int width = (int) getType().getWidth().convertToPixels();
-      int length = (int) getType().getLength().convertToPixels();
-      int lipWidth = (int) LIP_WIDTH.convertToPixels();
-      int lipLength = (int) LIP_LENGTH.convertToPixels();
+      int width = (int) WIDTH.convertToPixels();
+      int length = (int) LENGTH.convertToPixels();
       int edgeRadius = (int) EDGE_RADIUS.convertToPixels();
       int pointMargin = (int) POINT_MARGIN.convertToPixels();
+      int totalLength = (int) TOTAL_LENGTH.convertToPixels();
+      int lipRadius = (int) LIP_RADIUS.convertToPixels();
       int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
       int lipHoleSize = getClosestOdd(LIP_HOLE_SIZE.convertToPixels());
+      int lipHoleSpacing = getClosestOdd(LIP_HOLE_SPACING.convertToPixels());
 
       body[0] =
           new Area(new RoundRectangle2D.Double(x + pointMargin - length, y - pointMargin, length, width, edgeRadius,
               edgeRadius));
-      body[1] =
-          new Area(new RoundRectangle2D.Double(x + pointMargin - length - lipLength, y - pointMargin + width / 2
-              - lipWidth / 2, length + 2 * lipLength, lipWidth, edgeRadius / 2, edgeRadius / 2));
-      Area lipArea = new Area(body[1]);
-      lipArea.subtract((Area) (body[0]));
-      lipArea.subtract(new Area(new Ellipse2D.Double(x + pointMargin - length - lipLength / 2, y - pointMargin + width
-          / 2 - lipHoleSize / 2, lipHoleSize, lipHoleSize)));
-      lipArea.subtract(new Area(new Ellipse2D.Double(x + pointMargin + lipLength / 2, y - pointMargin + width / 2
-          - lipHoleSize / 2, lipHoleSize, lipHoleSize)));
+
+      double rectWidth = (totalLength - length) / Math.sqrt(2);
+      RoundRectangle2D roundRect =
+          new RoundRectangle2D.Double(-rectWidth / 2, -rectWidth / 2, rectWidth, rectWidth, lipRadius, lipRadius);
+      Area leftEar = new Area(roundRect);
+      leftEar.transform(AffineTransform.getRotateInstance(Math.PI / 4));
+      leftEar.transform(AffineTransform.getScaleInstance(1.1, 1.45));
+      leftEar.transform(AffineTransform.getTranslateInstance(x + pointMargin - length, y - pointMargin + width / 2));
+      leftEar.subtract((Area) body[0]);
+      Area rightEar = new Area(roundRect);
+      rightEar.transform(AffineTransform.getRotateInstance(Math.PI / 4));
+      rightEar.transform(AffineTransform.getScaleInstance(1.1, 1.45));
+      rightEar.transform(AffineTransform.getTranslateInstance(x + pointMargin, y - pointMargin + width / 2));
+      rightEar.subtract((Area) body[0]);
+      Area lipArea = leftEar;
+      lipArea.add(rightEar);
+      lipArea.subtract(new Area(new Ellipse2D.Double(x + pointMargin - length / 2 - lipHoleSpacing / 2 - lipHoleSize
+          / 2, y - pointMargin + width / 2 - lipHoleSize / 2, lipHoleSize, lipHoleSize)));
+      lipArea.subtract(new Area(new Ellipse2D.Double(x + pointMargin - length / 2 + lipHoleSpacing / 2 - lipHoleSize
+          / 2, y - pointMargin + width / 2 - lipHoleSize / 2, lipHoleSize, lipHoleSize)));
+
+
       body[1] = lipArea;
       body[2] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize));
 
       int poleSize = (int) POLE_SIZE.convertToPixels();
       int poleSpacing = (int) POLE_SPACING.convertToPixels();
-      int coilSpacing = (int) COIL_SPACING.convertToPixels();
-      int coilMargin = (width - coilSpacing) / 2;
       int poleMargin = (length - poleSpacing * 5) / 2;
       Area poleArea = new Area();
       for (int i = 0; i < 6; i++) {
-        if (getType() == HumbuckerType.PAF) {
-          Ellipse2D pole =
-              new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
-                  - pointMargin + coilMargin - poleSize / 2, poleSize, poleSize);
-          poleArea.add(new Area(pole));
-        }
-
         Ellipse2D pole =
             new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
-                - pointMargin + width - coilMargin - poleSize / 2, poleSize, poleSize);
+                - pointMargin - poleSize / 2 + width / 2, poleSize, poleSize);
         poleArea.add(new Area(pole));
       }
       body[3] = poleArea;
@@ -205,33 +207,21 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.rotate(Math.PI / 4, width / 2, height / 2);
 
-    int baseWidth = 16 * width / 32;
+    int baseWidth = 13 * width / 32;
     int baseLength = 27 * width / 32;
+    int radius = 6 * width / 32;
 
     g2d.setColor(BODY_COLOR);
-    g2d.fillRoundRect((width - baseWidth / 4) / 2, 0, baseWidth / 4, height - 1, 2 * width / 32, 2 * width / 32);
+    g2d.fillRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth, baseLength, radius, radius);
     g2d.setColor(BODY_COLOR.darker());
-    g2d.drawRoundRect((width - baseWidth / 4) / 2, 0, baseWidth / 4, height - 1, 2 * width / 32, 2 * width / 32);
+    g2d.drawRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth, baseLength, radius, radius);
 
-    g2d.setColor(BODY_COLOR);
-    g2d.fillRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth, baseLength, 4 * width / 32,
-        4 * width / 32);
-    g2d.setColor(BODY_COLOR.darker());
-    g2d.drawRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth, baseLength, 4 * width / 32,
-        4 * width / 32);
-  }
-
-  @EditableProperty
-  public HumbuckerType getType() {
-    if (type == null)
-      type = HumbuckerType.PAF;
-    return type;
-  }
-
-  public void setType(HumbuckerType type) {
-    this.type = type;
-    // Invalidate the body
-    body = null;
+    g2d.setColor(POLE_COLOR.darker());
+    int poleSize = 2;
+    int poleSpacing = 17 * width / 32;
+    for (int i = 0; i < 6; i++) {
+      g2d.fillOval((width - poleSize) / 2, (height - poleSpacing) / 2 + (i * poleSpacing / 5), poleSize, poleSize);
+    }
   }
 
   @Override
@@ -290,31 +280,5 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
   public void setColor(Color color) {
     this.color = color;
-  }
-
-  public static enum HumbuckerType {
-
-    PAF(WIDTH, LENGTH), Mini(WIDTH_MINI, LENGTH_MINI);
-
-    private Size width;
-    private Size length;
-
-    private HumbuckerType(Size width, Size length) {
-      this.width = width;
-      this.length = length;
-    }
-
-    public Size getWidth() {
-      return width;
-    }
-
-    public Size getLength() {
-      return length;
-    }
-
-    @Override
-    public String toString() {
-      return name();
-    }
   }
 }

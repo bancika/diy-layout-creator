@@ -183,6 +183,8 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
+    g2d.rotate(Math.PI / 4, width / 2, height / 2);
+    
     int bodyWidth = 8 * width / 32;
     int bodyLength = 30 * width / 32;
     g2d.setColor(BODY_COLOR);
