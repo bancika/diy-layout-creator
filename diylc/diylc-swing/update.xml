@@ -1456,6 +1456,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Searchable toolbox tree instead of the old toolbar (can be changed from "Config" menu)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>P-90 pickup in both "dog ear" and "soap bar" variations added</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

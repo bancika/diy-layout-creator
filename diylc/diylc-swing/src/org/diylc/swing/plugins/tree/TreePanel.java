@@ -196,18 +196,21 @@ public class TreePanel extends JPanel {
             Object obj = categoryNode.getUserObject();
             if (obj != null && obj.getClass().equals(Payload.class)) {
               Payload payload = (Payload) obj;
-              boolean visible = visibleCount > 0;
-              if (visible != payload.isVisible()) {
-                payload.setVisible(visible);
+              boolean categoryVisible = visibleCount > 0;
+              if (categoryVisible != payload.isVisible()) {
+                payload.setVisible(categoryVisible);
                 model.nodeStructureChanged(rootNode);
               }
-              if (visible && text.trim().length() > 0) {
+              if (categoryVisible && text.trim().length() > 0) {
                 tree.expandPath(new TreePath(categoryNode.getPath()));
               }
             }
           }
-
-          getTree().invalidate();
+          
+          for (int i = 0; i < model.getChildCount(rootNode); i++) {
+            DefaultMutableTreeNode categoryNode = (DefaultMutableTreeNode) model.getChild(rootNode, i);
+            tree.expandPath(new TreePath(categoryNode.getPath()));
+          }
         }
       });
     }
