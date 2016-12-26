@@ -1,12 +1,8 @@
 <p align="justify"><strong>DIYLC is provided free of charge and can be used and redistributed freely. Please note that it takes a lot of time and effort to build, test and maintain it and to interact with the growing community of users. If you find DIYLC useful and want to support further development, please consider making a small PayPal donation. Every little bit counts! If you have some extra parts, transistors, tubes, ICs, caps...anything useful for a fellow DIYer, I'll gladly accept a donation in parts.</strong></p>
 
-<p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=25161" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>
+<p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>
 
-<a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_32_Beta">Click here</a> to go to the latest beta version that includes "Project Cloud" feature (and probably few bugs here and there).</a>
-
-<a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_31_0_MP">Click here</a> to go to the latest multi-platform release that works on Windows, Linux, Mac and any other platform that can run Java JRE.</a>
-
-<a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_31_0_OSX">Click here</a> to go to the latest OSX release. Please note that 3rd party apps must be enabled inside OSX for DIYLC to work.</a>
+<a href="https://github.com/bancika/diy-layout-creator/releases/tag/REL_3_33">Click here</a> to go to the latest version for all platforms.</a>
 
 <a href="https://github.com/bancika/diy-layout-creator/tree/wiki">Click here</a> to read the user documentation as well as developer documentation.
 
