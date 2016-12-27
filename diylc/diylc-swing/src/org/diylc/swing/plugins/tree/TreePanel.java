@@ -34,8 +34,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -60,6 +58,7 @@ public class TreePanel extends JPanel {
 
   private DefaultTreeModel treeModel;
   private JTree tree;
+  private JScrollPane treeScroll;
   private JTextField searchField;
   private DefaultMutableTreeNode recentNode;
   private List<String> recentComponents;
@@ -77,17 +76,17 @@ public class TreePanel extends JPanel {
     gbc.gridy = 0;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weighty = 0;
+    gbc.gridwidth = 1;
 
     add(getSearchField(), gbc);
 
     gbc.gridy++;
+
     gbc.fill = GridBagConstraints.BOTH;
     gbc.weighty = 1;
     gbc.weightx = 1;
 
-    JScrollPane scroll = new JScrollPane(getTree());
-    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    add(scroll, gbc);
+    add(getTreeScroll(), gbc);
 
     setPreferredSize(new Dimension(240, 200));
 
@@ -107,6 +106,14 @@ public class TreePanel extends JPanel {
     });
 
     getTree().expandRow(0);
+  }
+
+  public JScrollPane getTreeScroll() {
+    if (treeScroll == null) {
+      treeScroll = new JScrollPane(getTree());
+      treeScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    }
+    return treeScroll;
   }
 
   public DefaultMutableTreeNode getRecentNode() {
@@ -170,31 +177,39 @@ public class TreePanel extends JPanel {
       tree.setCellRenderer(new ComponentCellRenderer());
       tree.setRowHeight(0);
       ToolTipManager.sharedInstance().registerComponent(tree);
-      tree.addTreeSelectionListener(new TreeSelectionListener() {
-
-        @Override
-        public void valueChanged(TreeSelectionEvent e) {
-          Object c = e.getPath().getLastPathComponent();
-          if (c != null && c.getClass().equals(DefaultMutableTreeNode.class)) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) c;
-            Object obj = node.getUserObject();
-            if (obj != null && obj.getClass().equals(Payload.class)) {
-              Payload payload = (Payload) obj;
-              plugInPort.setNewComponentTypeSlot(payload.getComponentType(), null);
-            }
-          }
-        }
-      });
+      // tree.addTreeSelectionListener(new TreeSelectionListener() {
+      //
+      // @Override
+      // public void valueChanged(TreeSelectionEvent e) {
+      // Object c = e.getPath().getLastPathComponent();
+      // if (c != null && c.getClass().equals(DefaultMutableTreeNode.class)) {
+      // DefaultMutableTreeNode node = (DefaultMutableTreeNode) c;
+      // Object obj = node.getUserObject();
+      // if (obj != null && obj.getClass().equals(Payload.class)) {
+      // Payload payload = (Payload) obj;
+      // plugInPort.setNewComponentTypeSlot(payload.getComponentType(), null);
+      // }
+      // }
+      // }
+      // });
 
       tree.addMouseListener(new MouseAdapter() {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-
           if (SwingUtilities.isRightMouseButton(e)) {
             int row = tree.getClosestRowForLocation(e.getX(), e.getY());
             tree.setSelectionRow(row);
             getPopup().show(e.getComponent(), e.getX(), e.getY());
+          } else {
+            TreePath path = tree.getClosestPathForLocation(e.getX(), e.getY());
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            if (node != null && node.getUserObject() != null) {
+              Payload payload = (Payload) node.getUserObject();
+              if (payload.getComponentType() != null) {
+                plugInPort.setNewComponentTypeSlot(payload.getComponentType(), null);
+              }
+            }
           }
         }
       });
