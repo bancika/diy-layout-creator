@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -210,6 +211,17 @@ public class P90DogEarPickup extends AbstractTransparentComponent<String> {
     int baseWidth = 13 * width / 32;
     int baseLength = 27 * width / 32;
     int radius = 6 * width / 32;
+
+    g2d.setColor(BODY_COLOR);
+    Polygon base =
+        new Polygon(new int[] {width / 2, (width + baseWidth) / 2, (width + baseWidth) / 2, width / 2,
+            (width - baseWidth) / 2, (width - baseWidth) / 2}, new int[] {-2, (height - baseLength) / 2,
+            (height + baseLength) / 2, height + 1, (height + baseLength) / 2, (height - baseLength) / 2}, 6);
+    Area baseArea = new Area(base);
+    baseArea.intersect(new Area(new Rectangle(0, -1, width, height + 1)));
+    g2d.fill(baseArea);
+    g2d.setColor(BODY_COLOR.darker());
+    g2d.draw(baseArea);
 
     g2d.setColor(BODY_COLOR);
     g2d.fillRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth, baseLength, radius, radius);
