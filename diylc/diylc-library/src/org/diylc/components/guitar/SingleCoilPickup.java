@@ -41,16 +41,17 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
-  private static Color BODY_COLOR = Color.darkGray;
+  private static Color BODY_COLOR = Color.gray;
   private static Color POINT_COLOR = Color.lightGray;
   private static Size WIDTH = new Size(15.5d, SizeUnit.mm);
-  private static Size LENGTH = new Size(83.82d, SizeUnit.mm);
+  private static Size LENGTH = new Size(83d, SizeUnit.mm);
+  private static Size INNER_LENGTH = new Size(70d, SizeUnit.mm);
   private static Size LIP_WIDTH = new Size(5d, SizeUnit.mm);
   private static Size LIP_LENGTH = new Size(20d, SizeUnit.mm);
   private static Size POINT_SIZE = new Size(3d, SizeUnit.mm);
   private static Size HOLE_SIZE = new Size(2d, SizeUnit.mm);
   private static Size HOLE_MARGIN = new Size(4d, SizeUnit.mm);
-  private static Size POLE_SIZE = new Size(3d, SizeUnit.mm);
+  private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);
 
   private String value = "";
@@ -74,6 +75,8 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       g2d.fill(body[0]);
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
       g2d.fill(body[1]);
+      // g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
+      // g2d.fill(body[3]);
       g2d.setComposite(oldComposite);
     }
 
@@ -87,13 +90,18 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     } else {
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : color.brighter();
+              : color.darker();
     }
 
     g2d.setColor(finalBorderColor);
     g2d.draw(body[0]);
+    g2d.draw(body[3]);
+
     if (!outlineMode) {
+      g2d.setColor(METAL_COLOR.darker());
       g2d.draw(body[2]);
+      g2d.setColor(METAL_COLOR);
+      g2d.fill(body[2]);
     }
 
     Color finalLabelColor;
@@ -118,12 +126,13 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
     if (body == null) {
-      body = new Shape[3];
+      body = new Shape[4];
 
       int x = controlPoint.x;
       int y = controlPoint.y;
       int width = (int) WIDTH.convertToPixels();
       int length = (int) LENGTH.convertToPixels();
+      int innerLength = (int) INNER_LENGTH.convertToPixels();
       int lipWidth = (int) LIP_WIDTH.convertToPixels();
       int lipLength = (int) LIP_LENGTH.convertToPixels();
       int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
@@ -132,9 +141,9 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
       Area mainArea =
           new Area(new RoundRectangle2D.Double(x - length / 2, y - lipWidth / 2 - width, length, width, width, width));
-      mainArea.add(new Area(new Polygon(new int[] {x - length / 2 + width / 2, x + length / 2 - width / 2,
-          x + lipLength / 2, x - lipLength / 2}, new int[] {y - lipWidth / 2, y - lipWidth / 2, y + lipWidth / 2,
-          y + lipWidth / 2}, 4)));
+      mainArea.add(new Area(new Polygon(new int[] {(int) (x - length / 2 + width * 0.47),
+          (int) (x + length / 2 - width * 0.47), x + lipLength / 2, x - lipLength / 2}, new int[] {y - lipWidth / 2,
+          y - lipWidth / 2, y + lipWidth / 2, y + lipWidth / 2}, 4)));
       // Cutout holes
       mainArea.subtract(new Area(new Ellipse2D.Double(x - length / 2 + holeMargin - holeSize / 2, y - lipWidth / 2
           - width / 2 - holeSize / 2, holeSize, holeSize)));
@@ -151,11 +160,14 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       Area poleArea = new Area();
       for (int i = 0; i < 6; i++) {
         Ellipse2D pole =
-            new Ellipse2D.Double(x - length / 2 + poleMargin + i * poleSpacing, y - lipWidth / 2 - width / 2 - poleSize
-                / 2, poleSize, poleSize);
+            new Ellipse2D.Double(x - length / 2 + poleMargin + i * poleSpacing - poleSize / 2, y - lipWidth / 2 - width
+                / 2 - poleSize / 2, poleSize, poleSize);
         poleArea.add(new Area(pole));
       }
       body[2] = poleArea;
+
+      body[3] =
+          new RoundRectangle2D.Double(x - innerLength / 2, y - lipWidth / 2 - width, innerLength, width, width, width);
 
       // Rotate if needed
       if (orientation != Orientation.DEFAULT) {
@@ -184,7 +196,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.rotate(Math.PI / 4, width / 2, height / 2);
-    
+
     int bodyWidth = 8 * width / 32;
     int bodyLength = 30 * width / 32;
     g2d.setColor(BODY_COLOR);

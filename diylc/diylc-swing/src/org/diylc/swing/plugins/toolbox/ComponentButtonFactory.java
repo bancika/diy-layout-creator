@@ -19,6 +19,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
@@ -33,7 +35,7 @@ import org.diylc.swingframework.openide.DropDownButtonFactory;
  * 
  * @author Branislav Stojkovic
  */
-class ComponentButtonFactory {
+public class ComponentButtonFactory {
 
   public static int MARGIN = 3;
 
@@ -127,6 +129,8 @@ class ComponentButtonFactory {
         e.consume();
       }
     });
+    Border margin = new EmptyBorder(4, 0, 0, 0);
+    label.setBorder(margin);
     item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
     item.add(label);
     return item;

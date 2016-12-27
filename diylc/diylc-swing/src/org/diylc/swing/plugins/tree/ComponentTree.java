@@ -1,5 +1,8 @@
 package org.diylc.swing.plugins.tree;
 
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.util.EnumSet;
 
 import javax.swing.SwingConstants;
@@ -49,6 +52,18 @@ public class ComponentTree implements IPlugIn {
     getTreePanel().setVisible(
         ConfigurationManager.getInstance().readString(ConfigPlugin.COMPONENT_BROWSER, ConfigPlugin.SEARCHABLE_TREE)
             .equals(ConfigPlugin.SEARCHABLE_TREE));
+
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+
+      @Override
+      public boolean dispatchKeyEvent(KeyEvent e) {
+        if (e.getKeyChar() == 'q') {
+          getTreePanel().getSearchField().requestFocusInWindow();
+          return true;
+        }
+        return false;
+      }
+    });
   }
 
   public TreePanel getTreePanel() {

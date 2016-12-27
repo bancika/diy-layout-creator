@@ -42,7 +42,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
   private static Color BODY_COLOR = Color.lightGray;
   private static Color POINT_COLOR = Color.darkGray;
-  public static Color PIN_COLOR = Color.decode("#C3E4ED");
+  public static Color POLE_COLOR = METAL_COLOR;
   private static Size WIDTH = new Size(36.5d, SizeUnit.mm);
   private static Size LENGTH = new Size(68.58d, SizeUnit.mm);
   private static Size WIDTH_MINI = new Size(29.3d, SizeUnit.mm);
@@ -100,7 +100,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     g2d.draw(body[0]);
     g2d.draw(body[1]);
     if (!outlineMode) {
-      g2d.setColor(PIN_COLOR);
+      g2d.setColor(POLE_COLOR);
       g2d.fill(body[3]);
       g2d.setColor(color.darker());
       g2d.draw(body[3]);

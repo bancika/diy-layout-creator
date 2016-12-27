@@ -42,7 +42,7 @@ public class P90DogEarPickup extends AbstractTransparentComponent<String> {
 
   private static Color BODY_COLOR = Color.decode("#D8C989");;
   private static Color POINT_COLOR = Color.darkGray;
-  public static Color POLE_COLOR = Color.decode("#C3E4ED");
+  public static Color POLE_COLOR = METAL_COLOR;
   private static Size WIDTH = new Size(41d, SizeUnit.mm);
   private static Size LENGTH = new Size(86.9d, SizeUnit.mm);
   private static Size TOTAL_LENGTH = new Size(118.7d, SizeUnit.mm);
@@ -52,8 +52,8 @@ public class P90DogEarPickup extends AbstractTransparentComponent<String> {
   private static Size POINT_SIZE = new Size(3d, SizeUnit.mm);
   private static Size LIP_HOLE_SIZE = new Size(2.5d, SizeUnit.mm);
   private static Size LIP_HOLE_SPACING = new Size(97d, SizeUnit.mm);
-  private static Size POLE_SIZE = new Size(3d, SizeUnit.mm);
-  private static Size POLE_SPACING = new Size(10.1d, SizeUnit.mm);
+  private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
+  private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);
 
   private String value = "";
   private Point controlPoint = new Point(0, 0);

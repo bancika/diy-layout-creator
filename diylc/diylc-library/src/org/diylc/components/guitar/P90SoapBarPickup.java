@@ -42,14 +42,14 @@ public class P90SoapBarPickup extends AbstractTransparentComponent<String> {
 
   private static Color BODY_COLOR = Color.decode("#D8C989");
   private static Color POINT_COLOR = Color.darkGray;
-  public static Color POLE_COLOR = Color.decode("#C3E4ED");
+  public static Color POLE_COLOR = METAL_COLOR;
   private static Size WIDTH = new Size(35.3d, SizeUnit.mm);
   private static Size LENGTH = new Size(85.6d, SizeUnit.mm);
   private static Size EDGE_RADIUS = new Size(8d, SizeUnit.mm);
   private static Size POINT_MARGIN = new Size(5d, SizeUnit.mm);
   private static Size POINT_SIZE = new Size(3d, SizeUnit.mm);
-  private static Size POLE_SIZE = new Size(3d, SizeUnit.mm);
-  private static Size POLE_SPACING = new Size(10.1d, SizeUnit.mm);
+  private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
+  private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);
 
   private String value = "";
   private Point controlPoint = new Point(0, 0);
