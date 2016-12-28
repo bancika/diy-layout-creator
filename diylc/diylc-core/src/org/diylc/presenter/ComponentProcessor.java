@@ -119,7 +119,7 @@ public class ComponentProcessor {
       componentInstance.drawIcon(g2d, Presenter.ICON_SIZE, Presenter.ICON_SIZE);
       icon = new ImageIcon(image);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      LOG.error("Error drawing component icon", e);
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
@@ -150,7 +150,7 @@ public class ComponentProcessor {
             } else {
               name = annotation.name();
             }
-            IPropertyValidator validator = getPropertyValidator(annotation.validatorClass());            
+            IPropertyValidator validator = getPropertyValidator(annotation.validatorClass());
             Method setter = clazz.getMethod("set" + getter.getName().substring(3), getter.getReturnType());
             PropertyWrapper property =
                 new PropertyWrapper(name, getter.getReturnType(), getter.getName(), setter.getName(),
