@@ -1472,6 +1472,14 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>X-axis coordinates for all perfboards are now numberical</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved trace cut rendering to look more natural</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved guitar pickup look</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
@@ -1481,7 +1489,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed broken links in the Help menu</description>
-				</org.diylc.appframework.update.Change>																	
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>TriPad board didn't show coordinate labels even when configured to do so</description>
+				</org.diylc.appframework.update.Change>																
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

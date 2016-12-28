@@ -197,19 +197,18 @@ public class TreePanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+          TreePath path = tree.getClosestPathForLocation(e.getX(), e.getY());
+          DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+          if (node != null && node.getUserObject() != null) {
+            Payload payload = (Payload) node.getUserObject();
+            if (payload.getComponentType() != null) {
+              plugInPort.setNewComponentTypeSlot(payload.getComponentType(), null);
+            }
+          }
           if (SwingUtilities.isRightMouseButton(e)) {
             int row = tree.getClosestRowForLocation(e.getX(), e.getY());
             tree.setSelectionRow(row);
             getPopup().show(e.getComponent(), e.getX(), e.getY());
-          } else {
-            TreePath path = tree.getClosestPathForLocation(e.getX(), e.getY());
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            if (node != null && node.getUserObject() != null) {
-              Payload payload = (Payload) node.getUserObject();
-              if (payload.getComponentType() != null) {
-                plugInPort.setNewComponentTypeSlot(payload.getComponentType(), null);
-              }
-            }
           }
         }
       });

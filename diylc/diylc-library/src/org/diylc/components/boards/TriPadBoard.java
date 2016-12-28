@@ -26,8 +26,7 @@ import org.diylc.utils.Constants;
 public class TriPadBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;
-
-  public static Color STRIP_COLOR = Color.decode("#DA8A67");
+  
   public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
   public static Size SPACING = new Size(0.1d, SizeUnit.in);
@@ -37,7 +36,7 @@ public class TriPadBoard extends AbstractBoard {
   protected int stripSpan = 3; // determines how many holes are covered by a
   // strip
   protected Size spacing = SPACING;
-  protected Color stripColor = STRIP_COLOR;
+  protected Color stripColor = COPPER_COLOR;
   protected OrientationHV orientation = OrientationHV.HORIZONTAL;
 
   @Override
@@ -132,6 +131,8 @@ public class TriPadBoard extends AbstractBoard {
         }
       }
       g2d.setComposite(oldComposite);
+      
+      super.drawCoordinates(g2d, spacing);
     }
   }
 
@@ -174,10 +175,10 @@ public class TriPadBoard extends AbstractBoard {
     final int verticalIndent = verticalSpacing / 2;
 
     for (int row = 0; row < 5; row++) {
-      g2d.setColor(STRIP_COLOR);
+      g2d.setColor(COPPER_COLOR);
       g2d.fillRect(0, row * verticalSpacing + 2, horizontalIndent / 2 + horizontalSpacing, verticalSpacing - 1);
 
-      g2d.setColor(STRIP_COLOR);
+      g2d.setColor(COPPER_COLOR);
       g2d.fillRect(horizontalSpacing + 2, row * verticalSpacing + 2, horizontalSpacing * 3 - 1, verticalSpacing - 1);
 
       g2d.fillRect(horizontalSpacing * 4 + 2, row * verticalSpacing + 2, horizontalIndent / 2 + horizontalSpacing,
@@ -191,7 +192,7 @@ public class TriPadBoard extends AbstractBoard {
         int x = (horizontalSpacing * col) + horizontalIndent;
         g2d.setColor(Constants.CANVAS_COLOR);
         g2d.fillOval(x, y, 2, 2);
-        g2d.setColor(STRIP_COLOR.darker());
+        g2d.setColor(COPPER_COLOR.darker());
         g2d.drawOval(x, y, 2, 2);
       }
     }

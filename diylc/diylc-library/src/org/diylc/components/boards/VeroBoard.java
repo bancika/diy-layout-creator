@@ -28,7 +28,6 @@ public class VeroBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color STRIP_COLOR = Color.decode("#DA8A67");
   public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
   public static Size SPACING = new Size(0.1d, SizeUnit.in);
@@ -36,7 +35,7 @@ public class VeroBoard extends AbstractBoard {
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
   protected Size spacing = SPACING;
-  protected Color stripColor = STRIP_COLOR;
+  protected Color stripColor = COPPER_COLOR;
   protected OrientationHV orientation = OrientationHV.HORIZONTAL;
 
   @Override
@@ -127,19 +126,27 @@ public class VeroBoard extends AbstractBoard {
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int factor = 32 / width;
     g2d.setColor(BOARD_COLOR);
-    g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
+    g2d.fillRect(0, 2 / factor, width - 1, height - 4 / factor);
     g2d.setColor(BORDER_COLOR);
-    g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
-    g2d.setColor(STRIP_COLOR);
-    g2d.fillRect(4 / factor, width / 4, width - 8 / factor, width / 2);
-    g2d.setColor(STRIP_COLOR.darker());
-    g2d.drawRect(4 / factor, width / 4, width - 8 / factor, width / 2);
+    g2d.drawRect(0, 2 / factor, width - 1, height - 4 / factor);
+    g2d.setColor(COPPER_COLOR);
+    g2d.fillRect(1 / factor, width / 4, width - 2 / factor, width / 2);
+    g2d.setColor(COPPER_COLOR.darker());    
+    g2d.drawRect(1 / factor, width / 4, width - 2 / factor, width / 2);
+    
+    g2d.setColor(COPPER_COLOR);
+    g2d.fillRect(1 / factor, 2 / factor, width - 2 / factor, 3 / factor);
+    g2d.fillRect(1 / factor, height - 5 / factor, width - 2 / factor, 3 / factor);
+    g2d.setColor(COPPER_COLOR.darker());
+    g2d.drawRect(1 / factor, 2 / factor, width - 2 / factor, 3 / factor);
+    g2d.drawRect(1 / factor, height - 5 / factor, width - 2 / factor, 3 / factor);
+    
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fillOval(width / 3 - 2 / factor, width / 2 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
     g2d.fillOval(2 * width / 3 - 2 / factor, width / 2 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
-    g2d.setColor(STRIP_COLOR.darker());
+    g2d.setColor(COPPER_COLOR.darker());
     g2d.drawOval(width / 3 - 2 / factor, width / 2 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
     g2d.drawOval(2 * width / 3 - 2 / factor, width / 2 - 2 / factor, getClosestOdd(5.0 / factor),
