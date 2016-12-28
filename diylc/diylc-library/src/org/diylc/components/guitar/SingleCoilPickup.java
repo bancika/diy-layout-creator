@@ -85,7 +85,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       // g2d.fill(body[3]);
       g2d.setComposite(oldComposite);
     }
-    
+
     Color finalBorderColor;
     if (outlineMode) {
       Theme theme =
@@ -221,21 +221,21 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
     int bodyWidth = 8 * width / 32;
     int bodyLength = 30 * width / 32;
-    
+
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     g2d.setColor(BASE_COLOR);
     g2d.fillPolygon(new int[] {width * 9 / 16, width * 9 / 16, width * 11 / 16, width * 11 / 16}, new int[] {
         (height - bodyLength) / 2, (height + bodyLength) / 2, height * 5 / 8, height * 3 / 8}, 4);
     g2d.setColor(BODY_COLOR);
     g2d.fillRoundRect((width - bodyWidth) / 2, (height - bodyLength) / 2, bodyWidth, bodyLength, bodyWidth, bodyWidth);
-    
+
     g2d.setColor(Color.gray);
     g2d.drawRoundRect((width - bodyWidth) / 2, (height - bodyLength) / 2, bodyWidth, bodyLength, bodyWidth, bodyWidth);
 
-//    g2d.setColor(Color.gray);
-//    g2d.drawLine(width / 2, 4 * width / 32, width / 2, 4 * width / 32);
-//    g2d.drawLine(width / 2, height - 4 * width / 32, width / 2, height - 4 * width / 32);
-    
+    // g2d.setColor(Color.gray);
+    // g2d.drawLine(width / 2, 4 * width / 32, width / 2, 4 * width / 32);
+    // g2d.drawLine(width / 2, height - 4 * width / 32, width / 2, height - 4 * width / 32);
+
     g2d.setColor(METAL_COLOR.darker());
     int poleSize = 2;
     int poleSpacing = 17 * width / 32;
@@ -302,7 +302,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     this.color = color;
   }
 
-  @EditableProperty
+  @EditableProperty(name = "Base")
   public Color getBaseColor() {
     if (baseColor == null)
       baseColor = BASE_COLOR;
