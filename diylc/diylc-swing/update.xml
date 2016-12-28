@@ -1476,6 +1476,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Using unicode characters (like micro character) in template names breaks the whole config file</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Fixed broken links in the Help menu</description>
 				</org.diylc.appframework.update.Change>																	
 			</changes>
