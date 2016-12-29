@@ -51,8 +51,8 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   private static Size LIP_WIDTH = new Size(12.7d, SizeUnit.mm);
   private static Size LIP_LENGTH = new Size(7.9d, SizeUnit.mm);
   private static Size EDGE_RADIUS = new Size(4d, SizeUnit.mm);
-  private static Size POINT_MARGIN = new Size(5d, SizeUnit.mm);
-  private static Size POINT_SIZE = new Size(3d, SizeUnit.mm);
+  private static Size POINT_MARGIN = new Size(1.5d, SizeUnit.mm);
+  private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size LIP_HOLE_SIZE = new Size(1.5d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(3d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(10.1d, SizeUnit.mm);
@@ -81,8 +81,6 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
       g2d.fill(body[0]);
       g2d.fill(body[1]);
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-      g2d.fill(body[2]);
 
       if (body[4] != null) {
         g2d.setColor(getBobinColor1());
@@ -92,6 +90,9 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         g2d.setColor(getBobinColor2());
         g2d.fill(body[5]);
       }
+      
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
+      g2d.fill(body[2]);
 
       g2d.setComposite(oldComposite);
     }

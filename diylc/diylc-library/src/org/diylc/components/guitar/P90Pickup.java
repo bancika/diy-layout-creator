@@ -56,8 +56,8 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
   private static Size SOAP_BAR_EDGE_RADIUS = new Size(8d, SizeUnit.mm);
 
   private static Size LIP_RADIUS = new Size(10d, SizeUnit.mm);
-  private static Size POINT_MARGIN = new Size(5d, SizeUnit.mm);
-  private static Size POINT_SIZE = new Size(3d, SizeUnit.mm);
+  private static Size POINT_MARGIN = new Size(1.5d, SizeUnit.mm);
+  private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size LIP_HOLE_SIZE = new Size(2.5d, SizeUnit.mm);
   private static Size LIP_HOLE_SPACING = new Size(97d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);

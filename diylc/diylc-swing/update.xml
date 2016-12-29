@@ -1460,6 +1460,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Open 1/4" Switchcraft-style jack added</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>LP-style switch added</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

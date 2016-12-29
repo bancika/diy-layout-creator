@@ -60,7 +60,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   private static Size TELE_LENGTH = new Size(2.87d, SizeUnit.in);
   private static Size TELE_HOLE_SPACING = new Size(1.135d, SizeUnit.in);
 
-  private static Size POINT_SIZE = new Size(3d, SizeUnit.mm);
+  private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size HOLE_SIZE = new Size(2d, SizeUnit.mm);
   private static Size HOLE_MARGIN = new Size(4d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
@@ -80,20 +80,20 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     Shape[] body = getBody();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    if (componentState != ComponentState.DRAGGING && !outlineMode) {
+    if (componentState != ComponentState.DRAGGING) {
       Composite oldComposite = g2d.getComposite();
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
 
-      g2d.setColor(getBaseColor());
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBaseColor());
       g2d.fill(body[4]);
-      g2d.setColor(getColor());
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
       if (body[0] == null)
         g2d.fill(body[3]);
       else
         g2d.fill(body[0]);
-      g2d.setColor(POINT_COLOR);
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
       g2d.fill(body[1]);
 
       // g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
