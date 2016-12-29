@@ -108,7 +108,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     g2d.draw(body[0]);
     if (body[1] != null)
       g2d.draw(body[1]);
-    if (!outlineMode) {
+    if (!outlineMode && componentState != ComponentState.DRAGGING) {
       g2d.setColor(POLE_COLOR);
       g2d.fill(body[3]);
       g2d.setColor(color.darker());

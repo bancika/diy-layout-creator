@@ -99,7 +99,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     g2d.setColor(finalBorderColor);
     g2d.draw(body[0]);
     g2d.draw(body[1]);
-    if (!outlineMode) {
+    if (!outlineMode && componentState != ComponentState.DRAGGING) {
       g2d.setColor(POLE_COLOR);
       g2d.fill(body[3]);
       g2d.setColor(color.darker());

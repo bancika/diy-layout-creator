@@ -1456,7 +1456,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Searchable toolbox tree instead of the old toolbar (can be changed from "Config" menu)</description>
+					<description>Searchable component tree instead of the old toolbar (can be changed back from "Config" menu)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -1480,11 +1480,11 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Improved trace cut rendering to look more natural</description>
+					<description>Improved trace cut rendering to look more realistic</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Improved guitar pickup look</description>
+					<description>Improved guitar pickup rendering to look more realistic</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
