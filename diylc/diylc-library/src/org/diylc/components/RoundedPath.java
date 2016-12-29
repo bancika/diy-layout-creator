@@ -1,4 +1,4 @@
-package org.diylc.common;
+package org.diylc.components;
 
 import java.awt.geom.GeneralPath;
 
