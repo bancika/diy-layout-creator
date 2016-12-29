@@ -163,7 +163,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
               springWidth, springWidth));
       sleeve.subtract(new Area(new Ellipse2D.Double(x - holeDiameter / 2, y - holeDiameter / 2, holeDiameter,
           holeDiameter)));
-      sleeve.transform(AffineTransform.getRotateInstance(Math.PI / 4, x, centerY));
+      sleeve.transform(AffineTransform.getRotateInstance(Math.PI * 0.295, x, centerY));
       sleeve.add(new Area(new Ellipse2D.Double(x - ringDiameter / 2, centerY - ringDiameter / 2, ringDiameter,
           ringDiameter)));
       sleeve.subtract(new Area(new Ellipse2D.Double(x - innerDiameter / 2, centerY - innerDiameter / 2, innerDiameter,
@@ -177,7 +177,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
                 springWidth, springWidth));
         ring.subtract(new Area(new Ellipse2D.Double(x - holeDiameter / 2, y - holeDiameter / 2, holeDiameter,
             holeDiameter)));
-        ring.transform(AffineTransform.getRotateInstance(3 * Math.PI / 4, x, centerY));
+        ring.transform(AffineTransform.getRotateInstance(Math.PI * 0.795, x, centerY));
         ring.subtract(new Area(new Ellipse2D.Double(x - outerDiameter / 2, centerY - outerDiameter / 2, outerDiameter,
             outerDiameter)));
 
@@ -227,8 +227,8 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
 
     int centerY = y + springLength - holeToEdge;
 
-    AffineTransform.getRotateInstance(Math.PI / 4, x, centerY).transform(controlPoints[0], controlPoints[1]);
-    AffineTransform.getRotateInstance(3 * Math.PI / 4, x, centerY).transform(controlPoints[0], controlPoints[2]);
+    AffineTransform.getRotateInstance(Math.PI * 0.295, x, centerY).transform(controlPoints[0], controlPoints[1]);
+    AffineTransform.getRotateInstance(Math.PI * 0.795, x, centerY).transform(controlPoints[0], controlPoints[2]);
 
     // Rotate if needed
     if (orientation != Orientation.DEFAULT) {
@@ -260,7 +260,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
     g2d.setColor(BASE_COLOR);
     g2d.drawLine(width / 2, 4 * width / 32, width / 2, width / 4);
 
-    g2d.rotate(3 * Math.PI / 4, width / 2, height / 2);
+    g2d.rotate(Math.PI * 0.795, width / 2, height / 2);
 
     g2d.drawLine(width / 2, 4 * width / 32, width / 2, width / 4);
 
