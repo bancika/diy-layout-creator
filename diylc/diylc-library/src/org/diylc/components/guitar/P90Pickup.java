@@ -43,7 +43,6 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
 
   private static Color BODY_COLOR = Color.decode("#D8C989");;
   private static Color POINT_COLOR = Color.darkGray;
-  public static Color POLE_COLOR = METAL_COLOR;
 
   // dog ear
   private static Size DOG_EAR_WIDTH = new Size(41d, SizeUnit.mm);
@@ -109,9 +108,9 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     if (body[1] != null)
       g2d.draw(body[1]);
     if (!outlineMode && componentState != ComponentState.DRAGGING) {
-      g2d.setColor(POLE_COLOR);
+      g2d.setColor(METAL_COLOR);
       g2d.fill(body[3]);
-      g2d.setColor(color.darker());
+      g2d.setColor(METAL_COLOR.darker());
       g2d.draw(body[3]);
     }
 
@@ -242,7 +241,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     g2d.setColor(BODY_COLOR.darker());
     g2d.drawRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth, baseLength, radius, radius);
 
-    g2d.setColor(POLE_COLOR.darker());
+    g2d.setColor(METAL_COLOR);
     int poleSize = 2;
     int poleSpacing = 17 * width / 32;
     for (int i = 0; i < 6; i++) {

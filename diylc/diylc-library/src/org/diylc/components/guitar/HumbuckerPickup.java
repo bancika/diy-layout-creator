@@ -40,9 +40,10 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
-  private static Color BODY_COLOR = Color.lightGray;
+  private static Color BASE_COLOR = Color.lightGray;
+  private static Color BOBIN_COLOR1 = Color.decode("#EAE3C6");
+  private static Color BOBIN_COLOR2 = Color.black;
   private static Color POINT_COLOR = Color.darkGray;
-  public static Color POLE_COLOR = METAL_COLOR;
   private static Size WIDTH = new Size(36.5d, SizeUnit.mm);
   private static Size LENGTH = new Size(68.58d, SizeUnit.mm);
   private static Size WIDTH_MINI = new Size(29.3d, SizeUnit.mm);
@@ -55,14 +56,16 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   private static Size LIP_HOLE_SIZE = new Size(1.5d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(3d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(10.1d, SizeUnit.mm);
-  private static Size COIL_SPACING = new Size(18d, SizeUnit.mm);
 
   private String value = "";
   private Point controlPoint = new Point(0, 0);
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
-  private Color color = BODY_COLOR;
+  private Color color = BASE_COLOR;
   private HumbuckerType type;
+  private boolean cover;
+  private Color bobinColor1 = BOBIN_COLOR1;
+  private Color bobinColor2 = BOBIN_COLOR2;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -80,6 +83,16 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
       g2d.fill(body[1]);
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
       g2d.fill(body[2]);
+
+      if (body[4] != null) {
+        g2d.setColor(getBobinColor1());
+        g2d.fill(body[4]);
+      }
+      if (body[5] != null) {
+        g2d.setColor(getBobinColor2());
+        g2d.fill(body[5]);
+      }
+
       g2d.setComposite(oldComposite);
     }
 
@@ -100,10 +113,19 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     g2d.draw(body[0]);
     g2d.draw(body[1]);
     if (!outlineMode && componentState != ComponentState.DRAGGING) {
-      g2d.setColor(POLE_COLOR);
+      g2d.setColor(METAL_COLOR);
       g2d.fill(body[3]);
-      g2d.setColor(color.darker());
+      g2d.setColor(METAL_COLOR.darker());
       g2d.draw(body[3]);
+
+      if (body[4] != null) {
+        g2d.setColor(getBobinColor1().darker());
+        g2d.draw(body[4]);
+      }
+      if (body[5] != null) {
+        g2d.setColor(getBobinColor2().darker());
+        g2d.draw(body[5]);
+      }
     }
 
     Color finalLabelColor;
@@ -128,7 +150,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
     if (body == null) {
-      body = new Shape[4];
+      body = new Shape[6];
 
       int x = controlPoint.x;
       int y = controlPoint.y;
@@ -144,6 +166,17 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
       body[0] =
           new Area(new RoundRectangle2D.Double(x + pointMargin - length, y - pointMargin, length, width, edgeRadius,
               edgeRadius));
+
+      if (!getCover()) {
+        int bobinWidth = width / 2;
+        body[4] =
+            new Area(new RoundRectangle2D.Double(x + pointMargin - length, y - pointMargin, length, bobinWidth,
+                bobinWidth, bobinWidth));
+        body[5] =
+            new Area(new RoundRectangle2D.Double(x + pointMargin - length, y - pointMargin + bobinWidth, length,
+                bobinWidth, bobinWidth, bobinWidth));
+      }
+
       body[1] =
           new Area(new RoundRectangle2D.Double(x + pointMargin - length - lipLength, y - pointMargin + width / 2
               - lipWidth / 2, length + 2 * lipLength, lipWidth, edgeRadius / 2, edgeRadius / 2));
@@ -158,12 +191,12 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
       int poleSize = (int) POLE_SIZE.convertToPixels();
       int poleSpacing = (int) POLE_SPACING.convertToPixels();
-      int coilSpacing = (int) COIL_SPACING.convertToPixels();
+      int coilSpacing = width / 2;
       int coilMargin = (width - coilSpacing) / 2;
       int poleMargin = (length - poleSpacing * 5) / 2;
       Area poleArea = new Area();
       for (int i = 0; i < 6; i++) {
-        if (getType() == HumbuckerType.PAF) {
+        if (getType() == HumbuckerType.PAF || !getCover()) {
           Ellipse2D pole =
               new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
                   - pointMargin + coilMargin - poleSize / 2, poleSize, poleSize);
@@ -208,17 +241,31 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     int baseWidth = 16 * width / 32;
     int baseLength = 27 * width / 32;
 
-    g2d.setColor(BODY_COLOR);
+    g2d.setColor(BASE_COLOR);
     g2d.fillRoundRect((width - baseWidth / 4) / 2, 0, baseWidth / 4, height - 1, 2 * width / 32, 2 * width / 32);
-    g2d.setColor(BODY_COLOR.darker());
+    g2d.setColor(BASE_COLOR.darker());
     g2d.drawRoundRect((width - baseWidth / 4) / 2, 0, baseWidth / 4, height - 1, 2 * width / 32, 2 * width / 32);
 
-    g2d.setColor(BODY_COLOR);
+    g2d.setColor(BASE_COLOR);
     g2d.fillRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth, baseLength, 4 * width / 32,
         4 * width / 32);
-    g2d.setColor(BODY_COLOR.darker());
+    g2d.setColor(BASE_COLOR.darker());
     g2d.drawRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth, baseLength, 4 * width / 32,
         4 * width / 32);
+
+    g2d.setColor(BOBIN_COLOR1);
+    g2d.fillRoundRect((width - baseWidth) / 2, (height - baseLength) / 2, baseWidth / 2, baseLength, baseWidth / 2,
+        baseWidth / 2);
+    g2d.setColor(BOBIN_COLOR2);
+    g2d.fillRoundRect(width / 2, (height - baseLength) / 2, baseWidth / 2, baseLength, baseWidth / 2, baseWidth / 2);
+    
+    g2d.setColor(METAL_COLOR);
+    int poleSize = 2;
+    int poleSpacing = 17 * width / 32;
+    for (int i = 0; i < 6; i++) {
+      g2d.fillOval((width - poleSize - baseWidth / 2) / 2, (height - poleSpacing) / 2 + (i * poleSpacing / 5), poleSize, poleSize);
+      g2d.fillOval((width - poleSize + baseWidth / 2) / 2, (height - poleSpacing) / 2 + (i * poleSpacing / 5), poleSize, poleSize);
+    }
   }
 
   @EditableProperty
@@ -230,6 +277,39 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
   public void setType(HumbuckerType type) {
     this.type = type;
+    // Invalidate the body
+    body = null;
+  }
+
+  @EditableProperty(name = "Bobin 1")
+  public Color getBobinColor1() {
+    if (bobinColor1 == null)
+      bobinColor1 = BOBIN_COLOR1;
+    return bobinColor1;
+  }
+
+  public void setBobinColor1(Color bobinColor1) {
+    this.bobinColor1 = bobinColor1;
+  }
+
+  @EditableProperty(name = "Bobin 2")
+  public Color getBobinColor2() {
+    if (bobinColor2 == null)
+      bobinColor2 = BOBIN_COLOR2;
+    return bobinColor2;
+  }
+
+  public void setBobinColor2(Color bobinColor2) {
+    this.bobinColor2 = bobinColor2;
+  }
+
+  @EditableProperty
+  public boolean getCover() {
+    return cover;
+  }
+
+  public void setCover(boolean cover) {
+    this.cover = cover;
     // Invalidate the body
     body = null;
   }

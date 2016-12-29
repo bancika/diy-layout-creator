@@ -299,7 +299,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     // g2d.drawLine(width / 2, 4 * width / 32, width / 2, 4 * width / 32);
     // g2d.drawLine(width / 2, height - 4 * width / 32, width / 2, height - 4 * width / 32);
 
-    g2d.setColor(METAL_COLOR.darker());
+    g2d.setColor(METAL_COLOR);
     int poleSize = 2;
     int poleSpacing = 17 * width / 32;
     for (int i = 0; i < 6; i++) {
