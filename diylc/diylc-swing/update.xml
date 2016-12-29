@@ -1468,6 +1468,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Telecaster bridge pickup added as a variation of single coil pickup</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Mini humbucker pickup added as a variation of Humbucker pickup</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
