@@ -155,19 +155,19 @@ public class LPSwitch extends AbstractTransparentComponent<String> {
       int terminalSpacing = (int) TERMINAL_SPACING.convertToPixels();
 
       GeneralPath terminalPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-      terminalPath.moveTo(x - waferThickness * 3 / 2, bodyY);
+      terminalPath.moveTo(x - waferThickness * 3 / 2, bodyY + 1);
       terminalPath.lineTo(x - waferThickness * 3 / 2, bodyY + baseLength);
       terminalPath.lineTo(x, y + length);
 
-      terminalPath.moveTo(x + waferThickness * 3 / 2, bodyY);
+      terminalPath.moveTo(x + waferThickness * 3 / 2, bodyY + 1);
       terminalPath.lineTo(x + waferThickness * 3 / 2, bodyY + baseLength);
       terminalPath.lineTo(x, y + length);
 
-      terminalPath.moveTo(x - waferThickness * 5 / 2, bodyY);
+      terminalPath.moveTo(x - waferThickness * 5 / 2, bodyY + 1);
       terminalPath.lineTo(x - waferThickness * 5 / 2, bodyY + baseLength);
       terminalPath.lineTo(x - terminalSpacing, y + length);
 
-      terminalPath.moveTo(x + waferThickness * 5 / 2, bodyY);
+      terminalPath.moveTo(x + waferThickness * 5 / 2, bodyY + 1);
       terminalPath.lineTo(x + waferThickness * 5 / 2, bodyY + baseLength);
       terminalPath.lineTo(x + terminalSpacing, y + length);
       body[2] = terminalPath;
@@ -246,8 +246,10 @@ public class LPSwitch extends AbstractTransparentComponent<String> {
     g2d.drawLine(width / 2 + 2, baseLength + (width - baseLength) / 2, width / 2 + 2 - dx, baseLength
         + (width - baseLength) / 2 + dy);
 
-    g2d.drawLine(width / 2 - 5, baseLength + (width - baseLength) / 2, width / 2 - 5 - dx, baseLength + (width - baseLength) / 2 + dy);
-    g2d.drawLine(width / 2 + 5, baseLength + (width - baseLength) / 2, width / 2 + 5 + dx, baseLength + (width - baseLength) / 2 + dy);
+    g2d.drawLine(width / 2 - 5, baseLength + (width - baseLength) / 2, width / 2 - 5 - dx, baseLength
+        + (width - baseLength) / 2 + dy);
+    g2d.drawLine(width / 2 + 5, baseLength + (width - baseLength) / 2, width / 2 + 5 + dx, baseLength
+        + (width - baseLength) / 2 + dy);
   }
 
   @Override
