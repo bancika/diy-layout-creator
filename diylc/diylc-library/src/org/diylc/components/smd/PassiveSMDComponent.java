@@ -31,7 +31,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
 
   private static final long serialVersionUID = 1L;
 
-  public static Color PIN_COLOR = Color.lightGray;
+  public static Color PIN_COLOR = METAL_COLOR;
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.white;
   public static int EDGE_RADIUS = 4;
