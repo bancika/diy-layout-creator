@@ -1424,6 +1424,10 @@
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Fixed the issue with zooming in on traces and similar components that would not change on zooming</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Tube, transistor and potentiometer symbols can be rotated</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

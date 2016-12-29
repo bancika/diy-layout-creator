@@ -141,7 +141,14 @@ public class TreePanel extends JPanel {
         componentType =
             ComponentProcessor.getInstance().extractComponentTypeFrom(
                 (Class<? extends IDIYComponent<?>>) Class.forName(componentClassName));
-        final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(new Payload(componentType), false);
+        Payload payload = new Payload(componentType);
+        final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(payload, false);
+        String text = getSearchField().getText();
+        boolean visible =
+            text.trim().length() == 0 || componentType.getName().toLowerCase().contains(text.toLowerCase())
+                || componentType.getDescription().toLowerCase().contains(text.toLowerCase())
+                || componentType.getCategory().toLowerCase().contains(text.toLowerCase());
+        payload.setVisible(visible);
         getRecentNode().add(componentNode);
       } catch (ClassNotFoundException e) {
         LOG.error("Could not create recent component button for " + componentClassName, e);
