@@ -38,7 +38,7 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color BODY_COLOR = Color.decode("#D0E0EF");
+  public static Color BODY_COLOR = Color.lightGray;
   public static Color BORDER_COLOR = BODY_COLOR.darker();
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();

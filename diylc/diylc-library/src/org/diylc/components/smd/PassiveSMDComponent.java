@@ -1,6 +1,5 @@
 package org.diylc.components.smd;
 
-
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -24,8 +23,6 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.annotations.PositiveMeasureValidator;
-import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -34,7 +31,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
 
   private static final long serialVersionUID = 1L;
 
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
+  public static Color PIN_COLOR = Color.lightGray;
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.white;
   public static int EDGE_RADIUS = 4;

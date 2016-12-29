@@ -36,7 +36,7 @@ public class TerminalStrip extends AbstractTransparentComponent<String> {
 
   public static Color BOARD_COLOR = Color.decode("#CD8500");
   public static Color BORDER_COLOR = BOARD_COLOR.darker();
-  public static Color TERMINAL_COLOR = Color.decode("#C3E4ED");
+  public static Color TERMINAL_COLOR = Color.lightGray;
   public static Color TERMINAL_BORDER_COLOR = TERMINAL_COLOR.darker();
   public static int EDGE_RADIUS = 2;
   public static Size HOLE_SIZE = new Size(0.06d, SizeUnit.in);
