@@ -249,7 +249,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     }
   }
 
-  @EditableProperty(name = "Kind")
+  @EditableProperty(name = "Type")
   public P90Type getType() {
     return type;
   }
