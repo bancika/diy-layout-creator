@@ -11,7 +11,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Schottky diode (schematic symbol)", author = "Branislav Stojkovic",
+@ComponentDescriptor(name = "Schottky Siode (symbol)", author = "Branislav Stojkovic",
     category = "Schematics", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D",
     description = "Schottky diode schematic symbol", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")

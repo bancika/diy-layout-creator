@@ -12,7 +12,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
-@ComponentDescriptor(name = "JFET Symbol", author = "Branislav Stojkovic", category = "Schematics",
+@ComponentDescriptor(name = "JFET (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "Q", description = "JFET transistor schematic symbol", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE,
     keywordTag = "Schematic")

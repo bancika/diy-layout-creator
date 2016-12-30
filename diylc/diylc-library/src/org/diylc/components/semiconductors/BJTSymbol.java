@@ -14,7 +14,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
-@ComponentDescriptor(name = "BJT Symbol", author = "Branislav Stojkovic", category = "Schematics",
+@ComponentDescriptor(name = "BJT (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "Q", description = "Bipolar junction transistor schematic symbol", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE,
     keywordTag = "Schematic")

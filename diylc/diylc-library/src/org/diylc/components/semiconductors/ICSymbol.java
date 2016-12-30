@@ -31,7 +31,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "IC Symbol", author = "Branislav Stojkovic", category = "Schematics",
+@ComponentDescriptor(name = "IC (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "IC", description = "IC symbol with 3 or 5 contacts", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, rotatable = false, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE,
     keywordTag = "Schematic")

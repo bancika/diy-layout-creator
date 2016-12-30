@@ -25,7 +25,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(
-    name = "Transformer Coil Symbol",
+    name = "Transformer Coil (symbol)",
     author = "Branislav Stojkovic",
     category = "Schematics",
     instanceNamePrefix = "L",

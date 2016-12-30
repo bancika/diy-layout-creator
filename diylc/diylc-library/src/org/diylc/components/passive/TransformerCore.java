@@ -24,7 +24,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(
-    name = "Transformer Core Symbol",
+    name = "Transformer Core (symbol)",
     author = "Branislav Stojkovic",
     category = "Schematics",
     instanceNamePrefix = "T",

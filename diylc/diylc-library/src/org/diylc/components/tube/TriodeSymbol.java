@@ -14,7 +14,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
-@ComponentDescriptor(name = "Triode Symbol", author = "Branislav Stojkovic", category = "Schematics",
+@ComponentDescriptor(name = "Triode (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "V", description = "Triode tube symbol", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, rotatable = false, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class TriodeSymbol extends AbstractTubeSymbol {

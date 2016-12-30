@@ -14,7 +14,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
-@ComponentDescriptor(name = "Pentode Symbol", author = "Branislav Stojkovic", category = "Schematics",
+@ComponentDescriptor(name = "Pentode (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "V", description = "Pentode tube symbol", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, rotatable = false, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class PentodeSymbol extends AbstractTubeSymbol {

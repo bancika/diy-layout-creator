@@ -17,7 +17,7 @@ import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Inductor (schematic symbol)", author = "Branislav Stojkovic", category = "Schematics",
+@ComponentDescriptor(name = "Inductor (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",
     description = "Inductor schematic symbol", zOrder = IDIYComponent.COMPONENT,
         keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
