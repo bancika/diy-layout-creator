@@ -12,9 +12,11 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -51,12 +53,14 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private JackType type = JackType.MONO;
+  private boolean showLabels = true;
 
   public OpenJack1_4() {
     super();
     updateControlPoints();
   }
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -122,6 +126,48 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
     g2d.draw(body[2]);
     if (body[3] != null)
       g2d.draw(body[3]);
+
+    // draw labels
+    if (showLabels) {
+      g2d.setColor(BASE_COLOR.darker());
+      g2d.setFont(LABEL_FONT.deriveFont(LABEL_FONT.getSize2D() * 0.8f));
+      int springLength = (int) SPRING_LENGTH.convertToPixels();
+      int holeToEdge = (int) HOLE_TO_EDGE.convertToPixels();
+      int centerY = controlPoints[0].y + springLength - holeToEdge;
+      Point tipLabel = new Point(controlPoints[0].x, (int) (controlPoints[0].y + holeToEdge * 1.25));
+      AffineTransform ringTransform = AffineTransform.getRotateInstance(Math.PI * 0.795, controlPoints[0].x, centerY);
+      AffineTransform sleeveTransform = AffineTransform.getRotateInstance(Math.PI * 0.295, controlPoints[0].x, centerY);
+      Point ringLabel = new Point(0, 0);
+      Point sleeveLabel = new Point(0, 0);
+      ringTransform.transform(tipLabel, ringLabel);
+      sleeveTransform.transform(tipLabel, sleeveLabel);
+      double theta = 0;
+      // Rotate if needed
+      if (orientation != Orientation.DEFAULT) {
+        switch (orientation) {
+          case _90:
+            theta = Math.PI / 2;
+            break;
+          case _180:
+            theta = Math.PI;
+            break;
+          case _270:
+            theta = Math.PI * 3 / 2;
+            break;
+        }
+      }
+
+      if (theta != 0) {
+        AffineTransform rotation = AffineTransform.getRotateInstance(theta, controlPoints[0].x, controlPoints[0].y);
+        rotation.transform(tipLabel, tipLabel);
+        rotation.transform(ringLabel, ringLabel);
+        rotation.transform(sleeveLabel, sleeveLabel);
+      }
+      drawCenteredText(g2d, "T", tipLabel.x, tipLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      drawCenteredText(g2d, "S", sleeveLabel.x, sleeveLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      if (getType() == JackType.STEREO)
+        drawCenteredText(g2d, "R", ringLabel.x, ringLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    }
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -338,5 +384,14 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
     updateControlPoints();
     // Invalidate the body
     body = null;
+  }
+
+  @EditableProperty(name = "Labels")
+  public boolean getShowLabels() {
+    return showLabels;
+  }
+
+  public void setShowLabels(boolean showLabels) {
+    this.showLabels = showLabels;
   }
 }
