@@ -1082,7 +1082,7 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       this.xAxisFirst = xAxisFirst;
-      putValue(AbstractAction.NAME, xAxisFirst ? "X Axis First" : "Y Axis First");
+      putValue(AbstractAction.NAME, xAxisFirst ? "Top-to-Bottom" : "Left-to-Right");
     }
 
     @Override
