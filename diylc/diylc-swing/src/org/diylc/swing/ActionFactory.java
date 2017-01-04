@@ -144,7 +144,7 @@ public class ActionFactory {
   public RotateSelectionAction createRotateSelectionAction(IPlugInPort plugInPort, int direction) {
     return new RotateSelectionAction(plugInPort, direction);
   }
-  
+
   public MirrorSelectionAction createMirrorSelectionAction(IPlugInPort plugInPort, int direction) {
     return new MirrorSelectionAction(plugInPort, direction);
   }
@@ -771,7 +771,7 @@ public class ActionFactory {
     public EditProjectAction(IPlugInPort plugInPort) {
       super();
       this.plugInPort = plugInPort;
-      putValue(AbstractAction.NAME, "Edit Project");
+      putValue(AbstractAction.NAME, "Edit Project Settings");
       putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentEdit.getIcon());
     }
 
@@ -926,7 +926,7 @@ public class ActionFactory {
       plugInPort.rotateSelection(direction);
     }
   }
-  
+
   public static class MirrorSelectionAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
@@ -940,10 +940,12 @@ public class ActionFactory {
       this.direction = direction;
       if (direction == ISelectionProcessor.HORIZONTAL) {
         putValue(AbstractAction.NAME, "Mirror Horizontally");
-        putValue(AbstractAction.SMALL_ICON, IconLoader.FlipHorizontal.getIcon());        
+        putValue(AbstractAction.SMALL_ICON, IconLoader.FlipHorizontal.getIcon());
+        putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.ALT_MASK));
       } else {
         putValue(AbstractAction.NAME, "Mirror Vertically");
-        putValue(AbstractAction.SMALL_ICON, IconLoader.FlipVertical.getIcon());        
+        putValue(AbstractAction.SMALL_ICON, IconLoader.FlipVertical.getIcon());
+        putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.ALT_MASK));
       }
     }
 
@@ -1043,7 +1045,7 @@ public class ActionFactory {
     }
   }
 
-  public static class ComponentBrowserAction extends AbstractAction {    
+  public static class ComponentBrowserAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
 
@@ -1055,8 +1057,10 @@ public class ActionFactory {
       putValue(AbstractAction.NAME, browserType);
       putValue(IView.RADIO_BUTTON_GROUP_KEY, "componentBrowser");
 
-      putValue(AbstractAction.SELECTED_KEY,
-          browserType.equals(ConfigurationManager.getInstance().readString(ConfigPlugin.COMPONENT_BROWSER, ConfigPlugin.SEARCHABLE_TREE)));
+      putValue(
+          AbstractAction.SELECTED_KEY,
+          browserType.equals(ConfigurationManager.getInstance().readString(ConfigPlugin.COMPONENT_BROWSER,
+              ConfigPlugin.SEARCHABLE_TREE)));
     }
 
     @Override

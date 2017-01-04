@@ -559,7 +559,7 @@ public class Presenter implements IPlugInPort {
                 || !newSelection.contains(topComponent)) {
               newSelection.clear();
             }
-                        
+
             newSelection.addAll(findAllGroupedComponents(topComponent));
           }
         }
@@ -575,7 +575,8 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public boolean keyPressed(int key, boolean ctrlDown, boolean shiftDown, boolean altDown) {
-    if (key != VK_DOWN && key != VK_LEFT && key != VK_UP && key != VK_RIGHT) {
+    if (key != VK_DOWN && key != VK_LEFT && key != VK_UP && key != VK_RIGHT && key != IKeyProcessor.VK_H
+        && key != IKeyProcessor.VK_V) {
       return false;
     }
     LOG.debug(String.format("keyPressed(%s, %s, %s, %s)", key, ctrlDown, shiftDown, altDown));
@@ -609,6 +610,12 @@ public class Presenter implements IPlugInPort {
       } else if (key == IKeyProcessor.VK_LEFT) {
         oldProject = currentProject.clone();
         rotateComponents(this.selectedComponents, -1, snapToGrid);
+      } else if (key == IKeyProcessor.VK_H) {
+        oldProject = currentProject.clone();
+        mirrorSelection(ISelectionProcessor.HORIZONTAL);
+      } else if (key == IKeyProcessor.VK_V) {
+        oldProject = currentProject.clone();
+        mirrorSelection(ISelectionProcessor.VERTICAL);
       } else
         return false;
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
@@ -1898,12 +1905,14 @@ public class Presenter implements IPlugInPort {
     ComponentType selectedType = null;
     Iterator<IDIYComponent<?>> iterator = this.selectedComponents.iterator();
     while (iterator.hasNext()) {
-      ComponentType type = ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) iterator.next().getClass());
+      ComponentType type =
+          ComponentProcessor.getInstance().extractComponentTypeFrom(
+              (Class<? extends IDIYComponent<?>>) iterator.next().getClass());
       if (selectedType == null)
         selectedType = type;
       else if (selectedType.getInstanceClass() != type.getInstanceClass())
         throw new RuntimeException("Template can be applied on multiple components of the same type only");
-    }        
+    }
     return getTemplatesFor(selectedType.getCategory(), selectedType.getName());
   }
 

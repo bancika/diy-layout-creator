@@ -1508,6 +1508,26 @@
 				</org.diylc.appframework.update.Change>																
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>	
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>35</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2016-12-30 20:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Mirror selection horizontally and vertically</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Consolidated context menu items</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
 	</a>
 </java.util.Arrays_-ArrayList>

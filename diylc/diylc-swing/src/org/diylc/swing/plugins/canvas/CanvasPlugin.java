@@ -138,6 +138,10 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
                 getUngroupAction().setEnabled(enabled);
                 getSendToBackAction().setEnabled(enabled);
                 getBringToFrontAction().setEnabled(enabled);
+                getRotateClockwiseAction().setEnabled(enabled);
+                getRotateCounterclockwiseAction().setEnabled(enabled);
+                getMirrorHorizontallyAction().setEnabled(enabled);
+                getMirrorVerticallyAction().setEnabled(enabled);
 
                 getSaveAsTemplateAction().setEnabled(plugInPort.getSelectedComponents().size() == 1);
 
@@ -280,14 +284,18 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   public JMenu getTransformMenu() {
     if (transformMenu == null) {
       transformMenu = new JMenu("Transform Selection");
+      transformMenu.setIcon(IconLoader.MagicWand.getIcon());
       transformMenu.add(getRotateClockwiseAction());
       transformMenu.add(getRotateCounterclockwiseAction());
+      transformMenu.addSeparator();
       transformMenu.add(getMirrorHorizontallyAction());
       transformMenu.add(getMirrorVerticallyAction());
-      transformMenu.add(getGroupAction());
-      transformMenu.add(getUngroupAction());
+      transformMenu.addSeparator();
       transformMenu.add(getSendToBackAction());
       transformMenu.add(getBringToFrontAction());
+      transformMenu.addSeparator();
+      transformMenu.add(getGroupAction());
+      transformMenu.add(getUngroupAction());
     }
     return transformMenu;
   }

@@ -13,6 +13,7 @@ import org.diylc.appframework.undo.UndoHandler;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ISelectionProcessor;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.Project;
 import org.diylc.images.IconLoader;
@@ -22,6 +23,7 @@ import org.diylc.swing.ISwingUI;
 public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
   private static final String EDIT_TITLE = "Edit";
+  private static final String TRANSFORM_TITLE = "Transform Selection";
   private static final String RENUMBER_TITLE = "Renumber Selection";
   private static final String EXPAND_TITLE = "Expand Selection";
 
@@ -47,6 +49,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.SaveAsTemplateAction saveAsTemplateAction;
   private ActionFactory.RotateSelectionAction rotateClockwiseAction;
   private ActionFactory.RotateSelectionAction rotateCounterClockwiseAction;
+  private ActionFactory.MirrorSelectionAction mirrorHorizontallyAction;
+  private ActionFactory.MirrorSelectionAction mirrorVerticallyAction;
 
   private UndoHandler<Project> undoHandler;
 
@@ -197,6 +201,22 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     }
     return rotateCounterClockwiseAction;
   }
+  
+  public ActionFactory.MirrorSelectionAction getMirrorHorizontallyAction() {
+    if (mirrorHorizontallyAction == null) {
+      mirrorHorizontallyAction =
+          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, ISelectionProcessor.HORIZONTAL);
+    }
+    return mirrorHorizontallyAction;
+  }
+
+  public ActionFactory.MirrorSelectionAction getMirrorVerticallyAction() {
+    if (mirrorVerticallyAction == null) {
+      mirrorVerticallyAction =
+          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, ISelectionProcessor.VERTICAL);
+    }
+    return mirrorVerticallyAction;
+  }
 
   @Override
   public void connect(IPlugInPort plugInPort) {
@@ -214,14 +234,20 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     swingUI.injectMenuAction(actionFactory.createSelectAllAction(plugInPort), EDIT_TITLE);
     swingUI.injectMenuAction(getEditSelectionAction(), EDIT_TITLE);
     swingUI.injectMenuAction(getDeleteSelectionAction(), EDIT_TITLE);
-    swingUI.injectMenuAction(getRotateClockwiseAction(), EDIT_TITLE);
-    swingUI.injectMenuAction(getRotateCounterclockwiseAction(), EDIT_TITLE);
-    swingUI.injectMenuAction(getSendToBackAction(), EDIT_TITLE);
-    swingUI.injectMenuAction(getBringToFrontAction(), EDIT_TITLE);
-    swingUI.injectMenuAction(getGroupAction(), EDIT_TITLE);
-    swingUI.injectMenuAction(getUngroupAction(), EDIT_TITLE);
+    swingUI.injectSubmenu(TRANSFORM_TITLE, IconLoader.MagicWand.getIcon(), EDIT_TITLE);
+    swingUI.injectMenuAction(getRotateClockwiseAction(), TRANSFORM_TITLE);
+    swingUI.injectMenuAction(getRotateCounterclockwiseAction(), TRANSFORM_TITLE);
+    swingUI.injectMenuAction(null, TRANSFORM_TITLE);
+    swingUI.injectMenuAction(getMirrorHorizontallyAction(), TRANSFORM_TITLE);
+    swingUI.injectMenuAction(getMirrorVerticallyAction(), TRANSFORM_TITLE);
+    swingUI.injectMenuAction(null, TRANSFORM_TITLE);
+    swingUI.injectMenuAction(getSendToBackAction(), TRANSFORM_TITLE);
+    swingUI.injectMenuAction(getBringToFrontAction(), TRANSFORM_TITLE);
+    swingUI.injectMenuAction(null, TRANSFORM_TITLE);
+    swingUI.injectMenuAction(getGroupAction(), TRANSFORM_TITLE);
+    swingUI.injectMenuAction(getUngroupAction(), TRANSFORM_TITLE);
     swingUI.injectMenuAction(null, EDIT_TITLE);
-    swingUI.injectMenuAction(getSaveAsTemplateAction(), EDIT_TITLE);
+//    swingUI.injectMenuAction(getSaveAsTemplateAction(), EDIT_TITLE);
     swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(), EDIT_TITLE);
     swingUI.injectMenuAction(getRenumberXAxisAction(), RENUMBER_TITLE);
     swingUI.injectMenuAction(getRenumberYAxisAction(), RENUMBER_TITLE);
@@ -277,6 +303,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     getBringToFrontAction().setEnabled(enabled);
     getRotateClockwiseAction().setEnabled(enabled);
     getRotateCounterclockwiseAction().setEnabled(enabled);
+    getMirrorHorizontallyAction().setEnabled(enabled);
+    getMirrorVerticallyAction().setEnabled(enabled);
     getSaveAsTemplateAction().setEnabled(enabled);
   }
 

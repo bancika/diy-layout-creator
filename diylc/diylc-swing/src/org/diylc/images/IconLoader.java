@@ -37,7 +37,7 @@ public enum IconLoader {
       "nav_right_blue.png"), MissingImage("missing_image.png"), CloudBg("cloud_bg.png"), CloudBig("cloud_big.png"), CloudWait(
       "cloud_wait.png"), Spinning("spinning.gif"), Megaphone("megaphone.png"), Download("download.png"), Eye("eye.png"), Messages(
       "messages.png"), SearchBox("search-box.png"), Screwdriver("screwdriver.png"), Hammer("hammer.png"), FlipHorizontal("flip_horizontal.png"),
-      FlipVertical("flip_vertical.png");
+      FlipVertical("flip_vertical.png"), MagicWand("magic_wand.png");
 
   protected String name;
 
