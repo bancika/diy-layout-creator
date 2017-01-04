@@ -41,6 +41,7 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.common.IKeyProcessor;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ISelectionProcessor;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.PropertyWrapper;
@@ -96,7 +97,7 @@ public class Presenter implements IPlugInPort {
   // Maps component class names to ComponentType objects.
   private List<IPlugIn> plugIns;
 
-  private List<IDIYComponent<?>> selectedComponents;
+  private Set<IDIYComponent<?>> selectedComponents;
   // Maps components that have at least one dragged point to set of indices
   // that designate which of their control points are being dragged.
   private Map<IDIYComponent<?>, Set<Integer>> controlPointMap;
@@ -131,7 +132,7 @@ public class Presenter implements IPlugInPort {
     this.view = view;
     plugIns = new ArrayList<IPlugIn>();
     messageDispatcher = new MessageDispatcher<EventType>(true);
-    selectedComponents = new ArrayList<IDIYComponent<?>>();
+    selectedComponents = new HashSet<IDIYComponent<?>>();
     lockedComponents = new HashSet<IDIYComponent<?>>();
     currentProject = new Project();
     // cloner = new Cloner();
@@ -558,6 +559,7 @@ public class Presenter implements IPlugInPort {
                 || !newSelection.contains(topComponent)) {
               newSelection.clear();
             }
+                        
             newSelection.addAll(findAllGroupedComponents(topComponent));
           }
         }
@@ -754,7 +756,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public List<IDIYComponent<?>> getSelectedComponents() {
+  public Collection<IDIYComponent<?>> getSelectedComponents() {
     return selectedComponents;
   }
 
@@ -1056,6 +1058,7 @@ public class Presenter implements IPlugInPort {
   @Override
   public void rotateSelection(int direction) {
     if (!selectedComponents.isEmpty()) {
+      LOG.trace("Rotating selected components");
       Project oldProject = currentProject.clone();
       rotateComponents(this.selectedComponents, direction, isSnapToGrid());
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
@@ -1069,7 +1072,7 @@ public class Presenter implements IPlugInPort {
    * @param direction 1 for clockwise, -1 for counter-clockwise
    */
   @SuppressWarnings("unchecked")
-  private void rotateComponents(List<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
+  private void rotateComponents(Collection<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
     Point center = getCenterOf(components, snapToGrid);
 
     AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x, center.y);
@@ -1129,7 +1132,56 @@ public class Presenter implements IPlugInPort {
     }
   }
 
-  private Point getCenterOf(List<IDIYComponent<?>> components, boolean snapToGrid) {
+  @SuppressWarnings("unchecked")
+  @Override
+  public void mirrorSelection(int direction) {
+    if (!selectedComponents.isEmpty()) {
+      LOG.trace("Mirroring selected components");
+      Project oldProject = currentProject.clone();
+
+      Point center = getCenterOf(selectedComponents, isSnapToGrid());
+
+      boolean canMirror = true;
+      for (IDIYComponent<?> component : selectedComponents) {
+        ComponentType type =
+            ComponentProcessor.getInstance().extractComponentTypeFrom(
+                (Class<? extends IDIYComponent<?>>) component.getClass());
+        if (!type.isStretchable() && component.getControlPointCount() > 1) {
+          canMirror = false;
+          break;
+        }
+      }
+
+      if (!canMirror)
+        if (view.showConfirmDialog(
+            "Selection contains components that cannot bi mirrored. Do you want to exclude them?", "Mirror Selection",
+            IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
+          return;
+
+      for (IDIYComponent<?> component : selectedComponents) {
+        ComponentType type =
+            ComponentProcessor.getInstance().extractComponentTypeFrom(
+                (Class<? extends IDIYComponent<?>>) component.getClass());
+        if (type.isStretchable() || component.getControlPointCount() == 1) {
+          drawingManager.invalidateComponent(component);
+          for (int i = 0; i < component.getControlPointCount(); i++) {
+            Point p = component.getControlPoint(i);
+            if (direction == ISelectionProcessor.HORIZONTAL) {
+              component.setControlPoint(new Point(p.x - 2 * (p.x - center.x), p.y), i);
+            } else {
+              component.setControlPoint(new Point(p.x, p.y - 2 * (p.y - center.y)), i);
+            }
+          }
+        }
+      }
+
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
+          "Mirror Selection");
+      messageDispatcher.dispatchMessage(EventType.REPAINT);
+    }
+  }
+
+  private Point getCenterOf(Collection<IDIYComponent<?>> components, boolean snapToGrid) {
     // Determine center of rotation
     int minX = Integer.MAX_VALUE;
     int minY = Integer.MAX_VALUE;
@@ -1455,8 +1507,8 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
-  public void updateSelection(List<IDIYComponent<?>> newSelection) {
-    this.selectedComponents = newSelection;
+  public void updateSelection(Collection<IDIYComponent<?>> newSelection) {
+    this.selectedComponents = new HashSet<IDIYComponent<?>>(newSelection);
     Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
     for (IDIYComponent<?> component : selectedComponents) {
       Set<Integer> indices = new HashSet<Integer>();
@@ -1843,17 +1895,15 @@ public class Presenter implements IPlugInPort {
     if (this.selectedComponents.isEmpty()) {
       throw new RuntimeException("No components selected");
     }
-    ComponentType selectedType =
-        ComponentProcessor.getInstance().extractComponentTypeFrom(
-            (Class<? extends IDIYComponent<?>>) this.selectedComponents.get(0).getClass());
-    for (int i = 1; i < this.selectedComponents.size(); i++) {
-      ComponentType newType =
-          ComponentProcessor.getInstance().extractComponentTypeFrom(
-              (Class<? extends IDIYComponent<?>>) this.selectedComponents.get(i).getClass());
-      if (newType.getInstanceClass() != selectedType.getInstanceClass()) {
+    ComponentType selectedType = null;
+    Iterator<IDIYComponent<?>> iterator = this.selectedComponents.iterator();
+    while (iterator.hasNext()) {
+      ComponentType type = ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) iterator.next().getClass());
+      if (selectedType == null)
+        selectedType = type;
+      else if (selectedType.getInstanceClass() != type.getInstanceClass())
         throw new RuntimeException("Template can be applied on multiple components of the same type only");
-      }
-    }
+    }        
     return getTemplatesFor(selectedType.getCategory(), selectedType.getName());
   }
 

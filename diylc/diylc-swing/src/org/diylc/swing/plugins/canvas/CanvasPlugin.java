@@ -32,6 +32,7 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ISelectionProcessor;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
@@ -55,6 +56,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private JPopupMenu popupMenu;
   private JMenu selectionMenu;
   private JMenu expandMenu;
+  private JMenu transformMenu;
   private JMenu applyTemplateMenu;
 
   private ActionFactory.CutAction cutAction;
@@ -72,6 +74,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
   private ActionFactory.RotateSelectionAction rotateClockwiseAction;
   private ActionFactory.RotateSelectionAction rotateCounterclockwiseAction;
+  private ActionFactory.MirrorSelectionAction mirrorHorizontallyAction;
+  private ActionFactory.MirrorSelectionAction mirrorVerticallyAction;
 
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
@@ -244,12 +248,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       popupMenu.addSeparator();
       popupMenu.add(getEditSelectionAction());
       popupMenu.add(getDeleteSelectionAction());
-      popupMenu.add(getRotateClockwiseAction());
-      popupMenu.add(getRotateCounterclockwiseAction());
-      popupMenu.add(getGroupAction());
-      popupMenu.add(getUngroupAction());
-      popupMenu.add(getSendToBackAction());
-      popupMenu.add(getBringToFrontAction());
+      popupMenu.add(getTransformMenu());
       popupMenu.add(getSaveAsTemplateAction());
       popupMenu.add(getApplyTemplateMenu());
       popupMenu.add(getExpandMenu());
@@ -276,6 +275,21 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       expandMenu.add(getExpandSelectionSameTypeAction());
     }
     return expandMenu;
+  }
+
+  public JMenu getTransformMenu() {
+    if (transformMenu == null) {
+      transformMenu = new JMenu("Transform Selection");
+      transformMenu.add(getRotateClockwiseAction());
+      transformMenu.add(getRotateCounterclockwiseAction());
+      transformMenu.add(getMirrorHorizontallyAction());
+      transformMenu.add(getMirrorVerticallyAction());
+      transformMenu.add(getGroupAction());
+      transformMenu.add(getUngroupAction());
+      transformMenu.add(getSendToBackAction());
+      transformMenu.add(getBringToFrontAction());
+    }
+    return transformMenu;
   }
 
   public JMenu getApplyTemplateMenu() {
@@ -382,6 +396,22 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       rotateCounterclockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, -1);
     }
     return rotateCounterclockwiseAction;
+  }
+
+  public ActionFactory.MirrorSelectionAction getMirrorHorizontallyAction() {
+    if (mirrorHorizontallyAction == null) {
+      mirrorHorizontallyAction =
+          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, ISelectionProcessor.HORIZONTAL);
+    }
+    return mirrorHorizontallyAction;
+  }
+
+  public ActionFactory.MirrorSelectionAction getMirrorVerticallyAction() {
+    if (mirrorVerticallyAction == null) {
+      mirrorVerticallyAction =
+          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, ISelectionProcessor.VERTICAL);
+    }
+    return mirrorVerticallyAction;
   }
 
   public ActionFactory.SaveAsTemplateAction getSaveAsTemplateAction() {

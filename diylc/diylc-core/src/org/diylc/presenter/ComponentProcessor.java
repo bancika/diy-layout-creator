@@ -6,8 +6,10 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -185,19 +187,22 @@ public class ComponentProcessor {
    * @param selectedComponents
    * @return
    */
-  public List<PropertyWrapper> getMutualSelectionProperties(List<IDIYComponent<?>> selectedComponents) throws Exception {
+  public List<PropertyWrapper> getMutualSelectionProperties(Collection<IDIYComponent<?>> selectedComponents) throws Exception {
     if (selectedComponents.isEmpty()) {
       return null;
     }
     List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
-    IDIYComponent<?> firstComponent = selectedComponents.get(0);
+    
+    List<IDIYComponent<?>> selectedList = new ArrayList<IDIYComponent<?>>(selectedComponents);    
+    
+    IDIYComponent<?> firstComponent = selectedList.get(0);
     properties.addAll(extractProperties(firstComponent.getClass()));
     // Initialize values
     for (PropertyWrapper property : properties) {
       property.readFrom(firstComponent);
     }
     for (int i = 1; i < selectedComponents.size(); i++) {
-      IDIYComponent<?> component = selectedComponents.get(i);
+      IDIYComponent<?> component = selectedList.get(i);
       List<PropertyWrapper> newProperties = extractProperties(component.getClass());
       for (PropertyWrapper property : newProperties) {
         property.readFrom(component);
@@ -219,14 +224,6 @@ public class ComponentProcessor {
           }
         }
       }
-      // for (PropertyWrapper property : properties) {
-      // try {
-      // property.readUniqueFrom(component);
-      // } catch (Exception e) {
-      // // TODO Auto-generated catch block
-      // e.printStackTrace();
-      // }
-      // }
     }
     Collections.sort(properties, ComparatorFactory.getInstance().getDefaultPropertyComparator());
     return properties;

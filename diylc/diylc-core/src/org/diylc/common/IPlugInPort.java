@@ -242,16 +242,6 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   void setMetric(boolean isMetric);
 
   /**
-   * Groups all selected components.
-   */
-  void groupSelectedComponents();
-
-  /**
-   * Ungroups all selected components.
-   */
-  void ungroupSelectedComponents();
-
-  /**
    * Locks or unlocks the specified layer. All components within +- 0.5 range will be affected by
    * the change as well.
    * 

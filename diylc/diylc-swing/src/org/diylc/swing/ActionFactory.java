@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ISelectionProcessor;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ExpansionMode;
@@ -141,6 +143,10 @@ public class ActionFactory {
 
   public RotateSelectionAction createRotateSelectionAction(IPlugInPort plugInPort, int direction) {
     return new RotateSelectionAction(plugInPort, direction);
+  }
+  
+  public MirrorSelectionAction createMirrorSelectionAction(IPlugInPort plugInPort, int direction) {
+    return new MirrorSelectionAction(plugInPort, direction);
   }
 
   public SendToBackAction createSendToBackAction(IPlugInPort plugInPort) {
@@ -681,7 +687,7 @@ public class ActionFactory {
     }
   }
 
-  private static List<IDIYComponent<?>> cloneComponents(List<IDIYComponent<?>> components) {
+  private static List<IDIYComponent<?>> cloneComponents(Collection<IDIYComponent<?>> components) {
     List<IDIYComponent<?>> result = new ArrayList<IDIYComponent<?>>(components.size());
     for (IDIYComponent<?> component : components) {
       try {
@@ -918,6 +924,33 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("Rotate Selection triggered: " + direction);
       plugInPort.rotateSelection(direction);
+    }
+  }
+  
+  public static class MirrorSelectionAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+    private int direction;
+
+    public MirrorSelectionAction(IPlugInPort plugInPort, int direction) {
+      super();
+      this.plugInPort = plugInPort;
+      this.direction = direction;
+      if (direction == ISelectionProcessor.HORIZONTAL) {
+        putValue(AbstractAction.NAME, "Mirror Horizontally");
+        putValue(AbstractAction.SMALL_ICON, IconLoader.FlipHorizontal.getIcon());        
+      } else {
+        putValue(AbstractAction.NAME, "Mirror Vertically");
+        putValue(AbstractAction.SMALL_ICON, IconLoader.FlipVertical.getIcon());        
+      }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("Mirror Selection triggered: " + direction);
+      plugInPort.mirrorSelection(direction);
     }
   }
 

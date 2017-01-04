@@ -296,7 +296,7 @@ public class StatusBar extends JPanel implements IPlugIn {
         }
         break;
       case SELECTION_CHANGED:
-        List<IDIYComponent<?>> selection = (List<IDIYComponent<?>>) params[0];
+        Collection<IDIYComponent<?>> selection = (Collection<IDIYComponent<?>>) params[0];
         Collection<IDIYComponent<?>> stuckComponents = (Collection<IDIYComponent<?>>) params[1];
         Collection<String> componentNames = new HashSet<String>();
         for (IDIYComponent<?> component : selection) {
