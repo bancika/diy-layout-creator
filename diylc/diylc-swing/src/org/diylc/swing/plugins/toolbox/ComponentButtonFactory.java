@@ -97,7 +97,7 @@ public class ComponentButtonFactory {
       // Customize item size to fit the delete button
       public java.awt.Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        return new Dimension(d.width + 18, d.height);
+        return new Dimension(d.width + 32, d.height);
       }
     };
     item.addActionListener(new ActionListener() {
@@ -107,7 +107,30 @@ public class ComponentButtonFactory {
         plugInPort.setNewComponentTypeSlot(componentType, template);
       }
     });
-    JLabel label = new JLabel(IconLoader.Garbage.getIcon());
+
+    JLabel label = new JLabel(template.isDefaultFlag() ? IconLoader.PinGreen.getIcon() : IconLoader.PinGrey.getIcon());
+    label.setToolTipText(template.isDefaultFlag() ? "Remove default template" : "Set default template");
+    label.addMouseListener(new MouseAdapter() {
+
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        // Hide the menu
+        Container c = item.getParent();
+        if (c != null && c instanceof JPopupMenu) {
+          JPopupMenu m = (JPopupMenu) c;
+          m.setVisible(false);
+        }
+        plugInPort.setTemplateDefault(componentType.getCategory(), componentType.getName(), template.getName(),
+            !template.isDefaultFlag());
+        e.consume();
+      }
+    });
+    Border margin = new EmptyBorder(4, 0, 0, 0);
+    label.setBorder(margin);
+    item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+    item.add(label);
+
+    label = new JLabel(IconLoader.Garbage.getIcon());
     label.setToolTipText("Delete template");
     label.addMouseListener(new MouseAdapter() {
 
@@ -129,7 +152,7 @@ public class ComponentButtonFactory {
         e.consume();
       }
     });
-    Border margin = new EmptyBorder(4, 0, 0, 0);
+    margin = new EmptyBorder(4, 2, 0, 0);
     label.setBorder(margin);
     item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
     item.add(label);

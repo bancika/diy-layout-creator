@@ -1790,6 +1790,18 @@ public class Presenter implements IPlugInPort {
       setNewComponentTypeSlot(null, null);
       return;
     }
+    
+    // try to find a default template if none is provided
+    if (componentType != null && template == null) {
+      List<Template> templates = getTemplatesFor(componentType.getCategory(), componentType.getName());
+      for (Template t : templates) {
+        if (t.isDefaultFlag()) {
+          template = t;
+          break;
+        }
+      }
+    }
+    
     try {
       instantiationManager.setComponentTypeSlot(componentType, template, currentProject);
       if (componentType != null) {
@@ -1854,7 +1866,7 @@ public class Presenter implements IPlugInPort {
       point.translate(-x, -y);
     }
 
-    Template template = new Template(templateName, values, points);
+    Template template = new Template(templateName, values, points, false);
     boolean exists = false;
     for (Template t : templates) {
       if (t.getName().equalsIgnoreCase(templateName)) {
@@ -1958,6 +1970,24 @@ public class Presenter implements IPlugInPort {
         }
       }
     }
+    ConfigurationManager.getInstance().saveConfigration();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public void setTemplateDefault(String categoryName, String componentTypeName, String templateName, boolean defaultFlag) {
+    Map<String, List<Template>> templateMap =
+        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+    if (templateMap != null) {
+      List<Template> templates = templateMap.get(categoryName + "." + componentTypeName);
+      if (templates != null) {
+        for (Template template : templates)
+          template.setDefaultFlag(defaultFlag && templateName.equals(template.getName()));
+        ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, templateMap);
+        return;
+      }
+    }
+    throw new RuntimeException("Could not find the specified template.");
   }
 
   private Set<IDIYComponent<?>> getLockedComponents() {

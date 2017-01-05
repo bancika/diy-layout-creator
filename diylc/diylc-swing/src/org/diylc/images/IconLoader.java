@@ -36,8 +36,9 @@ public enum IconLoader {
       "cloud_edit.png"), CloudUpload("cloud_upload.png"), NavLeftBlue("nav_left_blue.png"), NavRightBlue(
       "nav_right_blue.png"), MissingImage("missing_image.png"), CloudBg("cloud_bg.png"), CloudBig("cloud_big.png"), CloudWait(
       "cloud_wait.png"), Spinning("spinning.gif"), Megaphone("megaphone.png"), Download("download.png"), Eye("eye.png"), Messages(
-      "messages.png"), SearchBox("search-box.png"), Screwdriver("screwdriver.png"), Hammer("hammer.png"), FlipHorizontal("flip_horizontal.png"),
-      FlipVertical("flip_vertical.png"), MagicWand("magic_wand.png");
+      "messages.png"), SearchBox("search-box.png"), Screwdriver("screwdriver.png"), Hammer("hammer.png"), FlipHorizontal(
+      "flip_horizontal.png"), FlipVertical("flip_vertical.png"), MagicWand("magic_wand.png"), PinGrey("pin_grey.png"), PinGreen(
+      "pin_green.png");
 
   protected String name;
 

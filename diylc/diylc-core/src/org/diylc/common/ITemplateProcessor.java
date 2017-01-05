@@ -17,6 +17,8 @@ public interface ITemplateProcessor {
   void applyTemplateToSelection(Template template);
 
   void deleteTemplate(String categoryName, String componentTypeName, String templateName);
+  
+  void setTemplateDefault(String categoryName, String componentTypeName, String templateName, boolean defaultFlag);
 
   public class TemplateAlreadyExistsException extends Exception {
 

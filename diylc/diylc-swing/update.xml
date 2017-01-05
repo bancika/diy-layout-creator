@@ -1523,6 +1523,10 @@
 					<description>Mirror selection horizontally and vertically</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to set a default template for component type (grey "pin" icon in the template popup)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Default focus on "Text" field for label</description>
 				</org.diylc.appframework.update.Change>
