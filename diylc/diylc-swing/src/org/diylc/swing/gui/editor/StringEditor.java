@@ -48,4 +48,10 @@ public class StringEditor extends JTextField {
     setBackground(oldBg);
     property.setValue(getText());
   }
+  
+  @Override
+  public boolean requestFocusInWindow() {
+    selectAll();
+    return super.requestFocusInWindow();    
+  }
 }

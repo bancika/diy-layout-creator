@@ -145,7 +145,7 @@ public class V1FileParser implements IOldFileParser {
           if (color != null) {
             label.setColor(color);
           }
-          label.setText(valueAttr);
+          label.setValue(valueAttr);
           label.setHorizontalAlignment(HorizontalAlignment.LEFT);
           label.setVerticalAlignment(VerticalAlignment.CENTER);
           label.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr, y1Attr), 0);
@@ -671,7 +671,7 @@ public class V1FileParser implements IOldFileParser {
     Label titleLabel = new Label();
     titleLabel.setColor(Color.blue);
     titleLabel.setFontSize(24);
-    titleLabel.setText(project.getTitle());
+    titleLabel.setValue(project.getTitle());
     titleLabel.setHorizontalAlignment(HorizontalAlignment.CENTER);
     titleLabel.setControlPoint(
         new Point(CalcUtils.roundToGrid(x + boardWidth / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
@@ -680,7 +680,7 @@ public class V1FileParser implements IOldFileParser {
 
     Label creditsLabel = new Label();
     creditsLabel.setFontSize(16);
-    creditsLabel.setText(project.getAuthor());
+    creditsLabel.setValue(project.getAuthor());
     creditsLabel.setHorizontalAlignment(HorizontalAlignment.CENTER);
     creditsLabel.setControlPoint(
         new Point(CalcUtils.roundToGrid(x + boardWidth / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(

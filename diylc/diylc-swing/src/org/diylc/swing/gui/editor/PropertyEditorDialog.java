@@ -116,10 +116,18 @@ public class PropertyEditorDialog extends ButtonDialog {
           editorPanel.add(createDefaultCheckBox(property), gbc);
         }
       }
-
-      // Make value field focused
+      
       if (property.getName().equalsIgnoreCase("value")) {
         componentToFocus = editor;
+      }
+
+      // Make value field focused
+      try {
+        if (componentToFocus == null && property.getGetter().getName().equalsIgnoreCase("getValue")) {
+          componentToFocus = editor;
+        }
+      } catch (Exception e1) {
+        LOG.warn("Could not determine editor component to focus", e1);
       }
 
       gbc.gridy++;

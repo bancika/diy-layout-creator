@@ -1524,6 +1524,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Default focus on "Text" field for label</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Consolidated popup menu items with "Edit" menu</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

@@ -23,7 +23,7 @@ import org.diylc.core.annotations.EditableProperty;
 @ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined label", instanceNamePrefix = "L", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
     stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW)
-public class Label extends AbstractComponent<Void> {
+public class Label extends AbstractComponent<String> {
 
   public static String DEFAULT_TEXT = "Double click to edit text";
 
@@ -211,16 +211,7 @@ public class Label extends AbstractComponent<Void> {
   @Override
   public void setControlPoint(Point point, int index) {
     this.point.setLocation(point);
-  }
-
-  @EditableProperty(defaultable = false)
-  public String getText() {
-    return text;
-  }
-
-  public void setText(String text) {
-    this.text = text;
-  }
+  }  
 
   @EditableProperty
   public Color getColor() {
@@ -260,11 +251,14 @@ public class Label extends AbstractComponent<Void> {
     return super.getName();
   }
 
+  @EditableProperty(name="Text", defaultable = false)
   @Override
-  public Void getValue() {
-    return null;
+  public String getValue() {
+    return text;
   }
 
   @Override
-  public void setValue(Void value) {}
+  public void setValue(String value) {
+    this.text = value;
+  }
 }
