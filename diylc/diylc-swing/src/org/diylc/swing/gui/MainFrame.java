@@ -94,9 +94,10 @@ public class MainFrame extends JFrame implements ISwingUI {
     DialogFactory.getInstance().initialize(this);
 
     this.presenter = new Presenter(this);
+    
+    canvasPlugin = new CanvasPlugin(this);
 
-    presenter.installPlugin(new ToolBox(this));
-    presenter.installPlugin(new ComponentTree(this));
+    presenter.installPlugin(new ToolBox(this));    
     presenter.installPlugin(new FileMenuPlugin(this));
     presenter.installPlugin(new EditMenuPlugin(this));
     presenter.installPlugin(new ConfigPlugin(this));
@@ -105,8 +106,10 @@ public class MainFrame extends JFrame implements ISwingUI {
     presenter.installPlugin(new HelpMenuPlugin(this));
 
     presenter.installPlugin(new StatusBar(this));
-    canvasPlugin = new CanvasPlugin(this);
+    
     presenter.installPlugin(canvasPlugin);
+    
+    presenter.installPlugin(new ComponentTree(this, canvasPlugin.getCanvasPanel()));
     presenter.installPlugin(new FramePlugin());
 
     try {

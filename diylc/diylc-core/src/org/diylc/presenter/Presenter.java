@@ -1790,18 +1790,19 @@ public class Presenter implements IPlugInPort {
       setNewComponentTypeSlot(null, null);
       return;
     }
-    
+
     // try to find a default template if none is provided
     if (componentType != null && template == null) {
       List<Template> templates = getTemplatesFor(componentType.getCategory(), componentType.getName());
-      for (Template t : templates) {
-        if (t.isDefaultFlag()) {
-          template = t;
-          break;
+      if (templates != null)
+        for (Template t : templates) {
+          if (t.isDefaultFlag()) {
+            template = t;
+            break;
+          }
         }
-      }
     }
-    
+
     try {
       instantiationManager.setComponentTypeSlot(componentType, template, currentProject);
       if (componentType != null) {

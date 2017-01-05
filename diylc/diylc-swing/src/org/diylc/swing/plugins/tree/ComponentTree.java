@@ -5,6 +5,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.util.EnumSet;
 
+import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
@@ -27,9 +28,11 @@ public class ComponentTree implements IPlugIn {
   private IPlugInPort plugInPort;
 
   private TreePanel treePanel;
+  private JComponent canvasPanel;
 
-  public ComponentTree(ISwingUI swingUI) {
+  public ComponentTree(ISwingUI swingUI, JComponent canvasPanel) {
     this.swingUI = swingUI;
+    this.canvasPanel = canvasPanel;
   }
 
   @Override
@@ -57,7 +60,11 @@ public class ComponentTree implements IPlugIn {
 
       @Override
       public boolean dispatchKeyEvent(KeyEvent e) {
-        if (e.getKeyChar() == 'q') {
+        if ((canvasPanel.hasFocus() || treePanel.hasFocus())
+            && e.getKeyChar() == 'q'
+            && ConfigurationManager.getInstance()
+                .readString(ConfigPlugin.COMPONENT_BROWSER, ConfigPlugin.SEARCHABLE_TREE)
+                .equals(ConfigPlugin.SEARCHABLE_TREE)) {
           getTreePanel().getSearchField().requestFocusInWindow();
           return true;
         }
