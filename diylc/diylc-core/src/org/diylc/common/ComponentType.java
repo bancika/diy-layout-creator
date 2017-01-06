@@ -29,13 +29,13 @@ public class ComponentType {
   private boolean stretchable;
   private BomPolicy bomPolicy;
   private boolean autoEdit;
-  private boolean rotatable;
+  private IComponentTransformer transformer;
   private KeywordPolicy keywordPolicy;
   private String keywordTag;
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
-      boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit, boolean rotatable,
+      boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit, IComponentTransformer transformer,
       KeywordPolicy keywordPolicy, String keywordTag) {
     super();
     this.name = name;
@@ -51,7 +51,7 @@ public class ComponentType {
     this.stretchable = stretchable;
     this.bomPolicy = bomPolicy;
     this.autoEdit = autoEdit;
-    this.rotatable = rotatable;
+    this.transformer = transformer;
     this.keywordPolicy = keywordPolicy;
     this.keywordTag = keywordTag;
   }
@@ -108,8 +108,8 @@ public class ComponentType {
     return autoEdit;
   }
 
-  public boolean isRotatable() {
-    return rotatable;
+  public IComponentTransformer getTransformer() {
+    return transformer;
   }
 
   public KeywordPolicy getKeywordPolicy() {

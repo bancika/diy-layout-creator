@@ -11,6 +11,7 @@ import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractRadialComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -25,7 +26,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
-    description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT)
+    description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT,
+    transformer = SimpleComponentTransformer.class)
 public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
 
   private static final long serialVersionUID = 1L;

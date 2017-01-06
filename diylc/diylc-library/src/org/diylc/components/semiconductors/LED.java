@@ -8,6 +8,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -18,7 +19,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "LED", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Light Emitting Diode",
-    zOrder = IDIYComponent.COMPONENT)
+    zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class)
 public class LED extends AbstractLeadedComponent<String> {
 
   private static final long serialVersionUID = 1L;

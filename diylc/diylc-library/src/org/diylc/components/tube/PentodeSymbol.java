@@ -16,7 +16,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Pentode (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "V", description = "Pentode tube symbol", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, rotatable = false, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class PentodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;
@@ -25,8 +25,9 @@ public class PentodeSymbol extends AbstractTubeSymbol {
 
   public PentodeSymbol() {
     super();
-    this.controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-        new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+    this.controlPoints =
+        new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
+            new Point(0, 0), new Point(0, 0)};
     updateControlPoints();
   }
 
@@ -103,8 +104,9 @@ public class PentodeSymbol extends AbstractTubeSymbol {
         polyline.lineTo(x + pinSpacing * 5, y - pinSpacing * 5 / 4);
         polyline.curveTo(x + pinSpacing * 21 / 4, y - pinSpacing * 5 / 4, x + pinSpacing * 21 / 4, y - pinSpacing * 3
             / 4, x + pinSpacing * 5, y - pinSpacing * 3 / 4);
-        polyline.moveTo(x + pinSpacing * 5, y - pinSpacing * 3 / 4);        
-        polyline.curveTo(x + pinSpacing * 5, y + pinSpacing * 3 / 8, x + pinSpacing * 5, y + pinSpacing * 3 / 8, x + pinSpacing * 4, y + pinSpacing * 3 / 8);
+        polyline.moveTo(x + pinSpacing * 5, y - pinSpacing * 3 / 4);
+        polyline.curveTo(x + pinSpacing * 5, y + pinSpacing * 3 / 8, x + pinSpacing * 5, y + pinSpacing * 3 / 8, x
+            + pinSpacing * 4, y + pinSpacing * 3 / 8);
       }
 
       // plate
@@ -205,7 +207,7 @@ public class PentodeSymbol extends AbstractTubeSymbol {
 
   public void setExposeSuppressorGrid(boolean exposeSuppressorGrid) {
     this.exposeSuppressorGrid = exposeSuppressorGrid;
-    
+
     refreshDrawing();
   }
 }

@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -21,7 +22,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Ground Fill", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.TRACE,
-    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class GroundFill extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;

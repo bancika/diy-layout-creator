@@ -29,7 +29,7 @@ import org.diylc.utils.Constants;
     category = "Schematics",
     instanceNamePrefix = "T",
     description = "Transformer core symbol. Use multiple instances together with \"Transformer Coil Symbol\"<br>to draw transformer schematics.",
-    stretchable = true, zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG,
+    stretchable = true, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG,
     creationMethod = CreationMethod.POINT_BY_POINT, keywordTag = "Schematic")
 public class TransformerCore extends AbstractComponent<Void> {
 
@@ -99,7 +99,8 @@ public class TransformerCore extends AbstractComponent<Void> {
     }
 
     double theta =
-        Math.atan2(this.controlPoints[1].y - this.controlPoints[0].y, this.controlPoints[1].x - this.controlPoints[0].x) + Math.PI / 2;
+        Math.atan2(this.controlPoints[1].y - this.controlPoints[0].y, this.controlPoints[1].x - this.controlPoints[0].x)
+            + Math.PI / 2;
     double spacing = SPACING.convertToPixels();
     // System.out.println(theta);
 

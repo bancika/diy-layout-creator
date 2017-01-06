@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -18,7 +19,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Dot", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Connector dot", instanceNamePrefix = "Dot", stretchable = false, zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class Dot extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;

@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractRadialComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -17,7 +18,8 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Ceramic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
-    description = "Standard radial ceramic capacitor", zOrder = IDIYComponent.COMPONENT)
+    description = "Standard radial ceramic capacitor", zOrder = IDIYComponent.COMPONENT,
+    transformer = SimpleComponentTransformer.class)
 public class RadialCeramicDiskCapacitor extends AbstractRadialComponent<Capacitance> {
 
   private static final long serialVersionUID = 1L;

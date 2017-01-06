@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
+import org.diylc.common.IComponentTransformer;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -40,6 +41,7 @@ public class ComponentProcessor {
   private Map<String, List<PropertyWrapper>> propertyCache;
   private Map<String, IPropertyValidator> propertyValidatorCache;
   private Map<String, ComponentType> componentTypeMap;
+  private Map<String, IComponentTransformer> componentTransformerMap;
 
   public static ComponentProcessor getInstance() {
     if (instance == null) {
@@ -53,6 +55,7 @@ public class ComponentProcessor {
     this.propertyCache = new HashMap<String, List<PropertyWrapper>>();
     this.componentTypeMap = new HashMap<String, ComponentType>();
     this.propertyValidatorCache = new HashMap<String, IPropertyValidator>();
+    this.componentTransformerMap = new HashMap<String, IComponentTransformer>();
   }
 
   public ComponentType extractComponentTypeFrom(Class<? extends IDIYComponent<?>> clazz) {
@@ -71,7 +74,7 @@ public class ComponentProcessor {
     boolean stretchable;
     BomPolicy bomPolicy;
     boolean autoEdit;
-    boolean rotatable;
+    IComponentTransformer transformer;
     KeywordPolicy keywordPolicy;
     String keywordTag;
     if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
@@ -87,7 +90,7 @@ public class ComponentProcessor {
       stretchable = annotation.stretchable();
       bomPolicy = annotation.bomPolicy();
       autoEdit = annotation.autoEdit();
-      rotatable = annotation.rotatable();
+      transformer = getComponentTransformer(annotation.transformer());
       keywordPolicy = annotation.keywordPolicy();
       keywordTag = annotation.keywordTag();
     } else { // default
@@ -102,7 +105,7 @@ public class ComponentProcessor {
       stretchable = true;
       bomPolicy = BomPolicy.SHOW_ALL_NAMES;
       autoEdit = true;
-      rotatable = true;
+      transformer = null;
       keywordPolicy = KeywordPolicy.NEVER_SHOW;
       keywordTag = null;
     }
@@ -124,7 +127,7 @@ public class ComponentProcessor {
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
-            flexibleZOrder, stretchable, bomPolicy, autoEdit, rotatable, keywordPolicy, keywordTag);
+            flexibleZOrder, stretchable, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }
@@ -186,14 +189,15 @@ public class ComponentProcessor {
    * @param selectedComponents
    * @return
    */
-  public List<PropertyWrapper> getMutualSelectionProperties(Collection<IDIYComponent<?>> selectedComponents) throws Exception {
+  public List<PropertyWrapper> getMutualSelectionProperties(Collection<IDIYComponent<?>> selectedComponents)
+      throws Exception {
     if (selectedComponents.isEmpty()) {
       return null;
     }
     List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
-    
-    List<IDIYComponent<?>> selectedList = new ArrayList<IDIYComponent<?>>(selectedComponents);    
-    
+
+    List<IDIYComponent<?>> selectedList = new ArrayList<IDIYComponent<?>>(selectedComponents);
+
     IDIYComponent<?> firstComponent = selectedList.get(0);
     properties.addAll(extractProperties(firstComponent.getClass()));
     // Initialize values
@@ -241,5 +245,22 @@ public class ComponentProcessor {
     }
     propertyValidatorCache.put(clazz.getName(), validator);
     return validator;
+  }
+
+  private IComponentTransformer getComponentTransformer(Class<? extends IComponentTransformer> clazz) {
+    if (clazz == null)
+      return null;
+    if (componentTransformerMap.containsKey(clazz.getName())) {
+      return componentTransformerMap.get(clazz.getName());
+    }
+    IComponentTransformer transformer;
+    try {
+      transformer = clazz.newInstance();
+    } catch (Exception e) {
+      LOG.error("Could not instantiate validator for " + clazz.getName(), e);
+      return null;
+    }
+    componentTransformerMap.put(clazz.getName(), transformer);
+    return transformer;
   }
 }

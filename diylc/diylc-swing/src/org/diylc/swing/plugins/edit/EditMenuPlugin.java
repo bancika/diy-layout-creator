@@ -11,9 +11,9 @@ import java.util.EnumSet;
 import org.diylc.appframework.undo.IUndoListener;
 import org.diylc.appframework.undo.UndoHandler;
 import org.diylc.common.EventType;
+import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.common.ISelectionProcessor;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.Project;
 import org.diylc.images.IconLoader;
@@ -205,7 +205,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   public ActionFactory.MirrorSelectionAction getMirrorHorizontallyAction() {
     if (mirrorHorizontallyAction == null) {
       mirrorHorizontallyAction =
-          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, ISelectionProcessor.HORIZONTAL);
+          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.HORIZONTAL);
     }
     return mirrorHorizontallyAction;
   }
@@ -213,7 +213,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   public ActionFactory.MirrorSelectionAction getMirrorVerticallyAction() {
     if (mirrorVerticallyAction == null) {
       mirrorVerticallyAction =
-          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, ISelectionProcessor.VERTICAL);
+          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.VERTICAL);
     }
     return mirrorVerticallyAction;
   }

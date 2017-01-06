@@ -17,6 +17,7 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ISelectionProcessor;
 import org.diylc.common.ITask;
@@ -938,7 +939,7 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       this.direction = direction;
-      if (direction == ISelectionProcessor.HORIZONTAL) {
+      if (direction == IComponentTransformer.HORIZONTAL) {
         putValue(AbstractAction.NAME, "Mirror Horizontally");
         putValue(AbstractAction.SMALL_ICON, IconLoader.FlipHorizontal.getIcon());
         putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.ALT_MASK));

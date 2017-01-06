@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.common.OrientationHV;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -23,7 +24,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Vero Board", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board",
     description = "Perforated FR4 board with copper strips connecting all holes in a row",
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    transformer = SimpleComponentTransformer.class)
 public class VeroBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;
@@ -131,16 +133,16 @@ public class VeroBoard extends AbstractBoard {
     g2d.drawRect(0, 2 / factor, width - 1, height - 4 / factor);
     g2d.setColor(COPPER_COLOR);
     g2d.fillRect(1 / factor, width / 4, width - 2 / factor, width / 2);
-    g2d.setColor(COPPER_COLOR.darker());    
+    g2d.setColor(COPPER_COLOR.darker());
     g2d.drawRect(1 / factor, width / 4, width - 2 / factor, width / 2);
-    
+
     g2d.setColor(COPPER_COLOR);
     g2d.fillRect(1 / factor, 2 / factor, width - 2 / factor, 3 / factor);
     g2d.fillRect(1 / factor, height - 5 / factor, width - 2 / factor, 3 / factor);
     g2d.setColor(COPPER_COLOR.darker());
     g2d.drawRect(1 / factor, 2 / factor, width - 2 / factor, 3 / factor);
     g2d.drawRect(1 / factor, height - 5 / factor, width - 2 / factor, 3 / factor);
-    
+
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fillOval(width / 3 - 2 / factor, width / 2 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));

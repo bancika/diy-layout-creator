@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractSchematicLeadedSymbol;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -20,7 +21,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Inductor (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",
     description = "Inductor schematic symbol", zOrder = IDIYComponent.COMPONENT,
-        keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic", transformer = SimpleComponentTransformer.class)
 public class InductorSymbol extends AbstractSchematicLeadedSymbol<Inductance> {
 
   private static final long serialVersionUID = 1L;

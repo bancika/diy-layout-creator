@@ -14,8 +14,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "MOSFET (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "Q", description = "MOSFET transistor schematic symbol", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE,
-    keywordTag = "Schematic")
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
 public class MOSFETSymbol extends Abstract3LegSymbol {
 
   private static final long serialVersionUID = 1L;

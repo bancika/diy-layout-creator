@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.boards.AbstractBoard;
 import org.diylc.components.boards.VeroBoard;
@@ -21,7 +22,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Designates the place where a trace on the vero board needs to be cut", instanceNamePrefix = "Cut",
-    stretchable = false, zOrder = IDIYComponent.BOARD + 1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+    stretchable = false, zOrder = IDIYComponent.BOARD + 1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
+    transformer = SimpleComponentTransformer.class)
 public class TraceCut extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;

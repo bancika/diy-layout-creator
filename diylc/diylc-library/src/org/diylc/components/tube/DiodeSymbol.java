@@ -17,17 +17,17 @@ import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Diode (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "V", description = "Diode tube symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT,
-    rotatable = false, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class DiodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;
-  
+
   protected boolean directlyHeated = false;
 
   public DiodeSymbol() {
     super();
-    this.controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-        new Point(0, 0)};
+    this.controlPoints =
+        new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
     updateControlPoints();
   }
 

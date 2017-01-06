@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -21,7 +22,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Perf Board w/ Pads", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with solder pads",
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG,
-    keywordTag = "Perf Board")
+    keywordTag = "Perf Board", transformer = SimpleComponentTransformer.class)
 public class PerfBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -21,7 +22,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Eyelet", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Eyelet or turret terminal", instanceNamePrefix = "Eyelet", stretchable = false,
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class)
 public class Eyelet extends AbstractComponent<String> {
 
   private static final long serialVersionUID = 1L;

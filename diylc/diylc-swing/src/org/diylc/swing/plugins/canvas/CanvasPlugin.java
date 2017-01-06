@@ -30,6 +30,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
+import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ISelectionProcessor;
@@ -409,7 +410,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   public ActionFactory.MirrorSelectionAction getMirrorHorizontallyAction() {
     if (mirrorHorizontallyAction == null) {
       mirrorHorizontallyAction =
-          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, ISelectionProcessor.HORIZONTAL);
+          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.HORIZONTAL);
     }
     return mirrorHorizontallyAction;
   }
@@ -417,7 +418,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   public ActionFactory.MirrorSelectionAction getMirrorVerticallyAction() {
     if (mirrorVerticallyAction == null) {
       mirrorVerticallyAction =
-          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, ISelectionProcessor.VERTICAL);
+          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.VERTICAL);
     }
     return mirrorVerticallyAction;
   }

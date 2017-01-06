@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.CubicCurve2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -15,7 +16,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
+    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class HookupWire extends AbstractCurvedComponent<Void> {
 
   private static final long serialVersionUID = 1L;

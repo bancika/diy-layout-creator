@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
@@ -21,7 +22,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace",
     description = "Straight copper trace", zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW,
-    autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB")
+    autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class)
 public class CopperTrace extends AbstractLeadedComponent<Void> {
 
   private static final long serialVersionUID = 1L;

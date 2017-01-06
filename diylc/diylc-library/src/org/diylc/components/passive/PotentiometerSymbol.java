@@ -16,8 +16,7 @@ import org.diylc.components.semiconductors.SymbolFlipping;
 
 @ComponentDescriptor(name = "Potentiometer (symbol)", author = "MCbx", category = "Schematics",
     instanceNamePrefix = "VR", description = "Potentiometer symbol", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG,
-    keywordTag = "Schematic")
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
 public class PotentiometerSymbol extends Abstract3LegSymbol {
 
   private static final long serialVersionUID = 1L;

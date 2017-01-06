@@ -3,6 +3,7 @@ package org.diylc.components.boards;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -12,7 +13,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 
 @ComponentDescriptor(name = "Blank Board", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Blank circuit board",
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false)
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class BlankBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

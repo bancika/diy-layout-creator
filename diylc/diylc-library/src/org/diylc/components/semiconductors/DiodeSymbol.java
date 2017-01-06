@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -13,7 +14,8 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Diode (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Diode schematic symbol",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic",
+    transformer = SimpleComponentTransformer.class)
 public class DiodeSymbol extends AbstractDiodeSymbol {
 
   private static final long serialVersionUID = 1L;

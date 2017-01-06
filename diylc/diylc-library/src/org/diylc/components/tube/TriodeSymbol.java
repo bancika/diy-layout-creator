@@ -16,7 +16,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Triode (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "V", description = "Triode tube symbol", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, rotatable = false, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class TriodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;
@@ -25,8 +25,8 @@ public class TriodeSymbol extends AbstractTubeSymbol {
 
   public TriodeSymbol() {
     super();
-    this.controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-        new Point(0, 0)};
+    this.controlPoints =
+        new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
     updateControlPoints();
   }
 

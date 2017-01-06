@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -20,7 +21,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Eyelet Board", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with eyelets",
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    transformer = SimpleComponentTransformer.class)
 public class EyeletBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

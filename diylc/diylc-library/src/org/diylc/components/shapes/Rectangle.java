@@ -5,6 +5,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -17,7 +18,8 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Rectangle", author = "Branislav Stojkovic", category = "Shapes",
     instanceNamePrefix = "RECT", description = "Ractangular area, with or withouth rounded edges",
-    zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false)
+    zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false,
+    transformer = SimpleComponentTransformer.class)
 public class Rectangle extends AbstractShape {
 
   private static final long serialVersionUID = 1L;

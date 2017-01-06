@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
@@ -38,12 +37,10 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentFiler;
+import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IKeyProcessor;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.common.ISelectionProcessor;
-import org.diylc.common.Orientation;
-import org.diylc.common.OrientationHV;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
@@ -612,10 +609,10 @@ public class Presenter implements IPlugInPort {
         rotateComponents(this.selectedComponents, -1, snapToGrid);
       } else if (key == IKeyProcessor.VK_H) {
         oldProject = currentProject.clone();
-        mirrorSelection(ISelectionProcessor.HORIZONTAL);
+        mirrorComponents(this.selectedComponents, IComponentTransformer.HORIZONTAL, snapToGrid);
       } else if (key == IKeyProcessor.VK_V) {
         oldProject = currentProject.clone();
-        mirrorSelection(ISelectionProcessor.VERTICAL);
+        mirrorComponents(this.selectedComponents, IComponentTransformer.VERTICAL, snapToGrid);
       } else
         return false;
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
@@ -1082,109 +1079,137 @@ public class Presenter implements IPlugInPort {
   private void rotateComponents(Collection<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
     Point center = getCenterOf(components, snapToGrid);
 
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x, center.y);
-
-    // Update all points to new location.
-    for (IDIYComponent<?> component : components) {
-      drawingManager.invalidateComponent(component);
+    boolean canRotate = true;
+    for (IDIYComponent<?> component : selectedComponents) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
-      if (type.isRotatable()) {
-        for (int index = 0; index < component.getControlPointCount(); index++) {
-          Point p = new Point(component.getControlPoint(index));
-          rotate.transform(p, p);
-          component.setControlPoint(p, index);
-        }
-        // If component has orientation, change it too
-        List<PropertyWrapper> newProperties = ComponentProcessor.getInstance().extractProperties(component.getClass());
-        for (PropertyWrapper property : newProperties) {
-          if (property.getType() == Orientation.class) {
-            try {
-              property.readFrom(component);
-              Orientation orientation = (Orientation) property.getValue();
-              Orientation[] values = Orientation.values();
-              int newIndex = orientation.ordinal() + direction;
-              if (newIndex < 0)
-                newIndex = values.length - 1;
-              else if (newIndex >= values.length)
-                newIndex = 0;
-              property.setValue(values[newIndex]);
-              property.writeTo(component);
-            } catch (Exception e) {
-              LOG.error("Could not change component orientation for " + component.getName(), e);
-            }
-          } else if (property.getType() == OrientationHV.class) {
-            try {
-              property.readFrom(component);
-              OrientationHV orientation = (OrientationHV) property.getValue();
-              property.setValue(OrientationHV.values()[1 - orientation.ordinal()]);
-              property.writeTo(component);
-            } catch (Exception e) {
-              LOG.error("Could not change component orientation for " + component.getName(), e);
-            }
-          }
-        }
-      } else {
-        // Non-rotatable
-        Point componentCenter = getCenterOf(Arrays.asList(new IDIYComponent<?>[] {component}), false);
-        Point rotatedComponentCenter = new Point();
-        rotate.transform(componentCenter, rotatedComponentCenter);
-        for (int index = 0; index < component.getControlPointCount(); index++) {
-          Point p = new Point(component.getControlPoint(index));
-          p.translate(rotatedComponentCenter.x - componentCenter.x, rotatedComponentCenter.y - componentCenter.y);
-          component.setControlPoint(p, index);
-        }
+      if (type.getTransformer() == null || !type.getTransformer().canRotate(component)) {
+        canRotate = false;
+        break;
       }
     }
+
+    if (!canRotate)
+      if (view.showConfirmDialog("Selection contains components that cannot be rotated. Do you want to exclude them?",
+          "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
+        return;
+
+    for (IDIYComponent<?> component : selectedComponents) {
+      ComponentType type =
+          ComponentProcessor.getInstance().extractComponentTypeFrom(
+              (Class<? extends IDIYComponent<?>>) component.getClass());
+      if (type.getTransformer() != null && type.getTransformer().canRotate(component)) {
+        drawingManager.invalidateComponent(component);
+        type.getTransformer().rotate(component, center, direction);
+      }
+    }
+
+    // AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x,
+    // center.y);
+    //
+    // // Update all points to new location.
+    // for (IDIYComponent<?> component : components) {
+    // drawingManager.invalidateComponent(component);
+    // ComponentType type =
+    // ComponentProcessor.getInstance().extractComponentTypeFrom(
+    // (Class<? extends IDIYComponent<?>>) component.getClass());
+    // if (type.isRotatable()) {
+    // for (int index = 0; index < component.getControlPointCount(); index++) {
+    // Point p = new Point(component.getControlPoint(index));
+    // rotate.transform(p, p);
+    // component.setControlPoint(p, index);
+    // }
+    // // If component has orientation, change it too
+    // List<PropertyWrapper> newProperties =
+    // ComponentProcessor.getInstance().extractProperties(component.getClass());
+    // for (PropertyWrapper property : newProperties) {
+    // if (property.getType() == Orientation.class) {
+    // try {
+    // property.readFrom(component);
+    // Orientation orientation = (Orientation) property.getValue();
+    // Orientation[] values = Orientation.values();
+    // int newIndex = orientation.ordinal() + direction;
+    // if (newIndex < 0)
+    // newIndex = values.length - 1;
+    // else if (newIndex >= values.length)
+    // newIndex = 0;
+    // property.setValue(values[newIndex]);
+    // property.writeTo(component);
+    // } catch (Exception e) {
+    // LOG.error("Could not change component orientation for " + component.getName(), e);
+    // }
+    // } else if (property.getType() == OrientationHV.class) {
+    // try {
+    // property.readFrom(component);
+    // OrientationHV orientation = (OrientationHV) property.getValue();
+    // property.setValue(OrientationHV.values()[1 - orientation.ordinal()]);
+    // property.writeTo(component);
+    // } catch (Exception e) {
+    // LOG.error("Could not change component orientation for " + component.getName(), e);
+    // }
+    // }
+    // }
+    // } else {
+    // // Non-rotatable
+    // Point componentCenter = getCenterOf(Arrays.asList(new IDIYComponent<?>[] {component}),
+    // false);
+    // Point rotatedComponentCenter = new Point();
+    // rotate.transform(componentCenter, rotatedComponentCenter);
+    // for (int index = 0; index < component.getControlPointCount(); index++) {
+    // Point p = new Point(component.getControlPoint(index));
+    // p.translate(rotatedComponentCenter.x - componentCenter.x, rotatedComponentCenter.y -
+    // componentCenter.y);
+    // component.setControlPoint(p, index);
+    // }
+    // }
+    // }
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void mirrorSelection(int direction) {
     if (!selectedComponents.isEmpty()) {
       LOG.trace("Mirroring selected components");
       Project oldProject = currentProject.clone();
 
-      Point center = getCenterOf(selectedComponents, isSnapToGrid());
-
-      boolean canMirror = true;
-      for (IDIYComponent<?> component : selectedComponents) {
-        ComponentType type =
-            ComponentProcessor.getInstance().extractComponentTypeFrom(
-                (Class<? extends IDIYComponent<?>>) component.getClass());
-        if (!type.isStretchable() && component.getControlPointCount() > 1) {
-          canMirror = false;
-          break;
-        }
-      }
-
-      if (!canMirror)
-        if (view.showConfirmDialog(
-            "Selection contains components that cannot bi mirrored. Do you want to exclude them?", "Mirror Selection",
-            IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
-          return;
-
-      for (IDIYComponent<?> component : selectedComponents) {
-        ComponentType type =
-            ComponentProcessor.getInstance().extractComponentTypeFrom(
-                (Class<? extends IDIYComponent<?>>) component.getClass());
-        if (type.isStretchable() || component.getControlPointCount() == 1) {
-          drawingManager.invalidateComponent(component);
-          for (int i = 0; i < component.getControlPointCount(); i++) {
-            Point p = component.getControlPoint(i);
-            if (direction == ISelectionProcessor.HORIZONTAL) {
-              component.setControlPoint(new Point(p.x - 2 * (p.x - center.x), p.y), i);
-            } else {
-              component.setControlPoint(new Point(p.x, p.y - 2 * (p.y - center.y)), i);
-            }
-          }
-        }
-      }
+      mirrorComponents(selectedComponents, direction, isSnapToGrid());
 
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
           "Mirror Selection");
       messageDispatcher.dispatchMessage(EventType.REPAINT);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void mirrorComponents(Collection<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
+    Point center = getCenterOf(components, snapToGrid);
+
+    boolean canMirror = true;
+    for (IDIYComponent<?> component : components) {
+      ComponentType type =
+          ComponentProcessor.getInstance().extractComponentTypeFrom(
+              (Class<? extends IDIYComponent<?>>) component.getClass());
+      if (type.getTransformer() == null || !type.getTransformer().canMirror(component)) {
+        canMirror = false;
+        break;
+      }
+    }
+
+    if (!canMirror)
+      if (view.showConfirmDialog("Selection contains components that cannot be mirrored. Do you want to exclude them?",
+          "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
+        return;
+
+    for (IDIYComponent<?> component : components) {
+      ComponentType type =
+          ComponentProcessor.getInstance().extractComponentTypeFrom(
+              (Class<? extends IDIYComponent<?>>) component.getClass());
+      if (type.isStretchable() || component.getControlPointCount() == 1) {
+        drawingManager.invalidateComponent(component);
+        if (type.getTransformer() != null && type.getTransformer().canMirror(component)) {
+          type.getTransformer().mirror(component, center, direction);
+        }
+      }
     }
   }
 

@@ -33,8 +33,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "IC (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "IC", description = "IC symbol with 3 or 5 contacts", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, rotatable = false, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE,
-    keywordTag = "Schematic")
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
 public class ICSymbol extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

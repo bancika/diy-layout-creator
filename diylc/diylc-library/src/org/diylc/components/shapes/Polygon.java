@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -18,7 +19,8 @@ import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "Polygon", author = "Branislav Stojkovic", category = "Shapes",
     instanceNamePrefix = "POLY", description = "Polygonal area", zOrder = IDIYComponent.COMPONENT,
-    flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false)
+    flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false,
+    transformer = SimpleComponentTransformer.class)
 public class Polygon extends AbstractShape {
 
   private static final long serialVersionUID = 1L;

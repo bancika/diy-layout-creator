@@ -30,7 +30,7 @@ import org.diylc.utils.Constants;
     category = "Schematics",
     instanceNamePrefix = "L",
     description = "Transformer coil symbol. Use multiple instances together with \"Transformer Core Symbol\"<br>to draw transformer schematics.",
-    stretchable = false, zOrder = IDIYComponent.COMPONENT, rotatable = true, keywordPolicy = KeywordPolicy.SHOW_TAG,
+    stretchable = false, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Schematic")
 public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.Voltage> {
 
@@ -226,19 +226,21 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
       GeneralPath coil = new GeneralPath();
 
       int coilsPerTap = (int) Math.round(4 * tapSpacing.convertToPixels() / TAP_SPACING.convertToPixels());
-      
+
       double offset = OFFSET.convertToPixels();
 
       int i = 0;
       leads.moveTo(this.controlPoints[i].x, this.controlPoints[i].y);
-      leads.lineTo(this.controlPoints[i].x + fx * (spacing + offset), this.controlPoints[i].y + fy * (spacing + offset));
+      leads
+          .lineTo(this.controlPoints[i].x + fx * (spacing + offset), this.controlPoints[i].y + fy * (spacing + offset));
       leads.moveTo(this.controlPoints[i + 1].x, this.controlPoints[i + 1].y);
-      leads.lineTo(this.controlPoints[i + 1].x + fx * (spacing + offset), this.controlPoints[i + 1].y + fy * (spacing + offset));
+      leads.lineTo(this.controlPoints[i + 1].x + fx * (spacing + offset), this.controlPoints[i + 1].y + fy
+          * (spacing + offset));
 
       double dx = this.controlPoints[i + 1].getX() - this.controlPoints[i].getX();
       double dy = this.controlPoints[i + 1].getY() - this.controlPoints[i].getY();
       double d = Math.max(Math.abs(dx), Math.abs(dy)) / coilsPerTap;
-      
+
       double x1 = this.controlPoints[i].getX() + fx * (spacing + d + offset);
       double y1 = this.controlPoints[i].getY() + fy * (spacing + d + offset);
       double x2 = this.controlPoints[i + 1].getX() + fx * (spacing + d + offset);
@@ -246,16 +248,13 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
       double dxa = x2 - x1;
       double dya = y2 - y1;
 
-      coil.moveTo(this.controlPoints[i].getX() + fx * (spacing + offset), this.controlPoints[i].getY() + fy * (spacing + offset));
+      coil.moveTo(this.controlPoints[i].getX() + fx * (spacing + offset), this.controlPoints[i].getY() + fy
+          * (spacing + offset));
 
       for (int j = 0; j < coilsPerTap; j++) {
-        coil.curveTo(
-            x1 + dxa / coilsPerTap * j,
-            y1 + dya / coilsPerTap * j, 
-            x1 + dxa / coilsPerTap * (j + 1), 
-            y1 + dya / coilsPerTap * (j + 1), 
-            this.controlPoints[i].getX() + fx * (spacing + offset) +  dx / coilsPerTap * (j + 1),
-            this.controlPoints[i].getY() + fy * (spacing + offset) +  dy / coilsPerTap * (j + 1));
+        coil.curveTo(x1 + dxa / coilsPerTap * j, y1 + dya / coilsPerTap * j, x1 + dxa / coilsPerTap * (j + 1), y1 + dya
+            / coilsPerTap * (j + 1), this.controlPoints[i].getX() + fx * (spacing + offset) + dx / coilsPerTap
+            * (j + 1), this.controlPoints[i].getY() + fy * (spacing + offset) + dy / coilsPerTap * (j + 1));
       }
       body = new Shape[2];
 

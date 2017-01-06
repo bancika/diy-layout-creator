@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -19,7 +20,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Diode (glass)", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D",
-    description = "Glass diode, like most small signal diodes.", zOrder = IDIYComponent.COMPONENT)
+    description = "Glass diode, like most small signal diodes.", zOrder = IDIYComponent.COMPONENT,
+    transformer = SimpleComponentTransformer.class)
 public class DiodeGlass extends AbstractLeadedComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -112,7 +114,7 @@ public class DiodeGlass extends AbstractLeadedComponent<String> {
     int length = getClosestOdd(getLength().convertToPixels());
     // draw the inside
     if (!outlineMode) {
-      g2d.setColor(getInsideColor());      
+      g2d.setColor(getInsideColor());
       int width = getClosestOdd(getWidth().convertToPixels());
       int insideLength = getClosestOdd(length - 0.2 * width);
       int insideWidth = getClosestOdd(width * 0.8);

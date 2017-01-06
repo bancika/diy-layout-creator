@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractSchematicLeadedSymbol;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -18,7 +19,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Resistor (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R",
     description = "Resistor schematic symbol", zOrder = IDIYComponent.COMPONENT,
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic", transformer = SimpleComponentTransformer.class)
 public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 
   private static final long serialVersionUID = 1L;

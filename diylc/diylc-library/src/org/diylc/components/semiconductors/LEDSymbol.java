@@ -5,6 +5,7 @@ import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -12,7 +13,8 @@ import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "LED (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Diode schematic symbol",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic",
+    transformer = SimpleComponentTransformer.class)
 public class LEDSymbol extends DiodeSymbol {
 
   private static final long serialVersionUID = 1L;

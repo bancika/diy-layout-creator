@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.common.OrientationHV;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -22,11 +23,11 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "TriPad Board", category = "Boards", author = "Hauke Juhls", zOrder = IDIYComponent.BOARD,
     instanceNamePrefix = "Board",
     description = "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class)
 public class TriPadBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;
-  
+
   public static Color BORDER_COLOR = BOARD_COLOR.darker();
 
   public static Size SPACING = new Size(0.1d, SizeUnit.in);
@@ -131,7 +132,7 @@ public class TriPadBoard extends AbstractBoard {
         }
       }
       g2d.setComposite(oldComposite);
-      
+
       super.drawCoordinates(g2d, spacing);
     }
   }

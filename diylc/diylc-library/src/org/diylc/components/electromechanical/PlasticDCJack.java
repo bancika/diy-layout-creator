@@ -30,7 +30,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Plastic DC Jack", category = "Electromechanical", author = "Branislav Stojkovic",
     description = "Panel mount plastic DC jack", stretchable = false, zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "J", autoEdit = false, rotatable = false)
+    instanceNamePrefix = "J", autoEdit = false)
 public class PlasticDCJack extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.ResistorColorCode;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -19,7 +20,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "Resistor layout symbol",
-    zOrder = IDIYComponent.COMPONENT)
+    zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class)
 public class Resistor extends AbstractLeadedComponent<Resistance> {
 
   private static final long serialVersionUID = 1L;

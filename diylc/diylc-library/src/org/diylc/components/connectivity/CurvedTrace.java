@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.CubicCurve2D;
 
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractCurvedComponent;
@@ -19,7 +20,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "Trace", description = "Curved copper trace with two control points",
     zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB")
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class)
 public class CurvedTrace extends AbstractCurvedComponent<Void> {
 
   private static final long serialVersionUID = 1L;
