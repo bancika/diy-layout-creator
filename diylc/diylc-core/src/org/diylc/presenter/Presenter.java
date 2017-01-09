@@ -1185,6 +1185,7 @@ public class Presenter implements IPlugInPort {
     Point center = getCenterOf(components, snapToGrid);
 
     boolean canMirror = true;
+    boolean changesCircuit = false;
     for (IDIYComponent<?> component : components) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
@@ -1193,10 +1194,17 @@ public class Presenter implements IPlugInPort {
         canMirror = false;
         break;
       }
+      if (type.getTransformer() != null && type.getTransformer().mirroringChangesCircuit())
+        changesCircuit = true;
     }
 
     if (!canMirror)
       if (view.showConfirmDialog("Selection contains components that cannot be mirrored. Do you want to exclude them?",
+          "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
+        return;
+    
+    if (changesCircuit)
+      if (view.showConfirmDialog("Mirroring operation will change the circuit. Do you want to continue?",
           "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
         return;
 
@@ -1204,11 +1212,9 @@ public class Presenter implements IPlugInPort {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
-      if (type.isStretchable() || component.getControlPointCount() == 1) {
-        drawingManager.invalidateComponent(component);
-        if (type.getTransformer() != null && type.getTransformer().canMirror(component)) {
-          type.getTransformer().mirror(component, center, direction);
-        }
+      drawingManager.invalidateComponent(component);
+      if (type.getTransformer() != null && type.getTransformer().canMirror(component)) {
+        type.getTransformer().mirror(component, center, direction);
       }
     }
   }

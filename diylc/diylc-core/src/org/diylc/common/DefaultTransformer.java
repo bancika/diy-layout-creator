@@ -15,6 +15,11 @@ public class DefaultTransformer implements IComponentTransformer {
   public boolean canMirror(IDIYComponent<?> component) {
     return false;
   }
+  
+  @Override
+  public boolean mirroringChangesCircuit() {   
+    return false;
+  }
 
   @Override
   public void rotate(IDIYComponent<?> component, Point center, int direction) {

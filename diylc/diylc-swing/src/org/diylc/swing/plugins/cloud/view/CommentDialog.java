@@ -17,7 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 
-import org.apache.log4j.Logger;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.plugins.cloud.model.CommentEntity;
@@ -37,8 +36,6 @@ public class CommentDialog extends JDialog {
   private static final String JUST_NOW = "just now";
 
   private static final long serialVersionUID = 1L;
-
-  private static final Logger LOG = Logger.getLogger(CommentDialog.class);
 
   private ProjectEntity project;
   private List<CommentEntity> comments;

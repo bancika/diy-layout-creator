@@ -14,6 +14,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.components.transform.PotentiometerTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -28,7 +29,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Potentiometer (panel mount)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
-    description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT, stretchable = false)
+    description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT, stretchable = false,
+    transformer = PotentiometerTransformer.class)
 public class PotentiometerPanel extends AbstractPotentiometer {
 
   private static final long serialVersionUID = 1L;

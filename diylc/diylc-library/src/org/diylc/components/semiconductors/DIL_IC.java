@@ -19,6 +19,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.misc.Label;
+import org.diylc.components.transform.ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -34,7 +35,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "DIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Dual-in-line package IC", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = ICTransformer.class)
 public class DIL_IC extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

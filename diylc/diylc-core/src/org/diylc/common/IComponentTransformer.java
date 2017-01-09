@@ -15,6 +15,8 @@ public interface IComponentTransformer {
   boolean canRotate(IDIYComponent<?> component);
   
   boolean canMirror(IDIYComponent<?> component);
+  
+  boolean mirroringChangesCircuit();
 
   void rotate(IDIYComponent<?> component, Point center, int direction);
 

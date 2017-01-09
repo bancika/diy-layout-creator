@@ -18,6 +18,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.TO92Transformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -33,7 +34,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transistor (TO-92 package)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with small plastic or epoxy body", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO92Transformer.class)
 public class TransistorTO92 extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
