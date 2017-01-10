@@ -18,6 +18,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.SIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -33,7 +34,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "SIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Single-in-line package IC", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = SIL_ICTransformer.class)
 public class SIL_IC extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

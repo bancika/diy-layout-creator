@@ -18,6 +18,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.TO220Transformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -33,7 +34,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transistor (TO-220 package)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistors with metal tab for heat sink mounting", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO220Transformer.class)
 public class TransistorTO220 extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
