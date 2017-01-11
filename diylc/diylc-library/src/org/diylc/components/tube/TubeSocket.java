@@ -35,7 +35,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private static final long serialVersionUID = 1L;
 
   private static Color BODY_COLOR = Color.decode("#F7F7EF");
-  private static Color BORDER_COLOR = Color.decode("#8E8E38");
+//  private static Color BORDER_COLOR = Color.decode("#8E8E38");
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Size PIN_SIZE = new Size(1d, SizeUnit.mm);
@@ -47,6 +47,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private Orientation orientation;
   // private Mount mount = Mount.CHASSIS;
   private int angle;
+  private Color color = BODY_COLOR;
 
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
 
@@ -106,6 +107,18 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     updateControlPoints();
     // Reset body shape
     body = null;
+  }
+  
+  @EditableProperty
+  public Color getColor() {
+    if (color == null) {
+      color = BODY_COLOR;
+    }
+    return color;
+  }
+  
+  public void setColor(Color color) {
+    this.color = color;
   }
 
   // @EditableProperty
@@ -207,7 +220,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     if (componentState != ComponentState.DRAGGING) {
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
       g2d.fill(body);
     }
     g2d.setComposite(oldComposite);
@@ -221,7 +234,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     } else {
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : BORDER_COLOR;
+              : getColor().darker();
     }
     g2d.setColor(finalBorderColor);
     g2d.draw(body);
@@ -242,9 +255,9 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     Area area = new Area(new Ellipse2D.Double(1, 1, width - 2, width - 2));
     int center = width / 2;
     area.subtract(new Area(new Ellipse2D.Double(center - 2, center - 2, 5, 5)));
-    g2d.setColor(BODY_COLOR);
+    g2d.setColor(getColor());
     g2d.fill(area);
-    g2d.setColor(BORDER_COLOR);
+    g2d.setColor(getColor().darker());
     g2d.draw(area);
 
     int radius = width / 2 - 6;
