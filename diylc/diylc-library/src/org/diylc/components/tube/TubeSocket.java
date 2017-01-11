@@ -34,7 +34,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
-  private static Color BODY_COLOR = Color.decode("#FFFFE0");
+  private static Color BODY_COLOR = Color.decode("#F7F7EF");
   private static Color BORDER_COLOR = Color.decode("#8E8E38");
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
@@ -44,8 +44,9 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 
   private Base base = Base.B9A;
   private String type = "";
-  private Orientation orientation = Orientation.DEFAULT;
+  private Orientation orientation;
   // private Mount mount = Mount.CHASSIS;
+  private int angle;
 
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
 
@@ -67,14 +68,41 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     // Reset body shape
     body = null;
   }
+//
+//  @EditableProperty
+//  public Orientation getOrientation() {
+//    return orientation;
+//  }
+//
+//  public void setOrientation(Orientation orientation) {
+//    this.orientation = orientation;
+//    updateControlPoints();
+//    // Reset body shape
+//    body = null;
+//  }
 
   @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
+  @SuppressWarnings("incomplete-switch")
+  public int getAngle() {
+    if (orientation != null) {
+      switch (orientation) {
+        case _90:
+          angle = 90;
+          break;
+        case _180:
+          angle = 180;
+          break;
+        case _270:
+          angle = 270;
+          break;
+      }
+      orientation = null;
+    }
+    return angle;
   }
 
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
+  public void setAngle(int angle) {
+    this.angle = angle;
     updateControlPoints();
     // Reset body shape
     body = null;
@@ -115,31 +143,15 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     }
     double angleIncrement = Math.PI * 2 / (hasEmptySpace ? (pinCount + 1) : pinCount);
     double initialAngleOffset = hasEmptySpace ? angleIncrement : (angleIncrement / 2);
-    double initialAngle;
-    switch (orientation) {
-      case DEFAULT:
-        initialAngle = Math.PI / 2 + initialAngleOffset;
-        break;
-      case _90:
-        initialAngle = Math.PI + initialAngleOffset;
-        break;
-      case _180:
-        initialAngle = 3 * Math.PI / 2 + initialAngleOffset;
-        break;
-      case _270:
-        initialAngle = initialAngleOffset;
-        break;
-      default:
-        throw new RuntimeException("Unexpected orientation: " + orientation);
-    }
+
     controlPoints = new Point[pinCount + 1];
-    double angle = initialAngle;
+    double theta = initialAngleOffset + Math.toRadians(getAngle());
     controlPoints[0] = firstPoint;
     for (int i = 0; i < pinCount; i++) {
       controlPoints[i + 1] =
-          new Point((int) (firstPoint.getX() + Math.cos(angle) * pinCircleDiameter / 2),
-              (int) (firstPoint.getY() + Math.sin(angle) * pinCircleDiameter / 2));
-      angle += angleIncrement;
+          new Point((int) (firstPoint.getX() + Math.cos(theta) * pinCircleDiameter / 2),
+              (int) (firstPoint.getY() + Math.sin(theta) * pinCircleDiameter / 2));
+      theta += angleIncrement;
     }
   }
 
@@ -168,23 +180,9 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
           / 2, holeSize, holeSize)));
       if (base == Base.OCTAL) {
         int tickSize = getClosestOdd(TICK_SIZE.convertToPixels());
-        double angle = 0;
-        switch (orientation) {
-          case DEFAULT:
-            angle = Math.PI / 2;
-            break;
-          case _90:
-            angle = Math.PI;
-            break;
-          case _180:
-            angle = 3 * Math.PI / 2;
-            break;
-          case _270:
-            angle = 0;
-            break;
-        }
-        int centerX = (int) (controlPoints[0].x + Math.cos(angle) * holeSize / 2);
-        int centerY = (int) (controlPoints[0].y + Math.sin(angle) * holeSize / 2);
+        double theta = Math.toRadians(getAngle());
+        int centerX = (int) (controlPoints[0].x + Math.cos(theta) * holeSize / 2);
+        int centerY = (int) (controlPoints[0].y + Math.sin(theta) * holeSize / 2);
         bodyArea.subtract(new Area(new Ellipse2D.Double(centerX - tickSize / 2, centerY - tickSize / 2, tickSize,
             tickSize)));
       }
