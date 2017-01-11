@@ -14,6 +14,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.TerminalStripTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -29,7 +30,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Terminal Strip", author = "Branislav Stojkovic", category = "Boards",
     instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction", stretchable = false,
-    zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
+    zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = TerminalStripTransformer.class)
 public class TerminalStrip extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

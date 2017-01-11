@@ -19,6 +19,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.ClosedJackTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -33,7 +34,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic",
     description = "Enclosed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "J", autoEdit = false)
+    instanceNamePrefix = "J", autoEdit = false, transformer = ClosedJackTransformer.class)
 public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

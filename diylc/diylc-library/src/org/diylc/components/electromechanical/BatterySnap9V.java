@@ -17,6 +17,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.BatterySnapTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -31,7 +32,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "9V Battery Snap", category = "Electromechanical", author = "Branislav Stojkovic",
     description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "BTR",
-    autoEdit = false)
+    autoEdit = false, transformer = BatterySnapTransformer.class)
 public class BatterySnap9V extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

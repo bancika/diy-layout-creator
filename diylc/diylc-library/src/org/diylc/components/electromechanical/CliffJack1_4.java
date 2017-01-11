@@ -19,6 +19,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.CliffJackTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -33,7 +34,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic",
     description = "Cliff-style closed panel mount 1/4\" phono jack", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false)
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = CliffJackTransformer.class)
 public class CliffJack1_4 extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

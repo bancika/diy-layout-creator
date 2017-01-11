@@ -1969,7 +1969,7 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> component : this.selectedComponents) {
       try {
         drawingManager.invalidateComponent(component);
-        this.instantiationManager.loadComponentShapeFromTemplate(component, template);
+//        this.instantiationManager.loadComponentShapeFromTemplate(component, template);
         this.instantiationManager.fillWithDefaultProperties(component, template);
       } catch (Exception e) {
         LOG.warn("Could not apply templates to " + component.getName(), e);

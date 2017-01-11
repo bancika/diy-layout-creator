@@ -22,7 +22,7 @@ public class SIL_ICTransformer implements IComponentTransformer {
 
   @Override
   public boolean mirroringChangesCircuit() {
-    return true;
+    return false;
   }
 
   @Override

@@ -8,7 +8,7 @@ import org.diylc.common.Orientation;
 import org.diylc.components.semiconductors.DIL_IC;
 import org.diylc.core.IDIYComponent;
 
-public class ICTransformer implements IComponentTransformer {
+public class DIL_ICTransformer implements IComponentTransformer {
 
   @Override
   public boolean canRotate(IDIYComponent<?> component) {
