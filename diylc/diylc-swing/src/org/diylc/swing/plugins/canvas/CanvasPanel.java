@@ -110,13 +110,15 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     }
     Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
     g2d.setClip(getVisibleRect());
-    Set<DrawOption> drawOptions =
-        EnumSet.of(DrawOption.GRID, DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+    Set<DrawOption> drawOptions = EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
       drawOptions.add(DrawOption.ANTIALIASING);
     }
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
       drawOptions.add(DrawOption.OUTLINE_MODE);
+    }
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_GRID_KEY, false)) {
+      drawOptions.add(DrawOption.GRID);
     }
     plugInPort.draw(g2d, drawOptions, null);
     if (USE_HARDWARE_ACCELLERATION) {

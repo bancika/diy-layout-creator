@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugInPort;
-import org.diylc.common.ISelectionProcessor;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ExpansionMode;

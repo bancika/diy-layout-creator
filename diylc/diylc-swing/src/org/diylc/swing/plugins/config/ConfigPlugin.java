@@ -56,6 +56,12 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Continuous Creation",
             IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);
     swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Grid", IPlugInPort.SHOW_GRID_KEY, true),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Export Grid", IPlugInPort.EXPORT_GRID_KEY, false),
         CONFIG_MENU);
     swingUI.injectMenuAction(

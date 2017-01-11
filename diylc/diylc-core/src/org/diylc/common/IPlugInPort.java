@@ -44,6 +44,8 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String OUTLINE_KEY = "outline";
   public static final String THEME_KEY = "theme";
   public static final String RECENT_COMPONENTS_KEY = "recentComponents";
+  public static final String SHOW_RULERS_KEY = "showRulers";
+  public static final String SHOW_GRID_KEY = "showGrid";
 
   public static final int DND_TOGGLE_STICKY = 0x1;
   public static final int DND_TOGGLE_SNAP = 0x40000000;
@@ -54,7 +56,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final int NOBUTTON = 0;
   public static final int BUTTON1 = 1;
   public static final int BUTTON2 = 2;
-  public static final int BUTTON3 = 3;
+  public static final int BUTTON3 = 3;  
 
   /**
    * Returns size of the canvas that takes project dimensions into account as well as zoom level.

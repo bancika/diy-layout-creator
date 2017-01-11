@@ -1553,7 +1553,15 @@
 			</versionNumber>
 			<releaseDate>2017-01-05 20:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>								
+			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Show/hide rulers</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Show/hide the grid</description>
+				</org.diylc.appframework.update.Change>							
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Applying a template shouldn't affect component placement</description>
