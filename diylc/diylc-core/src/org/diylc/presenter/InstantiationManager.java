@@ -111,7 +111,8 @@ public class InstantiationManager {
     return changeMade;
   }
 
-  public void pasteComponents(Collection<IDIYComponent<?>> components, Point scaledPoint, boolean snapToGrid, Size gridSpacing) {
+  public void pasteComponents(Collection<IDIYComponent<?>> components, Point scaledPoint, boolean snapToGrid,
+      Size gridSpacing) {
     // Adjust location of components so they are centered under the mouse
     // cursor
     int minX = Integer.MAX_VALUE;
@@ -213,7 +214,7 @@ public class InstantiationManager {
     // Instantiate the component.
     IDIYComponent<?> component = componentType.getInstanceClass().newInstance();
 
-    component.setName(createUniqueName(componentType, currentProject));
+    component.setName(createUniqueName(componentType, currentProject.getComponents()));
 
     // Translate them to the desired location.
     if (point != null) {
@@ -251,11 +252,20 @@ public class InstantiationManager {
     return list;
   }
 
-  public String createUniqueName(ComponentType componentType, Project currentProject) {
+
+  /**
+   * * Creates a unique component name for the specified type taking existing components into
+   * account.
+   * 
+   * @param componentType
+   * @param currentProject
+   * @param additionalComponents
+   * @return
+   */
+  public String createUniqueName(ComponentType componentType, List<IDIYComponent<?>> components) {
     boolean exists = true;
-    List<IDIYComponent<?>> components = currentProject.getComponents();
     String[] takenNames = new String[components.size()];
-    for (int j = 0; j < currentProject.getComponents().size(); j++) {
+    for (int j = 0; j < components.size(); j++) {
       takenNames[j] = components.get(j).getName();
     }
     Arrays.sort(takenNames);

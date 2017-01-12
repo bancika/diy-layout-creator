@@ -1540,7 +1540,8 @@ public class Presenter implements IPlugInPort {
     // Assign new ones.
     for (IDIYComponent<?> component : components) {
       component.setName(instantiationManager.createUniqueName(ComponentProcessor.getInstance()
-          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()), currentProject));
+          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()), currentProject
+          .getComponents()));
     }
 
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
@@ -2077,11 +2078,13 @@ public class Presenter implements IPlugInPort {
         throw new InvalidBlockException();
       // clone components
       List<IDIYComponent<?>> clones = new ArrayList<IDIYComponent<?>>();
+      List<IDIYComponent<?>> testComponents = new ArrayList<IDIYComponent<?>>(currentProject.getComponents());
       for (IDIYComponent<?> c : components)
         try {
           IDIYComponent<?> clone = c.clone();
           clone.setName(instantiationManager.createUniqueName(ComponentProcessor.getInstance()
-              .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clone.getClass()), currentProject));
+              .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clone.getClass()), testComponents));
+          testComponents.add(clone);
           clones.add(clone);
         } catch (CloneNotSupportedException e) {
           LOG.error("Could not clone component: " + c);
