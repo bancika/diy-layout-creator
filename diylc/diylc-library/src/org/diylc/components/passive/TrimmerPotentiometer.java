@@ -338,19 +338,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
               : LABEL_COLOR;
     }
-    g2d.setColor(finalLabelColor);
-    FontMetrics fontMetrics = g2d.getFontMetrics();
-    Rectangle2D bodyRect = getBody()[0].getBounds2D();
-    Rectangle2D rect = fontMetrics.getStringBounds(getName(), g2d);
-
-    int textHeight = (int) rect.getHeight();
-    int textWidth = (int) rect.getWidth();
-    int panelHeight = (int) bodyRect.getHeight();
-    int panelWidth = (int) bodyRect.getWidth();
-
-    int x = (panelWidth - textWidth) / 2;
-    int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();
-
+    
     String label = "";
     label = (getDisplay() == Display.NAME) ? getName() : (getValue() == null ? "" : getValue().toString());
     if (getDisplay() == Display.NONE) {
@@ -359,6 +347,19 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     if (getDisplay() == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
+    
+    g2d.setColor(finalLabelColor);
+    FontMetrics fontMetrics = g2d.getFontMetrics();
+    Rectangle2D bodyRect = getBody()[0].getBounds2D();
+    Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
+
+    int textHeight = (int) rect.getHeight();
+    int textWidth = (int) rect.getWidth();
+    int panelHeight = (int) bodyRect.getHeight();
+    int panelWidth = (int) bodyRect.getWidth();
+
+    int x = (panelWidth - textWidth) / 2;
+    int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();  
 
     g2d.drawString(label, (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
   }
