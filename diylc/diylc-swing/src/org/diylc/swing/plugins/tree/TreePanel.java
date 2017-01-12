@@ -40,6 +40,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -265,6 +266,7 @@ public class TreePanel extends JPanel {
       tree = new JTree(getTreeModel());
       tree.setRootVisible(false);
       tree.setCellRenderer(new ComponentCellRenderer());
+      tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
       tree.setRowHeight(0);
       ToolTipManager.sharedInstance().registerComponent(tree);
 
@@ -301,9 +303,16 @@ public class TreePanel extends JPanel {
         public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
           popup.removeAll();
 
-          popup.add(new SelectAllAction(plugInPort));
-          ComponentType componentType = plugInPort.getNewComponentTypeSlot();
+          DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+
+          if (selectedNode == null || selectedNode.getUserObject() == null)
+            return;
+
+          Payload payload = (Payload) selectedNode.getUserObject();
+
+          ComponentType componentType = payload.getComponentType();
           if (componentType != null) {
+            popup.add(new SelectAllAction(plugInPort));
             popup.add(new JSeparator());
 
             List<Template> templates = plugInPort.getTemplatesFor(componentType.getCategory(), componentType.getName());
@@ -317,6 +326,8 @@ public class TreePanel extends JPanel {
                 popup.add(item);
               }
             }
+          } else if (selectedNode.isLeaf()) {
+            popup.add(new DeleteBlockAction(plugInPort, payload.toString()));
           }
         }
 
@@ -544,6 +555,27 @@ public class TreePanel extends JPanel {
         plugInPort.setNewComponentTypeSlot(null, null);
         plugInPort.refresh();
       }
+    }
+  }
+
+  public static class DeleteBlockAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+    private String blockName;
+
+    public DeleteBlockAction(IPlugInPort plugInPort, String blockName) {
+      super();
+      this.plugInPort = plugInPort;
+      this.blockName = blockName;
+      putValue(AbstractAction.NAME, "Delete Building Block");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info(getValue(AbstractAction.NAME) + " triggered");
+      plugInPort.deleteBlock(blockName);
     }
   }
 }

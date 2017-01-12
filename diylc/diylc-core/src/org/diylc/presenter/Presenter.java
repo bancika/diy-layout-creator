@@ -458,6 +458,10 @@ public class Presenter implements IPlugInPort {
                 addComponent(component, true);
                 newSelection.add(component);
               }
+              // group components if there's more than one, e.g. building blocks
+              if (componentSlot.size() > 1) {
+                this.currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(componentSlot));
+              }
               // Select the new component
               // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
               // selectedComponents);
@@ -2071,13 +2075,18 @@ public class Presenter implements IPlugInPort {
       Collection<IDIYComponent<?>> components = blocks.get(blockName);
       if (components == null)
         throw new InvalidBlockException();
+      // clone components
       List<IDIYComponent<?>> clones = new ArrayList<IDIYComponent<?>>();
       for (IDIYComponent<?> c : components)
         try {
-          clones.add(c.clone());
+          IDIYComponent<?> clone = c.clone();
+          clone.setName(instantiationManager.createUniqueName(ComponentProcessor.getInstance()
+              .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clone.getClass()), currentProject));
+          clones.add(clone);
         } catch (CloneNotSupportedException e) {
           LOG.error("Could not clone component: " + c);
         }
+      // paste them to the project
       pasteComponents(clones);
     } else
       throw new InvalidBlockException();
