@@ -39,9 +39,9 @@ public class HelpMenuPlugin implements IPlugIn {
   public HelpMenuPlugin(ISwingUI swingUI) {
     swingUI.injectMenuAction(new NavigateURLAction("User Manual", IconLoader.Manual.getIcon(), MANUAL_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("FAQ", IconLoader.Faq.getIcon(), FAQ_URL), HELP_TITLE);
-    swingUI.injectMenuAction(new NavigateURLAction("Component API", IconLoader.Component.getIcon(), COMPONENT_URL),
+    swingUI.injectMenuAction(new NavigateURLAction("Component API", IconLoader.CoffeebeanEdit.getIcon(), COMPONENT_URL),
         HELP_TITLE);
-    swingUI.injectMenuAction(new NavigateURLAction("Plugin API", IconLoader.Plugin.getIcon(), PLUGIN_URL), HELP_TITLE);
+    swingUI.injectMenuAction(new NavigateURLAction("Plugin API", IconLoader.ApplicationEdit.getIcon(), PLUGIN_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Submit a Bug", IconLoader.Bug.getIcon(), BUG_URL), HELP_TITLE);
     swingUI.injectMenuAction(null, HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Donate", IconLoader.Donate.getIcon(), DONATE_URL), HELP_TITLE);

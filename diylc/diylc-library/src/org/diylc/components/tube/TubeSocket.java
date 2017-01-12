@@ -35,7 +35,6 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private static final long serialVersionUID = 1L;
 
   private static Color BODY_COLOR = Color.decode("#F7F7EF");
-//  private static Color BORDER_COLOR = Color.decode("#8E8E38");
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Size PIN_SIZE = new Size(1d, SizeUnit.mm);
@@ -44,6 +43,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 
   private Base base = Base.B9A;
   private String type = "";
+  @Deprecated
   private Orientation orientation;
   // private Mount mount = Mount.CHASSIS;
   private int angle;
@@ -69,18 +69,6 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     // Reset body shape
     body = null;
   }
-//
-//  @EditableProperty
-//  public Orientation getOrientation() {
-//    return orientation;
-//  }
-//
-//  public void setOrientation(Orientation orientation) {
-//    this.orientation = orientation;
-//    updateControlPoints();
-//    // Reset body shape
-//    body = null;
-//  }
 
   @EditableProperty
   @SuppressWarnings("incomplete-switch")

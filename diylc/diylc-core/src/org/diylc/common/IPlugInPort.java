@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +30,7 @@ import org.diylc.core.Theme;
  * @see IMessageListener
  * @see EventType
  */
-public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, ITemplateProcessor {
+public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, ITemplateProcessor, IBlockProcessor {
 
   public static final String ANTI_ALIASING_KEY = "antiAliasing";
   public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
@@ -178,7 +179,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * 
    * @param components
    */
-  void pasteComponents(List<IDIYComponent<?>> components);
+  void pasteComponents(Collection<IDIYComponent<?>> components);
 
   /**
    * Deletes all the selected components from the project.

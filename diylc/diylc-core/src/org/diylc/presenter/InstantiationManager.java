@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +111,7 @@ public class InstantiationManager {
     return changeMade;
   }
 
-  public void pasteComponents(List<IDIYComponent<?>> components, Point scaledPoint, boolean snapToGrid, Size gridSpacing) {
+  public void pasteComponents(Collection<IDIYComponent<?>> components, Point scaledPoint, boolean snapToGrid, Size gridSpacing) {
     // Adjust location of components so they are centered under the mouse
     // cursor
     int minX = Integer.MAX_VALUE;

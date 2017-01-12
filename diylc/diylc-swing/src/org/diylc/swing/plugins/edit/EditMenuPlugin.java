@@ -47,6 +47,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.ExpandSelectionAction expandSelectionImmediateAction;
   private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
   private ActionFactory.SaveAsTemplateAction saveAsTemplateAction;
+  private ActionFactory.SaveAsBlockAction saveAsBlockAction;
   private ActionFactory.RotateSelectionAction rotateClockwiseAction;
   private ActionFactory.RotateSelectionAction rotateCounterClockwiseAction;
   private ActionFactory.MirrorSelectionAction mirrorHorizontallyAction;
@@ -187,6 +188,13 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     }
     return saveAsTemplateAction;
   }
+  
+  public ActionFactory.SaveAsBlockAction getSaveAsBlockAction() {
+    if (saveAsBlockAction == null) {
+      saveAsBlockAction = ActionFactory.getInstance().createSaveAsBlockAction(plugInPort);
+    }
+    return saveAsBlockAction;
+  }
 
   public ActionFactory.RotateSelectionAction getRotateClockwiseAction() {
     if (rotateClockwiseAction == null) {
@@ -306,6 +314,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     getMirrorHorizontallyAction().setEnabled(enabled);
     getMirrorVerticallyAction().setEnabled(enabled);
     getSaveAsTemplateAction().setEnabled(enabled);
+    getSaveAsBlockAction().setEnabled(enabled);
   }
 
   // ClipboardOwner

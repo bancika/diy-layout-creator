@@ -1556,6 +1556,10 @@
 			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to quickly save a group of components as a building block and use it later</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Show/hide rulers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

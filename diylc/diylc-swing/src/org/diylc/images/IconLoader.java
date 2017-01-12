@@ -38,7 +38,8 @@ public enum IconLoader {
       "cloud_wait.png"), Spinning("spinning.gif"), Megaphone("megaphone.png"), Download("download.png"), Eye("eye.png"), Messages(
       "messages.png"), SearchBox("search-box.png"), Screwdriver("screwdriver.png"), Hammer("hammer.png"), FlipHorizontal(
       "flip_horizontal.png"), FlipVertical("flip_vertical.png"), MagicWand("magic_wand.png"), PinGrey("pin_grey.png"), PinGreen(
-      "pin_green.png");
+      "pin_green.png"), CoffeebeanEdit("coffeebean_edit.png"), ApplicationEdit("application_edit.png"), ComponentAdd(
+      "component_add.png");
 
   protected String name;
 

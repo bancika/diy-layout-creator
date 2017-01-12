@@ -136,6 +136,10 @@ public class ActionFactory {
   public SaveAsTemplateAction createSaveAsTemplateAction(IPlugInPort plugInPort) {
     return new SaveAsTemplateAction(plugInPort);
   }
+  
+  public SaveAsBlockAction createSaveAsBlockAction(IPlugInPort plugInPort) {
+    return new SaveAsBlockAction(plugInPort);
+  }
 
   public ExpandSelectionAction createExpandSelectionAction(IPlugInPort plugInPort, ExpansionMode expansionMode) {
     return new ExpandSelectionAction(plugInPort, expansionMode);
@@ -860,6 +864,30 @@ public class ActionFactory {
           JOptionPane.showInputDialog(null, "Template name:", "Save as Template", JOptionPane.PLAIN_MESSAGE);
       if (templateName != null && !templateName.trim().isEmpty()) {
         plugInPort.saveSelectedComponentAsTemplate(templateName);
+      }
+    }
+  }
+  
+  public static class SaveAsBlockAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+
+    public SaveAsBlockAction(IPlugInPort plugInPort) {
+      super();
+      this.plugInPort = plugInPort;
+      putValue(AbstractAction.NAME, "Save as Building Block");
+      putValue(AbstractAction.SMALL_ICON, IconLoader.ComponentAdd.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("Save as building block triggered");
+      String templateName =
+          JOptionPane.showInputDialog(null, "Block name:", "Save as Building Block", JOptionPane.PLAIN_MESSAGE);
+      if (templateName != null && !templateName.trim().isEmpty()) {
+        plugInPort.saveSelectionAsBlock(templateName);
       }
     }
   }

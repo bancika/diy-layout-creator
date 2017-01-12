@@ -65,6 +65,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.EditSelectionAction editSelectionAction;
   private ActionFactory.DeleteSelectionAction deleteSelectionAction;
   private ActionFactory.SaveAsTemplateAction saveAsTemplateAction;
+  private ActionFactory.SaveAsBlockAction saveAsBlockAction;
   private ActionFactory.GroupAction groupAction;
   private ActionFactory.UngroupAction ungroupAction;
   private ActionFactory.SendToBackAction sendToBackAction;
@@ -154,6 +155,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
                 getMirrorVerticallyAction().setEnabled(enabled);
 
                 getSaveAsTemplateAction().setEnabled(plugInPort.getSelectedComponents().size() == 1);
+                getSaveAsBlockAction().setEnabled(plugInPort.getSelectedComponents().size() > 1);
 
                 showPopupAt(e.getX(), e.getY());
               }
@@ -265,6 +267,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       popupMenu.add(getTransformMenu());
       popupMenu.add(getSaveAsTemplateAction());
       popupMenu.add(getApplyTemplateMenu());
+      popupMenu.add(getSaveAsBlockAction());
       popupMenu.add(getExpandMenu());
       popupMenu.addSeparator();
       popupMenu.add(ActionFactory.getInstance().createEditProjectAction(plugInPort));
@@ -437,6 +440,13 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       saveAsTemplateAction = ActionFactory.getInstance().createSaveAsTemplateAction(plugInPort);
     }
     return saveAsTemplateAction;
+  }
+
+  public ActionFactory.SaveAsBlockAction getSaveAsBlockAction() {
+    if (saveAsBlockAction == null) {
+      saveAsBlockAction = ActionFactory.getInstance().createSaveAsBlockAction(plugInPort);
+    }
+    return saveAsBlockAction;
   }
 
   public ActionFactory.GroupAction getGroupAction() {

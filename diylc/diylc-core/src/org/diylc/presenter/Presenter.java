@@ -1202,7 +1202,7 @@ public class Presenter implements IPlugInPort {
       if (view.showConfirmDialog("Selection contains components that cannot be mirrored. Do you want to exclude them?",
           "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
         return;
-    
+
     if (changesCircuit)
       if (view.showConfirmDialog("Mirroring operation will change the circuit. Do you want to continue?",
           "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
@@ -1296,7 +1296,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void pasteComponents(List<IDIYComponent<?>> components) {
+  public void pasteComponents(Collection<IDIYComponent<?>> components) {
     LOG.info(String.format("pasteComponents(%s)", components));
     instantiationManager.pasteComponents(components, this.previousScaledPoint, isSnapToGrid(),
         currentProject.getGridSpacing());
@@ -1969,7 +1969,7 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> component : this.selectedComponents) {
       try {
         drawingManager.invalidateComponent(component);
-//        this.instantiationManager.loadComponentShapeFromTemplate(component, template);
+        // this.instantiationManager.loadComponentShapeFromTemplate(component, template);
         this.instantiationManager.fillWithDefaultProperties(component, template);
       } catch (Exception e) {
         LOG.warn("Could not apply templates to " + component.getName(), e);
@@ -2049,5 +2049,48 @@ public class Presenter implements IPlugInPort {
   private Point scalePoint(Point point) {
     return point == null ? null : new Point((int) (point.x / drawingManager.getZoomLevel()),
         (int) (point.y / drawingManager.getZoomLevel()));
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public void saveSelectionAsBlock(String blockName) {
+    Map<String, Collection<IDIYComponent<?>>> blocks =
+        (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+    if (blocks == null)
+      blocks = new HashMap<String, Collection<IDIYComponent<?>>>();
+    blocks.put(blockName, this.selectedComponents);
+    ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public void loadBlock(String blockName) throws InvalidBlockException {
+    Map<String, Collection<IDIYComponent<?>>> blocks =
+        (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+    if (blocks != null) {
+      Collection<IDIYComponent<?>> components = blocks.get(blockName);
+      if (components == null)
+        throw new InvalidBlockException();
+      List<IDIYComponent<?>> clones = new ArrayList<IDIYComponent<?>>();
+      for (IDIYComponent<?> c : components)
+        try {
+          clones.add(c.clone());
+        } catch (CloneNotSupportedException e) {
+          LOG.error("Could not clone component: " + c);
+        }
+      pasteComponents(clones);
+    } else
+      throw new InvalidBlockException();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public void deleteBlock(String blockName) {
+    Map<String, Collection<IDIYComponent<?>>> blocks =
+        (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+    if (blocks != null) {
+      blocks.remove(blockName);
+      ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
+    }
   }
 }
