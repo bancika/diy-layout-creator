@@ -1993,6 +1993,7 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   @Override
   public void deleteTemplate(String categoryName, String componentTypeName, String templateName) {
+    LOG.debug(String.format("deleteTemplate(%s, %s, %s)", categoryName, componentTypeName, templateName));
     Map<String, List<Template>> templateMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
     if (templateMap != null) {
@@ -2007,12 +2008,13 @@ public class Presenter implements IPlugInPort {
         }
       }
     }
-    ConfigurationManager.getInstance().saveConfigration();
+    ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, templateMap);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public void setTemplateDefault(String categoryName, String componentTypeName, String templateName, boolean defaultFlag) {
+    LOG.debug(String.format("setTemplateDefault(%s, %s, %s, %s)", categoryName, componentTypeName, templateName, defaultFlag));
     Map<String, List<Template>> templateMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
     if (templateMap != null) {
@@ -2059,6 +2061,7 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   @Override
   public void saveSelectionAsBlock(String blockName) {
+    LOG.debug(String.format("saveSelectionAsBlock(%s)", blockName));
     Map<String, Collection<IDIYComponent<?>>> blocks =
         (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
     if (blocks == null)
@@ -2070,6 +2073,7 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   @Override
   public void loadBlock(String blockName) throws InvalidBlockException {
+    LOG.debug(String.format("loadBlock(%s)", blockName));
     Map<String, Collection<IDIYComponent<?>>> blocks =
         (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
     if (blocks != null) {
@@ -2098,6 +2102,7 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   @Override
   public void deleteBlock(String blockName) {
+    LOG.debug(String.format("deleteBlock(%s)", blockName));
     Map<String, Collection<IDIYComponent<?>>> blocks =
         (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
     if (blocks != null) {

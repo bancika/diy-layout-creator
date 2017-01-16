@@ -109,7 +109,7 @@ public class ComponentButtonFactory {
     });
 
     JLabel label = new JLabel(template.isDefaultFlag() ? IconLoader.PinGreen.getIcon() : IconLoader.PinGrey.getIcon());
-    label.setToolTipText(template.isDefaultFlag() ? "Remove default template" : "Set default template");
+    label.setToolTipText(template.isDefaultFlag() ? "Remove default variant" : "Set default variant");
     label.addMouseListener(new MouseAdapter() {
 
       @Override
@@ -131,7 +131,7 @@ public class ComponentButtonFactory {
     item.add(label);
 
     label = new JLabel(IconLoader.Garbage.getIcon());
-    label.setToolTipText("Delete template");
+    label.setToolTipText("Delete variant");
     label.addMouseListener(new MouseAdapter() {
 
       @Override
@@ -143,7 +143,7 @@ public class ComponentButtonFactory {
           m.setVisible(false);
         }
         int result =
-            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(item), "Are you sure you want to delete template \""
+            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(item), "Are you sure you want to delete variant \""
                 + template.getName() + "\"", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (result != JOptionPane.YES_OPTION) {
           return;

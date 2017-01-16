@@ -317,7 +317,7 @@ public class TreePanel extends JPanel {
 
             List<Template> templates = plugInPort.getTemplatesFor(componentType.getCategory(), componentType.getName());
             if (templates == null || templates.isEmpty()) {
-              JMenuItem item = new JMenuItem("<no templates>");
+              JMenuItem item = new JMenuItem("<no variants>");
               item.setEnabled(false);
               popup.add(item);
             } else {

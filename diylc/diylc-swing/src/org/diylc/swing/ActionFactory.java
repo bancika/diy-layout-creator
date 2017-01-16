@@ -853,7 +853,7 @@ public class ActionFactory {
     public SaveAsTemplateAction(IPlugInPort plugInPort) {
       super();
       this.plugInPort = plugInPort;
-      putValue(AbstractAction.NAME, "Save as Template");
+      putValue(AbstractAction.NAME, "Save as Variant");
       putValue(AbstractAction.SMALL_ICON, IconLoader.BriefcaseAdd.getIcon());
     }
 
@@ -861,7 +861,7 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("Save as template triggered");
       String templateName =
-          JOptionPane.showInputDialog(null, "Template name:", "Save as Template", JOptionPane.PLAIN_MESSAGE);
+          JOptionPane.showInputDialog(null, "Variant name:", "Save as Variant", JOptionPane.PLAIN_MESSAGE);
       if (templateName != null && !templateName.trim().isEmpty()) {
         plugInPort.saveSelectedComponentAsTemplate(templateName);
       }

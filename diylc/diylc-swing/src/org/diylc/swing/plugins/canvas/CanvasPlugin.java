@@ -315,7 +315,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public JMenu getApplyTemplateMenu() {
     if (applyTemplateMenu == null) {
-      applyTemplateMenu = new JMenu("Apply Template");
+      applyTemplateMenu = new JMenu("Apply Variant");
       applyTemplateMenu.setIcon(IconLoader.BriefcaseInto.getIcon());
     }
     return applyTemplateMenu;
@@ -347,7 +347,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     try {
       templates = plugInPort.getTemplatesForSelection();
     } catch (Exception e) {
-      LOG.info("Could not get templates for selection");
+      LOG.info("Could not load variants for selection");
       getApplyTemplateMenu().setEnabled(false);
     }
 
