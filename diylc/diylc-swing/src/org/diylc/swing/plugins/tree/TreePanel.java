@@ -274,6 +274,8 @@ public class TreePanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+          if (e.getClickCount() != 1)
+            return;
           TreePath path = tree.getClosestPathForLocation(e.getX(), e.getY());
           DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
           if (node != null && node.getUserObject() != null) {

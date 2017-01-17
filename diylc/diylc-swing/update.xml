@@ -1586,6 +1586,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved resistor rendering to look more realistic</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Component type gets selected while expanding folders in component tree</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
