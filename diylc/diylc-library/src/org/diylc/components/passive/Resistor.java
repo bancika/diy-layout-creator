@@ -3,6 +3,8 @@ package org.diylc.components.passive;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
@@ -30,7 +32,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
   public static Color BODY_COLOR = Color.decode("#82CFFD");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
   public static int BAND_SPACING = 5;
-  public static int FIRST_BAND = 4;
+  public static int FIRST_BAND = -4;
 
   private Resistance value = null;
   @Deprecated
@@ -87,15 +89,18 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
     g2d.setColor(LEAD_COLOR_ICON);
     g2d.drawLine(0, height / 2, width, height / 2);
     g2d.setColor(BODY_COLOR);
-    g2d.fillRect(4, height / 2 - 3, width - 8, 6);
+    Area a = new Area(new Rectangle2D.Double(6, height / 2 - 3, width - 14, 6));
+    a.add(new Area(new Ellipse2D.Double(4, height / 2 - 4, 8, 8)));
+    a.add(new Area(new Ellipse2D.Double(width - 12, height / 2 - 4, 8, 8)));
+    g2d.fill(a);
     g2d.setColor(Color.red);
-    g2d.drawLine(7, height / 2 - 3, 7, height / 2 + 3);
-    g2d.setColor(Color.orange);
     g2d.drawLine(11, height / 2 - 3, 11, height / 2 + 3);
+    g2d.setColor(Color.orange);
+    g2d.drawLine(14, height / 2 - 3, 14, height / 2 + 3);
     g2d.setColor(Color.black);
-    g2d.drawLine(15, height / 2 - 3, 15, height / 2 + 3);
+    g2d.drawLine(17, height / 2 - 3, 17, height / 2 + 3);
     g2d.setColor(BORDER_COLOR);
-    g2d.drawRect(4, height / 2 - 3, width - 8, 6);
+    g2d.draw(a);
   }
 
   @Override
@@ -119,7 +124,13 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
   @Override
   protected Shape getBodyShape() {
-    return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth().convertToPixels()));
+    double length = getLength().convertToPixels();
+    double width = getClosestOdd(getWidth().convertToPixels());
+    Rectangle2D rect = new Rectangle2D.Double(width / 2, width / 10, length - width, width * 8 / 10);
+    Area a = new Area(rect);
+    a.add(new Area(new Ellipse2D.Double(0, 0, width, width)));
+    a.add(new Area(new Ellipse2D.Double(length - width, 0, width, width)));
+    return a;
   }
 
   @Override
@@ -128,13 +139,13 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
     if (colorCode == ResistorColorCode.NONE || outlineMode || value == null) {
       return;
     }
-    int height = getClosestOdd(getWidth().convertToPixels());
+    int width = getClosestOdd(getWidth().convertToPixels());
     Color[] bands = value.getColorCode(colorCode);
-    int x = FIRST_BAND;
+    int x = width + FIRST_BAND;
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
     for (int i = 0; i < bands.length; i++) {
       g2d.setColor(bands[i]);
-      g2d.drawLine(x, 1, x, height - 1);
+      g2d.drawLine(x, width / 10 + 2, x, width * 8 / 10 + 1);
       x += BAND_SPACING;
     }
   }
@@ -143,11 +154,12 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
   protected int getLabelOffset(int bodyWidth, int labelWidth) {
     if (value == null)
       return 0;
+    int width = getClosestOdd(getWidth().convertToPixels());
     Color[] bands = value.getColorCode(colorCode);
-    int bandArea = FIRST_BAND + BAND_SPACING * (bands.length - 1);
-    // Only offset the label if overlaping with the band area.
+    int bandArea = width + FIRST_BAND + BAND_SPACING * (bands.length - 1);
+    // Only offset the label if overlapping with the band area.
     if (labelWidth > bodyWidth - 2 * bandArea)
-      return bandArea / 2;
+      return BAND_SPACING * (bands.length - 1);
     return 0;
   }
 

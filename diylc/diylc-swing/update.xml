@@ -1582,6 +1582,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved rotation and mirroring of multiple components at the same time</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved resistor rendering to look more realistic</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
