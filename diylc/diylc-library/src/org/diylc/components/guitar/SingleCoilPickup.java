@@ -65,14 +65,20 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   private static Size HOLE_MARGIN = new Size(4d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);
+  
+  private static Size RAIL_WIDTH = new Size(1.5d, SizeUnit.mm);
+  private static Size RAIL_LENGTH = new Size(60d, SizeUnit.mm);
+  private static Size RAIL_SPACING = new Size(7.5d, SizeUnit.mm);
 
   private String value = "";
   private Point controlPoint = new Point(0, 0);
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private Color color = BODY_COLOR;
+  private Color poleColor = METAL_COLOR;
   private Color baseColor = BASE_COLOR;
   private SingleCoilType type = SingleCoilType.Stratocaster;
+  private PolePieceType polePieceType = PolePieceType.Rods;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -135,9 +141,9 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     g2d.draw(body[3]);
 
     if (componentState != ComponentState.DRAGGING && !outlineMode) {
-      g2d.setColor(METAL_COLOR.darker());
+      g2d.setColor(getPoleColor().darker());
       g2d.draw(body[2]);
-      g2d.setColor(METAL_COLOR);
+      g2d.setColor(getPoleColor());
       g2d.fill(body[2]);
     }
 
@@ -235,16 +241,25 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
       body[1] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize));
 
-      int poleSize = (int) POLE_SIZE.convertToPixels();
-      int poleSpacing = (int) POLE_SPACING.convertToPixels();
-      int poleMargin = (length - poleSpacing * 5) / 2;
       Area poleArea = new Area();
-      for (int i = 0; i < 6; i++) {
-        Ellipse2D pole =
-            new Ellipse2D.Double(x - length / 2 + poleMargin + i * poleSpacing - poleSize / 2, y - coilOffset - width
-                / 2 - poleSize / 2, poleSize, poleSize);
-        poleArea.add(new Area(pole));
+      if (getPolePieceType() == PolePieceType.Rods) {
+        int poleSize = (int) POLE_SIZE.convertToPixels();
+        int poleSpacing = (int) POLE_SPACING.convertToPixels();
+        int poleMargin = (length - poleSpacing * 5) / 2;        
+        for (int i = 0; i < 6; i++) {
+          Ellipse2D pole =
+              new Ellipse2D.Double(x - length / 2 + poleMargin + i * poleSpacing - poleSize / 2, y - coilOffset - width
+                  / 2 - poleSize / 2, poleSize, poleSize);
+          poleArea.add(new Area(pole));
+        }        
+      } else {
+        int railWidth = (int) RAIL_WIDTH.convertToPixels();
+        int railSpacing = (int) RAIL_SPACING.convertToPixels();        
+        int railLength = (int) RAIL_LENGTH.convertToPixels();
+        poleArea.add(new Area(new Rectangle2D.Double(x - railLength / 2, y - coilOffset - width / 2 - railSpacing / 2 - railWidth / 2, railLength, railWidth)));
+        poleArea.add(new Area(new Rectangle2D.Double(x - railLength / 2, y - coilOffset - width / 2 + railSpacing / 2 - railWidth / 2, railLength, railWidth)));
       }
+      
       body[2] = poleArea;
 
       body[3] =
@@ -320,6 +335,19 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     body = null;
   }
 
+  @EditableProperty(name = "Pole Pieces")
+  public PolePieceType getPolePieceType() {
+    if (polePieceType == null)
+      polePieceType = PolePieceType.Rods;
+    return polePieceType;
+  }
+
+  public void setPolePieceType(PolePieceType polePieceType) {
+    this.polePieceType = polePieceType;
+    // Invalidate the body
+    body = null;
+  }
+
   @Override
   public int getControlPointCount() {
     return 1;
@@ -388,8 +416,23 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   public void setBaseColor(Color baseColor) {
     this.baseColor = baseColor;
   }
+  
+  @EditableProperty(name = "Pole Color")
+  public Color getPoleColor() {
+    if (poleColor == null)
+      poleColor = METAL_COLOR;
+    return poleColor;
+  }
+  
+  public void setPoleColor(Color poleColor) {
+    this.poleColor = poleColor;
+  }
 
   public enum SingleCoilType {
     Stratocaster, Telecaster;
+  }
+
+  public enum PolePieceType {
+    Rods, Rails;
   }
 }

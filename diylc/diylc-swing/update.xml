@@ -1565,7 +1565,7 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Show/hide the grid</description>
-				</org.diylc.appframework.update.Change>		
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ability to rotate tube sockets for arbitrary angle and to change color</description>
@@ -1587,8 +1587,12 @@
 					<description>Improved resistor rendering to look more realistic</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Select single coil pickup pole pieces (rods or rails) and pole piece color</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Component type gets selected while expanding folders in component tree</description>
+					<description>Component type gets selected while expanding folders in the component tree</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
