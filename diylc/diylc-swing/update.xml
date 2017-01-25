@@ -1568,6 +1568,10 @@
 				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Ability to type in hex value in color editor</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Ability to rotate tube sockets for arbitrary angle and to change color</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

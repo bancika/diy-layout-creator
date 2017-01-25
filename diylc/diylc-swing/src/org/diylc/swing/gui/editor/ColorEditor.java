@@ -2,50 +2,129 @@ package org.diylc.swing.gui.editor;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.diylc.common.PropertyWrapper;
 
-public class ColorEditor extends JLabel {
+public class ColorEditor extends JPanel {
 
   private static final long serialVersionUID = 1L;
 
   private static final String title = "Click to edit";
 
-  public ColorEditor(final PropertyWrapper property) {
-    super(property.isUnique() ? title : ("(multi value) " + title));
-    setOpaque(true);
-    setHorizontalAlignment(SwingConstants.CENTER);
-    setBorder(BorderFactory.createEtchedBorder());
-    setBackground((Color) property.getValue());
-    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    addMouseListener(new MouseAdapter() {
+  private JLabel colorLabel;
+  private JTextField colorField;
+  private PropertyWrapper property;
 
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color", getBackground());
-        if (newColor != null) {
-          property.setChanged(true);
-          property.setValue(newColor);
-          setBackground(newColor);
-        }
-      }
-    });
+  public ColorEditor(final PropertyWrapper property) {
+    super();
+    this.property = property;
+
+    setLayout(new GridBagLayout());
+
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.weightx = 1;
+    gbc.weighty = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+
+    add(getColorLabel(), gbc);
+
+    gbc.gridx++;
+    gbc.weightx = 0;
+    gbc.insets = new Insets(0, 2, 0, 0);
+    add(new JLabel("#"), gbc);
+
+    gbc.gridx++;
+    gbc.insets = new Insets(0, 0, 0, 0);
+    add(getColorField(), gbc);
   }
 
-  @Override
-  public void setBackground(Color bg) {
-    if (bg.getRed() < 127 || bg.getBlue() < 127 || bg.getGreen() < 127) {
-      setForeground(Color.white);
-    } else {
-      setForeground(Color.black);
+  public JLabel getColorLabel() {
+    if (colorLabel == null) {
+      colorLabel = new JLabel(property.isUnique() ? title : ("(multi value) " + title)) {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void setBackground(Color bg) {
+          if (bg.getRed() < 127 || bg.getBlue() < 127 || bg.getGreen() < 127) {
+            setForeground(Color.white);
+          } else {
+            setForeground(Color.black);
+          }
+          super.setBackground(bg);
+        }
+      };
+      colorLabel.setOpaque(true);
+      colorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      colorLabel.setBorder(BorderFactory.createEtchedBorder());
+      colorLabel.setBackground((Color) property.getValue());
+      colorLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      colorLabel.addMouseListener(new MouseAdapter() {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color", getBackground());
+          if (newColor != null) {
+            property.setChanged(true);
+            property.setValue(newColor);
+            getColorLabel().setBackground(newColor);
+            getColorField().setText(Integer.toHexString(newColor.getRGB()).substring(2).toUpperCase());
+          }
+        }
+      });
     }
-    super.setBackground(bg);
+    return colorLabel;
+  }
+
+  public JTextField getColorField() {
+    if (colorField == null) {
+      Color color = (Color) property.getValue();
+      colorField =
+          new JTextField(property.isUnique() ? Integer.toHexString(color.getRGB()).substring(2).toUpperCase()
+              : ("(multi value) " + title));
+      colorField.setColumns(6);
+      colorField.getDocument().addDocumentListener(new DocumentListener() {
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+          updateColor();
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+          updateColor();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+          updateColor();
+        }
+      });
+    }
+    return colorField;
+  }
+
+  private void updateColor() {
+    if (getColorField().getText().length() == 6) {
+      Color newColor = Color.decode("#" + getColorField().getText());
+      if (newColor != null)
+        getColorLabel().setBackground(newColor);
+    }
   }
 }
