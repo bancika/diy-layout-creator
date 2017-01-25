@@ -81,6 +81,18 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   }
 
   /**
+   * Returns darker color if possible, or lighter if it's already dark
+   * 
+   * @param color
+   * @return
+   */
+  protected Color darkerOrLighter(Color color) {
+    float[] hsb = new float[3];
+    Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb);
+    return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2] > 0.5 ? hsb[2] - 0.25f : hsb[2] + 0.25f));
+  }
+
+  /**
    * @param clip
    * @return true if none of the control points lie in the clip rectangle.
    */

@@ -117,7 +117,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     } else {
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : getBaseColor().darker();
+              : darkerOrLighter(getBaseColor());
     }
 
     g2d.setColor(finalBorderColor);
@@ -132,7 +132,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     } else {
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : color.darker();
+              : darkerOrLighter(color);
     }
 
     g2d.setColor(finalBorderColor);
@@ -141,10 +141,10 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     g2d.draw(body[3]);
 
     if (componentState != ComponentState.DRAGGING && !outlineMode) {
-      g2d.setColor(getPoleColor().darker());
-      g2d.draw(body[2]);
       g2d.setColor(getPoleColor());
       g2d.fill(body[2]);
+      g2d.setColor(darkerOrLighter(getPoleColor()));
+      g2d.draw(body[2]);
     }
 
     Color finalLabelColor;
