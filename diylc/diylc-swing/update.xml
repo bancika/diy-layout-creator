@@ -1588,7 +1588,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Select single coil pickup pole pieces (rods or rails) and pole piece color</description>
+					<description>Editable single coil pickup pole pieces (rods or rails) and pole piece color</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

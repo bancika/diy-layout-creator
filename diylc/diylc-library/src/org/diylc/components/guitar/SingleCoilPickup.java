@@ -65,10 +65,10 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   private static Size HOLE_MARGIN = new Size(4d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);
-  
+
   private static Size RAIL_WIDTH = new Size(1.5d, SizeUnit.mm);
   private static Size RAIL_LENGTH = new Size(60d, SizeUnit.mm);
-  private static Size RAIL_SPACING = new Size(7.5d, SizeUnit.mm);
+  private static Size COIL_SPACING = new Size(7.5d, SizeUnit.mm);
 
   private String value = "";
   private Point controlPoint = new Point(0, 0);
@@ -245,21 +245,39 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       if (getPolePieceType() == PolePieceType.Rods) {
         int poleSize = (int) POLE_SIZE.convertToPixels();
         int poleSpacing = (int) POLE_SPACING.convertToPixels();
-        int poleMargin = (length - poleSpacing * 5) / 2;        
+        int poleMargin = (length - poleSpacing * 5) / 2;
         for (int i = 0; i < 6; i++) {
           Ellipse2D pole =
               new Ellipse2D.Double(x - length / 2 + poleMargin + i * poleSpacing - poleSize / 2, y - coilOffset - width
                   / 2 - poleSize / 2, poleSize, poleSize);
           poleArea.add(new Area(pole));
-        }        
-      } else {
+        }
+      } else if (getPolePieceType() == PolePieceType.RodHumbucker) {
+        int poleSize = (int) POLE_SIZE.convertToPixels() / 2;
+        int poleSpacing = (int) POLE_SPACING.convertToPixels();
+        int poleMargin = (length - poleSpacing * 5) / 2;
+        int coilSpacing = (int) COIL_SPACING.convertToPixels();
+        for (int i = 0; i < 6; i++) {
+          poleArea.add(new Area(new Ellipse2D.Double(x - length / 2 + poleMargin + i * poleSpacing - poleSize / 2, y
+              - coilOffset - width / 2 - poleSize / 2 - coilSpacing / 2, poleSize, poleSize)));
+          poleArea.add(new Area(new Ellipse2D.Double(x - length / 2 + poleMargin + i * poleSpacing - poleSize / 2, y
+              - coilOffset - width / 2 - poleSize / 2 + coilSpacing / 2, poleSize, poleSize)));
+        }
+      } else if (getPolePieceType() == PolePieceType.RailHumbucker) {
         int railWidth = (int) RAIL_WIDTH.convertToPixels();
-        int railSpacing = (int) RAIL_SPACING.convertToPixels();        
+        int railSpacing = (int) COIL_SPACING.convertToPixels();
         int railLength = (int) RAIL_LENGTH.convertToPixels();
-        poleArea.add(new Area(new Rectangle2D.Double(x - railLength / 2, y - coilOffset - width / 2 - railSpacing / 2 - railWidth / 2, railLength, railWidth)));
-        poleArea.add(new Area(new Rectangle2D.Double(x - railLength / 2, y - coilOffset - width / 2 + railSpacing / 2 - railWidth / 2, railLength, railWidth)));
+        poleArea.add(new Area(new Rectangle2D.Double(x - railLength / 2, y - coilOffset - width / 2 - railSpacing / 2
+            - railWidth / 2, railLength, railWidth)));
+        poleArea.add(new Area(new Rectangle2D.Double(x - railLength / 2, y - coilOffset - width / 2 + railSpacing / 2
+            - railWidth / 2, railLength, railWidth)));
+      } else if (getPolePieceType() == PolePieceType.Rail) {
+        int railWidth = 2 * (int) RAIL_WIDTH.convertToPixels();
+        int railLength = (int) RAIL_LENGTH.convertToPixels();
+        poleArea.add(new Area(new RoundRectangle2D.Double(x - railLength / 2, y - coilOffset - width / 2 - railWidth
+            / 2, railLength, railWidth, railWidth / 2, railWidth / 2)));
       }
-      
+
       body[2] = poleArea;
 
       body[3] =
@@ -416,14 +434,14 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   public void setBaseColor(Color baseColor) {
     this.baseColor = baseColor;
   }
-  
+
   @EditableProperty(name = "Pole Color")
   public Color getPoleColor() {
     if (poleColor == null)
       poleColor = METAL_COLOR;
     return poleColor;
   }
-  
+
   public void setPoleColor(Color poleColor) {
     this.poleColor = poleColor;
   }
@@ -433,6 +451,17 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   }
 
   public enum PolePieceType {
-    Rods, Rails;
+    Rods("Single Rods"), Rail("Single Rail"), RailHumbucker("Dual Rail Humbucker"), RodHumbucker("Dual Rods");
+
+    private String label;
+
+    private PolePieceType(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }
