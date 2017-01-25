@@ -96,8 +96,7 @@ public class ColorEditor extends JPanel {
     if (colorField == null) {
       Color color = (Color) property.getValue();
       colorField =
-          new JTextField(property.isUnique() ? Integer.toHexString(color.getRGB()).substring(2).toUpperCase()
-              : ("(multi value) " + title));
+          new JTextField(property.isUnique() ? Integer.toHexString(color.getRGB()).substring(2).toUpperCase() : "");
       colorField.setColumns(6);
       colorField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -123,8 +122,12 @@ public class ColorEditor extends JPanel {
   private void updateColor() {
     if (getColorField().getText().length() == 6) {
       Color newColor = Color.decode("#" + getColorField().getText());
-      if (newColor != null)
+      if (newColor != null && getColorLabel().getBackground() != newColor) {
         getColorLabel().setBackground(newColor);
+        getColorLabel().setText(title);
+        property.setChanged(true);
+        property.setValue(newColor);
+      }
     }
   }
 }
