@@ -1591,6 +1591,14 @@
 					<description>Editable single coil pickup pole pieces (rods or rails) and pole piece color</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Editable humbucker pickup pole pieces (rods or rails) and pole piece color</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Editable P90 pickup pole piece color</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Component type gets selected while expanding folders in the component tree</description>
 				</org.diylc.appframework.update.Change>	

@@ -69,6 +69,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
   private Orientation orientation = Orientation.DEFAULT;
   private Color color = BODY_COLOR;
   private P90Type type = P90Type.DOG_EAR;
+  private Color poleColor = METAL_COLOR;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -108,9 +109,9 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     if (body[1] != null)
       g2d.draw(body[1]);
     if (!outlineMode && componentState != ComponentState.DRAGGING) {
-      g2d.setColor(METAL_COLOR);
+      g2d.setColor(getPoleColor());
       g2d.fill(body[3]);
-      g2d.setColor(METAL_COLOR.darker());
+      g2d.setColor(darkerOrLighter(getPoleColor()));
       g2d.draw(body[3]);
     }
 
@@ -316,6 +317,17 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
 
   public void setColor(Color color) {
     this.color = color;
+  }
+  
+  @EditableProperty(name = "Pole Color")
+  public Color getPoleColor() {
+    if (poleColor == null)
+      poleColor = METAL_COLOR;
+    return poleColor;
+  }
+
+  public void setPoleColor(Color poleColor) {
+    this.poleColor = poleColor;
   }
 
   public enum P90Type {

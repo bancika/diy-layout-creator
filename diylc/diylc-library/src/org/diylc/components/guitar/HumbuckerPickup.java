@@ -62,10 +62,13 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private Color color = BASE_COLOR;
+  private Color poleColor = METAL_COLOR;
   private HumbuckerType type;
   private boolean cover;
   private Color bobinColor1 = BOBIN_COLOR1;
   private Color bobinColor2 = BOBIN_COLOR2;
+  private PolePieceType coilType1;
+  private PolePieceType coilType2;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -90,7 +93,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         g2d.setColor(getBobinColor2());
         g2d.fill(body[5]);
       }
-      
+
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
       g2d.fill(body[2]);
 
@@ -114,9 +117,9 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     g2d.draw(body[0]);
     g2d.draw(body[1]);
     if (!outlineMode && componentState != ComponentState.DRAGGING) {
-      g2d.setColor(METAL_COLOR);
+      g2d.setColor(getPoleColor());
       g2d.fill(body[3]);
-      g2d.setColor(METAL_COLOR.darker());
+      g2d.setColor(darkerOrLighter(getPoleColor()));
       g2d.draw(body[3]);
 
       if (body[4] != null) {
@@ -196,19 +199,35 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
       int coilMargin = (width - coilSpacing) / 2;
       int poleMargin = (length - poleSpacing * 5) / 2;
       Area poleArea = new Area();
-      for (int i = 0; i < 6; i++) {
-        if (getType() == HumbuckerType.PAF || !getCover()) {
+
+      if (getCoilType1() == PolePieceType.Rail) {
+        poleArea.add(new Area(
+            new RoundRectangle2D.Double(x + pointMargin - length + poleMargin - poleSize / 2, y - pointMargin
+                + coilMargin - poleSize / 2, poleSpacing * 5 + poleSize, poleSize, poleSize / 2, poleSize / 2)));
+      } else {
+        for (int i = 0; i < 6; i++) {
+          if (getType() == HumbuckerType.PAF || !getCover()) {
+            Ellipse2D pole =
+                new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
+                    - pointMargin + coilMargin - poleSize / 2, poleSize, poleSize);
+            poleArea.add(new Area(pole));
+          }
+        }
+      }
+
+      if (getCoilType2() == PolePieceType.Rail) {
+        poleArea.add(new Area(new RoundRectangle2D.Double(x + pointMargin - length + poleMargin - poleSize / 2, y
+            - pointMargin + width - coilMargin - poleSize / 2, poleSpacing * 5 + poleSize, poleSize, poleSize / 2,
+            poleSize / 2)));
+      } else {
+        for (int i = 0; i < 6; i++) {
           Ellipse2D pole =
               new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
-                  - pointMargin + coilMargin - poleSize / 2, poleSize, poleSize);
+                  - pointMargin + width - coilMargin - poleSize / 2, poleSize, poleSize);
           poleArea.add(new Area(pole));
         }
-
-        Ellipse2D pole =
-            new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
-                - pointMargin + width - coilMargin - poleSize / 2, poleSize, poleSize);
-        poleArea.add(new Area(pole));
       }
+
       body[3] = poleArea;
 
       // Rotate if needed
@@ -259,13 +278,15 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         baseWidth / 2);
     g2d.setColor(BOBIN_COLOR2);
     g2d.fillRoundRect(width / 2, (height - baseLength) / 2, baseWidth / 2, baseLength, baseWidth / 2, baseWidth / 2);
-    
+
     g2d.setColor(METAL_COLOR);
     int poleSize = 2;
     int poleSpacing = 17 * width / 32;
     for (int i = 0; i < 6; i++) {
-      g2d.fillOval((width - poleSize - baseWidth / 2) / 2, (height - poleSpacing) / 2 + (i * poleSpacing / 5), poleSize, poleSize);
-      g2d.fillOval((width - poleSize + baseWidth / 2) / 2, (height - poleSpacing) / 2 + (i * poleSpacing / 5), poleSize, poleSize);
+      g2d.fillOval((width - poleSize - baseWidth / 2) / 2, (height - poleSpacing) / 2 + (i * poleSpacing / 5),
+          poleSize, poleSize);
+      g2d.fillOval((width - poleSize + baseWidth / 2) / 2, (height - poleSpacing) / 2 + (i * poleSpacing / 5),
+          poleSize, poleSize);
     }
   }
 
@@ -373,6 +394,45 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     this.color = color;
   }
 
+  @EditableProperty(name = "Pole Color")
+  public Color getPoleColor() {
+    if (poleColor == null)
+      poleColor = METAL_COLOR;
+    return poleColor;
+  }
+
+  public void setPoleColor(Color poleColor) {
+    this.poleColor = poleColor;
+  }
+
+  @EditableProperty(name = "Pole Pieces 1")
+  public PolePieceType getCoilType1() {
+    if (coilType1 == null) {
+      return PolePieceType.Rods;
+    }
+    return coilType1;
+  }
+
+  public void setCoilType1(PolePieceType coilType1) {
+    this.coilType1 = coilType1;
+    // Invalidate the body
+    body = null;
+  }
+
+  @EditableProperty(name = "Pole Pieces 2")
+  public PolePieceType getCoilType2() {
+    if (coilType2 == null) {
+      return PolePieceType.Rods;
+    }
+    return coilType2;
+  }
+
+  public void setCoilType2(PolePieceType coilType2) {
+    this.coilType2 = coilType2;
+    // Invalidate the body
+    body = null;
+  }
+
   public static enum HumbuckerType {
 
     PAF(WIDTH, LENGTH), Mini(WIDTH_MINI, LENGTH_MINI);
@@ -397,5 +457,9 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     public String toString() {
       return name();
     }
+  }
+
+  public enum PolePieceType {
+    Rods, Rail;
   }
 }
