@@ -39,6 +39,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
   private Power power = Power.HALF;
   private org.diylc.core.measures.Power powerNew = null;
   private ResistorColorCode colorCode = ResistorColorCode._5_BAND;
+  private ResistorShape shape = ResistorShape.Standard;
 
   public Resistor() {
     super();
@@ -122,15 +123,29 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
     this.colorCode = colorCode;
   }
 
+  @EditableProperty
+  public ResistorShape getShape() {
+    if (shape == null)
+      shape = ResistorShape.Standard;
+    return shape;
+  }
+
+  public void setShape(ResistorShape shape) {
+    this.shape = shape;
+  }
+
   @Override
   protected Shape getBodyShape() {
-    double length = getLength().convertToPixels();
-    double width = getClosestOdd(getWidth().convertToPixels());
-    Rectangle2D rect = new Rectangle2D.Double(width / 2, width / 10, length - width, width * 8 / 10);
-    Area a = new Area(rect);
-    a.add(new Area(new Ellipse2D.Double(0, 0, width, width)));
-    a.add(new Area(new Ellipse2D.Double(length - width, 0, width, width)));
-    return a;
+    if (shape == ResistorShape.Standard) {
+      double length = getLength().convertToPixels();
+      double width = getClosestOdd(getWidth().convertToPixels());
+      Rectangle2D rect = new Rectangle2D.Double(width / 2, width / 10, length - width, width * 8 / 10);
+      Area a = new Area(rect);
+      a.add(new Area(new Ellipse2D.Double(0, 0, width, width)));
+      a.add(new Area(new Ellipse2D.Double(length - width, 0, width, width)));
+      return a;
+    }
+    return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth().convertToPixels()));
   }
 
   @Override
@@ -139,14 +154,26 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
     if (colorCode == ResistorColorCode.NONE || outlineMode || value == null) {
       return;
     }
-    int width = getClosestOdd(getWidth().convertToPixels());
-    Color[] bands = value.getColorCode(colorCode);
-    int x = width + FIRST_BAND;
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-    for (int i = 0; i < bands.length; i++) {
-      g2d.setColor(bands[i]);
-      g2d.drawLine(x, width / 10 + 2, x, width * 8 / 10 + 1);
-      x += BAND_SPACING;
+    if (shape == ResistorShape.Standard) {
+      int width = getClosestOdd(getWidth().convertToPixels());
+      Color[] bands = value.getColorCode(colorCode);
+      int x = width + FIRST_BAND;
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+      for (int i = 0; i < bands.length; i++) {
+        g2d.setColor(bands[i]);
+        g2d.drawLine(x, width / 10 + 2, x, width * 8 / 10 + 1);
+        x += BAND_SPACING;
+      }
+    } else {
+      int height = getClosestOdd(getWidth().convertToPixels());
+      Color[] bands = value.getColorCode(colorCode);
+      int x = FIRST_BAND;
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+      for (int i = 0; i < bands.length; i++) {
+        g2d.setColor(bands[i]);
+        g2d.drawLine(x, 1, x, height - 1);
+        x += BAND_SPACING;
+      }
     }
   }
 
@@ -166,5 +193,9 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
   @EditableProperty(name = "Reverse (standing)")
   public boolean getFlipStanding() {
     return super.getFlipStanding();
+  }
+
+  public enum ResistorShape {
+    Tubular, Standard
   }
 }
