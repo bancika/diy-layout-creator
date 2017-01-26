@@ -8,6 +8,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.components.transform.TubeSymbolTransformer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -16,7 +17,8 @@ import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Pentode (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "V", description = "Pentode tube symbol", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,
+    transformer = TubeSymbolTransformer.class)
 public class PentodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;
@@ -31,8 +33,10 @@ public class PentodeSymbol extends AbstractTubeSymbol {
     updateControlPoints();
   }
 
-  public Shape[] getBody() {
+  public Shape[] initializeBody() {
     if (body == null) {
+      Point[] controlPoints = initializeControlPoints(this.controlPoints[0]);
+
       body = new Shape[3];
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;
@@ -156,29 +160,35 @@ public class PentodeSymbol extends AbstractTubeSymbol {
     g2d.drawLine(width / 8, height * 5 / 8, width * 7 / 8, height * 5 / 8);
   }
 
-  protected void updateControlPoints() {
+  protected Point[] initializeControlPoints(Point first) {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    int x = first.x;
+    int y = first.y;
 
-    controlPoints[1].x = x + pinSpacing * 3;
-    controlPoints[1].y = y - pinSpacing * 4;
+    Point[] newPoints =
+        new Point[] {first, new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
+            new Point(0, 0)};
 
-    controlPoints[2].x = x + pinSpacing * 2;
-    controlPoints[2].y = y + pinSpacing * 2;
+    newPoints[1].x = x + pinSpacing * 3;
+    newPoints[1].y = y - pinSpacing * 4;
 
-    controlPoints[3].x = x + pinSpacing * 6;
-    controlPoints[3].y = y - pinSpacing;
+    newPoints[2].x = x + pinSpacing * 2;
+    newPoints[2].y = y + pinSpacing * 2;
 
-    controlPoints[4].x = x;
-    controlPoints[4].y = y - pinSpacing * 2;
+    newPoints[3].x = x + pinSpacing * 6;
+    newPoints[3].y = y - pinSpacing;
 
-    controlPoints[5].x = x + pinSpacing * 3;
-    controlPoints[5].y = y + pinSpacing * 2;
+    newPoints[4].x = x;
+    newPoints[4].y = y - pinSpacing * 2;
 
-    controlPoints[6].x = x + pinSpacing * 4;
-    controlPoints[6].y = y + pinSpacing * 2;
+    newPoints[5].x = x + pinSpacing * 3;
+    newPoints[5].y = y + pinSpacing * 2;
+
+    newPoints[6].x = x + pinSpacing * 4;
+    newPoints[6].y = y + pinSpacing * 2;
+
+    return newPoints;
   }
 
   @Override
@@ -208,6 +218,6 @@ public class PentodeSymbol extends AbstractTubeSymbol {
   public void setExposeSuppressorGrid(boolean exposeSuppressorGrid) {
     this.exposeSuppressorGrid = exposeSuppressorGrid;
 
-    refreshDrawing();
+    this.body = null;
   }
 }

@@ -7,6 +7,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.components.transform.TubeSymbolTransformer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IPropertyValidator;
 import org.diylc.core.ValidationException;
@@ -17,7 +18,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Diode (symbol)", author = "Branislav Stojkovic", category = "Schematics",
     instanceNamePrefix = "V", description = "Diode tube symbol", stretchable = false, zOrder = IDIYComponent.COMPONENT,
-    keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TubeSymbolTransformer.class)
 public class DiodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;
@@ -31,8 +32,10 @@ public class DiodeSymbol extends AbstractTubeSymbol {
     updateControlPoints();
   }
 
-  public Shape[] getBody() {
+  public Shape[] initializeBody() {
     if (body == null) {
+      Point[] controlPoints = initializeControlPoints(this.controlPoints[0]);
+
       body = new Shape[3];
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;
@@ -110,23 +113,27 @@ public class DiodeSymbol extends AbstractTubeSymbol {
   }
 
   @Override
-  protected void updateControlPoints() {
+  protected Point[] initializeControlPoints(Point first) {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    int x = first.x;
+    int y = first.y;
 
-    controlPoints[1].x = x + pinSpacing * 3;
-    controlPoints[1].y = y - pinSpacing * 3;
+    Point[] newPoints = new Point[] {first, new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
 
-    controlPoints[2].x = x + pinSpacing * 2;
-    controlPoints[2].y = y + pinSpacing * 3;
+    newPoints[1].x = x + pinSpacing * 3;
+    newPoints[1].y = y - pinSpacing * 3;
 
-    controlPoints[3].x = x + pinSpacing * 3;
-    controlPoints[3].y = y + pinSpacing * 3;
+    newPoints[2].x = x + pinSpacing * 2;
+    newPoints[2].y = y + pinSpacing * 3;
 
-    controlPoints[4].x = x + pinSpacing * 4;
-    controlPoints[4].y = y + pinSpacing * 3;
+    newPoints[3].x = x + pinSpacing * 3;
+    newPoints[3].y = y + pinSpacing * 3;
+
+    newPoints[4].x = x + pinSpacing * 4;
+    newPoints[4].y = y + pinSpacing * 3;
+
+    return newPoints;
   }
 
   @Override
@@ -159,7 +166,7 @@ public class DiodeSymbol extends AbstractTubeSymbol {
   public void setDirectlyHeated(boolean directlyHeated) {
     this.directlyHeated = directlyHeated;
 
-    refreshDrawing();
+    this.body = null;
   }
 
   public class HeaterValidator implements IPropertyValidator {

@@ -15,6 +15,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.semiconductors.SymbolFlipping;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -38,6 +39,7 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   transient protected Shape[] body;
   protected boolean showHeaters;
   protected Orientation orientation = Orientation.DEFAULT;
+  protected SymbolFlipping flip = SymbolFlipping.NONE;
   protected Point[] controlPoints;
 
   @Override
@@ -87,9 +89,9 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
               : LABEL_COLOR;
     }
     g2d.setColor(finalLabelColor);
-    
+
     Rectangle rect = body[2] != null ? body[2].getBounds() : body[1].getBounds();
-    
+
     String label = "";
     label = display == Display.VALUE ? getValue() : getName();
     if (display == Display.NONE) {
@@ -98,9 +100,10 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     if (display == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    drawCenteredText(g2d, label, rect.x + rect.width, rect.y + rect.height, HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM);
+    drawCenteredText(g2d, label, rect.x + rect.width, rect.y + rect.height, HorizontalAlignment.RIGHT,
+        VerticalAlignment.BOTTOM);
   }
-  
+
   @Override
   public Point getControlPoint(int index) {
     return controlPoints[index];
@@ -110,12 +113,13 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   public int getControlPointCount() {
     return controlPoints.length;
   }
-  
+
   @Override
   public void setControlPoint(Point point, int index) {
     controlPoints[index].setLocation(point);
-    
-    refreshDrawing();
+
+    if (index == controlPoints.length - 1)
+      this.body = null;
   }
 
   @EditableProperty
@@ -155,28 +159,112 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   public void setShowHeaters(boolean showHeaters) {
     this.showHeaters = showHeaters;
 
-    refreshDrawing();
+    this.body = null;
   }
 
   @EditableProperty
   public Orientation getOrientation() {
     if (orientation == null)
       orientation = Orientation.DEFAULT;
-    
+
     return orientation;
   }
 
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
 
-    refreshDrawing();
+    updateControlPoints();
+    this.body = null;
   }
 
-  protected void refreshDrawing() {
+  @EditableProperty
+  public SymbolFlipping getFlip() {
+    if (flip == null)
+      flip = SymbolFlipping.NONE;
+    return flip;
+  }
+
+  public void setFlip(SymbolFlipping flip) {
+    this.flip = flip;
+
     updateControlPoints();
-    // make sure we have a new drawing
-    body = null;
-    getBody();
+    this.body = null;
+  }
+
+  /**
+   * Returns transistor shape consisting of 3 parts, in this order: electrodes, connectors, bulb.
+   * 
+   * @return
+   */
+  protected abstract Shape[] initializeBody();
+
+  protected Shape[] getBody() {
+    if (this.body == null) {
+      Shape[] newBody = initializeBody();
+      
+//      int pinSpacing = (int) PIN_SPACING.convertToPixels();
+      int centerX = this.controlPoints[0].x;// + pinSpacing * 3;
+      int centerY = this.controlPoints[0].y;
+
+      if (getFlip() == SymbolFlipping.X) {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.concatenate(AffineTransform.getTranslateInstance(-2 * centerX, 0));
+        if (newBody != null) {
+          for (int i = 0; i < newBody.length; i++) {
+            newBody[i] = tx.createTransformedShape(newBody[i]);
+          }
+        }
+      } else if (getFlip() == SymbolFlipping.Y) {
+        AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+        tx.concatenate(AffineTransform.getTranslateInstance(0, -2 * centerY));
+        if (newBody != null) {
+          for (int i = 0; i < newBody.length; i++) {
+            newBody[i] = tx.createTransformedShape(newBody[i]);
+          }
+        }
+      }
+
+      if (getOrientation() != Orientation.DEFAULT) {
+
+        Point first = this.controlPoints[0];
+        double angle = Double.parseDouble(getOrientation().name().replace("_", ""));
+        AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
+        if (newBody != null) {
+          for (int i = 0; i < newBody.length; i++) {
+            newBody[i] = rotate.createTransformedShape(newBody[i]);
+          }
+        }
+      }
+
+      this.body = newBody;
+    }
+
+    return this.body;
+  }
+
+  protected abstract Point[] initializeControlPoints(Point first);
+
+  protected void updateControlPoints() {
+    Point[] newPoints = initializeControlPoints(this.controlPoints[0]);
+    this.controlPoints = newPoints;
+
+//    int pinSpacing = (int) PIN_SPACING.convertToPixels();
+    int centerX = this.controlPoints[0].x;// + pinSpacing * 3;
+    int centerY = this.controlPoints[0].y;
+
+    if (getFlip() == SymbolFlipping.X) {
+      AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+      tx.concatenate(AffineTransform.getTranslateInstance(-2 * centerX, 0));
+      for (int i = 0; i < this.controlPoints.length; i++) {
+        tx.transform(this.controlPoints[i], this.controlPoints[i]);
+      }
+    } else if (getFlip() == SymbolFlipping.Y) {
+      AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+      tx.concatenate(AffineTransform.getTranslateInstance(0, -2 * centerY));
+      for (int i = 0; i < this.controlPoints.length; i++) {
+        tx.transform(this.controlPoints[i], this.controlPoints[i]);
+      }
+    }
 
     if (getOrientation() == Orientation.DEFAULT)
       return;
@@ -187,19 +275,5 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     for (int i = 1; i < this.controlPoints.length; i++) {
       rotate.transform(this.controlPoints[i], this.controlPoints[i]);
     }
-    if (this.body != null) {
-      for (int i = 0; i < this.body.length; i++) {
-        this.body[i] = rotate.createTransformedShape(this.body[i]);
-      }
-    }
   }
-
-  /**
-   * Returns transistor shape consisting of 3 parts, in this order: electrodes, connectors, bulb.
-   * 
-   * @return
-   */
-  protected abstract Shape[] getBody();
-
-  protected abstract void updateControlPoints();
 }

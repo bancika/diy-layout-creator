@@ -1572,8 +1572,12 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Ability to rotate tube sockets for arbitrary angle and to change color</description>
+					<description>Ability to rotate tube sockets for arbitrary angle and change color</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Flip tube schematic symbols</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Renamed "template" to "variant" as it is describes the meaning more closely</description>

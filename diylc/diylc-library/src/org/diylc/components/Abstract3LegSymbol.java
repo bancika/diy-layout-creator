@@ -34,12 +34,11 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
 
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
   public static Color COLOR = Color.black;
-
-  public static SymbolFlipping FLIPPING = SymbolFlipping.NONE;
+  
   protected String value = "";
   protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
   protected Color color = COLOR;
-  protected SymbolFlipping flip = FLIPPING;
+  protected SymbolFlipping flip = SymbolFlipping.NONE;
   protected Display display = Display.NAME;
   transient protected Shape[] body;
   protected Orientation orientation = Orientation.DEFAULT;
