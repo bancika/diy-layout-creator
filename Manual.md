@@ -41,12 +41,12 @@ Application configuration may be changed from **Config** menu. It contains the f
   * **Sticky Points**: when checked, components are allowed to stick to each other when moved. Hold Ctrl key while dragging to temporarily toggle the Sticky Point mode. See [Control points](#Control_points.md) for more info on control points.
   * **Theme**: allows selecting a theme. Themes are read from **themes** directory under the DIYLC root and they include background color and grid line color. You can create your own themes by adding an XML file to themes directory. It's easiest to start with a copy of one of the existing files.
 
-### Adding components to the drawing ###
+### Adding components to the project ###
 
 This sections explains how to add an existing component to the project. To learn how to develop your own components follow [this tutorial](http://code.google.com/p/diy-layout-creator/wiki/Components). To instantiate a component, follow these steps:
 
-  * Locate the component in the toolbox. Components are categorized into several tabs, so make sure you're looking into the right one.
-  * Click on the button that shows the desired component. Note that text in the status bar changes to reflect this action.
+  * Locate the component in the toolbox. Components are categorized into several folders, so make sure you're looking into the right one. To speed up the process, search box at the top of the component tree can be used to narrow down the list of displayed component types.
+  * Click on the desired component type. Note that text in the status bar changes to reflect this action.
   * Click on the desired location on the canvas to create the component. Some components (solder pads, trace cuts, etc) will be created on single click, others (like resistors, jumpers, etc) will require two clicks to set both ending points. Instructions in the status bar will guide you through the process. Component will be drawn translucent until the creation process is finalized.
 
 ### Moving components ###
