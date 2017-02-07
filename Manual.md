@@ -27,8 +27,12 @@ Application configuration may be changed from **Config** menu. It contains the f
   * **Auto-Create Pads**: when checked, application will automatically create solder pads whenever a component is added to the layout.
   * **Auto-Edit Mode**: when checked, the component edit dialog will appear after each component is created, the same way version 1.x works.
   * **Continuous Creation**: when checked, the last selected component type will remain active after you create a component, allowing you to create many components of the same type rapidly.
-  * **Export Grid**: when checked, grid lines will be exported to a file or printer.
+  * **Show Rulers**: controls whether the rulers should be displayed
+  * **Show Grid**: controls whether the grid lines should be shown while working on the project.
+  * **Export Grid**: controls whether the grid lines should be exported when saving the project to a file or printer.
   * **Hi-Quality Rendering**: when checked, image quality will improve slightly, but it may decrease performance.
+  * **Mouse Wheel Zoom**: when checked, mouse wheel zooms in and out instead of scrolling the visible area of the project.
+  * **Outline Mode**: when checked, components are drawn only as the the outline with no fill color or decorations.
   * **Snap to Grid**: when checked, drag & drop operations will snap control points to the grid instead of following the mouse cursor pixel by pixel.
   * **Sticky Points**: when checked, components are allowed to stick to each other when moved. Hold Ctrl key while dragging to temporarily toggle the Sticky Point mode. See [Control points](#Control_points.md) for more info on control points.
   * **Theme**: allows selecting a theme. Themes are read from **themes** directory under the DIYLC root and they include background color and grid line color. You can create your own themes by adding an XML file to themes directory. It's easiest to start with a copy of one of the existing files.
