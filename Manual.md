@@ -1,14 +1,18 @@
 ### System requirements ###
 
   * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.6.0_45-b06 or newer
-  * 256MB free RAM memory
+  * 1GB free RAM memory is recommended
   * 10MB free hard drive space
   * Zip utility to unpack the archive (7-zip, WinZip, Total Commander, etc)
 
 ### Running the app ###
 
+For starters, make sure that you have downloaded the correct version. Mac OSX builds have names that end with "osx". The build without "osx" in their name are multi-platform and will work pretty much anywhere provided that Java JRE is available for that platform.
+
   * On **Windows** just run the diylc.exe
-  * On **Linux/Unix** or **Mac**, open the terminal, change the directory to diylc3 (**cd `<`path to diylc3`>`**) and type **./run.sh**
+  * On **Linux/Unix** (will also work on **Mac OSX** if not using the OSX dedicated build), open the terminal, change the directory to diylc3 (**cd `<`path to diylc3`>`**) and type **./run.sh**
+  
+  * On **Mac OSX** you will need to allow 3rd party apps and then run the application package.
 
 ### User interface ###
 
@@ -55,9 +59,7 @@ Note that:
 
 ### Control points ###
 
-A component may have one or more control points. Control points have dual purpose:
-
-  * Allows changing component placement or appearance by dragging it's control point on the canvas. For instance, drag one end point of the resistor. To be able to drag a control point, the component must be selected. That makes it easier to "un-stick" two component that have overlapping control points and to have control over points that are dragged. This also works with multiple selection. When two or more components have their components stuck to each other, selecting all of them will allow you to drag their control points at the same time.
+A component may have one or more control points. Control points determine component's position on the layout and in some cases allows the component to get connected with other components. For some components, such as resistors, wires, etc, individual control points can be moved around when the component is selected.
 
 Note that:
   * status bar lists all the components that will be affected by the drag&drop operation.
