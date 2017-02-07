@@ -67,9 +67,15 @@ Note that:
 
 ### Editing component properties ###
 
-  * Double click on a component opens the Component Editor - dialog that lists all editable properties of the selected component(s).
-  * Checking the "Default" checkbox on the right side will make the value for that property default. In other words, all the components created after that will inherit that value.
-  * Boxes that edit measures (size, resistance, capacitance, etc) can take math expressions in addition to constants. For instance you can type 3/32 and it will be automatically converted to decimal. Even more complicated expressions with parenthesis and 4 basic numerical operators are possible.
+Newly added components are assigned with default parameters (size, color, value, name, etc), but it is possible to edit them in a few different ways. The simples way to edit properties of a single component is to double click on the component. Another way to do it is to select "Edit Selection" from the context menu aciton or press "Ctrl + E" on the keyboard. The second approach also allows editing multiple components at the same. When editing multiple components at the same time, only properties common for all the selected properties will be shown. If we, for example, want to edit a resistor and a capacitor at the same time, we will not be able to edit capacitance or resistance because they apply on to one of the selected components. Input boxes that represent properties that have mixed values are highlighted in yellow to designate that we cannot see all values from the selection. Changing a value in the yellowed box will appply it to all the selected components.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/edit_multiple.png' /></p>
+
+Checking the "Default" checkbox on the right side will make the value for that property a default for the component. In other words, all the components created after that will inherit that value instead of the factory default value.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/edit_default_property.png' /></p>
+  
+Input boxes that represent measures (size, resistance, capacitance, etc) can take math expressions in addition to constants. For instance you can type 3/32 and it will be automatically converted to decimal. Even more complicated expressions with parenthesis and 4 basic numerical operators are possible.
   
 ### Using component variants ###
 
