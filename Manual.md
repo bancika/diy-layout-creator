@@ -68,6 +68,28 @@ Note that:
   * Double click on a component opens the Component Editor - dialog that lists all editable properties of the selected component(s).
   * Checking the "Default" checkbox on the right side will make the value for that property default. In other words, all the components created after that will inherit that value.
   * Boxes that edit measures (size, resistance, capacitance, etc) can take math expressions in addition to constants. For instance you can type 3/32 and it will be automatically converted to decimal. Even more complicated expressions with parenthesis and 4 basic numerical operators are possible.
+  
+### Using component variants ###
+
+Each component is created using default values for size, color, etc. Users can make their own variants of components with different properties. After the component is edited to the desired state, it can be saved as a variant using the context menu action.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/save_variant.png' /></p>
+
+After saving, the existing component variants can be employed in few different ways. One way would be to apply the variant to the existing component by using the context menu.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/apply_variant.png' /></p>
+
+Applying a variant will copy all the properties associated with the variant to the selected component and transform it to conform the variant.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/apply_variant_after.png' /></p>
+
+Another way to use variants is to add a component to the project using a saved variant as a blueprint. This can be done by right clicking on a component icon in the component tree and selecting a desired variant from the context menu.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/recall_variant.png' /></p>
+
+Furthermore, a variant can be set as default and all components created after that will inherit their properties from the default variant. That can be done by using the pin button in the aforementioned context menu. Next to the pin button is the delete button we can use to delete a variant.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/use_variant.png' /></p>
 
 ### Grouping components together ###
 
