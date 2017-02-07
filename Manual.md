@@ -16,12 +16,12 @@ For starters, make sure that you have downloaded the correct version. Mac OSX bu
 
 ### User interface ###
 
-User interface can be separated into 4 major components:
+User interface can be separated into 4 major sections:
 
   1. **Canvas** is used as a [WYSIWYG](http://en.wikipedia.org/wiki/WYSIWYG) editor for the project.
-  1. **Component tree (or toolbar)** lists all available components and allows you to pick the one you want to add.
+  1. **Component tree (or toolbar)** lists all available components and allows you to pick the one you want to add to the project.
   1. **Main menu** offers file operations, such as saving, loading and exporting, clipboard operations, etc.
-  1. **Status bar**: shows context related information, zoom control, update information and memory consumption.
+  1. **Status bar**: shows selection related information, zoom control, update information and memory consumption.
 
 ### Configuring the application ###
 
