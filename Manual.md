@@ -101,12 +101,30 @@ Furthermore, a variant can be set as default and all components created after th
 
 ### Grouping components together ###
 
-Component groups behave similar to object groups Corel Draw. The idea is to keep two or more components together and move/edit/delete them at the same time. To group components, select them and press Ctrl+G (or select "Group Selection" from the menu). Double click on one of the grouped components will open the editor with all the mutual properties of selected components and allow editing them at the same time.
-Note that while the components are grouped, you can't edit drag their individual control points.
+Component grouping works similarly to the way object grouping works in most vector-based drawing tool. The idea is to keep two or more components together and move/edit/delete them at the same time. To group components, select them and press Ctrl+G (or select "Group Selection" from the menu). Double click on one of the grouped components will open the editor with all the mutual properties of selected components and allow editing them at the same time.
+Note that while the components are grouped, you cannot edit drag their individual control points.
 To un-group the components, select them and press Ctrl+U (or select "Ungroup Selection" from the menu).
 
 Note that:
   * nested groups are not currently supported. If you group two groups of components together you'll end up with one large group instead of a group that contains two groups.
+  
+### Using building blocks ###
+
+Often times we use a cluster of components arranged and configured in a certain way repetitively. To speed up the process, DIYLC allows for a group of components to be saved as a building block and recalled simply by one click. This saves time needed to add each individual component and configure it to look the way we want. Suppose we want to make a leaded TO92 component. DIYLC provides enough pieces to build one. We can add a folded TO92 body together with three separate wires.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/building_block_1.png' /></p>
+
+To save this as a building block that we can use later, we need to select all four components and select "Save as Building Block" action from the context menu
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/building_block_2.png' /></p>
+
+The newly created building block appears immediately under "(Building Blocks)" folder in the component tree and can be used just like any other component.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/building_block_3.png' /></p>
+
+To delete an existing building block, use the context menu action.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/building_block_4.png' /></p>
 
 ### Using the status bar ###
 
