@@ -133,5 +133,6 @@ Status bar contains three different features:
   * **Information bar** shows context related information and guidance through the app.
   * **Selection size** shows the dimensions of the minimal bounding rectangle that contains all the selected components. It takes default size units (in or cm) into account.
   * **Zoom control** allows you to zoom in or out.
+  * **Announcements** shows public announcements if there are any posted.
   * **Auto-update** notification. When the bulb is on, there are updates available. Click on it for more information.
   * **Memory bar** is the blue-ish icon on the right side that shows the amount of memory occupied by the application. Move the mouse over it to see more details or click on it to try to cleanup as much memory as possible. Color will turn red when memory consumption is running high.
