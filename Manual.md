@@ -128,7 +128,7 @@ To delete an existing building block, use the context menu action.
 
 ### Using the status bar ###
 
-Status bar contains three different features:
+Status bar contains the following sections (going left to right):
 
   * **Information bar** shows context related information and guidance through the app.
   * **Selection size** shows the dimensions of the minimal bounding rectangle that contains all the selected components. It takes default size units (in or cm) into account.
