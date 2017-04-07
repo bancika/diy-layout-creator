@@ -154,10 +154,10 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
     if (colorCode == ResistorColorCode.NONE || outlineMode || value == null) {
       return;
     }
+    int width = getClosestOdd(getWidth().convertToPixels());
     if (shape == ResistorShape.Standard) {
-      int width = getClosestOdd(getWidth().convertToPixels());
-      Color[] bands = value.getColorCode(colorCode);
       int x = width + FIRST_BAND;
+      Color[] bands = value.getColorCode(colorCode);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
       for (int i = 0; i < bands.length; i++) {
         g2d.setColor(bands[i]);
@@ -165,9 +165,9 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
         x += BAND_SPACING;
       }
     } else {
+      int x = -FIRST_BAND;
       int height = getClosestOdd(getWidth().convertToPixels());
       Color[] bands = value.getColorCode(colorCode);
-      int x = FIRST_BAND;
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
       for (int i = 0; i < bands.length; i++) {
         g2d.setColor(bands[i]);
@@ -183,11 +183,11 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
       return 0;
     int width = getClosestOdd(getWidth().convertToPixels());
     Color[] bands = value.getColorCode(colorCode);
-    int bandArea = width + FIRST_BAND + BAND_SPACING * (bands.length - 1);
-    // Only offset the label if overlapping with the band area.
-    if (labelWidth > bodyWidth - 2 * bandArea)
-      return BAND_SPACING * (bands.length - 1);
-    return 0;
+    int bandArea =
+        shape == ResistorShape.Standard ? width + FIRST_BAND + BAND_SPACING * (bands.length - 1) : -FIRST_BAND
+            + BAND_SPACING * (bands.length - 1);
+   
+    return (bodyWidth - bandArea - labelWidth) / 2;
   }
 
   @EditableProperty(name = "Reverse (standing)")
