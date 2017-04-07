@@ -3,9 +3,11 @@ package org.diylc.components.boards;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
@@ -48,12 +50,31 @@ public class Breadboard extends AbstractComponent<Void> {
 
   protected BreadboardSize breadboardSize;
   protected PowerStripPosition powerStripPosition;
+  protected Orientation orientation;
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
     if (checkPointsClipped(g2d.getClip())) {
       return;
+    }
+
+    // adjust the angle
+    double theta = 0;
+    switch (getOrientation()) {
+      case _90:
+        theta = Math.PI / 2;
+        break;
+      case _180:
+        theta = Math.PI;
+        break;
+      case _270:
+        theta = Math.PI * 3 / 2;
+        break;
+    }
+    if (theta != 0) {
+      g2d.rotate(theta, point.x, point.y);
     }
 
     int bodyArc = (int) BODY_ARC.convertToPixels();
@@ -189,10 +210,21 @@ public class Breadboard extends AbstractComponent<Void> {
     g2d.drawLine(width / 2, 2 / factor, width / 2, height - 4 / factor);
   }
 
+  @EditableProperty
+  public Orientation getOrientation() {
+    if (orientation == null)
+      orientation = Orientation.DEFAULT;
+    return orientation;
+  }
+
+  public void setOrientation(Orientation orientation) {
+    this.orientation = orientation;
+  }
+
   @EditableProperty(name = "Size")
   public BreadboardSize getBreadboardSize() {
     if (breadboardSize == null)
-      breadboardSize = BreadboardSize.Full;
+      breadboardSize = BreadboardSize.Half;
     return breadboardSize;
   }
 
@@ -216,13 +248,32 @@ public class Breadboard extends AbstractComponent<Void> {
     return 2;
   }
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public Point getControlPoint(int index) {
     if (index == 0)
       return point;
     double spacing = SPACING.convertToPixels();
     int holeCount = getBreadboardSize() == BreadboardSize.Full ? 63 : 30;
-    return new Point((int)(point.x + 23 * spacing), (int)(point.y + holeCount * spacing));
+    // adjust the angle
+    double theta = 0;
+    switch (getOrientation()) {
+      case _90:
+        theta = Math.PI / 2;
+        break;
+      case _180:
+        theta = Math.PI;
+        break;
+      case _270:
+        theta = Math.PI * 3 / 2;
+        break;
+    }
+    Point secondPoint = new Point((int) (point.x + 23 * spacing), (int) (point.y + (holeCount + 1) * spacing));
+    if (theta != 0) {
+      AffineTransform tx = AffineTransform.getRotateInstance(theta, point.x, point.y);
+      tx.transform(secondPoint, secondPoint);
+    }
+    return secondPoint;
   }
 
   @Override

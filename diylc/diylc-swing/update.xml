@@ -1628,7 +1628,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Added more control over Breadboard size and appearance</description>
+					<description>Added more control over Breadboard size, orientation and appearance</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
