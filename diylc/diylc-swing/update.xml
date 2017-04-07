@@ -1625,6 +1625,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ability to change resistor shape (tubular or standard "dog bone")</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added more control over Breadboard size and appearance</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

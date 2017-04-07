@@ -15,6 +15,7 @@ import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -30,6 +31,7 @@ public class Breadboard extends AbstractComponent<Void> {
   public static Color FILL_COLOR = Color.white;
   public static Color BORDER_COLOR = Color.black;
   public static Size BODY_ARC = new Size(3d, SizeUnit.mm);
+  public static Size SPACING = new Size(0.1d, SizeUnit.in);
   public static Color SELECTION_COLOR = Color.red;
   public static Color HOLE_COLOR = Color.decode("#EEEEEE");
 
@@ -44,6 +46,9 @@ public class Breadboard extends AbstractComponent<Void> {
 
   protected Point point = new Point(0, 0);
 
+  protected BreadboardSize breadboardSize;
+  protected PowerStripPosition powerStripPosition;
+
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -52,12 +57,13 @@ public class Breadboard extends AbstractComponent<Void> {
     }
 
     int bodyArc = (int) BODY_ARC.convertToPixels();
-    double spacing = project.getGridSpacing().convertToPixels();
+    double spacing = SPACING.convertToPixels();
+    int holeCount = getBreadboardSize() == BreadboardSize.Full ? 63 : 30;
 
     // draw body
     g2d.setColor(FILL_COLOR);
     int width = (int) (23 * project.getGridSpacing().convertToPixels());
-    int height = (int) (31 * project.getGridSpacing().convertToPixels());
+    int height = (int) ((holeCount + 1) * project.getGridSpacing().convertToPixels());
     g2d.fillRoundRect(point.x, point.y, width, height, bodyArc, bodyArc);
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : BORDER_COLOR);
@@ -69,14 +75,14 @@ public class Breadboard extends AbstractComponent<Void> {
     // draw lines
     g2d.setColor(PLUS_COLOR);
     g2d.drawLine((int) (point.x + spacing), (int) (point.y + spacing), (int) (point.x + spacing),
-        (int) (point.y + 30 * spacing));
+        (int) (point.y + holeCount * spacing));
     g2d.drawLine((int) (point.x + 19 * spacing), (int) (point.y + spacing), (int) (point.x + 19 * spacing),
-        (int) (point.y + 30 * spacing));
+        (int) (point.y + holeCount * spacing));
     g2d.setColor(MINUS_COLOR);
     g2d.drawLine((int) (point.x + 4 * spacing), (int) (point.y + spacing), (int) (point.x + 4 * spacing),
-        (int) (point.y + 30 * spacing));
+        (int) (point.y + holeCount * spacing));
     g2d.drawLine((int) (point.x + 22 * spacing), (int) (point.y + spacing), (int) (point.x + 22 * spacing),
-        (int) (point.y + 30 * spacing));
+        (int) (point.y + holeCount * spacing));
 
     int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
     int holeArc = (int) HOLE_ARC.convertToPixels();
@@ -88,7 +94,7 @@ public class Breadboard extends AbstractComponent<Void> {
     for (int section = 0; section <= 1; section++) {
       double offset = section * 7 * spacing;
 
-      for (int y = 0; y < 30; y++) {
+      for (int y = 0; y < holeCount; y++) {
         g2d.setColor(COORDINATE_COLOR);
         int coordinateX;
         if (section == 0) {
@@ -118,15 +124,21 @@ public class Breadboard extends AbstractComponent<Void> {
       }
     }
 
-    // draw side holes
+    double powerOffset =
+        getPowerStripPosition() == PowerStripPosition.Inline ? (getBreadboardSize() == BreadboardSize.Full ? 2d : 1d)
+            : (getBreadboardSize() == BreadboardSize.Full ? 1.5d : 0.5d);
+
+    int psHoleCount = Math.round(holeCount / 10f) * 10;
+
+    // draw power strip holes
     for (int section = 0; section <= 1; section++) {
       double offset = section * 18 * spacing;
-      for (int y = 0; y < 30; y++) {
+      for (int y = 0; y < psHoleCount - 1; y++) {
         for (int x = 0; x < 2; x++) {
-          if ((y + 1) % 5 == 0)
+          if ((y + 1) % 6 == 0)
             continue;
           int holeX = (int) (point.x + offset + (x + 2) * spacing);
-          int holeY = (int) (point.y + (y + 1 + 0.5) * spacing);
+          int holeY = (int) (point.y + (y + 1 + powerOffset) * spacing);
           g2d.setColor(HOLE_COLOR);
           g2d.fillRoundRect(holeX - holeSize / 2, holeY - holeSize / 2, holeSize, holeSize, holeArc, holeArc);
           g2d.setColor(BORDER_COLOR);
@@ -177,14 +189,40 @@ public class Breadboard extends AbstractComponent<Void> {
     g2d.drawLine(width / 2, 2 / factor, width / 2, height - 4 / factor);
   }
 
+  @EditableProperty(name = "Size")
+  public BreadboardSize getBreadboardSize() {
+    if (breadboardSize == null)
+      breadboardSize = BreadboardSize.Full;
+    return breadboardSize;
+  }
+
+  public void setBreadboardSize(BreadboardSize breadboardSize) {
+    this.breadboardSize = breadboardSize;
+  }
+
+  @EditableProperty(name = "Power Strip")
+  public PowerStripPosition getPowerStripPosition() {
+    if (powerStripPosition == null)
+      powerStripPosition = PowerStripPosition.Inline;
+    return powerStripPosition;
+  }
+
+  public void setPowerStripPosition(PowerStripPosition powerStripPosition) {
+    this.powerStripPosition = powerStripPosition;
+  }
+
   @Override
   public int getControlPointCount() {
-    return 1;
+    return 2;
   }
 
   @Override
   public Point getControlPoint(int index) {
-    return point;
+    if (index == 0)
+      return point;
+    double spacing = SPACING.convertToPixels();
+    int holeCount = getBreadboardSize() == BreadboardSize.Full ? 63 : 30;
+    return new Point((int)(point.x + 23 * spacing), (int)(point.y + holeCount * spacing));
   }
 
   @Override
@@ -199,7 +237,8 @@ public class Breadboard extends AbstractComponent<Void> {
 
   @Override
   public void setControlPoint(Point point, int index) {
-    this.point.setLocation(point);
+    if (index == 0)
+      this.point.setLocation(point);
   }
 
   @Override
@@ -210,9 +249,11 @@ public class Breadboard extends AbstractComponent<Void> {
   @Override
   public void setValue(Void value) {}
 
-  @Deprecated
-  @Override
-  public String getName() {
-    return super.getName();
+  public enum BreadboardSize {
+    Half, Full
+  }
+
+  public enum PowerStripPosition {
+    Inline, Offset
   }
 }
