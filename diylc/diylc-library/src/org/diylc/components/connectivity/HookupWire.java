@@ -16,7 +16,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
+    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
+    transformer = SimpleComponentTransformer.class)
 public class HookupWire extends AbstractCurvedComponent<Void> {
 
   private static final long serialVersionUID = 1L;
