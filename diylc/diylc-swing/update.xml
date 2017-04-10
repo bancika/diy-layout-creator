@@ -1621,7 +1621,11 @@
 			</versionNumber>
 			<releaseDate>2017-01-26 20:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>					
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Thumbnail sometimes gets very small when uploading a project to the cloud</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ability to change resistor shape (tubular or standard "dog bone")</description>

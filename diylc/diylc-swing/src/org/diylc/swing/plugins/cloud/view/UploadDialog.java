@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -50,6 +51,7 @@ public class UploadDialog extends ButtonDialog {
   private JPanel thumbnailPanel;
   private JTextField nameField;
   private JComboBox categoryBox;
+  private JScrollPane descriptionPane;
   private JTextArea descriptionArea;
   private JTextField keywordsField;
 
@@ -108,7 +110,7 @@ public class UploadDialog extends ButtonDialog {
       gbc.weightx = 1;
       gbc.weighty = 1;
       gbc.fill = GridBagConstraints.BOTH;
-      mainPanel.add(getDescriptionArea(), gbc);
+      mainPanel.add(getDescriptionPane(), gbc);
 
       gbc.gridy = 3;
       gbc.weighty = 0;
@@ -183,14 +185,19 @@ public class UploadDialog extends ButtonDialog {
           paintThumbnail(g, getBounds());
         }
       }, gbc);
-      Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false);
-      if (d.height > d.width)
-        thumbnailPanel.setPreferredSize(new Dimension(192 * d.width / d.height, 192));
-      else
-        thumbnailPanel.setPreferredSize(new Dimension(192, 192 * d.height / d.width));
+
+      thumbnailPanel.setPreferredSize(getThumbnailSize());
       thumbnailPanel.setBorder(BorderFactory.createEtchedBorder());
     }
     return thumbnailPanel;
+  }
+
+  private Dimension getThumbnailSize() {
+    Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false);
+    if (d.height > d.width)
+      return new Dimension(192 * d.width / d.height, 192);
+    else
+      return new Dimension(192, 192 * d.height / d.width);
   }
 
   private JTextField getNameField() {
@@ -212,6 +219,15 @@ public class UploadDialog extends ButtonDialog {
     return categoryBox;
   }
 
+  private JScrollPane getDescriptionPane() {
+    if (descriptionPane == null) {
+      descriptionPane = new JScrollPane(getDescriptionArea());
+      descriptionPane.setBorder(getNameField().getBorder());
+      descriptionPane.setPreferredSize(new Dimension(1, 128));
+    }
+    return descriptionPane;
+  }
+
   private JTextArea getDescriptionArea() {
     if (descriptionArea == null) {
       descriptionArea = new HTMLTextArea();
@@ -223,7 +239,7 @@ public class UploadDialog extends ButtonDialog {
             descriptionArea.setText(plugInPort.getProjectProperties().get(i).getValue().toString());
           } catch (Exception e) {
           }
-      descriptionArea.setBorder(getNameField().getBorder());
+      descriptionArea.setBorder(null);
       descriptionArea.setFont(getNameField().getFont());
     }
     return descriptionArea;
@@ -251,8 +267,8 @@ public class UploadDialog extends ButtonDialog {
   }
 
   public BufferedImage getThumbnail() {
-    BufferedImage thumbnailImage =
-        new BufferedImage(getThumbnailPanel().getWidth(), getThumbnailPanel().getHeight(), BufferedImage.TYPE_INT_RGB);
+    Dimension d = getThumbnailSize();
+    BufferedImage thumbnailImage = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
     Graphics2D cg = thumbnailImage.createGraphics();
 
     paintThumbnail(cg, new Rectangle(thumbnailImage.getWidth(), thumbnailImage.getHeight()));
