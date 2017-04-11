@@ -22,6 +22,7 @@ import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -201,16 +202,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           new RulerScrollPane(getCanvasPanel(), new ProjectDrawingProvider(plugInPort, true, false), new Size(1d,
               SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in).convertToPixels());
       boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);
-      boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
-      ConfigurationManager.getInstance().addConfigListener(IPlugInPort.WHEEL_ZOOM_KEY, new IConfigListener() {
 
-        @Override
-        public void valueChanged(String key, Object value) {
-          scrollPane.setWheelScrollingEnabled(!(Boolean) value);
-        }
-      });
       scrollPane.setMetric(metric);
-      scrollPane.setWheelScrollingEnabled(!wheelZoom);
+      scrollPane.setWheelScrollingEnabled(true);
       scrollPane.addUnitListener(new IRulerListener() {
 
         @Override
@@ -223,23 +217,44 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
           boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
-          if (!wheelZoom) {
-            return;
-          }
-          double d = plugInPort.getZoomLevel();
-          Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
-          if (e.getWheelRotation() > 0) {
-            int i = availableZoomLevels.length - 1;
-            while (i > 0 && availableZoomLevels[i] >= d) {
-              i--;
+
+          if (wheelZoom || e.isControlDown()) {
+            // disable scrolling
+            scrollPane.setWheelScrollingEnabled(false);
+
+            Dimension oldDim = plugInPort.getCanvasDimensions(true);
+
+            // change zoom level
+            double d = plugInPort.getZoomLevel();
+            Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
+            if (e.getWheelRotation() > 0) {
+              int i = availableZoomLevels.length - 1;
+              while (i > 0 && availableZoomLevels[i] >= d) {
+                i--;
+              }
+              plugInPort.setZoomLevel(availableZoomLevels[i]);
+            } else {
+              int i = 0;
+              while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= d) {
+                i++;
+              }
+              plugInPort.setZoomLevel(availableZoomLevels[i]);
+              // center to cursor
+              Point mousePos = getCanvasPanel().getMousePosition(true);
+              Dimension newDim = plugInPort.getCanvasDimensions(true);
+              Point desiredPos =
+                  new Point((int) (1d * mousePos.x / oldDim.width * newDim.width), (int) (1d * mousePos.y
+                      / oldDim.height * newDim.height));
+              int dx = desiredPos.x - mousePos.x;
+              int dy = desiredPos.y - mousePos.y;
+              JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
+              horizontal.setValue(horizontal.getValue() + dx);
+              JScrollBar vertical = scrollPane.getVerticalScrollBar();
+              vertical.setValue(vertical.getValue() + dy);
             }
-            plugInPort.setZoomLevel(availableZoomLevels[i]);
           } else {
-            int i = 0;
-            while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= d) {
-              i++;
-            }
-            plugInPort.setZoomLevel(availableZoomLevels[i]);
+            // enable scrolling
+            scrollPane.setWheelScrollingEnabled(true);
           }
         }
       });
