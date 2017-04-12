@@ -222,36 +222,36 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
             // disable scrolling
             scrollPane.setWheelScrollingEnabled(false);
 
-            Dimension oldDim = plugInPort.getCanvasDimensions(true);
+
+            Point mousePos = getCanvasPanel().getMousePosition(true);
 
             // change zoom level
-            double d = plugInPort.getZoomLevel();
+            double oldZoom = plugInPort.getZoomLevel();
+            double newZoom;
             Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
             if (e.getWheelRotation() > 0) {
               int i = availableZoomLevels.length - 1;
-              while (i > 0 && availableZoomLevels[i] >= d) {
+              while (i > 0 && availableZoomLevels[i] >= oldZoom) {
                 i--;
               }
-              plugInPort.setZoomLevel(availableZoomLevels[i]);
+              plugInPort.setZoomLevel(newZoom = availableZoomLevels[i]);
             } else {
               int i = 0;
-              while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= d) {
+              while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= oldZoom) {
                 i++;
               }
-              plugInPort.setZoomLevel(availableZoomLevels[i]);
-              // center to cursor
-              Point mousePos = getCanvasPanel().getMousePosition(true);
-              Dimension newDim = plugInPort.getCanvasDimensions(true);
-              Point desiredPos =
-                  new Point((int) (1d * mousePos.x / oldDim.width * newDim.width), (int) (1d * mousePos.y
-                      / oldDim.height * newDim.height));
-              int dx = desiredPos.x - mousePos.x;
-              int dy = desiredPos.y - mousePos.y;
-              JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
-              horizontal.setValue(horizontal.getValue() + dx);
-              JScrollBar vertical = scrollPane.getVerticalScrollBar();
-              vertical.setValue(vertical.getValue() + dy);
+              plugInPort.setZoomLevel(newZoom = availableZoomLevels[i]);
             }
+
+            // center to cursor
+            Point desiredPos =
+                new Point((int) (1d * mousePos.x / oldZoom * newZoom), (int) (1d * mousePos.y / oldZoom * newZoom));
+            int dx = desiredPos.x - mousePos.x;
+            int dy = desiredPos.y - mousePos.y;
+            JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
+            horizontal.setValue(horizontal.getValue() + dx);
+            JScrollBar vertical = scrollPane.getVerticalScrollBar();
+            vertical.setValue(vertical.getValue() + dy);
           } else {
             // enable scrolling
             scrollPane.setWheelScrollingEnabled(true);
