@@ -1413,7 +1413,8 @@ public class Presenter implements IPlugInPort {
           ComponentType componentBeforeType =
               ComponentProcessor.getInstance().extractComponentTypeFrom(
                   (Class<? extends IDIYComponent<?>>) componentBefore.getClass());
-          if (!componentType.isFlexibleZOrder() && componentBeforeType.getZOrder() < componentType.getZOrder())
+          if (!componentType.isFlexibleZOrder()
+              && Math.round(componentBeforeType.getZOrder()) < Math.round(componentType.getZOrder()))
             break;
           Collections.swap(currentProject.getComponents(), index, index - 1);
           index--;
@@ -1444,7 +1445,8 @@ public class Presenter implements IPlugInPort {
           ComponentType componentAfterType =
               ComponentProcessor.getInstance().extractComponentTypeFrom(
                   (Class<? extends IDIYComponent<?>>) componentAfter.getClass());
-          if (!componentType.isFlexibleZOrder() && componentAfterType.getZOrder() > componentType.getZOrder())
+          if (!componentType.isFlexibleZOrder()
+              && Math.round(componentAfterType.getZOrder()) > Math.round(componentType.getZOrder()))
             break;
           Collections.swap(currentProject.getComponents(), index, index + 1);
           index++;
@@ -2014,7 +2016,8 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   @Override
   public void setTemplateDefault(String categoryName, String componentTypeName, String templateName, boolean defaultFlag) {
-    LOG.debug(String.format("setTemplateDefault(%s, %s, %s, %s)", categoryName, componentTypeName, templateName, defaultFlag));
+    LOG.debug(String.format("setTemplateDefault(%s, %s, %s, %s)", categoryName, componentTypeName, templateName,
+        defaultFlag));
     Map<String, List<Template>> templateMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
     if (templateMap != null) {
