@@ -93,7 +93,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     g2d.setTransform(old);
 
     // Draw label
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     Color finalLabelColor;
     if (outlineMode) {
       Theme theme =

@@ -230,7 +230,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       // }
 
       // Draw label.
-      g2d.setFont(LABEL_FONT);
+      g2d.setFont(project.getFont());
       if (useShapeRectAsPosition()) {
         g2d.translate(shapeRect.x, shapeRect.y);
       }

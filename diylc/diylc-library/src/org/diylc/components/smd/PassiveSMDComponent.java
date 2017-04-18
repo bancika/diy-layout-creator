@@ -269,7 +269,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
     g2d.draw(contactArea);
 
     // Draw label.
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     Color finalLabelColor;
     if (outlineMode) {
       Theme theme =

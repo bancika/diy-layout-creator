@@ -248,7 +248,7 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
               : LABEL_COLOR;
     }
     g2d.setColor(finalLabelColor);
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     Rectangle bounds = body[0].getBounds();
     int centerX = bounds.x + bounds.width / 2;
     int centerY = bounds.y + bounds.height / 2;

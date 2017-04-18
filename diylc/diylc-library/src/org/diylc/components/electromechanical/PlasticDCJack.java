@@ -159,7 +159,7 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
     if (!outlineMode && getPolarity() != DCPolarity.NONE) {
       int spacing = (int) SPACING.convertToPixels();
       g2d.setColor(MARKING_COLOR);
-      g2d.setFont(LABEL_FONT.deriveFont(12f));
+      g2d.setFont(project.getFont().deriveFont(12f));
       drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-", controlPoints[0].x,
           controlPoints[0].y - spacing * 7 / 16, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+", controlPoints[2].x,

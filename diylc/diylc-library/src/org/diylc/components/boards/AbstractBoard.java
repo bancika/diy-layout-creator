@@ -61,12 +61,12 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     g2d.drawRect(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
   }
 
-  protected void drawCoordinates(Graphics2D g2d, int spacing) {
+  protected void drawCoordinates(Graphics2D g2d, int spacing, Project project) {
     if (!getDrawCoordinates())
       return;
     Point p = new Point(firstPoint);
     g2d.setColor(coordinateColor);
-    g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE));
+    g2d.setFont(project.getFont().deriveFont(COORDINATE_FONT_SIZE));
 
     int t = 1;
     while (p.y < secondPoint.y - spacing) {

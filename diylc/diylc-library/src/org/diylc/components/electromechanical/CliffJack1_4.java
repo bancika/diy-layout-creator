@@ -228,7 +228,7 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
               : LABEL_COLOR;
     }
     g2d.setColor(finalLabelColor);
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     int centerX = (controlPoints[0].x + controlPoints[3].x) / 2;
     int centerY = (controlPoints[0].y + controlPoints[3].y) / 2;
     drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);

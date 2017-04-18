@@ -349,7 +349,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
     }
 
     // Draw label.
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     Color finalLabelColor;
     if (outlineMode) {
       finalLabelColor =

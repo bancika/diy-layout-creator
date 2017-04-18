@@ -89,7 +89,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
     g2d.draw(body[0]);
     // Draw label
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     Color finalLabelColor;
     if (outlineMode) {
       Theme theme =

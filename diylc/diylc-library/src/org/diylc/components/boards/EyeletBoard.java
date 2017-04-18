@@ -78,7 +78,7 @@ public class EyeletBoard extends AbstractBoard {
           g2d.drawOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter, holeDiameter);
         }
       }
-      super.drawCoordinates(g2d, spacing);
+      super.drawCoordinates(g2d, spacing, project);
     }
   }
 

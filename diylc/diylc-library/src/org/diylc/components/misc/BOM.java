@@ -51,7 +51,7 @@ public class BOM extends AbstractComponent<Void> {
         iterator.remove();
       }
     }
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     g2d.setColor(componentState == ComponentState.DRAGGING || componentState == ComponentState.SELECTED ? SELECTION_COLOR
         : getColor());
     // Determine maximum name length and maximum value length to calculate

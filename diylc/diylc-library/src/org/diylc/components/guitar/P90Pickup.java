@@ -128,7 +128,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
               : LABEL_COLOR;
     }
     g2d.setColor(finalLabelColor);
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     Rectangle bounds = body[0].getBounds();
     drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);

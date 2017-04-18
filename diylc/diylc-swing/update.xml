@@ -1651,6 +1651,10 @@
 					<description>Hold Control key to zoom with mouse wheel. Zooming tracks mouse cursor position.</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to set project-wide default font through 'Edit Project Settings' dialog.</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Hookup wire can be sent to back behind boards</description>
 				</org.diylc.appframework.update.Change>	

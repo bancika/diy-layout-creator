@@ -133,7 +133,7 @@ public class TriPadBoard extends AbstractBoard {
       }
       g2d.setComposite(oldComposite);
 
-      super.drawCoordinates(g2d, spacing);
+      super.drawCoordinates(g2d, spacing, project);
     }
   }
 

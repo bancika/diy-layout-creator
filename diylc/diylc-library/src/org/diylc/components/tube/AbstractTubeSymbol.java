@@ -75,7 +75,7 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     }
 
     // Draw label
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     Color finalLabelColor;
     if (outlineMode) {
       Theme theme =

@@ -331,7 +331,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
       }
     }
     // Draw label.
-    g2d.setFont(LABEL_FONT);
+    g2d.setFont(project.getFont());
     Color finalLabelColor;
     if (outlineMode) {
       Theme theme =
@@ -393,7 +393,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
         textY2 = textY2 - pinSize;
       }
 
-      g2d.setFont(LABEL_FONT.deriveFont((float) (Label.LABEL_FONT.getSize2D() * 0.66)));
+      g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.66)));
       if (displayNumbers == DisplayNumbers.DIP) {
         if (pinNo > pinCount.getValue() / 2) {
           g2d.drawString(Integer.toString(pinCount.getValue() - j), textX1, textY1);

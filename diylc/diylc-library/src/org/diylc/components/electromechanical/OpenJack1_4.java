@@ -130,7 +130,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
     // draw labels
     if (showLabels) {
       g2d.setColor(BASE_COLOR.darker());
-      g2d.setFont(LABEL_FONT.deriveFont(LABEL_FONT.getSize2D() * 0.8f));
+      g2d.setFont(project.getFont().deriveFont(project.getFont().getSize2D() * 0.8f));
       int springLength = (int) SPRING_LENGTH.convertToPixels();
       int holeToEdge = (int) HOLE_TO_EDGE.convertToPixels();
       int centerY = controlPoints[0].y + springLength - holeToEdge;

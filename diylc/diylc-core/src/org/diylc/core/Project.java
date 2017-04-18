@@ -1,5 +1,6 @@
 package org.diylc.core;
 
+import java.awt.Font;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class Project implements Serializable {
   public static Size DEFAULT_WIDTH = new Size(29d, SizeUnit.cm);
   public static Size DEFAULT_HEIGHT = new Size(21d, SizeUnit.cm);
   public static Size DEFAULT_GRID_SPACING = new Size(0.1d, SizeUnit.in);
+  public static Font DEFAULT_FONT = new Font("Tahoma", Font.PLAIN, 14);
 
   private VersionNumber fileVersion;
 
@@ -43,6 +45,7 @@ public class Project implements Serializable {
   private List<IDIYComponent<?>> components;
   private Set<Set<IDIYComponent<?>>> groups;
   private Set<Integer> lockedLayers;
+  private Font font = DEFAULT_FONT;
 
   public Project() {
     components = new ArrayList<IDIYComponent<?>>();
@@ -138,6 +141,28 @@ public class Project implements Serializable {
 
   public void setFileVersion(VersionNumber fileVersion) {
     this.fileVersion = fileVersion;
+  }
+  
+  @EditableProperty(name = "Default Font")
+  public Font getFont() {
+    if (font == null)
+      font = DEFAULT_FONT;
+    return font;
+  }
+  
+  public void setFont(Font font) {
+    this.font = font;
+  }
+  
+  @EditableProperty(name = "Default Font Size")
+  public int getFontSize() {
+    if (font == null)
+      font = DEFAULT_FONT;
+    return font.getSize();
+  }
+
+  public void setFontSize(int size) {
+    font = font.deriveFont((float) size);
   }
 
   @Override
