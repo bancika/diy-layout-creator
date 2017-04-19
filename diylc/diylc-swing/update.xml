@@ -1656,6 +1656,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Do not allow creating zero-length components (i.e. traces, lines, etc)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Hookup wire can be sent to back behind boards</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

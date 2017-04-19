@@ -503,6 +503,10 @@ public class Presenter implements IPlugInPort {
               // On the second click, add the component to the
               // project.
               List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
+              Point firstPoint = componentSlot.get(0).getControlPoint(0);
+              // don't allow to create component with the same points
+              if (scaledPoint.equals(firstPoint))
+                return;
               componentSlot.get(0).setControlPoint(scaledPoint, 1);
               List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
               for (IDIYComponent<?> component : componentSlot) {

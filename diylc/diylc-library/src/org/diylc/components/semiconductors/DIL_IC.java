@@ -18,7 +18,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.misc.Label;
 import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
