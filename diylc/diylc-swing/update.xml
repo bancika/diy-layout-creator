@@ -1676,7 +1676,11 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Ability to edit color of copper trace, curved trace and solder pad at the same time</description>
+					<description>Ability to edit color of copper traces, curved traces and solder pads at the same time when they are all selected</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Tooltip doesn't cover buttons in the right side of the status bar</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

@@ -133,7 +133,15 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   private UpdateLabel getUpdateLabel() {
     if (updateLabel == null) {
-      updateLabel = new UpdateLabel(plugInPort.getCurrentVersionNumber(), UPDATE_URL);
+      updateLabel = new UpdateLabel(plugInPort.getCurrentVersionNumber(), UPDATE_URL) {
+        
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Point getToolTipLocation(MouseEvent event) {
+          return new Point(0, -16);
+        }
+      };
       // updateLabel.setBorder(BorderFactory.createCompoundBorder(
       // BorderFactory.createEtchedBorder(), BorderFactory
       // .createEmptyBorder(2, 4, 2, 4)));
@@ -144,7 +152,15 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   public JLabel getAnnouncementLabel() {
     if (announcementLabel == null) {
-      announcementLabel = new JLabel(IconLoader.Megaphone.getIcon());
+      announcementLabel = new JLabel(IconLoader.Megaphone.getIcon()) {
+        
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Point getToolTipLocation(MouseEvent event) {
+          return new Point(0, -16);
+        }
+      };
       announcementLabel.setToolTipText("Click to fetch the most recent public announcement");
       announcementLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
       announcementLabel.addMouseListener(new MouseAdapter() {
@@ -183,7 +199,15 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   private MemoryBar getMemoryPanel() {
     if (memoryPanel == null) {
-      memoryPanel = new MemoryBar(false);
+      memoryPanel = new MemoryBar(false) {
+        
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Point getToolTipLocation(MouseEvent event) {
+          return new Point(0, -52);
+        }
+      };
     }
     return memoryPanel;
   }
@@ -198,7 +222,15 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   public JLabel getSizeLabel() {
     if (sizeLabel == null) {
-      sizeLabel = new JLabel(IconLoader.Size.getIcon());
+      sizeLabel = new JLabel(IconLoader.Size.getIcon()) {
+        
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Point getToolTipLocation(MouseEvent event) {
+          return new Point(0, -16);
+        }
+      };
       sizeLabel.setFocusable(true);
       sizeLabel.setToolTipText("Click to calculate selection size");
       sizeLabel.addMouseListener(new MouseAdapter() {
