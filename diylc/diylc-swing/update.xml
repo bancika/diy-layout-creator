@@ -1655,6 +1655,14 @@
 					<description>Ability to set project-wide default font through 'Edit Project Settings' dialog.</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added Windows installer.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Moved config and auto-save file locations to standard user directory instead of using the app directory.</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Do not allow creating zero-length components (i.e. traces, lines, etc)</description>
 				</org.diylc.appframework.update.Change>	

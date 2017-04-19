@@ -7,7 +7,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="3.37.0" />
+	<property name="diylc.version" value="3.38.0" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -90,8 +90,16 @@
 			                    role="Editor"/>-->
 		</jarbundler>
 	</target>
+	
+	<target name="win" depends="jar">
+		<exec executable="innosetup\iscc.exe">
+			<arg value="/Ddiylcver=${diylc.version}"/>
+			<arg value="/Fdiylc-${diylc.version}"/>
+		    <arg value="install.iss"/>
+		</exec>
+	</target>
 
-	<target name="complete" depends="mac">
+	<target name="complete" depends="mac, win">
 		<zip destfile="${build.dir}/diylc-${diylc.version}.zip">
 			<zipfileset dir="${jar.dir}" includes="diylc.jar" />
 			<zipfileset dir="${jar.dir}/lib" prefix="lib" />

@@ -42,6 +42,8 @@ public class DIYLCStarter {
     } catch (Exception e) {
       LOG.error("Could not initialize log4j configuration", e);
     }
+    
+    ConfigurationManager.initialize("diylc");
 
     LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
         + System.getProperty("java.vm.vendor"));

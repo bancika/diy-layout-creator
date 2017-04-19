@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -17,7 +18,7 @@ import org.diylc.swing.gui.DummyView;
 
 public class AutoSavePlugin implements IPlugIn {
 
-  private static final String AUTO_SAVE_FILE_NAME = "autoSave.diy";
+  private static final String AUTO_SAVE_FILE_NAME = Utils.getUserDataDirectory("diylc") + "autoSave.diy";
 
   protected static final long autoSaveFrequency = 60 * 1000;
 

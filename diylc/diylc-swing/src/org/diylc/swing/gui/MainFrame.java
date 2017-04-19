@@ -111,19 +111,8 @@ public class MainFrame extends JFrame implements ISwingUI {
     
     presenter.installPlugin(new ComponentTree(this, canvasPlugin.getCanvasPanel()));
     presenter.installPlugin(new FramePlugin());
-
-    try {
-      File testFile = new File("test.tmp");
-      Writer out = new OutputStreamWriter(new FileOutputStream(testFile));
-      out.write("This is a test");
-      out.close();
-      testFile.delete();
-      presenter.installPlugin(new AutoSavePlugin(this));
-    } catch (Exception e) {
-      showMessage("The current user does not have permissions to access folder " + new File(".").getAbsolutePath()
-          + ".\nAuto-save feature will not be available, contact your system administrator.", "Warning",
-          IView.WARNING_MESSAGE);
-    }
+    
+    presenter.installPlugin(new AutoSavePlugin(this));
 
     presenter.createNewProject();
 
