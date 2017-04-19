@@ -135,11 +135,11 @@ public class SolderPad extends AbstractComponent<Void> {
   }
 
   @EditableProperty(name = "Color")
-  public Color getColor() {
+  public Color getLeadColor() {
     return color;
   }
 
-  public void setColor(Color color) {
+  public void setLeadColor(Color color) {
     this.color = color;
   }
 

@@ -136,7 +136,6 @@ public class PropertyWrapper implements Cloneable {
     final int prime = 31;
     int result = 1;
     result = prime * result + (defaultable ? 1231 : 1237);
-    result = prime * result + ((getter == null) ? 0 : getter.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((setter == null) ? 0 : setter.hashCode());
     return result;

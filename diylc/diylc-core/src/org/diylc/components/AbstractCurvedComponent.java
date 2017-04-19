@@ -221,12 +221,12 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     }
   }
 
-  @EditableProperty
-  public Color getColor() {
+  @EditableProperty(name="Color")
+  public Color getLeadColor() {
     return color;
   }
 
-  public void setColor(Color color) {
+  public void setLeadColor(Color color) {
     this.color = color;
   }
 

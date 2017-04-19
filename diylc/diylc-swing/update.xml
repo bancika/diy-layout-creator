@@ -1648,23 +1648,23 @@
 			<changes>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Hold Control key to zoom with mouse wheel. Zooming tracks mouse cursor position.</description>
+					<description>Hold Control key to zoom with mouse wheel. Zooming tracks mouse cursor position</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to set project-wide default font through 'Edit Project Settings' dialog.</description>
+					<description>Ability to set project-wide default font through 'Edit Project Settings' dialog</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added wizard installer for Windows that associates .DIY files automatically.</description>
+					<description>Added wizard installer for Windows that associates .DIY files automatically</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Moved config and auto-save file locations to standard user directory instead of using the app directory.</description>
+					<description>Moved config and auto-save file locations to standard user directory instead of using the app directory</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Do not allow creating zero-length components (i.e. traces, lines, etc)</description>
+					<description>Do not allow creating zero-length components (e.g. traces, lines, etc)</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -1673,6 +1673,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Solder pads can be sent behind copper traces to allow creating white border around traces on top of a ground plane</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Ability to edit color of copper trace, curved trace and solder pad at the same time</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

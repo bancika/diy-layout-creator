@@ -109,7 +109,6 @@
 			<zipfileset dir="." includes="update.xml" />
 			<zipfileset dir="." includes="run.sh" />
 			<zipfileset dir="." includes="diylc.l4j.ini" />
-			<zipfileset dir="." includes="associations.bat" />
 			<zipfileset dir="." includes="diylc.exe" />
 		</zip>
 		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">

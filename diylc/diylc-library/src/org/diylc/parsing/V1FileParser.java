@@ -155,7 +155,7 @@ public class V1FileParser implements IOldFileParser {
           SolderPad pad = new SolderPad();
           pad.setName(nameAttr);
           if (color != null) {
-            pad.setColor(color);
+            pad.setLeadColor(color);
           }
           pad.setControlPoint(convertV1CoordinatesToV3Point(referencePoint, x1Attr, y1Attr), 0);
           component = pad;
@@ -197,7 +197,7 @@ public class V1FileParser implements IOldFileParser {
 
           wire.setName(nameAttr);
           String colorAttr = node.getAttributes().getNamedItem("Color").getNodeValue();
-          wire.setColor(parseV1Color(colorAttr));
+          wire.setLeadColor(parseV1Color(colorAttr));
           wire.setControlPoint(point1, 0);
           wire.setControlPoint(new Point(x2, y2), 1);
           wire.setControlPoint(new Point(x3, y3), 2);
