@@ -30,7 +30,6 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.diylc.announcements.AnnouncementProvider;
-import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ComponentType;
@@ -41,7 +40,6 @@ import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
-import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swingframework.MemoryBar;
 import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
@@ -134,7 +132,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private UpdateLabel getUpdateLabel() {
     if (updateLabel == null) {
       updateLabel = new UpdateLabel(plugInPort.getCurrentVersionNumber(), UPDATE_URL) {
-        
+
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -153,7 +151,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   public JLabel getAnnouncementLabel() {
     if (announcementLabel == null) {
       announcementLabel = new JLabel(IconLoader.Megaphone.getIcon()) {
-        
+
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -200,7 +198,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private MemoryBar getMemoryPanel() {
     if (memoryPanel == null) {
       memoryPanel = new MemoryBar(false) {
-        
+
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -223,7 +221,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   public JLabel getSizeLabel() {
     if (sizeLabel == null) {
       sizeLabel = new JLabel(IconLoader.Size.getIcon()) {
-        
+
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -237,17 +235,16 @@ public class StatusBar extends JPanel implements IPlugIn {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-          Point2D size = plugInPort.calculateSelectionDimension();
-          boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);
+          Point2D[] sizes = plugInPort.calculateSelectionDimension();
           String text;
-          if (size == null) {
+          if (sizes == null) {
             text = "Selection is empty.";
           } else {
             text =
-                "Selection size: " + sizeFormat.format(size.getX()) + " x " + sizeFormat.format(size.getY())
-                    + (metric ? " cm" : " in");
+                sizeFormat.format(sizes[0].getX()) + " x " + sizeFormat.format(sizes[0].getY()) + " in\n"
+                    + sizeFormat.format(sizes[1].getX()) + " x " + sizeFormat.format(sizes[1].getY()) + " cm";
           }
-          JOptionPane.showMessageDialog(SwingUtilities.getRootPane(StatusBar.this), text, "Information",
+          JOptionPane.showMessageDialog(SwingUtilities.getRootPane(StatusBar.this), text, "Selection Size",
               JOptionPane.INFORMATION_MESSAGE);
         }
       });

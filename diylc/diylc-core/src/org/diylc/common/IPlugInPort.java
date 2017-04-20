@@ -255,9 +255,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   void setLayerLocked(int layerZOrder, boolean locked);
 
   /**
-   * @return selection size expressed in either inches or centimeters, based on the user preference.
+   * @return selection size expressed in both inches or centimeters, respectively
    */
-  Point2D calculateSelectionDimension();
+  Point2D[] calculateSelectionDimension();
 
   // /**
   // * @return the smallest rectangle that encloses the selection

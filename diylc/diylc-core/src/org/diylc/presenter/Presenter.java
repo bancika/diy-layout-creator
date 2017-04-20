@@ -1707,30 +1707,26 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public Point2D calculateSelectionDimension() {
+  public Point2D[] calculateSelectionDimension() {
     if (selectedComponents.isEmpty()) {
       return null;
     }
-    boolean metric = ConfigurationManager.getInstance().readBoolean(METRIC_KEY, true);
-    Area area = new Area();
-    for (IDIYComponent<?> component : selectedComponents) {
-      Area componentArea = drawingManager.getComponentArea(component);
-      if (componentArea != null) {
-        area.add(componentArea);
-      } else {
-        LOG.warn("No area found for: " + component.getName());
-      }
-    }
-    double width = area.getBounds2D().getWidth();
-    double height = area.getBounds2D().getHeight();
+    Rectangle2D rect = getSelectionBounds();    
+
+    double width = rect.getWidth();
+    double height = rect.getHeight();
+
     width /= Constants.PIXELS_PER_INCH;
     height /= Constants.PIXELS_PER_INCH;
-    if (metric) {
-      width *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
-      height *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
-    }
-    Point2D dimension = new Point2D.Double(width, height);
-    return dimension;
+
+    Point2D inSize = new Point2D.Double(width, height);
+
+    width *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
+    height *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
+
+    Point2D cmSize = new Point2D.Double(width, height);
+
+    return new Point2D[] {inSize, cmSize};
   }
 
   // @Override
