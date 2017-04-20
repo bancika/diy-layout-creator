@@ -1643,7 +1643,7 @@
 				<minor>38</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2017-04-10 20:00:00.000 CET</releaseDate>
+			<releaseDate>2017-04-20 20:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>		
 				<org.diylc.appframework.update.Change>
@@ -1652,7 +1652,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Hold Control key to zoom with mouse wheel. Zooming tracks mouse cursor position</description>
+					<description>Hold Control key to zoom with mouse wheel. Zooming (somewhat) tracks mouse cursor position</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -1660,7 +1660,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added wizard installer for Windows that associates .DIY files automatically</description>
+					<description>Added wizard installer for Windows that associates the app with .DIY files automatically</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

@@ -94,7 +94,7 @@
 	<target name="win" depends="jar">
 		<exec executable="innosetup\iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
-			<arg value="/Fdiylc-${diylc.version}"/>
+			<arg value="/Fdiylc-${diylc.version}-win"/>
 		    <arg value="install.iss"/>
 		</exec>
 	</target>
