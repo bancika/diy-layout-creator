@@ -164,10 +164,10 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
     Point firstPoint = controlPoints[0];
     controlPoints = new Point[pinCount.getValue()];
     controlPoints[0] = firstPoint;
-    int pinSpacing = (int) this.pinSpacing.convertToPixels();
+    double pinSpacing = this.pinSpacing.convertToPixels();
     // Update control points.
-    int dx1;
-    int dy1;
+    double dx1;
+    double dy1;
     for (int i = 0; i < pinCount.getValue(); i++) {
       switch (orientation) {
         case DEFAULT:
@@ -189,7 +189,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point(firstPoint.x + dx1, firstPoint.y + dy1);
+      controlPoints[i] = new Point((int) (firstPoint.x + dx1), (int) (firstPoint.y + dy1));
     }
   }
 
@@ -199,9 +199,9 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;
       int thickness = getClosestOdd(THICKNESS.convertToPixels());
-      int width;
-      int height;
-      int pinSpacing = (int) this.pinSpacing.convertToPixels();
+      double width;
+      double height;
+      double pinSpacing = (int) this.pinSpacing.convertToPixels();
       Area indentation = null;
       int indentationSize = getClosestOdd(INDENT_SIZE.convertToPixels());
       switch (orientation) {

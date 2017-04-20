@@ -1704,7 +1704,11 @@
 			<changes>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Red ticks on both rulers track selection bounds, blue tick tracks cursor position</description>
+					<description>Red ticks on both rulers mark selection bounds, blue tick tracks cursor position</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Issues with DIL and SIL IC pin alignment when using metric grid and pin spacing</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

@@ -210,7 +210,7 @@ public class DrawingManager {
           failedComponents.add(component);
         }
         Area area = g2dWrapper.finishedDrawingComponent();
-        if (trackArea && area != null && !area.isEmpty()) {
+        if (trackArea && area != null && !area.isEmpty()) {          
           componentAreaMap.put(component, area);
           lastDrawnStateMap.put(component, state);
         }

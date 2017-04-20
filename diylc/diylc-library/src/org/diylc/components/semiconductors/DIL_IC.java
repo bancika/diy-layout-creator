@@ -178,13 +178,13 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     Point firstPoint = controlPoints[0];
     controlPoints = new Point[pinCount.getValue()];
     controlPoints[0] = firstPoint;
-    int pinSpacing = (int) this.pinSpacing.convertToPixels();
-    int rowSpacing = (int) this.rowSpacing.convertToPixels();
+    double pinSpacing = this.pinSpacing.convertToPixels();
+    double rowSpacing = this.rowSpacing.convertToPixels();
     // Update control points.
-    int dx1;
-    int dy1;
-    int dx2;
-    int dy2;
+    double dx1;
+    double dy1;
+    double dx2;
+    double dy2;
     for (int i = 0; i < pinCount.getValue() / 2; i++) {
       switch (orientation) {
         case DEFAULT:
@@ -214,21 +214,21 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point(firstPoint.x + dx1, firstPoint.y + dy1);
-      controlPoints[i + pinCount.getValue() / 2] = new Point(firstPoint.x + dx2, firstPoint.y + dy2);
+      controlPoints[i] = new Point((int) (firstPoint.x + dx1), (int) (firstPoint.y + dy1));
+      controlPoints[i + pinCount.getValue() / 2] = new Point((int) (firstPoint.x + dx2), (int) (firstPoint.y + dy2));
     }
   }
 
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
-      int width;
-      int height;
-      int pinSize = (int) PIN_SIZE.convertToPixels();
-      int pinSpacing = (int) this.pinSpacing.convertToPixels();
-      int rowSpacing = (int) this.rowSpacing.convertToPixels();
+      double x = controlPoints[0].x;
+      double y = controlPoints[0].y;
+      double width;
+      double height;
+      double pinSize = PIN_SIZE.convertToPixels();
+      double pinSpacing = this.pinSpacing.convertToPixels();
+      double rowSpacing = this.rowSpacing.convertToPixels();
       Area indentation = null;
       int indentationSize = getClosestOdd(INDENT_SIZE.convertToPixels());
       switch (orientation) {
