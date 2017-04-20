@@ -1705,7 +1705,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Red ticks on both rulers mark selection bounds, blue tick tracks cursor position</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Solder Pad size shouldn't be rounded up or down to the nearest integer to allow better precision</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Issues with DIL and SIL IC pin alignment when using metric grid and pin spacing</description>

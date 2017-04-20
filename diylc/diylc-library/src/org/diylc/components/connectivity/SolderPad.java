@@ -3,6 +3,8 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.PCBLayer;
 import org.diylc.common.SimpleComponentTransformer;
@@ -46,18 +48,18 @@ public class SolderPad extends AbstractComponent<Void> {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
-    int diameter = getClosestOdd((int) getSize().convertToPixels());
-    int holeDiameter = getClosestOdd((int) getHoleSize().convertToPixels());
+    double diameter = getSize().convertToPixels();
+    double holeDiameter = getHoleSize().convertToPixels();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color);
     if (type == Type.ROUND) {
-      g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+      g2d.fill(new Ellipse2D.Double(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter));
     } else {
-      g2d.fillRect(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+      g2d.fill(new Rectangle2D.Double(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter));
     }
     if (getHoleSize().getValue() > 0) {
       g2d.setColor(Constants.CANVAS_COLOR);
-      g2d.fillOval(point.x - holeDiameter / 2, point.y - holeDiameter / 2, holeDiameter, holeDiameter);
+      g2d.fill(new Ellipse2D.Double(point.x - holeDiameter / 2, point.y - holeDiameter / 2, holeDiameter, holeDiameter));
     }
   }
 
