@@ -550,6 +550,16 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         break;
       case REPAINT:
         canvasPanel.repaint();
+        // Refresh selection bounds after we're done with painting to ensure we have traced the
+        // component areas
+        SwingUtilities.invokeLater(new Runnable() {
+
+          @Override
+          public void run() {
+            if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_RULERS_KEY, true))
+              scrollPane.setSelectionRectangle(plugInPort.getSelectionBounds());
+          }
+        });
         break;
     }
     // }

@@ -1,6 +1,7 @@
 package org.diylc.common;
 
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,7 +26,8 @@ public interface ISelectionProcessor {
   void updateSelection(Collection<IDIYComponent<?>> newSelection);
 
   /**
-   * Finds all components at the specified location, sorted by z-index from top to bottom.
+   * Finds all components at the specified location, sorted by z-index from top to bottom. Location
+   * depends on the current zoom level.
    * 
    * @param point
    * @return
@@ -54,7 +56,7 @@ public interface ISelectionProcessor {
    * @param direction 1 for clockwise, -1 for counter-clockwise
    */
   void rotateSelection(int direction);
-  
+
   /**
    * Groups all selected components.
    */
@@ -64,6 +66,19 @@ public interface ISelectionProcessor {
    * Ungroups all selected components.
    */
   void ungroupSelectedComponents();
-  
+
+  /**
+   * Mirrors selected components in the given axis.
+   * 
+   * @param direction
+   */
   void mirrorSelection(int direction);
+
+  /**
+   * Returns the minimum rectangle containing all selected components, or null if none exists.
+   * Rectangle is scaled by the current zoom level.
+   * 
+   * @return
+   */
+  Rectangle2D getSelectionBounds();
 }

@@ -6,8 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -811,6 +813,26 @@ public class Presenter implements IPlugInPort {
     // messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
     // calculateSelectionDimension());
     messageDispatcher.dispatchMessage(EventType.REPAINT);
+  }
+
+  @Override
+  public Rectangle2D getSelectionBounds() {
+    if (selectedComponents == null || selectedComponents.isEmpty())
+      return null;
+
+    Area totalArea = new Area();
+    for (IDIYComponent<?> c : selectedComponents) {
+      Area compArea = drawingManager.getComponentArea(c);
+      if (compArea != null)
+        totalArea.add(compArea);
+      else
+        LOG.info("Area is null");
+    }
+    if (drawingManager.getZoomLevel() != 1) {
+      totalArea
+          .transform(AffineTransform.getScaleInstance(drawingManager.getZoomLevel(), drawingManager.getZoomLevel()));
+    }
+    return totalArea.getBounds2D();
   }
 
   @Override
