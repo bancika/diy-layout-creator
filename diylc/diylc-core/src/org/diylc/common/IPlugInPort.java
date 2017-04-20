@@ -45,6 +45,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String OUTLINE_KEY = "outline";
   public static final String THEME_KEY = "theme";
   public static final String RECENT_COMPONENTS_KEY = "recentComponents";
+  public static final String RECENT_FILES_KEY = "recentFiles";
   public static final String SHOW_RULERS_KEY = "showRulers";
   public static final String SHOW_GRID_KEY = "showGrid";
 

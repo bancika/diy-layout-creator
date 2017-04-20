@@ -1,12 +1,16 @@
 package org.diylc.swing.plugins.file;
 
 import java.util.EnumSet;
+import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
+import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
 
 /**
@@ -14,7 +18,9 @@ import org.diylc.swing.ISwingUI;
  * 
  * @author Branislav Stojkovic
  */
-public class FileMenuPlugin implements IPlugIn {
+public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
+
+  private static final Logger LOG = Logger.getLogger(FileMenuPlugin.class);
 
   private static final String FILE_TITLE = "File";
   private static final String TRACE_MASK_TITLE = "Trace Mask";
@@ -23,6 +29,7 @@ public class FileMenuPlugin implements IPlugIn {
   private TraceMaskDrawingProvider traceMaskDrawingProvider;
 
   private ISwingUI swingUI;
+  private IPlugInPort plugInPort;
 
   public FileMenuPlugin(ISwingUI swingUI) {
     super();
@@ -31,6 +38,7 @@ public class FileMenuPlugin implements IPlugIn {
 
   @Override
   public void connect(IPlugInPort plugInPort) {
+    this.plugInPort = plugInPort;
     this.drawingProvider = new ProjectDrawingProvider(plugInPort, false, true);
     this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
 
@@ -40,6 +48,7 @@ public class FileMenuPlugin implements IPlugIn {
     swingUI.injectMenuAction(actionFactory.createImportAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createSaveAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createSaveAsAction(plugInPort, swingUI), FILE_TITLE);
+    swingUI.injectDynamicSubmenu("Recent Files", IconLoader.History.getIcon(), FILE_TITLE, this);
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPDFAction(drawingProvider, swingUI), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPNGAction(drawingProvider, swingUI), FILE_TITLE);
@@ -61,5 +70,23 @@ public class FileMenuPlugin implements IPlugIn {
   @Override
   public void processMessage(EventType eventType, Object... params) {
     // Do nothing.
+  }
+
+  // Dynamic menu for recent files
+
+  @Override
+  public void onActionPerformed(String name) {
+    LOG.info("Openning recent file: " + name);
+    if (!plugInPort.allowFileAction()) {
+      LOG.info("Aborted openning recent file");
+      return;
+    }
+    this.plugInPort.loadProjectFromFile(name);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<String> getAvailableItems() {
+    return (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_FILES_KEY, null);
   }
 }

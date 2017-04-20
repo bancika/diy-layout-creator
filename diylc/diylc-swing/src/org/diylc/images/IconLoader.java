@@ -39,7 +39,7 @@ public enum IconLoader {
       "messages.png"), SearchBox("search-box.png"), Screwdriver("screwdriver.png"), Hammer("hammer.png"), FlipHorizontal(
       "flip_horizontal.png"), FlipVertical("flip_vertical.png"), MagicWand("magic_wand.png"), PinGrey("pin_grey.png"), PinGreen(
       "pin_green.png"), CoffeebeanEdit("coffeebean_edit.png"), ApplicationEdit("application_edit.png"), ComponentAdd(
-      "component_add.png");
+      "component_add.png"), History("history.png"), DocumentPlain("document_plain.png");
 
   protected String name;
 

@@ -8,9 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -28,12 +25,15 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -46,6 +46,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
+import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.autosave.AutoSavePlugin;
@@ -94,10 +95,10 @@ public class MainFrame extends JFrame implements ISwingUI {
     DialogFactory.getInstance().initialize(this);
 
     this.presenter = new Presenter(this);
-    
+
     canvasPlugin = new CanvasPlugin(this);
 
-    presenter.installPlugin(new ToolBox(this));    
+    presenter.installPlugin(new ToolBox(this));
     presenter.installPlugin(new FileMenuPlugin(this));
     presenter.installPlugin(new EditMenuPlugin(this));
     presenter.installPlugin(new ConfigPlugin(this));
@@ -106,12 +107,12 @@ public class MainFrame extends JFrame implements ISwingUI {
     presenter.installPlugin(new HelpMenuPlugin(this));
 
     presenter.installPlugin(new StatusBar(this));
-    
+
     presenter.installPlugin(canvasPlugin);
-    
+
     presenter.installPlugin(new ComponentTree(this, canvasPlugin.getCanvasPanel()));
     presenter.installPlugin(new FramePlugin());
-    
+
     presenter.installPlugin(new AutoSavePlugin(this));
 
     presenter.createNewProject();
@@ -303,6 +304,52 @@ public class MainFrame extends JFrame implements ISwingUI {
   }
 
   @Override
+  public void injectDynamicSubmenu(String name, Icon icon, String parentMenuName, final IDynamicSubmenuHandler handler) {
+    LOG.info(String.format("injectDynamicSubmenu(%s, icon, %s)", name, parentMenuName));
+    final JMenu menu = findOrCreateMenu(parentMenuName);
+    final JMenu submenu = new JMenu(name);
+    submenu.setIcon(icon);
+    menu.add(submenu);
+    menuMap.put(name, submenu);
+
+    final JMenuItem emptyItem = new JMenuItem("<empty>");
+    emptyItem.setEnabled(false);
+    submenu.add(emptyItem);
+
+    submenu.addMenuListener(new MenuListener() {
+
+      @Override
+      public void menuSelected(MenuEvent e) {
+        submenu.removeAll();
+        List<String> items = handler.getAvailableItems();
+        if (items == null || items.isEmpty())
+          submenu.add(emptyItem);
+        else
+          for (String item : items) {
+            final JMenuItem menuItem = new JMenuItem(item);
+            menuItem.addActionListener(new ActionListener() {
+
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                handler.onActionPerformed(menuItem.getText());
+              }
+            });
+            submenu.add(menuItem);
+          }
+        submenu.revalidate();
+        submenu.repaint();
+        submenu.doClick();
+      }
+
+      @Override
+      public void menuDeselected(MenuEvent e) {}
+
+      @Override
+      public void menuCanceled(MenuEvent e) {}
+    });
+  }
+
+  @Override
   public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
     getGlassPane().setVisible(true);
     SwingWorker<T, Void> worker = new SwingWorker<T, Void>() {
@@ -326,7 +373,7 @@ public class MainFrame extends JFrame implements ISwingUI {
           getGlassPane().setVisible(false);
           LOG.error("Background task execution interrupted", e);
           task.failed(e);
-        }        
+        }
       }
     };
     worker.execute();
@@ -365,7 +412,8 @@ public class MainFrame extends JFrame implements ISwingUI {
           fileName = "Untitled";
         }
         String modified = (Boolean) params[1] ? " (modified)" : "";
-        setTitle(String.format("DIYLC G3 version %s.%s - %s %s", plugInPort.getCurrentVersionNumber().getMinor(), plugInPort.getCurrentVersionNumber().getBuild(), fileName, modified));
+        setTitle(String.format("DIYLC G3 version %s.%s - %s %s", plugInPort.getCurrentVersionNumber().getMinor(),
+            plugInPort.getCurrentVersionNumber().getBuild(), fileName, modified));
       }
     }
   }

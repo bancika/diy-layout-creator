@@ -48,15 +48,26 @@ public interface ISwingUI extends IView {
   void injectMenuAction(Action action, String menuName);
 
   /**
-   * Injects a custom submenu into application's main menu. If <code>action</code> is set to null
-   * {@link Separator} will be added. If the specified menu does not exist it will be automatically
-   * created.
+   * Injects a custom submenu into application's main menu. If the specified menu does not exist it
+   * will be automatically created.
    * 
    * @param name
    * @param icon
    * @param parentMenuName
    */
   void injectSubmenu(String name, Icon icon, String parentMenuName);
+
+  /**
+   * Injects a dynamic submenu into application's main menu. Items are read from the
+   * <code>handler</code> and notifications are sent to the <code>handler</code> when an item is
+   * clicked on.
+   * 
+   * @param name
+   * @param icon
+   * @param parentMenuName
+   * @param handler
+   */
+  void injectDynamicSubmenu(String name, Icon icon, String parentMenuName, IDynamicSubmenuHandler handler);
 
   /**
    * Runs a task in background while showing busy cursor and a glass pane.
@@ -69,7 +80,7 @@ public interface ISwingUI extends IView {
    * @return {@link JFrame} that can be used to reference secondary dialogs and frames
    */
   JFrame getOwnerFrame();
-  
+
   /**
    * 
    */

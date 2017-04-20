@@ -192,7 +192,7 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "New");
       putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-      putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlainYellow.getIcon());
+      putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlain.getIcon());
     }
 
     @Override

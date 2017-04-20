@@ -1648,6 +1648,10 @@
 			<changes>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Recent Files' to the main menu to keep track of the previous 10 files</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Hold Control key to zoom with mouse wheel. Zooming tracks mouse cursor position</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

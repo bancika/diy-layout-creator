@@ -84,6 +84,8 @@ public class Presenter implements IPlugInPort {
 
   public static final int ICON_SIZE = 32;
 
+  private static final int MAX_RECENT_FILES = 5;
+
   private Project currentProject;
   private Map<String, List<ComponentType>> componentTypes;
   /**
@@ -248,10 +250,23 @@ public class Presenter implements IPlugInPort {
         builder.append("</html");
         view.showMessage(builder.toString(), "Warning", IView.WARNING_MESSAGE);
       }
+      addToRecentFiles(fileName);
     } catch (Exception ex) {
       LOG.error("Could not load file", ex);
       view.showMessage("Could not open file " + fileName + ". Check the log for details.", "Error", IView.ERROR_MESSAGE);
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void addToRecentFiles(String fileName) {
+    List<String> recentFiles = (List<String>) ConfigurationManager.getInstance().readObject(RECENT_FILES_KEY, null);
+    if (recentFiles == null)
+      recentFiles = new ArrayList<String>();
+    recentFiles.remove(fileName);
+    recentFiles.add(0, fileName);
+    while (recentFiles.size() > MAX_RECENT_FILES)
+      recentFiles.remove(recentFiles.size() - 1);
+    ConfigurationManager.getInstance().writeValue(RECENT_FILES_KEY, recentFiles);
   }
 
   @Override
@@ -282,6 +297,8 @@ public class Presenter implements IPlugInPort {
     try {
       currentProject.setFileVersion(CURRENT_VERSION);
       projectFileManager.serializeProjectToFile(currentProject, fileName, isBackup);
+      if (!isBackup)
+        addToRecentFiles(fileName);
     } catch (Exception ex) {
       LOG.error("Could not save file", ex);
       if (!isBackup) {
