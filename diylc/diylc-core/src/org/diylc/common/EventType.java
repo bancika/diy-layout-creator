@@ -73,6 +73,11 @@ public enum EventType {
    */
   LAYER_STATE_CHANGED,
   /**
+   * Called when a layer visibility is changed. The first parameter is a set of indices of hidden
+   * layers. All layers not included are considered visible.
+   */
+  LAYER_VISIBILITY_CHANGED,
+  /**
    * Called to update the status message. New status message is passed as a first parameter.
    */
   STATUS_MESSAGE_CHANGED;

@@ -1701,7 +1701,11 @@
 			</versionNumber>
 			<releaseDate>2017-04-20 20:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>		
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Show and hide each individual layer</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Red ticks on both rulers mark selection bounds, blue tick tracks cursor position</description>

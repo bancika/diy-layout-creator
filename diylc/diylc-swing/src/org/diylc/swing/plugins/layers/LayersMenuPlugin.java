@@ -22,10 +22,12 @@ public class LayersMenuPlugin implements IPlugIn {
 
   private IPlugInPort plugInPort;
   private Map<Layer, Action> lockActionMap;
+  private Map<Layer, Action> visibleActionMap;
   private Map<Integer, Action> selectAllActionMap;
 
   public LayersMenuPlugin(ISwingUI swingUI) {
     lockActionMap = new HashMap<Layer, Action>();
+    visibleActionMap = new HashMap<Layer, Action>();
     selectAllActionMap = new HashMap<Integer, Action>();
     for (Layer layer : Layer.values()) {
       final int zOrder = layer.getZOrder();
@@ -36,11 +38,24 @@ public class LayersMenuPlugin implements IPlugIn {
         @Override
         public void actionPerformed(ActionEvent e) {
           LayersMenuPlugin.this.plugInPort.setLayerLocked(zOrder, (Boolean) getValue(Action.SELECTED_KEY));
-          selectAllActionMap.get(zOrder).setEnabled(!(Boolean) getValue(Action.SELECTED_KEY));
+//          selectAllActionMap.get(zOrder).setEnabled(!(Boolean) getValue(Action.SELECTED_KEY));
         }
       };
       lockAction.putValue(IView.CHECK_BOX_MENU_ITEM, true);
       lockActionMap.put(layer, lockAction);
+      
+      AbstractAction visibleAction = new AbstractAction("Visible") {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          LayersMenuPlugin.this.plugInPort.setLayerVisibility(zOrder, getValue(Action.SELECTED_KEY) == null ? true : (Boolean) getValue(Action.SELECTED_KEY));
+//          selectAllActionMap.get(zOrder).setEnabled(!(Boolean) getValue(Action.SELECTED_KEY));
+        }
+      };
+      visibleAction.putValue(IView.CHECK_BOX_MENU_ITEM, true);
+      visibleActionMap.put(layer, visibleAction);
 
       AbstractAction selectAllAction = new AbstractAction("Select All") {
 
@@ -54,6 +69,7 @@ public class LayersMenuPlugin implements IPlugIn {
       selectAllActionMap.put(zOrder, selectAllAction);
 
       swingUI.injectSubmenu(layer.title, null, LOCK_LAYERS_TITLE);
+      swingUI.injectMenuAction(visibleAction, layer.title);
       swingUI.injectMenuAction(lockAction, layer.title);
       swingUI.injectMenuAction(selectAllAction, layer.title);
     }
@@ -66,7 +82,7 @@ public class LayersMenuPlugin implements IPlugIn {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    return EnumSet.of(EventType.LAYER_STATE_CHANGED);
+    return EnumSet.of(EventType.LAYER_STATE_CHANGED, EventType.LAYER_VISIBILITY_CHANGED);
   }
 
   @SuppressWarnings("unchecked")
@@ -77,7 +93,12 @@ public class LayersMenuPlugin implements IPlugIn {
       for (Layer layer : Layer.values()) {
         lockActionMap.get(layer).putValue(Action.SELECTED_KEY, lockedLayers.contains(layer.getZOrder()));
       }
-    }
+    } else if (eventType == EventType.LAYER_VISIBILITY_CHANGED) {
+      Set<Integer> hiddenLayers = (Set<Integer>) params[0];
+      for (Layer layer : Layer.values()) {
+        visibleActionMap.get(layer).putValue(Action.SELECTED_KEY, !hiddenLayers.contains(layer.getZOrder()));
+      }
+    }    
   }
 
   static enum Layer {

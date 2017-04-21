@@ -189,7 +189,7 @@ public class Presenter implements IPlugInPort {
         return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
       }
       for (IDIYComponent<?> component : currentProject.getComponents()) {
-        if (!isComponentLocked(component)) {
+        if (!isComponentLocked(component) && isComponentVisible(component)) {
           Area area = drawingManager.getComponentArea(component);
           if (area != null && area.contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -219,6 +219,7 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
+    messageDispatcher.dispatchMessage(EventType.LAYER_VISIBILITY_CHANGED, currentProject.getHiddenLayers());
   }
 
   @Override
@@ -374,9 +375,16 @@ public class Presenter implements IPlugInPort {
     return autoCreators;
   }
 
+  @SuppressWarnings({"unchecked"})
+  private boolean isComponentVisible(IDIYComponent<?> component) {
+    ComponentType componentType =
+        ComponentProcessor.getInstance().extractComponentTypeFrom(
+            (Class<? extends IDIYComponent<?>>) component.getClass());
+    return !currentProject.getHiddenLayers().contains((int) Math.round(componentType.getZOrder()));
+  }
 
   @Override
-  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter) {
+  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFiler filter) {
     if (currentProject == null) {
       return;
     }
@@ -387,6 +395,16 @@ public class Presenter implements IPlugInPort {
         groupedComponents.add(component);
       }
     }
+
+    // Concatenate the specified filter with our own filter that removes hidden layers
+    IComponentFiler newFiler = new IComponentFiler() {
+
+      @Override
+      public boolean testComponent(IDIYComponent<?> component) {
+        return (filter == null || filter.testComponent(component)) && isComponentVisible(component);
+      }
+    };
+
     // Don't draw the component in the slot if both control points
     // match.
     List<IDIYComponent<?>> componentSlotToDraw;
@@ -402,7 +420,7 @@ public class Presenter implements IPlugInPort {
                 g2d,
                 currentProject,
                 drawOptions,
-                filter,
+                newFiler,
                 selectionRect,
                 selectedComponents,
                 getLockedComponents(),
@@ -433,7 +451,8 @@ public class Presenter implements IPlugInPort {
     List<IDIYComponent<?>> components = drawingManager.findComponentsAt(point, currentProject);
     Iterator<IDIYComponent<?>> iterator = components.iterator();
     while (iterator.hasNext()) {
-      if (isComponentLocked(iterator.next())) {
+      IDIYComponent<?> component = iterator.next();
+      if (isComponentLocked(component) || !isComponentVisible(component)) {
         iterator.remove();
       }
     }
@@ -530,8 +549,8 @@ public class Presenter implements IPlugInPort {
               List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
               for (IDIYComponent<?> component : componentSlot) {
                 addComponent(component, true);
-                // Select the new component if it's not locked.
-                if (!isComponentLocked(component)) {
+                // Select the new component if it's not locked and invisible.
+                if (!isComponentLocked(component) && isComponentVisible(component)) {
                   newSelection.add(component);
                 }
               }
@@ -933,7 +952,7 @@ public class Presenter implements IPlugInPort {
         // Do not process a control point if it's already in the map and
         // if it's locked.
         if ((!controlPointMap.containsKey(component) || !controlPointMap.get(component).contains(i))
-            && !isComponentLocked(component)) {
+            && !isComponentLocked(component) && isComponentVisible(component)) {
           if (component.isControlPointSticky(i)) {
             boolean componentMatches = false;
             for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
@@ -1315,7 +1334,7 @@ public class Presenter implements IPlugInPort {
       }
       List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
       for (IDIYComponent<?> component : currentProject.getComponents()) {
-        if (!isComponentLocked(component)) {
+        if (!isComponentLocked(component) && isComponentVisible(component)) {
           Area area = drawingManager.getComponentArea(component);
           if ((area != null) && (selectionRect != null) && area.intersects(selectionRect)) {
             newSelection.addAll(findAllGroupedComponents(component));
@@ -1436,6 +1455,19 @@ public class Presenter implements IPlugInPort {
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
+  }
+
+  @Override
+  public void setLayerVisibility(int layerZOrder, boolean visible) {
+    LOG.info(String.format("setLayerVisibility(%s, %s)", layerZOrder, visible));
+    if (visible) {
+      currentProject.getHiddenLayers().remove(layerZOrder);
+    } else {
+      currentProject.getHiddenLayers().add(layerZOrder);
+    }
+    updateSelection(EMPTY_SELECTION);
+    messageDispatcher.dispatchMessage(EventType.REPAINT);
+    messageDispatcher.dispatchMessage(EventType.LAYER_VISIBILITY_CHANGED, currentProject.getHiddenLayers());
   }
 
   @SuppressWarnings("unchecked")
@@ -1711,7 +1743,7 @@ public class Presenter implements IPlugInPort {
     if (selectedComponents.isEmpty()) {
       return null;
     }
-    Rectangle2D rect = getSelectionBounds();    
+    Rectangle2D rect = getSelectionBounds();
 
     double width = rect.getWidth();
     double height = rect.getHeight();

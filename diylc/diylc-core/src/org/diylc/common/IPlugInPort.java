@@ -253,6 +253,15 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param locked
    */
   void setLayerLocked(int layerZOrder, boolean locked);
+  
+  /**
+   * Shows or hides the specified layer. All components within +- 0.5 range will be affected by
+   * the change as well.
+   * 
+   * @param layerZOrder
+   * @param visible
+   */
+  void setLayerVisibility(int layerZOrder, boolean visible);
 
   /**
    * @return selection size expressed in both inches or centimeters, respectively

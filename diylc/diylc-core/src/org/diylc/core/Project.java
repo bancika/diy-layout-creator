@@ -45,12 +45,14 @@ public class Project implements Serializable {
   private List<IDIYComponent<?>> components;
   private Set<Set<IDIYComponent<?>>> groups;
   private Set<Integer> lockedLayers;
+  private Set<Integer> hiddenLayers;
   private Font font = DEFAULT_FONT;
 
   public Project() {
     components = new ArrayList<IDIYComponent<?>>();
     groups = new HashSet<Set<IDIYComponent<?>>>();
     lockedLayers = new HashSet<Integer>();
+    hiddenLayers = new HashSet<Integer>();
     title = DEFAULT_TITLE;
     author = System.getProperty("user.name");
     width = DEFAULT_WIDTH;
@@ -133,6 +135,12 @@ public class Project implements Serializable {
 
   public Set<Integer> getLockedLayers() {
     return lockedLayers;
+  }
+  
+  public Set<Integer> getHiddenLayers() {
+    if (hiddenLayers == null)
+      hiddenLayers = new HashSet<Integer>();
+    return hiddenLayers;
   }
 
   public VersionNumber getFileVersion() {
@@ -261,6 +269,7 @@ public class Project implements Serializable {
     project.setHeight(this.getHeight());
     project.setWidth(this.getWidth());
     project.getLockedLayers().addAll(this.getLockedLayers());
+    project.getHiddenLayers().addAll(this.getHiddenLayers());
 
     Map<IDIYComponent<?>, IDIYComponent<?>> cloneMap = new HashMap<IDIYComponent<?>, IDIYComponent<?>>();
 
