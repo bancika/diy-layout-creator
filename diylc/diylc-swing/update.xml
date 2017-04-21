@@ -1704,6 +1704,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Assign F1-F12 keys as shortcuts for frequently used component types or building blocks</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Show and hide each individual layer</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>

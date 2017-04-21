@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
@@ -17,12 +18,16 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -59,6 +64,8 @@ public class TreePanel extends JPanel {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(TreePanel.class);
+
+  public static final String COMPONENT_SHORTCUT_KEY = "componentShortcuts";
 
   private DefaultTreeModel treeModel;
   private JTree tree;
@@ -312,9 +319,78 @@ public class TreePanel extends JPanel {
 
           Payload payload = (Payload) selectedNode.getUserObject();
 
-          ComponentType componentType = payload.getComponentType();
+          final ComponentType componentType = payload.getComponentType();
+
+          final String identifier =
+              componentType == null ? "block:" + payload.toString() : componentType.getInstanceClass()
+                  .getCanonicalName();
+
+          JMenu shortcutSubmenu = new JMenu("Assign Shortcut");
+          final JMenuItem noneItem = new JMenuItem("None");
+          noneItem.addActionListener(new ActionListener() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              HashMap<String, String> map =
+                  (HashMap<String, String>) ConfigurationManager.getInstance().readObject(COMPONENT_SHORTCUT_KEY, null);
+              if (map == null)
+                map = new HashMap<String, String>();
+
+              Iterator<Entry<String, String>> it = map.entrySet().iterator();
+              while (it.hasNext()) {
+                Entry<String, String> item = it.next();
+                if (item.getValue().equals(identifier))
+                  it.remove();
+              }
+
+              ConfigurationManager.getInstance().writeValue(COMPONENT_SHORTCUT_KEY, map);
+
+              TreePanel.this.invalidate();
+              TreePanel.this.repaint();
+            }
+
+          });
+
+          shortcutSubmenu.add(noneItem);
+
+          for (int i = 1; i <= 12; i++) {
+            final JMenuItem item = new JMenuItem("F" + i);
+            item.addActionListener(new ActionListener() {
+
+              @SuppressWarnings("unchecked")
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                HashMap<String, String> map =
+                    (HashMap<String, String>) ConfigurationManager.getInstance().readObject(COMPONENT_SHORTCUT_KEY,
+                        null);
+                if (map == null)
+                  map = new HashMap<String, String>();
+
+                if (map.containsKey(item.getText()))
+                  map.remove(item.getText());
+
+                Iterator<Entry<String, String>> it = map.entrySet().iterator();
+                while (it.hasNext()) {
+                  Entry<String, String> item = it.next();
+                  if (item.getValue().equals(identifier))
+                    it.remove();
+                }
+
+                map.put(item.getText(), identifier);
+
+                ConfigurationManager.getInstance().writeValue(COMPONENT_SHORTCUT_KEY, map);
+
+                TreePanel.this.invalidate();
+                TreePanel.this.repaint();
+              }
+            });
+            shortcutSubmenu.add(item);
+          }
+
           if (componentType != null) {
             popup.add(new SelectAllAction(plugInPort));
+            popup.add(shortcutSubmenu);
             popup.add(new JSeparator());
 
             List<Template> templates = plugInPort.getTemplatesFor(componentType.getCategory(), componentType.getName());
@@ -329,6 +405,7 @@ public class TreePanel extends JPanel {
               }
             }
           } else if (selectedNode.isLeaf()) {
+            popup.add(shortcutSubmenu);
             popup.add(new DeleteBlockAction(plugInPort, payload.toString()));
           }
         }
@@ -453,6 +530,7 @@ public class TreePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
+    @SuppressWarnings("unchecked")
     @Override
     public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean selected,
         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
@@ -476,9 +554,28 @@ public class TreePanel extends JPanel {
               + "<br><br>Left click to instantiate this component, right click for more options" + "</html>");
           setIcon(payload.getComponentType().getIcon());
           if (payload.isVisible())
-            setPreferredSize(new Dimension(240, 32));
+            setPreferredSize(new Dimension(180, 32));
           else
             setPreferredSize(new Dimension(0, 0));
+        }
+
+        if (payload.isVisible()) {
+          HashMap<String, String> shortcutMap =
+              (HashMap<String, String>) ConfigurationManager.getInstance().readObject(TreePanel.COMPONENT_SHORTCUT_KEY,
+                  null);
+          String identifier =
+              payload.getComponentType() == null ? "block:" + payload.toString() : payload.getComponentType()
+                  .getInstanceClass().getCanonicalName();
+          if (shortcutMap != null && shortcutMap.containsValue(identifier)) {
+            for (String key : shortcutMap.keySet()) {
+              if (shortcutMap.get(key).equals(identifier)) {
+                setText("<html>"
+                    + payload.toString()
+                    + " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #eeeeee; color: #666666;\"><sup>&nbsp;"
+                    + key + "&nbsp;</sup></a></html>");
+              }
+            }
+          }
         }
       }
 

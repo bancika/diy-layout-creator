@@ -19,15 +19,22 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.VolatileImage;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
+import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
+import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
+import org.diylc.swing.plugins.tree.TreePanel;
 
 /**
  * GUI class used to draw onto.
@@ -37,6 +44,8 @@ import org.diylc.common.IPlugInPort;
 public class CanvasPanel extends JComponent implements Autoscroll {
 
   private static final long serialVersionUID = 1L;
+
+  private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
 
   private IPlugInPort plugInPort;
 
@@ -52,6 +61,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   // EnumSet.of(DrawOption.GRID,
   // DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.ANTIALIASING,
   // DrawOption.CONTROL_POINTS);
+
+  private HashMap<String, ComponentType> componentTypeCache;
 
   public CanvasPanel(IPlugInPort plugInPort) {
     super();
@@ -70,6 +81,17 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     bufferImage = null;
   }
 
+  public HashMap<String, ComponentType> getComponentTypeCache() {
+    if (componentTypeCache == null) {
+      componentTypeCache = new HashMap<String, ComponentType>();
+      for (Entry<String, List<ComponentType>> entry : this.plugInPort.getComponentTypes().entrySet()) {
+        for (ComponentType type : entry.getValue())
+          componentTypeCache.put(type.getInstanceClass().getCanonicalName(), type);
+      }
+    }
+    return componentTypeCache;
+  }
+
   private void initializeDnD() {
     // Initialize drag source recognizer.
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
@@ -80,6 +102,21 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
   private void initializeActions() {
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearSlot");
+    for (int i = 1; i <= 12; i++) {
+      final int x = i;
+      getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F1 + i - 1, 0),
+          "functionKey" + i);
+      getActionMap().put("functionKey" + i, new AbstractAction() {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          functionKeyPressed(x);
+        }
+      });
+    }
+
     getActionMap().put("clearSlot", new AbstractAction() {
 
       private static final long serialVersionUID = 1L;
@@ -89,6 +126,35 @@ public class CanvasPanel extends JComponent implements Autoscroll {
         CanvasPanel.this.plugInPort.setNewComponentTypeSlot(null, null);
       }
     });
+  }
+
+  @SuppressWarnings("unchecked")
+  protected void functionKeyPressed(int i) {
+    HashMap<String, String> shortcutMap =
+        (HashMap<String, String>) ConfigurationManager.getInstance().readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
+    if (shortcutMap == null)
+      return;
+    String typeName = shortcutMap.get("F" + i);
+    if (typeName == null)
+      return;
+    if (typeName.startsWith("block:")) {
+      String blockName = typeName.substring(6);
+      try {
+        plugInPort.loadBlock(blockName);
+      } catch (InvalidBlockException e) {
+        LOG.error("Could not find block assigned to shortcut: " + blockName);
+      }
+    } else {
+      ComponentType type = getComponentTypeCache().get(typeName);
+      if (type == null) {
+        LOG.error("Could not find type: " + typeName);
+        return;
+      }
+      this.plugInPort.setNewComponentTypeSlot(type, null);
+    }
+
+    // hack: fake mouse movement to repaint
+    this.plugInPort.mouseMoved(getMousePosition(), false, false, false);
   }
 
   protected void createBufferImage() {
