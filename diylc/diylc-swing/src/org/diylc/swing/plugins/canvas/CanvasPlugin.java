@@ -169,7 +169,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void keyPressed(KeyEvent e) {
-          if (plugInPort.keyPressed(e.getKeyCode(), e.isControlDown(), e.isShiftDown(), e.isAltDown())) {
+          if (plugInPort.keyPressed(e.getKeyCode(), e.isControlDown() || e.isMetaDown(), e.isShiftDown(), e.isAltDown())) {
             e.consume();
           }
         }
@@ -180,7 +180,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         @Override
         public void mouseMoved(MouseEvent e) {
           canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
-          plugInPort.mouseMoved(e.getPoint(), e.isControlDown(), e.isShiftDown(), e.isAltDown());
+          plugInPort.mouseMoved(e.getPoint(), e.isControlDown() || e.isMetaDown(), e.isShiftDown(), e.isAltDown());
         }
       });
 
@@ -188,8 +188,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-          plugInPort.mouseClicked(e.getPoint(), e.getButton(), e.isControlDown(), e.isShiftDown(), e.isAltDown(),
-              e.getClickCount());
+          plugInPort.mouseClicked(e.getPoint(), e.getButton(), e.isControlDown() || e.isMetaDown(), e.isShiftDown(),
+              e.isAltDown(), e.getClickCount());
         }
       });
     }
@@ -218,7 +218,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         public void mouseWheelMoved(MouseWheelEvent e) {
           boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
-          if (wheelZoom || e.isControlDown()) {
+          if (wheelZoom || e.isControlDown() || e.isMetaDown()) {
             // disable scrolling
             scrollPane.setWheelScrollingEnabled(false);
 

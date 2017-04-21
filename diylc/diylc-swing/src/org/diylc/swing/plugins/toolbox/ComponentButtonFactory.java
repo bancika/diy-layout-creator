@@ -68,7 +68,7 @@ public class ComponentButtonFactory {
             }
           }
           // Ctrl appends selection
-          if (e.isControlDown()) {
+          if (e.isControlDown() || e.isMetaDown()) {
             newSelection.addAll(plugInPort.getSelectedComponents());
           }
           plugInPort.updateSelection(newSelection);
@@ -82,7 +82,7 @@ public class ComponentButtonFactory {
 
       @Override
       public void keyPressed(KeyEvent e) {
-        plugInPort.keyPressed(e.getKeyCode(), e.isControlDown(), e.isShiftDown(), e.isAltDown());
+        plugInPort.keyPressed(e.getKeyCode(), e.isControlDown() || e.isMetaDown(), e.isShiftDown(), e.isAltDown());
       }
     });
     return button;
