@@ -545,7 +545,7 @@ public class TreePanel extends JPanel {
           if (leaf)
             setIcon(IconLoader.Component.getIcon());
           if (payload.isVisible())
-            setPreferredSize(new Dimension(240, 20));
+            setPreferredSize(new Dimension(250, 20));
           else
             setPreferredSize(new Dimension(0, 0));
         } else {
@@ -554,7 +554,7 @@ public class TreePanel extends JPanel {
               + "<br><br>Left click to instantiate this component, right click for more options" + "</html>");
           setIcon(payload.getComponentType().getIcon());
           if (payload.isVisible())
-            setPreferredSize(new Dimension(180, 32));
+            setPreferredSize(new Dimension(250, 32));
           else
             setPreferredSize(new Dimension(0, 0));
         }
