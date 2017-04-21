@@ -117,7 +117,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         // g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
         // 0.5f));
         // }
-        int leadThickness = getClosestOdd(getLeadThickness());
+        float leadThickness = getLeadThickness();
         double leadLength = (distance - calculatePinSpacing(shapeRect)) / 2 - leadThickness / 2;
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
         Color leadColor =
@@ -335,8 +335,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   /**
    * @return default lead thickness. Override this method to change it.
    */
-  protected int getLeadThickness() {
-    return (int) LEAD_THICKNESS.convertToPixels();
+  protected float getLeadThickness() {
+    return getClosestOdd(LEAD_THICKNESS.convertToPixels());
   }
 
   /**

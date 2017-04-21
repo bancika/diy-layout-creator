@@ -1708,7 +1708,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Solder Pad size shouldn't be rounded up or down to the nearest integer to allow better precision</description>
+					<description>Solder Pad and Copper Trace size shouldn't be rounded up or down to the nearest integer to allow better precision</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

@@ -84,8 +84,8 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
   }
 
   @Override
-  protected int getLeadThickness() {
-    return (int) getThickness().convertToPixels();
+  protected float getLeadThickness() {
+    return (float) getThickness().convertToPixels();
   }
 
   @Override

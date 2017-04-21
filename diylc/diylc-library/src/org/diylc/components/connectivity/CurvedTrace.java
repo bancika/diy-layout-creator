@@ -38,7 +38,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
 
   @Override
   protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
-    int thickness = (int) size.convertToPixels();
+    float thickness = (float) size.convertToPixels();
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
     Color curveColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR

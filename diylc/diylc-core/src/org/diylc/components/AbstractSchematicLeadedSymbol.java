@@ -36,7 +36,7 @@ public abstract class AbstractSchematicLeadedSymbol<T> extends AbstractLeadedCom
   }
 
   @Override
-  protected int getLeadThickness() {
+  protected float getLeadThickness() {
     return 1;
   }
 
