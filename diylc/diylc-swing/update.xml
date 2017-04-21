@@ -1724,7 +1724,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Use Mac "command" key for menu shortcuts under OSX</description>
+					<description>Use standard OSX/Mac "command" key for menu shortcuts and to un-stuck components</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
