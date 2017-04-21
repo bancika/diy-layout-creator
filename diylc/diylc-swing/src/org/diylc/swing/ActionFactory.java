@@ -1,5 +1,6 @@
 package org.diylc.swing;
 
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.event.ActionEvent;
@@ -87,8 +88,8 @@ public class ActionFactory {
     return new ExportPNGAction(drawingProvider, swingUI);
   }
 
-  public PrintAction createPrintAction(IDrawingProvider drawingProvider) {
-    return new PrintAction(drawingProvider);
+  public PrintAction createPrintAction(IDrawingProvider drawingProvider, int keyModifiers) {
+    return new PrintAction(drawingProvider, keyModifiers);
   }
 
   public ExitAction createExitAction(IPlugInPort plugInPort) {
@@ -136,7 +137,7 @@ public class ActionFactory {
   public SaveAsTemplateAction createSaveAsTemplateAction(IPlugInPort plugInPort) {
     return new SaveAsTemplateAction(plugInPort);
   }
-  
+
   public SaveAsBlockAction createSaveAsBlockAction(IPlugInPort plugInPort) {
     return new SaveAsBlockAction(plugInPort);
   }
@@ -191,7 +192,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "New");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlain.getIcon());
     }
 
@@ -229,7 +231,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Open");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.FolderOut.getIcon());
     }
 
@@ -299,7 +302,8 @@ public class ActionFactory {
         }
       });
       putValue(AbstractAction.NAME, "Import");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.ElementInto.getIcon());
     }
 
@@ -352,7 +356,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Save");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
     }
 
@@ -416,8 +421,10 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Save As");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+      putValue(
+          AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+              | ActionEvent.SHIFT_MASK));
       putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
     }
 
@@ -564,11 +571,11 @@ public class ActionFactory {
 
     private IDrawingProvider drawingProvider;
 
-    public PrintAction(IDrawingProvider drawingProvider) {
+    public PrintAction(IDrawingProvider drawingProvider, int keyModifiers) {
       super();
       this.drawingProvider = drawingProvider;
       putValue(AbstractAction.NAME, "Print...");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, keyModifiers));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Print.getIcon());
     }
 
@@ -622,7 +629,8 @@ public class ActionFactory {
       this.clipboard = clipboard;
       this.clipboardOwner = clipboardOwner;
       putValue(AbstractAction.NAME, "Cut");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Cut.getIcon());
     }
 
@@ -649,7 +657,8 @@ public class ActionFactory {
       this.clipboard = clipboard;
       this.clipboardOwner = clipboardOwner;
       putValue(AbstractAction.NAME, "Copy");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Copy.getIcon());
     }
 
@@ -673,7 +682,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.clipboard = clipboard;
       putValue(AbstractAction.NAME, "Paste");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Paste.getIcon());
     }
 
@@ -713,7 +723,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Select All");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Selection.getIcon());
     }
 
@@ -734,7 +745,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Group Selection");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Group.getIcon());
     }
 
@@ -755,7 +767,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Ungroup Selection");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_U, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Ungroup.getIcon());
     }
 
@@ -807,7 +820,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Edit Selection");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.EditComponent.getIcon());
     }
 
@@ -867,7 +881,7 @@ public class ActionFactory {
       }
     }
   }
-  
+
   public static class SaveAsBlockAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;

@@ -1,5 +1,7 @@
 package org.diylc.swing.plugins.file;
 
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -52,11 +54,15 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPDFAction(drawingProvider, swingUI), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPNGAction(drawingProvider, swingUI), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createPrintAction(drawingProvider), FILE_TITLE);
+    swingUI.injectMenuAction(
+        actionFactory.createPrintAction(drawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+        FILE_TITLE);
     swingUI.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPDFAction(traceMaskDrawingProvider, swingUI), TRACE_MASK_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPNGAction(traceMaskDrawingProvider, swingUI), TRACE_MASK_TITLE);
-    swingUI.injectMenuAction(actionFactory.createPrintAction(traceMaskDrawingProvider), TRACE_MASK_TITLE);
+    swingUI.injectMenuAction(
+        actionFactory.createPrintAction(traceMaskDrawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+            | KeyEvent.SHIFT_DOWN_MASK), TRACE_MASK_TITLE);
     swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), FILE_TITLE);
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExitAction(plugInPort), FILE_TITLE);
