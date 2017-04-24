@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -27,6 +28,7 @@ import javax.swing.event.ChangeListener;
 
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.utils.KeywordExtractor;
@@ -204,10 +206,12 @@ public class UploadDialog extends ButtonDialog {
     if (nameField == null) {
       nameField = new JTextField();
 
+      List<PropertyWrapper> props = plugInPort.getProperties(plugInPort.getCurrentProject());
+
       // set default from the project
-      for (int i = 0; i < plugInPort.getProjectProperties().size(); i++)
-        if (plugInPort.getProjectProperties().get(i).getName().equals("Title"))
-          nameField.setText(plugInPort.getProjectProperties().get(i).getValue().toString());
+      for (int i = 0; i < props.size(); i++)
+        if (props.get(i).getName().equals("Title"))
+          nameField.setText(props.get(i).getValue().toString());
     }
     return nameField;
   }
@@ -232,11 +236,13 @@ public class UploadDialog extends ButtonDialog {
     if (descriptionArea == null) {
       descriptionArea = new HTMLTextArea();
 
+      List<PropertyWrapper> props = plugInPort.getProperties(plugInPort.getCurrentProject());
+
       // set default from the project
-      for (int i = 0; i < plugInPort.getProjectProperties().size(); i++)
-        if (plugInPort.getProjectProperties().get(i).getName().equals("Description"))
+      for (int i = 0; i < props.size(); i++)
+        if (props.get(i).getName().equals("Description"))
           try {
-            descriptionArea.setText(plugInPort.getProjectProperties().get(i).getValue().toString());
+            descriptionArea.setText(props.get(i).getValue().toString());
           } catch (Exception e) {
           }
       descriptionArea.setBorder(null);

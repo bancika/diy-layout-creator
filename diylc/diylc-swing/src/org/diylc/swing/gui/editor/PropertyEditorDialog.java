@@ -32,16 +32,17 @@ public class PropertyEditorDialog extends ButtonDialog {
 
   private static final long serialVersionUID = 1L;
 
-  public static boolean SHOW_DEFAULT_BOXES = true;
   private static final String DEFAULT_BOX_TOOLTIP =
       "<html>If this box is checked application will use the current value as a<br>default when creating new components of the same type</html>";
 
   private List<PropertyWrapper> properties;
   private Set<PropertyWrapper> defaultedProperties;
   private Component componentToFocus = null;
+  private boolean saveDefaults;
 
-  public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title) {
+  public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title, boolean saveDefaults) {
     super(owner, title, new String[] {ButtonDialog.OK, ButtonDialog.CANCEL});
+    this.saveDefaults = saveDefaults;
 
     LOG.debug("Creating property editor for: " + properties);
 
@@ -112,7 +113,7 @@ public class PropertyEditorDialog extends ButtonDialog {
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
 
-        if (SHOW_DEFAULT_BOXES) {
+        if (saveDefaults) {
           editorPanel.add(createDefaultCheckBox(property), gbc);
         }
       }

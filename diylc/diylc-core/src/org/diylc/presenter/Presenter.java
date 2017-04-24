@@ -51,6 +51,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.core.annotations.IAutoCreator;
+import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
@@ -855,6 +856,42 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
+  public void nudgeSelection(Size xOffset, Size yOffset, boolean affectStuckComponents) {
+    if (selectedComponents == null || selectedComponents.isEmpty())
+      return;
+    
+    LOG.debug(String.format("nudgeSelection(%s, %s)", xOffset, yOffset));
+    Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
+    // If there aren't any control points, try to add all the selected
+    // components with all their control points. That will allow the
+    // user to drag the whole components.
+    for (IDIYComponent<?> c : selectedComponents) {
+      Set<Integer> pointIndices = new HashSet<Integer>();
+      if (c.getControlPointCount() > 0) {
+        for (int i = 0; i < c.getControlPointCount(); i++) {
+          pointIndices.add(i);
+        }
+        controlPointMap.put(c, pointIndices);
+      }
+    }
+    if (controlPointMap.isEmpty()) {
+      return;
+    }
+    
+    if (affectStuckComponents) {
+      includeStuckComponents(controlPointMap);
+    }    
+
+    int dx = (int) xOffset.convertToPixels();
+    int dy = (int) yOffset.convertToPixels();
+
+    Project oldProject = currentProject.clone();
+    moveComponents(controlPointMap, dx, dy, false);
+    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Move Selection");
+    messageDispatcher.dispatchMessage(EventType.REPAINT);
+  }
+
+  @Override
   public VersionNumber getCurrentVersionNumber() {
     return CURRENT_VERSION;
   }
@@ -1403,10 +1440,10 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void setProjectDefaultPropertyValue(String propertyName, Object value) {
-    LOG.info(String.format("setProjectDefaultPropertyValue(%s, %s)", propertyName, value));
+  public void setDefaultPropertyValue(Class<?> clazz, String propertyName, Object value) {
+    LOG.info(String.format("setProjectDefaultPropertyValue(%s, %s, %s)", clazz.getName(), propertyName, value));
     LOG.debug("Default property value set for " + Project.class.getName() + ":" + propertyName);
-    ConfigurationManager.getInstance().writeValue(DEFAULTS_KEY_PREFIX + Project.class.getName() + ":" + propertyName,
+    ConfigurationManager.getInstance().writeValue(DEFAULTS_KEY_PREFIX + clazz.getName() + ":" + propertyName,
         value);
   }
 
@@ -1849,14 +1886,14 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public List<PropertyWrapper> getProjectProperties() {
-    List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(Project.class);
+  public List<PropertyWrapper> getProperties(Object object) {
+    List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(object.getClass());
     try {
       for (PropertyWrapper property : properties) {
-        property.readFrom(currentProject);
+        property.readFrom(object);
       }
     } catch (Exception e) {
-      LOG.error("Could not get project properties", e);
+      LOG.error("Could not get object properties", e);
       return null;
     }
     Collections.sort(properties, ComparatorFactory.getInstance().getDefaultPropertyComparator());
@@ -1864,16 +1901,16 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void applyPropertiesToProject(List<PropertyWrapper> properties) {
-    LOG.debug(String.format("applyPropertiesToProject(%s)", properties));
+  public void applyProperties(Object obj, List<PropertyWrapper> properties) {
+    LOG.debug(String.format("applyProperties(%s, %s)", obj, properties));
     Project oldProject = currentProject.clone();
     try {
       for (PropertyWrapper property : properties) {
-        property.writeTo(currentProject);
+        property.writeTo(obj);
       }
     } catch (Exception e) {
-      LOG.error("Could not apply project properties", e);
-      view.showMessage("Could not apply changes to the project. Check the log for details.", "Error",
+      LOG.error("Could not apply properties", e);
+      view.showMessage("Could not apply changes. Check the log for details.", "Error",
           IView.ERROR_MESSAGE);
     } finally {
       // Notify the listeners.

@@ -327,7 +327,7 @@ public class ResultsScrollPanel extends JScrollPane {
         List<PropertyWrapper> projectProperties = CloudPresenter.Instance.getProjectProperties(project);
         PropertyEditorDialog editor =
             DialogFactory.getInstance().createPropertyEditorDialog(cloudUI.getOwnerFrame(), projectProperties,
-                "Edit Published Project");
+                "Edit Published Project", true);
         editor.setVisible(true);
         if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
           // Update the project

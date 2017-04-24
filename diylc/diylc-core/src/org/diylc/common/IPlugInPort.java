@@ -30,14 +30,15 @@ import org.diylc.core.Theme;
  * @see IMessageListener
  * @see EventType
  */
-public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, ITemplateProcessor, IBlockProcessor {
+public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, ITemplateProcessor,
+    IBlockProcessor {
 
   public static final String ANTI_ALIASING_KEY = "antiAliasing";
   public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
   public static final String EXPORT_GRID_KEY = "exportGrid";
   public static final String STICKY_POINTS_KEY = "stickyPoints";
   public static final String METRIC_KEY = "metric";
-  public static final String SNAP_TO_GRID_KEY = "snapToGrid";  
+  public static final String SNAP_TO_GRID_KEY = "snapToGrid";
   public static final String CONTINUOUS_CREATION_KEY = "continuousCreation";
   public static final String AUTO_EDIT_KEY = "autoEdit";
   public static final String ABNORMAL_EXIT_KEY = "abnormalExit";
@@ -58,7 +59,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final int NOBUTTON = 0;
   public static final int BUTTON1 = 1;
   public static final int BUTTON2 = 2;
-  public static final int BUTTON3 = 3;  
+  public static final int BUTTON3 = 3;
 
   /**
    * Returns size of the canvas that takes project dimensions into account as well as zoom level.
@@ -198,10 +199,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   /**
    * Sets default value for the specified property name for projects.
    * 
+   * @param clazz class to set defaults to
    * @param propertyName display name for property
    * @param value new default value, must not be null
    */
-  void setProjectDefaultPropertyValue(String propertyName, Object value);
+  void setDefaultPropertyValue(Class<?> clazz, String propertyName, Object value);
 
   /**
    * @return a list of properties that are mutual for all the selected components. Resulting list
@@ -214,15 +216,18 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   /**
    * @return a list of editable properties of the current project.
+   * 
+   * @param obj
    */
-  List<PropertyWrapper> getProjectProperties();
+  List<PropertyWrapper> getProperties(Object obj);
 
   /**
    * Applies specified properties to the current project.
    * 
+   * @param obj
    * @param properties
    */
-  void applyPropertiesToProject(List<PropertyWrapper> properties);
+  void applyProperties(Object obj, List<PropertyWrapper> properties);
 
   /**
    * Gets the current new component slot.
@@ -253,10 +258,10 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param locked
    */
   void setLayerLocked(int layerZOrder, boolean locked);
-  
+
   /**
-   * Shows or hides the specified layer. All components within +- 0.5 range will be affected by
-   * the change as well.
+   * Shows or hides the specified layer. All components within +- 0.5 range will be affected by the
+   * change as well.
    * 
    * @param layerZOrder
    * @param visible

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.measures.Size;
 
 public interface ISelectionProcessor {
 
@@ -81,4 +82,13 @@ public interface ISelectionProcessor {
    * @return
    */
   Rectangle2D getSelectionBounds();
+
+  /**
+   * Moves selection for the specified offset.
+   * 
+   * @param xOffset
+   * @param yOffset
+   * @param affectStuckComponents
+   */
+  void nudgeSelection(Size xOffset, Size yOffset, boolean affectStuckComponents);
 }

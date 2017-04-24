@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
@@ -71,6 +72,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.UngroupAction ungroupAction;
   private ActionFactory.SendToBackAction sendToBackAction;
   private ActionFactory.BringToFrontAction bringToFrontAction;
+  private ActionFactory.NudgeAction nudgeAction;
   private ActionFactory.ExpandSelectionAction expandSelectionAllAction;
   private ActionFactory.ExpandSelectionAction expandSelectionImmediateAction;
   private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
@@ -148,6 +150,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
                 getExpandSelectionSameTypeAction().setEnabled(enabled);
                 getGroupAction().setEnabled(enabled);
                 getUngroupAction().setEnabled(enabled);
+                getNudgeAction().setEnabled(enabled);
                 getSendToBackAction().setEnabled(enabled);
                 getBringToFrontAction().setEnabled(enabled);
                 getRotateClockwiseAction().setEnabled(enabled);
@@ -169,7 +172,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void keyPressed(KeyEvent e) {
-          if (plugInPort.keyPressed(e.getKeyCode(), e.isControlDown() || e.isMetaDown(), e.isShiftDown(), e.isAltDown())) {
+          if (plugInPort.keyPressed(e.getKeyCode(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown())) {
             e.consume();
           }
         }
@@ -180,7 +183,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         @Override
         public void mouseMoved(MouseEvent e) {
           canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
-          plugInPort.mouseMoved(e.getPoint(), e.isControlDown() || e.isMetaDown(), e.isShiftDown(), e.isAltDown());
+          plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown());
         }
       });
 
@@ -188,7 +191,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-          plugInPort.mouseClicked(e.getPoint(), e.getButton(), e.isControlDown() || e.isMetaDown(), e.isShiftDown(),
+          plugInPort.mouseClicked(e.getPoint(), e.getButton(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(),
               e.isAltDown(), e.getClickCount());
         }
       });
@@ -218,7 +221,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         public void mouseWheelMoved(MouseWheelEvent e) {
           boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
-          if (wheelZoom || e.isControlDown() || e.isMetaDown()) {
+          if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
             // disable scrolling
             scrollPane.setWheelScrollingEnabled(false);
 
@@ -318,6 +321,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       transformMenu.addSeparator();
       transformMenu.add(getMirrorHorizontallyAction());
       transformMenu.add(getMirrorVerticallyAction());
+      transformMenu.addSeparator();
+      transformMenu.add(getNudgeAction());
       transformMenu.addSeparator();
       transformMenu.add(getSendToBackAction());
       transformMenu.add(getBringToFrontAction());
@@ -490,6 +495,13 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
     }
     return bringToFrontAction;
+  }
+
+  public ActionFactory.NudgeAction getNudgeAction() {
+    if (nudgeAction == null) {
+      nudgeAction = ActionFactory.getInstance().createNudgeAction(plugInPort);
+    }
+    return nudgeAction;
   }
 
   public ActionFactory.ExpandSelectionAction getExpandSelectionAllAction() {

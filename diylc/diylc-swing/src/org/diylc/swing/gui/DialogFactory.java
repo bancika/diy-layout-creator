@@ -57,12 +57,12 @@ public class DialogFactory {
     }
   }
 
-  public PropertyEditorDialog createPropertyEditorDialog(List<PropertyWrapper> properties, String title) {
-    return createPropertyEditorDialog(mainFrame, properties, title);
+  public PropertyEditorDialog createPropertyEditorDialog(List<PropertyWrapper> properties, String title, boolean saveDefaults) {
+    return createPropertyEditorDialog(mainFrame, properties, title, saveDefaults);
   }
 
-  public PropertyEditorDialog createPropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title) {
-    PropertyEditorDialog editor = new PropertyEditorDialog(owner, properties, title);
+  public PropertyEditorDialog createPropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title, boolean saveDefaults) {
+    PropertyEditorDialog editor = new PropertyEditorDialog(owner, properties, title, saveDefaults);
     return editor;
   }
 

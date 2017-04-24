@@ -41,6 +41,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.UngroupAction ungroupAction;
   private ActionFactory.SendToBackAction sendToBackAction;
   private ActionFactory.BringToFrontAction bringToFrontAction;
+  private ActionFactory.NudgeAction nudgeAction;
   private ActionFactory.RenumberAction renumberXAxisAction;
   private ActionFactory.RenumberAction renumberYAxisAction;
   private ActionFactory.ExpandSelectionAction expandSelectionAllAction;
@@ -143,6 +144,13 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
       bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
     }
     return bringToFrontAction;
+  }
+  
+  public ActionFactory.NudgeAction getNudgeAction() {
+    if (nudgeAction == null) {
+      nudgeAction = ActionFactory.getInstance().createNudgeAction(plugInPort);
+    }
+    return nudgeAction;
   }
 
   public ActionFactory.RenumberAction getRenumberXAxisAction() {
@@ -249,6 +257,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     swingUI.injectMenuAction(getMirrorHorizontallyAction(), TRANSFORM_TITLE);
     swingUI.injectMenuAction(getMirrorVerticallyAction(), TRANSFORM_TITLE);
     swingUI.injectMenuAction(null, TRANSFORM_TITLE);
+    swingUI.injectMenuAction(getNudgeAction(), TRANSFORM_TITLE);
+    swingUI.injectMenuAction(null, TRANSFORM_TITLE);
     swingUI.injectMenuAction(getSendToBackAction(), TRANSFORM_TITLE);
     swingUI.injectMenuAction(getBringToFrontAction(), TRANSFORM_TITLE);
     swingUI.injectMenuAction(null, TRANSFORM_TITLE);
@@ -306,6 +316,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     getExpandSelectionAllAction().setEnabled(enabled);
     getExpandSelectionImmediateAction().setEnabled(enabled);
     getExpandSelectionSameTypeAction().setEnabled(enabled);
+    getNudgeAction().setEnabled(enabled);
     getUngroupAction().setEnabled(enabled);
     getSendToBackAction().setEnabled(enabled);
     getBringToFrontAction().setEnabled(enabled);
