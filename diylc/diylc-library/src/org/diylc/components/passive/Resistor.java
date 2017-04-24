@@ -136,7 +136,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
   @Override
   protected Shape getBodyShape() {
-    if (shape == ResistorShape.Standard) {
+    if (getShape() == ResistorShape.Standard) {
       double length = getLength().convertToPixels();
       double width = getClosestOdd(getWidth().convertToPixels());
       Rectangle2D rect = new Rectangle2D.Double(width / 2, width / 10, length - width, width * 8 / 10);
@@ -155,7 +155,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
       return;
     }
     int width = getClosestOdd(getWidth().convertToPixels());
-    if (shape == ResistorShape.Standard) {
+    if (getShape() == ResistorShape.Standard) {
       int x = width + FIRST_BAND;
       Color[] bands = value.getColorCode(colorCode);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
@@ -184,7 +184,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
     int width = getClosestOdd(getWidth().convertToPixels());
     Color[] bands = value.getColorCode(colorCode);
     int bandArea =
-        shape == ResistorShape.Standard ? width + FIRST_BAND + BAND_SPACING * (bands.length - 1) : -FIRST_BAND
+        getShape() == ResistorShape.Standard ? width + FIRST_BAND + BAND_SPACING * (bands.length - 1) : -FIRST_BAND
             + BAND_SPACING * (bands.length - 1);
    
     return (bodyWidth - bandArea - labelWidth) / 2;
