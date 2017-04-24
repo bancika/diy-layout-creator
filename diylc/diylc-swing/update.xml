@@ -1708,6 +1708,10 @@
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Type-in selection nudge</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Show and hide each individual layer</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>

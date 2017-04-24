@@ -5,6 +5,9 @@ import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.JTextField;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.swingframework.FontChooserComboBox;
 import org.diylc.utils.Constants;
@@ -19,6 +22,8 @@ public class FontEditor extends FontChooserComboBox {
 
   public FontEditor(final PropertyWrapper property) {
     this.property = property;
+    ((JTextField) getEditor().getEditorComponent()).setBorder(BorderFactory.createCompoundBorder(
+        ((JTextField) getEditor().getEditorComponent()).getBorder(), BorderFactory.createEmptyBorder(0, 2, 0, 0)));
     setSelectedItem(((Font) property.getValue()).getName());
     addItemListener(new ItemListener() {
 
