@@ -856,11 +856,11 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void nudgeSelection(Size xOffset, Size yOffset, boolean affectStuckComponents) {
+  public void nudgeSelection(Size xOffset, Size yOffset, boolean includeStuckComponents) {
     if (selectedComponents == null || selectedComponents.isEmpty())
       return;
     
-    LOG.debug(String.format("nudgeSelection(%s, %s)", xOffset, yOffset));
+    LOG.debug(String.format("nudgeSelection(%s, %s, %s)", xOffset, yOffset, includeStuckComponents));
     Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
     // If there aren't any control points, try to add all the selected
     // components with all their control points. That will allow the
@@ -878,7 +878,7 @@ public class Presenter implements IPlugInPort {
       return;
     }
     
-    if (affectStuckComponents) {
+    if (includeStuckComponents) {
       includeStuckComponents(controlPointMap);
     }    
 

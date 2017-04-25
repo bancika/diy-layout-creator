@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,6 +28,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.EdgedBalloonStyle;
 
 import org.apache.log4j.Logger;
 import org.diylc.announcements.AnnouncementProvider;
@@ -93,7 +98,20 @@ public class StatusBar extends JPanel implements IPlugIn {
       @Override
       public String doInBackground() throws Exception {
         Thread.sleep(1000);
-        return announcementProvider.getCurrentAnnouncements(false);
+        String announcements = announcementProvider.getCurrentAnnouncements(false);
+
+        String update = getUpdateLabel().getUpdateChecker().findNewVersionShort();
+
+        if (update != null) {          
+          String updateHtml =
+              "<font size='4'><b>New version available:</b> " + update
+                  + "</font><br>Click the lighbulb icon in the bottom-right corner of the window for more info.";
+          if (announcements == null || announcements.length() == 0)
+            return "<html>" + updateHtml + "</html>";
+          announcements = announcements.replace("<html>", "<html>" + updateHtml + "<br>");
+        }
+
+        return announcements;
       }
 
       @Override
@@ -104,7 +122,8 @@ public class StatusBar extends JPanel implements IPlugIn {
       @Override
       public void complete(String result) {
         if (result != null && result.length() > 0) {
-          StatusBar.this.swingUI.showMessage(result, "Public Announcement", IView.INFORMATION_MESSAGE);
+          new BalloonTip(getUpdateLabel(), result, new EdgedBalloonStyle(UIManager.getColor("ToolTip.background"),
+              UIManager.getColor("ToolTip.foreground")), true);
           announcementProvider.dismissed();
         }
       }

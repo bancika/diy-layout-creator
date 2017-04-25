@@ -50,8 +50,7 @@ public class AnnouncementProvider {
       }
     }
     if (!hasUnread)
-      return "";
-    sb.append("<br><font size='small'>Click OK to dismiss and mark these announcements as read.</font>");
+      return "";    
     sb.append("</html>");
     return sb.toString();
   }

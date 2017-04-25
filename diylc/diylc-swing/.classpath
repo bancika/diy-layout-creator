@@ -7,9 +7,10 @@
 	<classpathentry kind="lib" path="lib/junit-4.7.jar"/>
 	<classpathentry kind="lib" path="lib/iText-2.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/app-framework.jar"/>
-	<classpathentry kind="lib" path="lib/swing-framework.jar"/>
+	<classpathentry kind="lib" path="lib/app-framework.jar" sourcepath="/app-framework"/>
+	<classpathentry kind="lib" path="lib/swing-framework.jar" sourcepath="/swing-framework"/>
 	<classpathentry kind="lib" path="library/main.jar" sourcepath="/diylc-library"/>
+	<classpathentry kind="lib" path="lib/balloontip-1.2.4.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_45"/>

@@ -88,7 +88,7 @@ public interface ISelectionProcessor {
    * 
    * @param xOffset
    * @param yOffset
-   * @param affectStuckComponents
+   * @param includeStuckComponents
    */
-  void nudgeSelection(Size xOffset, Size yOffset, boolean affectStuckComponents);
+  void nudgeSelection(Size xOffset, Size yOffset, boolean includeStuckComponents);
 }
