@@ -1699,7 +1699,7 @@
 				<minor>39</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2017-04-20 20:00:00.000 CET</releaseDate>
+			<releaseDate>2017-04-25 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -1733,7 +1733,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Use balloon to show announcements and update notifications</description>
-				</org.diylc.appframework.update.Change>		
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Moved logs to user's home directories</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Issues with DIL and SIL IC pin alignment when using metric grid and pin spacing</description>
