@@ -1748,6 +1748,22 @@
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>		
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>40</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2017-04-25 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Potentiometers can show an optional shaft, can have either solder lugs or PCB pins and rendering includes the wafer</description>
+				</org.diylc.appframework.update.Change>						
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>			
 	</a>
 </java.util.Arrays_-ArrayList>
