@@ -147,6 +147,18 @@ To delete an existing building block, use the context menu action.
 
 <p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/building_block_4.png' /></p>
 
+### Working with layers ###
+
+Component position is specified not only in X and Y axis, but also in Z axis, allowing us to control which components will be displayed on top of other components. Unlike Corel or Photoshop, Z-order of components in DIYLC is not completely free-form. Based on their nature, components are categorized into 5 "layers": Chassis, Board, Trace, Component, Text. All components in the board layer will always be beneath components in the trace level, etc.
+
+DIYLC offers few functionalities for working with layers:
+
+  * Temporarily hide the whole layer, helping to work at other layers if the drawing is getting crowded.
+  * Lock/unlock the whole layer, keep all the components visible, but unable to select
+  * Select all components beloging to a layer
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/layers.png' /></p>
+
 ### Using the status bar ###
 
 Status bar contains the following sections (going left to right):
