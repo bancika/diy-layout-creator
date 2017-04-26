@@ -9,11 +9,10 @@
 
 For starters, make sure that you have downloaded the correct version. Mac OSX builds have names that end with "osx". The build without "osx" in their name are multi-platform and will work pretty much anywhere provided that Java JRE is available for that platform.
 
-  * On **Windows** just run the diylc.exe
-  * On **Linux/Unix** (will also work on **Mac OSX** if not using the OSX dedicated build), open the terminal, change the directory to diylc3 (**cd `<`path to diylc3`>`**) and type **./run.sh**
-  
+  * On **Windows** run the installer wizard and follow the steps
+  * On **Linux/Unix** (will also work on **Mac OSX** if not using the OSX dedicated build): extract the entire ZIP file into a separate directory, open the terminal, change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**) and type **./run.sh**
   * On **Mac OSX** you will need to allow 3rd party apps and then run the application package.
-
+  
 ### User interface ###
 
 User interface can be separated into 4 major sections:
