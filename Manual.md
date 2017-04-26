@@ -36,8 +36,8 @@ Application configuration may be changed from **Config** menu. It contains the f
   * **Hi-Quality Rendering**: when checked, image quality will improve slightly, but it may decrease performance.
   * **Mouse Wheel Zoom**: when checked, mouse wheel zooms in and out instead of scrolling the visible area of the project.
   * **Outline Mode**: when checked, components are drawn only as the the outline with no fill color or decorations.
-  * **Snap to Grid**: when checked, drag & drop operations will snap control points to the grid instead of following the mouse cursor pixel by pixel.
-  * **Sticky Points**: when checked, components are allowed to stick to each other when moved. Hold Ctrl key while dragging to temporarily toggle the Sticky Point mode. See [Control points](#Control_points.md) for more info on control points.
+  * **Snap to Grid**: when checked, drag & drop operations will snap control points to the grid instead of following the mouse cursor pixel by pixel. Hold **Ctrl + Shift** while dragging to temporarily disable 'Snap to Grid' functionality and move the selected components freely.
+  * **Sticky Points**: when checked, components are allowed to stick to each other when moved. Hold **Ctrl** key while dragging to temporarily toggle the Sticky Point mode. See [Control points](#Control_points.md) for more info on control points.
   * **Theme**: allows selecting a theme. Themes are read from **themes** directory under the DIYLC root and they include background color and grid line color. You can create your own themes by adding an XML file to themes directory. It's easiest to start with a copy of one of the existing files.
 
 ### Adding components to the project ###
