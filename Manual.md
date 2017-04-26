@@ -48,13 +48,21 @@ This sections explains how to add an existing component to the project. To learn
   * Click on the desired component type. Note that text in the status bar changes to reflect this action.
   * Click on the desired location on the canvas to create the component. Some components (solder pads, trace cuts, etc) will be created on single click, others (like resistors, jumpers, etc) will require two clicks to set both ending points. Instructions in the status bar will guide you through the process. Component will be drawn translucent until the creation process is finalized.
 
-### Moving components ###
+### Moving components around ###
 
-The easiest way to move a component across the canvas is to drag it by clicking on it's body and moving the mouse to the desired location. When mouse cursor is over a component, it will change to "hand pointer" and status bar will read name of the component that will be dragged.
+Method 1: drag the selected component(s) across the canvas by clicking on the selection and moving the mouse to the desired location. When mouse cursor is over a component, it will change to "hand pointer" and status bar will read name of the component that will be dragged.
+  
+Method 2: move the selected components is using arrow keys with "Ctrl" key pressed.
 
-Note that:
+For methods 1 and 2 note that:
   * if more than one component is selected, all of them will be moved
-  * moving one (or more) components will move/stretch any components that are stuck to them. Status bar will inform you which components will be affected. Hold <b>Ctrl</b> to unstuck the selected components and move them only.
+  * moving one (or more) components will move/stretch any components that are stuck to them. Status bar will inform you which components will be affected. Hold <b>Ctrl</b> to unstuck the selected components and move only the selected components.
+
+Method 3: using the "Nudge" function from the "Transform" menu (or using the "Ctrl + Q" shortcut). It opens a dialog where you can type in the exact offset on both X and Y axis and specify whether to include stuck components or not.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/nudge_1.png' /></p>
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/nudge_2.png' /></p>
 
 ### Control points ###
 
@@ -75,6 +83,18 @@ Checking the "Default" checkbox on the right side will make the value for that p
 <p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/edit_default_property.png' /></p>
   
 Input boxes that represent measures (size, resistance, capacitance, etc) can take math expressions in addition to constants. For instance you can type 3/32 and it will be automatically converted to decimal. Even more complicated expressions with parenthesis and 4 basic numerical operators are possible.
+
+### Assigning keyboard shortcuts to components ###
+
+To speed up the workflow, it is possible to assign keyboard shortcuts to up to 12 most commonly used components and create them quickly without having to move the mouse away from the canvas. Only "F" keys can be assigned as keyboard shortcuts at the moment. To assign one of the "F" keys to a component, use "Assign Shortcut" menu from the drop down menu in the component toolbox.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/shortcuts_1.png' /></p>
+
+Components that have keyboard shortcuts assigned show a visual indicator on the right side of the component name to designate the corresponding key.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/shortcuts_2.png' /></p>
+
+To remove a keyboard shortcut, just select "None" from the "Assign Shortcut" menu.
   
 ### Using component variants ###
 
