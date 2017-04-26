@@ -1761,6 +1761,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Potentiometers can show an optional shaft, can have either solder lugs or PCB pins and rendering includes the wafer</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Tilde' key repeats the last added component</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

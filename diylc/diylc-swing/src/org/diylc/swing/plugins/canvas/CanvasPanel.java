@@ -21,6 +21,7 @@ import java.awt.image.VolatileImage;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -101,7 +102,10 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   }
 
   private void initializeActions() {
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_QUOTE, 0), "repeatLast");
+
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearSlot");
+
     for (int i = 1; i <= 12; i++) {
       final int x = i;
       getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F1 + i - 1, 0),
@@ -124,6 +128,32 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       @Override
       public void actionPerformed(ActionEvent e) {
         CanvasPanel.this.plugInPort.setNewComponentTypeSlot(null, null);
+      }
+    });
+
+    getActionMap().put("repeatLast", new AbstractAction() {
+
+      private static final long serialVersionUID = 1L;
+
+      @SuppressWarnings("unchecked")
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        List<String> recent =
+            (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
+        if (recent != null && !recent.isEmpty()) {
+          String clazz = recent.get(0);
+          Map<String, List<ComponentType>> componentTypes = CanvasPanel.this.plugInPort.getComponentTypes();
+          for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet()) {
+            for (ComponentType type : entry.getValue()) {
+              if (type.getInstanceClass().getCanonicalName().equals(clazz)) {
+                CanvasPanel.this.plugInPort.setNewComponentTypeSlot(type, null);
+                // hack: fake mouse movement to repaint
+                CanvasPanel.this.plugInPort.mouseMoved(getMousePosition(), false, false, false);
+                return;
+              }
+            }
+          }
+        }
       }
     });
   }

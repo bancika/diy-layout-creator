@@ -737,7 +737,9 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   @Override
   public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
-
+    if (point == null)
+      return;
+    
     if (shiftDown) {
       dragAction = IPlugInPort.DND_TOGGLE_SNAP;
     } else {
@@ -859,7 +861,7 @@ public class Presenter implements IPlugInPort {
   public void nudgeSelection(Size xOffset, Size yOffset, boolean includeStuckComponents) {
     if (selectedComponents == null || selectedComponents.isEmpty())
       return;
-    
+
     LOG.debug(String.format("nudgeSelection(%s, %s, %s)", xOffset, yOffset, includeStuckComponents));
     Map<IDIYComponent<?>, Set<Integer>> controlPointMap = new HashMap<IDIYComponent<?>, Set<Integer>>();
     // If there aren't any control points, try to add all the selected
@@ -877,10 +879,10 @@ public class Presenter implements IPlugInPort {
     if (controlPointMap.isEmpty()) {
       return;
     }
-    
+
     if (includeStuckComponents) {
       includeStuckComponents(controlPointMap);
-    }    
+    }
 
     int dx = (int) xOffset.convertToPixels();
     int dy = (int) yOffset.convertToPixels();
@@ -1443,8 +1445,7 @@ public class Presenter implements IPlugInPort {
   public void setDefaultPropertyValue(Class<?> clazz, String propertyName, Object value) {
     LOG.info(String.format("setProjectDefaultPropertyValue(%s, %s, %s)", clazz.getName(), propertyName, value));
     LOG.debug("Default property value set for " + Project.class.getName() + ":" + propertyName);
-    ConfigurationManager.getInstance().writeValue(DEFAULTS_KEY_PREFIX + clazz.getName() + ":" + propertyName,
-        value);
+    ConfigurationManager.getInstance().writeValue(DEFAULTS_KEY_PREFIX + clazz.getName() + ":" + propertyName, value);
   }
 
   @Override
@@ -1910,8 +1911,7 @@ public class Presenter implements IPlugInPort {
       }
     } catch (Exception e) {
       LOG.error("Could not apply properties", e);
-      view.showMessage("Could not apply changes. Check the log for details.", "Error",
-          IView.ERROR_MESSAGE);
+      view.showMessage("Could not apply changes. Check the log for details.", "Error", IView.ERROR_MESSAGE);
     } finally {
       // Notify the listeners.
       if (!oldProject.equals(currentProject)) {
