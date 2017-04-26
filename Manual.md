@@ -10,6 +10,7 @@ For starters, make sure that you have downloaded the correct version. Mac OSX bu
 
   * On **Windows** run the installer wizard and follow the steps
   * On **Linux/Unix** (will also work on **Mac OSX** if not using the OSX dedicated build): extract the entire ZIP file into a separate directory, open the terminal, change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**) and type **./run.sh**
+  * On **OSX** just run the package to install DIYLC
   
 ### User interface ###
 
