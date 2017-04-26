@@ -148,7 +148,7 @@ To delete an existing building block, use the context menu action.
 
 ### Working with layers ###
 
-Component position is specified not only in X and Y axis, but also in Z axis, allowing us to control which components will be displayed on top of other components. Unlike Corel or Photoshop, Z-order of components in DIYLC is not completely free-form. Based on their nature, components are categorized into 5 "layers": Chassis, Board, Trace, Component, Text. All components in the board layer will always be beneath components in the trace level, etc.
+Component position is specified not only in X and Y axis, but also in Z axis, allowing us to control which components will be displayed on top of other components. Unlike Corel or Photoshop, Z-order of components in DIYLC is not completely free-form. Based on their nature, components are categorized into 5 "layers": Chassis, Board, Trace, Component, Text. All components in the "Board" layer will be assigned with lower Z-order than components in the "Trace" level, all components in the "Component" level will be put on top of components from "Trace" level, etc.
 
 DIYLC offers few functionalities for working with layers:
 
