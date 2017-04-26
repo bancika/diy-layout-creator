@@ -1,8 +1,8 @@
 ### System requirements ###
 
   * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.6.0_45-b06 or newer
-  * 1GB free RAM memory is recommended
-  * 10MB free hard drive space
+  * 1GB free RAM memory is recommended, 2GB or more is ideal
+  * **Mac OSX** users must allow 3rd party apps before installing DIYLC. [This document](https://support.apple.com/en-us/HT202491) covers how to do it.
   
 ### Running the app ###
 
@@ -10,7 +10,6 @@ For starters, make sure that you have downloaded the correct version. Mac OSX bu
 
   * On **Windows** run the installer wizard and follow the steps
   * On **Linux/Unix** (will also work on **Mac OSX** if not using the OSX dedicated build): extract the entire ZIP file into a separate directory, open the terminal, change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**) and type **./run.sh**
-  * On **Mac OSX** you will need to allow 3rd party apps and then run the application package.
   
 ### User interface ###
 
