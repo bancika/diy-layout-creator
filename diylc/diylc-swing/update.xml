@@ -1736,7 +1736,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Moved logs to user's home directories</description>
+					<description>Moved logs to user's home directory</description>
 				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
