@@ -3,8 +3,7 @@
   * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.6.0_45-b06 or newer
   * 1GB free RAM memory is recommended
   * 10MB free hard drive space
-  * Zip utility to unpack the archive (7-zip, WinZip, Total Commander, etc)
-
+  
 ### Running the app ###
 
 For starters, make sure that you have downloaded the correct version. Mac OSX builds have names that end with "osx". The build without "osx" in their name are multi-platform and will work pretty much anywhere provided that Java JRE is available for that platform.
