@@ -1771,6 +1771,10 @@
 					<description>Ability to force components to the front or back of other components even outisde their designated layers, allowing placing components or jumpers below boards, etc.</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to change PCB board shape from rectangular to oval.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Do not block the UI while checking for new version at startup (can be problematic when there's connectivity issues)</description>
 				</org.diylc.appframework.update.Change>		
