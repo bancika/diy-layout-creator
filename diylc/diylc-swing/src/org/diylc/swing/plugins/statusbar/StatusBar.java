@@ -127,7 +127,7 @@ public class StatusBar extends JPanel implements IPlugIn {
         }
       }
 
-    });
+    }, false);
   }
 
   private JComboBox getZoomBox() {
@@ -206,7 +206,7 @@ public class StatusBar extends JPanel implements IPlugIn {
                     IView.INFORMATION_MESSAGE);
             }
 
-          });
+          }, true);
         }
       });
     }

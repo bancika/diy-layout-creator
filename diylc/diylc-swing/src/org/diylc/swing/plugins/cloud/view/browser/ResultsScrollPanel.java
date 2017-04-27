@@ -176,7 +176,7 @@ public class ResultsScrollPanel extends JScrollPane {
           LOG.info("Paging mechanism is armed");
           armed = true;
         }
-      });     
+      });
 
       if (searchSession != null && searchSession.hasMoreData()) {
         getLoadMoreLabel().setText("Querying the cloud for more results...");
@@ -298,7 +298,7 @@ public class ResultsScrollPanel extends JScrollPane {
                     mainUI.showMessage("Could not open file. Detailed message is in the logs.", "Error",
                         ISwingUI.ERROR_MESSAGE);
                   }
-                });
+                }, true);
               }
             }
 

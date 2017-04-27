@@ -108,7 +108,7 @@ public class CloudPlugIn implements IPlugIn {
           LOG.error("Error while trying to login with token", e);
         }
       }
-    });
+    }, false);
   }
 
   public CloudBrowserFrame getCloudBrowser() {
@@ -292,7 +292,7 @@ public class CloudPlugIn implements IPlugIn {
           public void complete(Void result) {
             swingUI.showMessage("Cloud account created successfully.", "Cloud", IView.INFORMATION_MESSAGE);
           }
-        });
+        }, true);
       }
     }
   }
@@ -332,7 +332,7 @@ public class CloudPlugIn implements IPlugIn {
             public void complete(Void result) {
               swingUI.showMessage("Cloud account updated successfully.", "Cloud", IView.INFORMATION_MESSAGE);
             }
-          });
+          }, true);
         }
       } catch (CloudException e1) {
         swingUI.showMessage("Failed to retreive user details from the server. Error: " + e1.getMessage(),
@@ -374,7 +374,7 @@ public class CloudPlugIn implements IPlugIn {
           public void complete(Void result) {
             swingUI.showMessage("Password updated.", "Cloud", IView.INFORMATION_MESSAGE);
           }
-        });
+        }, true);
       }
     }
   }
@@ -444,10 +444,10 @@ public class CloudPlugIn implements IPlugIn {
 
                         synchronized (taskIterator) {
                           if (taskIterator.hasPrevious())
-                            swingUI.executeBackgroundTask(taskIterator.previous());
+                            swingUI.executeBackgroundTask(taskIterator.previous(), true);
                         }
                       }
-                    });
+                    }, true);
                   } else {
                     swingUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.",
                         "Upload Error", IView.ERROR_MESSAGE);
@@ -467,7 +467,7 @@ public class CloudPlugIn implements IPlugIn {
 
         synchronized (taskIterator) {
           if (taskIterator.hasPrevious())
-            swingUI.executeBackgroundTask(taskIterator.previous());
+            swingUI.executeBackgroundTask(taskIterator.previous(), true);
         }
       }
     }

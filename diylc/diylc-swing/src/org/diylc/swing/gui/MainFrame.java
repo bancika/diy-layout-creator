@@ -221,7 +221,8 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   @Override
   public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
-    PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(properties, "Edit Selection", true);
+    PropertyEditorDialog editor =
+        DialogFactory.getInstance().createPropertyEditorDialog(properties, "Edit Selection", true);
     editor.setVisible(true);
     defaultedProperties.addAll(editor.getDefaultedProperties());
     return ButtonDialog.OK.equals(editor.getSelectedButtonCaption());
@@ -350,8 +351,9 @@ public class MainFrame extends JFrame implements ISwingUI {
   }
 
   @Override
-  public <T extends Object> void executeBackgroundTask(final ITask<T> task) {
-    getGlassPane().setVisible(true);
+  public <T extends Object> void executeBackgroundTask(final ITask<T> task, boolean blockUI) {
+    if (blockUI)
+      getGlassPane().setVisible(true);
     SwingWorker<T, Void> worker = new SwingWorker<T, Void>() {
 
       @Override

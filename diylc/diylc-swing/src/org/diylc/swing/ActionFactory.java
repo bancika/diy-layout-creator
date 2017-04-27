@@ -271,7 +271,7 @@ public class ActionFactory {
           public void failed(Exception e) {
             swingUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
           }
-        });
+        }, true);
       }
     }
   }
@@ -348,7 +348,7 @@ public class ActionFactory {
           public void failed(Exception e) {
             swingUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
           }
-        });
+        }, true);
       }
     }
   }
@@ -394,7 +394,7 @@ public class ActionFactory {
             public void failed(Exception e) {
               swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
             }
-          });
+          }, true);
         }
       } else {
         swingUI.executeBackgroundTask(new ITask<Void>() {
@@ -413,7 +413,7 @@ public class ActionFactory {
           public void failed(Exception e) {
             swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
           }
-        });
+        }, true);
       }
     }
   }
@@ -460,7 +460,7 @@ public class ActionFactory {
           public void failed(Exception e) {
             swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
           }
-        });
+        }, true);
       }
     }
   }
@@ -526,7 +526,7 @@ public class ActionFactory {
           public void failed(Exception e) {
             swingUI.showMessage("Could not export to PDF. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
           }
-        });
+        }, true);
       }
     }
   }
@@ -569,7 +569,7 @@ public class ActionFactory {
           public void failed(Exception e) {
             swingUI.showMessage("Could not export to PNG. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
           }
-        });
+        }, true);
       }
     }
   }

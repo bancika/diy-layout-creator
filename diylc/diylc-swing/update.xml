@@ -1765,7 +1765,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>'Tilde' key repeats the last added component</description>
-				</org.diylc.appframework.update.Change>						
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Do not block the UI while checking for new version at startup (can be problematic when there's connectivity issues)</description>
+				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>			

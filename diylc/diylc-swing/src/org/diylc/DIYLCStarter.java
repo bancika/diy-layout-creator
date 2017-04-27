@@ -8,7 +8,6 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -35,8 +34,6 @@ public class DIYLCStarter {
    * @param args
    */
   public static void main(String[] args) {    
-//    System.setProperty("app.root",  System.getProperty("user.home") + File.separator + ".diylc" + File.separator);
-    
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
     try {

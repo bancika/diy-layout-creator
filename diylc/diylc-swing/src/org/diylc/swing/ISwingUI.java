@@ -70,11 +70,12 @@ public interface ISwingUI extends IView {
   void injectDynamicSubmenu(String name, Icon icon, String parentMenuName, IDynamicSubmenuHandler handler);
 
   /**
-   * Runs a task in background while showing busy cursor and a glass pane.
+   * Runs a task in background while showing busy cursor and a glass pane if needed.
    * 
    * @param task
+   * @param blockUI
    */
-  <T extends Object> void executeBackgroundTask(ITask<T> task);
+  <T extends Object> void executeBackgroundTask(ITask<T> task, boolean blockUI);
 
   /**
    * @return {@link JFrame} that can be used to reference secondary dialogs and frames
