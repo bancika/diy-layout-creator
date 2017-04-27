@@ -1767,6 +1767,10 @@
 					<description>'Tilde' key repeats the last added component</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to force components to the front or back of other components even outisde their designated layer</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Do not block the UI while checking for new version at startup (can be problematic when there's connectivity issues)</description>
 				</org.diylc.appframework.update.Change>					

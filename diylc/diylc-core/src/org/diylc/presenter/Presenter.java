@@ -739,7 +739,7 @@ public class Presenter implements IPlugInPort {
   public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     if (point == null)
       return;
-    
+
     if (shiftDown) {
       dragAction = IPlugInPort.DND_TOGGLE_SNAP;
     } else {
@@ -1512,8 +1512,21 @@ public class Presenter implements IPlugInPort {
   @Override
   public void sendSelectionToBack() {
     LOG.info("sendSelectionToBack()");
+    int forceConfirmation = -1;
     Project oldProject = currentProject.clone();
-    for (IDIYComponent<?> component : selectedComponents) {
+
+    // sort the selection in the reversed Z-order to preserve the order after moving to the back
+    List<IDIYComponent<?>> selection = new ArrayList<IDIYComponent<?>>(selectedComponents);
+    Collections.sort(selection, new Comparator<IDIYComponent<?>>() {
+
+      @Override
+      public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
+        return new Integer(currentProject.getComponents().indexOf(o2)).compareTo(currentProject.getComponents()
+            .indexOf(o1));
+      }
+    });
+
+    for (IDIYComponent<?> component : selection) {
       ComponentType componentType =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
@@ -1527,7 +1540,13 @@ public class Presenter implements IPlugInPort {
               ComponentProcessor.getInstance().extractComponentTypeFrom(
                   (Class<? extends IDIYComponent<?>>) componentBefore.getClass());
           if (!componentType.isFlexibleZOrder()
-              && Math.round(componentBeforeType.getZOrder()) < Math.round(componentType.getZOrder()))
+              && Math.round(componentBeforeType.getZOrder()) < Math.round(componentType.getZOrder())
+              && forceConfirmation != IView.YES_OPTION
+              && (forceConfirmation =
+                  this.view
+                      .showConfirmDialog(
+                          "Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?",
+                          "Send Selection to Back", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
             break;
           Collections.swap(currentProject.getComponents(), index, index - 1);
           index--;
@@ -1544,8 +1563,21 @@ public class Presenter implements IPlugInPort {
   @Override
   public void bringSelectionToFront() {
     LOG.info("bringSelectionToFront()");
+    int forceConfirmation = -1;
     Project oldProject = currentProject.clone();
-    for (IDIYComponent<?> component : selectedComponents) {
+
+    // sort the selection in Z-order
+    List<IDIYComponent<?>> selection = new ArrayList<IDIYComponent<?>>(selectedComponents);
+    Collections.sort(selection, new Comparator<IDIYComponent<?>>() {
+
+      @Override
+      public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
+        return new Integer(currentProject.getComponents().indexOf(o1)).compareTo(currentProject.getComponents()
+            .indexOf(o2));
+      }
+    });
+
+    for (IDIYComponent<?> component : selection) {
       ComponentType componentType =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
@@ -1559,7 +1591,13 @@ public class Presenter implements IPlugInPort {
               ComponentProcessor.getInstance().extractComponentTypeFrom(
                   (Class<? extends IDIYComponent<?>>) componentAfter.getClass());
           if (!componentType.isFlexibleZOrder()
-              && Math.round(componentAfterType.getZOrder()) > Math.round(componentType.getZOrder()))
+              && Math.round(componentAfterType.getZOrder()) > Math.round(componentType.getZOrder())
+              && forceConfirmation != IView.YES_OPTION
+              && (forceConfirmation =
+                  this.view
+                      .showConfirmDialog(
+                          "Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?",
+                          "Send Selection to Back", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
             break;
           Collections.swap(currentProject.getComponents(), index, index + 1);
           index++;

@@ -57,8 +57,7 @@ public @interface ComponentDescriptor {
   double zOrder();
 
   /**
-   * @return true if the component may go beyond it's predefined layer. In that case,
-   *         <code>zOrder</code> is used as initial z order of the component.
+   * @return true if the component may go beyond it's predefined layer without warning the user.
    */
   boolean flexibleZOrder() default false;
 
