@@ -1773,7 +1773,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Do not block the UI while checking for new version at startup (can be problematic when there's connectivity issues)</description>
-				</org.diylc.appframework.update.Change>					
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>DIL IC label rotates to fit the longer side of the component. Name and value are displayed in separate lines</description>
+				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>			

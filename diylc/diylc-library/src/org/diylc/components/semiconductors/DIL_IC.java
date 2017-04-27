@@ -7,6 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -56,7 +57,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
   private Size pinSpacing = new Size(0.1d, SizeUnit.in);
   private Size rowSpacing = new Size(0.3d, SizeUnit.in);
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
-  protected Display display = Display.NAME;
+  protected Display display = Display.BOTH;
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
   private Color labelColor = LABEL_COLOR;
@@ -329,6 +330,9 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
         g2d.fill(getBody()[1]);
       }
     }
+
+    drawingObserver.stopTracking();
+
     // Draw label.
     g2d.setFont(project.getFont());
     Color finalLabelColor;
@@ -345,22 +349,48 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     }
     g2d.setColor(finalLabelColor);
     FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-    String label = "";
-    label = (getDisplay() == Display.NAME) ? getName() : getValue();
-    if (getDisplay() == Display.NONE) {
-      label = "";
+    String[] label = null;
+
+    if (getDisplay() == Display.NAME) {
+      label = new String[] {getName()};
+    } else if (getDisplay() == Display.VALUE) {
+      label = new String[] {getValue().toString()};
+    } else if (getDisplay() == Display.BOTH) {
+      String value = getValue().toString();
+      label = value.isEmpty() ? new String[] {getName()} : new String[] {getName(), value};
     }
-    if (getDisplay() == Display.BOTH) {
-      label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
+
+    if (label != null) {
+      for (int i = 0; i < label.length; i++) {
+        String l = label[i];
+        Rectangle2D rect = fontMetrics.getStringBounds(l, g2d);
+        int textHeight = (int) (rect.getHeight());
+        int textWidth = (int) (rect.getWidth());
+        // Center text horizontally and vertically
+        Rectangle bounds = mainArea.getBounds();
+        int x = bounds.x + (bounds.width - textWidth) / 2;
+        int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+
+        AffineTransform oldTransform = g2d.getTransform();
+
+        if (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180) {
+          int centerX = bounds.x + bounds.width / 2;
+          int centerY = bounds.y + bounds.height / 2;
+          g2d.rotate(-Math.PI / 2, centerX, centerY);
+        }
+
+        if (label.length == 2) {
+          if (i == 0)
+            g2d.translate(0, -textHeight / 2);
+          else if (i == 1)
+            g2d.translate(0, textHeight / 2);
+        }
+
+        g2d.drawString(l, x, y);
+
+        g2d.setTransform(oldTransform);
+      }
     }
-    Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
-    int textHeight = (int) (rect.getHeight());
-    int textWidth = (int) (rect.getWidth());
-    // Center text horizontally and vertically
-    Rectangle bounds = mainArea.getBounds();
-    int x = bounds.x + (bounds.width - textWidth) / 2;
-    int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
-    g2d.drawString(label, x, y);
 
     // draw pin numbers
     int pinNo = 0;
@@ -501,11 +531,17 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
   public enum DisplayNumbers {
 
-    NO, DIP, CONNECTOR;
+    NO("No"), DIP("DIP"), CONNECTOR("Connector");
+
+    private String label;
+
+    private DisplayNumbers(String label) {
+      this.label = label;
+    }
 
     @Override
     public String toString() {
-      return name();
+      return label;
     }
   }
 }
