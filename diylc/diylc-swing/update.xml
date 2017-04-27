@@ -1768,7 +1768,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to force components to the front or back of other components even outisde their designated layer</description>
+					<description>Ability to force components to the front or back of other components even outisde their designated layers, allowing placing components or jumpers below boards, etc.</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

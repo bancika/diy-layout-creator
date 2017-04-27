@@ -1536,18 +1536,20 @@ public class Presenter implements IPlugInPort {
       } else
         while (index > 0) {
           IDIYComponent<?> componentBefore = currentProject.getComponents().get(index - 1);
-          ComponentType componentBeforeType =
-              ComponentProcessor.getInstance().extractComponentTypeFrom(
-                  (Class<? extends IDIYComponent<?>>) componentBefore.getClass());
-          if (!componentType.isFlexibleZOrder()
-              && Math.round(componentBeforeType.getZOrder()) < Math.round(componentType.getZOrder())
-              && forceConfirmation != IView.YES_OPTION
-              && (forceConfirmation =
-                  this.view
-                      .showConfirmDialog(
-                          "Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?",
-                          "Send Selection to Back", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
-            break;
+          if (!selectedComponents.contains(componentBefore)) {
+            ComponentType componentBeforeType =
+                ComponentProcessor.getInstance().extractComponentTypeFrom(
+                    (Class<? extends IDIYComponent<?>>) componentBefore.getClass());
+            if (!componentType.isFlexibleZOrder()
+                && Math.round(componentBeforeType.getZOrder()) < Math.round(componentType.getZOrder())
+                && forceConfirmation != IView.YES_OPTION
+                && (forceConfirmation =
+                    this.view
+                        .showConfirmDialog(
+                            "Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?",
+                            "Send Selection to Back", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
+              break;
+          }
           Collections.swap(currentProject.getComponents(), index, index - 1);
           index--;
         }
@@ -1587,18 +1589,20 @@ public class Presenter implements IPlugInPort {
       } else
         while (index < currentProject.getComponents().size() - 1) {
           IDIYComponent<?> componentAfter = currentProject.getComponents().get(index + 1);
-          ComponentType componentAfterType =
-              ComponentProcessor.getInstance().extractComponentTypeFrom(
-                  (Class<? extends IDIYComponent<?>>) componentAfter.getClass());
-          if (!componentType.isFlexibleZOrder()
-              && Math.round(componentAfterType.getZOrder()) > Math.round(componentType.getZOrder())
-              && forceConfirmation != IView.YES_OPTION
-              && (forceConfirmation =
-                  this.view
-                      .showConfirmDialog(
-                          "Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?",
-                          "Send Selection to Back", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
-            break;
+          if (!selectedComponents.contains(componentAfter)) {
+            ComponentType componentAfterType =
+                ComponentProcessor.getInstance().extractComponentTypeFrom(
+                    (Class<? extends IDIYComponent<?>>) componentAfter.getClass());
+            if (!componentType.isFlexibleZOrder()
+                && Math.round(componentAfterType.getZOrder()) > Math.round(componentType.getZOrder())
+                && forceConfirmation != IView.YES_OPTION
+                && (forceConfirmation =
+                    this.view
+                        .showConfirmDialog(
+                            "Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?",
+                            "Send Selection to Back", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
+              break;
+          }
           Collections.swap(currentProject.getComponents(), index, index + 1);
           index++;
         }
