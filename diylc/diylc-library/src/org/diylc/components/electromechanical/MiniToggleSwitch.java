@@ -51,6 +51,9 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   private OrientationHV orientation = OrientationHV.VERTICAL;
   private Size spacing = SPACING;
 
+  private Color bodyColor = BODY_COLOR;
+  private Color borderColor = BORDER_COLOR;
+
   public MiniToggleSwitch() {
     super();
     updateControlPoints();
@@ -189,15 +192,15 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     // Reset body shape.
     body = null;
   }
-  
+
   @EditableProperty
   public Size getSpacing() {
     if (spacing == null) {
-      spacing = SPACING;      
+      spacing = SPACING;
     }
     return spacing;
   }
-  
+
   public void setSpacing(Size spacing) {
     this.spacing = spacing;
     updateControlPoints();
@@ -217,7 +220,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
       g2d.fill(body);
       g2d.setComposite(oldComposite);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -229,7 +232,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       } else {
         finalBorderColor =
             componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-                : BORDER_COLOR;
+                : getBorderColor();
       }
       g2d.setColor(finalBorderColor);
       g2d.draw(body);
@@ -314,5 +317,27 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       g2d.drawLine(width / 2 - circleSize / 2 + 1, i * height / 4 - 1, width / 2 + circleSize / 2 - 1, i * height / 4
           - 1);
     }
+  }
+
+  @EditableProperty(name = "Body")
+  public Color getBodyColor() {
+    if (bodyColor == null)
+      bodyColor = BODY_COLOR;
+    return bodyColor;
+  }
+
+  public void setBodyColor(Color bodyColor) {
+    this.bodyColor = bodyColor;
+  }
+
+  @EditableProperty(name = "Border")
+  public Color getBorderColor() {
+    if (borderColor == null)
+      borderColor = BORDER_COLOR;
+    return borderColor;
+  }
+
+  public void setBorderColor(Color borderColor) {
+    this.borderColor = borderColor;
   }
 }
