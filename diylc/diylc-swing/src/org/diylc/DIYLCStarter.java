@@ -33,7 +33,7 @@ public class DIYLCStarter {
   /**
    * @param args
    */
-  public static void main(String[] args) {    
+  public static void main(String[] args) {
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
     try {
@@ -95,7 +95,5 @@ public class DIYLCStarter {
     } catch (Exception e) {
       LOG.error("Could not read config.properties file", e);
     }
-    
-
   }
 }

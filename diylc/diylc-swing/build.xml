@@ -7,7 +7,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="3.39.0" />
+	<property name="diylc.version" value="3.40.0" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -67,19 +67,21 @@
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Main-Class" value="${main.class}" />
 				<attribute name="Class-Path" value="${manifest.class.path}" />
+				<attribute name="SplashScreen-Image" value="splash.png" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="mac" depends="jar">
 		<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
-		<jarbundler bundleid="org.diylc" dir="${jar.dir}" name="DIYLC" version="${diylc.version}" mainclass="${main.class}" stubfile="JavaApplicationStub" vmoptions="-Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true" icon="icons/diylc.icns" workingdirectory="$APP_PACKAGE/Contents/Resources" infostring="DIY Layout Creator by bancika (diy-fever.com)">
+		<jarbundler bundleid="org.diylc" dir="${jar.dir}" name="DIYLC" version="${diylc.version}" mainclass="${main.class}" stubfile="JavaApplicationStub" vmoptions="splash:splash.png -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true" icon="icons/diylc.icns" workingdirectory="$APP_PACKAGE/Contents/Resources" infostring="DIY Layout Creator by bancika (diy-fever.com)">
 			<jarfileset dir="${jar.dir}">
 				<include name="diylc.jar" />
 				<include name="lib/**/*.jar" />
 				<include name="library/**/*.jar" />
 			</jarfileset>
 			<resourcefileset dir="${basedir}">
+				<include name="splash.png" />
 				<include name="update.xml" />
 				<include name="templates**/*.diy" />
 				<include name="themes**/*.xml" />
@@ -110,6 +112,7 @@
 			<zipfileset dir="." includes="run.sh" />
 			<zipfileset dir="." includes="diylc.l4j.ini" />
 			<zipfileset dir="." includes="diylc.exe" />
+			<zipfileset dir="." includes="splash.png" />
 		</zip>
 		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
 			<zipfileset filemode="755" dir="${jar.dir}/DIYLC.app" prefix="DIYLC.app" />
