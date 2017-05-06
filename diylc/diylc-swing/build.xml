@@ -74,7 +74,7 @@
 
 	<target name="mac" depends="jar">
 		<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
-		<jarbundler bundleid="org.diylc" dir="${jar.dir}" name="DIYLC" version="${diylc.version}" mainclass="${main.class}" stubfile="JavaApplicationStub" vmoptions="splash:splash.png -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true" icon="icons/diylc.icns" workingdirectory="$APP_PACKAGE/Contents/Resources" infostring="DIY Layout Creator by bancika (diy-fever.com)">
+		<jarbundler bundleid="org.diylc" dir="${jar.dir}" name="DIYLC" version="${diylc.version}" mainclass="${main.class}" stubfile="JavaApplicationStub" vmoptions="splash:splash.png -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true" icon="icons/diylc.icns" workingdirectory="$APP_PACKAGE/Contents/Resources" infostring="DIY Layout Creator by bancika (diy-fever.com)" splashfile="$APP_PACKAGE/Contents/Resources/splash.png">
 			<jarfileset dir="${jar.dir}">
 				<include name="diylc.jar" />
 				<include name="lib/**/*.jar" />
