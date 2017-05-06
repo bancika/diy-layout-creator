@@ -1410,6 +1410,7 @@ public class Presenter implements IPlugInPort {
         instantiationManager.getFirstControlPoint());
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void duplicateSelection() {
     LOG.info("duplicateSelection()");
@@ -1424,6 +1425,10 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> component : this.selectedComponents) {
       try {
         IDIYComponent<?> cloned = component.clone();
+        ComponentType componentType =
+            ComponentProcessor.getInstance().extractComponentTypeFrom(
+                (Class<? extends IDIYComponent<?>>) cloned.getClass());
+        cloned.setName(instantiationManager.createUniqueName(componentType, currentProject.getComponents()));
         newSelection.add(cloned);
         for (int i = 0; i < component.getControlPointCount(); i++) {
           Point p = component.getControlPoint(i);
