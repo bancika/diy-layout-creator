@@ -184,6 +184,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   void pasteComponents(Collection<IDIYComponent<?>> components);
 
   /**
+   * Duplicates selected components and places them nearby.
+   */
+  void duplicateSelection();
+
+  /**
    * Deletes all the selected components from the project.
    */
   void deleteSelectedComponents();

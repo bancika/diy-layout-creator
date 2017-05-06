@@ -64,6 +64,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.CutAction cutAction;
   private ActionFactory.CopyAction copyAction;
   private ActionFactory.PasteAction pasteAction;
+  private ActionFactory.DuplicateAction duplicateAction;
   private ActionFactory.EditSelectionAction editSelectionAction;
   private ActionFactory.DeleteSelectionAction deleteSelectionAction;
   private ActionFactory.SaveAsTemplateAction saveAsTemplateAction;
@@ -138,6 +139,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
                 boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
                 getCutAction().setEnabled(enabled);
                 getCopyAction().setEnabled(enabled);
+                getDuplicateAction().setEnabled(enabled);
                 try {
                   getPasteAction().setEnabled(clipboard.isDataFlavorAvailable(ComponentTransferable.listFlavor));
                 } catch (Exception ex) {
@@ -172,7 +174,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void keyPressed(KeyEvent e) {
-          if (plugInPort.keyPressed(e.getKeyCode(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown())) {
+          if (plugInPort.keyPressed(e.getKeyCode(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
+              e.isShiftDown(), e.isAltDown())) {
             e.consume();
           }
         }
@@ -183,7 +186,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         @Override
         public void mouseMoved(MouseEvent e) {
           canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
-          plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown());
+          plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(),
+              e.isAltDown());
         }
       });
 
@@ -191,8 +195,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-          plugInPort.mouseClicked(e.getPoint(), e.getButton(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(),
-              e.isAltDown(), e.getClickCount());
+          plugInPort.mouseClicked(e.getPoint(), e.getButton(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
+              e.isShiftDown(), e.isAltDown(), e.getClickCount());
         }
       });
     }
@@ -279,6 +283,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       popupMenu.add(getCutAction());
       popupMenu.add(getCopyAction());
       popupMenu.add(getPasteAction());
+      popupMenu.add(getDuplicateAction());
       popupMenu.addSeparator();
       popupMenu.add(getEditSelectionAction());
       popupMenu.add(getDeleteSelectionAction());
@@ -409,6 +414,13 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       pasteAction = ActionFactory.getInstance().createPasteAction(plugInPort, clipboard);
     }
     return pasteAction;
+  }
+
+  public ActionFactory.DuplicateAction getDuplicateAction() {
+    if (duplicateAction == null) {
+      duplicateAction = ActionFactory.getInstance().createDuplicateAction(plugInPort);
+    }
+    return duplicateAction;
   }
 
   public ActionFactory.EditSelectionAction getEditSelectionAction() {

@@ -1411,6 +1411,38 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
+  public void duplicateSelection() {
+    LOG.info("duplicateSelection()");
+    if (selectedComponents.isEmpty()) {
+      LOG.debug("Nothing to duplicate");
+      return;
+    }
+    Project oldProject = currentProject.clone();
+    Set<IDIYComponent<?>> newSelection = new HashSet<IDIYComponent<?>>();
+
+    int grid = (int) currentProject.getGridSpacing().convertToPixels();
+    for (IDIYComponent<?> component : this.selectedComponents) {
+      try {
+        IDIYComponent<?> cloned = component.clone();
+        newSelection.add(cloned);
+        for (int i = 0; i < component.getControlPointCount(); i++) {
+          Point p = component.getControlPoint(i);
+          Point newPoint = new Point(p.x + grid, p.y + grid);
+          cloned.setControlPoint(newPoint, i);
+        }
+        currentProject.getComponents().add(cloned);
+      } catch (Exception e) {
+      }
+    }
+
+    updateSelection(newSelection);
+
+    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Duplicate");    
+    projectFileManager.notifyFileChange();
+    messageDispatcher.dispatchMessage(EventType.REPAINT);
+  }
+
+  @Override
   public void deleteSelectedComponents() {
     LOG.info("deleteSelectedComponents()");
     if (selectedComponents.isEmpty()) {

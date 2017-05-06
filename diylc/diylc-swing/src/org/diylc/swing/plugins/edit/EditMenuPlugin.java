@@ -35,6 +35,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.CutAction cutAction;
   private ActionFactory.CopyAction copyAction;
   private ActionFactory.PasteAction pasteAction;
+  private ActionFactory.DuplicateAction duplicateAction;
   private ActionFactory.EditSelectionAction editSelectionAction;
   private ActionFactory.DeleteSelectionAction deleteSelectionAction;
   private ActionFactory.GroupAction groupAction;
@@ -104,6 +105,13 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     return pasteAction;
   }
 
+  public ActionFactory.DuplicateAction getDuplicateAction() {
+    if (duplicateAction == null) {
+      duplicateAction = ActionFactory.getInstance().createDuplicateAction(plugInPort);
+    }
+    return duplicateAction;
+  }
+
   public ActionFactory.EditSelectionAction getEditSelectionAction() {
     if (editSelectionAction == null) {
       editSelectionAction = ActionFactory.getInstance().createEditSelectionAction(plugInPort);
@@ -145,7 +153,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     }
     return bringToFrontAction;
   }
-  
+
   public ActionFactory.NudgeAction getNudgeAction() {
     if (nudgeAction == null) {
       nudgeAction = ActionFactory.getInstance().createNudgeAction(plugInPort);
@@ -196,7 +204,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     }
     return saveAsTemplateAction;
   }
-  
+
   public ActionFactory.SaveAsBlockAction getSaveAsBlockAction() {
     if (saveAsBlockAction == null) {
       saveAsBlockAction = ActionFactory.getInstance().createSaveAsBlockAction(plugInPort);
@@ -217,7 +225,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     }
     return rotateCounterClockwiseAction;
   }
-  
+
   public ActionFactory.MirrorSelectionAction getMirrorHorizontallyAction() {
     if (mirrorHorizontallyAction == null) {
       mirrorHorizontallyAction =
@@ -246,6 +254,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     swingUI.injectMenuAction(getCutAction(), EDIT_TITLE);
     swingUI.injectMenuAction(getCopyAction(), EDIT_TITLE);
     swingUI.injectMenuAction(getPasteAction(), EDIT_TITLE);
+    swingUI.injectMenuAction(getDuplicateAction(), EDIT_TITLE);
     swingUI.injectMenuAction(null, EDIT_TITLE);
     swingUI.injectMenuAction(actionFactory.createSelectAllAction(plugInPort), EDIT_TITLE);
     swingUI.injectMenuAction(getEditSelectionAction(), EDIT_TITLE);
@@ -265,7 +274,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     swingUI.injectMenuAction(getGroupAction(), TRANSFORM_TITLE);
     swingUI.injectMenuAction(getUngroupAction(), TRANSFORM_TITLE);
     swingUI.injectMenuAction(null, EDIT_TITLE);
-//    swingUI.injectMenuAction(getSaveAsTemplateAction(), EDIT_TITLE);
+    // swingUI.injectMenuAction(getSaveAsTemplateAction(), EDIT_TITLE);
     swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(), EDIT_TITLE);
     swingUI.injectMenuAction(getRenumberXAxisAction(), RENUMBER_TITLE);
     swingUI.injectMenuAction(getRenumberYAxisAction(), RENUMBER_TITLE);
@@ -305,6 +314,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
     getCutAction().setEnabled(enabled);
     getCopyAction().setEnabled(enabled);
+    getDuplicateAction().setEnabled(enabled);
     try {
       getPasteAction().setEnabled(clipboard.isDataFlavorAvailable(ComponentTransferable.listFlavor));
     } catch (Exception e) {

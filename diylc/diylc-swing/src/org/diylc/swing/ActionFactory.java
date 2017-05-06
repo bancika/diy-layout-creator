@@ -114,6 +114,10 @@ public class ActionFactory {
     return new PasteAction(plugInPort, clipboard);
   }
 
+  public DuplicateAction createDuplicateAction(IPlugInPort plugInPort) {
+    return new DuplicateAction(plugInPort);
+  }
+
   public SelectAllAction createSelectAllAction(IPlugInPort plugInPort) {
     return new SelectAllAction(plugInPort);
   }
@@ -652,33 +656,6 @@ public class ActionFactory {
     }
   }
 
-  public static class CopyAction extends AbstractAction {
-
-    private static final long serialVersionUID = 1L;
-
-    private IPlugInPort plugInPort;
-    private Clipboard clipboard;
-    private ClipboardOwner clipboardOwner;
-
-    public CopyAction(IPlugInPort plugInPort, Clipboard clipboard, ClipboardOwner clipboardOwner) {
-      super();
-      this.plugInPort = plugInPort;
-      this.clipboard = clipboard;
-      this.clipboardOwner = clipboardOwner;
-      putValue(AbstractAction.NAME, "Copy");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-      putValue(AbstractAction.SMALL_ICON, IconLoader.Copy.getIcon());
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      LOG.info("Copy triggered");
-      clipboard.setContents(new ComponentTransferable(cloneComponents(plugInPort.getSelectedComponents())),
-          clipboardOwner);
-    }
-  }
-
   public static class PasteAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
@@ -706,6 +683,60 @@ public class ActionFactory {
         plugInPort.pasteComponents(cloneComponents(components));
       } catch (Exception ex) {
         LOG.error("Coule not paste.", ex);
+      }
+    }
+  }
+
+  public static class CopyAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+    private Clipboard clipboard;
+    private ClipboardOwner clipboardOwner;
+
+    public CopyAction(IPlugInPort plugInPort, Clipboard clipboard, ClipboardOwner clipboardOwner) {
+      super();
+      this.plugInPort = plugInPort;
+      this.clipboard = clipboard;
+      this.clipboardOwner = clipboardOwner;
+      putValue(AbstractAction.NAME, "Copy");
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.SMALL_ICON, IconLoader.Copy.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("Copy triggered");
+      clipboard.setContents(new ComponentTransferable(cloneComponents(plugInPort.getSelectedComponents())),
+          clipboardOwner);
+    }
+  }
+
+
+  public static class DuplicateAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+
+    public DuplicateAction(IPlugInPort plugInPort) {
+      super();
+      this.plugInPort = plugInPort;
+      putValue(AbstractAction.NAME, "Duplicate");
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+       putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentsGear.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("Duplicate triggered");
+      try {
+        plugInPort.duplicateSelection();
+      } catch (Exception ex) {
+        LOG.error("Coule not duplicate.", ex);
       }
     }
   }

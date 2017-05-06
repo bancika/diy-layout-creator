@@ -1776,6 +1776,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Duplicate selection option in Edit menu and popup menu (Ctrl+D).</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added bitchin new splash screen</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

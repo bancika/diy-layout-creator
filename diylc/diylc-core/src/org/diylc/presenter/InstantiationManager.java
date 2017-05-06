@@ -164,7 +164,7 @@ public class InstantiationManager {
     // Update the location according to mouse location
     updateSingleClick(scaledPoint, snapToGrid, gridSpacing);
   }
-
+  
   /**
    * Updates location of component slot based on the new mouse location.
    * 
