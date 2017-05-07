@@ -26,7 +26,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
-    description = "Vertical mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT,
+    description = "Vertically mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)
 public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
 
@@ -56,6 +56,7 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
     super();
     this.bodyColor = BODY_COLOR;
     this.borderColor = BORDER_COLOR;
+    this.labelColor = TICK_COLOR;
   }
 
   @EditableProperty(validatorClass = PositiveMeasureValidator.class)

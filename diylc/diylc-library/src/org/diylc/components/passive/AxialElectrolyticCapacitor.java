@@ -52,6 +52,7 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     super();
     this.bodyColor = BODY_COLOR;
     this.borderColor = BORDER_COLOR;
+    this.labelColor = TICK_COLOR;
   }
 
   @EditableProperty(validatorClass = PositiveMeasureValidator.class)
