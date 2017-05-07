@@ -1758,22 +1758,14 @@
 			<releaseDate>2017-04-25 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<org.diylc.appframework.update.Change>
+			    <org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Potentiometers can show an optional shaft, can have either solder lugs or PCB pins and rendering includes the wafer</description>
-				</org.diylc.appframework.update.Change>	
+					<description>Ability to force components to the front or back of other components even outisde their designated layers, allowing placing components or jumpers below boards, etc.</description>
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>'Tilde' key repeats the last added component</description>
 				</org.diylc.appframework.update.Change>	
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to force components to the front or back of other components even outisde their designated layers, allowing placing components or jumpers below boards, etc.</description>
-				</org.diylc.appframework.update.Change>	
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to change PCB board shape from rectangular to oval.</description>
-				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Duplicate selection option in Edit menu and popup menu (Ctrl+D).</description>
@@ -1782,6 +1774,14 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added bitchin new splash screen</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Potentiometers can show an optional shaft, can have either solder lugs or PCB pins and rendering includes the wafer</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to change PCB board shape from rectangular to oval.</description>
+				</org.diylc.appframework.update.Change>								
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Do not block the UI while checking for new version at startup (can be problematic when there's connectivity issues)</description>
