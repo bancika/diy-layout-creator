@@ -1792,6 +1792,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Better axial electrolytic rendering. Changed default color of all electrolytic capacitors</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Editable toggle switch color</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>

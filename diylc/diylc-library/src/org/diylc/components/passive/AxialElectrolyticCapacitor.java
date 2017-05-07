@@ -3,7 +3,10 @@ package org.diylc.components.passive;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
@@ -31,9 +34,9 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
   public static Size DEFAULT_WIDTH = new Size(1d / 2, SizeUnit.in);
   public static Size DEFAULT_HEIGHT = new Size(1d / 8, SizeUnit.in);
-  public static Color BODY_COLOR = Color.decode("#EAADEA");
+  public static Color BODY_COLOR = Color.decode("#6B6DCE");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
-  public static Color MARKER_COLOR = Color.gray;
+  public static Color MARKER_COLOR = Color.decode("#8CACEA");
   public static Color TICK_COLOR = Color.white;
 
   private Capacitance value = null;
@@ -137,17 +140,35 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
   @Override
   protected Shape getBodyShape() {
-    return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth().convertToPixels()));
+    double length = getLength().convertToPixels();
+    double width = getWidth().convertToPixels();
+    RoundRectangle2D rect = new RoundRectangle2D.Double(0f, 0f, length, width, width / 6, width / 6);
+    Area a = new Area(rect);
+    double notchDiameter = width / 4;
+    a.subtract(new Area(new Ellipse2D.Double(notchDiameter, -notchDiameter * 3 / 4, notchDiameter, notchDiameter)));
+    a.subtract(new Area(new Ellipse2D.Double(notchDiameter, width - notchDiameter / 4, notchDiameter, notchDiameter)));
+
+    if (!getPolarized()) {
+      a.subtract(new Area(new Ellipse2D.Double(length - notchDiameter * 2, -notchDiameter * 3 / 4, notchDiameter,
+          notchDiameter)));
+      a.subtract(new Area(new Ellipse2D.Double(length - notchDiameter * 2, width - notchDiameter / 4, notchDiameter,
+          notchDiameter)));
+    }
+    return a;
   }
 
   @Override
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
     if (polarized) {
-      int width = getClosestOdd(getWidth().convertToPixels());
+      double width = getWidth().convertToPixels();
       int markerLength = (int) (getLength().convertToPixels() * 0.2);
       if (!outlineMode) {
         g2d.setColor(markerColor);
-        g2d.fillRect((int) getLength().convertToPixels() - markerLength, 0, markerLength, width);
+        Rectangle2D markerRect =
+            new Rectangle2D.Double((int) getLength().convertToPixels() - markerLength, 0, markerLength + 2, width);
+        Area markerArea = new Area(markerRect);
+        markerArea.intersect((Area) getBodyShape());
+        g2d.fill(markerArea);
       }
       Color finalTickColor;
       if (outlineMode) {

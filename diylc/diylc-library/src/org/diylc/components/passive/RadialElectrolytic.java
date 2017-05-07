@@ -33,9 +33,9 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
   private static final long serialVersionUID = 1L;
 
   public static Size DEFAULT_SIZE = new Size(1d / 4, SizeUnit.in);
-  public static Color BODY_COLOR = Color.decode("#EAADEA");
+  public static Color BODY_COLOR = Color.decode("#6B6DCE");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
-  public static Color MARKER_COLOR = Color.gray;
+  public static Color MARKER_COLOR = Color.decode("#8CACEA");
   public static Color TICK_COLOR = Color.white;
   public static Size HEIGHT = new Size(0.4d, SizeUnit.in);
   public static Size EDGE_RADIUS = new Size(1d, SizeUnit.mm);
