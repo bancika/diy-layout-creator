@@ -1797,6 +1797,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Editable toggle switch color</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Changed border color oemory bar in bottom-right corner not to be red under OSX</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
