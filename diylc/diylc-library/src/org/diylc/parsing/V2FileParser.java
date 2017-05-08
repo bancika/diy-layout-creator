@@ -537,8 +537,7 @@ public class V2FileParser implements IOldFileParser {
               capacitor.setValue(new Capacitance(value, cp));
             }
             capacitor.setAlpha((byte) transparency);
-            capacitor.setWidth(diameterPro);
-            capacitor.setHeight(diameterPro);
+            capacitor.setLength(diameterPro);            
             capacitor.setControlPoint(tacke.get(0), 0);
             capacitor.setControlPoint(tacke.get(1), 1);
             project.getComponents().add(capacitor);
