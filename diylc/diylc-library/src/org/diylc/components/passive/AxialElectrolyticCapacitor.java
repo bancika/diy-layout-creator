@@ -160,13 +160,18 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
   @Override
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
+    int width = (int) getWidth().convertToPixels();
+    int length = (int) getLength().convertToPixels();
+    g2d.setColor(blend(getBorderColor(), getBodyColor()));
+    int notchDiameter = width / 4;
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.drawLine(notchDiameter, 0, notchDiameter, width);
+    g2d.drawLine(notchDiameter * 2, 0, notchDiameter * 2, width);
     if (polarized) {
-      double width = getWidth().convertToPixels();
       int markerLength = (int) (getLength().convertToPixels() * 0.2);
       if (!outlineMode) {
         g2d.setColor(markerColor);
-        Rectangle2D markerRect =
-            new Rectangle2D.Double((int) getLength().convertToPixels() - markerLength, 0, markerLength + 2, width);
+        Rectangle2D markerRect = new Rectangle2D.Double(length - markerLength, 0, markerLength + 2, width);
         Area markerArea = new Area(markerRect);
         markerArea.intersect((Area) getBodyShape());
         g2d.fill(markerArea);
@@ -183,6 +188,22 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
       g2d.drawLine((int) getLength().convertToPixels() - markerLength / 2, (int) (width / 2 - width * 0.15),
           (int) getLength().convertToPixels() - markerLength / 2, (int) (width / 2 + width * 0.15));
+    } else {
+      g2d.drawLine(length - notchDiameter, 0, length - notchDiameter, width);
+      g2d.drawLine(length - notchDiameter * 2, 0, length - notchDiameter * 2, width);
     }
+  }
+
+  public static Color blend(Color c0, Color c1) {
+    double totalAlpha = c0.getAlpha() + c1.getAlpha();
+    double weight0 = c0.getAlpha() / totalAlpha;
+    double weight1 = c1.getAlpha() / totalAlpha;
+
+    double r = weight0 * c0.getRed() + weight1 * c1.getRed();
+    double g = weight0 * c0.getGreen() + weight1 * c1.getGreen();
+    double b = weight0 * c0.getBlue() + weight1 * c1.getBlue();
+    double a = Math.max(c0.getAlpha(), c1.getAlpha());
+
+    return new Color((int) r, (int) g, (int) b, (int) a);
   }
 }
