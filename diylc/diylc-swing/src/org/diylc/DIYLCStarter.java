@@ -41,16 +41,6 @@ public class DIYLCStarter {
    * @param args
    */
   public static void main(String[] args) {
-    
-    URL url = DIYLCStarter.class.getResource("log4j.properties");
-    Properties properties = new Properties();
-    try {
-      properties.load(url.openStream());
-      PropertyConfigurator.configure(properties);
-    } catch (Exception e) {
-      LOG.error("Could not initialize log4j configuration", e);
-    }
-    
     // Initialize splash screen
     final SplashScreen splash = SplashScreen.getSplashScreen();
     if (splash != null) {
@@ -82,13 +72,15 @@ public class DIYLCStarter {
         t.start();
       }
     }
-
-//    try {
-//      Thread.sleep(20000);
-//    } catch (InterruptedException e1) {
-//      // TODO Auto-generated catch block
-//      e1.printStackTrace();
-//    }
+    
+    URL url = DIYLCStarter.class.getResource("log4j.properties");
+    Properties properties = new Properties();
+    try {
+      properties.load(url.openStream());
+      PropertyConfigurator.configure(properties);
+    } catch (Exception e) {
+      LOG.error("Could not initialize log4j configuration", e);
+    }
 
     ConfigurationManager.initialize("diylc");
 
