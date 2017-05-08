@@ -296,7 +296,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  static enum Base {
+  public static enum Base {
     B9A("Noval B9A"), OCTAL("Octal"), B7G("Small-button B7G");
 
     String name;

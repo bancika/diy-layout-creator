@@ -201,7 +201,7 @@ public class DIYLCStarter {
   static void renderSplashFrame(SplashScreen splash, Graphics2D g, int frame) {
     g.setComposite(AlphaComposite.Clear);
     getSplash().paintIcon(null, g, 0, 0);
-    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f - frame * 0.007f));
     getResistor().paintIcon(null, g, resistorTarget.x - pxPerFrame * frame, resistorTarget.y);
     getFilm().paintIcon(null, g, filmTarget.x, filmTarget.y + pxPerFrame * frame);
     getElectrolytic().paintIcon(null, g, electrolyticTarget.x, electrolyticTarget.y - pxPerFrame * frame);

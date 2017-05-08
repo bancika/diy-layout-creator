@@ -1758,6 +1758,10 @@
 			<releaseDate>2017-04-25 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Import files created in DIYLC v2</description>
+				</org.diylc.appframework.update.Change>	
 			    <org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ability to force components to the front or back of other components even outisde their designated layers, allowing placing components or jumpers below boards, etc.</description>
@@ -1800,7 +1804,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Changed border color oemory bar in bottom-right corner not to be red under OSX</description>
+					<description>Changed border color of memory status bar in bottom-right corner not to be red under OSX</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

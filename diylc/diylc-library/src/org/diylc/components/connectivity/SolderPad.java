@@ -162,7 +162,7 @@ public class SolderPad extends AbstractComponent<Void> {
   @Override
   public void setValue(Void value) {}
 
-  static enum Type {
+  public static enum Type {
     ROUND, SQUARE;
 
     @Override

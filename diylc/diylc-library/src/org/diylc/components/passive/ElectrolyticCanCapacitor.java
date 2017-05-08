@@ -34,30 +34,32 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Electrolytic Capacitor (can)", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "C", description = "Vertical chassis-mount electrolytic capacitor similar to JJ",
     stretchable = false, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
-public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capacitance> {
+public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capacitance[]> {
 
   private static final long serialVersionUID = 1L;
 
   public static Color BODY_COLOR = Color.lightGray;
+  public static Color BASE_COLOR = Color.gray;
   public static Color BORDER_COLOR = BODY_COLOR.darker();
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.black;
-  public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
-  public static Size PIN_SPACING = new Size(0.05d, SizeUnit.in);
+  public static Size PIN_SIZE = new Size(0.08d, SizeUnit.in);
+//  public static Size PIN_SPACING = new Size(0.05d, SizeUnit.in);
   public static Size BODY_DIAMETER = new Size(1d, SizeUnit.in);
 
-  private Capacitance value = null;
+  private Capacitance[] value = new Capacitance[4];
   private org.diylc.core.measures.Voltage voltage = null;
 
   private Orientation orientation = Orientation.DEFAULT;
   private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
   transient private Area body;
   private Color bodyColor = BODY_COLOR;
+  private Color baseColor = BASE_COLOR;
   private Color borderColor = BORDER_COLOR;
   private Color labelColor = LABEL_COLOR;
   protected Display display = Display.NAME;
-  private Size pinSpacing = PIN_SPACING;
+//  private Size pinSpacing = PIN_SPACING;
   private CanSections sections = CanSections._1;
   private Size diameter = BODY_DIAMETER;
 
@@ -67,11 +69,11 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
   }
 
   @EditableProperty
-  public Capacitance getValue() {
+  public Capacitance[] getValue() {
     return value;
   }
 
-  public void setValue(Capacitance value) {
+  public void setValue(Capacitance[] value) {
     this.value = value;
   }
 
@@ -83,15 +85,15 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
   public void setVoltage(org.diylc.core.measures.Voltage voltage) {
     this.voltage = voltage;
   }
-
-  @EditableProperty
-  public CanSections getSections() {
-    return sections;
-  }
-
-  public void setSections(CanSections sections) {
-    this.sections = sections;
-  }
+//
+//  @EditableProperty
+//  public CanSections getSections() {
+//    return sections;
+//  }
+//
+//  public void setSections(CanSections sections) {
+//    this.sections = sections;
+//  }
   
   @EditableProperty
   public Size getDiameter() {
@@ -141,7 +143,10 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
   }
 
   private void updateControlPoints() {
-    int pinSpacing = (int) getPinSpacing().convertToPixels();
+//    int pinSpacing = (int) getPinSpacing().convertToPixels();
+    int pinSpacing = (int) getDiameter().convertToPixels();
+//    switch (getS)
+    
     // Update control points.
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
@@ -273,18 +278,27 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
   public void setBodyColor(Color bodyColor) {
     this.bodyColor = bodyColor;
   }
-
-  @EditableProperty(name = "Pin spacing")
-  public Size getPinSpacing() {
-    return pinSpacing;
+  
+  @EditableProperty(name = "Base")
+  public Color getBaseColor() {
+    return baseColor;
+  }
+  
+  public void setBaseColor(Color baseColor) {
+    this.baseColor = baseColor;
   }
 
-  public void setPinSpacing(Size pinSpacing) {
-    this.pinSpacing = pinSpacing;
-    updateControlPoints();
-    // Reset body shape;
-    body = null;
-  }
+//  @EditableProperty(name = "Pin spacing")
+//  public Size getPinSpacing() {
+//    return pinSpacing;
+//  }
+//
+//  public void setPinSpacing(Size pinSpacing) {
+//    this.pinSpacing = pinSpacing;
+//    updateControlPoints();
+//    // Reset body shape;
+//    body = null;
+//  }
 
   @EditableProperty(name = "Border")
   public Color getBorderColor() {
