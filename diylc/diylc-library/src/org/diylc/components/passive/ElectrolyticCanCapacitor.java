@@ -31,9 +31,9 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Electrolytic Capacitor (can)", author = "Branislav Stojkovic", category = "Passive",
-    instanceNamePrefix = "C", description = "Vertical chassis-mount electrolytic capacitor similar to JJ",
-    stretchable = false, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+//@ComponentDescriptor(name = "Electrolytic Capacitor (can)", author = "Branislav Stojkovic", category = "Passive",
+//    instanceNamePrefix = "C", description = "Vertical chassis-mount electrolytic capacitor similar to JJ",
+//    stretchable = false, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capacitance[]> {
 
   private static final long serialVersionUID = 1L;
