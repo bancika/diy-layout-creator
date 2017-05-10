@@ -366,7 +366,7 @@ public class Presenter implements IPlugInPort {
         for (Class<?> clazz : classes) {
           if (IAutoCreator.class.isAssignableFrom(clazz)) {
             autoCreators.add((IAutoCreator) clazz.newInstance());
-            LOG.debug("Loaded auto-cretor: " + clazz.getName());
+            LOG.debug("Loaded auto-creator: " + clazz.getName());
           }
         }
       } catch (Exception e) {

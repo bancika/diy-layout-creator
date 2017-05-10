@@ -1,6 +1,7 @@
 package org.diylc.swing.plugins.autosave;
 
 import java.io.File;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,9 +42,12 @@ public class AutoSavePlugin implements IPlugIn {
       @Override
       public void run() {
         boolean wasAbnormal = ConfigurationManager.getInstance().readBoolean(IPlugInPort.ABNORMAL_EXIT_KEY, false);
+        Date lastHeartbeat = (Date) ConfigurationManager.getInstance().readObject(IPlugInPort.HEARTBEAT, new Date());
+        long msSinceHeartbeat = new Date().getTime() - lastHeartbeat.getTime();
         File autoSaved = new File(AUTO_SAVE_FILE_NAME);
         if (autoSaved.exists())
-          if (wasAbnormal) {
+          // try to figure out if another instance is running. Only pull auto-saved file if there's no recent heartbeat 
+          if (wasAbnormal && msSinceHeartbeat > autoSaveFrequency) {
             IPlugInPort testPresenter = new Presenter(new DummyView());
             testPresenter.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
             // Only prompt if there is something saved in the
@@ -51,7 +55,7 @@ public class AutoSavePlugin implements IPlugIn {
             if (!testPresenter.getCurrentProject().getComponents().isEmpty()) {
               int decision =
                   view.showConfirmDialog(
-                      "It appears that aplication was not closed normally in the previous session. Do you want to open the last auto-saved file?",
+                      "It appears that application was not closed normally in the previous session. Do you want to open the last auto-saved file?",
                       "Auto-Save", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE);
               if (decision == IView.YES_OPTION) {
                 AutoSavePlugin.this.plugInPort.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
@@ -64,6 +68,18 @@ public class AutoSavePlugin implements IPlugIn {
         ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, true);
       }
     });
+    // write heartbeat periodically
+    new Thread(new Runnable() {
+
+      @Override
+      public void run() {
+        try {
+          Thread.sleep(autoSaveFrequency);
+        } catch (InterruptedException e) {
+        }
+        ConfigurationManager.getInstance().writeValue(IPlugInPort.HEARTBEAT, new Date());
+      }
+    }).start();
   }
 
   @Override

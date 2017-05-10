@@ -42,6 +42,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String CONTINUOUS_CREATION_KEY = "continuousCreation";
   public static final String AUTO_EDIT_KEY = "autoEdit";
   public static final String ABNORMAL_EXIT_KEY = "abnormalExit";
+  public static final String HEARTBEAT = "heartbeat";
   public static final String WHEEL_ZOOM_KEY = "wheelZoom";
   public static final String OUTLINE_KEY = "outline";
   public static final String THEME_KEY = "theme";
