@@ -43,9 +43,9 @@ public abstract class AbstractSchematicLeadedSymbol<T> extends AbstractLeadedCom
   @Override
   protected int calculateLabelYCoordinate(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics) {
     if (labelPosition == LabelPosition.ABOVE) {
-      return -1;
+      return -5;
     } else {
-      return (int) (shapeRect.getHeight() + textRect.getHeight() - 1);
+      return (int) (shapeRect.getHeight() + textRect.getHeight());
     }
   }
 
