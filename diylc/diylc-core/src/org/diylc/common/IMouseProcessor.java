@@ -37,8 +37,9 @@ public interface IMouseProcessor {
    * 
    * @param point
    * @param dragAction
+   * @param forceSelectionRect
    */
-  void dragStarted(Point point, int dragAction);
+  void dragStarted(Point point, int dragAction, boolean forceSelectionRect);
 
   /**
    * Checks if it's possible to drop over the specified point.

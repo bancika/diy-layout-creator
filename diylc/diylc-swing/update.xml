@@ -1764,7 +1764,7 @@
 				</org.diylc.appframework.update.Change>	
 			    <org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to force components to the front or back of other components even outisde their designated layers, allowing placing components or jumpers below boards, etc.</description>
+					<description>Ability to force components to the front or back of other components even outisde their designated layers, allowing placing components or jumpers below boards, etc</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -1772,7 +1772,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Duplicate selection option in Edit menu and popup menu (Ctrl+D).</description>
+					<description>Duplicate selection option in Edit menu and popup menu (Ctrl+D)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -1806,6 +1806,22 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Changed border color of memory status bar in bottom-right corner not to be red under OSX</description>
 				</org.diylc.appframework.update.Change>				
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>41</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2017-05-08 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Using right click to draw a selection rectangle doesn't move objects under the cursor (useful for selecting multiple components that have a big board below)</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>			

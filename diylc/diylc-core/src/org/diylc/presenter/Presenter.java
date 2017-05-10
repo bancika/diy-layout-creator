@@ -899,7 +899,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void dragStarted(Point point, int dragAction) {
+  public void dragStarted(Point point, int dragAction, boolean forceSelectionRect) {
     LOG.debug(String.format("dragStarted(%s, %s)", point, dragAction));
     if (instantiationManager.getComponentTypeSlot() != null) {
       LOG.debug("Cannot start drag because a new component is being created.");
@@ -912,7 +912,7 @@ public class Presenter implements IPlugInPort {
     this.preDragProject = currentProject.clone();
     Point scaledPoint = scalePoint(point);
     this.previousDragPoint = scaledPoint;
-    List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
+    List<IDIYComponent<?>> components = forceSelectionRect ? null : findComponentsAtScaled(scaledPoint);
     if (!this.controlPointMap.isEmpty()) {
       // If we're dragging control points reset selection.
       updateSelection(new ArrayList<IDIYComponent<?>>(this.controlPointMap.keySet()));
@@ -921,7 +921,7 @@ public class Presenter implements IPlugInPort {
       // messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
       // calculateSelectionDimension());
       messageDispatcher.dispatchMessage(EventType.REPAINT);
-    } else if (components.isEmpty()) {
+    } else if (components == null || components.isEmpty()) {
       // If there are no components are under the cursor, reset selection.
       updateSelection(EMPTY_SELECTION);
       // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
@@ -1442,7 +1442,7 @@ public class Presenter implements IPlugInPort {
 
     updateSelection(newSelection);
 
-    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Duplicate");    
+    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Duplicate");
     projectFileManager.notifyFileChange();
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
