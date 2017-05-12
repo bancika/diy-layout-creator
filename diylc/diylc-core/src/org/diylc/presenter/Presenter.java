@@ -1636,8 +1636,8 @@ public class Presenter implements IPlugInPort {
                 && (forceConfirmation =
                     this.view
                         .showConfirmDialog(
-                            "Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?",
-                            "Send Selection to Back", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
+                            "Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?",
+                            "Bring Selection to Front", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
               break;
           }
           Collections.swap(currentProject.getComponents(), index, index + 1);
