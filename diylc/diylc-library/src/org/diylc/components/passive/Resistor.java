@@ -179,15 +179,15 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
   @Override
   protected int getLabelOffset(int bodyWidth, int labelWidth) {
-    if (value == null)
+    if (value == null || getColorCode() == ResistorColorCode.NONE)
       return 0;
     int width = getClosestOdd(getWidth().convertToPixels());
     Color[] bands = value.getColorCode(colorCode);
     int bandArea =
         getShape() == ResistorShape.Standard ? width + FIRST_BAND + BAND_SPACING * (bands.length - 1) : -FIRST_BAND
             + BAND_SPACING * (bands.length - 1);
-   
-    return (bodyWidth - bandArea - labelWidth) / 2;
+
+    return bandArea / 2;
   }
 
   @EditableProperty(name = "Reverse (standing)")
