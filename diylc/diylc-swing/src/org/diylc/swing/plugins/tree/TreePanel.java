@@ -41,6 +41,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -276,6 +278,20 @@ public class TreePanel extends JPanel {
       tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
       tree.setRowHeight(0);
       ToolTipManager.sharedInstance().registerComponent(tree);
+      
+      tree.addTreeSelectionListener(new TreeSelectionListener() {
+        
+        @Override
+        public void valueChanged(TreeSelectionEvent e) {          
+          DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+          if (node != null && node.getUserObject() != null) {
+            Payload payload = (Payload) node.getUserObject();
+            if (payload.getClickListener() != null) {
+              payload.getClickListener().mouseClicked(null);
+            }
+          }
+        }
+      });
 
       tree.addMouseListener(new MouseAdapter() {
 
@@ -283,14 +299,7 @@ public class TreePanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
           if (e.getClickCount() != 1)
             return;
-          TreePath path = tree.getClosestPathForLocation(e.getX(), e.getY());
-          DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-          if (node != null && node.getUserObject() != null) {
-            Payload payload = (Payload) node.getUserObject();
-            if (payload.getClickListener() != null) {
-              payload.getClickListener().mouseClicked(e);
-            }
-          }
+          
           if (SwingUtilities.isRightMouseButton(e)) {
             int row = tree.getClosestRowForLocation(e.getX(), e.getY());
             tree.setSelectionRow(row);

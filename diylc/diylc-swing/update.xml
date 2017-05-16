@@ -1834,6 +1834,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Auto-save dialog pops up when running multiple instances of the app at the same time</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Left mouse click on a component in the component tree sometimes has no effect</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>			
