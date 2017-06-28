@@ -41,7 +41,7 @@ Application configuration may be changed from **Config** menu. It contains the f
 
 ### Adding components to the project ###
 
-This sections explains how to add an existing component to the project. To learn how to develop your own components follow [this tutorial](http://code.google.com/p/diy-layout-creator/wiki/Components). To instantiate a component, follow these steps:
+This sections explains how to add an existing component to the project. To learn how to develop your own components follow [this tutorial](https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md). To instantiate a component, follow these steps:
 
   1. Locate the component in the toolbox. Components are categorized into several folders, so make sure you're looking into the right one. To speed up the process, search box at the top of the component tree can be used to narrow down the list of displayed component types.
   2. Click on the desired component type. Note that text in the status bar changes to reflect this action.
