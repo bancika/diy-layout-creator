@@ -78,6 +78,17 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
                 new Point(firstPoint.x + spacing, firstPoint.y + spacing),
                 new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing)};
         break;
+      case _DP3T_mustang:
+        controlPoints =
+                new Point[] {firstPoint,
+                        new Point(firstPoint.x, firstPoint.y + spacing),
+                        new Point(firstPoint.x, firstPoint.y + 2 * spacing),
+                        new Point(firstPoint.x, firstPoint.y + 3 * spacing),
+                        new Point(firstPoint.x + spacing, firstPoint.y),
+                        new Point(firstPoint.x + spacing, firstPoint.y + spacing),
+                        new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing),
+                        new Point(firstPoint.x + spacing, firstPoint.y + 3 * spacing)};
+        break;
       case _3PDT:
         controlPoints =
             new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
@@ -277,6 +288,11 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
           body =
               new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + spacing, 2
                   * margin + 2 * spacing, margin, margin);
+          break;
+        case _DP3T_mustang:
+          body =
+                  new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + spacing, 2
+                          * margin + 3 * spacing, margin, margin);
           break;
         case _3PDT:
           body =
