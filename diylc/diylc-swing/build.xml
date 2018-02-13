@@ -73,7 +73,27 @@
 	</target>
 
 	<target name="mac" depends="jar">
-		<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
+		<echo>Compile with JDK ${java.home}</echo>
+		<exec executable="javapackager">
+							<arg value="-version"/>
+		</exec>
+		<exec executable="javapackager">
+					<arg value="-deploy"/>
+					<arg value="-Bruntime=${java.home}"/>
+				    <arg value="-native"/><arg value="image"/>
+					<arg value="-srcdir"/><arg value="${jar.dir}"/>
+					<arg value="-srcfiles"/><arg value="diylc.jar"/>
+					<arg value="-srcfiles"/><arg value="lib/**/*.jar"/>
+					<arg value="-srcfiles"/><arg value="library/**/*.jar"/>
+					<arg value="-outdir"/><arg value="build"/>
+					<arg value="-outfile"/><arg value="${APP_DIR_NAME}"/>
+					<arg value="-appclass"/><arg value="${main.class}"/>
+					<arg value="-name"/><arg value="DIYLC"/>
+					<arg value="-title"/><arg value="DIY Layout Creator"/>
+					<arg value="-nosign"/>
+					<arg value="-v"/>
+		</exec>
+		<!--<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
 		<jarbundler bundleid="org.diylc" dir="${jar.dir}" name="DIYLC" version="${diylc.version}" mainclass="${main.class}" stubfile="JavaApplicationStub" vmoptions="splash:splash.png -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true" icon="icons/diylc.icns" workingdirectory="$APP_PACKAGE/Contents/Resources" infostring="DIY Layout Creator by bancika (diy-fever.com)" splashfile="$APP_PACKAGE/Contents/Resources/splash.png">
 			<jarfileset dir="${jar.dir}">
 				<include name="diylc.jar" />
@@ -86,11 +106,11 @@
 				<include name="templates**/*.diy" />
 				<include name="themes**/*.xml" />
 			</resourcefileset>
-			<javaproperty name="apple.laf.useScreenMenuBar" value="true" />
+			<javaproperty name="apple.laf.useScreenMenuBar" value="true" />-->
 			<!--<documenttype name="DIYLC Project"
 			                    extensions="diylc" 
 			                    role="Editor"/>-->
-		</jarbundler>
+		<!--</jarbundler>-->
 	</target>
 	
 	<target name="win" depends="jar">
