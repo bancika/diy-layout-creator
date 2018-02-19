@@ -73,7 +73,7 @@
 	</target>
 
 	<target name="mac" depends="jar">
-		<echo>Compile with JDK ${java.home}</echo>
+		<!--<echo>Compile with JDK ${java.home}</echo>
 		<exec executable="javapackager">
 							<arg value="-version"/>
 		</exec>
@@ -92,9 +92,9 @@
 					<arg value="-title"/><arg value="DIY Layout Creator"/>
 					<arg value="-nosign"/>
 					<arg value="-v"/>
-		</exec>
-		<!--<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
-		<jarbundler bundleid="org.diylc" dir="${jar.dir}" name="DIYLC" version="${diylc.version}" mainclass="${main.class}" stubfile="JavaApplicationStub" vmoptions="splash:splash.png -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true" icon="icons/diylc.icns" workingdirectory="$APP_PACKAGE/Contents/Resources" infostring="DIY Layout Creator by bancika (diy-fever.com)" splashfile="$APP_PACKAGE/Contents/Resources/splash.png">
+		</exec>-->
+		<taskdef name="jarbundler" classname="com.ultramixer.jarbundler.JarBundler" />
+		<jarbundler bundleid="org.diylc" dir="${jar.dir}" name="DIYLC" version="${diylc.version}" mainclass="${main.class}" stubfile="JavaApplicationStub" vmoptions="splash:splash.png -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true" icon="icons/diylc.icns" workingdirectory="$APP_PACKAGE/Contents/Resources" copyright="bancika (diy-fever.com)" splashfile="$APP_PACKAGE/Contents/Resources/splash.png" jvmversion="1.8+">
 			<jarfileset dir="${jar.dir}">
 				<include name="diylc.jar" />
 				<include name="lib/**/*.jar" />
@@ -106,11 +106,11 @@
 				<include name="templates**/*.diy" />
 				<include name="themes**/*.xml" />
 			</resourcefileset>
-			<javaproperty name="apple.laf.useScreenMenuBar" value="true" />-->
+			<javaproperty name="apple.laf.useScreenMenuBar" value="true" />
 			<!--<documenttype name="DIYLC Project"
 			                    extensions="diylc" 
 			                    role="Editor"/>-->
-		<!--</jarbundler>-->
+		</jarbundler>
 	</target>
 	
 	<target name="win" depends="jar">
