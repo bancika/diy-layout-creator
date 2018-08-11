@@ -108,7 +108,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     } else {
       // Normal mode with component body in the center and two lead parts.
       Rectangle shapeRect = shape.getBounds();
-      Double theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
+      double theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
       // Go back to the original transformation to draw leads.
       if (!outlineMode) {
         AffineTransform textTransform = g2d.getTransform();
@@ -118,26 +118,20 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         // 0.5f));
         // }
         float leadThickness = getLeadThickness();
-        double leadLength = (distance - calculatePinSpacing(shapeRect)) / 2 - leadThickness / 2;
+        double leadLength = (distance - calculatePinSpacing(shapeRect)) / 2;
+
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-        Color leadColor =
-            shouldShadeLeads() ? getLeadColorForPainting(componentState).darker()
-                : getLeadColorForPainting(componentState);
+        Color leadColor = shouldShadeLeads() ?
+                getLeadColorForPainting(componentState).darker() :
+                getLeadColorForPainting(componentState);
         g2d.setColor(leadColor);
-        int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
-        int endY = (int) Math.round(points[0].y + Math.sin(theta) * leadLength);
-        g2d.drawLine(points[0].x, points[0].y, endX, endY);
-        endX = (int) (points[1].x + Math.cos(theta - Math.PI) * leadLength);
-        endY = (int) Math.round(points[1].y + Math.sin(theta - Math.PI) * leadLength);
-        g2d.drawLine(points[1].x, points[1].y, endX, endY);
+        drawLeads(g2d, theta, leadLength);
+
         if (shouldShadeLeads()) {
           g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
           leadColor = getLeadColorForPainting(componentState);
           g2d.setColor(leadColor);
-          g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x + Math.cos(theta) * leadLength),
-              (int) (points[0].y + Math.sin(theta) * leadLength));
-          g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x + Math.cos(theta - Math.PI) * leadLength),
-              (int) (points[1].y + Math.sin(theta - Math.PI) * leadLength));
+          drawLeads(g2d, theta, leadLength);
         }
         g2d.setTransform(textTransform);
       }
@@ -162,10 +156,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
       if (bodyColor != null) {
-        if (bodyColor != null) {
           g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
           g2d.fill(shape);
-        }
       }
       decorateComponentBody(g2d, outlineMode);
       g2d.setComposite(oldComposite);
@@ -270,12 +262,23 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     }
   }
 
+  private void drawLeads(Graphics2D g2d, double theta, double leadLength) {
+    int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
+    int endY = (int) (points[0].y + Math.sin(theta) * leadLength);
+    g2d.drawLine(points[0].x, points[0].y, endX, endY);
+
+    endX = (int) (points[1].x + Math.cos(theta - Math.PI) * leadLength);
+    endY = (int) (points[1].y + Math.sin(theta - Math.PI) * leadLength);
+    g2d.drawLine(points[1].x, points[1].y, endX, endY);
+  }
+
   private void drawLead(Graphics2D g2d, ComponentState componentState) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness()));
     Color leadColor =
         shouldShadeLeads() ? getLeadColorForPainting(componentState).darker() : getLeadColorForPainting(componentState);
     g2d.setColor(leadColor);
     g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
+
     if (shouldShadeLeads()) {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness() - 2));
       leadColor = getLeadColorForPainting(componentState);
