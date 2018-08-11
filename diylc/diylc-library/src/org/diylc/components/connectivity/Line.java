@@ -17,6 +17,7 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Line", author = "Branislav Stojkovic", category = "Shapes",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "LN", description = "",
@@ -28,6 +29,7 @@ public class Line extends AbstractLeadedComponent<Void> {
 
   public static Color COLOR = Color.black;
 
+  protected Size weight = new Size(0.1d, SizeUnit.mm);
   private Color color = COLOR;
 
   @Override
@@ -40,7 +42,7 @@ public class Line extends AbstractLeadedComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((float)weight.convertToPixels()));
     g2d.setColor(color);
     g2d.drawLine(getControlPoint(0).x, getControlPoint(0).y, getControlPoint(1).x, getControlPoint(1).y);
   }
@@ -63,6 +65,15 @@ public class Line extends AbstractLeadedComponent<Void> {
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+  @EditableProperty(name = "Weight", defaultable = true)
+  public Size getWeight() {
+    return weight;
+  }
+
+  public void setWeight(Size weight) {
+    this.weight = weight;
   }
 
   public Color getBodyColor() {
