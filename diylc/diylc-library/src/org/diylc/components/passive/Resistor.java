@@ -6,6 +6,7 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.ResistorColorCode;
@@ -136,16 +137,21 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
   @Override
   protected Shape getBodyShape() {
+    double length = getLength().convertToPixels();
+    double width = getClosestOdd(getWidth().convertToPixels());
+
     if (getShape() == ResistorShape.Standard) {
-      double length = getLength().convertToPixels();
-      double width = getClosestOdd(getWidth().convertToPixels());
+      double radius = getWidth().convertToPixels() * 0.7;
       Rectangle2D rect = new Rectangle2D.Double(width / 2, width / 10, length - width, width * 8 / 10);
       Area a = new Area(rect);
-      a.add(new Area(new Ellipse2D.Double(0, 0, width, width)));
-      a.add(new Area(new Ellipse2D.Double(length - width, 0, width, width)));
+
+      a.add(new Area(new RoundRectangle2D.Double(0, 0, width * 8 / 10, width, radius, radius)));
+      a.add(new Area(new RoundRectangle2D.Double(length - width, 0, width * 8 / 10, width, radius, radius)));
       return a;
+
+    } else {
+      return new Rectangle2D.Double(0, 0, length, width);
     }
-    return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth().convertToPixels()));
   }
 
   @Override
