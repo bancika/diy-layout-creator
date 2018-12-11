@@ -245,7 +245,7 @@ public class TreePanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-          if (SwingUtilities.isLeftMouseButton(e)) {
+          if (e == null || SwingUtilities.isLeftMouseButton(e)) {
             try {
               plugInPort.loadBlock(block);
             } catch (InvalidBlockException e1) {
