@@ -1823,6 +1823,10 @@
 					<description>Using right click to draw a selection rectangle doesn't move objects under the cursor (useful for selecting multiple components that have a big board below)</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>"Cut Line" component added to designate where a custom eyelet/turret boards needs to be cut</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increased padding between schematic symbols and their labels</description>
 				</org.diylc.appframework.update.Change>	
