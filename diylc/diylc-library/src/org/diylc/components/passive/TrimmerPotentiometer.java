@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.components.passive;
 
 import java.awt.AlphaComposite;
@@ -32,6 +28,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -59,9 +56,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   private static final long serialVersionUID = 1L;
 
   protected static Size FLAT_BODY_SIZE = new Size(9.5d, SizeUnit.mm);
-  protected static Size FLAT_SHAFT_SIZE = new Size(4d, SizeUnit.mm);
+  protected static Size FLAT_LARGE_SIZE = new Size(13d, SizeUnit.mm);
+  protected static Size FLAT_SMALL_BODY_SIZE = new Size(5d, SizeUnit.mm);
+  protected static Size FLAT_SHAFT_SIZE = new Size(4.5d, SizeUnit.mm);
   protected static Size VERTICAL_BODY_LENGTH = new Size(9.5d, SizeUnit.mm);
   protected static Size VERTICAL_BODY_WIDTH = new Size(4.5d, SizeUnit.mm);
+  protected static Size ROUNDED_EDGE = new Size(1d, SizeUnit.mm);
   protected static Size SPACING = new Size(0.1d, SizeUnit.in);
   private static Color BODY_COLOR = Color.decode("#FFFFE0");
   private static Color BORDER_COLOR = Color.decode("#8E8E38");
@@ -91,10 +91,11 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     int dy1 = 0;
     int dx2 = 0;
     int dy2 = 0;
-    switch (orientation) {
+    switch (getOrientation()) {
       case DEFAULT:
-        switch (type) {
+        switch (getType()) {
           case FLAT_SMALL:
+          case FLAT_XSMALL:
             dx1 = 2 * spacing;
             dy1 = spacing;
             dx2 = 0;
@@ -105,6 +106,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dy1 = spacing;
             dx2 = 0;
             dy2 = 2 * spacing;
+            break;
+          case FLAT_XLARGE:
+            dx1 = 5 * spacing;
+            dy1 = 2 * spacing;
+            dx2 = 0;
+            dy2 = 4 * spacing;
             break;
           case VERTICAL_INLINE:
             dx1 = 0;
@@ -127,8 +134,9 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
         }
         break;
       case _90:
-        switch (type) {
+        switch (getType()) {
           case FLAT_SMALL:
+          case FLAT_XSMALL:
             dx1 = -spacing;
             dy1 = 2 * spacing;
             dx2 = -2 * spacing;
@@ -138,6 +146,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx1 = -spacing;
             dy1 = 4 * spacing;
             dx2 = -2 * spacing;
+            dy2 = 0;
+            break;
+          case FLAT_XLARGE:
+            dx1 = -2 * spacing;
+            dy1 = 5 * spacing;
+            dx2 = -4 * spacing;
             dy2 = 0;
             break;
           case VERTICAL_INLINE:
@@ -161,8 +175,9 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
         }
         break;
       case _180:
-        switch (type) {
+        switch (getType()) {
           case FLAT_SMALL:
+          case FLAT_XSMALL:
             dx1 = -2 * spacing;
             dy1 = -spacing;
             dx2 = 0;
@@ -173,6 +188,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dy1 = -spacing;
             dx2 = 0;
             dy2 = -2 * spacing;
+            break;
+          case FLAT_XLARGE:
+            dx1 = -5 * spacing;
+            dy1 = -2 * spacing;
+            dx2 = 0;
+            dy2 = -4 * spacing;
             break;
           case VERTICAL_INLINE:
             dx1 = 0;
@@ -195,8 +216,9 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
         }
         break;
       case _270:
-        switch (type) {
+        switch (getType()) {
           case FLAT_SMALL:
+          case FLAT_XSMALL:
             dx1 = spacing;
             dy1 = -2 * spacing;
             dx2 = 2 * spacing;
@@ -206,6 +228,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx1 = spacing;
             dy1 = -4 * spacing;
             dx2 = 2 * spacing;
+            dy2 = 0;
+            break;
+          case FLAT_XLARGE:
+            dx1 = 2 * spacing;
+            dy1 = -5 * spacing;
+            dx2 = 4 * spacing;
             dy2 = 0;
             break;
           case VERTICAL_INLINE:
@@ -251,10 +279,17 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
       // Calculate body dimensions based on the selected type.
       int length = 0;
       int width = 0;
-      switch (type) {
+      switch (getType()) {
         case FLAT_LARGE:
         case FLAT_SMALL:
-          length = getClosestOdd(FLAT_BODY_SIZE.convertToPixels());
+        case FLAT_XSMALL:
+        case FLAT_XLARGE:
+          if (getType() == TrimmerType.FLAT_XSMALL)
+            length = getClosestOdd(FLAT_SMALL_BODY_SIZE.convertToPixels());
+          else if (getType() == TrimmerType.FLAT_XLARGE)
+            length = getClosestOdd(FLAT_LARGE_SIZE.convertToPixels());
+          else
+            length = getClosestOdd(FLAT_BODY_SIZE.convertToPixels());
           width = length;
           int shaftSize = getClosestOdd(FLAT_SHAFT_SIZE.convertToPixels());
           Area shaft =
@@ -278,7 +313,8 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
         length = width;
         width = p;
       }
-      body[0] = new Rectangle2D.Double(centerX - length / 2, centerY - width / 2, length, width);
+      double edge = ROUNDED_EDGE.convertToPixels();
+      body[0] = new RoundRectangle2D.Double(centerX - length / 2, centerY - width / 2, length, width, edge, edge);
     }
     return body;
   }
@@ -359,7 +395,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
               : LABEL_COLOR;
     }
-    
+
     String label = "";
     label = (getDisplay() == Display.NAME) ? getName() : (getValue() == null ? "" : getValue().toString());
     if (getDisplay() == Display.NONE) {
@@ -368,7 +404,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     if (getDisplay() == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    
+
     g2d.setColor(finalLabelColor);
     FontMetrics fontMetrics = g2d.getFontMetrics();
     Rectangle2D bodyRect = getBody()[0].getBounds2D();
@@ -380,7 +416,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     int panelWidth = (int) bodyRect.getWidth();
 
     int x = (panelWidth - textWidth) / 2;
-    int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();  
+    int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();
 
     g2d.drawString(label, (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
   }
@@ -464,11 +500,19 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   }
 
   public static enum TrimmerType {
-    FLAT_LARGE, FLAT_SMALL, VERTICAL_INLINE, VERTICAL_OFFSET, VERTICAL_OFFSET_BIG_GAP;
+    FLAT_SMALL("Horizontal Small 1"), FLAT_XSMALL("Horizontal Small 2"), FLAT_LARGE("Horizontal Medium"), FLAT_XLARGE(
+        "Horizontal Large"), VERTICAL_INLINE("Vertical Inline"), VERTICAL_OFFSET("Vertical Offset 1"), VERTICAL_OFFSET_BIG_GAP(
+        "Vertical Offset 2");
+
+    String label;
+
+    private TrimmerType(String label) {
+      this.label = label;
+    }
 
     @Override
     public String toString() {
-      return name().substring(0, 1) + name().substring(1).toLowerCase().replace("_", " ");
+      return label;// name().substring(0, 1) + name().substring(1).toLowerCase().replace("_", " ");
     }
   }
 }
