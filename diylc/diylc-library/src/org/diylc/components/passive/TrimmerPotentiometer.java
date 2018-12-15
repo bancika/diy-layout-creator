@@ -531,7 +531,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   }
 
   public static enum TrimmerType {
-    FLAT_SMALL("Horizontal Small 1"), FLAT_SMALL2("Horizontal Small 2"), FLAT_XSMALL("Horizontal Small 3"), FLAT_LARGE(
+    FLAT_SMALL("Horizontal Small 1"), FLAT_SMALL2("Horizontal Small 2"), FLAT_XSMALL("Horizontal X-Small"), FLAT_LARGE(
         "Horizontal Medium"), FLAT_XLARGE("Horizontal Large"), VERTICAL_INLINE("Vertical Inline"), VERTICAL_OFFSET(
         "Vertical Offset 1"), VERTICAL_OFFSET_BIG_GAP("Vertical Offset 2");
 
