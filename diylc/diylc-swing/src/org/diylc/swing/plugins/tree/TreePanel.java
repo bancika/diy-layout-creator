@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.swing.plugins.tree;
 
 import java.awt.AlphaComposite;
@@ -220,7 +216,8 @@ public class TreePanel extends JPanel {
 
           @Override
           public void mouseClicked(MouseEvent e) {
-            plugInPort.setNewComponentTypeSlot(componentType, null);
+            if (plugInPort.getNewComponentTypeSlot() != componentType)
+              plugInPort.setNewComponentTypeSlot(componentType, null);
           }
         });
         final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(payload, false);
@@ -299,11 +296,11 @@ public class TreePanel extends JPanel {
       tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
       tree.setRowHeight(0);
       ToolTipManager.sharedInstance().registerComponent(tree);
-      
+
       tree.addTreeSelectionListener(new TreeSelectionListener() {
-        
+
         @Override
-        public void valueChanged(TreeSelectionEvent e) {          
+        public void valueChanged(TreeSelectionEvent e) {
           DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
           if (node != null && node.getUserObject() != null) {
             Payload payload = (Payload) node.getUserObject();
@@ -320,11 +317,20 @@ public class TreePanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
           if (e.getClickCount() != 1)
             return;
-          
+
           if (SwingUtilities.isRightMouseButton(e)) {
             int row = tree.getClosestRowForLocation(e.getX(), e.getY());
             tree.setSelectionRow(row);
             getPopup().show(e.getComponent(), e.getX(), e.getY());
+          } else {
+            TreePath path = tree.getClosestPathForLocation(e.getX(), e.getY());
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            if (node != null && node.getUserObject() != null) {
+              Payload payload = (Payload) node.getUserObject();
+              if (payload.getClickListener() != null) {
+                payload.getClickListener().mouseClicked(e);
+              }
+            }
           }
         }
       });

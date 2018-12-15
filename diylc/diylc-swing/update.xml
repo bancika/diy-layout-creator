@@ -1894,6 +1894,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Measurement tool shows incorrect readings when zoomed in or out</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Components in the tree sometimes stop responding until deselected and selected again</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>			
