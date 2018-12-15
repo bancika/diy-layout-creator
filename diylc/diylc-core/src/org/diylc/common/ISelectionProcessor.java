@@ -100,9 +100,11 @@ public interface ISelectionProcessor {
    * Returns the minimum rectangle containing all selected components, or null if none exists.
    * Rectangle is scaled by the current zoom level.
    * 
+   * @param applyZoom
+   * 
    * @return
    */
-  Rectangle2D getSelectionBounds();
+  Rectangle2D getSelectionBounds(boolean applyZoom);
 
   /**
    * Moves selection for the specified offset.

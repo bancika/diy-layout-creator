@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc;
 
 import java.awt.AlphaComposite;
@@ -43,6 +39,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
+import org.diylc.swingframework.FontChooserComboBox;
 
 /**
  * Main class that runs DIYLC.
@@ -93,7 +90,7 @@ public class DIYLCStarter {
         t.start();
       }
     }
-    
+
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
     try {
@@ -116,6 +113,17 @@ public class DIYLCStarter {
     } catch (Exception e) {
       LOG.error("Could not set Look&Feel", e);
     }
+    
+//    Thread fontThread = new Thread(new Runnable() {
+//
+//      @Override
+//      public void run() {
+//        LOG.debug("Starting font pre-loading");
+//        FontChooserComboBox box = new FontChooserComboBox();
+//        LOG.debug("Finished font pre-loading");
+//      }
+//    });
+//    fontThread.start();
 
     String val = System.getProperty(SCRIPT_RUN);
     if (!"true".equals(val)) {
@@ -163,7 +171,7 @@ public class DIYLCStarter {
 
   public static ImageIcon getResistor() {
     if (resistor == null) {
-      resistor = (ImageIcon)IconLoader.SplashResistor.getIcon();
+      resistor = (ImageIcon) IconLoader.SplashResistor.getIcon();
     }
     return resistor;
   }
@@ -172,7 +180,7 @@ public class DIYLCStarter {
 
   public static ImageIcon getFilm() {
     if (film == null) {
-      film = (ImageIcon)IconLoader.SplashFilm.getIcon();
+      film = (ImageIcon) IconLoader.SplashFilm.getIcon();
     }
     return film;
   }
@@ -181,7 +189,7 @@ public class DIYLCStarter {
 
   public static ImageIcon getCeramic() {
     if (ceramic == null) {
-      ceramic = (ImageIcon)IconLoader.SplashCeramic.getIcon();
+      ceramic = (ImageIcon) IconLoader.SplashCeramic.getIcon();
     }
     return ceramic;
   }
@@ -190,7 +198,7 @@ public class DIYLCStarter {
 
   public static ImageIcon getElectrolytic() {
     if (electrolytic == null) {
-      electrolytic = (ImageIcon)IconLoader.SplashElectrolytic.getIcon();
+      electrolytic = (ImageIcon) IconLoader.SplashElectrolytic.getIcon();
     }
     return electrolytic;
   }
@@ -199,7 +207,7 @@ public class DIYLCStarter {
 
   public static ImageIcon getSplash() {
     if (splash == null) {
-      splash = (ImageIcon)IconLoader.Splash.getIcon();
+      splash = (ImageIcon) IconLoader.Splash.getIcon();
     }
     return splash;
   }

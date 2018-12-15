@@ -22,7 +22,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;

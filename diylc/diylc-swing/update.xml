@@ -1868,15 +1868,23 @@
 		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
-				<minor>41</minor>
-				<build>2</build>
+				<minor>42</minor>
+				<build>0</build>
 			</versionNumber>
 			<releaseDate>2018-12-11 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Holding "shift" key switches mouse wheel scrolling from vertical to horizontal</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>"Cut Line" component sometimes disappears</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Measurement tool shows incorrect readings when zoomed in or out</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

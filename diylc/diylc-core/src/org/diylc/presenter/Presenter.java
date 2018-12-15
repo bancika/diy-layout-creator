@@ -859,7 +859,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public Rectangle2D getSelectionBounds() {
+  public Rectangle2D getSelectionBounds(boolean applyZoom) {
     if (selectedComponents == null || selectedComponents.isEmpty())
       return null;
 
@@ -871,7 +871,7 @@ public class Presenter implements IPlugInPort {
       else
         LOG.info("Area is null");
     }
-    if (drawingManager.getZoomLevel() != 1) {
+    if (drawingManager.getZoomLevel() != 1 && applyZoom) {
       totalArea
           .transform(AffineTransform.getScaleInstance(drawingManager.getZoomLevel(), drawingManager.getZoomLevel()));
     }
@@ -1881,7 +1881,7 @@ public class Presenter implements IPlugInPort {
     if (selectedComponents.isEmpty()) {
       return null;
     }
-    Rectangle2D rect = getSelectionBounds();
+    Rectangle2D rect = getSelectionBounds(false);
 
     double width = rect.getWidth();
     double height = rect.getHeight();

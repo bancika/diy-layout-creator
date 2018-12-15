@@ -240,16 +240,20 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           plugInPort.setMetric(isMetric);
         }
       });
+      
+      // disable scrolling
+      scrollPane.setWheelScrollingEnabled(false);
+      
       scrollPane.addMouseWheelListener(new MouseWheelListener() {
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+          final JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
+          final JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+          
           boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
           if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
-            // disable scrolling
-            scrollPane.setWheelScrollingEnabled(false);
-
 
             Point mousePos = getCanvasPanel().getMousePosition(true);
 
@@ -280,9 +284,16 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
             horizontal.setValue(horizontal.getValue() + dx);
             JScrollBar vertical = scrollPane.getVerticalScrollBar();
             vertical.setValue(vertical.getValue() + dy);
-          } else {
-            // enable scrolling
-            scrollPane.setWheelScrollingEnabled(true);
+          } if (e.isShiftDown()) {            
+            int iScrollAmount = e.getScrollAmount();
+            int iNewValue = horizontalScrollBar.getValue() + horizontalScrollBar.getBlockIncrement() * iScrollAmount * e.getWheelRotation();
+            if (iNewValue <= horizontalScrollBar.getMaximum())            
+                horizontalScrollBar.setValue(iNewValue);            
+          } else {            
+            int iScrollAmount = e.getScrollAmount();
+            int iNewValue = verticalScrollBar.getValue() + verticalScrollBar.getBlockIncrement() * iScrollAmount * e.getWheelRotation();
+            if (iNewValue <= verticalScrollBar.getMaximum())            
+              verticalScrollBar.setValue(iNewValue);
           }
         }
       });
@@ -602,7 +613,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           @Override
           public void run() {
             if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_RULERS_KEY, true))
-              scrollPane.setSelectionRectangle(plugInPort.getSelectionBounds());
+              scrollPane.setSelectionRectangle(plugInPort.getSelectionBounds(true));
           }
         });
         break;
