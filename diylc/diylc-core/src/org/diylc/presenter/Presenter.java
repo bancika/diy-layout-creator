@@ -831,7 +831,9 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public Collection<IDIYComponent<?>> getSelectedComponents() {
-    return selectedComponents;
+    List<IDIYComponent<?>> selection = new ArrayList<IDIYComponent<?>>(selectedComponents);
+    Collections.sort(selection, ComparatorFactory.getInstance().getComponentProjectZOrderComparator(currentProject));
+    return selection;
   }
 
   @SuppressWarnings("unchecked")

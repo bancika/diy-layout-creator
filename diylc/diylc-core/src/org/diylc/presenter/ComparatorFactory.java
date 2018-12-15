@@ -26,6 +26,7 @@ import java.util.Comparator;
 import org.diylc.common.ComponentType;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Project;
 
 public class ComparatorFactory {
 
@@ -127,5 +128,17 @@ public class ComparatorFactory {
       };
     }
     return componentZOrderComparator;
+  }
+  
+  public Comparator<IDIYComponent<?>> getComponentProjectZOrderComparator(final Project project) {
+    return new Comparator<IDIYComponent<?>>() {
+        
+        @Override
+        public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
+          int index1 = project.getComponents().indexOf(o1);
+          int index2 = project.getComponents().indexOf(o2);
+          return new Integer(index1).compareTo(index2);
+        }
+      };
   }
 }

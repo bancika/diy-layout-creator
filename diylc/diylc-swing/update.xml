@@ -1879,6 +1879,10 @@
 					<description>Holding "shift" key switches mouse wheel scrolling from vertical to horizontal</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Preserve z-order of components when copy-pasting</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>"Cut Line" component sometimes disappears</description>
 				</org.diylc.appframework.update.Change>
