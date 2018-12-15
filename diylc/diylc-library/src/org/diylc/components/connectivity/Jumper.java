@@ -40,7 +40,7 @@ import org.diylc.core.measures.Size;
 @ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "J", description = "",
     zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, continuity = true)
 public class Jumper extends AbstractLeadedComponent<Void> {
 
   private static final long serialVersionUID = 1L;

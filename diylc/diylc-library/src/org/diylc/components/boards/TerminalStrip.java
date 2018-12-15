@@ -377,7 +377,9 @@ public class TerminalStrip extends AbstractTransparentComponent<String> {
     g2d.draw(mainArea);
 
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : TERMINAL_COLOR);
+    drawingObserver.startTrackingContinuityArea(true);  
     g2d.fill(terminalArea);
+    drawingObserver.stopTrackingContinuityArea();
 
     Color finalTerminalBorderColor;
     if (outlineMode) {

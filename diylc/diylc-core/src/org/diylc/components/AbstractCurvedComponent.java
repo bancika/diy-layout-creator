@@ -61,7 +61,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
    * @param componentState
    * @param theme
    */
-  protected abstract void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState);
+  protected abstract void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver);
 
   /**
    * @return default color.
@@ -110,7 +110,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     // g2d.setColor(color);
     // g2d.setStroke(new BasicStroke(thickness - 2));
     // g2d.draw(path);
-    drawCurve(curve, g2d, componentState);
+    drawCurve(curve, g2d, componentState, drawingObserver);
     g2d.setComposite(oldComposite);
   }
 

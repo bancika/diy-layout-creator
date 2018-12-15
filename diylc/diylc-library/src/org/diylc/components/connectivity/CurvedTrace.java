@@ -31,6 +31,7 @@ import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -58,14 +59,16 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
   }
 
   @Override
-  protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
+  protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
     float thickness = (float) size.convertToPixels();
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
     Color curveColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : color;
     g2d.setColor(curveColor);
+    drawingObserver.startTrackingContinuityArea(true);
     g2d.draw(curve);
+    drawingObserver.stopTrackingContinuityArea();
   }
 
   @EditableProperty(name = "Width")

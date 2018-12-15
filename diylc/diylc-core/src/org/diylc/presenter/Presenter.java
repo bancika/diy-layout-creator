@@ -132,7 +132,7 @@ public class Presenter implements IPlugInPort {
   private ProjectFileManager projectFileManager;
   private InstantiationManager instantiationManager;
 
-  private Rectangle selectionRect;
+  private Rectangle selectionRect;  
 
   private final IView view;
 
@@ -148,7 +148,7 @@ public class Presenter implements IPlugInPort {
   private Point previousDragPoint = null;
   private Project preDragProject = null;
   private int dragAction;
-  private Point previousScaledPoint;
+  private Point previousScaledPoint;  
 
   public Presenter(IView view) {
     super();
@@ -212,8 +212,8 @@ public class Presenter implements IPlugInPort {
       }
       for (IDIYComponent<?> component : currentProject.getComponents()) {
         if (!isComponentLocked(component) && isComponentVisible(component)) {
-          Area area = drawingManager.getComponentArea(component);
-          if (area != null && area.contains(scaledPoint)) {
+          ComponentArea area = drawingManager.getComponentArea(component);
+          if (area != null && area.getOutlineArea() != null && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
           }
         }
@@ -600,6 +600,9 @@ public class Presenter implements IPlugInPort {
               + componentTypeSlot.getName());
           projectFileManager.notifyFileChange();
         }
+      } else if (ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+        drawingManager.findContinuityAreaAtPoint(currentProject, scaledPoint);
+        messageDispatcher.dispatchMessage(EventType.REPAINT);
       } else {
         List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(selectedComponents);
         List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
@@ -867,11 +870,11 @@ public class Presenter implements IPlugInPort {
 
     Area totalArea = new Area();
     for (IDIYComponent<?> c : selectedComponents) {
-      Area compArea = drawingManager.getComponentArea(c);
-      if (compArea != null)
-        totalArea.add(compArea);
+      ComponentArea compArea = drawingManager.getComponentArea(c);
+      if (compArea != null && compArea.getOutlineArea() != null)
+        totalArea.add(compArea.getOutlineArea());
       else
-        LOG.info("Area is null");
+        LOG.debug("Area is null");
     }
     if (drawingManager.getZoomLevel() != 1 && applyZoom) {
       totalArea
@@ -1397,8 +1400,8 @@ public class Presenter implements IPlugInPort {
       List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
       for (IDIYComponent<?> component : currentProject.getComponents()) {
         if (!isComponentLocked(component) && isComponentVisible(component)) {
-          Area area = drawingManager.getComponentArea(component);
-          if ((area != null) && (selectionRect != null) && area.intersects(selectionRect)) {
+          ComponentArea area = drawingManager.getComponentArea(component);
+          if ((area != null && area.getOutlineArea() != null) && (selectionRect != null) && area.getOutlineArea().intersects(selectionRect)) {
             newSelection.addAll(findAllGroupedComponents(component));
           }
         }
@@ -1801,16 +1804,16 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> component : getCurrentProject().getComponents()) {
       // Skip already selected components or ones that cannot be stuck to
       // other components.
-      Area area = drawingManager.getComponentArea(component);
-      if (newSelection.contains(component) || !component.isControlPointSticky(0) || area == null)
+      ComponentArea area = drawingManager.getComponentArea(component);
+      if (newSelection.contains(component) || !component.isControlPointSticky(0) || area == null || area.getOutlineArea() == null)
         continue;
       boolean matches = false;
       for (IDIYComponent<?> selectedComponent : this.selectedComponents) {
-        Area selectedArea = drawingManager.getComponentArea(selectedComponent);
-        if (selectedArea == null)
+        ComponentArea selectedArea = drawingManager.getComponentArea(selectedComponent);
+        if (selectedArea == null || selectedArea.getOutlineArea() == null)
           continue;
-        Area intersection = new Area(area);
-        intersection.intersect(selectedArea);
+        Area intersection = new Area(area.getOutlineArea());
+        intersection.intersect(selectedArea.getOutlineArea());
         if (!intersection.isEmpty()) {
           matches = true;
           break;

@@ -32,4 +32,8 @@ public interface IDrawingObserver {
   void stopTracking();
 
   void startTracking();
+  
+  void stopTrackingContinuityArea();
+
+  void startTrackingContinuityArea(boolean positive);
 }

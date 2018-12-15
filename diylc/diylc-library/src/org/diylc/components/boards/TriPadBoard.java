@@ -95,8 +95,10 @@ public class TriPadBoard extends AbstractBoard {
             }
 
             g2d.setColor(stripColor);
+            drawingObserver.startTrackingContinuityArea(true);  
             g2d.fillRect(p.x + spacing - stripSize / 2, p.y - stripSize / 2, spacing * (spacesToDraw - 1) + stripSize,
                 stripSize);
+            drawingObserver.stopTrackingContinuityArea();
             g2d.setColor(stripColor.darker());
 
             g2d.drawRect(p.x + spacing - stripSize / 2, p.y - stripSize / 2, spacing * (spacesToDraw - 1) + stripSize,
@@ -131,8 +133,10 @@ public class TriPadBoard extends AbstractBoard {
             }
 
             g2d.setColor(stripColor);
+            drawingObserver.startTrackingContinuityArea(true);  
             g2d.fillRect(p.x - stripSize / 2, p.y + spacing - stripSize / 2, stripSize, spacing * (spacesToDraw - 1)
                 + stripSize);
+            drawingObserver.stopTrackingContinuityArea();
             g2d.setColor(stripColor.darker());
             g2d.drawRect(p.x - stripSize / 2, p.y + spacing - stripSize / 2, stripSize, spacing * (spacesToDraw - 1)
                 + stripSize);

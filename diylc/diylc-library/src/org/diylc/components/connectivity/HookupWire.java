@@ -30,6 +30,7 @@ import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -38,7 +39,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.COMPONENT,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, continuity = true)
 public class HookupWire extends AbstractCurvedComponent<Void> {
 
   private static final long serialVersionUID = 1L;
@@ -54,7 +55,7 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
   }
 
   @Override
-  protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState) {
+  protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
     int thickness =
         (int) (Math.pow(Math.E, -1.12436 - 0.11594 * gauge.getValue()) * Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT));
     Color curveColor =

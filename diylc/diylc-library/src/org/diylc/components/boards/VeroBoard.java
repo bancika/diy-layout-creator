@@ -85,7 +85,9 @@ public class VeroBoard extends AbstractBoard {
           p.x = firstPoint.x;
           p.y += spacing;
           g2d.setColor(stripColor);
+          drawingObserver.startTrackingContinuityArea(true);          
           g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing - p.x, stripSize);
+          drawingObserver.stopTrackingContinuityArea();
           g2d.setColor(stripColor.darker());
           g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing - p.x, stripSize);
           while (p.x < secondPoint.x - spacing - holeSize) {
@@ -101,7 +103,9 @@ public class VeroBoard extends AbstractBoard {
           p.x += spacing;
           p.y = firstPoint.y;
           g2d.setColor(stripColor);
+          drawingObserver.startTrackingContinuityArea(true);
           g2d.fillRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, secondPoint.y - spacing - p.y);
+          drawingObserver.stopTrackingContinuityArea();
           g2d.setColor(stripColor.darker());
           g2d.drawRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, secondPoint.y - spacing - p.y);
           while (p.y < secondPoint.y - spacing - holeSize) {

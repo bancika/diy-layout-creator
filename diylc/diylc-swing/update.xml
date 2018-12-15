@@ -1876,6 +1876,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Highlight connected areas through copper traces, leads, jumpers, etc...</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Holding "shift" key switches mouse wheel scrolling function from vertical to horizontal</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

@@ -32,6 +32,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Observable;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -85,6 +86,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       // This will happen if components do not have any shape.
     }
   }
+  
+  protected boolean IsCopperArea() {
+    return false;
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -93,7 +98,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     Shape shape = getBodyShape();
     // If there's no body, just draw the line connecting the ending points.
     if (shape == null) {
-      drawLead(g2d, componentState);
+      drawLead(g2d, componentState, drawingObserver, IsCopperArea());
     } else if (supportsStandingMode() && length.convertToPixels() > points[0].distance(points[1])) {
       // When ending points are too close draw the component in standing
       // mode.
@@ -124,7 +129,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       g2d.setColor(finalBorderColor);
       g2d.draw(body);
       if (!outlineMode) {
-        drawLead(g2d, componentState);
+        drawLead(g2d, componentState, drawingObserver, false);
       }
     } else {
       // Normal mode with component body in the center and two lead parts.
@@ -293,12 +298,17 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     g2d.drawLine(points[1].x, points[1].y, endX, endY);
   }
 
-  private void drawLead(Graphics2D g2d, ComponentState componentState) {
+  private void drawLead(Graphics2D g2d, ComponentState componentState, IDrawingObserver observer, boolean isCopperArea) {
+    if (isCopperArea)
+      observer.startTrackingContinuityArea(true);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness()));
     Color leadColor =
         shouldShadeLeads() ? getLeadColorForPainting(componentState).darker() : getLeadColorForPainting(componentState);
     g2d.setColor(leadColor);
     g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
+    
+    if (isCopperArea)
+      observer.stopTrackingContinuityArea();
 
     if (shouldShadeLeads()) {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness() - 2));

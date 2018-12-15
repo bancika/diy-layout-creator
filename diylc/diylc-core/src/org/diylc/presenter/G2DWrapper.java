@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.presenter;
 
 import java.awt.BasicStroke;
@@ -57,6 +53,8 @@ import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.diylc.common.ObjectCache;
@@ -78,6 +76,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   private boolean drawingComponent = false;
   private boolean trackingAllowed = true;
+  private boolean trackingContinuityAllowed = false;
+  private boolean trackingContinuityPositive = true;
 
   private Graphics2D canvasGraphics;
   private Stroke originalStroke;
@@ -88,6 +88,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private AffineTransform currentTx;
   private AffineTransform initialTx;
   private Area currentArea;
+  private List<Area> currentContinuityPositiveAreas;
+  private List<Area> currentContinuityNegativeAreas;
   private Shape lastShape;
 
   private double zoom;
@@ -102,6 +104,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     this.canvasGraphics = canvasGraphics;
     this.zoom = zoom;
     currentArea = new Area();
+    currentContinuityPositiveAreas = new ArrayList<Area>();
+    currentContinuityNegativeAreas = new ArrayList<Area>();
     currentTx = new AffineTransform();
   }
 
@@ -111,6 +115,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public void startedDrawingComponent() {
     drawingComponent = true;
     currentArea = new Area();
+    currentContinuityPositiveAreas = new ArrayList<Area>();
+    currentContinuityNegativeAreas = new ArrayList<Area>();
     originalStroke = canvasGraphics.getStroke();
     originalColor = canvasGraphics.getColor();
     originalTx = canvasGraphics.getTransform();
@@ -127,14 +133,14 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
    * 
    * @return
    */
-  public Area finishedDrawingComponent() {
+  public ComponentArea finishedDrawingComponent() {
     drawingComponent = false;
     canvasGraphics.setStroke(originalStroke);
     canvasGraphics.setColor(originalColor);
     canvasGraphics.setTransform(originalTx);
     canvasGraphics.setComposite(originalComposite);
     canvasGraphics.setFont(originalFont);
-    return currentArea;
+    return new ComponentArea(currentArea, currentContinuityPositiveAreas, currentContinuityNegativeAreas);
   }
 
   @Override
@@ -147,13 +153,25 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     this.trackingAllowed = false;
   }
 
+  @Override
+  public void startTrackingContinuityArea(boolean positive) {
+    this.trackingContinuityAllowed = true;
+    this.trackingContinuityPositive = positive;
+  }
+
+  @Override
+  public void stopTrackingContinuityArea() {
+    this.trackingContinuityAllowed = false;
+  }
+
+
   /**
    * Appends shape interior to the current component area.
    * 
    * @param s
    */
   private void appendShape(Shape s) {
-    if (!drawingComponent || !trackingAllowed) {
+    if (!drawingComponent || (!trackingAllowed && !trackingContinuityAllowed)) {
       return;
     }
     Rectangle2D bounds = s.getBounds2D();
@@ -161,7 +179,16 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     if (bounds.getWidth() > 1 && bounds.getHeight() > 1) {
       Area area = new Area(s);
       area.transform(currentTx);
-      currentArea.add(area);
+
+      if (trackingAllowed)
+        currentArea.add(area);
+
+      if (trackingContinuityAllowed) {
+        if (trackingContinuityPositive)
+          currentContinuityPositiveAreas.add(area);
+        else
+          currentContinuityNegativeAreas.add(area);
+      }
       lastShape = s;
     }
   }
@@ -580,7 +607,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawLine(int x1, int y1, int x2, int y2) {
     canvasGraphics.drawLine(x1, y1, x2, y2);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Line2D.Double(x1, y1, x2, y2));
     }
   }
@@ -588,7 +615,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawOval(int x, int y, int width, int height) {
     canvasGraphics.drawOval(x, y, width, height);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Ellipse2D.Double(x, y, width, height));
     }
   }
@@ -596,7 +623,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawPolygon(int[] points, int[] points2, int points3) {
     canvasGraphics.drawPolygon(points, points2, points3);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Polygon(points, points2, points3));
     }
   }
@@ -609,7 +636,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
     canvasGraphics.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
     }
   }
@@ -617,7 +644,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
     canvasGraphics.fillArc(x, y, width, height, startAngle, arcAngle);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Arc2D.Double(x, y, width, height, startAngle, arcAngle, Arc2D.PIE));
     }
   }
@@ -625,7 +652,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillOval(int x, int y, int width, int height) {
     canvasGraphics.fillOval(x, y, width, height);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Ellipse2D.Double(x, y, width, height));
     }
   }
@@ -633,7 +660,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillPolygon(int[] points, int[] points2, int points3) {
     canvasGraphics.fillPolygon(points, points2, points3);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Polygon(points, points2, points3));
     }
   }
@@ -641,7 +668,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawRect(int x, int y, int width, int height) {
     canvasGraphics.drawRect(x, y, width, height);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Rectangle(x, y, width, height));
     }
   }
@@ -649,7 +676,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillRect(int x, int y, int width, int height) {
     canvasGraphics.fillRect(x, y, width, height);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Rectangle(x, y, width, height));
     }
   }
@@ -657,7 +684,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
     canvasGraphics.fillRoundRect(x, y, width, height, arcWidth, arcHeight);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
     }
   }
