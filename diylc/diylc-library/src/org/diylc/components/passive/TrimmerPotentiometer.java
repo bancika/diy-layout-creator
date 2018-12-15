@@ -56,8 +56,9 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   private static final long serialVersionUID = 1L;
 
   protected static Size FLAT_BODY_SIZE = new Size(9.5d, SizeUnit.mm);
-  protected static Size FLAT_LARGE_SIZE = new Size(13d, SizeUnit.mm);
+  protected static Size FLAT_LARGE_BODY_SIZE = new Size(13d, SizeUnit.mm);
   protected static Size FLAT_SMALL_BODY_SIZE = new Size(5d, SizeUnit.mm);
+  protected static Size FLAT_SMALL2_BODY_SIZE = new Size(9.5d, SizeUnit.mm);
   protected static Size FLAT_SHAFT_SIZE = new Size(4.5d, SizeUnit.mm);
   protected static Size VERTICAL_BODY_LENGTH = new Size(9.5d, SizeUnit.mm);
   protected static Size VERTICAL_BODY_WIDTH = new Size(4.5d, SizeUnit.mm);
@@ -97,6 +98,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
           case FLAT_SMALL:
           case FLAT_XSMALL:
             dx1 = 2 * spacing;
+            dy1 = spacing;
+            dx2 = 0;
+            dy2 = 2 * spacing;
+            break;
+          case FLAT_SMALL2:
+            dx1 = 4 * spacing;
             dy1 = spacing;
             dx2 = 0;
             dy2 = 2 * spacing;
@@ -142,6 +149,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx2 = -2 * spacing;
             dy2 = 0;
             break;
+          case FLAT_SMALL2:
+            dx1 = -spacing;
+            dy1 = 4 * spacing;
+            dx2 = -2 * spacing;
+            dy2 = 0;
+            break;
           case FLAT_LARGE:
             dx1 = -spacing;
             dy1 = 4 * spacing;
@@ -179,6 +192,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
           case FLAT_SMALL:
           case FLAT_XSMALL:
             dx1 = -2 * spacing;
+            dy1 = -spacing;
+            dx2 = 0;
+            dy2 = -2 * spacing;
+            break;
+          case FLAT_SMALL2:
+            dx1 = -4 * spacing;
             dy1 = -spacing;
             dx2 = 0;
             dy2 = -2 * spacing;
@@ -221,6 +240,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
           case FLAT_XSMALL:
             dx1 = spacing;
             dy1 = -2 * spacing;
+            dx2 = 2 * spacing;
+            dy2 = 0;
+            break;
+          case FLAT_SMALL2:
+            dx1 = spacing;
+            dy1 = -4 * spacing;
             dx2 = 2 * spacing;
             dy2 = 0;
             break;
@@ -284,10 +309,13 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
         case FLAT_SMALL:
         case FLAT_XSMALL:
         case FLAT_XLARGE:
+        case FLAT_SMALL2:
           if (getType() == TrimmerType.FLAT_XSMALL)
             length = getClosestOdd(FLAT_SMALL_BODY_SIZE.convertToPixels());
           else if (getType() == TrimmerType.FLAT_XLARGE)
-            length = getClosestOdd(FLAT_LARGE_SIZE.convertToPixels());
+            length = getClosestOdd(FLAT_LARGE_BODY_SIZE.convertToPixels());
+          else if (getType() == TrimmerType.FLAT_SMALL2)
+            length = getClosestOdd(FLAT_SMALL2_BODY_SIZE.convertToPixels());
           else
             length = getClosestOdd(FLAT_BODY_SIZE.convertToPixels());
           width = length;
@@ -314,7 +342,10 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
         width = p;
       }
       double edge = ROUNDED_EDGE.convertToPixels();
-      body[0] = new RoundRectangle2D.Double(centerX - length / 2, centerY - width / 2, length, width, edge, edge);
+      if (getType() == TrimmerType.FLAT_SMALL2)
+        body[0] = new Ellipse2D.Double(centerX - length / 2, centerY - width / 2, length, width);
+      else
+        body[0] = new RoundRectangle2D.Double(centerX - length / 2, centerY - width / 2, length, width, edge, edge);
     }
     return body;
   }
@@ -500,9 +531,9 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   }
 
   public static enum TrimmerType {
-    FLAT_SMALL("Horizontal Small 1"), FLAT_XSMALL("Horizontal Small 2"), FLAT_LARGE("Horizontal Medium"), FLAT_XLARGE(
-        "Horizontal Large"), VERTICAL_INLINE("Vertical Inline"), VERTICAL_OFFSET("Vertical Offset 1"), VERTICAL_OFFSET_BIG_GAP(
-        "Vertical Offset 2");
+    FLAT_SMALL("Horizontal Small 1"), FLAT_SMALL2("Horizontal Small 2"), FLAT_XSMALL("Horizontal Small 3"), FLAT_LARGE(
+        "Horizontal Medium"), FLAT_XLARGE("Horizontal Large"), VERTICAL_INLINE("Vertical Inline"), VERTICAL_OFFSET(
+        "Vertical Offset 1"), VERTICAL_OFFSET_BIG_GAP("Vertical Offset 2");
 
     String label;
 
