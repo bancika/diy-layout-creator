@@ -237,6 +237,7 @@ public class Presenter implements IPlugInPort {
     LOG.info(String.format("loadProject(%s, %s)", project.getTitle(), freshStart));
     this.currentProject = project;
     drawingManager.clearComponentAreaMap();
+    drawingManager.clearContinuityArea();
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -598,6 +599,7 @@ public class Presenter implements IPlugInPort {
         if (!oldProject.equals(currentProject)) {
           messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Add "
               + componentTypeSlot.getName());
+          drawingManager.clearContinuityArea();
           projectFileManager.notifyFileChange();
         }
       } else if (ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
@@ -689,6 +691,7 @@ public class Presenter implements IPlugInPort {
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
           "Rotate Selection");
       messageDispatcher.dispatchMessage(EventType.REPAINT);
+      drawingManager.clearContinuityArea();
       return true;
     }
 
@@ -917,6 +920,7 @@ public class Presenter implements IPlugInPort {
     moveComponents(controlPointMap, dx, dy, false);
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Move Selection");
     messageDispatcher.dispatchMessage(EventType.REPAINT);
+    drawingManager.clearContinuityArea();
   }
 
   @Override
@@ -1198,6 +1202,7 @@ public class Presenter implements IPlugInPort {
       rotateComponents(this.selectedComponents, direction, isSnapToGrid());
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
           "Rotate Selection");
+      drawingManager.clearContinuityArea();
       messageDispatcher.dispatchMessage(EventType.REPAINT);
     }
   }
@@ -1308,6 +1313,7 @@ public class Presenter implements IPlugInPort {
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
           "Mirror Selection");
       messageDispatcher.dispatchMessage(EventType.REPAINT);
+      drawingManager.clearContinuityArea();
     }
   }
 
@@ -1420,6 +1426,7 @@ public class Presenter implements IPlugInPort {
 
     if (!preDragProject.equals(currentProject)) {
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, currentProject.clone(), "Drag");
+      drawingManager.clearContinuityArea();
       projectFileManager.notifyFileChange();
     }
     messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1469,6 +1476,7 @@ public class Presenter implements IPlugInPort {
     updateSelection(newSelection);
 
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Duplicate");
+    drawingManager.clearContinuityArea();
     projectFileManager.notifyFileChange();
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
@@ -1489,6 +1497,7 @@ public class Presenter implements IPlugInPort {
     }
     currentProject.getComponents().removeAll(selectedComponents);
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Delete");
+    drawingManager.clearContinuityArea();
     projectFileManager.notifyFileChange();
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1527,7 +1536,7 @@ public class Presenter implements IPlugInPort {
     // Notify the listeners.
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Group");
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Group");      
       projectFileManager.notifyFileChange();
     }
   }
@@ -1540,7 +1549,7 @@ public class Presenter implements IPlugInPort {
     // Notify the listeners.
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Ungroup");
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Ungroup");      
       projectFileManager.notifyFileChange();
     }
   }
@@ -1618,7 +1627,7 @@ public class Presenter implements IPlugInPort {
         }
     }
     if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Send to Back");
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Send to Back");      
       projectFileManager.notifyFileChange();
       messageDispatcher.dispatchMessage(EventType.REPAINT);
     }
@@ -1672,7 +1681,7 @@ public class Presenter implements IPlugInPort {
     }
     if (!oldProject.equals(currentProject)) {
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
-          "Bring to Front");
+          "Bring to Front");      
       projectFileManager.notifyFileChange();
       messageDispatcher.dispatchMessage(EventType.REPAINT);
     }
@@ -1985,6 +1994,7 @@ public class Presenter implements IPlugInPort {
       if (!oldProject.equals(currentProject)) {
         messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
             "Edit Selection");
+        drawingManager.clearContinuityArea();
         projectFileManager.notifyFileChange();
       }
       messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -2022,6 +2032,7 @@ public class Presenter implements IPlugInPort {
       if (!oldProject.equals(currentProject)) {
         messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
             "Edit Project");
+        drawingManager.clearContinuityArea();
         projectFileManager.notifyFileChange();
       }
       drawingManager.fireZoomChanged();
@@ -2200,6 +2211,7 @@ public class Presenter implements IPlugInPort {
     if (!oldProject.equals(currentProject)) {
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
           "Edit Selection");
+      drawingManager.clearContinuityArea();
       projectFileManager.notifyFileChange();
     }
     messageDispatcher.dispatchMessage(EventType.REPAINT);

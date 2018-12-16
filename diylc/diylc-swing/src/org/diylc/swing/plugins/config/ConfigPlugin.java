@@ -102,7 +102,7 @@ public class ConfigPlugin implements IPlugIn {
             .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance()
-            .createConfigAction(plugInPort, "Highlighted Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false), CONFIG_MENU);
+            .createConfigAction(plugInPort, "Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false), CONFIG_MENU);
 
     File themeDir = new File("themes");
     if (themeDir.exists()) {

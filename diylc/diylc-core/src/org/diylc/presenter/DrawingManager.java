@@ -391,6 +391,10 @@ public class DrawingManager {
     componentAreaMap.clear();
     lastDrawnStateMap.clear();
   }
+  
+  public void clearContinuityArea() {
+    this.continuityArea = null;
+  }
 
   public List<IDIYComponent<?>> findComponentsAt(Point point, Project project) {
     List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();

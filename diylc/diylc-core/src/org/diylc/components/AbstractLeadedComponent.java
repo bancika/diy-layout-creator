@@ -32,7 +32,6 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Observable;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;

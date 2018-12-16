@@ -67,7 +67,9 @@ public class Eyelet extends AbstractComponent<String> {
     int diameter = getClosestOdd((int) size.convertToPixels());
     int holeDiameter = getClosestOdd((int) holeSize.convertToPixels());
     g2d.setColor(color);
+    drawingObserver.startTrackingContinuityArea(true);
     g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+    drawingObserver.stopTrackingContinuityArea();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color.darker());
     g2d.drawOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);

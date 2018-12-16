@@ -30,21 +30,18 @@ import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.RenderingHints.Key;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.RenderingHints.Key;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
-import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
@@ -88,8 +85,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private AffineTransform currentTx;
   private AffineTransform initialTx;
   private Area currentArea;
-  private List<Area> currentContinuityPositiveAreas;
-  private List<Area> currentContinuityNegativeAreas;
+  private List<Area> continuityPositiveAreas;
+  private List<Area> continuityNegativeAreas;
   private Shape lastShape;
 
   private double zoom;
@@ -104,8 +101,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     this.canvasGraphics = canvasGraphics;
     this.zoom = zoom;
     currentArea = new Area();
-    currentContinuityPositiveAreas = new ArrayList<Area>();
-    currentContinuityNegativeAreas = new ArrayList<Area>();
+    continuityPositiveAreas = new ArrayList<Area>();
+    continuityNegativeAreas = new ArrayList<Area>();
     currentTx = new AffineTransform();
   }
 
@@ -115,8 +112,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public void startedDrawingComponent() {
     drawingComponent = true;
     currentArea = new Area();
-    currentContinuityPositiveAreas = new ArrayList<Area>();
-    currentContinuityNegativeAreas = new ArrayList<Area>();
+    continuityPositiveAreas = new ArrayList<Area>();
+    continuityNegativeAreas = new ArrayList<Area>();
     originalStroke = canvasGraphics.getStroke();
     originalColor = canvasGraphics.getColor();
     originalTx = canvasGraphics.getTransform();
@@ -140,7 +137,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setTransform(originalTx);
     canvasGraphics.setComposite(originalComposite);
     canvasGraphics.setFont(originalFont);
-    return new ComponentArea(currentArea, currentContinuityPositiveAreas, currentContinuityNegativeAreas);
+    return new ComponentArea(currentArea, continuityPositiveAreas, continuityNegativeAreas);
   }
 
   @Override
@@ -185,9 +182,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
       if (trackingContinuityAllowed) {
         if (trackingContinuityPositive)
-          currentContinuityPositiveAreas.add(area);
+          continuityPositiveAreas.add(area);
         else
-          currentContinuityNegativeAreas.add(area);
+          continuityNegativeAreas.add(area);
       }
       lastShape = s;
     }
@@ -203,95 +200,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     if (!drawingComponent || !trackingAllowed || s.equals(lastShape)) {
       return;
     }
-    lastShape = s;
-    PathIterator pathIterator = s.getPathIterator(null);
-    double thickness;
-    if (getStroke() instanceof BasicStroke) {
-      thickness = ((BasicStroke) getStroke()).getLineWidth() + 2 * LINE_SENSITIVITY_MARGIN;
-    } else {
-      thickness = 2 * LINE_SENSITIVITY_MARGIN;
-    }
-    Point2D prevPoint = null;
-    while (!pathIterator.isDone()) {
-      double[] coord = new double[6];
-      int type = pathIterator.currentSegment(coord);
-      switch (type) {
-        case PathIterator.SEG_MOVETO:
-          prevPoint = new Point2D.Double(coord[0], coord[1]);
-          break;
-        case PathIterator.SEG_LINETO:
-          // Represent straight line with a rectangle.
-          Point2D nextPoint = new Point2D.Double(coord[0], coord[1]);
-          Double theta = Math.atan2(nextPoint.getY() - prevPoint.getY(), nextPoint.getX() - prevPoint.getX());
-          double width =
-              Math.sqrt(Math.pow(nextPoint.getX() - prevPoint.getX(), 2)
-                  + Math.pow(nextPoint.getY() - prevPoint.getY(), 2));
-          double midX = (prevPoint.getX() + nextPoint.getX()) / 2;
-          double midY = (prevPoint.getY() + nextPoint.getY()) / 2;
-          Rectangle2D rect = new Rectangle2D.Double(midX - width / 2, midY - thickness / 2, width, thickness);
-          Area area = new Area(rect);
-          area.transform(AffineTransform.getRotateInstance(theta, midX, midY));
-          // area.transform(currentTx);
-          appendShape(area);
-          // Set the prev point to line end
-          prevPoint = nextPoint;
-          break;
-        case PathIterator.SEG_CUBICTO:
-          CubicCurve2D cubicCurve =
-              new CubicCurve2D.Double(prevPoint.getX(), prevPoint.getY(), coord[0], coord[1], coord[2], coord[3],
-                  coord[4], coord[5]);
-          addCubicCurveArea(cubicCurve);
-          prevPoint = new Point2D.Double(coord[4], coord[5]);
-          break;
-        case PathIterator.SEG_QUADTO:
-          QuadCurve2D quadCurve =
-              new QuadCurve2D.Double(prevPoint.getX(), prevPoint.getY(), coord[0], coord[1], coord[2], coord[3]);
-          addQuadCurveArea(quadCurve);
-          prevPoint = new Point2D.Double(coord[3], coord[3]);
-          break;
-      }
-      pathIterator.next();
-    }
-  }
 
-  /**
-   * Adds a cubic curve to the component area. It uses subdivision to approximate the curve with a
-   * series of straight lines.
-   * 
-   * @param curve
-   */
-  private void addCubicCurveArea(CubicCurve2D curve) {
-    // When end points are close enough, approximate the curve with a
-    // straight line.
-    if (curve.getFlatness() < CURVE_SENSITIVITY) {
-      appendShapeOutline(new Line2D.Double(curve.getP1(), curve.getP2()));
-    } else {
-      CubicCurve2D leftSubcurve = new CubicCurve2D.Double();
-      CubicCurve2D rightSubcurve = new CubicCurve2D.Double();
-      curve.subdivide(leftSubcurve, rightSubcurve);
-      addCubicCurveArea(leftSubcurve);
-      addCubicCurveArea(rightSubcurve);
-    }
-  }
-
-  /**
-   * Adds a quad curve to the component area. It uses subdivision to approximate the curve with a
-   * series of straight lines.
-   * 
-   * @param curve
-   */
-  private void addQuadCurveArea(QuadCurve2D curve) {
-    // When end points are close enough, approximate the curve with a
-    // straight line.
-    if (curve.getFlatness() < CURVE_SENSITIVITY) {
-      appendShapeOutline(new Line2D.Double(curve.getP1(), curve.getP2()));
-    } else {
-      QuadCurve2D leftSubcurve = new QuadCurve2D.Double();
-      QuadCurve2D rightSubcurve = new QuadCurve2D.Double();
-      curve.subdivide(leftSubcurve, rightSubcurve);
-      addQuadCurveArea(leftSubcurve);
-      addQuadCurveArea(rightSubcurve);
-    }
+    appendShape(getStroke().createStrokedShape(s));
   }
 
   @Override
