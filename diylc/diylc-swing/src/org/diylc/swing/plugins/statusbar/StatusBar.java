@@ -79,7 +79,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   public static String UPDATE_URL = "http://www.diy-fever.com/update.xml";
   private static final Format sizeFormat = new DecimalFormat("0.##");
 
-  private JComboBox<Double> zoomBox;
+  private JComboBox zoomBox;
   private UpdateLabel updateLabel;
   private JLabel announcementLabel;
   private MemoryBar memoryPanel;
@@ -151,9 +151,9 @@ public class StatusBar extends JPanel implements IPlugIn {
     }, false);
   }
 
-  private JComboBox<Double> getZoomBox() {
+  private JComboBox getZoomBox() {
     if (zoomBox == null) {
-      zoomBox = new JComboBox<Double>(plugInPort.getAvailableZoomLevels());
+      zoomBox = new JComboBox(plugInPort.getAvailableZoomLevels());
       zoomBox.setSelectedItem(plugInPort.getZoomLevel());
       zoomBox.setFocusable(false);
       zoomBox.setRenderer(new PercentageListCellRenderer());
