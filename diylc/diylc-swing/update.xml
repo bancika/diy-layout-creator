@@ -1892,6 +1892,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>File chooser dialogs don't append file extension if folder path has a dot character in it</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>"Cut Line" component sometimes disappears</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

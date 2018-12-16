@@ -158,7 +158,7 @@ public class DialogFactory {
     if (result == JFileChooser.APPROVE_OPTION) {
       lastDirectory = fileChooser.getCurrentDirectory();
       ConfigurationManager.getInstance().writeValue(PATH_KEY, lastDirectory.getAbsolutePath());
-      if (fileChooser.getSelectedFile().getAbsolutePath().contains(".")) {
+      if (fileChooser.getSelectedFile().getName().contains(".")) {
         return fileChooser.getSelectedFile();
       } else {
         return new File(fileChooser.getSelectedFile().getAbsoluteFile() + "." + defaultExtension);
