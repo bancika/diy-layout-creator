@@ -473,10 +473,10 @@ public class DrawingManager {
     List<Area> areas = new ArrayList<Area>();
     for (int i = 0; i < preliminaryAreas.size(); i++) {
       Area a = preliminaryAreas.get(i);
-      if (checkBreakout.get(i))
+//      if (checkBreakout.get(i))
         areas.addAll(tryBreakout(a));
-      else
-        areas.add(a);
+      // else
+      // areas.add(a);
     }
 
     crunchAreas(areas, connections);

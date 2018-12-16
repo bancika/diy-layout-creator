@@ -122,10 +122,13 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BASE_COLOR);
+      
+      drawingObserver.startTrackingContinuityArea(true);
       g2d.fill(body[1]);
       g2d.fill(body[2]);
       if (body[3] != null)
         g2d.fill(body[3]);
+      drawingObserver.stopTrackingContinuityArea();
 
       g2d.setComposite(oldComposite);
     }

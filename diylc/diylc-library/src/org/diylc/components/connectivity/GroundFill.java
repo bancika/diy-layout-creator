@@ -74,7 +74,9 @@ public class GroundFill extends AbstractComponent<Void> {
       xPoints[i] = controlPoints[i].x;
       yPoints[i] = controlPoints[i].y;
     }
+    drawingObserver.startTrackingContinuityArea(true);
     g2d.fillPolygon(xPoints, yPoints, controlPoints.length);
+    drawingObserver.stopTrackingContinuityArea();
     // Do not track any changes that follow because the whole board has been
     // tracked so far.
     drawingObserver.stopTracking();

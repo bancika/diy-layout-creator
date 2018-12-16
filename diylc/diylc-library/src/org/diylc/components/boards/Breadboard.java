@@ -21,7 +21,9 @@
 */
 package org.diylc.components.boards;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
@@ -188,6 +190,49 @@ public class Breadboard extends AbstractComponent<Void> {
         }
       }
     }
+    
+    // draw transparent connections just to designate connections
+    drawingObserver.startTrackingContinuityArea(true);
+    Composite oldComposite = g2d.getComposite();
+    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.0f));
+        
+    for (int section = 0; section <= 1; section++) {
+      double offset = section * 18 * spacing;
+        for (int x = 0; x < 2; x++) {
+          int holeX = (int) (point.x + offset + (x + 2) * spacing);
+          int holeY1 = (int) (point.y + (1 + powerOffset) * spacing);
+          int holeY2 = (int) (point.y + (psHoleCount -1 + powerOffset) * spacing);
+          g2d.setColor(HOLE_COLOR);
+          g2d.fillRoundRect(holeX - holeSize / 2, holeY1 - holeSize / 2, holeSize, holeSize + holeY2 - holeY1, holeArc, holeArc);
+      }
+    }
+    
+    for (int section = 0; section <= 1; section++) {
+      double offset = section * 7 * spacing;
+
+      for (int y = 0; y < holeCount; y++) {
+        g2d.setColor(COORDINATE_COLOR);
+        int coordinateX;
+        if (section == 0) {
+          coordinateX = (int) (point.x + offset + 5.5 * spacing);
+        } else {
+          coordinateX = (int) (point.x + offset + 10.5 * spacing);
+        }
+        drawCenteredText(g2d, new Integer(y + 1).toString(), coordinateX, (int) (point.y + (y + 1) * spacing),
+            section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+//        for (int x = 0; x < 5; x++) {
+          int holeX1 = (int) (point.x + offset + 6 * spacing);
+          int holeX2 = (int) (point.x + offset + 10 * spacing);
+          int holeY = (int) (point.y + (y + 1) * spacing);
+          g2d.setColor(HOLE_COLOR);
+          g2d.fillRoundRect(holeX1 - holeSize / 2, holeY - holeSize / 2, holeSize + holeX2 - holeX1, holeSize, holeArc, holeArc);
+//          }
+        }
+//      }
+    }
+    
+    g2d.setComposite(oldComposite);
+    drawingObserver.stopTrackingContinuityArea();
   }
 
   @Override

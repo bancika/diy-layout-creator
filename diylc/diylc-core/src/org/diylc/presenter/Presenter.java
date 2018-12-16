@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.presenter;
 
 import java.awt.Cursor;
@@ -132,7 +128,7 @@ public class Presenter implements IPlugInPort {
   private ProjectFileManager projectFileManager;
   private InstantiationManager instantiationManager;
 
-  private Rectangle selectionRect;  
+  private Rectangle selectionRect;
 
   private final IView view;
 
@@ -148,7 +144,7 @@ public class Presenter implements IPlugInPort {
   private Point previousDragPoint = null;
   private Project preDragProject = null;
   private int dragAction;
-  private Point previousScaledPoint;  
+  private Point previousScaledPoint;
 
   public Presenter(IView view) {
     super();
@@ -211,7 +207,8 @@ public class Presenter implements IPlugInPort {
         return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
       }
       for (IDIYComponent<?> component : currentProject.getComponents()) {
-        if (!isComponentLocked(component) && isComponentVisible(component)) {
+        if (!isComponentLocked(component) && isComponentVisible(component)
+            && !ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
           ComponentArea area = drawingManager.getComponentArea(component);
           if (area != null && area.getOutlineArea() != null && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -937,6 +934,10 @@ public class Presenter implements IPlugInPort {
           dragAction == DnDConstants.ACTION_LINK, dragAction == DnDConstants.ACTION_MOVE, 1);
       return;
     }
+    if (ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+      LOG.debug("Cannot start drag in hightlight continuity mode.");
+      return;
+    }
     this.dragInProgress = true;
     this.dragAction = dragAction;
     this.preDragProject = currentProject.clone();
@@ -1083,7 +1084,7 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public boolean dragOver(Point point) {
-    if (point == null) {
+    if (point == null || ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
       return false;
     }
     Point scaledPoint = scalePoint(point);
@@ -1404,14 +1405,16 @@ public class Presenter implements IPlugInPort {
         this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
       }
       List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
-      for (IDIYComponent<?> component : currentProject.getComponents()) {
-        if (!isComponentLocked(component) && isComponentVisible(component)) {
-          ComponentArea area = drawingManager.getComponentArea(component);
-          if ((area != null && area.getOutlineArea() != null) && (selectionRect != null) && area.getOutlineArea().intersects(selectionRect)) {
-            newSelection.addAll(findAllGroupedComponents(component));
+      if (!ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
+        for (IDIYComponent<?> component : currentProject.getComponents()) {
+          if (!isComponentLocked(component) && isComponentVisible(component)) {
+            ComponentArea area = drawingManager.getComponentArea(component);
+            if ((area != null && area.getOutlineArea() != null) && (selectionRect != null)
+                && area.getOutlineArea().intersects(selectionRect)) {
+              newSelection.addAll(findAllGroupedComponents(component));
+            }
           }
         }
-      }
       selectionRect = null;
       updateSelection(newSelection);
       // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
@@ -1536,7 +1539,7 @@ public class Presenter implements IPlugInPort {
     // Notify the listeners.
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Group");      
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Group");
       projectFileManager.notifyFileChange();
     }
   }
@@ -1549,7 +1552,7 @@ public class Presenter implements IPlugInPort {
     // Notify the listeners.
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Ungroup");      
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Ungroup");
       projectFileManager.notifyFileChange();
     }
   }
@@ -1627,7 +1630,7 @@ public class Presenter implements IPlugInPort {
         }
     }
     if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Send to Back");      
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Send to Back");
       projectFileManager.notifyFileChange();
       messageDispatcher.dispatchMessage(EventType.REPAINT);
     }
@@ -1681,7 +1684,7 @@ public class Presenter implements IPlugInPort {
     }
     if (!oldProject.equals(currentProject)) {
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
-          "Bring to Front");      
+          "Bring to Front");
       projectFileManager.notifyFileChange();
       messageDispatcher.dispatchMessage(EventType.REPAINT);
     }
@@ -1814,7 +1817,8 @@ public class Presenter implements IPlugInPort {
       // Skip already selected components or ones that cannot be stuck to
       // other components.
       ComponentArea area = drawingManager.getComponentArea(component);
-      if (newSelection.contains(component) || !component.isControlPointSticky(0) || area == null || area.getOutlineArea() == null)
+      if (newSelection.contains(component) || !component.isControlPointSticky(0) || area == null
+          || area.getOutlineArea() == null)
         continue;
       boolean matches = false;
       for (IDIYComponent<?> selectedComponent : this.selectedComponents) {

@@ -257,7 +257,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     Area[] body = getBody();
     for (int i = 0; i < body.length; i++) {
-      Area shape = body[i];
+      Area shape = body[i];      
       // determine color
       if (shape != null) {
         switch (i) {
@@ -276,7 +276,11 @@ public class PotentiometerPanel extends AbstractPotentiometer {
           g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
         }
         if (!outlineMode) {
+          if (i == 3)
+            drawingObserver.startTrackingContinuityArea(true);
           g2d.fill(shape);
+          if (i == 3)
+            drawingObserver.stopTrackingContinuityArea();
         }
         g2d.setComposite(oldComposite);
         Color finalBorderColor;
