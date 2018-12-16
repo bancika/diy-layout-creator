@@ -63,7 +63,7 @@ public class AnnouncementProvider {
     StringBuilder sb = new StringBuilder("<html>");
     for (int i = 0; i < announcements.size(); i++) {
       Date date = dateFormat.parse(announcements.get(i).getDate());
-      if (lastDate == null || lastDate.before(date) || (forceLast && i == announcements.size() - 1)) {
+      if (lastDate == null || lastDate.before(date) || lastDate.equals(date) || (forceLast && i == announcements.size() - 1)) {
         sb.append("<font size='4'><b>").append(announcements.get(i).getTitle()).append("</b> on ")
             .append(announcements.get(i).getDate()).append("</font>").append("<p>")
             .append(announcements.get(i).getText()).append("</p>");
