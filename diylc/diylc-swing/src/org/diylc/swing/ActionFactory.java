@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.swing;
 
 import java.awt.Toolkit;
@@ -199,6 +195,11 @@ public class ActionFactory {
 
   public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue) {
     return new ConfigAction(plugInPort, title, configKey, defaultValue);
+  }
+
+  public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue,
+      String tipKey) {
+    return new ConfigAction(plugInPort, title, configKey, defaultValue, tipKey);
   }
 
   public ThemeAction createThemeAction(IPlugInPort plugInPort, Theme theme) {
@@ -748,7 +749,7 @@ public class ActionFactory {
       putValue(AbstractAction.NAME, "Duplicate");
       putValue(AbstractAction.ACCELERATOR_KEY,
           KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-       putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentsGear.getIcon());
+      putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentsGear.getIcon());
     }
 
     @Override
@@ -1146,20 +1147,30 @@ public class ActionFactory {
 
     private IPlugInPort plugInPort;
     private String configKey;
+    private String tipKey;
 
-    public ConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue) {
+    public ConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue, String tipKey) {
       super();
       this.plugInPort = plugInPort;
       this.configKey = configKey;
+      this.tipKey = tipKey;
       putValue(AbstractAction.NAME, title);
       putValue(IView.CHECK_BOX_MENU_ITEM, true);
       putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance().readBoolean(configKey, defaultValue));
+    }
+
+    public ConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue) {
+      this(plugInPort, title, configKey, defaultValue, null);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info(getValue(AbstractAction.NAME) + " triggered");
       ConfigurationManager.getInstance().writeValue(configKey, getValue(AbstractAction.SELECTED_KEY));
+      if ((Boolean) getValue(AbstractAction.SELECTED_KEY) && tipKey != null
+          && !ConfigurationManager.getInstance().readBoolean(tipKey + ".dismissed", false)) {
+        DialogFactory.getInstance().createInfoDialog(tipKey).setVisible(true);
+      }
       plugInPort.refresh();
     }
   }

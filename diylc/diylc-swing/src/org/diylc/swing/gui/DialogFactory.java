@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.swing.gui;
 
 import java.awt.Window;
@@ -35,6 +31,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
+import org.diylc.swing.gui.editor.InfoDialog;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
@@ -78,13 +75,19 @@ public class DialogFactory {
     }
   }
 
-  public PropertyEditorDialog createPropertyEditorDialog(List<PropertyWrapper> properties, String title, boolean saveDefaults) {
+  public PropertyEditorDialog createPropertyEditorDialog(List<PropertyWrapper> properties, String title,
+      boolean saveDefaults) {
     return createPropertyEditorDialog(mainFrame, properties, title, saveDefaults);
   }
 
-  public PropertyEditorDialog createPropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title, boolean saveDefaults) {
+  public PropertyEditorDialog createPropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title,
+      boolean saveDefaults) {
     PropertyEditorDialog editor = new PropertyEditorDialog(owner, properties, title, saveDefaults);
     return editor;
+  }
+
+  public InfoDialog createInfoDialog(String tipKey) {
+    return new InfoDialog(mainFrame, tipKey);
   }
 
   public BomDialog createBomDialog(List<BomEntry> bom) {
@@ -111,7 +114,7 @@ public class DialogFactory {
 
     return processFileChooserResult(result, openFileChooser, defaultExtension);
   }
-  
+
   public File[] showOpenMultiDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
       IFileChooserAccessory accessory, JFrame ownerFrame) {
     JFileChooser openFileChooser = new JFileChooser();
@@ -167,13 +170,13 @@ public class DialogFactory {
       return null;
     }
   }
-  
+
   private File[] processFileMultiChooserResult(int result, JFileChooser fileChooser, String defaultExtension) {
     fileChooser.setAccessory(null);
     if (result == JFileChooser.APPROVE_OPTION) {
       lastDirectory = fileChooser.getCurrentDirectory();
       ConfigurationManager.getInstance().writeValue(PATH_KEY, lastDirectory.getAbsolutePath());
-      return fileChooser.getSelectedFiles();      
+      return fileChooser.getSelectedFiles();
     } else {
       return null;
     }
