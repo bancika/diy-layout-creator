@@ -15,8 +15,9 @@
  * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package org.diylc.swing.gui.editor;
+package org.diylc.swing.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Arrays;
 
@@ -41,7 +42,7 @@ public class InfoDialog extends ButtonDialog {
     super(owner, "Usage Tip", new String[] {"OK", "Dismiss"});
     this.tipKey = tipKey;
     int index = Arrays.asList(tipKeys).indexOf(tipKey);
-    this.message = messages[index];
+    this.message = messages[index];   
 
     setMinimumSize(new Dimension(240, 40));
 
@@ -53,7 +54,9 @@ public class InfoDialog extends ButtonDialog {
   protected JComponent getMainComponent() {
     JLabel label = new JLabel("<html>" + message + "</html>");
     label.setIcon(IconLoader.Help.getIcon());
-    label.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+    label.setBackground(Color.white);
+    label.setOpaque(true);
+    label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray), BorderFactory.createEmptyBorder(16, 16, 16, 16)));
     label.setIconTextGap(8);
     return label;
   }

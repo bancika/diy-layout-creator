@@ -31,7 +31,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
-import org.diylc.swing.gui.editor.InfoDialog;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
