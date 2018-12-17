@@ -168,3 +168,10 @@ Status bar contains the following sections (going left to right):
   * **Announcements** shows public announcements if there are any posted.
   * **Auto-update** notification. When the bulb is on, there are updates available. Click on it for more information.
   * **Memory bar** is the blue-ish icon on the right side that shows the amount of memory occupied by the application. Move the mouse over it to see more details or click on it to try to cleanup as much memory as possible. Color will turn red when memory consumption is running high.
+  
+  ### Using 'Highlight Connected Areas' Feature ###
+  
+Since version 3.42.0, DIYLC includes a feature that can follow traces, leads and all other conductive components with (theoretical) zero-resistance and highlight the area that is connected to the desired point on the layout. This can be useful when debugging circuits, especially with stripboard/vero layouts, PCBs, breadboard, but also point-to-point circuits. To activate this mode, use 'Config' -> 'Highlight Connected Areas' option from the main menu. Click on any component or part of a component that needs to be traced. A transparent green highlight will cover any connected areas.
+
+Please note that once in this mode, components on the layout cannot be moved or edited, we can only debug the circuit. To continue with editing, 'Highlight Connected Areas' option from the 'Config' menu must be turned back OFF.
+ 
