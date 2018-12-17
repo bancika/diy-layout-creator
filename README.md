@@ -2,7 +2,7 @@
 <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>
 <a href="https://github.com/bancika/diy-layout-creator/releases/latest">Click here</a> to get the latest version for all platforms.</a>
 <a href="https://github.com/bancika/diy-layout-creator/tree/wiki">Click here</a> to read the user documentation as well as developer documentation.
-**OSX users**: make sure that __3rd party apps are allowed__ on your Mac before installing DIYLC. [This document](https://support.apple.com/en-us/HT202491) covers how to do it.
+**OSX users**: make sure that __3rd party apps are allowed__ on your Mac before installing DIYLC. <a href="https://support.apple.com/en-us/HT202491">This document</a> covers how to do it.
 <h3><a name="News"></a>Introduction<a href="#Introduction" class="section_anchor"></a></h3>
 <p align="justify">DIY Layout Creator (DIYLC in short) is a freeware drawing tool developed with help of the large online community of DIY electronics enthusiasts. It incorporates many ideas that came from people using older versions of the application. The goal is to provide a simple interface and enough power to let the user draw schematics, board/chassis layouts and guitar wiring diagrams quickly and without a steep learning curve. Also, it is buitd around a flexible open source framework that may be used to draw pretty much anything. Below is a sample board layout drawn in DIYLC3. </p>
 <p></p>
