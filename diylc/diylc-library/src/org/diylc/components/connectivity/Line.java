@@ -24,8 +24,10 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.Stroke;
 
 import org.diylc.common.Display;
+import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
@@ -50,6 +52,7 @@ public class Line extends AbstractLeadedComponent<Void> {
   public static Color COLOR = Color.black;
 
   private Color color = COLOR;
+  protected LineStyle style = LineStyle.SOLID; 
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -61,7 +64,20 @@ public class Line extends AbstractLeadedComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    float thickness = 1f;
+    Stroke stroke = null;
+    switch (getStyle()) {
+      case SOLID:
+        stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
+        break;
+      case DASHED:
+        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2}, thickness * 4);
+        break;
+      case DOTTED:
+        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 3}, 0);
+        break;
+    }
+    g2d.setStroke(stroke);
     g2d.setColor(color);
     g2d.drawLine(getControlPoint(0).x, getControlPoint(0).y, getControlPoint(1).x, getControlPoint(1).y);
   }
@@ -84,6 +100,17 @@ public class Line extends AbstractLeadedComponent<Void> {
 
   public void setColor(Color color) {
     this.color = color;
+  }
+  
+  @EditableProperty(name = "Style")
+  public LineStyle getStyle() {
+    if (style == null)
+      style = LineStyle.SOLID;
+    return style;
+  }
+
+  public void setStyle(LineStyle style) {
+    this.style = style;
   }
 
   public Color getBodyColor() {

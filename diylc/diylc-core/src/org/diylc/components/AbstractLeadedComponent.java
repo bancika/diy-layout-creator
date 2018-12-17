@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.components;
 
 import java.awt.AlphaComposite;
@@ -29,6 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -36,6 +33,7 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
@@ -85,7 +83,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       // This will happen if components do not have any shape.
     }
   }
-  
+
   protected boolean IsCopperArea() {
     return false;
   }
@@ -146,9 +144,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         double leadLength = (distance - calculatePinSpacing(shapeRect)) / 2;
 
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-        Color leadColor = shouldShadeLeads() ?
-                getLeadColorForPainting(componentState).darker() :
-                getLeadColorForPainting(componentState);
+        Color leadColor =
+            shouldShadeLeads() ? getLeadColorForPainting(componentState).darker()
+                : getLeadColorForPainting(componentState);
         g2d.setColor(leadColor);
         drawLeads(g2d, theta, leadLength);
 
@@ -181,8 +179,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
       if (bodyColor != null) {
-          g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
-          g2d.fill(shape);
+        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
+        g2d.fill(shape);
       }
       decorateComponentBody(g2d, outlineMode);
       g2d.setComposite(oldComposite);
@@ -201,50 +199,6 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       }
       g2d.setColor(finalBorderColor);
       g2d.draw(shape);
-
-      // // Go back to the original transformation to draw leads.
-      // if (!outlineMode) {
-      // AffineTransform textTransform = g2d.getTransform();
-      // g2d.setTransform(oldTransform);
-      // if (length.convertToPixels() > points[0].distance(points[1])) {
-      // g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-      // 0.5f));
-      // }
-      // int leadThickness = getClosestOdd(getLeadThickness());
-      // double leadLength = (distance - calculatePinSpacing(shapeRect)) /
-      // 2 - leadThickness / 2;
-      // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-      // Color leadColor = shouldShadeLeads() ?
-      // getLeadColor(componentState).darker()
-      // : getLeadColor(componentState);
-      // g2d.setColor(leadColor);
-      // int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
-      // int endY = (int) Math.round(points[0].y + Math.sin(theta) *
-      // leadLength);
-      // g2d.drawLine(points[0].x, points[0].y, endX, endY);
-      // endX = (int) (points[1].x + Math.cos(theta - Math.PI) *
-      // leadLength);
-      // endY = (int) Math.round(points[1].y + Math.sin(theta - Math.PI) *
-      // leadLength);
-      // g2d.drawLine(points[1].x, points[1].y, endX, endY);
-      // if (shouldShadeLeads()) {
-      // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness
-      // - 2));
-      // leadColor = getLeadColor(componentState);
-      // g2d.setColor(leadColor);
-      // g2d.drawLine(points[0].x, points[0].y, (int) (points[0].x +
-      // Math.cos(theta)
-      // * leadLength), (int) (points[0].y + Math.sin(theta) *
-      // leadLength));
-      // g2d.drawLine(points[1].x, points[1].y, (int) (points[1].x +
-      // Math.cos(theta
-      // - Math.PI)
-      // * leadLength), (int) (points[1].y + Math.sin(theta - Math.PI)
-      // * leadLength));
-      // }
-      // g2d.setComposite(oldComposite);
-      // g2d.setTransform(textTransform);
-      // }
 
       // Draw label.
       g2d.setFont(project.getFont());
@@ -300,21 +254,54 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   private void drawLead(Graphics2D g2d, ComponentState componentState, IDrawingObserver observer, boolean isCopperArea) {
     if (isCopperArea)
       observer.startTrackingContinuityArea(true);
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness()));
+
+    float thickness = getLeadThickness();
+    Stroke stroke = null;
+    switch (getStyle()) {
+      case SOLID:
+        stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
+        break;
+      case DASHED:
+        stroke =
+            ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2, thickness * 4}, thickness * 4);
+        break;
+      case DOTTED:
+        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 4}, 0);
+        break;
+    }
+
+    g2d.setStroke(stroke);
     Color leadColor =
         shouldShadeLeads() ? getLeadColorForPainting(componentState).darker() : getLeadColorForPainting(componentState);
     g2d.setColor(leadColor);
     g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
-    
+
     if (isCopperArea)
       observer.stopTrackingContinuityArea();
 
     if (shouldShadeLeads()) {
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getLeadThickness() - 2));
+      switch (getStyle()) {
+        case SOLID:
+          stroke = ObjectCache.getInstance().fetchBasicStroke(thickness - 2);
+          break;
+        case DASHED:
+          stroke =
+              ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness * 2, thickness * 4},
+                  thickness * 4);
+          break;
+        case DOTTED:
+          stroke = ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness / 4, thickness * 4}, 0);
+          break;
+      }
+      g2d.setStroke(stroke);
       leadColor = getLeadColorForPainting(componentState);
       g2d.setColor(leadColor);
       g2d.drawLine(points[0].x, points[0].y, points[1].x, points[1].y);
     }
+  }
+
+  protected LineStyle getStyle() {
+    return LineStyle.SOLID;
   }
 
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {

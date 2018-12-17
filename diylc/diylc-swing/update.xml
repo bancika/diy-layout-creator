@@ -1932,12 +1932,20 @@
 		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>3</major>
-				<minor>42</minor>
-				<build>2</build>
+				<minor>43</minor>
+				<build>0</build>
 			</versionNumber>
 			<releaseDate>2018-12-17 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Dashed" and "Dotted" style to "Hookup Wire", "Jumper" and "Line" components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added five and seven control point options to curved components for more flexibility (literally)</description>
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Turret Lug" component</description>

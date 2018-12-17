@@ -26,6 +26,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 
 import org.diylc.common.Display;
+import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
@@ -49,6 +50,7 @@ public class Jumper extends AbstractLeadedComponent<Void> {
 
   @Deprecated
   private Color color;
+  protected LineStyle style = LineStyle.SOLID; 
 
   public Jumper() {
     super();
@@ -78,6 +80,17 @@ public class Jumper extends AbstractLeadedComponent<Void> {
       this.leadColor = color;
     }
     return super.getLeadColor();
+  }
+  
+  @EditableProperty(name = "Style")
+  public LineStyle getStyle() {
+    if (style == null)
+      style = LineStyle.SOLID;
+    return style;
+  }
+
+  public void setStyle(LineStyle style) {
+    this.style = style;
   }
 
   public Color getBodyColor() {

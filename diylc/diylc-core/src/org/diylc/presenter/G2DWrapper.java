@@ -200,8 +200,17 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     if (!drawingComponent || !trackingAllowed || s.equals(lastShape)) {
       return;
     }
-
-    appendShape(getStroke().createStrokedShape(s));
+    Stroke stroke = getStroke();
+    if (stroke instanceof BasicStroke) {
+      BasicStroke bstroke = (BasicStroke) stroke;
+      if (bstroke.getLineWidth() < 3) {
+        appendShape(ObjectCache.getInstance().fetchBasicStroke(3).createStrokedShape(s));
+      } else {
+        appendShape(getStroke().createStrokedShape(s));
+      }
+    } else {
+      appendShape(getStroke().createStrokedShape(s));
+    }
   }
 
   @Override

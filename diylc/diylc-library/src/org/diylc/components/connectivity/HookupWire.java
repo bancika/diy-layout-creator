@@ -1,29 +1,26 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.CubicCurve2D;
+import java.awt.Stroke;
+import java.awt.geom.Path2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
@@ -55,18 +52,43 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
   }
 
   @Override
-  protected void drawCurve(CubicCurve2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
+  protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
     int thickness =
         (int) (Math.pow(Math.E, -1.12436 - 0.11594 * gauge.getValue()) * Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT));
     Color curveColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : color.darker();
     g2d.setColor(curveColor);
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
+    Stroke stroke = null;
+    switch (getStyle()) {
+      case SOLID:
+        stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
+        break;
+      case DASHED:
+        stroke =
+            ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2, thickness * 3}, thickness * 4);
+        break;
+      case DOTTED:
+        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 3}, 0);
+        break;
+    }
+    g2d.setStroke(stroke);
     g2d.draw(curve);
     if (componentState == ComponentState.NORMAL) {
       g2d.setColor(color);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness - 2));
+      switch (getStyle()) {
+        case SOLID:
+          stroke = ObjectCache.getInstance().fetchBasicStroke(thickness - 2);
+          break;
+        case DASHED:
+          stroke =
+              ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness * 2, thickness * 3},
+                  thickness * 4);
+          break;
+        case DOTTED:
+          stroke = ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness / 4, thickness * 3}, 0);
+      }
+      g2d.setStroke(stroke);
       g2d.draw(curve);
     }
   }
