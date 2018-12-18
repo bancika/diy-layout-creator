@@ -200,6 +200,8 @@ public class Presenter implements IPlugInPort {
   @Override
   public Cursor getCursorAt(Point point) {
     // Only change the cursor if we're not making a new component.
+    if (ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
+      return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     if (instantiationManager.getComponentTypeSlot() == null) {
       // Scale point to remove zoom factor.
       Point2D scaledPoint = scalePoint(point);
