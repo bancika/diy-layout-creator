@@ -73,14 +73,14 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(actionFactory.createSaveAsAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectDynamicSubmenu("Recent Files", IconLoader.History.getIcon(), FILE_TITLE, this);
     swingUI.injectMenuAction(null, FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportPDFAction(drawingProvider, swingUI), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportPNGAction(drawingProvider, swingUI), FILE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportPNGAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
     swingUI.injectMenuAction(
         actionFactory.createPrintAction(drawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
         FILE_TITLE);
     swingUI.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportPDFAction(traceMaskDrawingProvider, swingUI), TRACE_MASK_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportPNGAction(traceMaskDrawingProvider, swingUI), TRACE_MASK_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort, traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportPNGAction(plugInPort, traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
     swingUI.injectMenuAction(
         actionFactory.createPrintAction(traceMaskDrawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
             | KeyEvent.SHIFT_DOWN_MASK), TRACE_MASK_TITLE);

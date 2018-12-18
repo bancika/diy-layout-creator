@@ -101,12 +101,12 @@ public class ActionFactory {
     return new CreateBomAction(plugInPort);
   }
 
-  public ExportPDFAction createExportPDFAction(IDrawingProvider drawingProvider, ISwingUI swingUI) {
-    return new ExportPDFAction(drawingProvider, swingUI);
+  public ExportPDFAction createExportPDFAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
+    return new ExportPDFAction(plugInPort, drawingProvider, swingUI, defaultSuffix);
   }
 
-  public ExportPNGAction createExportPNGAction(IDrawingProvider drawingProvider, ISwingUI swingUI) {
-    return new ExportPNGAction(drawingProvider, swingUI);
+  public ExportPNGAction createExportPNGAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
+    return new ExportPNGAction(plugInPort, drawingProvider, swingUI, defaultSuffix);
   }
 
   public PrintAction createPrintAction(IDrawingProvider drawingProvider, int keyModifiers) {
@@ -509,7 +509,15 @@ public class ActionFactory {
       LOG.info("CreateBomAction triggered");
       List<BomEntry> bom =
           org.diylc.utils.BomMaker.getInstance().createBom(plugInPort.getCurrentProject().getComponents());
-      BomDialog dialog = DialogFactory.getInstance().createBomDialog(bom);
+      
+      String initialFileName = null;
+      String currentFile = plugInPort.getCurrentFileName();
+      if (currentFile != null) {
+        File cFile = new File(currentFile);        
+        initialFileName = cFile.getName().replaceAll("(?i)\\.diy", "") + " BOM";
+      }
+      
+      BomDialog dialog = DialogFactory.getInstance().createBomDialog(bom, initialFileName);
       dialog.setVisible(true);
     }
   }
@@ -520,11 +528,15 @@ public class ActionFactory {
 
     private IDrawingProvider drawingProvider;
     private ISwingUI swingUI;
+    private IPlugInPort plugInPort;
+    private String defaultSuffix;
 
-    public ExportPDFAction(IDrawingProvider drawingProvider, ISwingUI swingUI) {
+    public ExportPDFAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
       super();
+      this.plugInPort = plugInPort;
       this.drawingProvider = drawingProvider;
       this.swingUI = swingUI;
+      this.defaultSuffix = defaultSuffix;
       putValue(AbstractAction.NAME, "Export to PDF");
       putValue(AbstractAction.SMALL_ICON, IconLoader.PDF.getIcon());
     }
@@ -532,8 +544,16 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportPDFAction triggered");
+      
+      File initialFile = null;
+      String currentFile = plugInPort.getCurrentFileName();
+      if (currentFile != null) {
+        File cFile = new File(currentFile);        
+        initialFile = new File(cFile.getName().replaceAll("(?i)\\.diy", "") + defaultSuffix + ".pdf");
+      }
+      
       final File file =
-          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.PDF.getFilter(), null,
+          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.PDF.getFilter(), initialFile,
               FileFilterEnum.PDF.getExtensions()[0], null);
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
@@ -563,11 +583,16 @@ public class ActionFactory {
 
     private IDrawingProvider drawingProvider;
     private ISwingUI swingUI;
+    private IPlugInPort plugInPort;
+    private String defaultSuffix;
 
-    public ExportPNGAction(IDrawingProvider drawingProvider, ISwingUI swingUI) {
+    public ExportPNGAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
       super();
+      this.plugInPort = plugInPort;
+      this.drawingProvider = drawingProvider;
       this.drawingProvider = drawingProvider;
       this.swingUI = swingUI;
+      this.defaultSuffix = defaultSuffix;
       putValue(AbstractAction.NAME, "Export to PNG");
       putValue(AbstractAction.SMALL_ICON, IconLoader.Image.getIcon());
     }
@@ -575,8 +600,16 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportPNGAction triggered");
+      
+      File initialFile = null;
+      String currentFile = plugInPort.getCurrentFileName();
+      if (currentFile != null) {
+        File cFile = new File(currentFile);        
+        initialFile = new File(cFile.getName().replaceAll("(?i)\\.diy", "") + defaultSuffix + ".png");
+      }
+      
       final File file =
-          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.PNG.getFilter(), null,
+          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.PNG.getFilter(), initialFile,
               FileFilterEnum.PNG.getExtensions()[0], null);
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {

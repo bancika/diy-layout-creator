@@ -48,9 +48,11 @@ public class BomDialog extends JDialog {
 
   private ObjectListTable<BomEntry> table;
   private JPanel toolbar;
+  private String initialFileName;
 
-  public BomDialog(JFrame parent, List<BomEntry> bom) {
+  public BomDialog(JFrame parent, List<BomEntry> bom, String initialFileName) {
     super(parent, "Bill of Materials");
+    this.initialFileName = initialFileName;
     setContentPane(createMainPanel());
     getTable().setData(bom);
     pack();
@@ -111,8 +113,13 @@ public class BomDialog extends JDialog {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+      File initialFile = null;
+      if (initialFileName != null) {
+        initialFile = new File(initialFileName + ".xls");
+      }
+      
       File file =
-          DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(), FileFilterEnum.EXCEL.getFilter(), null,
+          DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(), FileFilterEnum.EXCEL.getFilter(), initialFile,
               FileFilterEnum.EXCEL.getExtensions()[0], null);
       if (file != null) {
         try {
@@ -137,8 +144,13 @@ public class BomDialog extends JDialog {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+      File initialFile = null;
+      if (initialFileName != null) {
+        initialFile = new File(initialFileName + ".csv");
+      }
+      
       File file =
-          DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(), FileFilterEnum.CSV.getFilter(), null,
+          DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(), FileFilterEnum.CSV.getFilter(), initialFile,
               FileFilterEnum.CSV.getExtensions()[0], null);
       if (file != null) {
         try {
@@ -163,8 +175,13 @@ public class BomDialog extends JDialog {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+      File initialFile = null;
+      if (initialFileName != null) {
+        initialFile = new File(initialFileName + ".html");
+      }
+      
       File file =
-          DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(), FileFilterEnum.HTML.getFilter(), null,
+          DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(), FileFilterEnum.HTML.getFilter(), initialFile,
               FileFilterEnum.HTML.getExtensions()[0], null);
       if (file != null) {
         try {
@@ -189,8 +206,13 @@ public class BomDialog extends JDialog {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+      File initialFile = null;
+      if (initialFileName != null) {
+        initialFile = new File(initialFileName + ".png");
+      }
+      
       File file =
-          DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(), FileFilterEnum.PNG.getFilter(), null,
+          DialogFactory.getInstance().showSaveDialog(BomDialog.this.getOwner(), FileFilterEnum.PNG.getFilter(), initialFile,
               FileFilterEnum.PNG.getExtensions()[0], null);
       if (file != null) {
         try {

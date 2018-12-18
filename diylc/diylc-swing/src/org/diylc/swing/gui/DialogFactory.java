@@ -89,8 +89,8 @@ public class DialogFactory {
     return new InfoDialog(mainFrame, tipKey);
   }
 
-  public BomDialog createBomDialog(List<BomEntry> bom) {
-    BomDialog dialog = new BomDialog(mainFrame, bom);
+  public BomDialog createBomDialog(List<BomEntry> bom, String initialFileName) {
+    BomDialog dialog = new BomDialog(mainFrame, bom, initialFileName);
     return dialog;
   }
 

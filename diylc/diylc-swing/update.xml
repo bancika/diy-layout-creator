@@ -1967,6 +1967,10 @@
 					<description>Added few chassis-related components under "Electromechanical" category</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>All file export actions (PNG, PDF, BOM...) take the current file name as a default</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Change mouse cursor when in "Highlight Connected Areas" mode to avoid confusion</description>
 				</org.diylc.appframework.update.Change>	
