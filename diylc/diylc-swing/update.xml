@@ -1959,12 +1959,20 @@
 				<minor>44</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2018-12-17 00:00:00.000 CET</releaseDate>
+			<releaseDate>2018-12-18 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>				
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added few chassis-related components under "Electromechanical" category</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Change mouse cursor when in "Highlight Connected Areas" mode to avoid confusion</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Thin dashed and dotted lines turn to solid when zommed in</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

@@ -36,7 +36,7 @@ public class Constants {
   public static Color CANVAS_COLOR = Color.white;
 
   public static final Stroke DASHED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
-      new float[] {2.0f}, 0.0f);
+      new float[] {2.0f, 4.0f}, 0.0f);
 
   public static final Theme DEFAULT_THEME = new Theme("Light", Constants.CANVAS_COLOR, new Color(240, 240, 240),
       Color.black);

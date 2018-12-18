@@ -41,7 +41,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Turret Lug", category = "Connectivity", author = "Branislav Stojkovic",
-    description = "Turret terminal lug", instanceNamePrefix = "Eyelet", stretchable = false,
+    description = "Turret terminal lug", instanceNamePrefix = "Turret", stretchable = false,
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class)
 public class Turret extends AbstractComponent<String> {
