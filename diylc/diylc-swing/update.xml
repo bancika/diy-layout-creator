@@ -1972,6 +1972,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Center visible area to the selection when using mouse wheel to zoom in and out</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Change mouse cursor when in "Highlight Connected Areas" mode to avoid confusion</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

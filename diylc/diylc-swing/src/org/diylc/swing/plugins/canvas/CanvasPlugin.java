@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.swing.plugins.canvas;
 
 import java.awt.Dimension;
@@ -36,6 +32,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -240,17 +237,17 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           plugInPort.setMetric(isMetric);
         }
       });
-      
+
       // disable scrolling
       scrollPane.setWheelScrollingEnabled(false);
-      
+
       scrollPane.addMouseWheelListener(new MouseWheelListener() {
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
           final JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
           final JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-          
+
           boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
           if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
@@ -274,25 +271,42 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
               }
               plugInPort.setZoomLevel(newZoom = availableZoomLevels[i]);
             }
-
-            // center to cursor
-            Point desiredPos =
-                new Point((int) (1d * mousePos.x / oldZoom * newZoom), (int) (1d * mousePos.y / oldZoom * newZoom));
-            int dx = desiredPos.x - mousePos.x;
-            int dy = desiredPos.y - mousePos.y;
+            
+            Rectangle2D selectionBounds = plugInPort.getSelectionBounds(true);
+            Rectangle visibleRect = scrollPane.getVisibleRect();
+            
             JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
-            horizontal.setValue(horizontal.getValue() + dx);
             JScrollBar vertical = scrollPane.getVerticalScrollBar();
-            vertical.setValue(vertical.getValue() + dy);
-          } if (e.isShiftDown()) {            
+
+            if (selectionBounds == null) {
+              // center to cursor
+              Point desiredPos =
+                  new Point((int) (1d * mousePos.x / oldZoom * newZoom), (int) (1d * mousePos.y / oldZoom * newZoom));
+              int dx = desiredPos.x - mousePos.x;
+              int dy = desiredPos.y - mousePos.y;              
+              horizontal.setValue(horizontal.getValue() + dx);              
+              vertical.setValue(vertical.getValue() + dy);
+            } else {
+              // center to selection
+              horizontal.setValue((int) (selectionBounds.getX() + selectionBounds.getWidth() / 2 - visibleRect
+                  .getWidth() / 2));
+              vertical.setValue((int) (selectionBounds.getY() + selectionBounds.getHeight() / 2 - visibleRect
+                  .getHeight() / 2));
+            }
+          }
+          if (e.isShiftDown()) {
             int iScrollAmount = e.getScrollAmount();
-            int iNewValue = horizontalScrollBar.getValue() + horizontalScrollBar.getBlockIncrement() * iScrollAmount * e.getWheelRotation();
-            if (iNewValue <= horizontalScrollBar.getMaximum())            
-                horizontalScrollBar.setValue(iNewValue);            
-          } else {            
+            int iNewValue =
+                horizontalScrollBar.getValue() + horizontalScrollBar.getBlockIncrement() * iScrollAmount
+                    * e.getWheelRotation();
+            if (iNewValue <= horizontalScrollBar.getMaximum())
+              horizontalScrollBar.setValue(iNewValue);
+          } else {
             int iScrollAmount = e.getScrollAmount();
-            int iNewValue = verticalScrollBar.getValue() + verticalScrollBar.getBlockIncrement() * iScrollAmount * e.getWheelRotation();
-            if (iNewValue <= verticalScrollBar.getMaximum())            
+            int iNewValue =
+                verticalScrollBar.getValue() + verticalScrollBar.getBlockIncrement() * iScrollAmount
+                    * e.getWheelRotation();
+            if (iNewValue <= verticalScrollBar.getMaximum())
               verticalScrollBar.setValue(iNewValue);
           }
         }
