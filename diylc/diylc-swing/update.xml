@@ -1984,6 +1984,22 @@
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>	
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>44</minor>
+				<build>1</build>
+			</versionNumber>
+			<releaseDate>2018-12-18 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>								
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed OSX "No compatible version of Java 1.8+ is available." error</description>
+				</org.diylc.appframework.update.Change>	
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
 	</a>
 </java.util.Arrays_-ArrayList>
