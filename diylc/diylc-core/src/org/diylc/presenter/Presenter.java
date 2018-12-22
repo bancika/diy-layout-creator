@@ -616,7 +616,7 @@ public class Presenter implements IPlugInPort {
           IDIYComponent<?> topComponent = components.get(0);
           // If ctrl is pressed just toggle the component under mouse
           // cursor.
-          if (ctrlDown) {
+          if (!Utils.isMac() && ctrlDown) {
             if (newSelection.contains(topComponent)) {
               newSelection.removeAll(findAllGroupedComponents(topComponent));
             } else {
