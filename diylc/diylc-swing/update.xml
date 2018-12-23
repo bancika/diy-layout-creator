@@ -2014,6 +2014,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed selection issues on right click in OSX</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Reverted undesired change for four-point curved traces and wires which made them slightly more curved than before</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

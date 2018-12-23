@@ -128,7 +128,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     if (getPointCount() == PointCount.TWO) {
       path.lineTo(p[1].x, p[1].y);
     } else if (getPointCount() == PointCount.THREE) {
-      path.quadTo(p[1].x, p[1].y, p[2].x, p[2].y);
+      path.curveTo(p[1].x, p[1].y, p[1].x, p[1].y, p[2].x, p[2].y);
     } else if (getPointCount() == PointCount.FOUR) {
       path.curveTo(p[1].x, p[1].y, p[2].x, p[2].y, p[3].x, p[3].y);
     } else if (getPointCount() == PointCount.FIVE) {
