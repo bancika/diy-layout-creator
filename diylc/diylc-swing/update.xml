@@ -2016,7 +2016,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Reverted undesired change for four-point curved traces and wires which made them slightly more curved than before</description>
+					<description>Reverted undesired change for three-point curved traces and wires which made them slightly more rounded than before</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
