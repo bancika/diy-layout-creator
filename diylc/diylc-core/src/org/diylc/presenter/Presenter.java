@@ -876,7 +876,7 @@ public class Presenter implements IPlugInPort {
       if (compArea != null && compArea.getOutlineArea() != null)
         totalArea.add(compArea.getOutlineArea());
       else
-        LOG.debug("Area is null");
+        LOG.warn("Area is null for " + c.getName() + " of type " + c.getClass().getName());
     }
     if (drawingManager.getZoomLevel() != 1 && applyZoom) {
       totalArea
