@@ -358,9 +358,9 @@ public class MainFrame extends JFrame implements ISwingUI {
             });
             submenu.add(menuItem);
           }
-        submenu.revalidate();
-        submenu.repaint();
-        submenu.doClick();
+//        submenu.revalidate();
+//        submenu.repaint();
+//        submenu.doClick();
       }
 
       @Override
