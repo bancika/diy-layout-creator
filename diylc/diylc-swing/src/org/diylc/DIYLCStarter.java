@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -114,16 +115,19 @@ public class DIYLCStarter {
       LOG.error("Could not set Look&Feel", e);
     }
     
-//    Thread fontThread = new Thread(new Runnable() {
-//
-//      @Override
-//      public void run() {
-//        LOG.debug("Starting font pre-loading");
-//        FontChooserComboBox box = new FontChooserComboBox();
-//        LOG.debug("Finished font pre-loading");
-//      }
-//    });
-//    fontThread.start();
+    Thread fontThread = new Thread(new Runnable() {
+
+      @Override
+      public void run() {
+        LOG.debug("Starting font pre-loading");
+        FontChooserComboBox box = new FontChooserComboBox();
+        box.getPreferredSize();
+        JPanel p = new JPanel();
+        box.paint(p.getGraphics());
+        LOG.debug("Finished font pre-loading");
+      }
+    });
+    fontThread.start();
 
     String val = System.getProperty(SCRIPT_RUN);
     if (!"true".equals(val)) {
