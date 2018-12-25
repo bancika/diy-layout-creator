@@ -252,7 +252,9 @@ public class V2FileParser implements IOldFileParser {
                     ru = ResistanceUnit.M;
                   else if (pr10.equals("R"))
                     ru = ResistanceUnit.R;
-                  value = Double.parseDouble(pr9);
+                  try {
+                	  value = Double.parseDouble(pr9);
+                  } catch (Exception e) {}
 
                 }
               } else if (propertyList.item(j).getAttributes().getNamedItem("name").getNodeValue()
