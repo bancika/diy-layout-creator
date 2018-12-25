@@ -2016,7 +2016,7 @@
 				</org.diylc.appframework.update.Change>								
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Fixed selection issues on right click in OSX</description>
+					<description>Fixed selection issues on right click in OSX that make it impossible to use Variants and other features</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
