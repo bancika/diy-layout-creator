@@ -21,6 +21,7 @@
 */
 package org.diylc.presenter;
 
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.util.List;
 
@@ -47,5 +48,16 @@ public class ComponentArea {
 
   public List<Area> getContinuityNegativeAreas() {
     return continuityNegativeAreas;
+  }
+  
+  public void translate(double dx, double dy) {
+	  AffineTransform tx = AffineTransform.getTranslateInstance(dx, dy);
+	  outlineArea.transform(tx);
+	  if (continuityPositiveAreas != null)
+		  for(Area area : continuityPositiveAreas)
+			  area.transform(tx);
+	  if (continuityNegativeAreas != null)
+		  for(Area area : continuityNegativeAreas)
+			  area.transform(tx);
   }
 }
