@@ -32,6 +32,7 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.transform.TextTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -43,7 +44,7 @@ import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined label", instanceNamePrefix = "L", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
-    stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW)
+    stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
 public class Label extends AbstractComponent<String> {
 
   public static String DEFAULT_TEXT = "Double click to edit text";

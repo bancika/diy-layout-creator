@@ -33,6 +33,7 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.transform.TextTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -44,7 +45,7 @@ import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,
-    flexibleZOrder = false, stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW)
+    flexibleZOrder = false, stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
 public class PCBText extends AbstractComponent<Void> {
 
   public static String DEFAULT_TEXT = "Double click to edit text";

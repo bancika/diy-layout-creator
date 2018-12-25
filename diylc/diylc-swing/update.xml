@@ -2040,7 +2040,7 @@
 			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Vastly improve performance of selection aree calculations, especially with bigger layouts</description>
+					<description>Faster click and popup menu response due to improved performance of selection area calculations, especially with bigger layouts</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -2049,6 +2049,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better error handing in V2 file importer</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Rotate commands now apply to "Label" and "PCB Text" components</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
