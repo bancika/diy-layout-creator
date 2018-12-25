@@ -356,6 +356,8 @@ public class Presenter implements IPlugInPort {
           if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
             ComponentType componentType =
                 ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
+            if (componentType == null)
+            	continue;
             List<ComponentType> nestedList;
             if (componentTypes.containsKey(componentType.getCategory())) {
               nestedList = componentTypes.get(componentType.getCategory());
@@ -517,8 +519,8 @@ public class Presenter implements IPlugInPort {
                 addComponent(component, true);
                 newSelection.add(component);
               }
-              // group components if there's more than one, e.g. building blocks
-              if (componentSlot.size() > 1) {
+              // group components if there's more than one, e.g. building blocks, but not clipboard contents
+              if (componentSlot.size() > 1 && !componentTypeSlot.getName().toLowerCase().contains("clipboard")) {
                 this.currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(componentSlot));
               }
               // Select the new component
@@ -1452,10 +1454,10 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void pasteComponents(Collection<IDIYComponent<?>> components) {
-    LOG.info(String.format("pasteComponents(%s)", components));
+  public void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup) {
+    LOG.info(String.format("pasteComponents(%s, %s)", components, autoGroup));
     instantiationManager.pasteComponents(components, this.previousScaledPoint, isSnapToGrid(),
-        currentProject.getGridSpacing());
+        currentProject.getGridSpacing(), autoGroup);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, instantiationManager.getComponentTypeSlot(),
         instantiationManager.getFirstControlPoint());
@@ -2327,6 +2329,8 @@ public class Presenter implements IPlugInPort {
       Collection<IDIYComponent<?>> components = blocks.get(blockName);
       if (components == null)
         throw new InvalidBlockException();
+      // clear potential control point every time!
+      instantiationManager.setPotentialControlPoint(null);
       // clone components
       List<IDIYComponent<?>> clones = new ArrayList<IDIYComponent<?>>();
       List<IDIYComponent<?>> testComponents = new ArrayList<IDIYComponent<?>>(currentProject.getComponents());
@@ -2341,7 +2345,7 @@ public class Presenter implements IPlugInPort {
           LOG.error("Could not clone component: " + c);
         }
       // paste them to the project
-      pasteComponents(clones);
+      pasteComponents(clones, true);
     } else
       throw new InvalidBlockException();
   }

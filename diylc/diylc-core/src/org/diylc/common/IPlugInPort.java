@@ -203,8 +203,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * Adds a list of components to the project.
    * 
    * @param components
+   * @param autoGroup
    */
-  void pasteComponents(Collection<IDIYComponent<?>> components);
+  void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup);
 
   /**
    * Duplicates selected components and places them nearby.

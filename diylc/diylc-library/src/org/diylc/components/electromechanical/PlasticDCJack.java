@@ -49,7 +49,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Plastic DC Jack", category = "Electromechanical", author = "Branislav Stojkovic",
+@ComponentDescriptor(name = "Plastic DC Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mount plastic DC jack", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false)
 public class PlasticDCJack extends AbstractTransparentComponent<String> {

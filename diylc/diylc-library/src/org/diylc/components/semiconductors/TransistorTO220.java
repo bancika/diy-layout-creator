@@ -463,7 +463,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
     this.body = null;
   }
 
-  @EditableProperty(name = "Lead length")
+  @EditableProperty(name = "Lead Length")
   public Size getLeadLength() {
     if (leadLength == null) {
       leadLength = LEAD_LENGTH;
@@ -477,7 +477,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
     this.body = null;
   }
 
-  @EditableProperty(name = "Tab border")
+  @EditableProperty(name = "Tab Border")
   public Color getTabBorderColor() {
     return tabBorderColor;
   }

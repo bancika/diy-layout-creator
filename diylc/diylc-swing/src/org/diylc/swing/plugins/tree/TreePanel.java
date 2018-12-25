@@ -239,10 +239,13 @@ public class TreePanel extends JPanel {
     getBlocksNode().removeAllChildren();
     for (final String block : blocks) {
       Payload payload = new Payload(block, new MouseAdapter() {
+    	  
+    	long previousActionTime = 0;
 
         @Override
         public void mouseClicked(MouseEvent e) {
-          if (e == null || SwingUtilities.isLeftMouseButton(e)) {
+          if (e == null || SwingUtilities.isLeftMouseButton(e) && System.currentTimeMillis() - previousActionTime > 100) {
+        	previousActionTime = System.currentTimeMillis();
             try {
               plugInPort.loadBlock(block);
             } catch (InvalidBlockException e1) {

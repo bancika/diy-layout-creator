@@ -34,7 +34,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Rectangular Cutout", author = "Branislav Stojkovic", category = "Electromechanical",
+@ComponentDescriptor(name = "Rectangular Cutout", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "RECTC", description = "Rectangular chassis cutout, with or without rounded edges",
     zOrder = IDIYComponent.CHASSIS + 0.1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     transformer = SimpleComponentTransformer.class)

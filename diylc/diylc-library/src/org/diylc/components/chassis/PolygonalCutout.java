@@ -35,7 +35,7 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "Polygonal Cutout", author = "Branislav Stojkovic", category = "Electromechanical",
+@ComponentDescriptor(name = "Polygonal Cutout", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "POLYC", description = "Polygonal chassis cutout", zOrder = IDIYComponent.CHASSIS + 0.1,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class PolygonalCutout extends AbstractShape {

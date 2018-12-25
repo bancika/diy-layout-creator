@@ -31,7 +31,7 @@ import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 
-@ComponentDescriptor(name = "Elliptical Cutout", author = "Branislav Stojkovic", category = "Electromechanical",
+@ComponentDescriptor(name = "Elliptical Cutout", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "ELC", description = "Elliptical chassis cutout", zOrder = IDIYComponent.CHASSIS + 0.1,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class EllipticalCutout extends AbstractShape {

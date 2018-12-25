@@ -131,7 +131,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Pin spacing")
+  @EditableProperty(name = "Pin Spacing")
   public Size getPinSpacing() {
     return pinSpacing;
   }

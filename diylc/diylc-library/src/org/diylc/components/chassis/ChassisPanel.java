@@ -38,7 +38,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Chassis Panel", author = "Branislav Stojkovic", category = "Electromechanical",
+@ComponentDescriptor(name = "Chassis Panel", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "CP", description = "One side of a chassis, with or withouth rounded edges",
     zOrder = IDIYComponent.CHASSIS, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
     transformer = SimpleComponentTransformer.class)

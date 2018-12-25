@@ -48,7 +48,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Mini Toggle Switch", category = "Electromechanical", author = "Branislav Stojkovic",
+@ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", autoEdit = false)
 public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> {

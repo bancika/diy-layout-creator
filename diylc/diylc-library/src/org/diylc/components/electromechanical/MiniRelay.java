@@ -52,7 +52,7 @@ import org.diylc.core.measures.Voltage;
 import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electromechanical",
+@ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1 or G5V-2",
     stretchable = false, zOrder = IDIYComponent.COMPONENT)
 public class MiniRelay extends AbstractTransparentComponent<String> {

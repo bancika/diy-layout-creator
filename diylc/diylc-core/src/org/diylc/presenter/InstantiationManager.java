@@ -61,9 +61,12 @@ public class InstantiationManager {
   private Point firstControlPoint;
   private Point potentialControlPoint;
 
-  private static final ComponentType clipboardType = new ComponentType("Clipboard contents",
+  public static final ComponentType clipboardType = new ComponentType("Clipboard contents",
       "Components from the clipboard", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, false, null,
       false, null, KeywordPolicy.NEVER_SHOW, null, false);
+  public static final ComponentType blockType = new ComponentType("Building block",
+	      "Components from the building block", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, false, null,
+	      false, null, KeywordPolicy.NEVER_SHOW, null, false);
 
   public InstantiationManager() {}
 
@@ -86,6 +89,10 @@ public class InstantiationManager {
   public Point getPotentialControlPoint() {
     return potentialControlPoint;
   }
+  
+  public void setPotentialControlPoint(Point potentialControlPoint) {
+	this.potentialControlPoint = potentialControlPoint;
+}
 
   public void setComponentTypeSlot(ComponentType componentTypeSlot, Template template, Project currentProject)
       throws Exception {
@@ -133,7 +140,7 @@ public class InstantiationManager {
   }
 
   public void pasteComponents(Collection<IDIYComponent<?>> components, Point scaledPoint, boolean snapToGrid,
-      Size gridSpacing) {
+      Size gridSpacing, boolean autoGroup) {	  
     // Adjust location of components so they are centered under the mouse
     // cursor
     int minX = Integer.MAX_VALUE;
@@ -176,7 +183,7 @@ public class InstantiationManager {
 
     // Update the component type slot so the app knows that something's
     // being instantiated.
-    this.componentTypeSlot = clipboardType;
+    this.componentTypeSlot = autoGroup ? blockType : clipboardType;
 
     if (snapToGrid) {
       scaledPoint = new Point(scaledPoint);

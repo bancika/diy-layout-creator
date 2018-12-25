@@ -134,7 +134,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Pin spacing")
+  @EditableProperty(name = "Pin Spacing")
   public Size getPinSpacing() {
     return pinSpacing;
   }
@@ -146,7 +146,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Row spacing")
+  @EditableProperty(name = "Row Spacing")
   public Size getRowSpacing() {
     return rowSpacing;
   }
@@ -527,7 +527,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     this.indentColor = indentColor;
   }
 
-  @EditableProperty(name = "Display pin numbers")
+  @EditableProperty(name = "Display Pin #s")
   public DisplayNumbers getDisplayNumbers() {
     return displayNumbers;
   }

@@ -359,7 +359,7 @@ public class ActionFactory {
             presenter.loadProjectFromFile(file.getAbsolutePath());
             // Grab all components and paste them into the main
             // presenter
-            plugInPort.pasteComponents(presenter.getCurrentProject().getComponents());
+            plugInPort.pasteComponents(presenter.getCurrentProject().getComponents(), false);
             // Cleanup components in the temp presenter, don't need
             // them anymore
             presenter.selectAll(0);
@@ -735,7 +735,7 @@ public class ActionFactory {
       try {
         List<IDIYComponent<?>> components =
             (List<IDIYComponent<?>>) clipboard.getData(ComponentTransferable.listFlavor);
-        plugInPort.pasteComponents(cloneComponents(components));
+        plugInPort.pasteComponents(cloneComponents(components), false);
       } catch (Exception ex) {
         LOG.error("Coule not paste.", ex);
       }

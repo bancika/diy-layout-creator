@@ -51,7 +51,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Open 1/4\" Jack", category = "Electromechanical", author = "Branislav Stojkovic",
+@ComponentDescriptor(name = "Open 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Switchcraft-style open panel mount 1/4\" phono jack, stereo and mono", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
 public class OpenJack1_4 extends AbstractTransparentComponent<String> {

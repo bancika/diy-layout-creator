@@ -117,21 +117,7 @@ public class ComponentProcessor {
       keywordTag = annotation.keywordTag();
       continuity = annotation.continuity();
     } else { // default
-      name = clazz.getSimpleName();
-      description = "";
-      creationMethod = CreationMethod.SINGLE_CLICK;
-      category = "Uncategorized";
-      namePrefix = "Unknown";
-      author = "Unknown";
-      zOrder = IDIYComponent.COMPONENT;
-      flexibleZOrder = false;
-      stretchable = true;
-      bomPolicy = BomPolicy.SHOW_ALL_NAMES;
-      autoEdit = true;
-      transformer = null;
-      keywordPolicy = KeywordPolicy.NEVER_SHOW;
-      keywordTag = null;
-      continuity = false;
+    	return null;
     }
     icon = null;
     // Draw component icon.
