@@ -2028,6 +2028,22 @@
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>		
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>46</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2018-12-25 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Vastly improve performance of selection aree calculations, especially with bigger layouts</description>
+				</org.diylc.appframework.update.Change>				
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>			
 	</a>
 </java.util.Arrays_-ArrayList>

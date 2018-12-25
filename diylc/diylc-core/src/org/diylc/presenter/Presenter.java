@@ -23,7 +23,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -870,19 +869,33 @@ public class Presenter implements IPlugInPort {
     if (selectedComponents == null || selectedComponents.isEmpty())
       return null;
 
-    Area totalArea = new Area();
-    for (IDIYComponent<?> c : selectedComponents) {
-      ComponentArea compArea = drawingManager.getComponentArea(c);
-      if (compArea != null && compArea.getOutlineArea() != null)
-        totalArea.add(compArea.getOutlineArea());
-      else
-        LOG.warn("Area is null for " + c.getName() + " of type " + c.getClass().getName());
-    }
-    if (drawingManager.getZoomLevel() != 1 && applyZoom) {
-      totalArea
-          .transform(AffineTransform.getScaleInstance(drawingManager.getZoomLevel(), drawingManager.getZoomLevel()));
-    }
-    return totalArea.getBounds2D();
+    int minX = Integer.MAX_VALUE;
+	int maxX = Integer.MIN_VALUE;
+	int minY = Integer.MAX_VALUE;
+	int maxY = Integer.MIN_VALUE;
+	for (IDIYComponent<?> c : selectedComponents) {
+		ComponentArea compArea = drawingManager.getComponentArea(c);
+		if (compArea != null && compArea.getOutlineArea() != null) {
+			Rectangle rect = compArea.getOutlineArea().getBounds();
+			if (rect.x < minX)
+				minX = rect.x;
+			if (rect.x + rect.width > maxX)
+				maxX = rect.x + rect.width;
+			if (rect.y < minY)
+				minY = rect.y;
+			if (rect.y + rect.height > maxY)
+				maxY = rect.y + rect.height;
+		} else
+			LOG.info("Area is null for " + c.getName() + " of type "
+					+ c.getClass().getName());
+	}
+	if (drawingManager.getZoomLevel() != 1 && applyZoom) {
+		minX *= drawingManager.getZoomLevel();
+		maxX *= drawingManager.getZoomLevel();
+		minY *= drawingManager.getZoomLevel();
+		maxY *= drawingManager.getZoomLevel();
+	}
+	return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
   }
 
   @Override
