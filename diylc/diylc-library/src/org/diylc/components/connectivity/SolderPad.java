@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.components.connectivity;
 
 import java.awt.Color;
@@ -76,10 +72,14 @@ public class SolderPad extends AbstractComponent<Void> {
     drawingObserver.startTrackingContinuityArea(true);
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter));
+    } else if (type == Type.OVAL_HORIZONTAL) {
+      g2d.fill(new Ellipse2D.Double(point.x - diameter / 2, point.y - diameter * 3 / 8, diameter, diameter * 3 / 4));
+    } else if (type == Type.OVAL_VERTICAL) {
+      g2d.fill(new Ellipse2D.Double(point.x - diameter * 3 / 8, point.y - diameter / 2, diameter * 3 / 4, diameter));
     } else {
       g2d.fill(new Rectangle2D.Double(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter));
     }
-    drawingObserver.stopTrackingContinuityArea();    
+    drawingObserver.stopTrackingContinuityArea();
     if (getHoleSize().getValue() > 0) {
       g2d.setColor(Constants.CANVAS_COLOR);
       g2d.fill(new Ellipse2D.Double(point.x - holeDiameter / 2, point.y - holeDiameter / 2, holeDiameter, holeDiameter));
@@ -186,11 +186,11 @@ public class SolderPad extends AbstractComponent<Void> {
   public void setValue(Void value) {}
 
   public static enum Type {
-    ROUND, SQUARE;
+    ROUND, SQUARE, OVAL_HORIZONTAL, OVAL_VERTICAL;
 
     @Override
     public String toString() {
-      return name().substring(0, 1) + name().substring(1).toLowerCase();
+      return name().substring(0, 1) + name().substring(1).toLowerCase().replace('_', ' ');
     }
   }
 }

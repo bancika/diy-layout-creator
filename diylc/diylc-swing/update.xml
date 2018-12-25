@@ -2039,6 +2039,10 @@
 			<name></name>
 			<changes>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Oval solder pads, available as new types of regular "Solder Pad" components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Faster click and popup menu response due to improved performance of selection area calculations, especially with bigger layouts</description>
 				</org.diylc.appframework.update.Change>	
