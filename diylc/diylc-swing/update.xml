@@ -2052,8 +2052,12 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Clicking on a building block twice in a row inside the component tree would make the components go back to the top-left corner of the layout</description>
-				</org.diylc.appframework.update.Change>					
+					<description>Clicking on a building block in the component tree sometimes makes the components go back to the top-left corner of the layout</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Ctrl + click doesn't add components to the selection in MacOS</description>
+				</org.diylc.appframework.update.Change>							
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>			

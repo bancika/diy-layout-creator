@@ -47,7 +47,6 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
-import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
@@ -136,23 +135,31 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     if (canvasPanel == null) {
       canvasPanel = new CanvasPanel(plugInPort);
       canvasPanel.addMouseListener(new MouseAdapter() {
+        
+        private MouseEvent pressedEvent;
+        
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          plugInPort.mouseClicked(e.getPoint(), e.getButton(), e.isControlDown(), e.isShiftDown(), e.isAltDown(),
+              e.getClickCount());
+        }
 
         @Override
         public void mousePressed(MouseEvent e) {
+          LOG.info("Pressed: " + e.isPopupTrigger());
           canvasPanel.requestFocus();
-          mouseReleased(e);
+          pressedEvent = e;
         }
 
         @Override
         public void mouseReleased(final MouseEvent e) {
-
           // Invoke the rest of the code later so we get the chance to
           // process selection messages.
           SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-              if (plugInPort.getNewComponentTypeSlot() == null && e.isPopupTrigger()) {
+              if (plugInPort.getNewComponentTypeSlot() == null && (e.isPopupTrigger() || pressedEvent.isPopupTrigger())) {
                 // Enable actions.
                 boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
                 getCutAction().setEnabled(enabled);
@@ -192,8 +199,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void keyPressed(KeyEvent e) {
-          if (plugInPort.keyPressed(e.getKeyCode(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
-              e.isShiftDown(), e.isAltDown())) {
+          if (plugInPort.keyPressed(e.getKeyCode(), e.isControlDown(), e.isShiftDown(), e.isAltDown())) {
             e.consume();
           }
         }
@@ -204,17 +210,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         @Override
         public void mouseMoved(MouseEvent e) {
           canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
-          plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(),
-              e.isAltDown());
-        }
-      });
-
-      canvasPanel.addMouseListener(new MouseAdapter() {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          plugInPort.mouseClicked(e.getPoint(), e.getButton(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
-              e.isShiftDown(), e.isAltDown(), e.getClickCount());
+          plugInPort.mouseMoved(e.getPoint(), e.isControlDown(), e.isShiftDown(), e.isAltDown());
         }
       });
     }
@@ -250,7 +246,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
           boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
-          if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
+          if (wheelZoom || e.isControlDown()) {
 
             Point mousePos = getCanvasPanel().getMousePosition(true);
 
@@ -271,10 +267,10 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
               }
               plugInPort.setZoomLevel(newZoom = availableZoomLevels[i]);
             }
-            
+
             Rectangle2D selectionBounds = plugInPort.getSelectionBounds(true);
             Rectangle visibleRect = scrollPane.getVisibleRect();
-            
+
             JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
             JScrollBar vertical = scrollPane.getVerticalScrollBar();
 
@@ -283,8 +279,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
               Point desiredPos =
                   new Point((int) (1d * mousePos.x / oldZoom * newZoom), (int) (1d * mousePos.y / oldZoom * newZoom));
               int dx = desiredPos.x - mousePos.x;
-              int dy = desiredPos.y - mousePos.y;              
-              horizontal.setValue(horizontal.getValue() + dx);              
+              int dy = desiredPos.y - mousePos.y;
+              horizontal.setValue(horizontal.getValue() + dx);
               vertical.setValue(vertical.getValue() + dy);
             } else {
               // center to selection
