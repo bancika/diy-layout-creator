@@ -2056,7 +2056,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Rotate commands now apply to "Label" and "PCB Text" components</description>
+					<description>Rotate commands now applies to "Label" and "PCB Text" components</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
