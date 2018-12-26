@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
@@ -85,7 +86,7 @@ public class ComponentButtonFactory {
             }
           }
           // Ctrl appends selection
-          if (e.isControlDown()) {
+          if (Utils.isMac() ? e.isControlDown() : e.isMetaDown()) {
             newSelection.addAll(plugInPort.getSelectedComponents());
           }
           plugInPort.updateSelection(newSelection);
@@ -99,7 +100,7 @@ public class ComponentButtonFactory {
 
       @Override
       public void keyPressed(KeyEvent e) {
-        plugInPort.keyPressed(e.getKeyCode(), e.isControlDown(), e.isShiftDown(), e.isAltDown());
+        plugInPort.keyPressed(e.getKeyCode(), Utils.isMac() ? e.isControlDown() : e.isMetaDown(), e.isShiftDown(), e.isAltDown());
       }
     });
     return button;
