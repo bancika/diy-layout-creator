@@ -2035,7 +2035,7 @@
 				<minor>46</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2018-12-25 00:00:00.000 CET</releaseDate>
+			<releaseDate>2018-12-26 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>	
 				<org.diylc.appframework.update.Change>
@@ -2065,6 +2065,22 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Ctrl + click doesn't add components to the selection in MacOS</description>
+				</org.diylc.appframework.update.Change>							
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>		
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>46</minor>
+				<build>1</build>
+			</versionNumber>
+			<releaseDate>2018-12-26 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>					
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Revert unintentional change for MacOs for "command" and "control" keys for zooming and selection</description>
 				</org.diylc.appframework.update.Change>							
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

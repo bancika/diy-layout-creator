@@ -47,6 +47,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
@@ -140,7 +141,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         
         @Override
         public void mouseClicked(MouseEvent e) {
-          plugInPort.mouseClicked(e.getPoint(), e.getButton(), e.isControlDown(), e.isShiftDown(), e.isAltDown(),
+          plugInPort.mouseClicked(e.getPoint(), e.getButton(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown(),
               e.getClickCount());
         }
 
@@ -199,7 +200,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void keyPressed(KeyEvent e) {
-          if (plugInPort.keyPressed(e.getKeyCode(), e.isControlDown(), e.isShiftDown(), e.isAltDown())) {
+          if (plugInPort.keyPressed(e.getKeyCode(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown())) {
             e.consume();
           }
         }
@@ -210,7 +211,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         @Override
         public void mouseMoved(MouseEvent e) {
           canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
-          plugInPort.mouseMoved(e.getPoint(), e.isControlDown(), e.isShiftDown(), e.isAltDown());
+          plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown());
         }
       });
     }
@@ -246,7 +247,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
           boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
-          if (wheelZoom || e.isControlDown()) {
+          if (wheelZoom || Utils.isMac() ? e.isMetaDown() : e.isControlDown()) {
 
             Point mousePos = getCanvasPanel().getMousePosition(true);
 
