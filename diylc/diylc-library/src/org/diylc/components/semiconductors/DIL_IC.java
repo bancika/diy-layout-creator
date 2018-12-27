@@ -158,6 +158,22 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     body = null;
   }
 
+/* to change the pin width for making SOIC, pin is .0138" to .02", mid-size is .017 inches
+    @EditableProperty(name="Pin Size") 
+    public Size getPinSize() {
+       if (PinWidth == null) {
+     pinSize = PIN_SIZE;
+    } 
+    return pinSize;
+    }
+    public void setPinSize(Size pinSize) {
+      this.pinSize = pinSize;
+      updateControlPoints();
+      // Reset body shape;
+    body = null;
+    }
+ */    
+
   @EditableProperty
   public Display getDisplay() {
     if (display == null) {
@@ -248,6 +264,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
       double y = controlPoints[0].y;
       double width;
       double height;
+//      double pinSize = this.pinSize.convertToPixels();
       double pinSize = PIN_SIZE.convertToPixels();
       double pinSpacing = this.pinSpacing.convertToPixels();
       double rowSpacing = this.rowSpacing.convertToPixels();
@@ -310,6 +327,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     }
     Area mainArea = getBody()[0];
     if (!outlineMode) {
+//      int pinSize = (int) this.pinSize.convertToPixels() / 2 * 2;
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point point : controlPoints) {
         g2d.setColor(PIN_COLOR);
@@ -417,6 +435,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     int pinNo = 0;
     int j = 0;
     int k = 0;
+//  int pinSize = (int) this.pinSize.convertToPixels();
     int pinSize = (int) PIN_SIZE.convertToPixels();
     for (Point point : controlPoints) {
       pinNo++;
