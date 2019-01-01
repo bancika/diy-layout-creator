@@ -247,7 +247,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
           boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
-          if (wheelZoom || Utils.isMac() ? e.isMetaDown() : e.isControlDown()) {
+          if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
 
             Point mousePos = getCanvasPanel().getMousePosition(true);
 
