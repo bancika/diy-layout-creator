@@ -73,6 +73,10 @@ public class FieldEditorFactory {
       MeasureEditor editor = new MeasureEditor(property);
       return editor;
     }
+    if (AbstractMeasure[].class.isAssignableFrom(property.getType())) {
+        MeasureArrayEditor editor = new MeasureArrayEditor(property);
+        return editor;
+      }
     if (ImageIcon.class.isAssignableFrom(property.getType())) {
       ImageEditor editor = new ImageEditor(property);
       return editor;
