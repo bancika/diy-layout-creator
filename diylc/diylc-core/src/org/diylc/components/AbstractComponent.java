@@ -149,6 +149,15 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 
   protected void drawCenteredText(Graphics2D g2d, String text, int x, int y, HorizontalAlignment horizontalAlignment,
       VerticalAlignment verticalAlignment) {
+    String[] parts = text.split("\n");
+    if (parts.length > 1) {
+      FontMetrics fontMetrics = g2d.getFontMetrics();
+      Rectangle stringBounds = fontMetrics.getStringBounds(parts[0], g2d).getBounds();
+      for (int i = 0; i < parts.length; i++)
+        drawCenteredText(g2d, parts[i], x, (int)(y - stringBounds.height * (parts.length - 1) / 2d + i * stringBounds.height), horizontalAlignment, verticalAlignment);
+      return;
+    }
+    
     FontMetrics fontMetrics = g2d.getFontMetrics();
     Rectangle stringBounds = fontMetrics.getStringBounds(text, g2d).getBounds();
 
