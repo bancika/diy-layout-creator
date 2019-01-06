@@ -54,7 +54,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Electrolytic Capacitor (can)", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(name = "Multi-Section Capacitor", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "C", description = "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
     stretchable = false, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capacitance[]> {
@@ -64,7 +64,7 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
   public static Color BODY_COLOR = Color.decode("#6B6DCE");
   public static Color BASE_COLOR = Color.decode("#333333");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = METAL_COLOR;
+  public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.white;
   public static Size PIN_SIZE = new Size(0.08d, SizeUnit.in);
@@ -119,7 +119,7 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
       if (isFirst)
         isFirst = false;
       else
-        sb.append(" / ");
+        sb.append("/");
       sb.append(c == null ? "" : format.format(c.getValue()));
     }
     if (value[0] != null)
@@ -203,39 +203,79 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
     
-    if (newCount == 2) {
-      controlPoints[1].setLocation(x + pinSpacing, y);
+    if (newCount == 2) {      
+      switch (orientation) {
+        case DEFAULT:        
+          controlPoints[1].setLocation(x + pinSpacing, y);
+          break;
+        case _90:
+          controlPoints[1].setLocation(x, y + pinSpacing);
+          break;
+        case _180:
+          controlPoints[1].setLocation(x - pinSpacing, y);
+          break;
+        case _270:
+          controlPoints[1].setLocation(x, y- pinSpacing);
+          break;
+        default:
+          throw new RuntimeException("Unexpected orientation: " + orientation);
+      }
     } else if (newCount == 3) {
-      controlPoints[1].setLocation(x + pinSpacing / 2, y - pinSpacing / 2);
-      controlPoints[2].setLocation(x + pinSpacing / 2, y + pinSpacing / 2);
+      switch (orientation) {
+        case DEFAULT:        
+          controlPoints[1].setLocation(x + pinSpacing / 2, y - pinSpacing / 2);
+          controlPoints[2].setLocation(x + pinSpacing / 2, y + pinSpacing / 2);
+          break;
+        case _90:
+          controlPoints[1].setLocation(x + pinSpacing / 2, y + pinSpacing / 2);
+          controlPoints[2].setLocation(x - pinSpacing / 2, y + pinSpacing / 2);
+          break;
+        case _180:
+          controlPoints[1].setLocation(x - pinSpacing / 2, y - pinSpacing / 2);
+          controlPoints[2].setLocation(x - pinSpacing / 2, y + pinSpacing / 2);
+          break;
+        case _270:
+          controlPoints[1].setLocation(x - pinSpacing / 2, y - pinSpacing / 2);
+          controlPoints[2].setLocation(x + pinSpacing / 2, y - pinSpacing / 2);
+          break;
+        default:
+          throw new RuntimeException("Unexpected orientation: " + orientation);
+      }
     } else {
       double theta = Math.PI * 2 / newCount;
-      double centerX = x + pinSpacing / 2;
-      double centerY = y;
-      for (int i = 1; i < newCount; i++) {
-        controlPoints[i].setLocation(centerX + Math.cos(-Math.PI + theta * i) * pinSpacing / 2, centerY + Math.sin(-Math.PI + theta * i) * pinSpacing / 2);
+      
+      double centerX;
+      double centerY;      
+      double theta0;
+      
+      switch (orientation) {
+        case DEFAULT:        
+          centerX = x + pinSpacing / 2;
+          centerY = y;
+          theta0 = -Math.PI;
+          break;
+        case _90:
+          centerX = x;
+          centerY = y + pinSpacing / 2;
+          theta0 = -Math.PI / 2;
+          break;
+        case _180:
+          centerX = x - pinSpacing / 2;
+          centerY = y;
+          theta0 = 0;
+          break;
+        case _270:
+          centerX = x;
+          centerY = y - pinSpacing / 2;
+          theta0 = Math.PI / 2;
+          break;
+        default:
+          throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-    }
-    
-    switch (orientation) {
-      case DEFAULT:        
-//        controlPoints[1].setLocation(x - pinSpacing, y + pinSpacing);
-//        controlPoints[2].setLocation(x, y + 2 * pinSpacing);
-        break;
-      case _90:
-        controlPoints[1].setLocation(x - pinSpacing, y - pinSpacing);
-        controlPoints[2].setLocation(x - 2 * pinSpacing, y);
-        break;
-      case _180:
-        controlPoints[1].setLocation(x + pinSpacing, y - pinSpacing);
-        controlPoints[2].setLocation(x, y - 2 * pinSpacing);
-        break;
-      case _270:
-        controlPoints[1].setLocation(x + pinSpacing, y + pinSpacing);
-        controlPoints[2].setLocation(x + 2 * pinSpacing, y);
-        break;
-      default:
-        throw new RuntimeException("Unexpected orientation: " + orientation);
+          
+      for (int i = 1; i < newCount; i++) {
+        controlPoints[i].setLocation(centerX + Math.cos(theta0 + theta * i) * pinSpacing / 2, centerY + Math.sin(theta0 + theta * i) * pinSpacing / 2);
+      }   
     }
   }
 
@@ -246,15 +286,51 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;
       int pinSpacing = (int) (getDiameter().convertToPixels() * RELATIVE_DIAMETER);
-      if (controlPoints.length == 2 || controlPoints.length == 3) {
-        centerX = x + pinSpacing / 2;
-        centerY = y;
+      if (controlPoints.length == 2 || controlPoints.length == 3) {       
+        switch (orientation) {
+          case DEFAULT:        
+            centerX = x + pinSpacing / 2;
+            centerY = y;
+            break;
+          case _90:
+            centerX = x;
+            centerY = y + pinSpacing / 2;
+            break;
+          case _180:
+            centerX = x - pinSpacing / 2;
+            centerY = y;
+            break;
+          case _270:
+            centerX = x;
+            centerY = y - pinSpacing / 2;
+            break;
+          default:
+            throw new RuntimeException("Unexpected orientation: " + orientation);
+        }
 //      } else if (controlPoints.length == 3) {
 //        controlPoints[1].setLocation(x + pinSpacing, y);
 //        controlPoints[2].setLocation(x + pinSpacing / 2, y + pinSpacing / 2);
       } else {
-        centerX = x + pinSpacing / 2;
-        centerY = y;
+        switch (orientation) {
+          case DEFAULT:        
+            centerX = x + pinSpacing / 2;
+            centerY = y;
+            break;
+          case _90:
+            centerX = x;
+            centerY = y + pinSpacing / 2;
+            break;
+          case _180:
+            centerX = x - pinSpacing / 2;
+            centerY = y;
+            break;
+          case _270:
+            centerX = x;
+            centerY = y - pinSpacing / 2;
+            break;
+          default:
+            throw new RuntimeException("Unexpected orientation: " + orientation);
+        }
       }
       int bodyDiameter = getClosestOdd(getDiameter().convertToPixels());
       int innerDiameter = getClosestOdd(getDiameter().convertToPixels() * 0.85);
@@ -296,9 +372,13 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(area[0]);
-    g2d.setColor(baseColor);
     
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : baseColor);    
     g2d.fill(area[1]);
+    if (outlineMode) {
+      g2d.setColor(baseColor.darker());    
+      g2d.draw(area[1]);
+    }
 
     for (Point point : controlPoints) {
       if (!outlineMode) {
@@ -354,15 +434,19 @@ public class ElectrolyticCanCapacitor extends AbstractTransparentComponent<Capac
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int margin = 2 * width / 32;
-    Area area = new Area(new Ellipse2D.Double(margin / 2, margin, width - 2 * margin, width - 2 * margin));
+    Area area = new Area(new Ellipse2D.Double(margin, margin, width - 2 * margin, width - 2 * margin));
     g2d.setColor(BODY_COLOR);
     g2d.fill(area);
     g2d.setColor(BORDER_COLOR);
     g2d.draw(area);
+    g2d.setColor(BASE_COLOR);
+    margin = 6 * width / 32;
+    area = new Area(new Ellipse2D.Double(margin, margin, width - 2 * margin + 1, width - 2 * margin + 1));
+    g2d.fill(area);
     g2d.setColor(PIN_COLOR);
     int pinSize = 2 * width / 32;
     for (int i = 0; i < 3; i++) {
-      g2d.fillOval((i == 1 ? width * 3 / 8 : width / 2) - pinSize / 2, (height / 4) * (i + 1), pinSize, pinSize);
+      g2d.fillOval((i == 1 ? width * 3 / 8 : width / 2) - pinSize / 2, height / 2 + (i - 1) * (height / 5), pinSize, pinSize);
     }
   }
 
