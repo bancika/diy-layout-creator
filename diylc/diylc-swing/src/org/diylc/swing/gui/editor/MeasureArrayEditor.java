@@ -60,7 +60,7 @@ public class MeasureArrayEditor extends Container {
 				.getValue());
 		Double[] values = new Double[measure.length];
 		for (int i = 0; i < measure.length; i++) {
-			values[i] = measure[i].getValue();
+			values[i] = measure[i] == null ? null : measure[i].getValue();
 		}
 		valueField = new DoubleArrayTextField(measure == null ? null : values);
 		oldBg = valueField.getBackground();
@@ -101,7 +101,7 @@ public class MeasureArrayEditor extends Container {
 					.getGenericSuperclass()).getActualTypeArguments()[0];
 			Method method = ((Class<?>) type).getMethod("values");
 			unitBox = new JComboBox((Object[]) method.invoke(null));
-			unitBox.setSelectedItem(measure == null || measure.length == 0 ? null
+			unitBox.setSelectedItem(measure == null || measure.length == 0 || measure[0] == null ? null
 					: measure[0].getUnit());
 			unitBox.addActionListener(new ActionListener() {
 
