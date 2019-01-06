@@ -2097,6 +2097,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fix "Mouse Wheel Zoom" feature that got broken in 3.46.1</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Inlude Themes (under Config menu) in the Windows installer version</description>
 				</org.diylc.appframework.update.Change>							
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

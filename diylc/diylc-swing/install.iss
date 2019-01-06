@@ -21,6 +21,7 @@ Source: "diylc.ico"; DestDir: "{app}"
 Source: "build\jar\diylc.jar"; DestDir: "{app}"
 Source: "build\jar\lib\*"; DestDir: "{app}\lib"
 Source: "build\jar\library\*"; DestDir: "{app}\library"
+Source: "themes\*"; DestDir: "{app}\themes"
 Source: "innosetup\donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
 
 [Registry]
