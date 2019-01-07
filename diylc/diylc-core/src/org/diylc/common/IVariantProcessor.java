@@ -25,26 +25,26 @@ import java.util.List;
 
 import org.diylc.core.Template;
 
-public interface ITemplateProcessor {
+public interface IVariantProcessor {
 
   public static final String TEMPLATES_KEY = "templates";
   public static final String DEFAULT_TEMPLATES_KEY = "defaultTemplates";
 
-  void saveSelectedComponentAsTemplate(String templateName);
+  void saveSelectedComponentAsVariant(String variantName);
 
-  List<Template> getTemplatesFor(String categoryName, String componentTypeName);
+  List<Template> getVariantsFor(String categoryName, String componentTypeName);
 
-  List<Template> getTemplatesForSelection();
+  List<Template> getVariantsForSelection();
 
-  void applyTemplateToSelection(Template template);
+  void applyVariantToSelection(Template variant);
 
-  void deleteTemplate(String categoryName, String componentTypeName, String templateName);
+  void deleteVariant(String categoryName, String componentTypeName, String variantName);
 
-  void setTemplateDefault(String categoryName, String componentTypeName, String templateName);
+  void setDefaultVariant(String categoryName, String componentTypeName, String variantName);
   
-  String getDefaultTemplate(String categoryName, String componentTypeName);
+  String getDefaultVariant(String categoryName, String componentTypeName);
 
-  public class TemplateAlreadyExistsException extends Exception {
+  public class VariantAlreadyExistsException extends Exception {
 
     private static final long serialVersionUID = 1L;
 

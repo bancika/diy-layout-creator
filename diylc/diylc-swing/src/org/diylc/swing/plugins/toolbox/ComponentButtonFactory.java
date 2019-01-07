@@ -106,9 +106,9 @@ public class ComponentButtonFactory {
     return button;
   }
 
-  public static JMenuItem createTemplateItem(final IPlugInPort plugInPort, final Template template,
+  public static JMenuItem createVariantItem(final IPlugInPort plugInPort, final Template variant,
       final ComponentType componentType) {
-    final JMenuItem item = new JMenuItem(template.getName()) {
+    final JMenuItem item = new JMenuItem(variant.getName()) {
 
       private static final long serialVersionUID = 1L;
 
@@ -122,14 +122,14 @@ public class ComponentButtonFactory {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        plugInPort.setNewComponentTypeSlot(componentType, template);
+        plugInPort.setNewComponentTypeSlot(componentType, variant);
       }
     });
     
-    String defaultVariant = plugInPort.getDefaultTemplate(componentType.getCategory(), componentType.getName());
+    String defaultVariant = plugInPort.getDefaultVariant(componentType.getCategory(), componentType.getName());
 
-    JLabel label = new JLabel(template.getName().equals(defaultVariant) ? IconLoader.PinGreen.getIcon() : IconLoader.PinGrey.getIcon());
-    label.setToolTipText(template.getName().equals(defaultVariant) ? "Remove default variant" : "Set default variant");
+    JLabel label = new JLabel(variant.getName().equals(defaultVariant) ? IconLoader.PinGreen.getIcon() : IconLoader.PinGrey.getIcon());
+    label.setToolTipText(variant.getName().equals(defaultVariant) ? "Remove default variant" : "Set default variant");
     label.addMouseListener(new MouseAdapter() {
 
       @Override
@@ -140,7 +140,7 @@ public class ComponentButtonFactory {
           JPopupMenu m = (JPopupMenu) c;
           m.setVisible(false);
         }
-        plugInPort.setTemplateDefault(componentType.getCategory(), componentType.getName(), template.getName());
+        plugInPort.setDefaultVariant(componentType.getCategory(), componentType.getName(), variant.getName());
         e.consume();
       }
     });
@@ -163,11 +163,11 @@ public class ComponentButtonFactory {
         }
         int result =
             JOptionPane.showConfirmDialog(SwingUtilities.getRoot(item), "Are you sure you want to delete variant \""
-                + template.getName() + "\"", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                + variant.getName() + "\"", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (result != JOptionPane.YES_OPTION) {
           return;
         }
-        plugInPort.deleteTemplate(componentType.getCategory(), componentType.getName(), template.getName());
+        plugInPort.deleteVariant(componentType.getCategory(), componentType.getName(), variant.getName());
         e.consume();
       }
     });

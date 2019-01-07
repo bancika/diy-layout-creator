@@ -2091,8 +2091,8 @@ public class Presenter implements IPlugInPort {
 
     // try to find a default template if none is provided
     if (componentType != null && template == null) {
-      String defaultTemplate = getDefaultTemplate(componentType.getCategory(), componentType.getName());
-      List<Template> templates = getTemplatesFor(componentType.getCategory(), componentType.getName());
+      String defaultTemplate = getDefaultVariant(componentType.getCategory(), componentType.getName());
+      List<Template> templates = getVariantsFor(componentType.getCategory(), componentType.getName());
       if (templates != null && defaultTemplate != null)
         for (Template t : templates) {
           if (t.getName().equals(defaultTemplate)) {
@@ -2122,25 +2122,25 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void saveSelectedComponentAsTemplate(String templateName) {
-    LOG.info(String.format("saveSelectedComponentAsTemplate(%s)", templateName));
+  public void saveSelectedComponentAsVariant(String variantName) {
+    LOG.info(String.format("saveSelectedComponentAsVariant(%s)", variantName));
     if (selectedComponents.size() != 1) {
-      throw new RuntimeException("Can only save a single component as a template at once.");
+      throw new RuntimeException("Can only save a single component as a variant at once.");
     }
     IDIYComponent<?> component = selectedComponents.iterator().next();
     ComponentType type =
         ComponentProcessor.getInstance().extractComponentTypeFrom(
             (Class<? extends IDIYComponent<?>>) component.getClass());
-    Map<String, List<Template>> templateMap =
+    Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
-    if (templateMap == null) {
-      templateMap = new HashMap<String, List<Template>>();
+    if (variantMap == null) {
+      variantMap = new HashMap<String, List<Template>>();
     }
     String key = type.getCategory() + "." + type.getName();
-    List<Template> templates = templateMap.get(key);
-    if (templates == null) {
-      templates = new ArrayList<Template>();
-      templateMap.put(key, templates);
+    List<Template> variants = variantMap.get(key);
+    if (variants == null) {
+      variants = new ArrayList<Template>();
+      variantMap.put(key, variants);
     }
     List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(component.getClass());
     Map<String, Object> values = new HashMap<String, Object>();
@@ -2166,10 +2166,10 @@ public class Presenter implements IPlugInPort {
       point.translate(-x, -y);
     }
 
-    Template template = new Template(templateName, values, points);
+    Template template = new Template(variantName, values, points);
     boolean exists = false;
-    for (Template t : templates) {
-      if (t.getName().equalsIgnoreCase(templateName)) {
+    for (Template t : variants) {
+      if (t.getName().equalsIgnoreCase(variantName)) {
         exists = true;
         break;
       }
@@ -2177,29 +2177,29 @@ public class Presenter implements IPlugInPort {
 
     if (exists) {
       int result =
-          view.showConfirmDialog("Template with that name already exists. Overwrite?", "Save as Template",
+          view.showConfirmDialog("A variant with that name already exists. Overwrite?", "Save as Variant",
               IView.YES_NO_OPTION, IView.WARNING_MESSAGE);
       if (result != IView.YES_OPTION) {
         return;
       }
-      // Delete the existing template
-      Iterator<Template> i = templates.iterator();
+      // Delete the existing variant
+      Iterator<Template> i = variants.iterator();
       while (i.hasNext()) {
         Template t = i.next();
-        if (t.getName().equalsIgnoreCase(templateName)) {
+        if (t.getName().equalsIgnoreCase(variantName)) {
           i.remove();
         }
       }
     }
 
-    templates.add(template);
+    variants.add(template);
 
     if (System.getProperty("org.diylc.WriteStaticVariants", "false").equalsIgnoreCase("true"))
     {
       if (defaultVariantMap == null)
         defaultVariantMap = new HashMap<String, List<Template>>();
       // unify default and user-variants
-      for(Map.Entry<String, List<Template>> entry : templateMap.entrySet()) {
+      for(Map.Entry<String, List<Template>> entry : variantMap.entrySet()) {
         if (defaultVariantMap.containsKey(entry.getKey())) {
           defaultVariantMap.get(entry.getKey()).addAll(entry.getValue());
         } else {
@@ -2218,13 +2218,13 @@ public class Presenter implements IPlugInPort {
         LOG.error("Could not save default variants", e);
       }
     } else {
-      ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, templateMap);
+      ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, variantMap);
     }
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Template> getTemplatesFor(String categoryName, String componentTypeName) {
+  public List<Template> getVariantsFor(String categoryName, String componentTypeName) {
     Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
     List<Template> variants = new ArrayList<Template>();
@@ -2243,7 +2243,7 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Template> getTemplatesForSelection() {
+  public List<Template> getVariantsForSelection() {
     if (this.selectedComponents.isEmpty()) {
       throw new RuntimeException("No components selected");
     }
@@ -2256,13 +2256,13 @@ public class Presenter implements IPlugInPort {
       if (selectedType == null)
         selectedType = type;
       else if (selectedType.getInstanceClass() != type.getInstanceClass())
-        throw new RuntimeException("Template can be applied on multiple components of the same type only");
+        return null;
     }
-    return getTemplatesFor(selectedType.getCategory(), selectedType.getName());
+    return getVariantsFor(selectedType.getCategory(), selectedType.getName());
   }
 
   @Override
-  public void applyTemplateToSelection(Template template) {
+  public void applyVariantToSelection(Template template) {
     LOG.debug(String.format("applyTemplateToSelection(%s)", template.getName()));
 
     Project oldProject = currentProject.clone();
@@ -2289,7 +2289,7 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void deleteTemplate(String categoryName, String componentTypeName, String templateName) {
+  public void deleteVariant(String categoryName, String componentTypeName, String templateName) {
     LOG.debug(String.format("deleteTemplate(%s, %s, %s)", categoryName, componentTypeName, templateName));
     Map<String, List<Template>> templateMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
@@ -2310,7 +2310,7 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void setTemplateDefault(String categoryName, String componentTypeName, String templateName) {
+  public void setDefaultVariant(String categoryName, String componentTypeName, String templateName) {
     LOG.debug(String.format("setTemplateDefault(%s, %s, %s)", categoryName, componentTypeName, templateName));
     Map<String, String> defaultTemplateMap =
         (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
@@ -2325,7 +2325,7 @@ public class Presenter implements IPlugInPort {
   
   @SuppressWarnings("unchecked")
   @Override
-  public String getDefaultTemplate(String categoryName, String componentTypeName) {
+  public String getDefaultVariant(String categoryName, String componentTypeName) {
     Map<String, String> defaultTemplateMap =
         (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
     if (defaultTemplateMap == null)

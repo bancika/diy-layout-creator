@@ -1011,7 +1011,7 @@ public class ActionFactory {
       String templateName =
           JOptionPane.showInputDialog(null, "Variant name:", "Save as Variant", JOptionPane.PLAIN_MESSAGE);
       if (templateName != null && !templateName.trim().isEmpty()) {
-        plugInPort.saveSelectedComponentAsTemplate(templateName);
+        plugInPort.saveSelectedComponentAsVariant(templateName);
       }
     }
   }

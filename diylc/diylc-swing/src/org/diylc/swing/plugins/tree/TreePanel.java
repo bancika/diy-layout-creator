@@ -441,14 +441,14 @@ public class TreePanel extends JPanel {
             popup.add(shortcutSubmenu);
             popup.add(new JSeparator());
 
-            List<Template> templates = plugInPort.getTemplatesFor(componentType.getCategory(), componentType.getName());
+            List<Template> templates = plugInPort.getVariantsFor(componentType.getCategory(), componentType.getName());
             if (templates == null || templates.isEmpty()) {
               JMenuItem item = new JMenuItem("<no variants>");
               item.setEnabled(false);
               popup.add(item);
             } else {
               for (Template template : templates) {
-                JMenuItem item = ComponentButtonFactory.createTemplateItem(plugInPort, template, componentType);
+                JMenuItem item = ComponentButtonFactory.createVariantItem(plugInPort, template, componentType);
                 popup.add(item);
               }
             }
@@ -628,7 +628,7 @@ public class TreePanel extends JPanel {
         }
         
         if (payload.getComponentType() != null) {
-          List<Template> variants = plugInPort.getTemplatesFor(payload.getComponentType().getCategory(), payload.getComponentType().getName());
+          List<Template> variants = plugInPort.getVariantsFor(payload.getComponentType().getCategory(), payload.getComponentType().getName());
           if (variants != null && !variants.isEmpty()) {
             variantsHtml = " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #D7FFC6; color: #666666;\">[+"
                 + variants.size() + "]</a>";  

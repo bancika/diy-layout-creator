@@ -160,7 +160,7 @@ class ComponentTabbedPane extends JTabbedPane {
     toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.X_AXIS));
     for (ComponentType componentType : componentTypes) {
       try {
-        Component button = ComponentButtonFactory.create(plugInPort, componentType, createTemplatePopup(componentType));
+        Component button = ComponentButtonFactory.create(plugInPort, componentType, createVariantPopup(componentType));
         toolbar.add(button);
       } catch (Exception e) {
         LOG.error("Could not create recent component button for " + componentType.getName(), e);
@@ -204,7 +204,7 @@ class ComponentTabbedPane extends JTabbedPane {
         componentType =
             ComponentProcessor.getInstance().extractComponentTypeFrom(
                 (Class<? extends IDIYComponent<?>>) Class.forName(componentClassName));
-        Component button = ComponentButtonFactory.create(plugInPort, componentType, createTemplatePopup(componentType));
+        Component button = ComponentButtonFactory.create(plugInPort, componentType, createVariantPopup(componentType));
         toolbar.add(button);
       } catch (Exception e) {
         LOG.error("Could not create recent component button for " + componentClassName, e);
@@ -212,23 +212,23 @@ class ComponentTabbedPane extends JTabbedPane {
     }
   }
 
-  private JPopupMenu createTemplatePopup(final ComponentType componentType) {
-    final JPopupMenu templatePopup = new JPopupMenu();
-    templatePopup.add("Loading...");
-    templatePopup.addPopupMenuListener(new PopupMenuListener() {
+  private JPopupMenu createVariantPopup(final ComponentType componentType) {
+    final JPopupMenu variantPopup = new JPopupMenu();
+    variantPopup.add("Loading...");
+    variantPopup.addPopupMenuListener(new PopupMenuListener() {
 
       @Override
       public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        templatePopup.removeAll();
-        List<Template> templates = plugInPort.getTemplatesFor(componentType.getCategory(), componentType.getName());
-        if (templates == null || templates.isEmpty()) {
+        variantPopup.removeAll();
+        List<Template> variants = plugInPort.getVariantsFor(componentType.getCategory(), componentType.getName());
+        if (variants == null || variants.isEmpty()) {
           JMenuItem item = new JMenuItem("<no variants>");
           item.setEnabled(false);
-          templatePopup.add(item);
+          variantPopup.add(item);
         } else {
-          for (Template template : templates) {
-            JMenuItem item = ComponentButtonFactory.createTemplateItem(plugInPort, template, componentType);
-            templatePopup.add(item);
+          for (Template variant : variants) {
+            JMenuItem item = ComponentButtonFactory.createVariantItem(plugInPort, variant, componentType);
+            variantPopup.add(item);
           }
         }
       }
@@ -239,6 +239,6 @@ class ComponentTabbedPane extends JTabbedPane {
       @Override
       public void popupMenuCanceled(PopupMenuEvent e) {}
     });
-    return templatePopup;
+    return variantPopup;
   }
 }

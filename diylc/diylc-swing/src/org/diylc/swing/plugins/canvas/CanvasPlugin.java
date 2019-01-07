@@ -413,14 +413,16 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     List<Template> templates = null;
 
     try {
-      templates = plugInPort.getTemplatesForSelection();
+      templates = plugInPort.getVariantsForSelection();
     } catch (Exception e) {
       LOG.info("Could not load variants for selection");
       getApplyTemplateMenu().setEnabled(false);
     }
 
-    if (templates == null)
+    if (templates == null) {
+      getApplyTemplateMenu().setEnabled(false);
       return;
+    }
 
     getApplyTemplateMenu().setEnabled(templates.size() > 0);
 
@@ -431,7 +433,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          plugInPort.applyTemplateToSelection(finalTemplate);
+          plugInPort.applyVariantToSelection(finalTemplate);
         }
       });
       getApplyTemplateMenu().add(item);

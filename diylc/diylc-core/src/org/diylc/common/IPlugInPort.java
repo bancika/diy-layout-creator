@@ -51,7 +51,7 @@ import org.diylc.core.Theme;
  * @see IMessageListener
  * @see EventType
  */
-public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, ITemplateProcessor,
+public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, IVariantProcessor,
     IBlockProcessor {
 
   public static final String ANTI_ALIASING_KEY = "antiAliasing";
