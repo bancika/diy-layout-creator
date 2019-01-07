@@ -98,6 +98,19 @@ public class Presenter implements IPlugInPort {
     }
   }
   public static final String DEFAULTS_KEY_PREFIX = "default.";
+  
+  private static Map<String, List<Template>> defaultVariantMap = null;
+  static {
+    try {
+      BufferedInputStream in = new BufferedInputStream(new FileInputStream("variants.xml"));
+      XStream xStream = new XStream(new DomDriver());
+      defaultVariantMap = (Map<String, List<Template>>) xStream.fromXML(in);
+      in.close();
+      LOG.info(String.format("Loaded default variants for %d components", defaultVariantMap == null ? 0 : defaultVariantMap.size()));
+    } catch (IOException e) {
+      LOG.error("Could not load default variants", e);
+    }
+  }
 
   public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
 
@@ -2184,12 +2197,20 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   @Override
   public List<Template> getTemplatesFor(String categoryName, String componentTypeName) {
-    Map<String, List<Template>> templateMap =
+    Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
-    if (templateMap != null) {
-      return templateMap.get(categoryName + "." + componentTypeName);
+    List<Template> variants = new ArrayList<Template>();
+    if (variantMap != null) {
+      List<Template> userVariants = variantMap.get(categoryName + "." + componentTypeName);
+      if (userVariants != null && !userVariants.isEmpty())
+        variants.addAll(userVariants);
     }
-    return null;
+    if (defaultVariantMap != null) {
+      List<Template> defaultVariants = defaultVariantMap.get(categoryName + "." + componentTypeName);
+      if (defaultVariants != null && !defaultVariants.isEmpty())
+        variants.addAll(defaultVariants);
+    }
+    return variants;
   }
 
   @SuppressWarnings("unchecked")

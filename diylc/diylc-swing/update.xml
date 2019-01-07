@@ -2103,6 +2103,10 @@
 					<description>Added visual indicator to the component tree showing how many variants, if any, exist for a component</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Made it possible for DIYLC to come with predefined component variants in addition to user-specific variants</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fix "Mouse Wheel Zoom" feature that got broken in 3.46.1</description>
 				</org.diylc.appframework.update.Change>	
