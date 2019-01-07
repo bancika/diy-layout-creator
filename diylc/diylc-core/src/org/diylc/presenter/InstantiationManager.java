@@ -378,7 +378,8 @@ public class InstantiationManager {
     PropertyWrapper angleProperty = null;
     for (PropertyWrapper propertyWrapper : properties) {
       if (propertyWrapper.getType().getName().equals(Orientation.class.getName())
-          || propertyWrapper.getType().getName().equals(OrientationHV.class.getName())) {
+          || propertyWrapper.getType().getName().equals(OrientationHV.class.getName())
+          || propertyWrapper.getName().equalsIgnoreCase("angle")) {
         angleProperty = propertyWrapper;
         break;
       }
@@ -397,6 +398,12 @@ public class InstantiationManager {
         } else if (value instanceof OrientationHV) {
           angleProperty.setValue(OrientationHV.values()[(((OrientationHV) value).ordinal() + 1)
               % OrientationHV.values().length]);
+        } else if (angleProperty.getName().equalsIgnoreCase("angle")) {
+          int angle = (Integer) angleProperty.getValue();
+          angle += 90;
+          if (angle >= 360)
+            angle -= 360;
+          angleProperty.setValue(angle);
         }
         angleProperty.writeTo(component);
       }

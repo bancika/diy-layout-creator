@@ -2107,6 +2107,10 @@
 					<description>DIYLC now comes with predefined component variants out-of-the box, in addition to user-specific variants</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Right-click rotate while placing components on the canvas now applies to tube sockets as wel</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fix "Mouse Wheel Zoom" feature that got broken in 3.46.1</description>
 				</org.diylc.appframework.update.Change>	
