@@ -103,6 +103,7 @@
 			<resourcefileset dir="${basedir}">
 				<include name="splash.png" />
 				<include name="update.xml" />
+				<include name="variants.xml" />
 				<include name="templates**/*.diy" />
 				<include name="themes**/*.xml" />
 			</resourcefileset>
@@ -129,6 +130,7 @@
 			<zipfileset dir="templates" prefix="templates" />
 			<zipfileset dir="themes" prefix="themes" />
 			<zipfileset dir="." includes="update.xml" />
+			<zipfileset dir="." includes="variants.xml" />
 			<zipfileset dir="." includes="run.sh" />
 			<zipfileset dir="." includes="diylc.l4j.ini" />
 			<zipfileset dir="." includes="diylc.exe" />
