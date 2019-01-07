@@ -149,11 +149,20 @@ public class TreePanel extends JPanel {
           Collections.sort(blockNames);
           if (!blockNames.equals(TreePanel.this.blocks)) {
             LOG.info("Detected block change");
-            refreshBlocks(blockNames);
+            refreshBuildingBlocks(blockNames);
           } else
             LOG.info("Detected no block change");
         } else
           LOG.info("Detected no block change");
+      }
+    });
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.TEMPLATES_KEY, new IConfigListener() {
+      
+      @Override
+      public void valueChanged(String key, Object value) {
+        LOG.info("Detected variants change, repainting the tree");
+        repaint();
       }
     });
 
@@ -194,7 +203,7 @@ public class TreePanel extends JPanel {
       if (newBlocks != null) {
         List<String> blockNames = new ArrayList<String>(newBlocks.keySet());
         Collections.sort(blockNames);
-        refreshBlocks(blockNames);
+        refreshBuildingBlocks(blockNames);
         this.blocks = blockNames;
       } else {
         this.blocks = new ArrayList<String>();
@@ -235,7 +244,7 @@ public class TreePanel extends JPanel {
     getTreeModel().nodeStructureChanged(getRecentNode());
   }
 
-  private void refreshBlocks(List<String> blocks) {
+  private void refreshBuildingBlocks(List<String> blocks) {
     getBlocksNode().removeAllChildren();
     for (final String block : blocks) {
       Payload payload = new Payload(block, new MouseAdapter() {
@@ -597,6 +606,9 @@ public class TreePanel extends JPanel {
           else
             setPreferredSize(new Dimension(0, 0));
         }
+        
+        String shortCutHtml = "";
+        String variantsHtml = "";
 
         if (payload.isVisible()) {
           HashMap<String, String> shortcutMap =
@@ -608,14 +620,22 @@ public class TreePanel extends JPanel {
           if (shortcutMap != null && shortcutMap.containsValue(identifier)) {
             for (String key : shortcutMap.keySet()) {
               if (shortcutMap.get(key).equals(identifier)) {
-                setText("<html>"
-                    + payload.toString()
-                    + " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #eeeeee; color: #666666;\"><sup>&nbsp;"
-                    + key + "&nbsp;</sup></a></html>");
+                shortCutHtml = " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #eeeeee; color: #666666;\">&nbsp;"
+                    + key + "&nbsp;</a>";                
               }
             }
           }
         }
+        
+        if (payload.getComponentType() != null) {
+          List<Template> variants = plugInPort.getTemplatesFor(payload.getComponentType().getCategory(), payload.getComponentType().getName());
+          if (variants != null && !variants.isEmpty()) {
+            variantsHtml = " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #D7FFC6; color: #666666;\">[+"
+                + variants.size() + "]</a>";  
+          }
+        }
+        
+        setText("<html>" + payload.toString() + shortCutHtml + variantsHtml + "</html>");
       }
 
       return this;
