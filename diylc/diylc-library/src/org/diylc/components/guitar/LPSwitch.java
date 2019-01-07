@@ -49,7 +49,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "LP Switch", category = "Guitar", author = "Branislav Stojkovic",
+@ComponentDescriptor(name = "LP Toggle Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Les Paul style 3 position toggle switch", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW")
 public class LPSwitch extends AbstractTransparentComponent<String> {
