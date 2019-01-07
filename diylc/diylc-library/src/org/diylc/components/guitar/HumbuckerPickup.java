@@ -268,7 +268,8 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
         for (Shape shape : body) {
           Area area = (Area) shape;
-          area.transform(rotation);
+          if (area != null)
+            area.transform(rotation);
         }
       }
     }
