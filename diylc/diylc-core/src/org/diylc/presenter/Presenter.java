@@ -27,8 +27,10 @@ import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -2191,7 +2193,32 @@ public class Presenter implements IPlugInPort {
 
     templates.add(template);
 
-    ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, templateMap);
+    if (System.getProperty("org.diylc.WriteStaticVariants", "false").equalsIgnoreCase("true"))
+    {
+      if (defaultVariantMap == null)
+        defaultVariantMap = new HashMap<String, List<Template>>();
+      // unify default and user-variants
+      for(Map.Entry<String, List<Template>> entry : templateMap.entrySet()) {
+        if (defaultVariantMap.containsKey(entry.getKey())) {
+          defaultVariantMap.get(entry.getKey()).addAll(entry.getValue());
+        } else {
+          defaultVariantMap.put(entry.getKey(), entry.getValue());
+        }        
+      }
+      try {
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("variants.xml"));
+        XStream xStream = new XStream(new DomDriver());
+        xStream.toXML(defaultVariantMap, out);        
+        out.close();
+        // no more user variants
+        ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, null);
+        LOG.info("Saved default variants");
+      } catch (IOException e) {
+        LOG.error("Could not save default variants", e);
+      }
+    } else {
+      ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, templateMap);
+    }
   }
 
   @SuppressWarnings("unchecked")
