@@ -125,9 +125,11 @@ public class ComponentButtonFactory {
         plugInPort.setNewComponentTypeSlot(componentType, template);
       }
     });
+    
+    String defaultVariant = plugInPort.getDefaultTemplate(componentType.getCategory(), componentType.getName());
 
-    JLabel label = new JLabel(template.isDefaultFlag() ? IconLoader.PinGreen.getIcon() : IconLoader.PinGrey.getIcon());
-    label.setToolTipText(template.isDefaultFlag() ? "Remove default variant" : "Set default variant");
+    JLabel label = new JLabel(template.getName().equals(defaultVariant) ? IconLoader.PinGreen.getIcon() : IconLoader.PinGrey.getIcon());
+    label.setToolTipText(template.getName().equals(defaultVariant) ? "Remove default variant" : "Set default variant");
     label.addMouseListener(new MouseAdapter() {
 
       @Override
@@ -138,8 +140,7 @@ public class ComponentButtonFactory {
           JPopupMenu m = (JPopupMenu) c;
           m.setVisible(false);
         }
-        plugInPort.setTemplateDefault(componentType.getCategory(), componentType.getName(), template.getName(),
-            !template.isDefaultFlag());
+        plugInPort.setTemplateDefault(componentType.getCategory(), componentType.getName(), template.getName());
         e.consume();
       }
     });

@@ -28,6 +28,7 @@ import org.diylc.core.Template;
 public interface ITemplateProcessor {
 
   public static final String TEMPLATES_KEY = "templates";
+  public static final String DEFAULT_TEMPLATES_KEY = "defaultTemplates";
 
   void saveSelectedComponentAsTemplate(String templateName);
 
@@ -39,7 +40,9 @@ public interface ITemplateProcessor {
 
   void deleteTemplate(String categoryName, String componentTypeName, String templateName);
 
-  void setTemplateDefault(String categoryName, String componentTypeName, String templateName, boolean defaultFlag);
+  void setTemplateDefault(String categoryName, String componentTypeName, String templateName);
+  
+  String getDefaultTemplate(String categoryName, String componentTypeName);
 
   public class TemplateAlreadyExistsException extends Exception {
 

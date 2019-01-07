@@ -30,14 +30,14 @@ public class Template {
   private String name;
   private Map<String, Object> values;
   private List<Point> points;
+  @Deprecated
   private boolean defaultFlag;
 
-  public Template(String name, Map<String, Object> values, List<Point> points, boolean defaultFlag) {
+  public Template(String name, Map<String, Object> values, List<Point> points) {
     super();
     this.name = name;
     this.values = values;
     this.points = points;
-    this.defaultFlag = defaultFlag;
   }
 
   public String getName() {
@@ -64,19 +64,10 @@ public class Template {
     this.points = points;
   }
 
-  public boolean isDefaultFlag() {
-    return defaultFlag;
-  }
-
-  public void setDefaultFlag(boolean defaultFlag) {
-    this.defaultFlag = defaultFlag;
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (defaultFlag ? 1231 : 1237);
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((points == null) ? 0 : points.hashCode());
     result = prime * result + ((values == null) ? 0 : values.hashCode());
@@ -92,8 +83,6 @@ public class Template {
     if (getClass() != obj.getClass())
       return false;
     Template other = (Template) obj;
-    if (defaultFlag != other.defaultFlag)
-      return false;
     if (name == null) {
       if (other.name != null)
         return false;

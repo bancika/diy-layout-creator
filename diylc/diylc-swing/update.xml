@@ -2104,7 +2104,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Made it possible for DIYLC to come with predefined component variants in addition to user-specific variants</description>
+					<description>DIYLC now comes with predefined component variants out-of-the box, in addition to user-specific variants</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
@@ -2113,6 +2113,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Inlude Themes (under Config menu) in the Windows installer version</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Covered humbucker pickup throwing errors when rotated</description>
 				</org.diylc.appframework.update.Change>							
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

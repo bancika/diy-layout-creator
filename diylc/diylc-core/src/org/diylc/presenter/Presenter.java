@@ -2091,10 +2091,11 @@ public class Presenter implements IPlugInPort {
 
     // try to find a default template if none is provided
     if (componentType != null && template == null) {
+      String defaultTemplate = getDefaultTemplate(componentType.getCategory(), componentType.getName());
       List<Template> templates = getTemplatesFor(componentType.getCategory(), componentType.getName());
-      if (templates != null)
+      if (templates != null && defaultTemplate != null)
         for (Template t : templates) {
-          if (t.isDefaultFlag()) {
+          if (t.getName().equals(defaultTemplate)) {
             template = t;
             break;
           }
@@ -2165,7 +2166,7 @@ public class Presenter implements IPlugInPort {
       point.translate(-x, -y);
     }
 
-    Template template = new Template(templateName, values, points, false);
+    Template template = new Template(templateName, values, points);
     boolean exists = false;
     for (Template t : templates) {
       if (t.getName().equalsIgnoreCase(templateName)) {
@@ -2309,21 +2310,27 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void setTemplateDefault(String categoryName, String componentTypeName, String templateName, boolean defaultFlag) {
-    LOG.debug(String.format("setTemplateDefault(%s, %s, %s, %s)", categoryName, componentTypeName, templateName,
-        defaultFlag));
-    Map<String, List<Template>> templateMap =
-        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
-    if (templateMap != null) {
-      List<Template> templates = templateMap.get(categoryName + "." + componentTypeName);
-      if (templates != null) {
-        for (Template template : templates)
-          template.setDefaultFlag(defaultFlag && templateName.equals(template.getName()));
-        ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, templateMap);
-        return;
-      }
-    }
-    throw new RuntimeException("Could not find the specified template.");
+  public void setTemplateDefault(String categoryName, String componentTypeName, String templateName) {
+    LOG.debug(String.format("setTemplateDefault(%s, %s, %s)", categoryName, componentTypeName, templateName));
+    Map<String, String> defaultTemplateMap =
+        (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
+    if (defaultTemplateMap == null)
+      defaultTemplateMap = new HashMap<String, String>();
+    if (templateName.equals(defaultTemplateMap.get(categoryName + "." + componentTypeName)))
+      defaultTemplateMap.remove(categoryName + "." + componentTypeName);
+    else
+      defaultTemplateMap.put(categoryName + "." + componentTypeName, templateName);
+    ConfigurationManager.getInstance().writeValue(DEFAULT_TEMPLATES_KEY, defaultTemplateMap);      
+  }
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public String getDefaultTemplate(String categoryName, String componentTypeName) {
+    Map<String, String> defaultTemplateMap =
+        (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
+    if (defaultTemplateMap == null)
+      return null;
+    return defaultTemplateMap.get(categoryName + "." + componentTypeName);
   }
 
   private Set<IDIYComponent<?>> getLockedComponents() {
