@@ -994,6 +994,660 @@
     </list>
   </entry>
   <entry>
+    <string>Passive.Resistor</string>
+    <list>
+      <org.diylc.core.Template>
+        <name>1/2W Carbon Comp</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color>
+              <red>115</red>
+              <green>88</green>
+              <blue>50</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color>
+              <red>0</red>
+              <green>0</green>
+              <blue>0</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color>
+              <red>138</red>
+              <green>94</green>
+              <blue>32</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Tubular</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>0.41</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>0.15</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color>
+              <red>204</red>
+              <green>204</green>
+              <blue>204</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>140</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>1/4W Carbon Comp</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[4]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[7]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Tubular</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>0.3</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>0.1</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[13]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>140</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>1/2W Carbon Film</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color>
+              <red>165</red>
+              <green>146</green>
+              <blue>104</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color>
+              <red>224</red>
+              <green>198</green>
+              <blue>139</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Standard</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>9.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>3.2</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[13]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>140</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>1/4W Carbon Film</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[4]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[7]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Standard</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>7.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>2.5</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[13]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>140</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>1/4W Metal Film</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color>
+              <red>91</red>
+              <green>144</green>
+              <blue>177</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color>
+              <red>130</red>
+              <green>207</green>
+              <blue>253</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Standard</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>7.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>2.5</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[13]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>140</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>1/2W Metal Film</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template[5]/values/entry[4]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[5]/values/entry[7]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Standard</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>9.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>3.2</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[13]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>140</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>5W Ceramic</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color>
+              <red>204</red>
+              <green>204</green>
+              <blue>204</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color>
+              <red>0</red>
+              <green>0</green>
+              <blue>0</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color>
+              <red>246</red>
+              <green>245</green>
+              <blue>245</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Tubular</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>22.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>10.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color>
+              <red>204</red>
+              <green>204</green>
+              <blue>204</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>220</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>10W Ceramic</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[4]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[7]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Tubular</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>38.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size reference="../../../../org.diylc.core.Template[7]/values/entry[12]/org.diylc.core.measures.Size"/>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[13]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>440</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+    </list>
+  </entry>
+  <entry>
     <string>Tubes.Tube Socket</string>
     <list>
       <org.diylc.core.Template>
