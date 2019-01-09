@@ -2152,7 +2152,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Render resistor color bands properly when zommed in</description>
+					<description>Render resistor color bands and capacitor polarity markings properly when zommed in</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

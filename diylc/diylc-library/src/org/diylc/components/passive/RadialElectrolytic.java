@@ -172,7 +172,7 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
         finalTickColor = tickColor;
       }
       g2d.setColor(finalTickColor);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+      g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(2));
       if (folded) {
         int tickLength = height / 7;
         for (int i = 0; i < 3; i++) {
