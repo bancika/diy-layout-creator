@@ -106,6 +106,7 @@
 				<include name="variants.xml" />
 				<include name="templates**/*.diy" />
 				<include name="themes**/*.xml" />
+				<include name="fonts**/*.ttf" />
 			</resourcefileset>
 			<javaproperty name="apple.laf.useScreenMenuBar" value="true" />
 			<!--<documenttype name="DIYLC Project"
@@ -129,6 +130,7 @@
 			<zipfileset dir="${jar.dir}/library/" prefix="library" />
 			<zipfileset dir="templates" prefix="templates" />
 			<zipfileset dir="themes" prefix="themes" />
+			<zipfileset dir="fonts" prefix="fonts" />
 			<zipfileset dir="." includes="update.xml" />
 			<zipfileset dir="." includes="variants.xml" />
 			<zipfileset dir="." includes="run.sh" />
