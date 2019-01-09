@@ -2112,7 +2112,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Changed default font to "Square721 BT" that looks more techincal and is packaged with the app</description>
+					<description>Changed default font to "Square721 BT" that looks more technical and is packaged with the app</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
