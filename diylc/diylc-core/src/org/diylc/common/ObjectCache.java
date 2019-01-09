@@ -43,6 +43,7 @@ public class ObjectCache {
   private ObjectCache() {}
 
   private Map<Float, Stroke> basicStrokeMap = new HashMap<Float, Stroke>();
+  private Map<Float, Stroke> zoomableStrokeMap = new HashMap<Float, Stroke>();
   private Map<String, Stroke> dashStrokeMap = new HashMap<String, Stroke>();
 
   public Stroke fetchBasicStroke(float width) {
@@ -51,6 +52,15 @@ public class ObjectCache {
     }
     Stroke stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     basicStrokeMap.put(width, stroke);
+    return stroke;
+  }
+  
+  public Stroke fetchZoomableStroke(float width) {
+    if (zoomableStrokeMap.containsKey(width)) {
+      return zoomableStrokeMap.get(width);
+    }
+    Stroke stroke = new ZoomableStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    zoomableStrokeMap.put(width, stroke);
     return stroke;
   }
 

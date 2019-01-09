@@ -2146,6 +2146,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>"P-Bass Pickup" added</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Render resistor color bands properly when zommed in</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

@@ -179,7 +179,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
     if (getShape() == ResistorShape.Standard) {
       int x = width + FIRST_BAND;
       Color[] bands = value.getColorCode(colorCode);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+      g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(2));
       for (int i = 0; i < bands.length; i++) {
         g2d.setColor(bands[i]);
         g2d.drawLine(x, width / 10 + 2, x, width * 8 / 10 + 1);
@@ -189,7 +189,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
       int x = -FIRST_BAND;
       int height = getClosestOdd(getWidth().convertToPixels());
       Color[] bands = value.getColorCode(colorCode);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+      g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(2));
       for (int i = 0; i < bands.length; i++) {
         g2d.setColor(bands[i]);
         g2d.drawLine(x, 1, x, height - 1);

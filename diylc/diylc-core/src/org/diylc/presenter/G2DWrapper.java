@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.ZoomableStroke;
 import org.diylc.core.IDrawingObserver;
 
 /**
@@ -406,7 +407,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     if (this.zoom > 1 && s instanceof BasicStroke) {
       BasicStroke bs = (BasicStroke) s;
       // make thin lines even thinner to compensate for zoom factor
-      if (bs.getLineWidth() <= 2)
+      if (bs.getLineWidth() <= 2 && !(s instanceof ZoomableStroke))
         s = ObjectCache.getInstance().fetchStroke((float) (bs.getLineWidth() / zoom), bs.getDashArray(), bs.getDashPhase());
     }
     canvasGraphics.setStroke(s);
