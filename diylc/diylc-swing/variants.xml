@@ -759,6 +759,373 @@
     </list>
   </entry>
   <entry>
+    <string>Passive.Multi-Section Capacitor</string>
+    <list>
+      <org.diylc.core.Template>
+        <name>1-section</name>
+        <values>
+          <entry>
+            <string>Diameter</string>
+            <org.diylc.core.measures.Size>
+              <value>0.875</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <awt-color>
+              <red>51</red>
+              <green>51</green>
+              <blue>51</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color>
+              <red>107</red>
+              <green>109</green>
+              <blue>206</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color>
+              <red>74</red>
+              <green>76</green>
+              <blue>144</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color>
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Pin Color</string>
+            <awt-color>
+              <red>117</red>
+              <green>157</green>
+              <blue>175</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>70</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>3-section</name>
+        <values>
+          <entry>
+            <string>Diameter</string>
+            <org.diylc.core.measures.Size>
+              <value>1.375</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <awt-color>
+              <red>51</red>
+              <green>51</green>
+              <blue>51</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color>
+              <red>107</red>
+              <green>109</green>
+              <blue>206</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color>
+              <red>74</red>
+              <green>76</green>
+              <blue>144</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color>
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Pin Color</string>
+            <awt-color>
+              <red>117</red>
+              <green>157</green>
+              <blue>175</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>83</x>
+            <y>82</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>165</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>-82</x>
+            <y>82</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>4-section</name>
+        <values>
+          <entry>
+            <string>Diameter</string>
+            <org.diylc.core.measures.Size>
+              <value>1.375</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <awt-color>
+              <red>51</red>
+              <green>51</green>
+              <blue>51</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color>
+              <red>107</red>
+              <green>109</green>
+              <blue>206</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color>
+              <red>74</red>
+              <green>76</green>
+              <blue>144</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color>
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Pin Color</string>
+            <awt-color>
+              <red>117</red>
+              <green>157</green>
+              <blue>175</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>78</x>
+            <y>57</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>48</x>
+            <y>149</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>-48</x>
+            <y>149</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>-78</x>
+            <y>57</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>2-section</name>
+        <values>
+          <entry>
+            <string>Diameter</string>
+            <org.diylc.core.measures.Size reference="../../../../org.diylc.core.Template[3]/values/entry/org.diylc.core.measures.Size"/>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[2]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[4]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[7]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[10]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Pin Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[11]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>82</x>
+            <y>82</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>-82</x>
+            <y>82</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+    </list>
+  </entry>
+  <entry>
     <string>Passive.Resistor</string>
     <list>
       <org.diylc.core.Template>
@@ -1245,7 +1612,7 @@
         </points>
         <defaultFlag>false</defaultFlag>
       </org.diylc.core.Template>
-	  <org.diylc.core.Template>
+      <org.diylc.core.Template>
         <name>2W Metal Oxide</name>
         <values>
           <entry>
@@ -1298,7 +1665,7 @@
           <entry>
             <string>Length</string>
             <org.diylc.core.measures.Size>
-              <value>16.0</value>
+              <value>12.0</value>
               <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
             </org.diylc.core.measures.Size>
           </entry>
@@ -1313,7 +1680,7 @@
           <entry>
             <string>Width</string>
             <org.diylc.core.measures.Size>
-              <value>6.0</value>
+              <value>4.0</value>
               <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
             </org.diylc.core.measures.Size>
           </entry>
@@ -1503,7 +1870,155 @@
           </java.awt.Point>
         </points>
         <defaultFlag>false</defaultFlag>
-      </org.diylc.core.Template>      
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>1W Metal Oxide</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[4]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[7]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Standard</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>9.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>3.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[13]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>240</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>3W Metal Oxide</name>
+        <values>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Power rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[4]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[7]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <org.diylc.components.passive.Resistor_-ResistorShape>Standard</org.diylc.components.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size>
+              <value>16.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size>
+              <value>6.0</value>
+              <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Lead color</string>
+            <awt-color reference="../../../../org.diylc.core.Template[7]/values/entry[13]/awt-color"/>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>240</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
     </list>
   </entry>
   <entry>

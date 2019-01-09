@@ -112,7 +112,7 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
   }
   
   private String getStringValue() {
-    if (value == null)
+    if (value == null || value.length == 0)
       return "";
     StringBuilder sb = new StringBuilder();
     boolean isFirst = true;    
@@ -121,10 +121,10 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
         isFirst = false;
       else
         sb.append("/");
-      sb.append(c == null ? "" : format.format(c.getValue()));
+      sb.append(c == null || c.getValue() == null ? "" : format.format(c.getValue()));
     }
     if (value[0] != null)
-      sb.append(" " + value[0].getUnit());
+      sb.append(" " + value[0].getUnit() == null ? "" : value[0].getUnit());
     return sb.toString();
   }
 
@@ -144,6 +144,9 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
   
   public void setDiameter(Size diameter) {
     this.diameter = diameter;
+    // Reset body shape;    
+    updateControlPoints();
+    body = null;
   }
 
   @EditableProperty
