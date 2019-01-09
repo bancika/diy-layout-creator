@@ -2238,6 +2238,13 @@ public class Presenter implements IPlugInPort {
       if (defaultVariants != null && !defaultVariants.isEmpty())
         variants.addAll(defaultVariants);
     }
+    Collections.sort(variants, new Comparator<Template>() {
+
+      @Override
+      public int compare(Template o1, Template o2) {       
+        return o1.getName().compareTo(o2.getName());
+      }      
+    });
     return variants;
   }
 
