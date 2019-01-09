@@ -18,11 +18,15 @@
 package org.diylc;
 
 import java.awt.AlphaComposite;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.SplashScreen;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -118,8 +122,26 @@ public class DIYLCStarter {
     Thread fontThread = new Thread(new Runnable() {
 
       @Override
-      public void run() {
+      public void run() {        
         LOG.debug("Starting font pre-loading");
+        
+        File dir = new File("fonts");
+        File[] fonts = dir.listFiles();
+
+        for (int i = 0; i < fonts.length; i++) {
+          try {
+            LOG.info("Dynamically loading font: " + fonts[i].getName());
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fonts[i].getAbsolutePath())).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            // register the font
+            ge.registerFont(customFont);
+          } catch (IOException e) {
+            LOG.error("Could not load font", e);
+          } catch (FontFormatException e) {
+            LOG.error("Font format error", e);
+          }
+        }
+        
         FontChooserComboBox box = new FontChooserComboBox();
         box.getPreferredSize();
         JPanel p = new JPanel();
