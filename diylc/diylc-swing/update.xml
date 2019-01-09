@@ -2108,7 +2108,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Right-click rotate while placing components on the canvas now applies to tube sockets as wel</description>
+					<description>Right-click rotate while placing components on the canvas now applies to tube sockets as well</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -2120,7 +2120,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Inlude Themes (under Config menu) in the Windows installer version</description>
+					<description>Include Themes (under Config menu) in the Windows installer version</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
