@@ -2147,6 +2147,10 @@
 					<description>"P-Bass Pickup" added</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to have "Single-coil Pickup" with no poles, similar to Lace Sensors</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Render resistor color bands properly when zommed in</description>
 				</org.diylc.appframework.update.Change>	

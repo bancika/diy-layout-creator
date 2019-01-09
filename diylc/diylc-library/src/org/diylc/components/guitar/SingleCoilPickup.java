@@ -472,7 +472,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   }
 
   public enum PolePieceType {
-    Rods("Single Rods"), Rail("Single Rail"), RailHumbucker("Dual Rail Humbucker"), RodHumbucker("Dual Rods");
+    Rods("Single Rods"), Rail("Single Rail"), RailHumbucker("Dual Rail Humbucker"), RodHumbucker("Dual Rods"), None("None");
 
     private String label;
 
