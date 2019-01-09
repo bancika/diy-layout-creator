@@ -225,7 +225,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         poleArea.add(new Area(
             new RoundRectangle2D.Double(x + pointMargin - length + poleMargin - poleSize / 2, y - pointMargin
                 + coilMargin - poleSize / 2, poleSpacing * 5 + poleSize, poleSize, poleSize / 2, poleSize / 2)));
-      } else {
+      } else if (getCoilType1() == PolePieceType.Rods) {
         for (int i = 0; i < 6; i++) {
           if (getType() == HumbuckerType.PAF || !getCover()) {
             Ellipse2D pole =
@@ -240,7 +240,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         poleArea.add(new Area(new RoundRectangle2D.Double(x + pointMargin - length + poleMargin - poleSize / 2, y
             - pointMargin + width - coilMargin - poleSize / 2, poleSpacing * 5 + poleSize, poleSize, poleSize / 2,
             poleSize / 2)));
-      } else {
+      } else if (getCoilType1() == PolePieceType.Rods) {
         for (int i = 0; i < 6; i++) {
           Ellipse2D pole =
               new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
@@ -482,6 +482,6 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   }
 
   public enum PolePieceType {
-    Rods, Rail;
+    Rods, Rail, None;
   }
 }

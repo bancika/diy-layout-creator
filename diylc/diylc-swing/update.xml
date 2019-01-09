@@ -2148,7 +2148,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to have "Single-coil Pickup" with no poles, similar to Lace Sensors</description>
+					<description>Ability to have "Single-coil Pickup" and "Humbucker Pickup" with no poles, similar to EMG, Lace Sensor...</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
