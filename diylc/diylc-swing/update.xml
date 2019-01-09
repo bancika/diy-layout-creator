@@ -2142,6 +2142,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>"Jazz Bass Pickup" added</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>"P-Bass Pickup" added</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

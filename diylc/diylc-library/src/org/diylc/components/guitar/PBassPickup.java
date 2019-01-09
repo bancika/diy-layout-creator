@@ -53,30 +53,28 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Jazz Bass Pickup", category = "Guitar", author = "Branislav Stojkovic",
-    description = "Single coil pickup for Jazz Bass and similar guitars", stretchable = false,
+@ComponentDescriptor(name = "P- Bass Pickup", category = "Guitar", author = "Branislav Stojkovic",
+    description = "Split-coil pickup for P-Bass and similar guitars", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
-public class JazzBassPickup extends AbstractTransparentComponent<String> {
+public class PBassPickup extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
   private static Color BODY_COLOR = Color.decode("#333333");;
   private static Color POINT_COLOR = Color.gray;
 
-  private static Size WIDTH = new Size(0.73, SizeUnit.in);
-  private static Size LENGTH = new Size(4.1, SizeUnit.in);
+  private static Size WIDTH = new Size(1.1, SizeUnit.in);
+  private static Size LENGTH = new Size(2.2, SizeUnit.in);
   private static Size EDGE_RADIUS = new Size(0.08d, SizeUnit.in);
   private static Size LIP_RADIUS = new Size(0.45d, SizeUnit.in);
-  private static Size LIP_SPACING = new Size(1.92d, SizeUnit.in);
   private static Size LIP_HOLE_SIZE = new Size(0.1d, SizeUnit.in);
   private static Size LIP_HOLE_SPACING = new Size(0.1d, SizeUnit.in);
 
   private static Size POINT_MARGIN = new Size(1.5d, SizeUnit.mm);
   private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
-  private static Size POLE_SPACING = new Size(0.85d, SizeUnit.in);
-  private static Size POLE_SPACING_MINOR = new Size(0.28d, SizeUnit.in);
+  private static Size POLE_SPACING = new Size(0.38d, SizeUnit.in);  
 
   private String value = "";
   private Point controlPoint = new Point(0, 0);
@@ -158,7 +156,6 @@ public class JazzBassPickup extends AbstractTransparentComponent<String> {
       int edgeRadius = (int) EDGE_RADIUS.convertToPixels();
       int pointMargin = (int) POINT_MARGIN.convertToPixels(); 
       int lipRadius = (int) LIP_RADIUS.convertToPixels();
-      int lipSpacing = (int) LIP_SPACING.convertToPixels();
       int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
       int lipHoleSize = getClosestOdd(LIP_HOLE_SIZE.convertToPixels());
       int lipHoleSpacing = getClosestOdd(LIP_HOLE_SPACING.convertToPixels());
@@ -168,34 +165,27 @@ public class JazzBassPickup extends AbstractTransparentComponent<String> {
               edgeRadius));
       
       Area lip = new Area(new Ellipse2D.Double(-lipRadius / 2, -lipRadius / 2, lipRadius, lipRadius));
-      lip.subtract(new Area(new Ellipse2D.Double(-lipHoleSize / 2, -lipHoleSpacing - lipHoleSize / 2, lipHoleSize, lipHoleSize)));
-      lip.transform(AffineTransform.getTranslateInstance(x + pointMargin - length / 2 - lipSpacing / 2, y - pointMargin));
+      lip.subtract(new Area(new Ellipse2D.Double(-lipHoleSize / 2 + lipHoleSpacing, -lipHoleSize / 2, lipHoleSize, lipHoleSize)));
+      lip.transform(AffineTransform.getTranslateInstance(x + pointMargin, y - pointMargin + width / 2));
+      Area lip2 = new Area(new Ellipse2D.Double(-lipRadius / 2, -lipRadius / 2, lipRadius, lipRadius));
+      lip2 = new Area(new Ellipse2D.Double(-lipRadius / 2, -lipRadius / 2, lipRadius, lipRadius));
+      lip2.subtract(new Area(new Ellipse2D.Double(-lipHoleSize / 2 - lipHoleSpacing, -lipHoleSize / 2, lipHoleSize, lipHoleSize)));
+      lip2.transform(AffineTransform.getTranslateInstance(x + pointMargin - length, y - pointMargin + width / 2));
+      lip.add(lip2);
       
       body[1] = new Area(lip);
-      lip.transform(AffineTransform.getTranslateInstance(lipSpacing, 0));
-      ((Area)body[1]).add(lip);
-      lip = new Area(body[1]);
-      double y1 = lip.getBounds2D().getY();
-      lip.transform(AffineTransform.getScaleInstance(1, -1));
-      lip.transform(AffineTransform.getTranslateInstance(0,  2 * y1 + width + lipRadius));
-      ((Area)body[1]).add(lip);
       
       ((Area)body[1]).subtract((Area)body[0]);
 
       body[2] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize));
 
       int poleSize = (int) POLE_SIZE.convertToPixels();
-      int poleSpacing = (int) POLE_SPACING.convertToPixels();
-      int poleSpacingMinor = (int) POLE_SPACING_MINOR.convertToPixels();
+      int poleSpacing = (int) POLE_SPACING.convertToPixels();      
       int poleMargin = (length - poleSpacing * 3) / 2;
       Area poleArea = new Area();
       for (int i = 0; i < 4; i++) {
         Ellipse2D pole =
-            new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2 - poleSpacingMinor / 2, y
-                - pointMargin - poleSize / 2 + width / 2, poleSize, poleSize);
-        poleArea.add(new Area(pole));
-        pole =
-            new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2 + poleSpacingMinor / 2, y
+            new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
                 - pointMargin - poleSize / 2 + width / 2, poleSize, poleSize);
         poleArea.add(new Area(pole));
       }
@@ -230,18 +220,16 @@ public class JazzBassPickup extends AbstractTransparentComponent<String> {
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.rotate(Math.PI / 4, width / 2, height / 2);
 
-    int bodyWidth = (int) (5f * width / 32);
+    int bodyWidth = (int) (13f * width / 32);
     int bodyLength = (int) (30f * width / 32);
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f)); 
     g2d.setColor(BODY_COLOR);
     g2d.fillRoundRect((width - bodyWidth) / 2, (height - bodyLength) / 2, bodyWidth, bodyLength, 3, 3);
+        
+    int lipSize = (int) (5f * width / 32);
     
-    int lipSpacing = (int) (14f * width / 32);
-    int lipSize = (int) (3f * width / 32);
-    
-    g2d.fillRoundRect((width - bodyWidth) / 2 - lipSize, (height - lipSpacing - lipSize) / 2 , bodyWidth + 2 * lipSize, lipSize, lipSize, lipSize);
-    g2d.fillRoundRect((width - bodyWidth) / 2 - lipSize, (height + lipSpacing - lipSize) / 2 , bodyWidth + 2 * lipSize, lipSize, lipSize, lipSize);
+    g2d.fillRoundRect((width - lipSize) / 2, (height - bodyLength) / 2 - lipSize + 1, lipSize, bodyLength + 2 * lipSize - 2, lipSize, lipSize);    
 
     g2d.setColor(BODY_COLOR.darker());
     g2d.drawRoundRect((width - bodyWidth) / 2, (height - bodyLength) / 2, bodyWidth, bodyLength, 3, 3);
