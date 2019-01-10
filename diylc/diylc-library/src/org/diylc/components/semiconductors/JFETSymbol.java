@@ -42,44 +42,43 @@ public class JFETSymbol extends Abstract3LegSymbol {
 
   protected FETPolarity polarity = FETPolarity.NEGATIVE;
 
-  public Shape[] getBody() {
-    if (body == null) {
-      body = new Shape[3];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
-      int pinSpacing = (int) PIN_SPACING.convertToPixels();
+  public Shape[] getBody() {    
+    Shape[] body = new Shape[3];
+    int x = controlPoints[0].x;
+    int y = controlPoints[0].y;
+    int pinSpacing = (int) PIN_SPACING.convertToPixels();
 
-      GeneralPath polyline = new GeneralPath();
+    GeneralPath polyline = new GeneralPath();
 
-      polyline.moveTo(x + pinSpacing, y - pinSpacing);
-      polyline.lineTo(x + pinSpacing, y + pinSpacing);
+    polyline.moveTo(x + pinSpacing, y - pinSpacing);
+    polyline.lineTo(x + pinSpacing, y + pinSpacing);
 
-      body[0] = polyline;
+    body[0] = polyline;
 
-      polyline = new GeneralPath();
+    polyline = new GeneralPath();
 
-      polyline.moveTo(x, y);
-      polyline.lineTo(x + pinSpacing, y);
-      polyline.moveTo(x + pinSpacing, y - pinSpacing * 7 / 8);
-      polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 7 / 8);
-      polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 2);
-      polyline.moveTo(x + pinSpacing, y + pinSpacing * 7 / 8);
-      polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 7 / 8);
-      polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 2);
-      body[1] = polyline;
+    polyline.moveTo(x, y);
+    polyline.lineTo(x + pinSpacing, y);
+    polyline.moveTo(x + pinSpacing, y - pinSpacing * 7 / 8);
+    polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 7 / 8);
+    polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 2);
+    polyline.moveTo(x + pinSpacing, y + pinSpacing * 7 / 8);
+    polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 7 / 8);
+    polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 2);
+    body[1] = polyline;
 
-      Polygon arrow;
-      if (polarity == FETPolarity.NEGATIVE) {
-        arrow =
-            new Polygon(new int[] {x + pinSpacing * 2 / 6, x + pinSpacing * 2 / 6, x + pinSpacing * 6 / 6}, new int[] {
-                y - pinSpacing / 5, y + pinSpacing / 5, y}, 3);
-      } else {
-        arrow =
-            new Polygon(new int[] {x + pinSpacing / 6, x + pinSpacing * 5 / 6, x + pinSpacing * 5 / 6}, new int[] {y,
-                y + pinSpacing / 5, y - pinSpacing / 5}, 3);
-      }
-      body[2] = arrow;
+    Polygon arrow;
+    if (polarity == FETPolarity.NEGATIVE) {
+      arrow =
+          new Polygon(new int[] {x + pinSpacing * 2 / 6, x + pinSpacing * 2 / 6, x + pinSpacing * 6 / 6}, new int[] {
+              y - pinSpacing / 5, y + pinSpacing / 5, y}, 3);
+    } else {
+      arrow =
+          new Polygon(new int[] {x + pinSpacing / 6, x + pinSpacing * 5 / 6, x + pinSpacing * 5 / 6}, new int[] {y,
+              y + pinSpacing / 5, y - pinSpacing / 5}, 3);
     }
+    body[2] = arrow;
+    
     return body;
   }
 
@@ -108,6 +107,6 @@ public class JFETSymbol extends Abstract3LegSymbol {
   public void setPolarity(FETPolarity polarity) {
     this.polarity = polarity;
 
-    refreshDrawing();
+    body = null;
   }
 }

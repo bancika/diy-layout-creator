@@ -2166,6 +2166,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Project font gets reverted to "Square721 BT" on Undo</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>When loaded from an existing file "Potentiometer Symbol" doesn't retain the specified orientation</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

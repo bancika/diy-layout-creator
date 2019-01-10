@@ -90,6 +90,10 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
 
     // Draw transistor
 
+    if (this.body == null) {
+      this.body = getBody();
+      applyOrientation(this.body);
+    }
     Shape[] body = getBody();
 
     AffineTransform old = g2d.getTransform();
@@ -166,7 +170,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     return controlPoints[0].y;
   }
 
-  private void updateControlPoints() {
+  protected void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
     int x = controlPoints[0].x;
@@ -179,6 +183,16 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
 
     controlPoints[2].x = x + f * pinSpacing * 2;
     controlPoints[2].y = y + pinSpacing * 2;
+    
+    if (getOrientation() != Orientation.DEFAULT)
+    {    
+      Point first = this.controlPoints[0];
+      double angle = Double.parseDouble(getOrientation().name().replace("_", ""));
+      AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
+      for (int i = 1; i < this.controlPoints.length; i++) {
+        rotate.transform(this.controlPoints[i], this.controlPoints[i]);
+      }
+    }
   }
 
   @Override
@@ -206,7 +220,8 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   public void setControlPoint(Point point, int index) {
     controlPoints[index].setLocation(point);
 
-    refreshDrawing();
+    // make sure we have a new drawing
+    body = null;
   }
 
   @EditableProperty
@@ -217,7 +232,9 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   public void setFlip(SymbolFlipping flip) {
     this.flip = flip;
 
-    refreshDrawing();
+    updateControlPoints();
+    // make sure we have a new drawing
+    body = null;
   }
 
   @EditableProperty
@@ -249,27 +266,22 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
 
-    refreshDrawing();
-  }
-  
-  protected void refreshDrawing() {
     updateControlPoints();
     // make sure we have a new drawing
     body = null;
-    getBody();
-
+  }
+  
+  protected void applyOrientation(Shape[] body) {
     if (getOrientation() == Orientation.DEFAULT)
       return;
 
     Point first = this.controlPoints[0];
     double angle = Double.parseDouble(getOrientation().name().replace("_", ""));
     AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
-    for (int i = 1; i < this.controlPoints.length; i++) {
-      rotate.transform(this.controlPoints[i], this.controlPoints[i]);
-    }
-    if (this.body != null) {
-      for (int i = 0; i < this.body.length; i++) {
-        this.body[i] = rotate.createTransformedShape(this.body[i]);
+    
+    if (body != null) {
+      for (int i = 0; i < body.length; i++) {
+        body[i] = rotate.createTransformedShape(body[i]);
       }
     }
   }
