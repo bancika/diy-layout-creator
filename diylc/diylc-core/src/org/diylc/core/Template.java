@@ -30,11 +30,14 @@ public class Template {
   private String name;
   private Map<String, Object> values;
   private List<Point> points;
+  @SuppressWarnings("unused")
   @Deprecated
   private boolean defaultFlag;
+  
+  public Template() {    
+  }
 
-  public Template(String name, Map<String, Object> values, List<Point> points) {
-    super();
+  public Template(String name, Map<String, Object> values, List<Point> points) {    
     this.name = name;
     this.values = values;
     this.points = points;
