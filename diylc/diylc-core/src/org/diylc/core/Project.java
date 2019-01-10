@@ -286,11 +286,12 @@ public class Project implements Serializable {
     project.setAuthor(this.getAuthor());
     project.setDescription(this.getDescription());
     project.setFileVersion(this.getFileVersion());
-    project.setGridSpacing(this.getGridSpacing());
+    project.setGridSpacing(this.getGridSpacing());    
     project.setHeight(this.getHeight());
     project.setWidth(this.getWidth());
     project.getLockedLayers().addAll(this.getLockedLayers());
     project.getHiddenLayers().addAll(this.getHiddenLayers());
+    project.setFont(this.getFont());    
 
     Map<IDIYComponent<?>, IDIYComponent<?>> cloneMap = new HashMap<IDIYComponent<?>, IDIYComponent<?>>();
 
