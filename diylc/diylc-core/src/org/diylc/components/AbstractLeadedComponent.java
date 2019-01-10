@@ -71,6 +71,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   protected Color leadColor = LEAD_COLOR;
   protected Display display = Display.NAME;
   private boolean flipStanding = false;
+  private LabelOriantation labelOriantation = LabelOriantation.Directional;
 
   protected AbstractLeadedComponent() {
     super();
@@ -235,9 +236,17 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         g2d.rotate(Math.PI, length / 2, width / 2);
         offset = -offset;
       }
-      g2d.drawString(label, (int) (length - textRect.getWidth()) / 2 + offset,
-          calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));
-      g2d.setTransform(oldTransform);
+      if (getLabelOriantation() == LabelOriantation.Horizontal) {
+        g2d.setTransform(oldTransform);
+        double x = (points[0].x + points[1].x - length) / 2.0;
+        double y = (points[0].y + points[1].y - width) / 2.0;
+        g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
+            (int)(y + calculateLabelYCoordinate(shapeRect, textRect, fontMetrics)));
+      } else {
+        g2d.drawString(label, (int) (length - textRect.getWidth()) / 2 + offset,
+            calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));      
+        g2d.setTransform(oldTransform); 
+      }      
     }
   }
 
@@ -367,7 +376,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         : getLeadColor();
   }
 
-  @EditableProperty(name = "Lead color")
+  @EditableProperty(name = "Lead Color")
   public Color getLeadColor() {
     if (leadColor == null) {
       leadColor = LEAD_COLOR_ICON;
@@ -457,13 +466,24 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     this.display = display;
   }
 
-  @EditableProperty(name = "Label color")
+  @EditableProperty(name = "Label Color")
   public Color getLabelColor() {
     return labelColor;
   }
 
   public void setLabelColor(Color labelColor) {
     this.labelColor = labelColor;
+  }
+  
+  @EditableProperty(name = "Label Orientation")
+  public LabelOriantation getLabelOriantation() {
+    if (labelOriantation == null)
+      labelOriantation = LabelOriantation.Directional;
+    return labelOriantation;
+  }
+  
+  public void setLabelOriantation(LabelOriantation labelOriantation) {
+    this.labelOriantation = labelOriantation;
   }
 
   /**
@@ -478,5 +498,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   public void setFlipStanding(boolean flipStanding) {
     this.flipStanding = flipStanding;
+  }
+  
+  public enum LabelOriantation {
+    Directional, Horizontal
   }
 }

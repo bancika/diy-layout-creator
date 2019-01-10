@@ -2140,6 +2140,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Label Orientation" property to leaded components that can be used to force labels to be rendered horizontally instead of following component placement direction</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>"Jazz Bass Pickup" added</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

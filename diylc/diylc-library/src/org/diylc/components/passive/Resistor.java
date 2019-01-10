@@ -200,7 +200,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
   @Override
   protected int getLabelOffset(int bodyWidth, int labelWidth) {
-    if (value == null || getColorCode() == ResistorColorCode.NONE)
+    if (value == null || getColorCode() == ResistorColorCode.NONE || getLabelOriantation() != AbstractLeadedComponent.LabelOriantation.Directional)
       return 0;
     int width = getClosestOdd(getWidth().convertToPixels());
     Color[] bands = value.getColorCode(colorCode);
