@@ -2152,6 +2152,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Filtertron pickup type added within "Humbucker Pickup" as well as screw pole pieces for all humbucker types</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>"Tantalum Capacitor" added</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

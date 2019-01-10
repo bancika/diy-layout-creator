@@ -19,6 +19,14 @@
             <byte>127</byte>
           </entry>
           <entry>
+            <string>Model</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -26,14 +34,6 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
           </entry>
           <entry>
             <string>Type</string>
@@ -73,16 +73,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -117,16 +117,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -161,16 +161,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -205,16 +205,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -249,16 +249,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -290,10 +290,6 @@
         <name>DPDT</name>
         <values>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Body</string>
             <awt-color>
               <red>50</red>
@@ -303,8 +299,16 @@
             </awt-color>
           </entry>
           <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
             <string>Orientation</string>
             <org.diylc.common.OrientationHV>VERTICAL</org.diylc.common.OrientationHV>
+          </entry>
+          <entry>
+            <string>Type</string>
+            <org.diylc.components.electromechanical.ToggleSwitchType>DPDT</org.diylc.components.electromechanical.ToggleSwitchType>
           </entry>
           <entry>
             <string>Border</string>
@@ -314,10 +318,6 @@
               <blue>142</blue>
               <alpha>255</alpha>
             </awt-color>
-          </entry>
-          <entry>
-            <string>Type</string>
-            <org.diylc.components.electromechanical.ToggleSwitchType>DPDT</org.diylc.components.electromechanical.ToggleSwitchType>
           </entry>
           <entry>
             <string>Spacing</string>
@@ -359,24 +359,24 @@
         <name>SPDT</name>
         <values>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Body</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry/awt-color"/>
           </entry>
           <entry>
-            <string>Body</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[2]/awt-color"/>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.OrientationHV>VERTICAL</org.diylc.common.OrientationHV>
           </entry>
           <entry>
-            <string>Border</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[4]/awt-color"/>
-          </entry>
-          <entry>
             <string>Type</string>
             <org.diylc.components.electromechanical.ToggleSwitchType>SPDT</org.diylc.components.electromechanical.ToggleSwitchType>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Spacing</string>
@@ -781,10 +781,8 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Value</string>
-            <org.diylc.core.measures.Capacitance-array>
-              <null/>
-            </org.diylc.core.measures.Capacitance-array>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Body</string>
@@ -796,8 +794,10 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -813,12 +813,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Voltage</string>
-            <null/>
-          </entry>
-          <entry>
             <string>Display</string>
             <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
           </entry>
           <entry>
             <string>Label</string>
@@ -871,8 +871,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
           </entry>
           <entry>
             <string>Body</string>
@@ -884,12 +888,8 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Value</string>
-            <org.diylc.core.measures.Capacitance-array>
-              <null/>
-              <null/>
-              <null/>
-            </org.diylc.core.measures.Capacitance-array>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -905,12 +905,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Display</string>
-            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
-          </entry>
-          <entry>
             <string>Voltage</string>
             <null/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
           </entry>
           <entry>
             <string>Label</string>
@@ -971,13 +971,8 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Value</string>
-            <org.diylc.core.measures.Capacitance-array>
-              <null/>
-              <null/>
-              <null/>
-              <null/>
-            </org.diylc.core.measures.Capacitance-array>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Body</string>
@@ -989,8 +984,13 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -1006,12 +1006,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Voltage</string>
-            <null/>
-          </entry>
-          <entry>
             <string>Display</string>
             <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
           </entry>
           <entry>
             <string>Label</string>
@@ -1068,19 +1068,19 @@
             <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[2]/awt-color"/>
           </entry>
           <entry>
-            <string>Value</string>
-            <org.diylc.core.measures.Capacitance-array>
-              <null/>
-              <null/>
-            </org.diylc.core.measures.Capacitance-array>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Body</string>
             <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[4]/awt-color"/>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -1091,12 +1091,12 @@
             <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[7]/awt-color"/>
           </entry>
           <entry>
-            <string>Voltage</string>
-            <null/>
-          </entry>
-          <entry>
             <string>Display</string>
             <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
           </entry>
           <entry>
             <string>Label</string>
@@ -1119,241 +1119,6 @@
           <java.awt.Point>
             <x>-82</x>
             <y>82</y>
-          </java.awt.Point>
-        </points>
-        <defaultFlag>false</defaultFlag>
-      </org.diylc.core.Template>
-    </list>
-  </entry>
-  <entry>
-    <string>Semiconductors.DIP IC</string>
-    <list>
-      <org.diylc.core.Template>
-        <name>DIP8</name>
-        <values>
-          <entry>
-            <string>Row Spacing</string>
-            <org.diylc.core.measures.Size>
-              <value>0.3</value>
-              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
-            </org.diylc.core.measures.Size>
-          </entry>
-          <entry>
-            <string>Pins</string>
-            <org.diylc.components.semiconductors.DIL__IC_-PinCount>_8</org.diylc.components.semiconductors.DIL__IC_-PinCount>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
-            <string>Body</string>
-            <awt-color reference="../../../../../../entry/list/org.diylc.core.Template/values/entry/awt-color"/>
-          </entry>
-          <entry>
-            <string>Value</string>
-            <string></string>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Border</string>
-            <awt-color>
-              <red>89</red>
-              <green>89</green>
-              <blue>89</blue>
-              <alpha>255</alpha>
-            </awt-color>
-          </entry>
-          <entry>
-            <string>Display</string>
-            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
-          </entry>
-          <entry>
-            <string>Label</string>
-            <awt-color reference="../../../../../../entry/list/org.diylc.core.Template/values/entry[8]/awt-color"/>
-          </entry>
-          <entry>
-            <string>Display Pin #s</string>
-            <org.diylc.components.semiconductors.DIL__IC_-DisplayNumbers>NO</org.diylc.components.semiconductors.DIL__IC_-DisplayNumbers>
-          </entry>
-          <entry>
-            <string>Indent</string>
-            <awt-color>
-              <red>89</red>
-              <green>89</green>
-              <blue>89</blue>
-              <alpha>255</alpha>
-            </awt-color>
-          </entry>
-          <entry>
-            <string>Pin Spacing</string>
-            <org.diylc.core.measures.Size>
-              <value>0.1</value>
-              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
-            </org.diylc.core.measures.Size>
-          </entry>
-        </values>
-        <points>
-          <java.awt.Point>
-            <x>0</x>
-            <y>0</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>20</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>40</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>60</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>0</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>20</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>40</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>60</y>
-          </java.awt.Point>
-        </points>
-        <defaultFlag>false</defaultFlag>
-      </org.diylc.core.Template>
-      <org.diylc.core.Template>
-        <name>DIP16</name>
-        <values>
-          <entry>
-            <string>Row Spacing</string>
-            <org.diylc.core.measures.Size>
-              <value>0.3</value>
-              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
-            </org.diylc.core.measures.Size>
-          </entry>
-          <entry>
-            <string>Pins</string>
-            <org.diylc.components.semiconductors.DIL__IC_-PinCount>_16</org.diylc.components.semiconductors.DIL__IC_-PinCount>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
-            <string>Body</string>
-            <awt-color reference="../../../../../../entry/list/org.diylc.core.Template/values/entry/awt-color"/>
-          </entry>
-          <entry>
-            <string>Value</string>
-            <string></string>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Border</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[7]/awt-color"/>
-          </entry>
-          <entry>
-            <string>Display</string>
-            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
-          </entry>
-          <entry>
-            <string>Label</string>
-            <awt-color reference="../../../../../../entry/list/org.diylc.core.Template/values/entry[8]/awt-color"/>
-          </entry>
-          <entry>
-            <string>Display Pin #s</string>
-            <org.diylc.components.semiconductors.DIL__IC_-DisplayNumbers>NO</org.diylc.components.semiconductors.DIL__IC_-DisplayNumbers>
-          </entry>
-          <entry>
-            <string>Indent</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[11]/awt-color"/>
-          </entry>
-          <entry>
-            <string>Pin Spacing</string>
-            <org.diylc.core.measures.Size>
-              <value>0.1</value>
-              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
-            </org.diylc.core.measures.Size>
-          </entry>
-        </values>
-        <points>
-          <java.awt.Point>
-            <x>0</x>
-            <y>0</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>20</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>40</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>60</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>80</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>100</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>120</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>0</x>
-            <y>140</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>0</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>20</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>40</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>60</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>80</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>100</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>120</y>
-          </java.awt.Point>
-          <java.awt.Point>
-            <x>60</x>
-            <y>140</y>
           </java.awt.Point>
         </points>
         <defaultFlag>false</defaultFlag>
@@ -2257,18 +2022,253 @@
     </list>
   </entry>
   <entry>
+    <string>Semiconductors.DIP IC</string>
+    <list>
+      <org.diylc.core.Template>
+        <name>DIP8</name>
+        <values>
+          <entry>
+            <string>Pins</string>
+            <org.diylc.components.semiconductors.DIL__IC_-PinCount>_8</org.diylc.components.semiconductors.DIL__IC_-PinCount>
+          </entry>
+          <entry>
+            <string>Row Spacing</string>
+            <org.diylc.core.measures.Size>
+              <value>0.3</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color reference="../../../../../../entry/list/org.diylc.core.Template/values/entry/awt-color"/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color>
+              <red>89</red>
+              <green>89</green>
+              <blue>89</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color reference="../../../../../../entry/list/org.diylc.core.Template/values/entry[8]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display Pin #s</string>
+            <org.diylc.components.semiconductors.DIL__IC_-DisplayNumbers>NO</org.diylc.components.semiconductors.DIL__IC_-DisplayNumbers>
+          </entry>
+          <entry>
+            <string>Indent</string>
+            <awt-color>
+              <red>89</red>
+              <green>89</green>
+              <blue>89</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Pin Spacing</string>
+            <org.diylc.core.measures.Size>
+              <value>0.1</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>20</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>40</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>60</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>20</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>40</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>60</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>DIP16</name>
+        <values>
+          <entry>
+            <string>Pins</string>
+            <org.diylc.components.semiconductors.DIL__IC_-PinCount>_16</org.diylc.components.semiconductors.DIL__IC_-PinCount>
+          </entry>
+          <entry>
+            <string>Row Spacing</string>
+            <org.diylc.core.measures.Size>
+              <value>0.3</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color reference="../../../../../../entry/list/org.diylc.core.Template/values/entry/awt-color"/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[7]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color reference="../../../../../../entry/list/org.diylc.core.Template/values/entry[8]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Display Pin #s</string>
+            <org.diylc.components.semiconductors.DIL__IC_-DisplayNumbers>NO</org.diylc.components.semiconductors.DIL__IC_-DisplayNumbers>
+          </entry>
+          <entry>
+            <string>Indent</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[11]/awt-color"/>
+          </entry>
+          <entry>
+            <string>Pin Spacing</string>
+            <org.diylc.core.measures.Size>
+              <value>0.1</value>
+              <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+            </org.diylc.core.measures.Size>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>20</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>40</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>60</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>80</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>100</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>120</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>0</x>
+            <y>140</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>20</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>40</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>60</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>80</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>100</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>120</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>140</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+    </list>
+  </entry>
+  <entry>
     <string>Tubes.Tube Socket</string>
     <list>
       <org.diylc.core.Template>
         <name>Noval</name>
         <values>
           <entry>
-            <string>Base</string>
-            <org.diylc.components.tube.TubeSocket_-Base>B9A</org.diylc.components.tube.TubeSocket_-Base>
-          </entry>
-          <entry>
             <string>Angle</string>
             <int>0</int>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <org.diylc.components.tube.TubeSocket_-Base>B9A</org.diylc.components.tube.TubeSocket_-Base>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -2336,12 +2336,12 @@
         <name>Octal</name>
         <values>
           <entry>
-            <string>Base</string>
-            <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
-          </entry>
-          <entry>
             <string>Angle</string>
             <int>0</int>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -2405,6 +2405,10 @@
         <name>Covered PAF-Style</name>
         <values>
           <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
             <string>Bobin 1</string>
             <awt-color>
               <red>234</red>
@@ -2414,18 +2418,6 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -2433,6 +2425,14 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Bobin 2</string>
@@ -2453,7 +2453,7 @@
           </entry>
           <entry>
             <string>Pole Pieces 1</string>
-            <org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>Rods</org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>
+            <org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>Screws</org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>
           </entry>
           <entry>
             <string>Pole Pieces 2</string>
@@ -2481,10 +2481,6 @@
         <name>Uncovered PAF-Style</name>
         <values>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Bobin 1</string>
             <awt-color>
               <red>234</red>
@@ -2494,6 +2490,18 @@
             </awt-color>
           </entry>
           <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Model</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -2501,14 +2509,6 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
           </entry>
           <entry>
             <string>Bobin 2</string>
@@ -2529,7 +2529,7 @@
           </entry>
           <entry>
             <string>Pole Pieces 1</string>
-            <org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>Rods</org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>
+            <org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>Screws</org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>
           </entry>
           <entry>
             <string>Pole Pieces 2</string>
@@ -2557,10 +2557,6 @@
         <name>EMG-style</name>
         <values>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Bobin 1</string>
             <awt-color>
               <red>234</red>
@@ -2570,6 +2566,18 @@
             </awt-color>
           </entry>
           <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Model</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -2577,14 +2585,6 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
           </entry>
           <entry>
             <string>Bobin 2</string>
@@ -2617,6 +2617,86 @@
               <red>51</red>
               <green>51</green>
               <blue>51</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>Filtertron-style</name>
+        <values>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Bobin 1</string>
+            <awt-color>
+              <red>0</red>
+              <green>0</green>
+              <blue>0</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Pole Color</string>
+            <awt-color>
+              <red>117</red>
+              <green>157</green>
+              <blue>175</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Model</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Bobin 2</string>
+            <awt-color>
+              <red>0</red>
+              <green>0</green>
+              <blue>0</blue>
+              <alpha>255</alpha>
+            </awt-color>
+          </entry>
+          <entry>
+            <string>Type</string>
+            <org.diylc.components.guitar.HumbuckerPickup_-HumbuckerType>Filtertron</org.diylc.components.guitar.HumbuckerPickup_-HumbuckerType>
+          </entry>
+          <entry>
+            <string>Legs</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Cover</string>
+            <boolean>true</boolean>
+          </entry>
+          <entry>
+            <string>Pole Pieces 1</string>
+            <org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>Screws</org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>
+          </entry>
+          <entry>
+            <string>Pole Pieces 2</string>
+            <org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>Screws</org.diylc.components.guitar.HumbuckerPickup_-PolePieceType>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color>
+              <red>192</red>
+              <green>192</green>
+              <blue>192</blue>
               <alpha>255</alpha>
             </awt-color>
           </entry>

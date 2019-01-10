@@ -44,11 +44,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(
-    name = "Transformer Core (symbol)",
-    author = "Branislav Stojkovic",
-    category = "Schematics",
-    instanceNamePrefix = "T",
+@ComponentDescriptor(name = "Transformer Core (symbol)", author = "Branislav Stojkovic", category = "Schematic Symbols", instanceNamePrefix = "T",
     description = "Transformer core symbol. Use multiple instances together with \"Transformer Coil Symbol\"<br>to draw transformer schematics.",
     stretchable = true, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG,
     creationMethod = CreationMethod.POINT_BY_POINT, keywordTag = "Schematic")

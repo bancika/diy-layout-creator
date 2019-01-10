@@ -37,7 +37,7 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Capacitor (symbol)", author = "Branislav Stojkovic", category = "Schematics",
+@ComponentDescriptor(name = "Capacitor (symbol)", author = "Branislav Stojkovic", category = "Schematic Symbols",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Capacitor schematic symbol with an optional polarity sign", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic", transformer = SimpleComponentTransformer.class)

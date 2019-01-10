@@ -35,7 +35,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 @ComponentDescriptor(
 	name = "PhotoDiode (symbol)", 
 	author = "N9XYP", 
-	category = "Schematics",
+	category = "Schematic Symbols",
     creationMethod = CreationMethod.POINT_BY_POINT, 
 	instanceNamePrefix = "D", 
 	description = "PhotoDiode schematic symbol",

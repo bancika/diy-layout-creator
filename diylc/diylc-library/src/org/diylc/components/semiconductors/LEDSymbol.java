@@ -32,7 +32,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.KeywordPolicy;
 
-@ComponentDescriptor(name = "LED (symbol)", author = "Branislav Stojkovic", category = "Schematics",
+@ComponentDescriptor(name = "LED (symbol)", author = "Branislav Stojkovic", category = "Schematic Symbols",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Diode schematic symbol",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic",
     transformer = SimpleComponentTransformer.class)
