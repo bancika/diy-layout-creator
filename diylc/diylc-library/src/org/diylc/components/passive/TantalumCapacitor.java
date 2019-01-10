@@ -58,8 +58,7 @@ public class TantalumCapacitor extends AbstractRadialComponent<Capacitance> {
   public static Color BORDER_COLOR = BODY_COLOR.darker();
   public static Color MARKER_COLOR = BODY_COLOR.darker();
   public static Color TICK_COLOR = Color.white;
-  public static Size HEIGHT = new Size(0.4d, SizeUnit.in);
-  public static Size EDGE_RADIUS = new Size(1d, SizeUnit.mm);
+  public static Size HEIGHT = new Size(0.4d, SizeUnit.in);  
 
   private Capacitance value = null;
   private org.diylc.core.measures.Voltage voltageNew = null;
@@ -154,30 +153,16 @@ public class TantalumCapacitor extends AbstractRadialComponent<Capacitance> {
     }
     g2d.setColor(finalTickColor);
     g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1));
-    if (folded) {
-      int tickLength = height / 7;
-      for (int i = 0; i < 3; i++) {
-        g2d.drawLine((int) (totalDiameter * (!invert ? 0.08 : 0.92)), -height / 2 + tickLength + i * tickLength * 2,
-            (int) (totalDiameter * (!invert ? 0.08 : 0.92)), -height / 2 + tickLength + i * tickLength * 2
-                + tickLength);
-      }
-    } else {
-      g2d.drawLine((int) (totalDiameter * (!invert ? 0.1 : 0.9)), totalDiameter / 2 - (int) (totalDiameter * 0.06),
-          (int) (totalDiameter * (!invert ? 0.1 : 0.9)), totalDiameter / 2 + (int) (totalDiameter * 0.06));
-      g2d.drawLine((int) (totalDiameter * (!invert ? 0.04 : 0.84)), totalDiameter / 2,
-          (int) (totalDiameter * (!invert ? 0.16 : 0.96)), totalDiameter / 2);
-    }    
-    // int coverDiameter = getClosestOdd(totalDiameter * 3 / 4);
-    // g2d.setColor(coverColor);
-    // int position = (totalDiameter - coverDiameter) / 2;
-    // g2d.fillOval(position, position, coverDiameter, coverDiameter);
-    // g2d.setColor(coverColor.darker());
-    // g2d.drawLine(position + coverDiameter / 5, position + coverDiameter /
-    // 5, position + 4
-    // * coverDiameter / 5, position + 4 * coverDiameter / 5);
-    // g2d.drawLine(position + coverDiameter / 5, position + 4 *
-    // coverDiameter / 5, position + 4
-    // * coverDiameter / 5, position + coverDiameter / 5);
+    int tickLength = (int) (totalDiameter * 0.12);
+    int centerX = (int) (totalDiameter * (!invert ? 0.1 : 0.9));
+    int centerY;
+    if (folded) {      
+      centerY = (int) (-height / 2 + tickLength * 3.5);
+    } else {      
+      centerY = totalDiameter / 2;
+    }
+    g2d.drawLine(centerX - tickLength / 2, centerY, centerX + tickLength / 2, centerY);
+    g2d.drawLine(centerX, centerY - tickLength / 2, centerX, centerY + tickLength / 2);
   }
 
   @Override
@@ -256,7 +241,7 @@ public class TantalumCapacitor extends AbstractRadialComponent<Capacitance> {
     double diameter = (int) getLength().convertToPixels();
     if (folded) {
       return new RoundRectangle2D.Double(0f, -height / 2 - LEAD_THICKNESS.convertToPixels() / 2,
-          getClosestOdd(diameter), getClosestOdd(height), EDGE_RADIUS.convertToPixels(), EDGE_RADIUS.convertToPixels());
+          getClosestOdd(diameter), getClosestOdd(height), diameter / 2, diameter / 2);
     }
     return new Ellipse2D.Double(0f, 0f, getClosestOdd(diameter), getClosestOdd(diameter));
   }
