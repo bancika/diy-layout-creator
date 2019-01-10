@@ -94,7 +94,6 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
       this.body = getBody();
       applyOrientation(this.body);
     }
-    Shape[] body = getBody();
 
     AffineTransform old = g2d.getTransform();
 

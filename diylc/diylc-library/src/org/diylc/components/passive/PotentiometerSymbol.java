@@ -47,44 +47,43 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
   }
 
   public Shape[] getBody() {
-    if (body == null) {
-      body = new Shape[3];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
-      int pinSpacing = (int) PIN_SPACING.convertToPixels();
+    Shape[] body = new Shape[3];
+    int x = controlPoints[0].x;
+    int y = controlPoints[0].y;
+    int pinSpacing = (int) PIN_SPACING.convertToPixels();
 
-      GeneralPath polyline = new GeneralPath();
-      polyline.moveTo(x + pinSpacing * 2, y - pinSpacing * 2);
-      polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 2 + pinSpacing / 2);
-      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + pinSpacing / 2 + pinSpacing / 4);
-      polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 2 * pinSpacing / 2);
-      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 3 * pinSpacing / 2 - pinSpacing / 8);
-      polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 4 * pinSpacing / 2 - pinSpacing / 4);
-      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 5 * pinSpacing / 2 - pinSpacing / 3
-          - pinSpacing / 16);
-      polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 6 * pinSpacing / 2 - pinSpacing / 2
-          + pinSpacing / 16);
-      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 7 * pinSpacing / 2 - pinSpacing / 2
-          - pinSpacing / 16);
-      polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 7 * pinSpacing / 2 - pinSpacing / 2
-          + pinSpacing / 4);
-      polyline.lineTo(x + pinSpacing * 2, (y - pinSpacing * 2) + 7 * pinSpacing / 2);
-      polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 2);
-      polyline.moveTo(x, y);
-      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 2, y);
+    GeneralPath polyline = new GeneralPath();
+    polyline.moveTo(x + pinSpacing * 2, y - pinSpacing * 2);
+    polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 2 + pinSpacing / 2);
+    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + pinSpacing / 2 + pinSpacing / 4);
+    polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 2 * pinSpacing / 2);
+    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 3 * pinSpacing / 2 - pinSpacing / 8);
+    polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 4 * pinSpacing / 2 - pinSpacing / 4);
+    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 5 * pinSpacing / 2 - pinSpacing / 3
+        - pinSpacing / 16);
+    polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 6 * pinSpacing / 2 - pinSpacing / 2
+        + pinSpacing / 16);
+    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 7 * pinSpacing / 2 - pinSpacing / 2
+        - pinSpacing / 16);
+    polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 7 * pinSpacing / 2 - pinSpacing / 2
+        + pinSpacing / 4);
+    polyline.lineTo(x + pinSpacing * 2, (y - pinSpacing * 2) + 7 * pinSpacing / 2);
+    polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 2);
+    polyline.moveTo(x, y);
+    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 2, y);
 
-      body[1] = polyline;
-      polyline = new GeneralPath();
+    body[1] = polyline;
+    polyline = new GeneralPath();
 
-      body[0] = polyline;
+    body[0] = polyline;
 
-      polyline = new GeneralPath();
-      polyline.moveTo(x + pinSpacing * 2 - pinSpacing / 3, y);
-      polyline.lineTo(x + pinSpacing * 2 - pinSpacing * 2 / 3, y - pinSpacing / 3);
-      polyline.lineTo(x + pinSpacing * 2 - pinSpacing * 2 / 3, y + pinSpacing / 3);
-      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 3, y);
-      body[2] = polyline;
-    }
+    polyline = new GeneralPath();
+    polyline.moveTo(x + pinSpacing * 2 - pinSpacing / 3, y);
+    polyline.lineTo(x + pinSpacing * 2 - pinSpacing * 2 / 3, y - pinSpacing / 3);
+    polyline.lineTo(x + pinSpacing * 2 - pinSpacing * 2 / 3, y + pinSpacing / 3);
+    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 3, y);
+    body[2] = polyline;
+    
     return body;
   }
 
