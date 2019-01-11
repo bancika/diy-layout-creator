@@ -17,12 +17,9 @@
  */
 package org.diylc;
 
-import java.awt.AlphaComposite;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
 import java.awt.SplashScreen;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,17 +27,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
-import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
@@ -66,35 +60,7 @@ public class DIYLCStarter {
   public static void main(String[] args) {
     // Initialize splash screen
     final SplashScreen splash = SplashScreen.getSplashScreen();
-    if (splash != null) {
-      final Graphics2D g = splash.createGraphics();
-      if (g != null) {
-        Thread t = new Thread(new Runnable() {
-
-          @Override
-          public void run() {
-            for (int i = 90; i >= 0; i--) {
-              if (!splash.isVisible())
-                return;
-              final int frame = i;
-              SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                  renderSplashFrame(splash, g, frame);
-                  splash.update();
-                }
-              });
-              try {
-                Thread.sleep(10);
-              } catch (InterruptedException e) {
-              }
-            }
-          }
-        });
-        t.start();
-      }
-    }
+    new DIYLCSplash(splash).start();    
 
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
@@ -189,69 +155,5 @@ public class DIYLCStarter {
     } catch (Exception e) {
       LOG.error("Could not read config.properties file", e);
     }
-  }
-
-  // Splash screen stuff below
-
-  private static ImageIcon resistor = null;
-
-  public static ImageIcon getResistor() {
-    if (resistor == null) {
-      resistor = (ImageIcon) IconLoader.SplashResistor.getIcon();
-    }
-    return resistor;
-  }
-
-  private static ImageIcon film = null;
-
-  public static ImageIcon getFilm() {
-    if (film == null) {
-      film = (ImageIcon) IconLoader.SplashFilm.getIcon();
-    }
-    return film;
-  }
-
-  private static ImageIcon ceramic = null;
-
-  public static ImageIcon getCeramic() {
-    if (ceramic == null) {
-      ceramic = (ImageIcon) IconLoader.SplashCeramic.getIcon();
-    }
-    return ceramic;
-  }
-
-  private static ImageIcon electrolytic = null;
-
-  public static ImageIcon getElectrolytic() {
-    if (electrolytic == null) {
-      electrolytic = (ImageIcon) IconLoader.SplashElectrolytic.getIcon();
-    }
-    return electrolytic;
-  }
-
-  private static ImageIcon splash = null;
-
-  public static ImageIcon getSplash() {
-    if (splash == null) {
-      splash = (ImageIcon) IconLoader.Splash.getIcon();
-    }
-    return splash;
-  }
-
-  private static Point resistorTarget = new Point(112, 114);
-  private static Point filmTarget = new Point(233, 113);
-  private static Point electrolyticTarget = new Point(261, 23);
-  private static Point ceramicTarget = new Point(352, 22);
-
-  private static int pxPerFrame = 3;
-
-  static void renderSplashFrame(SplashScreen splash, Graphics2D g, int frame) {
-    g.setComposite(AlphaComposite.Clear);
-    getSplash().paintIcon(null, g, 0, 0);
-    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f - frame * 0.007f));
-    getResistor().paintIcon(null, g, resistorTarget.x - pxPerFrame * frame, resistorTarget.y);
-    getFilm().paintIcon(null, g, filmTarget.x, filmTarget.y + pxPerFrame * frame);
-    getElectrolytic().paintIcon(null, g, electrolyticTarget.x, electrolyticTarget.y - pxPerFrame * frame);
-    getCeramic().paintIcon(null, g, ceramicTarget.x + pxPerFrame * frame, ceramicTarget.y);
   }
 }
