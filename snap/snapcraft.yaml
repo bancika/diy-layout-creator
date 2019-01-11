@@ -8,8 +8,18 @@
   grade: devel # must be 'stable' to release into candidate/stable channels
   confinement: devmode # use 'strict' once you have the right plugs and slots
 
-  parts:
-    my-part:
-      # See 'snapcraft plugins'
-      plugin: nil
-  
+apps:
+  diylc:
+    command: diylc.sh
+    plugs: [home]
+
+parts:
+  diylc:
+    plugin: dump
+    source: .
+
+  java:
+    plugin: nil
+    stage-packages:
+    - openjdk-8-jre
+    - openjdk-8-demo
