@@ -1592,6 +1592,7 @@ public class Presenter implements IPlugInPort {
   @Override
   public void setLayerLocked(int layerZOrder, boolean locked) {
     LOG.info(String.format("setLayerLocked(%s, %s)", layerZOrder, locked));
+    Project oldProject = currentProject.clone();
     if (locked) {
       currentProject.getLockedLayers().add(layerZOrder);
     } else {
@@ -1600,11 +1601,16 @@ public class Presenter implements IPlugInPort {
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
+    if (!oldProject.equals(currentProject)) {
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), locked ? "Lock Layer" : "Unlock Layer");
+      projectFileManager.notifyFileChange();
+    }
   }
 
   @Override
   public void setLayerVisibility(int layerZOrder, boolean visible) {
     LOG.info(String.format("setLayerVisibility(%s, %s)", layerZOrder, visible));
+    Project oldProject = currentProject.clone();
     if (visible) {
       currentProject.getHiddenLayers().remove(layerZOrder);
     } else {
@@ -1613,6 +1619,10 @@ public class Presenter implements IPlugInPort {
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_VISIBILITY_CHANGED, currentProject.getHiddenLayers());
+    if (!oldProject.equals(currentProject)) {
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), visible ? "Show Layer" : "Hide Layer");
+      projectFileManager.notifyFileChange();
+    }
   }
 
   @SuppressWarnings("unchecked")

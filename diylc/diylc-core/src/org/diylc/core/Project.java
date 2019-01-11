@@ -256,6 +256,31 @@ public class Project implements Serializable {
         return false;
     } else if (!width.equals(other.width))
       return false;
+    if (gridSpacing == null) {
+      if (other.gridSpacing != null)
+        return false;
+    } else if (!gridSpacing.equals(other.gridSpacing))
+      return false;
+    if (font == null) {
+      if (other.font != null)
+        return false;
+    } else if (!font.equals(other.font))
+      return false;
+    if (groups == null) {
+      if (other.groups != null)
+        return false;
+    } else if (!groups.equals(other.groups))
+      return false;
+    if (lockedLayers == null) {
+      if (other.lockedLayers != null)
+        return false;
+    } else if (!lockedLayers.equals(other.lockedLayers))
+      return false;
+    if (hiddenLayers == null) {
+      if (other.hiddenLayers != null)
+        return false;
+    } else if (!hiddenLayers.equals(other.hiddenLayers))
+      return false;
     return true;
   }
 

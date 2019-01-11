@@ -2140,7 +2140,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added "Label Orientation" property to leaded components that can be used to force labels to be rendered horizontally instead of following component placement direction</description>
+					<description>Added "Label Orientation" property to leaded components that can be used to force component labels to be rendered horizontally instead of following component placement direction</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -2169,10 +2169,14 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Project font gets reverted to "Square721 BT" on Undo</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>When loaded from an existing file "Potentiometer Symbol" doesn't retain the specified orientation</description>
+					<description>Some actions do not register with Undo/Redo mechanism: project font, layer settings, group/ungroup</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>When loaded from an existing file, "Potentiometer Symbol" doesn't retain the specified orientation</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
