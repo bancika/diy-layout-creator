@@ -30,7 +30,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -503,7 +502,7 @@ public class DIPSwitch extends AbstractTransparentComponent<String> {
 
   public static enum SwitchCount {
 
-    _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16;
+    _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12;
 
     @Override
     public String toString() {
