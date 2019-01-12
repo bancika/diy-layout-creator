@@ -405,7 +405,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
     body = null;
   }
 
-  @EditableProperty(name = "Lug size")
+  @EditableProperty(name = "Lug Size")
   public Size getLugDiameter() {
     return lugDiameter;
   }
@@ -433,7 +433,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
     this.borderColor = borderColor;
   }
 
-  @EditableProperty(name = "Show shaft")
+  @EditableProperty(name = "Show Shaft")
   public boolean getShowShaft() {
     return showShaft;
   }

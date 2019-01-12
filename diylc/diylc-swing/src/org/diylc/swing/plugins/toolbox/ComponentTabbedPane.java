@@ -65,12 +65,14 @@ class ComponentTabbedPane extends JTabbedPane {
 
   private final IPlugInPort plugInPort;
   private Container recentToolbar;
+  private Container buildingBlocksToolbar;
   private List<String> pendingRecentComponents = null;
 
   public ComponentTabbedPane(IPlugInPort plugInPort) {
     super();
     this.plugInPort = plugInPort;
     addTab("Recently Used", createRecentComponentsPanel());
+//    addTab("Building Blocks", createBuildingBlocksPanel());
     Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
     List<String> categories = new ArrayList<String>(componentTypes.keySet());
     Collections.sort(categories);
@@ -153,6 +155,14 @@ class ComponentTabbedPane extends JTabbedPane {
     }
     return recentToolbar;
   }
+  
+  public Container getBuildingBlocksToolbar() {
+    if (buildingBlocksToolbar == null) {
+      buildingBlocksToolbar = new Container();
+      buildingBlocksToolbar.setLayout(new BoxLayout(buildingBlocksToolbar, BoxLayout.X_AXIS));
+    }
+    return buildingBlocksToolbar;
+  }
 
   private Component createComponentPanel(List<ComponentType> componentTypes) {
     Container toolbar = new Container();
@@ -194,6 +204,32 @@ class ComponentTabbedPane extends JTabbedPane {
 
     return panel;
   }
+  
+  @SuppressWarnings("unchecked")
+  private Component createBuildingBlocksPanel() {
+    JPanel panel = new JPanel(new BorderLayout());
+    panel.setOpaque(false);
+
+    final Container toolbar = getBuildingBlocksToolbar();
+//    refreshRecentComponentsToolbar(
+//        toolbar,
+//        (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY,
+//            new ArrayList<String>()));
+//    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RECENT_COMPONENTS_KEY, new IConfigListener() {
+//
+//      @Override
+//      public void valueChanged(String key, Object value) {
+//        // Cache the new list, we'll refresh when there's a
+//        // chance
+//        pendingRecentComponents = (List<String>) value;
+//      }
+//    });
+
+    panel.add(toolbar, BorderLayout.CENTER);
+
+    return panel;
+  }
+
 
   @SuppressWarnings("unchecked")
   private void refreshRecentComponentsToolbar(Container toolbar, List<String> recentComponentClassList) {

@@ -77,7 +77,7 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
     this.power = power;
   }
 
-  @EditableProperty(name = "Power rating")
+  @EditableProperty(name = "Power Rating")
   public org.diylc.core.measures.Power getPowerNew() {
     // Backward compatibility
     if (powerNew == null) {

@@ -70,7 +70,7 @@ public abstract class AbstractSchematicLeadedSymbol<T> extends AbstractLeadedCom
     }
   }
 
-  @EditableProperty(name = "Label position")
+  @EditableProperty(name = "Label Position")
   public LabelPosition getLabelPosition() {
     return labelPosition;
   }

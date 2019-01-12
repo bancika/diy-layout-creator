@@ -97,7 +97,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
     this.power = power;
   }
 
-  @EditableProperty(name = "Power rating")
+  @EditableProperty(name = "Power Rating")
   public org.diylc.core.measures.Power getPowerNew() {
     return powerNew;
   }
