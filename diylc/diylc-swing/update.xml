@@ -2156,6 +2156,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>"DIP Switch" added</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>"Tantalum Capacitor" added</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
