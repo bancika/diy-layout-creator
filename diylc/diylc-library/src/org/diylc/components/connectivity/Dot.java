@@ -35,6 +35,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
@@ -71,7 +72,7 @@ public class Dot extends AbstractComponent<Void> {
     g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
   }
 
-  @EditableProperty
+  @EditableProperty(validatorClass = PositiveMeasureValidator.class)
   public Size getSize() {
     return size;
   }

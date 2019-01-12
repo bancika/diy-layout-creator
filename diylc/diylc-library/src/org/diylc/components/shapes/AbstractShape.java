@@ -27,6 +27,7 @@ import java.awt.Point;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
@@ -67,7 +68,7 @@ public abstract class AbstractShape extends AbstractTransparentComponent<Void> {
     this.borderColor = borderColor;
   }
 
-  @EditableProperty(name = "Border thickness")
+  @EditableProperty(name = "Border thickness", validatorClass = PositiveMeasureValidator.class)
   public Size getBorderThickness() {
     return borderThickness;
   }

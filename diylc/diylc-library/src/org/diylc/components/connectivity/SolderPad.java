@@ -105,7 +105,7 @@ public class SolderPad extends AbstractComponent<Void> {
     this.size = size;
   }
 
-  @EditableProperty(name = "Hole")
+  @EditableProperty(name = "Hole", validatorClass = PositiveMeasureValidator.class)
   public Size getHoleSize() {
     if (holeSize == null) {
       holeSize = HOLE_SIZE;

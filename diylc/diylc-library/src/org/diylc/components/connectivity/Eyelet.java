@@ -36,6 +36,7 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -94,7 +95,7 @@ public class Eyelet extends AbstractComponent<String> {
     g2d.drawOval((width - holeDiameter) / 2, (height - holeDiameter) / 2, holeDiameter, holeDiameter);
   }
 
-  @EditableProperty
+  @EditableProperty(validatorClass = PositiveMeasureValidator.class)
   public Size getSize() {
     return size;
   }
@@ -103,7 +104,7 @@ public class Eyelet extends AbstractComponent<String> {
     this.size = size;
   }
 
-  @EditableProperty(name = "Hole size")
+  @EditableProperty(name = "Hole Size", validatorClass = PositiveMeasureValidator.class)
   public Size getHoleSize() {
     return holeSize;
   }

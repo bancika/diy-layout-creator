@@ -49,6 +49,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -131,7 +132,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Pin Spacing")
+  @EditableProperty(name = "Pin Spacing", validatorClass = PositiveMeasureValidator.class)
   public Size getPinSpacing() {
     return pinSpacing;
   }

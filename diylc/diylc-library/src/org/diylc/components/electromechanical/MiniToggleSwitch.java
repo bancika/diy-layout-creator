@@ -44,6 +44,7 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -225,7 +226,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     body = null;
   }
 
-  @EditableProperty
+  @EditableProperty(validatorClass = PositiveMeasureValidator.class)
   public Size getSpacing() {
     if (spacing == null) {
       spacing = SPACING;

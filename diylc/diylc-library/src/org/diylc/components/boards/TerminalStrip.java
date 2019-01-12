@@ -45,6 +45,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -115,7 +116,7 @@ public class TerminalStrip extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Terminal spacing")
+  @EditableProperty(name = "Terminal Spacing", validatorClass = PositiveMeasureValidator.class)
   public Size getTerminalSpacing() {
     return terminalSpacing;
   }
@@ -127,7 +128,7 @@ public class TerminalStrip extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Hole spacing")
+  @EditableProperty(name = "Hole Spacing", validatorClass = PositiveMeasureValidator.class)
   public Size getHoleSpacing() {
     return holeSpacing;
   }
@@ -139,7 +140,7 @@ public class TerminalStrip extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Center terminal")
+  @EditableProperty(name = "Center Terminal")
   public boolean getCenterHole() {
     return centerHole;
   }
@@ -151,7 +152,7 @@ public class TerminalStrip extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty(name = "Board width")
+  @EditableProperty(name = "Board Width", validatorClass = PositiveMeasureValidator.class)
   public Size getBoardWidth() {
     return boardWidth;
   }

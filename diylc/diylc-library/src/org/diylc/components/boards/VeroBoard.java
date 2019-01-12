@@ -38,6 +38,7 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -122,7 +123,7 @@ public class VeroBoard extends AbstractBoard {
     }
   }
 
-  @EditableProperty(name = "Strip color")
+  @EditableProperty(name = "Strip Color")
   public Color getStripColor() {
     return stripColor;
   }
@@ -131,7 +132,7 @@ public class VeroBoard extends AbstractBoard {
     this.stripColor = padColor;
   }
 
-  @EditableProperty
+  @EditableProperty(validatorClass = PositiveMeasureValidator.class)
   public Size getSpacing() {
     return spacing;
   }

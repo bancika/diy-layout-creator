@@ -2171,6 +2171,10 @@
 					<description>Render resistor color bands and capacitor polarity markings properly when zommed in</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Do not allow negative values for properties indicating a size</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Project font gets reverted to "Square721 BT" on Undo</description>
 				</org.diylc.appframework.update.Change>
