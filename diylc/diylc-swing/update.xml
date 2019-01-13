@@ -2205,7 +2205,11 @@
 			</versionNumber>
 			<releaseDate>2018-12-26 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>				
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>When "High Quality Rendering" option is checked, some components are rendered with 3D shading for better looks</description>
+				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Changed default project font again to "Lucida Console" because "Square721 BT" doesn't render Ohm symbol properly</description>
@@ -2213,7 +2217,15 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added optional arrow to the "Line" component together with configurable thickness</description>
-				</org.diylc.appframework.update.Change>							
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Use hardware acceleration for rendering to improve performance</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Leads and wires are rendered better, especially when zoomed in</description>
+				</org.diylc.appframework.update.Change>						
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

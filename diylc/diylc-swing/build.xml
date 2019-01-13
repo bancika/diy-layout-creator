@@ -7,7 +7,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="3.48.0" />
+	<property name="diylc.version" value="3.49.0" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -104,6 +104,7 @@
 				<include name="splash.png" />
 				<include name="update.xml" />
 				<include name="variants.xml" />
+				<include name="config.properties" />
 				<include name="templates**/*.diy" />
 				<include name="themes**/*.xml" />
 				<include name="fonts**/*.ttf" />
@@ -132,6 +133,7 @@
 			<zipfileset dir="themes" prefix="themes" />
 			<zipfileset dir="fonts" prefix="fonts" />
 			<zipfileset dir="." includes="update.xml" />
+			<zipfileset dir="." includes="config.properties" />
 			<zipfileset dir="." includes="variants.xml" />
 			<zipfileset dir="." includes="run.sh" />
 			<zipfileset dir="." includes="diylc.l4j.ini" />
