@@ -19,6 +19,7 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Path2D;
 
@@ -54,10 +55,10 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
     int thickness =
-        (int) (Math.pow(Math.E, -1.12436 - 0.11594 * gauge.getValue()) * Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT));
+        (int) (Math.pow(Math.E, -1.12436 - 0.11594 * gauge.getValue()) * Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT)) - 1;
     Color curveColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-            : color.darker();
+            : color;
     g2d.setColor(curveColor);
     Stroke stroke = null;
     switch (getStyle()) {
@@ -72,24 +73,25 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
         stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 3}, 0);
         break;
     }
-    g2d.setStroke(stroke);
-    g2d.draw(curve);
+    Shape s = stroke.createStrokedShape(curve);    
+    g2d.fill(s);
     if (componentState == ComponentState.NORMAL) {
-      g2d.setColor(color);
-      switch (getStyle()) {
-        case SOLID:
-          stroke = ObjectCache.getInstance().fetchBasicStroke(thickness - 2);
-          break;
-        case DASHED:
-          stroke =
-              ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness * 2, thickness * 3},
-                  thickness * 4);
-          break;
-        case DOTTED:
-          stroke = ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness / 4, thickness * 3}, 0);
-      }
-      g2d.setStroke(stroke);
-      g2d.draw(curve);
+      g2d.setColor(color.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
+//      switch (getStyle()) {
+//        case SOLID:
+//          stroke = ObjectCache.getInstance().fetchBasicStroke(thickness - 2);
+//          break;
+//        case DASHED:
+//          stroke =
+//              ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness * 2, thickness * 3},
+//                  thickness * 4);
+//          break;
+//        case DOTTED:
+//          stroke = ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness / 4, thickness * 3}, 0);
+//      }
+//      g2d.setStroke(stroke);
+      g2d.draw(s);
     }
   }
 
