@@ -103,6 +103,7 @@ public class Line extends AbstractLeadedComponent<Void> {
       g2d.fill(getArrow());
       g2d.setTransform(oldTx);
       
+      // make the line slightly shorter so line end doesn't overlap with the arrow
       double distance = distance(startPoint, endPoint);
       interpolate(startPoint, endPoint, getArrowSize().convertToPixels() * 0.9 / distance, startPoint);
     }
@@ -116,6 +117,7 @@ public class Line extends AbstractLeadedComponent<Void> {
       g2d.fill(getArrow());
       g2d.setTransform(oldTx);
       
+      // make the line slightly shorter so line end doesn't overlap with the arrow
       double distance = distance(startPoint, endPoint);
       interpolate(endPoint, startPoint, getArrowSize().convertToPixels() * 0.9 / distance, endPoint);
     }

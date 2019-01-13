@@ -2207,7 +2207,7 @@
 			<name></name>
 			<changes>					
 				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURES</changeType>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added optional arrow to the "Line" component together with configurable thickness</description>
 				</org.diylc.appframework.update.Change>							
 			</changes>
