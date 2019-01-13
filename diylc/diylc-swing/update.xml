@@ -2164,6 +2164,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>"IEC Socket" added</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>"Logic Gate (symbol)" added with 8 main gate types</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
