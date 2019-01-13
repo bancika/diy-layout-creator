@@ -53,7 +53,7 @@ public class Project implements Serializable {
   public static Size DEFAULT_WIDTH = new Size(29d, SizeUnit.cm);
   public static Size DEFAULT_HEIGHT = new Size(21d, SizeUnit.cm);
   public static Size DEFAULT_GRID_SPACING = new Size(0.1d, SizeUnit.in);
-  public static Font DEFAULT_FONT = new Font("Square721 BT", Font.PLAIN, 14);
+  public static Font DEFAULT_FONT = new Font("Lucida Console", Font.PLAIN, 14);
 
   private VersionNumber fileVersion;
 
@@ -127,7 +127,7 @@ public class Project implements Serializable {
     this.height = height;
   }
 
-  @EditableProperty(name = "Grid spacing", validatorClass = SpacingValidator.class, sortOrder = 6)
+  @EditableProperty(name = "Grid Spacing", validatorClass = SpacingValidator.class, sortOrder = 6)
   public Size getGridSpacing() {
     return gridSpacing;
   }

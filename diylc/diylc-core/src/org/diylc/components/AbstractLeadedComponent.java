@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -31,6 +32,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.ShadedPaint;
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.LineStyle;
@@ -181,8 +183,19 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
       if (bodyColor != null) {
-        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
-        g2d.fill(shape);
+        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);    
+        
+        if (!outlineMode && ConfigurationManager.getInstance().readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
+          Point p1 = new Point((int) (length / 2), 0);
+          Point p2 = new Point((int) (length / 2), (int) width);
+          ShadedPaint paint = theta > 0 && theta < Math.PI ? new ShadedPaint(p2, p1, bodyColor) : new ShadedPaint(p1, p2, bodyColor);
+          Paint oldPaint = g2d.getPaint();
+          g2d.setPaint(paint);
+          g2d.fill(shape);
+          g2d.setPaint(oldPaint);
+        } else {        
+          g2d.fill(shape);
+        }
       }
       decorateComponentBody(g2d, outlineMode);
       g2d.setComposite(oldComposite);

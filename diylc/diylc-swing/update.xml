@@ -2205,7 +2205,11 @@
 			</versionNumber>
 			<releaseDate>2018-12-26 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>					
+			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Changed default project font again to "Lucida Console" because "Square721 BT" doesn't render Ohm symbol properly</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added optional arrow to the "Line" component together with configurable thickness</description>

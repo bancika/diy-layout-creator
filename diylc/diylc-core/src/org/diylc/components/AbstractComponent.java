@@ -61,7 +61,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public static Color SELECTION_COLOR = Color.red;
   public static Color LABEL_COLOR = Color.black;
   public static Color LABEL_COLOR_SELECTED = Color.red;
-  public static Font LABEL_FONT = new Font("Square721 BT", Font.PLAIN, 14);
+  public static Font LABEL_FONT = new Font("Lucida Console", Font.PLAIN, 14);
   public static Color METAL_COLOR = Color.decode("#759DAF");
   public static Color LIGHT_METAL_COLOR = Color.decode("#EEEEEE");
   public static Color COPPER_COLOR = Color.decode("#DA8A67");
