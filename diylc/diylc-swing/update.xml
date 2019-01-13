@@ -2176,7 +2176,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Render resistor color bands and capacitor polarity markings properly when zommed in</description>
+					<description>Render resistor color bands and capacitor polarity markings properly when zoomed in</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
