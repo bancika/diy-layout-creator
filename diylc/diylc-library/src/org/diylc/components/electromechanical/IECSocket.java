@@ -360,7 +360,7 @@ public class IECSocket extends AbstractTransparentComponent<String> {
     int margin = (int) (2f * width / 32);
     int slant = (int) (5f * width / 32);
     int terminal = (int) (4f * width / 32);
-    int terminalSpacingH = (int) (6f * width / 32);
+    int terminalSpacingH = (int) (7f * width / 32);
     int terminalSpacingV = (int) (4f * width / 32);
     RoundedPolygon poly = new RoundedPolygon(new Point[] {
         new Point(width / 2, height / 5),
