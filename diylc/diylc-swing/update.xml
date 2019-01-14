@@ -2209,6 +2209,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>When "High Quality Rendering" option is checked, some components are rendered with 3D shading for better looks</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>"Fuse Holder" added</description>
 				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
