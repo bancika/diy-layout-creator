@@ -97,6 +97,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
   public SIL_IC() {
     super();
     updateControlPoints();
+    alpha = 100;
   }
 
   @EditableProperty
@@ -282,14 +283,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
       return;
     }
     Area mainArea = getBody()[0];
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
-    g2d.fill(mainArea);
-    g2d.setComposite(oldComposite);
-
+    
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point point : controlPoints) {
@@ -299,6 +293,14 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
         g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
       }
     }
+    
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
+    }
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
+    g2d.fill(mainArea);
+    g2d.setComposite(oldComposite);
 
     Color finalBorderColor;
     if (outlineMode) {
