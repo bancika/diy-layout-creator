@@ -284,7 +284,7 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    int margin = 2 * width / 32;
+    int margin = (int) (2f * width / 32);
     Area area = new Area(new Ellipse2D.Double(margin / 2, margin, width - 2 * margin, width - 2 * margin));
     g2d.setColor(BODY_COLOR);
     g2d.fill(area);
