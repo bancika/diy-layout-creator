@@ -34,7 +34,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.VoltageUnit;
 
-@ComponentDescriptor(name = "Battery (symbol)", author = "N9XYP", category = "Schematic Symbols",
+@ComponentDescriptor(name = "Battery", author = "N9XYP", category = "Schematic Symbols",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "B", description = "Battery schematic symbol",
     zOrder = IDIYComponent.COMPONENT)
 public class BatterySymbol extends AbstractSchematicLeadedSymbol<String> {

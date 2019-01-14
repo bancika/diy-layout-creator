@@ -37,7 +37,7 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Ceramic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(name = "Ceramic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Standard radial ceramic capacitor", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)

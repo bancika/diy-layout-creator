@@ -29,20 +29,16 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.RoundedPolygon;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -55,7 +51,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Fuse Holder", category = "Electro-Mechanical", author = "Branislav Stojkovic",
+@ComponentDescriptor(name = "Fuse Holder (Panel)", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted fuse holder", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "FH", autoEdit = false)
 public class FuseHolderPanel extends AbstractTransparentComponent<String> {

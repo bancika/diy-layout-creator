@@ -35,7 +35,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
-@ComponentDescriptor(name = "BJT (symbol)", author = "Branislav Stojkovic", category = "Schematic Symbols",
+@ComponentDescriptor(name = "BJT", author = "Branislav Stojkovic", category = "Schematic Symbols",
     instanceNamePrefix = "Q", description = "Bipolar junction transistor schematic symbol", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
 public class BJTSymbol extends Abstract3LegSymbol {

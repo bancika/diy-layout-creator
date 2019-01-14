@@ -37,7 +37,7 @@ import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Resistor (symbol)", author = "Branislav Stojkovic", category = "Schematic Symbols",
+@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Schematic Symbols",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R",
     description = "Resistor schematic symbol", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic", transformer = SimpleComponentTransformer.class)

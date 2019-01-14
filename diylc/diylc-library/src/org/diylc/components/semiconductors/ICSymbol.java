@@ -52,7 +52,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "IC (symbol)", author = "Branislav Stojkovic", category = "Schematic Symbols",
+@ComponentDescriptor(name = "IC", author = "Branislav Stojkovic", category = "Schematic Symbols",
     instanceNamePrefix = "IC", description = "IC symbol with 3 or 5 contacts", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
 public class ICSymbol extends AbstractTransparentComponent<String> {

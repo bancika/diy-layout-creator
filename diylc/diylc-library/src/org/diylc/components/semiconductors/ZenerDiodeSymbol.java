@@ -33,7 +33,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Zener Diode (symbol)", author = "Branislav Stojkovic", category = "Schematic Symbols",
+@ComponentDescriptor(name = "Zener Diode", author = "Branislav Stojkovic", category = "Schematic Symbols",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D",
     description = "Zener diode schematic symbol", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic", transformer = SimpleComponentTransformer.class)

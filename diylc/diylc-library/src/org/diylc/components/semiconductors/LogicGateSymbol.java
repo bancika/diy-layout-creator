@@ -50,7 +50,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Logic Gate (symbol)", author = "Branislav Stojkovic", category = "Schematic Symbols",
+@ComponentDescriptor(name = "Logic Gate", author = "Branislav Stojkovic", category = "Schematic Symbols",
     instanceNamePrefix = "LG", description = "Basic logic gate schematic symbols", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
 public class LogicGateSymbol extends AbstractTransparentComponent<String> {

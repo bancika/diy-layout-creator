@@ -45,7 +45,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Electrolytic Capacitor (radial)", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(name = "Electrolytic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Vertically mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)
