@@ -83,7 +83,6 @@ public class IECSocket extends AbstractTransparentComponent<String> {
   protected String name;
   protected String value;
   private Orientation orientation = Orientation.DEFAULT;
-  private boolean hasFuse = false;
 
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
@@ -186,16 +185,6 @@ public class IECSocket extends AbstractTransparentComponent<String> {
     body = null;
   }
   
-  @EditableProperty(name = "Fuse")
-  public boolean getHasFuse() {
-    return hasFuse;
-  }
-
-  public void setHasFuse(boolean hasFuse) {
-    this.hasFuse = hasFuse;
-    body = null;
-  }
-
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -277,60 +266,56 @@ public class IECSocket extends AbstractTransparentComponent<String> {
       double holeSpacing = HOLE_SPACING.convertToPixels();
       
       body = new Area[3];
+           
+      cutoutRadius = SIMPLE_CUTOUT_RADIUS.convertToPixels();
+      baseRadius = SIMPLE_BASE_RADIUS.convertToPixels();
+      cutoutLength = SIMPLE_CUTOUT_LENGTH.convertToPixels();
+      cutoutWidth = SIMPLE_CUTOUT_WIDTH.convertToPixels();
+      cutoutSlant = SIMPLE_CUTOUT_SLANT.convertToPixels();
+      baseLength = SIMPLE_BASE_LENGTH.convertToPixels();
+      length = SIMPLE_LENGTH.convertToPixels();
+      outerRadius = SIMPLE_OUTER_RADIUS.convertToPixels();
       
-      if (hasFuse) {
-
-      } else {        
-        cutoutRadius = SIMPLE_CUTOUT_RADIUS.convertToPixels();
-        baseRadius = SIMPLE_BASE_RADIUS.convertToPixels();
-        cutoutLength = SIMPLE_CUTOUT_LENGTH.convertToPixels();
-        cutoutWidth = SIMPLE_CUTOUT_WIDTH.convertToPixels();
-        cutoutSlant = SIMPLE_CUTOUT_SLANT.convertToPixels();
-        baseLength = SIMPLE_BASE_LENGTH.convertToPixels();
-        length = SIMPLE_LENGTH.convertToPixels();
-        outerRadius = SIMPLE_OUTER_RADIUS.convertToPixels();
-        
-        Point[] outerPoints = new Point[] {
-            new Point((int) Math.round(firstPoint.x), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
-            new Point((int) Math.round(firstPoint.x + baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
-            new Point((int) Math.round(firstPoint.x + length / 2), (int) Math.round(firstPoint.y + vSpacing / 2)),
-            new Point((int) Math.round(firstPoint.x + baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 + baseWidth / 2)),
-            new Point((int) Math.round(firstPoint.x - baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 + baseWidth / 2)),
-            new Point((int) Math.round(firstPoint.x - length / 2), (int) Math.round(firstPoint.y + vSpacing / 2)),
-            new Point((int) Math.round(firstPoint.x - baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
-        };
-        
-        double[] outerRadiuses = new double[] {
-          baseRadius / 2,
-          outerRadius,
-          baseRadius / 2, 
-          baseRadius / 2,
-          outerRadius,
-          baseRadius / 2
-        };
-        
-        body[0] = new Area(new RoundedPolygon(outerPoints, outerRadiuses));
-        body[0].subtract(new Area(new Ellipse2D.Double(firstPoint.x - holeSpacing / 2 - holeDiameter / 2, firstPoint.y + vSpacing / 2 - holeDiameter / 2, holeDiameter, holeDiameter)));
-        body[0].subtract(new Area(new Ellipse2D.Double(firstPoint.x + holeSpacing / 2 - holeDiameter / 2, firstPoint.y + vSpacing / 2 - holeDiameter / 2, holeDiameter, holeDiameter)));
-        
-        body[1] = new Area(new RoundRectangle2D.Double(firstPoint.x - baseLength / 2, firstPoint.y + vSpacing / 2 - baseWidth / 2, baseLength, baseWidth, baseRadius, baseRadius));
-        
-        Point[] cutoutPoints = new Point[] {
-            new Point(firstPoint.x, (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
-            new Point((int) (firstPoint.x + cutoutLength / 2 - cutoutSlant), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
-            new Point((int) (firstPoint.x + cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant)),
-            new Point((int) (firstPoint.x + cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 + cutoutWidth / 2)),
-            new Point((int) (firstPoint.x - cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 + cutoutWidth / 2)),
-            new Point((int) (firstPoint.x - cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant)),
-            new Point((int) (firstPoint.x - cutoutLength / 2 + cutoutSlant), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
-        };
-        
-        double[] cutoutRadiuses = new double[] {
-            cutoutRadius,
-        };
-        
-        body[2] = new Area(new RoundedPolygon(cutoutPoints, cutoutRadiuses));
-      }      
+      Point[] outerPoints = new Point[] {
+          new Point((int) Math.round(firstPoint.x), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.x + baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.x + length / 2), (int) Math.round(firstPoint.y + vSpacing / 2)),
+          new Point((int) Math.round(firstPoint.x + baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 + baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.x - baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 + baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.x - length / 2), (int) Math.round(firstPoint.y + vSpacing / 2)),
+          new Point((int) Math.round(firstPoint.x - baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
+      };
+      
+      double[] outerRadiuses = new double[] {
+        baseRadius / 2,
+        outerRadius,
+        baseRadius / 2, 
+        baseRadius / 2,
+        outerRadius,
+        baseRadius / 2
+      };
+      
+      body[0] = new Area(new RoundedPolygon(outerPoints, outerRadiuses));
+      body[0].subtract(new Area(new Ellipse2D.Double(firstPoint.x - holeSpacing / 2 - holeDiameter / 2, firstPoint.y + vSpacing / 2 - holeDiameter / 2, holeDiameter, holeDiameter)));
+      body[0].subtract(new Area(new Ellipse2D.Double(firstPoint.x + holeSpacing / 2 - holeDiameter / 2, firstPoint.y + vSpacing / 2 - holeDiameter / 2, holeDiameter, holeDiameter)));
+      
+      body[1] = new Area(new RoundRectangle2D.Double(firstPoint.x - baseLength / 2, firstPoint.y + vSpacing / 2 - baseWidth / 2, baseLength, baseWidth, baseRadius, baseRadius));
+      
+      Point[] cutoutPoints = new Point[] {
+          new Point(firstPoint.x, (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
+          new Point((int) (firstPoint.x + cutoutLength / 2 - cutoutSlant), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
+          new Point((int) (firstPoint.x + cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant)),
+          new Point((int) (firstPoint.x + cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 + cutoutWidth / 2)),
+          new Point((int) (firstPoint.x - cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 + cutoutWidth / 2)),
+          new Point((int) (firstPoint.x - cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant)),
+          new Point((int) (firstPoint.x - cutoutLength / 2 + cutoutSlant), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
+      };
+      
+      double[] cutoutRadiuses = new double[] {
+          cutoutRadius,
+      };
+      
+      body[2] = new Area(new RoundedPolygon(cutoutPoints, cutoutRadiuses));
       
       if (orientation != Orientation.DEFAULT) {
         double theta = 0;
