@@ -2228,6 +2228,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Use transparency instead of rendering pins on top of transistor body</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Leads and wires are rendered better, especially when zoomed in</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>

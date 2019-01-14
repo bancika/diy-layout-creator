@@ -85,6 +85,7 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
   public TransistorTO1() {
     super();
     updateControlPoints();
+    alpha = (byte) 100;
   }
 
   @EditableProperty
@@ -215,6 +216,17 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
       return;
     }
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
+    Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+    
+    for (Point point : controlPoints) {
+      if (!outlineMode) {
+        g2d.setColor(PIN_COLOR);
+        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+      }
+      g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
+      g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+    }
+    
     Area mainArea = getBody();
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
@@ -224,7 +236,7 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);
     Color finalBorderColor;
-    Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+    
     if (outlineMode) {
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
@@ -236,16 +248,7 @@ public class TransistorTO1 extends AbstractTransparentComponent<String> {
     }
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    g2d.draw(mainArea);
-
-    for (Point point : controlPoints) {
-      if (!outlineMode) {
-        g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-      }
-      g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-      g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-    }
+    g2d.draw(mainArea);    
 
     // Draw label.
     g2d.setFont(project.getFont());

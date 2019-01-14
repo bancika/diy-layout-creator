@@ -83,6 +83,7 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
   public TransistorTO92() {
     super();
     updateControlPoints();
+    alpha = (byte) 100;
   }
 
   @EditableProperty
@@ -249,6 +250,16 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
       return;
     }
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
+    
+    if (!outlineMode) {
+      for (Point point : controlPoints) {
+        g2d.setColor(PIN_COLOR);
+        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.setColor(PIN_BORDER_COLOR);
+        g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+      }
+    }
+    
     Area mainArea = getBody();
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
@@ -272,15 +283,6 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(mainArea);
-
-    if (!outlineMode) {
-      for (Point point : controlPoints) {
-        g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-        g2d.setColor(PIN_BORDER_COLOR);
-        g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-      }
-    }
 
     // Draw label.
     g2d.setFont(project.getFont());

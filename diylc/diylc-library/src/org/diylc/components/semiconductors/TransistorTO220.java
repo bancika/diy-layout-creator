@@ -93,6 +93,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
   public TransistorTO220() {
     super();
     updateControlPoints();
+    alpha = (byte) 100;
   }
 
   @EditableProperty
@@ -264,47 +265,9 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
       return;
     }
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-    Shape mainArea = getBody()[0];
-    Shape tabArea = getBody()[1];
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
-    g2d.fill(mainArea);
-    Color finalTabColor;
-    if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalTabColor = theme.getOutlineColor();
-    } else {
-      finalTabColor = tabColor;
-    }
-    g2d.setColor(finalTabColor);
-    g2d.fill(tabArea);
-    g2d.setComposite(oldComposite);
-    if (!outlineMode) {
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.setColor(tabBorderColor);
-      g2d.draw(tabArea);
-    }
-    Color finalBorderColor;
+    
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-    if (outlineMode) {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : theme.getOutlineColor();
-    } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : borderColor;
-    }
-    g2d.setColor(finalBorderColor);
-    g2d.draw(mainArea);
-    if (folded) {
-      g2d.draw(tabArea);
-    }
-
+    
     // Draw pins.
 
     if (folded) {
@@ -367,6 +330,46 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
           g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
         }
       }
+    }
+
+    
+    Shape mainArea = getBody()[0];
+    Shape tabArea = getBody()[1];
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
+    }
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
+    g2d.fill(mainArea);
+    Color finalTabColor;
+    if (outlineMode) {      
+      finalTabColor = theme.getOutlineColor();
+    } else {
+      finalTabColor = tabColor;
+    }
+    g2d.setColor(finalTabColor);
+    g2d.fill(tabArea);
+    g2d.setComposite(oldComposite);
+    if (!outlineMode) {
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.setColor(tabBorderColor);
+      g2d.draw(tabArea);
+    }
+    Color finalBorderColor;
+    
+    if (outlineMode) {
+      finalBorderColor =
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+              : theme.getOutlineColor();
+    } else {
+      finalBorderColor =
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+              : borderColor;
+    }
+    g2d.setColor(finalBorderColor);
+    g2d.draw(mainArea);
+    if (folded) {
+      g2d.draw(tabArea);
     }
 
     // Draw label.
