@@ -2208,6 +2208,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Middle mouse click activates mouse movement scroll mode, similar to web browsers</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>When "High Quality Rendering" option is checked, some components are rendered with 3D shading for better looks</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
