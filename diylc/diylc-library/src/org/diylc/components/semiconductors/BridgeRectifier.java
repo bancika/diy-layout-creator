@@ -67,7 +67,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
   
-  private static Size MINI_LENGTH = new Size(6.35d, SizeUnit.mm);
+  private static Size MINI_LENGTH = new Size(6.7d, SizeUnit.mm);
   private static Size MINI_WIDTH = new Size(8.3d, SizeUnit.mm);
   private static Size MINI_HORIZONTAL_SPACING = new Size(0.3d, SizeUnit.in);
   private static Size MINI_VERTICAL_SPACING = new Size(0.2d, SizeUnit.in);
