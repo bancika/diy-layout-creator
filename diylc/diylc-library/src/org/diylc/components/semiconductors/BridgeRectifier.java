@@ -31,7 +31,6 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -44,6 +43,7 @@ import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLeadedComponent.LabelOriantation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.RoundedPolygon;
 import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -294,16 +294,28 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
           body[0] = new Area(new Ellipse2D.Double(centerX - length / 2, centerY - width / 2, length, width));
           break;
         case SquareBR3:
-          Path2D path = new Path2D.Double();
           double margin = (BR3_LENGTH.convertToPixels() - BR3_SPACING.convertToPixels()) / 2;
           double holeSize = BR3_HOLE_SIZE.convertToPixels();
-          path.moveTo(centerX - width / 2 + margin, centerY - width / 2);
-          path.lineTo(centerX + width / 2, centerY - width / 2);
-          path.lineTo(centerX + width / 2, centerY + width / 2);
-          path.lineTo(centerX - width / 2, centerY + width / 2);
-          path.lineTo(centerX - width / 2, centerY - width / 2 + margin);
-          path.closePath();
-          body[0] = new Area(path);
+//          
+//          Path2D path = new Path2D.Double();
+//          path.moveTo(centerX - width / 2 + margin, centerY - width / 2);
+//          path.lineTo(centerX + width / 2, centerY - width / 2);
+//          path.lineTo(centerX + width / 2, centerY + width / 2);
+//          path.lineTo(centerX - width / 2, centerY + width / 2);
+//          path.lineTo(centerX - width / 2, centerY - width / 2 + margin);
+//          path.closePath();
+          
+          RoundedPolygon poly = new RoundedPolygon(new Point[] {
+              new Point(centerX, centerY - width / 2),
+              new Point(centerX + width / 2, centerY - width / 2),
+              new Point(centerX + width / 2, centerY + width / 2),
+              new Point(centerX - width / 2, centerY + width / 2),
+              new Point(centerX - width / 2, (int) (centerY - width / 2 + margin)),
+              new Point((int) (centerX - width / 2 + margin), centerY - width / 2),
+              
+          }, new double[] { EDGE_RADIUS, EDGE_RADIUS, EDGE_RADIUS, EDGE_RADIUS / 2 , EDGE_RADIUS / 2});
+          
+          body[0] = new Area(poly);
           body[0].subtract(new Area(new Ellipse2D.Double(centerX - holeSize / 2, centerY - holeSize / 2, holeSize, holeSize)));
           
           if (orientation != Orientation.DEFAULT) {
