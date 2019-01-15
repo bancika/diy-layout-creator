@@ -17,7 +17,6 @@
  */
 package org.diylc.swing.plugins.canvas;
 
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -108,10 +107,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private double zoomLevel = 1;
   
-  // mouse scroll mode
-  private boolean mouseScrollMode = false;
-  private Point mouseScrollPrevLocation = null;
-  private static double MOUSE_SCROLL_SPEED = 0.8;
+
 
   public CanvasPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
@@ -147,17 +143,10 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         
         @Override
         public void mouseClicked(MouseEvent e) {
-          if (!mouseScrollMode && e.getButton() == MouseEvent.BUTTON2) {
-            mouseScrollPrevLocation = null;
-            mouseScrollMode = true;
-            canvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-          } else if (mouseScrollMode) {
-            mouseScrollMode = false;
-            canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
-          } else {            
-            plugInPort.mouseClicked(e.getPoint(), e.getButton(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown(),
-              e.getClickCount());
-          }
+          if (scrollPane.isMouseScrollMode() || e.getButton() == MouseEvent.BUTTON2)
+            return;
+          plugInPort.mouseClicked(e.getPoint(), e.getButton(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown(),
+            e.getClickCount());          
         }
 
         @Override
@@ -225,18 +214,10 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-          if (mouseScrollMode) {
-            if (mouseScrollPrevLocation != null) {
-              int dx = (int) ((e.getPoint().x - mouseScrollPrevLocation.x) * MOUSE_SCROLL_SPEED);
-              int dy = (int) ((e.getPoint().y - mouseScrollPrevLocation.y) * MOUSE_SCROLL_SPEED);
-              scrollPane.getHorizontalScrollBar().setValue(scrollPane.getHorizontalScrollBar().getValue() + dx);
-              scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + dy);
-            }
-            mouseScrollPrevLocation = e.getPoint();
-          } else {
-            canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
-            plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown());
-          }
+          if (scrollPane.isMouseScrollMode())
+            return;
+          canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
+          plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown());         
         }
       });
     }
