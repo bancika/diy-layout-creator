@@ -71,6 +71,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
   protected Color borderColor = BORDER_COLOR;
   protected Display display = Display.NAME;
   transient private Shape[] body;
+  private Boolean flip;
 
   public ICSymbol() {
     super();
@@ -135,10 +136,10 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
     }
     drawCenteredText(g2d, label, x, controlPoints[0].y + pinSpacing, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
-    // Draw +/- markers
-    drawCenteredText(g2d, "-", controlPoints[0].x + pinSpacing, controlPoints[0].y, HorizontalAlignment.CENTER,
+    // Draw +/- markers    
+    drawCenteredText(g2d, getFlip() ? "+" : "-", controlPoints[0].x + pinSpacing, controlPoints[0].y, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
-    drawCenteredText(g2d, "+", controlPoints[1].x + pinSpacing, controlPoints[1].y, HorizontalAlignment.CENTER,
+    drawCenteredText(g2d, getFlip() ? "-" : "+", controlPoints[1].x + pinSpacing, controlPoints[1].y, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
   }
 
@@ -274,6 +275,17 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 
   public void setBorderColor(Color borderColor) {
     this.borderColor = borderColor;
+  }
+  
+  @EditableProperty
+  public Boolean getFlip() {
+    if (flip == null)
+      flip = false;
+    return flip;
+  }
+  
+  public void setFlip(Boolean flip) {
+    this.flip = flip;
   }
 
   @EditableProperty
