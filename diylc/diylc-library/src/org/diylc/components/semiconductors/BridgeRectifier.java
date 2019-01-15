@@ -86,6 +86,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
   
   private static Size BR3_LENGTH = new Size(0.6d, SizeUnit.in);
   private static Size BR3_SPACING = new Size(0.425d, SizeUnit.in);
+  private static Size BR3_HOLE_SIZE = new Size(3d, SizeUnit.mm);
   private static int[] BR3_LABEL_SPACING_Y = new int[] { 1, 1, -1, -1 };
 
   public static Color BODY_COLOR = Color.gray;
@@ -295,6 +296,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
         case SquareBR3:
           Path2D path = new Path2D.Double();
           double margin = (BR3_LENGTH.convertToPixels() - BR3_SPACING.convertToPixels()) / 2;
+          double holeSize = BR3_HOLE_SIZE.convertToPixels();
           path.moveTo(centerX - width / 2 + margin, centerY - width / 2);
           path.lineTo(centerX + width / 2, centerY - width / 2);
           path.lineTo(centerX + width / 2, centerY + width / 2);
@@ -302,6 +304,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
           path.lineTo(centerX - width / 2, centerY - width / 2 + margin);
           path.closePath();
           body[0] = new Area(path);
+          body[0].subtract(new Area(new Ellipse2D.Double(centerX - holeSize / 2, centerY - holeSize / 2, holeSize, holeSize)));
           
           if (orientation != Orientation.DEFAULT) {
             double theta = 0;
@@ -442,6 +445,9 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
           else if (i == 1)
             g2d.translate(0, textHeight / 2);
         }
+        
+        if (rectifierType == RectifierType.SquareBR3)
+          y -= BR3_HOLE_SIZE.convertToPixels();
 
         g2d.drawString(l, x, y);
 
