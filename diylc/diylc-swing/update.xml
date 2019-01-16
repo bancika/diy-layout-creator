@@ -2257,7 +2257,11 @@
 			</versionNumber>
 			<releaseDate>2019-01-16 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>				
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Fixed the issue with Ohm symbol rendering with some fonts and changed default project font back to "Square721 BT"</description>
+				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better color band rendering on resistors and smarter label positioning</description>
