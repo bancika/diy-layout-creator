@@ -2266,6 +2266,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better color band rendering on resistors and smarter label positioning</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added few pedal enclosure variants</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
