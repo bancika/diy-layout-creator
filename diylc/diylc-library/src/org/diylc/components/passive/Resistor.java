@@ -24,8 +24,10 @@ package org.diylc.components.passive;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
@@ -171,42 +173,40 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
   @Override
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
-    // int width = getWidth().convertToPixels();
     if (colorCode == ResistorColorCode.NONE || outlineMode || value == null) {
       return;
     }
+    Area body = new Area(getBodyShape());
+    Stroke stroke = ObjectCache.getInstance().fetchZoomableStroke(2);
     int width = getClosestOdd(getWidth().convertToPixels());
-    if (getShape() == ResistorShape.Standard) {
-      int x = width + FIRST_BAND;
-      Color[] bands = value.getColorCode(colorCode);
-      g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(2));
-      for (int i = 0; i < bands.length; i++) {
-        g2d.setColor(bands[i]);
-        g2d.drawLine(x, width / 10 + 2, x, width * 8 / 10 + 1);
-        x += BAND_SPACING;
-      }
-    } else {
-      int x = -FIRST_BAND;
-      int height = getClosestOdd(getWidth().convertToPixels());
-      Color[] bands = value.getColorCode(colorCode);
-      g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(2));
-      for (int i = 0; i < bands.length; i++) {
-        g2d.setColor(bands[i]);
-        g2d.drawLine(x, 1, x, height - 1);
-        x += BAND_SPACING;
-      }
-    }
+    int x = getShape() == ResistorShape.Standard ? width + FIRST_BAND : -FIRST_BAND;
+    Color[] bands = value.getColorCode(colorCode);
+    for (int i = 0; i < bands.length; i++) {
+      g2d.setColor(bands[i]);        
+      Area line = new Area(stroke.createStrokedShape(new Line2D.Double(x, 0, x, width)));
+      line.intersect(body);
+      g2d.fill(line);
+      x += BAND_SPACING;
+    }   
   }
 
   @Override
-  protected int getLabelOffset(int bodyWidth, int labelWidth) {
+  protected int getLabelOffset(int bodyLength, int bodyWidth, int labelLength) {
     if (value == null || getColorCode() == ResistorColorCode.NONE || getLabelOriantation() != AbstractLeadedComponent.LabelOriantation.Directional)
       return 0;
-    int width = getClosestOdd(getWidth().convertToPixels());
     Color[] bands = value.getColorCode(colorCode);
-    int bandArea =
-        getShape() == ResistorShape.Standard ? width + FIRST_BAND + BAND_SPACING * (bands.length - 1) : -FIRST_BAND
-            + BAND_SPACING * (bands.length - 1);
+    
+    int bandLenght = FIRST_BAND + BAND_SPACING * (bands.length - 1);
+    
+    if (getShape() == ResistorShape.Standard) {
+      if (labelLength < bodyLength - 2 * bodyWidth - bandLenght)
+        return bandLenght;
+    } else {
+      if (labelLength < bodyLength - bandLenght)
+        return bandLenght;
+    }
+    
+    int bandArea = getShape() == ResistorShape.Standard ? bodyWidth + bandLenght : -bandLenght;
 
     return bandArea / 2;
   }

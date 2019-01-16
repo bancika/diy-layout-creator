@@ -2203,7 +2203,7 @@
 				<minor>49</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2018-12-26 00:00:00.000 CET</releaseDate>
+			<releaseDate>2019-01-16 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -2236,7 +2236,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Use hardware acceleration for rendering to improve performance</description>
+					<description>Use hardware acceleration for rendering to improve performance and reduce memory usage</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -2246,6 +2246,22 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Leads and wires are rendered better, especially when zoomed in</description>
 				</org.diylc.appframework.update.Change>						
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>50</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2019-01-16 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Better color band rendering on resistors and smarter label positioning</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
