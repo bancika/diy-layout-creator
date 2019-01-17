@@ -164,7 +164,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
             @Override
             public void run() {
-              if (plugInPort.getNewComponentTypeSlot() == null && (e.isPopupTrigger() || pressedEvent.isPopupTrigger())) {
+              if (plugInPort.getNewComponentTypeSlot() == null && (e.isPopupTrigger() || (pressedEvent != null && pressedEvent.isPopupTrigger()))) {
                 // Enable actions.
                 boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
                 getCutAction().setEnabled(enabled);

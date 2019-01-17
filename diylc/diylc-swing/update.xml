@@ -2270,6 +2270,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Added few pedal enclosure variants</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Chrome-style cursors for mouse scrolling with arrows showing the exact scrolling direction</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
