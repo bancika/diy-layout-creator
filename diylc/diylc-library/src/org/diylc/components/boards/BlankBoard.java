@@ -22,6 +22,7 @@
 package org.diylc.components.boards;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -88,9 +89,15 @@ public class BlankBoard extends AbstractBoard {
   }
 
   @Override
-  public boolean getDrawCoordinates() {
+  public CoordinateType getCoordinateType() {
     // Override to prevent editing.
-    return super.getDrawCoordinates();
+    return super.getCoordinateType();
+  }
+  
+  @Override
+  public Color getCoordinateColor() {
+    // Override to prevent editing.
+    return super.getCoordinateColor();
   }
 
   @EditableProperty(name = "Shape")

@@ -59,7 +59,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Color boardColor = BOARD_COLOR;
   protected Color borderColor = BORDER_COLOR;
   protected Color coordinateColor = COORDINATE_COLOR;
-  protected Boolean drawCoordinates = true;
+  protected Boolean drawCoordinates = null;
+  protected CoordinateType coordinateType = CoordinateType.XY;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -83,7 +84,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   }
 
   protected void drawCoordinates(Graphics2D g2d, int spacing, Project project) {
-    if (!getDrawCoordinates())
+    CoordinateType ct = getCoordinateType();
+    if (ct == CoordinateType.None)
       return;
     Point p = new Point(firstPoint);
     g2d.setColor(coordinateColor);
@@ -92,7 +94,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     int t = 1;
     while (p.y < secondPoint.y - spacing) {
       p.y += spacing;
-      super.drawCenteredText(g2d, getCoordinateLabel(t++), p.x + 2, p.y, HorizontalAlignment.LEFT,
+      super.drawCenteredText(g2d, ct == CoordinateType.XY ? getCoordinateLabel(t++) : Integer.toString(t++), p.x + 2, p.y, HorizontalAlignment.LEFT,
           VerticalAlignment.CENTER);
     }
 
@@ -100,7 +102,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     t = 1;
     while (p.x < secondPoint.x - spacing) {
       p.x += spacing;
-      super.drawCenteredText(g2d, Integer.toString(t++), p.x, p.y - 2, HorizontalAlignment.CENTER,
+      super.drawCenteredText(g2d, ct == CoordinateType.XY ? Integer.toString(t++) : getCoordinateLabel(t++), p.x, p.y - 2, HorizontalAlignment.CENTER,
           VerticalAlignment.TOP);
     }
   }
@@ -147,15 +149,16 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public void setBorderColor(Color borderColor) {
     this.borderColor = borderColor;
   }
-
-  @EditableProperty(name = "Draw Coordinates")
-  public boolean getDrawCoordinates() {
-    // Null protection for older files
-    return drawCoordinates == null || drawCoordinates;
+  
+  @EditableProperty(name ="Coordinates")
+  public CoordinateType getCoordinateType() {
+    if (coordinateType == null)
+      coordinateType = drawCoordinates == null || drawCoordinates ? CoordinateType.XY : CoordinateType.None;
+    return coordinateType;
   }
-
-  public void setDrawCoordinates(boolean drawCoordinates) {
-    this.drawCoordinates = drawCoordinates;
+  
+  public void setCoordinateType(CoordinateType coordinateType) {
+    this.coordinateType = coordinateType;
   }
 
   @Override
@@ -196,5 +199,20 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   @Override
   public void setValue(String value) {
     this.value = value;
+  }
+  
+  public static enum CoordinateType {
+    None("None"), XY("X-numbers Y-letters"), YX("X-letters Y-numbers");
+    
+    private String label;
+
+    private CoordinateType(String label) {
+      this.label = label;
+    }
+    
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }
