@@ -74,7 +74,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   private Image bufferImage;
   private GraphicsConfiguration screenGraphicsConfiguration;
 
-  public static boolean USE_HARDWARE_ACCELLERATION = false;
+  public boolean useHardwareAcceleration = false;
 
   // static final EnumSet<DrawOption> DRAW_OPTIONS =
   // EnumSet.of(DrawOption.GRID,
@@ -209,7 +209,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   }
 
   protected void createBufferImage() {
-    if (USE_HARDWARE_ACCELLERATION) {
+    if (useHardwareAcceleration) {
       bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(getWidth(), getHeight());
       ((VolatileImage) bufferImage).validate(screenGraphicsConfiguration);
     } else {
@@ -238,7 +238,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       drawOptions.add(DrawOption.GRID);
     }
     plugInPort.draw(g2d, drawOptions, null);
-    if (USE_HARDWARE_ACCELLERATION) {
+    if (useHardwareAcceleration) {
       VolatileImage volatileImage = (VolatileImage) bufferImage;
       do {
         try {
@@ -301,5 +301,10 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   public Insets getAutoscrollInsets() {
     Rectangle rect = getVisibleRect();
     return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15, rect.x + rect.width + 15);
+  }
+  
+  public void setUseHardwareAcceleration(boolean useHardwareAcceleration) {
+    this.useHardwareAcceleration = useHardwareAcceleration;
+    bufferImage = null;
   }
 }

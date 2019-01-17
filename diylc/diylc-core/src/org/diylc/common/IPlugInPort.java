@@ -72,6 +72,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String SHOW_RULERS_KEY = "showRulers";
   public static final String SHOW_GRID_KEY = "showGrid";
   public static final String HIGHLIGHT_CONTINUITY_AREA = "highlightContinuityArea";
+  public static final String HARDWARE_ACCELERATION = "hardwareAcceleration";
 
   public static final int DND_TOGGLE_STICKY = 0x1;
   public static final int DND_TOGGLE_SNAP = 0x40000000;

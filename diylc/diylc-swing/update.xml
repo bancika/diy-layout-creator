@@ -2259,6 +2259,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Configurable graphics hardware acceleration</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Fixed the issue with Ohm symbol rendering with some fonts and changed default project font back to "Square721 BT"</description>
 				</org.diylc.appframework.update.Change>				

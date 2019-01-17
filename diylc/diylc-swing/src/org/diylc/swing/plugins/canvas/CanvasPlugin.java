@@ -124,12 +124,22 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     }
 
     getScrollPane().setRulerVisible(ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_RULERS_KEY, true));
+    
     ConfigurationManager.getInstance().addConfigListener(IPlugInPort.SHOW_RULERS_KEY, new IConfigListener() {
 
       @Override
       public void valueChanged(String key, Object value) {
         if (IPlugInPort.SHOW_RULERS_KEY.equals(key))
           getScrollPane().setRulerVisible((Boolean) value);
+      }
+    });
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HARDWARE_ACCELERATION, new IConfigListener() {
+      
+      @Override
+      public void valueChanged(String key, Object value) {
+        canvasPanel.setUseHardwareAcceleration((Boolean) value);
+        scrollPane.setUseHardwareAcceleration((Boolean) value);
       }
     });
   }

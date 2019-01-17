@@ -73,17 +73,17 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Continuous Creation",
             IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);
     swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),
-        CONFIG_MENU);
-    swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Grid", IPlugInPort.SHOW_GRID_KEY, true),
-        CONFIG_MENU);
-    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Export Grid", IPlugInPort.EXPORT_GRID_KEY, false),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Hardware Acceleration", IPlugInPort.HARDWARE_ACCELERATION, false),
         CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Hi-Quality Rendering",
             IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas",
+            IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false, IPlugInPort.HIGHLIGHT_CONTINUITY_AREA), CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY,
             false), CONFIG_MENU);
@@ -91,14 +91,17 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Outline Mode", IPlugInPort.OUTLINE_KEY, false),
         CONFIG_MENU);
     swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Grid", IPlugInPort.SHOW_GRID_KEY, true),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Snap to Grid", IPlugInPort.SNAP_TO_GRID_KEY, true),
         CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance()
             .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
-    swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas",
-            IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false, IPlugInPort.HIGHLIGHT_CONTINUITY_AREA), CONFIG_MENU);
 
     File themeDir = new File("themes");
     if (themeDir.exists()) {
