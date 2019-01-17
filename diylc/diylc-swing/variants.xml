@@ -2579,7 +2579,7 @@
           <entry>
             <string>Radius</string>
             <org.diylc.core.measures.Size>
-              <value>0.0</value>
+              <value>5.0</value>
               <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
             </org.diylc.core.measures.Size>
           </entry>
