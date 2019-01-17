@@ -398,11 +398,13 @@ public class AudioTransformer extends AbstractTransparentComponent<String> {
     g2d.setColor(CORE_BORDER_COLOR);
     g2d.drawRect(width * 3 / 8, 1, width / 4, height - 2);
     
+    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+    
     int pinSize = (int) (2f * width / 32);
     g2d.setColor(PIN_COLOR);
     for (int i = 0; i < 3; i++) {
-      g2d.fillRect(width / 5 - pinSize + 1, (height / 6) * (i + 2), pinSize, pinSize);
-      g2d.fillRect(4 * width / 5 + 1, (height / 6) * (i + 2), pinSize, pinSize);
+      g2d.fillOval(width / 5 - pinSize + 1, (height / 6) * (i + 2), pinSize, pinSize);
+      g2d.fillOval(4 * width / 5 + 1, (height / 6) * (i + 2), pinSize, pinSize);
     }
   }
 
