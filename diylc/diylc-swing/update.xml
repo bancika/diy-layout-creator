@@ -2260,6 +2260,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>"Signal Transformer" added</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Configurable graphics hardware acceleration</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
