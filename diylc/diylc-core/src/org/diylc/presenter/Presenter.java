@@ -94,7 +94,7 @@ public class Presenter implements IPlugInPort {
       XStream xStream = new XStream(new DomDriver());
       @SuppressWarnings("unchecked")
       List<Version> allVersions = (List<Version>) xStream.fromXML(in);
-      RECENT_VERSIONS = allVersions.subList(allVersions.size() - 4, allVersions.size() - 1);
+      RECENT_VERSIONS = allVersions.subList(allVersions.size() - 3, allVersions.size());
       Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
 
         @Override
