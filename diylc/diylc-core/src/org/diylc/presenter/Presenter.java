@@ -86,6 +86,7 @@ public class Presenter implements IPlugInPort {
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
   public static VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 0);
+  public static List<Version> RECENT_VERSIONS = null;
   // Read the latest version from the local update.xml file
   static {
     try {
@@ -93,6 +94,14 @@ public class Presenter implements IPlugInPort {
       XStream xStream = new XStream(new DomDriver());
       @SuppressWarnings("unchecked")
       List<Version> allVersions = (List<Version>) xStream.fromXML(in);
+      RECENT_VERSIONS = allVersions.subList(allVersions.size() - 4, allVersions.size() - 1);
+      Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
+
+        @Override
+        public int compare(Version o1, Version o2) {         
+          return -o1.getVersionNumber().compareTo(o2.getVersionNumber());
+        }        
+      });
       in.close();
       CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
     } catch (IOException e) {
@@ -955,6 +964,11 @@ public class Presenter implements IPlugInPort {
   @Override
   public VersionNumber getCurrentVersionNumber() {
     return CURRENT_VERSION;
+  }
+  
+  @Override
+  public List<Version> getRecentUpdates() {
+    return RECENT_VERSIONS;
   }
 
   @Override

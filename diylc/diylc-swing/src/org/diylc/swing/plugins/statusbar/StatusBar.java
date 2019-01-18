@@ -44,6 +44,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -56,6 +57,8 @@ import net.java.balloontip.styles.EdgedBalloonStyle;
 import org.apache.log4j.Logger;
 import org.diylc.announcements.AnnouncementProvider;
 import org.diylc.appframework.miscutils.Utils;
+import org.diylc.appframework.update.UpdateChecker;
+import org.diylc.appframework.update.Version;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
@@ -68,6 +71,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swingframework.MemoryBar;
 import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
+import org.diylc.swingframework.update.UpdateDialog;
 import org.diylc.swingframework.update.UpdateLabel;
 
 public class StatusBar extends JPanel implements IPlugIn {
@@ -82,6 +86,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private JComboBox zoomBox;
   private UpdateLabel updateLabel;
   private JLabel announcementLabel;
+  private JLabel recentChangesLabel;
   private MemoryBar memoryPanel;
   private JLabel statusLabel;
   private JLabel sizeLabel;
@@ -179,9 +184,6 @@ public class StatusBar extends JPanel implements IPlugIn {
           return new Point(0, -16);
         }
       };
-      // updateLabel.setBorder(BorderFactory.createCompoundBorder(
-      // BorderFactory.createEtchedBorder(), BorderFactory
-      // .createEmptyBorder(2, 4, 2, 4)));
       updateLabel.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
     }
     return updateLabel;
@@ -232,6 +234,38 @@ public class StatusBar extends JPanel implements IPlugIn {
       });
     }
     return announcementLabel;
+  }
+  
+  public JLabel getRecentChangesLabel() {
+    if (recentChangesLabel == null) {
+      recentChangesLabel = new JLabel(IconLoader.ScrollInformation.getIcon()){
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Point getToolTipLocation(MouseEvent event) {
+          return new Point(0, -16);
+        }
+      };
+      recentChangesLabel.setToolTipText("Click to show recent changes and updates");
+      recentChangesLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      
+      recentChangesLabel.addMouseListener(new MouseAdapter() {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          List<Version> updates = plugInPort.getRecentUpdates();
+          if (updates == null)
+            swingUI.showMessage("Version history is not available.", "Information", IView.INFORMATION_MESSAGE);
+          else {
+            String html = UpdateChecker.createUpdateHTML(updates);
+            UpdateDialog updateDialog = new UpdateDialog(swingUI.getOwnerFrame().getRootPane(), html, (String)null);
+            updateDialog.setVisible(true);
+          }
+        }
+      });
+    }
+    return recentChangesLabel;
   }
 
   private MemoryBar getMemoryPanel() {
@@ -322,6 +356,10 @@ public class StatusBar extends JPanel implements IPlugIn {
     gbc.gridx++;
     gbc.insets = new Insets(0, 0, 0, 0);
     add(getUpdateLabel(), gbc);
+    
+    gbc.gridx++;
+    gbc.insets = new Insets(0, 0, 0, 4);
+    add(getRecentChangesLabel(), gbc);
 
     gbc.gridx++;
     gbc.fill = GridBagConstraints.NONE;

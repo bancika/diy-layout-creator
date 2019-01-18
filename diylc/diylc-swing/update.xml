@@ -2268,8 +2268,12 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to flip letters and numbers for board coordinates</description>
+					<description>Ability to flip the letters and numbers for board coordinates</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>"Recent Updates" added to status bar and Help menu</description>
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Fixed the issue with Ohm symbol rendering with some fonts and changed default project font back to "Square721 BT"</description>

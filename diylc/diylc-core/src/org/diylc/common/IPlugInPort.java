@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.diylc.appframework.simplemq.IMessageListener;
 import org.diylc.appframework.simplemq.MessageDispatcher;
+import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -199,6 +200,13 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @return
    */
   VersionNumber getCurrentVersionNumber();
+  
+  /**
+   * Returns few most recent versions. 
+   * 
+   * @return
+   */
+  List<Version> getRecentUpdates();
 
   /**
    * Adds a list of components to the project.

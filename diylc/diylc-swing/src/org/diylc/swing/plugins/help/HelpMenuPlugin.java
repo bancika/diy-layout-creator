@@ -23,20 +23,25 @@ package org.diylc.swing.plugins.help;
 
 import java.awt.event.ActionEvent;
 import java.util.EnumSet;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
+import org.diylc.appframework.update.UpdateChecker;
+import org.diylc.appframework.update.Version;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swingframework.AboutDialog;
 import org.diylc.swingframework.LinkLabel;
+import org.diylc.swingframework.update.UpdateDialog;
 
 /**
  * Entry point class for help-related utilities.
@@ -56,8 +61,10 @@ public class HelpMenuPlugin implements IPlugIn {
 
   private IPlugInPort plugInPort;
   private AboutDialog aboutDialog;
+  private ISwingUI swingUI;
 
   public HelpMenuPlugin(ISwingUI swingUI) {
+    this.swingUI = swingUI;
     swingUI.injectMenuAction(new NavigateURLAction("User Manual", IconLoader.Manual.getIcon(), MANUAL_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("FAQ", IconLoader.Faq.getIcon(), FAQ_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Component API", IconLoader.CoffeebeanEdit.getIcon(), COMPONENT_URL),
@@ -65,7 +72,9 @@ public class HelpMenuPlugin implements IPlugIn {
     swingUI.injectMenuAction(new NavigateURLAction("Plugin API", IconLoader.ApplicationEdit.getIcon(), PLUGIN_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Submit a Bug", IconLoader.Bug.getIcon(), BUG_URL), HELP_TITLE);
     swingUI.injectMenuAction(null, HELP_TITLE);
-    swingUI.injectMenuAction(new NavigateURLAction("Donate", IconLoader.Donate.getIcon(), DONATE_URL), HELP_TITLE);
+    swingUI.injectMenuAction(new RecentUpdatesAction(), HELP_TITLE);
+    swingUI.injectMenuAction(null, HELP_TITLE);
+    swingUI.injectMenuAction(new NavigateURLAction("Donate", IconLoader.Donate.getIcon(), DONATE_URL), HELP_TITLE);    
     swingUI.injectMenuAction(new AboutAction(), HELP_TITLE);
   }
 
@@ -117,6 +126,29 @@ public class HelpMenuPlugin implements IPlugIn {
     @Override
     public void actionPerformed(ActionEvent e) {
       getAboutDialog().setVisible(true);
+    }
+  }
+  
+  class RecentUpdatesAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    public RecentUpdatesAction() {
+      super();
+      putValue(AbstractAction.NAME, "Recent Updates");
+      putValue(AbstractAction.SMALL_ICON, IconLoader.ScrollInformation.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      List<Version> updates = plugInPort.getRecentUpdates();
+      if (updates == null)
+        swingUI.showMessage("Version history is not available.", "Information", IView.INFORMATION_MESSAGE);
+      else {
+        String html = UpdateChecker.createUpdateHTML(updates);
+        UpdateDialog updateDialog = new UpdateDialog(swingUI.getOwnerFrame().getRootPane(), html, (String)null);
+        updateDialog.setVisible(true);
+      }
     }
   }
 
