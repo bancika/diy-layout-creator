@@ -94,6 +94,7 @@ public class Presenter implements IPlugInPort {
       XStream xStream = new XStream(new DomDriver());
       @SuppressWarnings("unchecked")
       List<Version> allVersions = (List<Version>) xStream.fromXML(in);
+      CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
       RECENT_VERSIONS = allVersions.subList(allVersions.size() - 3, allVersions.size());
       Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
 
@@ -102,8 +103,7 @@ public class Presenter implements IPlugInPort {
           return -o1.getVersionNumber().compareTo(o2.getVersionNumber());
         }        
       });
-      in.close();
-      CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
+      in.close();      
     } catch (IOException e) {
       LOG.error("Could not find version number, using default", e);
     }
