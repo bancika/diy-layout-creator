@@ -240,6 +240,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           new RulerScrollPane(getCanvasPanel(), new ProjectDrawingProvider(plugInPort, true, false), new Size(1d,
               SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in).convertToPixels());
       boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);
+      
+      boolean useHardwareAcceleration = ConfigurationManager.getInstance().readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
+      scrollPane.setUseHardwareAcceleration(useHardwareAcceleration);
 
       scrollPane.setMetric(metric);
       scrollPane.setWheelScrollingEnabled(true);
