@@ -2290,6 +2290,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Chrome-style cursors for mouse scrolling with arrows showing the exact scrolling direction</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Since 3.49, straight traces are rendered 1px thinner than curved traces of the same thickness</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

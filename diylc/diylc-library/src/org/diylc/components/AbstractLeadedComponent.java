@@ -293,8 +293,16 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   private void drawLead(Graphics2D g2d, ComponentState componentState, IDrawingObserver observer, boolean isCopperArea) {
     if (isCopperArea)
       observer.startTrackingContinuityArea(true);
-
-    float thickness = getLeadThickness() - 1;
+    
+    float thickness = getLeadThickness();
+    
+    Line2D line = new Line2D.Double(points[0].x, points[0].y, points[1].x, points[1].y);
+    
+    if (shouldShadeLeads()) {
+      // for some reason the stroked line gets approx 1px thicker when converted to shape
+      thickness -= 1;
+    }
+    
     Stroke stroke = null;
     switch (getStyle()) {
       case SOLID:
@@ -308,23 +316,24 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 4}, 0);
         break;
     }
-
-    Line2D line = new Line2D.Double(points[0].x, points[0].y, points[1].x, points[1].y);
-    Shape lineShape = stroke.createStrokedShape(line);
     
-    Color leadColor =
-        shouldShadeLeads() ? getLeadColorForPainting(componentState) : getLeadColorForPainting(componentState);
-    g2d.setColor(leadColor);
-    g2d.fill(lineShape);
-
-    if (isCopperArea)
-      observer.stopTrackingContinuityArea();
-
-    if (shouldShadeLeads()) {
+    if (shouldShadeLeads()) {     
+      Shape lineShape = stroke.createStrokedShape(line);
+      
+      g2d.setColor(getLeadColorForPainting(componentState));
+      g2d.fill(lineShape);
+  
+      if (isCopperArea)
+        observer.stopTrackingContinuityArea();
+  
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
       leadColor = getLeadColorForPainting(componentState);
       g2d.setColor(leadColor.darker());
-      g2d.draw(lineShape);
+      g2d.draw(lineShape);      
+    } else {
+      g2d.setColor(getLeadColorForPainting(componentState));
+      g2d.setStroke(stroke);
+      g2d.draw(line);
     }
   }
 
