@@ -95,6 +95,7 @@ public class Presenter implements IPlugInPort {
       @SuppressWarnings("unchecked")
       List<Version> allVersions = (List<Version>) xStream.fromXML(in);
       CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
+      LOG.info("Current DIYLC version: " + CURRENT_VERSION);
       RECENT_VERSIONS = allVersions.subList(allVersions.size() - 3, allVersions.size());
       Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
 
