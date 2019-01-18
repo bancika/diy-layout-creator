@@ -93,17 +93,19 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
     int t = 1;
     while (p.y < secondPoint.y - spacing) {
-      p.y += spacing;
-      super.drawCenteredText(g2d, ct == CoordinateType.XY ? getCoordinateLabel(t++) : Integer.toString(t++), p.x + 2, p.y, HorizontalAlignment.LEFT,
+      p.y += spacing;      
+      super.drawCenteredText(g2d, ct == CoordinateType.XY ? getCoordinateLabel(t) : Integer.toString(t), p.x + (ct == CoordinateType.YX && t >= 10 ? 0 : 2), p.y, HorizontalAlignment.LEFT,
           VerticalAlignment.CENTER);
+      t++;
     }
 
     p = new Point(firstPoint);
     t = 1;
     while (p.x < secondPoint.x - spacing) {
-      p.x += spacing;
-      super.drawCenteredText(g2d, ct == CoordinateType.XY ? Integer.toString(t++) : getCoordinateLabel(t++), p.x, p.y - 2, HorizontalAlignment.CENTER,
+      p.x += spacing;      
+      super.drawCenteredText(g2d, ct == CoordinateType.XY ? Integer.toString(t) : getCoordinateLabel(t), p.x, p.y - 2, HorizontalAlignment.CENTER,
           VerticalAlignment.TOP);
+      t++;
     }
   }
 
