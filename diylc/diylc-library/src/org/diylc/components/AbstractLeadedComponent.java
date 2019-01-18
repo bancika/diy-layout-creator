@@ -213,7 +213,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
           g2d.fill(shape);
         }
       }
-      decorateComponentBody(g2d, outlineMode);
+      
+      Composite newComposite = null;
+      if (!decorateAboveBorder())
+        decorateComponentBody(g2d, outlineMode);
+      else
+        newComposite = g2d.getComposite();
+      
       g2d.setComposite(oldComposite);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       Color finalBorderColor;
@@ -230,6 +236,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       }
       g2d.setColor(finalBorderColor);
       g2d.draw(shape);
+      
+      if (decorateAboveBorder()) {
+        g2d.setComposite(newComposite);
+        decorateComponentBody(g2d, outlineMode);
+        g2d.setComposite(oldComposite);
+      }
 
       // Draw label.
       g2d.setFont(project.getFont());
@@ -343,6 +355,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
     // Do nothing.
+  }
+  
+  protected boolean decorateAboveBorder() {
+    return false;
   }
 
   protected int calculateLabelYCoordinate(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics) {
