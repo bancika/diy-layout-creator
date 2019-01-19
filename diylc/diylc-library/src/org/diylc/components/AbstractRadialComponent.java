@@ -45,7 +45,7 @@ public abstract class AbstractRadialComponent<T> extends AbstractLeadedComponent
 
   @Override
   protected int calculatePinSpacing(Rectangle shapeRect) {
-    return getClosestOdd(getPinSpacing().convertToPixels());
+    return (int) getPinSpacing().convertToPixels();
   }
 
   @EditableProperty(name = "Pin spacing")
