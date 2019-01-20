@@ -60,7 +60,9 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Color borderColor = BORDER_COLOR;
   protected Color coordinateColor = COORDINATE_COLOR;
   protected Boolean drawCoordinates = null;
-  protected CoordinateType coordinateType = CoordinateType.XY;
+  protected CoordinateType xType = CoordinateType.Numbers;
+  protected CoordinateDisplay coordinateDisplay = CoordinateDisplay.One_Side;
+  protected CoordinateType yType = CoordinateType.Letters;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -84,28 +86,38 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   }
 
   protected void drawCoordinates(Graphics2D g2d, int spacing, Project project) {
-    CoordinateType ct = getCoordinateType();
-    if (ct == CoordinateType.None)
-      return;
-    Point p = new Point(firstPoint);
     g2d.setColor(coordinateColor);
     g2d.setFont(project.getFont().deriveFont(COORDINATE_FONT_SIZE));
 
-    int t = 1;
-    while (p.y < secondPoint.y - spacing) {
-      p.y += spacing;      
-      super.drawCenteredText(g2d, ct == CoordinateType.XY ? getCoordinateLabel(t) : Integer.toString(t), p.x + (ct == CoordinateType.YX && t >= 10 ? 0 : 2), p.y, HorizontalAlignment.LEFT,
-          VerticalAlignment.CENTER);
-      t++;
+    if (getCoordinateDisplay() != CoordinateDisplay.None) {
+      Point p = new Point(firstPoint);
+      int t = 1;
+      while (p.y < secondPoint.y - spacing) {
+        p.y += spacing;
+        int offset = (getyType() == CoordinateType.Numbers && t >= 10) || (getyType() == CoordinateType.Letters && t >= 27) ? 0 : 2;
+        drawCenteredText(g2d, getyType() == CoordinateType.Letters ? getCoordinateLabel(t) : Integer.toString(t), p.x + offset, p.y, HorizontalAlignment.LEFT,
+            VerticalAlignment.CENTER);
+        if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
+          drawCenteredText(g2d, getyType() == CoordinateType.Letters ? getCoordinateLabel(t) : Integer.toString(t), secondPoint.x - offset, p.y, HorizontalAlignment.RIGHT,
+              VerticalAlignment.CENTER);
+        }
+        t++;
+      }
     }
 
-    p = new Point(firstPoint);
-    t = 1;
-    while (p.x < secondPoint.x - spacing) {
-      p.x += spacing;      
-      super.drawCenteredText(g2d, ct == CoordinateType.XY ? Integer.toString(t) : getCoordinateLabel(t), p.x, p.y - 2, HorizontalAlignment.CENTER,
-          VerticalAlignment.TOP);
-      t++;
+    if (getCoordinateDisplay() != CoordinateDisplay.None) {
+      Point p = new Point(firstPoint);
+      int t = 1;
+      while (p.x < secondPoint.x - spacing) {
+        p.x += spacing;      
+        drawCenteredText(g2d, getxType() == CoordinateType.Letters ? getCoordinateLabel(t) : Integer.toString(t), p.x, p.y - 2, HorizontalAlignment.CENTER,
+            VerticalAlignment.TOP);
+        if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
+          drawCenteredText(g2d, getxType() == CoordinateType.Letters ? getCoordinateLabel(t) : Integer.toString(t), p.x, (int) (secondPoint.y - COORDINATE_FONT_SIZE), HorizontalAlignment.CENTER,
+              VerticalAlignment.BOTTOM);
+        }
+        t++;
+      }
     }
   }
 
@@ -152,15 +164,37 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     this.borderColor = borderColor;
   }
   
-  @EditableProperty(name ="Coordinates")
-  public CoordinateType getCoordinateType() {
-    if (coordinateType == null)
-      coordinateType = drawCoordinates == null || drawCoordinates ? CoordinateType.XY : CoordinateType.None;
-    return coordinateType;
+  @EditableProperty(name = "X")
+  public CoordinateType getxType() {
+    if (xType == null)
+      xType = CoordinateType.Numbers;
+    return xType;
   }
-  
-  public void setCoordinateType(CoordinateType coordinateType) {
-    this.coordinateType = coordinateType;
+
+  public void setxType(CoordinateType xType) {
+    this.xType = xType;
+  }
+
+  @EditableProperty(name = "Coordinates")
+  public CoordinateDisplay getCoordinateDisplay() {
+    if (coordinateDisplay == null)
+      coordinateDisplay = CoordinateDisplay.One_Side;
+    return coordinateDisplay;
+  }
+
+  public void setCoordinateDisplay(CoordinateDisplay coordinateDisplay) {
+    this.coordinateDisplay = coordinateDisplay;
+  }
+
+  @EditableProperty(name = "Y")
+  public CoordinateType getyType() {
+    if (yType == null)
+      yType = CoordinateType.Letters;
+    return yType;
+  }
+
+  public void setyType(CoordinateType yType) {
+    this.yType = yType;
   }
 
   @Override
@@ -204,17 +238,15 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   }
   
   public static enum CoordinateType {
-    None("None"), XY("X-numbers Y-letters"), YX("X-letters Y-numbers");
-    
-    private String label;
-
-    private CoordinateType(String label) {
-      this.label = label;
-    }
+    Letters, Numbers
+  }
+  
+  public static enum CoordinateDisplay {
+    None, One_Side, Both_Sides;
     
     @Override
     public String toString() {
-      return label;
-    }
+      return super.toString().replace('_', ' ');
+    };
   }
 }

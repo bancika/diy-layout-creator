@@ -87,13 +87,25 @@ public class BlankBoard extends AbstractBoard {
     else
       g2d.drawOval(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
   }
+  
+  @Override
+  public CoordinateType getxType() {
+    // Override to prevent editing.
+    return super.getxType();
+  }
 
   @Override
-  public CoordinateType getCoordinateType() {
+  public CoordinateDisplay getCoordinateDisplay() {
     // Override to prevent editing.
-    return super.getCoordinateType();
+    return super.getCoordinateDisplay();
   }
-  
+
+  @Override
+  public CoordinateType getyType() {
+    // Override to prevent editing.
+    return super.getyType();
+  }
+
   @Override
   public Color getCoordinateColor() {
     // Override to prevent editing.
