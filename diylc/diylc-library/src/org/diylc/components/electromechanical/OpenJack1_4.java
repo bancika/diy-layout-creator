@@ -88,7 +88,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
     Shape[] body = getBody();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    if (componentState != ComponentState.DRAGGING) {
+//    if (componentState != ComponentState.DRAGGING) {
       Composite oldComposite = g2d.getComposite();
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
@@ -97,7 +97,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
       g2d.fill(body[0]);
 
       g2d.setComposite(oldComposite);
-    }
+//    }
 
     Color finalBorderColor;
 
@@ -116,8 +116,8 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
     g2d.setColor(finalBorderColor);
     g2d.draw(body[0]);
 
-    if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
+//    if (componentState != ComponentState.DRAGGING) {
+      oldComposite = g2d.getComposite();
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
@@ -131,7 +131,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
       drawingObserver.stopTrackingContinuityArea();
 
       g2d.setComposite(oldComposite);
-    }
+//    }
 
     if (outlineMode) {
       Theme theme =
@@ -361,7 +361,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
 
   @Override
   public boolean isControlPointSticky(int index) {
-    return index < 3 || getType() == JackType.STEREO;
+    return index < 2 || getType() == JackType.STEREO;
   }
 
   @Override

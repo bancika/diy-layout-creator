@@ -216,7 +216,7 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
     // Rectangle bounds = body.getBounds();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    if (componentState != ComponentState.DRAGGING) {
+//    if (componentState != ComponentState.DRAGGING) {
       Composite oldComposite = g2d.getComposite();
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
@@ -228,7 +228,7 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : METAL_COLOR);
       g2d.fill(body[3]);
       g2d.setComposite(oldComposite);
-    }
+//    }
 
     Color finalBorderColor;
     if (outlineMode) {

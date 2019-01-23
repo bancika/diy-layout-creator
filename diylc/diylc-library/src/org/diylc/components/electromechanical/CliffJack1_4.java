@@ -197,7 +197,7 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
     Shape[] body = getBody();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    if (componentState != ComponentState.DRAGGING) {
+//    if (componentState != ComponentState.DRAGGING) {
       Composite oldComposite = g2d.getComposite();
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
@@ -210,7 +210,7 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
         g2d.fill(body[i]);
       }
       g2d.setComposite(oldComposite);
-    }
+//    }
 
     Color finalBorderColor;
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);

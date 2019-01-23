@@ -2303,6 +2303,10 @@
 					<description>Chrome-style cursors for mouse scrolling with arrows showing the exact scrolling direction</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Do not render various jack components as completely transparent while dragging</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Since 3.49, straight traces are rendered 1px thinner than curved traces of the same thickness</description>
 				</org.diylc.appframework.update.Change>

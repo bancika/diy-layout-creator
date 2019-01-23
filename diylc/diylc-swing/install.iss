@@ -14,7 +14,6 @@ AlwaysShowDirOnReadyPage=yes
 [Files]
 Source: "diylc.exe"; DestDir: "{app}"
 Source: "diylc.l4j.ini"; DestDir: "{app}"
-Source: "config.xml"; DestDir: "{app}"
 Source: "update.xml"; DestDir: "{app}"
 Source: "variants.xml"; DestDir: "{app}"
 Source: "config.properties"; DestDir: "{app}"
