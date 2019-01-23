@@ -2306,6 +2306,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Since 3.49, straight traces are rendered 1px thinner than curved traces of the same thickness</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Since 3.49, some capacitor variants have disappeared. The fix brings them back</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

@@ -44,6 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
@@ -116,7 +117,10 @@ public class Presenter implements IPlugInPort {
     try {
       BufferedInputStream in = new BufferedInputStream(new FileInputStream("variants.xml"));
       XStream xStream = new XStream(new DomDriver());
-      defaultVariantMap = (Map<String, List<Template>>) xStream.fromXML(in);
+      @SuppressWarnings("unchecked")
+      Map<String, List<Template>> map = (Map<String, List<Template>>) xStream.fromXML(in);
+      defaultVariantMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
+      defaultVariantMap.putAll(map);
       in.close();
       LOG.info(String.format("Loaded default variants for %d components", defaultVariantMap == null ? 0 : defaultVariantMap.size()));
     } catch (IOException e) {
@@ -2250,8 +2254,13 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   @Override
   public List<Template> getVariantsFor(String categoryName, String componentTypeName) {
+    Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
+    
     Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+    if (variantMap != null)
+      lookupMap.putAll(variantMap);
+    
     List<Template> variants = new ArrayList<Template>();
     if (variantMap != null) {
       List<Template> userVariants = variantMap.get(categoryName + "." + componentTypeName);
