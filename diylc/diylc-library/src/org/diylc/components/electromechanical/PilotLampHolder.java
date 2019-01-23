@@ -26,24 +26,19 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.RadialGradientPaint;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -59,7 +54,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Pilot Lamp Holder", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Fender-style pilot bulb holder for T2 and T-3 ¼ miniature bayonet lamps", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PL")
-public class PilotLampHolder extends AbstractTransparentComponent<String> {
+public class PilotLampHolder extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -110,13 +105,9 @@ public class PilotLampHolder extends AbstractTransparentComponent<String> {
     if (outlineMode) {
       Theme theme =
           (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : WAFER_COLOR.darker();
+      finalBorderColor = WAFER_COLOR.darker();
     }
 
     g2d.setColor(finalBorderColor);
@@ -146,13 +137,9 @@ public class PilotLampHolder extends AbstractTransparentComponent<String> {
     if (outlineMode) {
       Theme theme =
           (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : BASE_COLOR.darker();
+      finalBorderColor = BASE_COLOR.darker();
     }
 
     g2d.setColor(finalBorderColor);
@@ -163,6 +150,8 @@ public class PilotLampHolder extends AbstractTransparentComponent<String> {
     
     g2d.draw(body[1]);
     g2d.draw(body[2]);
+    
+    drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
   @SuppressWarnings("incomplete-switch")

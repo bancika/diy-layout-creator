@@ -39,7 +39,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.components.transform.ClosedJackTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -56,7 +56,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Enclosed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false, transformer = ClosedJackTransformer.class)
-public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
+public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -76,7 +76,7 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
   private JackType type = JackType.MONO;
   private Orientation orientation = Orientation.DEFAULT;
-  transient private Shape[] body;
+  transient private Area[] body;
   private String value = "";
 
   public ClosedJack1_4() {
@@ -129,9 +129,9 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
     return angle;
   }
 
-  public Shape[] getBody() {
+  public Area[] getBody() {
     if (body == null) {
-      body = new Shape[5];
+      body = new Area[5];
 
       // Create body.
       int x = controlPoints[0].x;
@@ -170,7 +170,7 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
       }
       Area pathArea = new Area(path);
       pathArea.intersect(shaft);
-      body[2] = path;
+      body[2] = new Area(path);
 
       // Create lugs.
       Area lugs = new Area();
@@ -234,13 +234,9 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
     if (outlineMode) {
       Theme theme =
           (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : BORDER_COLOR;
+      finalBorderColor = BORDER_COLOR;
     }
 
     g2d.setColor(finalBorderColor);
@@ -274,6 +270,8 @@ public class ClosedJack1_4 extends AbstractTransparentComponent<String> {
     int centerX = bounds.x + bounds.width / 2;
     int centerY = bounds.y + bounds.height / 2;
     drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    
+    drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
   @Override

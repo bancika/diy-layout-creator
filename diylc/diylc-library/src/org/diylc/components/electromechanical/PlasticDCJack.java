@@ -36,7 +36,7 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -52,7 +52,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Plastic DC Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mount plastic DC jack", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false)
-public class PlasticDCJack extends AbstractTransparentComponent<String> {
+public class PlasticDCJack extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -68,7 +68,7 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
   private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
   private String value = "";
   private DCPolarity polarity = DCPolarity.CENTER_NEGATIVE;
-  transient private Shape[] body;
+  transient private Area[] body;
 
   public PlasticDCJack() {
     updateControlPoints();
@@ -86,18 +86,19 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
     controlPoints[2] = new Point(x - spacing, y + spacing * 2);
   }
 
-  public Shape[] getBody() {
+  @Override
+  public Area[] getBody() {
     if (body == null) {
-      body = new Shape[4];
+      body = new Area[4];
 
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;
       int spacing = (int) SPACING.convertToPixels();
       int diameter = getClosestOdd(DIAMETER.convertToPixels());
-      body[0] = new Ellipse2D.Double(x - diameter / 2, y + spacing - diameter / 2, diameter, diameter);
+      body[0] = new Area(new Ellipse2D.Double(x - diameter / 2, y + spacing - diameter / 2, diameter, diameter));
 
       int rectWidth = (int) (diameter / Math.sqrt(2)) - 2;
-      body[1] = new Rectangle(x - rectWidth / 2, y + spacing - rectWidth / 2, rectWidth, rectWidth);
+      body[1] = new Area(new Rectangle(x - rectWidth / 2, y + spacing - rectWidth / 2, rectWidth, rectWidth));
 
       int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
       int lugThickness = getClosestOdd(LUG_THICKNESS.convertToPixels());
@@ -134,17 +135,17 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 //    if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
-      g2d.fill(body[0]);
-      if (!outlineMode) {
-        g2d.setColor(PHENOLIC_COLOR);
-        g2d.fill(body[1]);
-      }
-      g2d.setComposite(oldComposite);
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
+    }
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
+    g2d.fill(body[0]);
+    if (!outlineMode) {
+      g2d.setColor(PHENOLIC_COLOR);
+      g2d.fill(body[1]);
+    }
+    g2d.setComposite(oldComposite);
 //    }
 
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
@@ -186,6 +187,8 @@ public class PlasticDCJack extends AbstractTransparentComponent<String> {
       drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+", controlPoints[2].x,
           controlPoints[2].y - spacing * 3 / 4, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
+    
+    drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
   @Override

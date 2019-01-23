@@ -40,7 +40,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -59,7 +59,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Audio Transformer", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "TR", description = "Small signal audio transformer with EI core", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
-public class AudioTransformer extends AbstractTransparentComponent<String> {
+public class AudioTransformer extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -205,6 +205,7 @@ public class AudioTransformer extends AbstractTransparentComponent<String> {
     }    
   }
 
+  @Override
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
@@ -287,13 +288,9 @@ public class AudioTransformer extends AbstractTransparentComponent<String> {
     if (outlineMode) {
       Theme theme =
           (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : getCoilBorderColor();
+      finalBorderColor = getCoilBorderColor();
     }
     g2d.setColor(finalBorderColor);
     g2d.draw(coilArea);
@@ -303,11 +300,9 @@ public class AudioTransformer extends AbstractTransparentComponent<String> {
     g2d.fill(coreArea);
     g2d.setComposite(oldComposite);
 
-    if (!outlineMode) {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : getCoreBorderColor();
-    }
+    if (!outlineMode)
+      finalBorderColor = getCoreBorderColor();
+    
     g2d.setColor(finalBorderColor);   
     g2d.draw(coreArea);
     
@@ -382,7 +377,9 @@ public class AudioTransformer extends AbstractTransparentComponent<String> {
 
         g2d.setTransform(oldTransform);
       }
-    }   
+    }
+
+    drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
   @Override

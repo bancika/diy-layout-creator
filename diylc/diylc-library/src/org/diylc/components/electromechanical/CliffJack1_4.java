@@ -39,7 +39,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.components.transform.CliffJackTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -56,7 +56,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Cliff-style closed panel mount 1/4\" phono jack", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = CliffJackTransformer.class)
-public class CliffJack1_4 extends AbstractTransparentComponent<String> {
+public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -74,7 +74,7 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
   private JackType type = JackType.MONO;
   private Orientation orientation = Orientation.DEFAULT;
-  transient private Shape[] body;
+  transient private Area[] body;
   private String value = "";
 
   public CliffJack1_4() {
@@ -129,29 +129,27 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
     return angle;
   }
 
-  public Shape[] getBody() {
+  public Area[] getBody() {
     if (body == null) {
-      body = new Shape[5];
+      body = new Area[5];
 
       // Create body.
       int bodyLength = (int) BODY_LENGTH.convertToPixels();
       int bodyWidth = (int) BODY_WIDTH.convertToPixels();
       int centerX = (controlPoints[0].x + controlPoints[3].x) / 2;
       int centerY = (controlPoints[0].y + controlPoints[3].y) / 2;
-      body[0] = new Rectangle(centerX - bodyLength / 2, centerY - bodyWidth / 2, bodyLength, bodyWidth);
+      body[0] = new Area(new Rectangle(centerX - bodyLength / 2, centerY - bodyWidth / 2, bodyLength, bodyWidth));
 
       int tailLength = (int) TAIL_LENGTH.convertToPixels();
-      body[1] =
-          new RoundRectangle2D.Double(centerX - bodyLength / 2 - tailLength, centerY - bodyWidth / 4, tailLength * 2,
-              bodyWidth / 2, tailLength, tailLength);
+      body[1] = new Area(new RoundRectangle2D.Double(centerX - bodyLength / 2 - tailLength, centerY - bodyWidth / 4, tailLength * 2,
+              bodyWidth / 2, tailLength, tailLength));
       Area tailArea = new Area(body[1]);
       tailArea.subtract(new Area(body[0]));
       body[1] = tailArea;
 
-      body[2] = new Rectangle(centerX + bodyLength / 2, centerY - bodyWidth / 4, tailLength, bodyWidth / 2);
+      body[2] = new Area(new Rectangle(centerX + bodyLength / 2, centerY - bodyWidth / 4, tailLength, bodyWidth / 2));
 
-      body[3] =
-          new Rectangle(centerX + bodyLength / 2 + tailLength, centerY - bodyWidth / 4, tailLength, bodyWidth / 2);
+      body[3] = new Area(new Rectangle(centerX + bodyLength / 2 + tailLength, centerY - bodyWidth / 4, tailLength, bodyWidth / 2));
       tailArea = new Area(body[3]);
       int radius = bodyLength / 2 + tailLength * 2;
       tailArea.intersect(new Area(new Ellipse2D.Double(centerX - radius, centerY - radius, radius * 2, radius * 2)));
@@ -215,13 +213,9 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
     Color finalBorderColor;
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     if (outlineMode) {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : BORDER_COLOR;
+      finalBorderColor = BORDER_COLOR;
     }
 
     g2d.setColor(finalBorderColor);
@@ -253,6 +247,8 @@ public class CliffJack1_4 extends AbstractTransparentComponent<String> {
     int centerX = (controlPoints[0].x + controlPoints[3].x) / 2;
     int centerY = (controlPoints[0].y + controlPoints[3].y) / 2;
     drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    
+    drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
   @Override

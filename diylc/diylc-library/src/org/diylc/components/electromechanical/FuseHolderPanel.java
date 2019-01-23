@@ -38,7 +38,7 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -54,7 +54,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Fuse Holder (Panel)", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted fuse holder", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "FH", autoEdit = false)
-public class FuseHolderPanel extends AbstractTransparentComponent<String> {
+public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;  
 
@@ -188,13 +188,9 @@ public class FuseHolderPanel extends AbstractTransparentComponent<String> {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       Color finalBorderColor;
       if (outlineMode) {
-        finalBorderColor =
-            componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-                : theme.getOutlineColor();
+        finalBorderColor = theme.getOutlineColor();
       } else {
-        finalBorderColor =
-            componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-                : getBorderColor();
+        finalBorderColor = getBorderColor();
       }
       g2d.setColor(finalBorderColor);
       for (Area a : body)
@@ -255,8 +251,11 @@ public class FuseHolderPanel extends AbstractTransparentComponent<String> {
     int x = bounds.x + (bounds.width - textWidth) / 2;
     int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
     g2d.drawString(label, x, y);
+    
+    drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
   
+  @Override
   public Area[] getBody() {
     if (body == null) {
       Point firstPoint = controlPoints[0];

@@ -38,7 +38,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -54,7 +54,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Open 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Switchcraft-style open panel mount 1/4\" phono jack, stereo and mono", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
-public class OpenJack1_4 extends AbstractTransparentComponent<String> {
+public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -71,7 +71,7 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
 
   private String value = "";
   private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-  transient Shape[] body;
+  transient Area[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private JackType type = JackType.MONO;
   private boolean showLabels = true;
@@ -89,14 +89,14 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 //    if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : WAFER_COLOR);
-      g2d.fill(body[0]);
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
+    }
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : WAFER_COLOR);
+    g2d.fill(body[0]);
 
-      g2d.setComposite(oldComposite);
+    g2d.setComposite(oldComposite);
 //    }
 
     Color finalBorderColor;
@@ -104,13 +104,9 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
     if (outlineMode) {
       Theme theme =
           (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : WAFER_COLOR.darker();
+      finalBorderColor =  WAFER_COLOR.darker();
     }
 
     g2d.setColor(finalBorderColor);
@@ -136,13 +132,9 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
     if (outlineMode) {
       Theme theme =
           (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : BASE_COLOR.darker();
+      finalBorderColor = BASE_COLOR.darker();
     }
 
     g2d.setColor(finalBorderColor);
@@ -192,12 +184,14 @@ public class OpenJack1_4 extends AbstractTransparentComponent<String> {
       if (getType() == JackType.STEREO)
         drawCenteredText(g2d, "R", ringLabel.x, ringLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
+    
+    drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
   @SuppressWarnings("incomplete-switch")
-  public Shape[] getBody() {
+  public Area[] getBody() {
     if (body == null) {
-      body = new Shape[4];
+      body = new Area[4];
 
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;

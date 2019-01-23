@@ -35,7 +35,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.components.RoundedPolygon;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -52,7 +52,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "IEC Socket", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted IEC power socket", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "IEC", autoEdit = false)
-public class IECSocket extends AbstractTransparentComponent<String> {
+public class IECSocket extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;  
 
@@ -209,13 +209,9 @@ public class IECSocket extends AbstractTransparentComponent<String> {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       Color finalBorderColor;
       if (outlineMode) {
-        finalBorderColor =
-            componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-                : theme.getOutlineColor();
+        finalBorderColor = theme.getOutlineColor();
       } else {
-        finalBorderColor =
-            componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-                : getBorderColor();
+        finalBorderColor = getBorderColor();
       }
       g2d.setColor(finalBorderColor);
       for (Area a : body)
@@ -245,6 +241,8 @@ public class IECSocket extends AbstractTransparentComponent<String> {
         g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
       }
     }
+    
+    drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
   @SuppressWarnings("incomplete-switch")
