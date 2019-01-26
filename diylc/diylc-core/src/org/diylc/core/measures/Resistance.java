@@ -109,7 +109,7 @@ public class Resistance extends AbstractMeasure<ResistanceUnit> {
   }
 
   public static Resistance parseResistance(String value) {
-    value = value.replace("*", "").replace("R", "Ω");
+    value = value.replace("*", "").replace("R", "\u2126");
     for (ResistanceUnit unit : ResistanceUnit.values()) {
       if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
         value = value.substring(0, value.length() - unit.toString().length()).trim();

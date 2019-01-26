@@ -23,7 +23,7 @@ package org.diylc.core.measures;
 
 public enum ResistanceUnit implements Unit {
 
-  R(1, "Ω"), K(1e3, "K"), M(1e6, "M");
+  R(1, "\u2126"), K(1e3, "K"), M(1e6, "M");
 
   double factor;
   String display;
@@ -36,6 +36,7 @@ public enum ResistanceUnit implements Unit {
   @Override
   public double getFactor() {
     return factor;
+    
   }
 
   @Override

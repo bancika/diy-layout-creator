@@ -2329,6 +2329,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better selection rendering for a few components, mostly electro-mechanical</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Reverted Ohm symbol changes that made it render wrong on some systems</description>
 				</org.diylc.appframework.update.Change>								
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
