@@ -2341,6 +2341,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Reverted Ohm symbol changes that made it render wrong on some systems</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Update dialog doesn't show up when clicked on the light bulb icon in the status bar</description>
 				</org.diylc.appframework.update.Change>								
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
