@@ -31,6 +31,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.transform.TextTransformer;
@@ -61,6 +62,8 @@ public class PCBText extends AbstractComponent<Void> {
   private HorizontalAlignment horizontalAlignment = HorizontalAlignment.CENTER;
   private VerticalAlignment verticalAlignment = VerticalAlignment.CENTER;
   private Orientation orientation = Orientation.DEFAULT;
+  
+  private PCBLayer layer = PCBLayer._1;
 
   @SuppressWarnings("incomplete-switch")
   @Override
@@ -261,7 +264,7 @@ public class PCBText extends AbstractComponent<Void> {
     this.color = color;
   }
 
-  @EditableProperty(name = "Vertical alignment")
+  @EditableProperty(name = "Vertical Alignment")
   public VerticalAlignment getVerticalAlignment() {
     if (verticalAlignment == null) {
       verticalAlignment = VerticalAlignment.CENTER;
@@ -273,7 +276,7 @@ public class PCBText extends AbstractComponent<Void> {
     this.verticalAlignment = verticalAlignment;
   }
 
-  @EditableProperty(name = "Horizontal alignment")
+  @EditableProperty(name = "Horizontal Alignment")
   public HorizontalAlignment getHorizontalAlignment() {
     if (horizontalAlignment == null) {
       horizontalAlignment = HorizontalAlignment.CENTER;
@@ -283,6 +286,18 @@ public class PCBText extends AbstractComponent<Void> {
 
   public void setHorizontalAlignment(HorizontalAlignment alignment) {
     this.horizontalAlignment = alignment;
+  }
+  
+  @EditableProperty
+  public PCBLayer getLayer() {
+    if (layer == null) {
+      layer = PCBLayer._1;
+    }
+    return layer;
+  }
+
+  public void setLayer(PCBLayer layer) {
+    this.layer = layer;
   }
 
   @Override

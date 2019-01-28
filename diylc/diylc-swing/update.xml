@@ -2348,6 +2348,22 @@
 				</org.diylc.appframework.update.Change>								
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>52</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2019-01-28 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>								
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>"PCB Text" components are not included in trace mask exports</description>
+				</org.diylc.appframework.update.Change>								
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		
 	</a>
 </java.util.Arrays_-ArrayList>
