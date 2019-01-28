@@ -2332,6 +2332,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Jumper color switches to red on its own</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Reverted Ohm symbol changes that made it render wrong on some systems</description>
 				</org.diylc.appframework.update.Change>								
 			</changes>

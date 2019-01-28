@@ -339,7 +339,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         observer.stopTrackingContinuityArea();
   
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-      leadColor = getLeadColorForPainting(componentState);
+      Color leadColor = getLeadColorForPainting(componentState);
       g2d.setColor(leadColor.darker());
       g2d.draw(lineShape);      
     } else {
