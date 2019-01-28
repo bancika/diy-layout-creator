@@ -293,12 +293,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   }
 
   private void drawLeads(Graphics2D g2d, double theta, double leadLength) {
-    int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
-    int endY = (int) (points[0].y + Math.sin(theta) * leadLength);
+    int endX = (int) Math.round(points[0].x + Math.cos(theta) * leadLength);
+    int endY = (int) Math.round(points[0].y + Math.sin(theta) * leadLength);
     g2d.drawLine(points[0].x, points[0].y, endX, endY);
 
-    endX = (int) (points[1].x + Math.cos(theta - Math.PI) * leadLength);
-    endY = (int) (points[1].y + Math.sin(theta - Math.PI) * leadLength);
+    endX = (int) Math.round(points[1].x + Math.cos(theta - Math.PI) * leadLength);
+    endY = (int) Math.round(points[1].y + Math.sin(theta - Math.PI) * leadLength);
     g2d.drawLine(points[1].x, points[1].y, endX, endY);
   }
 
