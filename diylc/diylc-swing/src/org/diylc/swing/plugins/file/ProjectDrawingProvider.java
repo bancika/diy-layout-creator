@@ -51,12 +51,12 @@ public class ProjectDrawingProvider implements IDrawingProvider {
   }
 
   @Override
-  public Dimension getSize() {
+  public Dimension getSize() {    
     return plugInPort.getCanvasDimensions(useZoom);
   }
 
   @Override
-  public void draw(int page, Graphics g) {
+  public void draw(int page, Graphics g, double zoomFactor) {
     EnumSet<DrawOption> drawOptions = EnumSet.of(DrawOption.ANTIALIASING);
     if (useZoom) {
       drawOptions.add(DrawOption.ZOOM);
@@ -67,7 +67,7 @@ public class ProjectDrawingProvider implements IDrawingProvider {
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
       drawOptions.add(DrawOption.OUTLINE_MODE);
     }
-    plugInPort.draw((Graphics2D) g, drawOptions, null);
+    plugInPort.draw((Graphics2D) g, drawOptions, null, zoomFactor);
   }
 
   @Override

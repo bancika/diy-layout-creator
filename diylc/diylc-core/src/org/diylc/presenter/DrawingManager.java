@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Area;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
@@ -122,12 +123,13 @@ public class DrawingManager {
    * @param controlPointSlot
    * @param componentSlot
    * @param dragInProgress
+   * @param externalZoom
    * @return
    */
   public List<IDIYComponent<?>> drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
       IComponentFiler filter, Rectangle selectionRect, Collection<IDIYComponent<?>> selectedComponents,
       Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
-      List<IDIYComponent<?>> componentSlot, boolean dragInProgress) {
+      List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom) {
     failedComponents.clear();
     if (project == null) {
       return failedComponents;
@@ -139,6 +141,9 @@ public class DrawingManager {
     } else {
       zoom = 1 / Constants.PIXEL_SIZE;
     }
+    
+    if (externalZoom != null)
+      zoom *= externalZoom;
 
     G2DWrapper g2dWrapper = new G2DWrapper(g2d, zoom);
 
@@ -175,20 +180,23 @@ public class DrawingManager {
     GridType gridType = GridType.LINES;
     if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
       double zoomStep = project.getGridSpacing().convertToPixels() * zoom;
+      float gridThickness = (float) (1f * (zoom > 1 ? 1 : zoom));
       if (gridType == GridType.CROSSHAIR) {
-        g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {
+        g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {
             (float) zoomStep / 2, (float) zoomStep / 2}, (float) zoomStep / 4));
       } else if (gridType == GridType.DOT) {
-        g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f,
+        g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f,
             (float) zoomStep - 1}, 0f));
+      } else {
+        g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness));
       }
 
       g2dWrapper.setColor(theme.getGridColor());
       for (double i = zoomStep; i < d.width; i += zoomStep) {
-        g2dWrapper.drawLine((int) i, 0, (int) i, d.height - 1);
+        g2dWrapper.draw(new Line2D.Double(i, 0, i, d.height - 1));
       }
       for (double j = zoomStep; j < d.height; j += zoomStep) {
-        g2dWrapper.drawLine(0, (int) j, d.width - 1, (int) j);
+        g2dWrapper.draw(new Line2D.Double(0, j, d.width - 1, j));
       }
     }
 

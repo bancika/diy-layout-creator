@@ -147,8 +147,8 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
       // System.out.println(x + "," + y);
 
       // g2d.translate(x, y);
-      g2d.scale(zoomRatio, zoomRatio);
-      presenter.draw(g2d, EnumSet.noneOf(DrawOption.class), null);
+//      g2d.scale(zoomRatio, zoomRatio);
+      presenter.draw(g2d, EnumSet.noneOf(DrawOption.class), null, zoomRatio);
 
       g2d.setColor(Color.black);
       g2d.drawRect(0, 0, d.width - (int) (1 / zoomRatio), d.height - (int) (1 / zoomRatio));

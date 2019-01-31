@@ -293,13 +293,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   }
 
   private void drawLeads(Graphics2D g2d, double theta, double leadLength) {
-    int endX = (int) Math.round(points[0].x + Math.cos(theta) * leadLength);
-    int endY = (int) Math.round(points[0].y + Math.sin(theta) * leadLength);
-    g2d.drawLine(points[0].x, points[0].y, endX, endY);
+    double endX = points[0].x + Math.cos(theta) * leadLength;
+    double endY = points[0].y + Math.sin(theta) * leadLength;
+    g2d.draw(new Line2D.Double(points[0].x, points[0].y, endX, endY));
 
-    endX = (int) Math.round(points[1].x + Math.cos(theta - Math.PI) * leadLength);
-    endY = (int) Math.round(points[1].y + Math.sin(theta - Math.PI) * leadLength);
-    g2d.drawLine(points[1].x, points[1].y, endX, endY);
+    endX = points[1].x + Math.cos(theta - Math.PI) * leadLength;
+    endY = points[1].y + Math.sin(theta - Math.PI) * leadLength;
+    g2d.draw(new Line2D.Double(points[1].x, points[1].y, endX, endY));
   }
 
   private void drawLead(Graphics2D g2d, ComponentState componentState, IDrawingObserver observer, boolean isCopperArea) {

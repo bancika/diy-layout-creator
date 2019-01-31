@@ -318,8 +318,8 @@ public class UploadDialog extends ButtonDialog {
       zoomRatio = rect.getHeight() / d.getHeight();
     }
 
-    g2d.scale(zoomRatio, zoomRatio);
-    UploadDialog.this.plugInPort.draw(g2d, EnumSet.of(DrawOption.ANTIALIASING), null);
+//    g2d.scale(zoomRatio, zoomRatio);
+    UploadDialog.this.plugInPort.draw(g2d, EnumSet.of(DrawOption.ANTIALIASING), null, zoomRatio);
   }
 
   public String getKeywords() {

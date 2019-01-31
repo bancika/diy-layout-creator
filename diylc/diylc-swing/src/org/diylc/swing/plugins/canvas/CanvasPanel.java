@@ -237,7 +237,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_GRID_KEY, true)) {
       drawOptions.add(DrawOption.GRID);
     }
-    plugInPort.draw(g2d, drawOptions, null);
+    plugInPort.draw(g2d, drawOptions, null, null);
     if (useHardwareAcceleration) {
       VolatileImage volatileImage = (VolatileImage) bufferImage;
       do {
