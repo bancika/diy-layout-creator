@@ -60,7 +60,7 @@ public abstract class AbstractSchematicLeadedSymbol<T> extends AbstractLeadedCom
   protected float getLeadThickness() {
     return 1;
   }
-
+  
   @Override
   protected int calculateLabelYCoordinate(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics) {
     if (labelPosition == LabelPosition.ABOVE) {

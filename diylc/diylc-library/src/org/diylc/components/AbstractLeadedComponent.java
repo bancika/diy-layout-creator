@@ -221,7 +221,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         newComposite = g2d.getComposite();
       
       g2d.setComposite(oldComposite);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(getOutlineStrokeSize()));
       Color finalBorderColor;
       if (outlineMode) {
         Theme theme =
@@ -375,6 +375,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   protected int getLabelOffset(int bodyLength, int bodyWidth, int labelLength) {
     return 0;
+  }
+  
+  protected float getOutlineStrokeSize() {
+    return 1f;
   }
 
   /**

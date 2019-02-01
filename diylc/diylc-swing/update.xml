@@ -2359,8 +2359,12 @@
 			<name></name>
 			<changes>			
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>"Fuse Symbol" added</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Better precision when exporting to PDF and PNG files</description>
+					<description>Better rendering precision when exporting to PDF and PNG files</description>
 				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
