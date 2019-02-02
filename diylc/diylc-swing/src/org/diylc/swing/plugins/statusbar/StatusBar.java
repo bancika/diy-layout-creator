@@ -96,6 +96,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   // State variables
   private ComponentType componentSlot;
   private Point controlPointSlot;
+  private Boolean forceInstatiate;
   private List<String> componentNamesUnderCursor;
   private List<String> selectedComponentNames;
   private List<String> stuckComponentNames;
@@ -420,6 +421,7 @@ public class StatusBar extends JPanel implements IPlugIn {
       case SLOT_CHANGED:
         componentSlot = (ComponentType) params[0];
         controlPointSlot = (Point) params[1];
+        forceInstatiate = params.length > 2 ? (Boolean)params[2] : null;
         refreshStatusText();
         break;
       case AVAILABLE_CTRL_POINTS_CHANGED:
@@ -459,6 +461,10 @@ public class StatusBar extends JPanel implements IPlugIn {
         statusText = "<html>Selection: " + builder.toString() + "</html>";
       }
     } else {
+      if (forceInstatiate)
+        statusText =  "<html>Drag the mouse over the canvas to place a new <font color='blue'>" + componentSlot.getName()
+            + "</font></html>";
+      else
       switch (componentSlot.getCreationMethod()) {
         case POINT_BY_POINT:
           String count;

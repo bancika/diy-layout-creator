@@ -923,8 +923,8 @@ public class Presenter implements IPlugInPort {
 				minY = rect.y;
 			if (rect.y + rect.height > maxY)
 				maxY = rect.y + rect.height;
-		} else
-			LOG.info("Area is null for " + c.getName() + " of type "
+		} else if (currentProject.getComponents().contains(c))
+			LOG.debug("Area is null for " + c.getName() + " of type "
 					+ c.getClass().getName());
 	}
 	if (drawingManager.getZoomLevel() != 1 && applyZoom) {
@@ -2161,7 +2161,7 @@ public class Presenter implements IPlugInPort {
       // messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
       // calculateSelectionDimension());
       messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, instantiationManager.getComponentTypeSlot(),
-          instantiationManager.getFirstControlPoint());
+          instantiationManager.getFirstControlPoint(), forceInstatiate);
     } catch (Exception e) {
       LOG.error("Could not set component type slot", e);
       view.showMessage("Could not set component type slot. Check log for details.", "Error", IView.ERROR_MESSAGE);
