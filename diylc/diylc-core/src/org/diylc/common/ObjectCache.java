@@ -64,12 +64,12 @@ public class ObjectCache {
     return stroke;
   }
 
-  public Stroke fetchStroke(float width, float[] dash, float phase) {
-    String key = width + "|" + Arrays.toString(dash) + "|" + phase;
+  public Stroke fetchStroke(float width, float[] dash, float phase, int cap) {
+    String key = width + "|" + Arrays.toString(dash) + "|" + phase + "|" + phase;
     if (dashStrokeMap.containsKey(key)) {
       return dashStrokeMap.get(key);
     }
-    Stroke stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, dash, phase);
+    Stroke stroke = new BasicStroke(width, cap, BasicStroke.JOIN_ROUND, 0, dash, phase);
     dashStrokeMap.put(key, stroke);
     return stroke;
   }

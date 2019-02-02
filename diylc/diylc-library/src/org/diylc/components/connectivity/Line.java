@@ -21,6 +21,7 @@
 */
 package org.diylc.components.connectivity;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -81,10 +82,10 @@ public class Line extends AbstractLeadedComponent<Void> {
         stroke = ObjectCache.getInstance().fetchZoomableStroke(thickness);
         break;
       case DASHED:
-        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2, thickness * 4}, thickness * 4);
+        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2, thickness * 4}, thickness * 4, BasicStroke.CAP_SQUARE);
         break;
       case DOTTED:
-        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness, thickness * 5}, 0);
+        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness, thickness * 5}, 0, BasicStroke.CAP_ROUND);
         break;
     }
     g2d.setStroke(stroke);

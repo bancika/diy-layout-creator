@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 
+import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.common.SimpleComponentTransformer;
@@ -104,5 +105,10 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
   @Override
   public void setAlpha(Byte alpha) {
     super.setAlpha(alpha);
+  }
+  
+  @Override
+  public LineStyle getStyle() {   
+    return super.getStyle();
   }
 }

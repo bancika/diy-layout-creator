@@ -408,7 +408,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
       BasicStroke bs = (BasicStroke) s;
       // make thin lines even thinner to compensate for zoom factor
       if (bs.getLineWidth() <= 2 && !(s instanceof ZoomableStroke))
-        s = ObjectCache.getInstance().fetchStroke((float) (bs.getLineWidth() / zoom), bs.getDashArray(), bs.getDashPhase());
+        s = ObjectCache.getInstance().fetchStroke((float) (bs.getLineWidth() / zoom), bs.getDashArray(), bs.getDashPhase(), bs.getEndCap());
     }
     canvasGraphics.setStroke(s);
   }

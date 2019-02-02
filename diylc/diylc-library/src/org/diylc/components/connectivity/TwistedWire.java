@@ -17,6 +17,7 @@
  */
 package org.diylc.components.connectivity;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -53,40 +54,29 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
 
   public static Color COLOR = Color.green;
   public static Color COLOR2 = Color.blue;
+  public static Color STRIPE_COLOR = Color.yellow;
+  public static Color STRIPE_COLOR2 = Color.decode("#FF00FF");
   public static double INSULATION_THICKNESS_PCT = 0.3;
 
   protected AWG gauge = AWG._22;
   
   private Color color2 = COLOR2;
+  private Color stripeColor = STRIPE_COLOR;
+  private Color stripeColor2 = STRIPE_COLOR2;
+  private boolean stripe1 = false;
+  private boolean stripe2 = false;
   
   // cached areas
   transient private Area firstLeadArea = null;
   transient private Area secondLeadArea = null;
+  
+  transient private Area firstLeadStripeArea = null;
+  transient private Area secondLeadStripeArea = null;
 
   @Override
   protected Color getDefaultColor() {
     return COLOR;
-  }
-  
-  @EditableProperty(name = "Color 1")
-  public Color getLeadColor() {
-    return color;
-  }
-  
-  @EditableProperty(name = "Color 2")
-  public Color getColor2() {
-    return color2;
-  }
-  
-  public void setColor2(Color color2) {
-    this.color2 = color2;
-  }
-  
-  @Override
-  public LineStyle getStyle() {
-    // prevent from editing
-    return super.getStyle();
-  }
+  }  
 
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
@@ -99,13 +89,36 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : color2;
     
-    if (firstLeadArea == null || secondLeadArea == null)
-      recalculate(curve, thickness);
+    if (firstLeadArea == null || secondLeadArea == null) {
+      firstLeadArea = new Area();
+      secondLeadArea = new Area();
+      recalculate(curve, thickness, firstLeadArea, secondLeadArea, false);
+
+      if (stripe1 || stripe2) {
+        firstLeadStripeArea = new Area();
+        secondLeadStripeArea = new Area();
+        recalculate(curve, thickness, firstLeadStripeArea, secondLeadStripeArea, true);
+        firstLeadStripeArea.intersect(firstLeadArea);
+        secondLeadStripeArea.intersect(secondLeadArea);
+      }
+    }
     
     g2d.setColor(curveColor1);
     g2d.fill(firstLeadArea);
+    
+    if (stripe1 && componentState == ComponentState.NORMAL) {
+      g2d.setColor(stripeColor);
+      g2d.fill(firstLeadStripeArea);
+    }
+    
     g2d.setColor(curveColor2);
     g2d.fill(secondLeadArea);
+    
+    if (stripe2 && componentState == ComponentState.NORMAL) {
+      g2d.setColor(stripeColor2);
+      g2d.fill(secondLeadStripeArea);
+    }
+    
     if (componentState == ComponentState.NORMAL) {      
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
       g2d.setColor(color.darker());
@@ -148,6 +161,8 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     // invalidate cached areas
     this.firstLeadArea = null;
     this.secondLeadArea = null;
+    this.firstLeadStripeArea = null;
+    this.secondLeadStripeArea = null;
   }
   
   @Override
@@ -157,6 +172,8 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     // invalidate cached areas
     this.firstLeadArea = null;
     this.secondLeadArea = null;
+    this.firstLeadStripeArea = null;
+    this.secondLeadStripeArea = null;
   }
   
   @Override
@@ -166,6 +183,8 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     // invalidate cached areas
     this.firstLeadArea = null;
     this.secondLeadArea = null;
+    this.firstLeadStripeArea = null;
+    this.secondLeadStripeArea = null;
   }
 
   @Override
@@ -176,9 +195,81 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
   @Override
   public void setValue(Void value) {}  
   
+  @EditableProperty(name = "Color 1")
+  public Color getLeadColor() {
+    return color;
+  }
+  
+  @EditableProperty(name = "Color 2")
+  public Color getColor2() {
+    return color2;
+  }
+  
+  public void setColor2(Color color2) {
+    this.color2 = color2;
+  }
+  
+  @Override
+  public LineStyle getStyle() {
+    // prevent from editing
+    return super.getStyle();
+  }
+    
+  @EditableProperty(name = "Stripe 1")
+  public Color getStripeColor() {
+    return stripeColor;
+  }
+
+  public void setStripeColor(Color stripeColor) {
+    this.stripeColor = stripeColor;
+  }
+
+  @EditableProperty(name = "Stripe 2")
+  public Color getStripeColor2() {
+    return stripeColor2;
+  }
+
+  public void setStripeColor2(Color stripeColor2) {
+    this.stripeColor2 = stripeColor2;
+  }
+    
+  @EditableProperty(name = "Show Stripe 1")
+  public boolean getStripe1() {
+    return stripe1;
+  }
+
+  public void setStripe1(boolean stripe1) {
+    this.stripe1 = stripe1;
+    
+    if (stripe1) {
+      // invalidate cached areas
+      this.firstLeadArea = null;
+      this.secondLeadArea = null;
+      this.firstLeadStripeArea = null;
+      this.secondLeadStripeArea = null;
+    }
+  }
+
+  @EditableProperty(name = "Show Stripe 2")
+  public boolean getStripe2() {
+    return stripe2;
+  }
+
+  public void setStripe2(boolean stripe2) {
+    this.stripe2 = stripe2;
+    
+    if (stripe2) {
+      // invalidate cached areas
+      this.firstLeadArea = null;
+      this.secondLeadArea = null;
+      this.firstLeadStripeArea = null;
+      this.secondLeadStripeArea = null;
+    }
+  }
+  
   // hard-core math below :)
 
-  public void recalculate(Path2D path, float thickness) {
+  public void recalculate(Path2D path, float thickness, Area firstLeadArea, Area secondLeadArea, boolean stripe) {
     PathIterator iterator = path.getPathIterator(null);
     float[] coords = new float[6];
     Point current = new Point();
@@ -210,8 +301,13 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
       }
       iterator.next();
     }
-
-    Stroke stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
+    
+    Stroke stroke;
+    
+    if (stripe)
+      stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] { thickness / 2, thickness * 2 }, thickness * 10, BasicStroke.CAP_BUTT);
+    else
+      stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
 
     double segmentLength = thickness * 6;
 
@@ -219,9 +315,6 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     List<Line2D> polygon = new ArrayList<Line2D>();
     for (CubicCurve2D curve : curves)
       polygon.addAll(split(curve, segmentLength));
-
-    firstLeadArea = new Area();
-    secondLeadArea = new Area();
 
     List<Path2D> firstCurves = new ArrayList<Path2D>();
     List<Path2D> secondCurves = new ArrayList<Path2D>();

@@ -18,6 +18,7 @@
 package org.diylc.components;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
@@ -322,10 +323,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         break;
       case DASHED:
         stroke =
-            ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2, thickness * 4}, thickness * 4);
+            ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2, thickness * 4}, thickness * 4, BasicStroke.CAP_SQUARE);
         break;
       case DOTTED:
-        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 4}, 0);
+        stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 4}, 0, BasicStroke.CAP_ROUND);
         break;
     }
     
