@@ -96,7 +96,7 @@ public class ComponentTree implements IPlugIn {
 
   public TreePanel getTreePanel() {
     if (treePanel == null) {
-      treePanel = new TreePanel(plugInPort);
+      treePanel = new TreePanel(plugInPort, swingUI);
     }
     return treePanel;
   }

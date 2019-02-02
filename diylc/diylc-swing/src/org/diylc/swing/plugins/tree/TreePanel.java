@@ -75,9 +75,11 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IView;
 import org.diylc.core.Template;
 import org.diylc.images.IconLoader;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
 
 public class TreePanel extends JPanel {
@@ -98,11 +100,13 @@ public class TreePanel extends JPanel {
   private List<String> blocks;
 
   private IPlugInPort plugInPort;
+  private ISwingUI swingUI;
 
-  private JPopupMenu popup;
+  private JPopupMenu popup;  
 
-  public TreePanel(IPlugInPort plugInPort) {
+  public TreePanel(IPlugInPort plugInPort, ISwingUI swingUI) {
     this.plugInPort = plugInPort;
+    this.swingUI = swingUI;
     setLayout(new GridBagLayout());
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -255,6 +259,8 @@ public class TreePanel extends JPanel {
   }
 
   private void refreshBuildingBlocks(List<String> blocks) {
+    this.blocks = blocks;
+    
     getBlocksNode().removeAllChildren();
     for (final String block : blocks) {
       Payload payload = new Payload(block, new MouseAdapter() {
@@ -323,6 +329,9 @@ public class TreePanel extends JPanel {
 
         @Override
         public void valueChanged(TreeSelectionEvent e) {
+          if (!e.isAddedPath())
+            return;
+          
           DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
           if (node != null && node.getUserObject() != null) {
             Payload payload = (Payload) node.getUserObject();
@@ -464,7 +473,7 @@ public class TreePanel extends JPanel {
             }
           } else if (selectedNode.isLeaf()) {
             popup.add(shortcutSubmenu);
-            popup.add(new DeleteBlockAction(plugInPort, payload.toString()));
+            popup.add(new DeleteBlockAction(plugInPort, swingUI, payload.toString()));
           }
         }
 
@@ -731,11 +740,13 @@ public class TreePanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private IPlugInPort plugInPort;
-    private String blockName;
+    private ISwingUI swingUI;
+    private String blockName;    
 
-    public DeleteBlockAction(IPlugInPort plugInPort, String blockName) {
+    public DeleteBlockAction(IPlugInPort plugInPort, ISwingUI swingUI, String blockName) {
       super();
       this.plugInPort = plugInPort;
+      this.swingUI = swingUI;
       this.blockName = blockName;
       putValue(AbstractAction.NAME, "Delete Building Block");
     }
@@ -743,7 +754,8 @@ public class TreePanel extends JPanel {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info(getValue(AbstractAction.NAME) + " triggered");
-      plugInPort.deleteBlock(blockName);
+      if (swingUI.showConfirmDialog("Are you sure you want to delete building block \"" + blockName + "\"?", "Delete Building Block", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION)
+        plugInPort.deleteBlock(blockName);
     }
   }
 }
