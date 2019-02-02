@@ -213,7 +213,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
 
     Stroke stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
 
-    double segmentLength = thickness * 7;
+    double segmentLength = thickness * 6;
 
     // Convert to polygon
     List<Line2D> polygon = new ArrayList<Line2D>();
@@ -229,7 +229,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     Path2D current1 = new Path2D.Double();
     Path2D current2 = new Path2D.Double();
     double offset = thickness * 1.5;
-    double rectSize = thickness * 4;
+    double rectSize = thickness * 3.5;
 
     current1.moveTo(polygon.get(0).getX1(), polygon.get(0).getY1());
     current2.moveTo(polygon.get(0).getX1(), polygon.get(0).getY1());
