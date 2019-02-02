@@ -234,6 +234,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     current1.moveTo(polygon.get(0).getX1(), polygon.get(0).getY1());
     current2.moveTo(polygon.get(0).getX1(), polygon.get(0).getY1());
 
+    // create curved paths for each segment of the twisted pair
     for (int i = 0; i < polygon.size(); i++) {
       Line2D line = polygon.get(i);
       double centerX = (line.getX1() + line.getX2()) / 2;
@@ -262,6 +263,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
       }
     }
 
+    // convert to Area
     for (Path2D p : firstCurves) {
       firstLeadArea.add(new Area(stroke.createStrokedShape(p)));
     }
@@ -269,6 +271,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
       secondLeadArea.add(new Area(stroke.createStrokedShape(p)));
     }
 
+    // at overlapping points, decide which lead goes on top and clear the overlapping area from the lead below
     for (int i = 0; i < polygon.size(); i++) {
       Line2D line = polygon.get(i);
       Area pointRect1 = new Area(new Rectangle2D.Double(line.getX1() - rectSize / 2, line.getY1() - rectSize / 2, rectSize, rectSize));
@@ -294,6 +297,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     }
   }
 
+  // splits a curve into a series of lines
   private List<Line2D> split(CubicCurve2D curve, double segmentLength) {
     Point2D p1 = curve.getP1();
     Point2D p2 = curve.getP2();
@@ -316,6 +320,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     return res;
   }
   
+  // calculates length of a curve, given the precision
   private double calculateLength(CubicCurve2D curve, double precision) {
     Point2D p1 = curve.getP1();
     Point2D p2 = curve.getP2();
