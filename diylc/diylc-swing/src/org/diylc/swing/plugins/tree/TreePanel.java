@@ -25,6 +25,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -167,6 +169,14 @@ public class TreePanel extends JPanel {
     });
 
     getTree().expandRow(0);
+    
+    initializeDnD();
+  }
+  
+  private void initializeDnD() {
+    // Initialize drag source recognizer.
+    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(getTree(),
+        DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK, new TreeGestureListener(plugInPort));
   }
 
   public JScrollPane getTreeScroll() {
@@ -226,7 +236,7 @@ public class TreePanel extends JPanel {
           @Override
           public void mouseClicked(MouseEvent e) {
             if (plugInPort.getNewComponentTypeSlot() != componentType)
-              plugInPort.setNewComponentTypeSlot(componentType, null);
+              plugInPort.setNewComponentTypeSlot(componentType, null, false);
           }
         });
         final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(payload, false);
@@ -289,7 +299,7 @@ public class TreePanel extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-              plugInPort.setNewComponentTypeSlot(type, null);
+              plugInPort.setNewComponentTypeSlot(type, null, false);
             }
           }), false);
           categoryNode.add(componentNode);
@@ -710,7 +720,7 @@ public class TreePanel extends JPanel {
         }
 
         plugInPort.updateSelection(newSelection);
-        plugInPort.setNewComponentTypeSlot(null, null);
+        plugInPort.setNewComponentTypeSlot(null, null, false);
         plugInPort.refresh();
       }
     }

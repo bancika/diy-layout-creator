@@ -94,7 +94,7 @@ public class InstantiationManager {
 	this.potentialControlPoint = potentialControlPoint;
 }
 
-  public void setComponentTypeSlot(ComponentType componentTypeSlot, Template template, Project currentProject)
+  public void setComponentTypeSlot(ComponentType componentTypeSlot, Template template, Project currentProject, boolean forceInstatiate)
       throws Exception {
     this.componentTypeSlot = componentTypeSlot;
     this.template = template;
@@ -103,7 +103,7 @@ public class InstantiationManager {
     } else {
       switch (componentTypeSlot.getCreationMethod()) {
         case POINT_BY_POINT:
-          this.componentSlot = null;
+          this.componentSlot = forceInstatiate ? instantiateComponent(componentTypeSlot, template, new Point(0, 0), currentProject) : null;
           break;
         case SINGLE_CLICK:
           this.componentSlot = instantiateComponent(componentTypeSlot, template, new Point(0, 0), currentProject);

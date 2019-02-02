@@ -69,7 +69,7 @@ public class ComponentButtonFactory {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        plugInPort.setNewComponentTypeSlot(componentType, null);
+        plugInPort.setNewComponentTypeSlot(componentType, null, false);
       }
     });
 
@@ -90,7 +90,7 @@ public class ComponentButtonFactory {
             newSelection.addAll(plugInPort.getSelectedComponents());
           }
           plugInPort.updateSelection(newSelection);
-          plugInPort.setNewComponentTypeSlot(null, null);
+          plugInPort.setNewComponentTypeSlot(null, null, false);
           plugInPort.refresh();
         }
       }
@@ -122,7 +122,7 @@ public class ComponentButtonFactory {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        plugInPort.setNewComponentTypeSlot(componentType, variant);
+        plugInPort.setNewComponentTypeSlot(componentType, variant, false);
       }
     });
     

@@ -97,7 +97,7 @@ public class Presenter implements IPlugInPort {
       List<Version> allVersions = (List<Version>) xStream.fromXML(in);
       CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
       LOG.info("Current DIYLC version: " + CURRENT_VERSION);
-      RECENT_VERSIONS = allVersions.subList(allVersions.size() - 3, allVersions.size());
+      RECENT_VERSIONS = allVersions.subList(allVersions.size() - 10, allVersions.size());
       Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
 
         @Override
@@ -571,9 +571,9 @@ public class Presenter implements IPlugInPort {
               editSelection();
             }
             if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-              setNewComponentTypeSlot(componentTypeSlot, template);
+              setNewComponentTypeSlot(componentTypeSlot, template, false);
             } else {
-              setNewComponentTypeSlot(null, null);
+              setNewComponentTypeSlot(null, null, false);
             }
             break;
           case POINT_BY_POINT:
@@ -595,33 +595,7 @@ public class Presenter implements IPlugInPort {
             } else {
               // On the second click, add the component to the
               // project.
-              List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
-              Point firstPoint = componentSlot.get(0).getControlPoint(0);
-              // don't allow to create component with the same points
-              if (scaledPoint.equals(firstPoint))
-                return;
-              componentSlot.get(0).setControlPoint(scaledPoint, 1);
-              List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
-              for (IDIYComponent<?> component : componentSlot) {
-                addComponent(component, true);
-                // Select the new component if it's not locked and invisible.
-                if (!isComponentLocked(component) && isComponentVisible(component)) {
-                  newSelection.add(component);
-                }
-              }
-
-              updateSelection(newSelection);
-              messageDispatcher.dispatchMessage(EventType.REPAINT);
-
-              if (componentTypeSlot.isAutoEdit()
-                  && ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_EDIT_KEY, false)) {
-                editSelection();
-              }
-              if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-                setNewComponentTypeSlot(componentTypeSlot, template);
-              } else {
-                setNewComponentTypeSlot(null, null);
-              }
+              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template);
             }
             break;
           default:
@@ -672,6 +646,36 @@ public class Presenter implements IPlugInPort {
         // calculateSelectionDimension());
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       }
+    }
+  }
+
+  private void addPendingComponentsToProject(Point scaledPoint, ComponentType componentTypeSlot, Template template) {
+    List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
+    Point firstPoint = componentSlot.get(0).getControlPoint(0);
+    // don't allow to create component with the same points
+    if (scaledPoint == null || scaledPoint.equals(firstPoint))
+      return;
+//    componentSlot.get(0).setControlPoint(scaledPoint, 1);
+    List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
+    for (IDIYComponent<?> component : componentSlot) {
+      addComponent(component, true);
+      // Select the new component if it's not locked and invisible.
+      if (!isComponentLocked(component) && isComponentVisible(component)) {
+        newSelection.add(component);
+      }
+    }
+
+    updateSelection(newSelection);
+    messageDispatcher.dispatchMessage(EventType.REPAINT);
+
+    if (componentTypeSlot.isAutoEdit()
+        && ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_EDIT_KEY, false)) {
+      editSelection();
+    }
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
+      setNewComponentTypeSlot(componentTypeSlot, template, false);
+    } else {
+      setNewComponentTypeSlot(null, null, false);
     }
   }
 
@@ -1162,6 +1166,10 @@ public class Presenter implements IPlugInPort {
       }
       // messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
       // selectionRect);
+    } else if (instantiationManager.getComponentSlot() != null) {
+      this.previousScaledPoint = scalePoint(point);
+      instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(),
+          currentProject.getGridSpacing());
     }
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     return true;
@@ -1448,10 +1456,15 @@ public class Presenter implements IPlugInPort {
   @Override
   public void dragEnded(Point point) {
     LOG.debug(String.format("dragEnded(%s)", point));
-    if (!dragInProgress) {
-      return;
-    }
+    
     Point scaledPoint = scalePoint(point);
+    
+    if (!dragInProgress) {
+      if (instantiationManager.getComponentSlot() != null)
+        addPendingComponentsToProject(scaledPoint, instantiationManager.getComponentTypeSlot(), null);
+      return;
+    }    
+      
     if (selectedComponents.isEmpty()) {
       // If there's no selection finalize selectionRect and see which
       // components intersect with it.
@@ -2113,11 +2126,11 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void setNewComponentTypeSlot(ComponentType componentType, Template template) {
+  public void setNewComponentTypeSlot(ComponentType componentType, Template template, boolean forceInstatiate) {
     LOG.info(String.format("setNewComponentSlot(%s)", componentType == null ? null : componentType.getName()));
     if (componentType != null && componentType.getInstanceClass() == null) {
       LOG.info("Cannot set new component type slot for type " + componentType.getName());
-      setNewComponentTypeSlot(null, null);
+      setNewComponentTypeSlot(null, null, false);
       return;
     }
 
@@ -2135,10 +2148,13 @@ public class Presenter implements IPlugInPort {
     }
 
     try {
-      instantiationManager.setComponentTypeSlot(componentType, template, currentProject);
-      if (componentType != null) {
+      instantiationManager.setComponentTypeSlot(componentType, template, currentProject, forceInstatiate);
+      
+      if (forceInstatiate)
+        updateSelection(instantiationManager.getComponentSlot());
+      else if (componentType != null)
         updateSelection(EMPTY_SELECTION);
-      }
+      
       messageDispatcher.dispatchMessage(EventType.REPAINT);
       // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
       // selectedComponents);

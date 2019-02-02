@@ -2357,7 +2357,11 @@
 			</versionNumber>
 			<releaseDate>2019-01-28 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>			
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to drag components directly from the tree to the canvas for faster process</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>"Fuse Symbol" added</description>

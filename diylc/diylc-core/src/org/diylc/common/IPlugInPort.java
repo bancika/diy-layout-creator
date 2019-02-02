@@ -279,8 +279,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * 
    * @param componentType
    * @param template
+   * @param forceInstatiate
    */
-  void setNewComponentTypeSlot(ComponentType componentType, Template template);
+  void setNewComponentTypeSlot(ComponentType componentType, Template template, boolean forceInstatiate);
 
   /**
    * Changes default size notation, true for metric, false for imperial.

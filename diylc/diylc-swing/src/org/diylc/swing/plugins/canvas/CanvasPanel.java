@@ -148,7 +148,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        CanvasPanel.this.plugInPort.setNewComponentTypeSlot(null, null);
+        CanvasPanel.this.plugInPort.setNewComponentTypeSlot(null, null, false);
       }
     });
 
@@ -167,7 +167,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
           for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet()) {
             for (ComponentType type : entry.getValue()) {
               if (type.getInstanceClass().getCanonicalName().equals(clazz)) {
-                CanvasPanel.this.plugInPort.setNewComponentTypeSlot(type, null);
+                CanvasPanel.this.plugInPort.setNewComponentTypeSlot(type, null, false);
                 // hack: fake mouse movement to repaint
                 CanvasPanel.this.plugInPort.mouseMoved(getMousePosition(), false, false, false);
                 return;
@@ -201,7 +201,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
         LOG.error("Could not find type: " + typeName);
         return;
       }
-      this.plugInPort.setNewComponentTypeSlot(type, null);
+      this.plugInPort.setNewComponentTypeSlot(type, null, false);
     }
 
     // hack: fake mouse movement to repaint
