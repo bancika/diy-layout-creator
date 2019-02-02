@@ -158,6 +158,15 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     this.firstLeadArea = null;
     this.secondLeadArea = null;
   }
+  
+  @Override
+  public void setPointCount(PointCount pointCount) {
+    super.setPointCount(pointCount);
+    
+    // invalidate cached areas
+    this.firstLeadArea = null;
+    this.secondLeadArea = null;
+  }
 
   @Override
   public Void getValue() {
@@ -186,14 +195,17 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
           curves.add(new CubicCurve2D.Double(current.x, current.y, (current.x + coords[0]) / 2,
               (current.y + coords[1]) / 2, (current.x + coords[0]) / 2, (current.y + coords[1]) / 2, coords[0],
               coords[1]));
+          current.setLocation(coords[0], coords[1]);
           break;
         case PathIterator.SEG_QUADTO:
           curves.add(new CubicCurve2D.Double(current.x, current.y, coords[0], coords[1], coords[0], coords[1],
               coords[2], coords[3]));
+          current.setLocation(coords[2], coords[3]);
           break;
         case PathIterator.SEG_CUBICTO:
           curves.add(new CubicCurve2D.Double(current.x, current.y, coords[0], coords[1], coords[2], coords[3],
               coords[4], coords[5]));
+          current.setLocation(coords[4], coords[5]);
           break;
       }
       iterator.next();

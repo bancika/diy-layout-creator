@@ -322,7 +322,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     // }
   }
 
-  enum PointCount {
+  public enum PointCount {
     TWO(2), THREE(3), FOUR(4), FIVE(5), SEVEN(7);
 
     private int count;
