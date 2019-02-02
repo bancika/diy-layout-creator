@@ -27,6 +27,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -181,6 +182,8 @@ public class TreePanel extends JPanel {
     // Initialize drag source recognizer.
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(getTree(),
         DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK, new TreeGestureListener(plugInPort));
+    // Initialize drop target.
+    new DropTarget(getTree(), DnDConstants.ACTION_COPY_OR_MOVE, new TreeTargetListener(plugInPort), true);
   }
 
   public JScrollPane getTreeScroll() {
