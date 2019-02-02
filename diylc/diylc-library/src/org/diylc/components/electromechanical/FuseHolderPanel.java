@@ -323,7 +323,7 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
     this.display = display;
   }
   
-  @EditableProperty
+  @EditableProperty(name = "Label")
   public Color getLabelColor() {
     return labelColor;
   }

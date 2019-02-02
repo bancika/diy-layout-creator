@@ -2361,6 +2361,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ability to drag components directly from the tree to the canvas for faster process</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>"Twisted Leads" added (DIYLC v2 fans rejoice)</description>
 				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
