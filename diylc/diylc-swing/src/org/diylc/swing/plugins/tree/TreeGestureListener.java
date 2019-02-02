@@ -51,7 +51,7 @@ class TreeGestureListener implements DragGestureListener {
     if (path != null && path.getLastPathComponent() instanceof DefaultMutableTreeNode) {
       DefaultMutableTreeNode leaf = (DefaultMutableTreeNode)path.getLastPathComponent();
       Payload payload = (Payload) leaf.getUserObject();
-      if (payload != null) {
+      if (payload != null && (payload.getComponentType() != null || payload.getClickListener() != null)) {
         if (payload.getComponentType() != null)
           presenter.setNewComponentTypeSlot(payload.getComponentType(), null, true);
         else

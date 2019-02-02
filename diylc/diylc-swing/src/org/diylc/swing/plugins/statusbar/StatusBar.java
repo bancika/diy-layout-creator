@@ -461,7 +461,7 @@ public class StatusBar extends JPanel implements IPlugIn {
         statusText = "<html>Selection: " + builder.toString() + "</html>";
       }
     } else {
-      if (forceInstatiate)
+      if (forceInstatiate != null && forceInstatiate)
         statusText =  "<html>Drag the mouse over the canvas to place a new <font color='blue'>" + componentSlot.getName()
             + "</font></html>";
       else
