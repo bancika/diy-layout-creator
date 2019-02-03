@@ -37,6 +37,7 @@ import org.diylc.common.IPlugInPort;
  */
 class TreeSourceListener implements DragSourceListener {
 
+  @SuppressWarnings("unused")
   private IPlugInPort presenter;
 
   public TreeSourceListener(IPlugInPort presenter) {
@@ -46,7 +47,8 @@ class TreeSourceListener implements DragSourceListener {
 
   @Override
   public void dragDropEnd(DragSourceDropEvent dsde) {
-    presenter.dragEnded(null);
+//    if (!dsde.getDropSuccess())
+//      presenter.setNewComponentTypeSlot(null, null, false);
   }
 
   @Override

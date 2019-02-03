@@ -1459,9 +1459,7 @@ public class Presenter implements IPlugInPort {
     
     Point scaledPoint = scalePoint(point);
     
-    if (!dragInProgress) {
-      if (instantiationManager.getComponentSlot() != null)
-        addPendingComponentsToProject(scaledPoint, instantiationManager.getComponentTypeSlot(), null);
+    if (!dragInProgress && instantiationManager.getComponentSlot() == null) {      
       return;
     }    
       
@@ -1488,6 +1486,9 @@ public class Presenter implements IPlugInPort {
       // selectedComponents);
       // messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
       // calculateSelectionDimension());
+    } else if (instantiationManager.getComponentSlot() != null) {
+      preDragProject = currentProject.clone();
+      addPendingComponentsToProject(scaledPoint, instantiationManager.getComponentTypeSlot(), null);
     } else {
       updateSelection(selectedComponents);
     }
@@ -2132,6 +2133,11 @@ public class Presenter implements IPlugInPort {
       LOG.info("Cannot set new component type slot for type " + componentType.getName());
       setNewComponentTypeSlot(null, null, false);
       return;
+    }
+    
+    if (componentType == null) {
+      controlPointMap.clear();
+      updateSelection(EMPTY_SELECTION);
     }
 
     // try to find a default template if none is provided
