@@ -2397,7 +2397,15 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Create a backup of config file when there is an issue with loading (cross-version)</description>
-				</org.diylc.appframework.update.Change>												
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Automatically select dropped components from the component tree after they get placed</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Drag&amp;Drop from the tree sometimes picks up a wrong component type</description>
+				</org.diylc.appframework.update.Change>											
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>		

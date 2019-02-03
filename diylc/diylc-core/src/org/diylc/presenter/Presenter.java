@@ -1156,7 +1156,7 @@ public class Presenter implements IPlugInPort {
         return true;
 
       previousDragPoint.translate(actualD.x, actualD.y);
-    } else if (selectedComponents.isEmpty() && instantiationManager.getComponentTypeSlot() == null) {
+    } else if (selectedComponents.isEmpty() && instantiationManager.getComponentTypeSlot() == null && previousDragPoint != null) {
       // If there's no selection, the only thing to do is update the
       // selection rectangle and refresh.
       Rectangle oldSelectionRect = selectionRect == null ? null : new Rectangle(selectionRect);
@@ -2135,10 +2135,10 @@ public class Presenter implements IPlugInPort {
       return;
     }
     
-    if (componentType == null) {
-      controlPointMap.clear();
-      updateSelection(EMPTY_SELECTION);
-    }
+//    if (componentType == null) {
+//      controlPointMap.clear();
+//      updateSelection(EMPTY_SELECTION);
+//    }
 
     // try to find a default template if none is provided
     if (componentType != null && template == null) {

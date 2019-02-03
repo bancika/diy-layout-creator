@@ -25,6 +25,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.plugins.canvas.EmptyTransferable;
 import org.diylc.swing.plugins.tree.TreePanel.Payload;
@@ -45,20 +46,37 @@ class TreeGestureListener implements DragGestureListener {
 
   @Override
   public void dragGestureRecognized(DragGestureEvent dge) {
-    JTree tree = (JTree) dge.getComponent();
-    Point p = dge.getDragOrigin();
-    TreePath path = tree.getClosestPathForLocation(p.x, p.y);
-    if (path != null && path.getLastPathComponent() instanceof DefaultMutableTreeNode) {
-      DefaultMutableTreeNode leaf = (DefaultMutableTreeNode)path.getLastPathComponent();
-      Payload payload = (Payload) leaf.getUserObject();
-      if (payload != null && (payload.getComponentType() != null || payload.getClickListener() != null)) {
-        if (payload.getComponentType() != null)
-          presenter.setNewComponentTypeSlot(payload.getComponentType(), null, true);
-        else
-          payload.getClickListener().mouseClicked(null);
-        dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(), new TreeSourceListener(
-            presenter));
+    ComponentType type = null;
+    Payload payload = null;
+    if (presenter.getNewComponentTypeSlot() == null) {
+      JTree tree = (JTree) dge.getComponent();
+      Point p = dge.getDragOrigin();
+      TreePath path = tree.getClosestPathForLocation(p.x, p.y);
+      if (path != null && path.getLastPathComponent() instanceof DefaultMutableTreeNode) {
+        DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) path.getLastPathComponent();
+        payload = (Payload) leaf.getUserObject();
+        if (payload != null && (payload.getComponentType() != null || payload.getClickListener() != null))
+          type = payload.getComponentType();
+      }
+    } else {
+      type = presenter.getNewComponentTypeSlot();
+    }
+
+    boolean start = false;
+    if (type == null)
+    {
+      if (payload != null && payload.getClickListener() != null) {
+        payload.getClickListener().mouseClicked(null);
+        start = true;
       }
     }
+    else {
+      presenter.setNewComponentTypeSlot(type, null, true);
+      start = true;
+    }
+
+    if (start)
+      dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(),
+        new TreeSourceListener(presenter));
   }
 }
