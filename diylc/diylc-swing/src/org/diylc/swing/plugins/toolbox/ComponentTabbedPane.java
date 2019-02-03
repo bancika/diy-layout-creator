@@ -205,7 +205,8 @@ class ComponentTabbedPane extends JTabbedPane {
     return panel;
   }
   
-  @SuppressWarnings("unchecked")
+  
+  @SuppressWarnings("unused")
   private Component createBuildingBlocksPanel() {
     JPanel panel = new JPanel(new BorderLayout());
     panel.setOpaque(false);

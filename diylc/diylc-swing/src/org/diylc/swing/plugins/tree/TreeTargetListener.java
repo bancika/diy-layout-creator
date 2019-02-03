@@ -21,7 +21,6 @@
 */
 package org.diylc.swing.plugins.tree;
 
-import java.awt.Point;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
