@@ -44,9 +44,13 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
   private static final long serialVersionUID = 1L;
 
   public static Color COLOR = Color.green;
+  public static Color STRIPE_COLOR = Color.yellow;
   public static double INSULATION_THICKNESS_PCT = 0.3;
 
   protected AWG gauge = AWG._22;
+  
+  protected boolean striped = false;
+  protected Color stripeColor = STRIPE_COLOR;
 
   @Override
   protected Color getDefaultColor() {
@@ -76,22 +80,19 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
     }
     Shape s = stroke.createStrokedShape(curve);    
     g2d.fill(s);
+    
+    if (getStriped()) {
+      stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] { thickness / 2, thickness * 2 }, thickness * 10, BasicStroke.CAP_BUTT);
+      Shape stripe = stroke.createStrokedShape(curve);
+      g2d.setColor(getStripeColor());
+      drawingObserver.stopTracking();
+      g2d.fill(stripe);
+      drawingObserver.startTracking();
+    }
+    
     if (componentState == ComponentState.NORMAL) {
       g2d.setColor(color.darker());
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-//      switch (getStyle()) {
-//        case SOLID:
-//          stroke = ObjectCache.getInstance().fetchBasicStroke(thickness - 2);
-//          break;
-//        case DASHED:
-//          stroke =
-//              ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness * 2, thickness * 3},
-//                  thickness * 4);
-//          break;
-//        case DOTTED:
-//          stroke = ObjectCache.getInstance().fetchStroke(thickness - 2, new float[] {thickness / 4, thickness * 3}, 0);
-//      }
-//      g2d.setStroke(stroke);
       g2d.draw(s);
     }
   }
@@ -112,4 +113,24 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
 
   @Override
   public void setValue(Void value) {}
+
+  @EditableProperty(name = "Stripe")
+  public boolean getStriped() {
+    return striped;
+  }
+
+  public void setStriped(boolean striped) {
+    this.striped = striped;
+  }
+
+  @EditableProperty(name = "Stripe Color")
+  public Color getStripeColor() {
+    if (stripeColor == null)
+      stripeColor = STRIPE_COLOR;
+    return stripeColor;
+  }
+
+  public void setStripeColor(Color stripeColor) {
+    this.stripeColor = stripeColor;
+  }
 }

@@ -107,16 +107,20 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     g2d.fill(firstLeadArea);
     
     if (stripe1 && componentState == ComponentState.NORMAL) {
+      drawingObserver.stopTracking();
       g2d.setColor(stripeColor);
       g2d.fill(firstLeadStripeArea);
+      drawingObserver.startTracking();
     }
     
     g2d.setColor(curveColor2);
     g2d.fill(secondLeadArea);
     
     if (stripe2 && componentState == ComponentState.NORMAL) {
+      drawingObserver.stopTracking();
       g2d.setColor(stripeColor2);
       g2d.fill(secondLeadStripeArea);
+      drawingObserver.startTracking();
     }
     
     if (componentState == ComponentState.NORMAL) {      
@@ -215,7 +219,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     return super.getStyle();
   }
     
-  @EditableProperty(name = "Stripe 1")
+  @EditableProperty(name = "Stripe Color 1")
   public Color getStripeColor() {
     return stripeColor;
   }
@@ -224,7 +228,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     this.stripeColor = stripeColor;
   }
 
-  @EditableProperty(name = "Stripe 2")
+  @EditableProperty(name = "Stripe Color 2")
   public Color getStripeColor2() {
     return stripeColor2;
   }
@@ -233,7 +237,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     this.stripeColor2 = stripeColor2;
   }
     
-  @EditableProperty(name = "Show Stripe 1")
+  @EditableProperty(name = "Stripe 1")
   public boolean getStripe1() {
     return stripe1;
   }
@@ -250,7 +254,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     }
   }
 
-  @EditableProperty(name = "Show Stripe 2")
+  @EditableProperty(name = "Stripe 2")
   public boolean getStripe2() {
     return stripe2;
   }
