@@ -284,12 +284,13 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
     }
     Area mainArea = getBody()[0];
     
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point point : controlPoints) {
         g2d.setColor(PIN_COLOR);
         g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-        g2d.setColor(PIN_BORDER_COLOR);
+        g2d.setColor(PIN_BORDER_COLOR);        
         g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
       }
     }

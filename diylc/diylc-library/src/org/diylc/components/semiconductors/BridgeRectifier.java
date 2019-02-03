@@ -354,6 +354,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
     PinShape pinShape = rectifierType.getPinShape();
     int pinSize = (int) (pinShape == PinShape.Round ? ROUND_PIN_SIZE.convertToPixels() : SQUARE_PIN_SIZE.convertToPixels()) / 2 * 2;
     
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     if (!outlineMode) {      
       for (Point point : controlPoints) {
         g2d.setColor(PIN_COLOR);
