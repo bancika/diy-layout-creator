@@ -2396,7 +2396,7 @@
 			<changes>				
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Create a backup of config file when there is an issue with loading (cross-version)</description>
+					<description>Create a backup of config file when there is an issue with loading (for example running two DIYLC versions on the same machine) to avoid data loss</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

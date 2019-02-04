@@ -27,13 +27,17 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -56,9 +60,12 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private static final long serialVersionUID = 1L;
 
   private static Color BODY_COLOR = Color.decode("#F7F7EF");
+  private static Color LABEL_COLOR = BODY_COLOR.darker();
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
-  public static Size PIN_SIZE = new Size(1d, SizeUnit.mm);
+  public static Size PIN_DIAMETER = new Size(1d, SizeUnit.mm);
+  private static Size PIN_WIDTH = new Size(0.08d, SizeUnit.in);
+  private static Size PIN_THICKNESS = new Size(0.02d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(5d, SizeUnit.mm);
   public static Size TICK_SIZE = new Size(2d, SizeUnit.mm);
 
@@ -69,6 +76,9 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   // private Mount mount = Mount.CHASSIS;
   private int angle;
   private Color color = BODY_COLOR;
+  private String electrodeLabels = null; 
+  private Mount mount = null;
+  private Color labelColor = LABEL_COLOR;
 
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
 
@@ -157,7 +167,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
         break;
       case B9A:
         pinCount = 9;
-        pinCircleDiameter = getClosestOdd(new Size(21d, SizeUnit.mm).convertToPixels());
+        pinCircleDiameter = getClosestOdd(getMount() == Mount.PCB ? new Size(21d, SizeUnit.mm).convertToPixels() : new Size(12.5d, SizeUnit.mm).convertToPixels());
         hasEmptySpace = true;
         break;
       default:
@@ -185,10 +195,10 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
           bodyDiameter = getClosestOdd(new Size(17d, SizeUnit.mm).convertToPixels());
           break;
         case B9A:
-          bodyDiameter = getClosestOdd(new Size(19d, SizeUnit.mm).convertToPixels());
+          bodyDiameter = getClosestOdd(new Size(3 / 4d, SizeUnit.in).convertToPixels());
           break;
         case OCTAL:
-          bodyDiameter = getClosestOdd(new Size(24.5d, SizeUnit.mm).convertToPixels());
+          bodyDiameter = getClosestOdd(new Size(25d, SizeUnit.mm).convertToPixels());
           break;
         default:
           throw new RuntimeException("Unexpected base: " + base);
@@ -200,14 +210,24 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
       int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
       bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - holeSize / 2, controlPoints[0].y - holeSize
           / 2, holeSize, holeSize)));
+      
       if (base == Base.OCTAL) {
         int tickSize = getClosestOdd(TICK_SIZE.convertToPixels());
         double theta = Math.toRadians(getAngle());
         int centerX = (int) (controlPoints[0].x + Math.cos(theta) * holeSize / 2);
         int centerY = (int) (controlPoints[0].y + Math.sin(theta) * holeSize / 2);
         bodyArea.subtract(new Area(new Ellipse2D.Double(centerX - tickSize / 2, centerY - tickSize / 2, tickSize,
-            tickSize)));
-      }
+            tickSize)));        
+      } else if (base == Base.B9A && getMount() == Mount.CHASSIS) {
+        double cutoutDiameter = getClosestOdd(new Size(5.5d, SizeUnit.mm).convertToPixels());
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+      } else if (base == Base.B7G && getMount() == Mount.CHASSIS) {
+        double cutoutDiameter = getClosestOdd(new Size(4d, SizeUnit.mm).convertToPixels());
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+      }      
+      
       body = bodyArea;
     }
     return body;
@@ -247,14 +267,44 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     }
     g2d.setColor(finalBorderColor);
     g2d.draw(body);
+    
     // Draw pins
-    if (!outlineMode) {
-      int pinSize = getClosestOdd(PIN_SIZE.convertToPixels());
+    if (!outlineMode) {      
       for (int i = 1; i < controlPoints.length; i++) {
+        Shape pinShape;
+        if (getMount() == Mount.PCB) {
+          int pinSize = getClosestOdd(PIN_DIAMETER.convertToPixels());
+          pinShape = new Ellipse2D.Double(controlPoints[i].x - pinSize / 2, controlPoints[i].y - pinSize / 2, pinSize, pinSize);
+        } else {
+          int pinWidth = getClosestOdd(PIN_WIDTH.convertToPixels());
+          int pinThickness = getClosestOdd(PIN_THICKNESS.convertToPixels());
+          pinShape = new Rectangle2D.Double(controlPoints[i].x - pinWidth / 2, controlPoints[i].y - pinThickness / 2, pinWidth, pinThickness);
+          double theta = Math.atan2(controlPoints[i].y - controlPoints[0].y, controlPoints[i].x - controlPoints[0].x) + Math.PI / 2;
+          Area rotatedPin = new Area(pinShape);
+          rotatedPin.transform(AffineTransform.getRotateInstance(theta, controlPoints[i].x, controlPoints[i].y));
+          pinShape = rotatedPin;
+        }
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval(controlPoints[i].x - pinSize / 2, controlPoints[i].y - pinSize / 2, pinSize, pinSize);
+        g2d.fill(pinShape);
         g2d.setColor(PIN_BORDER_COLOR);
-        g2d.drawOval(controlPoints[i].x - pinSize / 2, controlPoints[i].y - pinSize / 2, pinSize, pinSize);
+        g2d.fill(pinShape);
+      }
+    }
+    
+    // draw labels
+    if (electrodeLabels != null) {
+      g2d.setColor(getLabelColor());
+      g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.8)));
+      String[] labels = electrodeLabels.split(",");
+      double electrodeLabelOffset = project.getFont().getSize2D() * (getBase() == Base.B9A && getMount() == Mount.PCB ? 1.5 : 1);
+      for (int i = 0; i < labels.length; i++) {
+        if (i < controlPoints.length - 1) {
+          String label = labels[i];
+          double theta = Math.atan2(controlPoints[i + 1].y - controlPoints[0].y, controlPoints[i + 1].x - controlPoints[0].x);
+          double x = controlPoints[i + 1].x - Math.cos(theta) * electrodeLabelOffset;
+          double y = controlPoints[i + 1].y - Math.sin(theta) * electrodeLabelOffset;
+          drawCenteredText(g2d, label, (int)x, (int)y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        }
       }
     }
   }
@@ -314,6 +364,44 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   @Override
   public void setControlPoint(Point point, int index) {
     controlPoints[index].setLocation(point);
+    
+    body = null;
+  }
+  
+  @EditableProperty(name = "Electrode Labels")
+  public String getElectrodeLabels() {
+    if (electrodeLabels == null)
+      electrodeLabels = "1,2,3,4,5,6,7,8,9";
+    return electrodeLabels;
+  }
+  
+  public void setElectrodeLabels(String electrodeLabels) {
+    this.electrodeLabels = electrodeLabels;
+  }
+  
+  @EditableProperty(name = "Label")
+  public Color getLabelColor() {
+    if (labelColor == null)
+      labelColor = LABEL_COLOR;
+    return labelColor;
+  }
+  
+  public void setLabelColor(Color labelColor) {
+    this.labelColor = labelColor;
+  }
+  
+  @EditableProperty(name = "Mount")
+  public Mount getMount() {
+    if (mount == null)
+      mount = Mount.PCB;
+    return mount;
+  }
+  
+  public void setMount(Mount mount) {
+    this.mount = mount;
+    
+    updateControlPoints();
+    // Reset body shape
     body = null;
   }
 
