@@ -57,6 +57,17 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class TubeSocket extends AbstractTransparentComponent<String> {
 
+  private static final Size B9A_PIN_SPACING_CHASSIS = new Size(12.5d, SizeUnit.mm);
+  private static final Size B9A_PIN_SPACING_PCB = new Size(21d, SizeUnit.mm);
+  private static final Size OCTAL_PIN_SPACING = new Size(17.5d, SizeUnit.mm);
+  private static final Size B7G_PIN_SPACING = new Size(12d, SizeUnit.mm);
+  private static final Size B7G_CUTOUT_DIAMETER = new Size(4d, SizeUnit.mm);
+  private static final Size B9A_CUTOUT_DIAMETER = new Size(5.5d, SizeUnit.mm);
+
+  private static final Size OCTAL_DIAMETER = new Size(25d, SizeUnit.mm);
+  private static final Size B9A_DIAMETER = new Size(3 / 4d, SizeUnit.in);
+  private static final Size B7G_DIAMETER = new Size(17d, SizeUnit.mm);
+
   private static final long serialVersionUID = 1L;
 
   private static Color BODY_COLOR = Color.decode("#F7F7EF");
@@ -67,7 +78,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private static Size PIN_WIDTH = new Size(0.08d, SizeUnit.in);
   private static Size PIN_THICKNESS = new Size(0.02d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(5d, SizeUnit.mm);
-  public static Size TICK_SIZE = new Size(2d, SizeUnit.mm);
+  public static Size OCTAL_TICK_SIZE = new Size(2d, SizeUnit.mm);
 
   private Base base = Base.B9A;
   private String type = "";
@@ -152,22 +163,22 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private void updateControlPoints() {
     Point firstPoint = controlPoints[0];
     int pinCount;
-    int pinCircleDiameter;
+    int pinSpacing;
     boolean hasEmptySpace;
     switch (base) {
       case B7G:
         pinCount = 7;
-        pinCircleDiameter = getClosestOdd(new Size(12d, SizeUnit.mm).convertToPixels());
+        pinSpacing = getClosestOdd(B7G_PIN_SPACING.convertToPixels());
         hasEmptySpace = true;
         break;
       case OCTAL:
         pinCount = 8;
-        pinCircleDiameter = getClosestOdd(new Size(17.5d, SizeUnit.mm).convertToPixels());
+        pinSpacing = getClosestOdd(OCTAL_PIN_SPACING.convertToPixels());
         hasEmptySpace = false;
         break;
       case B9A:
         pinCount = 9;
-        pinCircleDiameter = getClosestOdd(getMount() == Mount.PCB ? new Size(21d, SizeUnit.mm).convertToPixels() : new Size(12.5d, SizeUnit.mm).convertToPixels());
+        pinSpacing = getClosestOdd(getMount() == Mount.PCB ? B9A_PIN_SPACING_PCB.convertToPixels() : B9A_PIN_SPACING_CHASSIS.convertToPixels());
         hasEmptySpace = true;
         break;
       default:
@@ -181,8 +192,8 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     controlPoints[0] = firstPoint;
     for (int i = 0; i < pinCount; i++) {
       controlPoints[i + 1] =
-          new Point((int) (firstPoint.getX() + Math.cos(theta) * pinCircleDiameter / 2),
-              (int) (firstPoint.getY() + Math.sin(theta) * pinCircleDiameter / 2));
+          new Point((int) (firstPoint.getX() + Math.cos(theta) * pinSpacing / 2),
+              (int) (firstPoint.getY() + Math.sin(theta) * pinSpacing / 2));
       theta += angleIncrement;
     }
   }
@@ -192,17 +203,18 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
       int bodyDiameter;
       switch (base) {
         case B7G:
-          bodyDiameter = getClosestOdd(new Size(17d, SizeUnit.mm).convertToPixels());
+          bodyDiameter = getClosestOdd(B7G_DIAMETER.convertToPixels());
           break;
         case B9A:
-          bodyDiameter = getClosestOdd(new Size(3 / 4d, SizeUnit.in).convertToPixels());
+          bodyDiameter = getClosestOdd(B9A_DIAMETER.convertToPixels());
           break;
         case OCTAL:
-          bodyDiameter = getClosestOdd(new Size(25d, SizeUnit.mm).convertToPixels());
+          bodyDiameter = getClosestOdd(OCTAL_DIAMETER.convertToPixels());
           break;
         default:
           throw new RuntimeException("Unexpected base: " + base);
       }
+      
       body =
           new Ellipse2D.Double(controlPoints[0].x - bodyDiameter / 2, controlPoints[0].y - bodyDiameter / 2,
               bodyDiameter, bodyDiameter);
@@ -212,18 +224,18 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
           / 2, holeSize, holeSize)));
       
       if (base == Base.OCTAL) {
-        int tickSize = getClosestOdd(TICK_SIZE.convertToPixels());
+        int tickSize = getClosestOdd(OCTAL_TICK_SIZE.convertToPixels());
         double theta = Math.toRadians(getAngle());
         int centerX = (int) (controlPoints[0].x + Math.cos(theta) * holeSize / 2);
         int centerY = (int) (controlPoints[0].y + Math.sin(theta) * holeSize / 2);
         bodyArea.subtract(new Area(new Ellipse2D.Double(centerX - tickSize / 2, centerY - tickSize / 2, tickSize,
             tickSize)));        
       } else if (base == Base.B9A && getMount() == Mount.CHASSIS) {
-        double cutoutDiameter = getClosestOdd(new Size(5.5d, SizeUnit.mm).convertToPixels());
+        double cutoutDiameter = getClosestOdd(B9A_CUTOUT_DIAMETER.convertToPixels());
         bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
         bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
       } else if (base == Base.B7G && getMount() == Mount.CHASSIS) {
-        double cutoutDiameter = getClosestOdd(new Size(4d, SizeUnit.mm).convertToPixels());
+        double cutoutDiameter = getClosestOdd(B7G_CUTOUT_DIAMETER.convertToPixels());
         bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
         bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
       }      
@@ -236,12 +248,9 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    // g2d.setColor(Color.black);
+    
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    // for (int i = 0; i < controlPoints.length; i++) {
-    // g2d.drawString(Integer.toString(i), controlPoints[i].x,
-    // controlPoints[i].y);
-    // }
+
     // Draw body
     Shape body = getBody();
     Composite oldComposite = g2d.getComposite();
@@ -291,7 +300,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
       }
     }
     
-    // draw labels
+    // draw electrode labels
     if (electrodeLabels != null) {
       g2d.setColor(getLabelColor());
       g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.8)));
