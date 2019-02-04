@@ -277,6 +277,8 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     g2d.setColor(finalBorderColor);
     g2d.draw(body);
     
+    drawingObserver.stopTracking();
+    
     // Draw pins
     if (!outlineMode) {      
       for (int i = 1; i < controlPoints.length; i++) {
