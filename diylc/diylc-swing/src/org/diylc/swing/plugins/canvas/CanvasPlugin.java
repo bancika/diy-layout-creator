@@ -655,23 +655,35 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         refreshSize();
         if ((Boolean) params[1]) {
           // Scroll to the center.
-          Rectangle visibleRect = canvasPanel.getVisibleRect();
+          final Rectangle visibleRect = canvasPanel.getVisibleRect();
           visibleRect.setLocation((canvasPanel.getWidth() - visibleRect.width) / 2,
               (canvasPanel.getHeight() - visibleRect.height) / 2);
-          canvasPanel.scrollRectToVisible(visibleRect);
-          canvasPanel.revalidate();
+          SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {              
+              canvasPanel.scrollRectToVisible(visibleRect);
+              canvasPanel.revalidate();
+            }
+          });
         }
         break;
       case ZOOM_CHANGED:
-        Rectangle visibleRect = canvasPanel.getVisibleRect();
+        final Rectangle visibleRect = canvasPanel.getVisibleRect();
         refreshSize();
         // Try to set the visible area to be centered with the previous
         // one.
         double zoomFactor = (Double) params[0] / zoomLevel;
         visibleRect.setBounds((int) (visibleRect.x * zoomFactor), (int) (visibleRect.y * zoomFactor),
             visibleRect.width, visibleRect.height);
-        canvasPanel.scrollRectToVisible(visibleRect);
-        canvasPanel.revalidate();
+        SwingUtilities.invokeLater(new Runnable() {
+
+          @Override
+          public void run() {
+            canvasPanel.scrollRectToVisible(visibleRect);
+            canvasPanel.revalidate();
+          }
+        });
 
         zoomLevel = (Double) params[0];
         break;
