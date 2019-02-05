@@ -35,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
+import org.diylc.core.IView;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
@@ -155,5 +156,13 @@ public class DIYLCStarter {
     } catch (Exception e) {
       LOG.error("Could not read config.properties file", e);
     }
+    
+    if (ConfigurationManager.getInstance().isFileWithErrors())
+      mainFrame.showMessage("<html>"
+          + "There was an error reading the configuration file and it was replaced by a default configuration.<br>"
+          + "The backup file is created and placed in user directory under '.diylc' sub-directory with '~' at the end.<br>"
+          + "This can happen when running two versions of DIYLC on the same machine at the same time.<br>"          
+          + "Replace the main 'config.xml' file with the backup when running the latest version of DIYLC."
+          + "</html>", "Warning", IView.WARNING_MESSAGE);
   }
 }
