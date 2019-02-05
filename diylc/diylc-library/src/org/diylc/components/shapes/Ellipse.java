@@ -46,15 +46,17 @@ public class Ellipse extends AbstractShape {
       IDrawingObserver drawingObserver) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((int) borderThickness.convertToPixels()));
 
-    if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
-      g2d.setColor(color);
-      g2d.fillOval(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
-      g2d.setComposite(oldComposite);
+    float alpha = this.alpha;
+    if (componentState == ComponentState.DRAGGING)
+      alpha = 0;
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
+    g2d.setColor(color);
+    g2d.fillOval(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+    g2d.setComposite(oldComposite);
+    
     // Do not track any changes that follow because the whole oval has been
     // tracked so far.
     drawingObserver.stopTracking();
