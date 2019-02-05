@@ -33,7 +33,7 @@ public class CalcUtils {
    * @param x
    * @return
    */
-  public static int roundToGrid(int x, Size gridSpacing) {
+  public static int roundToGrid(double x, Size gridSpacing) {
     double grid = gridSpacing.convertToPixels();
     return (int) (Math.round(1f * x / grid) * grid);
   }

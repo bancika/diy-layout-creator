@@ -42,17 +42,19 @@ public class ProjectDrawingProvider implements IDrawingProvider {
   private IPlugInPort plugInPort;
   private boolean useZoom;
   private boolean showGridWhenNeeded;
+  private boolean includeExtraSpace;
 
-  public ProjectDrawingProvider(IPlugInPort plugInPort, boolean useZoom, boolean showGridWhenNeeded) {
+  public ProjectDrawingProvider(IPlugInPort plugInPort, boolean useZoom, boolean showGridWhenNeeded, boolean includeExtraSpace) {
     super();
     this.plugInPort = plugInPort;
     this.useZoom = useZoom;
     this.showGridWhenNeeded = showGridWhenNeeded;
+    this.includeExtraSpace = includeExtraSpace;
   }
 
   @Override
   public Dimension getSize() {    
-    return plugInPort.getCanvasDimensions(useZoom);
+    return plugInPort.getCanvasDimensions(useZoom, includeExtraSpace);
   }
 
   @Override
@@ -66,6 +68,9 @@ public class ProjectDrawingProvider implements IDrawingProvider {
     }
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
       drawOptions.add(DrawOption.OUTLINE_MODE);
+    }
+    if (includeExtraSpace) {
+      drawOptions.add(DrawOption.EXTRA_SPACE);
     }
     plugInPort.draw((Graphics2D) g, drawOptions, null, zoomFactor);
   }

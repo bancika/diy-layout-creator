@@ -74,6 +74,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String SHOW_GRID_KEY = "showGrid";
   public static final String HIGHLIGHT_CONTINUITY_AREA = "highlightContinuityArea";
   public static final String HARDWARE_ACCELERATION = "hardwareAcceleration";
+  public static final String EXTRA_SPACE_KEY = "extraSpace";
 
   public static final int DND_TOGGLE_STICKY = 0x1;
   public static final int DND_TOGGLE_SNAP = 0x40000000;
@@ -92,10 +93,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * unit. If <code>useZoom</code> is set to true, the result is scaled by zoom factor.
    * 
    * @param useZoom
+   * @param includeExtraSpace
    * 
    * @return canvas dimensions
    */
-  Dimension getCanvasDimensions(boolean useZoom);
+  Dimension getCanvasDimensions(boolean useZoom, boolean includeExtraSpace);
 
   /**
    * Returns an instance of {@link Cursor} that should be used at the specified location.

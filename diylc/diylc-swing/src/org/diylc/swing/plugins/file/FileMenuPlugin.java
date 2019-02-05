@@ -62,7 +62,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
   @Override
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
-    this.drawingProvider = new ProjectDrawingProvider(plugInPort, false, true);
+    this.drawingProvider = new ProjectDrawingProvider(plugInPort, false, true, false);
     this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
 
     ActionFactory actionFactory = ActionFactory.getInstance();

@@ -56,5 +56,9 @@ public enum DrawOption {
   /**
    * Draw components in outline mode.
    */
-  OUTLINE_MODE;
+  OUTLINE_MODE,
+  /**
+   * Include extra space around the layout.
+   */
+  EXTRA_SPACE;
 }

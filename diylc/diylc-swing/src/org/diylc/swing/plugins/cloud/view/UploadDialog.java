@@ -216,7 +216,7 @@ public class UploadDialog extends ButtonDialog {
   }
 
   private Dimension getThumbnailSize() {
-    Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false);
+    Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false, false);
     if (d.height > d.width)
       return new Dimension(192 * d.width / d.height, 192);
     else
@@ -304,7 +304,7 @@ public class UploadDialog extends ButtonDialog {
 
   private void paintThumbnail(Graphics g, Rectangle rect) {
     Graphics2D g2d = (Graphics2D) g;
-    Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false);
+    Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false, false);
 
     g2d.setColor(Color.white);
     g2d.fill(rect);

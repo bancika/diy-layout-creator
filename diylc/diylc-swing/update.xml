@@ -2393,7 +2393,15 @@
 			</versionNumber>
 			<releaseDate>2019-02-03 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>				
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added extra work space around the layout that can be used to store additional components and helpers, but does not get exported to a file. Configurable from the menu</description>
+				</org.diylc.appframework.update.Change>				
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Vast improvement of rendering performance, especially with large layouts</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Create a backup of config file when there is an issue with loading (for example running two DIYLC versions on the same machine) to avoid data loss</description>

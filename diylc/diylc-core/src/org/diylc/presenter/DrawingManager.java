@@ -26,10 +26,12 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -65,6 +67,7 @@ public class DrawingManager {
   private static final Logger LOG = Logger.getLogger(DrawingManager.class);
 
   public static int CONTROL_POINT_SIZE = 7;
+  public static double EXTRA_SPACE = 0.2;
 
   public static final String ZOOM_KEY = "zoom";
 
@@ -141,7 +144,7 @@ public class DrawingManager {
     } else {
       zoom = 1 / Constants.PIXEL_SIZE;
     }
-    
+
     if (externalZoom != null)
       zoom *= externalZoom;
 
@@ -171,7 +174,7 @@ public class DrawingManager {
     }
 
     // AffineTransform initialTx = g2d.getTransform();
-    Dimension d = getCanvasDimensions(project, zoom, true);
+    Dimension d = getCanvasDimensions(project, zoom, drawOptions.contains(DrawOption.EXTRA_SPACE));
 
     g2dWrapper.setColor(theme.getBgColor());
     g2dWrapper.fillRect(0, 0, d.width, d.height);
@@ -185,8 +188,8 @@ public class DrawingManager {
         g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {
             (float) zoomStep / 2, (float) zoomStep / 2}, (float) zoomStep / 4));
       } else if (gridType == GridType.DOT) {
-        g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f,
-            (float) zoomStep - 1}, 0f));
+        g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {
+            1f, (float) zoomStep - 1}, 0f));
       } else {
         g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness));
       }
@@ -199,11 +202,26 @@ public class DrawingManager {
         g2dWrapper.draw(new Line2D.Double(0, j, d.width - 1, j));
       }
     }
+    
+    // manage extra space
+    double extraSpace = 0;
+    if (drawOptions.contains(DrawOption.EXTRA_SPACE)) {
+      Dimension dInner = getCanvasDimensions(project, zoom, false);
+      extraSpace = getExtraSpace(project) * zoom;
+      float borderThickness = (float) (3f * (zoom > 1 ? 1 : zoom));
+      g2d.setStroke(ObjectCache.getInstance().fetchStroke(borderThickness, new float[] {borderThickness * 4, borderThickness * 4, }, 0, BasicStroke.CAP_BUTT));
+      g2dWrapper.setColor(theme.getOutlineColor());
+      g2d.draw(new Rectangle2D.Double(extraSpace, extraSpace, dInner.getWidth(), dInner.getHeight()));
 
+      // translate to the new (0, 0)
+      g2d.transform(AffineTransform.getTranslateInstance(extraSpace, extraSpace));
+    }    
+
+    // apply zoom
     if (Math.abs(1.0 - zoom) > 1e-4) {
       g2dWrapper.scale(zoom, zoom);
     }
-
+    
     // Composite mainComposite = g2d.getComposite();
     // Composite alphaComposite =
     // AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
@@ -363,9 +381,9 @@ public class DrawingManager {
           g2d.draw(a);
       }
     }
-    
-    if (continuityArea != null && (ConfigurationManager.getInstance().readBoolean(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false)))
-    {
+
+    if (continuityArea != null
+        && (ConfigurationManager.getInstance().readBoolean(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false))) {
       Composite oldComposite = g2d.getComposite();
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
       g2d.setColor(Color.green);
@@ -399,7 +417,7 @@ public class DrawingManager {
     componentAreaMap.clear();
     lastDrawnStateMap.clear();
   }
-  
+
   public void clearContinuityArea() {
     this.continuityArea = null;
   }
@@ -415,16 +433,26 @@ public class DrawingManager {
     return components;
   }
 
-  public Dimension getCanvasDimensions(Project project, Double zoomLevel, boolean useZoom) {
+  public double getExtraSpace(Project project) {
     double width = project.getWidth().convertToPixels();
     double height = project.getHeight().convertToPixels();
-    if (useZoom) {
-      width *= zoomLevel;
-      height *= zoomLevel;
-    } else {
-      width /= Constants.PIXEL_SIZE;
-      height /= Constants.PIXEL_SIZE;
+    double targetExtraSpace = EXTRA_SPACE * Math.max(width, height);    
+    return CalcUtils.roundToGrid(targetExtraSpace, project.getGridSpacing());    
+  }
+
+  public Dimension getCanvasDimensions(Project project, Double zoomLevel, boolean includeExtraSpace) {
+    double width = project.getWidth().convertToPixels();
+    double height = project.getHeight().convertToPixels();
+
+    if (includeExtraSpace) {
+      double extraSpace = getExtraSpace(project);
+      width += 2 * extraSpace;
+      height += 2 * extraSpace;
     }
+
+    width *= zoomLevel;
+    height *= zoomLevel;
+    
     return new Dimension((int) width, (int) height);
   }
 
@@ -481,8 +509,8 @@ public class DrawingManager {
     List<Area> areas = new ArrayList<Area>();
     for (int i = 0; i < preliminaryAreas.size(); i++) {
       Area a = preliminaryAreas.get(i);
-//      if (checkBreakout.get(i))
-        areas.addAll(tryBreakout(a));
+      // if (checkBreakout.get(i))
+      areas.addAll(tryBreakout(a));
       // else
       // areas.add(a);
     }

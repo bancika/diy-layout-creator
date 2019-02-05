@@ -235,7 +235,7 @@ public class TemplateDialog extends JDialog {
           File file = (File) fileList.getSelectedValue();
           if (file != null) {
             presenter.loadProjectFromFile(file.getAbsolutePath());
-            Dimension dim = presenter.getCanvasDimensions(true);
+            Dimension dim = presenter.getCanvasDimensions(true, true);
             double xFactor = panelSize.getWidth() / dim.getWidth();
             double yFactor = panelSize.getHeight() / dim.getHeight();
             presenter.setZoomLevel(Math.min(xFactor, yFactor));

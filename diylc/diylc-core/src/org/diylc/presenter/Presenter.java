@@ -250,8 +250,8 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public Dimension getCanvasDimensions(boolean useZoom) {
-    return drawingManager.getCanvasDimensions(currentProject, drawingManager.getZoomLevel(), useZoom);
+  public Dimension getCanvasDimensions(boolean useZoom, boolean includeExtraSpace) {
+    return drawingManager.getCanvasDimensions(currentProject, useZoom ? drawingManager.getZoomLevel() : 1/ Constants.PIXEL_SIZE, includeExtraSpace);
   }
 
   @Override
@@ -1182,8 +1182,10 @@ public class Presenter implements IPlugInPort {
     int actualDy = 0;
     // For each component, do a simulation of the move to see if any of
     // them will overlap or go out of bounds.
-    int width = (int) currentProject.getWidth().convertToPixels();
-    int height = (int) currentProject.getHeight().convertToPixels();
+    
+    boolean useExtraSpace = ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true);
+    Dimension d = drawingManager.getCanvasDimensions(currentProject, 1d, useExtraSpace);    
+    double extraSpace = useExtraSpace ? drawingManager.getExtraSpace(currentProject) : 0;
 
     if (controlPointMap.size() == 1) {
       Map.Entry<IDIYComponent<?>, Set<Integer>> entry = controlPointMap.entrySet().iterator().next();
@@ -1220,8 +1222,9 @@ public class Presenter implements IPlugInPort {
         // actually moved after snapping.
         if (entry.getValue().contains(index)) {
           controlPoints[index].translate(actualDx, actualDy);
-          if (controlPoints[index].x < 0 || controlPoints[index].y < 0 || controlPoints[index].x > width
-              || controlPoints[index].y > height) {
+          controlPoints[index].translate((int)extraSpace, (int)extraSpace);
+          if (controlPoints[index].x < 0 || controlPoints[index].y < 0 || controlPoints[index].x > d.width
+              || controlPoints[index].y > d.height) {
             // At least one control point went out of bounds.
             return null;
           }
@@ -2424,8 +2427,14 @@ public class Presenter implements IPlugInPort {
    * @return
    */
   private Point scalePoint(Point point) {
-    return point == null ? null : new Point((int) (point.x / drawingManager.getZoomLevel()),
+    Point p = point == null ? null : new Point((int) (point.x / drawingManager.getZoomLevel()),
         (int) (point.y / drawingManager.getZoomLevel()));
+        
+    if (p != null && ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true)) {
+      double extraSpace = drawingManager.getExtraSpace(currentProject);
+      p.translate((int)(-extraSpace), (int)(-extraSpace));
+    }
+    return p;
   }
 
   @SuppressWarnings("unchecked")

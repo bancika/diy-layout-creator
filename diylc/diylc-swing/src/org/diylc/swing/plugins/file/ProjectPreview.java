@@ -127,7 +127,7 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
       super.paint(g);
 
       Graphics2D g2d = (Graphics2D) g;
-      Dimension d = presenter.getCanvasDimensions(false);
+      Dimension d = presenter.getCanvasDimensions(false, false);
       // System.out.println(d);
       Rectangle rect = getBounds();
       // System.out.println(rect);

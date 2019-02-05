@@ -55,7 +55,7 @@ public class TraceMaskDrawingProvider implements IDrawingProvider {
 
   @Override
   public Dimension getSize() {
-    return plugInPort.getCanvasDimensions(false);
+    return plugInPort.getCanvasDimensions(false, false);
   }
 
   @Override

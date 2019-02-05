@@ -68,6 +68,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
+  
+  public static boolean RENDER_VISIBLE_RECT_ONLY = true;
 
   private IPlugInPort plugInPort;
 
@@ -209,11 +211,22 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   }
 
   protected void createBufferImage() {
+    int imageWidth;
+    int imageHeight;
+    if (RENDER_VISIBLE_RECT_ONLY) {
+      Rectangle visibleRect = getVisibleRect();
+      imageWidth = visibleRect.width;
+      imageHeight = visibleRect.height;
+    } else {
+      imageWidth = getWidth();
+      imageHeight = getHeight();
+    }
+    
     if (useHardwareAcceleration) {
-      bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(getWidth(), getHeight());
+      bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(imageWidth, imageHeight);
       ((VolatileImage) bufferImage).validate(screenGraphicsConfiguration);
     } else {
-      bufferImage = createImage(getWidth(), getHeight());
+      bufferImage = createImage(imageWidth, imageHeight);
     }
   }
 
@@ -226,7 +239,20 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       createBufferImage();
     }
     Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
-    g2d.setClip(getVisibleRect());
+    
+    Rectangle visibleRect = getVisibleRect();
+    
+    int x = 0;
+    int y = 0;
+    
+    if (RENDER_VISIBLE_RECT_ONLY) {      
+      x = visibleRect.x;
+      y = visibleRect.y;
+      g2d.translate(-x, -y);
+    } else {      
+      g2d.setClip(visibleRect);
+    }
+    
     Set<DrawOption> drawOptions = EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
       drawOptions.add(DrawOption.ANTIALIASING);
@@ -237,7 +263,12 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_GRID_KEY, true)) {
       drawOptions.add(DrawOption.GRID);
     }
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
+      drawOptions.add(DrawOption.EXTRA_SPACE);
+    }
+    
     plugInPort.draw(g2d, drawOptions, null, null);
+    
     if (useHardwareAcceleration) {
       VolatileImage volatileImage = (VolatileImage) bufferImage;
       do {
@@ -250,13 +281,13 @@ public class CanvasPanel extends JComponent implements Autoscroll {
           // if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
           // createBufferImage();
           // }
-          g.drawImage(bufferImage, 0, 0, this);
+          g.drawImage(bufferImage, x, y, this);
         } catch (NullPointerException e) {
           createBufferImage();
         }
       } while (volatileImage == null || volatileImage.contentsLost());
     } else {
-      g.drawImage(bufferImage, 0, 0, this);
+      g.drawImage(bufferImage, x, y, this);
       // bufferImage.flush();
     }
     g2d.dispose();
