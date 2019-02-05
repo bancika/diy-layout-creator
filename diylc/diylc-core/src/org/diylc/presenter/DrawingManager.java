@@ -67,7 +67,7 @@ public class DrawingManager {
   private static final Logger LOG = Logger.getLogger(DrawingManager.class);
 
   public static int CONTROL_POINT_SIZE = 7;
-  public static double EXTRA_SPACE = 0.2;
+  public static double EXTRA_SPACE = 0.25;
 
   public static final String ZOOM_KEY = "zoom";
 

@@ -109,8 +109,6 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private double zoomLevel = 1;
 
-
-
   public CanvasPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
     clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

@@ -927,6 +927,15 @@ public class Presenter implements IPlugInPort {
 			LOG.debug("Area is null for " + c.getName() + " of type "
 					+ c.getClass().getName());
 	}
+	
+	if (ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true)) {
+	  double extraSpace = drawingManager.getExtraSpace(currentProject);
+	  minX += extraSpace;
+	  maxX += extraSpace;
+	  minY += extraSpace;
+	  maxY += extraSpace;
+	}
+	
 	if (drawingManager.getZoomLevel() != 1 && applyZoom) {
 		minX *= drawingManager.getZoomLevel();
 		maxX *= drawingManager.getZoomLevel();
