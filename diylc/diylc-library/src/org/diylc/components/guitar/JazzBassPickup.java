@@ -91,19 +91,18 @@ public class JazzBassPickup extends AbstractTransparentComponent<String> {
     Shape[] body = getBody();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
-      g2d.fill(body[0]);
-      g2d.fill(body[1]);
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-      g2d.fill(body[2]);
-      g2d.setComposite(oldComposite);
-    }
 
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
+    }
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
+    g2d.fill(body[0]);
+    g2d.fill(body[1]);
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
+    g2d.fill(body[2]);
+    g2d.setComposite(oldComposite);
+    
     Color finalBorderColor;
     if (outlineMode) {
       Theme theme =
@@ -120,7 +119,8 @@ public class JazzBassPickup extends AbstractTransparentComponent<String> {
     g2d.setColor(finalBorderColor);
     g2d.draw(body[0]);
     g2d.draw(body[1]);
-    if (!outlineMode && componentState != ComponentState.DRAGGING) {
+
+    if (!outlineMode) {
       g2d.setColor(getPoleColor());
       g2d.fill(body[3]);
       g2d.setColor(darkerOrLighter(getPoleColor()));

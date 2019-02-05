@@ -107,26 +107,25 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     Shape[] body = getBody();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
 
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBaseColor());
-      g2d.fill(body[4]);
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
-      if (body[0] == null)
-        g2d.fill(body[3]);
-      else
-        g2d.fill(body[0]);
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-      g2d.fill(body[1]);
-
-      // g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
-      // g2d.fill(body[3]);
-      g2d.setComposite(oldComposite);
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
+
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBaseColor());
+    g2d.fill(body[4]);
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
+    if (body[0] == null)
+      g2d.fill(body[3]);
+    else
+      g2d.fill(body[0]);
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
+    g2d.fill(body[1]);
+
+    // g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
+    // g2d.fill(body[3]);
+    g2d.setComposite(oldComposite);   
 
     Color finalBorderColor;
     if (outlineMode) {
@@ -161,7 +160,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       g2d.draw(body[0]);
     g2d.draw(body[3]);
 
-    if (componentState != ComponentState.DRAGGING && !outlineMode) {
+    if (!outlineMode) {
       g2d.setColor(getPoleColor());
       g2d.fill(body[2]);
       g2d.setColor(darkerOrLighter(getPoleColor()));

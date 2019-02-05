@@ -2413,7 +2413,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better rendering of IC and transistor pins when zoomed in</description>
-				</org.diylc.appframework.update.Change>			
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Better rendering of guitar pickups when dragging and in outline mode</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Drag&amp;Drop from the tree sometimes picks up a wrong component type</description>

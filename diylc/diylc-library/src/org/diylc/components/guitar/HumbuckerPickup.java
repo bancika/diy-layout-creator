@@ -106,17 +106,18 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     Shape[] body = getBody();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
-      if (getType() != HumbuckerType.Filtertron)
-        g2d.fill(body[0]);
-      if (body[1] != null)
-        g2d.fill(body[1]);
 
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
+    }
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
+    if (getType() != HumbuckerType.Filtertron)
+      g2d.fill(body[0]);
+    if (body[1] != null)
+      g2d.fill(body[1]);
+
+    if (!outlineMode) {
       if (body[4] != null) {
         g2d.setColor(getBobinColor1());
         g2d.fill(body[4]);
@@ -125,16 +126,18 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         g2d.setColor(getBobinColor2());
         g2d.fill(body[5]);
       }
-      if (getType() == HumbuckerType.Filtertron) {
-        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
-        g2d.fill(body[0]);
-      }
-
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-      g2d.fill(body[2]);
-
-      g2d.setComposite(oldComposite);
     }
+    
+    if (getType() == HumbuckerType.Filtertron) {
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
+      g2d.fill(body[0]);
+    }
+
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
+    g2d.fill(body[2]);
+
+    g2d.setComposite(oldComposite);
+    
 
     Color finalBorderColor;
     if (outlineMode) {
@@ -154,14 +157,15 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
       g2d.draw(body[0]);
     if (body[1] != null)
       g2d.draw(body[1]);
-    if (!outlineMode && componentState != ComponentState.DRAGGING) {
+
+    if (!outlineMode) {
       g2d.setColor(getPoleColor());
       g2d.fill(body[3]);
       g2d.setColor(darkerOrLighter(getPoleColor()));
       g2d.draw(body[3]);
       if (body[6] != null)
         g2d.draw(body[6]);
-
+  
       if (getType() != HumbuckerType.Filtertron) {
         if (body[4] != null) {
           g2d.setColor(getBobinColor1().darker());
@@ -173,6 +177,7 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
         }
       }
     }
+    
     if (getType() == HumbuckerType.Filtertron) {
       g2d.setColor(finalBorderColor);
       g2d.draw(body[0]);
