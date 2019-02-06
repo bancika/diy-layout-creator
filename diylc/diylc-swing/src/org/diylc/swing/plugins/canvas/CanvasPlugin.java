@@ -676,14 +676,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         double zoomFactor = (Double) params[0] / zoomLevel;
         visibleRect.setBounds((int) (visibleRect.x * zoomFactor), (int) (visibleRect.y * zoomFactor),
             visibleRect.width, visibleRect.height);
-        SwingUtilities.invokeLater(new Runnable() {
 
-          @Override
-          public void run() {
-            canvasPanel.scrollRectToVisible(visibleRect);
-            canvasPanel.revalidate();
-          }
-        });
+        canvasPanel.scrollRectToVisible(visibleRect);
+        canvasPanel.revalidate();
 
         zoomLevel = (Double) params[0];
         break;
