@@ -478,10 +478,13 @@ public class StatusBar extends JPanel implements IPlugIn {
       mousePosition = mousePositionMm;
     else 
       mousePosition = mousePositionIn;
+    
+    String unit = metric ? "mm" : "in";
+    
     if (mousePosition == null)
       getPositionLabel().setText(null);
     else
-      getPositionLabel().setText(String.format("x:%.2f y:%.2f " + (metric ? "mm" : "in"), mousePosition.getX(), mousePosition.getY()));
+      getPositionLabel().setText(String.format("x:%.2f%s y:%.2f%s", mousePosition.getX(), unit, mousePosition.getY(), unit));
   }
 
   private void refreshStatusText() {
