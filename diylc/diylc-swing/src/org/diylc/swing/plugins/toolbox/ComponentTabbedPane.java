@@ -257,7 +257,7 @@ class ComponentTabbedPane extends JTabbedPane {
       @Override
       public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         variantPopup.removeAll();
-        List<Template> variants = plugInPort.getVariantsFor(componentType.getCategory(), componentType.getName());
+        List<Template> variants = plugInPort.getVariantsFor(componentType);
         if (variants == null || variants.isEmpty()) {
           JMenuItem item = new JMenuItem("<no variants>");
           item.setEnabled(false);

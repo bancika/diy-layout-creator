@@ -21,6 +21,8 @@
 */
 package org.diylc.common;
 
+import java.io.IOException;
+
 public interface IBlockProcessor {
 
   public static final String BLOCKS_KEY = "buildingBlocks";
@@ -30,6 +32,8 @@ public interface IBlockProcessor {
   void loadBlock(String blockName) throws InvalidBlockException;
   
   void deleteBlock(String blockName);
+  
+  int importBlocks(String fileName) throws IOException;
 
   public class BlockAlreadyExistsException extends Exception {
 

@@ -23,10 +23,14 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
@@ -35,14 +39,17 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.common.VariantPackage;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
+import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.core.measures.Nudge;
 import org.diylc.core.measures.Size;
@@ -59,6 +66,9 @@ import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.IDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.utils.BomEntry;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ActionFactory {
 
@@ -111,6 +121,22 @@ public class ActionFactory {
 
   public PrintAction createPrintAction(IDrawingProvider drawingProvider, int keyModifiers) {
     return new PrintAction(drawingProvider, keyModifiers);
+  }
+  
+  public ExportVariantsAction createExportVariantsAction(ISwingUI swingUI) {
+    return new ExportVariantsAction(swingUI);
+  }
+  
+  public ImportVariantsAction createImportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
+    return new ImportVariantsAction(swingUI, plugInPort);
+  }
+  
+  public ExportBlocksAction createExportBlocksAction(ISwingUI swingUI) {
+    return new ExportBlocksAction(swingUI);
+  }
+  
+  public ImportBlocksAction createImportBlocksAction(ISwingUI swingUI, IPlugInPort plugInPort) {
+    return new ImportBlocksAction(swingUI, plugInPort);
   }
 
   public ExitAction createExitAction(IPlugInPort plugInPort) {
@@ -653,8 +679,236 @@ public class ActionFactory {
       try {
         DrawingExporter.getInstance().print(this.drawingProvider);
       } catch (PrinterException e1) {
-        // TODO Auto-generated catch block
         e1.printStackTrace();
+      }
+    }
+  }
+  
+  public static class ExportVariantsAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private ISwingUI swingUI;
+
+    public ExportVariantsAction(ISwingUI swingUI) {
+      super();
+      this.swingUI = swingUI;
+      putValue(AbstractAction.NAME, "Export Variants");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("ExportVariantsAction triggered");
+      Map<String, List<Template>> variantMap =
+          (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(IPlugInPort.TEMPLATES_KEY, null);
+      if (variantMap == null || variantMap.isEmpty()) {
+        swingUI.showMessage("No variants found to export.", "Error", IView.ERROR_MESSAGE);
+        return;
+      }
+
+      final VariantPackage variantPkg = new VariantPackage(variantMap, System.getProperty("user.name"));
+
+      File initialFile =
+          new File(variantPkg.getOwner() == null ? "variants.xml" : ("variants by "
+              + variantPkg.getOwner().toLowerCase() + ".xml"));
+
+      final File file =
+          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.XML.getFilter(),
+              initialFile, FileFilterEnum.XML.getExtensions()[0], null);
+
+      if (file != null) {
+        swingUI.executeBackgroundTask(new ITask<Void>() {
+
+          @Override
+          public Void doInBackground() throws Exception {
+            LOG.debug("Exporting variants to " + file.getAbsolutePath());
+
+            try {
+              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+              XStream xStream = new XStream(new DomDriver());
+              xStream.toXML(variantPkg, out);
+              out.close();
+              LOG.info("Exported variants succesfully");
+            } catch (IOException e) {
+              LOG.error("Could not export variants", e);
+            }
+
+            return null;
+          }
+
+          @Override
+          public void complete(Void result) {
+            swingUI.showMessage("Variants exported to \"" + file.getName() + "\".", "Success",
+                ISwingUI.INFORMATION_MESSAGE);
+          }
+
+          @Override
+          public void failed(Exception e) {
+            swingUI.showMessage("Could not export variants: " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+          }
+        }, true);
+      }
+    }
+  }
+  
+  public static class ImportVariantsAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private ISwingUI swingUI;
+    private IPlugInPort plugInPort;
+
+    public ImportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
+      super();
+      this.swingUI = swingUI;
+      this.plugInPort = plugInPort;
+      putValue(AbstractAction.NAME, "Import Variants");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("ImportVariantsAction triggered");
+      
+
+      final File file =
+          DialogFactory.getInstance().showOpenDialog(FileFilterEnum.XML.getFilter(),
+              null, FileFilterEnum.XML.getExtensions()[0], null, swingUI.getOwnerFrame());
+
+      if (file != null) {
+        swingUI.executeBackgroundTask(new ITask<Integer>() {
+
+          @Override
+          public Integer doInBackground() throws Exception {
+            return plugInPort.importVariants(file.getAbsolutePath());
+          }
+
+          @Override
+          public void complete(Integer result) {
+            swingUI.showMessage(result + " variant(s) imported from \"" + file.getName() + "\".", "Success",
+                ISwingUI.INFORMATION_MESSAGE);
+          }
+
+          @Override
+          public void failed(Exception e) {
+            swingUI.showMessage("Could not import variants: " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+          }
+        }, true);
+      }
+    }
+  }
+  
+  public static class ExportBlocksAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private ISwingUI swingUI;
+
+    public ExportBlocksAction(ISwingUI swingUI) {
+      super();
+      this.swingUI = swingUI;
+      putValue(AbstractAction.NAME, "Export Building Blocks");
+      // putValue(AbstractAction.SMALL_ICON, IconLoader.Print.getIcon());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("ExportBuildingBlocksAction triggered");
+      Map<String, Collection<IDIYComponent<?>>> blocks =
+          (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(IPlugInPort.BLOCKS_KEY, null);
+      if (blocks == null || blocks.isEmpty()) {
+        swingUI.showMessage("No building blocks found to export.", "Error", IView.ERROR_MESSAGE);
+        return;
+      }
+
+      final BuildingBlockPackage variantPkg = new BuildingBlockPackage(blocks, System.getProperty("user.name"));
+
+      File initialFile =
+          new File(variantPkg.getOwner() == null ? "building blocks.xml" : ("building blocks by "
+              + variantPkg.getOwner().toLowerCase() + ".xml"));
+
+      final File file =
+          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.XML.getFilter(),
+              initialFile, FileFilterEnum.XML.getExtensions()[0], null);
+
+      if (file != null) {
+        swingUI.executeBackgroundTask(new ITask<Void>() {
+
+          @Override
+          public Void doInBackground() throws Exception {
+            LOG.debug("Exporting variants to " + file.getAbsolutePath());
+
+            try {
+              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+              XStream xStream = new XStream(new DomDriver());
+              xStream.toXML(variantPkg, out);
+              out.close();
+              LOG.info("Exported building blocks succesfully");
+            } catch (IOException e) {
+              LOG.error("Could not export building blocks", e);
+            }
+
+            return null;
+          }
+
+          @Override
+          public void complete(Void result) {
+            swingUI.showMessage("Building blocks exported to \"" + file.getName() + "\".", "Success",
+                ISwingUI.INFORMATION_MESSAGE);
+          }
+
+          @Override
+          public void failed(Exception e) {
+            swingUI.showMessage("Could not export building blocks: " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+          }
+        }, true);
+      }
+    }
+  }
+  
+  public static class ImportBlocksAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private ISwingUI swingUI;
+    private IPlugInPort plugInPort;
+
+    public ImportBlocksAction(ISwingUI swingUI, IPlugInPort plugInPort) {
+      super();
+      this.swingUI = swingUI;
+      this.plugInPort = plugInPort;
+      putValue(AbstractAction.NAME, "Import Building Blocks");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("ImportBlocksAction triggered");
+      
+
+      final File file =
+          DialogFactory.getInstance().showOpenDialog(FileFilterEnum.XML.getFilter(),
+              null, FileFilterEnum.XML.getExtensions()[0], null, swingUI.getOwnerFrame());
+
+      if (file != null) {
+        swingUI.executeBackgroundTask(new ITask<Integer>() {
+
+          @Override
+          public Integer doInBackground() throws Exception {
+            return plugInPort.importBlocks(file.getAbsolutePath());
+          }
+
+          @Override
+          public void complete(Integer result) {
+            swingUI.showMessage(result + " building block(s) imported from \"" + file.getName() + "\".", "Success",
+                ISwingUI.INFORMATION_MESSAGE);
+          }
+
+          @Override
+          public void failed(Exception e) {
+            swingUI.showMessage("Could not import building blocks: " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+          }
+        }, true);
       }
     }
   }

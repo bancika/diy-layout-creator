@@ -54,6 +54,7 @@ import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
+import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
@@ -63,6 +64,7 @@ import org.diylc.common.IKeyProcessor;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.common.VariantPackage;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
@@ -2157,8 +2159,8 @@ public class Presenter implements IPlugInPort {
 
     // try to find a default template if none is provided
     if (componentType != null && template == null) {
-      String defaultTemplate = getDefaultVariant(componentType.getCategory(), componentType.getName());
-      List<Template> templates = getVariantsFor(componentType.getCategory(), componentType.getName());
+      String defaultTemplate = getDefaultVariant(componentType);
+      List<Template> templates = getVariantsFor(componentType);
       if (templates != null && defaultTemplate != null)
         for (Template t : templates) {
           if (t.getName().equals(defaultTemplate)) {
@@ -2205,7 +2207,7 @@ public class Presenter implements IPlugInPort {
     if (variantMap == null) {
       variantMap = new HashMap<String, List<Template>>();
     }
-    String key = type.getCategory() + "." + type.getName();
+    String key = type.getInstanceClass().getCanonicalName();
     List<Template> variants = variantMap.get(key);
     if (variants == null) {
       variants = new ArrayList<Template>();
@@ -2293,7 +2295,7 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Template> getVariantsFor(String categoryName, String componentTypeName) {
+  public List<Template> getVariantsFor(ComponentType type) {
     Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
     
     Map<String, List<Template>> variantMap =
@@ -2301,14 +2303,24 @@ public class Presenter implements IPlugInPort {
     if (variantMap != null)
       lookupMap.putAll(variantMap);
     
+    // try by class name and then by old category.type format
+    String key1 = type.getInstanceClass().getCanonicalName();
+    String key2 = type.getCategory() + "." + type.getName();
+    
     List<Template> variants = new ArrayList<Template>();
     if (variantMap != null) {
-      List<Template> userVariants = variantMap.get(categoryName + "." + componentTypeName);
+      List<Template> userVariants = variantMap.get(key1);
+      if (userVariants != null && !userVariants.isEmpty())
+        variants.addAll(userVariants);
+      userVariants = variantMap.get(key2);
       if (userVariants != null && !userVariants.isEmpty())
         variants.addAll(userVariants);
     }
     if (defaultVariantMap != null) {
-      List<Template> defaultVariants = defaultVariantMap.get(categoryName + "." + componentTypeName);
+      List<Template> defaultVariants = defaultVariantMap.get(key1);        
+      if (defaultVariants != null && !defaultVariants.isEmpty())
+        variants.addAll(defaultVariants);
+      defaultVariants = defaultVariantMap.get(key2);
       if (defaultVariants != null && !defaultVariants.isEmpty())
         variants.addAll(defaultVariants);
     }
@@ -2339,7 +2351,7 @@ public class Presenter implements IPlugInPort {
       else if (selectedType.getInstanceClass() != type.getInstanceClass())
         return null;
     }
-    return getVariantsFor(selectedType.getCategory(), selectedType.getName());
+    return getVariantsFor(selectedType);
   }
 
   @Override
@@ -2370,12 +2382,26 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void deleteVariant(String categoryName, String componentTypeName, String templateName) {
-    LOG.debug(String.format("deleteTemplate(%s, %s, %s)", categoryName, componentTypeName, templateName));
+  public void deleteVariant(ComponentType type, String templateName) {
+    LOG.debug(String.format("deleteTemplate(%s, %s)", type, templateName));
     Map<String, List<Template>> templateMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
     if (templateMap != null) {
-      List<Template> templates = templateMap.get(categoryName + "." + componentTypeName);
+      // try by class name and then by old category.type format
+      String key1 = type.getInstanceClass().getCanonicalName();
+      String key2 = type.getCategory() + "." + type.getName();
+      
+      List<Template> templates = templateMap.get(key1);
+      if (templates != null) {
+        Iterator<Template> i = templates.iterator();
+        while (i.hasNext()) {
+          Template t = i.next();
+          if (t.getName().equalsIgnoreCase(templateName)) {
+            i.remove();
+          }
+        }
+      }
+      templates = templateMap.get(key2);
       if (templates != null) {
         Iterator<Template> i = templates.iterator();
         while (i.hasNext()) {
@@ -2391,27 +2417,44 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void setDefaultVariant(String categoryName, String componentTypeName, String templateName) {
-    LOG.debug(String.format("setTemplateDefault(%s, %s, %s)", categoryName, componentTypeName, templateName));
+  public void setDefaultVariant(ComponentType type, String templateName) {
+    LOG.debug(String.format("setTemplateDefault(%s, %s)", type, templateName));
     Map<String, String> defaultTemplateMap =
         (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
     if (defaultTemplateMap == null)
       defaultTemplateMap = new HashMap<String, String>();
-    if (templateName.equals(defaultTemplateMap.get(categoryName + "." + componentTypeName)))
-      defaultTemplateMap.remove(categoryName + "." + componentTypeName);
-    else
-      defaultTemplateMap.put(categoryName + "." + componentTypeName, templateName);
+    
+    // try by class name and then by old category.type format
+    String key1 = type.getInstanceClass().getCanonicalName();
+    String key2 = type.getCategory() + "." + type.getName();
+    
+    if (templateName.equals(defaultTemplateMap.get(key1)) || templateName.equals(defaultTemplateMap.get(key2))) {
+      defaultTemplateMap.remove(key1);
+      defaultTemplateMap.remove(key2);
+    }
+    else {
+      // get rid of legacy key
+      defaultTemplateMap.remove(key2);
+      defaultTemplateMap.put(key1, templateName);
+    }
     ConfigurationManager.getInstance().writeValue(DEFAULT_TEMPLATES_KEY, defaultTemplateMap);      
   }
   
   @SuppressWarnings("unchecked")
   @Override
-  public String getDefaultVariant(String categoryName, String componentTypeName) {
+  public String getDefaultVariant(ComponentType type) {
     Map<String, String> defaultTemplateMap =
         (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
     if (defaultTemplateMap == null)
       return null;
-    return defaultTemplateMap.get(categoryName + "." + componentTypeName);
+    
+    String key1 = type.getInstanceClass().getCanonicalName();
+    String key2 = type.getCategory() + "." + type.getName();
+    
+    if (defaultTemplateMap.containsKey(key1))
+      return defaultTemplateMap.get(key1);
+    
+    return defaultTemplateMap.get(key2);
   }
 
   private Set<IDIYComponent<?>> getLockedComponents() {
@@ -2518,5 +2561,76 @@ public class Presenter implements IPlugInPort {
        extraSpace *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
     
     return extraSpace;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public int importVariants(String fileName) throws IOException {
+    LOG.debug(String.format("importVariants(%s)", fileName));
+    BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
+    XStream xStream = new XStream(new DomDriver());
+    
+    VariantPackage pkg = (VariantPackage) xStream.fromXML(in);
+    
+    in.close();
+    
+    if (pkg == null || pkg.getVariants().isEmpty())
+      return 0;
+    
+    Map<String, List<Template>> variantMap =
+        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+    if (variantMap == null) {
+      variantMap = new HashMap<String, List<Template>>();
+    }
+    
+    for (Map.Entry<String, List<Template>> entry : pkg.getVariants().entrySet()) {
+      List<Template> templates;      
+      templates = variantMap.get(entry.getKey());
+      if (templates == null)
+      {
+        templates = new ArrayList<Template>();
+        variantMap.put(entry.getKey(), templates);
+      }
+      for (Template t : entry.getValue()) {
+        templates.add(new Template(t.getName() + " by " + pkg.getOwner(), t.getValues(), t.getPoints()));      
+      }
+    }
+    
+    ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, variantMap);
+        
+    LOG.info(String.format("Loaded variants for %d components", pkg.getVariants().size()));
+    
+    return pkg.getVariants().size();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public int importBlocks(String fileName) throws IOException {
+    LOG.debug(String.format("importBlocks(%s)", fileName));
+    BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
+    XStream xStream = new XStream(new DomDriver());
+    
+    BuildingBlockPackage pkg = (BuildingBlockPackage) xStream.fromXML(in);
+    
+    in.close();
+    
+    if (pkg == null || pkg.getBlocks().isEmpty())
+      return 0;
+    
+    Map<String, Collection<IDIYComponent<?>>> blocks =
+        (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+    if (blocks == null) {
+      blocks = new HashMap<String, Collection<IDIYComponent<?>>>();
+    }
+    
+    for (Map.Entry<String, Collection<IDIYComponent<?>>> entry : pkg.getBlocks().entrySet()) {
+      blocks.put(entry.getKey() + " by " + pkg.getOwner(), entry.getValue());
+    }
+    
+    ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
+        
+    LOG.info(String.format("Loaded building blocks for %d components", pkg.getBlocks().size()));
+    
+    return pkg.getBlocks().size();
   }
 }

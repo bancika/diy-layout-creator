@@ -21,6 +21,8 @@
 */
 package org.diylc.common;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.diylc.core.Template;
@@ -32,17 +34,19 @@ public interface IVariantProcessor {
 
   void saveSelectedComponentAsVariant(String variantName);
 
-  List<Template> getVariantsFor(String categoryName, String componentTypeName);
+  List<Template> getVariantsFor(ComponentType type);
 
   List<Template> getVariantsForSelection();
 
   void applyVariantToSelection(Template variant);
 
-  void deleteVariant(String categoryName, String componentTypeName, String variantName);
+  void deleteVariant(ComponentType type, String variantName);
 
-  void setDefaultVariant(String categoryName, String componentTypeName, String variantName);
+  void setDefaultVariant(ComponentType type, String variantName);
   
-  String getDefaultVariant(String categoryName, String componentTypeName);
+  int importVariants(String fileName) throws IOException;
+  
+  String getDefaultVariant(ComponentType type);
 
   public class VariantAlreadyExistsException extends Exception {
 

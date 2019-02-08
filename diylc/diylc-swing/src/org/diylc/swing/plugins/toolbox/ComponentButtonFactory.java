@@ -126,7 +126,7 @@ public class ComponentButtonFactory {
       }
     });
     
-    String defaultVariant = plugInPort.getDefaultVariant(componentType.getCategory(), componentType.getName());
+    String defaultVariant = plugInPort.getDefaultVariant(componentType);
 
     JLabel label = new JLabel(variant.getName().equals(defaultVariant) ? IconLoader.PinGreen.getIcon() : IconLoader.PinGrey.getIcon());
     label.setToolTipText(variant.getName().equals(defaultVariant) ? "Remove default variant" : "Set default variant");
@@ -140,7 +140,7 @@ public class ComponentButtonFactory {
           JPopupMenu m = (JPopupMenu) c;
           m.setVisible(false);
         }
-        plugInPort.setDefaultVariant(componentType.getCategory(), componentType.getName(), variant.getName());
+        plugInPort.setDefaultVariant(componentType, variant.getName());
         e.consume();
       }
     });
@@ -167,7 +167,7 @@ public class ComponentButtonFactory {
         if (result != JOptionPane.YES_OPTION) {
           return;
         }
-        plugInPort.deleteVariant(componentType.getCategory(), componentType.getName(), variant.getName());
+        plugInPort.deleteVariant(componentType, variant.getName());
         e.consume();
       }
     });

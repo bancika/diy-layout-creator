@@ -29,7 +29,7 @@ public enum FileFilterEnum {
 
   PNG("PNG Images (*.png)", "png"), PDF("PDF Files (*.pdf)", "pdf"), DIY("DIY Project Files (*.diy)", "diy"), EXCEL(
       "Excel Workbooks (*.xls)", "xls"), CSV("Comma Separated Files (*.csv)", "csv"), HTML("HTML Files (*.html)",
-      "html"), IMAGES("Image Files (*.png, *.jpg, *.gif)", "png", "jpg", "gif");
+      "html"), IMAGES("Image Files (*.png, *.jpg, *.gif)", "png", "jpg", "gif"), XML("XML Files (*.xml)", "xml");
 
   FileFilter filter;
   String[] extensions;
