@@ -2503,4 +2503,20 @@ public class Presenter implements IPlugInPort {
       ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
     }
   }
+  
+  @Override
+  public double getExtraSpace() {
+    if (!ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true))
+      return 0;
+    
+    double extraSpace = drawingManager.getExtraSpace(currentProject);
+    boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);    
+
+    extraSpace /= Constants.PIXELS_PER_INCH;
+    
+    if (metric)
+       extraSpace *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
+    
+    return extraSpace;
+  }
 }

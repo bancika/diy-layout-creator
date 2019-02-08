@@ -353,4 +353,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param xAxisFirst
    */
   void renumberSelectedComponents(boolean xAxisFirst);
+  
+  /**   
+   * @return size of extra space around the canvas
+   */
+  double getExtraSpace();
 }

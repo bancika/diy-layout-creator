@@ -34,6 +34,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -175,6 +176,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
             (canvasPanel.getHeight() - visibleRect.height) / 2);
         canvasPanel.scrollRectToVisible(visibleRect);
         canvasPanel.revalidate();
+        
+        double extraSpace = CanvasPlugin.this.plugInPort.getExtraSpace();
+        getScrollPane().setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
       }
     });
   }
@@ -292,8 +296,11 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           plugInPort.setMetric(isMetric);
         }
       });
+      
+      double extraSpace = plugInPort.getExtraSpace();
+      scrollPane.setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
 
-      // disable scrolling
+      // disable built-in scrolling mechanism, we'll do it manually
       scrollPane.setWheelScrollingEnabled(false);
 
       scrollPane.addMouseWheelListener(new MouseWheelListener() {
@@ -679,6 +686,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         canvasPanel.scrollRectToVisible(visibleRect);
         canvasPanel.revalidate();
+        
+        double extraSpace = CanvasPlugin.this.plugInPort.getExtraSpace();
+        getScrollPane().setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
 
         zoomLevel = (Double) params[0];
         break;
