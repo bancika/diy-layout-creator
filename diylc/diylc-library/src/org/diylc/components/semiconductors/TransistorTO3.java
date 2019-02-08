@@ -27,15 +27,16 @@ import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.TwoCircleTangent;
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -190,35 +191,15 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
       int smallDiameter = getClosestOdd(SMALL_DIAMETER.convertToPixels());
       int holeDistance = getClosestOdd(HOLE_DISTANCE.convertToPixels());
       int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
+      
+      TwoCircleTangent left = new TwoCircleTangent(new Point2D.Double(x, y), new Point2D.Double(x - holeDistance / 2, y), largeDiameter / 2, smallDiameter / 2);
+      TwoCircleTangent right = new TwoCircleTangent(new Point2D.Double(x, y), new Point2D.Double(x + holeDistance / 2, y), largeDiameter / 2, smallDiameter / 2);
+      
+      body[0] = left;
+      body[0].add(right);
 
-      body[0] =
-          new Area(new Ellipse2D.Double(x - largeDiameter / 2, y - largeDiameter / 2, largeDiameter, largeDiameter));
-
-      int[] xPoints =
-          new int[] {x + (int) (Math.cos(Math.PI / 4) * largeDiameter / 2),
-              x + holeDistance / 2 + (int) (Math.cos(Math.PI / 4) * smallDiameter / 2),
-              x + holeDistance / 2 + (int) (Math.cos(Math.PI / 4) * smallDiameter / 2),
-              x + (int) (Math.cos(Math.PI / 4) * largeDiameter / 2),
-              x - (int) (Math.cos(Math.PI / 4) * largeDiameter / 2),
-              x - holeDistance / 2 - (int) (Math.cos(Math.PI / 4) * smallDiameter / 2),
-              x - holeDistance / 2 - (int) (Math.cos(Math.PI / 4) * smallDiameter / 2),
-              x - (int) (Math.cos(Math.PI / 4) * largeDiameter / 2)};
-      int[] yPoints =
-          new int[] {y - (int) (Math.sin(Math.PI / 4) * largeDiameter / 2),
-              y - (int) (Math.sin(Math.PI / 4) * smallDiameter / 2),
-              y + (int) (Math.sin(Math.PI / 4) * smallDiameter / 2),
-              y + (int) (Math.sin(Math.PI / 4) * largeDiameter / 2),
-              y + (int) (Math.sin(Math.PI / 4) * largeDiameter / 2),
-              y + (int) (Math.sin(Math.PI / 4) * smallDiameter / 2),
-              y - (int) (Math.sin(Math.PI / 4) * smallDiameter / 2),
-              y - (int) (Math.sin(Math.PI / 4) * largeDiameter / 2)};
-      body[0].add(new Area(new Polygon(xPoints, yPoints, xPoints.length)));
-      body[0].add(new Area(new Ellipse2D.Double(x - holeDistance / 2 - smallDiameter / 2, y - smallDiameter / 2,
-          smallDiameter, smallDiameter)));
       body[0].subtract(new Area(new Ellipse2D.Double(x - holeDistance / 2 - holeSize / 2, y - holeSize / 2, holeSize,
           holeSize)));
-      body[0].add(new Area(new Ellipse2D.Double(x + holeDistance / 2 - smallDiameter / 2, y - smallDiameter / 2,
-          smallDiameter, smallDiameter)));
       body[0].subtract(new Area(new Ellipse2D.Double(x + holeDistance / 2 - holeSize / 2, y - holeSize / 2, holeSize,
           holeSize)));
 
@@ -323,20 +304,14 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-    int sizeLarge = getClosestOdd(width * 3d / 4);
-    int sizeInner = getClosestOdd(width * 5d / 10);
-    int sizeSmall = getClosestOdd(width / 3d);
+    int largeR = getClosestOdd(width * 3d / 8);
+    int smallR = getClosestOdd(width / 6d);
+    int innerD = getClosestOdd(width / 2d);    
     int hole = 4 * width / 32;
-    Area area = new Area(new Ellipse2D.Double((width - sizeLarge) / 2, (height - sizeLarge) / 2, sizeLarge, sizeLarge));
-   
-//    Polygon p =
-//        new Polygon(new int[] {(width - sizeSmall) / 2, (width + sizeSmall) / 2, (width + sizeLarge) / 2,
-//            (width + sizeSmall) / 2, (width - sizeSmall) / 2, (width - sizeLarge) / 2}, new int[] {height / 8,
-//            height / 8, height / 2, height * 7 / 8, height * 7 / 8, height / 2}, 6);
-//    area.add(new Area(p));
-    area.add(new Area(new Ellipse2D.Double((width - sizeSmall) / 2, height / 8 - sizeSmall / 2, sizeSmall, sizeSmall)));
-    area.add(new Area(new Ellipse2D.Double((width - sizeSmall) / 2, height * 7 / 8 - sizeSmall / 2, sizeSmall,
-        sizeSmall)));
+    
+    Area area = new TwoCircleTangent(new Point2D.Double(width * 0.5, height * 0.5), new Point2D.Double(width / 2, height / 8d), largeR, smallR);
+    area.add((Area)new TwoCircleTangent(new Point2D.Double(width * 0.5, height * 0.5), new Point2D.Double(width / 2, height * 7 / 8d), largeR, smallR));
+    
     area.subtract(new Area(new Ellipse2D.Double((width - hole) / 2, height / 8 - hole / 2, hole, hole)));
     area.subtract(new Area(new Ellipse2D.Double((width - hole) / 2, height * 7 / 8 - hole / 2, hole, hole)));
     area.transform(AffineTransform.getRotateInstance(Math.PI / 4, width / 2, height / 2));
@@ -344,7 +319,7 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
     g2d.fill(area);
     g2d.setColor(BORDER_COLOR);
     g2d.draw(area);
-    g2d.drawOval((width - sizeInner) / 2, (height - sizeInner) / 2, sizeInner, sizeInner);
+    g2d.drawOval((width - innerD) / 2, (height - innerD) / 2, innerD, innerD);
   }
 
   @EditableProperty(name = "Body")

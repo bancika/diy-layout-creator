@@ -2404,7 +2404,7 @@
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Show mouse position coordiantes in the status bar</description>
+					<description>Show mouse cursor coordiantes in the status bar</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -2434,6 +2434,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better rendering of guitar pickups when dragging and in outline mode</description>
 				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Better rendering of TO-3 transformer package</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Drag&amp;Drop from the tree sometimes picks up a wrong component type</description>
