@@ -55,6 +55,8 @@ import net.java.balloontip.styles.EdgedBalloonStyle;
 
 import org.apache.log4j.Logger;
 import org.diylc.announcements.AnnouncementProvider;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.update.UpdateChecker;
 import org.diylc.appframework.update.Version;
@@ -67,6 +69,7 @@ import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
+import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swingframework.MemoryBar;
 import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
@@ -88,6 +91,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private JLabel recentChangesLabel;
   private MemoryBar memoryPanel;
   private JLabel statusLabel;
+  private JLabel positionLabel;
   private JLabel sizeLabel;
 
   private IPlugInPort plugInPort;
@@ -101,8 +105,13 @@ public class StatusBar extends JPanel implements IPlugIn {
   private List<String> selectedComponentNames;
   private List<String> stuckComponentNames;
   private String statusMessage;
+  private Point mousePosition;
 
   private AnnouncementProvider announcementProvider;
+
+  private Point2D mousePositionIn;
+
+  private Point2D mousePositionMm;
 
   public StatusBar(ISwingUI swingUI) {
     super();
@@ -154,6 +163,14 @@ public class StatusBar extends JPanel implements IPlugIn {
       }
 
     }, false);
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.METRIC_KEY, new IConfigListener() {
+      
+      @Override
+      public void valueChanged(String key, Object value) {
+        refreshPosition((Boolean)value);
+      }
+    });
   }
 
   private JComboBox getZoomBox() {
@@ -290,6 +307,14 @@ public class StatusBar extends JPanel implements IPlugIn {
     }
     return statusLabel;
   }
+  
+  private JLabel getPositionLabel() {
+    if (positionLabel == null) {
+      positionLabel = new JLabel();
+      positionLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+    }
+    return positionLabel;
+  }
 
   public JLabel getSizeLabel() {
     if (sizeLabel == null) {
@@ -332,6 +357,11 @@ public class StatusBar extends JPanel implements IPlugIn {
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     add(getStatusLabel(), gbc);
+    
+    gbc.gridx++;
+    gbc.fill = GridBagConstraints.BOTH;
+    gbc.weightx = 0;
+    add(getPositionLabel(), gbc);
 
     JPanel zoomPanel = new JPanel(new BorderLayout());
     zoomPanel.add(new JLabel("Zoom: "), BorderLayout.WEST);
@@ -382,7 +412,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
     return EnumSet.of(EventType.ZOOM_CHANGED, EventType.SLOT_CHANGED, EventType.AVAILABLE_CTRL_POINTS_CHANGED,
-        EventType.SELECTION_CHANGED, EventType.STATUS_MESSAGE_CHANGED);
+        EventType.SELECTION_CHANGED, EventType.STATUS_MESSAGE_CHANGED, EventType.MOUSE_MOVED);
   }
 
   @SuppressWarnings({"unchecked", "incomplete-switch"})
@@ -434,7 +464,25 @@ public class StatusBar extends JPanel implements IPlugIn {
         break;
       case STATUS_MESSAGE_CHANGED:
         statusMessage = (String) params[0];
+        break;
+      case MOUSE_MOVED:
+        mousePositionIn = (Point2D) params[1];
+        mousePositionMm = (Point2D) params[2];        
+        refreshPosition(ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true));
+        break;
     }
+  }
+
+  private void refreshPosition(boolean metric) {
+    Point2D mousePosition;
+    if (metric)
+      mousePosition = mousePositionMm;
+    else 
+      mousePosition = mousePositionIn;
+    if (mousePosition == null)
+      getPositionLabel().setText(null);
+    else
+      getPositionLabel().setText(String.format("@%.2f %.2f " + (metric ? "mm" : "in"), mousePosition.getX(), mousePosition.getY()));
   }
 
   private void refreshStatusText() {
@@ -484,6 +532,7 @@ public class StatusBar extends JPanel implements IPlugIn {
           break;
       }
     }
+    
     final String finalStatus = statusText;
     SwingUtilities.invokeLater(new Runnable() {
 

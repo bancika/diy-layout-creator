@@ -85,7 +85,8 @@ public enum EventType {
   AVAILABLE_CTRL_POINTS_CHANGED,
   /**
    * Called when mouse cursor is moved. Point object is passed, containing the current cursor
-   * location (not taking zoom into account).
+   * location (not taking zoom into account) in pixels and two {@link Point2D} objects with coordinates in
+   * inches and mm
    */
   MOUSE_MOVED,
   /**

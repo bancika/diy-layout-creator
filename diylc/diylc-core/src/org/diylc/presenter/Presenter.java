@@ -861,8 +861,11 @@ public class Presenter implements IPlugInPort {
         }
       }
     }
+    
+    Point2D inPoint = new Point2D.Double(1.0d * previousScaledPoint.x / Constants.PIXELS_PER_INCH, 1.0d * previousScaledPoint.y / Constants.PIXELS_PER_INCH);
+    Point2D mmPoint = new Point2D.Double(inPoint.getX() * SizeUnit.in.getFactor() / SizeUnit.cm.getFactor() * 10d, inPoint.getY() * SizeUnit.in.getFactor() / SizeUnit.cm.getFactor() * 10d);
 
-    messageDispatcher.dispatchMessage(EventType.MOUSE_MOVED, previousScaledPoint);
+    messageDispatcher.dispatchMessage(EventType.MOUSE_MOVED, previousScaledPoint, inPoint, mmPoint);
 
     if (!components.equals(controlPointMap)) {
       controlPointMap = components;

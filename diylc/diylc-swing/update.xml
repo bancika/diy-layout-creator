@@ -2397,10 +2397,14 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added extra work space around the layout that can be used to store additional components and helpers, but does not get exported to a file. Configurable from the menu</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Show mouse position in the status bar</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Vast improvement of rendering performance, especially with large layouts</description>
+					<description>Vast improvement of rendering performance and memory management, especially with large layouts</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
