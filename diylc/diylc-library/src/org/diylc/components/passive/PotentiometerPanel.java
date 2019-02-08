@@ -78,7 +78,9 @@ public class PotentiometerPanel extends AbstractPotentiometer {
   protected Color nutColor = NUT_COLOR;
   protected Color waferColor = WAFER_COLOR;
   protected Type type = Type.ThroughHole;
+  @Deprecated
   protected boolean showShaft = false;
+  protected View view;
   // Array of 7 elements: 3 lug connectors, 1 pot body and 3 lugs
   transient protected Area[] body = null;
 
@@ -219,7 +221,8 @@ public class PotentiometerPanel extends AbstractPotentiometer {
               - holeDiameter / 2, holeDiameter, holeDiameter)));
         }
       }
-      if (getShowShaft()) {
+      
+      if (getView() == View.ShaftUp) {
         int nutSize = (int) NUT_SIZE.convertToPixels();
         int shaftSize = (int) SHAFT_SIZE.convertToPixels();
         int[] xPoints = new int[6];
@@ -433,14 +436,16 @@ public class PotentiometerPanel extends AbstractPotentiometer {
     this.borderColor = borderColor;
   }
 
-  @EditableProperty(name = "Show Shaft")
-  public boolean getShowShaft() {
-    return showShaft;
+  @EditableProperty(name = "View")
+  public View getView() {
+    if (view == null)
+      view = showShaft ? View.ShaftUp : View.ShaftDown;
+    return view;
   }
-
-  public void setShowShaft(boolean showShaft) {
-    this.showShaft = showShaft;
-    this.body = null;
+  
+  public void setView(View view) {
+    this.view = view;
+    body = null;
   }
 
   @EditableProperty(name = "Wafer")
@@ -460,6 +465,21 @@ public class PotentiometerPanel extends AbstractPotentiometer {
     private String value;
 
     private Type(String value) {
+      this.value = value;
+    }
+
+    @Override
+    public String toString() {
+      return value;
+    }
+  }
+  
+  public enum View {
+    ShaftDown("Shaft Down"), ShaftUp("Shaft Up");//, TerminalsDown, TerminalsUp;
+    
+    private String value;
+
+    private View(String value) {
       this.value = value;
     }
 
