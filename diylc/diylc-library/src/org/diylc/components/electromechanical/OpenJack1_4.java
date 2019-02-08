@@ -56,6 +56,11 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
 public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
+  private static final double RING_THETA = Math.PI * 0.795;
+  private static final double SLEEVE_THETA = Math.PI * 0.295;
+  private static final double SLEEVE_SWITCHED_THETA = Math.PI * 4 / 3;
+  private static final double SWITCH_THETA = Math.PI * 5 / 3;
+
   private static final long serialVersionUID = 1L;
 
   private static Color BASE_COLOR = Color.lightGray;
@@ -73,7 +78,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
   private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
   transient Area[] body;
   private Orientation orientation = Orientation.DEFAULT;
-  private JackType type = JackType.MONO;
+  private OpenJackType type = OpenJackType.MONO;
   private boolean showLabels = true;
 
   public OpenJack1_4() {
@@ -151,11 +156,11 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
       int holeToEdge = (int) HOLE_TO_EDGE.convertToPixels();
       int centerY = controlPoints[0].y + springLength - holeToEdge;
       Point tipLabel = new Point(controlPoints[0].x, (int) (controlPoints[0].y + holeToEdge * 1.25));
-      AffineTransform ringTransform = AffineTransform.getRotateInstance(Math.PI * 0.795, controlPoints[0].x, centerY);
-      AffineTransform sleeveTransform = AffineTransform.getRotateInstance(Math.PI * 0.295, controlPoints[0].x, centerY);
-      Point ringLabel = new Point(0, 0);
+      AffineTransform ringTransform = AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SWITCH_THETA : RING_THETA, controlPoints[0].x, centerY);
+      AffineTransform sleeveTransform = AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SLEEVE_SWITCHED_THETA : SLEEVE_THETA, controlPoints[0].x, centerY);
+      Point ringOrSwitchLabel = new Point(0, 0);
       Point sleeveLabel = new Point(0, 0);
-      ringTransform.transform(tipLabel, ringLabel);
+      ringTransform.transform(tipLabel, ringOrSwitchLabel);
       sleeveTransform.transform(tipLabel, sleeveLabel);
       double theta = 0;
       // Rotate if needed
@@ -176,13 +181,15 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
       if (theta != 0) {
         AffineTransform rotation = AffineTransform.getRotateInstance(theta, controlPoints[0].x, controlPoints[0].y);
         rotation.transform(tipLabel, tipLabel);
-        rotation.transform(ringLabel, ringLabel);
+        rotation.transform(ringOrSwitchLabel, ringOrSwitchLabel);
         rotation.transform(sleeveLabel, sleeveLabel);
       }
       drawCenteredText(g2d, "T", tipLabel.x, tipLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       drawCenteredText(g2d, "S", sleeveLabel.x, sleeveLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      if (getType() == JackType.STEREO)
-        drawCenteredText(g2d, "R", ringLabel.x, ringLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      if (getType() == OpenJackType.STEREO)
+        drawCenteredText(g2d, "R", ringOrSwitchLabel.x, ringOrSwitchLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      if (getType() == OpenJackType.SWITCHED)
+        drawCenteredText(g2d, "Sw", ringOrSwitchLabel.x, ringOrSwitchLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
     
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
@@ -227,7 +234,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
               springWidth, springWidth));
       sleeve.subtract(new Area(new Ellipse2D.Double(x - holeDiameter / 2, y - holeDiameter / 2, holeDiameter,
           holeDiameter)));
-      sleeve.transform(AffineTransform.getRotateInstance(Math.PI * 0.295, x, centerY));
+      sleeve.transform(AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SLEEVE_SWITCHED_THETA : SLEEVE_THETA, x, centerY));
       sleeve.add(new Area(new Ellipse2D.Double(x - ringDiameter / 2, centerY - ringDiameter / 2, ringDiameter,
           ringDiameter)));
       sleeve.subtract(new Area(new Ellipse2D.Double(x - innerDiameter / 2, centerY - innerDiameter / 2, innerDiameter,
@@ -235,17 +242,17 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
       body[2] = sleeve;
 
-      if (getType() == JackType.STEREO) {
-        Area ring =
+      if (getType() != OpenJackType.MONO) {
+        Area ringOrSwitch =
             new Area(new RoundRectangle2D.Double(x - springWidth / 2, y - holeToEdge, springWidth, springLength,
                 springWidth, springWidth));
-        ring.subtract(new Area(new Ellipse2D.Double(x - holeDiameter / 2, y - holeDiameter / 2, holeDiameter,
+        ringOrSwitch.subtract(new Area(new Ellipse2D.Double(x - holeDiameter / 2, y - holeDiameter / 2, holeDiameter,
             holeDiameter)));
-        ring.transform(AffineTransform.getRotateInstance(Math.PI * 0.795, x, centerY));
-        ring.subtract(new Area(new Ellipse2D.Double(x - outerDiameter / 2, centerY - outerDiameter / 2, outerDiameter,
+        ringOrSwitch.transform(AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SWITCH_THETA : RING_THETA, x, centerY));
+        ringOrSwitch.subtract(new Area(new Ellipse2D.Double(x - outerDiameter / 2, centerY - outerDiameter / 2, outerDiameter,
             outerDiameter)));
 
-        body[3] = ring;
+        body[3] = ringOrSwitch;
       }
 
       double theta = 0;
@@ -291,8 +298,8 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
     int centerY = y + springLength - holeToEdge;
 
-    AffineTransform.getRotateInstance(Math.PI * 0.295, x, centerY).transform(controlPoints[0], controlPoints[1]);
-    AffineTransform.getRotateInstance(Math.PI * 0.795, x, centerY).transform(controlPoints[0], controlPoints[2]);
+    AffineTransform.getRotateInstance(SLEEVE_THETA, x, centerY).transform(controlPoints[0], controlPoints[1]);
+    AffineTransform.getRotateInstance(RING_THETA, x, centerY).transform(controlPoints[0], controlPoints[2]);
 
     // Rotate if needed
     if (orientation != Orientation.DEFAULT) {
@@ -324,7 +331,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     g2d.setColor(BASE_COLOR);
     g2d.drawLine(width / 2, 4 * width / 32, width / 2, width / 4);
 
-    g2d.rotate(Math.PI * 0.795, width / 2, height / 2);
+    g2d.rotate(RING_THETA, width / 2, height / 2);
 
     g2d.drawLine(width / 2, 4 * width / 32, width / 2, width / 4);
 
@@ -355,7 +362,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
   @Override
   public boolean isControlPointSticky(int index) {
-    return index < 2 || getType() == JackType.STEREO;
+    return index < 2 || getType() == OpenJackType.STEREO;
   }
 
   @Override
@@ -393,11 +400,11 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
   }
 
   @EditableProperty
-  public JackType getType() {
+  public OpenJackType getType() {
     return type;
   }
 
-  public void setType(JackType type) {
+  public void setType(OpenJackType type) {
     this.type = type;
     updateControlPoints();
     // Invalidate the body
@@ -411,5 +418,15 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
   public void setShowLabels(boolean showLabels) {
     this.showLabels = showLabels;
+  }
+  
+  public enum OpenJackType {
+
+    MONO, STEREO, SWITCHED;
+
+    @Override
+    public String toString() {
+      return name().substring(0, 1) + name().substring(1).toLowerCase();
+    }
   }
 }

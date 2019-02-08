@@ -172,10 +172,6 @@
         <name>DPDT</name>
         <values>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Body</string>
             <awt-color>
               <red>50</red>
@@ -185,8 +181,16 @@
             </awt-color>
           </entry>
           <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
             <string>Orientation</string>
             <org.diylc.common.OrientationHV>VERTICAL</org.diylc.common.OrientationHV>
+          </entry>
+          <entry>
+            <string>Type</string>
+            <org.diylc.components.electromechanical.ToggleSwitchType>DPDT</org.diylc.components.electromechanical.ToggleSwitchType>
           </entry>
           <entry>
             <string>Border</string>
@@ -196,10 +200,6 @@
               <blue>142</blue>
               <alpha>255</alpha>
             </awt-color>
-          </entry>
-          <entry>
-            <string>Type</string>
-            <org.diylc.components.electromechanical.ToggleSwitchType>DPDT</org.diylc.components.electromechanical.ToggleSwitchType>
           </entry>
           <entry>
             <string>Spacing</string>
@@ -241,24 +241,24 @@
         <name>SPDT</name>
         <values>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Body</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry/awt-color"/>
           </entry>
           <entry>
-            <string>Body</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[2]/awt-color"/>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.OrientationHV>VERTICAL</org.diylc.common.OrientationHV>
           </entry>
           <entry>
-            <string>Border</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[4]/awt-color"/>
-          </entry>
-          <entry>
             <string>Type</string>
             <org.diylc.components.electromechanical.ToggleSwitchType>SPDT</org.diylc.components.electromechanical.ToggleSwitchType>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Spacing</string>
@@ -284,11 +284,19 @@
     </list>
   </entry>
   <entry>
+    <string>Electro-Mechanical.RCA Jack</string>
+    <list/>
+  </entry>
+  <entry>
     <string>Guitar.Humbucker Pickup</string>
     <list>
       <org.diylc.core.Template>
         <name>Covered PAF-Style</name>
         <values>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
           <entry>
             <string>Bobin 1</string>
             <awt-color>
@@ -299,18 +307,6 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -318,6 +314,14 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Bobin 2</string>
@@ -366,10 +370,6 @@
         <name>Uncovered PAF-Style</name>
         <values>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Bobin 1</string>
             <awt-color>
               <red>234</red>
@@ -379,6 +379,18 @@
             </awt-color>
           </entry>
           <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Model</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -386,14 +398,6 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
           </entry>
           <entry>
             <string>Bobin 2</string>
@@ -442,10 +446,6 @@
         <name>EMG-style</name>
         <values>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Bobin 1</string>
             <awt-color>
               <red>234</red>
@@ -455,6 +455,18 @@
             </awt-color>
           </entry>
           <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Model</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -462,14 +474,6 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
           </entry>
           <entry>
             <string>Bobin 2</string>
@@ -518,6 +522,10 @@
         <name>Filtertron-style</name>
         <values>
           <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
             <string>Bobin 1</string>
             <awt-color>
               <red>0</red>
@@ -527,18 +535,6 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -546,6 +542,14 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Bobin 2</string>
@@ -561,12 +565,12 @@
             <org.diylc.components.guitar.HumbuckerPickup_-HumbuckerType>Filtertron</org.diylc.components.guitar.HumbuckerPickup_-HumbuckerType>
           </entry>
           <entry>
-            <string>Cover</string>
-            <boolean>true</boolean>
-          </entry>
-          <entry>
             <string>Legs</string>
             <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Cover</string>
+            <boolean>true</boolean>
           </entry>
           <entry>
             <string>Pole Pieces 1</string>
@@ -789,6 +793,14 @@
             <byte>127</byte>
           </entry>
           <entry>
+            <string>Model</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
             <string>Pole Color</string>
             <awt-color>
               <red>117</red>
@@ -796,14 +808,6 @@
               <blue>175</blue>
               <alpha>255</alpha>
             </awt-color>
-          </entry>
-          <entry>
-            <string>Orientation</string>
-            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Model</string>
-            <string></string>
           </entry>
           <entry>
             <string>Type</string>
@@ -843,16 +847,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -887,16 +891,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -931,16 +935,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -975,16 +979,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -1019,16 +1023,16 @@
             <byte>127</byte>
           </entry>
           <entry>
-            <string>Pole Color</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
+            <string>Model</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Model</string>
-            <string></string>
+            <string>Pole Color</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[5]/awt-color"/>
           </entry>
           <entry>
             <string>Type</string>
@@ -1052,6 +1056,123 @@
         <defaultFlag>false</defaultFlag>
       </org.diylc.core.Template>
     </list>
+  </entry>
+  <entry>
+    <string>org.diylc.components.electromechanical.OpenJack1_4</string>
+    <list>
+      <org.diylc.core.Template>
+        <name>Mono</name>
+        <values>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Labels</string>
+            <boolean>true</boolean>
+          </entry>
+          <entry>
+            <string>Type</string>
+            <org.diylc.components.electromechanical.OpenJack1__4_-OpenJackType>MONO</org.diylc.components.electromechanical.OpenJack1__4_-OpenJackType>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>80</x>
+            <y>40</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>180</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>Stereo</name>
+        <values>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Labels</string>
+            <boolean>true</boolean>
+          </entry>
+          <entry>
+            <string>Type</string>
+            <org.diylc.components.electromechanical.OpenJack1__4_-OpenJackType>STEREO</org.diylc.components.electromechanical.OpenJack1__4_-OpenJackType>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>80</x>
+            <y>40</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>180</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>Switched</name>
+        <values>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Labels</string>
+            <boolean>true</boolean>
+          </entry>
+          <entry>
+            <string>Type</string>
+            <org.diylc.components.electromechanical.OpenJack1__4_-OpenJackType>SWITCHED</org.diylc.components.electromechanical.OpenJack1__4_-OpenJackType>
+          </entry>
+        </values>
+        <points>
+          <java.awt.Point>
+            <x>0</x>
+            <y>0</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>80</x>
+            <y>40</y>
+          </java.awt.Point>
+          <java.awt.Point>
+            <x>60</x>
+            <y>180</y>
+          </java.awt.Point>
+        </points>
+        <defaultFlag>false</defaultFlag>
+      </org.diylc.core.Template>
+    </list>
+  </entry>
+  <entry>
+    <string>org.diylc.components.passive.PotentiometerPanel</string>
+    <list/>
   </entry>
   <entry>
     <string>Passive.Audio Transformer</string>
@@ -1460,10 +1581,8 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Value</string>
-            <org.diylc.core.measures.Capacitance-array>
-              <null/>
-            </org.diylc.core.measures.Capacitance-array>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Body</string>
@@ -1475,8 +1594,10 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -1492,12 +1613,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Voltage</string>
-            <null/>
-          </entry>
-          <entry>
             <string>Display</string>
             <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
           </entry>
           <entry>
             <string>Label</string>
@@ -1550,8 +1671,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
           </entry>
           <entry>
             <string>Body</string>
@@ -1563,12 +1688,8 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Value</string>
-            <org.diylc.core.measures.Capacitance-array>
-              <null/>
-              <null/>
-              <null/>
-            </org.diylc.core.measures.Capacitance-array>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -1584,12 +1705,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Display</string>
-            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
-          </entry>
-          <entry>
             <string>Voltage</string>
             <null/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
           </entry>
           <entry>
             <string>Label</string>
@@ -1650,13 +1771,8 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Value</string>
-            <org.diylc.core.measures.Capacitance-array>
-              <null/>
-              <null/>
-              <null/>
-              <null/>
-            </org.diylc.core.measures.Capacitance-array>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Body</string>
@@ -1668,8 +1784,13 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -1685,12 +1806,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Voltage</string>
-            <null/>
-          </entry>
-          <entry>
             <string>Display</string>
             <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
           </entry>
           <entry>
             <string>Label</string>
@@ -1747,19 +1868,19 @@
             <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[2]/awt-color"/>
           </entry>
           <entry>
-            <string>Value</string>
-            <org.diylc.core.measures.Capacitance-array>
-              <null/>
-              <null/>
-            </org.diylc.core.measures.Capacitance-array>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Body</string>
             <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[4]/awt-color"/>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <org.diylc.core.measures.Capacitance-array>
+              <null/>
+              <null/>
+            </org.diylc.core.measures.Capacitance-array>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -1770,12 +1891,12 @@
             <awt-color reference="../../../../org.diylc.core.Template[3]/values/entry[7]/awt-color"/>
           </entry>
           <entry>
-            <string>Voltage</string>
-            <null/>
-          </entry>
-          <entry>
             <string>Display</string>
             <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
           </entry>
           <entry>
             <string>Label</string>
@@ -2895,8 +3016,8 @@
             <org.diylc.components.AbstractLeadedComponent_-LabelOriantation>Directional</org.diylc.components.AbstractLeadedComponent_-LabelOriantation>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
+            <string>Value</string>
+            <string></string>
           </entry>
           <entry>
             <string>Body</string>
@@ -2908,16 +3029,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Value</string>
-            <string></string>
+            <string>Alpha</string>
+            <byte>127</byte>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-          </entry>
-          <entry>
-            <string>Type</string>
-            <org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>MiniDIP1</org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>
           </entry>
           <entry>
             <string>Border</string>
@@ -2929,12 +3046,16 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Voltage</string>
-            <null/>
+            <string>Type</string>
+            <org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>MiniDIP1</org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>
           </entry>
           <entry>
             <string>Display</string>
             <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Voltage</string>
+            <null/>
           </entry>
           <entry>
             <string>Label</string>
@@ -2978,36 +3099,36 @@
             <org.diylc.components.AbstractLeadedComponent_-LabelOriantation>Directional</org.diylc.components.AbstractLeadedComponent_-LabelOriantation>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>100</byte>
+            <string>Value</string>
+            <string></string>
           </entry>
           <entry>
             <string>Body</string>
             <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
           </entry>
           <entry>
-            <string>Value</string>
-            <string></string>
+            <string>Alpha</string>
+            <byte>100</byte>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
             <string>Type</string>
             <org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>MiniRound1</org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>
           </entry>
           <entry>
-            <string>Border</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[7]/awt-color"/>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
           </entry>
           <entry>
             <string>Voltage</string>
             <null/>
-          </entry>
-          <entry>
-            <string>Display</string>
-            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
           </entry>
           <entry>
             <string>Label</string>
@@ -3046,36 +3167,36 @@
             <org.diylc.components.AbstractLeadedComponent_-LabelOriantation>Directional</org.diylc.components.AbstractLeadedComponent_-LabelOriantation>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>100</byte>
+            <string>Value</string>
+            <string></string>
           </entry>
           <entry>
             <string>Body</string>
             <awt-color reference="../../../../org.diylc.core.Template/values/entry[3]/awt-color"/>
           </entry>
           <entry>
-            <string>Value</string>
-            <string></string>
+            <string>Alpha</string>
+            <byte>100</byte>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
+            <string>Border</string>
+            <awt-color reference="../../../../org.diylc.core.Template/values/entry[6]/awt-color"/>
+          </entry>
+          <entry>
             <string>Type</string>
             <org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>InLine</org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>
           </entry>
           <entry>
-            <string>Border</string>
-            <awt-color reference="../../../../org.diylc.core.Template/values/entry[7]/awt-color"/>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
           </entry>
           <entry>
             <string>Voltage</string>
             <null/>
-          </entry>
-          <entry>
-            <string>Display</string>
-            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
           </entry>
           <entry>
             <string>Label</string>
@@ -3114,8 +3235,8 @@
             <org.diylc.components.AbstractLeadedComponent_-LabelOriantation>Horizontal</org.diylc.components.AbstractLeadedComponent_-LabelOriantation>
           </entry>
           <entry>
-            <string>Value</string>
-            <string></string>
+            <string>Alpha</string>
+            <byte>100</byte>
           </entry>
           <entry>
             <string>Body</string>
@@ -3127,12 +3248,16 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>100</byte>
+            <string>Value</string>
+            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Type</string>
+            <org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>SquareBR3</org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>
           </entry>
           <entry>
             <string>Border</string>
@@ -3144,16 +3269,12 @@
             </awt-color>
           </entry>
           <entry>
-            <string>Type</string>
-            <org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>SquareBR3</org.diylc.components.semiconductors.BridgeRectifier_-RectifierType>
+            <string>Voltage</string>
+            <null/>
           </entry>
           <entry>
             <string>Display</string>
             <org.diylc.common.Display>BOTH</org.diylc.common.Display>
-          </entry>
-          <entry>
-            <string>Voltage</string>
-            <null/>
           </entry>
           <entry>
             <string>Label</string>
@@ -3201,6 +3322,10 @@
         <name>DIP8</name>
         <values>
           <entry>
+            <string>Pins</string>
+            <org.diylc.components.semiconductors.DIL__IC_-PinCount>_8</org.diylc.components.semiconductors.DIL__IC_-PinCount>
+          </entry>
+          <entry>
             <string>Row Spacing</string>
             <org.diylc.core.measures.Size>
               <value>0.3</value>
@@ -3208,20 +3333,16 @@
             </org.diylc.core.measures.Size>
           </entry>
           <entry>
-            <string>Pins</string>
-            <org.diylc.components.semiconductors.DIL__IC_-PinCount>_8</org.diylc.components.semiconductors.DIL__IC_-PinCount>
+            <string>Value</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color reference="../../../../../../entry[6]/list/org.diylc.core.Template/values/entry/awt-color"/>
           </entry>
           <entry>
             <string>Alpha</string>
             <byte>127</byte>
-          </entry>
-          <entry>
-            <string>Body</string>
-            <awt-color reference="../../../../../../entry[5]/list/org.diylc.core.Template/values/entry/awt-color"/>
-          </entry>
-          <entry>
-            <string>Value</string>
-            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -3242,7 +3363,7 @@
           </entry>
           <entry>
             <string>Label</string>
-            <awt-color reference="../../../../../../entry[5]/list/org.diylc.core.Template/values/entry[8]/awt-color"/>
+            <awt-color reference="../../../../../../entry[6]/list/org.diylc.core.Template/values/entry[8]/awt-color"/>
           </entry>
           <entry>
             <string>Display Pin #s</string>
@@ -3305,6 +3426,10 @@
         <name>DIP16</name>
         <values>
           <entry>
+            <string>Pins</string>
+            <org.diylc.components.semiconductors.DIL__IC_-PinCount>_16</org.diylc.components.semiconductors.DIL__IC_-PinCount>
+          </entry>
+          <entry>
             <string>Row Spacing</string>
             <org.diylc.core.measures.Size>
               <value>0.3</value>
@@ -3312,20 +3437,16 @@
             </org.diylc.core.measures.Size>
           </entry>
           <entry>
-            <string>Pins</string>
-            <org.diylc.components.semiconductors.DIL__IC_-PinCount>_16</org.diylc.components.semiconductors.DIL__IC_-PinCount>
+            <string>Value</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color reference="../../../../../../entry[6]/list/org.diylc.core.Template/values/entry/awt-color"/>
           </entry>
           <entry>
             <string>Alpha</string>
             <byte>127</byte>
-          </entry>
-          <entry>
-            <string>Body</string>
-            <awt-color reference="../../../../../../entry[5]/list/org.diylc.core.Template/values/entry/awt-color"/>
-          </entry>
-          <entry>
-            <string>Value</string>
-            <string></string>
           </entry>
           <entry>
             <string>Orientation</string>
@@ -3341,7 +3462,7 @@
           </entry>
           <entry>
             <string>Label</string>
-            <awt-color reference="../../../../../../entry[5]/list/org.diylc.core.Template/values/entry[8]/awt-color"/>
+            <awt-color reference="../../../../../../entry[6]/list/org.diylc.core.Template/values/entry[8]/awt-color"/>
           </entry>
           <entry>
             <string>Display Pin #s</string>
@@ -3436,12 +3557,12 @@
         <name>PCB Noval</name>
         <values>
           <entry>
-            <string>Base</string>
-            <org.diylc.components.tube.TubeSocket_-Base>B9A</org.diylc.components.tube.TubeSocket_-Base>
-          </entry>
-          <entry>
             <string>Angle</string>
             <int>0</int>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <org.diylc.components.tube.TubeSocket_-Base>B9A</org.diylc.components.tube.TubeSocket_-Base>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -3509,12 +3630,12 @@
         <name>PCB Octal</name>
         <values>
           <entry>
-            <string>Base</string>
-            <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
-          </entry>
-          <entry>
             <string>Angle</string>
             <int>0</int>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -3573,12 +3694,12 @@
         <name>Chassis Noval</name>
         <values>
           <entry>
-            <string>Angle</string>
-            <int>0</int>
-          </entry>
-          <entry>
             <string>Base</string>
             <org.diylc.components.tube.TubeSocket_-Base>B9A</org.diylc.components.tube.TubeSocket_-Base>
+          </entry>
+          <entry>
+            <string>Angle</string>
+            <int>0</int>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -3658,12 +3779,12 @@
         <name>Chassis Octal</name>
         <values>
           <entry>
-            <string>Angle</string>
-            <int>0</int>
-          </entry>
-          <entry>
             <string>Base</string>
             <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
+          </entry>
+          <entry>
+            <string>Angle</string>
+            <int>0</int>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -3734,12 +3855,12 @@
         <name>Chassis Noval 9A (12A?7)</name>
         <values>
           <entry>
-            <string>Angle</string>
-            <int>0</int>
-          </entry>
-          <entry>
             <string>Base</string>
             <org.diylc.components.tube.TubeSocket_-Base>B9A</org.diylc.components.tube.TubeSocket_-Base>
+          </entry>
+          <entry>
+            <string>Angle</string>
+            <int>0</int>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -3814,12 +3935,12 @@
         <name>Chassis Noval 9CV (EL84)</name>
         <values>
           <entry>
-            <string>Angle</string>
-            <int>0</int>
-          </entry>
-          <entry>
             <string>Base</string>
             <org.diylc.components.tube.TubeSocket_-Base>B9A</org.diylc.components.tube.TubeSocket_-Base>
+          </entry>
+          <entry>
+            <string>Angle</string>
+            <int>0</int>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -3894,12 +4015,12 @@
         <name>Chassis Octal 5T</name>
         <values>
           <entry>
-            <string>Base</string>
-            <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
-          </entry>
-          <entry>
             <string>Angle</string>
             <int>0</int>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -3970,12 +4091,12 @@
         <name>Chassis Octal 7AC (6?6)</name>
         <values>
           <entry>
-            <string>Base</string>
-            <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
-          </entry>
-          <entry>
             <string>Angle</string>
             <int>0</int>
+          </entry>
+          <entry>
+            <string>Base</string>
+            <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -4046,12 +4167,12 @@
         <name>Chassis 7-pin 7BK</name>
         <values>
           <entry>
-            <string>Angle</string>
-            <int>0</int>
-          </entry>
-          <entry>
             <string>Base</string>
             <org.diylc.components.tube.TubeSocket_-Base>B7G</org.diylc.components.tube.TubeSocket_-Base>
+          </entry>
+          <entry>
+            <string>Angle</string>
+            <int>0</int>
           </entry>
           <entry>
             <string>Alpha</string>
@@ -4128,12 +4249,12 @@
         <name>Chassis Octal 8ET (EL34)</name>
         <values>
           <entry>
-            <string>Angle</string>
-            <int>0</int>
-          </entry>
-          <entry>
             <string>Base</string>
             <org.diylc.components.tube.TubeSocket_-Base>OCTAL</org.diylc.components.tube.TubeSocket_-Base>
+          </entry>
+          <entry>
+            <string>Angle</string>
+            <int>0</int>
           </entry>
           <entry>
             <string>Alpha</string>
