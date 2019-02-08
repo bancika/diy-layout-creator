@@ -71,6 +71,8 @@ public class DrawingManager {
 
   public static final String ZOOM_KEY = "zoom";
 
+  private static boolean SHADE_EXTRA_SPACE = true;
+
   public static String DEBUG_COMPONENT_AREAS = "org.diylc.debugComponentAreas";
   public static String DEBUG_CONTINUITY_AREAS = "org.diylc.debugContinuityAreas";
 
@@ -203,6 +205,8 @@ public class DrawingManager {
       }
     }
     
+    Rectangle2D extraSpaceRect = null;
+    AffineTransform extraSpaceTx = null;
     // manage extra space
     double extraSpace = 0;
     if (drawOptions.contains(DrawOption.EXTRA_SPACE)) {
@@ -211,7 +215,9 @@ public class DrawingManager {
       float borderThickness = (float) (3f * (zoom > 1 ? 1 : zoom));
       g2d.setStroke(ObjectCache.getInstance().fetchStroke(borderThickness, new float[] {borderThickness * 4, borderThickness * 4, }, 0, BasicStroke.CAP_BUTT));
       g2dWrapper.setColor(theme.getOutlineColor());
-      g2d.draw(new Rectangle2D.Double(extraSpace, extraSpace, dInner.getWidth(), dInner.getHeight()));
+      extraSpaceRect = new Rectangle2D.Double(extraSpace, extraSpace, dInner.getWidth(), dInner.getHeight());
+      g2d.draw(extraSpaceRect);
+      extraSpaceTx = g2d.getTransform();
 
       // translate to the new (0, 0)
       g2d.transform(AffineTransform.getTranslateInstance(extraSpace, extraSpace));
@@ -389,6 +395,16 @@ public class DrawingManager {
       g2d.setColor(Color.green);
       g2d.fill(continuityArea);
       g2d.setComposite(oldComposite);
+    }
+    
+    // shade extra space
+    if (SHADE_EXTRA_SPACE && extraSpaceRect != null) {
+      Area extraSpaceArea = new Area(new Rectangle2D.Double(0, 0, d.getWidth(), d.getHeight()));
+      extraSpaceArea.subtract(new Area(extraSpaceRect));
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.05f));
+      g2d.setTransform(extraSpaceTx);
+      g2d.setColor(theme.getOutlineColor());
+      g2d.fill(extraSpaceArea);
     }
 
     return failedComponents;
