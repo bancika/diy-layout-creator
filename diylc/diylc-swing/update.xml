@@ -2428,6 +2428,10 @@
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>"Select All" menu option from the component tree context menu doesn't work</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Components do not load if the installation directory name contains a special character, like '!'</description>
 				</org.diylc.appframework.update.Change>											
 			</changes>

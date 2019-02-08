@@ -459,7 +459,7 @@ public class TreePanel extends JPanel {
           }
 
           if (componentType != null) {
-            popup.add(new SelectAllAction(plugInPort));
+            popup.add(new SelectAllAction(plugInPort, componentType));
             popup.add(shortcutSubmenu);
             popup.add(new JSeparator());
 
@@ -711,18 +711,20 @@ public class TreePanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private IPlugInPort plugInPort;
+    private ComponentType componentType;
 
-    public SelectAllAction(IPlugInPort plugInPort) {
+    public SelectAllAction(IPlugInPort plugInPort, ComponentType componentType) {
       super();
       this.plugInPort = plugInPort;
+      this.componentType = componentType;
       putValue(AbstractAction.NAME, "Select All");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      LOG.info(getValue(AbstractAction.NAME) + " triggered");
-      ComponentType componentType = plugInPort.getNewComponentTypeSlot();
+      LOG.info(getValue(AbstractAction.NAME) + " triggered");      
       if (componentType != null) {
+        plugInPort.setNewComponentTypeSlot(null, null, false);
         List<IDIYComponent<?>> components = plugInPort.getCurrentProject().getComponents();
         List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
         for (IDIYComponent<?> component : components) {
@@ -731,8 +733,7 @@ public class TreePanel extends JPanel {
           }
         }
 
-        plugInPort.updateSelection(newSelection);
-        plugInPort.setNewComponentTypeSlot(null, null, false);
+        plugInPort.updateSelection(newSelection);        
         plugInPort.refresh();
       }
     }
