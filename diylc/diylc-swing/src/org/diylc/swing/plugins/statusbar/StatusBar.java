@@ -104,8 +104,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private List<String> componentNamesUnderCursor;
   private List<String> selectedComponentNames;
   private List<String> stuckComponentNames;
-  private String statusMessage;
-  private Point mousePosition;
+  private String statusMessage;  
 
   private AnnouncementProvider announcementProvider;
 
@@ -482,7 +481,7 @@ public class StatusBar extends JPanel implements IPlugIn {
     if (mousePosition == null)
       getPositionLabel().setText(null);
     else
-      getPositionLabel().setText(String.format("@%.2f %.2f " + (metric ? "mm" : "in"), mousePosition.getX(), mousePosition.getY()));
+      getPositionLabel().setText(String.format("x:%.2f y:%.2f " + (metric ? "mm" : "in"), mousePosition.getX(), mousePosition.getY()));
   }
 
   private void refreshStatusText() {

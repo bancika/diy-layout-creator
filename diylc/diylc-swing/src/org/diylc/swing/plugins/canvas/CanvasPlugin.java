@@ -164,6 +164,14 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         scrollPane.setUseHardwareAcceleration((Boolean) value);
       }
     });
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.METRIC_KEY, new IConfigListener() {
+
+      @Override
+      public void valueChanged(String key, Object value) {
+        updateZeroLocation();
+      }
+    });
 
     ConfigurationManager.getInstance().addConfigListener(IPlugInPort.EXTRA_SPACE_KEY, new IConfigListener() {
 
@@ -177,8 +185,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         canvasPanel.scrollRectToVisible(visibleRect);
         canvasPanel.revalidate();
         
-        double extraSpace = CanvasPlugin.this.plugInPort.getExtraSpace();
-        getScrollPane().setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
+        updateZeroLocation();
       }
     });
   }
@@ -687,8 +694,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         canvasPanel.scrollRectToVisible(visibleRect);
         canvasPanel.revalidate();
         
-        double extraSpace = CanvasPlugin.this.plugInPort.getExtraSpace();
-        getScrollPane().setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
+        updateZeroLocation();
 
         zoomLevel = (Double) params[0];
         break;
@@ -735,5 +741,10 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   public void lostOwnership(Clipboard clipboard, Transferable contents) {
     // TODO Auto-generated method stub
 
+  }
+
+  private void updateZeroLocation() {
+    double extraSpace = CanvasPlugin.this.plugInPort.getExtraSpace();
+    getScrollPane().setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
   }
 }
