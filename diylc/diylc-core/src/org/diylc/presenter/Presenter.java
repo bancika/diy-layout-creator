@@ -2592,7 +2592,7 @@ public class Presenter implements IPlugInPort {
         variantMap.put(entry.getKey(), templates);
       }
       for (Template t : entry.getValue()) {
-        templates.add(new Template(t.getName() + " by " + pkg.getOwner(), t.getValues(), t.getPoints()));      
+        templates.add(new Template(t.getName() + " [" + pkg.getOwner() + "]", t.getValues(), t.getPoints()));      
       }
     }
     
@@ -2624,7 +2624,7 @@ public class Presenter implements IPlugInPort {
     }
     
     for (Map.Entry<String, Collection<IDIYComponent<?>>> entry : pkg.getBlocks().entrySet()) {
-      blocks.put(entry.getKey() + " by " + pkg.getOwner(), entry.getValue());
+      blocks.put(entry.getKey() + " [" + pkg.getOwner() + "]", entry.getValue());
     }
     
     ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);

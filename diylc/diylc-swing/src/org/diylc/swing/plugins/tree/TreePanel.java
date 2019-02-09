@@ -44,6 +44,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -669,6 +671,8 @@ public class TreePanel extends JPanel {
     private String category;
     private boolean isVisible;
     private MouseListener clickListener;
+    
+    private final Pattern contributedPattern = Pattern.compile("^(.*)\\[(.*)\\]");
 
     public Payload(ComponentType componentType, MouseListener clickListener) {
       super();
@@ -699,10 +703,21 @@ public class TreePanel extends JPanel {
     public MouseListener getClickListener() {
       return clickListener;
     }
+    
+    private String categoryForDisplay() {
+      String display = category;
+      Matcher match = contributedPattern.matcher(display);
+      if (match.find()) {
+        String name = match.group(1);
+        String owner = match.group(2);
+        display = name + "<font color='gray'>[" + owner + "]</font>"; 
+      }
+      return display;
+    }
 
     @Override
     public String toString() {
-      return componentType == null ? category : componentType.getName();
+      return componentType == null ? categoryForDisplay() : componentType.getName();
     }
   }
 

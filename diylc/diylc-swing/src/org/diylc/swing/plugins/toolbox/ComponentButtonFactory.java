@@ -28,6 +28,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -105,10 +107,22 @@ public class ComponentButtonFactory {
     });
     return button;
   }
+  
+  private static final Pattern contributedPattern = Pattern.compile("^(.*)\\[(.*)\\]");
 
   public static JMenuItem createVariantItem(final IPlugInPort plugInPort, final Template variant,
       final ComponentType componentType) {
-    final JMenuItem item = new JMenuItem(variant.getName()) {
+    
+    String display = variant.getName();
+    
+    Matcher match = contributedPattern.matcher(display);
+    if (match.find()) {
+      String name = match.group(1);
+      String owner = match.group(2);
+      display = "<html>" + name + "<font color='gray'>[" + owner + "]</font></html>"; 
+    }
+    
+    final JMenuItem item = new JMenuItem(display) {
 
       private static final long serialVersionUID = 1L;
 
