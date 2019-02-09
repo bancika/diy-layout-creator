@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
@@ -697,7 +698,7 @@ public class ActionFactory {
     private ISwingUI swingUI;
     private IPlugInPort plugInPort;
     
-    private Map<String, ComponentType> typeMap = new HashMap<String, ComponentType>();
+    private Map<String, ComponentType> typeMap = new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
 
     public ExportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
       super();
@@ -707,51 +708,68 @@ public class ActionFactory {
       
       Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
       for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet())
-        for (ComponentType type : entry.getValue())
+        for (ComponentType type : entry.getValue()) {
           typeMap.put(type.getInstanceClass().getCanonicalName(), type);
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportVariantsAction triggered");
-      Map<String, List<Template>> variantMap =
-          (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(IPlugInPort.TEMPLATES_KEY, null);
-      if (variantMap == null || variantMap.isEmpty()) {
-        swingUI.showMessage("No variants found to export.", "Error", IView.ERROR_MESSAGE);
+      
+      Map<String, List<Template>> selectedVariants;
+      
+      try {
+        Map<String, List<Template>> variantMap =
+            (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(IPlugInPort.TEMPLATES_KEY, null);
+        if (variantMap == null || variantMap.isEmpty()) {
+          swingUI.showMessage("No variants found to export.", "Error", IView.ERROR_MESSAGE);
+          return;
+        }
+        
+        List<ComponentType> types = new ArrayList<ComponentType>();
+        for (String className : variantMap.keySet()) {
+          ComponentType type = typeMap.get(className);
+          if (type != null)            
+            types.add(type);
+          else
+            LOG.warn("Could not find type for: " + className);
+        }
+        
+        Collections.sort(types, new Comparator<ComponentType>() {
+  
+          @Override
+          public int compare(ComponentType o1, ComponentType o2) {
+            return o1.toString().compareToIgnoreCase(o2.toString());
+          }});
+        
+        CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Variants", types.toArray());
+        
+        dialog.setVisible(true);      
+        
+        if (dialog.getSelectedButtonCaption() != "OK")
+          return;
+        
+        Object[] selected = dialog.getSelectedOptions();
+        
+        if (selected.length == 0) {
+          swingUI.showMessage("No variants selected for export.", "Error", IView.ERROR_MESSAGE);
+          return;      
+        }
+        
+        selectedVariants = new HashMap<String, List<Template>>();
+        for (Object key : selected) {
+          ComponentType type = (ComponentType) key;
+          String clazz = type.getInstanceClass().getCanonicalName();
+          List<Template> variants = variantMap.get(clazz);
+          if (variants != null)
+            selectedVariants.put(clazz, variants);
+        }
+      } catch (Exception ex) {
+        LOG.error("Error preparing variants for export", ex);
+        swingUI.showMessage("Could not export variants. Please check the log for details", "Export Variants", ISwingUI.ERROR_MESSAGE);
         return;
-      }
-      
-      List<ComponentType> types = new ArrayList<ComponentType>();
-      for (String className : variantMap.keySet())
-        types.add(typeMap.get(className));
-      
-      Collections.sort(types, new Comparator<ComponentType>() {
-
-        @Override
-        public int compare(ComponentType o1, ComponentType o2) {
-          return o1.toString().compareToIgnoreCase(o2.toString());
-        }});
-      
-      CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Variants", types.toArray());
-      
-      dialog.setVisible(true);      
-      
-      if (dialog.getSelectedButtonCaption() != "OK")
-        return;
-      
-      Object[] selected = dialog.getSelectedOptions();
-      
-      if (selected.length == 0) {
-        swingUI.showMessage("No building blocks selected for export.", "Error", IView.ERROR_MESSAGE);
-        return;      
-      }
-      
-      Map<String, List<Template>> selectedVariants = new HashMap<String, List<Template>>();
-      for (Object key : selected) {
-        ComponentType type = (ComponentType) key;
-        String clazz = type.getInstanceClass().getCanonicalName();
-        selectedVariants.put(clazz, variantMap.get(clazz));
       }
 
       final VariantPackage variantPkg = new VariantPackage(selectedVariants, System.getProperty("user.name"));
@@ -861,41 +879,50 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportBuildingBlocksAction triggered");
-      Map<String, Collection<IDIYComponent<?>>> blocks =
-          (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(IPlugInPort.BLOCKS_KEY, null);
-      if (blocks == null || blocks.isEmpty()) {
-        swingUI.showMessage("No building blocks found to export.", "Error", IView.ERROR_MESSAGE);
+      
+      Map<String, Collection<IDIYComponent<?>>> selectedBlocks;
+      
+      try {
+        Map<String, Collection<IDIYComponent<?>>> blocks =
+            (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(IPlugInPort.BLOCKS_KEY, null);
+        if (blocks == null || blocks.isEmpty()) {
+          swingUI.showMessage("No building blocks found to export.", "Error", IView.ERROR_MESSAGE);
+          return;
+        }
+        
+        String[] options = blocks.keySet().toArray(new String[0]);
+        
+        Arrays.sort(options, new Comparator<String>() {
+  
+          @Override
+          public int compare(String o1, String o2) {
+            return o1.compareToIgnoreCase(o2);
+          }});
+        
+        CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Building Blocks", options);
+        
+        dialog.setVisible(true);      
+        
+        if (dialog.getSelectedButtonCaption() != "OK")
+          return;
+        
+        Object[] selected = dialog.getSelectedOptions();
+        
+        if (selected.length == 0) {
+          swingUI.showMessage("No building blocks selected for export.", "Error", IView.ERROR_MESSAGE);
+          return;      
+        }
+        
+        selectedBlocks = new HashMap<String, Collection<IDIYComponent<?>>>();
+        for (Object key : selected) {
+          selectedBlocks.put(key.toString(), blocks.get(key));
+        }
+      } catch (Exception ex) {
+        LOG.error("Error preparing building blocks for export", ex);
+        swingUI.showMessage("Could not export building blocks. Please check the log for details", "Export Building Blocks", ISwingUI.ERROR_MESSAGE);
         return;
       }
       
-      String[] options = blocks.keySet().toArray(new String[0]);
-      
-      Arrays.sort(options, new Comparator<String>() {
-
-        @Override
-        public int compare(String o1, String o2) {
-          return o1.compareToIgnoreCase(o2);
-        }});
-      
-      CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Building Blocks", options);
-      
-      dialog.setVisible(true);      
-      
-      if (dialog.getSelectedButtonCaption() != "OK")
-        return;
-      
-      Object[] selected = dialog.getSelectedOptions();
-      
-      if (selected.length == 0) {
-        swingUI.showMessage("No building blocks selected for export.", "Error", IView.ERROR_MESSAGE);
-        return;      
-      }
-      
-      Map<String, Collection<IDIYComponent<?>>> selectedBlocks = new HashMap<String, Collection<IDIYComponent<?>>>();
-      for (Object key : selected) {
-        selectedBlocks.put(key.toString(), blocks.get(key));
-      }
-
       final BuildingBlockPackage variantPkg = new BuildingBlockPackage(selectedBlocks, System.getProperty("user.name"));
 
       File initialFile =

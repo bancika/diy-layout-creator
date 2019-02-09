@@ -191,6 +191,7 @@ public class Presenter implements IPlugInPort {
 
     // lockedLayers = EnumSet.noneOf(ComponentLayer.class);
     // visibleLayers = EnumSet.allOf(ComponentLayer.class);
+    upgradeVariants();
   }
 
   public void installPlugin(IPlugIn plugIn) {
@@ -2632,5 +2633,48 @@ public class Presenter implements IPlugInPort {
     LOG.info(String.format("Loaded building blocks for %d components", pkg.getBlocks().size()));
     
     return pkg.getBlocks().size();
+  }
+  
+  private static boolean upgradedVariants = false;
+  
+  @SuppressWarnings("unchecked")
+  private synchronized void upgradeVariants() {
+    if (upgradedVariants)
+      return;
+    
+    upgradedVariants = true;
+    
+    LOG.info("Checking if variants need to be updated");
+    Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);    
+    Map<String, List<Template>> variantMap =
+        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+    
+    if (variantMap == null)
+      return;
+    
+    Map<String, ComponentType> typeMap = new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
+    
+    Map<String, List<ComponentType>> componentTypes = getComponentTypes();
+    for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet())
+      for (ComponentType type : entry.getValue()) {
+        typeMap.put(type.getInstanceClass().getCanonicalName(), type);
+        typeMap.put(type.getCategory() + "." + type.getName(), type);
+        if (type.getCategory().contains("Electro-Mechanical"))
+          typeMap.put(type.getCategory().replace("Electro-Mechanical", "Electromechanical") + "." + type.getName(), type);
+      }
+    
+    Map<String, List<Template>> newVariantMap = new HashMap<String, List<Template>>();
+    
+    lookupMap.putAll(variantMap);
+    
+    for (Map.Entry<String, List<Template>> entry : variantMap.entrySet()) {
+      if (typeMap.containsKey(entry.getKey())) {
+        newVariantMap.put(typeMap.get(entry.getKey()).getInstanceClass().getCanonicalName(), entry.getValue()); // great, nothing to upgrade
+      } else {
+        LOG.warn("Could not upgrade variants for: " + entry.getKey());
+      }
+    }
+    
+    ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, newVariantMap);
   }
 }
