@@ -94,6 +94,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     
     // The half space is used to do rounding when calculating the range.
     int halfSpace = spacing / 2;
+    CoordinateOrigin origin = getCoordinateOrigin();
     
     if (getCoordinateDisplay() != CoordinateDisplay.None) {
       int range;
@@ -101,7 +102,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
       CoordinateType yType = getyType();
       Point drawPoint = new Point(firstPoint);
       
-      if (coordinateOrigin == CoordinateOrigin.Top_Left || coordinateOrigin == CoordinateOrigin.Top_Right) {
+      if (origin == CoordinateOrigin.Top_Left || origin == CoordinateOrigin.Top_Right) {
     	range = (int) ((secondPoint.y - firstPoint.y + halfSpace) / spacing);
     	yOffset = spacing;
       } else {
@@ -132,7 +133,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
       CoordinateType xType = getxType();
       Point drawPoint = new Point(firstPoint);
       
-      if (coordinateOrigin == CoordinateOrigin.Top_Left || coordinateOrigin == CoordinateOrigin.Bottom_Left) {
+      if (origin == CoordinateOrigin.Top_Left || origin == CoordinateOrigin.Bottom_Left) {
         range = (int) ((secondPoint.x - firstPoint.x + halfSpace) / spacing);
         xOffset = spacing;
       } else {
