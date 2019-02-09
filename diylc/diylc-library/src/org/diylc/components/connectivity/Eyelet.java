@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
@@ -67,6 +68,7 @@ public class Eyelet extends AbstractComponent<String> {
     }
     int diameter = getClosestOdd((int) size.convertToPixels());
     int holeDiameter = getClosestOdd((int) holeSize.convertToPixels());
+    g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1f));
     g2d.setColor(color);
     drawingObserver.startTrackingContinuityArea(true);
     g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
