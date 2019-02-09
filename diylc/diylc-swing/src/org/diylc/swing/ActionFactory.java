@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +41,7 @@ import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.BuildingBlockPackage;
+import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
@@ -63,6 +65,7 @@ import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
+import org.diylc.swingframework.CheckBoxListDialog;
 import org.diylc.swingframework.IDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.utils.BomEntry;
@@ -123,8 +126,8 @@ public class ActionFactory {
     return new PrintAction(drawingProvider, keyModifiers);
   }
   
-  public ExportVariantsAction createExportVariantsAction(ISwingUI swingUI) {
-    return new ExportVariantsAction(swingUI);
+  public ExportVariantsAction createExportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
+    return new ExportVariantsAction(swingUI, plugInPort);
   }
   
   public ImportVariantsAction createImportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
@@ -689,11 +692,20 @@ public class ActionFactory {
     private static final long serialVersionUID = 1L;
 
     private ISwingUI swingUI;
+    private IPlugInPort plugInPort;
+    
+    private Map<String, ComponentType> typeMap = new HashMap<String, ComponentType>();
 
-    public ExportVariantsAction(ISwingUI swingUI) {
+    public ExportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
       super();
       this.swingUI = swingUI;
+      this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Export Variants");
+      
+      Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
+      for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet())
+        for (ComponentType type : entry.getValue())
+          typeMap.put(type.getInstanceClass().getCanonicalName(), type);
     }
 
     @SuppressWarnings("unchecked")
@@ -706,8 +718,33 @@ public class ActionFactory {
         swingUI.showMessage("No variants found to export.", "Error", IView.ERROR_MESSAGE);
         return;
       }
+      
+      List<ComponentType> types = new ArrayList<ComponentType>();
+      for (String className : variantMap.keySet())
+        types.add(typeMap.get(className));
+      
+      CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Variants", types.toArray());
+      
+      dialog.setVisible(true);      
+      
+      if (dialog.getSelectedButtonCaption() != "OK")
+        return;
+      
+      Object[] selected = dialog.getSelectedOptions();
+      
+      if (selected.length == 0) {
+        swingUI.showMessage("No building blocks selected for export.", "Error", IView.ERROR_MESSAGE);
+        return;      
+      }
+      
+      Map<String, List<Template>> selectedVariants = new HashMap<String, List<Template>>();
+      for (Object key : selected) {
+        ComponentType type = (ComponentType) key;
+        String clazz = type.getInstanceClass().getCanonicalName();
+        selectedVariants.put(clazz, variantMap.get(clazz));
+      }
 
-      final VariantPackage variantPkg = new VariantPackage(variantMap, System.getProperty("user.name"));
+      final VariantPackage variantPkg = new VariantPackage(selectedVariants, System.getProperty("user.name"));
 
       File initialFile =
           new File(variantPkg.getOwner() == null ? "variants.xml" : ("variants by "
@@ -769,7 +806,6 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ImportVariantsAction triggered");
-      
 
       final File file =
           DialogFactory.getInstance().showOpenDialog(FileFilterEnum.XML.getFilter(),
@@ -821,8 +857,27 @@ public class ActionFactory {
         swingUI.showMessage("No building blocks found to export.", "Error", IView.ERROR_MESSAGE);
         return;
       }
+      
+      CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Building Blocks", blocks.keySet().toArray(new String[0]));
+      
+      dialog.setVisible(true);      
+      
+      if (dialog.getSelectedButtonCaption() != "OK")
+        return;
+      
+      Object[] selected = dialog.getSelectedOptions();
+      
+      if (selected.length == 0) {
+        swingUI.showMessage("No building blocks selected for export.", "Error", IView.ERROR_MESSAGE);
+        return;      
+      }
+      
+      Map<String, Collection<IDIYComponent<?>>> selectedBlocks = new HashMap<String, Collection<IDIYComponent<?>>>();
+      for (Object key : selected) {
+        selectedBlocks.put(key.toString(), blocks.get(key));
+      }
 
-      final BuildingBlockPackage variantPkg = new BuildingBlockPackage(blocks, System.getProperty("user.name"));
+      final BuildingBlockPackage variantPkg = new BuildingBlockPackage(selectedBlocks, System.getProperty("user.name"));
 
       File initialFile =
           new File(variantPkg.getOwner() == null ? "building blocks.xml" : ("building blocks by "

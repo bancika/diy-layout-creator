@@ -92,7 +92,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(actionFactory.createExportBlocksAction(swingUI), INTEGRATION_TITLE);
     swingUI.injectMenuAction(null, INTEGRATION_TITLE);
     swingUI.injectMenuAction(actionFactory.createImportVariantsAction(swingUI, plugInPort), INTEGRATION_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportVariantsAction(swingUI), INTEGRATION_TITLE);    
+    swingUI.injectMenuAction(actionFactory.createExportVariantsAction(swingUI, plugInPort), INTEGRATION_TITLE);    
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExitAction(plugInPort), FILE_TITLE);
   }

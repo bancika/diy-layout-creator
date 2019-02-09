@@ -2413,7 +2413,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Add switched type to "Open 1/4" Jack" component</description>
-				</org.diylc.appframework.update.Change>			
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Selectable coordinate origin point for all perforated boards</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Vast improvement of rendering performance and memory management, especially with large layouts</description>
