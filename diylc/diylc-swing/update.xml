@@ -2391,7 +2391,7 @@
 				<minor>53</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2019-02-03 00:00:00.000 CET</releaseDate>
+			<releaseDate>2019-02-09 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -2400,7 +2400,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to export and import building blocks and variants from the File menu</description>
+					<description>Ability to export and import building blocks and variants from the "File" menu</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -2440,7 +2440,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Drag&amp;Drop from the tree sometimes picks up a wrong component type</description>
+					<description>Drag&amp;Drop from the component tree sometimes picks up a wrong component type</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
