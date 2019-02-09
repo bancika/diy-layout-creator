@@ -61,6 +61,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Color coordinateColor = COORDINATE_COLOR;
   protected Boolean drawCoordinates = null;
   protected CoordinateType xType = CoordinateType.Numbers;
+  protected CoordinateOrigin coordinateOrigin = CoordinateOrigin.Top_Left;
   protected CoordinateDisplay coordinateDisplay = CoordinateDisplay.One_Side;
   protected CoordinateType yType = CoordinateType.Letters;
 
@@ -90,35 +91,69 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected void drawCoordinates(Graphics2D g2d, int spacing, Project project) {
     g2d.setColor(coordinateColor);
     g2d.setFont(project.getFont().deriveFont(COORDINATE_FONT_SIZE));
-
+    
+    // The half space is used to do rounding when calculating the range.
+    int halfSpace = spacing / 2;
+    CoordinateOrigin origin = getCoordinateOrigin();
+    
     if (getCoordinateDisplay() != CoordinateDisplay.None) {
-      Point p = new Point(firstPoint);
-      int t = 1;
-      while (p.y < secondPoint.y - spacing) {
-        p.y += spacing;
-        int offset = (getyType() == CoordinateType.Numbers && t >= 10) || (getyType() == CoordinateType.Letters && t >= 27) ? 0 : 2;
-        drawCenteredText(g2d, getyType() == CoordinateType.Letters ? getCoordinateLabel(t) : Integer.toString(t), p.x + offset, p.y, HorizontalAlignment.LEFT,
-            VerticalAlignment.CENTER);
-        if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
-          drawCenteredText(g2d, getyType() == CoordinateType.Letters ? getCoordinateLabel(t) : Integer.toString(t), secondPoint.x - offset, p.y, HorizontalAlignment.RIGHT,
-              VerticalAlignment.CENTER);
-        }
-        t++;
+      int range;
+      int yOffset;
+      CoordinateType yType = getyType();
+      Point drawPoint = new Point(firstPoint);
+      
+      if (origin == CoordinateOrigin.Top_Left || origin == CoordinateOrigin.Top_Right) {
+    	range = (int) ((secondPoint.y - firstPoint.y + halfSpace) / spacing);
+    	yOffset = spacing;
+      } else {
+    	range = (int) ((secondPoint.y - firstPoint.y + halfSpace) / spacing);
+    	yOffset = -spacing;
+    	drawPoint.y = secondPoint.y;
+      }
+      
+      for (int c = 1; c < range; c++) {
+    	int xOffset = (yType == CoordinateType.Numbers && c >= 10) || (yType == CoordinateType.Letters && c >= 27) ? 0 : 2;
+    	String label = yType == CoordinateType.Letters ? getCoordinateLabel(c) : Integer.toString(c);
+    	
+    	drawPoint.y += yOffset;
+    	drawCenteredText(g2d, label, 
+    		firstPoint.x + xOffset, drawPoint.y, 
+    		HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+    	if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
+    	  drawCenteredText(g2d, label, 
+    		  secondPoint.x - xOffset, drawPoint.y, 
+    		  HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+    	}
       }
     }
 
     if (getCoordinateDisplay() != CoordinateDisplay.None) {
-      Point p = new Point(firstPoint);
-      int t = 1;
-      while (p.x < secondPoint.x - spacing) {
-        p.x += spacing;      
-        drawCenteredText(g2d, getxType() == CoordinateType.Letters ? getCoordinateLabel(t) : Integer.toString(t), p.x, p.y - 2, HorizontalAlignment.CENTER,
-            VerticalAlignment.TOP);
+      int range;
+      int xOffset;
+      CoordinateType xType = getxType();
+      Point drawPoint = new Point(firstPoint);
+      
+      if (origin == CoordinateOrigin.Top_Left || origin == CoordinateOrigin.Bottom_Left) {
+        range = (int) ((secondPoint.x - firstPoint.x + halfSpace) / spacing);
+        xOffset = spacing;
+      } else {
+        range = (int) ((secondPoint.x - firstPoint.x + halfSpace) / spacing);
+        xOffset = -spacing;
+        drawPoint.x = secondPoint.x;
+      }
+      
+      for (int c = 1; c < range; c++) {
+        String label = xType == CoordinateType.Letters ? getCoordinateLabel(c) : Integer.toString(c);
+        
+        drawPoint.x += xOffset;
+        drawCenteredText(g2d, label, 
+            drawPoint.x, firstPoint.y - 2, 
+            HorizontalAlignment.CENTER, VerticalAlignment.TOP);
         if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
-          drawCenteredText(g2d, getxType() == CoordinateType.Letters ? getCoordinateLabel(t) : Integer.toString(t), p.x, (int) (secondPoint.y - COORDINATE_FONT_SIZE), HorizontalAlignment.CENTER,
-              VerticalAlignment.BOTTOM);
+          drawCenteredText(g2d, label, 
+              drawPoint.x, (int) (secondPoint.y - COORDINATE_FONT_SIZE), 
+              HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
         }
-        t++;
       }
     }
   }
@@ -188,6 +223,17 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     this.coordinateDisplay = coordinateDisplay;
   }
 
+  @EditableProperty(name = "Coordinate Origin")
+  public CoordinateOrigin getCoordinateOrigin() {
+	  if (coordinateOrigin == null)
+		  coordinateOrigin = CoordinateOrigin.Top_Left;
+	  return coordinateOrigin;
+  }
+  
+  public void setCoordinateOrigin(CoordinateOrigin coordinateOrigin) {
+	  this.coordinateOrigin = coordinateOrigin;
+  }
+  
   @EditableProperty(name = "Y")
   public CoordinateType getyType() {
     if (yType == null)
@@ -246,6 +292,15 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public static enum CoordinateDisplay {
     None, One_Side, Both_Sides;
     
+    @Override
+    public String toString() {
+      return super.toString().replace('_', ' ');
+    };
+  }
+  
+  public static enum CoordinateOrigin {
+    Top_Left, Top_Right, Bottom_Right, Bottom_Left;
+
     @Override
     public String toString() {
       return super.toString().replace('_', ' ');
