@@ -29,11 +29,11 @@ import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.Abstract3LegSymbol;
+import org.diylc.components.semiconductors.SymbolFlipping;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.KeywordPolicy;
-import org.diylc.components.Abstract3LegSymbol;
-import org.diylc.components.semiconductors.SymbolFlipping;
 
 @ComponentDescriptor(name = "Potentiometer", author = "MCbx", category = "Schematic Symbols",
     instanceNamePrefix = "VR", description = "Potentiometer symbol", stretchable = false,

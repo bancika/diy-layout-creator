@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
@@ -37,6 +38,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -67,6 +69,7 @@ public class Eyelet extends AbstractComponent<String> {
     }
     int diameter = getClosestOdd((int) size.convertToPixels());
     int holeDiameter = getClosestOdd((int) holeSize.convertToPixels());
+    g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1f));
     g2d.setColor(color);
     drawingObserver.startTrackingContinuityArea(true);
     g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
@@ -95,7 +98,7 @@ public class Eyelet extends AbstractComponent<String> {
     g2d.drawOval((width - holeDiameter) / 2, (height - holeDiameter) / 2, holeDiameter, holeDiameter);
   }
 
-  @EditableProperty(validatorClass = PositiveMeasureValidator.class)
+  @EditableProperty(validatorClass = PositiveNonZeroMeasureValidator.class)
   public Size getSize() {
     return size;
   }

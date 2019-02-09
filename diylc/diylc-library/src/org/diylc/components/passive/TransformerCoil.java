@@ -41,7 +41,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
-import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -159,7 +159,7 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
     this.color = color;
   }
 
-  @EditableProperty(name = "Size", validatorClass = PositiveMeasureValidator.class)
+  @EditableProperty(name = "Size", validatorClass = PositiveNonZeroMeasureValidator.class)
   public Size getTapSpacing() {
     return tapSpacing;
   }

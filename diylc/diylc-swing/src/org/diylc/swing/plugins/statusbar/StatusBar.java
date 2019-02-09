@@ -310,7 +310,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private JLabel getPositionLabel() {
     if (positionLabel == null) {
       positionLabel = new JLabel();
-      positionLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+      positionLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
     }
     return positionLabel;
   }
