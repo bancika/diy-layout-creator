@@ -659,7 +659,7 @@ public class TreePanel extends JPanel {
           }
         }
         
-        setText("<html>" + payload.toString() + shortCutHtml + variantsHtml + "</html>");
+        setText("<html>" + payload.forDisplay() + shortCutHtml + variantsHtml + "</html>");
       }
 
       return this;
@@ -704,20 +704,23 @@ public class TreePanel extends JPanel {
       return clickListener;
     }
     
-    private String categoryForDisplay() {
-      String display = category;
-      Matcher match = contributedPattern.matcher(display);
-      if (match.find()) {
-        String name = match.group(1);
-        String owner = match.group(2);
-        display = name + "<font color='gray'>[" + owner + "]</font>"; 
+    public String forDisplay() {
+      if (componentType == null) {
+        String display = category;
+        Matcher match = contributedPattern.matcher(display);
+        if (match.find()) {
+          String name = match.group(1);
+          String owner = match.group(2);
+          display = name + "<font color='gray'>[" + owner + "]</font>"; 
+        }
+        return display;
       }
-      return display;
+      return componentType.getName();
     }
 
     @Override
     public String toString() {
-      return componentType == null ? categoryForDisplay() : componentType.getName();
+      return componentType == null ? category : componentType.getName();
     }
   }
 
