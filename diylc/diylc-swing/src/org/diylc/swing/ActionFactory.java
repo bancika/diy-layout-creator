@@ -28,7 +28,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -723,6 +726,13 @@ public class ActionFactory {
       for (String className : variantMap.keySet())
         types.add(typeMap.get(className));
       
+      Collections.sort(types, new Comparator<ComponentType>() {
+
+        @Override
+        public int compare(ComponentType o1, ComponentType o2) {
+          return o1.toString().compareToIgnoreCase(o2.toString());
+        }});
+      
       CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Variants", types.toArray());
       
       dialog.setVisible(true);      
@@ -858,7 +868,16 @@ public class ActionFactory {
         return;
       }
       
-      CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Building Blocks", blocks.keySet().toArray(new String[0]));
+      String[] options = blocks.keySet().toArray(new String[0]);
+      
+      Arrays.sort(options, new Comparator<String>() {
+
+        @Override
+        public int compare(String o1, String o2) {
+          return o1.compareToIgnoreCase(o2);
+        }});
+      
+      CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Building Blocks", options);
       
       dialog.setVisible(true);      
       
