@@ -28,8 +28,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 
-import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.common.OrientationHV;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -38,7 +38,7 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
-import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -132,7 +132,7 @@ public class VeroBoard extends AbstractBoard {
     this.stripColor = padColor;
   }
 
-  @EditableProperty(validatorClass = PositiveMeasureValidator.class)
+  @EditableProperty(validatorClass = PositiveNonZeroMeasureValidator.class)
   public Size getSpacing() {
     return spacing;
   }

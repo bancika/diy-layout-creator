@@ -21,9 +21,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
-import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
+import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;

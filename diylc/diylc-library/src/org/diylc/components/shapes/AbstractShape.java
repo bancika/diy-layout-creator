@@ -68,7 +68,7 @@ public abstract class AbstractShape extends AbstractTransparentComponent<Void> {
     this.borderColor = borderColor;
   }
 
-  @EditableProperty(name = "Border thickness", validatorClass = PositiveMeasureValidator.class)
+  @EditableProperty(name = "Border Thickness", validatorClass = PositiveMeasureValidator.class)
   public Size getBorderThickness() {
     return borderThickness;
   }

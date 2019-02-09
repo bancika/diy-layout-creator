@@ -46,7 +46,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -488,7 +488,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     this.borderColor = borderColor;
   }
 
-  @EditableProperty(name = "Length", defaultable = true, validatorClass = PositiveMeasureValidator.class)
+  @EditableProperty(name = "Length", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class)
   public Size getLength() {
     return length;
   }
@@ -497,7 +497,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     this.length = length;
   }
 
-  @EditableProperty(name = "Width", defaultable = true, validatorClass = PositiveMeasureValidator.class)
+  @EditableProperty(name = "Width", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class)
   public Size getWidth() {
     return width;
   }

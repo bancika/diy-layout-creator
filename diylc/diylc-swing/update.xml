@@ -2449,6 +2449,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Components do not load if the installation directory name contains a special character, like '!'</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Do not allow zero for size and spacing properties that could lead to crashes or unexpected behavior</description>
 				</org.diylc.appframework.update.Change>											
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
