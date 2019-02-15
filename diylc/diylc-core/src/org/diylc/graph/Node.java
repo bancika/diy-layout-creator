@@ -52,6 +52,6 @@ public class Node {
 
   @Override
   public String toString() {
-    return component.getName() + "." + pointIndex + " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")";
+    return component.getName() + "." + component.getControlPointNodeName(pointIndex) /*+ " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")"*/;
   }
 }

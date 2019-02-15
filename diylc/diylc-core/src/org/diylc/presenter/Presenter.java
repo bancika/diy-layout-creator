@@ -301,7 +301,7 @@ public class Presenter implements IPlugInPort {
     LOG.info(String.format("loadProjectFromFile(%s)", fileName));
     try {
       List<String> warnings = new ArrayList<String>();
-      Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName, warnings);
+      Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName, warnings);      
       loadProject(project, true);
       projectFileManager.fireFileStatusChanged();
       if (!warnings.isEmpty()) {
@@ -2687,8 +2687,8 @@ public class Presenter implements IPlugInPort {
   
   @SuppressWarnings("unchecked")
   @Override
-  public Map<GraphKey, Graph> extractGraphs() {    
-    Map<GraphKey, Graph> result = new HashMap<GraphKey, Graph>();
+  public Map<Graph, List<GraphKey>> extractGraphs() {    
+    Map<Graph, List<GraphKey>> result = new HashMap<Graph, List<GraphKey>>();
     List<Node> nodes = new ArrayList<Node>();
     
     List<ISwitch> switches = new ArrayList<ISwitch>();
@@ -2753,7 +2753,15 @@ public class Presenter implements IPlugInPort {
       }
       List<Line2D> connections = getConnections(switchPositions);  
       Graph graph = constructGraph(nodes, connections, continuity);
-      result.put(new GraphKey(posList), graph);
+      
+      // merge graphs that are effectivelly the same
+      if (result.containsKey(graph)) {
+        result.get(graph).add(new GraphKey(posList));
+      } else {
+        List<GraphKey> list = new ArrayList<GraphKey>();
+        list.add(new GraphKey(posList));
+        result.put(graph, list);
+      }
       
       // find the next combination if possible
       if (positions[i] < switches.get(i).getPositionCount() - 1) {

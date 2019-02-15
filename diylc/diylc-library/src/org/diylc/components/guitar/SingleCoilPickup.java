@@ -65,10 +65,11 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   private static Color BODY_COLOR = Color.white;
   private static Color BASE_COLOR = Color.gray;
-  private static Color POINT_COLOR = Color.lightGray;
+//  private static Color POINT_COLOR = Color.lightGray;
   private static Size WIDTH = new Size(15.5d, SizeUnit.mm);
   private static Size LENGTH = new Size(83d, SizeUnit.mm);
   private static Size BASE_RADIUS = new Size(0.15d, SizeUnit.in);
+  private static Size POINT_SPACING = new Size(0.1d, SizeUnit.in);
 
   // strat-specific
   private static Size STRAT_LIP_WIDTH = new Size(5d, SizeUnit.mm);
@@ -100,6 +101,51 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   private Color baseColor = BASE_COLOR;
   private SingleCoilType type = SingleCoilType.Stratocaster;
   private PolePieceType polePieceType = PolePieceType.Rods;
+  
+  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  
+  public SingleCoilPickup() {
+    updateControlPoints();
+  }
+  
+  private Point[] getControlPoints() {
+    if (controlPoints == null) {
+      controlPoints =
+          new Point[] {controlPoint, new Point(controlPoint.x, controlPoint.y),
+              new Point(controlPoint.x, controlPoint.y), new Point(controlPoint.x, controlPoint.y)};
+      updateControlPoints();
+    }
+    return controlPoints;
+  }
+  
+  @SuppressWarnings("incomplete-switch")
+  private void updateControlPoints() {
+    Point[] points = getControlPoints();
+    int pointSpacing = (int) POINT_SPACING.convertToPixels();
+    int dx = 1;
+    int dy = 0;
+    if (orientation != Orientation.DEFAULT) {
+      switch (orientation) {
+        case _90:
+          dx = 0;
+          dy = -1;
+          break;
+        case _180:
+          dx = -1;
+          dy = 0;
+          break;
+        case _270:
+          dx = 0;
+          dy = 1;
+          break;
+      }
+    }
+    points[1].setLocation(points[0].x + dx * pointSpacing, points[0].y + dy * pointSpacing);
+    points[2]
+        .setLocation(points[0].x + 2 * dx * pointSpacing, points[0].y + 2 * dy * pointSpacing);
+    points[3]
+        .setLocation(points[0].x + 3 * dx * pointSpacing, points[0].y + 3 * dy * pointSpacing);
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -120,8 +166,8 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       g2d.fill(body[3]);
     else
       g2d.fill(body[0]);
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-    g2d.fill(body[1]);
+//    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
+//    g2d.fill(body[1]);
 
     // g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
     // g2d.fill(body[3]);
@@ -191,8 +237,9 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     if (body == null) {
       body = new Shape[5];
 
-      int x = controlPoint.x;
-      int y = controlPoint.y;
+      Point[] points = getControlPoints();
+      int x = (points[0].x + points[3].x) / 2;
+      int y = (points[0].y + points[3].y) / 2;;
       int width = (int) WIDTH.convertToPixels();
       int length = (int) LENGTH.convertToPixels();
       int stratInnerLength = (int) STRAT_INNER_LENGTH.convertToPixels();
@@ -388,7 +435,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   @Override
   public int getControlPointCount() {
-    return 1;
+    return 4;
   }
 
   @Override
@@ -403,12 +450,12 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   @Override
   public Point getControlPoint(int index) {
-    return controlPoint;
+    return getControlPoints()[index];
   }
 
   @Override
   public void setControlPoint(Point point, int index) {
-    this.controlPoint.setLocation(point);
+    getControlPoints()[index].setLocation(point);
     // Invalidate the body
     body = null;
   }
@@ -433,6 +480,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     this.orientation = orientation;
     // Invalidate the body
     body = null;
+    updateControlPoints();
   }
 
   @EditableProperty
@@ -468,7 +516,17 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   
   @Override
   public String getControlPointNodeName(int index) {
-    return getName() + ".PickupTerminal";
+    switch (index) {
+      case 0:
+        return"North Start";
+      case 1:
+        return "North End";
+      case 2:
+        return "South Start";
+      case 3:
+        return "South End";
+    }
+    return null;
   }
 
   public enum SingleCoilType {

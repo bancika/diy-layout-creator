@@ -21,6 +21,7 @@
 */
 package org.diylc.common;
 
+import java.util.List;
 import java.util.Map;
 
 import org.diylc.graph.Graph;
@@ -28,5 +29,5 @@ import org.diylc.graph.GraphKey;
 
 public interface IGraphProcessor {
 
-  Map<GraphKey, Graph> extractGraphs();
+  Map<Graph, List<GraphKey>> extractGraphs();
 }
