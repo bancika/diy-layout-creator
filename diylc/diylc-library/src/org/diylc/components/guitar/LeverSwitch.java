@@ -366,7 +366,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
     // Invalidate the body
     body = null;
   }
-
+ 
   public enum LeverSwitchType {
     DP3T("DP3T (Standard Strat)"), _4P5T("4P5T (Super/Mega)"), DP5T("DP5T");
 

@@ -283,4 +283,9 @@ public class Label extends AbstractComponent<String> {
   public void setValue(String value) {
     this.text = value;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 }

@@ -350,6 +350,11 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
   public void setPoleColor(Color poleColor) {
     this.poleColor = poleColor;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return getName() + ".PickupTerminal";
+  }
 
   public enum P90Type {
     DOG_EAR("Dog Ear", DOG_EAR_LENGTH, DOG_EAR_WIDTH, DOG_EAR_EDGE_RADIUS), SOAP_BAR("Soap Bar", SOAP_BAR_LENGTH,

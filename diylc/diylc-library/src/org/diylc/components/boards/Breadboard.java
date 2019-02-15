@@ -365,6 +365,11 @@ public class Breadboard extends AbstractComponent<Void> {
 
   @Override
   public void setValue(Void value) {}
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 
   public enum BreadboardSize {
     Half, Full

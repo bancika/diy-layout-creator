@@ -1,33 +1,33 @@
 package org.diylc.graph;
 
+import org.diylc.core.IDIYComponent;
+import org.diylc.core.ISwitch;
+
 public class Position {
 
-  private String ownerType;
-  private String owner;
-  private String name;
-  
-  public Position() {    
+  private ISwitch theSwitch;
+  private int position;
+
+  public Position(ISwitch theSwitch, int position) {
+    super();
+    this.theSwitch = theSwitch;
+    this.position = position;
   }
 
-  public String getOwnerType() {
-    return ownerType;
+  public ISwitch getSwitch() {
+    return theSwitch;
   }
 
-  public String getOwner() {
-    return owner;
-  }
-
-  public String getName() {
-    return name;
+  public int getPosition() {
+    return position;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-    result = prime * result + ((ownerType == null) ? 0 : ownerType.hashCode());
+    result = prime * result + position;
+    result = prime * result + ((theSwitch == null) ? 0 : theSwitch.hashCode());
     return result;
   }
 
@@ -40,26 +40,18 @@ public class Position {
     if (getClass() != obj.getClass())
       return false;
     Position other = (Position) obj;
-    if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
+    if (position != other.position)
       return false;
-    if (owner == null) {
-      if (other.owner != null)
+    if (theSwitch == null) {
+      if (other.theSwitch != null)
         return false;
-    } else if (!owner.equals(other.owner))
-      return false;
-    if (ownerType == null) {
-      if (other.ownerType != null)
-        return false;
-    } else if (!ownerType.equals(other.ownerType))
+    } else if (!theSwitch.equals(other.theSwitch))
       return false;
     return true;
   }
 
   @Override
   public String toString() {
-    return ownerType + "." + owner + "." + name;
+    return (theSwitch instanceof IDIYComponent<?> ? ((IDIYComponent<?>) theSwitch).getName() + "." : "") + theSwitch.getPositionName(position);
   }
 }

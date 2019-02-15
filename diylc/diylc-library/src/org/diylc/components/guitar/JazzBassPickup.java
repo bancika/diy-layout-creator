@@ -326,4 +326,9 @@ public class JazzBassPickup extends AbstractTransparentComponent<String> {
   public void setPoleColor(Color poleColor) {
     this.poleColor = poleColor;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return getName() + ".PickupTerminal";
+  }
 }

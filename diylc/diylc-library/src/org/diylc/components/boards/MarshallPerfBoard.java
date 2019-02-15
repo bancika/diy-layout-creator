@@ -104,6 +104,11 @@ public class MarshallPerfBoard extends AbstractBoard {
   public void setSpacing(Size spacing) {
     this.spacing = spacing;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {

@@ -160,6 +160,11 @@ public class GroundFill extends AbstractComponent<Void> {
   @Deprecated
   @Override
   public void setValue(Void value) {}
+  
+  @Override
+  public String getControlPointNodeName(int index) {   
+    return null;
+  }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {

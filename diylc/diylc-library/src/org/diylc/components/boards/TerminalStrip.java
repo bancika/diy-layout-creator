@@ -450,4 +450,9 @@ public class TerminalStrip extends AbstractTransparentComponent<String> {
   public void setBorderColor(Color borderColor) {
     this.borderColor = borderColor;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return "TerminalStrip" + index;
+  }
 }

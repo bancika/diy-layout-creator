@@ -231,4 +231,9 @@ public class TraceCut extends AbstractComponent<Void> {
   public String getName() {
     return super.getName();
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {   
+    return null;
+  }
 }

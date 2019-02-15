@@ -280,4 +280,9 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
     }
     return o1.equals(o2);
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return getName() + "." + index;
+  }
 }

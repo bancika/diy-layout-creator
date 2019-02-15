@@ -315,4 +315,9 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
     // Invalidate the body
     body = null;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return getName() + (index == 0 ? "Tip" : "Sleeve");
+  }
 }

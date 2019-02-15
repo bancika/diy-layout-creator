@@ -568,6 +568,11 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     // Invalidate the body
     body = null;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return "PickupTerminal";
+  }
 
   public static enum HumbuckerType {
 

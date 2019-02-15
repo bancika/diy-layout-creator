@@ -165,4 +165,9 @@ public class Eyelet extends AbstractComponent<String> {
   public void setValue(String value) {
     this.value = value;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {   
+    return null;
+  }
 }

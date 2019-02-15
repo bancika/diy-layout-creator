@@ -157,4 +157,9 @@ public class CutLine extends AbstractTransparentComponent<Void> {
 
   @Override
   public void setValue(Void value) {}
+  
+  @Override
+  public String getControlPointNodeName(int index) {   
+    return null;
+  }
 }

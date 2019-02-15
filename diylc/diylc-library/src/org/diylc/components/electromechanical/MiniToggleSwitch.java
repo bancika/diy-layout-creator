@@ -39,6 +39,7 @@ import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
@@ -52,7 +53,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", autoEdit = false)
-public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> {
+public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -377,5 +378,51 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
   public void setBorderColor(Color borderColor) {
     this.borderColor = borderColor;
+  }
+  
+  // switch stuff
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    // we don't want the switch to produce any nodes, it just makes connections
+    return null;
+  }
+
+  @Override
+  public int getPositionCount() {
+    switch (switchType) {
+      case SPST:        
+      case SPDT:
+      case DPDT:
+      case _3PDT:
+      case _4PDT:
+      case _5PDT:
+        return 2;        
+      case _DP3T_mustang:
+        return 3;      
+    }
+    return 2;
+  }
+
+  @Override
+  public String getPositionName(int position) {
+    return Integer.toString(position);
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2, int position) {
+    switch (switchType) {
+      case SPST:
+        return position == 1;
+      case SPDT:        
+      case DPDT:
+      case _3PDT:
+      case _4PDT:
+      case _5PDT:
+        return (index2 - index1) < 3 && index1 % 3 == position && index2 % 3 == position + 1;        
+      case _DP3T_mustang:
+        return (index2 - index1) < 3 && index1 % 3 == 0 && index2 % 3 == position + 1;      
+    }
+    return false;
   }
 }

@@ -132,5 +132,5 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
 
   public void setStripeColor(Color stripeColor) {
     this.stripeColor = stripeColor;
-  }
+  }  
 }

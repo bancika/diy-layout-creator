@@ -2440,7 +2440,7 @@
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Better rendering of TO-3 transformer package</description>
+					<description>Better rendering of TO-3 transistor package</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

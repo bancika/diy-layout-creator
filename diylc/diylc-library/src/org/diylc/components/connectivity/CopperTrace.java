@@ -162,4 +162,9 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
   protected boolean IsCopperArea() {
     return true;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {   
+    return null;
+  }
 }

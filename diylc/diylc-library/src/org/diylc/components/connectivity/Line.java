@@ -263,6 +263,11 @@ public class Line extends AbstractLeadedComponent<Void> {
   protected Size getDefaultLength() {
     return null;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {   
+    return null;
+  }
 
   @Deprecated
   @Override

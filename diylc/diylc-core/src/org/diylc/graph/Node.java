@@ -1,24 +1,25 @@
 package org.diylc.graph;
 
+import org.diylc.core.IDIYComponent;
+
 
 public class Node {
 
-  private String type;
-  private String component;
-  private String terminal;
+  private IDIYComponent<?> component;
+  private int pointIndex;
 
-  public Node() {}
-
-  public String getType() {
-    return type;
+  public Node(IDIYComponent<?> component, int pointIndex) {
+    super();
+    this.component = component;
+    this.pointIndex = pointIndex;
   }
 
-  public String getComponent() {
+  public IDIYComponent<?> getComponent() {
     return component;
   }
 
-  public String getTerminal() {
-    return terminal;
+  public int getPointIndex() {
+    return pointIndex;
   }
 
   @Override
@@ -26,8 +27,7 @@ public class Node {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((component == null) ? 0 : component.hashCode());
-    result = prime * result + ((terminal == null) ? 0 : terminal.hashCode());
-    result = prime * result + ((type == null) ? 0 : type.hashCode());
+    result = prime * result + pointIndex;
     return result;
   }
 
@@ -45,21 +45,13 @@ public class Node {
         return false;
     } else if (!component.equals(other.component))
       return false;
-    if (terminal == null) {
-      if (other.terminal != null)
-        return false;
-    } else if (!terminal.equals(other.terminal))
-      return false;
-    if (type == null) {
-      if (other.type != null)
-        return false;
-    } else if (!type.equals(other.type))
+    if (pointIndex != other.pointIndex)
       return false;
     return true;
   }
 
   @Override
   public String toString() {
-    return type + "." + component + "." + terminal;
+    return component.getName() + "." + pointIndex + " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")";
   }
 }

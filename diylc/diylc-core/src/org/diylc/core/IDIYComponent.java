@@ -111,7 +111,17 @@ public interface IDIYComponent<T> extends Serializable {
    */
   boolean canControlPointOverlap(int index);
 
+  /**  
+   * @param index
+   * @return {@link VisibilityPolicy} of the control point.
+   */
   VisibilityPolicy getControlPointVisibilityPolicy(int index);
+  
+  /**  
+   * @param index
+   * @return name of the control point node, if the control point represents a graph node, null otherwise.
+   */
+  String getControlPointNodeName(int index);
 
   /**
    * Draws the component onto the {@link Graphics2D}.
@@ -153,5 +163,5 @@ public interface IDIYComponent<T> extends Serializable {
    * @param other
    * @return
    */
-  boolean equalsTo(IDIYComponent<?> other);
+  boolean equalsTo(IDIYComponent<?> other); 
 }

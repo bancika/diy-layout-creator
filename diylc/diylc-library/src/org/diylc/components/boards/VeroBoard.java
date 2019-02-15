@@ -149,6 +149,11 @@ public class VeroBoard extends AbstractBoard {
   public void setOrientation(OrientationHV orientation) {
     this.orientation = orientation;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {

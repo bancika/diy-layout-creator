@@ -111,4 +111,9 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
   public LineStyle getStyle() {   
     return super.getStyle();
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {   
+    return null;
+  }
 }

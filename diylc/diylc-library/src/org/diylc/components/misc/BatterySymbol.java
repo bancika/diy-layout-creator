@@ -131,6 +131,9 @@ public class BatterySymbol extends AbstractSchematicLeadedSymbol<String> {
     g2d.drawLine(height / 2 - 6 * width / 32, height / 2 - 3 * width / 32, height / 2 - 6 * width / 32, height / 2 - 7
         * width / 32);
   }
-
-
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return getName() + "." + (index == 0 ? "+" : "-");
+  }
 }

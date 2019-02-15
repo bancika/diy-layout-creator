@@ -24,6 +24,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
 import java.awt.geom.Area;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedInputStream;
@@ -67,6 +68,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.common.VariantPackage;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.ISwitch;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
@@ -74,6 +76,11 @@ import org.diylc.core.Theme;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.graph.Graph;
+import org.diylc.graph.GraphKey;
+import org.diylc.graph.Node;
+import org.diylc.graph.Position;
+import org.diylc.graph.Vertex;
 import org.diylc.utils.Constants;
 
 import com.thoughtworks.xstream.XStream;
@@ -2677,4 +2684,271 @@ public class Presenter implements IPlugInPort {
     
     ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, newVariantMap);
   }
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public Map<GraphKey, Graph> extractGraphs() {    
+    Map<GraphKey, Graph> result = new HashMap<GraphKey, Graph>();
+    List<Node> nodes = new ArrayList<Node>();
+    
+    List<ISwitch> switches = new ArrayList<ISwitch>();
+    for (IDIYComponent<?> c : currentProject.getComponents()) {
+      ComponentType type =
+          ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
+      // extract nodes
+      if (!type.isContinuity()) {
+        for (int i = 0; i < c.getControlPointCount(); i++) {
+          String nodeName = c.getControlPointNodeName(i);
+          if (nodeName != null) {
+            nodes.add(new Node(c, i));
+          }
+        }
+      }
+      
+      // extract switches
+      if (ISwitch.class.isAssignableFrom(type.getInstanceClass()))
+        switches.add((ISwitch)c);
+    }
+    
+    // save us the trouble
+    if (nodes.isEmpty())
+      return null;
+    
+    // if there are no switches, make one with 1 position so we get 1 result back
+    if (switches.isEmpty())
+      switches.add(new ISwitch() {
+        
+        @Override
+        public String getPositionName(int position) {
+          return "Default";
+        }
+        
+        @Override
+        public int getPositionCount() {
+          return 1;
+        }
+        
+        @Override
+        public boolean arePointsConnected(int index1, int index2, int position) {
+          return false;
+        }
+      });
+    
+    // construct all possible combinations
+    int[] positions = new int[switches.size()];
+    for (int i = 0; i < switches.size(); i++)
+      positions[i] = 0;
+    
+    // grab continuity areas
+    List<Area> continuity = drawingManager.getContinuityAreas(currentProject);
+    
+    int i = switches.size() - 1;
+    while (i >= 0) {
+      // process the current combination
+      Map<ISwitch, Integer> switchPositions = new HashMap<ISwitch, Integer>();
+      List<Position> posList = new ArrayList<Position>();
+      for (int j = 0; j < positions.length; j++) {
+        switchPositions.put(switches.get(j), positions[j]);
+        posList.add(new Position(switches.get(j), positions[j]));
+      }
+      List<Line2D> connections = getConnections(switchPositions);  
+      Graph graph = constructGraph(nodes, connections, continuity);
+      result.put(new GraphKey(posList), graph);
+      
+      // find the next combination if possible
+      if (positions[i] < switches.get(i).getPositionCount() - 1) {
+        positions[i]++;
+      } else {
+        while (i >= 0 && positions[i] == switches.get(i).getPositionCount() - 1)
+          i--;
+        if (i >= 0) {
+          positions[i]++;
+          for (int j = i + 1; j < positions.length; j++)
+            positions[j] = 0;
+          i = switches.size() - 1;
+        }        
+      }
+    }
+        
+    return result;
+  }
+  
+  private Graph constructGraph(List<Node> nodes, List<Line2D> connections, List<Area> continuityAreas) {
+    Graph graph = new Graph();
+    
+    StringBuilder sb = new StringBuilder();
+    sb.append("Nodes:").append("\n");
+    for (Node n : nodes) {
+      sb.append(n.toString()).append("\n");
+    }
+    sb.append("Connections:").append("\n");
+    for (Line2D n : connections) {
+      sb.append(n.getP1()).append(":").append(n.getP2()).append("\n");
+    }
+    LOG.debug(sb.toString());
+
+    double t = DrawingManager.CONTROL_POINT_SIZE;
+    for (int i = 0; i < nodes.size() - 1; i++)
+      for (int j = i + 1; j < nodes.size(); j++) {
+        Node node1 = nodes.get(i);
+        Node node2 = nodes.get(j);
+        Point2D point1 = node1.getComponent().getControlPoint(node1.getPointIndex());
+        Point2D point2 = node2.getComponent().getControlPoint(node2.getPointIndex());
+        
+        // try both directions
+        if (point1.distance(point2) < t || 
+            checkGraphConnection(point1, point2, connections, continuityAreas, new boolean[connections.size()]) || 
+            checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()])) {
+          graph.getVertices().add(new Vertex(node1, node2));        
+        }        
+      }
+    
+    return graph;
+  }
+  
+  private boolean checkGraphConnection(Point2D point1, Point2D point2, List<Line2D> connections,
+      List<Area> continuityAreas, boolean[] visited) {
+    double t = DrawingManager.CONTROL_POINT_SIZE;
+    
+    if (point1.distance(point2) < t)
+      return true;
+    
+    for (Area a : continuityAreas) {
+      if (a.contains(point1) && a.contains(point2))
+        return true;
+    }
+    
+    for (int i = 0; i < connections.size(); i++) {
+      if (visited[i])
+        continue;
+      
+      Line2D c = connections.get(i);
+      if (point1.distance(c.getP1()) < t) {
+        visited[i] = true;
+        if (checkGraphConnection(c.getP2(), point2, connections, continuityAreas, visited))          
+          return true;        
+      }
+      if (point1.distance(c.getP2()) < t) {
+        visited[i] = true;
+        if (checkGraphConnection(c.getP1(), point2, connections, continuityAreas, visited))          
+          return true;        
+      }
+    }
+    
+    return false;
+  }
+
+  @SuppressWarnings("unchecked")
+  private List<Line2D> getConnections(Map<ISwitch, Integer> switchPositions) {
+    List<Line2D> connections = new ArrayList<Line2D>();
+    for (IDIYComponent<?> c : currentProject.getComponents()) {
+      ComponentType type =
+          ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
+      // handle direct connections
+      if (type.isContinuity()) {
+        connections.add(new Line2D.Double(c.getControlPoint(0), c.getControlPoint(c.getControlPointCount() - 1)));
+      }
+      // handle switches
+      if (ISwitch.class.isAssignableFrom(type.getInstanceClass()) && switchPositions.containsKey(c)) {
+        int position = switchPositions.get(c);
+        ISwitch s = (ISwitch)c;
+        for (int i = 0; i < c.getControlPointCount() - 1; i++)
+          for (int j = i + 1; j < c.getControlPointCount(); j++)
+            if (s.arePointsConnected(i, j, position))
+              connections.add(new Line2D.Double(c.getControlPoint(i), c.getControlPoint(j)));
+      }
+    }   
+    
+//    // grab continuity areas
+//    List<Area> continuity = drawingManager.getContinuityAreas(currentProject);
+//    
+//    mergeConnections(connections, continuity);
+    
+    return connections;
+  }
+  
+//  private void mergeConnections(List<Line2D> connections, List<Area> continuity) {
+//    List<Line2D> merged = new ArrayList<Line2D>();
+//    boolean[] visited = new boolean[connections.size()];
+//    for (int i = 0; i < visited.length; i++)
+//      visited[i] = false;
+//    
+//    double t = DrawingManager.CONTROL_POINT_SIZE;
+//    
+//    for (int i = 0; i < visited.length - 1; i++) {
+//      if (visited[i])
+//        continue;
+//      for (int j = i + 1; j < visited.length; j++) {
+//        if (visited[j])
+//          continue;
+//        Line2D c1 = connections.get(i);
+//        Line2D c2 = connections.get(j);
+//        Point2D p1 = null;
+//        Point2D p2 = null;
+//        boolean connected = false;
+//        // test direct continuity between two connections        
+//        if (!connected && c1.getP1().distance(c2.getP1()) < t) {
+//          connected = true;
+//          p1 = c1.getP2();
+//          p2 = c2.getP2();
+//        }
+//        if (!connected && c1.getP1().distance(c2.getP2()) < t) {
+//          connected = true;
+//          p1 = c1.getP2();
+//          p2 = c2.getP1();
+//        }
+//        if (!connected && c1.getP2().distance(c2.getP1()) < t) {
+//          connected = true;
+//          p1 = c1.getP1();
+//          p2 = c2.getP2();
+//        }
+//        if (!connected && c1.getP2().distance(c2.getP2()) < t) {
+//          connected = true;
+//          p1 = c1.getP1();
+//          p2 = c2.getP1();
+//        }
+//        // if that failed, try using continuity areas
+//        if (!connected) {
+//          for (Area a : continuity) {
+//            if (!connected && a.contains(c1.getP1()) && a.contains(c2.getP1())) {
+//              connected = true;
+//              p1 = c1.getP2();
+//              p2 = c2.getP2();
+//              break;
+//            }
+//            if (!connected && a.contains(c1.getP1()) && a.contains(c2.getP2())) {
+//              connected = true;
+//              p1 = c1.getP2();
+//              p2 = c2.getP1();
+//              break;
+//            }
+//            if (!connected && a.contains(c1.getP2()) && a.contains(c2.getP1())) {
+//              connected = true;
+//              p1 = c1.getP1();
+//              p2 = c2.getP2();
+//              break;
+//            }
+//            if (!connected && a.contains(c1.getP2()) && a.contains(c2.getP2())) {
+//              connected = true;
+//              p1 = c1.getP1();
+//              p2 = c2.getP1();
+//              break;
+//            }
+//          }
+//        }
+//        
+//        if (connected) {
+//          visited[i] = visited[j] = true;
+//          merged.add(new Line2D.Double(p1, p2));
+//        }
+//      }
+//    }
+//    
+//    // replace connections with merged 
+//    if (!merged.isEmpty()) {
+////      connections.clear();
+//      connections.addAll(merged);
+//      mergeConnections(connections, continuity); // attempt another round of merging if needed
+//    }
+//  }
 }

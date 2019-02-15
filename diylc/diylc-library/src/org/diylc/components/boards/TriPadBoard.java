@@ -237,4 +237,9 @@ public class TriPadBoard extends AbstractBoard {
       this.stripSpan = stripSpan;
     }
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 }

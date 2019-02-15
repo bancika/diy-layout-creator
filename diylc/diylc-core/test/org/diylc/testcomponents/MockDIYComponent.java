@@ -164,4 +164,9 @@ public class MockDIYComponent extends AbstractComponent<Capacitance> {
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.drawString("X", 10, 10);
   }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 }

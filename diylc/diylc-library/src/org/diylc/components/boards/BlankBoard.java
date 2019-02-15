@@ -123,6 +123,11 @@ public class BlankBoard extends AbstractBoard {
   public void setType(Type type) {
     this.type = type;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 
   static enum Type {
     ROUND, SQUARE;

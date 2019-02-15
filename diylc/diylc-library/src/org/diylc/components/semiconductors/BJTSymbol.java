@@ -117,4 +117,9 @@ public class BJTSymbol extends Abstract3LegSymbol {
 
     body = null;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return getName() + "." + index;
+  }
 }

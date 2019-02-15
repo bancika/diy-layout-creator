@@ -422,5 +422,5 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
     updateControlPoints();
     // Invalidate the body
     body = null;
-  }  
+  }
 }

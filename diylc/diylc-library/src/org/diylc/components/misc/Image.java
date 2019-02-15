@@ -61,6 +61,11 @@ public class Image extends AbstractTransparentComponent<Void> {
       ICON = new ImageIcon(imgURL, name);
     }
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 
   private Point point = new Point(0, 0);
   @XStreamConverter(IconImageConverter.class)

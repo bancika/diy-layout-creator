@@ -182,6 +182,11 @@ public class SolderPad extends AbstractComponent<Void> {
   public Void getValue() {
     return null;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {   
+    return null;
+  }
 
   @Override
   public void setValue(Void value) {}

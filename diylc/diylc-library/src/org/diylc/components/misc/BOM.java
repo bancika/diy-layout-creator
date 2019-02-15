@@ -59,6 +59,11 @@ public class BOM extends AbstractComponent<Void> {
 
   private Point point = new Point(0, 0);
   private Color color = COLOR;
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,

@@ -105,6 +105,11 @@ public abstract class AbstractShape extends AbstractTransparentComponent<Void> {
     secondPoint.setLocation(Math.max(controlPoints[0].x, controlPoints[1].x),
         Math.max(controlPoints[0].y, controlPoints[1].y));
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
 
   @Deprecated
   @Override

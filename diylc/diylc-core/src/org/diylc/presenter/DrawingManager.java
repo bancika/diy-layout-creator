@@ -486,20 +486,33 @@ public class DrawingManager {
     ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY, theme);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
-
-  @SuppressWarnings("unchecked")
+  
   public void findContinuityAreaAtPoint(Project project, Point p) {
+    List<Area> areas = getContinuityAreas(project);
+
+    for (Area a : areas) {
+      if (a.contains(p)) {
+        continuityArea = a;
+        return;
+      }
+    }
+
+    continuityArea = null;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public List<Area> getContinuityAreas(Project project) {
     // Find all individual continuity areas for all components
     List<Area> preliminaryAreas = new ArrayList<Area>();
     List<Boolean> checkBreakout = new ArrayList<Boolean>();
-    List<Connection> connections = new ArrayList<Connection>();
+    List<Line2D> connections = new ArrayList<Line2D>();
     for (IDIYComponent<?> c : project.getComponents()) {
       ComponentArea a = getComponentArea(c);
 
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
       if (type.isContinuity()) {
-        connections.add(new Connection(c.getControlPoint(0), c.getControlPoint(c.getControlPointCount() - 1)));
+        connections.add(new Line2D.Double(c.getControlPoint(0), c.getControlPoint(c.getControlPointCount() - 1)));
       }
 
       if (a == null || a.getOutlineArea() == null)
@@ -532,18 +545,18 @@ public class DrawingManager {
     }
 
     crunchAreas(areas, connections);
-
-    for (Area a : areas) {
-      if (a.contains(p)) {
-        continuityArea = a;
-        return;
-      }
-    }
-
-    continuityArea = null;
+    
+    return areas;
   }
 
-  private boolean crunchAreas(List<Area> areas, List<Connection> connections) {
+  /**
+   * Merges all areas that either overlap or are joined by connections.
+   * 
+   * @param areas
+   * @param connections
+   * @return
+   */
+  private boolean crunchAreas(List<Area> areas, List<Line2D> connections) {
     boolean isChanged = false;
 
     List<Area> newAreas = new ArrayList<Area>();
@@ -564,8 +577,8 @@ public class DrawingManager {
           a1.add(a2);
           consumed.set(j, true);
         } else { // maybe there's a connection between them
-          for (Connection p : connections) {
-            if ((a1.contains(p.pointA) && a2.contains(p.pointB)) || (a1.contains(p.pointB) && a2.contains(p.pointA))) {
+          for (Line2D p : connections) {
+            if ((a1.contains(p.getP1()) && a2.contains(p.getP2())) || (a1.contains(p.getP2()) && a2.contains(p.getP1()))) {
               a1.add(a2);
               consumed.set(j, true);
               break;
@@ -623,25 +636,5 @@ public class DrawingManager {
     }
 
     return toReturn;
-  }
-
-  class Connection {
-
-    private Point pointA;
-    private Point pointB;
-
-    public Connection(Point pointA, Point pointB) {
-      super();
-      this.pointA = pointA;
-      this.pointB = pointB;
-    }
-
-    public Point getPointA() {
-      return pointA;
-    }
-
-    public Point getPointB() {
-      return pointB;
-    }
   }
 }

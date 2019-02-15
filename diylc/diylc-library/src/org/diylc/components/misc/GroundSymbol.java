@@ -135,6 +135,11 @@ public class GroundSymbol extends AbstractComponent<Void> {
   public void setControlPoint(Point point, int index) {
     this.point = point;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    return getName();
+  }
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {

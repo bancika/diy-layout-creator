@@ -426,9 +426,7 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
   }
 
   public static enum RelayType {
-
     SPDT, DPDT;
-
   }
 
   public static enum RelaySize {
