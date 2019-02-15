@@ -298,8 +298,8 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
     int centerY = y + springLength - holeToEdge;
 
-    AffineTransform.getRotateInstance(SLEEVE_THETA, x, centerY).transform(controlPoints[0], controlPoints[1]);
-    AffineTransform.getRotateInstance(RING_THETA, x, centerY).transform(controlPoints[0], controlPoints[2]);
+    AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SLEEVE_SWITCHED_THETA : SLEEVE_THETA, x, centerY).transform(controlPoints[0], controlPoints[1]);
+    AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SWITCH_THETA : RING_THETA, x, centerY).transform(controlPoints[0], controlPoints[2]);
 
     // Rotate if needed
     if (orientation != Orientation.DEFAULT) {
@@ -418,6 +418,19 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
   public void setShowLabels(boolean showLabels) {
     this.showLabels = showLabels;
+  }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index == 0)
+      return "Tip";
+    if (index == 1)
+      return "Sleeve";
+    if (index == 2 && getType() == OpenJackType.STEREO)
+      return "Ring";
+    if (index == 2 && getType() == OpenJackType.SWITCHED)
+      return "Shunt";
+    return null;
   }
   
   public enum OpenJackType {
