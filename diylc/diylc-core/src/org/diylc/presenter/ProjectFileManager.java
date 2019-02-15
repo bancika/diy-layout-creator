@@ -32,6 +32,7 @@ import java.io.Writer;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -51,6 +52,7 @@ import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.mapper.MapperWrapper;
 
 public class ProjectFileManager {
 
@@ -67,10 +69,28 @@ public class ProjectFileManager {
   private MessageDispatcher<EventType> messageDispatcher;
 
   private List<IOldFileParser> parsers;
+  
+  private Set<String> missingFields = new HashSet<String>();
 
   public ProjectFileManager(MessageDispatcher<EventType> messageDispatcher) {
     super();
-    this.xStream = new XStream(new DomDriver("UTF-8"));
+    this.xStream = new XStream(new DomDriver("UTF-8")) {
+      
+      @Override
+      protected MapperWrapper wrapMapper(MapperWrapper next) {
+          return new MapperWrapper(next) {
+              @SuppressWarnings("rawtypes")
+              @Override
+              public boolean shouldSerializeMember(Class definedIn, String fieldName) {
+                  if (definedIn == Object.class) {
+                      missingFields.add(definedIn.getName() + "." + fieldName);
+                      return false;
+                  }
+                  return super.shouldSerializeMember(definedIn, fieldName);
+              }
+          };
+      }
+    };
     xStream.autodetectAnnotations(true);
     xStream.registerConverter(new PointConverter());
     this.xStreamOld = new XStream(new DomDriver());
@@ -131,7 +151,7 @@ public class ProjectFileManager {
     Document doc = db.parse(new InputSource(new InputStreamReader(new FileInputStream(file))));
     doc.getDocumentElement().normalize();
     if (doc.getDocumentElement().getNodeName().equalsIgnoreCase(Project.class.getName())) {
-      project = parseV3File(fileName);
+      project = parseV3File(fileName, warnings);
     } else {
       if (!doc.getDocumentElement().getNodeName().equalsIgnoreCase("layout")) {
         throw new IllegalArgumentException("Could not open DIY file. Root node is not named 'Layout'.");
@@ -171,9 +191,10 @@ public class ProjectFileManager {
     messageDispatcher.dispatchMessage(EventType.FILE_STATUS_CHANGED, getCurrentFileName(), isModified());
   }
 
-  private Project parseV3File(String fileName) throws IOException {
+  private Project parseV3File(String fileName, List<String> warnings) throws IOException {
     Project project;
     FileInputStream fis = new FileInputStream(fileName);
+    missingFields.clear();
     try {
       Reader reader = new InputStreamReader(fis, "UTF-8");
       project = (Project) xStream.fromXML(reader);
@@ -182,6 +203,9 @@ public class ProjectFileManager {
       fis.close();
       fis = new FileInputStream(fileName);
       project = (Project) xStreamOld.fromXML(fis);
+    }
+    if (!missingFields.isEmpty()) {
+      warnings.add("The project references unknown component properties, most likely because it was created with a newer version of DIYLC.");
     }
     fis.close();
     return project;
