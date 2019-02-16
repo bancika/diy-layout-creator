@@ -90,11 +90,13 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
         controlPoints = new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing)};
         break;
       case SPDT:
+      case SPDT_off:
         controlPoints =
             new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
                 new Point(firstPoint.x, firstPoint.y + 2 * spacing)};
         break;
       case DPDT:
+      case DPDT_off:
         controlPoints =
             new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
                 new Point(firstPoint.x, firstPoint.y + 2 * spacing), new Point(firstPoint.x + spacing, firstPoint.y),
@@ -113,6 +115,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
                         new Point(firstPoint.x + spacing, firstPoint.y + 3 * spacing)};
         break;
       case _3PDT:
+      case _3PDT_off:
         controlPoints =
             new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
                 new Point(firstPoint.x, firstPoint.y + 2 * spacing), new Point(firstPoint.x + spacing, firstPoint.y),
@@ -123,6 +126,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
                 new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2 * spacing)};
         break;
       case _4PDT:
+      case _4PDT_off:
         controlPoints =
             new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
                 new Point(firstPoint.x, firstPoint.y + 2 * spacing), new Point(firstPoint.x + spacing, firstPoint.y),
@@ -136,6 +140,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
                 new Point(firstPoint.x + 3 * spacing, firstPoint.y + 2 * spacing)};
         break;
       case _5PDT:
+      case _5PDT_off:
         controlPoints =
             new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
                 new Point(firstPoint.x, firstPoint.y + 2 * spacing), new Point(firstPoint.x + spacing, firstPoint.y),
@@ -303,11 +308,13 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
                   + spacing, margin, margin);
           break;
         case SPDT:
+        case SPDT_off:
           body =
               new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin, 2 * margin + 2
                   * spacing, margin, margin);
           break;
         case DPDT:
+        case DPDT_off:
           body =
               new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + spacing, 2
                   * margin + 2 * spacing, margin, margin);
@@ -318,16 +325,19 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
                           * margin + 3 * spacing, margin, margin);
           break;
         case _3PDT:
+        case _3PDT_off:
           body =
               new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + 2 * spacing, 2
                   * margin + 2 * spacing, margin, margin);
           break;
         case _4PDT:
+        case _4PDT_off:
           body =
               new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + 3 * spacing, 2
                   * margin + 2 * spacing, margin, margin);
           break;
         case _5PDT:
+        case _5PDT_off:
           body =
               new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + 4 * spacing, 2
                   * margin + 2 * spacing, margin, margin);
@@ -398,7 +408,12 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       case _4PDT:
       case _5PDT:
         return 2;        
-      case _DP3T_mustang:
+      case _DP3T_mustang:             
+      case SPDT_off:
+      case DPDT_off:
+      case _3PDT_off:
+      case _4PDT_off:
+      case _5PDT_off:
         return 3;      
     }
     return 2;
@@ -406,20 +421,28 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
   @Override
   public String getPositionName(int position) {
-    return Integer.toString(position);
+    if (switchType.name().endsWith("_off") && position == 2)
+      return "OFF";
+    return "ON" + Integer.toString(position + 1);
   }
 
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
     switch (switchType) {
       case SPST:
-        return position == 1;
+        return position == 0;
       case SPDT:        
       case DPDT:
       case _3PDT:
       case _4PDT:
       case _5PDT:
         return (index2 - index1) < 3 && index1 % 3 == position && index2 % 3 == position + 1;        
+      case SPDT_off:        
+      case DPDT_off:
+      case _3PDT_off:
+      case _4PDT_off:
+      case _5PDT_off:
+        return position != 2 && (index2 - index1) < 3 && index1 % 3 == position && index2 % 3 == position + 1; 
       case _DP3T_mustang:
         return (index2 - index1) < 3 && index1 % 3 == 0 && index2 % 3 == position + 1;      
     }

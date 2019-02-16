@@ -23,10 +23,16 @@ package org.diylc.components.electromechanical;
 
 public enum ToggleSwitchType {
 
-  SPST, SPDT, DPDT, _DP3T_mustang, _3PDT, _4PDT, _5PDT;
+  SPST, SPDT, DPDT, _DP3T_mustang, _3PDT, _4PDT, _5PDT, SPDT_off, DPDT_off, _3PDT_off, _4PDT_off, _5PDT_off;
 
   @Override
   public String toString() {
-    return name().replace("_", "");
+    String name = name();
+    if (name.startsWith("_"))
+      name = name.substring(1);
+    name = name.replace("_", " ");
+    name = name.replace("mustang", "");
+    name = name.replace("off", " (Center OFF)");
+    return name;
   }
 }
