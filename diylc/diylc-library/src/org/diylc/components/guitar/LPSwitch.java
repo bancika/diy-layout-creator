@@ -40,6 +40,7 @@ import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
@@ -52,7 +53,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "LP Toggle Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Les Paul style 3 position toggle switch", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW")
-public class LPSwitch extends AbstractTransparentComponent<String> {
+public class LPSwitch extends AbstractTransparentComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -320,5 +321,53 @@ public class LPSwitch extends AbstractTransparentComponent<String> {
     updateControlPoints();
     // Invalidate the body
     body = null;
+  }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0: 
+        return "Ground";
+      case 1: 
+        return "Lead In";
+      case 2: 
+        return "Common";
+      case 3: 
+        return "Rhythm In";
+    }
+    return null;
+  }
+  
+  // switch stuff
+
+  @Override
+  public int getPositionCount() {    
+    return 3;
+  }
+
+  @Override
+  public String getPositionName(int position) {
+    switch (position) {
+      case 0:
+        return "Treble";
+      case 1:
+        return "Middle";
+      case 2:
+        return "Rhythm";
+    }
+    return null;
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2, int position) {
+    switch (position) {
+      case 0:
+        return index1 == 1 && index2 == 2;
+      case 1:
+        return index1 > 0;
+      case 2:
+        return index1 == 2 && index2 == 3;
+    }
+    return false;
   }
 }
