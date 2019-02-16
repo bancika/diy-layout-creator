@@ -479,7 +479,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   @Override
   public int getControlPointCount() {
-    return 4;
+    return getControlPoints().length;
   }
 
   @Override

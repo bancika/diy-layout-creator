@@ -63,7 +63,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
   private static final long serialVersionUID = 1L;
 
   private static Color BODY_COLOR = Color.decode("#D8C989");;
-  private static Color POINT_COLOR = Color.darkGray;
+//  private static Color POINT_COLOR = Color.darkGray;
 
   // dog ear
   private static Size DOG_EAR_WIDTH = new Size(41d, SizeUnit.mm);
@@ -77,12 +77,15 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
   private static Size SOAP_BAR_EDGE_RADIUS = new Size(8d, SizeUnit.mm);
 
   private static Size LIP_RADIUS = new Size(10d, SizeUnit.mm);
-  private static Size POINT_MARGIN = new Size(1.5d, SizeUnit.mm);
+  private static Size POINT_MARGIN = new Size(3.5d, SizeUnit.mm);
   private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size LIP_HOLE_SIZE = new Size(2.5d, SizeUnit.mm);
   private static Size LIP_HOLE_SPACING = new Size(97d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);
+  private static Size POINT_SPACING = new Size(0.1d, SizeUnit.in);
+  
+  private static final int TERMINAL_FONT_SIZE = 11;
 
   private String value = "";
   private Point controlPoint = new Point(0, 0);
@@ -91,6 +94,52 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
   private Color color = BODY_COLOR;
   private P90Type type = P90Type.DOG_EAR;
   private Color poleColor = METAL_COLOR;
+  private Polarity polarity = Polarity.North;
+  
+  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  
+  public P90Pickup() {
+    updateControlPoints();
+  }
+  
+  private Point[] getControlPoints() {
+    if (controlPoints == null) {
+      controlPoints =
+          new Point[] {controlPoint, new Point(controlPoint.x, controlPoint.y),
+              new Point(controlPoint.x, controlPoint.y), new Point(controlPoint.x, controlPoint.y)};
+      updateControlPoints();
+    }
+    return controlPoints;
+  }
+  
+  @SuppressWarnings("incomplete-switch")
+  private void updateControlPoints() {
+    Point[] points = getControlPoints();
+    int pointSpacing = (int) POINT_SPACING.convertToPixels();
+    int dx = 0;
+    int dy = 1;
+    if (orientation != Orientation.DEFAULT) {
+      switch (orientation) {
+        case _90:
+          dx = -1;
+          dy = 0;
+          break;
+        case _180:
+          dx = 0;
+          dy = -1;
+          break;
+        case _270:
+          dx = 1;
+          dy = 0;
+          break;
+      }
+    }
+    points[1].setLocation(points[0].x + dx * pointSpacing, points[0].y + dy * pointSpacing);
+    points[2]
+        .setLocation(points[0].x + 2 * dx * pointSpacing, points[0].y + 2 * dy * pointSpacing);
+    points[3]
+        .setLocation(points[0].x + 3 * dx * pointSpacing, points[0].y + 3 * dy * pointSpacing);
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -107,8 +156,8 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     g2d.fill(body[0]);
     if (body[1] != null)
       g2d.fill(body[1]);
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-    g2d.fill(body[2]);
+//    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
+//    g2d.fill(body[2]);
     g2d.setComposite(oldComposite);    
 
     Color finalBorderColor;
@@ -153,6 +202,40 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     Rectangle bounds = body[0].getBounds();
     drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
+    
+    // terminal labels
+    Point[] points = getControlPoints();
+    g2d.setColor(finalBorderColor);
+
+    g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
+    int dx = 0;
+    int dy = 0;
+    switch (orientation) {
+      case DEFAULT:        
+        dx = (int) (TERMINAL_FONT_SIZE * 0.8);
+        dy = 0;  
+        break;
+      case _90:
+        dx = 0;
+        dy = (int) (TERMINAL_FONT_SIZE * 0.8);
+        break;
+      case _180:
+        dx = -(int) (TERMINAL_FONT_SIZE * 0.8);
+        dy = 0;       
+        break;
+      case _270:
+        dx = 0;
+        dy = -(int) (TERMINAL_FONT_SIZE * 0.8);
+        break;     
+    }
+    
+    if (getPolarity() == Polarity.North || getPolarity() == Polarity.South) {
+      drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].x + points[2].x) / 2 + dx, (points[1].y + points[2].y) / 2 + dy, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
+    } else {
+      drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    }
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -160,8 +243,9 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     if (body == null) {
       body = new Shape[4];
 
-      int x = controlPoint.x;
-      int y = controlPoint.y;
+      Point[] points = getControlPoints();
+      int x = points[0].x;
+      int y = points[0].y;
       int width = (int) getType().getWidth().convertToPixels();
       int length = (int) getType().getLength().convertToPixels();
       int edgeRadius = (int) getType().getEdgeRadius().convertToPixels();
@@ -173,7 +257,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
       int lipHoleSpacing = getClosestOdd(LIP_HOLE_SPACING.convertToPixels());
 
       body[0] =
-          new Area(new RoundRectangle2D.Double(x + pointMargin - length, y - pointMargin, length, width, edgeRadius,
+          new Area(new RoundRectangle2D.Double(x /*+ pointMargin*/ - length, y - pointMargin, length, width, edgeRadius,
               edgeRadius));
 
       if (getType() == P90Type.DOG_EAR) {
@@ -183,18 +267,18 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
         Area leftEar = new Area(roundRect);
         leftEar.transform(AffineTransform.getRotateInstance(Math.PI / 4));
         leftEar.transform(AffineTransform.getScaleInstance(1.1, 1.45));
-        leftEar.transform(AffineTransform.getTranslateInstance(x + pointMargin - length, y - pointMargin + width / 2));
+        leftEar.transform(AffineTransform.getTranslateInstance(x /*+ pointMargin*/ - length, y - pointMargin + width / 2));
         leftEar.subtract((Area) body[0]);
         Area rightEar = new Area(roundRect);
         rightEar.transform(AffineTransform.getRotateInstance(Math.PI / 4));
         rightEar.transform(AffineTransform.getScaleInstance(1.1, 1.45));
-        rightEar.transform(AffineTransform.getTranslateInstance(x + pointMargin, y - pointMargin + width / 2));
+        rightEar.transform(AffineTransform.getTranslateInstance(x /*+ pointMargin*/, y - pointMargin + width / 2));
         rightEar.subtract((Area) body[0]);
         Area lipArea = leftEar;
         lipArea.add(rightEar);
-        lipArea.subtract(new Area(new Ellipse2D.Double(x + pointMargin - length / 2 - lipHoleSpacing / 2 - lipHoleSize
+        lipArea.subtract(new Area(new Ellipse2D.Double(x /*+ pointMargin*/ - length / 2 - lipHoleSpacing / 2 - lipHoleSize
             / 2, y - pointMargin + width / 2 - lipHoleSize / 2, lipHoleSize, lipHoleSize)));
-        lipArea.subtract(new Area(new Ellipse2D.Double(x + pointMargin - length / 2 + lipHoleSpacing / 2 - lipHoleSize
+        lipArea.subtract(new Area(new Ellipse2D.Double(x /*+ pointMargin*/ - length / 2 + lipHoleSpacing / 2 - lipHoleSize
             / 2, y - pointMargin + width / 2 - lipHoleSize / 2, lipHoleSize, lipHoleSize)));
 
         body[1] = lipArea;
@@ -208,7 +292,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
       Area poleArea = new Area();
       for (int i = 0; i < 6; i++) {
         Ellipse2D pole =
-            new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
+            new Ellipse2D.Double(x /*+ pointMargin*/ - length + poleMargin + i * poleSpacing - poleSize / 2, y
                 - pointMargin - poleSize / 2 + width / 2, poleSize, poleSize);
         poleArea.add(new Area(pole));
       }
@@ -284,12 +368,14 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
 
   @Override
   public int getControlPointCount() {
-    return 1;
+    return getControlPoints().length;
   }
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.WHEN_SELECTED;
+    if (getPolarity() != Polarity.Humbucking && (index == 0 || index == 3))
+      return VisibilityPolicy.NEVER;
+    return VisibilityPolicy.ALWAYS;
   }
 
   @Override
@@ -299,12 +385,12 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
 
   @Override
   public Point getControlPoint(int index) {
-    return controlPoint;
+    return getControlPoints()[index];
   }
 
   @Override
   public void setControlPoint(Point point, int index) {
-    this.controlPoint.setLocation(point);
+    getControlPoints()[index].setLocation(point);
     // Invalidate the body
     body = null;
   }
@@ -353,7 +439,42 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
   
   @Override
   public String getControlPointNodeName(int index) {
-    return getName() + ".PickupTerminal";
+    switch (index) {
+      case 0:
+        if (getPolarity() != Polarity.Humbucking)
+          return null;
+        return"North Start";
+      case 1:
+        if (getPolarity() == Polarity.South)
+          return "South Start";
+        if (getPolarity() == Polarity.North)
+          return "North Start";
+        return "North Finish";
+      case 2:
+        if (getPolarity() == Polarity.South)
+          return "South Finish";
+        if (getPolarity() == Polarity.North)
+          return "North Finish";
+        return "South Start";
+      case 3:
+        if (getPolarity() != Polarity.Humbucking)
+          return null;
+        return "South Finish";
+    }
+    return null;
+  }
+  
+  @EditableProperty
+  public Polarity getPolarity() {
+    if (polarity == null)
+      polarity = Polarity.North;
+    return polarity;
+  }
+  
+  public void setPolarity(Polarity polarity) {
+    this.polarity = polarity;
+    // Invalidate the body
+    body = null;
   }
 
   public enum P90Type {
@@ -388,5 +509,9 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     public String toString() {
       return label;
     }
+  }
+  
+  public enum Polarity {
+    North, South, Humbucking;
   }
 }
