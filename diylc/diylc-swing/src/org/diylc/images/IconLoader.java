@@ -63,7 +63,7 @@ public enum IconLoader {
       "component_add.png"), History("history.png"), DocumentPlain("document_plain.png"), FitToSize("fit_to_size.png"), DocumentsGear(
       "documents_gear.png"), SplashResistor("splash_resistor.png"), SplashCeramic("splash_ceramic.png"), SplashElectrolytic(
       "splash_electrolytic.png"), SplashFilm("splash_film.png"), Splash("splash.png"), Help("help2.png"), ScrollInformation("scroll_information.png"),
-      Node("node.png");
+      Node("node.png"), Web("web.png");
 
   protected String name;
 

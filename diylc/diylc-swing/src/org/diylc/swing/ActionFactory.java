@@ -17,6 +17,8 @@
  */
 package org.diylc.swing;
 
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -39,6 +41,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import javax.swing.AbstractAction;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
@@ -61,6 +64,8 @@ import org.diylc.core.measures.Nudge;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.images.IconLoader;
+import org.diylc.netlist.Netlist;
+import org.diylc.netlist.SwitchSetup;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -71,6 +76,7 @@ import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.CheckBoxListDialog;
 import org.diylc.swingframework.IDrawingProvider;
+import org.diylc.swingframework.TextDialog;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.utils.BomEntry;
 
@@ -245,6 +251,10 @@ public class ActionFactory {
 
   public RenumberAction createRenumberAction(IPlugInPort plugInPort, boolean xAxisFirst) {
     return new RenumberAction(plugInPort, xAxisFirst);
+  }
+  
+  public GenerateNetlistAction createGenerateNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+    return new GenerateNetlistAction(plugInPort, swingUI);
   }
 
   // File menu actions.
@@ -1631,5 +1641,36 @@ public class ActionFactory {
       LOG.info(getValue(AbstractAction.NAME) + " triggered");
       plugInPort.renumberSelectedComponents(xAxisFirst);
     }
+  }
+  
+  public static class GenerateNetlistAction extends AbstractAction {
+    
+    private static final long serialVersionUID = 1L;
+    
+    private IPlugInPort plugInPort;
+    private ISwingUI swingUI;
+
+    public GenerateNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+      super();
+      this.plugInPort = plugInPort;
+      this.swingUI = swingUI;
+      putValue(AbstractAction.NAME, "Create Netlist");
+      putValue(AbstractAction.SMALL_ICON, IconLoader.Web.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      Map<Netlist, List<SwitchSetup>> g = plugInPort.extractNetlists();
+      if (g == null)
+        return;
+      StringBuilder sb = new StringBuilder("<html><p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\">");
+      for (Map.Entry<Netlist, List<SwitchSetup>> en : g.entrySet()) {
+        sb.append("<b>").append(en.getValue()).append("</b><br>");
+        sb.append(en.getKey()).append("<br><br>");
+      }
+      sb.append("</p></html>");
+      new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Netlist", new Dimension(600, 480)).setVisible(true);
+    }
+    
   }
 }

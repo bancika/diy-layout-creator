@@ -86,6 +86,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
         actionFactory.createPrintAction(traceMaskDrawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
             | KeyEvent.SHIFT_DOWN_MASK), TRACE_MASK_TITLE);
     swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), FILE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectSubmenu(INTEGRATION_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createImportBlocksAction(swingUI, plugInPort), INTEGRATION_TITLE);
