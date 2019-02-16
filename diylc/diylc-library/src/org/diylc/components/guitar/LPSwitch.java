@@ -325,16 +325,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
   
   @Override
   public String getControlPointNodeName(int index) {
-    switch (index) {
-      case 0: 
-        return "Ground";
-      case 1: 
-        return "Lead In";
-      case 2: 
-        return "Common";
-      case 3: 
-        return "Rhythm In";
-    }
+    // we don't want the switch to produce any nodes, it just makes connections
     return null;
   }
   
