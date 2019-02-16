@@ -628,11 +628,11 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
       case 0:
         return"North Start";
       case 1:
-        return "North End";
+        return "North Finish";
       case 2:
         return "South Start";
       case 3:
-        return "South End";
+        return "South Finish";
     }
     return null;
   }

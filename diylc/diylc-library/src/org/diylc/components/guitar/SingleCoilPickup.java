@@ -65,11 +65,13 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   private static Color BODY_COLOR = Color.white;
   private static Color BASE_COLOR = Color.gray;
+  public static Color LUG_COLOR = Color.decode("#E0C04C");
 //  private static Color POINT_COLOR = Color.lightGray;
   private static Size WIDTH = new Size(15.5d, SizeUnit.mm);
   private static Size LENGTH = new Size(83d, SizeUnit.mm);
   private static Size BASE_RADIUS = new Size(0.15d, SizeUnit.in);
   private static Size POINT_SPACING = new Size(0.1d, SizeUnit.in);
+  private static Size LUG_DIAMETER = new Size(0.06d, SizeUnit.in);
 
   // strat-specific
   private static Size STRAT_LIP_WIDTH = new Size(5d, SizeUnit.mm);
@@ -81,8 +83,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   private static Size TELE_LIP_LENGTH = new Size(1.735d, SizeUnit.in);
   private static Size TELE_LENGTH = new Size(2.87d, SizeUnit.in);
   private static Size TELE_HOLE_SPACING = new Size(1.135d, SizeUnit.in);
-
-  private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
+  
   private static Size HOLE_SIZE = new Size(2d, SizeUnit.mm);
   private static Size HOLE_MARGIN = new Size(4d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
@@ -101,6 +102,8 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   private Color baseColor = BASE_COLOR;
   private SingleCoilType type = SingleCoilType.Stratocaster;
   private PolePieceType polePieceType = PolePieceType.Rods;
+  private Color lugColor = LUG_COLOR;
+  private Polarity polarity = Polarity.North;
   
   private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
   
@@ -158,6 +161,9 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
+    
+    Theme theme =
+        (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
 
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBaseColor());
     g2d.fill(body[4]);
@@ -166,8 +172,11 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       g2d.fill(body[3]);
     else
       g2d.fill(body[0]);
-//    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-//    g2d.fill(body[1]);
+    
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getLugColor());
+    g2d.fill(body[1]);
+    g2d.setColor(outlineMode ? theme.getOutlineColor() : darkerOrLighter(LUG_COLOR));
+    g2d.draw(body[1]);
 
     // g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
     // g2d.fill(body[3]);
@@ -175,8 +184,6 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
     Color finalBorderColor;
     if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
               : theme.getOutlineColor();
@@ -189,9 +196,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     g2d.setColor(finalBorderColor);
     g2d.draw(body[4]);
 
-    if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+    if (outlineMode) {     
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
               : theme.getOutlineColor();
@@ -215,8 +220,6 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
     Color finalLabelColor;
     if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
       finalLabelColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
               : theme.getOutlineColor();
@@ -250,7 +253,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       int coilLength = getType() == SingleCoilType.Stratocaster ? stratInnerLength : teleLength;
       int lipWidth = (int) STRAT_LIP_WIDTH.convertToPixels();
       int lipLength = (int) STRAT_LIP_LENGTH.convertToPixels();
-      int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
+      int lugDiameter = getClosestOdd(LUG_DIAMETER.convertToPixels());
       int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
       int holeMargin = getClosestOdd(HOLE_MARGIN.convertToPixels());
       int baseRadius = (int) BASE_RADIUS.convertToPixels();
@@ -304,9 +307,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
         base.subtract(new Area(new Ellipse2D.Double(x - holeSize / 2, y - teleHoleSpacing, holeSize, holeSize)));
 
         body[4] = base;
-      }
-
-      body[1] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize));
+      }      
 
       Area poleArea = new Area();
       if (getPolePieceType() == PolePieceType.Rods) {
@@ -374,6 +375,14 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
             area.transform(rotation);
         }
       }
+      
+      body[1] = new Area();
+      double lugHole = getClosestOdd(lugDiameter / 2);
+      for (int i = getPolarity() == Polarity.Humbucking ? 0 : 1; i < (getPolarity() == Polarity.Humbucking ? 4 : 3); i++) {
+        Point p = points[i];
+        ((Area)body[1]).add(new Area(new Ellipse2D.Double(p.x - lugDiameter / 2, p.y - lugDiameter / 2, lugDiameter, lugDiameter)));
+        ((Area)body[1]).subtract(new Area(new Ellipse2D.Double(p.x - lugHole / 2, p.y - lugHole / 2, lugHole, lugHole)));
+      } 
     }
     return body;
   }
@@ -440,12 +449,12 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.WHEN_SELECTED;
+    return VisibilityPolicy.NEVER;
   }
 
   @Override
   public boolean isControlPointSticky(int index) {
-    return true;
+    return getPolarity() == Polarity.Humbucking || (index > 0 && index < 3);
   }
 
   @Override
@@ -514,23 +523,64 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     this.poleColor = poleColor;
   }
   
+  @EditableProperty(name = "Lugs")
+  public Color getLugColor() {
+    if (lugColor == null) {
+      lugColor = LUG_COLOR;
+    }
+    return lugColor;
+  }
+  
+  public void setLugColor(Color lugColor) {
+    this.lugColor = lugColor;
+  }
+  
+  @EditableProperty
+  public Polarity getPolarity() {
+    if (polarity == null)
+      polarity = Polarity.North;
+    return polarity;
+  }
+  
+  public void setPolarity(Polarity polarity) {
+    this.polarity = polarity;
+    // Invalidate the body
+    body = null;
+  }
+  
   @Override
   public String getControlPointNodeName(int index) {
     switch (index) {
       case 0:
+        if (getPolarity() != Polarity.Humbucking)
+          return null;
         return"North Start";
       case 1:
-        return "North End";
+        if (getPolarity() == Polarity.South)
+          return "South Start";
+        if (getPolarity() == Polarity.North)
+          return "North Start";
+        return "North Finish";
       case 2:
+        if (getPolarity() == Polarity.South)
+          return "South Finish";
+        if (getPolarity() == Polarity.North)
+          return "North Finish";
         return "South Start";
       case 3:
-        return "South End";
+        if (getPolarity() != Polarity.Humbucking)
+          return null;
+        return "South Finish";
     }
     return null;
   }
 
   public enum SingleCoilType {
     Stratocaster, Telecaster;
+  }
+  
+  public enum Polarity {
+    North, South, Humbucking;
   }
 
   public enum PolePieceType {

@@ -2784,16 +2784,16 @@ public class Presenter implements IPlugInPort {
   private Graph constructGraph(List<Node> nodes, List<Line2D> connections, List<Area> continuityAreas) {
     Graph graph = new Graph();
     
-    StringBuilder sb = new StringBuilder();
-    sb.append("Nodes:").append("\n");
-    for (Node n : nodes) {
-      sb.append(n.toString()).append("\n");
-    }
-    sb.append("Connections:").append("\n");
-    for (Line2D n : connections) {
-      sb.append(n.getP1()).append(":").append(n.getP2()).append("\n");
-    }
-    LOG.debug(sb.toString());
+//    StringBuilder sb = new StringBuilder();
+//    sb.append("Nodes:").append("\n");
+//    for (Node n : nodes) {
+//      sb.append(n.toString()).append("\n");
+//    }
+//    sb.append("Connections:").append("\n");
+//    for (Line2D n : connections) {
+//      sb.append(n.getP1()).append(":").append(n.getP2()).append("\n");
+//    }
+//    LOG.debug(sb.toString());
 
     double t = DrawingManager.CONTROL_POINT_SIZE;
     for (int i = 0; i < nodes.size() - 1; i++)
