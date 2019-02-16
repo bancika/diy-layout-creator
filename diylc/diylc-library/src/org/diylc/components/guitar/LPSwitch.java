@@ -142,19 +142,19 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
       int waferThickness = getClosestOdd(WAFER_THICKNESS.convertToPixels());
 
       Rectangle2D ground =
-          new Rectangle2D.Double(x - waferThickness / 2, y, waferThickness, baseLength + (length - baseLength) / 2);
+          new Rectangle2D.Double(x - waferThickness / 2, y, waferThickness - 1, baseLength + (length - baseLength) / 2);
       body[0] = new Area(ground);
 
       int bodyY = y + (length - baseLength) / 2;
 
-      Area waferArea = new Area(new Rectangle2D.Double(x - waferThickness * 3 / 2, bodyY, waferThickness, baseLength));
-      waferArea.add(new Area(new Rectangle2D.Double(x + waferThickness / 2, bodyY, waferThickness, baseLength)));
+      Area waferArea = new Area();//new Area(new Rectangle2D.Double(x - waferThickness * 3 / 2, bodyY, waferThickness, baseLength));
+      waferArea.add(new Area(new Rectangle2D.Double(x + waferThickness / 2, bodyY, waferThickness  *3, baseLength)));
 
       waferArea.add(new Area(new Rectangle2D.Double(x - waferThickness * 5 / 2, bodyY, waferThickness, baseLength)));
       waferArea.add(new Area(new Rectangle2D.Double(x + waferThickness * 3 / 2, bodyY, waferThickness, baseLength)));
 
-      waferArea.add(new Area(new Rectangle2D.Double(x - waferThickness * 7 / 2, bodyY, waferThickness, baseLength)));
-      waferArea.add(new Area(new Rectangle2D.Double(x + waferThickness * 5 / 2, bodyY, waferThickness, baseLength)));
+      waferArea.add(new Area(new Rectangle2D.Double(x - waferThickness * 7 / 2, bodyY, waferThickness * 3, baseLength)));
+//      waferArea.add(new Area(new Rectangle2D.Double(x + waferThickness * 5 / 2, bodyY, waferThickness, baseLength)));
 
       body[1] = waferArea;
 
