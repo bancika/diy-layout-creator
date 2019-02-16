@@ -41,6 +41,7 @@ import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
@@ -55,12 +56,14 @@ import org.diylc.utils.Constants;
     description = "Strat-style lever switch", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Guitar Wiring Diagram")
-public class LeverSwitch extends AbstractTransparentComponent<String> {
+public class LeverSwitch extends AbstractTransparentComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
   private static Color BASE_COLOR = Color.lightGray;
   private static Color WAFER_COLOR = Color.decode("#CD8500");
+  private static Color LUG_COLOR = METAL_COLOR;
+  private static Color COMMON_LUG_COLOR = Color.decode("#FF9999");
 
   private static Size BASE_WIDTH = new Size(10d, SizeUnit.mm);
   private static Size BASE_LENGTH = new Size(47.5d, SizeUnit.mm);
@@ -78,6 +81,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private LeverSwitchType type = LeverSwitchType.DP3T;
+  private Boolean highlightCommon;
 
   public LeverSwitch() {
     super();
@@ -132,16 +136,20 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
 
     g2d.draw(body[1]);
 
-    g2d.setColor(METAL_COLOR);
+    g2d.setColor(LUG_COLOR);
     g2d.fill(body[2]);
-    g2d.setColor(METAL_COLOR.darker());
+    g2d.setColor(LUG_COLOR.darker());
     g2d.draw(body[2]);
+    g2d.setColor(COMMON_LUG_COLOR);
+    g2d.fill(body[3]);
+    g2d.setColor(COMMON_LUG_COLOR.darker());
+    g2d.draw(body[3]);
   }
 
   @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
     if (body == null) {
-      body = new Shape[3];
+      body = new Shape[4];
 
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;
@@ -155,9 +163,12 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
       int terminalSpacing = (int) TERMINAL_SPACING.convertToPixels();
       int terminalLength = getClosestOdd(TERMINAL_LENGTH.convertToPixels());
       int terminalWidth = getClosestOdd(TERMINAL_WIDTH.convertToPixels());
+      
+      if (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos)
+        x += terminalLength;
 
       int baseX = x - terminalLength / 2 - waferSpacing;
-      int baseY = y - (baseLength - terminalSpacing * (type == LeverSwitchType.DP3T ? 7 : 12)) / 2;
+      int baseY = y - (baseLength - terminalSpacing * (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos ? 7 : 12)) / 2;
       Area baseArea = new Area(new Rectangle2D.Double(baseX, baseY, baseWidth, baseLength));
       baseArea.subtract(new Area(new Ellipse2D.Double(baseX + baseWidth / 2 - holeSize / 2, baseY
           + (baseLength - holeSpacing) / 2 - holeSize / 2, holeSize, holeSize)));
@@ -167,12 +178,12 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
 
       Area waferArea =
           new Area(new Rectangle2D.Double(x - terminalLength / 2 - waferThickness / 2, y
-              - (waferLength - terminalSpacing * (type == LeverSwitchType.DP3T ? 7 : 12)) / 2, waferThickness,
+              - (waferLength - terminalSpacing * (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos ? 7 : 12)) / 2, waferThickness,
               waferLength));
 
       if (type == LeverSwitchType._4P5T) {
         waferArea.add(new Area(new Rectangle2D.Double(x - terminalLength / 2 - waferThickness / 2 + waferSpacing, y
-            - (waferLength - terminalSpacing * (type == LeverSwitchType.DP3T ? 7 : 12)) / 2, waferThickness,
+            - (waferLength - terminalSpacing * 12) / 2, waferThickness,
             waferLength)));
       }
       body[1] = waferArea;
@@ -194,7 +205,9 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
       }
 
       Area terminalArea = new Area();
-      for (Point point : controlPoints) {
+      Area commonTerminalArea = new Area();
+      for (int i = 0; i < controlPoints.length; i++) {
+        Point point = controlPoints[i];
         Area terminal =
             new Area(new RoundRectangle2D.Double(point.x - terminalLength / 2, point.y - terminalWidth / 2,
                 terminalLength, terminalWidth, terminalWidth / 2, terminalWidth / 2));
@@ -206,8 +219,15 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
           terminal.transform(rotation);
         }
         terminalArea.add(terminal);
+        if (getHighlightCommon() && 
+            (((type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos) && (i == 1 || i == 6)) ||
+            ((type == LeverSwitchType._4P5T || type == LeverSwitchType.DP5T) && (i == 0 || i == 11 || i == 12 || i == 23))))
+          commonTerminalArea.add(terminal);
+        else
+          terminalArea.add(terminal);
       }
       body[2] = terminalArea;
+      body[3] = commonTerminalArea;
 
       // Rotate if needed
       if (theta != 0) {
@@ -233,9 +253,10 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
 
     switch (type) {
       case DP3T:
+      case DP3T_5pos:
         controlPoints = new Point[8];
         for (int i = 0; i < 8; i++) {
-          controlPoints[i] = new Point(x - (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
+          controlPoints[i] = new Point(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
         }
         break;
       case DP5T:
@@ -366,9 +387,22 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
     // Invalidate the body
     body = null;
   }
+  
+  @EditableProperty(name = "Mark Common Lugs")
+  public Boolean getHighlightCommon() {
+    if (highlightCommon == null)
+      highlightCommon = true;
+    return highlightCommon;
+  }
+  
+  public void setHighlightCommon(Boolean highlightCommon) {
+    this.highlightCommon = highlightCommon;
+    
+    body = null;
+  }
  
   public enum LeverSwitchType {
-    DP3T("DP3T (Standard Strat)"), _4P5T("4P5T (Super/Mega)"), DP5T("DP5T");
+    DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), _4P5T("4P5T (Super/Mega)"), DP5T("DP5T");
 
     private String title;
 
@@ -380,5 +414,50 @@ public class LeverSwitch extends AbstractTransparentComponent<String> {
     public String toString() {
       return title;
     }
+  }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    // we don't want the switch to produce any nodes, it just makes connections
+    return null;
+  }
+  
+  // switch stuff
+
+  @Override
+  public int getPositionCount() {
+    switch (type) {
+      case DP3T:
+        return 3;
+      case DP3T_5pos:        
+      case DP5T:        
+      case _4P5T:
+        return 5;
+    }
+    return 0;
+  }
+
+  @Override
+  public String getPositionName(int position) {
+    return Integer.toString(position + 1);
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2, int position) {
+    switch (type) {
+      case DP3T:
+        return (index2 == 6 || index1 == 1) && index2 == index1 + 2 * (position + 1);        
+      case DP3T_5pos:
+        if (position % 2 == 0)          
+          return (index2 == 6 || index1 == 1) && index2 == index1 + position + 2;
+        else
+          return (index2 == 6 && (index1 == 2 || (index1 == 4 && position == 1) || (index1 == 0 && position == 3))) || 
+              (index1 == 1 && (index2 == 5 || (index2 == 3 && position == 1) || (index2 == 7 && position == 3)));
+      case DP5T:
+        return (index1 == 0 || index2 == 11) && index2 - index1 == position + 1;
+      case _4P5T:
+        return (index1 == 0 || index1 == 12 || index2 == 11 || index2 == 23) && index2 - index1 == position + 1;        
+    }
+    return false;
   }
 }

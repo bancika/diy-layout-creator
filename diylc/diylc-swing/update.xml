@@ -2471,6 +2471,14 @@
 			<name></name>
 			<changes>				
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added center-OFF options for "Mini Toggle Switch"</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to mark common lugs on all "Lever Switch" types with a different color</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow a file to be loaded if it references a missing component property, but show a warning.</description>
 				</org.diylc.appframework.update.Change>											
