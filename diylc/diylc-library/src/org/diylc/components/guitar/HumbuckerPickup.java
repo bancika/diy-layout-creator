@@ -60,6 +60,8 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
+  private static final int TERMINAL_FONT_SIZE = 11;
+
   private static Color BASE_COLOR = Color.lightGray;
   private static Color BOBIN_COLOR1 = Color.decode("#EAE3C6");
   private static Color BOBIN_COLOR2 = Color.black;
@@ -203,6 +205,35 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     Rectangle bounds = body[0].getBounds();
     drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
+    
+    // terminal labels
+    Point[] points = getControlPoints();
+    g2d.setColor(finalBorderColor);
+ 
+    g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
+    int dx = 0;
+    int dy = 0;
+    switch (orientation) {
+      case DEFAULT:        
+        dx = (int) (TERMINAL_FONT_SIZE * 0.8);
+        dy = 0;  
+        break;
+      case _90:
+        dx = 0;
+        dy = (int) (TERMINAL_FONT_SIZE * 0.8);
+        break;
+      case _180:
+        dx = -(int) (TERMINAL_FONT_SIZE * 0.8);
+        dy = 0;       
+        break;
+      case _270:
+        dx = 0;
+        dy = -(int) (TERMINAL_FONT_SIZE * 0.8);
+        break;     
+    }
+
+    drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);    
   }
 
   private Point[] getControlPoints() {

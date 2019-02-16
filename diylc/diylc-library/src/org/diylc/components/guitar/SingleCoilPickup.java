@@ -62,6 +62,8 @@ import org.diylc.utils.Constants;
 public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
+  
+  private static final int TERMINAL_FONT_SIZE = 11;
 
   private static Color BODY_COLOR = Color.white;
   private static Color BASE_COLOR = Color.gray;
@@ -233,6 +235,39 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     Rectangle bounds = body[3].getBounds();
     drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
+    
+    // terminal labels
+    Point[] points = getControlPoints();
+    g2d.setColor(finalBorderColor);
+
+    g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
+    int dx = 0;
+    int dy = 0;
+    switch (orientation) {
+      case DEFAULT:
+        dx = 0;
+        dy = -TERMINAL_FONT_SIZE;
+        break;
+      case _90:
+        dx = TERMINAL_FONT_SIZE;
+        dy = 0;        
+        break;
+      case _180:
+        dx = 0;
+        dy = TERMINAL_FONT_SIZE;        
+        break;
+      case _270:
+        dx = -TERMINAL_FONT_SIZE;
+        dy = 0;
+        break;     
+    }
+    if (getPolarity() == Polarity.North || getPolarity() == Polarity.South) {
+      drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].x + points[2].x) / 2 + dx, (points[1].y + points[2].y) / 2 + dy, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
+    } else {
+      drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    }
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -377,7 +412,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
       }
       
       body[1] = new Area();
-      double lugHole = getClosestOdd(lugDiameter / 2);
+      double lugHole = getClosestOdd(lugDiameter * 0.4);
       for (int i = getPolarity() == Polarity.Humbucking ? 0 : 1; i < (getPolarity() == Polarity.Humbucking ? 4 : 3); i++) {
         Point p = points[i];
         ((Area)body[1]).add(new Area(new Ellipse2D.Double(p.x - lugDiameter / 2, p.y - lugDiameter / 2, lugDiameter, lugDiameter)));
