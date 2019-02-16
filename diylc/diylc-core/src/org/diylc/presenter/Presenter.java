@@ -2687,8 +2687,8 @@ public class Presenter implements IPlugInPort {
   
   @SuppressWarnings("unchecked")
   @Override
-  public Map<Netlist, List<SwitchSetup>> extractNetlists() {    
-    Map<Netlist, List<SwitchSetup>> result = new HashMap<Netlist, List<SwitchSetup>>();
+  public List<Netlist> extractNetlists() {    
+    Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
     
     List<ISwitch> switches = new ArrayList<ISwitch>();
@@ -2756,11 +2756,10 @@ public class Presenter implements IPlugInPort {
       
       // merge graphs that are effectivelly the same
       if (result.containsKey(graph)) {
-        result.get(graph).add(new SwitchSetup(posList));
-      } else {
-        List<SwitchSetup> list = new ArrayList<SwitchSetup>();
-        list.add(new SwitchSetup(posList));
-        result.put(graph, list);
+        result.get(graph).getSwitchSetup().add(new SwitchSetup(posList));
+      } else {        
+        graph.getSwitchSetup().add(new SwitchSetup(posList));
+        result.put(graph, graph);
       }
       
       // find the next combination if possible
@@ -2777,13 +2776,18 @@ public class Presenter implements IPlugInPort {
         }        
       }
     }
-        
-    return result;
+    
+    // sort everything alphabetically
+    List<Netlist> netlists = new ArrayList<Netlist>(result.keySet());
+    Collections.sort(netlists);    
+
+    return netlists;
   }
   
   private Netlist constructGraph(List<Node> nodes, List<Line2D> connections, List<Area> continuityAreas) {
-    Netlist graph = new Netlist();
+    Netlist netlist = new Netlist();
     
+//    debugging code    
 //    StringBuilder sb = new StringBuilder();
 //    sb.append("Nodes:").append("\n");
 //    for (Node n : nodes) {
@@ -2809,20 +2813,22 @@ public class Presenter implements IPlugInPort {
             checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()])) {
           boolean added = false;
           // add to an existing vertex if possible
-          for (Group v :graph.getGroups())
-            if (v.getNodes().contains(node1)) {
-              v.getNodes().add(node2);
+          for (Group g : netlist.getGroups())
+            if (g.getNodes().contains(node1)) {
+              g.getNodes().add(node2);
               added = true;
-            } else if (v.getNodes().contains(node2)) {
-              v.getNodes().add(node1);
+            } else if (g.getNodes().contains(node2)) {
+              g.getNodes().add(node1);
               added = true;
             }
           if (!added)
-            graph.getGroups().add(new Group(node1, node2));
+            netlist.getGroups().add(new Group(node1, node2));
         }        
       }
     
-    return graph;
+    netlist.done();
+    
+    return netlist;
   }
   
   private boolean checkGraphConnection(Point2D point1, Point2D point2, List<Line2D> connections,

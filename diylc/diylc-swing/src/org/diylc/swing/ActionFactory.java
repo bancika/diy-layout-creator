@@ -18,7 +18,6 @@
 package org.diylc.swing;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -66,7 +65,6 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.images.IconLoader;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
-import org.diylc.netlist.SwitchSetup;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -77,11 +75,9 @@ import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.CheckBoxListDialog;
 import org.diylc.swingframework.IDrawingProvider;
-import org.diylc.swingframework.TextDialog;
 import org.diylc.swingframework.export.DrawingExporter;
+import org.diylc.swingframework.text.TextDialog;
 import org.diylc.utils.BomEntry;
-
-import sun.java2d.pipe.hw.ExtendedBufferCapabilities.VSyncType;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -709,14 +705,12 @@ public class ActionFactory {
     private static final long serialVersionUID = 1L;
 
     private ISwingUI swingUI;
-    private IPlugInPort plugInPort;
     
     private Map<String, ComponentType> typeMap = new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
 
     public ExportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
       super();
       this.swingUI = swingUI;
-      this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Export Variants");
       
       Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
@@ -1657,24 +1651,34 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
-      putValue(AbstractAction.NAME, "Create Netlist");
+      putValue(AbstractAction.NAME, "Create Netlist (beta)");
       putValue(AbstractAction.SMALL_ICON, IconLoader.Web.getIcon());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      Map<Netlist, List<SwitchSetup>> g = plugInPort.extractNetlists();
-      if (g == null)
+      List<Netlist> res = plugInPort.extractNetlists();
+      if (res == null) {
+        swingUI.showMessage("The generated netlist is empty, nothing to show.", "Netlist", ISwingUI.INFORMATION_MESSAGE);
         return;
-      StringBuilder sb = new StringBuilder("<html><p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\">");
-      for (Map.Entry<Netlist, List<SwitchSetup>> en : g.entrySet()) {
-        sb.append("<b>").append(en.getValue()).append("</b><br>");
-        for (Group v : en.getKey().getGroups()) {
-          sb.append(v).append("<br>");
-        }
-        sb.append("<br>");
       }
-      sb.append("</p></html>");
+      StringBuilder sb = new StringBuilder("<html>");
+      
+      for (Netlist netlist : res) {        
+        sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").append(netlist.getSwitchSetup()).append("</b><br><br>Connected node groups:<br>");        
+        for (Group v : netlist.getSortedGroups()) {
+//          boolean first = true;
+//          for (Node n : v.getSortedNodes()) {
+//            if (!first)
+//              sb.append(" &lt;-&gt; ");
+//            first = false;
+//            
+//          }
+          sb.append("&nbsp;&nbsp;").append(v.getSortedNodes()).append("<br>");          
+        }
+        sb.append("</p><br><hr>");
+      }
+      sb.append("</html>");
       new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Netlist", new Dimension(600, 480)).setVisible(true);
     }
     

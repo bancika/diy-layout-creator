@@ -21,24 +21,38 @@
 */
 package org.diylc.netlist;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class Netlist {
+public class Netlist implements Comparable<Netlist> {
   
   private Set<Group> groups = new HashSet<Group>();
+  private List<SwitchSetup> switchSetup = new ArrayList<SwitchSetup>();
 
-  public Netlist() {    
+  public Netlist() {
   }
 
   public Set<Group> getGroups() {
     return groups;
   }
   
-  public boolean verticesMatch(Netlist other) {
-    return this.groups.equals(other.groups);
+  public List<Group> getSortedGroups() {
+    List<Group> list = new ArrayList<Group>(groups);
+    Collections.sort(list);
+    return list;
   }
   
+  public List<SwitchSetup> getSwitchSetup() {
+    return switchSetup;
+  }
+  
+  public void done() {
+    Collections.sort(switchSetup);
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -67,9 +81,15 @@ public class Netlist {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Group v : groups) {
-      sb.append("\t").append(v).append("\n");
+    List<Group> list = getSortedGroups();
+    for (Group g : list) {
+      sb.append("\t").append(g).append("\n");
     }
     return sb.toString();
+  }
+
+  @Override
+  public int compareTo(Netlist o) {
+    return switchSetup.toString().compareToIgnoreCase(o.switchSetup.toString());
   }
 }

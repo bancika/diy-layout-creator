@@ -21,7 +21,10 @@
 */
 package org.diylc.netlist;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,7 +32,7 @@ import java.util.Set;
  * 
  * @author Branislav Stojkovic
  */
-public class Group {
+public class Group implements Comparable<Group> {
   
   private Set<Node> nodes = new HashSet<Node>();
 
@@ -40,6 +43,12 @@ public class Group {
 
   public Set<Node> getNodes() {
     return nodes;
+  }
+  
+  public List<Node> getSortedNodes() {
+    List<Node> list = new ArrayList<Node>(nodes);
+    Collections.sort(list);
+    return list;
   }
  
   @Override
@@ -70,11 +79,17 @@ public class Group {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Node n : nodes) {
+    List<Node> list = getSortedNodes();
+    for (Node n : list) {
       if (sb.length() > 0)
         sb.append(" <-> ");
       sb.append(n);
     }
     return sb.toString();
+  }
+
+  @Override
+  public int compareTo(Group o) {
+    return toString().compareToIgnoreCase(o.toString());
   }
 }

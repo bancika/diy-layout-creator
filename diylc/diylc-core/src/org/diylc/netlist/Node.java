@@ -28,7 +28,7 @@ import org.diylc.core.IDIYComponent;
  * 
  * @author Branislav Stojkovic
  */
-public class Node {
+public class Node implements Comparable<Node> {
 
   private IDIYComponent<?> component;
   private int pointIndex;
@@ -78,5 +78,10 @@ public class Node {
   @Override
   public String toString() {
     return component.getName() + "." + component.getControlPointNodeName(pointIndex) /*+ " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")"*/;
+  }
+
+  @Override
+  public int compareTo(Node o) {
+    return toString().compareToIgnoreCase(o.toString());
   }
 }

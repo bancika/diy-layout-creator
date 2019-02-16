@@ -21,6 +21,7 @@
 */
 package org.diylc.netlist;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,13 +29,14 @@ import java.util.List;
  * 
  * @author Branislav Stojkovic
  */
-public class SwitchSetup {
+public class SwitchSetup implements Comparable<SwitchSetup> {
   
   private List<Position> positions;
 
   public SwitchSetup(List<Position> positions) {
     super();
     this.positions = positions;
+    Collections.sort(this.positions);
   }
 
   public List<Position> getPositions() {
@@ -76,5 +78,10 @@ public class SwitchSetup {
       sb.append(s.toString());      
     }
     return sb.toString();
+  }
+
+  @Override
+  public int compareTo(SwitchSetup o) {
+    return toString().compareToIgnoreCase(o.toString());
   }
 }

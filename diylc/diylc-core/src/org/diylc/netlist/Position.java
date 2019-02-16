@@ -29,7 +29,7 @@ import org.diylc.core.ISwitch;
  * 
  * @author Branislav Stojkovic
  */
-public class Position {
+public class Position implements Comparable<Position> {
 
   private ISwitch theSwitch;
   private int position;
@@ -79,5 +79,12 @@ public class Position {
   @Override
   public String toString() {
     return (theSwitch instanceof IDIYComponent<?> ? ((IDIYComponent<?>) theSwitch).getName() + "." : "") + theSwitch.getPositionName(position);
+  }
+
+  @Override
+  public int compareTo(Position o) {
+    if (theSwitch instanceof IDIYComponent<?> && o.theSwitch instanceof IDIYComponent<?>)
+      return ((IDIYComponent<?>) theSwitch).getName().compareToIgnoreCase(((IDIYComponent<?>) o.theSwitch).getName());
+    return 0;
   }
 }

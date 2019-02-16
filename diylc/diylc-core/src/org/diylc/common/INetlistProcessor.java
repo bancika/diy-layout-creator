@@ -22,12 +22,10 @@
 package org.diylc.common;
 
 import java.util.List;
-import java.util.Map;
 
 import org.diylc.netlist.Netlist;
-import org.diylc.netlist.SwitchSetup;
 
 public interface INetlistProcessor {
 
-  Map<Netlist, List<SwitchSetup>> extractNetlists();
+  List<Netlist> extractNetlists();
 }

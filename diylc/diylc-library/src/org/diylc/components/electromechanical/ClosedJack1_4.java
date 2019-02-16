@@ -351,4 +351,17 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
     this.orientation = orientation;
     updateControlPoints();
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0:
+        return "Tip";
+      case 1:
+        return "Sleeve";
+      case 2:
+        return "Ring";
+    }
+    return null;
+  }
 }

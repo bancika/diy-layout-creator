@@ -238,7 +238,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     
     // terminal labels
     Point[] points = getControlPoints();
-    g2d.setColor(finalBorderColor);
+    g2d.setColor(darkerOrLighter(baseColor));
 
     g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
     int dx = 0;

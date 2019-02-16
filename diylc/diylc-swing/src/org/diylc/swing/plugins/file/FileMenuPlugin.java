@@ -48,6 +48,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
   private static final String FILE_TITLE = "File";
   private static final String TRACE_MASK_TITLE = "Trace Mask";
   private static final String INTEGRATION_TITLE = "Integration";
+  private static final String ANALYZE_TITLE = "Analyze";
 
   private ProjectDrawingProvider drawingProvider;
   private TraceMaskDrawingProvider traceMaskDrawingProvider;
@@ -85,8 +86,9 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(
         actionFactory.createPrintAction(traceMaskDrawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
             | KeyEvent.SHIFT_DOWN_MASK), TRACE_MASK_TITLE);
-    swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI), FILE_TITLE);
+    swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), ANALYZE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI), ANALYZE_TITLE);
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectSubmenu(INTEGRATION_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createImportBlocksAction(swingUI, plugInPort), INTEGRATION_TITLE);
