@@ -49,6 +49,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
+import org.diylc.common.INetlistSummarizer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
@@ -65,6 +66,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.images.IconLoader;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
+import org.diylc.netlist.Summary;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -254,6 +256,10 @@ public class ActionFactory {
   
   public GenerateNetlistAction createGenerateNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
     return new GenerateNetlistAction(plugInPort, swingUI);
+  }
+  
+  public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI, INetlistSummarizer summarizer) {
+    return new SummarizeNetlistAction(plugInPort, swingUI, summarizer);
   }
 
   // File menu actions.
@@ -1667,20 +1673,56 @@ public class ActionFactory {
       for (Netlist netlist : res) {        
         sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").append(netlist.getSwitchSetup()).append("</b><br><br>Connected node groups:<br>");        
         for (Group v : netlist.getSortedGroups()) {
-//          boolean first = true;
-//          for (Node n : v.getSortedNodes()) {
-//            if (!first)
-//              sb.append(" &lt;-&gt; ");
-//            first = false;
-//            
-//          }
           sb.append("&nbsp;&nbsp;").append(v.getSortedNodes()).append("<br>");          
         }
         sb.append("</p><br><hr>");
       }
       sb.append("</html>");
       new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Netlist", new Dimension(600, 480)).setVisible(true);
-    }
+    }    
+  }
+  
+  public static class SummarizeNetlistAction extends AbstractAction {
     
+    private static final long serialVersionUID = 1L;
+    
+    private IPlugInPort plugInPort;
+    private ISwingUI swingUI;
+    private INetlistSummarizer summarizer;
+
+    public SummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI, INetlistSummarizer summarizer) {
+      super();
+      this.plugInPort = plugInPort;
+      this.swingUI = swingUI;
+      this.summarizer = summarizer;
+      putValue(AbstractAction.NAME, "Analyze " + summarizer.getName());      
+      putValue(AbstractAction.SMALL_ICON, Enum.valueOf(IconLoader.class, summarizer.getIconName()).getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      List<Netlist> netlists = plugInPort.extractNetlists();
+      if (netlists == null || netlists.isEmpty()) {
+        swingUI.showMessage("The generated netlist is empty, nothing to show.", "Netlist", ISwingUI.INFORMATION_MESSAGE);
+        return;
+      }
+      
+      List<Summary> res = summarizer.summarize(netlists, null);
+      if (res == null) {
+        swingUI.showMessage("The generated summary is empty, nothing to show.", "Analyze", ISwingUI.INFORMATION_MESSAGE);
+        return;
+      }
+      StringBuilder sb = new StringBuilder("<html>");
+      
+      for (Summary summary : res) {        
+        sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup()).append("</b><br><br>Notes:<br><br>");        
+        for (String v : summary.getNotes()) {
+          sb.append("&nbsp;&nbsp;").append(v).append("<br>");          
+        }
+        sb.append("</p><br><hr>");
+      }
+      sb.append("</html>");
+      new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Netlist", new Dimension(600, 480)).setVisible(true);
+    }    
   }
 }

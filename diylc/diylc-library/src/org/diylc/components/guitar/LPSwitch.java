@@ -281,7 +281,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.NEVER;
+    return VisibilityPolicy.ALWAYS;
   }
 
   @Override

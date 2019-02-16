@@ -62,6 +62,7 @@ import org.diylc.common.EventType;
 import org.diylc.common.IComponentFiler;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IKeyProcessor;
+import org.diylc.common.INetlistSummarizer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
@@ -76,11 +77,11 @@ import org.diylc.core.Theme;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
-import org.diylc.netlist.SwitchSetup;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Position;
-import org.diylc.netlist.Group;
+import org.diylc.netlist.SwitchSetup;
 import org.diylc.utils.Constants;
 
 import com.thoughtworks.xstream.XStream;
@@ -2882,98 +2883,27 @@ public class Presenter implements IPlugInPort {
             if (s.arePointsConnected(i, j, position))
               connections.add(new Line2D.Double(c.getControlPoint(i), c.getControlPoint(j)));
       }
-    }   
-    
-//    // grab continuity areas
-//    List<Area> continuity = drawingManager.getContinuityAreas(currentProject);
-//    
-//    mergeConnections(connections, continuity);
+    }      
     
     return connections;
-  }
+  }  
   
-//  private void mergeConnections(List<Line2D> connections, List<Area> continuity) {
-//    List<Line2D> merged = new ArrayList<Line2D>();
-//    boolean[] visited = new boolean[connections.size()];
-//    for (int i = 0; i < visited.length; i++)
-//      visited[i] = false;
-//    
-//    double t = DrawingManager.CONTROL_POINT_SIZE;
-//    
-//    for (int i = 0; i < visited.length - 1; i++) {
-//      if (visited[i])
-//        continue;
-//      for (int j = i + 1; j < visited.length; j++) {
-//        if (visited[j])
-//          continue;
-//        Line2D c1 = connections.get(i);
-//        Line2D c2 = connections.get(j);
-//        Point2D p1 = null;
-//        Point2D p2 = null;
-//        boolean connected = false;
-//        // test direct continuity between two connections        
-//        if (!connected && c1.getP1().distance(c2.getP1()) < t) {
-//          connected = true;
-//          p1 = c1.getP2();
-//          p2 = c2.getP2();
-//        }
-//        if (!connected && c1.getP1().distance(c2.getP2()) < t) {
-//          connected = true;
-//          p1 = c1.getP2();
-//          p2 = c2.getP1();
-//        }
-//        if (!connected && c1.getP2().distance(c2.getP1()) < t) {
-//          connected = true;
-//          p1 = c1.getP1();
-//          p2 = c2.getP2();
-//        }
-//        if (!connected && c1.getP2().distance(c2.getP2()) < t) {
-//          connected = true;
-//          p1 = c1.getP1();
-//          p2 = c2.getP1();
-//        }
-//        // if that failed, try using continuity areas
-//        if (!connected) {
-//          for (Area a : continuity) {
-//            if (!connected && a.contains(c1.getP1()) && a.contains(c2.getP1())) {
-//              connected = true;
-//              p1 = c1.getP2();
-//              p2 = c2.getP2();
-//              break;
-//            }
-//            if (!connected && a.contains(c1.getP1()) && a.contains(c2.getP2())) {
-//              connected = true;
-//              p1 = c1.getP2();
-//              p2 = c2.getP1();
-//              break;
-//            }
-//            if (!connected && a.contains(c1.getP2()) && a.contains(c2.getP1())) {
-//              connected = true;
-//              p1 = c1.getP1();
-//              p2 = c2.getP2();
-//              break;
-//            }
-//            if (!connected && a.contains(c1.getP2()) && a.contains(c2.getP2())) {
-//              connected = true;
-//              p1 = c1.getP1();
-//              p2 = c2.getP1();
-//              break;
-//            }
-//          }
-//        }
-//        
-//        if (connected) {
-//          visited[i] = visited[j] = true;
-//          merged.add(new Line2D.Double(p1, p2));
-//        }
-//      }
-//    }
-//    
-//    // replace connections with merged 
-//    if (!merged.isEmpty()) {
-////      connections.clear();
-//      connections.addAll(merged);
-//      mergeConnections(connections, continuity); // attempt another round of merging if needed
-//    }
-//  }
+  @Override
+  public List<INetlistSummarizer> getNetlistSummarizers() {
+    Set<Class<?>> classes;
+    try {
+      classes = Utils.getClasses("org.diylc.netlist");
+      List<INetlistSummarizer> result = new ArrayList<INetlistSummarizer>();
+   
+      for (Class<?> clazz : classes) {
+        if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistSummarizer.class.isAssignableFrom(clazz)) {
+          result.add((INetlistSummarizer) clazz.newInstance());
+        }
+      }
+      return result;
+    } catch (Exception e) {
+      LOG.error("Could not load INetlistSummarizer implementations", e);
+      return null;
+    }
+  }
 }

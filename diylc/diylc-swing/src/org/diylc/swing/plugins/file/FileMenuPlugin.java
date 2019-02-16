@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.EventType;
+import org.diylc.common.INetlistSummarizer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.images.IconLoader;
@@ -86,9 +87,16 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(
         actionFactory.createPrintAction(traceMaskDrawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
             | KeyEvent.SHIFT_DOWN_MASK), TRACE_MASK_TITLE);
-    swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);
+    swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Scientist.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), ANALYZE_TITLE);
     swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI), ANALYZE_TITLE);
+    
+    List<INetlistSummarizer> summarizers = plugInPort.getNetlistSummarizers();
+    if (summarizers != null) {
+      for(INetlistSummarizer summarizer : summarizers)
+        swingUI.injectMenuAction(actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer), ANALYZE_TITLE);
+    }
+    
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectSubmenu(INTEGRATION_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createImportBlocksAction(swingUI, plugInPort), INTEGRATION_TITLE);

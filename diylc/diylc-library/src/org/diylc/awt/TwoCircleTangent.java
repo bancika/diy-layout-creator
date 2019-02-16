@@ -21,13 +21,10 @@
 */
 package org.diylc.awt;
 
-import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Creates an are covered by the two circles and the area between them bordered by the two external common tangents.
@@ -53,9 +50,5 @@ public class TwoCircleTangent extends Area {
     path.closePath();
     a.add(new Area(path));
     add(a);
-  }
-
-  public TwoCircleTangent(Shape s) {
-    throw new NotImplementedException();    
   }
 }

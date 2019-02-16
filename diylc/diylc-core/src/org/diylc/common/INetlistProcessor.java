@@ -25,7 +25,24 @@ import java.util.List;
 
 import org.diylc.netlist.Netlist;
 
+/**
+ * Interface for {@link Netlist} related operations.
+ * 
+ * @author Branislav Stojkovic
+ */
 public interface INetlistProcessor {
 
+  /**
+   * Finds all {@link Netlist}s for each switch position combination. 
+   * 
+   * @return
+   */
   List<Netlist> extractNetlists();
+  
+  /**
+   * Finds all available {@link INetlistSummarizer} implementations.
+   * 
+   * @return
+   */
+  List<INetlistSummarizer> getNetlistSummarizers();
 }
