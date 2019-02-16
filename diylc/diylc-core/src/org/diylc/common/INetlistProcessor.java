@@ -24,10 +24,10 @@ package org.diylc.common;
 import java.util.List;
 import java.util.Map;
 
-import org.diylc.graph.Graph;
-import org.diylc.graph.GraphKey;
+import org.diylc.netlist.Netlist;
+import org.diylc.netlist.SwitchSetup;
 
-public interface IGraphProcessor {
+public interface INetlistProcessor {
 
-  Map<Graph, List<GraphKey>> extractGraphs();
+  Map<Netlist, List<SwitchSetup>> extractNetlists();
 }

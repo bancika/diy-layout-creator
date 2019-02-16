@@ -76,11 +76,11 @@ import org.diylc.core.Theme;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.graph.Graph;
-import org.diylc.graph.GraphKey;
-import org.diylc.graph.Node;
-import org.diylc.graph.Position;
-import org.diylc.graph.Vertex;
+import org.diylc.netlist.Netlist;
+import org.diylc.netlist.SwitchSetup;
+import org.diylc.netlist.Node;
+import org.diylc.netlist.Position;
+import org.diylc.netlist.Group;
 import org.diylc.utils.Constants;
 
 import com.thoughtworks.xstream.XStream;
@@ -2687,8 +2687,8 @@ public class Presenter implements IPlugInPort {
   
   @SuppressWarnings("unchecked")
   @Override
-  public Map<Graph, List<GraphKey>> extractGraphs() {    
-    Map<Graph, List<GraphKey>> result = new HashMap<Graph, List<GraphKey>>();
+  public Map<Netlist, List<SwitchSetup>> extractNetlists() {    
+    Map<Netlist, List<SwitchSetup>> result = new HashMap<Netlist, List<SwitchSetup>>();
     List<Node> nodes = new ArrayList<Node>();
     
     List<ISwitch> switches = new ArrayList<ISwitch>();
@@ -2752,14 +2752,14 @@ public class Presenter implements IPlugInPort {
         posList.add(new Position(switches.get(j), positions[j]));
       }
       List<Line2D> connections = getConnections(switchPositions);  
-      Graph graph = constructGraph(nodes, connections, continuity);
+      Netlist graph = constructGraph(nodes, connections, continuity);
       
       // merge graphs that are effectivelly the same
       if (result.containsKey(graph)) {
-        result.get(graph).add(new GraphKey(posList));
+        result.get(graph).add(new SwitchSetup(posList));
       } else {
-        List<GraphKey> list = new ArrayList<GraphKey>();
-        list.add(new GraphKey(posList));
+        List<SwitchSetup> list = new ArrayList<SwitchSetup>();
+        list.add(new SwitchSetup(posList));
         result.put(graph, list);
       }
       
@@ -2781,8 +2781,8 @@ public class Presenter implements IPlugInPort {
     return result;
   }
   
-  private Graph constructGraph(List<Node> nodes, List<Line2D> connections, List<Area> continuityAreas) {
-    Graph graph = new Graph();
+  private Netlist constructGraph(List<Node> nodes, List<Line2D> connections, List<Area> continuityAreas) {
+    Netlist graph = new Netlist();
     
 //    StringBuilder sb = new StringBuilder();
 //    sb.append("Nodes:").append("\n");
@@ -2807,7 +2807,18 @@ public class Presenter implements IPlugInPort {
         if (point1.distance(point2) < t || 
             checkGraphConnection(point1, point2, connections, continuityAreas, new boolean[connections.size()]) || 
             checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()])) {
-          graph.getVertices().add(new Vertex(node1, node2));        
+          boolean added = false;
+          // add to an existing vertex if possible
+          for (Group v :graph.getVertices())
+            if (v.getNodes().contains(node1)) {
+              v.getNodes().add(node2);
+              added = true;
+            } else if (v.getNodes().contains(node2)) {
+              v.getNodes().add(node1);
+              added = true;
+            }
+          if (!added)
+            graph.getVertices().add(new Group(node1, node2));
         }        
       }
     
