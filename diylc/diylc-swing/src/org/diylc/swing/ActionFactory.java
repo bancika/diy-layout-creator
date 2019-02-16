@@ -64,6 +64,7 @@ import org.diylc.core.measures.Nudge;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.images.IconLoader;
+import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.SwitchSetup;
 import org.diylc.presenter.Presenter;
@@ -79,6 +80,8 @@ import org.diylc.swingframework.IDrawingProvider;
 import org.diylc.swingframework.TextDialog;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.utils.BomEntry;
+
+import sun.java2d.pipe.hw.ExtendedBufferCapabilities.VSyncType;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -1666,7 +1669,10 @@ public class ActionFactory {
       StringBuilder sb = new StringBuilder("<html><p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\">");
       for (Map.Entry<Netlist, List<SwitchSetup>> en : g.entrySet()) {
         sb.append("<b>").append(en.getValue()).append("</b><br>");
-        sb.append(en.getKey()).append("<br><br>");
+        for (Group v : en.getKey().getGroups()) {
+          sb.append(v).append("<br>");
+        }
+        sb.append("<br>");
       }
       sb.append("</p></html>");
       new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Netlist", new Dimension(600, 480)).setVisible(true);

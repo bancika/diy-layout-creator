@@ -26,24 +26,24 @@ import java.util.Set;
 
 public class Netlist {
   
-  private Set<Group> vertices = new HashSet<Group>();
+  private Set<Group> groups = new HashSet<Group>();
 
   public Netlist() {    
   }
 
-  public Set<Group> getVertices() {
-    return vertices;
+  public Set<Group> getGroups() {
+    return groups;
   }
   
   public boolean verticesMatch(Netlist other) {
-    return this.vertices.equals(other.vertices);
+    return this.groups.equals(other.groups);
   }
   
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((vertices == null) ? 0 : vertices.hashCode());
+    result = prime * result + ((groups == null) ? 0 : groups.hashCode());
     return result;
   }
 
@@ -56,10 +56,10 @@ public class Netlist {
     if (getClass() != obj.getClass())
       return false;
     Netlist other = (Netlist) obj;
-    if (vertices == null) {
-      if (other.vertices != null)
+    if (groups == null) {
+      if (other.groups != null)
         return false;
-    } else if (!vertices.equals(other.vertices))
+    } else if (!groups.equals(other.groups))
       return false;
     return true;
   }
@@ -67,7 +67,7 @@ public class Netlist {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Group v : vertices) {
+    for (Group v : groups) {
       sb.append("\t").append(v).append("\n");
     }
     return sb.toString();

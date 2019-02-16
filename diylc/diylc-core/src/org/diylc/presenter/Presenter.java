@@ -2809,7 +2809,7 @@ public class Presenter implements IPlugInPort {
             checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()])) {
           boolean added = false;
           // add to an existing vertex if possible
-          for (Group v :graph.getVertices())
+          for (Group v :graph.getGroups())
             if (v.getNodes().contains(node1)) {
               v.getNodes().add(node2);
               added = true;
@@ -2818,7 +2818,7 @@ public class Presenter implements IPlugInPort {
               added = true;
             }
           if (!added)
-            graph.getVertices().add(new Group(node1, node2));
+            graph.getGroups().add(new Group(node1, node2));
         }        
       }
     
