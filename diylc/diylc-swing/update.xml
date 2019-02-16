@@ -2481,7 +2481,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow a file to be loaded if it references a missing component property, but show a warning.</description>
-				</org.diylc.appframework.update.Change>											
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Version 3.53 would not start unless there was an older version running on the same machine before</description>
+				</org.diylc.appframework.update.Change>										
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
