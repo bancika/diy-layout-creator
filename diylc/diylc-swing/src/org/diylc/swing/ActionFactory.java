@@ -1695,7 +1695,7 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       this.summarizer = summarizer;
-      putValue(AbstractAction.NAME, "Analyze " + summarizer.getName());      
+      putValue(AbstractAction.NAME, "Analyze " + summarizer.getName() + " (beta)");      
       putValue(AbstractAction.SMALL_ICON, Enum.valueOf(IconLoader.class, summarizer.getIconName()).getIcon());
     }
 
@@ -1703,26 +1703,26 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       List<Netlist> netlists = plugInPort.extractNetlists();
       if (netlists == null || netlists.isEmpty()) {
-        swingUI.showMessage("The generated netlist is empty, nothing to show.", "Netlist", ISwingUI.INFORMATION_MESSAGE);
+        swingUI.showMessage("The generated netlist is empty, nothing to show.", "Analyze " + summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
         return;
       }
       
       List<Summary> res = summarizer.summarize(netlists, null);
       if (res == null) {
-        swingUI.showMessage("The generated summary is empty, nothing to show.", "Analyze", ISwingUI.INFORMATION_MESSAGE);
+        swingUI.showMessage("The generated summary is empty, nothing to show.", "Analyze " + summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
         return;
       }
       StringBuilder sb = new StringBuilder("<html>");
       
       for (Summary summary : res) {        
-        sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup()).append("</b><br><br>Notes:<br><br>");        
+        sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup()).append("</b><br><br>");        
         for (String v : summary.getNotes()) {
           sb.append("&nbsp;&nbsp;").append(v).append("<br>");          
         }
         sb.append("</p><br><hr>");
       }
       sb.append("</html>");
-      new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Netlist", new Dimension(600, 480)).setVisible(true);
+      new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Analyze " + summarizer.getName(), new Dimension(600, 480)).setVisible(true);
     }    
   }
 }

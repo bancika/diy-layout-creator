@@ -35,6 +35,7 @@ import org.diylc.components.guitar.P90Pickup;
 import org.diylc.components.guitar.PBassPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
+import org.diylc.core.IDIYComponent;
 
 public class GuitarDiagramSummarizer extends AbstractNetlistSummarizer implements INetlistSummarizer {
   
@@ -74,32 +75,35 @@ public class GuitarDiagramSummarizer extends AbstractNetlistSummarizer implement
   
   private Summary summarize(Netlist netlist, Node preferredOutput) {
     List<String> notes = new ArrayList<String>();
-    List<Node> jackTipNodes = find(JACK_TYPES, "Tip", netlist, null);
-    List<Node> jackSleeveNodes = find(JACK_TYPES, "Sleeve", netlist, null);
+    List<Node> jackTipNodes = find(JACK_TYPES, "Tip", netlist);
+    List<Node> jackSleeveNodes = find(JACK_TYPES, "Sleeve", netlist);
     
-    netlist = findAndEliminateVolumePot(netlist, jackTipNodes, jackSleeveNodes, notes);
+    netlist = findAndEliminateVolumeControls(netlist, jackTipNodes, jackSleeveNodes, notes);
     
     return new Summary(netlist, notes);
   }
 
-  private Netlist findAndEliminateVolumePot(Netlist netlist, List<Node> jackTipGroups, List<Node> jackSleeveGroups, List<String> notes) {
+  private Netlist findAndEliminateVolumeControls(Netlist netlist, List<Node> jackTipGroups, List<Node> jackSleeveGroups, List<String> notes) {
     List<Node> potTipNodes = find(POT_TYPES, null, netlist, jackTipGroups);
     List<Node> potSleeveNodes = find(POT_TYPES, null, netlist, jackSleeveGroups);
-    if (!potTipNodes.isEmpty() && !potSleeveNodes.isEmpty()) {
-      if (potTipNodes.size() == 1 && potTipNodes.get(0).getDisplayName().equals("2") &&
-          potSleeveNodes.size() == 1 && potSleeveNodes.get(0).getDisplayName().equals("3")) {
-        notes.add("Volume pot detected: " + potTipNodes.get(0).getComponent().getName());
+    if (!potTipNodes.isEmpty() && !potSleeveNodes.isEmpty()) {                  
+      Set<IDIYComponent<?>> pots = extractComponents(potTipNodes);
+      List<Node> potInputNodes = find(POT_TYPES, "1", netlist, pots);
+      
+      if (allMatch(potTipNodes, "2") && allMatch(potSleeveNodes, "3") && allComponentsMatch(potInputNodes, pots)) {        
+        List<String> potNames = extractNames(pots);
+        notes.add("Detected volume control(s): " + potNames);
         
-        Set<Node> toEliminate = new HashSet<Node>(potTipNodes);
-        toEliminate.addAll(potSleeveNodes);
-        return eliminate(netlist, toEliminate);
-      } else if (potTipNodes.size() > 1 || potSleeveNodes.size() > 1) {
-        notes.add("Detected multiple volume pots, test inconclusive.");
+        Set<Node> toMerge = new HashSet<Node>(potTipNodes);
+        toMerge.addAll(potInputNodes);
+        return simplify(netlist, toMerge, potSleeveNodes);
+      } else {
+        notes.add("Detected incorrectly wired volume control(s).");
         return netlist;
       }
     }
     
-    notes.add("No volume pot detected.");    
+    notes.add("No volume controls detected.");    
     return netlist;
   }
 }

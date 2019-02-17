@@ -96,4 +96,11 @@ public class Group implements Comparable<Group> {
   public int compareTo(Group o) {
     return toString().compareToIgnoreCase(o.toString());
   }
+  
+  @Override
+  public Group clone() {
+    Group g = new Group();
+    g.nodes.addAll(nodes);
+    return g;
+  }
 }
