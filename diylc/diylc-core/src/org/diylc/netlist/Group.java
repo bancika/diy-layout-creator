@@ -35,6 +35,10 @@ import java.util.Set;
 public class Group implements Comparable<Group> {
   
   private Set<Node> nodes = new HashSet<Node>();
+  
+  public Group() {
+    
+  }
 
   public Group(Node node1, Node node2) {
     nodes.add(node1);

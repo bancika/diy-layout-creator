@@ -46,6 +46,10 @@ public class Node implements Comparable<Node> {
   public int getPointIndex() {
     return pointIndex;
   }
+  
+  public String getDisplayName() {
+    return component.getControlPointNodeName(pointIndex);
+  }
 
   @Override
   public int hashCode() {
@@ -77,7 +81,7 @@ public class Node implements Comparable<Node> {
 
   @Override
   public String toString() {
-    return component.getName() + "." + component.getControlPointNodeName(pointIndex) /*+ " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")"*/;
+    return component.getName() + "." + getDisplayName() /*+ " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")"*/;
   }
 
   @Override
