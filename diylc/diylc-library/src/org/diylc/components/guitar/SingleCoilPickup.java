@@ -609,6 +609,30 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     }
     return null;
   }
+  
+  @Override
+  public String getInternalLinkName(int index1, int index2) {    
+    switch (getPolarity()) {
+      case Humbucking:
+        if (index1 == 0 && index2 == 1)
+          return Polarity.North.toString() + "->";
+        else if (index1 == 1 && index2 == 0)
+          return Polarity.North.toString() + "<-";
+        else if (index1 == 2 && index2 == 3)
+          return Polarity.South.toString() + "->";
+        else if (index1 == 3 && index2 == 2)
+          return Polarity.South.toString() + "<-";
+        break;
+      case North:
+      case South:
+        if (index1 == 1 && index2 == 2)
+          return getPolarity().toString() + "->";
+        else if (index1 == 2 && index2 == 1)
+          return getPolarity().toString() + "<-";
+    }
+    
+    return null;
+  }
 
   public enum SingleCoilType {
     Stratocaster, Telecaster;

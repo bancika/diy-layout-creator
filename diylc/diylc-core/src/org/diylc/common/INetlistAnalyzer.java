@@ -24,27 +24,37 @@ package org.diylc.common;
 import java.util.List;
 
 import org.diylc.netlist.Netlist;
+import org.diylc.netlist.Node;
+import org.diylc.netlist.Summary;
+import org.diylc.netlist.Tree;
+import org.diylc.netlist.TreeException;
 
-/**
- * Interface for {@link Netlist} related operations.
- * 
- * @author Branislav Stojkovic
- */
-public interface INetlistProcessor {
+public interface INetlistAnalyzer {
 
+  /**   
+   * @return summarizer name
+   */
+  String getName();
+  
+  /**   
+   * @return name of the icon to use
+   */
+  String getIconName();  
+  
   /**
-   * Finds all {@link Netlist}s for each switch position combination. 
+   * Summarizes all {@link Netlist}s provided. 
    * 
+   * @param netlists
+   * @param preferredOutput optional, needed only where there's more than one possible output node.
    * @return
    */
-  List<Netlist> extractNetlists();
-  
+  List<Summary> summarize(List<Netlist> netlists, Node preferredOutput);
+
   /**
-   * Finds all available {@link INetlistAnalyzer} implementations.
    * 
+   * @param netlist
    * @return
+   * @throws TreeException 
    */
-  List<INetlistAnalyzer> getNetlistAnalyzers();
-  
-  
+  Tree constructTree(Netlist netlist) throws TreeException;
 }

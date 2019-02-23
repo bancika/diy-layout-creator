@@ -27,11 +27,13 @@ public class Summary {
 
   private Netlist netlist;
   private List<String> notes;
+  private Tree tree;
 
-  public Summary(Netlist netlist, List<String> notes) {
+  public Summary(Netlist netlist, List<String> notes, Tree tree) {
     super();
     this.netlist = netlist;
     this.notes = notes;
+    this.tree = tree;
   }
 
   public Netlist getNetlist() {
@@ -40,6 +42,10 @@ public class Summary {
 
   public List<String> getNotes() {
     return notes;
+  }
+  
+  public Tree getTree() {
+    return tree;
   }
 
   @Override

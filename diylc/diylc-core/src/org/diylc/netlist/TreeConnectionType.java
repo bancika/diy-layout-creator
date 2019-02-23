@@ -19,32 +19,26 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.common;
+package org.diylc.netlist;
 
-import java.util.List;
+public enum TreeConnectionType {
 
-import org.diylc.netlist.Netlist;
-
-/**
- * Interface for {@link Netlist} related operations.
- * 
- * @author Branislav Stojkovic
- */
-public interface INetlistProcessor {
-
-  /**
-   * Finds all {@link Netlist}s for each switch position combination. 
-   * 
-   * @return
-   */
-  List<Netlist> extractNetlists();
+  Series("+", "red"), Parallel("||", "blue");
   
-  /**
-   * Finds all available {@link INetlistAnalyzer} implementations.
-   * 
-   * @return
-   */
-  List<INetlistAnalyzer> getNetlistAnalyzers();
+  private String label;
+  private String color;
+
+  private TreeConnectionType(String label, String color) {
+    this.label = label;
+    this.color = color;
+  }
+
+  @Override
+  public String toString() {
+    return label;
+  }
   
-  
+  public String toHTML() {
+    return "<b><font color='" + color + "'>" + label + "</font></b>";
+  }
 }

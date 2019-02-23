@@ -19,32 +19,13 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.common;
+package org.diylc.netlist;
 
 import java.util.List;
 
-import org.diylc.netlist.Netlist;
-import org.diylc.netlist.Node;
-import org.diylc.netlist.Summary;
+public interface ITree {
 
-public interface INetlistSummarizer {
-
-  /**   
-   * @return summarizer name
-   */
-  String getName();
+  List<ITree> getChildren();
   
-  /**   
-   * @return name of the icon to use
-   */
-  String getIconName();
-  
-  /**
-   * Summarizes all {@link Netlist}s provided. 
-   * 
-   * @param netlists
-   * @param preferredOutput optional, needed only where there's more than one possible output node.
-   * @return
-   */
-  List<Summary> summarize(List<Netlist> netlists, Node preferredOutput);
+  TreeConnectionType getConnectionType();
 }

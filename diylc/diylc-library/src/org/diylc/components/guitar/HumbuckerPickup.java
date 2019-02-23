@@ -39,6 +39,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.guitar.SingleCoilPickup.Polarity;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -665,6 +666,20 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
       case 3:
         return "South Finish";
     }
+    return null;
+  }
+  
+  @Override
+  public String getInternalLinkName(int index1, int index2) {
+    if (index1 == 0 && index2 == 1)
+      return Polarity.North.toString() + "->";
+    else if (index1 == 2 && index2 == 3)
+      return Polarity.South.toString() + "->";
+    else if (index1 == 1 && index2 == 0)
+      return Polarity.North.toString() + "<-";
+    else if (index1 == 3 && index2 == 2)
+      return Polarity.South.toString() + "<-";
+    
     return null;
   }
 

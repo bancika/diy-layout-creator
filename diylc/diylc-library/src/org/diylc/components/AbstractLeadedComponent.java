@@ -534,6 +534,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   public void setLabelOriantation(LabelOriantation labelOriantation) {
     this.labelOriantation = labelOriantation;
   }
+  
+  @Override
+  public String getInternalLinkName(int index1, int index2) {
+    if ((index1 == 0 && index2 == getControlPointCount() - 1) || (index2 == 0 && index1 == getControlPointCount() - 1))
+      return getName();
+    return null;
+  }
 
   /**
    * Override this method with @EditableProperty annotation in child classes where standing mode is

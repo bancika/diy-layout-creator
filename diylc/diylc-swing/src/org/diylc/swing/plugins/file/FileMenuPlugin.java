@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.EventType;
-import org.diylc.common.INetlistSummarizer;
+import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.images.IconLoader;
@@ -91,9 +91,9 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), ANALYZE_TITLE);
     swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI), ANALYZE_TITLE);
     
-    List<INetlistSummarizer> summarizers = plugInPort.getNetlistSummarizers();
+    List<INetlistAnalyzer> summarizers = plugInPort.getNetlistAnalyzers();
     if (summarizers != null) {
-      for(INetlistSummarizer summarizer : summarizers)
+      for(INetlistAnalyzer summarizer : summarizers)
         swingUI.injectMenuAction(actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer), ANALYZE_TITLE);
     }
     

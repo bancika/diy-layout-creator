@@ -285,4 +285,9 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public String getControlPointNodeName(int index) {
     return Integer.toString(index + 1);
   }
+  
+  @Override
+  public String getInternalLinkName(int index1, int index2) {   
+    return null;
+  }
 }

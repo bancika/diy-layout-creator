@@ -122,6 +122,13 @@ public interface IDIYComponent<T> extends Serializable {
    * @return name of the control point node, if the control point represents a graph node, null otherwise.
    */
   String getControlPointNodeName(int index);
+  
+  /**   
+   * @param index1
+   * @param index2
+   * @return name of the internal linked formed by the two control points, null if they do not form an internal link
+   */
+  String getInternalLinkName(int index1, int index2);
 
   /**
    * Draws the component onto the {@link Graphics2D}.

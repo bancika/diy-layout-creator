@@ -62,7 +62,7 @@ import org.diylc.common.EventType;
 import org.diylc.common.IComponentFiler;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IKeyProcessor;
-import org.diylc.common.INetlistSummarizer;
+import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
@@ -2753,7 +2753,7 @@ public class Presenter implements IPlugInPort {
         posList.add(new Position(switches.get(j), positions[j]));
       }
       List<Line2D> connections = getConnections(switchPositions);  
-      Netlist graph = constructGraph(nodes, connections, continuity);
+      Netlist graph = constructNetlist(nodes, connections, continuity);
       
       // merge graphs that are effectivelly the same
       if (result.containsKey(graph)) {
@@ -2785,7 +2785,7 @@ public class Presenter implements IPlugInPort {
     return netlists;
   }
   
-  private Netlist constructGraph(List<Node> nodes, List<Line2D> connections, List<Area> continuityAreas) {
+  private Netlist constructNetlist(List<Node> nodes, List<Line2D> connections, List<Area> continuityAreas) {
     Netlist netlist = new Netlist();
     
 //    debugging code    
@@ -2827,7 +2827,7 @@ public class Presenter implements IPlugInPort {
         }        
       }
     
-    netlist.done();
+    Collections.sort(netlist.getSwitchSetup());   
     
     return netlist;
   }
@@ -2889,15 +2889,15 @@ public class Presenter implements IPlugInPort {
   }  
   
   @Override
-  public List<INetlistSummarizer> getNetlistSummarizers() {
+  public List<INetlistAnalyzer> getNetlistAnalyzers() {
     Set<Class<?>> classes;
     try {
       classes = Utils.getClasses("org.diylc.netlist");
-      List<INetlistSummarizer> result = new ArrayList<INetlistSummarizer>();
+      List<INetlistAnalyzer> result = new ArrayList<INetlistAnalyzer>();
    
       for (Class<?> clazz : classes) {
-        if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistSummarizer.class.isAssignableFrom(clazz)) {
-          result.add((INetlistSummarizer) clazz.newInstance());
+        if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistAnalyzer.class.isAssignableFrom(clazz)) {
+          result.add((INetlistAnalyzer) clazz.newInstance());
         }
       }
       return result;

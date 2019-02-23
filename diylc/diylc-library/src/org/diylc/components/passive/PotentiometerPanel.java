@@ -458,6 +458,17 @@ public class PotentiometerPanel extends AbstractPotentiometer {
   public void setWaferColor(Color waferColor) {
     this.waferColor = waferColor;
   }
+  
+  @Override
+  public String getInternalLinkName(int index1, int index2) {
+    if (index1 > index2)
+      return getInternalLinkName(index2, index1);
+    
+    if (index2 - index1 == 1)
+      return (index1 + 1) + "-" + (index2 + 1);
+    
+    return null;
+  }
 
   public enum Type {
     ThroughHole("Through Hole"), PCB("PCB");

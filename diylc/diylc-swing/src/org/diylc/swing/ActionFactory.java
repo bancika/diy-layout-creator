@@ -49,7 +49,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
-import org.diylc.common.INetlistSummarizer;
+import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
@@ -258,7 +258,7 @@ public class ActionFactory {
     return new GenerateNetlistAction(plugInPort, swingUI);
   }
   
-  public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI, INetlistSummarizer summarizer) {
+  public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI, INetlistAnalyzer summarizer) {
     return new SummarizeNetlistAction(plugInPort, swingUI, summarizer);
   }
 
@@ -1688,9 +1688,9 @@ public class ActionFactory {
     
     private IPlugInPort plugInPort;
     private ISwingUI swingUI;
-    private INetlistSummarizer summarizer;
+    private INetlistAnalyzer summarizer;
 
-    public SummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI, INetlistSummarizer summarizer) {
+    public SummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI, INetlistAnalyzer summarizer) {
       super();
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
@@ -1716,6 +1716,8 @@ public class ActionFactory {
       
       for (Summary summary : res) {        
         sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup()).append("</b><br><br>");        
+        
+        sb.append("Parallel/Series connectivity tree:<br><br>").append(summary.getTree().toHTML(0));
         for (String v : summary.getNotes()) {
           sb.append("&nbsp;&nbsp;").append(v).append("<br>");          
         }
