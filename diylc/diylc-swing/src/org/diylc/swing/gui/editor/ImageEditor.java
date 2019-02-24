@@ -23,10 +23,13 @@ package org.diylc.swing.gui.editor;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import org.apache.poi.util.IOUtils;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.plugins.file.FileFilterEnum;
@@ -48,8 +51,21 @@ public class ImageEditor extends JButton {
                 FileFilterEnum.IMAGES.getExtensions()[0], null);
         if (file != null) {
           property.setChanged(true);
-          ImageIcon image = new ImageIcon(file.getAbsolutePath());
-          property.setValue(image);
+          FileInputStream fis;
+          try {
+            fis = new FileInputStream(file);
+            byte[] byteArray = IOUtils.toByteArray(fis);
+//            ImageIcon image = new ImageIcon(file.getAbsolutePath());
+            property.setValue(byteArray);
+            fis.close();
+          } catch (FileNotFoundException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+                  
         }
       }
     });

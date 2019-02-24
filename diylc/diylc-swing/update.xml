@@ -2477,7 +2477,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added ability to mark common lugs on all "Lever Switch" types with a different color</description>
-				</org.diylc.appframework.update.Change>		
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improve performance of "Image" component and greatly reduce file size when images are present</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow a file to be loaded if it references a missing component property, but show a warning.</description>

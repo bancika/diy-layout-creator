@@ -25,7 +25,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
@@ -77,7 +76,7 @@ public class FieldEditorFactory {
         MeasureArrayEditor editor = new MeasureArrayEditor(property);
         return editor;
       }
-    if (ImageIcon.class.isAssignableFrom(property.getType())) {
+    if (byte[].class.isAssignableFrom(property.getType())) {
       ImageEditor editor = new ImageEditor(property);
       return editor;
     }

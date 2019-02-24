@@ -1,24 +1,20 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.components.misc;
 
 import java.awt.AlphaComposite;
@@ -27,10 +23,16 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IconImageConverter;
+import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -42,7 +44,10 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PercentEditor;
 
+import sun.awt.image.ToolkitImage;
+
 import com.thoughtworks.xstream.annotations.XStreamConverter;
+
 
 @ComponentDescriptor(name = "Image", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined image", instanceNamePrefix = "Img", zOrder = IDIYComponent.COMPONENT,
@@ -61,23 +66,34 @@ public class Image extends AbstractTransparentComponent<Void> {
       ICON = new ImageIcon(imgURL, name);
     }
   }
-  
+
   @Override
   public String getControlPointNodeName(int index) {
     return null;
   }
 
   private Point point = new Point(0, 0);
+
   @XStreamConverter(IconImageConverter.class)
-  private ImageIcon image = ICON;
+  @Deprecated
+  private ImageIcon image;
+  private byte[] data;
   private byte scale = DEFAULT_SCALE;
+
+  public Image() {
+    try {
+      data = IOUtils.toByteArray(Image.class.getResourceAsStream("image.png"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
     double s = 1d * scale / DEFAULT_SCALE;
     Shape clip = g2d.getClip().getBounds();
-    if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(), image.getIconWidth() * s, image
+    if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(), getImage().getIconWidth() * s, getImage()
         .getIconHeight() * s))) {
       return;
     }
@@ -87,12 +103,13 @@ public class Image extends AbstractTransparentComponent<Void> {
     }
 
     g2d.scale(s, s);
-    g2d.drawImage(image.getImage(), (int) (point.x / s), (int) (point.y / s), null);
+    g2d.drawImage(getImage().getImage(), (int) (point.x / s), (int) (point.y / s), null);
     if (componentState == ComponentState.SELECTED) {
       g2d.setComposite(oldComposite);
       g2d.scale(1 / s, 1 / s);
       g2d.setColor(SELECTION_COLOR);
-      g2d.drawRect(point.x, point.y, (int) (image.getIconWidth() * s), (int) (image.getIconHeight() * s));
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
+      g2d.drawRect(point.x, point.y, (int) (getImage().getIconWidth() * s), (int) (getImage().getIconHeight() * s));
     }
   }
 
@@ -126,13 +143,31 @@ public class Image extends AbstractTransparentComponent<Void> {
     this.point.setLocation(point);
   }
 
-  @EditableProperty(defaultable = false)
   public ImageIcon getImage() {
-    return image;
+    if (image != null) {
+      BufferedImage bi = ((ToolkitImage) image.getImage()).getBufferedImage();
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      try {
+        ImageIO.write(bi, "png", baos);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      data = baos.toByteArray();
+      image = null;
+    }
+
+    return new ImageIcon(data);
   }
 
-  public void setImage(ImageIcon image) {
-    this.image = image;
+  @EditableProperty(name = "Image")
+  public byte[] getData() {
+    return data;
+  }
+
+  public void setData(byte[] data) {
+    this.data = data;
+    this.image = null;
   }
 
   @PercentEditor(_100PercentValue = 50)
