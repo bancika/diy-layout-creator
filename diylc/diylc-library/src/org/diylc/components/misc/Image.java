@@ -145,15 +145,16 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   public ImageIcon getImage() {
     if (image != null) {
+      // when loading old files, convert the stored image to byte array and then then discard it, we won't be needing it anymore
       BufferedImage bi = ((ToolkitImage) image.getImage()).getBufferedImage();
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       try {
         ImageIO.write(bi, "png", baos);
+        // make it official
+        data = baos.toByteArray();
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      data = baos.toByteArray();
+      }      
+      // don't save back to the file
       image = null;
     }
 
