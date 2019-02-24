@@ -92,7 +92,10 @@ public class TreeLeaf implements ITree {
 
   @Override
   public String toString() {   
-    return component.getName() + "." + component.getInternalLinkName(pointIndex1, pointIndex2);
+    String linkName = component.getInternalLinkName(pointIndex1, pointIndex2);
+    if (component.getName().equals(linkName))
+      return linkName;
+    return component.getName() + "." + linkName;
   }
   
   public String toHTML() {

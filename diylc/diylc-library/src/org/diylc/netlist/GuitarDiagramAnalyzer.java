@@ -164,7 +164,7 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
     } else {      
       Node jackTip = jackTipNodes.get(0);
       Node jackSleeve = jackSleeveNodes.get(0);      
-      return constructTree(netlist, jackTip, jackSleeve);
+      return constructTreeBetween(netlist, jackTip, jackSleeve);
     }
   }
 }

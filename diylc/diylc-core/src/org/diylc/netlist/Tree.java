@@ -30,6 +30,11 @@ public class Tree {
   private TreeConnectionType connectionType;  
   private TreeLeaf leaf;
   
+  public Tree(TreeConnectionType connectionType) {
+    this.children = new ArrayList<Tree>();
+    this.connectionType = connectionType;
+  }
+  
   public Tree(TreeLeaf leaf) {
     this.leaf = leaf;
   }
@@ -43,8 +48,12 @@ public class Tree {
     return children;
   }
   
-  public void trimChildren(int count) {
+  public void trimChildrenLeft(int count) {
     children = children.subList(count, children.size());
+  }
+  
+  public void trimChildrenRight(int count) {
+    children = children.subList(0, children.size() - count);
   }
 
   public TreeConnectionType getConnectionType() { 

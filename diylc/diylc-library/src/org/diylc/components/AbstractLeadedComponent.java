@@ -130,6 +130,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
                 : borderColor;
       }
 
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
       g2d.setColor(finalBorderColor);
       g2d.draw(body);
       if (!outlineMode) {
