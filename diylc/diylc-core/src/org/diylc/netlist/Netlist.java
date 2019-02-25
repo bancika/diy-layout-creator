@@ -39,6 +39,11 @@ public class Netlist implements Comparable<Netlist> {
     return groups;
   }
   
+  public Netlist add(Group g) {
+    groups.add(g);
+    return this;
+  }
+  
   public List<Group> getSortedGroups() {
     List<Group> list = new ArrayList<Group>(groups);
     Collections.sort(list);
