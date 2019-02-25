@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.diylc.core.IDIYComponent;
+
 /**
  * Represents a group of {@link Node}s that are connected together.
  * 
@@ -43,6 +45,11 @@ public class Group implements Comparable<Group> {
   public Group(Node node1, Node node2) {
     nodes.add(node1);
     nodes.add(node2);
+  }
+  
+  public Group connect(IDIYComponent<?> component, int index) {
+    getNodes().add(new Node(component, index));
+    return this;
   }
 
   public Set<Node> getNodes() {

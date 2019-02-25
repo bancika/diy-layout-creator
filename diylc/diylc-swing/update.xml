@@ -2472,6 +2472,18 @@
 			<changes>				
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>"Create Netlist" feature added under File -> Analyze</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>"Analyze Guitar Wiring" feature added under File -> Analyze</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Guitar pickups now have separate terminals for start and finish point of each coil. Single coil pickups have polarity property added</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added center-OFF options for "Mini Toggle Switch"</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

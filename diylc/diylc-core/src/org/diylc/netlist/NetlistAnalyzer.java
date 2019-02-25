@@ -28,11 +28,11 @@ import java.util.Set;
 
 import org.diylc.core.IDIYComponent;
 
-public abstract class AbstractNetlistAnalyzer {
+public class NetlistAnalyzer {
 
-  public AbstractNetlistAnalyzer() {}
+  public NetlistAnalyzer() {}
 
-  protected Tree constructTreeBetween(Netlist netlist, Node nodeA, Node nodeB) {
+  public Tree constructTreeBetween(Netlist netlist, Node nodeA, Node nodeB) {
     Tree tree = new Tree(TreeConnectionType.Parallel);
     connectNodes(netlist, nodeA, nodeB, tree.getChildren(), new Tree(TreeConnectionType.Series), new HashSet<Node>());
 

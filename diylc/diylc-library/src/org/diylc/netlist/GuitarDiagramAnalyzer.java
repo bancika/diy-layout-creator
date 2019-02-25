@@ -37,7 +37,7 @@ import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.core.IDIYComponent;
 
-public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
+public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
   
   private static Set<String> JACK_TYPES = new HashSet<String>();
   private static Set<String> POT_TYPES = new HashSet<String>();

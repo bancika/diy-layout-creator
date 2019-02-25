@@ -22,6 +22,8 @@
 package org.diylc.netlist;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Tree {
@@ -97,6 +99,19 @@ public class Tree {
       return false;
     return true;
   }
+  
+  private List<Tree> getOrderedChildren() {
+    if (getConnectionType() == TreeConnectionType.Series)
+      return children;
+    List<Tree> ordered = new ArrayList<Tree>(children);
+    Collections.sort(ordered, new Comparator<Tree>() {
+
+      @Override
+      public int compare(Tree o1, Tree o2) {
+        return o1.toString().compareToIgnoreCase(o2.toString());
+      }});
+    return ordered;
+  }
 
   @Override
   public String toString() {
@@ -105,7 +120,7 @@ public class Tree {
     
     StringBuilder sb = new StringBuilder("(");
     boolean first = true;
-    for(Tree child : children) {
+    for(Tree child : getOrderedChildren()) {
       if (!first)
         sb.append(" " ).append(connectionType).append(" ");
       first = false;
@@ -118,6 +133,8 @@ public class Tree {
   public String toHTML(int depth) {
     if (leaf != null)
       return leaf.toHTML();
+    
+    List<Tree> children = getOrderedChildren();
     
     StringBuilder sb = new StringBuilder();
     if (depth > 0 && children.size() > 1)
