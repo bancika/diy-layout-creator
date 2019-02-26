@@ -276,6 +276,8 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
     if (o1 == null || o2 == null)
       return false;
     if (o1.getClass().isArray()) {
+      if (o1.getClass().getComponentType() == byte.class)
+        return Arrays.equals((byte[]) o1, (byte[]) o2);
       return Arrays.equals((Object[]) o1, (Object[]) o2);
     }
     return o1.equals(o2);
