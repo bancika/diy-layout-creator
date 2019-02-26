@@ -1707,7 +1707,14 @@ public class ActionFactory {
         return;
       }
       
-      List<Summary> res = summarizer.summarize(netlists, null);
+      List<Summary> res = null;
+      try {
+        res = summarizer.summarize(netlists, null);
+      } catch (Exception ex) {
+        swingUI.showMessage(ex.getMessage(), "Analyze " + summarizer.getName(), ISwingUI.ERROR_MESSAGE);
+        return;
+      }
+      
       if (res == null) {
         swingUI.showMessage("The generated summary is empty, nothing to show.", "Analyze " + summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
         return;

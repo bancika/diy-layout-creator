@@ -47,8 +47,9 @@ public interface INetlistAnalyzer {
    * @param netlists
    * @param preferredOutput optional, needed only where there's more than one possible output node.
    * @return
+   * @throws TreeException 
    */
-  List<Summary> summarize(List<Netlist> netlists, Node preferredOutput);
+  List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException;
 
   /**
    * 

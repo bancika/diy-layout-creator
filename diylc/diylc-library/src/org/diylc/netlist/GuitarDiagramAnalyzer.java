@@ -65,7 +65,7 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     return "Guitar";
   }
     
-  public List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) {    
+  public List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException {    
     List<Summary> summaries = new ArrayList<Summary>();
     for (Netlist n : netlists)
       summaries.add(summarize(n, preferredOutput));
@@ -73,7 +73,7 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     return summaries;
   }
   
-  private Summary summarize(Netlist netlist, Node preferredOutput) {
+  private Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
     List<String> notes = new ArrayList<String>();
     List<Group> jackTipGroups = findGroups(JACK_TYPES, "Tip", netlist);
     List<Group> jackSleeveGroups = findGroups(JACK_TYPES, "Sleeve", netlist);
@@ -96,13 +96,8 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
 //      }
 //    }
     
-    try {
-      return new Summary(netlist, notes, constructTree(netlist));
-    } catch (TreeException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-      return null;
-    }
+    
+    return new Summary(netlist, notes, constructTree(netlist));
   }
 
   private Netlist findAndEliminatePots(Netlist netlist, Group jackTipGroup, Group jackSleeveGroup, List<String> notes) {
