@@ -12,19 +12,19 @@
 <ul>
    <li>platform independence, will run on any machine having Java JRE/JDK 1.6.0_45 or newer </li>
    <li>easy to use interface, most of the operations can be done using mouse </li>
-   <li>can be used to draw PCB, perfboard, stripboard or point-to-point circuit layouts layouts, schematics and guitar wiring diagrams </li>
-   <li>high flexibility, has the API to allow plug-ins and new components to be added without much trouble </li>
+   <li>draw PCB, perfboard, stripboard or point-to-point circuit layouts layouts, schematics and guitar wiring diagrams </li>
+   <li>high flexibility, has the API to allow plug-ins and new components to be added</li>
    <li>improved performance and reduced memory consumption compared to the previous versions </li>
    <li>save default values for each property of a component individually </li>
    <li>group components together and treat them as one, e.g. move, edit or delete </li>
    <li>export the output to image, PDF or printer </li>
    <li>export PCB trace mask suitable for toner transfer </li>
    <li>create a Bill of Materials as a part of the project or export it to few different file formats </li>
+   <li>analyze guitar wirings and show detailed pickup configuration in each switch configuration</li>
    <li>zoom in/out feature </li>
    <li>configurable grid spacing on the project level </li>
    <li>auto update checks for new versions </li>
-   <li>import files created with older versions of the application </li>
-   <li>create and load project templates </li>
+   <li>import files created with older versions of the application </li>   
    <li>cloud feature - share your projects, search through the cloud and download other users' projects </li>
    <li>highlight connected areas to simplify validation and circuit debugging</li>
 </ul>
@@ -44,6 +44,6 @@
 <p></p>
 <h3><a name="Credits"></a>Credits<a href="#Credits" class="section_anchor"></a></h3>
 <ul>
-   <li>Big thanks goes to folks from the following sites that helped with testing and ideas: <a href="http://www.diystompboxes.com/smfforum/" rel="nofollow">DIY Stompboxes</a>, <a href="http://ax84.com/bbs" rel="nofollow">AX84</a> and <a href="http://freestompboxes.org" rel="nofollow">Free Stompboxes</a>. </li>
+   <li>Big thanks goes to folks from the following online communities for contributing ideas and helped test the app: <a href="http://www.diystompboxes.com/smfforum/" rel="nofollow">DIY Stompboxes</a>, <a href="http://ax84.com/bbs" rel="nofollow">AX84</a> and <a href="http://freestompboxes.org" rel="nofollow">Free Stompboxes</a>. </li>
    <li>I'm happy to report that DIYLC 3 is the fastest version ever. <a href="http://www.yourkit.com/java/profiler/index.jsp" rel="nofollow">YourKit Java Profiler</a> helped tremendously with memory and performance profiling and pointed me to places in the code that took longer to run or consumed more memory than I'd like them to. I strongly recommend this tool to anyone developing Java or .NET applications because it helps finding bottlenecks and allocation hot-spots very fast.<br><br>YourKit is kindly supporting open source projects with its full-featured Java Profiler.<br>YourKit, LLC is the creator of innovative and intelligent tools for profiling Java and .NET applications.<br>Take a look at YourKit's leading software products: <a href="http://www.yourkit.com/java/profiler/index.jsp" rel="nofollow">YourKit Java Profiler</a> and <a href="http://www.yourkit.com/.net/profiler/index.jsp" rel="nofollow">YourKit .NET Profiler</a> </li>
 </ul>
