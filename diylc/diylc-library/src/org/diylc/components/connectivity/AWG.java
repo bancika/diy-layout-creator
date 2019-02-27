@@ -23,11 +23,15 @@ package org.diylc.components.connectivity;
 
 public enum AWG {
 
-  _8, _10, _12, _14, _16, _18, _20, _22, _24, _26, _28, _30;
+  _8, _10, _12, _14, _16, _18, _20, _22, _24, _26, _28, _30, _32, _34, _36;
 
   @Override
   public String toString() {
-    return "#" + name().replace("_", "");
+    return "#" + name().replace("_", "") + " (" + String.format("%1$,.2f", diameterIn() * 25.4) + "mm / " + String.format("%1$,.5f", diameterIn()) + "in)";
+  }
+
+  public double diameterIn() {
+    return Math.pow(Math.E, -1.12436 - 0.11594 * getValue());
   }
 
   public int getValue() {
