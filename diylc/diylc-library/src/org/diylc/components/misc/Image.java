@@ -57,7 +57,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   private static final long serialVersionUID = 1L;
   public static String DEFAULT_TEXT = "Double click to edit text";
   private static ImageIcon ICON;
-  private static byte DEFAULT_SCALE = 50;
+  private static byte DEFAULT_SCALE = 25;
 
   static {
     String name = "image.png";
@@ -78,7 +78,8 @@ public class Image extends AbstractTransparentComponent<Void> {
   @Deprecated
   private ImageIcon image;
   private byte[] data;
-  private byte scale = DEFAULT_SCALE;
+  private Byte scale;
+  private byte newScale = DEFAULT_SCALE;
 
   public Image() {
     try {
@@ -91,7 +92,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    double s = 1d * scale / DEFAULT_SCALE;
+    double s = 1d * getScale() / DEFAULT_SCALE;
     Shape clip = g2d.getClip().getBounds();
     if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(), getImage().getIconWidth() * s, getImage()
         .getIconHeight() * s))) {
@@ -171,14 +172,18 @@ public class Image extends AbstractTransparentComponent<Void> {
     this.image = null;
   }
 
-  @PercentEditor(_100PercentValue = 50)
+  @PercentEditor(_100PercentValue = 25)
   @EditableProperty(defaultable = false)
   public byte getScale() {
-    return scale;
+    if (scale != null) {
+      newScale = (byte) (scale / 2);
+      scale = null;
+    }
+    return newScale;
   }
 
   public void setScale(byte scale) {
-    this.scale = scale;
+    this.newScale = scale;
   }
 
   @Override

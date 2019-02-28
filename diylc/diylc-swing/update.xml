@@ -2496,7 +2496,7 @@
 				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Allow a file to be loaded if it references a missing component property, but show a warning.</description>
+					<description>Allow a file to be loaded if it references a missing component property, but show a warning</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
@@ -2517,6 +2517,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Show wire diameter in mm and in next to AWG gauge</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increase the range of zoom slider for images to 500%</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
