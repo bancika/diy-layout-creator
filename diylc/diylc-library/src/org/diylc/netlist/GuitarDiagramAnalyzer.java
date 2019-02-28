@@ -35,7 +35,6 @@ import org.diylc.components.guitar.P90Pickup;
 import org.diylc.components.guitar.PBassPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
-import org.diylc.core.IDIYComponent;
 
 public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
   
@@ -75,76 +74,10 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
   
   private Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
     List<String> notes = new ArrayList<String>();
-    List<Group> jackTipGroups = findGroups(JACK_TYPES, "Tip", netlist);
-    List<Group> jackSleeveGroups = findGroups(JACK_TYPES, "Sleeve", netlist);
-    
-//    if (jackTipGroups.size() == 0 || jackSleeveGroups.size() == 0) {
-//      notes.add("Could not find anything connected to a jack tip terminal.");
-//    } else if (jackTipGroups.size() > 1 || jackSleeveGroups.size() > 1) {
-//      notes.add("Multiple jacks found, could not proceed.");
-//    } else {      
-//      Group jackTipGroup = jackTipGroups.get(0);
-//      Group jackSleeveGroup = jackSleeveGroups.get(0);      
-//      netlist = findAndEliminatePots(netlist, jackTipGroup, jackSleeveGroup, notes);
-//      // find jack tip group again after eliminating pots, it should be connecter straight to the pickups
-//      jackTipGroups = findGroups(JACK_TYPES, "Tip", netlist);
-//      if (jackTipGroups.size() == 1) {
-//        jackTipGroup = jackTipGroups.get(0);
-//        List<Node> pickupTipNodes = find(PICKUP_TYPES, null, jackTipGroup);
-//        List<Node> pickupSleeveNodes = find(PICKUP_TYPES, null, jackSleeveGroup);
-//        notes.add("test");
-//      }
-//    }
-    
-    
-    return new Summary(netlist, notes, constructTree(netlist));
-  }
 
-  private Netlist findAndEliminatePots(Netlist netlist, Group jackTipGroup, Group jackSleeveGroup, List<String> notes) {
-    // try to find any pots that have connections to jack tip or sleeve
-    List<Node> potTipNodes = find(POT_TYPES, null, jackTipGroup);
-    List<Node> potSleeveNodes = find(POT_TYPES, null, jackSleeveGroup);
+    Tree tree = constructTree(netlist);
     
-    if (!potTipNodes.isEmpty() && !potSleeveNodes.isEmpty()) {     
-      
-      Set<IDIYComponent<?>> pots = extractComponents(potTipNodes);
-      List<Node> potInputNodes = find(POT_TYPES, "1", netlist, pots);
-//      List<Group> potInputGroups = findGroups(POT_TYPES, "1", netlist, pots);
-      
-//      if (allMatch(potTipNodes, "2") && allMatch(potSleeveNodes, "3")) {  
-//        
-//        for (Group g : potInputGroups) {
-//          List<Node> potNodes = find(POT_TYPES, null, g);
-//          List<Node> pickupNodes = find(PICKUP_TYPES, null, g);
-//          if (potNodes.size() != 1) {
-//            notes.add("Detected control potentiometer wiring issue.");
-//          } else {            
-//            StringBuilder sb = new StringBuilder("Detected volume potentiometer [");
-//            sb.append(extractName(potNodes.get(0).getComponent())).append("] controlling: ");
-//            Set<String> pickups = new HashSet<String>();
-//            for (Node n : pickupNodes) {
-//              pickups.add(n.getComponent().getName());
-//            }
-//            List<String> pickupList = new ArrayList<String>(pickups);
-//            Collections.sort(pickupList);
-//            sb.append(pickupList.toString());
-//            notes.add(sb.toString());
-//          }
-//        }
-//        List<String> potNames = extractNames(pots);
-//        notes.add("Detected volume control(s): " + potNames);
-        
-        Set<Node> toMerge = new HashSet<Node>(potTipNodes);
-        toMerge.addAll(potInputNodes);
-        return simplify(netlist, toMerge, potSleeveNodes);
-//      } else {
-//        notes.add("Detected incorrectly wired volume control(s).");
-//        return netlist;
-//      }
-    }
-    
-//    notes.add("No volume controls detected.");    
-    return netlist;
+    return new Summary(netlist, notes, tree);
   }
 
   @Override

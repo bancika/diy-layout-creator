@@ -39,14 +39,13 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -58,7 +57,7 @@ import org.diylc.utils.Constants;
     description = "Single coil P-90 guitar pickup, both \"dog ear\" and \"soap bar\"", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
-public class P90Pickup extends AbstractTransparentComponent<String> {
+public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
 
   private static final long serialVersionUID = 1L;
 
@@ -82,63 +81,15 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
   private static Size LIP_HOLE_SIZE = new Size(2.5d, SizeUnit.mm);
   private static Size LIP_HOLE_SPACING = new Size(97d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
-  private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);
-  private static Size POINT_SPACING = new Size(0.1d, SizeUnit.in);
-  
-  private static final int TERMINAL_FONT_SIZE = 11;
-
-  private String value = "";
-  private Point controlPoint = new Point(0, 0);
-  transient Shape[] body;
-  private Orientation orientation = Orientation.DEFAULT;
+  private static Size POLE_SPACING = new Size(11.68d, SizeUnit.mm);  
+    
   private Color color = BODY_COLOR;
   private P90Type type = P90Type.DOG_EAR;
   private Color poleColor = METAL_COLOR;
-  private Polarity polarity = Polarity.North;
   
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-  
-  public P90Pickup() {
-    updateControlPoints();
-  }
-  
-  private Point[] getControlPoints() {
-    if (controlPoints == null) {
-      controlPoints =
-          new Point[] {controlPoint, new Point(controlPoint.x, controlPoint.y),
-              new Point(controlPoint.x, controlPoint.y), new Point(controlPoint.x, controlPoint.y)};
-      updateControlPoints();
-    }
-    return controlPoints;
-  }
-  
-  @SuppressWarnings("incomplete-switch")
-  private void updateControlPoints() {
-    Point[] points = getControlPoints();
-    int pointSpacing = (int) POINT_SPACING.convertToPixels();
-    int dx = 0;
-    int dy = 1;
-    if (orientation != Orientation.DEFAULT) {
-      switch (orientation) {
-        case _90:
-          dx = -1;
-          dy = 0;
-          break;
-        case _180:
-          dx = 0;
-          dy = -1;
-          break;
-        case _270:
-          dx = 1;
-          dy = 0;
-          break;
-      }
-    }
-    points[1].setLocation(points[0].x + dx * pointSpacing, points[0].y + dy * pointSpacing);
-    points[2]
-        .setLocation(points[0].x + 2 * dx * pointSpacing, points[0].y + 2 * dy * pointSpacing);
-    points[3]
-        .setLocation(points[0].x + 3 * dx * pointSpacing, points[0].y + 3 * dy * pointSpacing);
+  @Override
+  protected OrientationHV getControlPointDirection() {   
+    return OrientationHV.VERTICAL;
   }
 
   @Override
@@ -366,57 +317,6 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @Override
-  public int getControlPointCount() {
-    return getControlPoints().length;
-  }
-
-  @Override
-  public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    if (getPolarity() != Polarity.Humbucking && (index == 0 || index == 3))
-      return VisibilityPolicy.NEVER;
-    return VisibilityPolicy.ALWAYS;
-  }
-
-  @Override
-  public boolean isControlPointSticky(int index) {
-    return true;
-  }
-
-  @Override
-  public Point getControlPoint(int index) {
-    return getControlPoints()[index];
-  }
-
-  @Override
-  public void setControlPoint(Point point, int index) {
-    getControlPoints()[index].setLocation(point);
-    // Invalidate the body
-    body = null;
-  }
-
-  @EditableProperty(name = "Model")
-  @Override
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
-    // Invalidate the body
-    body = null;
-  }
-
   @EditableProperty
   public Color getColor() {
     return color;
@@ -435,47 +335,7 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
 
   public void setPoleColor(Color poleColor) {
     this.poleColor = poleColor;
-  }
-  
-  @Override
-  public String getControlPointNodeName(int index) {
-    switch (index) {
-      case 0:
-        if (getPolarity() != Polarity.Humbucking)
-          return null;
-        return"North Start";
-      case 1:
-        if (getPolarity() == Polarity.South)
-          return "South Start";
-        if (getPolarity() == Polarity.North)
-          return "North Start";
-        return "North Finish";
-      case 2:
-        if (getPolarity() == Polarity.South)
-          return "South Finish";
-        if (getPolarity() == Polarity.North)
-          return "North Finish";
-        return "South Start";
-      case 3:
-        if (getPolarity() != Polarity.Humbucking)
-          return null;
-        return "South Finish";
-    }
-    return null;
-  }
-  
-  @EditableProperty
-  public Polarity getPolarity() {
-    if (polarity == null)
-      polarity = Polarity.North;
-    return polarity;
-  }
-  
-  public void setPolarity(Polarity polarity) {
-    this.polarity = polarity;
-    // Invalidate the body
-    body = null;
-  }
+  }  
 
   public enum P90Type {
     DOG_EAR("Dog Ear", DOG_EAR_LENGTH, DOG_EAR_WIDTH, DOG_EAR_EDGE_RADIUS), SOAP_BAR("Soap Bar", SOAP_BAR_LENGTH,
@@ -509,9 +369,5 @@ public class P90Pickup extends AbstractTransparentComponent<String> {
     public String toString() {
       return label;
     }
-  }
-  
-  public enum Polarity {
-    North, South, Humbucking;
   }
 }

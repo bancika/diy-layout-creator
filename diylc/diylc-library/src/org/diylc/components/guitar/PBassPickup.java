@@ -38,14 +38,13 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -57,12 +56,11 @@ import org.diylc.utils.Constants;
     description = "Split-coil pickup for P-Bass and similar guitars", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
-public class PBassPickup extends AbstractTransparentComponent<String> {
+public class PBassPickup extends AbstractSingleOrHumbuckerPickup {
 
   private static final long serialVersionUID = 1L;
 
   private static Color BODY_COLOR = Color.decode("#333333");;
-  private static Color POINT_COLOR = Color.gray;
 
   private static Size WIDTH = new Size(1.1, SizeUnit.in);
   private static Size LENGTH = new Size(2.2, SizeUnit.in);
@@ -76,10 +74,6 @@ public class PBassPickup extends AbstractTransparentComponent<String> {
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(0.38d, SizeUnit.in);  
 
-  private String value = "";
-  private Point controlPoint = new Point(0, 0);
-  transient Shape[] body;
-  private Orientation orientation = Orientation.DEFAULT;
   private Color color = BODY_COLOR;
   private Color poleColor = METAL_COLOR;
 
@@ -97,8 +91,6 @@ public class PBassPickup extends AbstractTransparentComponent<String> {
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
     g2d.fill(body[0]);
     g2d.fill(body[1]);
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-    g2d.fill(body[2]);
     g2d.setComposite(oldComposite);
 
     Color finalBorderColor;
@@ -142,6 +134,8 @@ public class PBassPickup extends AbstractTransparentComponent<String> {
     Rectangle bounds = body[0].getBounds();
     drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
+    
+    drawTerminalLabels(g2d, finalLabelColor, project);
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -149,8 +143,9 @@ public class PBassPickup extends AbstractTransparentComponent<String> {
     if (body == null) {
       body = new Shape[4];
 
-      int x = controlPoint.x;
-      int y = controlPoint.y;
+      Point[] points = getControlPoints();
+      int x = points[0].x;
+      int y = points[0].y;
       int width = (int) WIDTH.convertToPixels();
       int length = (int) LENGTH.convertToPixels();
       int edgeRadius = (int) EDGE_RADIUS.convertToPixels();
@@ -161,16 +156,16 @@ public class PBassPickup extends AbstractTransparentComponent<String> {
       int lipHoleSpacing = getClosestOdd(LIP_HOLE_SPACING.convertToPixels());
 
       body[0] =
-          new Area(new RoundRectangle2D.Double(x + pointMargin - length, y - pointMargin, length, width, edgeRadius,
+          new Area(new RoundRectangle2D.Double(x - length, y - pointMargin, length, width, edgeRadius,
               edgeRadius));
       
       Area lip = new Area(new Ellipse2D.Double(-lipRadius / 2, -lipRadius / 2, lipRadius, lipRadius));
       lip.subtract(new Area(new Ellipse2D.Double(-lipHoleSize / 2 + lipHoleSpacing, -lipHoleSize / 2, lipHoleSize, lipHoleSize)));
-      lip.transform(AffineTransform.getTranslateInstance(x + pointMargin, y - pointMargin + width / 2));
+      lip.transform(AffineTransform.getTranslateInstance(x, y - pointMargin + width / 2));
       Area lip2 = new Area(new Ellipse2D.Double(-lipRadius / 2, -lipRadius / 2, lipRadius, lipRadius));
       lip2 = new Area(new Ellipse2D.Double(-lipRadius / 2, -lipRadius / 2, lipRadius, lipRadius));
       lip2.subtract(new Area(new Ellipse2D.Double(-lipHoleSize / 2 - lipHoleSpacing, -lipHoleSize / 2, lipHoleSize, lipHoleSize)));
-      lip2.transform(AffineTransform.getTranslateInstance(x + pointMargin - length, y - pointMargin + width / 2));
+      lip2.transform(AffineTransform.getTranslateInstance(x - length, y - pointMargin + width / 2));
       lip.add(lip2);
       
       body[1] = new Area(lip);
@@ -185,7 +180,7 @@ public class PBassPickup extends AbstractTransparentComponent<String> {
       Area poleArea = new Area();
       for (int i = 0; i < 4; i++) {
         Ellipse2D pole =
-            new Ellipse2D.Double(x + pointMargin - length + poleMargin + i * poleSpacing - poleSize / 2, y
+            new Ellipse2D.Double(x - length + poleMargin + i * poleSpacing - poleSize / 2, y
                 - pointMargin - poleSize / 2 + width / 2, poleSize, poleSize);
         poleArea.add(new Area(pole));
       }
@@ -247,52 +242,8 @@ public class PBassPickup extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public int getControlPointCount() {
-    return 1;
-  }
-
-  @Override
-  public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.WHEN_SELECTED;
-  }
-
-  @Override
-  public boolean isControlPointSticky(int index) {
-    return true;
-  }
-
-  @Override
-  public Point getControlPoint(int index) {
-    return controlPoint;
-  }
-
-  @Override
-  public void setControlPoint(Point point, int index) {
-    this.controlPoint.setLocation(point);
-    // Invalidate the body
-    body = null;
-  }
-
-  @EditableProperty(name = "Model")
-  @Override
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
-    // Invalidate the body
-    body = null;
+  protected OrientationHV getControlPointDirection() {   
+    return OrientationHV.VERTICAL;
   }
 
   @EditableProperty
@@ -313,10 +264,5 @@ public class PBassPickup extends AbstractTransparentComponent<String> {
 
   public void setPoleColor(Color poleColor) {
     this.poleColor = poleColor;
-  }
-  
-  @Override
-  public String getControlPointNodeName(int index) {
-    return getName() + ".PickupTerminal";
   }
 }

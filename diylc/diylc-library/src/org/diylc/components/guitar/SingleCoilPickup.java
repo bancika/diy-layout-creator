@@ -39,15 +39,14 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.RoundedPath;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -59,11 +58,9 @@ import org.diylc.utils.Constants;
     description = "Single coil guitar pickup, both Strat and Tele style", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
-public class SingleCoilPickup extends AbstractTransparentComponent<String> {
+public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
 
-  private static final long serialVersionUID = 1L;
-  
-  private static final int TERMINAL_FONT_SIZE = 11;
+  private static final long serialVersionUID = 1L;  
 
   private static Color BODY_COLOR = Color.white;
   private static Color BASE_COLOR = Color.gray;
@@ -71,8 +68,7 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
 //  private static Color POINT_COLOR = Color.lightGray;
   private static Size WIDTH = new Size(15.5d, SizeUnit.mm);
   private static Size LENGTH = new Size(83d, SizeUnit.mm);
-  private static Size BASE_RADIUS = new Size(0.15d, SizeUnit.in);
-  private static Size POINT_SPACING = new Size(0.1d, SizeUnit.in);
+  private static Size BASE_RADIUS = new Size(0.15d, SizeUnit.in);  
   private static Size LUG_DIAMETER = new Size(0.06d, SizeUnit.in);
 
   // strat-specific
@@ -94,62 +90,17 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   private static Size RAIL_WIDTH = new Size(1.5d, SizeUnit.mm);
   private static Size RAIL_LENGTH = new Size(60d, SizeUnit.mm);
   private static Size COIL_SPACING = new Size(7.5d, SizeUnit.mm);
-
-  private String value = "";
-  private Point controlPoint = new Point(0, 0);
-  transient Shape[] body;
-  private Orientation orientation = Orientation.DEFAULT;
+  
   private Color color = BODY_COLOR;
   private Color poleColor = METAL_COLOR;
   private Color baseColor = BASE_COLOR;
   private SingleCoilType type = SingleCoilType.Stratocaster;
   private PolePieceType polePieceType = PolePieceType.Rods;
-  private Color lugColor = LUG_COLOR;
-  private Polarity polarity = Polarity.North;
+  private Color lugColor = LUG_COLOR;  
   
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-  
-  public SingleCoilPickup() {
-    updateControlPoints();
-  }
-  
-  private Point[] getControlPoints() {
-    if (controlPoints == null) {
-      controlPoints =
-          new Point[] {controlPoint, new Point(controlPoint.x, controlPoint.y),
-              new Point(controlPoint.x, controlPoint.y), new Point(controlPoint.x, controlPoint.y)};
-      updateControlPoints();
-    }
-    return controlPoints;
-  }
-  
-  @SuppressWarnings("incomplete-switch")
-  private void updateControlPoints() {
-    Point[] points = getControlPoints();
-    int pointSpacing = (int) POINT_SPACING.convertToPixels();
-    int dx = 1;
-    int dy = 0;
-    if (orientation != Orientation.DEFAULT) {
-      switch (orientation) {
-        case _90:
-          dx = 0;
-          dy = -1;
-          break;
-        case _180:
-          dx = -1;
-          dy = 0;
-          break;
-        case _270:
-          dx = 0;
-          dy = 1;
-          break;
-      }
-    }
-    points[1].setLocation(points[0].x + dx * pointSpacing, points[0].y + dy * pointSpacing);
-    points[2]
-        .setLocation(points[0].x + 2 * dx * pointSpacing, points[0].y + 2 * dy * pointSpacing);
-    points[3]
-        .setLocation(points[0].x + 3 * dx * pointSpacing, points[0].y + 3 * dy * pointSpacing);
+  @Override
+  protected OrientationHV getControlPointDirection() {   
+    return OrientationHV.HORIZONTAL;
   }
 
   @Override
@@ -236,39 +187,8 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
     
-    // terminal labels
-    Point[] points = getControlPoints();
-    g2d.setColor(darkerOrLighter(baseColor));
-
-    g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
-    int dx = 0;
-    int dy = 0;
-    switch (orientation) {
-      case DEFAULT:
-        dx = 0;
-        dy = -TERMINAL_FONT_SIZE;
-        break;
-      case _90:
-        dx = TERMINAL_FONT_SIZE;
-        dy = 0;        
-        break;
-      case _180:
-        dx = 0;
-        dy = TERMINAL_FONT_SIZE;        
-        break;
-      case _270:
-        dx = -TERMINAL_FONT_SIZE;
-        dy = 0;
-        break;     
-    }
-    if (getPolarity() == Polarity.North || getPolarity() == Polarity.South) {
-      drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].x + points[2].x) / 2 + dx, (points[1].y + points[2].y) / 2 + dy, HorizontalAlignment.CENTER,
-          VerticalAlignment.CENTER);
-    } else {
-      drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    }
-  }
+    drawTerminalLabels(g2d, finalLabelColor, project);
+  }  
 
   @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
@@ -477,56 +397,6 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @Override
-  public int getControlPointCount() {
-    return getControlPoints().length;
-  }
-
-  @Override
-  public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.NEVER;
-  }
-
-  @Override
-  public boolean isControlPointSticky(int index) {
-    return getPolarity() == Polarity.Humbucking || (index > 0 && index < 3);
-  }
-
-  @Override
-  public Point getControlPoint(int index) {
-    return getControlPoints()[index];
-  }
-
-  @Override
-  public void setControlPoint(Point point, int index) {
-    getControlPoints()[index].setLocation(point);
-    // Invalidate the body
-    body = null;
-  }
-
-  @EditableProperty(name = "Model")
-  @Override
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
-    // Invalidate the body
-    body = null;
-    updateControlPoints();
-  }
-
   @EditableProperty
   public Color getColor() {
     return color;
@@ -569,77 +439,10 @@ public class SingleCoilPickup extends AbstractTransparentComponent<String> {
   public void setLugColor(Color lugColor) {
     this.lugColor = lugColor;
   }
-  
-  @EditableProperty
-  public Polarity getPolarity() {
-    if (polarity == null)
-      polarity = Polarity.North;
-    return polarity;
-  }
-  
-  public void setPolarity(Polarity polarity) {
-    this.polarity = polarity;
-    // Invalidate the body
-    body = null;
-  }
-  
-  @Override
-  public String getControlPointNodeName(int index) {
-    switch (index) {
-      case 0:
-        if (getPolarity() != Polarity.Humbucking)
-          return null;
-        return"North Start";
-      case 1:
-        if (getPolarity() == Polarity.South)
-          return "South Start";
-        if (getPolarity() == Polarity.North)
-          return "North Start";
-        return "North Finish";
-      case 2:
-        if (getPolarity() == Polarity.South)
-          return "South Finish";
-        if (getPolarity() == Polarity.North)
-          return "North Finish";
-        return "South Start";
-      case 3:
-        if (getPolarity() != Polarity.Humbucking)
-          return null;
-        return "South Finish";
-    }
-    return null;
-  }
-  
-  @Override
-  public String getInternalLinkName(int index1, int index2) {    
-    switch (getPolarity()) {
-      case Humbucking:
-        if (index1 == 0 && index2 == 1)
-          return Polarity.North.toString() + "->";
-        else if (index1 == 1 && index2 == 0)
-          return Polarity.North.toString() + "<-";
-        else if (index1 == 2 && index2 == 3)
-          return Polarity.South.toString() + "->";
-        else if (index1 == 3 && index2 == 2)
-          return Polarity.South.toString() + "<-";
-        break;
-      case North:
-      case South:
-        if (index1 == 1 && index2 == 2)
-          return getPolarity().toString() + "->";
-        else if (index1 == 2 && index2 == 1)
-          return getPolarity().toString() + "<-";
-    }
-    
-    return null;
-  }
+   
 
   public enum SingleCoilType {
     Stratocaster, Telecaster;
-  }
-  
-  public enum Polarity {
-    North, South, Humbucking;
   }
 
   public enum PolePieceType {

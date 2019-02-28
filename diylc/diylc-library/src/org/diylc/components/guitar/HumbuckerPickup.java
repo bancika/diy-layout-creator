@@ -37,15 +37,13 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.guitar.SingleCoilPickup.Polarity;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -57,11 +55,9 @@ import org.diylc.utils.Constants;
     description = "Double-coil humbucker guitar pickup (PAF, Mini Humbuckers, Filtertrons)", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
-public class HumbuckerPickup extends AbstractTransparentComponent<String> {
+public class HumbuckerPickup extends AbstractGuitarPickup {
 
-  private static final long serialVersionUID = 1L;
-
-  private static final int TERMINAL_FONT_SIZE = 11;
+  private static final long serialVersionUID = 1L;  
 
   private static Color BASE_COLOR = Color.lightGray;
   private static Color BOBIN_COLOR1 = Color.decode("#EAE3C6");
@@ -77,19 +73,14 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   private static Size LIP_WIDTH = new Size(12.7d, SizeUnit.mm);
   private static Size LIP_LENGTH = new Size(7.9d, SizeUnit.mm);
   private static Size EDGE_RADIUS = new Size(4d, SizeUnit.mm);
-  private static Size POINT_MARGIN = new Size(1.5d, SizeUnit.mm);
-  private static Size POINT_SPACING = new Size(0.1d, SizeUnit.in);
+  private static Size POINT_MARGIN = new Size(1.5d, SizeUnit.mm);  
   private static Size SCREW_LINE = new Size(1d, SizeUnit.mm);
   private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size LIP_HOLE_SIZE = new Size(2d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
   private static Size POLE_SIZE_FILTERTRON = new Size(5d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(10.1d, SizeUnit.mm);
-
-  private String value = "";
-  private Point controlPoint = new Point(0, 0);
-  transient Shape[] body;
-  private Orientation orientation = Orientation.DEFAULT;
+  
   private Color color = BASE_COLOR;
   private Color poleColor = METAL_COLOR;
   private HumbuckerType type;
@@ -98,14 +89,8 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   private Color bobinColor1 = BOBIN_COLOR1;
   private Color bobinColor2 = BOBIN_COLOR2;
   private PolePieceType coilType1;
-  private PolePieceType coilType2;
-
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-  
-  public HumbuckerPickup() {
-    updateControlPoints();
-  }
-
+  private PolePieceType coilType2;  
+ 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -207,73 +192,12 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
     drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
     
-    // terminal labels
-    Point[] points = getControlPoints();
-    g2d.setColor(finalBorderColor);
+    drawTerminalLabels(g2d, finalBorderColor, project);  
+  }
  
-    g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
-    int dx = 0;
-    int dy = 0;
-    switch (orientation) {
-      case DEFAULT:        
-        dx = (int) (TERMINAL_FONT_SIZE * 0.8);
-        dy = 0;  
-        break;
-      case _90:
-        dx = 0;
-        dy = (int) (TERMINAL_FONT_SIZE * 0.8);
-        break;
-      case _180:
-        dx = -(int) (TERMINAL_FONT_SIZE * 0.8);
-        dy = 0;       
-        break;
-      case _270:
-        dx = 0;
-        dy = -(int) (TERMINAL_FONT_SIZE * 0.8);
-        break;     
-    }
-
-    drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);    
-  }
-
-  private Point[] getControlPoints() {
-    if (controlPoints == null) {
-      controlPoints =
-          new Point[] {controlPoint, new Point(controlPoint.x, controlPoint.y),
-              new Point(controlPoint.x, controlPoint.y), new Point(controlPoint.x, controlPoint.y)};
-      updateControlPoints();
-    }
-    return controlPoints;
-  }
-
-  @SuppressWarnings("incomplete-switch")
-  private void updateControlPoints() {
-    Point[] points = getControlPoints();
-    int pointSpacing = (int) POINT_SPACING.convertToPixels();
-    int dx = 0;
-    int dy = 1;
-    if (orientation != Orientation.DEFAULT) {
-      switch (orientation) {
-        case _90:
-          dx = -1;
-          dy = 0;
-          break;
-        case _180:
-          dx = 0;
-          dy = -1;
-          break;
-        case _270:
-          dx = 1;
-          dy = 0;
-          break;
-      }
-    }
-    points[1].setLocation(points[0].x + dx * pointSpacing, points[0].y + dy * pointSpacing);
-    points[2]
-        .setLocation(points[0].x + 2 * dx * pointSpacing, points[0].y + 2 * dy * pointSpacing);
-    points[3]
-        .setLocation(points[0].x + 3 * dx * pointSpacing, points[0].y + 3 * dy * pointSpacing);
+  @Override
+  protected OrientationHV getControlPointDirection() {   
+    return OrientationHV.VERTICAL;
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -557,54 +481,9 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public int getControlPointCount() {
-    return getControlPoints().length;
-  }
-
-  @Override
-  public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.ALWAYS;
-  }
-
-  @Override
   public boolean isControlPointSticky(int index) {
     return true;
-  }
-
-  @Override
-  public Point getControlPoint(int index) {
-    return getControlPoints()[index];
-  }
-
-  @Override
-  public void setControlPoint(Point point, int index) {
-    getControlPoints()[index].setLocation(point);
-    // Invalidate the body
-    body = null;
-  }
-
-  @EditableProperty(name = "Model")
-  @Override
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
-    // Invalidate the body
-    body = null;
-    updateControlPoints();
-  }
+  } 
 
   @EditableProperty
   public Color getColor() {
@@ -681,6 +560,12 @@ public class HumbuckerPickup extends AbstractTransparentComponent<String> {
       return Polarity.South.toString() + "<-";
     
     return null;
+  }
+  
+  @Override
+  public Polarity getPolarity() {
+    // just to disable editor
+    return super.getPolarity();
   }
 
   public static enum HumbuckerType {
