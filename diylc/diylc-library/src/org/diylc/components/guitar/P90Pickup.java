@@ -35,12 +35,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -136,60 +134,63 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
       g2d.draw(body[3]);    
     }
 
-    Color finalLabelColor;
-    if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : theme.getOutlineColor();
-    } else {
-      finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : LABEL_COLOR;
-    }
-    g2d.setColor(finalLabelColor);
-    g2d.setFont(project.getFont());
-    Rectangle bounds = body[0].getBounds();
-    drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
-        VerticalAlignment.CENTER);
+//    Color finalLabelColor;
+//    if (outlineMode) {
+//      Theme theme =
+//          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+//      finalLabelColor =
+//          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+//              : theme.getOutlineColor();
+//    } else {
+//      finalLabelColor =
+//          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+//              : LABEL_COLOR;
+//    }
+//    g2d.setColor(finalLabelColor);
+//    g2d.setFont(project.getFont());
+//    Rectangle bounds = body[0].getBounds();
+//    drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
+//        VerticalAlignment.CENTER);
+    drawMainLabel(g2d, project, outlineMode, componentState);
     
+    drawlTerminalLabels(g2d, finalBorderColor, project);
     // terminal labels
-    Point[] points = getControlPoints();
-    g2d.setColor(finalBorderColor);
-
-    g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
-    int dx = 0;
-    int dy = 0;
-    switch (orientation) {
-      case DEFAULT:        
-        dx = (int) (TERMINAL_FONT_SIZE * 0.8);
-        dy = 0;  
-        break;
-      case _90:
-        dx = 0;
-        dy = (int) (TERMINAL_FONT_SIZE * 0.8);
-        break;
-      case _180:
-        dx = -(int) (TERMINAL_FONT_SIZE * 0.8);
-        dy = 0;       
-        break;
-      case _270:
-        dx = 0;
-        dy = -(int) (TERMINAL_FONT_SIZE * 0.8);
-        break;     
-    }
-    
-    if (getPolarity() == Polarity.North || getPolarity() == Polarity.South) {
-      drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].x + points[2].x) / 2 + dx, (points[1].y + points[2].y) / 2 + dy, HorizontalAlignment.CENTER,
-          VerticalAlignment.CENTER);
-    } else {
-      drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    }
+//    Point[] points = getControlPoints();
+//    g2d.setColor(finalBorderColor);
+//
+//    g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
+//    int dx = 0;
+//    int dy = 0;
+//    switch (orientation) {
+//      case DEFAULT:        
+//        dx = (int) (TERMINAL_FONT_SIZE * 0.8);
+//        dy = 0;  
+//        break;
+//      case _90:
+//        dx = 0;
+//        dy = (int) (TERMINAL_FONT_SIZE * 0.8);
+//        break;
+//      case _180:
+//        dx = -(int) (TERMINAL_FONT_SIZE * 0.8);
+//        dy = 0;       
+//        break;
+//      case _270:
+//        dx = 0;
+//        dy = -(int) (TERMINAL_FONT_SIZE * 0.8);
+//        break;     
+//    }
+//    
+//    if (getPolarity() == Polarity.North || getPolarity() == Polarity.South) {
+//      drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].x + points[2].x) / 2 + dx, (points[1].y + points[2].y) / 2 + dy, HorizontalAlignment.CENTER,
+//          VerticalAlignment.CENTER);
+//    } else {
+//      drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+//      drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+//    }
   }
 
   @SuppressWarnings("incomplete-switch")
+  @Override
   public Shape[] getBody() {
     if (body == null) {
       body = new Shape[4];
@@ -272,6 +273,11 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
       }
     }
     return body;
+  }
+  
+  @Override
+  protected int getMainLabelYOffset() {
+    return (int) (getType().getWidth().convertToPixels() / 2 - 20);
   }
 
   @Override

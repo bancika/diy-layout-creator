@@ -22,7 +22,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
@@ -33,12 +32,10 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -173,26 +170,10 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
       g2d.setColor(finalBorderColor);
       g2d.draw(body[0]);
     }
-
-    Color finalLabelColor;
-    if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : theme.getOutlineColor();
-    } else {
-      finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : LABEL_COLOR;
-    }
-    g2d.setColor(finalLabelColor);
-    g2d.setFont(project.getFont());
-    Rectangle bounds = body[0].getBounds();
-    drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
-        VerticalAlignment.CENTER);
     
-    drawTerminalLabels(g2d, finalBorderColor, project);  
+    drawMainLabel(g2d, project, outlineMode, componentState);
+    
+    drawlTerminalLabels(g2d, finalBorderColor, project);  
   }
  
   @Override
@@ -201,7 +182,8 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
   }
 
   @SuppressWarnings("incomplete-switch")
-  public Shape[] getBody() {
+  @Override
+  protected Shape[] getBody() {
     if (body == null) {
       body = new Shape[7];
 
@@ -383,6 +365,11 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
       }
     }
     return body;
+  }
+  
+  @Override
+  protected int getMainLabelYOffset() {
+    return (int) (getType().getWidth().convertToPixels() / 2 - 20);
   }
 
   @Override

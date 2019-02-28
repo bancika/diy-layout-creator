@@ -18,20 +18,28 @@
 package org.diylc.components.guitar;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.HorizontalAlignment;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.core.ComponentState;
 import org.diylc.core.Project;
+import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<String> {
 
@@ -39,7 +47,7 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
   
   protected static Size POINT_SPACING = new Size(0.1d, SizeUnit.in);
   
-  protected static final int TERMINAL_FONT_SIZE = 11;
+  protected static final int TERMINAL_FONT_SIZE = 11;  
   
   protected String value = "";
   protected Orientation orientation = Orientation.DEFAULT;
@@ -50,11 +58,13 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
   
   protected Polarity polarity = Polarity.North;  
   
+  protected Color labelColor;
+  
   public AbstractGuitarPickup() {
     updateControlPoints();
   }
   
-  protected void drawTerminalLabels(Graphics2D g2d, Color color, Project project) {
+  protected void drawlTerminalLabels(Graphics2D g2d, Color color, Project project) {
     Point[] points = getControlPoints();    
     g2d.setColor(color);
       
@@ -78,10 +88,47 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
         dx = getControlPointDirection() == OrientationHV.HORIZONTAL ? -TERMINAL_FONT_SIZE : 0;
         dy = getControlPointDirection() == OrientationHV.HORIZONTAL ? 0 : -(int) (TERMINAL_FONT_SIZE * 0.8);
         break;     
-    }
+    }   
 
     drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);   
+  }
+  
+  protected void drawMainLabel(Graphics2D g2d, Project project, boolean outlineMode, ComponentState componentState) {
+    Color finalLabelColor;
+    if (outlineMode) {
+      Theme theme =
+          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+      finalLabelColor =
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+              : theme.getOutlineColor();
+    } else {
+      finalLabelColor =
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+              : getLabelColor();
+    }
+    g2d.setColor(finalLabelColor);
+    g2d.setFont(project.getFont().deriveFont(Font.BOLD));
+    Rectangle bounds = getBody()[0].getBounds();
+    
+    AffineTransform originalTx = g2d.getTransform();
+    g2d.translate(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    if (orientation == Orientation._90)
+      g2d.rotate(Math.PI / 2);
+    else if (orientation == Orientation._270){
+      g2d.rotate(-Math.PI / 2);
+    }
+    g2d.translate(0, getMainLabelYOffset());
+    
+    drawCenteredText(g2d, value, 0, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+   
+    g2d.setTransform(originalTx);
+  }
+  
+  protected abstract Shape[] getBody();
+  
+  protected int getMainLabelYOffset() {
+    return 0;
   }
   
   @EditableProperty(name = "Model")
@@ -151,6 +198,17 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
     this.polarity = polarity;
     // Invalidate the body
     body = null;
+  }
+  
+  @EditableProperty(name = "Label")
+  public Color getLabelColor() {
+    if (labelColor == null)
+      labelColor = LABEL_COLOR;
+    return labelColor;
+  }
+  
+  public void setLabelColor(Color labelColor) {
+    this.labelColor = labelColor;
   }
   
   protected abstract OrientationHV getControlPointDirection();

@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -34,12 +33,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -119,29 +116,30 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
       g2d.draw(body[3]);
     }
 
-    Color finalLabelColor;
-    if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-      finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : theme.getOutlineColor();
-    } else {
-      finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : LABEL_COLOR;
-    }
-    g2d.setColor(finalLabelColor);
-    g2d.setFont(project.getFont());
-    Rectangle bounds = body[0].getBounds();
-    drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
-        VerticalAlignment.CENTER);
-    
-    // terminal labels
-    drawTerminalLabels(g2d, finalLabelColor, project);
+//    Color finalLabelColor;
+//    if (outlineMode) {
+//      Theme theme =
+//          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+//      finalLabelColor =
+//          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+//              : theme.getOutlineColor();
+//    } else {
+//      finalLabelColor =
+//          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+//              : LABEL_COLOR;
+//    }
+//    g2d.setColor(finalLabelColor);
+//    g2d.setFont(project.getFont());
+//    Rectangle bounds = body[0].getBounds();
+//    drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
+//        VerticalAlignment.CENTER);
+    drawMainLabel(g2d, project, outlineMode, componentState);
+   
+    drawlTerminalLabels(g2d, finalBorderColor, project);
   }
 
   @SuppressWarnings("incomplete-switch")
+  @Override
   public Shape[] getBody() {
     if (body == null) {
       body = new Shape[4];
@@ -220,6 +218,11 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
       }
     }
     return body;
+  }
+  
+  @Override
+  protected int getMainLabelYOffset() {
+    return (int) (WIDTH.convertToPixels() / 2 - 20);
   }
   
   @Override

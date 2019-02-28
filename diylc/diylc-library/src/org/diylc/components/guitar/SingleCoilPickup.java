@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -35,12 +34,10 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.components.RoundedPath;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -121,10 +118,10 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBaseColor());
     g2d.fill(body[4]);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
-    if (body[0] == null)
-      g2d.fill(body[3]);
-    else
+    if (body[3] == null)
       g2d.fill(body[0]);
+    else
+      g2d.fill(body[3]);
     
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getLugColor());
     g2d.fill(body[1]);
@@ -171,26 +168,20 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
       g2d.draw(body[2]);
     }
 
-    Color finalLabelColor;
-    if (outlineMode) {
-      finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : theme.getOutlineColor();
-    } else {
-      finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : LABEL_COLOR;
-    }
-    g2d.setColor(finalLabelColor);
-    g2d.setFont(project.getFont());
-    Rectangle bounds = body[3].getBounds();
-    drawCenteredText(g2d, value, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER,
-        VerticalAlignment.CENTER);
+    drawMainLabel(g2d, project, outlineMode, componentState);
     
-    drawTerminalLabels(g2d, finalLabelColor, project);
+    drawlTerminalLabels(g2d, finalBorderColor, project);
   }  
+  
+  @Override
+  protected int getMainLabelYOffset() {
+    if (getPolePieceType() == PolePieceType.RailHumbucker || getPolePieceType() == PolePieceType.RodHumbucker || getPolePieceType() == PolePieceType.None)
+      return 0;
+    return (int) (WIDTH.convertToPixels() / 2 - 20);
+  }
 
   @SuppressWarnings("incomplete-switch")
+  @Override
   public Shape[] getBody() {
     if (body == null) {
       body = new Shape[5];
@@ -225,7 +216,7 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
         mainArea.subtract(new Area(new Ellipse2D.Double(x + length / 2 - holeMargin - holeSize / 2, y - lipWidth / 2
             - width / 2 - holeSize / 2, holeSize, holeSize)));
 
-        body[0] = mainArea;
+        body[3] = mainArea;
         RoundedPath basePath = new RoundedPath(baseRadius);
         basePath.moveTo(x, y + lipWidth / 2);
         basePath.lineTo(x + lipLength / 2, y + lipWidth / 2);
@@ -303,7 +294,7 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
 
       body[2] = poleArea;
 
-      body[3] =
+      body[0] =
           new Area(new RoundRectangle2D.Double(x - coilLength / 2, y - coilOffset - width, coilLength, width, width,
               width));
 
