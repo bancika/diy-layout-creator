@@ -1725,6 +1725,8 @@ public class ActionFactory {
         sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup()).append("</b><br><br>");        
         
         sb.append("Parallel/Series connectivity tree:<br><br>").append(summary.getTree().toHTML(0));
+        if (!summary.getNotes().isEmpty())
+          sb.append("<br><br>Notes:<br>");
         for (String v : summary.getNotes()) {
           sb.append("&nbsp;&nbsp;").append(v).append("<br>");          
         }

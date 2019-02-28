@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class Tree {
 
@@ -158,6 +159,44 @@ public class Tree {
   protected Object clone() throws CloneNotSupportedException {
     if (leaf != null)
       return new Tree(leaf);
-    return new Tree(new ArrayList<Tree>(children), connectionType);
+    List<Tree> newChildren = new ArrayList<Tree>();
+    for (Tree t : children)
+      newChildren.add((Tree) t.clone());
+    return new Tree(newChildren, connectionType);
+  }
+  
+  public Tree filter(Set<String> types) {
+    if (leaf != null) {
+      if (types.contains(leaf.getComponent().getClass().getCanonicalName()))        
+        return new Tree(leaf);
+      return null;
+    }
+    List<Tree> newChildren = new ArrayList<Tree>();
+    for (Tree t : children) {
+      Tree child = t.filter(types);
+      if (child != null)
+        newChildren.add(child);
+    }
+    if (newChildren.isEmpty())
+      return null;
+    return new Tree(newChildren, connectionType);
+  }
+  
+  public void walk(ITreeWalker walker) {
+    if (leaf != null) {
+      walker.visit(leaf);
+    } else {
+      for (Tree t : children) {
+        walker.visit(t);
+        t.walk(walker);
+      }
+    }
+  }
+  
+  public interface ITreeWalker {
+    
+    void visit(Tree t);
+    
+    void visit(TreeLeaf l);
   }
 }

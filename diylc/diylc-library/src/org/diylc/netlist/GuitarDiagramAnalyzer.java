@@ -35,6 +35,7 @@ import org.diylc.components.guitar.P90Pickup;
 import org.diylc.components.guitar.PBassPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
+import org.diylc.netlist.Tree.ITreeWalker;
 
 public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
   
@@ -72,13 +73,64 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     return summaries;
   }
   
+  private int positiveCount;
+  private int negativeCount;
+  private int noiseCount;
+  
   private Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
     List<String> notes = new ArrayList<String>();
 
     Tree tree = constructTree(netlist);
     
+    Tree pickupTree = tree.filter(PICKUP_TYPES);
+    
+    if (pickupTree == null || pickupTree.getChildren().isEmpty()) {
+      notes.add("No pickups are detected in this switch configuration");
+    } else {
+      positiveCount = 0;
+      negativeCount = 0;
+      noiseCount = 0;
+      pickupTree.walk(new ITreeWalker() {
+
+        @Override
+        public void visit(Tree t) {
+        }
+
+        @Override
+        public void visit(TreeLeaf l) {
+          if ((l.toString().toLowerCase().contains("north") && (l.toString().toLowerCase().contains("->"))) ||
+              (l.toString().toLowerCase().contains("south") && (l.toString().toLowerCase().contains("<-"))))
+            noiseCount++;
+          if ((l.toString().toLowerCase().contains("north") && (l.toString().toLowerCase().contains("<-"))) ||
+              (l.toString().toLowerCase().contains("south") && (l.toString().toLowerCase().contains("->"))))
+            noiseCount--;
+            
+          if (l.toString().toLowerCase().contains("->"))
+            positiveCount++;
+          if (l.toString().toLowerCase().contains("<-"))
+            negativeCount++;
+        }        
+      });
+            
+      boolean humCancelling = noiseCount == 0;
+      
+      if (humCancelling)
+        notes.add("This position is hum-cancelling");
+      else
+        notes.add("This position is NOT hum-cancelling");
+          
+      if (positiveCount > 1 || negativeCount > 1) {
+        boolean inPhase = (positiveCount == 0 && negativeCount > 0) || (positiveCount > 0 && negativeCount == 0);
+        if (inPhase)
+          notes.add("The pickups are wired in-phase");
+        else
+          notes.add("This pickups are wired out-of-phase");      
+      }
+    }
+    
     return new Summary(netlist, notes, tree);
   }
+  
 
   @Override
   public Tree constructTree(Netlist netlist) throws TreeException {
