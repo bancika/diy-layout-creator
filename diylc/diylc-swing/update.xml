@@ -2523,6 +2523,10 @@
 					<description>Added two or four terminal hookup to bass pickups types</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 4-position Tele switch type to the "Lever Switch" component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increase the range of zoom slider for images to 500%</description>
 				</org.diylc.appframework.update.Change>

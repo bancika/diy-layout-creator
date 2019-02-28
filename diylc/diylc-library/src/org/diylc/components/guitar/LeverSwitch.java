@@ -164,11 +164,16 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       int terminalLength = getClosestOdd(TERMINAL_LENGTH.convertToPixels());
       int terminalWidth = getClosestOdd(TERMINAL_WIDTH.convertToPixels());
       
-      if (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos)
+      int yOffset;
+      if (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP4T || type == LeverSwitchType.DP3T_5pos) {
         x += terminalLength;
+        yOffset = 7;
+      } else {
+        yOffset = 12;
+      }      
 
       int baseX = x - terminalLength / 2 - waferSpacing;
-      int baseY = y - (baseLength - terminalSpacing * (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos ? 7 : 12)) / 2;
+      int baseY = y - (baseLength - terminalSpacing * yOffset) / 2;
       Area baseArea = new Area(new Rectangle2D.Double(baseX, baseY, baseWidth, baseLength));
       baseArea.subtract(new Area(new Ellipse2D.Double(baseX + baseWidth / 2 - holeSize / 2, baseY
           + (baseLength - holeSpacing) / 2 - holeSize / 2, holeSize, holeSize)));
@@ -178,7 +183,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
 
       Area waferArea =
           new Area(new Rectangle2D.Double(x - terminalLength / 2 - waferThickness / 2, y
-              - (waferLength - terminalSpacing * (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos ? 7 : 12)) / 2, waferThickness,
+              - (waferLength - terminalSpacing * yOffset) / 2, waferThickness,
               waferLength));
 
       if (type == LeverSwitchType._4P5T) {
@@ -221,6 +226,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
         terminalArea.add(terminal);
         if (getHighlightCommon() && 
             (((type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos) && (i == 1 || i == 6)) ||
+            (type == LeverSwitchType.DP4T && (i == 1 || i == 8)) ||
             ((type == LeverSwitchType._4P5T || type == LeverSwitchType.DP5T) && (i == 0 || i == 11 || i == 12 || i == 23))))
           commonTerminalArea.add(terminal);
         else
@@ -256,6 +262,12 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       case DP3T_5pos:
         controlPoints = new Point[8];
         for (int i = 0; i < 8; i++) {
+          controlPoints[i] = new Point(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
+        }
+        break;
+      case DP4T:
+        controlPoints = new Point[10];
+        for (int i = 0; i < 10; i++) {
           controlPoints[i] = new Point(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
         }
         break;
@@ -402,7 +414,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   }
  
   public enum LeverSwitchType {
-    DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), _4P5T("4P5T (Super/Mega)"), DP5T("DP5T");
+    DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), _4P5T("4P5T (Super/Mega)"), DP4T("DP4T (4-Position Tele)"), DP5T("DP5T");
 
     private String title;
 
@@ -429,6 +441,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     switch (type) {
       case DP3T:
         return 3;
+      case DP4T:
+        return 4;
       case DP3T_5pos:        
       case DP5T:        
       case _4P5T:
@@ -446,7 +460,9 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   public boolean arePointsConnected(int index1, int index2, int position) {
     switch (type) {
       case DP3T:
-        return (index2 == 6 || index1 == 1) && index2 == index1 + 2 * (position + 1);        
+        return (index2 == 6 || index1 == 1) && index2 == index1 + 2 * (position + 1);
+      case DP4T:
+        return (index2 == 8 || index1 == 1) && index2 - index1 == position + 1;
       case DP3T_5pos:
         if (position % 2 == 0)          
           return (index2 == 6 || index1 == 1) && index2 == index1 + position + 2;
