@@ -462,7 +462,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       case DP3T:
         return (index2 == 6 || index1 == 1) && index2 == index1 + 2 * (position + 1);
       case DP4T:
-        return (index2 == 8 || index1 == 1) && index2 - index1 == position + 1;
+        return (index2 == 8 || index1 == 1) && index2 == index1 + 2 * (position + 1);
       case DP3T_5pos:
         if (position % 2 == 0)          
           return (index2 == 6 || index1 == 1) && index2 == index1 + position + 2;
