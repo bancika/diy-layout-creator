@@ -132,4 +132,8 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
     
     return null;
   }
+  
+  public boolean isHumbucker() {
+    return getPolarity() == Polarity.Humbucking;
+  }
 }

@@ -371,6 +371,11 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
   protected int getMainLabelYOffset() {
     return (int) (getType().getWidth().convertToPixels() / 2 - 20);
   }
+  
+  @Override
+  public boolean isHumbucker() {   
+    return true;
+  }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {

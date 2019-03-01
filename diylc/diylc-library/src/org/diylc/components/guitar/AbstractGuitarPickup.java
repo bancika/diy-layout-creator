@@ -127,6 +127,8 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
   
   protected abstract Shape[] getBody();
   
+  public abstract boolean isHumbucker();
+  
   protected int getMainLabelYOffset() {
     return 0;
   }

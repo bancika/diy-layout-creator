@@ -24,8 +24,11 @@ package org.diylc.netlist;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.diylc.core.IDIYComponent;
 
 public class Tree {
 
@@ -191,6 +194,72 @@ public class Tree {
         t.walk(walker);
       }
     }
+  }
+  
+  public Set<IDIYComponent<?>> extractComponents(Set<String> types) {
+    Set<IDIYComponent<?>> res = new HashSet<IDIYComponent<?>>();
+    if (leaf != null && types.contains(leaf.getComponent().getClass().getCanonicalName())) {
+      res.add(leaf.getComponent());
+    } else if (children != null) {
+      for (Tree t : children) {
+        Set<IDIYComponent<?>> childRes = t.extractComponents(types);
+        if (childRes != null)
+          res.addAll(childRes);
+      }
+    }
+    return res;
+  }
+  
+  public Tree locate(TreeLeaf l, boolean forceDirection) {
+    if (leaf != null && leaf.equals(l, forceDirection))
+      return this;
+    if (children != null) {
+      for (Tree t : children) {
+        Tree childL = t.locate(l, forceDirection);
+        if (childL != null) {
+//          if (t.getLeaf() != null)
+//            return this;
+          return childL;
+        }
+      }
+    }
+    return null;
+  }
+  
+  public Tree findCommonParent(Tree t1, Tree t2) {
+    if (children == null)
+      return null;
+    
+    Tree p1 = null;
+    Tree p2 = null;
+    for (Tree c : children) {
+      if (c.contains(t1))
+        p1 = c;
+      if (c.contains(t2))
+        p2 = c;
+    }
+    
+    if (p1 == null || p2 == null)
+      return null;
+    
+    if (p1 != p2)
+      return this;
+    
+    return p1.findCommonParent(t1, t2);
+  }
+  
+  public boolean contains(Tree t) {
+    if (this == t)
+      return true;
+    
+    if (children == null)
+      return false;
+    if (children.contains(t))
+      return true;
+    for (Tree c : children)
+      if (c.contains(t))
+        return true;
+    return false;
   }
   
   public interface ITreeWalker {

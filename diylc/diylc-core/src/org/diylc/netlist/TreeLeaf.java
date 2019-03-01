@@ -89,6 +89,15 @@ public class TreeLeaf implements ITree {
       return false;
     return true;
   }
+  
+  public boolean equals(TreeLeaf other, boolean forceDirection) {
+    if (component == null) {
+      if (other.component != null)
+        return false;
+    } else if (!component.equals(other.component))
+      return false;
+    return (pointIndex1 == other.pointIndex1 && pointIndex2 == other.pointIndex2) || (!forceDirection && (pointIndex1 == other.pointIndex2 && pointIndex2 == other.pointIndex1));
+  }
 
   @Override
   public String toString() {   

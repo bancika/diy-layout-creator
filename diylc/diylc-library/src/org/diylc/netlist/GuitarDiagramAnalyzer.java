@@ -29,12 +29,14 @@ import java.util.Set;
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.components.electromechanical.ClosedJack1_4;
 import org.diylc.components.electromechanical.OpenJack1_4;
+import org.diylc.components.guitar.AbstractGuitarPickup;
 import org.diylc.components.guitar.HumbuckerPickup;
 import org.diylc.components.guitar.JazzBassPickup;
 import org.diylc.components.guitar.P90Pickup;
 import org.diylc.components.guitar.PBassPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
+import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Tree.ITreeWalker;
 
 public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
@@ -111,6 +113,25 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
             negativeCount++;
         }        
       });
+      
+      Set<IDIYComponent<?>> pickups = tree.extractComponents(PICKUP_TYPES);
+      for (IDIYComponent<?> c : pickups) {
+        if (c instanceof AbstractGuitarPickup) {
+          AbstractGuitarPickup pickup = (AbstractGuitarPickup)c;
+          if (((AbstractGuitarPickup) c).isHumbucker()) {
+            TreeLeaf nLeaf = new TreeLeaf(pickup, 0, 1);
+            TreeLeaf sLeaf = new TreeLeaf(pickup, 2, 3);
+            Tree nTree = tree.locate(nLeaf, false);
+            Tree sTree = tree.locate(sLeaf, false);
+            Tree parent = tree.findCommonParent(nTree, sTree);
+            if (nTree != null && sTree != null && parent != null) {              
+               notes.add(pickup.getName() + " pickup engaged in humbucking mode with coils wired in " + parent.getConnectionType().name().toLowerCase());              
+            } else if ((nTree == null && sTree != null) || (nTree != null && sTree == null)) {
+              notes.add(pickup.getName() + " pickup engaged in coil-split mode");
+            }
+          }
+        }
+      }
             
       boolean humCancelling = noiseCount == 0;
       
