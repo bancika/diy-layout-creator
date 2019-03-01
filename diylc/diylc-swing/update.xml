@@ -2534,6 +2534,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increase the range of zoom slider for images to 500%</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed bug with "Highlight Connected Areas" that makes random components conductive</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	

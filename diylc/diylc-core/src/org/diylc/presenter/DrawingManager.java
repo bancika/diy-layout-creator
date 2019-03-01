@@ -264,6 +264,10 @@ public class DrawingManager {
         // Draw the component through the g2dWrapper.
         try {
           component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
+          if (g2dWrapper.isTrackingContinuityArea()) {
+            LOG.info("Component " + component.getName() + " of type " + component.getClass().getName() + " did not stop tracking continuity area.");
+            g2dWrapper.stopTrackingContinuityArea();
+          }
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
           failedComponents.add(component);

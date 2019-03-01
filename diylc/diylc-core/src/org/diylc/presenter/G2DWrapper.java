@@ -162,6 +162,10 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     this.trackingContinuityAllowed = false;
   }
 
+  @Override
+  public boolean isTrackingContinuityArea() {   
+    return trackingContinuityAllowed;
+  }
 
   /**
    * Appends shape interior to the current component area.

@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.boards.AbstractBoard;
@@ -72,6 +73,7 @@ public class TraceCut extends AbstractComponent<Void> {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
+    g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1f));
     int size = getClosestOdd((int) this.size.convertToPixels());
     int cutWidth = getClosestOdd((int) CUT_WIDTH.convertToPixels());
     if (getCutBetweenHoles()) {

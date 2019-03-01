@@ -348,6 +348,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       g2d.setColor(getLeadColorForPainting(componentState));
       g2d.setStroke(stroke);
       g2d.draw(line);
+      
+      if (isCopperArea)
+        observer.stopTrackingContinuityArea();
     }
   }
 
