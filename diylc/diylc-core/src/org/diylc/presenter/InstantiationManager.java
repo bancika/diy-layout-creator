@@ -236,7 +236,7 @@ public class InstantiationManager {
 
   @SuppressWarnings("unchecked")
   public List<IDIYComponent<?>> instantiateComponent(ComponentType componentType, Template template, Point point,
-      Project currentProject) throws Exception {
+      Project currentProject) throws InstantiationException, IllegalAccessException {
     LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
 
     // Instantiate the component.
@@ -321,8 +321,7 @@ public class InstantiationManager {
    * @throws NoSuchMethodException
    * @throws SecurityException
    */
-  public void fillWithDefaultProperties(Object object, Template template) throws IllegalArgumentException,
-      IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
+  public void fillWithDefaultProperties(Object object, Template template) {
     // Extract properties.
     List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(object.getClass());
     Map<String, PropertyWrapper> propertyCache = new HashMap<String, PropertyWrapper>();
@@ -334,7 +333,11 @@ public class InstantiationManager {
               Presenter.DEFAULTS_KEY_PREFIX + object.getClass().getName() + ":" + property.getName(), null);
       if (defaultValue != null) {
         property.setValue(defaultValue);
-        property.writeTo(object);
+        try {
+          property.writeTo(object);
+        } catch (Exception e) {
+          LOG.error("Could not write property " + property.getName(), e);
+        }
       }
     }
     if (template != null) {
@@ -345,7 +348,11 @@ public class InstantiationManager {
         } else {
           LOG.debug("Filling value from template for " + pair.getKey());
           property.setValue(pair.getValue());
-          property.writeTo(object);
+          try {
+            property.writeTo(object);
+          } catch (Exception e) {
+            LOG.error("Could not write property " + property.getName(), e);
+          }
         }
       }
     }
