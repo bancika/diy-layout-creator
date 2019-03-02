@@ -227,6 +227,11 @@ public class Tree {
   }
   
   public Tree findCommonParent(Tree t1, Tree t2) {
+    if (t1 == null)
+      return t2;
+    if (t2 == null)
+      return t1;
+    
     if (children == null)
       return null;
     
@@ -246,6 +251,25 @@ public class Tree {
       return this;
     
     return p1.findCommonParent(t1, t2);
+  }
+  
+  public Tree findCommonParent(List<Tree> t) {
+    if (t.contains(null))
+    {
+      while(t.contains(null))
+        t.remove(null);
+      return findCommonParent(t);
+    }
+      
+    if (t.size() == 0)
+      return null;
+    if (t.size() == 1)
+      return t.get(0);
+    if (t.size() == 2)
+      return findCommonParent(t.get(0), t.get(1));
+    
+    List<Tree> remainder = t.subList(1, t.size());
+    return findCommonParent(t.get(0), findCommonParent(remainder));
   }
   
   public boolean contains(Tree t) {

@@ -22,8 +22,10 @@
 package org.diylc.netlist;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.diylc.common.INetlistAnalyzer;
@@ -92,6 +94,8 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
       positiveCount = 0;
       negativeCount = 0;
       noiseCount = 0;
+      
+      // analyze hum-cancellation and phase
       pickupTree.walk(new ITreeWalker() {
 
         @Override
@@ -115,6 +119,9 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
       });
       
       Set<IDIYComponent<?>> pickups = tree.extractComponents(PICKUP_TYPES);
+      Map<IDIYComponent<?>, Tree> pickupRoots = new HashMap<IDIYComponent<?>, Tree>();
+      
+      // analyze each pickup separately to see how each coil is wired
       for (IDIYComponent<?> c : pickups) {
         if (c instanceof AbstractGuitarPickup) {
           AbstractGuitarPickup pickup = (AbstractGuitarPickup)c;
@@ -124,13 +131,38 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
             Tree nTree = tree.locate(nLeaf, false);
             Tree sTree = tree.locate(sLeaf, false);
             Tree parent = tree.findCommonParent(nTree, sTree);
+            if (parent != null)
+              pickupRoots.put(pickup, parent);
             if (nTree != null && sTree != null && parent != null) {              
-               notes.add(pickup.getName() + " pickup engaged in humbucking mode with coils wired in " + parent.getConnectionType().name().toLowerCase());              
+               notes.add("'" + pickup.getName() + "' pickup wired in humbucking mode with " + parent.getConnectionType().name().toLowerCase() + " coils");              
             } else if ((nTree == null && sTree != null) || (nTree != null && sTree == null)) {
-              notes.add(pickup.getName() + " pickup engaged in coil-split mode");
+              notes.add("'" + pickup.getName() + "' pickup wired in coil-split mode");
             }
+          } else {
+            TreeLeaf leaf = new TreeLeaf(pickup, 1, 2);
+            Tree t = tree.locate(leaf, false);
+            if (t != null)
+              pickupRoots.put(pickup, t);
           }
         }
+      }
+      
+      // figure out how pickups are wired between them
+      if (pickupRoots.size() > 1) {
+        Tree root = tree.findCommonParent(new ArrayList<Tree>(pickupRoots.values()));
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;        
+        for (IDIYComponent<?> c : pickupRoots.keySet()) {
+          if (!first)
+            sb.append(pickupRoots.size() == 2 ? " and " : ", ");
+          first = false;
+          sb.append("'").append(c.getName()).append("'");
+        }
+        sb.append(" pickups engaged, wired in " ).append(root.getConnectionType().name().toLowerCase());
+        notes.add(sb.toString());
+      } else if (pickupRoots.size() == 1) {
+        AbstractGuitarPickup pickup = (AbstractGuitarPickup) pickupRoots.keySet().iterator().next();
+        notes.add("'" + pickup.getName() + "' is the only engaged pickup");
       }
             
       boolean humCancelling = noiseCount == 0;
@@ -143,9 +175,9 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
       if (positiveCount > 1 || negativeCount > 1) {
         boolean inPhase = (positiveCount == 0 && negativeCount > 0) || (positiveCount > 0 && negativeCount == 0);
         if (inPhase)
-          notes.add("The pickups are wired in-phase");
+          notes.add("Pickup coils are wired in-phase");
         else
-          notes.add("This pickups are wired out-of-phase");      
+          notes.add("Pickup coils are wired OUT-of-phase");      
       }
     }
     

@@ -120,7 +120,7 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
     }
     g2d.translate(0, getMainLabelYOffset());
     
-    drawCenteredText(g2d, value, 0, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    drawCenteredText(g2d, getName(), 0, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
    
     g2d.setTransform(originalTx);
   }

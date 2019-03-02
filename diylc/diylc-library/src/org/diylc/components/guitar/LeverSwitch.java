@@ -238,8 +238,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       // Rotate if needed
       if (theta != 0) {
         AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
-        // Skip the last one because it's already rotated
-        for (int i = 0; i < body.length - 1; i++) {
+        // Skip the last two because terminals are already rotated
+        for (int i = 0; i < body.length - 2; i++) {
           Shape shape = body[i];
           Area area = (Area) shape;
           area.transform(rotation);
@@ -460,14 +460,14 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   public boolean arePointsConnected(int index1, int index2, int position) {
     switch (type) {
       case DP3T:
-        return (index2 == 6 || index1 == 1) && index2 == index1 + 2 * (position + 1);
+        return (index1 == 1 && index2 == index1 + 2 * (position + 1)) || (index2 == 6 && index2 == index1 + 2 * (3 - position));
       case DP4T:
-        return (index2 == 8 || index1 == 1) && index2 == index1 + 2 * (position + 1);
+        return (index1 == 1 && index2 == index1 + 2 * (position + 1)) || (index2 == 8 && index2 == index1 + 2 * (3 - position));
       case DP3T_5pos:
         if (position % 2 == 0)          
-          return (index2 == 6 || index1 == 1) && index2 == index1 + position + 2;
+          return (index1 == 1 && index2 == index1 + position + 2) || (index2 == 6 && index2 == index1 + 6 - position);
         else
-          return (index2 == 6 && (index1 == 2 || (index1 == 4 && position == 1) || (index1 == 0 && position == 3))) || 
+          return (index2 == 6 && (index1 == 2 || (index1 == 0 && position == 1) || (index1 == 4 && position == 3))) || 
               (index1 == 1 && (index2 == 5 || (index2 == 3 && position == 1) || (index2 == 7 && position == 3)));
       case DP5T:
         return (index1 == 0 || index2 == 11) && index2 - index1 == position + 1;

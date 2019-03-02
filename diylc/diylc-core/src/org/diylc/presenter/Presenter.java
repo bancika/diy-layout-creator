@@ -2755,7 +2755,7 @@ public class Presenter implements IPlugInPort {
       List<Line2D> connections = getConnections(switchPositions);  
       Netlist graph = constructNetlist(nodes, connections, continuity);
       
-      // merge graphs that are effectivelly the same
+      // merge graphs that are effectively the same
       if (result.containsKey(graph)) {
         result.get(graph).getSwitchSetup().add(new SwitchSetup(posList));
       } else {        
@@ -2826,6 +2826,29 @@ public class Presenter implements IPlugInPort {
             netlist.getGroups().add(new Group(node1, node2));
         }        
       }
+    
+    // merge overlapping groups if needed
+    boolean reduce = true;
+    while (reduce) {
+      reduce = false;
+      List<Group> groups = netlist.getSortedGroups();
+      Iterator<Group> i = groups.iterator();
+      while (i.hasNext()) {
+        Group g1 = i.next();
+        for (Group g2 : groups) {
+          if (g1 != g2 && !Collections.disjoint(g1.getNodes(), g2.getNodes())) {
+            i.remove();
+            g2.getNodes().addAll(g1.getNodes());            
+            reduce = true;
+            break;
+          }
+        }
+      }
+      if (reduce) {
+        netlist.getGroups().clear();
+        netlist.getGroups().addAll(groups);
+      }
+    }
     
     Collections.sort(netlist.getSwitchSetup());   
     
