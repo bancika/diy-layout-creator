@@ -247,7 +247,7 @@ public class Tree {
         p2 = c;
     }   
     
-    if (p1 != p2)
+    if (p1 != p2 || p1 == this || p2 == this)
       return this;
     
     return p1.findCommonParent(t1, t2);
