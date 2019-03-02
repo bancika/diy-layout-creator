@@ -230,25 +230,22 @@ public class Tree {
     if (t1 == null)
       return t2;
     if (t2 == null)
-      return t1;
+      return t1;   
     
     if (children == null)
       return null;
     
-    Tree p1 = null;
-    Tree p2 = null;
+    if (!this.contains(t1) || !this.contains(t2))
+      return null;
+    
+    Tree p1 = this;
+    Tree p2 = this;
     for (Tree c : children) {
       if (c.contains(t1))
         p1 = c;
       if (c.contains(t2))
         p2 = c;
-    }
-    
-    if (p1 == null || p2 == null)
-      return null;
-    
-    if (p1 == p2)
-      return p1;
+    }   
     
     if (p1 != p2)
       return this;
