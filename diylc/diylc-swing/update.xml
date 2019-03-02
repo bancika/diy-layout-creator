@@ -2528,7 +2528,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>"Analyze Guitar Wiring" can figure out if wiring is hum-cancelling and in or out of phase for each position, can detect split-coil wiring and series/parallel humbucking mode</description>
+					<description>"Analyze Guitar Wiring" can figure out if wiring is hum-cancelling and in or out of phase for each position, split-coil wiring, series/parallel humbucking mode, volume and tone potentiometers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

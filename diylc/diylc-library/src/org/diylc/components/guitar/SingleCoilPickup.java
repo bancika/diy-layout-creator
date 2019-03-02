@@ -156,10 +156,10 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
               : darkerOrLighter(color);
     }
 
-    g2d.setColor(finalBorderColor);
-    if (body[0] != null)
-      g2d.draw(body[0]);
-    g2d.draw(body[3]);
+    g2d.setColor(finalBorderColor);    
+    g2d.draw(body[0]);
+    if (body[3] != null)
+      g2d.draw(body[3]);
 
     if (!outlineMode) {
       g2d.setColor(getPoleColor());
@@ -203,7 +203,7 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
       int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
       int holeMargin = getClosestOdd(HOLE_MARGIN.convertToPixels());
       int baseRadius = (int) BASE_RADIUS.convertToPixels();
-      int coilOffset = 0;
+      int coilOffset = 0;     
 
       if (getType() == SingleCoilType.Stratocaster) {
         coilOffset = lipWidth / 2;
@@ -251,7 +251,7 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
         base.subtract(new Area(new Ellipse2D.Double(x - teleLipLength / 2 - holeSize / 2, y, holeSize, holeSize)));
         base.subtract(new Area(new Ellipse2D.Double(x + teleLipLength / 2 - holeSize / 2, y, holeSize, holeSize)));
         base.subtract(new Area(new Ellipse2D.Double(x - holeSize / 2, y - teleHoleSpacing, holeSize, holeSize)));
-
+        
         body[4] = base;
       }      
 
@@ -291,14 +291,16 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
         poleArea.add(new Area(new RoundRectangle2D.Double(x - railLength / 2, y - coilOffset - width / 2 - railWidth
             / 2, railLength, railWidth, railWidth / 2, railWidth / 2)));
       }
-
-      body[2] = poleArea;
-
+      
       body[0] =
           new Area(new RoundRectangle2D.Double(x - coilLength / 2, y - coilOffset - width, coilLength, width, width,
               width));
 
-      ((Area) body[4]).subtract((Area) body[3]);
+      body[2] = poleArea;          
+      
+      if (body[3] == null) {
+        ((Area)body[4]).subtract((Area) body[0]);
+      }
 
       // Rotate if needed
       if (orientation != Orientation.DEFAULT) {

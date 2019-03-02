@@ -247,6 +247,9 @@ public class Tree {
     if (p1 == null || p2 == null)
       return null;
     
+    if (p1 == p2)
+      return p1;
+    
     if (p1 != p2)
       return this;
     
@@ -270,6 +273,20 @@ public class Tree {
     
     List<Tree> remainder = t.subList(1, t.size());
     return findCommonParent(t.get(0), findCommonParent(remainder));
+  }
+  
+  public Tree findParent(Tree t) {
+    if (children == null)
+      return null;
+    if (children.contains(t))
+      return this;
+    for (Tree c : children)
+    {
+      Tree p = c.findParent(t);
+      if (p != null)
+        return p;
+    }
+    return null;
   }
   
   public boolean contains(Tree t) {
