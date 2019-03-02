@@ -142,7 +142,7 @@ public class Presenter implements IPlugInPort {
 
   public static final int ICON_SIZE = 32;
 
-  private static final int MAX_RECENT_FILES = 10;
+  private static final int MAX_RECENT_FILES = 20;
 
   private Project currentProject;
   private Map<String, List<ComponentType>> componentTypes;

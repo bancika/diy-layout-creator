@@ -2535,6 +2535,10 @@
 					<description>Increase the range of zoom slider for images to 500%</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increase the number of recently used files from 10 to 20</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Netlist algorithm would sometimes create overlapping groups of nodes which are supposed to be merged</description>
 				</org.diylc.appframework.update.Change>	
