@@ -2516,7 +2516,7 @@
 			<changes>				
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Show wire diameter in mm and in next to AWG gauge</description>
+					<description>"Analyze Guitar Wiring" can figure out if wiring is hum-cancelling and in or out of phase for each position, split-coil wiring, series/parallel humbucking mode, volume and tone potentiometers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -2525,11 +2525,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added 4-position Tele switch type to the "Lever Switch" component</description>
-				</org.diylc.appframework.update.Change>
+				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>"Analyze Guitar Wiring" can figure out if wiring is hum-cancelling and in or out of phase for each position, split-coil wiring, series/parallel humbucking mode, volume and tone potentiometers</description>
-				</org.diylc.appframework.update.Change>
+					<description>Show wire diameter in mm and in next to AWG gauge</description>
+				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increase the range of zoom slider for images to 500%</description>
@@ -2549,6 +2549,22 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed rendering issue with "Lever Switch" when rotated</description>
+				</org.diylc.appframework.update.Change>	
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>3</major>
+				<minor>55</minor>
+				<build>1</build>
+			</versionNumber>
+			<releaseDate>2019-03-02 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>								
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Z-order of components is not retained in building blocks</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

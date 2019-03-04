@@ -2505,11 +2505,18 @@ public class Presenter implements IPlugInPort {
   @Override
   public void saveSelectionAsBlock(String blockName) {
     LOG.debug(String.format("saveSelectionAsBlock(%s)", blockName));
-    Map<String, Collection<IDIYComponent<?>>> blocks =
-        (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+    Map<String, List<IDIYComponent<?>>> blocks =
+        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
     if (blocks == null)
-      blocks = new HashMap<String, Collection<IDIYComponent<?>>>();
-    blocks.put(blockName, this.selectedComponents);
+      blocks = new HashMap<String, List<IDIYComponent<?>>>();
+    List<IDIYComponent<?>> blockComponents = new ArrayList<IDIYComponent<?>>(this.selectedComponents);
+    Collections.sort(blockComponents, new Comparator<IDIYComponent<?>>() {
+
+      @Override
+      public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
+        return new Integer(currentProject.getComponents().indexOf(o1)).compareTo(currentProject.getComponents().indexOf(o2));
+      }});
+    blocks.put(blockName, blockComponents);
     ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
   }
 
@@ -2517,8 +2524,8 @@ public class Presenter implements IPlugInPort {
   @Override
   public void loadBlock(String blockName) throws InvalidBlockException {
     LOG.debug(String.format("loadBlock(%s)", blockName));
-    Map<String, Collection<IDIYComponent<?>>> blocks =
-        (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+    Map<String, List<IDIYComponent<?>>> blocks =
+        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
     if (blocks != null) {
       Collection<IDIYComponent<?>> components = blocks.get(blockName);
       if (components == null)
@@ -2548,8 +2555,8 @@ public class Presenter implements IPlugInPort {
   @Override
   public void deleteBlock(String blockName) {
     LOG.debug(String.format("deleteBlock(%s)", blockName));
-    Map<String, Collection<IDIYComponent<?>>> blocks =
-        (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+    Map<String, List<IDIYComponent<?>>> blocks =
+        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
     if (blocks != null) {
       blocks.remove(blockName);
       ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
@@ -2626,13 +2633,13 @@ public class Presenter implements IPlugInPort {
     if (pkg == null || pkg.getBlocks().isEmpty())
       return 0;
     
-    Map<String, Collection<IDIYComponent<?>>> blocks =
-        (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+    Map<String, List<IDIYComponent<?>>> blocks =
+        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
     if (blocks == null) {
-      blocks = new HashMap<String, Collection<IDIYComponent<?>>>();
+      blocks = new HashMap<String, List<IDIYComponent<?>>>();
     }
     
-    for (Map.Entry<String, Collection<IDIYComponent<?>>> entry : pkg.getBlocks().entrySet()) {
+    for (Map.Entry<String, List<IDIYComponent<?>>> entry : pkg.getBlocks().entrySet()) {
       blocks.put(entry.getKey() + " [" + pkg.getOwner() + "]", entry.getValue());
     }
     

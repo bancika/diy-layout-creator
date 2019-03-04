@@ -152,7 +152,7 @@ public class TreePanel extends JPanel {
       @SuppressWarnings("unchecked")
       @Override
       public void valueChanged(String key, Object value) {
-        Map<String, Collection<IDIYComponent<?>>> newBlocks = (Map<String, Collection<IDIYComponent<?>>>) value;
+        Map<String, List<IDIYComponent<?>>> newBlocks = (Map<String, List<IDIYComponent<?>>>) value;
         if (newBlocks != null) {
           List<String> blockNames = new ArrayList<String>(newBlocks.keySet());
           Collections.sort(blockNames);
@@ -216,8 +216,8 @@ public class TreePanel extends JPanel {
     if (this.blocksNode == null) {
       this.blocksNode = new DefaultMutableTreeNode(new Payload("(Building Blocks)", null), true);
       @SuppressWarnings("unchecked")
-      Map<String, Collection<IDIYComponent<?>>> newBlocks =
-          (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(
+      Map<String, List<IDIYComponent<?>>> newBlocks =
+          (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(
               IPlugInPort.BLOCKS_KEY, null);
       if (newBlocks != null) {
         List<String> blockNames = new ArrayList<String>(newBlocks.keySet());

@@ -21,23 +21,23 @@
 */
 package org.diylc.common;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.diylc.core.IDIYComponent;
 
 public class BuildingBlockPackage {
 
-  private Map<String, Collection<IDIYComponent<?>>> block;
+  private Map<String, List<IDIYComponent<?>>> block;
   private String owner;
 
-  public BuildingBlockPackage(Map<String, Collection<IDIYComponent<?>>> blocks, String owner) {
+  public BuildingBlockPackage(Map<String, List<IDIYComponent<?>>> blocks, String owner) {
     super();
     this.block = blocks;
     this.owner = owner;
   }
 
-  public Map<String, Collection<IDIYComponent<?>>> getBlocks() {
+  public Map<String, List<IDIYComponent<?>>> getBlocks() {
     return block;
   }
 

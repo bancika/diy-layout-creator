@@ -893,11 +893,11 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportBuildingBlocksAction triggered");
       
-      Map<String, Collection<IDIYComponent<?>>> selectedBlocks;
+      Map<String, List<IDIYComponent<?>>> selectedBlocks;
       
       try {
-        Map<String, Collection<IDIYComponent<?>>> blocks =
-            (Map<String, Collection<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(IPlugInPort.BLOCKS_KEY, null);
+        Map<String, List<IDIYComponent<?>>> blocks =
+            (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(IPlugInPort.BLOCKS_KEY, null);
         if (blocks == null || blocks.isEmpty()) {
           swingUI.showMessage("No building blocks found to export.", "Error", IView.ERROR_MESSAGE);
           return;
@@ -926,7 +926,7 @@ public class ActionFactory {
           return;      
         }
         
-        selectedBlocks = new HashMap<String, Collection<IDIYComponent<?>>>();
+        selectedBlocks = new HashMap<String, List<IDIYComponent<?>>>();
         for (Object key : selected) {
           selectedBlocks.put(key.toString(), blocks.get(key));
         }
