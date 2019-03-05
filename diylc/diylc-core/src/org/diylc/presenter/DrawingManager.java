@@ -35,6 +35,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -509,14 +510,14 @@ public class DrawingManager {
     // Find all individual continuity areas for all components
     List<Area> preliminaryAreas = new ArrayList<Area>();
     List<Boolean> checkBreakout = new ArrayList<Boolean>();
-    List<Line2D> connections = new ArrayList<Line2D>();
+    Set<Connection> connections = new HashSet<Connection>();
     for (IDIYComponent<?> c : project.getComponents()) {
       ComponentArea a = getComponentArea(c);
 
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
       if (type.isContinuity()) {
-        connections.add(new Line2D.Double(c.getControlPoint(0), c.getControlPoint(c.getControlPointCount() - 1)));
+        connections.add(new Connection(c.getControlPoint(0), c.getControlPoint(c.getControlPointCount() - 1)));
       }
 
       if (a == null || a.getOutlineArea() == null)
@@ -547,10 +548,31 @@ public class DrawingManager {
       // else
       // areas.add(a);
     }
+    
+    expandConnections(connections);
 
     crunchAreas(areas, connections);
     
     return areas;
+  }
+  
+  private void expandConnections(Set<Connection> connections) {
+    Set<Connection> toAdd = new HashSet<Connection>();
+    for (Connection c1 : connections)
+      for (Connection c2 : connections) {
+        if (c1 == c2)
+          continue;
+        if (c1.getP1().distance(c2.getP1()) < CONTROL_POINT_SIZE)
+          toAdd.add(new Connection(c1.getP2(), c2.getP2()));
+        if (c1.getP1().distance(c2.getP2()) < CONTROL_POINT_SIZE)
+          toAdd.add(new Connection(c1.getP2(), c2.getP1()));
+        if (c1.getP2().distance(c2.getP1()) < CONTROL_POINT_SIZE)
+          toAdd.add(new Connection(c1.getP1(), c2.getP2()));
+        if (c1.getP2().distance(c2.getP2()) < CONTROL_POINT_SIZE)
+          toAdd.add(new Connection(c1.getP1(), c2.getP1()));
+      }
+    if (connections.addAll(toAdd))
+      expandConnections(connections);
   }
 
   /**
@@ -560,7 +582,7 @@ public class DrawingManager {
    * @param connections
    * @return
    */
-  private boolean crunchAreas(List<Area> areas, List<Line2D> connections) {
+  private boolean crunchAreas(List<Area> areas, Set<Connection> connections) {
     boolean isChanged = false;
 
     List<Area> newAreas = new ArrayList<Area>();
@@ -581,7 +603,7 @@ public class DrawingManager {
           a1.add(a2);
           consumed.set(j, true);
         } else { // maybe there's a connection between them
-          for (Line2D p : connections) {
+          for (Connection p : connections) {
             if ((a1.contains(p.getP1()) && a2.contains(p.getP2())) || (a1.contains(p.getP2()) && a2.contains(p.getP1()))) {
               a1.add(a2);
               consumed.set(j, true);
