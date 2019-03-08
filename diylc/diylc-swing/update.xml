@@ -2582,6 +2582,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>"Highlight Connected Areas" doesn't follow multiple chained wires and jumpers</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>"Mini Toggle Switch" doesn't reset body size after changing terminal spacing</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	

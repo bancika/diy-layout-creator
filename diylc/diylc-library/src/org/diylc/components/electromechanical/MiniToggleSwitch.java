@@ -243,6 +243,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   public void setSpacing(Size spacing) {
     this.spacing = spacing;
     updateControlPoints();
+    // Reset body shape.
+    body = null;
   }
 
   @Override
