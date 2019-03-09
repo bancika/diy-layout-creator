@@ -129,6 +129,12 @@ public interface IDIYComponent<T> extends Serializable {
    * @return name of the internal linked formed by the two control points, null if they do not form an internal link
    */
   String getInternalLinkName(int index1, int index2);
+  
+  /**   
+   * @param pointIndex name of the internal section containing the specified point, or null if the component does not have internal sections. 
+   * @return
+   */
+  String getSectionName(int pointIndex);
 
   /**
    * Draws the component onto the {@link Graphics2D}.

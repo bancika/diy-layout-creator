@@ -292,4 +292,10 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public String getInternalLinkName(int index1, int index2) {   
     return null;
   }
+  
+  @Override
+  public String getSectionName(int pointIndex) {   
+    return null;
+  }
+  
 }
