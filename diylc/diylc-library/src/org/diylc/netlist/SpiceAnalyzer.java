@@ -72,7 +72,7 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
     StringBuilder sb = new StringBuilder();
     
     List<Group> groups = netlist.getSortedGroups();
-    int unconnectedIndex = groups.size() + 1;
+    int unconnectedIndex = groups.size();
     
     int maxLen = 0;
     for (IDIYComponent<?> c : allComponents) {
@@ -83,16 +83,33 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
     for (IDIYComponent<?> c : allComponents) {
       sb.append(fill(c.getName(), (int) (Math.ceil(maxLen / 5.0) * 5)));
       sb.append(" ");
+      int[] nodeIndices = new int[c.getControlPointCount()];
+      
+      // find node indices for each control point
       for (int i = 0; i < c.getControlPointCount(); i++) {
-        int index = find(new Node(c, i), groups);
-        if (index < 0)
-          index = unconnectedIndex++;
-        else
-          index++;
-        sb.append(fill(Integer.toString(index), 5));
+        int pointIndex = i;        
+        
+        int nodeIndex = find(new Node(c, pointIndex), groups);
+        if (nodeIndex < 0)
+          nodeIndex = unconnectedIndex++;
+        
+        // 1-based convention
+        nodeIndex++;
+        
+        // remap if needed
+        if (c instanceof ISpiceMapper)
+          pointIndex = ((ISpiceMapper)c).mapToSpiceNode(pointIndex);
+        
+        nodeIndices[pointIndex] = nodeIndex;
+      }
+      
+      // output to spice
+      for (int i = 0; i < c.getControlPointCount(); i++) {
+        sb.append(fill(Integer.toString(nodeIndices[i]), 5));
         sb.append(" ");
       }
-      sb.append(c.getValueForDisplay());
+      
+      sb.append(c.getValue());
       sb.append("<br>");
     }
         
