@@ -80,9 +80,14 @@ public class Favorite implements Serializable, Comparable<Favorite> {
   public enum FavoriteType {
     Component, Block
   }
+  
+  public String toDisplay() {
+    String[] parts = name.split("\\.");
+    return parts[parts.length - 1];    
+  }
 
   @Override
   public int compareTo(Favorite o) {
-    return name.compareToIgnoreCase(o.getName());
+    return toDisplay().compareToIgnoreCase(o.toDisplay());
   }
 }
