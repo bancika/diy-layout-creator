@@ -83,6 +83,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private static final Logger LOG = Logger.getLogger(StatusBar.class);
 
   public static String UPDATE_URL = "http://www.diy-fever.com/update.xml";
+  private static String HIGHLIGHT_CONNECTED_TIP = "Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF";
   private static final Format sizeFormat = new DecimalFormat("0.##");
 
   private JComboBox zoomBox;
@@ -92,7 +93,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private MemoryBar memoryPanel;
   private JLabel statusLabel;
   private JLabel positionLabel;
-  private JLabel sizeLabel;
+  private JLabel sizeLabel;  
 
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
@@ -168,6 +169,14 @@ public class StatusBar extends JPanel implements IPlugIn {
       @Override
       public void valueChanged(String key, Object value) {
         refreshPosition((Boolean)value);
+      }
+    });
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, new IConfigListener() {
+      
+      @Override
+      public void valueChanged(String key, Object value) {
+        refreshStatusText();
       }
     });
   }
@@ -463,6 +472,7 @@ public class StatusBar extends JPanel implements IPlugIn {
         break;
       case STATUS_MESSAGE_CHANGED:
         statusMessage = (String) params[0];
+        refreshStatusText();
         break;
       case MOUSE_MOVED:
         mousePositionIn = (Point2D) params[1];
@@ -487,7 +497,7 @@ public class StatusBar extends JPanel implements IPlugIn {
       getPositionLabel().setText(String.format("x:%.2f%s y:%.2f%s", mousePosition.getX(), unit, mousePosition.getY(), unit));
   }
 
-  private void refreshStatusText() {
+  private void refreshStatusText() {    
     String statusText = this.statusMessage;
     if (componentSlot == null) {
       if (componentNamesUnderCursor != null && !componentNamesUnderCursor.isEmpty()) {
@@ -534,6 +544,11 @@ public class StatusBar extends JPanel implements IPlugIn {
           break;
       }
     }
+    
+    // override any other status with this when in highlight mode, as we cannot do anything else
+    Boolean highlightConnectedAreasMode = ConfigurationManager.getInstance().readBoolean(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
+    if (highlightConnectedAreasMode)
+      statusText = HIGHLIGHT_CONNECTED_TIP;
     
     final String finalStatus = statusText;
     SwingUtilities.invokeLater(new Runnable() {

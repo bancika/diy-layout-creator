@@ -85,8 +85,8 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Hi-Quality Rendering",
             IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
     swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas",
-            IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false, IPlugInPort.HIGHLIGHT_CONTINUITY_AREA), CONFIG_MENU);
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, 
+            false), CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY,
             false), CONFIG_MENU);
