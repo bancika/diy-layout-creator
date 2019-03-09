@@ -93,7 +93,14 @@ public class ProjectFileManager {
       }
     };
     xStream.autodetectAnnotations(true);
-    xStream.registerConverter(new PointConverter());
+    xStream.alias("point", java.awt.Point.class);
+    xStream.alias("font", java.awt.Font.class);
+    xStream.alias("project", Project.class);
+    xStream.aliasPackage("diylc", "org.diylc.components");
+    xStream.registerConverter(new PointConverter());        
+    xStream.registerConverter(new ColorConverter());
+    xStream.registerConverter(new FontConverter());
+    xStream.registerConverter(new MeasureConverter());
     xStream.addImmutableType(Color.class);
     xStream.addImmutableType(java.awt.Point.class);
     xStream.addImmutableType(org.diylc.core.measures.Voltage.class);
@@ -160,7 +167,7 @@ public class ProjectFileManager {
     DocumentBuilder db = dbf.newDocumentBuilder();
     Document doc = db.parse(new InputSource(new InputStreamReader(new FileInputStream(file))));
     doc.getDocumentElement().normalize();
-    if (doc.getDocumentElement().getNodeName().equalsIgnoreCase(Project.class.getName())) {
+    if (doc.getDocumentElement().getNodeName().equals(Project.class.getName()) || doc.getDocumentElement().getNodeName().equals("project")) {
       project = parseV3File(fileName, warnings);
     } else {
       if (!doc.getDocumentElement().getNodeName().equalsIgnoreCase("layout")) {
@@ -209,7 +216,7 @@ public class ProjectFileManager {
       Reader reader = new InputStreamReader(fis, "UTF-8");
       project = (Project) xStream.fromXML(reader);
     } catch (Exception e) {
-      LOG.warn("Could not open with the new xStream, trying the old one");
+      LOG.warn("Could not open with the new xStream, trying the old one", e);
       fis.close();
       fis = new FileInputStream(fileName);
       project = (Project) xStreamOld.fromXML(fis);
