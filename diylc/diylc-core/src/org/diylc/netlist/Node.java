@@ -48,8 +48,8 @@ public class Node implements Comparable<Node> {
   }
   
   public String getDisplayName() {
-    String section = component.getSectionName(pointIndex);
-    return (section == null ? "" : section + ".") + component.getControlPointNodeName(pointIndex);
+    String[] section = component.getSectionNames(pointIndex);
+    return (section == null || section.length > 1 ? "" : section[0] + ".") + component.getControlPointNodeName(pointIndex);
   }
 
   @Override

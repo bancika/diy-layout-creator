@@ -6,6 +6,14 @@ public enum TransistorPinout {
   
   @Override
   public String toString() {
-    return name().replace("_", " ");
+    String[] parts = name().split("_");
+    StringBuilder sb = new StringBuilder();    
+    for (int i = 0; i < parts[1].length(); i++) {
+      if (i > 0)
+        sb.append("-");
+      sb.append(parts[1].charAt(i));
+    }
+    sb.append("     ").append(parts[0]);
+    return sb.toString();
   };
 }

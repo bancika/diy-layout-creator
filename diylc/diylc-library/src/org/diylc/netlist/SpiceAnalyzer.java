@@ -110,6 +110,12 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
       }
       
       sb.append(c.getValue());
+      
+      if (c instanceof ISpiceMapper) {
+        String comment = ((ISpiceMapper)c).getComment();
+        if (comment != null)
+          sb.append(" ; ").append(comment);
+      }
       sb.append("<br>");
     }
         

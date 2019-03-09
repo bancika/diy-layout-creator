@@ -21,6 +21,7 @@
 */
 package org.diylc.presenter;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -93,6 +94,15 @@ public class ProjectFileManager {
     };
     xStream.autodetectAnnotations(true);
     xStream.registerConverter(new PointConverter());
+    xStream.addImmutableType(Color.class);
+    xStream.addImmutableType(java.awt.Point.class);
+    xStream.addImmutableType(org.diylc.core.measures.Voltage.class);
+    xStream.addImmutableType(org.diylc.core.measures.Resistance.class);
+    xStream.addImmutableType(org.diylc.core.measures.Capacitance.class);
+    xStream.addImmutableType(org.diylc.core.measures.Current.class);
+    xStream.addImmutableType(org.diylc.core.measures.Power.class);
+    xStream.addImmutableType(org.diylc.core.measures.Inductance.class);
+    xStream.addImmutableType(org.diylc.core.measures.Size.class);
     this.xStreamOld = new XStream(new DomDriver());
     xStreamOld.autodetectAnnotations(true);
     this.messageDispatcher = messageDispatcher;

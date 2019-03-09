@@ -2587,9 +2587,17 @@
 					<description>Generate SPICE-compatible netlist (still in beta stage)</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added pinout property to all transistor components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>When in "Highlight Connected Area" mode, the status bar shows useful information making it harder to forget what the mode does</description>
-				</org.diylc.appframework.update.Change>		
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Cleaner XML format for .DIY files with less cross-references</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>"Highlight Connected Areas" doesn't follow multiple chained wires and jumpers</description>

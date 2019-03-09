@@ -87,6 +87,11 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
     return index;
   }
   
+  @Override
+  public String getComment() {
+    return getPinout() == null ? null : (getPinout().toString() + " pinout");
+  }
+  
   @EditableProperty
   public String getValue() {
     return value;

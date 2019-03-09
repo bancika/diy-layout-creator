@@ -294,7 +294,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   }
   
   @Override
-  public String getSectionName(int pointIndex) {   
+  public String[] getSectionNames(int pointIndex) {   
     return null;
   }
   
