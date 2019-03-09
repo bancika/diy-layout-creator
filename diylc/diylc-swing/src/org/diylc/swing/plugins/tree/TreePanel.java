@@ -567,26 +567,30 @@ public class TreePanel extends JPanel {
             shortcutSubmenu.add(item);
           }
                     
-          final Favorite fav = new Favorite(componentType == null ? FavoriteType.Block : FavoriteType.Component, componentType == null ? payload.toString() : componentType.getInstanceClass()
-                  .getCanonicalName());
-          final boolean isFavorite = favorites != null && favorites.indexOf(fav) >= 0;
-          final JMenuItem favoritesItem = new JMenuItem(isFavorite ? "Remove From Favorites" : "Add To Favorites", 
-              isFavorite ? IconLoader.StarBlue.getIcon() : IconLoader.StarGrey.getIcon());
-          favoritesItem.addActionListener(new ActionListener() {
-            
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              List<Favorite> favorites = new ArrayList<Favorite>(TreePanel.this.favorites);
-              if (isFavorite) {
-                favorites.remove(fav);
-              } else {
-                favorites.add(fav);
-                Collections.sort(favorites);                
+          if (selectedNode.isLeaf()) {
+            final Favorite fav =
+                new Favorite(componentType == null ? FavoriteType.Block : FavoriteType.Component,
+                    componentType == null ? payload.toString() : componentType.getInstanceClass().getCanonicalName());
+            final boolean isFavorite = favorites != null && favorites.indexOf(fav) >= 0;
+            final JMenuItem favoritesItem =
+                new JMenuItem(isFavorite ? "Remove From Favorites" : "Add To Favorites",
+                    isFavorite ? IconLoader.StarBlue.getIcon() : IconLoader.StarGrey.getIcon());
+            favoritesItem.addActionListener(new ActionListener() {
+
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                List<Favorite> favorites = new ArrayList<Favorite>(TreePanel.this.favorites);
+                if (isFavorite) {
+                  favorites.remove(fav);
+                } else {
+                  favorites.add(fav);
+                  Collections.sort(favorites);
+                }
+                ConfigurationManager.getInstance().writeValue(IPlugInPort.FAVORITES_KEY, favorites);
               }
-              ConfigurationManager.getInstance().writeValue(IPlugInPort.FAVORITES_KEY, favorites);
-            }
-          });
-          popup.add(favoritesItem);
+            });
+            popup.add(favoritesItem);
+          }
 
           if (componentType != null) {
             popup.add(new SelectAllAction(plugInPort, componentType));
