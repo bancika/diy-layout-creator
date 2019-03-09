@@ -2577,7 +2577,11 @@
 			</versionNumber>
 			<releaseDate>2019-03-02 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>								
+			<changes>					
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to tag components and building blocks as favorites</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>"Highlight Connected Areas" doesn't follow multiple chained wires and jumpers</description>

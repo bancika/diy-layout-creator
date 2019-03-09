@@ -63,7 +63,7 @@ public enum IconLoader {
       "component_add.png"), History("history.png"), DocumentPlain("document_plain.png"), FitToSize("fit_to_size.png"), DocumentsGear(
       "documents_gear.png"), SplashResistor("splash_resistor.png"), SplashCeramic("splash_ceramic.png"), SplashElectrolytic(
       "splash_electrolytic.png"), SplashFilm("splash_film.png"), Splash("splash.png"), Help("help2.png"), ScrollInformation("scroll_information.png"),
-      Node("node.png"), Web("web.png"), Guitar("guitar.png"), Scientist("scientist.png");
+      Node("node.png"), Web("web.png"), Guitar("guitar.png"), Scientist("scientist.png"), StarGrey("star_grey.png"), StarBlue("star_blue.png");
 
   protected String name;
 

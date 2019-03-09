@@ -36,7 +36,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,6 +62,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -72,9 +72,12 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.lf5.viewer.categoryexplorer.TreeModelAdapter;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.ComponentType;
+import org.diylc.common.Favorite;
+import org.diylc.common.Favorite.FavoriteType;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
@@ -99,11 +102,14 @@ public class TreePanel extends JPanel {
   private JTextField searchField;
   private DefaultMutableTreeNode recentNode;
   private DefaultMutableTreeNode blocksNode;
+  private DefaultMutableTreeNode favoritesNode;
   private List<String> recentComponents;
+  private List<Favorite> favorites;
   private List<String> blocks;
 
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
+  private boolean initializing = false;
 
   private JPopupMenu popup;  
 
@@ -142,7 +148,7 @@ public class TreePanel extends JPanel {
           LOG.info("Detected recent component change");
           refreshRecentComponents(newComponents);
         } else
-          LOG.info("Detected no recent component  change");
+          LOG.info("Detected no recent component change");
         TreePanel.this.recentComponents = new ArrayList<String>(newComponents);
       }
     });
@@ -174,6 +180,20 @@ public class TreePanel extends JPanel {
         repaint();
       }
     });
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.FAVORITES_KEY, new IConfigListener() {
+
+      @SuppressWarnings("unchecked")
+      @Override
+      public void valueChanged(String key, Object value) {
+        List<Favorite> newFavorites = (List<Favorite>) value;
+        if (newFavorites != null && !newFavorites.equals(TreePanel.this.favorites)) {
+          LOG.info("Detected favorites change");
+          refreshFavorites(newFavorites);
+        } else
+          LOG.info("Detected no favorites change");        
+      }
+    });
 
     getTree().expandRow(0);
     
@@ -199,6 +219,7 @@ public class TreePanel extends JPanel {
   public DefaultMutableTreeNode getRecentNode() {
     if (this.recentNode == null) {
       this.recentNode = new DefaultMutableTreeNode(new Payload("(Recently Used)", null), true);
+      
       @SuppressWarnings("unchecked")
       List<String> recent =
           (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
@@ -215,6 +236,7 @@ public class TreePanel extends JPanel {
   public DefaultMutableTreeNode getBlocksNode() {
     if (this.blocksNode == null) {
       this.blocksNode = new DefaultMutableTreeNode(new Payload("(Building Blocks)", null), true);
+      
       @SuppressWarnings("unchecked")
       Map<String, List<IDIYComponent<?>>> newBlocks =
           (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(
@@ -223,12 +245,26 @@ public class TreePanel extends JPanel {
         List<String> blockNames = new ArrayList<String>(newBlocks.keySet());
         Collections.sort(blockNames);
         refreshBuildingBlocks(blockNames);
-        this.blocks = blockNames;
       } else {
         this.blocks = new ArrayList<String>();
       }
     }
     return this.blocksNode;
+  }
+  
+  public DefaultMutableTreeNode getFavoritesNode() {
+    if (this.favoritesNode == null) {
+      this.favoritesNode = new DefaultMutableTreeNode(new Payload("(Favorites)", null), true);
+      
+      @SuppressWarnings("unchecked")
+      List<Favorite> favorites = (List<Favorite>) ConfigurationManager.getInstance().readObject(IPlugInPort.FAVORITES_KEY, null);
+      if (favorites != null) {        
+        refreshFavorites(favorites);
+      } else {
+        this.favorites = new ArrayList<Favorite>();
+      }
+    }
+    return this.favoritesNode;
   }
 
   @SuppressWarnings("unchecked")
@@ -260,7 +296,8 @@ public class TreePanel extends JPanel {
         LOG.error("Could not create recent component button for " + componentClassName, e);
       }
     }
-    getTreeModel().nodeStructureChanged(getRecentNode());
+    if (!initializing)
+      getTreeModel().nodeStructureChanged(getRecentNode());
   }
 
   private void refreshBuildingBlocks(List<String> blocks) {
@@ -291,14 +328,72 @@ public class TreePanel extends JPanel {
       payload.setVisible(visible);
       getBlocksNode().add(componentNode);
     }
-    getTreeModel().nodeStructureChanged(getBlocksNode());
+    if (!initializing)
+      getTreeModel().nodeStructureChanged(getBlocksNode());
+  }
+  
+  private void refreshFavorites(List<Favorite> favorites) {
+    this.favorites = new ArrayList<Favorite>(favorites);
+    
+    getFavoritesNode().removeAllChildren();
+    
+    Map<String, List<ComponentType>> types = plugInPort.getComponentTypes();
+    Map<String, ComponentType> typesByClass = new HashMap<String, ComponentType>();
+    for (Map.Entry<String, List<ComponentType>> e : types.entrySet())
+      for (ComponentType c : e.getValue())
+        typesByClass.put(c.getInstanceClass().getCanonicalName(), c);
+    
+    for (Favorite f : favorites) {
+      if (f.getType() == FavoriteType.Component) {
+        final ComponentType type = typesByClass.get(f.getName());
+        if (type != null) {
+          DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(new Payload(type, new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+              plugInPort.setNewComponentTypeSlot(type, null, false);
+            }
+          }), false);
+          getFavoritesNode().add(componentNode);
+        }
+      } else if (f.getType() == FavoriteType.Block) {
+        final String block = f.getName();
+        Payload payload = new Payload(block, new MouseAdapter() {
+          
+          long previousActionTime = 0;
+
+          @Override
+          public void mouseClicked(MouseEvent e) {
+            if (e == null || SwingUtilities.isLeftMouseButton(e) && System.currentTimeMillis() - previousActionTime > 100) {
+              previousActionTime = System.currentTimeMillis();
+              try {
+                plugInPort.loadBlock(block);
+              } catch (InvalidBlockException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+              }
+            }
+          }
+        });
+        final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(payload, false);
+        String text = getSearchField().getText();
+        boolean visible = text.trim().length() == 0 || block.toLowerCase().contains(text.toLowerCase());
+        payload.setVisible(visible);
+        getFavoritesNode().add(componentNode);
+      }
+    }
+    if (!initializing)
+      getTreeModel().nodeStructureChanged(getFavoritesNode());
   }
 
   public DefaultTreeModel getTreeModel() {
     if (treeModel == null) {
       final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Components", true);
+      initializing = true;
+      rootNode.add(getFavoritesNode());
       rootNode.add(getRecentNode());
       rootNode.add(getBlocksNode());
+      initializing = false;
       Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
       List<String> categories = new ArrayList<String>(componentTypes.keySet());
       Collections.sort(categories);
@@ -317,6 +412,18 @@ public class TreePanel extends JPanel {
         }
       }
       treeModel = new DefaultTreeModel(rootNode);
+      treeModel.addTreeModelListener(new TreeModelAdapter() {
+        @Override
+        public void treeNodesRemoved(TreeModelEvent e) {
+          super.treeNodesRemoved(e);
+        }
+        
+        @Override
+        public void treeNodesChanged(TreeModelEvent e) {
+          // TODO Auto-generated method stub
+          super.treeNodesChanged(e);
+        }
+      });
     }
     return treeModel;
   }
@@ -459,6 +566,27 @@ public class TreePanel extends JPanel {
             });
             shortcutSubmenu.add(item);
           }
+                    
+          final Favorite fav = new Favorite(componentType == null ? FavoriteType.Block : FavoriteType.Component, componentType == null ? payload.toString() : componentType.getInstanceClass()
+                  .getCanonicalName());
+          final boolean isFavorite = favorites != null && favorites.indexOf(fav) >= 0;
+          final JMenuItem favoritesItem = new JMenuItem(isFavorite ? "Remove From Favorites" : "Add To Favorites", 
+              isFavorite ? IconLoader.StarBlue.getIcon() : IconLoader.StarGrey.getIcon());
+          favoritesItem.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              List<Favorite> favorites = new ArrayList<Favorite>(TreePanel.this.favorites);
+              if (isFavorite) {
+                favorites.remove(fav);
+              } else {
+                favorites.add(fav);
+                Collections.sort(favorites);                
+              }
+              ConfigurationManager.getInstance().writeValue(IPlugInPort.FAVORITES_KEY, favorites);
+            }
+          });
+          popup.add(favoritesItem);
 
           if (componentType != null) {
             popup.add(new SelectAllAction(plugInPort, componentType));
