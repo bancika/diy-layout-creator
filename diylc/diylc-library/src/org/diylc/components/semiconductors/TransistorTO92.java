@@ -37,15 +37,12 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.TO92Transformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -56,7 +53,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Transistor (TO-92)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with small plastic or epoxy body", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO92Transformer.class)
-public class TransistorTO92 extends AbstractTransparentComponent<String> {
+public class TransistorTO92 extends AbstractTransistorPackage {
 
   private static final long serialVersionUID = 1L;
 
@@ -69,42 +66,15 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
   public static Size PIN_SPACING = new Size(0.05d, SizeUnit.in);
   public static Size BODY_DIAMETER = new Size(0.2d, SizeUnit.in);
 
-  private String value = "";
-  private Orientation orientation = Orientation.DEFAULT;
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-  transient private Area body;
-  private Color bodyColor = BODY_COLOR;
-  private Color borderColor = BORDER_COLOR;
-  private Color labelColor = LABEL_COLOR;
-  protected Display display = Display.NAME;
   private boolean folded = false;
-  private Size pinSpacing = PIN_SPACING;
+  private Size pinSpacing = PIN_SPACING;  
 
   public TransistorTO92() {
     super();
     updateControlPoints();
     alpha = (byte) 100;
-  }
-
-  @EditableProperty
-  public String getValue() {
-    return value;
-  }
-
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
-    updateControlPoints();
-    // Reset body shape;
-    body = null;
+    bodyColor = BODY_COLOR;
+    borderColor = BORDER_COLOR;
   }
 
   @EditableProperty
@@ -132,34 +102,9 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
     // Reset body shape;
     body = null;
   }
-
+ 
   @Override
-  public int getControlPointCount() {
-    return controlPoints.length;
-  }
-
-  @Override
-  public Point getControlPoint(int index) {
-    return controlPoints[index];
-  }
-
-  @Override
-  public boolean isControlPointSticky(int index) {
-    return true;
-  }
-
-  @Override
-  public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.NEVER;
-  }
-
-  @Override
-  public void setControlPoint(Point point, int index) {
-    controlPoints[index].setLocation(point);
-    body = null;
-  }
-
-  private void updateControlPoints() {
+  protected void updateControlPoints() {
     int pinSpacing = (int) getPinSpacing().convertToPixels();
     // Update control points.
     int x = controlPoints[0].x;
@@ -186,25 +131,27 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
     }
   }
 
-  public Area getBody() {
+  public Area[] getBody() {
     if (body == null) {
       int x = (controlPoints[0].x + controlPoints[1].x + controlPoints[2].x) / 3;
       int y = (controlPoints[0].y + controlPoints[1].y + controlPoints[2].y) / 3;
       int bodyDiameter = getClosestOdd(BODY_DIAMETER.convertToPixels());
+      
+      Area newBody = null;
 
       if (folded) {
         switch (orientation) {
           case DEFAULT:
-            body = new Area(new Rectangle2D.Double(x - bodyDiameter, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
+            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
             break;
           case _90:
-            body = new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyDiameter, bodyDiameter, bodyDiameter));
+            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyDiameter, bodyDiameter, bodyDiameter));
             break;
           case _180:
-            body = new Area(new Rectangle2D.Double(x, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
+            newBody = new Area(new Rectangle2D.Double(x, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
             break;
           case _270:
-            body = new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyDiameter));
+            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyDiameter));
             break;
           default:
             throw new RuntimeException("Unexpected orientation: " + orientation);
@@ -212,33 +159,35 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
       } else {
         switch (orientation) {
           case DEFAULT:
-            body =
+            newBody =
                 new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
-            body.subtract(new Area(new Rectangle2D.Double(x - bodyDiameter, y - bodyDiameter / 2, 3 * bodyDiameter / 4,
+            newBody.subtract(new Area(new Rectangle2D.Double(x - bodyDiameter, y - bodyDiameter / 2, 3 * bodyDiameter / 4,
                 bodyDiameter)));
             break;
           case _90:
-            body =
+            newBody =
                 new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
-            body.subtract(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyDiameter, bodyDiameter,
+            newBody.subtract(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyDiameter, bodyDiameter,
                 3 * bodyDiameter / 4)));
             break;
           case _180:
-            body =
+            newBody =
                 new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
-            body.subtract(new Area(new Rectangle2D.Double(x + bodyDiameter / 4, y - bodyDiameter / 2,
+            newBody.subtract(new Area(new Rectangle2D.Double(x + bodyDiameter / 4, y - bodyDiameter / 2,
                 3 * bodyDiameter / 4, bodyDiameter)));
             break;
           case _270:
-            body =
+            newBody =
                 new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
-            body.subtract(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y + bodyDiameter / 4, bodyDiameter,
+            newBody.subtract(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y + bodyDiameter / 4, bodyDiameter,
                 3 * bodyDiameter / 4)));
             break;
           default:
             throw new RuntimeException("Unexpected orientation: " + orientation);
         }
       }
+      
+      body = new Area[] { newBody };
     }
     return body;
   }
@@ -261,7 +210,7 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
       }
     }
     
-    Area mainArea = getBody();
+    Area mainArea = getBody()[0];
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
@@ -336,47 +285,5 @@ public class TransistorTO92 extends AbstractTransparentComponent<String> {
     for (int i = 0; i < 3; i++) {
       g2d.fillOval(width / 2 - pinSize / 2, (height / 4) * (i + 1), pinSize, pinSize);
     }
-  }
-
-  @EditableProperty(name = "Body")
-  public Color getBodyColor() {
-    return bodyColor;
-  }
-
-  public void setBodyColor(Color bodyColor) {
-    this.bodyColor = bodyColor;
-  }
-
-  @EditableProperty(name = "Border")
-  public Color getBorderColor() {
-    return borderColor;
-  }
-
-  public void setBorderColor(Color borderColor) {
-    this.borderColor = borderColor;
-  }
-
-  @EditableProperty(name = "Label")
-  public Color getLabelColor() {
-    if (labelColor == null) {
-      labelColor = LABEL_COLOR;
-    }
-    return labelColor;
-  }
-
-  public void setLabelColor(Color labelColor) {
-    this.labelColor = labelColor;
-  }
-
-  @EditableProperty
-  public Display getDisplay() {
-    if (display == null) {
-      display = Display.NAME;
-    }
-    return display;
-  }
-
-  public void setDisplay(Display display) {
-    this.display = display;
   }
 }

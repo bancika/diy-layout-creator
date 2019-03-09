@@ -37,15 +37,12 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.TO220Transformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -56,7 +53,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Transistor (TO-220)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistors with metal tab for heat sink mounting", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO220Transformer.class)
-public class TransistorTO220 extends AbstractTransparentComponent<String> {
+public class TransistorTO220 extends AbstractTransistorPackage {
 
   private static final long serialVersionUID = 1L;
 
@@ -78,15 +75,8 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
   public static Size LEAD_LENGTH = new Size(3.5d, SizeUnit.mm);
   public static Size LEAD_THICKNESS = new Size(0.8d, SizeUnit.mm);
 
-  private String value = "";
-  private Orientation orientation = Orientation.DEFAULT;
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-  transient private Shape[] body;
-  private Color bodyColor = BODY_COLOR;
-  private Color borderColor = BORDER_COLOR;
   private Color tabColor = TAB_COLOR;
   private Color tabBorderColor = TAB_BORDER_COLOR;
-  private Display display = Display.NAME;
   private boolean folded = false;
   private Size leadLength = LEAD_LENGTH;
 
@@ -94,56 +84,12 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
     super();
     updateControlPoints();
     alpha = (byte) 100;
-  }
-
-  @EditableProperty
-  public String getValue() {
-    return value;
-  }
-
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
-    updateControlPoints();
-    // Reset body shape;
-    body = null;
+    bodyColor = BODY_COLOR;
+    borderColor = BORDER_COLOR;
   }
 
   @Override
-  public int getControlPointCount() {
-    return controlPoints.length;
-  }
-
-  @Override
-  public Point getControlPoint(int index) {
-    return controlPoints[index];
-  }
-
-  @Override
-  public boolean isControlPointSticky(int index) {
-    return true;
-  }
-
-  @Override
-  public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.NEVER;
-  }
-
-  @Override
-  public void setControlPoint(Point point, int index) {
-    controlPoints[index].setLocation(point);
-    body = null;
-  }
-
-  private void updateControlPoints() {
+  protected void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
     int x = controlPoints[0].x;
@@ -170,9 +116,9 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
     }
   }
 
-  public Shape[] getBody() {
+  public Area[] getBody() {
     if (body == null) {
-      body = new Shape[2];
+      body = new Area[2];
       int x = controlPoints[0].x;
       int y = controlPoints[0].y;
       int pinSpacing = (int) PIN_SPACING.convertToPixels();
@@ -187,68 +133,68 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
       switch (orientation) {
         case DEFAULT:
           if (folded) {
-            body[0] = new Rectangle2D.Double(x + leadLength, y + pinSpacing - bodyWidth / 2, bodyHeight, bodyWidth);
+            body[0] = new Area(new Rectangle2D.Double(x + leadLength, y + pinSpacing - bodyWidth / 2, bodyHeight, bodyWidth));
             body[1] =
                 new Area(new Rectangle2D.Double(x + leadLength + bodyHeight, y + pinSpacing - bodyWidth / 2, tabHeight,
                     bodyWidth));
             ((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x + leadLength + bodyHeight + tabHeight / 2
                 - tabHoleDiameter / 2, y + pinSpacing - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
           } else {
-            body[0] =
-                new Rectangle2D.Double(x - bodyThickness / 2, y + pinSpacing - bodyWidth / 2, bodyThickness, bodyWidth);
-            body[1] =
+            body[0] = new Area(
+                new Rectangle2D.Double(x - bodyThickness / 2, y + pinSpacing - bodyWidth / 2, bodyThickness, bodyWidth));
+            body[1] = new Area(
                 new Rectangle2D.Double(x + bodyThickness / 2 - tabThickness, y + pinSpacing - bodyWidth / 2,
-                    tabThickness, bodyWidth);
+                    tabThickness, bodyWidth));
           }
           break;
         case _90:
           if (folded) {
-            body[0] = new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + leadLength, bodyWidth, bodyHeight);
+            body[0] = new Area(new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + leadLength, bodyWidth, bodyHeight));
             body[1] =
                 new Area(new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + leadLength + bodyHeight, bodyWidth,
                     tabHeight));
             ((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x - pinSpacing - tabHoleDiameter / 2, y
                 + leadLength + bodyHeight + tabHeight / 2 - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
           } else {
-            body[0] =
-                new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, bodyThickness);
-            body[1] =
+            body[0] = new Area(
+                new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, bodyThickness));
+            body[1] = new Area(
                 new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + bodyThickness / 2 - tabThickness, bodyWidth,
-                    tabThickness);
+                    tabThickness));
           }
           break;
         case _180:
           if (folded) {
-            body[0] =
+            body[0] = new Area(
                 new Rectangle2D.Double(x - leadLength - bodyHeight, y - pinSpacing - bodyWidth / 2, bodyHeight,
-                    bodyWidth);
+                    bodyWidth));
             body[1] =
                 new Area(new Rectangle2D.Double(x - leadLength - bodyHeight - tabHeight,
                     y - pinSpacing - bodyWidth / 2, tabHeight, bodyWidth));
             ((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x - leadLength - bodyHeight - tabHeight / 2
                 - tabHoleDiameter / 2, y - pinSpacing - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
           } else {
-            body[0] =
-                new Rectangle2D.Double(x - bodyThickness / 2, y - pinSpacing - bodyWidth / 2, bodyThickness, bodyWidth);
-            body[1] =
-                new Rectangle2D.Double(x - bodyThickness / 2, y - pinSpacing - bodyWidth / 2, tabThickness, bodyWidth);
+            body[0] = new Area(
+                new Rectangle2D.Double(x - bodyThickness / 2, y - pinSpacing - bodyWidth / 2, bodyThickness, bodyWidth));
+            body[1] = new Area(
+                new Rectangle2D.Double(x - bodyThickness / 2, y - pinSpacing - bodyWidth / 2, tabThickness, bodyWidth));
           }
           break;
         case _270:
           if (folded) {
-            body[0] =
+            body[0] = new Area(
                 new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2, y - leadLength - bodyHeight, bodyWidth,
-                    bodyHeight);
+                    bodyHeight));
             body[1] =
                 new Area(new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2,
                     y - leadLength - bodyHeight - tabHeight, bodyWidth, tabHeight));
             ((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x + pinSpacing - tabHoleDiameter / 2, y
                 - leadLength - bodyHeight - tabHeight / 2 - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
           } else {
-            body[0] =
-                new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, bodyThickness);
-            body[1] =
-                new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, tabThickness);
+            body[0] = new Area(
+                new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, bodyThickness));
+            body[1] = new Area(
+                new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, tabThickness));
           }
           break;
         default:
@@ -382,7 +328,7 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
     } else {
       finalLabelColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-              : LABEL_COLOR;
+              : getLabelColor();
     }
     g2d.setColor(finalLabelColor);
     String label = "";
@@ -428,24 +374,6 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
     g2d.drawLine(width / 2 + bodySize / 3, margin + tabSize + bodySize, width / 2 + bodySize / 3, height - margin);
   }
 
-  @EditableProperty(name = "Body")
-  public Color getBodyColor() {
-    return bodyColor;
-  }
-
-  public void setBodyColor(Color bodyColor) {
-    this.bodyColor = bodyColor;
-  }
-
-  @EditableProperty(name = "Border")
-  public Color getBorderColor() {
-    return borderColor;
-  }
-
-  public void setBorderColor(Color borderColor) {
-    this.borderColor = borderColor;
-  }
-
   @EditableProperty(name = "Tab")
   public Color getTabColor() {
     return tabColor;
@@ -487,17 +415,5 @@ public class TransistorTO220 extends AbstractTransparentComponent<String> {
 
   public void setTabBorderColor(Color tabBorderColor) {
     this.tabBorderColor = tabBorderColor;
-  }
-
-  @EditableProperty
-  public Display getDisplay() {
-    if (display == null) {
-      display = Display.NAME;
-    }
-    return display;
-  }
-
-  public void setDisplay(Display display) {
-    this.display = display;
-  }
+  } 
 }
