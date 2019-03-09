@@ -26,7 +26,6 @@ import java.util.List;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Summary;
-import org.diylc.netlist.Tree;
 import org.diylc.netlist.TreeException;
 
 public interface INetlistAnalyzer {
@@ -50,12 +49,9 @@ public interface INetlistAnalyzer {
    * @throws TreeException 
    */
   List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException;
-
-  /**
-   * 
-   * @param netlist
-   * @return
-   * @throws TreeException 
+  
+  /**   
+   * @return name of the font to be used for display.
    */
-  Tree constructTree(Netlist netlist) throws TreeException;
+  String getFontName();
 }

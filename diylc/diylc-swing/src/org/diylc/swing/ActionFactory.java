@@ -1657,7 +1657,7 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
-      putValue(AbstractAction.NAME, "Create Netlist (beta)");
+      putValue(AbstractAction.NAME, "Create DIYLC Netlist");
       putValue(AbstractAction.SMALL_ICON, IconLoader.Web.getIcon());
     }
 
@@ -1665,7 +1665,7 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       List<Netlist> res = plugInPort.extractNetlists();
       if (res == null) {
-        swingUI.showMessage("The generated netlist is empty, nothing to show.", "Netlist", ISwingUI.INFORMATION_MESSAGE);
+        swingUI.showMessage("The generated netlist is empty, nothing to show.", "DIYLC Netlist", ISwingUI.INFORMATION_MESSAGE);
         return;
       }
       StringBuilder sb = new StringBuilder("<html>");
@@ -1678,7 +1678,7 @@ public class ActionFactory {
         sb.append("</p><br><hr>");
       }
       sb.append("</html>");
-      new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Netlist", new Dimension(600, 480)).setVisible(true);
+      new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "DIYLC Netlist", new Dimension(600, 480)).setVisible(true);
     }    
   }
   
@@ -1695,7 +1695,7 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       this.summarizer = summarizer;
-      putValue(AbstractAction.NAME, "Analyze " + summarizer.getName() + " (beta)");      
+      putValue(AbstractAction.NAME, summarizer.getName());      
       putValue(AbstractAction.SMALL_ICON, Enum.valueOf(IconLoader.class, summarizer.getIconName()).getIcon());
     }
 
@@ -1703,7 +1703,7 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       List<Netlist> netlists = plugInPort.extractNetlists();
       if (netlists == null || netlists.isEmpty()) {
-        swingUI.showMessage("The generated netlist is empty, nothing to show.", "Analyze " + summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
+        swingUI.showMessage("The generated netlist is empty, nothing to show.", summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
         return;
       }
       
@@ -1711,29 +1711,35 @@ public class ActionFactory {
       try {
         res = summarizer.summarize(netlists, null);
       } catch (Exception ex) {
-        swingUI.showMessage(ex.getMessage(), "Analyze " + summarizer.getName(), ISwingUI.ERROR_MESSAGE);
+        swingUI.showMessage(ex.getMessage(), summarizer.getName(), ISwingUI.ERROR_MESSAGE);
         return;
       }
       
       if (res == null) {
-        swingUI.showMessage("The generated summary is empty, nothing to show.", "Analyze " + summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
+        swingUI.showMessage("The generated summary is empty, nothing to show.", summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
         return;
       }
       StringBuilder sb = new StringBuilder("<html>");
       
       for (Summary summary : res) {        
-        sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup()).append("</b><br><br>");        
+        sb.append("<p style=\"font-family: ").
+          append(summarizer.getFontName()).
+          append("; font-size: 9px\">");
         
-        sb.append("Parallel/Series connectivity tree:<br><br>").append(summary.getTree().toHTML(0));
-        if (!summary.getNotes().isEmpty())
-          sb.append("<br><br>Notes:<br>");
-        for (String v : summary.getNotes()) {
-          sb.append("&nbsp;&nbsp;").append(v).append("<br>");          
-        }
-        sb.append("</p><br><hr>");
+        if (res.size() > 1)
+          sb.append("<b>Switch configuration: ").
+            append(summary.getNetlist().getSwitchSetup()).
+            append("</b><br><br>");        
+        
+        sb.append(summary.getSummary());
+        
+        sb.append("</p><br>");
+        
+        if (res.size() > 1)
+          sb.append("<hr>");
       }
       sb.append("</html>");
-      new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "Analyze " + summarizer.getName(), new Dimension(600, 480)).setVisible(true);
+      new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), summarizer.getName(), new Dimension(600, 480)).setVisible(true);
     }    
   }
 }

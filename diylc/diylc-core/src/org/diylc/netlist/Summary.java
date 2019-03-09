@@ -21,31 +21,24 @@
 */
 package org.diylc.netlist;
 
-import java.util.List;
 
 public class Summary {
 
   private Netlist netlist;
-  private List<String> notes;
-  private Tree tree;
+  private String summary;
 
-  public Summary(Netlist netlist, List<String> notes, Tree tree) {
+  public Summary(Netlist netlist, String summary) {
     super();
     this.netlist = netlist;
-    this.notes = notes;
-    this.tree = tree;
+    this.summary = summary;
   }
 
   public Netlist getNetlist() {
     return netlist;
   }
 
-  public List<String> getNotes() {
-    return notes;
-  }
-  
-  public Tree getTree() {
-    return tree;
+  public String getSummary() {
+    return summary;
   }
 
   @Override
@@ -53,7 +46,7 @@ public class Summary {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((netlist == null) ? 0 : netlist.hashCode());
-    result = prime * result + ((notes == null) ? 0 : notes.hashCode());
+    result = prime * result + ((summary == null) ? 0 : summary.hashCode());
     return result;
   }
 
@@ -71,16 +64,16 @@ public class Summary {
         return false;
     } else if (!netlist.equals(other.netlist))
       return false;
-    if (notes == null) {
-      if (other.notes != null)
+    if (summary == null) {
+      if (other.summary != null)
         return false;
-    } else if (!notes.equals(other.notes))
+    } else if (!summary.equals(other.summary))
       return false;
     return true;
   }
 
   @Override
   public String toString() {   
-    return notes.toString();
+    return summary.toString();
   }
 }

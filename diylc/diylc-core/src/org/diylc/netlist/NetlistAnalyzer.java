@@ -381,6 +381,21 @@ public class NetlistAnalyzer {
   protected String extractName(IDIYComponent<?> c) {
     return c.getName() + " " + c.getValueForDisplay();
   }
+  
+  protected Set<IDIYComponent<?>> extractComponents(Netlist netlist) {
+    Set<IDIYComponent<?>> res = new HashSet<IDIYComponent<?>>();
+    for (Group g : netlist.getGroups())
+      for (Node n : g.getNodes())
+        res.add(n.getComponent());
+    return res;
+  }
+  
+  protected int find(Node node, List<Group> groups) {
+    for (int i = 0; i < groups.size(); i++)
+      if (groups.get(i).getNodes().contains(node))
+        return i;
+    return -1;
+  }
 
   protected List<String> extractNames(Collection<IDIYComponent<?>> components) {
     List<String> names = new ArrayList<String>();

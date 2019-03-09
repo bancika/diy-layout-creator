@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JLabel;
+
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.components.electromechanical.ClosedJack1_4;
 import org.diylc.components.electromechanical.OpenJack1_4;
@@ -69,12 +71,17 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
 
   @Override
   public String getName() {  
-    return "Guitar Diagrams";
+    return "Analyze Guitar Diagrams (beta)";
   }
   
   @Override
   public String getIconName() {
     return "Guitar";
+  }
+  
+  @Override
+  public String getFontName() {   
+    return new JLabel().getFont().getName();
   }
     
   public List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException {    
@@ -309,11 +316,18 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
       }    
     }
     
-    return new Summary(netlist, notes, tree);
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append("Parallel/Series connectivity tree:<br><br>").append(tree.toHTML(0));
+    if (!notes.isEmpty())
+      sb.append("<br><br>Notes:<br>");
+    for (String v : notes) {
+      sb.append("&nbsp;&nbsp;").append(v).append("<br>");          
+    }
+    
+    return new Summary(netlist, sb.toString());
   }
   
-
-  @Override
   public Tree constructTree(Netlist netlist) throws TreeException {
     List<Node> jackTipNodes = find(JACK_TYPES, "Tip", netlist);
     List<Node> jackSleeveNodes = find(JACK_TYPES, "Sleeve", netlist);

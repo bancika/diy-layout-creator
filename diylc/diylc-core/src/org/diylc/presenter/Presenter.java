@@ -2930,6 +2930,15 @@ public class Presenter implements IPlugInPort {
           result.add((INetlistAnalyzer) clazz.newInstance());
         }
       }
+      
+      Collections.sort(result, new Comparator<INetlistAnalyzer>() {
+
+        @Override
+        public int compare(INetlistAnalyzer o1, INetlistAnalyzer o2) {
+          return o1.getName().compareToIgnoreCase(o2.getName());
+        }        
+      });
+      
       return result;
     } catch (Exception e) {
       LOG.error("Could not load INetlistSummarizer implementations", e);
