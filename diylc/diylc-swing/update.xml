@@ -2580,7 +2580,7 @@
 			<changes>					
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Ability to tag components and building blocks as favorites</description>
+					<description>Ability to tag components and building blocks as favorites and recall them quickly from a separate folder in the component tree</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
