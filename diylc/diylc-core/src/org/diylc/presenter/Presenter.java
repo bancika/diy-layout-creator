@@ -300,8 +300,9 @@ public class Presenter implements IPlugInPort {
   @Override
   public void loadProjectFromFile(String fileName) {
     LOG.info(String.format("loadProjectFromFile(%s)", fileName));
+    List<String> warnings = null;
     try {
-      List<String> warnings = new ArrayList<String>();
+      warnings = new ArrayList<String>();
       Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName, warnings);      
       loadProject(project, true);
       projectFileManager.fireFileStatusChanged();
@@ -317,7 +318,15 @@ public class Presenter implements IPlugInPort {
       addToRecentFiles(fileName);
     } catch (Exception ex) {
       LOG.error("Could not load file", ex);
-      view.showMessage("Could not open file " + fileName + ". Check the log for details.", "Error", IView.ERROR_MESSAGE);
+      String errorMessage = "Could not open file " + fileName + ". Check the log for details.";
+      if (warnings != null && !warnings.isEmpty()) {
+        errorMessage += " Possible reasons are:\n\n";
+        for (String warn : warnings) {
+          errorMessage += warn;
+          errorMessage += "\n";
+        }
+      }
+      view.showMessage(errorMessage, "Error", IView.ERROR_MESSAGE);
     }
   }
 

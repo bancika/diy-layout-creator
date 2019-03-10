@@ -89,7 +89,14 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   
   @Override
   public String getComment() {
-    return getPinout() == null ? null : (getPinout().toString() + " pinout");
+    return getPinout() == null ? "Pinout not configured, validate this line" : (getPinout().toString() + " pinout");
+  }
+  
+  @Override
+  public String getPrefix() {
+    if (getPinout() == null)
+      return null;    
+    return getPinout().name().substring(0, 1);
   }
   
   @EditableProperty

@@ -2599,6 +2599,10 @@
 					<description>Cleaner and more compact XML format for .DIY files resulting in files about half the size of originals. Backward compatible with older files, but might introduce issues when opening files from the new version using an old version!</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Detect when a file is created with a newer version of DIYLC and show a warning</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>"Highlight Connected Areas" doesn't follow multiple chained wires and jumpers</description>
 				</org.diylc.appframework.update.Change>	

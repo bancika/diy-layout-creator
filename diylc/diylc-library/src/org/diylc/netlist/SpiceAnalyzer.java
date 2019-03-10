@@ -80,8 +80,16 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
         maxLen = c.getName().length();
     }
     
-    for (IDIYComponent<?> c : allComponents) {
-      sb.append(fill(c.getName(), (int) (Math.ceil(maxLen / 5.0) * 5)));
+    for (IDIYComponent<?> c : allComponents) {      
+      // change the prefix to match spice convention if needed
+      String name = c.getName();
+      String prefix = null;
+      if (c instanceof ISpiceMapper)
+        prefix = ((ISpiceMapper)c).getPrefix();
+      if (prefix != null && !name.toLowerCase().startsWith(prefix.toLowerCase()))
+        name = prefix + name;
+        
+      sb.append(fill(name, (int) (Math.ceil(maxLen / 5.0) * 5)));
       sb.append(" ");
       int[] nodeIndices = new int[c.getControlPointCount()];
       

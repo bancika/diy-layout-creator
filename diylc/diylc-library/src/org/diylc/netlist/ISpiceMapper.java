@@ -31,4 +31,6 @@ public interface ISpiceMapper {
   int mapToSpiceNode(int pontIndex); 
   
   String getComment();
+  
+  String getPrefix();
 }

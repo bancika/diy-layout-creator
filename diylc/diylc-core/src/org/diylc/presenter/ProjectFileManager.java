@@ -44,10 +44,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
+import org.diylc.appframework.update.VersionNumber;
 import org.diylc.common.EventType;
 import org.diylc.core.Project;
 import org.diylc.parsing.IOldFileParser;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -210,6 +213,14 @@ public class ProjectFileManager {
 
   private Project parseV3File(String fileName, List<String> warnings) throws IOException {
     Project project;
+    VersionNumber fileVersion;
+    try { 
+      fileVersion = readV3Version(fileName);
+      if (fileVersion.compareTo(Presenter.CURRENT_VERSION) > 0)
+        warnings.add("The file is created with a newer version of DIYLC and may contain features that are not supported by your version of DIYLC. Please update.");
+    } catch (Exception e) {
+      warnings.add("Could not read file version number, the file may be corrupted.");
+    }
     FileInputStream fis = new FileInputStream(fileName);
     missingFields.clear();
     try {
@@ -226,5 +237,32 @@ public class ProjectFileManager {
     }
     fis.close();
     return project;
+  }
+  
+  private VersionNumber readV3Version(String fileName) throws Exception {
+    File fXmlFile = new File(fileName);
+    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+    Document doc = dBuilder.parse(fXmlFile);
+            
+    doc.getDocumentElement().normalize();
+    
+    NodeList nList = doc.getElementsByTagName("fileVersion");
+    
+    int items = nList.getLength();
+    
+    if (items != 1)
+      throw new Exception("File version information could not be read from the XML.");
+    
+    Node versionNode = nList.item(0);    
+    Node n = versionNode.getFirstChild().getNextSibling();
+    int major = Integer.parseInt(n.getFirstChild().getNodeValue());
+    n = n.getNextSibling().getNextSibling();
+    int minor = Integer.parseInt(n.getFirstChild().getNodeValue());
+    n = n.getNextSibling().getNextSibling();
+    int build = Integer.parseInt(n.getFirstChild().getNodeValue());
+    
+    return new VersionNumber(major, minor, build);
+
   }
 }
