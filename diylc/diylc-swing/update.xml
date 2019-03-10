@@ -2575,7 +2575,7 @@
 				<minor>56</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2019-03-02 00:00:00.000 CET</releaseDate>
+			<releaseDate>2019-03-10 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>					
 				<org.diylc.appframework.update.Change>
@@ -2600,7 +2600,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Cleaner and more compact XML format for .DIY files resulting in files about half the size of originals. Backward compatible with older files, but might introduce issues when opening files from the new version using an old version!</description>
+					<description>Cleaner and more compact XML format for .DIY files resulting in files about half the size of originals. Backward compatible with older files, but will introduce issues when opening files from the new version using an old version!</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
