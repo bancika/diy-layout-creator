@@ -133,7 +133,7 @@ public class GroundSymbol extends AbstractComponent<Void> {
 
   @Override
   public void setControlPoint(Point point, int index) {
-    this.point = point;
+    this.point.setLocation(point);
   }
   
   @Override
