@@ -57,7 +57,7 @@ import org.diylc.utils.Constants;
 public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
   private static final double RING_THETA = Math.PI * 0.795;
-  private static final double SLEEVE_THETA = Math.PI * 0.295;
+  private static final double SLEEVE_THETA = Math.PI * 0.29444444444;
   private static final double SLEEVE_SWITCHED_THETA = Math.PI * 4 / 3;
   private static final double SWITCH_THETA = Math.PI * 5 / 3;
 
@@ -77,7 +77,9 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
   private String value = "";
   private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
   transient Area[] body;
+  @Deprecated
   private Orientation orientation = Orientation.DEFAULT;
+  private Integer angle = 0;
   private OpenJackType type = OpenJackType.MONO;
   private boolean showLabels = true;
 
@@ -86,7 +88,6 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     updateControlPoints();
   }
 
-  @SuppressWarnings("incomplete-switch")
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -162,24 +163,9 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
       Point sleeveLabel = new Point(0, 0);
       ringTransform.transform(tipLabel, ringOrSwitchLabel);
       sleeveTransform.transform(tipLabel, sleeveLabel);
-      double theta = 0;
-      // Rotate if needed
-      if (orientation != Orientation.DEFAULT) {
-        switch (orientation) {
-          case _90:
-            theta = Math.PI / 2;
-            break;
-          case _180:
-            theta = Math.PI;
-            break;
-          case _270:
-            theta = Math.PI * 3 / 2;
-            break;
-        }
-      }
 
-      if (theta != 0) {
-        AffineTransform rotation = AffineTransform.getRotateInstance(theta, controlPoints[0].x, controlPoints[0].y);
+      if (getTheta() != 0) {
+        AffineTransform rotation = AffineTransform.getRotateInstance(getTheta(), controlPoints[0].x, controlPoints[0].y);
         rotation.transform(tipLabel, tipLabel);
         rotation.transform(ringOrSwitchLabel, ringOrSwitchLabel);
         rotation.transform(sleeveLabel, sleeveLabel);
@@ -195,7 +181,6 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
-  @SuppressWarnings("incomplete-switch")
   public Area[] getBody() {
     if (body == null) {
       body = new Area[4];
@@ -255,25 +240,9 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
         body[3] = ringOrSwitch;
       }
 
-      double theta = 0;
       // Rotate if needed
-      if (orientation != Orientation.DEFAULT) {
-        switch (orientation) {
-          case _90:
-            theta = Math.PI / 2;
-            break;
-          case _180:
-            theta = Math.PI;
-            break;
-          case _270:
-            theta = Math.PI * 3 / 2;
-            break;
-        }
-      }
-
-      // Rotate if needed
-      if (theta != 0) {
-        AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
+      if (getTheta() != 0) {
+        AffineTransform rotation = AffineTransform.getRotateInstance(getTheta(), x, y);
         // Skip the last one because it's already rotated
         for (int i = 0; i < body.length; i++) {
           Shape shape = body[i];
@@ -288,7 +257,6 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     return body;
   }
 
-  @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
@@ -302,20 +270,8 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SWITCH_THETA : RING_THETA, x, centerY).transform(controlPoints[0], controlPoints[2]);
 
     // Rotate if needed
-    if (orientation != Orientation.DEFAULT) {
-      double theta = 0;
-      switch (orientation) {
-        case _90:
-          theta = Math.PI / 2;
-          break;
-        case _180:
-          theta = Math.PI;
-          break;
-        case _270:
-          theta = Math.PI * 3 / 2;
-          break;
-      }
-      AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
+    if (getTheta() != 0) {
+      AffineTransform rotation = AffineTransform.getRotateInstance(getTheta(), x, y);
       for (Point point : controlPoints) {
         rotation.transform(point, point);
       }
@@ -388,15 +344,25 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
   }
 
   @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
+  public Integer getAngle() {
+    if (angle == null) {
+      if (orientation != null)
+        angle = Integer.parseInt(orientation.name().replace("_", ""));
+      else 
+        angle = 0;
+    }
+    return angle;
   }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
+  
+  public void setAngle(Integer angle) {
+    this.angle = angle;
     updateControlPoints();
     // Invalidate the body
     body = null;
+  }
+  
+  protected double getTheta() {
+    return Math.toRadians(getAngle());
   }
 
   @EditableProperty

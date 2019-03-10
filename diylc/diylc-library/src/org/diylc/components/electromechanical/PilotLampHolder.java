@@ -60,6 +60,8 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
 
   private static Color BASE_COLOR = Color.lightGray;
   private static Color WAFER_COLOR = Color.decode("#CD8500");
+  
+  private static final double SLEEVE_THETA = Math.PI * 0.29444444444;
 
   private static Size THREAD_OUTER_DIAMETER = new Size(11 / 16d, SizeUnit.in);
   private static Size NUT_DIAMETER = new Size(14 / 16d, SizeUnit.in);
@@ -76,7 +78,9 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
   private String value = "";
   private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0) };
   transient Area[] body;
+  @Deprecated
   private Orientation orientation = Orientation.DEFAULT;
+  private Integer angle = 0;
 
   public PilotLampHolder() {
     super();
@@ -154,7 +158,6 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
 
-  @SuppressWarnings("incomplete-switch")
   public Area[] getBody() {
     if (body == null) {
       body = new Area[6];
@@ -191,7 +194,7 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
       Area sleeve =
           new Area(new RoundRectangle2D.Double(x - springWidth / 2, y - holeToEdge, springWidth, springLength,
               springWidth, springWidth));
-      sleeve.transform(AffineTransform.getRotateInstance(Math.PI * 0.295, x, centerY));
+      sleeve.transform(AffineTransform.getRotateInstance(SLEEVE_THETA, x, centerY));
       sleeve.add(new Area(new Ellipse2D.Double(x - ringDiameter / 2, centerY - ringDiameter / 2, ringDiameter, ringDiameter)));
       sleeve.subtract(new Area(new Ellipse2D.Double(x - innerDiameter / 2, centerY - innerDiameter / 2, innerDiameter, innerDiameter)));
 
@@ -230,26 +233,10 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
       body[5] = link;
       
       nut.subtract(link);
-      thread.subtract(link);
-      
-      double theta = 0;
-      // Rotate if needed
-      if (orientation != Orientation.DEFAULT) {
-        switch (orientation) {
-          case _90:
-            theta = Math.PI / 2;
-            break;
-          case _180:
-            theta = Math.PI;
-            break;
-          case _270:
-            theta = Math.PI * 3 / 2;
-            break;
-        }
-      }
+      thread.subtract(link);     
 
-      if (theta != 0) {
-        AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
+      if (getTheta() != 0) {
+        AffineTransform rotation = AffineTransform.getRotateInstance(getTheta(), x, y);
         for (Area area : body) {  
           if (area != null)
             area.transform(rotation);
@@ -264,7 +251,6 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
     return body;
   }
 
-  @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
@@ -283,20 +269,8 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
     rotation.transform(controlPoints[2], controlPoints[3]);
 
     // Rotate if needed
-    if (orientation != Orientation.DEFAULT) {
-      double theta = 0;
-      switch (orientation) {
-        case _90:
-          theta = Math.PI / 2;
-          break;
-        case _180:
-          theta = Math.PI;
-          break;
-        case _270:
-          theta = Math.PI * 3 / 2;
-          break;
-      }
-      rotation = AffineTransform.getRotateInstance(theta, x, y);
+    if (getTheta() != 0) {
+      rotation = AffineTransform.getRotateInstance(getTheta(), x, y);
       for (Point point : controlPoints) {
         rotation.transform(point, point);
       }
@@ -413,14 +387,24 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
   }
 
   @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
+  public Integer getAngle() {
+    if (angle == null) {
+      if (orientation != null)
+        angle = Integer.parseInt(orientation.name().replace("_", ""));
+      else 
+        angle = 0;
+    }
+    return angle;
   }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
+  
+  public void setAngle(Integer angle) {
+    this.angle = angle;
     updateControlPoints();
     // Invalidate the body
     body = null;
+  }
+  
+  protected double getTheta() {
+    return Math.toRadians(getAngle());
   }
 }

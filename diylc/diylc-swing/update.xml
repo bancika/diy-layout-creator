@@ -2591,6 +2591,10 @@
 					<description>Added pinout property to all transistor components</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to enter arbitrary angle of rotation for "Open 1/4" Jack" and "Pilot Lamp Holder"</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>When in "Highlight Connected Area" mode, the status bar shows useful information making it harder to forget what the mode does</description>
 				</org.diylc.appframework.update.Change>	
