@@ -568,7 +568,7 @@ public class Presenter implements IPlugInPort {
               List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
               List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
               for (IDIYComponent<?> component : componentSlot) {
-                addComponent(component, true);
+                currentProject.getComponents().add(component);
                 newSelection.add(component);
               }
               // group components if there's more than one, e.g. building blocks, but not clipboard contents

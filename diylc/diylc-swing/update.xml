@@ -2637,7 +2637,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Honor "Terminal Strip" connectivity when creating a netlist</description>
-				</org.diylc.appframework.update.Change>					
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Z-order of components sometimes gets wrong when importing a DIY file into another file</description>
+				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
