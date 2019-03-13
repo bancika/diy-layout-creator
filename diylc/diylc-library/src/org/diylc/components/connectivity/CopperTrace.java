@@ -27,7 +27,6 @@ import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
-import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
@@ -42,7 +41,7 @@ import org.diylc.core.measures.SizeUnit;
     description = "Straight copper trace", zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW,
     autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
     transformer = SimpleComponentTransformer.class)
-public class CopperTrace extends AbstractLeadedComponent<Void> implements IContinuity {
+public class CopperTrace extends AbstractLeadedComponent<Void> {
 
   private static final long serialVersionUID = 1L;
 
@@ -167,10 +166,5 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements IConti
   @Override
   public String getControlPointNodeName(int index) {   
     return null;
-  }
-  
-  @Override
-  public boolean arePointsConnected(int index1, int index2) {
-    return Math.abs(index1 - index2) == getControlPointCount() - 1;
   }
 }

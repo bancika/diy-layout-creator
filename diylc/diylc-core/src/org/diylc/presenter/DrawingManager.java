@@ -556,7 +556,7 @@ public class DrawingManager {
     return areas;
   }
   
-  private void expandConnections(Set<Connection> connections) {
+  public void expandConnections(Set<Connection> connections) {
     Set<Connection> toAdd = new HashSet<Connection>();
     for (Connection c1 : connections)
       for (Connection c2 : connections) {
@@ -596,15 +596,19 @@ public class DrawingManager {
           continue;
         Area a1 = areas.get(i);
         Area a2 = areas.get(j);
-        Area intersection = new Area(a1);
-        intersection.intersect(a2);
+        Area intersection = null;
+        if (a1.getBounds2D().intersects(a2.getBounds())) {
+          intersection = new Area(a1);
+          intersection.intersect(a2);
+        }
         // if the two areas intersect, make a union and consume the second area
-        if (!intersection.isEmpty()) {
+        if (intersection != null && !intersection.isEmpty()) {
           a1.add(a2);
           consumed.set(j, true);
         } else { // maybe there's a connection between them
-          for (Connection p : connections) {
-            if ((a1.contains(p.getP1()) && a2.contains(p.getP2())) || (a1.contains(p.getP2()) && a2.contains(p.getP1()))) {
+          for (Connection p : connections) { // use getBounds to optimize the computation, don't get into complex math if not needed
+            if ((a1.getBounds().contains(p.getP1()) && a2.getBounds().contains(p.getP2()) && a1.contains(p.getP1()) && a2.contains(p.getP2())) || 
+                (a1.getBounds().contains(p.getP2()) && a2.getBounds().contains(p.getP1())) && a1.contains(p.getP2()) && a2.contains(p.getP1())) {
               a1.add(a2);
               consumed.set(j, true);
               break;

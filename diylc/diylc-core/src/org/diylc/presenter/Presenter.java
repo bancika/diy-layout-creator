@@ -2910,7 +2910,7 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   private List<Connection> getConnections(Map<ISwitch, Integer> switchPositions) {
-    List<Connection> connections = new ArrayList<Connection>();
+    Set<Connection> connections = new HashSet<Connection>();
     for (IDIYComponent<?> c : currentProject.getComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
@@ -2930,9 +2930,11 @@ public class Presenter implements IPlugInPort {
             if (s.arePointsConnected(i, j, position))
               connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
       }
-    }      
+    }
     
-    return connections;
+    drawingManager.expandConnections(connections);
+    
+    return new ArrayList<Connection>(connections);
   }  
   
   @Override

@@ -2636,6 +2636,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improve performance of netlist calculations</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Honor "Terminal Strip" connectivity when creating a netlist</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
