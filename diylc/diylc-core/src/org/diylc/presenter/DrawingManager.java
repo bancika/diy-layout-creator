@@ -43,7 +43,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.simplemq.MessageDispatcher;
-import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.GridType;
@@ -51,6 +50,7 @@ import org.diylc.common.IComponentFiler;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
@@ -505,7 +505,6 @@ public class DrawingManager {
     continuityArea = null;
   }
   
-  @SuppressWarnings("unchecked")
   public List<Area> getContinuityAreas(Project project) {
     // Find all individual continuity areas for all components
     List<Area> preliminaryAreas = new ArrayList<Area>();
@@ -513,11 +512,12 @@ public class DrawingManager {
     Set<Connection> connections = new HashSet<Connection>();
     for (IDIYComponent<?> c : project.getComponents()) {
       ComponentArea a = getComponentArea(c);
-
-      ComponentType type =
-          ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      if (type.isContinuity()) {
-        connections.add(new Connection(c.getControlPoint(0), c.getControlPoint(c.getControlPointCount() - 1)));
+      
+      if (c instanceof IContinuity) {
+        for (int i = 0; i < c.getControlPointCount() - 1; i++)
+          for (int j = i + 1; j < c.getControlPointCount(); j++)
+            if (((IContinuity)c).arePointsConnected(i, j))
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
       }
 
       if (a == null || a.getOutlineArea() == null)

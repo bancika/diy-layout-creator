@@ -32,6 +32,7 @@ import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -41,8 +42,8 @@ import org.diylc.core.measures.Size;
 @ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "J", description = "",
     zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class, continuity = true)
-public class Jumper extends AbstractLeadedComponent<Void> {
+    transformer = SimpleComponentTransformer.class)
+public class Jumper extends AbstractLeadedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -157,4 +158,9 @@ public class Jumper extends AbstractLeadedComponent<Void> {
   public Display getDisplay() {
     return super.getDisplay();
   }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2) {
+    return true;
+  }  
 }

@@ -24,7 +24,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
 import java.awt.geom.Area;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedInputStream;
@@ -68,6 +67,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.common.VariantPackage;
 import org.diylc.core.ExpansionMode;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.core.IView;
@@ -2712,8 +2712,9 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> c : currentProject.getComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
+      
       // extract nodes
-      if (!type.isContinuity()) {
+      if (!(c instanceof IContinuity)) {
         for (int i = 0; i < c.getControlPointCount(); i++) {
           String nodeName = c.getControlPointNodeName(i);
           if (nodeName != null) {
@@ -2768,7 +2769,7 @@ public class Presenter implements IPlugInPort {
         switchPositions.put(switches.get(j), positions[j]);
         posList.add(new Position(switches.get(j), positions[j]));
       }
-      List<Line2D> connections = getConnections(switchPositions);  
+      List<Connection> connections = getConnections(switchPositions);  
       Netlist graph = constructNetlist(nodes, connections, continuity);
       
       // merge graphs that are effectively the same
@@ -2801,7 +2802,7 @@ public class Presenter implements IPlugInPort {
     return netlists;
   }
   
-  private Netlist constructNetlist(List<Node> nodes, List<Line2D> connections, List<Area> continuityAreas) {
+  private Netlist constructNetlist(List<Node> nodes, List<Connection> connections, List<Area> continuityAreas) {
     Netlist netlist = new Netlist();
     
 //    debugging code    
@@ -2875,7 +2876,7 @@ public class Presenter implements IPlugInPort {
     return netlist;
   }
   
-  private boolean checkGraphConnection(Point2D point1, Point2D point2, List<Line2D> connections,
+  private boolean checkGraphConnection(Point2D point1, Point2D point2, List<Connection> connections,
       List<Area> continuityAreas, boolean[] visited) {
     double t = DrawingManager.CONTROL_POINT_SIZE;
     
@@ -2891,7 +2892,7 @@ public class Presenter implements IPlugInPort {
       if (visited[i])
         continue;
       
-      Line2D c = connections.get(i);
+      Connection c = connections.get(i);
       if (point1.distance(c.getP1()) < t) {
         visited[i] = true;
         if (checkGraphConnection(c.getP2(), point2, connections, continuityAreas, visited))          
@@ -2908,14 +2909,17 @@ public class Presenter implements IPlugInPort {
   }
 
   @SuppressWarnings("unchecked")
-  private List<Line2D> getConnections(Map<ISwitch, Integer> switchPositions) {
-    List<Line2D> connections = new ArrayList<Line2D>();
+  private List<Connection> getConnections(Map<ISwitch, Integer> switchPositions) {
+    List<Connection> connections = new ArrayList<Connection>();
     for (IDIYComponent<?> c : currentProject.getComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
       // handle direct connections
-      if (type.isContinuity()) {
-        connections.add(new Line2D.Double(c.getControlPoint(0), c.getControlPoint(c.getControlPointCount() - 1)));
+      if (c instanceof IContinuity) {
+        for (int i = 0; i < c.getControlPointCount() - 1; i++)
+          for (int j = i + 1; j < c.getControlPointCount(); j++)
+            if (((IContinuity)c).arePointsConnected(i, j))
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
       }
       // handle switches
       if (ISwitch.class.isAssignableFrom(type.getInstanceClass()) && switchPositions.containsKey(c)) {
@@ -2924,7 +2928,7 @@ public class Presenter implements IPlugInPort {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (s.arePointsConnected(i, j, position))
-              connections.add(new Line2D.Double(c.getControlPoint(i), c.getControlPoint(j)));
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
       }
     }      
     

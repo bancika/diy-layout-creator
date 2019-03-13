@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.annotations.BomPolicy;
@@ -47,8 +48,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Twisted Leads", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "A pair of flexible leads twisted tighly together", zOrder = IDIYComponent.COMPONENT,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class, continuity = true)
-public class TwistedWire extends AbstractCurvedComponent<Void> {
+    transformer = SimpleComponentTransformer.class)
+public class TwistedWire extends AbstractCurvedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -432,4 +433,9 @@ public class TwistedWire extends AbstractCurvedComponent<Void> {
     
     return calculateLength(left, precision) + calculateLength(right, precision);
   }
+  
+  @Override
+  public boolean arePointsConnected(int index1, int index2) {
+    return Math.abs(index1 - index2) == getControlPointCount() - 1;
+  }  
 }

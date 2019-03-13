@@ -49,12 +49,11 @@ public class ComponentType {
   private IComponentTransformer transformer;
   private KeywordPolicy keywordPolicy;
   private String keywordTag;
-  private boolean continuity;
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
       boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit,
-      IComponentTransformer transformer, KeywordPolicy keywordPolicy, String keywordTag, boolean continuity) {
+      IComponentTransformer transformer, KeywordPolicy keywordPolicy, String keywordTag) {
     super();
     this.name = name;
     this.description = description;
@@ -72,7 +71,6 @@ public class ComponentType {
     this.transformer = transformer;
     this.keywordPolicy = keywordPolicy;
     this.keywordTag = keywordTag;
-    this.continuity = continuity;
   }
 
   public String getName() {
@@ -137,10 +135,6 @@ public class ComponentType {
 
   public String getKeywordTag() {
     return keywordTag;
-  }
-
-  public boolean isContinuity() {
-    return continuity;
   }
 
   @Override

@@ -37,6 +37,7 @@ import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.TerminalStripTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -53,7 +54,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Terminal Strip", author = "Branislav Stojkovic", category = "Boards",
     instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction", stretchable = false,
     zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = TerminalStripTransformer.class)
-public class TerminalStrip extends AbstractTransparentComponent<String> {
+public class TerminalStrip extends AbstractTransparentComponent<String> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -454,5 +455,10 @@ public class TerminalStrip extends AbstractTransparentComponent<String> {
   @Override
   public String getControlPointNodeName(int index) {
     return "TerminalStrip" + index;
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2) {
+    return Math.abs(index1 - index2) == getTerminalCount();
   }
 }

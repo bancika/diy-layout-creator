@@ -98,7 +98,6 @@ public class ComponentProcessor {
     IComponentTransformer transformer;
     KeywordPolicy keywordPolicy;
     String keywordTag;
-    boolean continuity;
     if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
       ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
       name = annotation.name();
@@ -115,7 +114,6 @@ public class ComponentProcessor {
       transformer = getComponentTransformer(annotation.transformer());
       keywordPolicy = annotation.keywordPolicy();
       keywordTag = annotation.keywordTag();
-      continuity = annotation.continuity();
     } else { // default
     	return null;
     }
@@ -137,7 +135,7 @@ public class ComponentProcessor {
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
-            flexibleZOrder, stretchable, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag, continuity);
+            flexibleZOrder, stretchable, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }

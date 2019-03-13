@@ -28,6 +28,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.annotations.BomPolicy;
@@ -38,8 +39,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.COMPONENT,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class, continuity = true)
-public class HookupWire extends AbstractCurvedComponent<Void> {
+    transformer = SimpleComponentTransformer.class)
+public class HookupWire extends AbstractCurvedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -131,5 +132,10 @@ public class HookupWire extends AbstractCurvedComponent<Void> {
 
   public void setStripeColor(Color stripeColor) {
     this.stripeColor = stripeColor;
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2) {
+    return Math.abs(index1 - index2) == getControlPointCount() - 1;
   }  
 }

@@ -116,13 +116,5 @@ public @interface ComponentDescriptor {
    * 
    * @return
    */
-  String keywordTag() default "";
-  
-  /**
-   * For components that show continuity between the two ending points, e.d. wires, jumpers, etc.
-   * 
-   * @return
-   */
-  boolean continuity() default false;
-
+  String keywordTag() default "";  
 }

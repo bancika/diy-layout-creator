@@ -27,6 +27,7 @@ import org.diylc.common.PCBLayer;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.annotations.BomPolicy;
@@ -40,7 +41,7 @@ import org.diylc.core.measures.SizeUnit;
     instanceNamePrefix = "Trace", description = "Curved copper trace with two control points",
     zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class)
-public class CurvedTrace extends AbstractCurvedComponent<Void> {
+public class CurvedTrace extends AbstractCurvedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -115,5 +116,10 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
   @Override
   public String getControlPointNodeName(int index) {   
     return null;
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2) {
+    return Math.abs(index1 - index2) == getControlPointCount() - 1;
   }
 }

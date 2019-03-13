@@ -72,9 +72,9 @@ public class SwitchSetup implements Comparable<SwitchSetup> {
   public String toString() {   
     StringBuilder sb = new StringBuilder();
     for (Position s : positions)
-    {
+    {      
       if (sb.length() > 0)
-        sb.append(":");
+        sb.append(":");      
       sb.append(s.toString());      
     }
     return sb.toString();
