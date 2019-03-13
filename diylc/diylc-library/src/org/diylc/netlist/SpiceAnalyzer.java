@@ -113,7 +113,7 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
       
       // output to spice
       for (int i = 0; i < c.getControlPointCount(); i++) {
-        sb.append(fill(Integer.toString(nodeIndices[i]), 5));
+        sb.append(fill(formatSpiceNode(nodeIndices[i]), 5));
         sb.append(" ");
       }
       
@@ -128,6 +128,10 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
     }
         
     return new Summary(netlist, sb.toString());
+  }
+  
+  private static String formatSpiceNode(int i) {
+    return String.format("N%03d" , i);
   }
   
   private String fill(String source, int desiredLength) {

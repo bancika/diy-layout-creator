@@ -140,6 +140,11 @@ public class GroundSymbol extends AbstractComponent<Void> {
   public String getControlPointNodeName(int index) {
     return getName();
   }
+  
+  @Override
+  public String getCommonPointName(int pointIndex) {  
+    return "GND";
+  }
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {

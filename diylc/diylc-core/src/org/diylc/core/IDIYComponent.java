@@ -131,11 +131,17 @@ public interface IDIYComponent<T> extends Serializable {
   String getInternalLinkName(int index1, int index2);
   
   /**   
-   * @param pointIndex name of the internal section containing the specified point, or null if the component does not have internal sections.
-   * One point can be shared between multiple sections, in which case, the result may contain more than one element. 
-   * @return
+   * @param pointIndex  
+   * @return name of the internal section containing the specified point, or null if the component does not have internal sections.
+   * One point can be shared between multiple sections, in which case, the result may contain more than one element.
    */
   String[] getSectionNames(int pointIndex);
+  
+  /**   
+   * @param pointIndex
+   * @return name of the common point that joins all the other points with the same name together, e.g. GND
+   */
+  String getCommonPointName(int pointIndex);
 
   /**
    * Draws the component onto the {@link Graphics2D}.

@@ -298,4 +298,8 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
     return null;
   }
   
+  @Override
+  public String getCommonPointName(int pointIndex) {   
+    return null;
+  }
 }

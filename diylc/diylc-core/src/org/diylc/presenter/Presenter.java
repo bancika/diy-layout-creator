@@ -2824,10 +2824,14 @@ public class Presenter implements IPlugInPort {
         Point2D point1 = node1.getComponent().getControlPoint(node1.getPointIndex());
         Point2D point2 = node2.getComponent().getControlPoint(node2.getPointIndex());
         
+        String commonPoint1 = node1.getComponent().getCommonPointName(node1.getPointIndex());
+        String commonPoint2 = node2.getComponent().getCommonPointName(node2.getPointIndex());
+        
         // try both directions
         if (point1.distance(point2) < t || 
             checkGraphConnection(point1, point2, connections, continuityAreas, new boolean[connections.size()]) || 
-            checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()])) {
+            checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()]) ||
+            (commonPoint1 != null && commonPoint1.equalsIgnoreCase(commonPoint2))) {
           boolean added = false;
           // add to an existing vertex if possible
           for (Group g : netlist.getGroups())
