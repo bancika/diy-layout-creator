@@ -2647,6 +2647,10 @@
 					<description>Honor all possible combinations of "DIP Switch" positions when creating a netlist</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Scan "library" folder for any additional JAR files that may contain more components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Z-order of components sometimes gets wrong when importing a DIY file into another file</description>
 				</org.diylc.appframework.update.Change>				
