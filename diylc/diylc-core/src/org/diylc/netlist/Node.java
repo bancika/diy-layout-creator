@@ -82,6 +82,8 @@ public class Node implements Comparable<Node> {
 
   @Override
   public String toString() {
+    if (component.getControlPointCount() == 1)
+      return component.getName();
     return component.getName() + "." + getDisplayName() /*+ " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")"*/;
   }
 
