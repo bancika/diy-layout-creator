@@ -21,8 +21,7 @@
 */
 package org.diylc.netlist;
 
-
-public class Summary {
+public class Summary implements Comparable<Summary> {
 
   private Netlist netlist;
   private String summary;
@@ -35,6 +34,10 @@ public class Summary {
 
   public Netlist getNetlist() {
     return netlist;
+  }
+  
+  public void append(Netlist netlist) {
+    this.netlist.getSwitchSetup().addAll(netlist.getSwitchSetup());
   }
 
   public String getSummary() {
@@ -75,5 +78,10 @@ public class Summary {
   @Override
   public String toString() {   
     return summary.toString();
+  }
+
+  @Override
+  public int compareTo(Summary o) {
+    return netlist.compareTo(o.netlist);
   }
 }
