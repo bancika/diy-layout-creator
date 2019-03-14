@@ -43,6 +43,7 @@ import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
@@ -57,7 +58,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "DIP Switch", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "SW", description = "Dual-in-line package switch", stretchable = false,
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
-public class DIPSwitch extends AbstractTransparentComponent<String> {
+public class DIPSwitch extends AbstractTransparentComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -512,5 +513,39 @@ public class DIPSwitch extends AbstractTransparentComponent<String> {
     public int getValue() {
       return Integer.parseInt(toString());
     }
+  }
+
+  @Override
+  public int getPositionCount() {
+    return (int) Math.pow(2, getSwitchCount().getValue());
+  }
+
+  @Override
+  public String getPositionName(int position) {
+    String binary = toBinary(position);
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < getSwitchCount().getValue(); i++) {
+      if (sb.length() > 0)
+        sb.append("-");
+      sb.append(binary.charAt(i) == '0' ? "OFF" : "ON");
+    }    
+    return sb.toString();
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2, int position) {
+    String binary = toBinary(position);
+    return Math.abs(index1 - index2) == getSwitchCount().getValue() && binary.charAt(index1 < index2 ? index1 : index2) == '1';
+  }
+  
+  private String toBinary(int n) {
+    StringBuilder builder = new StringBuilder();
+    do {
+        builder.append(n % 2);
+        n = n / 2;
+    } while (n > 0);
+    while (builder.length() < getSwitchCount().getValue())
+      builder.append("0");
+    return builder.toString();
   }
 }
