@@ -18,7 +18,6 @@
 package org.diylc.netlist;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,9 +27,26 @@ import java.util.Set;
 
 import org.diylc.core.IDIYComponent;
 
-public class NetlistAnalyzer {
+public abstract class NetlistAnalyzer {
 
   public NetlistAnalyzer() {}
+  
+  public List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException {    
+    Map<String, Summary> summaries = new HashMap<String, Summary>();
+    for (Netlist n : netlists) {
+      Summary s = summarize(n, preferredOutput);
+      if (summaries.containsKey(s.getSummary()))
+        summaries.get(s.getSummary()).append(n);
+      else
+        summaries.put(s.getSummary(), s);
+    }
+    
+    List<Summary> res = new ArrayList<Summary>(summaries.values());
+    Collections.sort(res);
+    return res;
+  }
+  
+  protected abstract Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException;
 
   public Tree constructTreeBetween(Netlist netlist, Node nodeA, Node nodeB) {
     Tree tree = new Tree(TreeConnectionType.Parallel);
@@ -199,45 +215,45 @@ public class NetlistAnalyzer {
       paths.addAll(unmerged);
     }
   }
-
-  protected void findAllPaths(Netlist netlist, Node nodeA, Node nodeB, List<TreeLeaf> currentPath,
-      List<List<TreeLeaf>> allPaths, Set<Node> visited) {
-    if (nodeA == nodeB) {
-      allPaths.add(currentPath);
-      return;
-    }
-
-    // System.out.println("Finding path between " + nodeA + " and " + nodeB);
-
-    Group groupA = findGroup(netlist, nodeA);
-
-    if (groupA == null)
-      return;
-
-    if (groupA.getNodes().contains(nodeB)) {
-      allPaths.add(currentPath);
-      return;
-    }
-
-    for (Node n : groupA.getNodes()) {
-      IDIYComponent<?> c = n.getComponent();
-      for (int i = 0; i < c.getControlPointCount(); i++) {
-        if (i != n.getPointIndex() && c.getInternalLinkName(i, n.getPointIndex()) != null) {
-          TreeLeaf l = new TreeLeaf(c, i, n.getPointIndex());
-          Node newNodeA = new Node(c, i);
-          if (!visited.contains(newNodeA)) {
-            List<TreeLeaf> newCurrentPath = new ArrayList<TreeLeaf>(currentPath);
-            if (!currentPath.contains(l))
-              newCurrentPath.add(l);
-            Set<Node> newVisited = new HashSet<Node>(visited);
-            newVisited.add(nodeA);
-            newVisited.add(newNodeA);
-            findAllPaths(netlist, newNodeA, nodeB, newCurrentPath, allPaths, newVisited);
-          }
-        }
-      }
-    }
-  }
+//
+//  protected void findAllPaths(Netlist netlist, Node nodeA, Node nodeB, List<TreeLeaf> currentPath,
+//      List<List<TreeLeaf>> allPaths, Set<Node> visited) {
+//    if (nodeA == nodeB) {
+//      allPaths.add(currentPath);
+//      return;
+//    }
+//
+//    // System.out.println("Finding path between " + nodeA + " and " + nodeB);
+//
+//    Group groupA = findGroup(netlist, nodeA);
+//
+//    if (groupA == null)
+//      return;
+//
+//    if (groupA.getNodes().contains(nodeB)) {
+//      allPaths.add(currentPath);
+//      return;
+//    }
+//
+//    for (Node n : groupA.getNodes()) {
+//      IDIYComponent<?> c = n.getComponent();
+//      for (int i = 0; i < c.getControlPointCount(); i++) {
+//        if (i != n.getPointIndex() && c.getInternalLinkName(i, n.getPointIndex()) != null) {
+//          TreeLeaf l = new TreeLeaf(c, i, n.getPointIndex());
+//          Node newNodeA = new Node(c, i);
+//          if (!visited.contains(newNodeA)) {
+//            List<TreeLeaf> newCurrentPath = new ArrayList<TreeLeaf>(currentPath);
+//            if (!currentPath.contains(l))
+//              newCurrentPath.add(l);
+//            Set<Node> newVisited = new HashSet<Node>(visited);
+//            newVisited.add(nodeA);
+//            newVisited.add(newNodeA);
+//            findAllPaths(netlist, newNodeA, nodeB, newCurrentPath, allPaths, newVisited);
+//          }
+//        }
+//      }
+//    }
+//  }
 
   protected Group findGroup(Netlist netlist, Node node) {
     for (Group g : netlist.getGroups())
@@ -246,62 +262,62 @@ public class NetlistAnalyzer {
     return null;
   }
 
-  protected List<Group> trace(Set<String> typeNames, String nodeName, Netlist netlist) {
-    List<Group> res = new ArrayList<Group>();
-    for (Group g : netlist.getGroups()) {
-      for (Node n : g.getNodes()) {
-        if (typeNames.contains(n.getComponent().getClass().getCanonicalName())
-            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
-          res.add(g);
-          break;
-        }
-      }
-    }
-    return res;
-  }
+//  protected List<Group> trace(Set<String> typeNames, String nodeName, Netlist netlist) {
+//    List<Group> res = new ArrayList<Group>();
+//    for (Group g : netlist.getGroups()) {
+//      for (Node n : g.getNodes()) {
+//        if (typeNames.contains(n.getComponent().getClass().getCanonicalName())
+//            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
+//          res.add(g);
+//          break;
+//        }
+//      }
+//    }
+//    return res;
+//  }
 
-  protected List<Node> find(Set<String> typeNames, String nodeName, Group group) {
-    List<Node> res = new ArrayList<Node>();
+//  protected List<Node> find(Set<String> typeNames, String nodeName, Group group) {
+//    List<Node> res = new ArrayList<Node>();
+//
+//    for (Node n : group.getNodes()) {
+//      if (typeNames.contains(n.getComponent().getClass().getCanonicalName())
+//          && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
+//        res.add(n);
+//      }
+//    }
+//
+//    return res;
+//  }
 
-    for (Node n : group.getNodes()) {
-      if (typeNames.contains(n.getComponent().getClass().getCanonicalName())
-          && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
-        res.add(n);
-      }
-    }
+//  protected List<Group> findGroups(Set<String> typeNames, String nodeName, Netlist netlist) {
+//    List<Group> res = new ArrayList<Group>();
+//    for (Group g : netlist.getGroups()) {
+//      for (Node n : g.getNodes()) {
+//        if (typeNames.contains(n.getComponent().getClass().getCanonicalName())
+//            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
+//          res.add(g);
+//          break;
+//        }
+//      }
+//    }
+//    return res;
+//  }
 
-    return res;
-  }
-
-  protected List<Group> findGroups(Set<String> typeNames, String nodeName, Netlist netlist) {
-    List<Group> res = new ArrayList<Group>();
-    for (Group g : netlist.getGroups()) {
-      for (Node n : g.getNodes()) {
-        if (typeNames.contains(n.getComponent().getClass().getCanonicalName())
-            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
-          res.add(g);
-          break;
-        }
-      }
-    }
-    return res;
-  }
-
-  protected List<Group> findGroups(Set<String> typeNames, String nodeName, Netlist netlist,
-      Collection<IDIYComponent<?>> belongTo) {
-    List<Group> res = new ArrayList<Group>();
-    for (Group g : netlist.getGroups()) {
-      for (Node n : g.getNodes()) {
-        if ((belongTo == null || belongTo.contains(n.getComponent()))
-            && (typeNames.contains(n.getComponent().getClass().getCanonicalName()))
-            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
-          res.add(g);
-          break;
-        }
-      }
-    }
-    return res;
-  }
+//  protected List<Group> findGroups(Set<String> typeNames, String nodeName, Netlist netlist,
+//      Collection<IDIYComponent<?>> belongTo) {
+//    List<Group> res = new ArrayList<Group>();
+//    for (Group g : netlist.getGroups()) {
+//      for (Node n : g.getNodes()) {
+//        if ((belongTo == null || belongTo.contains(n.getComponent()))
+//            && (typeNames.contains(n.getComponent().getClass().getCanonicalName()))
+//            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
+//          res.add(g);
+//          break;
+//        }
+//      }
+//    }
+//    return res;
+//  }
 
   protected List<Node> find(Set<String> typeNames, String nodeName, Netlist netlist) {
     List<Node> res = new ArrayList<Node>();
@@ -316,67 +332,67 @@ public class NetlistAnalyzer {
     return res;
   }
 
-  protected List<Node> find(Set<String> typeNames, String nodeName, Netlist netlist, List<Node> inGroupWith) {
-    List<Node> res = new ArrayList<Node>();
-    for (Group g : netlist.getGroups()) {
+//  protected List<Node> find(Set<String> typeNames, String nodeName, Netlist netlist, List<Node> inGroupWith) {
+//    List<Node> res = new ArrayList<Node>();
+//    for (Group g : netlist.getGroups()) {
+//
+//      boolean inGroup;
+//      if (inGroupWith == null) {
+//        inGroup = true;
+//      } else {
+//        inGroup = true;
+//        for (Node n1 : inGroupWith)
+//          if (!g.getNodes().contains(n1)) {
+//            inGroup = false;
+//            break;
+//          }
+//      }
+//
+//      for (Node n : g.getNodes()) {
+//        if (inGroup && typeNames.contains(n.getComponent().getClass().getCanonicalName())
+//            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
+//          res.add(n);
+//        }
+//      }
+//    }
+//    return res;
+//  }
 
-      boolean inGroup;
-      if (inGroupWith == null) {
-        inGroup = true;
-      } else {
-        inGroup = true;
-        for (Node n1 : inGroupWith)
-          if (!g.getNodes().contains(n1)) {
-            inGroup = false;
-            break;
-          }
-      }
+//  protected List<Node> find(Set<String> typeNames, String nodeName, Netlist netlist,
+//      Collection<IDIYComponent<?>> belongTo) {
+//    List<Node> res = new ArrayList<Node>();
+//    for (Group g : netlist.getGroups()) {
+//
+//      for (Node n : g.getNodes()) {
+//        if ((belongTo == null || belongTo.contains(n.getComponent()))
+//            && typeNames.contains(n.getComponent().getClass().getCanonicalName())
+//            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
+//          res.add(n);
+//        }
+//      }
+//    }
+//    return res;
+//  }
 
-      for (Node n : g.getNodes()) {
-        if (inGroup && typeNames.contains(n.getComponent().getClass().getCanonicalName())
-            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
-          res.add(n);
-        }
-      }
-    }
-    return res;
-  }
+//  protected boolean allMatch(Collection<Node> nodes, String name) {
+//    for (Node n : nodes)
+//      if (!n.getDisplayName().equalsIgnoreCase(name))
+//        return false;
+//
+//    return true;
+//  }
 
-  protected List<Node> find(Set<String> typeNames, String nodeName, Netlist netlist,
-      Collection<IDIYComponent<?>> belongTo) {
-    List<Node> res = new ArrayList<Node>();
-    for (Group g : netlist.getGroups()) {
-
-      for (Node n : g.getNodes()) {
-        if ((belongTo == null || belongTo.contains(n.getComponent()))
-            && typeNames.contains(n.getComponent().getClass().getCanonicalName())
-            && (nodeName == null || n.getDisplayName().equalsIgnoreCase(nodeName))) {
-          res.add(n);
-        }
-      }
-    }
-    return res;
-  }
-
-  protected boolean allMatch(Collection<Node> nodes, String name) {
-    for (Node n : nodes)
-      if (!n.getDisplayName().equalsIgnoreCase(name))
-        return false;
-
-    return true;
-  }
-
-  protected boolean allComponentsMatch(Collection<Node> nodes, Set<IDIYComponent<?>> components) {
-    Set<IDIYComponent<?>> extracted = extractComponents(nodes);
-    return extracted.containsAll(components);
-  }
-
-  protected Set<IDIYComponent<?>> extractComponents(Collection<Node> nodes) {
-    Set<IDIYComponent<?>> components = new HashSet<IDIYComponent<?>>();
-    for (Node n : nodes)
-      components.add(n.getComponent());
-    return components;
-  }
+//  protected boolean allComponentsMatch(Collection<Node> nodes, Set<IDIYComponent<?>> components) {
+//    Set<IDIYComponent<?>> extracted = extractComponents(nodes);
+//    return extracted.containsAll(components);
+//  }
+//
+//  protected Set<IDIYComponent<?>> extractComponents(Collection<Node> nodes) {
+//    Set<IDIYComponent<?>> components = new HashSet<IDIYComponent<?>>();
+//    for (Node n : nodes)
+//      components.add(n.getComponent());
+//    return components;
+//  }
 
   protected String extractName(IDIYComponent<?> c) {
     return c.getName() + " " + c.getValueForDisplay();
@@ -397,53 +413,53 @@ public class NetlistAnalyzer {
     return -1;
   }
 
-  protected List<String> extractNames(Collection<IDIYComponent<?>> components) {
-    List<String> names = new ArrayList<String>();
-    for (IDIYComponent<?> c : components)
-      names.add(c.getName() + " " + c.getValueForDisplay());
-    Collections.sort(names);
-    return names;
-  }
-
-  protected Netlist simplify(Netlist netlist, Set<Node> nodesToMerge, Collection<Node> nodesToPurge) {
-    Netlist res = new Netlist();
-    res.getSwitchSetup().addAll(netlist.getSwitchSetup());
-
-    Group merged = new Group();
-
-    // merge
-    for (Group g : netlist.getGroups()) {
-      boolean needsMerging = false;
-      for (Node n : nodesToMerge) {
-        if (g.getNodes().contains(n)) {
-          needsMerging = true;
-          break;
-        }
-      }
-      if (needsMerging) {
-        for (Node n : g.getNodes()) {
-          if (!nodesToMerge.contains(n))
-            merged.getNodes().add(n);
-        }
-      } else {
-        res.getGroups().add(g.clone());
-      }
-    }
-
-    if (!merged.getNodes().isEmpty())
-      res.getGroups().add(merged);
-
-    // purge
-    for (Group g : res.getGroups()) {
-      g.getNodes().removeAll(nodesToPurge);
-    }
-
-    System.out.println("Before:\n" + netlist);
-    System.out.println("After:\n" + res);
-
-    return res;
-  }
-
+//  protected List<String> extractNames(Collection<IDIYComponent<?>> components) {
+//    List<String> names = new ArrayList<String>();
+//    for (IDIYComponent<?> c : components)
+//      names.add(c.getName() + " " + c.getValueForDisplay());
+//    Collections.sort(names);
+//    return names;
+//  }
+//
+//  protected Netlist simplify(Netlist netlist, Set<Node> nodesToMerge, Collection<Node> nodesToPurge) {
+//    Netlist res = new Netlist();
+//    res.getSwitchSetup().addAll(netlist.getSwitchSetup());
+//
+//    Group merged = new Group();
+//
+//    // merge
+//    for (Group g : netlist.getGroups()) {
+//      boolean needsMerging = false;
+//      for (Node n : nodesToMerge) {
+//        if (g.getNodes().contains(n)) {
+//          needsMerging = true;
+//          break;
+//        }
+//      }
+//      if (needsMerging) {
+//        for (Node n : g.getNodes()) {
+//          if (!nodesToMerge.contains(n))
+//            merged.getNodes().add(n);
+//        }
+//      } else {
+//        res.getGroups().add(g.clone());
+//      }
+//    }
+//
+//    if (!merged.getNodes().isEmpty())
+//      res.getGroups().add(merged);
+//
+//    // purge
+//    for (Group g : res.getGroups()) {
+//      g.getNodes().removeAll(nodesToPurge);
+//    }
+//
+//    System.out.println("Before:\n" + netlist);
+//    System.out.println("After:\n" + res);
+//
+//    return res;
+//  }
+//
   protected boolean intersect(List<Group> groups, Node node) {
     for (Group g : groups)
       if (g.getNodes().contains(node))

@@ -22,7 +22,6 @@
 package org.diylc.netlist;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -84,27 +83,13 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
   public String getFontName() {   
     return new JLabel().getFont().getName();
   }
-    
-  public List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException {    
-    Map<String, Summary> summaries = new HashMap<String, Summary>();
-    for (Netlist n : netlists) {
-      Summary s = summarize(n, preferredOutput);
-      if (summaries.containsKey(s.getSummary()))
-        summaries.get(s.getSummary()).append(n);
-      else
-        summaries.put(s.getSummary(), s);
-    }
-    
-    List<Summary> res = new ArrayList<Summary>(summaries.values());
-    Collections.sort(res);
-    return res;
-  }
+   
   
   private int positiveCount;
   private int negativeCount;
   private int noiseCount;
   
-  private Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
+  protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
     List<String> notes = new ArrayList<String>();
 
     Tree tree = constructTree(netlist);

@@ -48,17 +48,8 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
   public String getFontName() {   
     return "Courier New";
   }
-
-  @Override
-  public List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException {
-    List<Summary> summaries = new ArrayList<Summary>();
-    for (Netlist n : netlists)
-      summaries.add(summarize(n, preferredOutput));
-    
-    return summaries;
-  }
   
-  private Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
+  protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
     // grab all components that are in the netlist
     List<IDIYComponent<?>> allComponents = new ArrayList<IDIYComponent<?>>(extractComponents(netlist));
     Collections.sort(allComponents, new Comparator<IDIYComponent<?>>() {
