@@ -50,6 +50,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
@@ -400,6 +401,9 @@ public class Presenter implements IPlugInPort {
       Set<Class<?>> componentTypeClasses = null;
       try {
         componentTypeClasses = Utils.getClasses("org.diylc.components");
+        List<Class<?>> additionalComponentTypeClasses = JarScanner.getInstance().scanFolder("library", IDIYComponent.class);
+        if (additionalComponentTypeClasses != null)
+          componentTypeClasses.addAll(additionalComponentTypeClasses);
 
         for (Class<?> clazz : componentTypeClasses) {
           if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
