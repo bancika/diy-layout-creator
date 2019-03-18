@@ -2629,7 +2629,11 @@
 			</versionNumber>
 			<releaseDate>2019-03-10 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>									
+			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added an optional third control point to leaded components that can be used to set component label position. This feature is off by default to keep things backwards compatible and is driven by "Movable Label" property</description>
+				</org.diylc.appframework.update.Change>						
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Output SPICE node names in the "Nxxx" format</description>

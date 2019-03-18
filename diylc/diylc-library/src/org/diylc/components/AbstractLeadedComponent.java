@@ -37,9 +37,11 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.ShadedPaint;
 import org.diylc.common.Display;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -69,8 +71,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   protected Size length;
   protected Size width;
-  protected Point[] points = new Point[] {new Point((int) (-DEFAULT_SIZE.convertToPixels() / 2), 0),
-      new Point((int) (DEFAULT_SIZE.convertToPixels() / 2), 0)};
+  @Deprecated
+  protected Point[] points;
+  protected Point[] newPoints = new Point[] {new Point((int) (-DEFAULT_SIZE.convertToPixels() / 2), 0),
+      new Point((int) (DEFAULT_SIZE.convertToPixels() / 2), 0), new Point(0, 0)};
   protected Color bodyColor = Color.white;
   protected Color borderColor = Color.black;
   protected Color labelColor = LABEL_COLOR;
@@ -78,6 +82,11 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   protected Display display = Display.NAME;
   private boolean flipStanding = false;
   private LabelOriantation labelOriantation = LabelOriantation.Directional;
+  protected boolean moveLabel = false;
+  
+  // parameters for adjusting the label control point
+  protected Double gamma = null;
+  protected Double p = null;
 
   protected AbstractLeadedComponent() {
     super();
@@ -94,22 +103,61 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   protected boolean IsCopperArea() {
     return false;
   }
+  
+  protected Point[] getNewPoints() {
+    // convert old points to new
+    if (points != null) {      
+      newPoints = new Point[] { points[0], points[1], calculateLabelPosition(points[0], points[1]) };
+      points = null;
+      // to make standing components backward compatible and not show a label until the user switches the display to something else
+      if (isStanding())
+        display = Display.NONE;
+    }
+    return newPoints;
+  }
+  
+  protected Point calculateLabelPosition(Point point1, Point point2) {
+    double x = (point1.x + point2.x) / 2.0;
+    double y = (point1.y + point2.y) / 2.0;
+    return new Point((int) x, (int) y);
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    double distance = points[0].distance(points[1]);
+    if (gamma != null) {
+      // recalculate center position and theta, then adjust label point accordingly, while preserving alpha and p
+      double x = (getNewPoints()[1].x + getNewPoints()[0].x) / 2.0;
+      double y = (getNewPoints()[1].y + getNewPoints()[0].y) / 2.0;
+      double theta = Math.atan2(getNewPoints()[1].y - getNewPoints()[0].y, getNewPoints()[1].x - getNewPoints()[0].x);
+      double beta = gamma - (Math.PI / 2 - theta);
+      getNewPoints()[2].setLocation(x + Math.cos(beta) * p, y + Math.sin(beta) * p);
+      gamma = null;
+      p = null;
+    }
+    
+    double distance = getNewPoints()[0].distance(getNewPoints()[1]);
     Shape shape = getBodyShape();
     // If there's no body, just draw the line connecting the ending points.
     if (shape == null) {
       drawLead(g2d, componentState, drawingObserver, IsCopperArea());
-    } else if (supportsStandingMode() && length.convertToPixels() > points[0].distance(points[1])) {
+      return;
+    }
+    
+    AffineTransform oldTransform = g2d.getTransform();
+    double width;
+    double length;
+    Rectangle shapeRect;
+    double theta = Math.atan2(getNewPoints()[1].y - getNewPoints()[0].y, getNewPoints()[1].x - getNewPoints()[0].x);
+    
+    if (isStanding()) {
       // When ending points are too close draw the component in standing
       // mode.
-      int width = getClosestOdd(this.width.convertToPixels());
+      width = length = getClosestOdd(this.width.convertToPixels());      
       Shape body =
-          new Ellipse2D.Double((getFlipStanding() ? points[1] : points[0]).x - width / 2,
-              (getFlipStanding() ? points[1] : points[0]).y - width / 2, width, width);
+          new Ellipse2D.Double((getFlipStanding() ? getNewPoints()[1] : getNewPoints()[0]).x - width / 2,
+              (getFlipStanding() ? getNewPoints()[1] : getNewPoints()[0]).y - width / 2, width, width);
+      shapeRect = body.getBounds();
       Composite oldComposite = g2d.getComposite();
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
@@ -138,11 +186,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       }
     } else {
       // Normal mode with component body in the center and two lead parts.
-      Rectangle shapeRect = shape.getBounds();
-      double theta = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
+      shapeRect = shape.getBounds();      
       // Go back to the original transformation to draw leads.
       if (!outlineMode) {
-        AffineTransform textTransform = g2d.getTransform();
+//        AffineTransform textTransform = g2d.getTransform();
         // if (length.convertToPixels() > points[0].distance(points[1]))
         // {
         // g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
@@ -157,14 +204,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
           
           Area leadArea = new Area();
           
-          int endX = (int) (points[0].x + Math.cos(theta) * leadLength);
-          int endY = (int) (points[0].y + Math.sin(theta) * leadLength);
-          Line2D line = new Line2D.Double(points[0].x, points[0].y, endX, endY);
+          int endX = (int) (getNewPoints()[0].x + Math.cos(theta) * leadLength);
+          int endY = (int) (getNewPoints()[0].y + Math.sin(theta) * leadLength);
+          Line2D line = new Line2D.Double(getNewPoints()[0].x, getNewPoints()[0].y, endX, endY);
           leadArea.add(new Area(leadStroke.createStrokedShape(line)));
           
-          endX = (int) (points[1].x + Math.cos(theta - Math.PI) * leadLength);
-          endY = (int) (points[1].y + Math.sin(theta - Math.PI) * leadLength);
-          line = new Line2D.Double(points[1].x, points[1].y, endX, endY);
+          endX = (int) (getNewPoints()[1].x + Math.cos(theta - Math.PI) * leadLength);
+          endY = (int) (getNewPoints()[1].y + Math.sin(theta - Math.PI) * leadLength);
+          line = new Line2D.Double(getNewPoints()[1].x, getNewPoints()[1].y, endX, endY);
           leadArea.add(new Area(leadStroke.createStrokedShape(line)));
           
           g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
@@ -178,13 +225,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
           g2d.setColor(leadColor);
           drawLeads(g2d, theta, leadLength);
         }
-        g2d.setTransform(textTransform);
+//        g2d.setTransform(textTransform);
       }
       // Transform graphics to draw the body in the right place and at the
-      // right angle.
-      AffineTransform oldTransform = null;
-      double width;
-      double length;
+      // right angle.      
       if (useShapeRectAsPosition()) {
         width = shapeRect.getHeight();
         length = shapeRect.getWidth();
@@ -192,8 +236,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         width = getWidth().convertToPixels();
         length = getLength().convertToPixels();
       }
-      oldTransform = g2d.getTransform();
-      g2d.translate((points[0].x + points[1].x - length) / 2, (points[0].y + points[1].y - width) / 2);
+      g2d.translate((getNewPoints()[0].x + getNewPoints()[1].x - length) / 2, (getNewPoints()[0].y + getNewPoints()[1].y - width) / 2);
       g2d.rotate(theta, length / 2, width / 2);
       // Draw body.
       Composite oldComposite = g2d.getComposite();
@@ -244,64 +287,88 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         decorateComponentBody(g2d, outlineMode);
         g2d.setComposite(oldComposite);
       }
+    }
 
-      // Draw label.
-      g2d.setFont(project.getFont());
-      if (useShapeRectAsPosition()) {
-        g2d.translate(shapeRect.x, shapeRect.y);
+    // Draw label.
+    g2d.setFont(project.getFont());
+    if (useShapeRectAsPosition()) {
+      g2d.translate(shapeRect.x, shapeRect.y);
+    }
+    Color finalLabelColor;
+    if (outlineMode) {
+      Theme theme =
+          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+      finalLabelColor =
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+              : theme.getOutlineColor();
+    } else {
+      finalLabelColor =
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+              : labelColor;
+    }
+    g2d.setColor(finalLabelColor);
+    FontMetrics fontMetrics = g2d.getFontMetrics();
+    String label = "";
+    label = display == Display.NAME ? getName() : (getValue() == null ? "" : getValue().toString());
+    if (display == Display.NONE) {
+      label = "";
+    }
+    if (display == Display.BOTH) {
+      label = getName() + " " + (getValue() == null ? "" : getValue().toString());
+    }
+    Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
+    // Don't offset in outline mode.
+    int offset = outlineMode ? 0 : getLabelOffset((int) length, (int) width, (int) textRect.getWidth());
+    // Adjust label angle if needed to make sure that it's readable.
+    if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {
+      g2d.rotate(Math.PI, length / 2, width / 2);
+      offset = -offset;
+    }
+    if (getMoveLabel()) {
+      g2d.setTransform(oldTransform);
+      g2d.translate(getNewPoints()[2].x, getNewPoints()[2].y);
+      if (getLabelOriantation() != LabelOriantation.Horizontal) {
+        g2d.rotate(theta);
       }
-      Color finalLabelColor;
-      if (outlineMode) {
-        Theme theme =
-            (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-        finalLabelColor =
-            componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-                : theme.getOutlineColor();
-      } else {
-        finalLabelColor =
-            componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
-                : labelColor;
-      }
-      g2d.setColor(finalLabelColor);
-      FontMetrics fontMetrics = g2d.getFontMetrics();
-      String label = "";
-      label = display == Display.NAME ? getName() : (getValue() == null ? "" : getValue().toString());
-      if (display == Display.NONE) {
-        label = "";
-      }
-      if (display == Display.BOTH) {
-        label = getName() + " " + (getValue() == null ? "" : getValue().toString());
-      }
-      Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
-      // Don't offset in outline mode.
-      int offset = outlineMode ? 0 : getLabelOffset((int) length, (int) width, (int) textRect.getWidth());
-      // Adjust label angle if needed to make sure that it's readable.
-      if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {
-        g2d.rotate(Math.PI, length / 2, width / 2);
-        offset = -offset;
-      }
+      drawCenteredText(g2d, label, offset, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      g2d.setTransform(oldTransform);
+    } else {
       if (getLabelOriantation() == LabelOriantation.Horizontal) {
         g2d.setTransform(oldTransform);
-        double x = (points[0].x + points[1].x - length) / 2.0;
-        double y = (points[0].y + points[1].y - width) / 2.0;
+        double x = (getNewPoints()[0].x + getNewPoints()[1].x - length) / 2.0;
+        double y = (getNewPoints()[0].y + getNewPoints()[1].y - width) / 2.0;
         g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
             (int)(y + calculateLabelYCoordinate(shapeRect, textRect, fontMetrics)));
       } else {
         g2d.drawString(label, (int) (length - textRect.getWidth()) / 2 + offset,
             calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));      
         g2d.setTransform(oldTransform); 
-      }      
+      }  
     }
+//      if (getLabelOriantation() == LabelOriantation.Horizontal) {        
+//
+//        drawCenteredText(g2d, label, getNewPoints()[2].x, getNewPoints()[2].x, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+//        g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
+//            (int)(y + calculateLabelYCoordinate(shapeRect, textRect, fontMetrics)));
+//      } else {
+//        g2d.drawString(label, (int) (length - textRect.getWidth()) / 2 + offset,
+//            calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));      
+//        g2d.setTransform(oldTransform); 
+//      }          
+  }
+
+  protected boolean isStanding() {
+    return supportsStandingMode() && this.length.convertToPixels() > getNewPoints()[0].distance(getNewPoints()[1]);
   }
 
   private void drawLeads(Graphics2D g2d, double theta, double leadLength) {
-    double endX = points[0].x + Math.cos(theta) * leadLength;
-    double endY = points[0].y + Math.sin(theta) * leadLength;
-    g2d.draw(new Line2D.Double(points[0].x, points[0].y, endX, endY));
+    double endX = getNewPoints()[0].x + Math.cos(theta) * leadLength;
+    double endY = getNewPoints()[0].y + Math.sin(theta) * leadLength;
+    g2d.draw(new Line2D.Double(getNewPoints()[0].x, getNewPoints()[0].y, endX, endY));
 
-    endX = points[1].x + Math.cos(theta - Math.PI) * leadLength;
-    endY = points[1].y + Math.sin(theta - Math.PI) * leadLength;
-    g2d.draw(new Line2D.Double(points[1].x, points[1].y, endX, endY));
+    endX = getNewPoints()[1].x + Math.cos(theta - Math.PI) * leadLength;
+    endY = getNewPoints()[1].y + Math.sin(theta - Math.PI) * leadLength;
+    g2d.draw(new Line2D.Double(getNewPoints()[1].x, getNewPoints()[1].y, endX, endY));
   }
 
   private void drawLead(Graphics2D g2d, ComponentState componentState, IDrawingObserver observer, boolean isCopperArea) {
@@ -310,7 +377,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     
     float thickness = getLeadThickness();
     
-    Line2D line = new Line2D.Double(points[0].x, points[0].y, points[1].x, points[1].y);
+    Line2D line = new Line2D.Double(getNewPoints()[0].x, getNewPoints()[0].y, getNewPoints()[1].x, getNewPoints()[1].y);
     
     if (shouldShadeLeads()) {
       // for some reason the stroked line gets approx 1px thicker when converted to shape
@@ -447,27 +514,37 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   @Override
   public int getControlPointCount() {
-    return points.length;
+    return getNewPoints().length;
   }
 
   @Override
   public Point getControlPoint(int index) {
-    return (Point) points[index];
+    return (Point) getNewPoints()[index];
   }
 
   @Override
   public boolean isControlPointSticky(int index) {
-    return true;
+    return index < 2;
   }
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.ALWAYS;
+    return getMoveLabel() || index < 2 ? VisibilityPolicy.ALWAYS : VisibilityPolicy.NEVER;
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
-    points[index].setLocation(point);
+  public void setControlPoint(Point point, int index) {        
+    // when moving one of the ending points, try to retain the angle and distance from the center point to label point
+    if (index < 2 && gamma == null) {
+      double x = (getNewPoints()[1].x + getNewPoints()[0].x) / 2.0;
+      double y = (getNewPoints()[1].y + getNewPoints()[0].y) / 2.0;
+      double theta = Math.atan2(getNewPoints()[1].y - getNewPoints()[0].y, getNewPoints()[1].x - getNewPoints()[0].x);
+      double beta = Math.atan2(getNewPoints()[2].y - y, getNewPoints()[2].x - x);
+      gamma = beta + (Math.PI / 2 - theta); 
+      p = getNewPoints()[2].distance(x, y);
+    }
+    
+    getNewPoints()[index].setLocation(point);   
   }
 
   @EditableProperty(name = "Color")
@@ -559,7 +636,16 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   public void setFlipStanding(boolean flipStanding) {
     this.flipStanding = flipStanding;
   }
-  
+    
+  @EditableProperty(name = "Moveable Label")
+  public boolean getMoveLabel() {
+    return moveLabel;
+  }
+
+  public void setMoveLabel(boolean moveLabel) {
+    this.moveLabel = moveLabel;
+  }
+
   public enum LabelOriantation {
     Directional, Horizontal
   }
