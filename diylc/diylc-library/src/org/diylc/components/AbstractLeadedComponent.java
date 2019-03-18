@@ -319,11 +319,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
     // Don't offset in outline mode.
     int offset = outlineMode ? 0 : getLabelOffset((int) length, (int) width, (int) textRect.getWidth());
+    
     // Adjust label angle if needed to make sure that it's readable.
     if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {
       g2d.rotate(Math.PI, length / 2, width / 2);
+      theta += Math.PI;
       offset = -offset;
     }
+    
     if (getMoveLabel()) {
       g2d.setTransform(oldTransform);
       g2d.translate(getNewPoints()[2].x, getNewPoints()[2].y);
