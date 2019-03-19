@@ -343,10 +343,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         double x = (getNewPoints()[0].x + getNewPoints()[1].x - length) / 2.0;
         double y = (getNewPoints()[0].y + getNewPoints()[1].y - width) / 2.0;
         g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
-            (int)(y + calculateLabelYCoordinate(shapeRect, textRect, fontMetrics)));
+            (int)(y + calculateLabelYOffset(shapeRect, textRect, fontMetrics)));
       } else {
         g2d.drawString(label, (int) (length - textRect.getWidth()) / 2 + offset,
-            calculateLabelYCoordinate(shapeRect, textRect, fontMetrics));      
+            calculateLabelYOffset(shapeRect, textRect, fontMetrics));      
         g2d.setTransform(oldTransform); 
       }  
     }
@@ -438,7 +438,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     return false;
   }
 
-  protected int calculateLabelYCoordinate(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics) {
+  protected int calculateLabelYOffset(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics) {
     return (int) (shapeRect.getHeight() - textRect.getHeight()) / 2 + fontMetrics.getAscent();
   }
 

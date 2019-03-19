@@ -63,7 +63,7 @@ public abstract class AbstractSchematicLeadedSymbol<T> extends AbstractLeadedCom
   }
   
   @Override
-  protected int calculateLabelYCoordinate(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics) {
+  protected int calculateLabelYOffset(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics) {
     if (labelPosition == LabelPosition.ABOVE) {
       return -5;
     } else {
