@@ -98,6 +98,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     } catch (NullPointerException e) {
       // This will happen if components do not have any shape.
     }
+    if (newPoints != null)
+      newPoints[2] = calculateLabelPosition(newPoints[0], newPoints[1]);
   }
 
   protected boolean IsCopperArea() {

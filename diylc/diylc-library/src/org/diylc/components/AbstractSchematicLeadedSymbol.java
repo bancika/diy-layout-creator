@@ -23,6 +23,7 @@ package org.diylc.components;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.LabelPosition;
@@ -68,6 +69,15 @@ public abstract class AbstractSchematicLeadedSymbol<T> extends AbstractLeadedCom
     } else {
       return (int) (shapeRect.getHeight() + textRect.getHeight());
     }
+  }
+  
+  @Override
+  protected Point calculateLabelPosition(Point point1, Point point2) {
+    double x = (point1.x + point2.x) / 2.0;
+    double y = (point1.y + point2.y) / 2.0;
+    double theta = Math.atan2(point2.y - point1.y, point2.x - point2.x) - Math.PI / 2;
+    double r = width.convertToPixels() / 2 + LABEL_FONT.getSize() / 2;
+    return new Point((int) (x + Math.cos(theta) * r), (int) (y + Math.sin(theta) * r));
   }
 
   @EditableProperty(name = "Label Position")
