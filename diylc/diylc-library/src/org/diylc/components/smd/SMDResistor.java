@@ -30,7 +30,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Resistance;
 
-@ComponentDescriptor(name = "SMD Resistor", author = "Branislav Stojkovic", category = "SMD", instanceNamePrefix = "C",
+@ComponentDescriptor(name = "SMD Resistor", author = "Branislav Stojkovic", category = "SMD", instanceNamePrefix = "R",
     description = "Surface mount resistor", stretchable = false, zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class SMDResistor extends PassiveSMDComponent<Resistance> {
