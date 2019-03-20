@@ -104,8 +104,6 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     }
     g2d.setColor(finalColor);
 
-    // Draw transistor
-
     if (this.body == null) {
       this.body = getBody();
       applyOrientation(this.body);
@@ -164,7 +162,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     
     if (getMoveLabel()) {
       drawCenteredText(g2d, label, controlPoints[3].x, controlPoints[3].y, flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
-              : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+              : HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     } else {
       drawCenteredText(g2d, label, getLabelX(shapeRect, textRect, fontMetrics, outlineMode),
           getLabelY(shapeRect, textRect, fontMetrics, outlineMode), flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
@@ -195,21 +193,21 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   protected void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     Point[] controlPoints = getNewControlPoints();
-    // Update control points.
+        
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
 
-    int f = flip == SymbolFlipping.X ? -1 : 1;
-    int d = flip == SymbolFlipping.X ? (int) PIN_SPACING.convertToPixels() / 2 : 0;
-
-    controlPoints[1].x = x + f * pinSpacing * 2;
+    // set default point positions
+    controlPoints[1].x = x +  pinSpacing * 2;
     controlPoints[1].y = y - pinSpacing * 2;
 
-    controlPoints[2].x = x + f * pinSpacing * 2;
+    controlPoints[2].x = x + pinSpacing * 2;
     controlPoints[2].y = y + pinSpacing * 2;
     
-    controlPoints[3].x = x + f * (int) (PIN_SPACING.convertToPixels() * 1.5 + d);
+    controlPoints[3].x = x + (int) (PIN_SPACING.convertToPixels() * 2);
+    controlPoints[3].y = y;
     
+    // apply rotation if needed
     if (getOrientation() != Orientation.DEFAULT)
     {    
       Point first = controlPoints[0];
@@ -218,6 +216,18 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
       for (int i = 1; i < controlPoints.length; i++) {
         rotate.transform(controlPoints[i], controlPoints[i]);
       }
+    }
+    
+    // flip at the end
+    if (flip == SymbolFlipping.X) {
+      controlPoints[1].x = controlPoints[0].x - (controlPoints[1].x - controlPoints[0].x);
+      controlPoints[2].x = controlPoints[0].x - (controlPoints[2].x - controlPoints[0].x);
+      controlPoints[3].x = controlPoints[0].x - (controlPoints[3].x - controlPoints[0].x);
+    }
+    if (flip == SymbolFlipping.Y) {
+      controlPoints[1].y = controlPoints[0].y - (controlPoints[1].y - controlPoints[0].y);
+      controlPoints[2].y = controlPoints[0].y - (controlPoints[2].y - controlPoints[0].y);
+      controlPoints[3].y = controlPoints[0].y - (controlPoints[3].y - controlPoints[0].y);
     }
   }
 

@@ -2664,6 +2664,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Some schematic symbols (transistors, potentiometer...) get into bad state when rotated and flipped at the same time</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Z-order of components sometimes gets wrong when importing a DIY file into another file</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>
