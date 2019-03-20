@@ -2640,6 +2640,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Assign a new name for pasted component if the project already contains components under that name</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Output SPICE node names in the "Nxxx" format</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
@@ -2664,7 +2668,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Some schematic symbols (transistors, potentiometer...) get into bad state when rotated and flipped at the same time</description>
+					<description>Some schematic symbols (transistors, potentiometer...) are not rendered properly when rotated and flipped at the same time</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

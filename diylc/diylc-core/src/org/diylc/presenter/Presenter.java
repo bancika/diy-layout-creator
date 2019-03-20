@@ -1532,7 +1532,7 @@ public class Presenter implements IPlugInPort {
   public void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup) {
     LOG.info(String.format("pasteComponents(%s, %s)", components, autoGroup));
     instantiationManager.pasteComponents(components, this.previousScaledPoint, isSnapToGrid(),
-        currentProject.getGridSpacing(), autoGroup);
+        currentProject.getGridSpacing(), autoGroup, this.currentProject);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, instantiationManager.getComponentTypeSlot(),
         instantiationManager.getFirstControlPoint());

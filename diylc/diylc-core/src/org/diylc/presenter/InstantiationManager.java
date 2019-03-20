@@ -27,8 +27,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -139,16 +141,34 @@ public class InstantiationManager {
     return changeMade;
   }
 
+  @SuppressWarnings("unchecked")
   public void pasteComponents(Collection<IDIYComponent<?>> components, Point scaledPoint, boolean snapToGrid,
-      Size gridSpacing, boolean autoGroup) {	  
+      Size gridSpacing, boolean autoGroup, Project currentProject) {	  
     // Adjust location of components so they are centered under the mouse
     // cursor
     int minX = Integer.MAX_VALUE;
     int maxX = Integer.MIN_VALUE;
     int minY = Integer.MAX_VALUE;
     int maxY = Integer.MIN_VALUE;
+    
+    Set<String> existingNames = new HashSet<String>();
+    for (IDIYComponent<?> c : currentProject.getComponents())
+      existingNames.add(c.getName());
+    
+    List<IDIYComponent<?>> allComponents = new ArrayList<IDIYComponent<?>>(currentProject.getComponents());
+    
     for (IDIYComponent<?> component : components) {
-      for (int i = 0; i < component.getControlPointCount(); i++) {
+      // assign a new name if it already exists in the project
+      if (existingNames.contains(component.getName())) {
+        ComponentType componentType =
+            ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
+        String newName = createUniqueName(componentType, allComponents);
+        existingNames.add(newName);
+        component.setName(newName);
+        allComponents.add(component);
+      }
+      
+      for (int i = 0; i < component.getControlPointCount(); i++) {        
         Point p = component.getControlPoint(i);
         if (p.x > maxX) {
           maxX = p.x;
