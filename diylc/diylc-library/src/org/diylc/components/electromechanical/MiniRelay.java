@@ -303,6 +303,8 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);
+    
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;

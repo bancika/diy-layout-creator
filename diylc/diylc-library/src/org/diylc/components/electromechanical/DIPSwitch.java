@@ -314,6 +314,7 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     Area mainArea = getBody()[0];
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
