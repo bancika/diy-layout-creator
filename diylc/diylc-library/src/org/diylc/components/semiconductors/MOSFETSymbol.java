@@ -22,6 +22,7 @@
 package org.diylc.components.semiconductors;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
@@ -34,7 +35,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "MOSFET", author = "Branislav Stojkovic", category = "Schematic Symbols",
-    instanceNamePrefix = "Q", description = "MOSFET transistor schematic symbol", stretchable = false,
+    instanceNamePrefix = "Q", description = "MOSFET transistor schematic symbol",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
 public class MOSFETSymbol extends Abstract3LegSymbol {
 
@@ -44,6 +45,7 @@ public class MOSFETSymbol extends Abstract3LegSymbol {
 
   public Shape[] getBody() {    
     Shape[] body = new Shape[3];
+    Point[] controlPoints = getNewControlPoints();
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
     int pinSpacing = (int) PIN_SPACING.convertToPixels();

@@ -821,7 +821,6 @@ public class Presenter implements IPlugInPort {
     }
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     if (point == null)
@@ -857,24 +856,15 @@ public class Presenter implements IPlugInPort {
       // Go backwards so we take the highest z-order components first.
       for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
         IDIYComponent<?> component = currentProject.getComponents().get(i);
-        ComponentType componentType =
-            ComponentProcessor.getInstance().extractComponentTypeFrom(
-                (Class<? extends IDIYComponent<?>>) component.getClass());
         for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
           Point controlPoint = component.getControlPoint(pointIndex);
           // Only consider selected components that are not grouped.
-          if (selectedComponents.contains(component) && componentType.isStretchable()
+          if (selectedComponents.contains(component) && component.canPointMoveFreely(pointIndex)
               && findAllGroupedComponents(component).size() == 1) {
             try {
               if (previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE) {
                 Set<Integer> indices = new HashSet<Integer>();
-                if (componentType.isStretchable()) {
                   indices.add(pointIndex);
-                } else {
-                  for (int j = 0; j < component.getControlPointCount(); j++) {
-                    indices.add(j);
-                  }
-                }
                 components.put(component, indices);
                 break;
               }
@@ -1101,15 +1091,10 @@ public class Presenter implements IPlugInPort {
    * 
    * @param controlPointMap
    */
-  @SuppressWarnings("unchecked")
   private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap) {
     int oldSize = controlPointMap.size();
     LOG.trace("Expanding selected component map");
     for (IDIYComponent<?> component : currentProject.getComponents()) {
-      ComponentType componentType =
-          ComponentProcessor.getInstance().extractComponentTypeFrom(
-              (Class<? extends IDIYComponent<?>>) component.getClass());
-
       // Check if there's a control point in the current selection
       // that matches with one of its control points.
       for (int i = 0; i < component.getControlPointCount(); i++) {
@@ -1142,7 +1127,7 @@ public class Presenter implements IPlugInPort {
               // For stretchable components just add the
               // matching component. Otherwise, add all control
               // points.
-              if (componentType.isStretchable()) {
+              if (component.canPointMoveFreely(i)) {
                 indices.add(i);
               } else {
                 for (int k = 0; k < component.getControlPointCount(); k++) {

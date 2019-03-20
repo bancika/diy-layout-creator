@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Fuse Holder (Panel)", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Panel mounted fuse holder", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    description = "Panel mounted fuse holder", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "FH", autoEdit = false)
 public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
 
@@ -69,7 +69,7 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
   private static Color BORDER_COLOR = BODY_COLOR.darker();
   private static Color LABEL_COLOR = Color.white;
 
-  protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0)};
+  protected Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0) };
   transient protected Area[] body;
   protected String name;
   protected String value = "";
@@ -330,5 +330,10 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
   
   public void setLabelColor(Color labelColor) {
     this.labelColor = labelColor;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

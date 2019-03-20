@@ -53,7 +53,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Lever Switch", category = "Guitar", author = "Branislav Stojkovic",
-    description = "Strat-style lever switch", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    description = "Strat-style lever switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Guitar Wiring Diagram")
 public class LeverSwitch extends AbstractTransparentComponent<String> implements ISwitch {
@@ -474,6 +474,11 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       case _4P5T:
         return (index1 == 0 || index1 == 12 || index2 == 11 || index2 == 23) && index2 - index1 == position + 1;        
     }
+    return false;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
 }

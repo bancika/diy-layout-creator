@@ -46,7 +46,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Breadboard", category = "Boards", author = "Branislav Stojkovic",
-    description = "Prototyping solderless breadboard", instanceNamePrefix = "BB", stretchable = false,
+    description = "Prototyping solderless breadboard", instanceNamePrefix = "BB",
     zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
 public class Breadboard extends AbstractComponent<Void> {
@@ -312,6 +312,11 @@ public class Breadboard extends AbstractComponent<Void> {
   @Override
   public int getControlPointCount() {
     return 2;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 
   @SuppressWarnings("incomplete-switch")

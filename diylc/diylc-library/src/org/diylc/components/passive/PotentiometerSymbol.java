@@ -24,6 +24,7 @@ package org.diylc.components.passive;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
@@ -36,7 +37,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Potentiometer", author = "MCbx", category = "Schematic Symbols",
-    instanceNamePrefix = "VR", description = "Potentiometer symbol", stretchable = false,
+    instanceNamePrefix = "VR", description = "Potentiometer symbol",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic")
 public class PotentiometerSymbol extends Abstract3LegSymbol {
 
@@ -48,6 +49,7 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
 
   public Shape[] getBody() {
     Shape[] body = new Shape[3];
+    Point[] controlPoints = getNewControlPoints();
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
     int pinSpacing = (int) PIN_SPACING.convertToPixels();

@@ -50,7 +50,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Plastic DC Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Panel mount plastic DC jack", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    description = "Panel mount plastic DC jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false)
 public class PlasticDCJack extends AbstractMultiPartComponent<String> {
 
@@ -261,5 +261,10 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
 
   public void setPolarity(DCPolarity polarity) {
     this.polarity = polarity;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

@@ -54,7 +54,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1 or G5V-2",
-    stretchable = false, zOrder = IDIYComponent.COMPONENT)
+    zOrder = IDIYComponent.COMPONENT)
 public class MiniRelay extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -423,6 +423,11 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
     updateControlPoints();
     // Invalidate body
     this.body = null;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 
   public static enum RelayType {

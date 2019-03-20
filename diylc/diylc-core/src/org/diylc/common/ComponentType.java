@@ -43,7 +43,6 @@ public class ComponentType {
   private Class<? extends IDIYComponent<?>> instanceClass;
   private double zOrder;
   private boolean flexibleZOrder;
-  private boolean stretchable;
   private BomPolicy bomPolicy;
   private boolean autoEdit;
   private IComponentTransformer transformer;
@@ -52,8 +51,8 @@ public class ComponentType {
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
-      boolean flexibleZOrder, boolean stretchable, BomPolicy bomPolicy, boolean autoEdit,
-      IComponentTransformer transformer, KeywordPolicy keywordPolicy, String keywordTag) {
+      boolean flexibleZOrder, BomPolicy bomPolicy, boolean autoEdit, IComponentTransformer transformer, 
+      KeywordPolicy keywordPolicy, String keywordTag) {
     super();
     this.name = name;
     this.description = description;
@@ -65,7 +64,6 @@ public class ComponentType {
     this.instanceClass = instanceClass;
     this.zOrder = zOrder;
     this.flexibleZOrder = flexibleZOrder;
-    this.stretchable = stretchable;
     this.bomPolicy = bomPolicy;
     this.autoEdit = autoEdit;
     this.transformer = transformer;
@@ -111,10 +109,6 @@ public class ComponentType {
 
   public boolean isFlexibleZOrder() {
     return flexibleZOrder;
-  }
-
-  public boolean isStretchable() {
-    return stretchable;
   }
 
   public BomPolicy getBomPolicy() {

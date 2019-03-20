@@ -51,7 +51,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @ComponentDescriptor(name = "Image", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined image", instanceNamePrefix = "Img", zOrder = IDIYComponent.COMPONENT,
-    flexibleZOrder = true, stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW)
+    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW)
 public class Image extends AbstractTransparentComponent<Void> {
 
   private static final long serialVersionUID = 1L;

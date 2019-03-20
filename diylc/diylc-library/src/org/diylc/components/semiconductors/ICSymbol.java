@@ -53,7 +53,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "IC", author = "Branislav Stojkovic", category = "Schematic Symbols",
-    instanceNamePrefix = "IC", description = "IC symbol with 3 or 5 contacts", stretchable = false,
+    instanceNamePrefix = "IC", description = "IC symbol with 3 or 5 contacts",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
 public class ICSymbol extends AbstractTransparentComponent<String> {
 
@@ -295,5 +295,10 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 
   public void setDisplay(Display display) {
     this.display = display;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

@@ -92,7 +92,6 @@ public class ComponentProcessor {
     Icon icon;
     double zOrder;
     boolean flexibleZOrder;
-    boolean stretchable;
     BomPolicy bomPolicy;
     boolean autoEdit;
     IComponentTransformer transformer;
@@ -108,7 +107,6 @@ public class ComponentProcessor {
       author = annotation.author();
       zOrder = annotation.zOrder();
       flexibleZOrder = annotation.flexibleZOrder();
-      stretchable = annotation.stretchable();
       bomPolicy = annotation.bomPolicy();
       autoEdit = annotation.autoEdit();
       transformer = getComponentTransformer(annotation.transformer());
@@ -135,7 +133,7 @@ public class ComponentProcessor {
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
-            flexibleZOrder, stretchable, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag);
+            flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }

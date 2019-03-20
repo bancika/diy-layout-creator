@@ -2632,8 +2632,12 @@
 			<changes>				
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added an optional third control point to leaded components that can be used to set component label position. This feature is off by default to keep things backwards compatible and is driven by "Movable Label" property</description>
+					<description>Added an optional third control point to leaded components and some schematic symbols that can be used to set component label position. This feature is off by default to keep things backwards compatible and is driven by "Movable Label" property</description>
 				</org.diylc.appframework.update.Change>						
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Ability to show labels for standing components and control the position</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Output SPICE node names in the "Nxxx" format</description>

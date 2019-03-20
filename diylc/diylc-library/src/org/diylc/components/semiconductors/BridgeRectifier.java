@@ -61,7 +61,7 @@ import org.diylc.core.measures.Voltage;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Bridge Rectifier", author = "Branislav Stojkovic", category = "Semiconductors",
-    instanceNamePrefix = "BR", description = "Few variations of bridge rectifier chips", stretchable = false,
+    instanceNamePrefix = "BR", description = "Few variations of bridge rectifier chips",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
 public class BridgeRectifier extends AbstractTransparentComponent<String> {
 
@@ -661,6 +661,11 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
   
   public void setLabelOriantation(LabelOriantation labelOriantation) {
     this.labelOriantation = labelOriantation;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 
   public static enum RectifierType {

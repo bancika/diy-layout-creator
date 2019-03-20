@@ -50,7 +50,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "IEC Socket", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Panel mounted IEC power socket", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    description = "Panel mounted IEC power socket", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "IEC", autoEdit = false)
 public class IECSocket extends AbstractMultiPartComponent<String> {
 
@@ -384,5 +384,10 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
 
   public void setBorderColor(Color borderColor) {
     this.borderColor = borderColor;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

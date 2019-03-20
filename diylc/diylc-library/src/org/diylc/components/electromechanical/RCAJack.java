@@ -52,8 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "RCA Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Panel mount RCA phono jack socket", stretchable = false,
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
+    description = "Panel mount RCA phono jack socket", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
 public class RCAJack extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -319,5 +318,10 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
   @Override
   public String getControlPointNodeName(int index) {
     return getName() + (index == 0 ? "Tip" : "Sleeve");
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

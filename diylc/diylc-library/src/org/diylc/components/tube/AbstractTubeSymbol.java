@@ -297,4 +297,9 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
       rotate.transform(this.controlPoints[i], this.controlPoints[i]);
     }
   }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
 }

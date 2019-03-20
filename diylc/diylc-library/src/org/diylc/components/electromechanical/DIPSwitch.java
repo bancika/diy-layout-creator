@@ -56,7 +56,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "DIP Switch", author = "Branislav Stojkovic", category = "Electro-Mechanical",
-    instanceNamePrefix = "SW", description = "Dual-in-line package switch", stretchable = false,
+    instanceNamePrefix = "SW", description = "Dual-in-line package switch",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
 public class DIPSwitch extends AbstractTransparentComponent<String> implements ISwitch {
 
@@ -536,6 +536,11 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
   public boolean arePointsConnected(int index1, int index2, int position) {
     String binary = toBinary(position);
     return Math.abs(index1 - index2) == getSwitchCount().getValue() && binary.charAt(index1 < index2 ? index1 : index2) == '1';
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
   
   private String toBinary(int n) {

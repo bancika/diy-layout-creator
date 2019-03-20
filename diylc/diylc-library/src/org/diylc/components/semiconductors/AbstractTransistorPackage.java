@@ -196,4 +196,9 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   public void setPinout(TransistorPinout pinout) {
     this.pinout = pinout;
   }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
 }

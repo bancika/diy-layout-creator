@@ -37,7 +37,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Pentode", author = "Branislav Stojkovic", category = "Schematic Symbols",
-    instanceNamePrefix = "V", description = "Pentode tube symbol", stretchable = false,
+    instanceNamePrefix = "V", description = "Pentode tube symbol", 
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,
     transformer = TubeSymbolTransformer.class)
 public class PentodeSymbol extends AbstractTubeSymbol {

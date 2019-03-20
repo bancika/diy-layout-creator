@@ -54,7 +54,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Cliff-style closed panel mount 1/4\" phono jack", stretchable = false,
+    description = "Cliff-style closed panel mount 1/4\" phono jack",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = CliffJackTransformer.class)
 public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
 
@@ -337,5 +337,10 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
     updateControlPoints();
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

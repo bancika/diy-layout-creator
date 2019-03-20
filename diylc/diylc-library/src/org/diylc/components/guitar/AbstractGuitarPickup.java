@@ -189,6 +189,11 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
     body = null;
   }
   
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
+  
   @EditableProperty
   public Polarity getPolarity() {
     if (polarity == null)

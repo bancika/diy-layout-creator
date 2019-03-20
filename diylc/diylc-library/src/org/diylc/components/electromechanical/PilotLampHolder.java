@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Pilot Lamp Holder", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Fender-style pilot bulb holder for T2 and T-3 ¼ miniature bayonet lamps", stretchable = false,
+    description = "Fender-style pilot bulb holder for T2 and T-3 ¼ miniature bayonet lamps",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PL")
 public class PilotLampHolder extends AbstractMultiPartComponent<String> {
 
@@ -402,6 +402,11 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
     updateControlPoints();
     // Invalidate the body
     body = null;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
   
   protected double getTheta() {

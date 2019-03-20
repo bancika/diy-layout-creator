@@ -49,8 +49,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Trimmer Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
-    description = "Various types of board mounted trimmer potentiometers", zOrder = IDIYComponent.COMPONENT,
-    stretchable = false)
+    description = "Various types of board mounted trimmer potentiometers", zOrder = IDIYComponent.COMPONENT)
 public class TrimmerPotentiometer extends AbstractPotentiometer {
 
   private static final long serialVersionUID = 1L;
@@ -528,6 +527,11 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     this.type = type;
     updateControlPoints();
     body = null;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 
   public static enum TrimmerType {

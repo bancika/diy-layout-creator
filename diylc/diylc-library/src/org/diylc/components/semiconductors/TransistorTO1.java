@@ -51,7 +51,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transistor (TO-1)", author = "Branislav Stojkovic", category = "Semiconductors",
-    instanceNamePrefix = "Q", description = "Transistor with small metal body", stretchable = false,
+    instanceNamePrefix = "Q", description = "Transistor with small metal body",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO1Transformer.class)
 public class TransistorTO1 extends AbstractTransistorPackage {
 

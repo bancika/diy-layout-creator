@@ -57,7 +57,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Audio Transformer", author = "Branislav Stojkovic", category = "Passive",
-    instanceNamePrefix = "TR", description = "Small signal audio transformer with EI core", stretchable = false,
+    instanceNamePrefix = "TR", description = "Small signal audio transformer with EI core",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
 public class AudioTransformer extends AbstractMultiPartComponent<String> {
 
@@ -518,4 +518,9 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
     this.secondaryCT = secondaryCT;
     updateControlPoints();
   }  
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
 }

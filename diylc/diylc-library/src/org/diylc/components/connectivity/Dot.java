@@ -40,7 +40,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Dot", category = "Connectivity", author = "Branislav Stojkovic",
-    description = "Connector dot", instanceNamePrefix = "Dot", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    description = "Connector dot", instanceNamePrefix = "Dot", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class Dot extends AbstractComponent<Void> {
 

@@ -54,7 +54,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Enclosed panel mount 1/4\" phono jack", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    description = "Enclosed panel mount 1/4\" phono jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false, transformer = ClosedJackTransformer.class)
 public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
 
@@ -363,5 +363,10 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
         return "Ring";
     }
     return null;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

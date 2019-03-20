@@ -83,12 +83,6 @@ public @interface ComponentDescriptor {
   boolean flexibleZOrder() default false;
 
   /**
-   * @return when false, moving one control point will cause all the others to move together with
-   *         it.
-   */
-  boolean stretchable() default true;
-
-  /**
    * @return controls what should be shown the BOM
    */
   BomPolicy bomPolicy() default BomPolicy.SHOW_ALL_NAMES;

@@ -62,10 +62,10 @@ public class InstantiationManager {
   private Point potentialControlPoint;
 
   public static final ComponentType clipboardType = new ComponentType("Clipboard contents",
-      "Components from the clipboard", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, false, null,
+      "Components from the clipboard", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
       false, null, KeywordPolicy.NEVER_SHOW, null);
   public static final ComponentType blockType = new ComponentType("Building block",
-	      "Components from the building block", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, false, null,
+	      "Components from the building block", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
 	      false, null, KeywordPolicy.NEVER_SHOW, null);
 
   public InstantiationManager() {}

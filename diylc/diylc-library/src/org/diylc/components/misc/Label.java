@@ -44,7 +44,7 @@ import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined label", instanceNamePrefix = "L", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
-    stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
+    bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
 public class Label extends AbstractComponent<String> {
 
   public static String DEFAULT_TEXT = "Double click to edit text";

@@ -51,7 +51,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "LP Toggle Switch", category = "Guitar", author = "Branislav Stojkovic",
-    description = "Les Paul style 3 position toggle switch", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    description = "Les Paul style 3 position toggle switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW")
 public class LPSwitch extends AbstractTransparentComponent<String> implements ISwitch {
 
@@ -299,6 +299,11 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
     this.controlPoints[index].setLocation(point);
     // Invalidate the body
     body = null;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 
   @Override

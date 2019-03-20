@@ -56,7 +56,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "DIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
-    instanceNamePrefix = "IC", description = "Dual-in-line package IC", stretchable = false,
+    instanceNamePrefix = "IC", description = "Dual-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
 public class DIL_IC extends AbstractTransparentComponent<String> {
 
@@ -536,6 +536,11 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
   public void setDisplayNumbers(DisplayNumbers numbers) {
     this.displayNumbers = numbers;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 
   public static enum PinCount {

@@ -52,7 +52,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
-    description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT, stretchable = false,
+    description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT,
     transformer = PotentiometerTransformer.class)
 public class PotentiometerPanel extends AbstractPotentiometer {
 
@@ -468,6 +468,11 @@ public class PotentiometerPanel extends AbstractPotentiometer {
       return (index1 + 1) + "-" + (index2 + 1);
     
     return null;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 
   public enum Type {

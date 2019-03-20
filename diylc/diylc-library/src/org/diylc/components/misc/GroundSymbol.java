@@ -40,7 +40,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Ground", author = "Branislav Stojkovic", category = "Schematic Symbols",
-    instanceNamePrefix = "GND", description = "Ground schematic symbol", stretchable = false,
+    instanceNamePrefix = "GND", description = "Ground schematic symbol",
     zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
 public class GroundSymbol extends AbstractComponent<Void> {
 

@@ -46,8 +46,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transformer Core", author = "Branislav Stojkovic", category = "Schematic Symbols", instanceNamePrefix = "T",
     description = "Transformer core symbol. Use multiple instances together with \"Transformer Coil Symbol\"<br>to draw transformer schematics.",
-    stretchable = true, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG,
-    creationMethod = CreationMethod.POINT_BY_POINT, keywordTag = "Schematic")
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG, creationMethod = CreationMethod.POINT_BY_POINT, keywordTag = "Schematic")
 public class TransformerCore extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;
@@ -154,6 +153,10 @@ public class TransformerCore extends AbstractComponent<Void> {
   @Override
   public void setValue(Void value) {
     // TODO Auto-generated method stub
-
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

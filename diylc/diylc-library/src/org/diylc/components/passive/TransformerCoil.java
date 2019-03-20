@@ -48,7 +48,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transformer Coil", author = "Branislav Stojkovic", category = "Schematic Symbols", instanceNamePrefix = "L",
     description = "Transformer coil symbol. Use multiple instances together with \"Transformer Core Symbol\"<br>to draw transformer schematics.",
-    stretchable = false, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG,
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Schematic")
 public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.Voltage> {
 
@@ -281,5 +281,10 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
 
     }
     return body;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

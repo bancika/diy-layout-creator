@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Open 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Switchcraft-style open panel mount 1/4\" phono jack, stereo and mono", stretchable = false,
+    description = "Switchcraft-style open panel mount 1/4\" phono jack, stereo and mono",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
 public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
@@ -397,6 +397,11 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     if (index == 2 && getType() == OpenJackType.SWITCHED)
       return "Shunt";
     return null;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
   
   public enum OpenJackType {

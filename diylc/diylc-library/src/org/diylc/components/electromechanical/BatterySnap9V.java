@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "9V Battery Snap", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "", stretchable = false, zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "BTR",
+    description = "", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "BTR",
     autoEdit = false, transformer = BatterySnapTransformer.class)
 public class BatterySnap9V extends AbstractTransparentComponent<String> {
 

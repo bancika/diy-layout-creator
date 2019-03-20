@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "P-90 Single Coil Pickup", category = "Guitar", author = "Branislav Stojkovic",
-    description = "Single coil P-90 guitar pickup, both \"dog ear\" and \"soap bar\"", stretchable = false,
+    description = "Single coil P-90 guitar pickup, both \"dog ear\" and \"soap bar\"",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
 public class P90Pickup extends AbstractSingleOrHumbuckerPickup {

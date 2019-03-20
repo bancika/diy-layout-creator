@@ -406,6 +406,11 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
   public void setLabelColor(Color labelColor) {
     this.labelColor = labelColor;
   }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
 
   public static enum SMDSize {
 

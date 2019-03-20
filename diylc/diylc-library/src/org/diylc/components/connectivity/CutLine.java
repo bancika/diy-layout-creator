@@ -39,7 +39,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Cut Line", category = "Connectivity", author = "Branislav Stojkovic",
-    description = "Cut line", instanceNamePrefix = "CL", stretchable = false, zOrder = IDIYComponent.COMPONENT,
+    description = "Cut line", instanceNamePrefix = "CL", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class CutLine extends AbstractTransparentComponent<Void> {
 

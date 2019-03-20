@@ -56,7 +56,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transistor (TO-3)", author = "Branislav Stojkovic", category = "Semiconductors",
-    instanceNamePrefix = "Q", description = "Transistor with large metal body", stretchable = false,
+    instanceNamePrefix = "Q", description = "Transistor with large metal body",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class TransistorTO3 extends AbstractTransparentComponent<String> {
 

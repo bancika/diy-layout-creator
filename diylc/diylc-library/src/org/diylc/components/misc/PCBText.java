@@ -46,7 +46,7 @@ import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,
-    flexibleZOrder = false, stretchable = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
+    flexibleZOrder = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
 public class PCBText extends AbstractComponent<Void> {
 
   public static String DEFAULT_TEXT = "Double click to edit text";

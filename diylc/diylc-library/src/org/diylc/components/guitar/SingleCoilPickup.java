@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Single Coil Pickup", category = "Guitar", author = "Branislav Stojkovic",
-    description = "Single coil guitar pickup, both Strat and Tele style", stretchable = false,
+    description = "Single coil guitar pickup, both Strat and Tele style",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
 public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {

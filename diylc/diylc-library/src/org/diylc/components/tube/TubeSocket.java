@@ -53,7 +53,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes",
-    instanceNamePrefix = "V", description = "Various types of tube/valve sockets", stretchable = false,
+    instanceNamePrefix = "V", description = "Various types of tube/valve sockets",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class TubeSocket extends AbstractTransparentComponent<String> {
 

@@ -56,7 +56,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Multi-Section Capacitor", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "C", description = "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
-    stretchable = false, zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
 public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacitance[]> {
 
   private static final long serialVersionUID = 1L;
@@ -515,5 +515,10 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
   
   public void setPinColor(Color pinColor) {
     this.pinColor = pinColor;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

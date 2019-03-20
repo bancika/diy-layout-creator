@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Terminal Strip", author = "Branislav Stojkovic", category = "Boards",
-    instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction", stretchable = false,
+    instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction",
     zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = TerminalStripTransformer.class)
 public class TerminalStrip extends AbstractTransparentComponent<String> implements IContinuity {
 
@@ -460,5 +460,10 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
   @Override
   public boolean arePointsConnected(int index1, int index2) {
     return Math.abs(index1 - index2) == getTerminalCount();
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 }

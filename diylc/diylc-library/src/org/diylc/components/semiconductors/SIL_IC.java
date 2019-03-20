@@ -55,7 +55,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "SIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
-    instanceNamePrefix = "IC", description = "Single-in-line package IC", stretchable = false,
+    instanceNamePrefix = "IC", description = "Single-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = SIL_ICTransformer.class)
 public class SIL_IC extends AbstractTransparentComponent<String> {
 
@@ -143,6 +143,11 @@ public class SIL_IC extends AbstractTransparentComponent<String> {
     updateControlPoints();
     // Reset body shape;
     body = null;
+  }
+  
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
   }
 
   @EditableProperty
