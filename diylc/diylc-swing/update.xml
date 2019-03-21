@@ -2648,6 +2648,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improve "Expand Selection" feature to use the same algorithm as netlists for better precision</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improve performance of netlist calculations</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

@@ -201,4 +201,11 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 3)
+      return null;
+    return Integer.toString(index + 1);
+  }
 }

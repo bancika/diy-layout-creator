@@ -398,7 +398,26 @@ public abstract class NetlistAnalyzer {
     return c.getName() + " " + c.getValueForDisplay();
   }
   
-  protected Set<IDIYComponent<?>> extractComponents(Netlist netlist) {
+  public static List<Set<IDIYComponent<?>>> extractComponentGroups(List<Netlist> netlists) {
+    List<Set<IDIYComponent<?>>> res = new ArrayList<Set<IDIYComponent<?>>>();
+    for (Netlist n : netlists) {
+      res.addAll(extractComponentGroups(n));
+    }
+    return res;
+  }
+  
+  public static List<Set<IDIYComponent<?>>> extractComponentGroups(Netlist netlist) {
+    List<Set<IDIYComponent<?>>> res = new ArrayList<Set<IDIYComponent<?>>>();
+    for (Group g : netlist.getGroups()) {
+      Set<IDIYComponent<?>> components = new HashSet<IDIYComponent<?>>();
+      for (Node n : g.getNodes())
+        components.add(n.getComponent());
+      res.add(components);
+    }
+    return res;
+  }
+  
+  public static Set<IDIYComponent<?>> extractComponents(Netlist netlist) {
     Set<IDIYComponent<?>> res = new HashSet<IDIYComponent<?>>();
     for (Group g : netlist.getGroups())
       for (Node n : g.getNodes())

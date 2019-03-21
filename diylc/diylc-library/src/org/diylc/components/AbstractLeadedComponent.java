@@ -623,7 +623,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   
   @Override
   public String getInternalLinkName(int index1, int index2) {
-    if ((index1 == 0 && index2 == getControlPointCount() - 1) || (index2 == 0 && index1 == getControlPointCount() - 1))
+    if ((index1 == 0 && index2 == 1) || (index2 == 0 && index1 == 1))
       return getName();
     return null;
   }
@@ -649,6 +649,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   public void setMoveLabel(boolean moveLabel) {
     this.moveLabel = moveLabel;
+  }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 2)
+      return null;
+    return Integer.toString(index + 1);
   }
 
   public enum LabelOriantation {

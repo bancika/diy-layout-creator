@@ -167,4 +167,9 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
   public String getControlPointNodeName(int index) {   
     return null;
   }
+  
+  public boolean getMoveLabel() {
+    // override to disable edit
+    return false;
+  }
 }

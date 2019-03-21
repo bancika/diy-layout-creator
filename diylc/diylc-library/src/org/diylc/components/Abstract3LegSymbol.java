@@ -335,6 +335,13 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
       }
     }
   }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 3)
+      return null;
+    return Integer.toString(index + 1);
+  }
 
   /**
    * Returns transistor shape consisting of 3 parts, in this order: main body, connectors, polarity

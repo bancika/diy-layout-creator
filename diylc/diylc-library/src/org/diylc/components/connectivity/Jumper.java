@@ -163,4 +163,9 @@ public class Jumper extends AbstractLeadedComponent<Void> implements IContinuity
   public boolean arePointsConnected(int index1, int index2) {
     return true;
   }  
+  
+  public boolean getMoveLabel() {
+    // override to disable edit
+    return false;
+  }
 }

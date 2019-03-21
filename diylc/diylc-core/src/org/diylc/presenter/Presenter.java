@@ -80,6 +80,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
+import org.diylc.netlist.NetlistAnalyzer;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Position;
 import org.diylc.netlist.SwitchSetup;
@@ -1905,6 +1906,8 @@ public class Presenter implements IPlugInPort {
   public void expandSelection(ExpansionMode expansionMode) {
     LOG.info(String.format("expandSelection(%s)", expansionMode));
     List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(this.selectedComponents);
+    List<Netlist> netlists = extractNetlists();
+    List<Set<IDIYComponent<?>>> allGroups = NetlistAnalyzer.extractComponentGroups(netlists);
     // Find control points of all selected components and all types
     Set<String> selectedNamePrefixes = new HashSet<String>();
     if (expansionMode == ExpansionMode.SAME_TYPE) {
@@ -1916,23 +1919,26 @@ public class Presenter implements IPlugInPort {
     // Now try to find components that intersect with at least one component
     // in the pool.
     for (IDIYComponent<?> component : getCurrentProject().getComponents()) {
+      // no need to consider it, it's already in the selection
+      if (newSelection.contains(component))
+        continue;
+      // construct a list of component groups that contain the current component
+      List<Set<IDIYComponent<?>>> componentGroups = new ArrayList<Set<IDIYComponent<?>>>();
+      for (Set<IDIYComponent<?>> e : allGroups)
+        if (e.contains(component))
+          componentGroups.add(e);
+      if (componentGroups.isEmpty())
+        continue;
       // Skip already selected components or ones that cannot be stuck to
       // other components.
-      ComponentArea area = drawingManager.getComponentArea(component);
-      if (newSelection.contains(component) || !component.isControlPointSticky(0) || area == null
-          || area.getOutlineArea() == null)
-        continue;
       boolean matches = false;
-      for (IDIYComponent<?> selectedComponent : this.selectedComponents) {
-        ComponentArea selectedArea = drawingManager.getComponentArea(selectedComponent);
-        if (selectedArea == null || selectedArea.getOutlineArea() == null)
-          continue;
-        Area intersection = new Area(area.getOutlineArea());
-        intersection.intersect(selectedArea.getOutlineArea());
-        if (!intersection.isEmpty()) {
-          matches = true;
-          break;
-        }
+      outer: for (IDIYComponent<?> selectedComponent : this.selectedComponents) {
+          // try to find the selectedComponent in one of the groups
+        for (Set<IDIYComponent<?>> s : componentGroups)
+          if (s.contains(selectedComponent)) {
+            matches = true;
+            break outer;
+          }
       }
 
       if (matches) {
