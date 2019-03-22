@@ -69,6 +69,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.gui.actionBar.ActionBarPlugin;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.autosave.AutoSavePlugin;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
@@ -126,6 +127,7 @@ public class MainFrame extends JFrame implements ISwingUI {
     presenter.installPlugin(new LayersMenuPlugin(this));
     presenter.installPlugin(new CloudPlugIn(this));
     presenter.installPlugin(new HelpMenuPlugin(this));
+    presenter.installPlugin(new ActionBarPlugin(this));
 
     presenter.installPlugin(new StatusBar(this));
 
@@ -313,7 +315,7 @@ public class MainFrame extends JFrame implements ISwingUI {
         menu.add(action);
       }
     }
-  }
+  }  
 
   @Override
   public void injectSubmenu(String name, Icon icon, String parentMenuName) {
@@ -323,6 +325,11 @@ public class MainFrame extends JFrame implements ISwingUI {
     submenu.setIcon(icon);
     menu.add(submenu);
     menuMap.put(name, submenu);
+  }
+  
+  @Override
+  public void injectMenuComponent(JComponent component) {
+    getMainMenuBar().add(component);
   }
 
   @Override

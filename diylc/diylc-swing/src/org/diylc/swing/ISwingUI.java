@@ -67,6 +67,8 @@ public interface ISwingUI extends IView {
    * @param menuName name of the menu to insert into
    */
   void injectMenuAction(Action action, String menuName);
+  
+  void injectMenuComponent(JComponent component);
 
   /**
    * Injects a custom submenu into application's main menu. If the specified menu does not exist it
