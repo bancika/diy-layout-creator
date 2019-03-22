@@ -86,7 +86,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   
   // parameters for adjusting the label control point
   protected Double gamma = null;
-  protected Double p = null;
+  protected Double r = null;
 
   protected AbstractLeadedComponent() {
     super();
@@ -133,9 +133,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       double y = (getNewPoints()[1].y + getNewPoints()[0].y) / 2.0;
       double theta = Math.atan2(getNewPoints()[1].y - getNewPoints()[0].y, getNewPoints()[1].x - getNewPoints()[0].x);
       double beta = gamma - (Math.PI / 2 - theta);
-      getNewPoints()[2].setLocation(x + Math.cos(beta) * p, y + Math.sin(beta) * p);
+      getNewPoints()[2].setLocation(x + Math.cos(beta) * r, y + Math.sin(beta) * r);
       gamma = null;
-      p = null;
+      r = null;
     }
     
     double distance = getNewPoints()[0].distance(getNewPoints()[1]);
@@ -540,13 +540,19 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   @Override
   public void setControlPoint(Point point, int index) {        
     // when moving one of the ending points, try to retain the angle and distance from the center point to label point
-    if (index < 2 && gamma == null) {
-      double x = (getNewPoints()[1].x + getNewPoints()[0].x) / 2.0;
-      double y = (getNewPoints()[1].y + getNewPoints()[0].y) / 2.0;
-      double theta = Math.atan2(getNewPoints()[1].y - getNewPoints()[0].y, getNewPoints()[1].x - getNewPoints()[0].x);
-      double beta = Math.atan2(getNewPoints()[2].y - y, getNewPoints()[2].x - x);
-      gamma = beta + (Math.PI / 2 - theta); 
-      p = getNewPoints()[2].distance(x, y);
+    if (index < 2) {
+      if (gamma == null) {
+        double x = (getNewPoints()[1].x + getNewPoints()[0].x) / 2.0;
+        double y = (getNewPoints()[1].y + getNewPoints()[0].y) / 2.0;
+        double theta = Math.atan2(getNewPoints()[1].y - getNewPoints()[0].y, getNewPoints()[1].x - getNewPoints()[0].x);
+        double beta = Math.atan2(getNewPoints()[2].y - y, getNewPoints()[2].x - x);
+        gamma = beta + (Math.PI / 2 - theta);
+        r = getNewPoints()[2].distance(x, y);
+      } else { // in case when we are copy pasting we don't want to recalculate 3rd point position as they will all move in unison
+        // when we moved the first point, gamma and r were initialized, so now we are canceling
+        gamma = null;
+        r = null;
+      }
     }
     
     getNewPoints()[index].setLocation(point);   
