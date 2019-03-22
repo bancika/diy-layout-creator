@@ -81,8 +81,7 @@ public class AutoSavePlugin implements IPlugIn {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
             lastSave = System.currentTimeMillis();
-            String fileName = generateBackupFileName(plugInPort.getCurrentFileName());
-            LOG.info("Creating backup file: " + fileName);
+            String fileName = generateBackupFileName(plugInPort.getCurrentFileName());            
             plugInPort.saveProjectToFile(fileName, true);
             cleanupExtra();
           }
@@ -131,7 +130,7 @@ public class AutoSavePlugin implements IPlugIn {
     int i = 0;
     while (i < files.length && totalSize > maxTotalSize) {
       totalSize -= files[i].length();
-      LOG.info("Deleteting old backup file: " + files[i].getName());
+      LOG.info("Maximum backup size exceeded. Deleteting old backup file: " + files[i].getName());
       files[i].delete();
       i++;
     }
