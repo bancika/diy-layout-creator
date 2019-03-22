@@ -2676,6 +2676,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>When pasting a group of components that contain at least one "PCB Text" instance, some of the other components get rendered mirrored while position the pasted components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Some schematic symbols (transistors, potentiometer...) are not rendered properly when rotated and flipped at the same time</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

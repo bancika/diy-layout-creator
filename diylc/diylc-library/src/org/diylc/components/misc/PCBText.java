@@ -117,6 +117,8 @@ public class PCBText extends AbstractComponent<Void> {
         g2d.rotate(Math.PI * 3 / 2, point.x, point.y);
         break;
     }
+    
+    AffineTransform oldTx = g2d.getTransform();
 
     // Flip horizontally
     AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
@@ -124,6 +126,8 @@ public class PCBText extends AbstractComponent<Void> {
     g2d.transform(tx);
 
     g2d.drawString(text, x, y);
+    
+    g2d.setTransform(oldTx);
   }
 
   @Override
