@@ -22,85 +22,47 @@
 package org.diylc.swing.plugins.autosave;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.swing.SwingUtilities;
-
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
-import org.diylc.presenter.Presenter;
-import org.diylc.swing.gui.DummyView;
 
 public class AutoSavePlugin implements IPlugIn {
 
-  private static final String AUTO_SAVE_FILE_NAME = Utils.getUserDataDirectory("diylc") + "autoSave.diy";
+  private static final String AUTO_SAVE_PATH = Utils.getUserDataDirectory("diylc") + "autoSave";
+  
+  private static final Logger LOG = Logger.getLogger(AutoSavePlugin.class);
 
-  protected static final long autoSaveFrequency = 60 * 1000;
+  protected static final long autoSaveFrequencyMs = 60 * 1000;
+  protected static final int maxTotalSizeMb = 64;
 
   private ExecutorService executor;
 
   private IPlugInPort plugInPort;
-  private IView view;
   private long lastSave = 0;
 
   public AutoSavePlugin(IView view) {
-    this.view = view;
     executor = Executors.newSingleThreadExecutor();
   }
 
   @Override
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
-    SwingUtilities.invokeLater(new Runnable() {
-
-      @Override
-      public void run() {
-        boolean wasAbnormal = ConfigurationManager.getInstance().readBoolean(IPlugInPort.ABNORMAL_EXIT_KEY, false);
-        Date lastHeartbeat = (Date) ConfigurationManager.getInstance().readObject(IPlugInPort.HEARTBEAT, new Date());
-        long msSinceHeartbeat = new Date().getTime() - lastHeartbeat.getTime();
-        File autoSaved = new File(AUTO_SAVE_FILE_NAME);
-        if (autoSaved.exists())
-          // try to figure out if another instance is running. Only pull auto-saved file if there's no recent heartbeat 
-          if (wasAbnormal && msSinceHeartbeat > autoSaveFrequency) {
-            IPlugInPort testPresenter = new Presenter(new DummyView());
-            testPresenter.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
-            // Only prompt if there is something saved in the
-            // auto-saved file.
-            if (!testPresenter.getCurrentProject().getComponents().isEmpty()) {
-              int decision =
-                  view.showConfirmDialog(
-                      "It appears that application was not closed normally in the previous session. Do you want to open the last auto-saved file?",
-                      "Auto-Save", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE);
-              if (decision == IView.YES_OPTION) {
-                AutoSavePlugin.this.plugInPort.loadProjectFromFile(AUTO_SAVE_FILE_NAME);
-              }
-            }
-          } else
-            autoSaved.delete();
-        // Set abnormal flag to true, GUI side of the app must flip to
-        // false when app closes regularly.
-        ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, true);
-      }
-    });
-    // write heartbeat periodically
-    new Thread(new Runnable() {
-
-      @Override
-      public void run() {
-        try {
-          Thread.sleep(autoSaveFrequency);
-        } catch (InterruptedException e) {
-        }
-        ConfigurationManager.getInstance().writeValue(IPlugInPort.HEARTBEAT, new Date());
-      }
-    }).start();
+    // create the directory if needed
+    File dir = new File(AUTO_SAVE_PATH);
+    if (!dir.exists())
+      dir.mkdirs();
   }
 
   @Override
@@ -111,7 +73,7 @@ public class AutoSavePlugin implements IPlugIn {
   @Override
   public void processMessage(EventType eventType, Object... params) {
     if (eventType == EventType.PROJECT_MODIFIED) {
-      if (System.currentTimeMillis() - lastSave > autoSaveFrequency) {
+      if (System.currentTimeMillis() - lastSave > autoSaveFrequencyMs) {
         executor.execute(new Runnable() {
 
           @Override
@@ -119,10 +81,59 @@ public class AutoSavePlugin implements IPlugIn {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
             lastSave = System.currentTimeMillis();
-            plugInPort.saveProjectToFile(AUTO_SAVE_FILE_NAME, true);
+            String fileName = generateBackupFileName(plugInPort.getCurrentFileName());
+            LOG.info("Creating backup file: " + fileName);
+            plugInPort.saveProjectToFile(fileName, true);
+            cleanupExtra();
           }
         });
       }
+    }
+  }
+  
+  private String generateBackupFileName(String baseFileName) {
+    if (baseFileName == null)
+      baseFileName = "Untitled";
+    File file = new File(baseFileName);
+    String name = file.getName();
+    
+    // remove extension
+    if (name.toLowerCase().endsWith(".diy"))
+      name = name.substring(name.length() - 4);
+    
+    // append date and time
+    Date date = new Date(); 
+    DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+    file = new File(AUTO_SAVE_PATH + File.separator + name + "." + dateFormat.format(date) + ".diy");
+    // make sure that it doesn't already exist
+    int i = 2;
+    while (file.exists()) {
+      file = new File(AUTO_SAVE_PATH + File.separator + name + "." + dateFormat.format(date) + "-" + i + ".diy");
+      i++;
+    }
+    return file.getAbsolutePath();
+  }
+  
+  private void cleanupExtra() {
+    File[] files = new File(AUTO_SAVE_PATH).listFiles();
+    // sort files by date
+    Arrays.sort(files, new Comparator<File>() {
+
+      @Override
+      public int compare(File o1, File o2) {       
+        return new Long(o1.lastModified()).compareTo(o2.lastModified());
+      }      
+    });
+    long totalSize = 0;
+    long maxTotalSize = maxTotalSizeMb * 1024 * 1024;
+    for (File f : files)
+      totalSize += f.length();
+    int i = 0;
+    while (i < files.length && totalSize > maxTotalSize) {
+      totalSize -= files[i].length();
+      LOG.info("Deleteting old backup file: " + files[i].getName());
+      files[i].delete();
+      i++;
     }
   }
 }
