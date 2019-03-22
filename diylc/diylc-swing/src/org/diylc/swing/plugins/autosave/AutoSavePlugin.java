@@ -44,8 +44,8 @@ public class AutoSavePlugin implements IPlugIn {
   
   private static final Logger LOG = Logger.getLogger(AutoSavePlugin.class);
 
-  protected static final long autoSaveFrequencyMs = 60 * 1000;
-  protected static final int maxTotalSizeMb = 64;
+  public static long BACKUP_FREQ_MS = 60 * 1000;
+  public static int MAX_TOTAL_SIZE_MB = 64;
 
   private ExecutorService executor;
 
@@ -73,7 +73,7 @@ public class AutoSavePlugin implements IPlugIn {
   @Override
   public void processMessage(EventType eventType, Object... params) {
     if (eventType == EventType.PROJECT_MODIFIED) {
-      if (System.currentTimeMillis() - lastSave > autoSaveFrequencyMs) {
+      if (System.currentTimeMillis() - lastSave > BACKUP_FREQ_MS) {
         executor.execute(new Runnable() {
 
           @Override
@@ -124,7 +124,7 @@ public class AutoSavePlugin implements IPlugIn {
       }      
     });
     long totalSize = 0;
-    long maxTotalSize = maxTotalSizeMb * 1024 * 1024;
+    long maxTotalSize = MAX_TOTAL_SIZE_MB * 1024 * 1024;
     for (File f : files)
       totalSize += f.length();
     int i = 0;
