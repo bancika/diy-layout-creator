@@ -264,6 +264,11 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   public boolean canPointMoveFreely(int pointIndex) {   
     return pointIndex == 3;
   }
+  
+  @Override
+  public boolean canControlPointOverlap(int index) {
+    return index >= 3;
+  }
 
   @EditableProperty
   public SymbolFlipping getFlip() {

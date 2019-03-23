@@ -536,6 +536,11 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
     return getMoveLabel() || index < 2 ? VisibilityPolicy.ALWAYS : VisibilityPolicy.NEVER;
   }
+  
+  @Override
+  public boolean canControlPointOverlap(int index) {
+    return index >= 2;
+  }
 
   @Override
   public void setControlPoint(Point point, int index) {        
