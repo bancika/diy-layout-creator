@@ -428,11 +428,11 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     }
   }
   
-  @Override
-  public String getControlPointNodeName(int index) {
-    // we don't want the switch to produce any nodes, it just makes connections
-    return null;
-  }
+//  @Override
+//  public String getControlPointNodeName(int index) {
+//    // we don't want the switch to produce any nodes, it just makes connections
+//    return null;
+//  }
   
   // switch stuff
 

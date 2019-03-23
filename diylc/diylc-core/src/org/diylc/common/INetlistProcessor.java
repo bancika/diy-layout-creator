@@ -35,9 +35,10 @@ public interface INetlistProcessor {
   /**
    * Finds all {@link Netlist}s for each switch position combination. 
    * 
+   * @param includeSwitches
    * @return
    */
-  List<Netlist> extractNetlists();
+  List<Netlist> extractNetlists(boolean includeSwitches);
   
   /**
    * Finds all available {@link INetlistAnalyzer} implementations.

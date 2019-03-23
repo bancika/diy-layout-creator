@@ -1667,7 +1667,7 @@ public class ActionFactory {
 
         @Override
         public List<Netlist> doInBackground() throws Exception {
-          return plugInPort.extractNetlists();
+          return plugInPort.extractNetlists(true);
         }
 
         @Override
@@ -1722,7 +1722,7 @@ public class ActionFactory {
 
         @Override
         public List<Summary> doInBackground() throws Exception {
-          List<Netlist> netlists = plugInPort.extractNetlists();
+          List<Netlist> netlists = plugInPort.extractNetlists(true);
           if (netlists == null || netlists.isEmpty()) {
             throw new Exception("The generated netlist is empty, nothing to show.");            
           }

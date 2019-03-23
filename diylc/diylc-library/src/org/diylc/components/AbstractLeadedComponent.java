@@ -338,7 +338,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       drawCenteredText(g2d, label, offset, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       g2d.setTransform(oldTransform);
     } else {
-      if (getLabelOriantation() == LabelOriantation.Horizontal) {
+      if (isStanding() || getLabelOriantation() == LabelOriantation.Horizontal) {
         g2d.setTransform(oldTransform);
         double x = (getNewPoints()[0].x + getNewPoints()[1].x - length) / 2.0;
         double y = (getNewPoints()[0].y + getNewPoints()[1].y - width) / 2.0;

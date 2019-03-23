@@ -1906,7 +1906,7 @@ public class Presenter implements IPlugInPort {
   public void expandSelection(ExpansionMode expansionMode) {
     LOG.info(String.format("expandSelection(%s)", expansionMode));
     List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(this.selectedComponents);
-    List<Netlist> netlists = extractNetlists();
+    List<Netlist> netlists = extractNetlists(false);
     List<Set<IDIYComponent<?>>> allGroups = NetlistAnalyzer.extractComponentGroups(netlists);
     // Find control points of all selected components and all types
     Set<String> selectedNamePrefixes = new HashSet<String>();
@@ -2699,29 +2699,30 @@ public class Presenter implements IPlugInPort {
   
   @SuppressWarnings("unchecked")
   @Override
-  public List<Netlist> extractNetlists() {    
+  public List<Netlist> extractNetlists(boolean includeSwitches) {    
     Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
     
     List<ISwitch> switches = new ArrayList<ISwitch>();
+    
     for (IDIYComponent<?> c : currentProject.getComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      
+
       // extract nodes
       if (!(c instanceof IContinuity)) {
         for (int i = 0; i < c.getControlPointCount(); i++) {
           String nodeName = c.getControlPointNodeName(i);
-          if (nodeName != null) {
+          if (nodeName != null && (!includeSwitches || !ISwitch.class.isAssignableFrom(type.getInstanceClass()))) {
             nodes.add(new Node(c, i));
           }
         }
       }
-      
+
       // extract switches
-      if (ISwitch.class.isAssignableFrom(type.getInstanceClass()))
-        switches.add((ISwitch)c);
-    }
+      if (includeSwitches && ISwitch.class.isAssignableFrom(type.getInstanceClass()))
+        switches.add((ISwitch) c);
+    }   
     
     // save us the trouble
     if (nodes.isEmpty())
