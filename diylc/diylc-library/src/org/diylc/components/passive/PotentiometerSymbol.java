@@ -49,7 +49,7 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
 
   public Shape[] getBody() {
     Shape[] body = new Shape[3];
-    Point[] controlPoints = getNewControlPoints();
+    Point[] controlPoints = getControlPoints();
     int x = controlPoints[0].x;
     int y = controlPoints[0].y;
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
