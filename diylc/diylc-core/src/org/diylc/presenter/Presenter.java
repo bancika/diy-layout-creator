@@ -1258,15 +1258,15 @@ public class Presenter implements IPlugInPort {
         }
       }
 
-      for (int i = 0; i < controlPoints.length - 1; i++) {
-        for (int j = i + 1; j < controlPoints.length; j++) {
-          if (controlPoints[i] != null && controlPoints[j] != null && controlPoints[i].equals(controlPoints[j])) {
-            // Control points collision detected, cannot make
-            // this move.
-            return null;
-          }
-        }
-      }
+//      for (int i = 0; i < controlPoints.length - 1; i++) {
+//        for (int j = i + 1; j < controlPoints.length; j++) {
+//          if (controlPoints[i] != null && controlPoints[j] != null && controlPoints[i].equals(controlPoints[j])) {
+//            // Control points collision detected, cannot make
+//            // this move.
+//            return null;
+//          }
+//        }
+//      }
     }
 
     // Update all points to new location.
