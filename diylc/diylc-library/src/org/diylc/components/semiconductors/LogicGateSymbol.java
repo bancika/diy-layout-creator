@@ -31,6 +31,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
@@ -132,7 +133,7 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
     if (display == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    drawCenteredText(g2d, label, x, controlPoints[0].y + (getControlPointCount() == 2 ? 0 : pinSpacing), HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, label, x, controlPoints[0].y + (getControlPointCount() == 2 ? 0 : pinSpacing), HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);   
   }
 

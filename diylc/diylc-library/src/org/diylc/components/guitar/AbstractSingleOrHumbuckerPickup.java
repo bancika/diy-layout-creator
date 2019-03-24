@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
@@ -60,11 +61,11 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
     }
     
     if (getPolarity() == Polarity.North || getPolarity() == Polarity.South) {
-      drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].x + points[2].x) / 2 + dx, (points[1].y + points[2].y) / 2 + dy, HorizontalAlignment.CENTER,
+      StringUtils.drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].x + points[2].x) / 2 + dx, (points[1].y + points[2].y) / 2 + dy, HorizontalAlignment.CENTER,
           VerticalAlignment.CENTER);
     } else {
-      drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
   }
   

@@ -36,6 +36,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.ShadedPaint;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
@@ -331,7 +332,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       if (getLabelOriantation() != LabelOriantation.Horizontal) {
         g2d.rotate(theta);
       }
-      drawCenteredText(g2d, label, offset, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, label, offset, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       g2d.setTransform(oldTransform);
     } else {
       if (isStanding() || getLabelOriantation() == LabelOriantation.Horizontal) {

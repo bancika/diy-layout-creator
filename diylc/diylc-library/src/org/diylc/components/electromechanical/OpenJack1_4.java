@@ -33,6 +33,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -170,12 +171,12 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
         rotation.transform(ringOrSwitchLabel, ringOrSwitchLabel);
         rotation.transform(sleeveLabel, sleeveLabel);
       }
-      drawCenteredText(g2d, "T", tipLabel.x, tipLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      drawCenteredText(g2d, "S", sleeveLabel.x, sleeveLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "T", tipLabel.x, tipLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "S", sleeveLabel.x, sleeveLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       if (getType() == OpenJackType.STEREO)
-        drawCenteredText(g2d, "R", ringOrSwitchLabel.x, ringOrSwitchLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        StringUtils.drawCenteredText(g2d, "R", ringOrSwitchLabel.x, ringOrSwitchLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       if (getType() == OpenJackType.SWITCHED)
-        drawCenteredText(g2d, "Sw", ringOrSwitchLabel.x, ringOrSwitchLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        StringUtils.drawCenteredText(g2d, "Sw", ringOrSwitchLabel.x, ringOrSwitchLabel.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
     
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);

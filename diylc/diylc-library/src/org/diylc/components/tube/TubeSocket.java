@@ -33,6 +33,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -314,7 +315,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
           double theta = Math.atan2(controlPoints[i + 1].y - controlPoints[0].y, controlPoints[i + 1].x - controlPoints[0].x);
           double x = controlPoints[i + 1].x - Math.cos(theta) * electrodeLabelOffset;
           double y = controlPoints[i + 1].y - Math.sin(theta) * electrodeLabelOffset;
-          drawCenteredText(g2d, label, (int)x, (int)y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          StringUtils.drawCenteredText(g2d, label, (int)x, (int)y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         }
       }
     }

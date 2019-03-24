@@ -2640,6 +2640,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Auto-Wrap Label" component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Auto-save plugin now works by periodically creating project backups in user\.diylc\autoSave directory and maintains file history, keeping the last X versions of the file. Maximum size for all backups combined is configurable and pre-set to 64MB</description>
 				</org.diylc.appframework.update.Change>						
 				<org.diylc.appframework.update.Change>

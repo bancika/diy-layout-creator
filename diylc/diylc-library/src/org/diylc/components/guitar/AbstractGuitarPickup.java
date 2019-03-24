@@ -26,6 +26,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
@@ -90,8 +91,8 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
         break;     
     }   
 
-    drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);   
+    StringUtils.drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);   
   }
   
   protected void drawMainLabel(Graphics2D g2d, Project project, boolean outlineMode, ComponentState componentState) {
@@ -120,7 +121,7 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
     }
     g2d.translate(0, getMainLabelYOffset());
     
-    drawCenteredText(g2d, getName(), 0, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, getName(), 0, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
    
     g2d.setTransform(originalTx);
   }

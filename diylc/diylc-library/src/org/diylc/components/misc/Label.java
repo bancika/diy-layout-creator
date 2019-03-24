@@ -244,7 +244,7 @@ public class Label extends AbstractComponent<String> {
     this.color = color;
   }
 
-  @EditableProperty(name = "Vertical alignment")
+  @EditableProperty(name = "Vertical Alignment")
   public VerticalAlignment getVerticalAlignment() {
     if (verticalAlignment == null) {
       verticalAlignment = VerticalAlignment.CENTER;
@@ -256,7 +256,7 @@ public class Label extends AbstractComponent<String> {
     this.verticalAlignment = verticalAlignment;
   }
 
-  @EditableProperty(name = "Horizontal alignment")
+  @EditableProperty(name = "Horizontal Alignment")
   public HorizontalAlignment getHorizontalAlignment() {
     if (horizontalAlignment == null) {
       horizontalAlignment = HorizontalAlignment.CENTER;

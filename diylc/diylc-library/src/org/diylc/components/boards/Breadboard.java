@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -146,7 +147,7 @@ public class Breadboard extends AbstractComponent<Void> {
         } else {
           coordinateX = (int) (point.x + offset + 10.5 * spacing);
         }
-        drawCenteredText(g2d, new Integer(y + 1).toString(), coordinateX, (int) (point.y + (y + 1) * spacing),
+        StringUtils.drawCenteredText(g2d, new Integer(y + 1).toString(), coordinateX, (int) (point.y + (y + 1) * spacing),
             section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
         for (int x = 0; x < 5; x++) {
           int holeX = (int) (point.x + offset + (x + 6) * spacing);
@@ -159,9 +160,9 @@ public class Breadboard extends AbstractComponent<Void> {
           // Draw horizontal labels
           if (y == 0) {
             g2d.setColor(COORDINATE_COLOR);
-            drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y),
+            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y),
                 HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-            drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y
+            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y
                 + spacing * 30 + COORDINATE_FONT_SIZE / 2), HorizontalAlignment.CENTER, VerticalAlignment.TOP);
           }
         }
@@ -218,7 +219,7 @@ public class Breadboard extends AbstractComponent<Void> {
         } else {
           coordinateX = (int) (point.x + offset + 10.5 * spacing);
         }
-        drawCenteredText(g2d, new Integer(y + 1).toString(), coordinateX, (int) (point.y + (y + 1) * spacing),
+        StringUtils.drawCenteredText(g2d, new Integer(y + 1).toString(), coordinateX, (int) (point.y + (y + 1) * spacing),
             section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 //        for (int x = 0; x < 5; x++) {
           int holeX1 = (int) (point.x + offset + 6 * spacing);

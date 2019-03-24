@@ -32,6 +32,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -182,9 +183,9 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
       int spacing = (int) SPACING.convertToPixels();
       g2d.setColor(MARKING_COLOR);
       g2d.setFont(project.getFont().deriveFont(12f));
-      drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-", controlPoints[0].x,
+      StringUtils.drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-", controlPoints[0].x,
           controlPoints[0].y - spacing * 7 / 16, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+", controlPoints[2].x,
+      StringUtils.drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+", controlPoints[2].x,
           controlPoints[2].y - spacing * 3 / 4, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
     

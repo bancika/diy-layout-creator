@@ -35,6 +35,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
@@ -561,7 +562,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
           break;
       }         
       
-      drawCenteredText(g2d, pointLabels[i], point.x + dx, point.y + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, pointLabels[i], point.x + dx, point.y + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
   }
 
@@ -581,10 +582,10 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
     g2d.fillOval(width * 2 / 8, height * 6 / 8 - pinSize, pinSize, pinSize);
     g2d.setColor(LABEL_COLOR);
     g2d.setFont(LABEL_FONT.deriveFont(8f * width / 32));
-    drawCenteredText(g2d, "+", width * 2 / 8 + 1, height * 2 / 8 + 4 * width / 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    drawCenteredText(g2d, "-", width * 2 / 8 + 1, height * 6 / 8 - 5 * width / 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    drawCenteredText(g2d, "~", width * 6 / 8 - 2 * width / 32, height * 2 / 8 + 5 * width / 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    drawCenteredText(g2d, "~", width * 6 / 8 - 2 * width / 32, height * 6 / 8 - 5 * width / 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "+", width * 2 / 8 + 1, height * 2 / 8 + 4 * width / 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "-", width * 2 / 8 + 1, height * 6 / 8 - 5 * width / 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "~", width * 6 / 8 - 2 * width / 32, height * 2 / 8 + 5 * width / 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "~", width * 6 / 8 - 2 * width / 32, height * 6 / 8 - 5 * width / 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   @EditableProperty(name = "Body")

@@ -29,6 +29,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
@@ -121,7 +122,7 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     if (display == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    drawCenteredText(g2d, label, rect.x + rect.width, rect.y + rect.height, HorizontalAlignment.RIGHT,
+    StringUtils.drawCenteredText(g2d, label, rect.x + rect.width, rect.y + rect.height, HorizontalAlignment.RIGHT,
         VerticalAlignment.BOTTOM);
   }
 

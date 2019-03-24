@@ -27,6 +27,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
@@ -116,11 +117,11 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     	String label = yType == CoordinateType.Letters ? getCoordinateLabel(c) : Integer.toString(c);
     	
     	drawPoint.y += yOffset;
-    	drawCenteredText(g2d, label, 
+    	StringUtils.drawCenteredText(g2d, label, 
     		firstPoint.x + xOffset, drawPoint.y, 
     		HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
     	if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
-    	  drawCenteredText(g2d, label, 
+    	  StringUtils.drawCenteredText(g2d, label, 
     		  secondPoint.x - xOffset, drawPoint.y, 
     		  HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     	}
@@ -146,11 +147,11 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
         String label = xType == CoordinateType.Letters ? getCoordinateLabel(c) : Integer.toString(c);
         
         drawPoint.x += xOffset;
-        drawCenteredText(g2d, label, 
+        StringUtils.drawCenteredText(g2d, label, 
             drawPoint.x, firstPoint.y - 2, 
             HorizontalAlignment.CENTER, VerticalAlignment.TOP);
         if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
-          drawCenteredText(g2d, label, 
+          StringUtils.drawCenteredText(g2d, label, 
               drawPoint.x, (int) (secondPoint.y - COORDINATE_FONT_SIZE), 
               HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
         }

@@ -34,6 +34,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -269,7 +270,7 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
     Rectangle bounds = body[0].getBounds();
     int centerX = bounds.x + bounds.width / 2;
     int centerY = bounds.y + bounds.height / 2;
-    drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }

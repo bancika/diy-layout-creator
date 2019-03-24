@@ -33,6 +33,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
@@ -134,12 +135,12 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
     if (display == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    drawCenteredText(g2d, label, x, controlPoints[0].y + pinSpacing, HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, label, x, controlPoints[0].y + pinSpacing, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
     // Draw +/- markers    
-    drawCenteredText(g2d, getFlip() ? "+" : "-", controlPoints[0].x + pinSpacing, controlPoints[0].y, HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, getFlip() ? "+" : "-", controlPoints[0].x + pinSpacing, controlPoints[0].y, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
-    drawCenteredText(g2d, getFlip() ? "-" : "+", controlPoints[1].x + pinSpacing, controlPoints[1].y, HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, getFlip() ? "-" : "+", controlPoints[1].x + pinSpacing, controlPoints[1].y, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
   }
 
@@ -156,8 +157,8 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
     g2d.fill(area);
     g2d.setColor(BORDER_COLOR);
     g2d.setFont(LABEL_FONT.deriveFont(8f));
-    drawCenteredText(g2d, "-", 3 * margin, height / 3, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    drawCenteredText(g2d, "+", 3 * margin + 1, height * 2 / 3, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "-", 3 * margin, height / 3, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "+", 3 * margin + 1, height * 2 / 3, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     // g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND,
     // BasicStroke.JOIN_ROUND));
     g2d.draw(area);

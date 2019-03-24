@@ -33,6 +33,7 @@ import java.text.DecimalFormat;
 import java.text.Format;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
@@ -414,7 +415,7 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
     
     Rectangle bounds = area[0].getBounds();
 
-    drawCenteredText(g2d, label, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, label, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     
     // draw polarity markers
     g2d.setColor(pinColor.darker());

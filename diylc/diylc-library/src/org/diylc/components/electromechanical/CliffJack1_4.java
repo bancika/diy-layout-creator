@@ -34,6 +34,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -246,7 +247,7 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
     g2d.setFont(project.getFont());
     int centerX = (controlPoints[0].x + controlPoints[3].x) / 2;
     int centerY = (controlPoints[0].y + controlPoints[3].y) / 2;
-    drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }

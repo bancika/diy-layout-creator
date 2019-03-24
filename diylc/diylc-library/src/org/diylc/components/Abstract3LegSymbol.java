@@ -31,13 +31,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractComponent;
 import org.diylc.components.semiconductors.SymbolFlipping;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
@@ -160,10 +160,10 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     Rectangle shapeRect = body[0].getBounds().union(body[1].getBounds()).union(body[2].getBounds());
     
     if (getMoveLabel()) {
-      drawCenteredText(g2d, label, controlPoints[3].x, controlPoints[3].y, flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
+      StringUtils.drawCenteredText(g2d, label, controlPoints[3].x, controlPoints[3].y, flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
               : HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     } else {
-      drawCenteredText(g2d, label, getLabelX(shapeRect, textRect, fontMetrics, outlineMode),
+      StringUtils.drawCenteredText(g2d, label, getLabelX(shapeRect, textRect, fontMetrics, outlineMode),
           getLabelY(shapeRect, textRect, fontMetrics, outlineMode), flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
               : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
     }

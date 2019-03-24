@@ -34,6 +34,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
@@ -315,11 +316,11 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
     AffineTransform tx = getTx();
     if (tx != null)
       tx.transform(wPoint, wPoint);
-    drawCenteredText(g2d, "P", wPoint.x, wPoint.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "P", wPoint.x, wPoint.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     wPoint = new Point((int) (controlPoints[0].x + windingSpacing.convertToPixels() - project.getFontSize()), (int) (controlPoints[0].y + leadSpacing.convertToPixels()));
     if (tx != null)
       tx.transform(wPoint, wPoint);
-    drawCenteredText(g2d, "S", wPoint.x, wPoint.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "S", wPoint.x, wPoint.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
     // Draw label.
     Color finalLabelColor;
