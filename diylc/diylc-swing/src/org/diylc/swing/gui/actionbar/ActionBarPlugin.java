@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package org.diylc.swing.gui.actionBar;
+package org.diylc.swing.gui.actionbar;
 
 import java.awt.BorderLayout;
 import java.util.EnumSet;

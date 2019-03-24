@@ -1,27 +1,28 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package org.diylc.swing.plugins.autosave;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ import org.diylc.core.IView;
 public class AutoSavePlugin implements IPlugIn {
 
   private static final String AUTO_SAVE_PATH = Utils.getUserDataDirectory("diylc") + "autoSave";
-  
+
   private static final Logger LOG = Logger.getLogger(AutoSavePlugin.class);
 
   public static long BACKUP_FREQ_MS = 60 * 1000;
@@ -67,7 +68,7 @@ public class AutoSavePlugin implements IPlugIn {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    return EnumSet.of(EventType.PROJECT_MODIFIED);
+    return EnumSet.of(EventType.PROJECT_MODIFIED, EventType.PROJECT_LOADED);
   }
 
   @Override
@@ -81,27 +82,55 @@ public class AutoSavePlugin implements IPlugIn {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
             lastSave = System.currentTimeMillis();
-            String fileName = generateBackupFileName(plugInPort.getCurrentFileName());            
+            String fileName = generateBackupFileName(plugInPort.getCurrentFileName());
             plugInPort.saveProjectToFile(fileName, true);
             cleanupExtra();
           }
         });
       }
+    } else if (eventType == EventType.PROJECT_LOADED) {
+      String fileName = (String) params[2];
+      if (fileName != null) {
+        String backupName = generateBackupFileName(fileName);
+        try {
+          copyFileUsingStream(new File(fileName), new File(backupName));
+          LOG.info("Copied loaded file to " + backupName);
+        } catch (IOException e) {
+          LOG.error("Could not copy the loaded file to backup", e);
+        }
+      }
     }
   }
-  
+
+  private static void copyFileUsingStream(File source, File dest) throws IOException {
+    InputStream is = null;
+    OutputStream os = null;
+    try {
+      is = new FileInputStream(source);
+      os = new FileOutputStream(dest);
+      byte[] buffer = new byte[1024];
+      int length;
+      while ((length = is.read(buffer)) > 0) {
+        os.write(buffer, 0, length);
+      }
+    } finally {
+      is.close();
+      os.close();
+    }
+  }
+
   private String generateBackupFileName(String baseFileName) {
     if (baseFileName == null)
       baseFileName = "Untitled";
     File file = new File(baseFileName);
     String name = file.getName();
-    
+
     // remove extension
     if (name.toLowerCase().endsWith(".diy"))
-      name = name.substring(name.length() - 4);
-    
+      name = name.substring(0, name.length() - 4);
+
     // append date and time
-    Date date = new Date(); 
+    Date date = new Date();
     DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
     file = new File(AUTO_SAVE_PATH + File.separator + name + "." + dateFormat.format(date) + ".diy");
     // make sure that it doesn't already exist
@@ -112,16 +141,16 @@ public class AutoSavePlugin implements IPlugIn {
     }
     return file.getAbsolutePath();
   }
-  
+
   private void cleanupExtra() {
     File[] files = new File(AUTO_SAVE_PATH).listFiles();
     // sort files by date
     Arrays.sort(files, new Comparator<File>() {
 
       @Override
-      public int compare(File o1, File o2) {       
+      public int compare(File o1, File o2) {
         return new Long(o1.lastModified()).compareTo(o2.lastModified());
-      }      
+      }
     });
     long totalSize = 0;
     long maxTotalSize = MAX_TOTAL_SIZE_MB * 1024 * 1024;

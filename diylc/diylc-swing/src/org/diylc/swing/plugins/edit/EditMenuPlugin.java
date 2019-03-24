@@ -93,7 +93,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
       @Override
       public void actionPerformed(Project currentState) {
-        plugInPort.loadProject(currentState, false);
+        plugInPort.loadProject(currentState, false, null);
       }
     });
     clipboard.addFlavorListener(new FlavorListener() {

@@ -273,13 +273,13 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void loadProject(Project project, boolean freshStart) {
+  public void loadProject(Project project, boolean freshStart, String filename) {
     LOG.info(String.format("loadProject(%s, %s)", project.getTitle(), freshStart));
     this.currentProject = project;
     drawingManager.clearComponentAreaMap();
     drawingManager.clearContinuityArea();
     updateSelection(EMPTY_SELECTION);
-    messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart);
+    messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart, filename);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
     messageDispatcher.dispatchMessage(EventType.LAYER_VISIBILITY_CHANGED, currentProject.getHiddenLayers());
@@ -291,7 +291,7 @@ public class Presenter implements IPlugInPort {
     try {
       Project project = new Project();
       instantiationManager.fillWithDefaultProperties(project, null);
-      loadProject(project, true);
+      loadProject(project, true, null);
       projectFileManager.startNewFile();
     } catch (Exception e) {
       LOG.error("Could not create new file", e);
@@ -306,7 +306,7 @@ public class Presenter implements IPlugInPort {
     try {
       warnings = new ArrayList<String>();
       Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName, warnings);      
-      loadProject(project, true);
+      loadProject(project, true, fileName);
       projectFileManager.fireFileStatusChanged();
       if (!warnings.isEmpty()) {
         StringBuilder builder = new StringBuilder("<html>File was opened, but there were some issues with it:<br><br>");

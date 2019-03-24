@@ -19,7 +19,7 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.swing.gui.actionBar;
+package org.diylc.swing.gui.actionbar;
 
 import java.awt.Component;
 import java.awt.Cursor;

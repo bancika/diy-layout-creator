@@ -185,7 +185,7 @@ public class TemplateDialog extends JDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          plugInPort.loadProject(presenter.getCurrentProject(), true);
+          plugInPort.loadProject(presenter.getCurrentProject(), true, null);
           dispose();
         }
       });

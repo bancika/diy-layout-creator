@@ -104,7 +104,7 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
     }
 
     nameLabel.setText(selectedProject.getTitle());
-    presenter.loadProject(selectedProject, true);
+    presenter.loadProject(selectedProject, true, null);
 
     if (update) {
       if (renderComponent.isShowing()) {

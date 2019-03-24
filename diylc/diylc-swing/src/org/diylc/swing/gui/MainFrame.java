@@ -69,7 +69,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.gui.actionBar.ActionBarPlugin;
+import org.diylc.swing.gui.actionbar.ActionBarPlugin;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.autosave.AutoSavePlugin;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
