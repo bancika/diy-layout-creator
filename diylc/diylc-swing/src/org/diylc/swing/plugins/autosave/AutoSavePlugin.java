@@ -41,7 +41,7 @@ import org.diylc.core.IView;
 
 public class AutoSavePlugin implements IPlugIn {
 
-  private static final String AUTO_SAVE_PATH = Utils.getUserDataDirectory("diylc") + "autoSave";
+  private static final String AUTO_SAVE_PATH = Utils.getUserDataDirectory("diylc") + "backup";
 
   private static final Logger LOG = Logger.getLogger(AutoSavePlugin.class);
 
