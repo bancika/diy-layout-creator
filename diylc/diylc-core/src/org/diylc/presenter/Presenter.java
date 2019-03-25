@@ -113,17 +113,17 @@ public class Presenter implements IPlugInPort {
       Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
 
         @Override
-        public int compare(Version o1, Version o2) {         
+        public int compare(Version o1, Version o2) {
           return -o1.getVersionNumber().compareTo(o2.getVersionNumber());
-        }        
+        }
       });
-      in.close();      
+      in.close();
     } catch (IOException e) {
       LOG.error("Could not find version number, using default", e);
     }
   }
   public static final String DEFAULTS_KEY_PREFIX = "default.";
-  
+
   private static Map<String, List<Template>> defaultVariantMap = null;
   static {
     try {
@@ -134,7 +134,8 @@ public class Presenter implements IPlugInPort {
       defaultVariantMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
       defaultVariantMap.putAll(map);
       in.close();
-      LOG.info(String.format("Loaded default variants for %d components", defaultVariantMap == null ? 0 : defaultVariantMap.size()));
+      LOG.info(String.format("Loaded default variants for %d components", defaultVariantMap == null ? 0
+          : defaultVariantMap.size()));
     } catch (IOException e) {
       LOG.error("Could not load default variants", e);
     }
@@ -264,7 +265,8 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public Dimension getCanvasDimensions(boolean useZoom, boolean includeExtraSpace) {
-    return drawingManager.getCanvasDimensions(currentProject, useZoom ? drawingManager.getZoomLevel() : 1/ Constants.PIXEL_SIZE, includeExtraSpace);
+    return drawingManager.getCanvasDimensions(currentProject, useZoom ? drawingManager.getZoomLevel()
+        : 1 / Constants.PIXEL_SIZE, includeExtraSpace);
   }
 
   @Override
@@ -305,7 +307,7 @@ public class Presenter implements IPlugInPort {
     List<String> warnings = null;
     try {
       warnings = new ArrayList<String>();
-      Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName, warnings);      
+      Project project = (Project) projectFileManager.deserializeProjectFromFile(fileName, warnings);
       loadProject(project, true, fileName);
       projectFileManager.fireFileStatusChanged();
       if (!warnings.isEmpty()) {
@@ -402,16 +404,21 @@ public class Presenter implements IPlugInPort {
       Set<Class<?>> componentTypeClasses = null;
       try {
         componentTypeClasses = Utils.getClasses("org.diylc.components");
-        List<Class<?>> additionalComponentTypeClasses = JarScanner.getInstance().scanFolder("library", IDIYComponent.class);
-        if (additionalComponentTypeClasses != null)
-          componentTypeClasses.addAll(additionalComponentTypeClasses);
+        try {
+          List<Class<?>> additionalComponentTypeClasses =
+              JarScanner.getInstance().scanFolder("library", IDIYComponent.class);
+          if (additionalComponentTypeClasses != null)
+            componentTypeClasses.addAll(additionalComponentTypeClasses);
+        } catch (Exception e) {
+          LOG.warn("Could not find additional type classes", e);
+        }
 
         for (Class<?> clazz : componentTypeClasses) {
           if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
             ComponentType componentType =
                 ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
             if (componentType == null)
-            	continue;
+              continue;
             List<ComponentType> nestedList;
             if (componentTypes.containsKey(componentType.getCategory())) {
               nestedList = componentTypes.get(componentType.getCategory());
@@ -503,10 +510,7 @@ public class Presenter implements IPlugInPort {
                 getLockedComponents(),
                 groupedComponents,
                 Arrays.asList(instantiationManager.getFirstControlPoint(),
-                    instantiationManager.getPotentialControlPoint()), 
-                componentSlotToDraw,
-                dragInProgress,
-                externalZoom);
+                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress, externalZoom);
     List<String> failedComponentNames = new ArrayList<String>();
     for (IDIYComponent<?> component : failedComponents) {
       failedComponentNames.add(component.getName());
@@ -576,7 +580,8 @@ public class Presenter implements IPlugInPort {
                 currentProject.getComponents().add(component);
                 newSelection.add(component);
               }
-              // group components if there's more than one, e.g. building blocks, but not clipboard contents
+              // group components if there's more than one, e.g. building blocks, but not clipboard
+              // contents
               if (componentSlot.size() > 1 && !componentTypeSlot.getName().toLowerCase().contains("clipboard")) {
                 this.currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(componentSlot));
               }
@@ -650,7 +655,7 @@ public class Presenter implements IPlugInPort {
           // cursor.
           if (ctrlDown) {
             if (newSelection.contains(topComponent)) {
-                newSelection.removeAll(findAllGroupedComponents(topComponent));
+              newSelection.removeAll(findAllGroupedComponents(topComponent));
             } else {
               newSelection.addAll(findAllGroupedComponents(topComponent));
             }
@@ -680,7 +685,7 @@ public class Presenter implements IPlugInPort {
     // don't allow to create component with the same points
     if (scaledPoint == null || scaledPoint.equals(firstPoint))
       return;
-//    componentSlot.get(0).setControlPoint(scaledPoint, 1);
+    // componentSlot.get(0).setControlPoint(scaledPoint, 1);
     List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
     for (IDIYComponent<?> component : componentSlot) {
       addComponent(component, true);
@@ -865,7 +870,7 @@ public class Presenter implements IPlugInPort {
             try {
               if (previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE) {
                 Set<Integer> indices = new HashSet<Integer>();
-                  indices.add(pointIndex);
+                indices.add(pointIndex);
                 components.put(component, indices);
                 break;
               }
@@ -876,9 +881,13 @@ public class Presenter implements IPlugInPort {
         }
       }
     }
-    
-    Point2D inPoint = new Point2D.Double(1.0d * previousScaledPoint.x / Constants.PIXELS_PER_INCH, 1.0d * previousScaledPoint.y / Constants.PIXELS_PER_INCH);
-    Point2D mmPoint = new Point2D.Double(inPoint.getX() * SizeUnit.in.getFactor() / SizeUnit.cm.getFactor() * 10d, inPoint.getY() * SizeUnit.in.getFactor() / SizeUnit.cm.getFactor() * 10d);
+
+    Point2D inPoint =
+        new Point2D.Double(1.0d * previousScaledPoint.x / Constants.PIXELS_PER_INCH, 1.0d * previousScaledPoint.y
+            / Constants.PIXELS_PER_INCH);
+    Point2D mmPoint =
+        new Point2D.Double(inPoint.getX() * SizeUnit.in.getFactor() / SizeUnit.cm.getFactor() * 10d, inPoint.getY()
+            * SizeUnit.in.getFactor() / SizeUnit.cm.getFactor() * 10d);
 
     messageDispatcher.dispatchMessage(EventType.MOUSE_MOVED, previousScaledPoint, inPoint, mmPoint);
 
@@ -926,41 +935,40 @@ public class Presenter implements IPlugInPort {
       return null;
 
     int minX = Integer.MAX_VALUE;
-	int maxX = Integer.MIN_VALUE;
-	int minY = Integer.MAX_VALUE;
-	int maxY = Integer.MIN_VALUE;
-	for (IDIYComponent<?> c : selectedComponents) {
-		ComponentArea compArea = drawingManager.getComponentArea(c);
-		if (compArea != null && compArea.getOutlineArea() != null) {
-			Rectangle rect = compArea.getOutlineArea().getBounds();
-			if (rect.x < minX)
-				minX = rect.x;
-			if (rect.x + rect.width > maxX)
-				maxX = rect.x + rect.width;
-			if (rect.y < minY)
-				minY = rect.y;
-			if (rect.y + rect.height > maxY)
-				maxY = rect.y + rect.height;
-		} else if (currentProject.getComponents().contains(c))
-			LOG.debug("Area is null for " + c.getName() + " of type "
-					+ c.getClass().getName());
-	}
-	
-	if (ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true)) {
-	  double extraSpace = drawingManager.getExtraSpace(currentProject);
-	  minX += extraSpace;
-	  maxX += extraSpace;
-	  minY += extraSpace;
-	  maxY += extraSpace;
-	}
-	
-	if (drawingManager.getZoomLevel() != 1 && applyZoom) {
-		minX *= drawingManager.getZoomLevel();
-		maxX *= drawingManager.getZoomLevel();
-		minY *= drawingManager.getZoomLevel();
-		maxY *= drawingManager.getZoomLevel();
-	}
-	return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+    int maxX = Integer.MIN_VALUE;
+    int minY = Integer.MAX_VALUE;
+    int maxY = Integer.MIN_VALUE;
+    for (IDIYComponent<?> c : selectedComponents) {
+      ComponentArea compArea = drawingManager.getComponentArea(c);
+      if (compArea != null && compArea.getOutlineArea() != null) {
+        Rectangle rect = compArea.getOutlineArea().getBounds();
+        if (rect.x < minX)
+          minX = rect.x;
+        if (rect.x + rect.width > maxX)
+          maxX = rect.x + rect.width;
+        if (rect.y < minY)
+          minY = rect.y;
+        if (rect.y + rect.height > maxY)
+          maxY = rect.y + rect.height;
+      } else if (currentProject.getComponents().contains(c))
+        LOG.debug("Area is null for " + c.getName() + " of type " + c.getClass().getName());
+    }
+
+    if (ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true)) {
+      double extraSpace = drawingManager.getExtraSpace(currentProject);
+      minX += extraSpace;
+      maxX += extraSpace;
+      minY += extraSpace;
+      maxY += extraSpace;
+    }
+
+    if (drawingManager.getZoomLevel() != 1 && applyZoom) {
+      minX *= drawingManager.getZoomLevel();
+      maxX *= drawingManager.getZoomLevel();
+      minY *= drawingManager.getZoomLevel();
+      maxY *= drawingManager.getZoomLevel();
+    }
+    return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
   }
 
   @Override
@@ -1004,7 +1012,7 @@ public class Presenter implements IPlugInPort {
   public VersionNumber getCurrentVersionNumber() {
     return CURRENT_VERSION;
   }
-  
+
   @Override
   public List<Version> getRecentUpdates() {
     return RECENT_VERSIONS;
@@ -1178,7 +1186,8 @@ public class Presenter implements IPlugInPort {
         return true;
 
       previousDragPoint.translate(actualD.x, actualD.y);
-    } else if (selectedComponents.isEmpty() && instantiationManager.getComponentTypeSlot() == null && previousDragPoint != null) {
+    } else if (selectedComponents.isEmpty() && instantiationManager.getComponentTypeSlot() == null
+        && previousDragPoint != null) {
       // If there's no selection, the only thing to do is update the
       // selection rectangle and refresh.
       Rectangle oldSelectionRect = selectionRect == null ? null : new Rectangle(selectionRect);
@@ -1190,8 +1199,7 @@ public class Presenter implements IPlugInPort {
       // selectionRect);
     } else if (instantiationManager.getComponentSlot() != null) {
       this.previousScaledPoint = scalePoint(point);
-      instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(),
-          currentProject.getGridSpacing());
+      instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(), currentProject.getGridSpacing());
     }
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     return true;
@@ -1204,9 +1212,9 @@ public class Presenter implements IPlugInPort {
     int actualDy = 0;
     // For each component, do a simulation of the move to see if any of
     // them will overlap or go out of bounds.
-    
+
     boolean useExtraSpace = ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true);
-    Dimension d = drawingManager.getCanvasDimensions(currentProject, 1d, useExtraSpace);    
+    Dimension d = drawingManager.getCanvasDimensions(currentProject, 1d, useExtraSpace);
     double extraSpace = useExtraSpace ? drawingManager.getExtraSpace(currentProject) : 0;
 
     if (controlPointMap.size() == 1) {
@@ -1244,7 +1252,7 @@ public class Presenter implements IPlugInPort {
         // actually moved after snapping.
         if (entry.getValue().contains(index)) {
           controlPoints[index].translate(actualDx, actualDy);
-          controlPoints[index].translate((int)extraSpace, (int)extraSpace);
+          controlPoints[index].translate((int) extraSpace, (int) extraSpace);
           if (controlPoints[index].x < 0 || controlPoints[index].y < 0 || controlPoints[index].x > d.width
               || controlPoints[index].y > d.height) {
             // At least one control point went out of bounds.
@@ -1481,13 +1489,13 @@ public class Presenter implements IPlugInPort {
   @Override
   public void dragEnded(Point point) {
     LOG.debug(String.format("dragEnded(%s)", point));
-    
+
     Point scaledPoint = scalePoint(point);
-    
-    if (!dragInProgress && instantiationManager.getComponentSlot() == null) {      
+
+    if (!dragInProgress && instantiationManager.getComponentSlot() == null) {
       return;
-    }    
-      
+    }
+
     if (selectedComponents.isEmpty()) {
       // If there's no selection finalize selectionRect and see which
       // components intersect with it.
@@ -1663,7 +1671,8 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
     if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), locked ? "Lock Layer" : "Unlock Layer");
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
+          locked ? "Lock Layer" : "Unlock Layer");
       projectFileManager.notifyFileChange();
     }
   }
@@ -1681,7 +1690,8 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_VISIBILITY_CHANGED, currentProject.getHiddenLayers());
     if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), visible ? "Show Layer" : "Hide Layer");
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
+          visible ? "Show Layer" : "Hide Layer");
       projectFileManager.notifyFileChange();
     }
   }
@@ -1933,7 +1943,7 @@ public class Presenter implements IPlugInPort {
       // other components.
       boolean matches = false;
       outer: for (IDIYComponent<?> selectedComponent : this.selectedComponents) {
-          // try to find the selectedComponent in one of the groups
+        // try to find the selectedComponent in one of the groups
         for (Set<IDIYComponent<?>> s : componentGroups)
           if (s.contains(selectedComponent)) {
             matches = true;
@@ -2164,11 +2174,11 @@ public class Presenter implements IPlugInPort {
       setNewComponentTypeSlot(null, null, false);
       return;
     }
-    
-//    if (componentType == null) {
-//      controlPointMap.clear();
-//      updateSelection(EMPTY_SELECTION);
-//    }
+
+    // if (componentType == null) {
+    // controlPointMap.clear();
+    // updateSelection(EMPTY_SELECTION);
+    // }
 
     // try to find a default template if none is provided
     if (componentType != null && template == null) {
@@ -2185,12 +2195,12 @@ public class Presenter implements IPlugInPort {
 
     try {
       instantiationManager.setComponentTypeSlot(componentType, template, currentProject, forceInstatiate);
-      
+
       if (forceInstatiate)
         updateSelection(instantiationManager.getComponentSlot());
       else if (componentType != null)
         updateSelection(EMPTY_SELECTION);
-      
+
       messageDispatcher.dispatchMessage(EventType.REPAINT);
       // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
       // selectedComponents);
@@ -2278,22 +2288,21 @@ public class Presenter implements IPlugInPort {
 
     variants.add(template);
 
-    if (System.getProperty("org.diylc.WriteStaticVariants", "false").equalsIgnoreCase("true"))
-    {
+    if (System.getProperty("org.diylc.WriteStaticVariants", "false").equalsIgnoreCase("true")) {
       if (defaultVariantMap == null)
         defaultVariantMap = new HashMap<String, List<Template>>();
       // unify default and user-variants
-      for(Map.Entry<String, List<Template>> entry : variantMap.entrySet()) {
+      for (Map.Entry<String, List<Template>> entry : variantMap.entrySet()) {
         if (defaultVariantMap.containsKey(entry.getKey())) {
           defaultVariantMap.get(entry.getKey()).addAll(entry.getValue());
         } else {
           defaultVariantMap.put(entry.getKey(), entry.getValue());
-        }        
+        }
       }
       try {
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("variants.xml"));
         XStream xStream = new XStream(new DomDriver());
-        xStream.toXML(defaultVariantMap, out);        
+        xStream.toXML(defaultVariantMap, out);
         out.close();
         // no more user variants
         ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, null);
@@ -2310,16 +2319,16 @@ public class Presenter implements IPlugInPort {
   @Override
   public List<Template> getVariantsFor(ComponentType type) {
     Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
-    
+
     Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
     if (variantMap != null)
       lookupMap.putAll(variantMap);
-    
+
     // try by class name and then by old category.type format
     String key1 = type.getInstanceClass().getCanonicalName();
     String key2 = type.getCategory() + "." + type.getName();
-    
+
     List<Template> variants = new ArrayList<Template>();
     if (variantMap != null) {
       List<Template> userVariants = variantMap.get(key1);
@@ -2330,7 +2339,7 @@ public class Presenter implements IPlugInPort {
         variants.addAll(userVariants);
     }
     if (defaultVariantMap != null) {
-      List<Template> defaultVariants = defaultVariantMap.get(key1);        
+      List<Template> defaultVariants = defaultVariantMap.get(key1);
       if (defaultVariants != null && !defaultVariants.isEmpty())
         variants.addAll(defaultVariants);
       defaultVariants = defaultVariantMap.get(key2);
@@ -2340,9 +2349,9 @@ public class Presenter implements IPlugInPort {
     Collections.sort(variants, new Comparator<Template>() {
 
       @Override
-      public int compare(Template o1, Template o2) {       
+      public int compare(Template o1, Template o2) {
         return o1.getName().compareTo(o2.getName());
-      }      
+      }
     });
     return variants;
   }
@@ -2403,7 +2412,7 @@ public class Presenter implements IPlugInPort {
       // try by class name and then by old category.type format
       String key1 = type.getInstanceClass().getCanonicalName();
       String key2 = type.getCategory() + "." + type.getName();
-      
+
       List<Template> templates = templateMap.get(key1);
       if (templates != null) {
         Iterator<Template> i = templates.iterator();
@@ -2436,23 +2445,22 @@ public class Presenter implements IPlugInPort {
         (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
     if (defaultTemplateMap == null)
       defaultTemplateMap = new HashMap<String, String>();
-    
+
     // try by class name and then by old category.type format
     String key1 = type.getInstanceClass().getCanonicalName();
     String key2 = type.getCategory() + "." + type.getName();
-    
+
     if (templateName.equals(defaultTemplateMap.get(key1)) || templateName.equals(defaultTemplateMap.get(key2))) {
       defaultTemplateMap.remove(key1);
       defaultTemplateMap.remove(key2);
-    }
-    else {
+    } else {
       // get rid of legacy key
       defaultTemplateMap.remove(key2);
       defaultTemplateMap.put(key1, templateName);
     }
-    ConfigurationManager.getInstance().writeValue(DEFAULT_TEMPLATES_KEY, defaultTemplateMap);      
+    ConfigurationManager.getInstance().writeValue(DEFAULT_TEMPLATES_KEY, defaultTemplateMap);
   }
-  
+
   @SuppressWarnings("unchecked")
   @Override
   public String getDefaultVariant(ComponentType type) {
@@ -2460,13 +2468,13 @@ public class Presenter implements IPlugInPort {
         (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
     if (defaultTemplateMap == null)
       return null;
-    
+
     String key1 = type.getInstanceClass().getCanonicalName();
     String key2 = type.getCategory() + "." + type.getName();
-    
+
     if (defaultTemplateMap.containsKey(key1))
       return defaultTemplateMap.get(key1);
-    
+
     return defaultTemplateMap.get(key2);
   }
 
@@ -2495,12 +2503,13 @@ public class Presenter implements IPlugInPort {
    * @return
    */
   private Point scalePoint(Point point) {
-    Point p = point == null ? null : new Point((int) (point.x / drawingManager.getZoomLevel()),
-        (int) (point.y / drawingManager.getZoomLevel()));
-        
+    Point p =
+        point == null ? null : new Point((int) (point.x / drawingManager.getZoomLevel()),
+            (int) (point.y / drawingManager.getZoomLevel()));
+
     if (p != null && ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true)) {
       double extraSpace = drawingManager.getExtraSpace(currentProject);
-      p.translate((int)(-extraSpace), (int)(-extraSpace));
+      p.translate((int) (-extraSpace), (int) (-extraSpace));
     }
     return p;
   }
@@ -2518,8 +2527,10 @@ public class Presenter implements IPlugInPort {
 
       @Override
       public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-        return new Integer(currentProject.getComponents().indexOf(o1)).compareTo(currentProject.getComponents().indexOf(o2));
-      }});
+        return new Integer(currentProject.getComponents().indexOf(o1)).compareTo(currentProject.getComponents()
+            .indexOf(o2));
+      }
+    });
     blocks.put(blockName, blockComponents);
     ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
   }
@@ -2566,20 +2577,20 @@ public class Presenter implements IPlugInPort {
       ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
     }
   }
-  
+
   @Override
   public double getExtraSpace() {
     if (!ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true))
       return 0;
-    
+
     double extraSpace = drawingManager.getExtraSpace(currentProject);
-    boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);    
+    boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);
 
     extraSpace /= Constants.PIXELS_PER_INCH;
-    
+
     if (metric)
-       extraSpace *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
-    
+      extraSpace *= SizeUnit.in.getFactor() / SizeUnit.cm.getFactor();
+
     return extraSpace;
   }
 
@@ -2589,37 +2600,36 @@ public class Presenter implements IPlugInPort {
     LOG.debug(String.format("importVariants(%s)", fileName));
     BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
     XStream xStream = new XStream(new DomDriver());
-    
+
     VariantPackage pkg = (VariantPackage) xStream.fromXML(in);
-    
+
     in.close();
-    
+
     if (pkg == null || pkg.getVariants().isEmpty())
       return 0;
-    
+
     Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
     if (variantMap == null) {
       variantMap = new HashMap<String, List<Template>>();
     }
-    
+
     for (Map.Entry<String, List<Template>> entry : pkg.getVariants().entrySet()) {
-      List<Template> templates;      
+      List<Template> templates;
       templates = variantMap.get(entry.getKey());
-      if (templates == null)
-      {
+      if (templates == null) {
         templates = new ArrayList<Template>();
         variantMap.put(entry.getKey(), templates);
       }
       for (Template t : entry.getValue()) {
-        templates.add(new Template(t.getName() + " [" + pkg.getOwner() + "]", t.getValues(), t.getPoints()));      
+        templates.add(new Template(t.getName() + " [" + pkg.getOwner() + "]", t.getValues(), t.getPoints()));
       }
     }
-    
+
     ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, variantMap);
-        
+
     LOG.info(String.format("Loaded variants for %d components", pkg.getVariants().size()));
-    
+
     return pkg.getVariants().size();
   }
 
@@ -2629,82 +2639,86 @@ public class Presenter implements IPlugInPort {
     LOG.debug(String.format("importBlocks(%s)", fileName));
     BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
     XStream xStream = new XStream(new DomDriver());
-    
+
     BuildingBlockPackage pkg = (BuildingBlockPackage) xStream.fromXML(in);
-    
+
     in.close();
-    
+
     if (pkg == null || pkg.getBlocks().isEmpty())
       return 0;
-    
+
     Map<String, List<IDIYComponent<?>>> blocks =
         (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
     if (blocks == null) {
       blocks = new HashMap<String, List<IDIYComponent<?>>>();
     }
-    
+
     for (Map.Entry<String, List<IDIYComponent<?>>> entry : pkg.getBlocks().entrySet()) {
       blocks.put(entry.getKey() + " [" + pkg.getOwner() + "]", entry.getValue());
     }
-    
+
     ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
-        
+
     LOG.info(String.format("Loaded building blocks for %d components", pkg.getBlocks().size()));
-    
+
     return pkg.getBlocks().size();
   }
-  
+
   private static boolean upgradedVariants = false;
-  
+
   @SuppressWarnings("unchecked")
   private synchronized void upgradeVariants() {
     if (upgradedVariants)
       return;
-    
+
     upgradedVariants = true;
-    
+
     LOG.info("Checking if variants need to be updated");
-    Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);    
+    Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
     Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
-    
+
     if (variantMap == null)
       return;
-    
+
     Map<String, ComponentType> typeMap = new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
-    
+
     Map<String, List<ComponentType>> componentTypes = getComponentTypes();
     for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet())
       for (ComponentType type : entry.getValue()) {
         typeMap.put(type.getInstanceClass().getCanonicalName(), type);
         typeMap.put(type.getCategory() + "." + type.getName(), type);
         if (type.getCategory().contains("Electro-Mechanical"))
-          typeMap.put(type.getCategory().replace("Electro-Mechanical", "Electromechanical") + "." + type.getName(), type);
+          typeMap.put(type.getCategory().replace("Electro-Mechanical", "Electromechanical") + "." + type.getName(),
+              type);
       }
-    
+
     Map<String, List<Template>> newVariantMap = new HashMap<String, List<Template>>();
-    
+
     lookupMap.putAll(variantMap);
-    
+
     for (Map.Entry<String, List<Template>> entry : variantMap.entrySet()) {
       if (typeMap.containsKey(entry.getKey())) {
-        newVariantMap.put(typeMap.get(entry.getKey()).getInstanceClass().getCanonicalName(), entry.getValue()); // great, nothing to upgrade
+        newVariantMap.put(typeMap.get(entry.getKey()).getInstanceClass().getCanonicalName(), entry.getValue()); // great,
+                                                                                                                // nothing
+                                                                                                                // to
+                                                                                                                // upgrade
       } else {
         LOG.warn("Could not upgrade variants for: " + entry.getKey());
       }
     }
-    
+
     ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, newVariantMap);
   }
-  
+
   @SuppressWarnings("unchecked")
   @Override
-  public List<Netlist> extractNetlists(boolean includeSwitches) {    
+  public List<Netlist> extractNetlists(boolean includeSwitches) {
     Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
-    
+
     List<ISwitch> switches = new ArrayList<ISwitch>();
-    
+
     for (IDIYComponent<?> c : currentProject.getComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
@@ -2722,40 +2736,40 @@ public class Presenter implements IPlugInPort {
       // extract switches
       if (includeSwitches && ISwitch.class.isAssignableFrom(type.getInstanceClass()))
         switches.add((ISwitch) c);
-    }   
-    
+    }
+
     // save us the trouble
     if (nodes.isEmpty())
       return null;
-    
+
     // if there are no switches, make one with 1 position so we get 1 result back
     if (switches.isEmpty())
       switches.add(new ISwitch() {
-        
+
         @Override
         public String getPositionName(int position) {
           return "Default";
         }
-        
+
         @Override
         public int getPositionCount() {
           return 1;
         }
-        
+
         @Override
         public boolean arePointsConnected(int index1, int index2, int position) {
           return false;
         }
       });
-    
+
     // construct all possible combinations
     int[] positions = new int[switches.size()];
     for (int i = 0; i < switches.size(); i++)
       positions[i] = 0;
-    
+
     // grab continuity areas
     List<Area> continuity = drawingManager.getContinuityAreas(currentProject);
-    
+
     int i = switches.size() - 1;
     while (i >= 0) {
       // process the current combination
@@ -2765,17 +2779,17 @@ public class Presenter implements IPlugInPort {
         switchPositions.put(switches.get(j), positions[j]);
         posList.add(new Position(switches.get(j), positions[j]));
       }
-      List<Connection> connections = getConnections(switchPositions);  
+      List<Connection> connections = getConnections(switchPositions);
       Netlist graph = constructNetlist(nodes, connections, continuity);
-      
+
       // merge graphs that are effectively the same
       if (result.containsKey(graph)) {
         result.get(graph).getSwitchSetup().add(new SwitchSetup(posList));
-      } else {        
+      } else {
         graph.getSwitchSetup().add(new SwitchSetup(posList));
         result.put(graph, graph);
       }
-      
+
       // find the next combination if possible
       if (positions[i] < switches.get(i).getPositionCount() - 1) {
         positions[i]++;
@@ -2787,31 +2801,31 @@ public class Presenter implements IPlugInPort {
           for (int j = i + 1; j < positions.length; j++)
             positions[j] = 0;
           i = switches.size() - 1;
-        }        
+        }
       }
     }
-    
+
     // sort everything alphabetically
     List<Netlist> netlists = new ArrayList<Netlist>(result.keySet());
-    Collections.sort(netlists);    
+    Collections.sort(netlists);
 
     return netlists;
   }
-  
+
   private Netlist constructNetlist(List<Node> nodes, List<Connection> connections, List<Area> continuityAreas) {
     Netlist netlist = new Netlist();
-    
-//    debugging code    
-//    StringBuilder sb = new StringBuilder();
-//    sb.append("Nodes:").append("\n");
-//    for (Node n : nodes) {
-//      sb.append(n.toString()).append("\n");
-//    }
-//    sb.append("Connections:").append("\n");
-//    for (Line2D n : connections) {
-//      sb.append(n.getP1()).append(":").append(n.getP2()).append("\n");
-//    }
-//    LOG.debug(sb.toString());
+
+    // debugging code
+    // StringBuilder sb = new StringBuilder();
+    // sb.append("Nodes:").append("\n");
+    // for (Node n : nodes) {
+    // sb.append(n.toString()).append("\n");
+    // }
+    // sb.append("Connections:").append("\n");
+    // for (Line2D n : connections) {
+    // sb.append(n.getP1()).append(":").append(n.getP2()).append("\n");
+    // }
+    // LOG.debug(sb.toString());
 
     double t = DrawingManager.CONTROL_POINT_SIZE;
     for (int i = 0; i < nodes.size() - 1; i++)
@@ -2820,15 +2834,15 @@ public class Presenter implements IPlugInPort {
         Node node2 = nodes.get(j);
         Point2D point1 = node1.getComponent().getControlPoint(node1.getPointIndex());
         Point2D point2 = node2.getComponent().getControlPoint(node2.getPointIndex());
-        
+
         String commonPoint1 = node1.getComponent().getCommonPointName(node1.getPointIndex());
         String commonPoint2 = node2.getComponent().getCommonPointName(node2.getPointIndex());
-        
+
         // try both directions
-        if (point1.distance(point2) < t || 
-            checkGraphConnection(point1, point2, connections, continuityAreas, new boolean[connections.size()]) || 
-            checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()]) ||
-            (commonPoint1 != null && commonPoint1.equalsIgnoreCase(commonPoint2))) {
+        if (point1.distance(point2) < t
+            || checkGraphConnection(point1, point2, connections, continuityAreas, new boolean[connections.size()])
+            || checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()])
+            || (commonPoint1 != null && commonPoint1.equalsIgnoreCase(commonPoint2))) {
           boolean added = false;
           // add to an existing vertex if possible
           for (Group g : netlist.getGroups())
@@ -2841,9 +2855,9 @@ public class Presenter implements IPlugInPort {
             }
           if (!added)
             netlist.getGroups().add(new Group(node1, node2));
-        }        
+        }
       }
-    
+
     // merge overlapping groups if needed
     boolean reduce = true;
     while (reduce) {
@@ -2855,7 +2869,7 @@ public class Presenter implements IPlugInPort {
         for (Group g2 : groups) {
           if (g1 != g2 && !Collections.disjoint(g1.getNodes(), g2.getNodes())) {
             i.remove();
-            g2.getNodes().addAll(g1.getNodes());            
+            g2.getNodes().addAll(g1.getNodes());
             reduce = true;
             break;
           }
@@ -2866,41 +2880,41 @@ public class Presenter implements IPlugInPort {
         netlist.getGroups().addAll(groups);
       }
     }
-    
-    Collections.sort(netlist.getSwitchSetup());   
-    
+
+    Collections.sort(netlist.getSwitchSetup());
+
     return netlist;
   }
-  
+
   private boolean checkGraphConnection(Point2D point1, Point2D point2, List<Connection> connections,
       List<Area> continuityAreas, boolean[] visited) {
     double t = DrawingManager.CONTROL_POINT_SIZE;
-    
+
     if (point1.distance(point2) < t)
       return true;
-    
+
     for (Area a : continuityAreas) {
       if (a.contains(point1) && a.contains(point2))
         return true;
     }
-    
+
     for (int i = 0; i < connections.size(); i++) {
       if (visited[i])
         continue;
-      
+
       Connection c = connections.get(i);
       if (point1.distance(c.getP1()) < t) {
         visited[i] = true;
-        if (checkGraphConnection(c.getP2(), point2, connections, continuityAreas, visited))          
-          return true;        
+        if (checkGraphConnection(c.getP2(), point2, connections, continuityAreas, visited))
+          return true;
       }
       if (point1.distance(c.getP2()) < t) {
         visited[i] = true;
-        if (checkGraphConnection(c.getP1(), point2, connections, continuityAreas, visited))          
-          return true;        
+        if (checkGraphConnection(c.getP1(), point2, connections, continuityAreas, visited))
+          return true;
       }
     }
-    
+
     return false;
   }
 
@@ -2914,46 +2928,46 @@ public class Presenter implements IPlugInPort {
       if (c instanceof IContinuity) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
-            if (((IContinuity)c).arePointsConnected(i, j))
+            if (((IContinuity) c).arePointsConnected(i, j))
               connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
       }
       // handle switches
       if (ISwitch.class.isAssignableFrom(type.getInstanceClass()) && switchPositions.containsKey(c)) {
         int position = switchPositions.get(c);
-        ISwitch s = (ISwitch)c;
+        ISwitch s = (ISwitch) c;
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (s.arePointsConnected(i, j, position))
               connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
       }
     }
-    
+
     drawingManager.expandConnections(connections);
-    
+
     return new ArrayList<Connection>(connections);
-  }  
-  
+  }
+
   @Override
   public List<INetlistAnalyzer> getNetlistAnalyzers() {
     Set<Class<?>> classes;
     try {
       classes = Utils.getClasses("org.diylc.netlist");
       List<INetlistAnalyzer> result = new ArrayList<INetlistAnalyzer>();
-   
+
       for (Class<?> clazz : classes) {
         if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistAnalyzer.class.isAssignableFrom(clazz)) {
           result.add((INetlistAnalyzer) clazz.newInstance());
         }
       }
-      
+
       Collections.sort(result, new Comparator<INetlistAnalyzer>() {
 
         @Override
         public int compare(INetlistAnalyzer o1, INetlistAnalyzer o2) {
           return o1.getName().compareToIgnoreCase(o2.getName());
-        }        
+        }
       });
-      
+
       return result;
     } catch (Exception e) {
       LOG.error("Could not load INetlistSummarizer implementations", e);
