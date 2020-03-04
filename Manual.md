@@ -9,7 +9,7 @@
 Make sure that you have downloaded the correct version. Windows build file ends with "win", Mac OSX build ends with "osx" and multi-platform build does not have any suffix and will work pretty much anywhere where Java JRE runs.
 
   * On **Windows** run the installer wizard and follow the steps
-  * On **Linux/Unix** (will also work on **Mac OSX** if using multi-platform build): extract the entire ZIP file into a separate directory, open the terminal, change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**) and type **./run.sh**
+  * On **Linux/Unix** (will also work on **Mac OSX** if using multi-platform build): extract the entire *diylc-[version number].ZIP* file into a separate directory, open the terminal, change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**), set the file *run.sh* to be executable by typing **chmod +x run.sh**, then type **./run.sh** which is the same as **sh run.sh**
   * On **OSX** just run the package to install DIYLC
   
 ### User interface ###
