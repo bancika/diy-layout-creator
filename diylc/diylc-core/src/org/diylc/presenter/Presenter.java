@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -98,48 +99,54 @@ public class Presenter implements IPlugInPort {
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-  public static VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 0);
+  public static VersionNumber CURRENT_VERSION = new VersionNumber(4, 0, 0);
   public static List<Version> RECENT_VERSIONS = null;
   // Read the latest version from the local update.xml file
-  static {
-    try {
-      BufferedInputStream in = new BufferedInputStream(new FileInputStream("update.xml"));
-      XStream xStream = new XStream(new DomDriver());
-      @SuppressWarnings("unchecked")
-      List<Version> allVersions = (List<Version>) xStream.fromXML(in);
-      CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
-      LOG.info("Current DIYLC version: " + CURRENT_VERSION);
-      RECENT_VERSIONS = allVersions.subList(allVersions.size() - 10, allVersions.size());
-      Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
+	static {
+		try {
+			URL resource = Presenter.class.getClassLoader().getResource("org/diylc/presenter/update.xml");
+			if (resource != null) {
+				BufferedInputStream in = new BufferedInputStream(resource.openStream());
+				XStream xStream = new XStream(new DomDriver());
+				@SuppressWarnings("unchecked")
+				List<Version> allVersions = (List<Version>) xStream.fromXML(in);
+				CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
+				LOG.info("Current DIYLC version: " + CURRENT_VERSION);
+				RECENT_VERSIONS = allVersions.subList(allVersions.size() - 10, allVersions.size());
+				Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
 
-        @Override
-        public int compare(Version o1, Version o2) {
-          return -o1.getVersionNumber().compareTo(o2.getVersionNumber());
-        }
-      });
-      in.close();
-    } catch (IOException e) {
-      LOG.error("Could not find version number, using default", e);
-    }
-  }
+					@Override
+					public int compare(Version o1, Version o2) {
+						return -o1.getVersionNumber().compareTo(o2.getVersionNumber());
+					}
+				});
+				in.close();
+			}
+		} catch (IOException e) {
+			LOG.error("Could not find version number, using default", e);
+		}
+	}
   public static final String DEFAULTS_KEY_PREFIX = "default.";
 
-  private static Map<String, List<Template>> defaultVariantMap = null;
-  static {
-    try {
-      BufferedInputStream in = new BufferedInputStream(new FileInputStream("variants.xml"));
-      XStream xStream = new XStream(new DomDriver());
-      @SuppressWarnings("unchecked")
-      Map<String, List<Template>> map = (Map<String, List<Template>>) xStream.fromXML(in);
-      defaultVariantMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
-      defaultVariantMap.putAll(map);
-      in.close();
-      LOG.info(String.format("Loaded default variants for %d components", defaultVariantMap == null ? 0
-          : defaultVariantMap.size()));
-    } catch (IOException e) {
-      LOG.error("Could not load default variants", e);
-    }
-  }
+	private static Map<String, List<Template>> defaultVariantMap = null;
+	static {
+		try {
+			URL resource = Presenter.class.getClassLoader().getResource("org/diylc/presenter/variants.xml");
+			if (resource != null) {
+				BufferedInputStream in = new BufferedInputStream(resource.openStream());
+				XStream xStream = new XStream(new DomDriver());
+				@SuppressWarnings("unchecked")
+				Map<String, List<Template>> map = (Map<String, List<Template>>) xStream.fromXML(in);
+				defaultVariantMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
+				defaultVariantMap.putAll(map);
+				in.close();
+				LOG.info(String.format("Loaded default variants for %d components",
+						defaultVariantMap == null ? 0 : defaultVariantMap.size()));
+			}
+		} catch (IOException e) {
+			LOG.error("Could not load default variants", e);
+		}
+	}
 
   public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
 

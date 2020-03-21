@@ -148,9 +148,9 @@ public class DIYLCStarter {
     properties = new Properties();
     try {
       LOG.info("Injecting default properties.");
-      File f = new File("config.properties");
-      if (f.exists()) {
-        properties.load(new FileInputStream(f));
+      URL resource = Presenter.class.getClassLoader().getResource("config.properties");
+      if (resource != null) {
+        properties.load(resource.openStream());
         PropertyInjector.injectProperties(properties);
       }
     } catch (Exception e) {

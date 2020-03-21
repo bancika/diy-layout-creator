@@ -72,6 +72,7 @@
 				<attribute name="Class-Path" value="${manifest.class.path}" />
 				<attribute name="SplashScreen-Image" value="splash.png" />
 			</manifest>
+			<zipfileset dir="." includes="config.properties" />
 		</jar>
 	</target>
 	
@@ -96,7 +97,6 @@
 					<arg value="-nosign"/>
 					<arg value="-v"/>
 		</exec>-->
-		<mkdir dir="${jar.dir}\DIYLC.app" />
 		<bundleapp 
 	        outputdirectory="${build.dir}" 
 	        name="DIYLC" 
@@ -125,7 +125,7 @@
 			<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 		</bundleapp>
 		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
-			<zipfileset filemode="755" dir="${jar.dir}/DIYLC.app" prefix="DIYLC.app" />
+			<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />		
 		</zip>
 	</target>
 	
@@ -142,13 +142,10 @@
 			<zipfileset dir="templates" prefix="templates" />
 			<zipfileset dir="themes" prefix="themes" />
 			<zipfileset dir="fonts" prefix="fonts" />
-			<zipfileset dir="." includes="update.xml" />
-			<zipfileset dir="." includes="config.properties" />
-			<zipfileset dir="." includes="variants.xml" />
+			<zipfileset dir="." includes="splash.png" />
 			<zipfileset dir="." includes="run.sh" />
 			<zipfileset dir="." includes="diylc.l4j.ini" />
-			<zipfileset dir="." includes="diylc.exe" />
-			<zipfileset dir="." includes="splash.png" />
+			<zipfileset dir="." includes="diylc.exe" />			
 		</zip>
 	</target>
 
