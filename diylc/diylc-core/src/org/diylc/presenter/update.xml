@@ -2627,7 +2627,7 @@
 				<minor>57</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2019-03-10 00:00:00.000 CET</releaseDate>
+			<releaseDate>2019-03-24 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>				
 				<org.diylc.appframework.update.Change>
@@ -2694,6 +2694,26 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Z-order of components sometimes gets wrong when importing a DIY file into another file</description>
 				</org.diylc.appframework.update.Change>				
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>0</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2019-03-24 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>New app bundle for Mac OS using appbundler instead of javabundler</description>
+				</org.diylc.appframework.update.Change>				
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded to Java 8</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
