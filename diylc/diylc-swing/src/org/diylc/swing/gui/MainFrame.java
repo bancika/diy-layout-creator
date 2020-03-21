@@ -442,7 +442,7 @@ public class MainFrame extends JFrame implements ISwingUI {
           fileName = "Untitled";
         }
         String modified = (Boolean) params[1] ? " (modified)" : "";
-        setTitle(String.format("DIYLC G3 version %s.%s - %s %s", plugInPort.getCurrentVersionNumber().getMinor(),
+        setTitle(String.format("DIYLC G4 version %s.%s - %s %s", plugInPort.getCurrentVersionNumber().getMinor(),
             plugInPort.getCurrentVersionNumber().getBuild(), fileName, modified));
       }
     }

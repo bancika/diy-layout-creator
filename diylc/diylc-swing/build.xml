@@ -148,6 +148,8 @@
 			<zipfileset dir="." includes="diylc.exe" />			
 		</zip>
 	</target>
+	
+	<target name="full" depends="win,mac"/>
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">

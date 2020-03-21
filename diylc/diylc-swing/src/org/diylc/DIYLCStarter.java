@@ -61,7 +61,15 @@ public class DIYLCStarter {
   public static void main(String[] args) {
     // Initialize splash screen
     final SplashScreen splash = SplashScreen.getSplashScreen();
-    new DIYLCSplash(splash).start();    
+    URL splashUrl = Presenter.class.getClassLoader().getResource("org/diylc/splash.png");
+	if (splash != null) {
+		try {
+			splash.setImageURL(splashUrl);
+			new DIYLCSplash(splash).start();
+		} catch (NullPointerException | IllegalStateException | IOException e1) {
+			LOG.error("Could not initialize splash screen", e1);
+		}
+	}
 
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
@@ -148,7 +156,7 @@ public class DIYLCStarter {
     properties = new Properties();
     try {
       LOG.info("Injecting default properties.");
-      URL resource = Presenter.class.getClassLoader().getResource("config.properties");
+      URL resource = Presenter.class.getResource("config.properties");
       if (resource != null) {
         properties.load(resource.openStream());
         PropertyInjector.injectProperties(properties);

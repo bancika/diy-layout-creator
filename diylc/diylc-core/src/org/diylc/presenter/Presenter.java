@@ -104,7 +104,7 @@ public class Presenter implements IPlugInPort {
   // Read the latest version from the local update.xml file
 	static {
 		try {
-			URL resource = Presenter.class.getClassLoader().getResource("org/diylc/presenter/update.xml");
+			URL resource = Presenter.class.getResource("update.xml");
 			if (resource != null) {
 				BufferedInputStream in = new BufferedInputStream(resource.openStream());
 				XStream xStream = new XStream(new DomDriver());
@@ -131,7 +131,7 @@ public class Presenter implements IPlugInPort {
 	private static Map<String, List<Template>> defaultVariantMap = null;
 	static {
 		try {
-			URL resource = Presenter.class.getClassLoader().getResource("org/diylc/presenter/variants.xml");
+			URL resource = Presenter.class.getResource("variants.xml");
 			if (resource != null) {
 				BufferedInputStream in = new BufferedInputStream(resource.openStream());
 				XStream xStream = new XStream(new DomDriver());
