@@ -115,13 +115,13 @@
 		    <option value="-splash:splash.png" />
 			<option value="-Xms512m" />
 			<option value="-Xmx2048m" />
-			<option value="-Dorg.diylc.scriptRun=false" />
+			<option value="-Dorg.diylc.scriptRun=true" />
 			<option value="-Dfile.encoding=UTF-8" />
 			<option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
 		    <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
-		    <option value="-Dapple.awt.application.name=DIYLC"/>
+		    <option value="-Dapple.awt.application.name=DIY Layout Creator"/>
 		    <option value="-Dcom.apple.smallTabs=true"/>			
-			<option value="-Xdock:name=${bundle.name}"/>
+			<option value="-Xdock:name=DIY Layout Creator"/>
 			<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 		</bundleapp>
 		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
