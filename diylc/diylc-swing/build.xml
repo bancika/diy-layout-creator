@@ -122,7 +122,7 @@
 		    <option value="-Dapple.awt.application.name=DIYLC"/>
 		    <option value="-Dcom.apple.smallTabs=true"/>			
 			<option value="-Xdock:name=${bundle.name}"/>
-			<option value="-Xdock:icon=Contents/Resources/${bundle.icon}"/>
+			<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 		</bundleapp>
 		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
 			<zipfileset filemode="755" dir="${jar.dir}/DIYLC.app" prefix="DIYLC.app" />
