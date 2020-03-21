@@ -1,4 +1,7 @@
-<project name="diylc-swing" basedir="." default="complete">
+<project name="diylc-swing" basedir="." default="win">
+	
+	 <taskdef name="bundleapp"
+	             classname="com.oracle.appbundler.AppBundlerTask"  />
 
 	<property name="src.dir" value="src" />
 
@@ -71,7 +74,7 @@
 			</manifest>
 		</jar>
 	</target>
-
+	
 	<target name="mac" depends="jar">
 		<!--<echo>Compile with JDK ${java.home}</echo>
 		<exec executable="javapackager">
@@ -93,27 +96,34 @@
 					<arg value="-nosign"/>
 					<arg value="-v"/>
 		</exec>-->
-		<taskdef name="jarbundler" classname="com.ultramixer.jarbundler.JarBundler" />
-		<jarbundler bundleid="org.diylc" dir="${jar.dir}" name="DIYLC" version="${diylc.version}" mainclass="${main.class}" stubfile="JavaApplicationStub" vmoptions="splash:splash.png -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true" icon="icons/diylc.icns" workingdirectory="$APP_PACKAGE/Contents/Resources" copyright="bancika (diy-fever.com)" splashfile="$APP_PACKAGE/Contents/Resources/splash.png">
-			<jarfileset dir="${jar.dir}">
-				<include name="diylc.jar" />
-				<include name="lib/**/*.jar" />
-				<include name="library/**/*.jar" />
-			</jarfileset>
-			<resourcefileset dir="${basedir}">
-				<include name="splash.png" />
-				<include name="update.xml" />
-				<include name="variants.xml" />
-				<include name="config.properties" />
-				<include name="templates**/*.diy" />
-				<include name="themes**/*.xml" />
-				<include name="fonts**/*.ttf" />
-			</resourcefileset>
-			<javaproperty name="apple.laf.useScreenMenuBar" value="true" />
-			<!--<documenttype name="DIYLC Project"
-			                    extensions="diylc" 
-			                    role="Editor"/>-->
-		</jarbundler>
+		<mkdir dir="${jar.dir}\DIYLC.app" />
+		<bundleapp 
+	        outputdirectory="${build.dir}" 
+	        name="DIYLC" 
+			jvmrequired="1.8"
+			copyright="Branislav Stojkovic, a.k.a. bancika"
+	        displayname="DIY Layout Creator" 
+	        identifier="org.diylc.App" 
+	        shortversion="${diylc.version}"
+	        applicationCategory="public.app-category.graphics-design"
+	        mainclassname="${main.class}">
+	        <!--<runtime dir="${env.JAVA_HOME}" />-->
+	        <classpath file="${jar.dir}\diylc.jar" />
+	    	<classpath file="${jar.dir}\lib\*.jar" />
+	    	<classpath file="${jar.dir}\library\*.jar" />
+		    <option value="-splash:splash.png" />
+			<option value="-Xms512m" />
+			<option value="-Xmx2048m" />
+			<option value="-Dorg.diylc.scriptRun=false" />
+			<option value="-Dfile.encoding=UTF-8" />
+			<option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
+		    <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+		    <option value="-Dapple.awt.application.name=DIYLC"/>
+		    <option value="-Dcom.apple.smallTabs=true"/>
+		</bundleapp>
+		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
+			<zipfileset filemode="755" dir="${jar.dir}/DIYLC.app" prefix="DIYLC.app" />
+		</zip>
 	</target>
 	
 	<target name="win" depends="jar">
@@ -122,9 +132,6 @@
 			<arg value="/Fdiylc-${diylc.version}-win"/>
 		    <arg value="install.iss"/>
 		</exec>
-	</target>
-
-	<target name="complete" depends="mac, win">
 		<zip destfile="${build.dir}/diylc-${diylc.version}.zip">
 			<zipfileset dir="${jar.dir}" includes="diylc.jar" />
 			<zipfileset dir="${jar.dir}/lib" prefix="lib" />
@@ -139,9 +146,6 @@
 			<zipfileset dir="." includes="diylc.l4j.ini" />
 			<zipfileset dir="." includes="diylc.exe" />
 			<zipfileset dir="." includes="splash.png" />
-		</zip>
-		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
-			<zipfileset filemode="755" dir="${jar.dir}/DIYLC.app" prefix="DIYLC.app" />
 		</zip>
 	</target>
 
