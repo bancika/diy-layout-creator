@@ -471,7 +471,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
    * @return shape that represents component body. Shape should not be transformed and should be
    *         referenced to (0, 0).
    */
-  protected abstract Shape getBodyShape();
+  protected abstract Shape getBodyShape();   
 
   /**
    * Controls how component shape should be placed relative to start and end point.
@@ -516,7 +516,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   @Override
   public int getControlPointCount() {
-    return getPoints().length;
+    return getPoints().length - (getMoveLabel() ? 0 : 1);
   }
 
   @Override
