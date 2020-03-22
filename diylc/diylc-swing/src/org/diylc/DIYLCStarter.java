@@ -129,13 +129,14 @@ public class DIYLCStarter {
     }
 
     MainFrame mainFrame = new MainFrame();
-    mainFrame.setLocationRelativeTo(null);
+    mainFrame.setLocationRelativeTo(null);    
     mainFrame.setExtendedState(mainFrame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
     
     splash.setVisible(false);
     splash.dispose();
     
     mainFrame.setVisible(true);
+    
     if (args.length > 0) {
       mainFrame.getPresenter().loadProjectFromFile(args[0]);
     } else {

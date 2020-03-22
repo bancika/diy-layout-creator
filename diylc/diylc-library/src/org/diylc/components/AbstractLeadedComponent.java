@@ -308,11 +308,11 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     g2d.setColor(finalLabelColor);
     FontMetrics fontMetrics = g2d.getFontMetrics();
     String label = "";
-    label = display == Display.NAME ? getName() : (getValue() == null ? "" : getValue().toString());
-    if (display == Display.NONE) {
+    label = getDisplay() == Display.NAME ? getName() : (getValue() == null ? "" : getValue().toString());
+    if (getDisplay() == Display.NONE) {
       label = "";
     }
-    if (display == Display.BOTH) {
+    if (getDisplay() == Display.BOTH) {
       label = getName() + " " + (getValue() == null ? "" : getValue().toString());
     }
     Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);

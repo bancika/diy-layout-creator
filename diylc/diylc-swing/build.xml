@@ -103,7 +103,7 @@
 			jvmrequired="1.8"
 			copyright="Branislav Stojkovic, a.k.a. bancika"
 	        displayname="DIY Layout Creator" 
-	        identifier="org.diylc.App" 
+	        identifier="org.diylc.Desktop" 
 	        shortversion="${diylc.version}"
 	        applicationCategory="public.app-category.graphics-design"
 			icon="diylc.icns"
@@ -112,7 +112,6 @@
 	        <classpath file="${jar.dir}\diylc.jar" />
 	    	<classpath file="${jar.dir}\lib\*.jar" />
 	    	<classpath file="${jar.dir}\library\*.jar" />
-		    <option value="-splash:splash.png" />
 			<option value="-Xms512m" />
 			<option value="-Xmx2048m" />
 			<option value="-Dorg.diylc.scriptRun=true" />
