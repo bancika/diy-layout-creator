@@ -20,9 +20,7 @@ package org.diylc;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.awt.SplashScreen;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
@@ -60,16 +58,7 @@ public class DIYLCStarter {
    */
   public static void main(String[] args) {
     // Initialize splash screen
-    final SplashScreen splash = SplashScreen.getSplashScreen();
-    URL splashUrl = Presenter.class.getClassLoader().getResource("org/diylc/splash.png");
-	if (splash != null) {
-		try {
-			splash.setImageURL(splashUrl);
-			new DIYLCSplash(splash).start();
-		} catch (NullPointerException | IllegalStateException | IOException e1) {
-			LOG.error("Could not initialize splash screen", e1);
-		}
-	}
+	DIYLCSplash splash = new DIYLCSplash();
 
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
@@ -140,6 +129,10 @@ public class DIYLCStarter {
 
     MainFrame mainFrame = new MainFrame();
     mainFrame.setLocationRelativeTo(null);
+    
+    splash.setVisible(false);
+    splash.dispose();
+    
     mainFrame.setVisible(true);
     if (args.length > 0) {
       mainFrame.getPresenter().loadProjectFromFile(args[0]);
