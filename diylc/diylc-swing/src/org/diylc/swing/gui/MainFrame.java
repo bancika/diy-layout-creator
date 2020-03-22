@@ -108,7 +108,6 @@ public class MainFrame extends JFrame implements ISwingUI {
   public MainFrame() {
     super("DIYLC 3");
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    setPreferredSize(new Dimension(1024, 700));
     createBasePanels();
     menuMap = new HashMap<String, JMenu>();
     buttonGroupMap = new HashMap<String, ButtonGroup>();

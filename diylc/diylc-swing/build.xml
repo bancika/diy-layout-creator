@@ -10,7 +10,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="3.57.0" />
+	<property name="diylc.version" value="4.0.1" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
