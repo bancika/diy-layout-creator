@@ -584,7 +584,7 @@ public class Presenter implements IPlugInPort {
               List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
               List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
               for (IDIYComponent<?> component : componentSlot) {
-                currentProject.getComponents().add(component);
+                addComponent(component, true);
                 newSelection.add(component);
               }
               // group components if there's more than one, e.g. building blocks, but not clipboard
@@ -2065,7 +2065,7 @@ public class Presenter implements IPlugInPort {
    * @param component
    */
   @SuppressWarnings("unchecked")
-  private void addComponent(IDIYComponent<?> component, boolean alowAutoCreate) {
+  private void addComponent(IDIYComponent<?> component, boolean allowAutoCreate) {
     int index = currentProject.getComponents().size();
     while (index > 0
         && ComponentProcessor.getInstance()

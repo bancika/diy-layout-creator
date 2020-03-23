@@ -2724,6 +2724,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>"Auto-Create Pads" doesn't work for ICs and similar non-stretchable components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Hide the 3rd control point for components that do not need it (Trace, Jumper, Line)</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
