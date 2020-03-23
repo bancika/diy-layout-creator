@@ -745,7 +745,7 @@ public class Presenter implements IPlugInPort {
         snapTo = IPlugInPort.SNAP_TO_NONE;
     }
     boolean snapToGrid = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID);
-    boolean snapToObjects = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_OBJECTS);
+    boolean snapToObjects = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_COMPONENTS);
 
     if (altDown) {
       Project oldProject = null;
@@ -1183,7 +1183,7 @@ public class Presenter implements IPlugInPort {
     String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
     if (this.dragAction == IPlugInPort.DND_TOGGLE_SNAP)
       return false;
-    return snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_OBJECTS);
+    return snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_COMPONENTS);
   }
 
   @Override

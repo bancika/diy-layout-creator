@@ -80,7 +80,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   
   public static final String SNAP_TO_NONE = "None";
   public static final String SNAP_TO_GRID = "Grid";
-  public static final String SNAP_TO_OBJECTS = "Objects";
+  public static final String SNAP_TO_COMPONENTS = "Components";
   public static final String SNAP_TO_DEFAULT = SNAP_TO_GRID;
 
   public static final int DND_TOGGLE_STICKY = 0x1;
