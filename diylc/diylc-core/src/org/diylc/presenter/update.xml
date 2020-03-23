@@ -2713,7 +2713,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>New app bundle for Mac OS using appbundler instead of javabundler</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>New Mac OS app icon</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded to Java 8</description>
