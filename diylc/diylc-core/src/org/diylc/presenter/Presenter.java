@@ -740,10 +740,12 @@ public class Presenter implements IPlugInPort {
       return false;
     }
 
-    boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY, true);
+    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);
     if (shiftDown) {
-      snapToGrid = !snapToGrid;
+        snapTo = IPlugInPort.SNAP_TO_NONE;
     }
+    boolean snapToGrid = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID);
+    boolean snapToObjects = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_OBJECTS);
 
     if (altDown) {
       Project oldProject = null;
@@ -804,7 +806,7 @@ public class Presenter implements IPlugInPort {
     }
 
     Project oldProject = currentProject.clone();
-    moveComponents(controlPointMap, dx, dy, snapToGrid);
+    moveComponents(controlPointMap, dx, dy, snapToGrid, snapToObjects);
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Move Selection");
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     return true;
@@ -1009,7 +1011,7 @@ public class Presenter implements IPlugInPort {
     int dy = (int) yOffset.convertToPixels();
 
     Project oldProject = currentProject.clone();
-    moveComponents(controlPointMap, dx, dy, false);
+    moveComponents(controlPointMap, dx, dy, false, false);
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Move Selection");
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     drawingManager.clearContinuityArea();
@@ -1171,10 +1173,17 @@ public class Presenter implements IPlugInPort {
   }
 
   private boolean isSnapToGrid() {
-    boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY, true);
+    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
     if (this.dragAction == IPlugInPort.DND_TOGGLE_SNAP)
-      snapToGrid = !snapToGrid;
-    return snapToGrid;
+      return false;
+    return snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID);
+  }
+  
+  private boolean isSnapToObjects() {
+    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
+    if (this.dragAction == IPlugInPort.DND_TOGGLE_SNAP)
+      return false;
+    return snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_OBJECTS);
   }
 
   @Override
@@ -1188,7 +1197,7 @@ public class Presenter implements IPlugInPort {
       int dx = (scaledPoint.x - previousDragPoint.x);
       int dy = (scaledPoint.y - previousDragPoint.y);
 
-      Point actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid());
+      Point actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects());
       if (actualD == null)
         return true;
 
@@ -1212,7 +1221,7 @@ public class Presenter implements IPlugInPort {
     return true;
   }
 
-  private Point moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid) {
+  private Point moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid, boolean snapToObjects) {
     // After we make the transfer and snap to grid, calculate actual dx
     // and dy. We'll use them to translate the previous drag point.
     int actualDx = 0;
@@ -1232,6 +1241,8 @@ public class Presenter implements IPlugInPort {
       testPoint.translate(dx, dy);
       if (snapToGrid) {
         CalcUtils.snapPointToGrid(testPoint, currentProject.getGridSpacing());
+      } else if (snapToObjects) {
+        CalcUtils.snapPointToObjects(testPoint, currentProject.getGridSpacing(), entry.getKey(), currentProject.getComponents());
       }
 
       actualDx = testPoint.x - firstPoint.x;

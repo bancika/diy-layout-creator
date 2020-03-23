@@ -2716,6 +2716,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Snap To Objects" feature that snaps control points to control points of the nearest components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>New Mac OS app icon</description>
 				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>

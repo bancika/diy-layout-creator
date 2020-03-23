@@ -46,6 +46,7 @@ public class ConfigPlugin implements IPlugIn {
 
   private static final String CONFIG_MENU = "Config";
   private static final String THEME_MENU = "Theme";
+  private static final String SNAP_MENU = "Snap To...";
   private static final String COMPONENT_BROWSER_MENU = "Toolbox";
   public static final String COMPONENT_BROWSER = "componentBrowser";
   public static final String SEARCHABLE_TREE = "Searchable Tree";
@@ -96,12 +97,19 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),
         CONFIG_MENU);
+    swingUI.injectSubmenu(SNAP_MENU, null, CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Grid", IPlugInPort.SHOW_GRID_KEY, true),
         CONFIG_MENU);
     swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Snap to Grid", IPlugInPort.SNAP_TO_GRID_KEY, true),
-        CONFIG_MENU);
+        ActionFactory.getInstance().createToggleAction("None", IPlugInPort.SNAP_TO_KEY, SNAP_MENU, IPlugInPort.SNAP_TO_DEFAULT),
+        SNAP_MENU);    
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createToggleAction("Grid", IPlugInPort.SNAP_TO_KEY, SNAP_MENU, IPlugInPort.SNAP_TO_DEFAULT),
+        SNAP_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createToggleAction("Objects", IPlugInPort.SNAP_TO_KEY, SNAP_MENU, IPlugInPort.SNAP_TO_DEFAULT),
+        SNAP_MENU);  
     swingUI.injectMenuAction(
         ActionFactory.getInstance()
             .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
