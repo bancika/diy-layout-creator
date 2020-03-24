@@ -2720,7 +2720,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>New Mac OS app icon</description>
+					<description>New app icon!</description>
 				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
