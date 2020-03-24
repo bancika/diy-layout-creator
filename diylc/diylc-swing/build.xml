@@ -106,7 +106,7 @@
 	        identifier="org.diylc.Desktop" 
 	        shortversion="${diylc.version}"
 	        applicationCategory="public.app-category.graphics-design"
-			icon="diylc.icns"
+			icon="icons/diylc.icns"
 	        mainclassname="${main.class}">
 	        <!--<runtime dir="${env.JAVA_HOME}" />-->
 	        <classpath file="${jar.dir}\diylc.jar" />
