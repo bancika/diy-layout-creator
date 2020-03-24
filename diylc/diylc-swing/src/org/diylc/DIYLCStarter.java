@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -130,7 +129,6 @@ public class DIYLCStarter {
 
     MainFrame mainFrame = new MainFrame();
     mainFrame.setLocationRelativeTo(null);    
-    mainFrame.setExtendedState(mainFrame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
     
     splash.setVisible(false);
     splash.dispose();

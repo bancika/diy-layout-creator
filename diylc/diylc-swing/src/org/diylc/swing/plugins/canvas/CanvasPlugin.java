@@ -44,6 +44,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -115,6 +116,21 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
   }
 
+  /**
+   * Sets the scroll pane location to center and shows the contents. This method must be called when
+   * the frame is initialized or the contents will remain hidden.
+   * 
+   * TODO: figure out a better way
+   */
+  public void scrollToCenterAndShowContents() {
+    JScrollPane scroll = getScrollPane();
+    Dimension totalSize = plugInPort.getCanvasDimensions(true, true);
+    Dimension visibleSize = scroll.getSize();
+    scroll.getHorizontalScrollBar().setValue((totalSize.width - visibleSize.width) / 2);
+    scroll.getVerticalScrollBar().setValue((totalSize.height - visibleSize.height) / 2);
+    getScrollPane().getViewport().setVisible(true);
+  }
+
   @Override
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
@@ -124,21 +140,22 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       LOG.error("Could not install canvas plugin", e);
     }
 
-    getScrollPane().setRulerVisible(ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_RULERS_KEY, true));
-    
+    getScrollPane().setRulerVisible(
+        ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_RULERS_KEY, true));
+
     // revalidate canvas on scrolling when we render visible rect only
-    if (CanvasPanel.RENDER_VISIBLE_RECT_ONLY) {    
+    if (CanvasPanel.RENDER_VISIBLE_RECT_ONLY) {
       getScrollPane().getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-        
+
         @Override
         public void adjustmentValueChanged(AdjustmentEvent e) {
           getCanvasPanel().invalidateCache();
           getCanvasPanel().revalidate();
         }
       });
-      
+
       getScrollPane().getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-        
+
         @Override
         public void adjustmentValueChanged(AdjustmentEvent e) {
           getCanvasPanel().invalidateCache();
@@ -147,47 +164,53 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       });
     }
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.SHOW_RULERS_KEY, new IConfigListener() {
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.SHOW_RULERS_KEY,
+        new IConfigListener() {
 
-      @Override
-      public void valueChanged(String key, Object value) {
-        if (IPlugInPort.SHOW_RULERS_KEY.equals(key))
-          getScrollPane().setRulerVisible((Boolean) value);
-      }
-    });
+          @Override
+          public void valueChanged(String key, Object value) {
+            if (IPlugInPort.SHOW_RULERS_KEY.equals(key))
+              getScrollPane().setRulerVisible((Boolean) value);
+          }
+        });
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HARDWARE_ACCELERATION, new IConfigListener() {
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HARDWARE_ACCELERATION,
+        new IConfigListener() {
 
-      @Override
-      public void valueChanged(String key, Object value) {
-        canvasPanel.setUseHardwareAcceleration((Boolean) value);
-        scrollPane.setUseHardwareAcceleration((Boolean) value);
-      }
-    });
-    
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.METRIC_KEY, new IConfigListener() {
+          @Override
+          public void valueChanged(String key, Object value) {
+            canvasPanel.setUseHardwareAcceleration((Boolean) value);
+            scrollPane.setUseHardwareAcceleration((Boolean) value);
+          }
+        });
 
-      @Override
-      public void valueChanged(String key, Object value) {
-        updateZeroLocation();
-      }
-    });
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.METRIC_KEY,
+        new IConfigListener() {
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.EXTRA_SPACE_KEY, new IConfigListener() {
+          @Override
+          public void valueChanged(String key, Object value) {
+            updateZeroLocation();
+          }
+        });
 
-      @Override
-      public void valueChanged(String key, Object value) {
-        refreshSize();
-        // Scroll to the center.
-        Rectangle visibleRect = canvasPanel.getVisibleRect();
-        visibleRect.setLocation((canvasPanel.getWidth() - visibleRect.width) / 2,
-            (canvasPanel.getHeight() - visibleRect.height) / 2);
-        canvasPanel.scrollRectToVisible(visibleRect);
-        canvasPanel.revalidate();
-        
-        updateZeroLocation();
-      }
-    });
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.EXTRA_SPACE_KEY,
+        new IConfigListener() {
+
+          @Override
+          public void valueChanged(String key, Object value) {
+            refreshSize();
+            // Scroll to the center.
+            Rectangle visibleRect = canvasPanel.getVisibleRect();
+            visibleRect.setLocation((canvasPanel.getWidth() - visibleRect.width) / 2,
+                (canvasPanel.getHeight() - visibleRect.height) / 2);
+            canvasPanel.scrollRectToVisible(visibleRect);
+            canvasPanel.revalidate();
+
+            updateZeroLocation();
+          }
+        });
+
+    getScrollPane().getViewport().setVisible(false);
   }
 
   public CanvasPanel getCanvasPanel() {
@@ -201,8 +224,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         public void mouseClicked(MouseEvent e) {
           if (scrollPane.isMouseScrollMode() || e.getButton() == MouseEvent.BUTTON2)
             return;
-          plugInPort.mouseClicked(e.getPoint(), e.getButton(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
-              e.isShiftDown(), e.isAltDown(), e.getClickCount());
+          plugInPort.mouseClicked(e.getPoint(), e.getButton(),
+              Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown(),
+              e.getClickCount());
         }
 
         @Override
@@ -220,15 +244,16 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
             @Override
             public void run() {
-              if (plugInPort.getNewComponentTypeSlot() == null
-                  && (e.isPopupTrigger() || (pressedEvent != null && pressedEvent.isPopupTrigger()))) {
+              if (plugInPort.getNewComponentTypeSlot() == null && (e.isPopupTrigger()
+                  || (pressedEvent != null && pressedEvent.isPopupTrigger()))) {
                 // Enable actions.
                 boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
                 getCutAction().setEnabled(enabled);
                 getCopyAction().setEnabled(enabled);
                 getDuplicateAction().setEnabled(enabled);
                 try {
-                  getPasteAction().setEnabled(clipboard.isDataFlavorAvailable(ComponentTransferable.listFlavor));
+                  getPasteAction().setEnabled(
+                      clipboard.isDataFlavorAvailable(ComponentTransferable.listFlavor));
                 } catch (Exception ex) {
                   getPasteAction().setEnabled(false);
                 }
@@ -247,7 +272,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
                 getMirrorHorizontallyAction().setEnabled(enabled);
                 getMirrorVerticallyAction().setEnabled(enabled);
 
-                getSaveAsTemplateAction().setEnabled(plugInPort.getSelectedComponents().size() == 1);
+                getSaveAsTemplateAction()
+                    .setEnabled(plugInPort.getSelectedComponents().size() == 1);
                 getSaveAsBlockAction().setEnabled(plugInPort.getSelectedComponents().size() > 1);
 
                 showPopupAt(e.getX(), e.getY());
@@ -261,8 +287,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void keyPressed(KeyEvent e) {
-          if (plugInPort.keyPressed(e.getKeyCode(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
-              e.isShiftDown(), e.isAltDown())) {
+          if (plugInPort.keyPressed(e.getKeyCode(),
+              Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown())) {
             e.consume();
           }
         }
@@ -275,8 +301,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           if (scrollPane.isMouseScrollMode())
             return;
           canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
-          plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(),
-              e.isAltDown());
+          plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
+              e.isShiftDown(), e.isAltDown());
         }
       });
     }
@@ -285,9 +311,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private RulerScrollPane getScrollPane() {
     if (scrollPane == null) {
-      scrollPane =
-          new RulerScrollPane(getCanvasPanel(), new ProjectDrawingProvider(plugInPort, true, false, true), new Size(1d,
-              SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in).convertToPixels());
+      scrollPane = new RulerScrollPane(getCanvasPanel(),
+          new ProjectDrawingProvider(plugInPort, true, false, true),
+          new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in).convertToPixels());
       boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);
 
       boolean useHardwareAcceleration =
@@ -303,7 +329,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           plugInPort.setMetric(isMetric);
         }
       });
-      
+
       double extraSpace = plugInPort.getExtraSpace();
       scrollPane.setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
 
@@ -317,7 +343,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           final JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
           final JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
 
-          boolean wheelZoom = ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
+          boolean wheelZoom =
+              ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
           if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
 
@@ -349,32 +376,30 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
             if (selectionBounds == null) {
               // center to cursor
-              Point desiredPos =
-                  new Point((int) (1d * mousePos.x / oldZoom * newZoom), (int) (1d * mousePos.y / oldZoom * newZoom));
+              Point desiredPos = new Point((int) (1d * mousePos.x / oldZoom * newZoom),
+                  (int) (1d * mousePos.y / oldZoom * newZoom));
               int dx = desiredPos.x - mousePos.x;
               int dy = desiredPos.y - mousePos.y;
               horizontal.setValue(horizontal.getValue() + dx);
               vertical.setValue(vertical.getValue() + dy);
             } else {
               // center to selection
-              horizontal.setValue((int) (selectionBounds.getX() + selectionBounds.getWidth() / 2 - visibleRect
-                  .getWidth() / 2));
-              vertical.setValue((int) (selectionBounds.getY() + selectionBounds.getHeight() / 2 - visibleRect
-                  .getHeight() / 2));
+              horizontal.setValue((int) (selectionBounds.getX() + selectionBounds.getWidth() / 2
+                  - visibleRect.getWidth() / 2));
+              vertical.setValue((int) (selectionBounds.getY() + selectionBounds.getHeight() / 2
+                  - visibleRect.getHeight() / 2));
             }
           }
           if (e.isShiftDown()) {
             int iScrollAmount = e.getScrollAmount();
-            int iNewValue =
-                horizontalScrollBar.getValue() + horizontalScrollBar.getBlockIncrement() * iScrollAmount
-                    * e.getWheelRotation();
+            int iNewValue = horizontalScrollBar.getValue()
+                + horizontalScrollBar.getBlockIncrement() * iScrollAmount * e.getWheelRotation();
             if (iNewValue <= horizontalScrollBar.getMaximum())
               horizontalScrollBar.setValue(iNewValue);
           } else {
             int iScrollAmount = e.getScrollAmount();
-            int iNewValue =
-                verticalScrollBar.getValue() + verticalScrollBar.getBlockIncrement() * iScrollAmount
-                    * e.getWheelRotation();
+            int iNewValue = verticalScrollBar.getValue()
+                + verticalScrollBar.getBlockIncrement() * iScrollAmount * e.getWheelRotation();
             if (iNewValue <= verticalScrollBar.getMaximum())
               verticalScrollBar.setValue(iNewValue);
           }
@@ -556,30 +581,32 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public ActionFactory.RotateSelectionAction getRotateClockwiseAction() {
     if (rotateClockwiseAction == null) {
-      rotateClockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, 1);
+      rotateClockwiseAction =
+          ActionFactory.getInstance().createRotateSelectionAction(plugInPort, 1);
     }
     return rotateClockwiseAction;
   }
 
   public ActionFactory.RotateSelectionAction getRotateCounterclockwiseAction() {
     if (rotateCounterclockwiseAction == null) {
-      rotateCounterclockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, -1);
+      rotateCounterclockwiseAction =
+          ActionFactory.getInstance().createRotateSelectionAction(plugInPort, -1);
     }
     return rotateCounterclockwiseAction;
   }
 
   public ActionFactory.MirrorSelectionAction getMirrorHorizontallyAction() {
     if (mirrorHorizontallyAction == null) {
-      mirrorHorizontallyAction =
-          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.HORIZONTAL);
+      mirrorHorizontallyAction = ActionFactory.getInstance().createMirrorSelectionAction(plugInPort,
+          IComponentTransformer.HORIZONTAL);
     }
     return mirrorHorizontallyAction;
   }
 
   public ActionFactory.MirrorSelectionAction getMirrorVerticallyAction() {
     if (mirrorVerticallyAction == null) {
-      mirrorVerticallyAction =
-          ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.VERTICAL);
+      mirrorVerticallyAction = ActionFactory.getInstance().createMirrorSelectionAction(plugInPort,
+          IComponentTransformer.VERTICAL);
     }
     return mirrorVerticallyAction;
   }
@@ -635,23 +662,24 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public ActionFactory.ExpandSelectionAction getExpandSelectionAllAction() {
     if (expandSelectionAllAction == null) {
-      expandSelectionAllAction = ActionFactory.getInstance().createExpandSelectionAction(plugInPort, ExpansionMode.ALL);
+      expandSelectionAllAction =
+          ActionFactory.getInstance().createExpandSelectionAction(plugInPort, ExpansionMode.ALL);
     }
     return expandSelectionAllAction;
   }
 
   public ActionFactory.ExpandSelectionAction getExpandSelectionImmediateAction() {
     if (expandSelectionImmediateAction == null) {
-      expandSelectionImmediateAction =
-          ActionFactory.getInstance().createExpandSelectionAction(plugInPort, ExpansionMode.IMMEDIATE);
+      expandSelectionImmediateAction = ActionFactory.getInstance()
+          .createExpandSelectionAction(plugInPort, ExpansionMode.IMMEDIATE);
     }
     return expandSelectionImmediateAction;
   }
 
   public ActionFactory.ExpandSelectionAction getExpandSelectionSameTypeAction() {
     if (expandSelectionSameTypeAction == null) {
-      expandSelectionSameTypeAction =
-          ActionFactory.getInstance().createExpandSelectionAction(plugInPort, ExpansionMode.SAME_TYPE);
+      expandSelectionSameTypeAction = ActionFactory.getInstance()
+          .createExpandSelectionAction(plugInPort, ExpansionMode.SAME_TYPE);
     }
     return expandSelectionSameTypeAction;
   }
@@ -675,7 +703,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           SwingUtilities.invokeLater(new Runnable() {
 
             @Override
-            public void run() {              
+            public void run() {
               canvasPanel.scrollRectToVisible(visibleRect);
               canvasPanel.revalidate();
             }
@@ -688,12 +716,12 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         // Try to set the visible area to be centered with the previous
         // one.
         double zoomFactor = (Double) params[0] / zoomLevel;
-        visibleRect.setBounds((int) (visibleRect.x * zoomFactor), (int) (visibleRect.y * zoomFactor),
-            visibleRect.width, visibleRect.height);
+        visibleRect.setBounds((int) (visibleRect.x * zoomFactor),
+            (int) (visibleRect.y * zoomFactor), visibleRect.width, visibleRect.height);
 
         canvasPanel.scrollRectToVisible(visibleRect);
         canvasPanel.revalidate();
-        
+
         updateZeroLocation();
 
         zoomLevel = (Double) params[0];
@@ -717,9 +745,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   }
 
   private void refreshSize() {
-    Dimension d =
-        plugInPort.getCanvasDimensions(true,
-            ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true));
+    Dimension d = plugInPort.getCanvasDimensions(true,
+        ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true));
     canvasPanel.setSize(d);
     canvasPanel.setPreferredSize(d);
     getScrollPane().setZoomLevel(plugInPort.getZoomLevel());
@@ -729,11 +756,12 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
    * Causes ruler scroll pane to refresh by sending a fake mouse moved message to the canvasPanel.
    */
   public void refresh() {
-    MouseEvent event = new MouseEvent(canvasPanel, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 1, 1,// canvasPanel.getWidth()
-                                                                                                               // /
-        // 2,
-        // canvasPanel.getHeight() / 2,
-        0, false);
+    MouseEvent event =
+        new MouseEvent(canvasPanel, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 1, 1, // canvasPanel.getWidth()
+                                                                                                 // /
+            // 2,
+            // canvasPanel.getHeight() / 2,
+            0, false);
     canvasPanel.dispatchEvent(event);
   }
 

@@ -23,7 +23,6 @@ package org.diylc.swing.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -51,6 +50,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.MenuEvent;
@@ -160,10 +160,41 @@ public class MainFrame extends JFrame implements ISwingUI {
           System.exit(0);
         }
       }
+     
     });
 
     setGlassPane(new CustomGlassPane());
     // getGlassPane().setVisible(true);
+    
+    // maximize the screen
+    setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+    new Thread(new Runnable() {
+      
+      @Override
+      public void run() {
+        // wait some time for size to update
+        // TODO: find a better solution
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+          
+          @Override
+          public void run() {
+            // Important! Notify the canvas to center the scrolls and show the content
+            canvasPlugin.scrollToCenterAndShowContents();  
+          }
+        }); 
+      }
+    }).start();
+  }
+  
+  @Override
+  public void setExtendedState(int state) {
+    super.setExtendedState(state);
+    
+       
   }
 
   public Presenter getPresenter() {
