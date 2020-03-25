@@ -95,6 +95,9 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Outline Mode", IPlugInPort.OUTLINE_KEY, false),
         CONFIG_MENU);
     swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Renumber On Paste", IPlugInPort.RENUMBER_ON_PASTE_KEY, true),
+        CONFIG_MENU);
+    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),
         CONFIG_MENU);
     swingUI.injectSubmenu(SNAP_MENU, IconLoader.GraphEdgeDirected.getIcon(), CONFIG_MENU);

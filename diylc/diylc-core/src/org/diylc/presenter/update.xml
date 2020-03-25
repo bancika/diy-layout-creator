@@ -2727,6 +2727,10 @@
 					<description>Added ability to collapse and expand the component tree panel to the left edge of the screen</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Renumber On Paste" option in the "Config" menu</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded to Java 8</description>
 				</org.diylc.appframework.update.Change>

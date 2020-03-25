@@ -1556,10 +1556,10 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup) {
-    LOG.info(String.format("pasteComponents(%s, %s)", components, autoGroup));
+  public void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup, boolean assignNewNames) {
+    LOG.info(String.format("pasteComponents(%s, %s, %s)", components, autoGroup, assignNewNames));
     instantiationManager.pasteComponents(components, this.previousScaledPoint, isSnapToGrid(),
-        currentProject.getGridSpacing(), autoGroup, this.currentProject);
+        currentProject.getGridSpacing(), autoGroup, this.currentProject, assignNewNames);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, instantiationManager.getComponentTypeSlot(),
         instantiationManager.getFirstControlPoint());
@@ -2579,7 +2579,7 @@ public class Presenter implements IPlugInPort {
           LOG.error("Could not clone component: " + c);
         }
       // paste them to the project
-      pasteComponents(clones, true);
+      pasteComponents(clones, true, true);
     } else
       throw new InvalidBlockException();
   }

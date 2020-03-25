@@ -77,6 +77,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String HARDWARE_ACCELERATION = "hardwareAcceleration";
   public static final String EXTRA_SPACE_KEY = "extraSpace";
   public static final String FAVORITES_KEY = "favorites";
+  public static final String RENUMBER_ON_PASTE_KEY = "renumberOnPaste";
   
   public static final String SNAP_TO_NONE = "None";
   public static final String SNAP_TO_GRID = "Grid";
@@ -224,8 +225,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * 
    * @param components
    * @param autoGroup
+   * @param assignNewNames
    */
-  void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup);
+  void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup, boolean assignNewNames);
 
   /**
    * Duplicates selected components and places them nearby.
