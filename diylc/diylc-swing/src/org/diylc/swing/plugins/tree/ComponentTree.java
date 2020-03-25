@@ -60,7 +60,7 @@ public class ComponentTree implements IPlugIn {
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
     try {
-      swingUI.injectGUIComponent(getTreePanel(), SwingConstants.LEFT);
+      swingUI.injectGUIComponent(getTreePanel(), SwingConstants.LEFT, true);
     } catch (BadPositionException e) {
       LOG.error("Could not install the component tree", e);
     }

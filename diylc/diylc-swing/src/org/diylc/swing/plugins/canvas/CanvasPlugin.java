@@ -135,7 +135,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
     try {
-      swingUI.injectGUIComponent(getScrollPane(), SwingConstants.CENTER);
+      swingUI.injectGUIComponent(getScrollPane(), SwingConstants.CENTER, false);
     } catch (BadPositionException e) {
       LOG.error("Could not install canvas plugin", e);
     }

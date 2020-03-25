@@ -54,7 +54,7 @@ public class ToolBox implements IPlugIn {
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
     try {
-      swingUI.injectGUIComponent(getComponentTabbedPane(), SwingConstants.TOP);
+      swingUI.injectGUIComponent(getComponentTabbedPane(), SwingConstants.TOP, false);
     } catch (BadPositionException e) {
       LOG.error("Could not install the toolbox", e);
     }

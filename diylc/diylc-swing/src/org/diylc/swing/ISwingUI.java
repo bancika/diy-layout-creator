@@ -54,9 +54,10 @@ public interface ISwingUI extends IView {
    * 
    * @param component
    * @param position
+   * @param collapsible
    * @throws BadPositionException in case invalid position is specified
    */
-  void injectGUIComponent(JComponent component, int position) throws BadPositionException;
+  void injectGUIComponent(JComponent component, int position, boolean collapsible) throws BadPositionException;
 
   /**
    * Injects a custom menu action into application's main menu. If <code>action</code> is set to

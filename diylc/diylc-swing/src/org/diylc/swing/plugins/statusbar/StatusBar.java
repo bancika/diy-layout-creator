@@ -122,7 +122,7 @@ public class StatusBar extends JPanel implements IPlugIn {
     setLayout(new GridBagLayout());
 
     try {
-      swingUI.injectGUIComponent(this, SwingUtilities.BOTTOM);
+      swingUI.injectGUIComponent(this, SwingUtilities.BOTTOM, false);
     } catch (BadPositionException e) {
       LOG.error("Could not install status bar", e);
     }

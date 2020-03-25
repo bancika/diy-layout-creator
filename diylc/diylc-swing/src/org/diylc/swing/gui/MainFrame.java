@@ -294,8 +294,13 @@ public class MainFrame extends JFrame implements ISwingUI {
   }
 
   @Override
-  public void injectGUIComponent(JComponent component, int position) throws BadPositionException {
-    LOG.info(String.format("injectGUIComponent(%s, %s)", component.getClass().getName(), position));
+  public void injectGUIComponent(JComponent component, int position, boolean collapsible) throws BadPositionException {
+    LOG.info(String.format("injectGUIComponent(%s, %s, %s)", component.getClass().getName(), position, collapsible));
+    if (collapsible) {
+      CollapsiblePanel panel = new CollapsiblePanel(position);
+      panel.add(component);
+      component = panel;
+    }
     switch (position) {
       case SwingConstants.TOP:
         topPanel.add(component);
