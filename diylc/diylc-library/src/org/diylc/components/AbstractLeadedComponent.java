@@ -657,6 +657,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   public void setMoveLabel(boolean moveLabel) {
     this.moveLabel = moveLabel;
+    // recalculate label point position
+    if (moveLabel)
+      points[2] = calculateLabelPosition(points[0], points[1]);
   }
   
   @Override
