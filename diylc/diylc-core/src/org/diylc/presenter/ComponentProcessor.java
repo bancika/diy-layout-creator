@@ -152,7 +152,10 @@ public class ComponentProcessor {
     for (Method getter : clazz.getMethods()) {
       if (getter.getName().startsWith("get")) {
         try {
-          if (getter.isAnnotationPresent(EditableProperty.class) && !getter.isAnnotationPresent(Deprecated.class)) {
+          if (getter.isAnnotationPresent(EditableProperty.class) && !getter.isAnnotationPresent(Deprecated.class)
+              // since Java 8 in generic classes we get properties of both the generic type and Object
+              // added this condition to skip Object property that we do not need
+              && getter.getReturnType() != Object.class) {
             EditableProperty annotation = getter.getAnnotation(EditableProperty.class);
             String name;
             if (annotation.name().equals("")) {

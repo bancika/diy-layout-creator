@@ -101,7 +101,7 @@
 	        outputdirectory="${build.dir}" 
 	        name="DIYLC" 
 			jvmrequired="1.8"
-			copyright="Branislav Stojkovic, a.k.a. bancika"
+			copyright="2020 bancika"
 	        displayname="DIY Layout Creator" 
 	        identifier="org.diylc.Desktop" 
 	        shortversion="${diylc.version}"
