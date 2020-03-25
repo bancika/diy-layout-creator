@@ -77,7 +77,7 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
   private JackType type = JackType.MONO;
   private Orientation orientation = Orientation.DEFAULT;
-  transient private Area[] body;
+  transient private Shape[] body;
   private String value = "";
 
   public ClosedJack1_4() {
@@ -130,9 +130,9 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
     return angle;
   }
 
-  public Area[] getBody() {
+  public Shape[] getBody() {
     if (body == null) {
-      body = new Area[5];
+      body = new Shape[5];
 
       // Create body.
       int x = controlPoints[0].x;
@@ -169,9 +169,9 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
         }
         path.lineTo(p.x, p.y);
       }
-      Area pathArea = new Area(path);
-      pathArea.intersect(shaft);
-      body[2] = new Area(path);
+//      Area pathArea = new Area(path);
+//      pathArea.intersect(shaft);
+      body[2] = path;
 
       // Create lugs.
       Area lugs = new Area();
@@ -245,7 +245,7 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
     g2d.draw(body[1]);
     if (!outlineMode) {
       g2d.setColor(SHAFT_COLOR.darker());
-      g2d.fill(body[2]);
+//      g2d.fill(body[2]);
       g2d.draw(body[2]);
     }
 

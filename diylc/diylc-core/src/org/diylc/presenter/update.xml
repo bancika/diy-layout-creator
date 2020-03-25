@@ -2738,6 +2738,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Hide the 3rd control point for components that do not need it (Trace, Jumper, Line)</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Threads on 1/4" Closed Jack were not rendered at all</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
