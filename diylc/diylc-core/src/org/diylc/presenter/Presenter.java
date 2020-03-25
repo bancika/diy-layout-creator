@@ -122,7 +122,7 @@ public class Presenter implements IPlugInPort {
 				});
 				in.close();
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.error("Could not find version number, using default", e);
 		}
 	}
@@ -143,7 +143,7 @@ public class Presenter implements IPlugInPort {
 				LOG.info(String.format("Loaded default variants for %d components",
 						defaultVariantMap == null ? 0 : defaultVariantMap.size()));
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.error("Could not load default variants", e);
 		}
 	}
