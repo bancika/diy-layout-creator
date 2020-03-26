@@ -241,6 +241,10 @@ public class ActionFactory {
       String tipKey) {
     return new ConfigAction(plugInPort, title, configKey, defaultValue, tipKey);
   }
+  
+  public ToggleAction createToggleAction(String title, String configKey, String groupName, String defaultValue) {
+    return new ToggleAction(title, configKey, groupName, defaultValue);
+  }
 
   public ThemeAction createThemeAction(IPlugInPort plugInPort, Theme theme) {
     return new ThemeAction(plugInPort, theme);
@@ -407,7 +411,7 @@ public class ActionFactory {
             presenter.loadProjectFromFile(file.getAbsolutePath());
             // Grab all components and paste them into the main
             // presenter
-            plugInPort.pasteComponents(presenter.getCurrentProject().getComponents(), false);
+            plugInPort.pasteComponents(presenter.getCurrentProject().getComponents(), false, false);
             // Cleanup components in the temp presenter, don't need
             // them anymore
             presenter.selectAll(0);
@@ -1103,7 +1107,7 @@ public class ActionFactory {
       try {
         List<IDIYComponent<?>> components =
             (List<IDIYComponent<?>>) clipboard.getData(ComponentTransferable.listFlavor);
-        plugInPort.pasteComponents(cloneComponents(components), false);
+        plugInPort.pasteComponents(cloneComponents(components), false, ConfigurationManager.getInstance().readBoolean(Presenter.RENUMBER_ON_PASTE_KEY, true));
       } catch (Exception ex) {
         LOG.error("Coule not paste.", ex);
       }
@@ -1573,6 +1577,27 @@ public class ActionFactory {
         DialogFactory.getInstance().createInfoDialog(tipKey).setVisible(true);
       }
       plugInPort.refresh();
+    }
+  }
+  
+  public static class ToggleAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+	private String configKey;
+
+    public ToggleAction(String title, String configKey, String groupName, String defaultValue) {
+      super();
+      this.configKey = configKey;
+      putValue(AbstractAction.NAME, title);
+      putValue(IView.RADIO_BUTTON_GROUP_KEY, groupName);
+      putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance().readString(configKey, defaultValue).equalsIgnoreCase(title));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info(getValue(AbstractAction.NAME) + " toggle triggered");
+      ConfigurationManager.getInstance().writeValue(configKey, getValue(AbstractAction.NAME));
     }
   }
 

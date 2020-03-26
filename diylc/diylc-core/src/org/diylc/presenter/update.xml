@@ -2627,7 +2627,7 @@
 				<minor>57</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2019-03-10 00:00:00.000 CET</releaseDate>
+			<releaseDate>2019-03-24 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>				
 				<org.diylc.appframework.update.Change>
@@ -2694,6 +2694,74 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Z-order of components sometimes gets wrong when importing a DIY file into another file</description>
 				</org.diylc.appframework.update.Change>				
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>0</minor>
+				<build>1</build>
+			</versionNumber>
+			<releaseDate>2020-03-26 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Tape Measure" component for measuring the distance between any two points on the drawing</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to set board size explicitly by typing in dimensions, instead of dragging two control points</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>New app bundle for Mac OS using appbundler instead of javabundler</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Snap To Components" feature that snaps control points to control points of the nearest components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>New app icon!</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to collapse and expand the component tree panel to the left edge of the screen</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added read-only "Length" property to curved components (i.e. "Hookup Wire") that calculates total length of the curve</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Renumber On Paste" option in the "Config" menu</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added orientation parameter to "Ground Simbol" to allow rotation</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded to Java 8</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>The third control point of resistors and similar components appears in the Spice netlist by mistake</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Hide the 3rd control point for components that do not need it (Trace, Jumper, Line)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>"Auto-Create Pads" doesn't work for ICs and similar non-stretchable components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Threads on 1/4" Closed Jack were not rendered at all</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	

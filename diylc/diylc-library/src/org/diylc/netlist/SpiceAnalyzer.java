@@ -82,10 +82,14 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
         
       sb.append(fill(name, (int) (Math.ceil(maxLen / 5.0) * 5)));
       sb.append(" ");
-      int[] nodeIndices = new int[c.getControlPointCount()];
+      List<Integer> nodeIndices = new ArrayList<Integer>();
       
       // find node indices for each control point
       for (int i = 0; i < c.getControlPointCount(); i++) {
+        // skip non-sticky points
+        if (c.getControlPointNodeName(i) == null)
+          continue;
+        
         int pointIndex = i;        
         
         int nodeIndex = find(new Node(c, pointIndex), groups);
@@ -99,12 +103,12 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
         if (c instanceof ISpiceMapper)
           pointIndex = ((ISpiceMapper)c).mapToSpiceNode(pointIndex);
         
-        nodeIndices[pointIndex] = nodeIndex;
+        nodeIndices.add(nodeIndex);
       }
       
       // output to spice
-      for (int i = 0; i < c.getControlPointCount(); i++) {
-        sb.append(fill(formatSpiceNode(nodeIndices[i]), 5));
+      for (Integer nodeIndex : nodeIndices) {
+        sb.append(fill(formatSpiceNode(nodeIndex), 5));
         sb.append(" ");
       }
       

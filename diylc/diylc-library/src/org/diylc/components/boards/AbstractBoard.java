@@ -65,11 +65,17 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected CoordinateOrigin coordinateOrigin = CoordinateOrigin.Top_Left;
   protected CoordinateDisplay coordinateDisplay = CoordinateDisplay.One_Side;
   protected CoordinateType yType = CoordinateType.Letters;
+  
+  protected Size length;
+  protected Size width;
+  protected BoardSizingMode mode = BoardSizingMode.TwoPoints;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    
+    Point finalSecondPoint = getFinalSecondPoint();    
 
     Composite oldComposite = g2d.getComposite();
     // render as transparent when dragging
@@ -78,7 +84,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     g2d.setColor(boardColor);
-    g2d.fillRect(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+    g2d.fillRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
     g2d.setComposite(oldComposite);
     
     // Do not track any changes that follow because the whole board has been
@@ -86,7 +92,17 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : borderColor);
-    g2d.drawRect(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+    g2d.drawRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
+  }
+  
+  protected Point getFinalSecondPoint() {
+    Point finalSecondPoint;
+    if (getMode() == BoardSizingMode.TwoPoints)
+      finalSecondPoint = secondPoint;
+    else
+      finalSecondPoint = new Point((int)(firstPoint.x + getLength().convertToPixels()), 
+          (int)(firstPoint.y + getWidth().convertToPixels()));
+    return finalSecondPoint;
   }
 
   protected void drawCoordinates(Graphics2D g2d, int spacing, Project project) {
@@ -97,6 +113,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     int halfSpace = spacing / 2;
     CoordinateOrigin origin = getCoordinateOrigin();
     
+    Point finalSecondPoint = getFinalSecondPoint();
+    
     if (getCoordinateDisplay() != CoordinateDisplay.None) {
       int range;
       int yOffset;
@@ -104,12 +122,12 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
       Point drawPoint = new Point(firstPoint);
       
       if (origin == CoordinateOrigin.Top_Left || origin == CoordinateOrigin.Top_Right) {
-    	range = (int) ((secondPoint.y - firstPoint.y + halfSpace) / spacing);
+    	range = (int) ((finalSecondPoint.y - firstPoint.y + halfSpace) / spacing);
     	yOffset = spacing;
       } else {
-    	range = (int) ((secondPoint.y - firstPoint.y + halfSpace) / spacing);
+    	range = (int) ((finalSecondPoint.y - firstPoint.y + halfSpace) / spacing);
     	yOffset = -spacing;
-    	drawPoint.y = secondPoint.y;
+    	drawPoint.y = finalSecondPoint.y;
       }
       
       for (int c = 1; c < range; c++) {
@@ -122,7 +140,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     		HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
     	if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
     	  StringUtils.drawCenteredText(g2d, label, 
-    		  secondPoint.x - xOffset, drawPoint.y, 
+    	      finalSecondPoint.x - xOffset, drawPoint.y, 
     		  HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     	}
       }
@@ -135,12 +153,12 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
       Point drawPoint = new Point(firstPoint);
       
       if (origin == CoordinateOrigin.Top_Left || origin == CoordinateOrigin.Bottom_Left) {
-        range = (int) ((secondPoint.x - firstPoint.x + halfSpace) / spacing);
+        range = (int) ((finalSecondPoint.x - firstPoint.x + halfSpace) / spacing);
         xOffset = spacing;
       } else {
-        range = (int) ((secondPoint.x - firstPoint.x + halfSpace) / spacing);
+        range = (int) ((finalSecondPoint.x - firstPoint.x + halfSpace) / spacing);
         xOffset = -spacing;
-        drawPoint.x = secondPoint.x;
+        drawPoint.x = finalSecondPoint.x;
       }
       
       for (int c = 1; c < range; c++) {
@@ -152,7 +170,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
             HorizontalAlignment.CENTER, VerticalAlignment.TOP);
         if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
           StringUtils.drawCenteredText(g2d, label, 
-              drawPoint.x, (int) (secondPoint.y - COORDINATE_FONT_SIZE), 
+              drawPoint.x, (int) (finalSecondPoint.y - COORDINATE_FONT_SIZE), 
               HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
         }
       }
@@ -263,7 +281,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.WHEN_SELECTED;
+    return getMode() == BoardSizingMode.TwoPoints ? VisibilityPolicy.WHEN_SELECTED : VisibilityPolicy.NEVER;
   }
 
   @Override
@@ -285,7 +303,36 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public void setValue(String value) {
     this.value = value;
   }
+    
+  @EditableProperty(name = "Explicit Length", validatorClass = BoardModeValidator.class)
+  public Size getLength() {
+    return length;
+  }
+
+  public void setLength(Size length) {
+    this.length = length;
+  }
+
+  @EditableProperty(name = "Explicit Width", validatorClass = BoardModeValidator.class)
+  public Size getWidth() {    
+    return width;
+  }
+
+  public void setWidth(Size width) {
+    this.width = width;
+  }
   
+  @EditableProperty(name = "Sizing Mode")
+  public BoardSizingMode getMode() {
+    if (mode == null)
+      mode = BoardSizingMode.TwoPoints;
+    return mode;
+  }
+
+  public void setMode(BoardSizingMode mode) {
+    this.mode = mode;
+  }
+
   public static enum CoordinateType {
     Letters, Numbers
   }
@@ -307,4 +354,19 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
       return super.toString().replace('_', ' ');
     };
   }
+  
+  public static enum BoardSizingMode {
+    TwoPoints("Opposing Points"), Explicit("Explicit Dimensions");
+    
+    private String label;
+
+    private BoardSizingMode(String label) {
+      this.label = label;
+    }
+    
+    @Override
+    public String toString() {
+      return label;
+    }
+  }  
 }

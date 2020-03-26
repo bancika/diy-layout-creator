@@ -308,11 +308,11 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     g2d.setColor(finalLabelColor);
     FontMetrics fontMetrics = g2d.getFontMetrics();
     String label = "";
-    label = display == Display.NAME ? getName() : (getValue() == null ? "" : getValue().toString());
-    if (display == Display.NONE) {
+    label = getDisplay() == Display.NAME ? getName() : (getValue() == null ? "" : getValue().toString());
+    if (getDisplay() == Display.NONE) {
       label = "";
     }
-    if (display == Display.BOTH) {
+    if (getDisplay() == Display.BOTH) {
       label = getName() + " " + (getValue() == null ? "" : getValue().toString());
     }
     Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
@@ -471,7 +471,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
    * @return shape that represents component body. Shape should not be transformed and should be
    *         referenced to (0, 0).
    */
-  protected abstract Shape getBodyShape();
+  protected abstract Shape getBodyShape();   
 
   /**
    * Controls how component shape should be placed relative to start and end point.
@@ -516,7 +516,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   @Override
   public int getControlPointCount() {
-    return getPoints().length;
+    return getPoints().length - (getMoveLabel() ? 0 : 1);
   }
 
   @Override
@@ -657,6 +657,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   public void setMoveLabel(boolean moveLabel) {
     this.moveLabel = moveLabel;
+    // recalculate label point position
+    if (moveLabel)
+      points[2] = calculateLabelPosition(points[0], points[1]);
   }
   
   @Override

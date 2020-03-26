@@ -76,11 +76,18 @@ public class PropertyWrapper implements Cloneable {
 
   public void writeTo(Object object) throws IllegalArgumentException, IllegalAccessException,
       InvocationTargetException, SecurityException, NoSuchMethodException {
+    // nothing to do if no setter
+    if (setter == null)
+      return;
     object.getClass().getMethod(setter, type).invoke(object, this.value);
   }
 
   public Method getGetter() throws SecurityException, NoSuchMethodException {
     return getOwnerObject().getClass().getMethod(getter);
+  }
+  
+  public boolean isReadOnly() {
+    return setter == null;
   }
 
   public String getName() {

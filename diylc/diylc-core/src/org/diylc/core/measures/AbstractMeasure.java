@@ -41,9 +41,6 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
   protected Double value;
   protected T unit;
 
-  // public AbstractMeasure() {
-  // }
-
   public AbstractMeasure(Double value, T unit) {
     super();
     this.value = value;
@@ -54,22 +51,9 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
     return value;
   }
 
-  // public void setValue(Double value) {
-  // this.value = value;
-  // }
-
   public T getUnit() {
     return unit;
   }
-
-  // public void setUnit(T multiplier) {
-  // this.unit = multiplier;
-  // }
-
-  // @Override
-  // public Object clone() throws CloneNotSupportedException {
-  // return super.clone();
-  // }
 
   @Override
   public int hashCode() {

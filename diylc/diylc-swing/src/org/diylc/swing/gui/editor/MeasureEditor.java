@@ -56,7 +56,7 @@ public class MeasureEditor extends Container {
   @SuppressWarnings("unchecked")
   public MeasureEditor(final PropertyWrapper property) {
     setLayout(new BorderLayout());
-    final AbstractMeasure<?> measure = ((AbstractMeasure<?>) property.getValue());
+    final AbstractMeasure<?> measure = ((AbstractMeasure<?>) property.getValue());    
     valueField = new DoubleTextField(measure == null ? null : measure.getValue());
     oldBg = valueField.getBackground();
     valueField.addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY, new PropertyChangeListener() {
@@ -88,8 +88,15 @@ public class MeasureEditor extends Container {
         public void actionPerformed(ActionEvent evt) {
           try {
             Constructor<?> ctor = property.getType().getConstructors()[0];
+            Double newValue = valueField.getValue();
+            if (newValue != null && property.isReadOnly()) {
+              double oldFactor = ((Unit)((AbstractMeasure<?>)property.getValue()).getUnit()).getFactor();
+              double newFactor = ((Unit)unitBox.getSelectedItem()).getFactor();
+              newValue = newValue * oldFactor / newFactor;
+              valueField.setValue(newValue);
+            }
             AbstractMeasure<?> newMeasure =
-                (AbstractMeasure<?>) ctor.newInstance(valueField.getValue(),
+                (AbstractMeasure<?>) ctor.newInstance(newValue,
                     (Enum<? extends Unit>) unitBox.getSelectedItem());
             property.setValue(newMeasure);
             property.setChanged(true);
@@ -101,6 +108,11 @@ public class MeasureEditor extends Container {
         }
       });
       add(unitBox, BorderLayout.EAST);
+      
+      if (property.isReadOnly()) {
+        valueField.setEnabled(false);
+        unitBox.setEnabled(true);
+      }
 
       if (!property.isUnique()) {
         valueField.setBackground(Constants.MULTI_VALUE_COLOR);

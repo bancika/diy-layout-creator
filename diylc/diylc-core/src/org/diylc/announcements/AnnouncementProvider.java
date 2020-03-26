@@ -59,6 +59,8 @@ public class AnnouncementProvider {
 
   public String getCurrentAnnouncements(boolean forceLast) throws ParseException {
     announcements = service.getAnnouncements();
+    if (announcements == null)
+    	return null;
     boolean hasUnread = false;
     StringBuilder sb = new StringBuilder("<html>");
     for (int i = 0; i < announcements.size(); i++) {

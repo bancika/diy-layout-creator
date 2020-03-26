@@ -34,7 +34,7 @@ import org.diylc.core.measures.AbstractMeasure;
 public class PositiveMeasureValidator implements IPropertyValidator {
 
   @Override
-  public void validate(Object value) throws ValidationException {
+  public void validate(Object owner, Object value) throws ValidationException {
     if (value == null)
       return;
     if (value instanceof AbstractMeasure) {

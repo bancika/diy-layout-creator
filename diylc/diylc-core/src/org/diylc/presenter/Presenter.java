@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -98,48 +99,54 @@ public class Presenter implements IPlugInPort {
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-  public static VersionNumber CURRENT_VERSION = new VersionNumber(3, 0, 0);
+  public static VersionNumber CURRENT_VERSION = new VersionNumber(4, 0, 0);
   public static List<Version> RECENT_VERSIONS = null;
   // Read the latest version from the local update.xml file
-  static {
-    try {
-      BufferedInputStream in = new BufferedInputStream(new FileInputStream("update.xml"));
-      XStream xStream = new XStream(new DomDriver());
-      @SuppressWarnings("unchecked")
-      List<Version> allVersions = (List<Version>) xStream.fromXML(in);
-      CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
-      LOG.info("Current DIYLC version: " + CURRENT_VERSION);
-      RECENT_VERSIONS = allVersions.subList(allVersions.size() - 10, allVersions.size());
-      Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
+	static {
+		try {
+			URL resource = Presenter.class.getResource("update.xml");
+			if (resource != null) {
+				BufferedInputStream in = new BufferedInputStream(resource.openStream());
+				XStream xStream = new XStream(new DomDriver());
+				@SuppressWarnings("unchecked")
+				List<Version> allVersions = (List<Version>) xStream.fromXML(in);
+				CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
+				LOG.info("Current DIYLC version: " + CURRENT_VERSION);
+				RECENT_VERSIONS = allVersions.subList(allVersions.size() - 10, allVersions.size());
+				Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
 
-        @Override
-        public int compare(Version o1, Version o2) {
-          return -o1.getVersionNumber().compareTo(o2.getVersionNumber());
-        }
-      });
-      in.close();
-    } catch (IOException e) {
-      LOG.error("Could not find version number, using default", e);
-    }
-  }
+					@Override
+					public int compare(Version o1, Version o2) {
+						return -o1.getVersionNumber().compareTo(o2.getVersionNumber());
+					}
+				});
+				in.close();
+			}
+		} catch (Exception e) {
+			LOG.error("Could not find version number, using default", e);
+		}
+	}
   public static final String DEFAULTS_KEY_PREFIX = "default.";
 
-  private static Map<String, List<Template>> defaultVariantMap = null;
-  static {
-    try {
-      BufferedInputStream in = new BufferedInputStream(new FileInputStream("variants.xml"));
-      XStream xStream = new XStream(new DomDriver());
-      @SuppressWarnings("unchecked")
-      Map<String, List<Template>> map = (Map<String, List<Template>>) xStream.fromXML(in);
-      defaultVariantMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
-      defaultVariantMap.putAll(map);
-      in.close();
-      LOG.info(String.format("Loaded default variants for %d components", defaultVariantMap == null ? 0
-          : defaultVariantMap.size()));
-    } catch (IOException e) {
-      LOG.error("Could not load default variants", e);
-    }
-  }
+	private static Map<String, List<Template>> defaultVariantMap = null;
+	static {
+		try {
+			URL resource = Presenter.class.getResource("variants.xml");
+			if (resource != null) {
+				BufferedInputStream in = new BufferedInputStream(resource.openStream());
+				XStream xStream = new XStream(new DomDriver());
+				@SuppressWarnings("unchecked")
+				Map<String, List<Template>> map = (Map<String, List<Template>>) xStream.fromXML(in);
+				defaultVariantMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
+				defaultVariantMap.putAll(map);
+				in.close();
+				LOG.info(String.format("Loaded default variants for %d components",
+						defaultVariantMap == null ? 0 : defaultVariantMap.size()));
+			}
+		} catch (Exception e) {
+			LOG.error("Could not load default variants", e);
+		}
+	}
 
   public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
 
@@ -577,7 +584,7 @@ public class Presenter implements IPlugInPort {
               List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
               List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
               for (IDIYComponent<?> component : componentSlot) {
-                currentProject.getComponents().add(component);
+                addComponent(component, true);
                 newSelection.add(component);
               }
               // group components if there's more than one, e.g. building blocks, but not clipboard
@@ -733,10 +740,12 @@ public class Presenter implements IPlugInPort {
       return false;
     }
 
-    boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY, true);
+    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);
     if (shiftDown) {
-      snapToGrid = !snapToGrid;
+        snapTo = IPlugInPort.SNAP_TO_NONE;
     }
+    boolean snapToGrid = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID);
+    boolean snapToObjects = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_COMPONENTS);
 
     if (altDown) {
       Project oldProject = null;
@@ -797,7 +806,7 @@ public class Presenter implements IPlugInPort {
     }
 
     Project oldProject = currentProject.clone();
-    moveComponents(controlPointMap, dx, dy, snapToGrid);
+    moveComponents(controlPointMap, dx, dy, snapToGrid, snapToObjects);
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Move Selection");
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     return true;
@@ -1002,7 +1011,7 @@ public class Presenter implements IPlugInPort {
     int dy = (int) yOffset.convertToPixels();
 
     Project oldProject = currentProject.clone();
-    moveComponents(controlPointMap, dx, dy, false);
+    moveComponents(controlPointMap, dx, dy, false, false);
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Move Selection");
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     drawingManager.clearContinuityArea();
@@ -1164,10 +1173,17 @@ public class Presenter implements IPlugInPort {
   }
 
   private boolean isSnapToGrid() {
-    boolean snapToGrid = ConfigurationManager.getInstance().readBoolean(IPlugInPort.SNAP_TO_GRID_KEY, true);
+    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
     if (this.dragAction == IPlugInPort.DND_TOGGLE_SNAP)
-      snapToGrid = !snapToGrid;
-    return snapToGrid;
+      return false;
+    return snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID);
+  }
+  
+  private boolean isSnapToObjects() {
+    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
+    if (this.dragAction == IPlugInPort.DND_TOGGLE_SNAP)
+      return false;
+    return snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_COMPONENTS);
   }
 
   @Override
@@ -1181,7 +1197,7 @@ public class Presenter implements IPlugInPort {
       int dx = (scaledPoint.x - previousDragPoint.x);
       int dy = (scaledPoint.y - previousDragPoint.y);
 
-      Point actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid());
+      Point actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects());
       if (actualD == null)
         return true;
 
@@ -1205,7 +1221,7 @@ public class Presenter implements IPlugInPort {
     return true;
   }
 
-  private Point moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid) {
+  private Point moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid, boolean snapToObjects) {
     // After we make the transfer and snap to grid, calculate actual dx
     // and dy. We'll use them to translate the previous drag point.
     int actualDx = 0;
@@ -1225,6 +1241,8 @@ public class Presenter implements IPlugInPort {
       testPoint.translate(dx, dy);
       if (snapToGrid) {
         CalcUtils.snapPointToGrid(testPoint, currentProject.getGridSpacing());
+      } else if (snapToObjects) {
+        CalcUtils.snapPointToObjects(testPoint, currentProject.getGridSpacing(), entry.getKey(), currentProject.getComponents());
       }
 
       actualDx = testPoint.x - firstPoint.x;
@@ -1538,10 +1556,10 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup) {
-    LOG.info(String.format("pasteComponents(%s, %s)", components, autoGroup));
+  public void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup, boolean assignNewNames) {
+    LOG.info(String.format("pasteComponents(%s, %s, %s)", components, autoGroup, assignNewNames));
     instantiationManager.pasteComponents(components, this.previousScaledPoint, isSnapToGrid(),
-        currentProject.getGridSpacing(), autoGroup, this.currentProject);
+        currentProject.getGridSpacing(), autoGroup, this.currentProject, assignNewNames);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, instantiationManager.getComponentTypeSlot(),
         instantiationManager.getFirstControlPoint());
@@ -2058,7 +2076,7 @@ public class Presenter implements IPlugInPort {
    * @param component
    */
   @SuppressWarnings("unchecked")
-  private void addComponent(IDIYComponent<?> component, boolean alowAutoCreate) {
+  private void addComponent(IDIYComponent<?> component, boolean allowAutoCreate) {
     int index = currentProject.getComponents().size();
     while (index > 0
         && ComponentProcessor.getInstance()
@@ -2561,7 +2579,7 @@ public class Presenter implements IPlugInPort {
           LOG.error("Could not clone component: " + c);
         }
       // paste them to the project
-      pasteComponents(clones, true);
+      pasteComponents(clones, true, true);
     } else
       throw new InvalidBlockException();
   }

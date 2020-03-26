@@ -193,7 +193,7 @@ public class DiodeSymbol extends AbstractTubeSymbol {
   public class HeaterValidator implements IPropertyValidator {
 
     @Override
-    public void validate(Object value) throws ValidationException {
+    public void validate(Object owner, Object value) throws ValidationException {
       if (value != null && value instanceof Boolean) {
         boolean b = (Boolean) value;
         if (!b && getDirectlyHeated()) {

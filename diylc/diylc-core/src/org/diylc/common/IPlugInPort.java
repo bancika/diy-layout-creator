@@ -60,7 +60,8 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String EXPORT_GRID_KEY = "exportGrid";
   public static final String STICKY_POINTS_KEY = "stickyPoints";
   public static final String METRIC_KEY = "metric";
-  public static final String SNAP_TO_GRID_KEY = "snapToGrid";
+
+  public static final String SNAP_TO_KEY = "snapTo";
   public static final String CONTINUOUS_CREATION_KEY = "continuousCreation";
   public static final String AUTO_EDIT_KEY = "autoEdit";
   public static final String ABNORMAL_EXIT_KEY = "abnormalExit";
@@ -76,6 +77,12 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String HARDWARE_ACCELERATION = "hardwareAcceleration";
   public static final String EXTRA_SPACE_KEY = "extraSpace";
   public static final String FAVORITES_KEY = "favorites";
+  public static final String RENUMBER_ON_PASTE_KEY = "renumberOnPaste";
+  
+  public static final String SNAP_TO_NONE = "None";
+  public static final String SNAP_TO_GRID = "Grid";
+  public static final String SNAP_TO_COMPONENTS = "Components";
+  public static final String SNAP_TO_DEFAULT = SNAP_TO_GRID;
 
   public static final int DND_TOGGLE_STICKY = 0x1;
   public static final int DND_TOGGLE_SNAP = 0x40000000;
@@ -218,8 +225,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * 
    * @param components
    * @param autoGroup
+   * @param assignNewNames
    */
-  void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup);
+  void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup, boolean assignNewNames);
 
   /**
    * Duplicates selected components and places them nearby.

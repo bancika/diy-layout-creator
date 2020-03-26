@@ -1,6 +1,7 @@
 package org.diylc.components;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Area;
 
 import org.diylc.common.ObjectCache;
@@ -13,7 +14,7 @@ public abstract class AbstractMultiPartComponent<T> extends AbstractTransparentC
 
   private static final long serialVersionUID = 1L;
 
-  public abstract Area[] getBody();
+  public abstract Shape[] getBody();
   
   public void drawSelectionOutline(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -25,11 +26,11 @@ public abstract class AbstractMultiPartComponent<T> extends AbstractTransparentC
   }
   
   public Area getBodyOutline() {
-    Area[] body = getBody();
+    Shape[] body = getBody();
     Area outline = new Area();
-    for (Area b : body)
-      if (b != null)
-        outline.add(b);
+    for (Shape b : body)
+      if (b != null && b instanceof Area)
+        outline.add((Area)b);
     return outline;
   }
 }

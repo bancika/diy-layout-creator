@@ -23,7 +23,6 @@ package org.diylc.swing.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -51,6 +50,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.MenuEvent;
@@ -108,7 +108,6 @@ public class MainFrame extends JFrame implements ISwingUI {
   public MainFrame() {
     super("DIYLC 3");
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    setPreferredSize(new Dimension(1024, 700));
     createBasePanels();
     menuMap = new HashMap<String, JMenu>();
     buttonGroupMap = new HashMap<String, ButtonGroup>();
@@ -161,10 +160,41 @@ public class MainFrame extends JFrame implements ISwingUI {
           System.exit(0);
         }
       }
+     
     });
 
     setGlassPane(new CustomGlassPane());
     // getGlassPane().setVisible(true);
+    
+    // maximize the screen
+    setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+    new Thread(new Runnable() {
+      
+      @Override
+      public void run() {
+        // wait some time for size to update
+        // TODO: find a better solution
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+          
+          @Override
+          public void run() {
+            // Important! Notify the canvas to center the scrolls and show the content
+            canvasPlugin.scrollToCenterAndShowContents();  
+          }
+        }); 
+      }
+    }).start();
+  }
+  
+  @Override
+  public void setExtendedState(int state) {
+    super.setExtendedState(state);
+    
+       
   }
 
   public Presenter getPresenter() {
@@ -264,8 +294,13 @@ public class MainFrame extends JFrame implements ISwingUI {
   }
 
   @Override
-  public void injectGUIComponent(JComponent component, int position) throws BadPositionException {
-    LOG.info(String.format("injectGUIComponent(%s, %s)", component.getClass().getName(), position));
+  public void injectGUIComponent(JComponent component, int position, boolean collapsible) throws BadPositionException {
+    LOG.info(String.format("injectGUIComponent(%s, %s, %s)", component.getClass().getName(), position, collapsible));
+    if (collapsible) {
+      CollapsiblePanel panel = new CollapsiblePanel(position);
+      panel.add(component);
+      component = panel;
+    }
     switch (position) {
       case SwingConstants.TOP:
         topPanel.add(component);
@@ -442,7 +477,7 @@ public class MainFrame extends JFrame implements ISwingUI {
           fileName = "Untitled";
         }
         String modified = (Boolean) params[1] ? " (modified)" : "";
-        setTitle(String.format("DIYLC G3 version %s.%s - %s %s", plugInPort.getCurrentVersionNumber().getMinor(),
+        setTitle(String.format("DIYLC G4 version %s.%s - %s %s", plugInPort.getCurrentVersionNumber().getMinor(),
             plugInPort.getCurrentVersionNumber().getBuild(), fileName, modified));
       }
     }

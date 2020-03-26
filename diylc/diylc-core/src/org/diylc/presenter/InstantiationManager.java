@@ -143,7 +143,7 @@ public class InstantiationManager {
 
   @SuppressWarnings("unchecked")
   public void pasteComponents(Collection<IDIYComponent<?>> components, Point scaledPoint, boolean snapToGrid,
-      Size gridSpacing, boolean autoGroup, Project currentProject) {	  
+      Size gridSpacing, boolean autoGroup, Project currentProject, boolean assignNewNames) {	  
     // Adjust location of components so they are centered under the mouse
     // cursor
     int minX = Integer.MAX_VALUE;
@@ -159,7 +159,7 @@ public class InstantiationManager {
     
     for (IDIYComponent<?> component : components) {
       // assign a new name if it already exists in the project
-      if (existingNames.contains(component.getName())) {
+      if (assignNewNames && existingNames.contains(component.getName())) {
         ComponentType componentType =
             ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
         String newName = createUniqueName(componentType, allComponents);

@@ -22,7 +22,9 @@
 package org.diylc.presenter;
 
 import java.awt.Point;
+import java.util.List;
 
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
 
 public class CalcUtils {
@@ -42,5 +44,17 @@ public class CalcUtils {
     int x = roundToGrid(point.x, gridSpacing);
     int y = roundToGrid(point.y, gridSpacing);
     point.setLocation(x, y);
+  }
+  
+  public static void snapPointToObjects(Point point, Size gridSpacing, IDIYComponent<?> component, List<IDIYComponent<?>> components) {
+    for (IDIYComponent<?> c : components) {
+      if (c == component)
+        continue;
+      for (int i = 0; i < c.getControlPointCount(); i++)
+        if (c.isControlPointSticky(i) && point.distance(c.getControlPoint(i)) < gridSpacing.convertToPixels() / 2) {
+          point.setLocation(c.getControlPoint(i));
+          return;
+        }
+    }    
   }
 }

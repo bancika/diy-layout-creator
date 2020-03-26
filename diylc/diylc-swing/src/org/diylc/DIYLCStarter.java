@@ -20,9 +20,7 @@ package org.diylc;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.awt.SplashScreen;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
@@ -60,8 +58,7 @@ public class DIYLCStarter {
    */
   public static void main(String[] args) {
     // Initialize splash screen
-    final SplashScreen splash = SplashScreen.getSplashScreen();
-    new DIYLCSplash(splash).start();    
+	DIYLCSplash splash = new DIYLCSplash();
 
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
@@ -131,8 +128,13 @@ public class DIYLCStarter {
     }
 
     MainFrame mainFrame = new MainFrame();
-    mainFrame.setLocationRelativeTo(null);
+    mainFrame.setLocationRelativeTo(null);    
+    
+    splash.setVisible(false);
+    splash.dispose();
+    
     mainFrame.setVisible(true);
+    
     if (args.length > 0) {
       mainFrame.getPresenter().loadProjectFromFile(args[0]);
     } else {
@@ -148,9 +150,9 @@ public class DIYLCStarter {
     properties = new Properties();
     try {
       LOG.info("Injecting default properties.");
-      File f = new File("config.properties");
-      if (f.exists()) {
-        properties.load(new FileInputStream(f));
+      URL resource = Presenter.class.getResource("config.properties");
+      if (resource != null) {
+        properties.load(resource.openStream());
         PropertyInjector.injectProperties(properties);
       }
     } catch (Exception e) {

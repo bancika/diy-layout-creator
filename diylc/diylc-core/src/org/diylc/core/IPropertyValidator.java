@@ -29,8 +29,9 @@ package org.diylc.core;
 public interface IPropertyValidator {
 
   /**
+   * @param owner
    * @param value
    * @throws ValidationException if validation fails. Message will contain the reason.
    */
-  void validate(Object value) throws ValidationException;
+  void validate(Object owner, Object value) throws ValidationException;
 }

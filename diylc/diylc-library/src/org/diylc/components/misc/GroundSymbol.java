@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Orientation;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -53,7 +54,9 @@ public class GroundSymbol extends AbstractComponent<Void> {
   private Color color = COLOR;
   private Size size = SIZE;
   private GroundSymbolType type = GroundSymbolType.DEFAULT;
+  private Orientation orientation = Orientation.DEFAULT;
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -62,6 +65,19 @@ public class GroundSymbol extends AbstractComponent<Void> {
     g2d.setColor(color);
     int x = point.x;
     int y = point.y;
+
+    switch (getOrientation()) {
+      case _90:
+        g2d.rotate(Math.PI / 2, point.x, point.y);
+        break;
+      case _180:
+        g2d.rotate(Math.PI, point.x, point.y);
+        break;
+      case _270:
+        g2d.rotate(Math.PI * 3 / 2, point.x, point.y);
+        break;
+    }
+
     g2d.drawLine(x, y, x, y + sizePx / 6);
     if (type == GroundSymbolType.DEFAULT) {
       int delta = sizePx / 7;
@@ -96,6 +112,17 @@ public class GroundSymbol extends AbstractComponent<Void> {
 
   public void setType(GroundSymbolType type) {
     this.type = type;
+  }
+  
+  @EditableProperty
+  public Orientation getOrientation() {
+    if (orientation == null)
+      orientation = Orientation.DEFAULT;
+    return orientation;
+  }
+  
+  public void setOrientation(Orientation orientation) {
+    this.orientation = orientation;
   }
 
   @Override

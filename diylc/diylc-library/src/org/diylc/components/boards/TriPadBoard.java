@@ -65,9 +65,11 @@ public class TriPadBoard extends AbstractBoard {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+    Point finalSecondPoint = getFinalSecondPoint();
+    
     Shape clip = g2d.getClip();
-    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
-        && !clip.contains(secondPoint.x, firstPoint.y)) {
+    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, finalSecondPoint.y)
+        && !clip.contains(finalSecondPoint.x, firstPoint.y)) {
       return;
     }
     super.draw(g2d, componentState, outlineMode, project, drawingObserver);
@@ -82,13 +84,13 @@ public class TriPadBoard extends AbstractBoard {
       int spacing = (int) this.spacing.convertToPixels();
 
       if (orientation == OrientationHV.HORIZONTAL) {
-        while (p.y < secondPoint.y - spacing) {
+        while (p.y < finalSecondPoint.y - spacing) {
           p.x = firstPoint.x;
           p.y += spacing;
 
-          while (p.x + spacing < secondPoint.x) {
+          while (p.x + spacing < finalSecondPoint.x) {
 
-            int remainingSpace = secondPoint.x - p.x;
+            int remainingSpace = finalSecondPoint.x - p.x;
             int spacesToDraw = stripSpan;
 
             if (remainingSpace < (stripSize + (stripSpan * spacing))) {
@@ -111,7 +113,7 @@ public class TriPadBoard extends AbstractBoard {
           // draw holes
           p.x = firstPoint.x;
 
-          while (p.x < secondPoint.x - spacing - holeSize) {
+          while (p.x < finalSecondPoint.x - spacing - holeSize) {
             p.x += spacing;
             g2d.setColor(Constants.CANVAS_COLOR);
             g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
@@ -120,13 +122,13 @@ public class TriPadBoard extends AbstractBoard {
           }
         }
       } else {
-        while (p.x < secondPoint.x - spacing) {
+        while (p.x < finalSecondPoint.x - spacing) {
           p.x += spacing;
           p.y = firstPoint.y;
 
-          while (p.y + spacing < secondPoint.y) {
+          while (p.y + spacing < finalSecondPoint.y) {
 
-            int remainingSpace = secondPoint.y - p.y;
+            int remainingSpace = finalSecondPoint.y - p.y;
             int spacesToDraw = stripSpan;
 
             if (remainingSpace < (stripSize + (stripSpan * spacing))) {
@@ -148,7 +150,7 @@ public class TriPadBoard extends AbstractBoard {
           // draw holes
           p.y = firstPoint.y;
 
-          while (p.y < secondPoint.y - spacing - holeSize) {
+          while (p.y < finalSecondPoint.y - spacing - holeSize) {
             p.y += spacing;
             g2d.setColor(Constants.CANVAS_COLOR);
             g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);

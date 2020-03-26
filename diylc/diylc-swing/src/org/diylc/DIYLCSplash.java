@@ -1,115 +1,131 @@
 package org.diylc;
 
 import java.awt.AlphaComposite;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.SplashScreen;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
 import org.diylc.images.IconLoader;
 
-public class DIYLCSplash {
-  
-  private Thread t;
+/**
+ * Custom splash screen with animated components. Does not use standard SplashScreen because of issues with OS X and Java 8.
+ * 
+ * @author bancika
+ *
+ */
+public class DIYLCSplash extends JDialog {
 
-  public DIYLCSplash(final SplashScreen splash) {
-    if (splash == null)
-      return;
-    final Graphics2D g = splash.createGraphics();
-    if (g == null)
-      return;
-    
-    t = new Thread(new Runnable() {
+	private static final long serialVersionUID = 1L;
+	private Thread t;
+	
+	private int frameNumber = 90;
+	
+	private Point resistorTarget = new Point(112, 114);
+	private Point filmTarget = new Point(233, 113);
+	private Point electrolyticTarget = new Point(261, 23);
+	private Point ceramicTarget = new Point(352, 22);
 
-      @Override
-      public void run() {
-        for (int i = 90; i >= 0; i--) {
-          if (!splash.isVisible())
-            return;
-          final int frame = i;
-          SwingUtilities.invokeLater(new Runnable() {
+	private int pxPerFrame = 3;
 
-            @Override
-            public void run() {
-              renderSplashFrame(splash, g, frame);
-              splash.update();
-            }
-          });
-          try {
-            Thread.sleep(10);
-          } catch (InterruptedException e) {
-          }
-        }
-      }
-    });    
-  }
-  
-  public void start() {
-    if (t != null)
-      t.start();
-  }
+	public DIYLCSplash() {
+		setPreferredSize(new Dimension(getSplash().getIconWidth(), getSplash().getIconHeight()));
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        setUndecorated(true);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setAlwaysOnTop(true);
+        repaint();    
 
-  private ImageIcon resistor = null;
+		t = new Thread(new Runnable() {
 
-  public ImageIcon getResistor() {
-    if (resistor == null) {
-      resistor = (ImageIcon) IconLoader.SplashResistor.getIcon();
-    }
-    return resistor;
-  }
+			@Override
+			public void run() {
+				for (int i = 90; i >= 0; i--) {
+					if (!isVisible())
+						return;
+					frameNumber = i;
+					SwingUtilities.invokeLater(new Runnable() {
 
-  private ImageIcon film = null;
+						@Override
+						public void run() {							
+							repaint();
+						}
+					});
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		});
+		t.start();
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.setComposite(AlphaComposite.SrcOver);
+		getSplash().paintIcon(null, g, 0, 0);
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f - frameNumber * 0.007f));
+		getResistor().paintIcon(null, g, resistorTarget.x - pxPerFrame * frameNumber, resistorTarget.y);
+		getFilm().paintIcon(null, g, filmTarget.x, filmTarget.y + pxPerFrame * frameNumber);
+		getElectrolytic().paintIcon(null, g, electrolyticTarget.x, electrolyticTarget.y - pxPerFrame * frameNumber);
+		getCeramic().paintIcon(null, g, ceramicTarget.x + pxPerFrame * frameNumber, ceramicTarget.y);
+	}
 
-  public ImageIcon getFilm() {
-    if (film == null) {
-      film = (ImageIcon) IconLoader.SplashFilm.getIcon();
-    }
-    return film;
-  }
+	public void start() {
+		if (t != null)
+			t.start();
+	}
 
-  private ImageIcon ceramic = null;
+	private ImageIcon resistor = null;
 
-  public ImageIcon getCeramic() {
-    if (ceramic == null) {
-      ceramic = (ImageIcon) IconLoader.SplashCeramic.getIcon();
-    }
-    return ceramic;
-  }
+	public ImageIcon getResistor() {
+		if (resistor == null) {
+			resistor = (ImageIcon) IconLoader.SplashResistor.getIcon();
+		}
+		return resistor;
+	}
 
-  private ImageIcon electrolytic = null;
+	private ImageIcon film = null;
 
-  public ImageIcon getElectrolytic() {
-    if (electrolytic == null) {
-      electrolytic = (ImageIcon) IconLoader.SplashElectrolytic.getIcon();
-    }
-    return electrolytic;
-  }
+	public ImageIcon getFilm() {
+		if (film == null) {
+			film = (ImageIcon) IconLoader.SplashFilm.getIcon();
+		}
+		return film;
+	}
 
-  private ImageIcon splash = null;
+	private ImageIcon ceramic = null;
 
-  public ImageIcon getSplash() {
-    if (splash == null) {
-      splash = (ImageIcon) IconLoader.Splash.getIcon();
-    }
-    return splash;
-  }
+	public ImageIcon getCeramic() {
+		if (ceramic == null) {
+			ceramic = (ImageIcon) IconLoader.SplashCeramic.getIcon();
+		}
+		return ceramic;
+	}
 
-  private Point resistorTarget = new Point(112, 114);
-  private Point filmTarget = new Point(233, 113);
-  private Point electrolyticTarget = new Point(261, 23);
-  private Point ceramicTarget = new Point(352, 22);
+	private ImageIcon electrolytic = null;
 
-  private int pxPerFrame = 3;
+	public ImageIcon getElectrolytic() {
+		if (electrolytic == null) {
+			electrolytic = (ImageIcon) IconLoader.SplashElectrolytic.getIcon();
+		}
+		return electrolytic;
+	}
 
-  public void renderSplashFrame(SplashScreen splash, Graphics2D g, int frame) {
-    g.setComposite(AlphaComposite.Clear);
-    getSplash().paintIcon(null, g, 0, 0);
-    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f - frame * 0.007f));
-    getResistor().paintIcon(null, g, resistorTarget.x - pxPerFrame * frame, resistorTarget.y);
-    getFilm().paintIcon(null, g, filmTarget.x, filmTarget.y + pxPerFrame * frame);
-    getElectrolytic().paintIcon(null, g, electrolyticTarget.x, electrolyticTarget.y - pxPerFrame * frame);
-    getCeramic().paintIcon(null, g, ceramicTarget.x + pxPerFrame * frame, ceramicTarget.y);
-  }
+	private ImageIcon splash = null;
+
+	public ImageIcon getSplash() {
+		if (splash == null) {
+			splash = (ImageIcon) IconLoader.Splash.getIcon();
+		}
+		return splash;
+	}	
 }
