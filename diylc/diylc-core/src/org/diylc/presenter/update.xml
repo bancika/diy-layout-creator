@@ -2735,6 +2735,10 @@
 					<description>Added "Renumber On Paste" option in the "Config" menu</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added orientation parameter to "Ground Simbol" to allow rotation</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded to Java 8</description>
 				</org.diylc.appframework.update.Change>
@@ -2744,16 +2748,16 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Hide the 3rd control point for components that do not need it (Trace, Jumper, Line)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>"Auto-Create Pads" doesn't work for ICs and similar non-stretchable components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Threads on 1/4" Closed Jack were not rendered at all</description>
 				</org.diylc.appframework.update.Change>		
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Hide the 3rd control point for components that do not need it (Trace, Jumper, Line)</description>
-				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Threads on 1/4" Closed Jack were not rendered at all</description>
