@@ -73,6 +73,11 @@ public class ColorEditor extends JPanel {
     gbc.gridx++;
     gbc.insets = new Insets(0, 0, 0, 0);
     add(getColorField(), gbc);
+    
+    if (property.isReadOnly()) {
+      getColorField().setEnabled(false);
+      getColorLabel().setEnabled(false);
+    }
   }
 
   public JLabel getColorLabel() {

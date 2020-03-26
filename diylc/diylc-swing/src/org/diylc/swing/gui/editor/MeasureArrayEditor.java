@@ -63,6 +63,8 @@ public class MeasureArrayEditor extends Container {
 			values[i] = measure[i] == null ? null : measure[i].getValue();
 		}
 		valueField = new DoubleArrayTextField(measure == null ? null : values);
+		if (property.isReadOnly())
+	      valueField.setEnabled(false);
 		oldBg = valueField.getBackground();
 		valueField.addPropertyChangeListener(
 				DoubleArrayTextField.VALUE_PROPERTY,

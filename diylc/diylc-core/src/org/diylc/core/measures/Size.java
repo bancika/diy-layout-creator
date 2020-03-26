@@ -66,4 +66,9 @@ public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> 
   public int compareTo(Size o) {
     return new Double(value * unit.getFactor()).compareTo(o.getValue() * o.getUnit().getFactor());
   }
+  
+  @Override
+  public boolean isConvertible() {
+    return true;
+  }
 }

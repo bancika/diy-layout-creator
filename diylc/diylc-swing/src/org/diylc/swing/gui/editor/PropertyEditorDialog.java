@@ -134,7 +134,7 @@ public class PropertyEditorDialog extends ButtonDialog {
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
 
-        if (saveDefaults) {
+        if (saveDefaults && !property.isReadOnly()) {
           editorPanel.add(createDefaultCheckBox(property), gbc);
         }
       }

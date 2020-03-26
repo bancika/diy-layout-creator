@@ -42,6 +42,8 @@ public class EnumEditor extends JComboBox {
   public EnumEditor(final PropertyWrapper property) {
     this.property = property;
     Object[] values = property.getType().getEnumConstants();
+    if (property.isReadOnly())
+      setEnabled(false);
     setModel(new DefaultComboBoxModel(values));
     setSelectedItem(property.getValue());
     addItemListener(new ItemListener() {

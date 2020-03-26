@@ -43,6 +43,8 @@ public class StringListEditor extends JComboBox {
 
   public StringListEditor(final PropertyWrapper property) throws Exception {
     this.property = property;
+    if (property.isReadOnly())
+      setEnabled(false);
     String listFunctionName = property.getGetter().getAnnotation(DynamicList.class).availableValueFunction();
     Method function = property.getOwnerObject().getClass().getMethod(listFunctionName);
     Object[] values = (Object[]) function.invoke(property.getOwnerObject());

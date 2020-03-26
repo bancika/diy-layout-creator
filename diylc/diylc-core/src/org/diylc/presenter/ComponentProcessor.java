@@ -151,7 +151,7 @@ public class ComponentProcessor {
     List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
     for (Method getter : clazz.getMethods()) {
       if (getter.getName().startsWith("get")) {
-        try {
+        
           if (getter.isAnnotationPresent(EditableProperty.class) && !getter.isAnnotationPresent(Deprecated.class)
               // since Java 8 in generic classes we get properties of both the generic type and Object
               // added this condition to skip Object property that we do not need
@@ -164,15 +164,19 @@ public class ComponentProcessor {
               name = annotation.name();
             }
             IPropertyValidator validator = getPropertyValidator(annotation.validatorClass());
-            Method setter = clazz.getMethod("set" + getter.getName().substring(3), getter.getReturnType());
+            
+            String setterName = null;
+            try {
+              Method setter = clazz.getMethod("set" + getter.getName().substring(3), getter.getReturnType());
+              setterName = setter.getName();
+            } catch (NoSuchMethodException e) {
+              LOG.debug("No matching setter found for \"" + getter.getName() + "\". Skipping...");
+            }
             PropertyWrapper property =
-                new PropertyWrapper(name, getter.getReturnType(), getter.getName(), setter.getName(),
+                new PropertyWrapper(name, getter.getReturnType(), getter.getName(), setterName,
                     annotation.defaultable(), validator, annotation.sortOrder());
             properties.add(property);
-          }
-        } catch (NoSuchMethodException e) {
-          LOG.debug("No matching setter found for \"" + getter.getName() + "\". Skipping...");
-        }
+          }       
       }
     }
 

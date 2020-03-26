@@ -2728,6 +2728,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added read-only "Length" property to curved components (i.e. "Hookup Wire") that calculates total length of the curve</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Renumber On Paste" option in the "Config" menu</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

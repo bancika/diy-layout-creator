@@ -38,6 +38,8 @@ public class IntEditor extends DoubleTextField {
 
   public IntEditor(final PropertyWrapper property) {
     setLayout(new BorderLayout());
+    if (property.isReadOnly())
+      setEnabled(false);
     setValue((double) (Integer) property.getValue());
     addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY, new PropertyChangeListener() {
 

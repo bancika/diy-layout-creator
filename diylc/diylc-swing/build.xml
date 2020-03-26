@@ -134,6 +134,9 @@
 			<arg value="/Fdiylc-${diylc.version}-win"/>
 		    <arg value="install.iss"/>
 		</exec>
+	</target>
+	
+	<target name="universal" depends="jar">
 		<zip destfile="${build.dir}/diylc-${diylc.version}.zip">
 			<zipfileset dir="${jar.dir}" includes="diylc.jar" />
 			<zipfileset dir="${jar.dir}/lib" prefix="lib" />
@@ -144,11 +147,12 @@
 			<zipfileset dir="." includes="splash.png" />
 			<zipfileset dir="." includes="run.sh" />
 			<zipfileset dir="." includes="diylc.l4j.ini" />
-			<zipfileset dir="." includes="diylc.exe" />			
+			<zipfileset dir="." includes="diylc.exe" />	
+			<zipfileset dir="icons" includes="*.png" prefix="icons" />
 		</zip>
 	</target>
 	
-	<target name="full" depends="win,mac"/>
+	<target name="full" depends="win,mac,universal"/>
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">

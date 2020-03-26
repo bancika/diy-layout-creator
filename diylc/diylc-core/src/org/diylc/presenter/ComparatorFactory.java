@@ -99,6 +99,10 @@ public class ComparatorFactory {
 
         @Override
         public int compare(PropertyWrapper o1, PropertyWrapper o2) {
+          if (o1.isReadOnly() && !o2.isReadOnly())
+            return 1;
+          if (!o1.isReadOnly() && o2.isReadOnly())
+            return -1;
           int comp = new Integer(o1.getSortOrder()).compareTo(o2.getSortOrder());
           if (comp != 0)
             return comp;

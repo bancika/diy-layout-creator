@@ -42,6 +42,8 @@ public class ImageEditor extends JButton {
 
   public ImageEditor(final PropertyWrapper property) {
     super(property.isUnique() ? title : ("(multi value) " + title));
+    if (property.isReadOnly())
+      setEnabled(false);
     addActionListener(new ActionListener() {
 
       @Override

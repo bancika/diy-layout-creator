@@ -39,6 +39,8 @@ public class BooleanEditor extends JCheckBox {
   public BooleanEditor(final PropertyWrapper property) {
     super();
     setSelected((Boolean) property.getValue());
+    if (property.isReadOnly())
+      setEnabled(false);
     addActionListener(new ActionListener() {
 
       @Override

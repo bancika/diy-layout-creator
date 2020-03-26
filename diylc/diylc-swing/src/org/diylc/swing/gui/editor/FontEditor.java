@@ -43,6 +43,8 @@ public class FontEditor extends FontChooserComboBox {
 
   public FontEditor(final PropertyWrapper property) {
     this.property = property;
+    if (property.isReadOnly())
+      setEnabled(false);
     ((JTextField) getEditor().getEditorComponent()).setBorder(BorderFactory.createCompoundBorder(
         ((JTextField) getEditor().getEditorComponent()).getBorder(), BorderFactory.createEmptyBorder(0, 2, 0, 0)));
     setSelectedItem(((Font) property.getValue()).getName());

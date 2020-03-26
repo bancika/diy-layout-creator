@@ -64,6 +64,11 @@ public class ByteEditor extends JPanel {
 
     final JSlider slider = new JSlider();
     final DoubleTextField valueField = new DoubleTextField();
+    
+    if (property.isReadOnly()) {
+      slider.setEnabled(false);
+      valueField.setEnabled(false);
+    }
 
     final double percentFactor = (double) default100Percent / _100PercentValue;
 

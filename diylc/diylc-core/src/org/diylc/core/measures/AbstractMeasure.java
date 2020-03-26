@@ -41,9 +41,6 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
   protected Double value;
   protected T unit;
 
-  // public AbstractMeasure() {
-  // }
-
   public AbstractMeasure(Double value, T unit) {
     super();
     this.value = value;
@@ -54,22 +51,18 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
     return value;
   }
 
-  // public void setValue(Double value) {
-  // this.value = value;
-  // }
-
   public T getUnit() {
     return unit;
   }
-
-  // public void setUnit(T multiplier) {
-  // this.unit = multiplier;
-  // }
-
-  // @Override
-  // public Object clone() throws CloneNotSupportedException {
-  // return super.clone();
-  // }
+  
+  /***
+   * Flag that designates if measure value should be converted between different units. eg. 2.54mm <-> 0.1in
+   * 
+   * @return
+   */
+  public boolean isConvertible() {
+    return false;
+  }
 
   @Override
   public int hashCode() {

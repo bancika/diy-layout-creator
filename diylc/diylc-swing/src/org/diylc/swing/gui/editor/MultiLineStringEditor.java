@@ -51,6 +51,8 @@ public class MultiLineStringEditor extends JScrollPane {
     super();
     this.property = property;
     setViewportView(getTextArea());
+    if (property.isReadOnly())
+      getTextArea().setEnabled(false);
     setPreferredSize(new Dimension(192, 64));
     setBorder(border);
   }
