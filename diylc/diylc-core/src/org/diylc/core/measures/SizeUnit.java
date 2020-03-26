@@ -25,7 +25,7 @@ import org.diylc.utils.Constants;
 
 public enum SizeUnit implements Unit {
 
-  px(25.4d / Constants.PIXELS_PER_INCH), mm(1d), cm(10d), m(1e4d), in(25.4d), ft(25.4d * 12), yd(9144d);
+  px(25.4d / Constants.PIXELS_PER_INCH), mm(1d), cm(10d), m(1e3d), in(25.4d), ft(25.4d * 12), yd(9144d);
 
   double factor;
 
