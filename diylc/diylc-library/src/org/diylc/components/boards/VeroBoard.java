@@ -65,9 +65,11 @@ public class VeroBoard extends AbstractBoard {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+    Point finalSecondPoint = getFinalSecondPoint();
+    
     Shape clip = g2d.getClip();
-    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
-        && !clip.contains(secondPoint.x, firstPoint.y)) {
+    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, finalSecondPoint.y)
+        && !clip.contains(finalSecondPoint.x, firstPoint.y)) {
       return;
     }
     super.draw(g2d, componentState, outlineMode, project, drawingObserver);
@@ -82,16 +84,16 @@ public class VeroBoard extends AbstractBoard {
       int spacing = (int) this.spacing.convertToPixels();
 
       if (orientation == OrientationHV.HORIZONTAL) {
-        while (p.y < secondPoint.y - spacing) {
+        while (p.y < finalSecondPoint.y - spacing) {
           p.x = firstPoint.x;
           p.y += spacing;
           g2d.setColor(stripColor);
           drawingObserver.startTrackingContinuityArea(true);          
-          g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing - p.x, stripSize);
+          g2d.fillRect(p.x + spacing / 2, p.y - stripSize / 2, finalSecondPoint.x - spacing - p.x, stripSize);
           drawingObserver.stopTrackingContinuityArea();
           g2d.setColor(stripColor.darker());
-          g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2, secondPoint.x - spacing - p.x, stripSize);
-          while (p.x < secondPoint.x - spacing - holeSize) {
+          g2d.drawRect(p.x + spacing / 2, p.y - stripSize / 2, finalSecondPoint.x - spacing - p.x, stripSize);
+          while (p.x < finalSecondPoint.x - spacing - holeSize) {
             p.x += spacing;
             g2d.setColor(Constants.CANVAS_COLOR);
             g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);
@@ -100,16 +102,16 @@ public class VeroBoard extends AbstractBoard {
           }
         }
       } else {
-        while (p.x < secondPoint.x - spacing) {
+        while (p.x < finalSecondPoint.x - spacing) {
           p.x += spacing;
           p.y = firstPoint.y;
           g2d.setColor(stripColor);
           drawingObserver.startTrackingContinuityArea(true);
-          g2d.fillRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, secondPoint.y - spacing - p.y);
+          g2d.fillRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, finalSecondPoint.y - spacing - p.y);
           drawingObserver.stopTrackingContinuityArea();
           g2d.setColor(stripColor.darker());
-          g2d.drawRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, secondPoint.y - spacing - p.y);
-          while (p.y < secondPoint.y - spacing - holeSize) {
+          g2d.drawRect(p.x - stripSize / 2, p.y + spacing / 2, stripSize, finalSecondPoint.y - spacing - p.y);
+          while (p.y < finalSecondPoint.y - spacing - holeSize) {
             p.y += spacing;
             g2d.setColor(Constants.CANVAS_COLOR);
             g2d.fillOval(p.x - holeSize / 2, p.y - holeSize / 2, holeSize, holeSize);

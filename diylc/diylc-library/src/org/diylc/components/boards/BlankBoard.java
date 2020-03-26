@@ -25,6 +25,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Shape;
 
 import org.diylc.common.ObjectCache;
@@ -57,12 +58,14 @@ public class BlankBoard extends AbstractBoard {
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
+      IDrawingObserver drawingObserver) {    
+    Point finalSecondPoint = getFinalSecondPoint();    
+    
     Shape clip = g2d.getClip();
-    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
-        && !clip.contains(secondPoint.x, firstPoint.y)) {
+    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, finalSecondPoint.y)
+        && !clip.contains(finalSecondPoint.x, firstPoint.y)) {
       return;
-    }
+    }        
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     if (componentState != ComponentState.DRAGGING) {
@@ -72,9 +75,9 @@ public class BlankBoard extends AbstractBoard {
       }
       g2d.setColor(boardColor);
       if (getType() == Type.SQUARE)
-        g2d.fillRect(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+        g2d.fillRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
       else
-        g2d.fillOval(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+        g2d.fillOval(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
       g2d.setComposite(oldComposite);
     }
     // Do not track any changes that follow because the whole board has been
@@ -83,9 +86,9 @@ public class BlankBoard extends AbstractBoard {
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : borderColor);
     if (getType() == Type.SQUARE)
-      g2d.drawRect(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+      g2d.drawRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
     else
-      g2d.drawOval(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+      g2d.drawOval(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
   }
   
   @Override

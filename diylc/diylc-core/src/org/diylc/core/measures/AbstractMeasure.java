@@ -54,15 +54,6 @@ public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializ
   public T getUnit() {
     return unit;
   }
-  
-  /***
-   * Flag that designates if measure value should be converted between different units. eg. 2.54mm <-> 0.1in
-   * 
-   * @return
-   */
-  public boolean isConvertible() {
-    return false;
-  }
 
   @Override
   public int hashCode() {

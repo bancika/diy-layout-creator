@@ -2712,6 +2712,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to set board size explicitly by typing in dimensions, instead of dragging two control points</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>New app bundle for Mac OS using appbundler instead of javabundler</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

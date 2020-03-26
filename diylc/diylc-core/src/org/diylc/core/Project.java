@@ -45,7 +45,7 @@ import org.diylc.core.measures.SizeUnit;
  * 
  * @author Branislav Stojkovic
  */
-public class Project implements Serializable {
+public class Project implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
@@ -292,8 +292,8 @@ public class Project implements Serializable {
   public static class SpacingValidator extends PositiveMeasureValidator {
 
     @Override
-    public void validate(Object value) throws ValidationException {
-      super.validate(value);
+    public void validate(Object owner, Object value) throws ValidationException {
+      super.validate(owner, value);
       Size size = (Size) value;
       if (size.compareTo(new Size(0.1d, SizeUnit.mm)) < 0) {
         throw new ValidationException("must be at least 0.1mm");

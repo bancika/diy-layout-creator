@@ -1,24 +1,21 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.swing.gui.editor;
 
 import java.awt.Component;
@@ -30,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,7 +59,8 @@ public class PropertyEditorDialog extends ButtonDialog {
   private Component componentToFocus = null;
   private boolean saveDefaults;
 
-  public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title, boolean saveDefaults) {
+  public PropertyEditorDialog(JFrame owner, List<PropertyWrapper> properties, String title,
+      boolean saveDefaults) {
     super(owner, title, new String[] {ButtonDialog.OK, ButtonDialog.CANCEL});
     this.saveDefaults = saveDefaults;
 
@@ -79,12 +78,32 @@ public class PropertyEditorDialog extends ButtonDialog {
   @Override
   protected boolean validateInput(String button) {
     if (button.equals(ButtonDialog.OK)) {
+      Object testObject = null;
+      if (properties.size() > 0) {
+        if (properties.get(0).getOwnerObject() instanceof Cloneable) {
+          try {
+            Object object = ((Cloneable) properties.get(0).getOwnerObject());
+            Method method = object.getClass().getMethod("clone");
+            method.setAccessible(true);
+            testObject = method.invoke(object);
+            for (PropertyWrapper property : properties) {
+              property.writeTo(testObject);
+            }
+          } catch (Exception e) {
+            LOG.warn("Could not clone test object", e);
+            testObject = properties.get(0).getOwnerObject();
+          }
+        } else {
+          testObject = properties.get(0).getOwnerObject();
+        }
+      }
       for (PropertyWrapper property : properties) {
         try {
-          property.getValidator().validate(property.getValue());
+          property.getValidator().validate(testObject, property.getValue());
         } catch (ValidationException ve) {
-          JOptionPane.showMessageDialog(PropertyEditorDialog.this, "Input error for \"" + property.getName() + "\": "
-              + ve.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(PropertyEditorDialog.this,
+              "Input error for \"" + property.getName() + "\": " + ve.getMessage(), "Error",
+              JOptionPane.ERROR_MESSAGE);
           return false;
         }
       }
@@ -99,7 +118,7 @@ public class PropertyEditorDialog extends ButtonDialog {
     GridBagConstraints gbc = new GridBagConstraints();
 
     gbc.gridy = 0;
-    
+
     gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 
     for (PropertyWrapper property : properties) {
@@ -138,14 +157,15 @@ public class PropertyEditorDialog extends ButtonDialog {
           editorPanel.add(createDefaultCheckBox(property), gbc);
         }
       }
-      
+
       if (property.getName().equalsIgnoreCase("value")) {
         componentToFocus = editor;
       }
 
       // Make value field focused
       try {
-        if (componentToFocus == null && property.getGetter().getName().equalsIgnoreCase("getValue")) {
+        if (componentToFocus == null
+            && property.getGetter().getName().equalsIgnoreCase("getValue")) {
           componentToFocus = editor;
         }
       } catch (Exception e1) {

@@ -62,9 +62,11 @@ public class PerfBoard extends AbstractBoard {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+    Point finalSecondPoint = getFinalSecondPoint();
+    
     Shape clip = g2d.getClip();
-    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, secondPoint.y)
-        && !clip.contains(secondPoint.x, firstPoint.y)) {
+    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, finalSecondPoint.y)
+        && !clip.contains(finalSecondPoint.x, firstPoint.y)) {
       return;
     }
     super.draw(g2d, componentState, outlineMode, project, drawingObserver);
@@ -77,10 +79,10 @@ public class PerfBoard extends AbstractBoard {
       int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
       int spacing = (int) this.spacing.convertToPixels();
 
-      while (p.y < secondPoint.y - spacing) {
+      while (p.y < finalSecondPoint.y - spacing) {
         p.x = firstPoint.x;
         p.y += spacing;
-        while (p.x < secondPoint.x - spacing - diameter) {
+        while (p.x < finalSecondPoint.x - spacing - diameter) {
           p.x += spacing;
           g2d.setColor(padColor);
           g2d.fillOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);

@@ -45,7 +45,7 @@ import org.diylc.core.annotations.EditableProperty;
  * 
  * @param <T> type of component values, e.g. Resistance for resistors or String for transistors.
  */
-public interface IDIYComponent<T> extends Serializable {
+public interface IDIYComponent<T> extends Serializable, Cloneable {
 
   public static final int CHASSIS = 1;
   public static final int BOARD = 2;

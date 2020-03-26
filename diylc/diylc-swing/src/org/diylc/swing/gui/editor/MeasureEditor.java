@@ -89,7 +89,7 @@ public class MeasureEditor extends Container {
           try {
             Constructor<?> ctor = property.getType().getConstructors()[0];
             Double newValue = valueField.getValue();
-            if (newValue != null && property.isReadOnly() && measure.isConvertible()) {
+            if (newValue != null && property.isReadOnly()) {
               double oldFactor = ((Unit)((AbstractMeasure<?>)property.getValue()).getUnit()).getFactor();
               double newFactor = ((Unit)unitBox.getSelectedItem()).getFactor();
               newValue = newValue * oldFactor / newFactor;
@@ -111,7 +111,7 @@ public class MeasureEditor extends Container {
       
       if (property.isReadOnly()) {
         valueField.setEnabled(false);
-        unitBox.setEnabled(measure.isConvertible());
+        unitBox.setEnabled(true);
       }
 
       if (!property.isUnique()) {
