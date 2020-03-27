@@ -2780,7 +2780,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>When deleting trace cuts from a vero board, highlight connected areas would still render the area from before the cut was deleted</description>
+					<description>When moving or deleting trace cuts from a vero board, highlight connected areas would still render the area from before the cut was deleted</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

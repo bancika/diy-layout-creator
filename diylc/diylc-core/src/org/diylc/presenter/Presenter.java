@@ -1297,14 +1297,18 @@ public class Presenter implements IPlugInPort {
 
     // Update all points to new location.
     for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
-      IDIYComponent<?> c = entry.getKey();
-      drawingManager.invalidateComponent(c);
+      IDIYComponent<?> c = entry.getKey();      
       for (Integer index : entry.getValue()) {
         Point p = new Point(c.getControlPoint(index));
         p.translate(actualDx, actualDy);
         c.setControlPoint(p, index);
       }
     }
+    
+    // Remove from area map.    
+    drawingManager.clearComponentAreaMap();
+    drawingManager.clearContinuityArea();
+    
     return new Point(actualDx, actualDy);
   }
 
@@ -1349,11 +1353,14 @@ public class Presenter implements IPlugInPort {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
-      if (type.getTransformer() != null && type.getTransformer().canRotate(component)) {
-        drawingManager.invalidateComponent(component);
+      if (type.getTransformer() != null && type.getTransformer().canRotate(component)) {        
         type.getTransformer().rotate(component, center, direction);
       }
     }
+    
+    // Remove from area map.    
+    drawingManager.clearComponentAreaMap();
+    drawingManager.clearContinuityArea();
 
     // AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x,
     // center.y);
@@ -1462,12 +1469,15 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> component : components) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
-              (Class<? extends IDIYComponent<?>>) component.getClass());
-      drawingManager.invalidateComponent(component);
+              (Class<? extends IDIYComponent<?>>) component.getClass());      
       if (type.getTransformer() != null && type.getTransformer().canMirror(component)) {
         type.getTransformer().mirror(component, center, direction);
       }
     }
+    
+    // Remove from area map.    
+    drawingManager.clearComponentAreaMap();
+    drawingManager.clearContinuityArea();
   }
 
   private Point getCenterOf(Collection<IDIYComponent<?>> components, boolean snapToGrid) {
