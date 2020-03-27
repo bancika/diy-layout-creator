@@ -2794,6 +2794,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>4P5T and DP5T guitar switches were not properly configured for internal pin connections</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Humbucker doesn't render second coil poles properly in certain scenarios</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	

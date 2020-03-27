@@ -317,7 +317,7 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
               new Ellipse2D.Double(x /* + pointMargin */- length + poleMargin + i * poleSpacing - poleSize / 2, y
                   - pointMargin + width - coilMargin - poleSize / 2, poleSize, poleSize);
           poleArea.add(new Area(pole));
-          if (getCoilType1() == PolePieceType.Screws) {
+          if (getCoilType2() == PolePieceType.Screws) {
             if (i % 2 == 1) {
               screwPath.moveTo(x /* + pointMargin */- length + poleMargin + i * poleSpacing - poleSize / 2, y
                   - pointMargin + width - coilMargin - poleSize / 2);
