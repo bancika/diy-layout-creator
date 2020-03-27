@@ -1613,10 +1613,11 @@ public class Presenter implements IPlugInPort {
     Project oldProject = currentProject.clone();
     // Remove selected components from any groups.
     ungroupComponents(selectedComponents);
-    // Remove from area map.
-    for (IDIYComponent<?> component : selectedComponents) {
-      drawingManager.invalidateComponent(component);
-    }
+    
+    // Remove from area map.    
+    drawingManager.clearComponentAreaMap();
+    drawingManager.clearContinuityArea();
+    
     currentProject.getComponents().removeAll(selectedComponents);
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Delete");
     drawingManager.clearContinuityArea();

@@ -2778,6 +2778,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Issues with connectivity check with some components (e.g. Jumper) where the middle of the component was considered as a connected point</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>When deleting trace cuts from a vero board, highlight connected areas would still render the area from before the cut was deleted</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
