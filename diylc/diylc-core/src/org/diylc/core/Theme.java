@@ -32,12 +32,14 @@ public class Theme implements Serializable {
   private Color bgColor;
   private Color gridColor;
   private Color outlineColor;
+  private Color dotColor;
 
-  public Theme(String name, Color bgColor, Color gridColor, Color outlineColor) {
+  public Theme(String name, Color bgColor, Color gridColor, Color dotColor, Color outlineColor) {
     super();
     this.name = name;
     this.bgColor = bgColor;
     this.gridColor = gridColor;
+    this.dotColor = dotColor;    
     this.outlineColor = outlineColor;
   }
 
@@ -52,6 +54,12 @@ public class Theme implements Serializable {
   public Color getGridColor() {
     return gridColor;
   }
+  
+  public Color getDotColor() {
+    if (dotColor == null)
+      dotColor = gridColor;
+    return dotColor;
+  }
 
   public Color getOutlineColor() {
     return outlineColor;
@@ -61,9 +69,6 @@ public class Theme implements Serializable {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((bgColor == null) ? 0 : bgColor.hashCode());
-    result = prime * result + ((gridColor == null) ? 0 : gridColor.hashCode());
-    result = prime * result + ((outlineColor == null) ? 0 : outlineColor.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     return result;
   }
@@ -76,22 +81,7 @@ public class Theme implements Serializable {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Theme other = (Theme) obj;
-    if (bgColor == null) {
-      if (other.bgColor != null)
-        return false;
-    } else if (!bgColor.equals(other.bgColor))
-      return false;
-    if (gridColor == null) {
-      if (other.gridColor != null)
-        return false;
-    } else if (!gridColor.equals(other.gridColor))
-      return false;
-    if (outlineColor == null) {
-      if (other.outlineColor != null)
-        return false;
-    } else if (!outlineColor.equals(other.outlineColor))
-      return false;
+    Theme other = (Theme) obj;  
     if (name == null) {
       if (other.name != null)
         return false;

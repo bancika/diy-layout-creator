@@ -182,6 +182,10 @@ public class DrawingManager {
     g2dWrapper.setColor(theme.getBgColor());
     g2dWrapper.fillRect(0, 0, d.width, d.height);
     g2d.clip(new Rectangle(new Point(0, 0), d));
+    
+    // calculate size to be rendered
+    double extraSpace = getExtraSpace(project) * zoom;
+    Dimension dInner = getCanvasDimensions(project, zoom, false);
 
     GridType gridType = GridType.LINES;
     if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
@@ -204,15 +208,21 @@ public class DrawingManager {
       for (double j = zoomStep; j < d.height; j += zoomStep) {
         g2dWrapper.draw(new Line2D.Double(0, j, d.width - 1, j));
       }
+      // draw dots if needed
+      if (project.getDotSpacing() > 1 && zoomStep > 8) {
+        g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness * 3));
+        g2d.setColor(theme.getDotColor());
+        for (double i = extraSpace + zoomStep * project.getDotSpacing(); i < extraSpace + dInner.width; i += zoomStep * project.getDotSpacing()) 
+          for (double j = extraSpace + zoomStep * project.getDotSpacing(); j < extraSpace + dInner.height; j += zoomStep * project.getDotSpacing()) {
+            g2d.fillOval((int)Math.round(i - 1), (int)Math.round(j - 1), 3, 3);
+          }
+      }
     }
     
     Rectangle2D extraSpaceRect = null;
     AffineTransform extraSpaceTx = null;
     // manage extra space
-    double extraSpace = 0;
-    if (drawOptions.contains(DrawOption.EXTRA_SPACE)) {
-      Dimension dInner = getCanvasDimensions(project, zoom, false);
-      extraSpace = getExtraSpace(project) * zoom;
+    if (drawOptions.contains(DrawOption.EXTRA_SPACE)) {      
       float borderThickness = (float) (3f * (zoom > 1 ? 1 : zoom));
       g2d.setStroke(ObjectCache.getInstance().fetchStroke(borderThickness, new float[] {borderThickness * 4, borderThickness * 4, }, 0, BasicStroke.CAP_BUTT));
       g2dWrapper.setColor(theme.getOutlineColor());
@@ -458,7 +468,7 @@ public class DrawingManager {
     double width = project.getWidth().convertToPixels();
     double height = project.getHeight().convertToPixels();
     double targetExtraSpace = EXTRA_SPACE * Math.max(width, height);    
-    return CalcUtils.roundToGrid(targetExtraSpace, project.getGridSpacing());    
+    return CalcUtils.roundToGrid(targetExtraSpace, project.getGridSpacing().scale(project.getDotSpacing()));
   }
 
   public Dimension getCanvasDimensions(Project project, Double zoomLevel, boolean includeExtraSpace) {
@@ -488,7 +498,7 @@ public class DrawingManager {
 
   public void setTheme(Theme theme) {
     this.theme = theme;
-    ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY, theme);
+    ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY, theme.getName());
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
   

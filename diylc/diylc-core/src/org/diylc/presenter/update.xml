@@ -2775,6 +2775,10 @@
 			<name></name>
 			<changes>				
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Dot Spacing" property in project settings that shows dots on every N-th grid line intersection</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Issues with circuit analysis introduced in version 4.0.1. Wires and jumpers are made non-conductive by mistake.</description>
 				</org.diylc.appframework.update.Change>

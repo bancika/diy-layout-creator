@@ -42,8 +42,12 @@ public class PositiveNonZeroMeasureValidator implements IPropertyValidator {
       if (measure.getValue() <= 0) {
         throw new ValidationException("must be greater than zero.");
       }
-    } else {
-      throw new ValidationException("wrong data type, measure expected.");
+    } else if (value instanceof Integer) {
+      Integer i = (Integer) value;
+      if (i < 0)
+        throw new ValidationException("must be greater or equal to zero.");
+    }  else {
+      throw new ValidationException("wrong data type.");
     }
   }
 }

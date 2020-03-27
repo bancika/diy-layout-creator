@@ -12,6 +12,12 @@
     <blue>193</blue>
     <alpha>255</alpha>
   </gridColor>
+  <dotColor>
+    <red>142</red>
+    <green>219</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </dotColor>
   <outlineColor>
     <red>255</red>
     <green>255</green>

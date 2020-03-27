@@ -61,6 +61,10 @@ public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> 
     }
     throw new IllegalArgumentException("Could not parse size: " + value);
   }
+  
+  public Size scale(double factor) {
+    return new Size(value * factor, unit);
+  }
 
   @Override
   public int compareTo(Size o) {

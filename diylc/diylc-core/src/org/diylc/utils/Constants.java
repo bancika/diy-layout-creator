@@ -38,7 +38,7 @@ public class Constants {
   public static final Stroke DASHED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
       new float[] {2.0f, 4.0f}, 0.0f);
 
-  public static final Theme DEFAULT_THEME = new Theme("Light", Constants.CANVAS_COLOR, new Color(240, 240, 240),
+  public static final Theme DEFAULT_THEME = new Theme("Light", Constants.CANVAS_COLOR, new Color(240, 240, 240), new Color(200, 200, 200), 
       Color.black);
 
   public static final Color TRANSPARENT_COLOR = new Color(0, 0, 0, 0);

@@ -12,6 +12,12 @@
 		<blue>240</blue>
 		<alpha>240</alpha>
 	</gridColor>
+	<dotColor>
+		<red>200</red>
+		<green>200</green>
+		<blue>200</blue>
+		<alpha>240</alpha>
+	</dotColor>
 	<outlineColor>
 		<red>0</red>
 		<green>0</green>

@@ -35,6 +35,7 @@ import org.diylc.appframework.update.VersionNumber;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.MultiLineText;
 import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
@@ -63,6 +64,7 @@ public class Project implements Serializable, Cloneable {
   private Size width;
   private Size height;
   private Size gridSpacing;
+  private Integer dotSpacing;
   private List<IDIYComponent<?>> components;
   private Set<Set<IDIYComponent<?>>> groups;
   private Set<Integer> lockedLayers;
@@ -134,6 +136,17 @@ public class Project implements Serializable, Cloneable {
 
   public void setGridSpacing(Size gridSpacing) {
     this.gridSpacing = gridSpacing;
+  }
+  
+  @EditableProperty(name = "Dot Spacing", validatorClass = PositiveNonZeroMeasureValidator.class)
+  public Integer getDotSpacing() {
+    if (dotSpacing == null)
+      dotSpacing = 1;
+    return dotSpacing;
+  }
+  
+  public void setDotSpacing(Integer dotSpacing) {
+    this.dotSpacing = dotSpacing;
   }
 
   /**
