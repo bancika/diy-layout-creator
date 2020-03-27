@@ -144,6 +144,11 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     g2d.fill(body[3]);
     g2d.setColor(COMMON_LUG_COLOR.darker());
     g2d.draw(body[3]);
+    
+    g2d.setColor(Color.black);
+    for(int i = 0; i < getControlPointCount(); i++) {
+      g2d.drawString(i + "", controlPoints[i].x, controlPoints[i].y);
+    }
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -304,7 +309,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       for (Point point : controlPoints) {
         rotation.transform(point, point);
       }
-    }
+    }        
   }
 
   @Override
@@ -470,9 +475,11 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
           return (index2 == 6 && (index1 == 2 || (index1 == 0 && position == 1) || (index1 == 4 && position == 3))) || 
               (index1 == 1 && (index2 == 5 || (index2 == 3 && position == 1) || (index2 == 7 && position == 3)));
       case DP5T:
-        return (index1 == 0 || index2 == 11) && index2 - index1 == position + 1;
+        return (index1 == 0 && index2 - index1 == position + 1)
+            || (index2 == 11 && index2 - index1 == 5 - position);
       case _4P5T:
-        return (index1 == 0 || index1 == 12 || index2 == 11 || index2 == 23) && index2 - index1 == position + 1;        
+        return ((index1 == 0 || index1 == 12) && index2 - index1 == position + 1)
+            || ((index2 == 11 || index2 == 23) && index2 - index1 == 5 - position);     
     }
     return false;
   }

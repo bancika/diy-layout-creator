@@ -22,9 +22,16 @@
 package org.diylc.netlist;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.diylc.components.electromechanical.OpenJack1_4;
 import org.diylc.components.guitar.HumbuckerPickup;
+import org.diylc.components.guitar.LeverSwitch;
+import org.diylc.components.guitar.LeverSwitch.LeverSwitchType;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialCeramicDiskCapacitor;
@@ -270,5 +277,42 @@ public class GuitarNetlistAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals("(((Volume.1-2) + ((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || (Volume.2-3))", s);
+  }
+  
+  @Test
+  public void testLeverSwitch() {
+    LeverSwitch leverSwitch = new LeverSwitch();
+    
+    leverSwitch.setType(LeverSwitchType.DP5T);
+    String[] validCombinations = new String[]{
+        "0,0,1", "0,6,11", "0,12,13", "0,18,23",
+        "1,0,2", "1,7,11", "1,12,14", "1,19,23",
+        "2,0,3", "2,8,11", "2,12,15", "2,20,23",
+        "3,0,4", "3,9,11", "3,12,16", "3,21,23",
+        "4,0,5", "4,10,11", "4,12,17", "4,22,23"};
+    Arrays.sort(validCombinations);
+    for (int p = 0; p < leverSwitch.getPositionCount(); p++)
+      for (int i = 0; i < leverSwitch.getControlPointCount(); i++)
+        for (int j = 0; j < leverSwitch.getControlPointCount(); j++) {
+          String test = p + "," + i + "," + j;
+          boolean isConnected = leverSwitch.arePointsConnected(i, j, p);
+          boolean isOk = (isConnected && Arrays.binarySearch(validCombinations, test) >= 0) ||
+              !isConnected && Arrays.binarySearch(validCombinations, test) < 0;
+          if (!isOk)
+            fail("Bad connection for p=" + p + ", i=" + i + ",j=" + j);          
+        }
+    
+    leverSwitch.setType(LeverSwitchType._4P5T);
+    Arrays.sort(validCombinations);
+    for (int p = 0; p < leverSwitch.getPositionCount(); p++)
+      for (int i = 0; i < leverSwitch.getControlPointCount(); i++)
+        for (int j = 0; j < leverSwitch.getControlPointCount(); j++) {
+          String test = p + "," + i + "," + j;
+          boolean isConnected = leverSwitch.arePointsConnected(i, j, p);
+          boolean isOk = (isConnected && Arrays.binarySearch(validCombinations, test) >= 0) ||
+              !isConnected && Arrays.binarySearch(validCombinations, test) < 0;
+          if (!isOk)
+            fail("Bad connection for p=" + p + ", i=" + i + ",j=" + j);          
+        }
   }
 }

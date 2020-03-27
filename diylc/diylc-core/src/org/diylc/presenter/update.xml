@@ -2782,6 +2782,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>When moving or deleting trace cuts from a vero board, highlight connected areas would still render the area from before the cut was deleted</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>4P5T and DP5T guitar switches were not properly configured for internal pin connections</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
