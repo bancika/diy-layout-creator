@@ -2764,6 +2764,22 @@
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>1</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-03-26 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Issues with connectivity check with some components (e.g. Jumper) where the middle of the component was considered as a connected point</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
 	</a>
 </java.util.Arrays_-ArrayList>
