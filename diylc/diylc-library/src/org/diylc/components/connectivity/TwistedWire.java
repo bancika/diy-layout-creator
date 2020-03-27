@@ -436,6 +436,6 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
   
   @Override
   public boolean arePointsConnected(int index1, int index2) {
-    return index1 <= 1 && index2 <= 1;
+    return Math.abs(index1 - index2) == getControlPointCount() - 1;
   } 
 }
