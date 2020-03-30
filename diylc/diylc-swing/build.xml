@@ -1,6 +1,6 @@
 <project name="diylc-swing" basedir="." default="win">
-	
-	 <taskdef name="bundleapp"
+
+	<taskdef name="bundleapp"
 	             classname="com.oracle.appbundler.AppBundlerTask"  />
 
 	<property name="src.dir" value="src" />
@@ -75,7 +75,7 @@
 			<zipfileset dir="." includes="config.properties" />
 		</jar>
 	</target>
-	
+
 	<target name="mac" depends="jar">
 		<!--<echo>Compile with JDK ${java.home}</echo>
 		<exec executable="javapackager">
@@ -108,34 +108,47 @@
 	        applicationCategory="public.app-category.graphics-design"
 			icon="icons/diylc.icns"
 	        mainclassname="${main.class}">
-	        <!--<runtime dir="${env.JAVA_HOME}" />-->
-	        <classpath file="${jar.dir}\diylc.jar" />
-	    	<classpath file="${jar.dir}\lib\*.jar" />
-	    	<classpath file="${jar.dir}\library\*.jar" />
+			<!--<runtime dir="${env.JAVA_HOME}" />-->
+			<classpath file="${jar.dir}\diylc.jar" />
+			<classpath file="${jar.dir}\lib\*.jar" />
+			<classpath file="${jar.dir}\library\*.jar" />
 			<option value="-Xms512m" />
 			<option value="-Xmx2048m" />
 			<option value="-Dorg.diylc.scriptRun=true" />
 			<option value="-Dfile.encoding=UTF-8" />
 			<option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
-		    <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
-		    <option value="-Dapple.awt.application.name=DIY Layout Creator"/>
-		    <option value="-Dcom.apple.smallTabs=true"/>			
+			<option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+			<option value="-Dapple.awt.application.name=DIY Layout Creator"/>
+			<option value="-Dcom.apple.smallTabs=true"/>
 			<option value="-Xdock:name=DIY Layout Creator"/>
 			<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 		</bundleapp>
 		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
-			<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />		
+			<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />
 		</zip>
 	</target>
 	
+	<property name="izpack-dist" value="e:\bane\dev\IzPack" />
+
+	<path id="lib.path">
+		<fileset dir="${izpack-dist}/lib" includes="*.jar" />
+	</path>
+
+	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask" classpathref="lib.path" />
+
 	<target name="win" depends="jar">
 		<exec executable="innosetup\iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
 			<arg value="/Fdiylc-${diylc.version}-win"/>
-		    <arg value="install.iss"/>
+			<arg value="install.iss"/>
 		</exec>
+		<izpack input="${basedir}/izpack.xml"
+		            output="${build.dir}/diylc-${diylc.version}-setup.jar" 
+		            installerType="standard"             
+		            basedir="."
+		            izPackDir="${izpack-dist}"/>
 	</target>
-	
+
 	<target name="universal" depends="jar">
 		<zip destfile="${build.dir}/diylc-${diylc.version}.zip">
 			<zipfileset dir="${jar.dir}" includes="diylc.jar" />
@@ -147,12 +160,12 @@
 			<zipfileset dir="." includes="splash.png" />
 			<zipfileset dir="." includes="run.sh" />
 			<zipfileset dir="." includes="diylc.l4j.ini" />
-			<zipfileset dir="." includes="diylc.exe" />	
+			<zipfileset dir="." includes="diylc.exe" />
 			<zipfileset dir="icons" includes="*.png" prefix="icons" />
 		</zip>
 	</target>
-	
-	<target name="full" depends="win,mac,universal"/>
+
+	<target name="full" depends="win,mac,universal" />
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">
