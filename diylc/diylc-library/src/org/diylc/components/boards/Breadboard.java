@@ -325,6 +325,7 @@ public class Breadboard extends AbstractComponent<Void> {
   public Point getControlPoint(int index) {
     if (index == 0)
       return point;
+    // create a synthetic second control point for clipping check and to make sure that we cannot drag the right side of the board off the screen
     double spacing = SPACING.convertToPixels();
     int holeCount = getBreadboardSize() == BreadboardSize.Full ? 63 : 30;
     // adjust the angle

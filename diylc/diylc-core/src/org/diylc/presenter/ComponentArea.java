@@ -22,15 +22,15 @@
 package org.diylc.presenter;
 
 import java.awt.geom.Area;
-import java.util.List;
+import java.util.Collection;
 
 public class ComponentArea {
 
   private Area outlineArea;
-  private List<Area> continuityPositiveAreas;
-  private List<Area> continuityNegativeAreas;
+  private Collection<Area> continuityPositiveAreas;
+  private Collection<Area> continuityNegativeAreas;
 
-  public ComponentArea(Area outlineArea, List<Area> continuityPositiveAreas, List<Area> continuityNegativeAreas) {
+  public ComponentArea(Area outlineArea, Collection<Area> continuityPositiveAreas, Collection<Area> continuityNegativeAreas) {
     super();
     this.outlineArea = outlineArea;
     this.continuityPositiveAreas = continuityPositiveAreas;
@@ -41,11 +41,11 @@ public class ComponentArea {
     return outlineArea;
   }
 
-  public List<Area> getContinuityPositiveAreas() {
+  public Collection<Area> getContinuityPositiveAreas() {
     return continuityPositiveAreas;
   }
 
-  public List<Area> getContinuityNegativeAreas() {
+  public Collection<Area> getContinuityNegativeAreas() {
     return continuityNegativeAreas;
-  }
+  }  
 }

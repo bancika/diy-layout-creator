@@ -532,13 +532,15 @@ public class DrawingManager {
 
       if (a == null || a.getOutlineArea() == null)
         continue;
-      if (a.getContinuityPositiveAreas() != null)
-        for (Area a1 : a.getContinuityPositiveAreas()) {
+      Collection<Area> positiveAreas = a.getContinuityPositiveAreas();
+      if (positiveAreas != null)
+        for (Area a1 : positiveAreas) {
           preliminaryAreas.add(a1);
           checkBreakout.add(false);
         }
-      if (a.getContinuityNegativeAreas() != null) {
-        for (Area na : a.getContinuityNegativeAreas())
+      Collection<Area> negativeAreas = a.getContinuityNegativeAreas();
+      if (negativeAreas != null) {
+        for (Area na : negativeAreas)
           for (int i = 0; i < preliminaryAreas.size(); i++) {
             Area a1 = preliminaryAreas.get(i);
             if (a1.intersects(na.getBounds2D())) {
@@ -546,17 +548,17 @@ public class DrawingManager {
               checkBreakout.set(i, true);
             }
           }
-      }
+      }   
     }
 
     // Check if we need to break some areas out in case they are interrupted
     List<Area> areas = new ArrayList<Area>();
     for (int i = 0; i < preliminaryAreas.size(); i++) {
       Area a = preliminaryAreas.get(i);
-      // if (checkBreakout.get(i))
-      areas.addAll(tryBreakout(a));
-      // else
-      // areas.add(a);
+       if (checkBreakout.get(i))
+         areas.addAll(tryBreakout(a));
+       else
+         areas.add(a);
     }
     
     expandConnections(connections);

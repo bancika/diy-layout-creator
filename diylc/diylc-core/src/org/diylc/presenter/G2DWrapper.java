@@ -41,6 +41,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -49,10 +50,17 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.AttributedCharacterIterator;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.ZoomableStroke;
@@ -70,12 +78,16 @@ import org.diylc.core.IDrawingObserver;
 class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   public static int LINE_SENSITIVITY_MARGIN = 2;
-  public static int CURVE_SENSITIVITY = 6;
+  public static int CURVE_SENSITIVITY = 6;  
 
   private boolean drawingComponent = false;
   private boolean trackingAllowed = true;
   private boolean trackingContinuityAllowed = false;
   private boolean trackingContinuityPositive = true;
+  
+  private HashMap<String, Integer> trackingStacks = new HashMap<String, Integer>();
+  
+  private int uniqueCounter = 0;
 
   private Graphics2D canvasGraphics;
   private Stroke originalStroke;
@@ -86,11 +98,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private AffineTransform currentTx;
   private AffineTransform initialTx;
   private Area currentArea;
-  private List<Area> continuityPositiveAreas;
-  private List<Area> continuityNegativeAreas;
+  private Map<String, Area> continuityPositiveAreas;
+  private Map<String, Area> continuityNegativeAreas;
+  private String continuityMarker;
   private Shape lastShape;
 
-  private double zoom;
+  private double zoom;  
 
   /**
    * Creates a wrapper around specified {@link Graphics2D} object.
@@ -102,8 +115,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     this.canvasGraphics = canvasGraphics;
     this.zoom = zoom;
     currentArea = new Area();
-    continuityPositiveAreas = new ArrayList<Area>();
-    continuityNegativeAreas = new ArrayList<Area>();
+    continuityPositiveAreas = new HashMap<String, Area>();
+    continuityNegativeAreas = new HashMap<String, Area>();
+    continuityMarker = null;
     currentTx = new AffineTransform();
   }
 
@@ -113,8 +127,10 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public void startedDrawingComponent() {
     drawingComponent = true;
     currentArea = new Area();
-    continuityPositiveAreas = new ArrayList<Area>();
-    continuityNegativeAreas = new ArrayList<Area>();
+    continuityPositiveAreas = new HashMap<String, Area>();
+    continuityNegativeAreas = new HashMap<String, Area>();
+//    trackingStacks.clear();
+    continuityMarker = null;
     originalStroke = canvasGraphics.getStroke();
     originalColor = canvasGraphics.getColor();
     originalTx = canvasGraphics.getTransform();
@@ -138,7 +154,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setTransform(originalTx);
     canvasGraphics.setComposite(originalComposite);
     canvasGraphics.setFont(originalFont);
-    return new ComponentArea(currentArea, continuityPositiveAreas, continuityNegativeAreas);
+//    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);    
+    return new ComponentArea(currentArea, continuityPositiveAreas.values(), continuityNegativeAreas.values());
   }
 
   @Override
@@ -165,7 +182,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public boolean isTrackingContinuityArea() {   
     return trackingContinuityAllowed;
-  }
+  }  
+  
+  @Override
+  public void setContinuityMarker(String marker) {
+    continuityMarker = marker;    
+  }    
 
   /**
    * Appends shape interior to the current component area.
@@ -183,16 +205,39 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
       area.transform(currentTx);
 
       if (trackingAllowed)
-        currentArea.add(area);
+        currentArea.add(area);      
 
+      Map<String, Area> toAdd;
       if (trackingContinuityAllowed) {
         if (trackingContinuityPositive)
-          continuityPositiveAreas.add(area);
+          toAdd = continuityPositiveAreas;
         else
-          continuityNegativeAreas.add(area);
+          toAdd = continuityNegativeAreas;
+        String marker = continuityMarker == null ? ("internalUnique" + uniqueCounter++) : continuityMarker;
+        if (continuityMarker == null) {
+          toAdd.put(marker, area);
+//          markStack();
+        } else {
+          Area current = toAdd.getOrDefault(marker, null); 
+          if (current == null) {            
+            toAdd.put(marker, area);
+//            markStack();          
+          } else
+            current.add(area);
+        }        
       }
       lastShape = s;
     }
+  }
+  
+  private void markStack() {
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    new Throwable().printStackTrace(pw);
+    String stack = sw.toString();
+    Integer currentCount = trackingStacks.getOrDefault(stack, 0);
+    currentCount++;
+    trackingStacks.put(stack, currentCount);
   }
 
   /**
@@ -202,7 +247,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
    */
   private void appendShapeOutline(Shape s) {
     // Do not add shape outline if the same shape has been filled recently.
-    if (!drawingComponent || !trackingAllowed || s.equals(lastShape)) {
+    if (!drawingComponent || (!trackingAllowed && !trackingContinuityAllowed) || s.equals(lastShape)) {
       return;
     }
     Stroke stroke = getStroke();
@@ -553,8 +598,15 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   }
 
   @Override
-  public void drawPolyline(int[] points, int[] points2, int points3) {
-    canvasGraphics.drawPolyline(points, points2, points3);
+  public void drawPolyline(int[] pointsX, int[] pointsY, int pointCount) {
+    canvasGraphics.drawPolyline(pointsX, pointsY, pointCount);
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed) && pointCount > 1) {
+      Path2D path = new Path2D.Double();
+      path.moveTo(pointsX[0], pointsY[0]);
+      for (int i = 1; i < pointCount; i++)
+        path.lineTo(pointsX[i], pointsY[i]);
+      appendShapeOutline(path);
+    }
   }
 
   @Override
@@ -666,5 +718,31 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void setXORMode(Color c1) {
     canvasGraphics.setXORMode(c1);
+  }
+  
+  private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap,
+      final boolean order) {
+    List<Entry<String, Integer>> list =
+        new LinkedList<Entry<String, Integer>>(unsortMap.entrySet());
+
+    // Sorting the list based on values
+    Collections.sort(list, new Comparator<Entry<String, Integer>>() {
+      public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+        if (order) {
+          return o1.getValue().compareTo(o2.getValue());
+        } else {
+          return o2.getValue().compareTo(o1.getValue());
+
+        }
+      }
+    });
+
+    // Maintaining insertion order with the help of LinkedList
+    Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+    for (Entry<String, Integer> entry : list) {
+      sortedMap.put(entry.getKey(), entry.getValue());
+    }
+
+    return sortedMap;
   }
 }

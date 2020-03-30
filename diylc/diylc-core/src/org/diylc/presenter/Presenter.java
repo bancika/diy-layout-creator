@@ -1946,6 +1946,10 @@ public class Presenter implements IPlugInPort {
     LOG.info(String.format("expandSelection(%s)", expansionMode));
     List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(this.selectedComponents);
     List<Netlist> netlists = extractNetlists(false);
+    
+    if (netlists == null)
+      return;
+    
     List<Set<IDIYComponent<?>>> allGroups = NetlistAnalyzer.extractComponentGroups(netlists);
     // Find control points of all selected components and all types
     Set<String> selectedNamePrefixes = new HashSet<String>();

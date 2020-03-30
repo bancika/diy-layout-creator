@@ -29,13 +29,40 @@ package org.diylc.core;
  */
 public interface IDrawingObserver {
 
+  /**
+   * Notifies the observer that it should start tracking the drawing process.
+   */
   void stopTracking();
 
+  /**
+   * Notifies the observer that it should stop tracking the drawing process.
+   */
   void startTracking();
   
-  void stopTrackingContinuityArea();
-
+  /**   
+   * Notifies the observer that it should start tracking conductive continuity areas.
+   * 
+   * @param positive designates if the area should be additive or subtractive
+   */
   void startTrackingContinuityArea(boolean positive);
   
+  /**
+   * Notifies the observer that it should stop tracking conductive continuity areas.
+   */
+  void stopTrackingContinuityArea();  
+  
+  /**
+   * Checks if we are tracking continuity ares.
+   * 
+   * @return
+   */
   boolean isTrackingContinuityArea();
+  
+  /**
+   * Allows us to connect multiple disjoint continuity areas by specifying the same continuity markers.
+   * By default it is set to null and does not connect disjoint areas.
+   * 
+   * @param marker
+   */
+  void setContinuityMarker(String marker);
 }
