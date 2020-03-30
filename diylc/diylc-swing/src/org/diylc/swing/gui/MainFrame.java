@@ -167,7 +167,14 @@ public class MainFrame extends JFrame implements ISwingUI {
     // getGlassPane().setVisible(true);
     
     // maximize the screen
-    setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+    SwingUtilities.invokeLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+      }
+    }); 
+    
     new Thread(new Runnable() {
       
       @Override
@@ -190,13 +197,6 @@ public class MainFrame extends JFrame implements ISwingUI {
     }).start();
   }
   
-  @Override
-  public void setExtendedState(int state) {
-    super.setExtendedState(state);
-    
-       
-  }
-
   public Presenter getPresenter() {
     return presenter;
   }
