@@ -2777,7 +2777,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Dot Spacing" property in project settings that shows dots on every N-th grid line intersection</description>
-				</org.diylc.appframework.update.Change>		
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "P-0+o (Proto) Board" component by Kristian Blåsol</description>
+				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Issues with circuit analysis introduced in version 4.0.1. Wires and jumpers are made non-conductive by mistake.</description>
@@ -2796,8 +2800,12 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Humbucker doesn't render second coil poles properly in certain scenarios</description>
+					<description>"Humbucker Pickup" doesn't render second coil poles properly in certain scenarios</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Minor fix in tracking conductive areas</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
