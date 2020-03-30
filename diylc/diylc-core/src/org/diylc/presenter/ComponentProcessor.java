@@ -276,4 +276,21 @@ public class ComponentProcessor {
     componentTransformerMap.put(clazz.getName(), transformer);
     return transformer;
   }
+  
+  public static boolean hasStickyPoint(IDIYComponent<?> c) {
+    for (int i = 0; i < c.getControlPointCount(); i++)
+      if (c.isControlPointSticky(0))
+        return true;
+    return false;
+  }
+  
+  private static int touchSensitivity = 5;
+  
+  public static boolean componentPointsTouch(IDIYComponent<?> c1, IDIYComponent<?> c2) {
+    for (int i = 0; i < c1.getControlPointCount(); i++)
+      for (int j = 0; j < c2.getControlPointCount(); j++)
+        if (c1.isControlPointSticky(i) && c2.isControlPointSticky(j) && c1.getControlPoint(i).distance(c2.getControlPoint(j)) < touchSensitivity)
+          return true;
+    return false;
+  }
 }

@@ -1939,63 +1939,141 @@ public class Presenter implements IPlugInPort {
     }
     messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents, controlPointMap.keySet());
   }
+  
+  private static boolean useNetlistForExpandSelection = false;
 
   @SuppressWarnings("unchecked")
   @Override
   public void expandSelection(ExpansionMode expansionMode) {
-    LOG.info(String.format("expandSelection(%s)", expansionMode));
+    LOG.info(String.format("expandSelection(%s)", expansionMode));    
     List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(this.selectedComponents);
-    List<Netlist> netlists = extractNetlists(false);
-    
-    if (netlists == null)
-      return;
-    
-    List<Set<IDIYComponent<?>>> allGroups = NetlistAnalyzer.extractComponentGroups(netlists);
-    // Find control points of all selected components and all types
-    Set<String> selectedNamePrefixes = new HashSet<String>();
-    if (expansionMode == ExpansionMode.SAME_TYPE) {
-      for (IDIYComponent<?> component : getSelectedComponents()) {
-        selectedNamePrefixes.add(ComponentProcessor.getInstance()
-            .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()).getNamePrefix());
+    // experimental mode using netlist to expand selection. Works fine but doesn't include any connectivity components 
+    // like traces and wires, so it's not ideal
+    if (useNetlistForExpandSelection) {
+      List<Netlist> netlists = extractNetlists(false);
+      
+      if (netlists == null)
+        return;
+      
+      List<Set<IDIYComponent<?>>> allGroups = NetlistAnalyzer.extractComponentGroups(netlists);
+      // Find control points of all selected components and all types
+      Set<String> selectedNamePrefixes = new HashSet<String>();
+      if (expansionMode == ExpansionMode.SAME_TYPE) {
+        for (IDIYComponent<?> component : getSelectedComponents()) {
+          selectedNamePrefixes.add(ComponentProcessor.getInstance()
+              .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()).getNamePrefix());
+        }
       }
-    }
-    // Now try to find components that intersect with at least one component
-    // in the pool.
-    for (IDIYComponent<?> component : getCurrentProject().getComponents()) {
-      // no need to consider it, it's already in the selection
-      if (newSelection.contains(component))
-        continue;
-      // construct a list of component groups that contain the current component
-      List<Set<IDIYComponent<?>>> componentGroups = new ArrayList<Set<IDIYComponent<?>>>();
-      for (Set<IDIYComponent<?>> e : allGroups)
-        if (e.contains(component))
-          componentGroups.add(e);
-      if (componentGroups.isEmpty())
-        continue;
-      // Skip already selected components or ones that cannot be stuck to
-      // other components.
-      boolean matches = false;
-      outer: for (IDIYComponent<?> selectedComponent : this.selectedComponents) {
-        // try to find the selectedComponent in one of the groups
-        for (Set<IDIYComponent<?>> s : componentGroups)
-          if (s.contains(selectedComponent)) {
-            matches = true;
-            break outer;
-          }
-      }
-
-      if (matches) {
-        switch (expansionMode) {
-          case ALL:
-          case IMMEDIATE:
-            newSelection.add(component);
-            break;
-          case SAME_TYPE:
-            if (selectedNamePrefixes.contains(ComponentProcessor.getInstance()
-                .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()).getNamePrefix())) {
-              newSelection.add(component);
+      // Now try to find components that intersect with at least one component
+      // in the pool.
+      for (IDIYComponent<?> component : getCurrentProject().getComponents()) {
+        // no need to consider it, it's already in the selection
+        if (newSelection.contains(component))
+          continue;
+        // construct a list of component groups that contain the current component
+        List<Set<IDIYComponent<?>>> componentGroups = new ArrayList<Set<IDIYComponent<?>>>();
+        for (Set<IDIYComponent<?>> e : allGroups)
+          if (e.contains(component))
+            componentGroups.add(e);
+        if (componentGroups.isEmpty())
+          continue;
+        // Skip already selected components or ones that cannot be stuck to
+        // other components.
+        boolean matches = false;
+        outer: for (IDIYComponent<?> selectedComponent : this.selectedComponents) {
+          // try to find the selectedComponent in one of the groups
+          for (Set<IDIYComponent<?>> s : componentGroups)
+            if (s.contains(selectedComponent)) {
+              matches = true;
+              break outer;
             }
+        }
+  
+        if (matches) {
+          switch (expansionMode) {
+            case ALL:
+            case IMMEDIATE:
+              newSelection.add(component);
+              break;
+            case SAME_TYPE:
+              if (selectedNamePrefixes.contains(ComponentProcessor.getInstance()
+                  .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()).getNamePrefix())) {
+                newSelection.add(component);
+              }
+              break;
+          }
+        }
+      }
+    } else {
+      Set<String> selectedNamePrefixes = new HashSet<String>();
+      if (expansionMode == ExpansionMode.SAME_TYPE) {
+        // find prefixes of all selected components to bundle similar component types together
+        for (IDIYComponent<?> component : getSelectedComponents()) {
+          selectedNamePrefixes.add(ComponentProcessor.getInstance()
+              .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()).getNamePrefix());
+        }
+      }
+      // Now try to find components that intersect with at least one component
+      // in the pool.
+      for (IDIYComponent<?> component : getCurrentProject().getComponents()) {
+        // Skip already selected components or ones that cannot be stuck to
+        // other components.
+        ComponentArea area = drawingManager.getComponentArea(component);
+        if (newSelection.contains(component) || !(ComponentProcessor.hasStickyPoint(component) || (area != null
+            && area.getContinuityPositiveAreas() == null)))
+          continue;
+        boolean matches = false;
+        for (IDIYComponent<?> selectedComponent : this.selectedComponents) {
+          ComponentArea selectedArea = drawingManager.getComponentArea(selectedComponent);
+          if (ComponentProcessor.componentPointsTouch(component, selectedComponent)) {
+            matches = true;
             break;
+          }
+          if (selectedArea == null || selectedArea.getContinuityPositiveAreas() == null)
+            continue;
+          
+          // do a rough check, if the outlines don't intersect there's no chance of a match
+          // so don't waste time doing the precise check
+          if (area.getOutlineArea() != null && selectedArea.getOutlineArea() != null && 
+              !area.getOutlineArea().getBounds().intersects(selectedArea.getOutlineArea().getBounds()))
+            continue;
+          
+          // create a unified continuity area for both components
+          Area area1 = new Area();
+          for (Area a : area.getContinuityPositiveAreas())
+            area1.add(a);
+          if (area.getContinuityNegativeAreas() != null)
+            for(Area a : area.getContinuityNegativeAreas())
+              area1.subtract(a);
+          
+          Area area2 = new Area();
+          for (Area a : selectedArea.getContinuityPositiveAreas())
+            area2.add(a);
+          if (selectedArea.getContinuityNegativeAreas() != null)
+            for(Area a : selectedArea.getContinuityNegativeAreas())
+              area2.subtract(a);
+          
+          // now check the intersection, if there's something we have a match
+          area1.intersect(area2);
+          if (!area1.isEmpty()) {
+            matches = true;
+            break;
+          }
+        }
+
+        if (matches) {
+          switch (expansionMode) {
+            case ALL:
+            case IMMEDIATE:
+              newSelection.add(component);
+              break;
+            case SAME_TYPE:
+              if (selectedNamePrefixes.contains(ComponentProcessor.getInstance()
+                  .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()).getNamePrefix())) {
+                newSelection.add(component);
+              }
+              break;
+          }
         }
       }
     }

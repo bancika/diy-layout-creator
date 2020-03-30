@@ -2781,6 +2781,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "P-0+o (Proto) Board" component by Kristian Blåsol</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Better "Expand Selection" logic. Works well with conductive components like traces and wires and regular components like resistors and capacitors</description>
 				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
