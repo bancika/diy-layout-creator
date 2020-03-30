@@ -513,39 +513,47 @@ public class ProtoBoard extends AbstractComponent<Void> {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int factor = 32 / width;
-    int arc = 4 / factor;
     g2d.setColor(FILL_COLOR);
     g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
     g2d.setColor(BORDER_COLOR);
     g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
+    
+    g2d.setColor(PAD_COLOR.brighter());
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2 / factor));
+    
+    int size = (int) (8.0 / factor);
+    
+    g2d.drawLine(width / 3 - 2 / factor + size / 2, 6 / factor + size / 2, width, 6 / factor + size / 2);
+    g2d.drawLine(width / 3 - 2 / factor + size / 2, 2 * width / 3 - 2 / factor + size / 2, width, 2 * width / 3 - 2 / factor + size / 2);
+    
+    
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 
     g2d.setColor(PAD_COLOR);
-    g2d.fillRoundRect(width / 3 - 2 / factor, width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
-        getClosestOdd(5.0 / factor), arc, arc);
-    g2d.setColor(BORDER_COLOR);
-    g2d.drawRoundRect(width / 3 - 2 / factor, width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
-        getClosestOdd(5.0 / factor), arc, arc);
+    g2d.fillRect(width / 3 - 2 / factor, 6 / factor, size, size);
+    g2d.setColor(PAD_COLOR.darker());
+    g2d.drawRect(width / 3 - 2 / factor, 6 / factor, size, size);
 
     g2d.setColor(PAD_COLOR);
-    g2d.fillRoundRect(2 * width / 3 - 2 / factor, width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
-        getClosestOdd(5.0 / factor), arc, arc);
-    g2d.setColor(BORDER_COLOR);
-    g2d.drawRoundRect(2 * width / 3 - 2 / factor, width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
-        getClosestOdd(5.0 / factor), arc, arc);
+    g2d.fillOval(2 * width / 3 - 2 / factor, 6 / factor, size, size);
+    g2d.setColor(PAD_COLOR.darker());
+    g2d.drawOval(2 * width / 3 - 2 / factor, 6 / factor, size, size);
 
     g2d.setColor(PAD_COLOR);
-    g2d.fillRoundRect(width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
-        getClosestOdd(5.0 / factor), arc, arc);
-    g2d.setColor(BORDER_COLOR);
-    g2d.drawRoundRect(width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
-        getClosestOdd(5.0 / factor), arc, arc);
+    g2d.fillRect(width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, size, size);
+    g2d.setColor(PAD_COLOR.darker());
+    g2d.drawRect(width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, size, size);
 
     g2d.setColor(PAD_COLOR);
-    g2d.fillRoundRect(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
-        getClosestOdd(5.0 / factor), arc, arc);
-    g2d.setColor(BORDER_COLOR);
-    g2d.drawRoundRect(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
-        getClosestOdd(5.0 / factor), arc, arc);
+    g2d.fillOval(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, size, size);
+    g2d.setColor(PAD_COLOR.darker());
+    g2d.drawOval(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, size, size);
+    
+    g2d.setColor(Color.darkGray);
+    g2d.fillOval(width / 3 - 2 / factor + size / 2 - 1, 6 / factor + size / 2 - 1, 3, 3);
+    g2d.fillOval(width / 3 - 2 / factor + size / 2 - 1, 2 * width / 3 - 2 / factor + size / 2 - 1, 3, 3);
+    g2d.fillOval(2 * width / 3 - 2 / factor + size / 2 - 1, 6 / factor + size / 2 - 1, 3, 3);
+    g2d.fillOval(2 * width / 3 - 2 / factor + size / 2 - 1, 2 * width / 3 - 2 / factor + size / 2 - 1, 3, 3);
   }
 
   @EditableProperty
