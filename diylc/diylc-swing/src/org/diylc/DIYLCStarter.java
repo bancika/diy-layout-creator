@@ -55,6 +55,7 @@ public class DIYLCStarter {
 
   /**
    * @param args
+   * @throws InvalidActivityException 
    */
   public static void main(String[] args) {
     // Initialize splash screen
@@ -128,7 +129,7 @@ public class DIYLCStarter {
     }
 
     MainFrame mainFrame = new MainFrame();
-    mainFrame.setLocationRelativeTo(null);    
+//    mainFrame.setLocationRelativeTo(null);    
     
     splash.setVisible(false);
     splash.dispose();
