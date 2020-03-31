@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 
 import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IconImageConverter;
+import org.diylc.awt.ImageUtils;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
@@ -43,8 +44,6 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PercentEditor;
-
-import sun.awt.image.ToolkitImage;
 
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -147,7 +146,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   public ImageIcon getImage() {
     if (image != null) {
       // when loading old files, convert the stored image to byte array and then then discard it, we won't be needing it anymore
-      BufferedImage bi = ((ToolkitImage) image.getImage()).getBufferedImage();
+      BufferedImage bi = ImageUtils.ToBufferedImage(image.getImage());
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       try {
         ImageIO.write(bi, "png", baos);
