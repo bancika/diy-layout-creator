@@ -2793,6 +2793,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better "Expand Selection" logic. Works well with conductive components like traces and wires and regular components like resistors and capacitors</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Refactor dependencies to internal Java classes that are market as proprietary (could potentially affect "Hi-Quality Rendering" mode and loading older DIY files that contain images)</description>
 				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
