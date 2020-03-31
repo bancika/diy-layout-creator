@@ -2788,6 +2788,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Moved "Tape Measure" to "Misc" category</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Better "Expand Selection" logic. Works well with conductive components like traces and wires and regular components like resistors and capacitors</description>
 				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
