@@ -29,9 +29,8 @@ import java.awt.geom.Point2D;
 import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.lang.ref.WeakReference;
-
-import sun.awt.image.IntegerComponentRaster;
 
 public class ShadedPaintContext implements PaintContext {
   
@@ -222,17 +221,20 @@ public class ShadedPaintContext implements PaintContext {
             rast = getCachedRaster(model, w, h);
             saved = rast;
         }
-        IntegerComponentRaster irast = (IntegerComponentRaster) rast;
-        int off = irast.getDataOffset(0);
-        int adjust = irast.getScanlineStride() - w;
-        int[] pixels = irast.getDataStorage();
+//        IntegerComponentRaster irast = (IntegerComponentRaster) rast;        
+//        int off = irast.getDataOffset(0);
+//        int adjust = irast.getScanlineStride() - w;
+//        int[] pixels2 = irast.getDataStorage();
+        
+        int[] pixels = new int[w * h * 3];
 
-        clipFillRaster(pixels, off, adjust, w, h, rowrel, dx, dy);        
+        clipFillRasterRGB(pixels, 0, 0, w, h, rowrel, dx, dy);
+        ((WritableRaster)rast).setPixels(rast.getMinX(), rast.getMinY(), w, h, pixels);
 
 //        irast.markDirty();
 
         return rast;
-    }
+    }   
 
     void clipFillRaster(int[] pixels, int off, int adjust, int w, int h,
                         double rowrel, double dx, double dy) {
@@ -260,5 +262,49 @@ public class ShadedPaintContext implements PaintContext {
             off += adjust;
             rowrel += dy;
         }
+    }
+    
+    void clipFillRasterRGB(int[] pixels, int off, int adjust, int w, int h, double rowrel,
+        double dx, double dy) {
+      while (--h >= 0) {
+        double colrel = rowrel;
+        int j = w;
+        if (colrel <= 0.0) {
+          int rgb = interp[0];
+          do {
+            int red = (rgb >> 16) & 0xff;
+            int green = (rgb >> 8) & 0xff;
+            int blue = (rgb) & 0xff;
+            pixels[off++] = red;
+            pixels[off++] = green;
+            pixels[off++] = blue;
+            colrel += dx;
+          } while (--j > 0 && colrel <= 0.0);
+        }
+        while (colrel < 1.0 && --j >= 0) {
+          int rgb = interp[(int) (colrel < 0.5 ? colrel * 2 * 256 : (2 - colrel * 2) * 256)];
+          int red = (rgb >> 16) & 0xff;
+          int green = (rgb >> 8) & 0xff;
+          int blue = (rgb) & 0xff;
+          pixels[off++] = red;
+          pixels[off++] = green;
+          pixels[off++] = blue;
+          colrel += dx;
+        }
+        if (j > 0) {
+          int rgb = interp[256];
+          do {
+            int red = (rgb >> 16) & 0xff;
+            int green = (rgb >> 8) & 0xff;
+            int blue = (rgb) & 0xff;
+            pixels[off++] = red;
+            pixels[off++] = green;
+            pixels[off++] = blue;
+          } while (--j > 0);
+        }
+
+        off += adjust;
+        rowrel += dy;
+      }
     }
 }
