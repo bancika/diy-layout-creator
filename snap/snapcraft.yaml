@@ -1,6 +1,6 @@
 name: diy-layout-creator
 version: '4.1.0'
-summary: A simple to use, free vector-based software for designing circuit layouts and schematics
+summary: A free tool for designing circuit layouts and schematics with ease
 description: |
   DIY Layout Creator (DIYLC in short) is a freeware drawing tool developed with help of the large online community of DIY electronics enthusiasts. It incorporates many ideas that came from people using older versions of the application. The goal is to provide a simple interface and enough power to let the user draw schematics, board/chassis layouts and guitar wiring diagrams quickly and without a steep learning curve. Also, it is buitd around a flexible open source framework that may be used to draw pretty much anything. 
   
