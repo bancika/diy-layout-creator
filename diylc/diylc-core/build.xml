@@ -17,7 +17,7 @@
 	<target name="compile">
 		<mkdir dir="${classes.dir}" />
 		<echo>Compile with JDK ${java.runtime.version}</echo>
-		<javac encoding="8859_1" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="class.path" />
+		<javac encoding="8859_1" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="class.path" includeantruntime="false" />
 	</target>
 
 	<target name="resource.copy">

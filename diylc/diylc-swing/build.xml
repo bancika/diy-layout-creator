@@ -24,7 +24,7 @@
 		<ant antfile="../diylc-library/build.xml" target="jar" inheritAll="false" />
 		<mkdir dir="${classes.dir}" />
 		<echo>Compile with JDK ${java.runtime.version}</echo>
-		<javac compiler="modern" encoding="8859_1" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="class.path">
+		<javac compiler="modern" encoding="8859_1" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="class.path" includeantruntime="false">
 			<compilerarg value="-proc:none" />
 		</javac>
 	</target>
