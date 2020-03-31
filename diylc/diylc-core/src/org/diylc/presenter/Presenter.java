@@ -2036,29 +2036,42 @@ public class Presenter implements IPlugInPort {
           // so don't waste time doing the precise check
           if (area.getOutlineArea() != null && selectedArea.getOutlineArea() != null && 
               !area.getOutlineArea().getBounds().intersects(selectedArea.getOutlineArea().getBounds()))
-            continue;
+            continue;          
           
           // create a unified continuity area for both components
-          Area area1 = new Area();
+          Area totalArea = new Area();
           for (Area a : area.getContinuityPositiveAreas())
-            area1.add(a);
+            totalArea.add(a);
           if (area.getContinuityNegativeAreas() != null)
             for(Area a : area.getContinuityNegativeAreas())
-              area1.subtract(a);
+              totalArea.subtract(a);
           
-          Area area2 = new Area();
+          Area totalSelectedArea = new Area();
           for (Area a : selectedArea.getContinuityPositiveAreas())
-            area2.add(a);
+            totalSelectedArea.add(a);
           if (selectedArea.getContinuityNegativeAreas() != null)
             for(Area a : selectedArea.getContinuityNegativeAreas())
-              area2.subtract(a);
+              totalSelectedArea.subtract(a);
           
           // now check the intersection, if there's something we have a match
-          area1.intersect(area2);
-          if (!area1.isEmpty()) {
+          Area intersection = new Area(totalArea);
+          intersection.intersect(totalSelectedArea);
+          if (!intersection.isEmpty()) {
             matches = true;
             break;
           }
+          
+          // check if one of the sticky points of one components falls on the continuity area of the other
+          for (int i = 0; i < component.getControlPointCount(); i++)
+            if (component.isControlPointSticky(i) && totalSelectedArea.contains(component.getControlPoint(i))) {
+              matches = true;
+              break;
+            }
+          for (int i = 0; i < selectedComponent.getControlPointCount(); i++)
+            if (selectedComponent.isControlPointSticky(i) && totalArea.contains(selectedComponent.getControlPoint(i))) {
+              matches = true;
+              break;
+            }
         }
 
         if (matches) {
