@@ -128,26 +128,6 @@ public class Presenter implements IPlugInPort {
 	}
   public static final String DEFAULTS_KEY_PREFIX = "default.";
 
-	private static Map<String, List<Template>> defaultVariantMap = null;
-	static {
-		try {
-			URL resource = Presenter.class.getResource("variants.xml");
-			if (resource != null) {
-				BufferedInputStream in = new BufferedInputStream(resource.openStream());
-				XStream xStream = new XStream(new DomDriver());
-				@SuppressWarnings("unchecked")
-				Map<String, List<Template>> map = (Map<String, List<Template>>) xStream.fromXML(in);
-				defaultVariantMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
-				defaultVariantMap.putAll(map);
-				in.close();
-				LOG.info(String.format("Loaded default variants for %d components",
-						defaultVariantMap == null ? 0 : defaultVariantMap.size()));
-			}
-		} catch (Exception e) {
-			LOG.error("Could not load default variants", e);
-		}
-	}
-
   public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
 
   public static final int ICON_SIZE = 32;
@@ -210,6 +190,7 @@ public class Presenter implements IPlugInPort {
     // lockedLayers = EnumSet.noneOf(ComponentLayer.class);
     // visibleLayers = EnumSet.allOf(ComponentLayer.class);
     upgradeVariants();
+    importDefaultVariants();
   }
 
   public void installPlugin(IPlugIn plugIn) {
@@ -2413,8 +2394,7 @@ public class Presenter implements IPlugInPort {
     variants.add(template);
 
     if (System.getProperty("org.diylc.WriteStaticVariants", "false").equalsIgnoreCase("true")) {
-      if (defaultVariantMap == null)
-        defaultVariantMap = new HashMap<String, List<Template>>();
+      Map<String, List<Template>>  defaultVariantMap = new HashMap<String, List<Template>>();
       // unify default and user-variants
       for (Map.Entry<String, List<Template>> entry : variantMap.entrySet()) {
         if (defaultVariantMap.containsKey(entry.getKey())) {
@@ -2436,6 +2416,45 @@ public class Presenter implements IPlugInPort {
       }
     } else {
       ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, variantMap);
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
+  private void importDefaultVariants() {
+    // import default templates from variants.xml file only if we didn't do it already
+    if (!ConfigurationManager.getInstance().readBoolean(DEFAULT_TEMPLATES_IMPORTED_KEY, false)) {
+      try {
+        URL resource = Presenter.class.getResource("variants.xml");
+        if (resource != null) {
+          BufferedInputStream in = new BufferedInputStream(resource.openStream());
+          XStream xStream = new XStream(new DomDriver());
+          Map<String, List<Template>> defaults = (Map<String, List<Template>>) xStream.fromXML(in);
+          in.close();
+                    
+          Map<String, List<Template>> variantMap =
+              (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+          if (variantMap == null)
+            variantMap = new HashMap<String, List<Template>>();          
+          
+          // merge default variants with user's
+          for (Map.Entry<String, List<Template>> entry : defaults.entrySet()) {
+            List<Template> templates = variantMap.getOrDefault(entry.getKey(), null);
+            if (templates == null) {
+              templates = new ArrayList<Template>();
+              variantMap.put(entry.getKey(), templates);
+            }
+            templates.addAll(entry.getValue());
+          }          
+          
+          // update templates and a flag marking that we imported them
+          ConfigurationManager.getInstance().writeValue(DEFAULT_TEMPLATES_IMPORTED_KEY, true);
+          ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, variantMap);
+          LOG.info(String.format("Imported default variants for %d components",
+              defaults == null ? 0 : defaults.size()));         
+        }
+      } catch (Exception e) {
+        LOG.error("Could not load default variants", e);
+      }
     }
   }
 
@@ -2461,14 +2480,6 @@ public class Presenter implements IPlugInPort {
       userVariants = variantMap.get(key2);
       if (userVariants != null && !userVariants.isEmpty())
         variants.addAll(userVariants);
-    }
-    if (defaultVariantMap != null) {
-      List<Template> defaultVariants = defaultVariantMap.get(key1);
-      if (defaultVariants != null && !defaultVariants.isEmpty())
-        variants.addAll(defaultVariants);
-      defaultVariants = defaultVariantMap.get(key2);
-      if (defaultVariants != null && !defaultVariants.isEmpty())
-        variants.addAll(defaultVariants);
     }
     Collections.sort(variants, new Comparator<Template>() {
 
@@ -3042,7 +3053,7 @@ public class Presenter implements IPlugInPort {
     return false;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "unlikely-arg-type"})
   private List<Connection> getConnections(Map<ISwitch, Integer> switchPositions) {
     Set<Connection> connections = new HashSet<Connection>();
     for (IDIYComponent<?> c : currentProject.getComponents()) {

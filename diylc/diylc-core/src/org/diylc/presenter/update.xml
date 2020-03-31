@@ -2784,6 +2784,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Added ability to delete default component variants</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Better "Expand Selection" logic. Works well with conductive components like traces and wires and regular components like resistors and capacitors</description>
 				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
