@@ -1,3 +1,24 @@
+/*
+
+    DIY Layout Creator (DIYLC).
+    Copyright (c) 2009-2018 held jointly by the individual authors.
+
+    This file is part of DIYLC.
+
+    DIYLC is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DIYLC is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 package org.diylc.swing.gui;
 
 import java.awt.BorderLayout;
@@ -23,18 +44,22 @@ public class CollapsiblePanel extends JPanel {
   
   private static final long serialVersionUID = 1L;
   
-  private static int thickness = 4;
+  private static int BORDER_THICKNESS = 4;
   
   private MatteBorderEx border;
   
   private Color defaultColor = Color.lightGray;
   private Color highlightColor = Color.decode("#66CCFF");
 
+  /**
+   * 
+   * @param position designates the direction in which the panel should collapse
+   */
   public CollapsiblePanel(int position) {
-      border = new MatteBorderEx(position == SwingConstants.BOTTOM ? thickness : 0, 
-          position == SwingConstants.RIGHT ? thickness : 0, 
-          position == SwingConstants.TOP ? thickness : 0, 
-          position == SwingConstants.LEFT ? thickness : 0, defaultColor);
+      border = new MatteBorderEx(position == SwingConstants.BOTTOM ? BORDER_THICKNESS : 0, 
+          position == SwingConstants.RIGHT ? BORDER_THICKNESS : 0, 
+          position == SwingConstants.TOP ? BORDER_THICKNESS : 0, 
+          position == SwingConstants.LEFT ? BORDER_THICKNESS : 0, defaultColor);
       setToolTipText("Click to collapse");
       setBorder(border);
       BorderLayout borderLayout = new BorderLayout();
