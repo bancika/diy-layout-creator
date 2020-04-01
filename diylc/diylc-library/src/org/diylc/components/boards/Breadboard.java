@@ -147,7 +147,7 @@ public class Breadboard extends AbstractComponent<Void> {
         } else {
           coordinateX = (int) (point.x + offset + 10.5 * spacing);
         }
-        StringUtils.drawCenteredText(g2d, new Integer(y + 1).toString(), coordinateX, (int) (point.y + (y + 1) * spacing),
+        StringUtils.drawCenteredText(g2d, String.valueOf(y + 1), coordinateX, (int) (point.y + (y + 1) * spacing),
             section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
         for (int x = 0; x < 5; x++) {
           int holeX = (int) (point.x + offset + (x + 6) * spacing);
@@ -219,7 +219,7 @@ public class Breadboard extends AbstractComponent<Void> {
         } else {
           coordinateX = (int) (point.x + offset + 10.5 * spacing);
         }
-        StringUtils.drawCenteredText(g2d, new Integer(y + 1).toString(), coordinateX, (int) (point.y + (y + 1) * spacing),
+        StringUtils.drawCenteredText(g2d, String.valueOf(y + 1), coordinateX, (int) (point.y + (y + 1) * spacing),
             section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 //        for (int x = 0; x < 5; x++) {
           int holeX1 = (int) (point.x + offset + 6 * spacing);
