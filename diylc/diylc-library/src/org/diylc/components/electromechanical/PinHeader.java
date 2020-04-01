@@ -26,9 +26,10 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
@@ -50,51 +51,34 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Pin Header", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "PH", description = "PCB mount male pin header with editable number or pins and pin spacing",
     zOrder = IDIYComponent.COMPONENT)
-public class PinHeader extends AbstractTransparentComponent<String> {
+public class PinHeader extends AbstractTransparentComponent<Void> {
 
   private static final long serialVersionUID = 1L;
 
   public static Color BODY_COLOR = Color.gray;
-  public static Color BORDER_COLOR = Color.gray.darker();
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color INDENT_COLOR = Color.gray.darker();
-  public static Color LABEL_COLOR = Color.white;
-  public static int EDGE_RADIUS = 6;
   public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
-  public static Size INDENT_SIZE = new Size(0.07d, SizeUnit.in);
-  public static Size BODY_MARGIN = new Size(0.05d, SizeUnit.in);
-
-  public static Size MINI_PIN_SPACING = new Size(0.2d, SizeUnit.in);
-  public static Size MINI_ROW_SPACING = new Size(0.3d, SizeUnit.in);
-  public static Size MINI_WIDTH = new Size(20.1d, SizeUnit.mm);
-  public static Size MINI_HEIGHT = new Size(9.9d, SizeUnit.mm);
-  public static Size MINI_GAP = new Size(0.1d, SizeUnit.in);
-
+  public static Size INDENT_SIZE = new Size(0.1d, SizeUnit.in); 
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
 
-  private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
 
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
   private int rowCount = 2;
   private int columnCount = 5;
   private Size spacing = PIN_SPACING;
+  private Boolean shrouded = false;
+  
+  private Color bodyColor = BODY_COLOR;
+  private Color shroudColor = BODY_COLOR.darker();
   
   transient private Area[] body;
 
   public PinHeader() {
     super();
     updateControlPoints();
-  }
-
-  @EditableProperty
-  public String getValue() {
-    return value;
-  }
-
-  public void setValue(String value) {
-    this.value = value;
   }
 
   @EditableProperty
@@ -184,9 +168,45 @@ public class PinHeader extends AbstractTransparentComponent<String> {
       double pinSpacing = spacing.convertToPixels();
       double width = Math.abs((controlPoints[0].x - controlPoints[controlPoints.length - 1].x)) + pinSpacing;
       double height = Math.abs((controlPoints[0].y - controlPoints[controlPoints.length - 1].y)) + pinSpacing;
+      if (shrouded) {
+        if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
+          height += 2 * pinSpacing;
+          width += 0.5 * pinSpacing;          
+        } else {
+          height += 0.5 * pinSpacing;
+          width += 2 * pinSpacing;
+        }
+        double shroudWidth = width + 0.5 * pinSpacing;
+        double shroudHeight = height + 0.5 * pinSpacing;
+        double indentSize = INDENT_SIZE.convertToPixels();
+        
+        body[1] =
+            new Area(new Rectangle2D.Double(centerX - shroudWidth / 2, centerY - shroudHeight / 2, shroudWidth, shroudHeight));
+        Shape indent = null;
+        switch (orientation) {
+          case DEFAULT:
+            indent = new Rectangle2D.Double(centerX - shroudWidth, centerY - indentSize / 2, shroudWidth, indentSize);
+            break;
+          case _180:
+            indent = new Rectangle2D.Double(centerX, centerY - indentSize / 2, shroudWidth, indentSize);            
+            break;
+          case _270:
+            indent = new Rectangle2D.Double(centerX - indentSize / 2, centerY, indentSize, shroudHeight);            
+            break;
+          case _90:
+            indent = new Rectangle2D.Double(centerX - indentSize / 2, centerY - shroudHeight, indentSize, shroudHeight);
+            break;
+          default:
+            break;          
+        }
+        if (indent != null)
+          body[1].subtract(new Area(indent));
+      }
       body[0] =
-          new Area(new RoundRectangle2D.Double(centerX - width / 2, centerY - height / 2, width, height, EDGE_RADIUS,
-              EDGE_RADIUS));      
+          new Area(new Rectangle2D.Double(centerX - width / 2, centerY - height / 2, width, height));
+      
+      if (body[1] != null)
+        body[1].subtract(body[0]);
     }
     return body;
   }
@@ -197,13 +217,19 @@ public class PinHeader extends AbstractTransparentComponent<String> {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
-    Area mainArea = getBody()[0];
+    Area[] body = getBody();
+    Area mainArea = body[0];
+    Area shroudArea = body[1];
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(mainArea);
+    if (shroudArea != null) {
+      g2d.setColor(shroudColor);
+      g2d.fill(shroudArea);
+    }
     g2d.setComposite(oldComposite);
     
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -227,28 +253,22 @@ public class PinHeader extends AbstractTransparentComponent<String> {
     } else {
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : BORDER_COLOR;
+              : bodyColor.darker();
     }
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    if (outlineMode) {
-      Area area = new Area(mainArea);
-      area.subtract(getBody()[1]);
-      g2d.draw(area);
-    } else {
-      g2d.draw(mainArea);
-      if (getBody()[1] != null) {
-        g2d.setColor(INDENT_COLOR);
-        g2d.fill(getBody()[1]);
-      }
-    }    
+    g2d.draw(mainArea);
+    if (shroudArea != null) {
+      g2d.setColor(shroudColor.darker());
+      g2d.draw(shroudArea);
+    }
   }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.setColor(BODY_COLOR);
     g2d.fillRect(width / 3, 1, width / 3 + 1, height - 4);
-    g2d.setColor(BORDER_COLOR);
+    g2d.setColor(BODY_COLOR.darker());
     g2d.drawRect(width / 3, 1, width / 3 + 1, height - 4);
     int pinSize = 2 * width / 32;
     g2d.setColor(PIN_COLOR);
@@ -293,8 +313,46 @@ public class PinHeader extends AbstractTransparentComponent<String> {
     body = null;
   }
   
+  @EditableProperty
+  public Boolean getShrouded() {
+    return shrouded;
+  }
+  
+  public void setShrouded(Boolean shrouded) {
+    this.shrouded = shrouded;
+    // Reset body shape.
+    body = null;
+  }
+  
+  @EditableProperty(name = "Color")
+  public Color getBodyColor() {
+    return bodyColor;
+  }
+
+  public void setBodyColor(Color bodyColor) {
+    this.bodyColor = bodyColor;
+  }
+
+  @EditableProperty(name = "Shroud")
+  public Color getShroudColor() {
+    return shroudColor;
+  }
+
+  public void setShroudColor(Color shroudColor) {
+    this.shroudColor = shroudColor;
+  }
+
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Deprecated
+  public Void getValue() {
+    return null;
+  }
+
+  @Deprecated
+  public void setValue(Void value) {
   }
 }
