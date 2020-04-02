@@ -52,17 +52,17 @@ public class ProtoBoard extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color FILL_COLOR = Color.decode("#0B3B0B");
-  public static Color BORDER_COLOR = FILL_COLOR.darker();
+  public static Color FILL_COLOR = Color.decode("#6B9B6B");  
   public static Size SPACING = new Size(0.1d, SizeUnit.in);
   public static Color SELECTION_COLOR = Color.red;
-  public static Color PAD_COLOR = Color.decode("#D2D2D2");
-  public static Color UNDERSIDE_PAD_COLOR = Color.decode("#A8A8DA");
-  public static Color UNDERSIDE_LINE_COLOR = Color.decode("#CDCDFF");
-  public static Color HOLE_COLOR = Color.black;
+  public static Color PAD_COLOR = COPPER_COLOR;
+  public static Color TRACE_COLOR = PAD_COLOR.brighter();
+  public static Color UNDERSIDE_PAD_COLOR = Color.decode("#977DC4");
+  public static Color UNDERSIDE_TRACE_COLOR = UNDERSIDE_PAD_COLOR.brighter();
+  public static Color HOLE_COLOR = Color.white;
 
   public static float COORDINATE_FONT_SIZE = 9f;
-  public static Color COORDINATE_COLOR = Color.gray.brighter(); 
+  public static Color COORDINATE_COLOR = Color.decode("#DDDDDD"); 
   
   public static Color SEPARATOR_COLOR = Color.white;
   public static Color SCREEN_COLOR = Color.decode("#CAD4CA");  
@@ -80,9 +80,14 @@ public class ProtoBoard extends AbstractComponent<Void> {
 
   protected Point point = new Point(0, 0);
 
-  protected PowerStripPosition powerStripPosition;
   protected Orientation orientation;
-  protected Boolean markUndersidePads = true;
+  
+  protected Color boardColor = FILL_COLOR;
+  protected Color padColor = PAD_COLOR;
+  protected Color traceColor = TRACE_COLOR;
+  protected Color undersidePadColor = UNDERSIDE_PAD_COLOR;
+  protected Color undersideTraceColor = UNDERSIDE_TRACE_COLOR;
+  protected Color textColor = COORDINATE_COLOR;      
 
   @SuppressWarnings("incomplete-switch")
   @Override
@@ -112,27 +117,27 @@ public class ProtoBoard extends AbstractComponent<Void> {
     double spacing = SPACING.convertToPixels();            
 
     // draw body
-    g2d.setColor(FILL_COLOR);
+    g2d.setColor(boardColor);
     int width = (int) WIDTH_SIZE.convertToPixels();
     int length = (int) LENGTH_SIZE.convertToPixels();
     
     g2d.fillRect(point.x, point.y, width, length);
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-        : BORDER_COLOR);
+        : boardColor.darker());
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.drawRect(point.x, point.y, width, length);
 
     drawingObserver.stopTracking();
 
     int padSize = getClosestOdd(PAD_SIZE.convertToPixels());
-    int holeSize = getClosestOdd(padSize / 2);
+    int holeSize = getClosestOdd(padSize / 3);
 
     g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE));       
     
     int xOffset = 1;
     int yOffset = 5;
     
-    g2d.setColor(PAD_COLOR.brighter());
+    g2d.setColor(traceColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     
     drawingObserver.startTrackingContinuityArea(true);
@@ -160,7 +165,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
           (int) (point.x + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) (point.y + (yOffset + y - 0.25d) * spacing + 1));
     }
     
-    g2d.setColor(getMarkUndersidePads() ? UNDERSIDE_LINE_COLOR : PAD_COLOR.brighter());
+    g2d.setColor(undersideTraceColor);
     
     // bottom row.
     for (int y = 0; y < ROW_COUNT; y++) {       
@@ -174,7 +179,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
     g2d.drawLine((int) (point.x + (1 + SEGMENTS_SUM[3] + 1.5) * spacing), (int) (point.y + (yOffset - 1.5) * spacing),
       (int) (point.x + (1 + SEGMENTS_SUM[3] + 1.5) * spacing), (int) (point.y + (yOffset + ROW_COUNT + 0.5) * spacing));
     
-    g2d.setColor(PAD_COLOR.brighter());   
+    g2d.setColor(traceColor);   
     
     // traces to top and bottom 3 pads
     g2d.drawPolyline(new int[] { 
@@ -216,7 +221,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
     int miniPadSize = getClosestOdd((2d * spacing - 6) / 5);
     
     // draw top mini pad traces
-    g2d.setColor(PAD_COLOR.brighter());      
+    g2d.setColor(traceColor);      
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     drawingObserver.startTrackingContinuityArea(true);
     g2d.drawLine((int) (point.x + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) (point.y + 1 * spacing), 
@@ -253,7 +258,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
           drawingObserver.startTrackingContinuityArea(true);
           drawingObserver.setContinuityMarker("SEGMENT=" + segment + ";ROW=" + y);
           
-          g2d.setColor(PAD_COLOR);
+          g2d.setColor(padColor);
           if ((segment == 2 && x == 2) || (segment == 3 && x == 0))
             g2d.fillRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
           else
@@ -263,7 +268,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
           
           drawingObserver.stopTrackingContinuityArea();
           
-          g2d.setColor(PAD_COLOR.darker());          
+          g2d.setColor(padColor.darker());          
           if ((segment == 2 && x == 2) || (segment == 3 && x == 0))
             g2d.drawRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
           else
@@ -274,7 +279,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
           
           // Draw horizontal labels
           if (y == 0) {
-            g2d.setColor(COORDINATE_COLOR);
+            g2d.setColor(textColor);
             StringUtils.drawCenteredText(g2d, Integer.toString(SEGMENTS_SUM[segment] + x + 1), padX, (int) (point.y + (yOffset - 1) * spacing) - 1,
                 HorizontalAlignment.CENTER, VerticalAlignment.TOP);
           }
@@ -296,7 +301,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
         int padX = (int) (point.x + (1 + SEGMENTS_SUM[3] + 0.5 + x) * spacing);
         int padY = (int) (point.y + (yOffset - 1.5 + y * (ROW_COUNT + 2)) * spacing);        
         
-        g2d.setColor(PAD_COLOR);
+        g2d.setColor(padColor);
         
         if (x == 0)
           drawingObserver.setContinuityMarker("columnA");
@@ -310,7 +315,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
         
         drawingObserver.setContinuityMarker(null);
         
-        g2d.setColor(PAD_COLOR.darker());
+        g2d.setColor(padColor.darker());
         if (x == 2)
           g2d.drawRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
         else
@@ -336,12 +341,12 @@ public class ProtoBoard extends AbstractComponent<Void> {
     g2d.drawLine((int) (point.x + width - 1.5 * spacing), (int) (point.y + 2 * spacing + 8), 
         (int) (point.x + width - 1.5 * spacing), (int) (point.y + 3.5 * spacing));
     
-    g2d.setColor(PAD_COLOR.brighter());
+    g2d.setColor(traceColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     
     drawingObserver.startTrackingContinuityArea(true);     
     
-    // Draw two horizontal connections in the top-right section
+    // Draw two horizontal traces in the top-right section
     g2d.drawLine((int) (point.x + width - 4 * spacing), (int) (point.y + 0.5 * spacing), (int) (point.x + width - (2) * spacing), (int) (point.y + 0.5 * spacing));
     g2d.drawLine((int) (point.x + width - 4 * spacing), (int) (point.y + 1.5 * spacing), (int) (point.x + width - (2) * spacing), (int) (point.y + 1.5 * spacing));        
     
@@ -349,7 +354,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
     for (int x = 0; x < 6; x++) { 
       int padX = (int) (point.x + width - (x + 1) * spacing);
 
-      g2d.setColor(PAD_COLOR.brighter());      
+      g2d.setColor(traceColor);      
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
       g2d.drawLine(padX, (int) (point.y + 0.5 * spacing), padX, (int) (point.y + 3 * spacing));
       
@@ -368,7 +373,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
         else
           drawingObserver.setContinuityMarker("GND");
           
-        g2d.setColor(PAD_COLOR);
+        g2d.setColor(padColor);
         if (x >= 4)
           g2d.fillRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
         else
@@ -376,7 +381,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
         
         drawingObserver.setContinuityMarker(null);
         
-        g2d.setColor(PAD_COLOR.darker());
+        g2d.setColor(padColor.darker());
         if (x >= 4)
           g2d.drawRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
         else
@@ -413,18 +418,18 @@ public class ProtoBoard extends AbstractComponent<Void> {
           }
         }
       
-        g2d.setColor(PAD_COLOR);        
+        g2d.setColor(padColor);        
         g2d.fillRect(padX - miniPadSize / 2, padY - miniPadSize / 2, miniPadSize, miniPadSize);
         
         drawingObserver.setContinuityMarker(null);
       
         drawingObserver.stopTrackingContinuityArea();
-        g2d.setColor(PAD_COLOR.darker());
+        g2d.setColor(padColor.darker());
         g2d.drawRect(padX - miniPadSize / 2, padY - miniPadSize / 2, miniPadSize, miniPadSize);
       }
     }        
     
-    g2d.setColor(COORDINATE_COLOR);
+    g2d.setColor(textColor);
     
     // Draw top labels
     StringUtils.drawCenteredText(g2d, "+5V", (int) (point.x + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) (point.y + 1 * spacing) + 1, 
@@ -458,7 +463,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
       StringUtils.drawCenteredText(g2d, label, (int) (point.x + width - spacing * 0.35), padY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
     
-    g2d.setColor(PAD_COLOR.brighter());
+    g2d.setColor(textColor);
     g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE + 2));
     
     StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Blåsol 2019", (int) (point.x + width * 0.70d), (int) (point.y + (yOffset + ROW_COUNT + 0.4) * spacing), 
@@ -466,7 +471,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
     
     // draw central mini pads
     for (int y = 0; y < ROW_COUNT; y++) { 
-      g2d.setColor(PAD_COLOR);
+      g2d.setColor(padColor);
       
       drawingObserver.startTrackingContinuityArea(true);
       
@@ -481,11 +486,11 @@ public class ProtoBoard extends AbstractComponent<Void> {
       
       drawingObserver.stopTrackingContinuityArea();
             
-      g2d.setColor(PAD_COLOR.darker());
+      g2d.setColor(padColor.darker());
       g2d.drawRect((int) (point.x + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + 1, (int) (point.y + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
       g2d.drawRect((int) (point.x + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + miniPadSize + 3, (int) (point.y + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
       
-      g2d.setColor(getMarkUndersidePads() ? UNDERSIDE_PAD_COLOR : PAD_COLOR);
+      g2d.setColor(undersidePadColor);
       
       drawingObserver.startTrackingContinuityArea(true);
       
@@ -499,7 +504,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
       
       drawingObserver.stopTrackingContinuityArea();
       
-      g2d.setColor((getMarkUndersidePads() ? UNDERSIDE_PAD_COLOR : PAD_COLOR).darker());
+      g2d.setColor(undersidePadColor.darker());
       
       g2d.drawRect((int) (point.x + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + 3, (int) (point.y + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
       g2d.drawRect((int) (point.x + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize + 5, (int) (point.y + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
@@ -515,7 +520,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
     int factor = 32 / width;
     g2d.setColor(FILL_COLOR);
     g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
-    g2d.setColor(BORDER_COLOR);
+    g2d.setColor(FILL_COLOR.darker());
     g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
     
     g2d.setColor(PAD_COLOR.brighter());
@@ -549,7 +554,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
     g2d.setColor(PAD_COLOR.darker());
     g2d.drawOval(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, size, size);
     
-    g2d.setColor(Color.darkGray);
+    g2d.setColor(HOLE_COLOR);
     g2d.fillOval(width / 3 - 2 / factor + size / 2 - 1, 6 / factor + size / 2 - 1, 3, 3);
     g2d.fillOval(width / 3 - 2 / factor + size / 2 - 1, 2 * width / 3 - 2 / factor + size / 2 - 1, 3, 3);
     g2d.fillOval(2 * width / 3 - 2 / factor + size / 2 - 1, 6 / factor + size / 2 - 1, 3, 3);
@@ -566,25 +571,59 @@ public class ProtoBoard extends AbstractComponent<Void> {
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
   }
-
-  @EditableProperty(name = "Power Strip")
-  public PowerStripPosition getPowerStripPosition() {
-    if (powerStripPosition == null)
-      powerStripPosition = PowerStripPosition.Inline;
-    return powerStripPosition;
+  
+  @EditableProperty(name = "Board Color")
+  public Color getBoardColor() {
+    return boardColor;
   }
 
-  public void setPowerStripPosition(PowerStripPosition powerStripPosition) {
-    this.powerStripPosition = powerStripPosition;
+  public void setBoardColor(Color boardColor) {
+    this.boardColor = boardColor;
   }
-  
-  @EditableProperty(name = "Mark Underside Pads")
-  public Boolean getMarkUndersidePads() {
-    return markUndersidePads;
+
+  @EditableProperty(name = "Pad Color")
+  public Color getPadColor() {
+    return padColor;
   }
-  
-  public void setMarkUndersidePads(Boolean markUndersidePads) {
-    this.markUndersidePads = markUndersidePads;
+
+  public void setPadColor(Color padColor) {
+    this.padColor = padColor;
+  }
+
+  @EditableProperty(name = "Trace Color")
+  public Color getTraceColor() {
+    return traceColor;
+  }
+
+  public void setTraceColor(Color traceColor) {
+    this.traceColor = traceColor;
+  }
+
+  @EditableProperty(name = "Underside Pad Color")
+  public Color getUndersidePadColor() {
+    return undersidePadColor;
+  }
+
+  public void setUndersidePadColor(Color undersidePadColor) {
+    this.undersidePadColor = undersidePadColor;
+  }
+
+  @EditableProperty(name = "Underside Trace Color")
+  public Color getUndersideTraceColor() {
+    return undersideTraceColor;
+  }
+
+  public void setUndersideTraceColor(Color undersideTraceColor) {
+    this.undersideTraceColor = undersideTraceColor;
+  }
+
+  @EditableProperty(name = "Text Color")
+  public Color getTextColor() {
+    return textColor;
+  }
+
+  public void setTextColor(Color textColor) {
+    this.textColor = textColor;
   }
 
   @Override
@@ -655,9 +694,5 @@ public class ProtoBoard extends AbstractComponent<Void> {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
-  }
-
-  public enum PowerStripPosition {
-    Inline, Offset
   }
 }
