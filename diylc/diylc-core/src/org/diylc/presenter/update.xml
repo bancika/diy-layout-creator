@@ -2800,11 +2800,11 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Refactor dependencies to internal Java classes that are market as proprietary (could potentially affect "Hi-Quality Rendering" mode and loading older DIY files that contain images)</description>
+					<description>Refactor dependencies to internal Java classes that are market as proprietary in Java 8 (could potentially affect "Hi-Quality Rendering" mode and loading older DIY files that contain images)</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Fix "Ohm" symbol rendering issue with some fonts.</description>
+					<description>Fix "Ohm" symbol rendering issue with some fonts by switching to the regular Omega character instead of the dedicated Ohm symbol that is absent in most fonts</description>
 				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
@@ -2829,6 +2829,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Minor fix in tracking conductive areas</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Cannot edit "Hookup Wire" properties when opening existing files</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

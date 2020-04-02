@@ -233,6 +233,7 @@ public class ProjectFileManager {
       project = (Project) xStreamOld.fromXML(fis);
     }
     if (!missingFields.isEmpty()) {
+      LOG.warn("The opened file is missing the following properties: " + String.join(", ", missingFields));
       warnings.add("The project references unknown component properties, most likely because it was created with a newer version of DIYLC.");
     }
     fis.close();

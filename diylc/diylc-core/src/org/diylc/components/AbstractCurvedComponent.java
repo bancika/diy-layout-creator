@@ -26,6 +26,7 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
+import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.LineStyle;
@@ -42,6 +43,8 @@ import org.diylc.utils.Constants;
 public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> {
 
   private static final long serialVersionUID = 1L;
+  
+  private static final Logger LOG = Logger.getLogger(AbstractCurvedComponent.class);
 
   public static Color GUIDELINE_COLOR = Color.blue;
   public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
@@ -328,27 +331,32 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   @EditableProperty
   public Size getLength() {
     double d = 0;
-    Point[] p = getControlPoints();
-    if (getPointCount() == PointCount.TWO) {
-      d = p[0].distance(p[1]);
-    } else if (getPointCount() == PointCount.THREE) {
-      d = calculateLength(p[0], p[1], p[1], p[2]);
-    } else if (getPointCount() == PointCount.FOUR) {
-      d = calculateLength(p[0], p[1], p[2], p[3]);
-    } else if (getPointCount() == PointCount.FIVE) {
-      d = calculateLength(p[0], p[1], p[2]) + calculateLength(p[2], p[3], p[4]);      
-    } else if (getPointCount() == PointCount.SEVEN) {
-      d = calculateLength(p[0], p[1], p[2], p[3]) + calculateLength(p[3], p[4], p[5], p[6]);      
+      try {
+      Point[] p = getControlPoints();
+      if (getPointCount() == PointCount.TWO) {
+        d = p[0].distance(p[1]);
+      } else if (getPointCount() == PointCount.THREE) {
+        d = calculateLength(p[0], p[1], p[1], p[2]);
+      } else if (getPointCount() == PointCount.FOUR) {
+        d = calculateLength(p[0], p[1], p[2], p[3]);
+      } else if (getPointCount() == PointCount.FIVE) {
+        d = calculateLength(p[0], p[1], p[2]) + calculateLength(p[2], p[3], p[4]);      
+      } else if (getPointCount() == PointCount.SEVEN) {
+        d = calculateLength(p[0], p[1], p[2], p[3]) + calculateLength(p[3], p[4], p[5], p[6]);      
+      }
+      
+      SizeUnit unit;
+      if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true))
+        unit = SizeUnit.mm;
+      else
+        unit = SizeUnit.in;    
+      
+      d = d * SizeUnit.px.getFactor() / unit.getFactor();    
+      return new Size(d, unit);
+    } catch (Exception e) {
+      LOG.error("Error calculating length of " + getName(), e);
+      return null;
     }
-    
-    SizeUnit unit;
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true))
-      unit = SizeUnit.mm;
-    else
-      unit = SizeUnit.in;    
-    
-    d = d * SizeUnit.px.getFactor() / unit.getFactor();    
-    return new Size(d, unit);
   }
 
   public enum PointCount {
@@ -391,12 +399,17 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
         / (8 * Math.pow(uu, 1.5)));
   }
   
-  private double curveThreshold = 10;
+  // do not use this property
+  @Deprecated
+  private double curveThreshold;
   
+  // tweak this value if needed
+  private static final double curveDivisionThreshold = 5d;
+   
   // approximately calculate length of Bezier curves by subdivision
   private double calculateLength(Point2D a, Point2D b, Point2D c, Point2D d) {
     double distance = a.distance(d);
-    if (distance < curveThreshold)
+    if (distance < curveDivisionThreshold)
       return distance;
     CubicCurve2D curve = new CubicCurve2D.Double(a.getX(), a.getY(), b.getX(), b.getY(), c.getX(), c.getY(), d.getX(), d.getY());
     CubicCurve2D left = new CubicCurve2D.Double();
