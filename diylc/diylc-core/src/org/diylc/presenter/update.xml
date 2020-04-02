@@ -2801,7 +2801,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Refactor dependencies to internal Java classes that are market as proprietary (could potentially affect "Hi-Quality Rendering" mode and loading older DIY files that contain images)</description>
-				</org.diylc.appframework.update.Change>					
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fix "Ohm" symbol rendering issue with some fonts.</description>
+				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Issues with circuit analysis introduced in version 4.0.1. Wires and jumpers are made non-conductive by mistake.</description>
