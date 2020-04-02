@@ -28,6 +28,8 @@
    <li>import files created with older versions of the application </li>   
    <li>cloud feature - share your projects, search through the cloud and download other users' projects </li>
    <li>highlight connected areas to simplify validation and circuit debugging</li>
+   <li>analyze guitar wiring diagrams and visualize pickup wirings for each switch configuration</li>
+   <li>export circuits to SPICE-compatible netlists</li>
 </ul>
 <p>To report bugs or request a new feature go to <a href="https://github.com/bancika/diy-layout-creator/issues" rel="nofollow">Issues</a> page and create a new issue describing your problem or request. </p>
 <p>To join the discussion or request technical assistance, use the dedicated <a href="http://groups.google.com/group/diy-layout-creator" rel="nofollow">Discussion Group</a>. </p>
