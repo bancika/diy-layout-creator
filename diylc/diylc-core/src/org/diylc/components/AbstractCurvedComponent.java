@@ -40,6 +40,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> {
 
   private static final long serialVersionUID = 1L;
@@ -400,6 +402,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   }
   
   // do not use this property
+  @XStreamOmitField
   @Deprecated
   private double curveThreshold;
   
