@@ -498,7 +498,7 @@ public class DrawingManager {
 
   public void setTheme(Theme theme) {
     this.theme = theme;
-    ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY, theme.getName());
+    ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY, theme);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
   
