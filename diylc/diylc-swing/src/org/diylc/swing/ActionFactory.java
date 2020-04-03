@@ -78,7 +78,7 @@ import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.CheckBoxListDialog;
 import org.diylc.swingframework.IDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
-import org.diylc.swingframework.text.TextDialog;
+import org.diylc.swingframework.TextDialog;
 import org.diylc.utils.BomEntry;
 
 import com.thoughtworks.xstream.XStream;

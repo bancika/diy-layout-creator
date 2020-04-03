@@ -63,12 +63,12 @@ import org.diylc.core.Template;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.images.IconLoader;
-import org.diylc.presenter.Presenter;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 import org.diylc.swingframework.ruler.IRulerListener;
+import org.diylc.swingframework.ruler.Ruler.InchSubdivision;
 import org.diylc.swingframework.ruler.RulerScrollPane;
 
 public class CanvasPlugin implements IPlugIn, ClipboardOwner {
@@ -209,6 +209,15 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
             updateZeroLocation();
           }
         });
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RULER_IN_SUBDIVISION_KEY,
+        new IConfigListener() {
+
+          @Override
+          public void valueChanged(String key, Object value) {            
+              getScrollPane().setInSubdivision(IPlugInPort.RULER_IN_SUBDIVISION_10.equalsIgnoreCase(value == null ? null : value.toString()) ? InchSubdivision.BASE_10 : InchSubdivision.BASE_2);
+          }
+        });
 
     getScrollPane().getViewport().setVisible(false);
   }
@@ -311,16 +320,18 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private RulerScrollPane getScrollPane() {
     if (scrollPane == null) {
+      String subdivision = ConfigurationManager.getInstance().readString(IPlugInPort.RULER_IN_SUBDIVISION_KEY, IPlugInPort.RULER_IN_SUBDIVISION_DEFAULT);
+      
       scrollPane = new RulerScrollPane(getCanvasPanel(),
           new ProjectDrawingProvider(plugInPort, true, false, true),
-          new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in).convertToPixels());
-      boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);
+          new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in).convertToPixels(),
+          IPlugInPort.RULER_IN_SUBDIVISION_10.equalsIgnoreCase(subdivision) ? InchSubdivision.BASE_10 : InchSubdivision.BASE_2);
+      boolean metric = ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true);
 
       boolean useHardwareAcceleration =
           ConfigurationManager.getInstance().readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
       scrollPane.setUseHardwareAcceleration(useHardwareAcceleration);
-
-      scrollPane.setMetric(metric);
+      scrollPane.setMetric(metric);      
       scrollPane.setWheelScrollingEnabled(true);
       scrollPane.addUnitListener(new IRulerListener() {
 

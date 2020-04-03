@@ -64,7 +64,7 @@ public enum IconLoader {
       "documents_gear.png"), SplashResistor("splash_resistor.png"), SplashCeramic("splash_ceramic.png"), SplashElectrolytic(
       "splash_electrolytic.png"), SplashFilm("splash_film.png"), Splash("splash.png"), Help("help2.png"), ScrollInformation("scroll_information.png"),
       Node("node.png"), Web("web.png"), Guitar("guitar.png"), Scientist("scientist.png"), StarGrey("star_grey.png"), StarBlue("star_blue.png"), 
-      JarBeanInto("jar_bean_into.png"), GraphEdgeDirected("graph_edge_directed.png"), LaserPointer("laserpointer.png");
+      JarBeanInto("jar_bean_into.png"), GraphEdgeDirected("graph_edge_directed.png"), LaserPointer("laserpointer.png"), TapeMeasure("tape_measure1.png");
 
   protected String name;
 
