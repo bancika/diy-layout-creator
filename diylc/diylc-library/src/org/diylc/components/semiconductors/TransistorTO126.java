@@ -50,10 +50,10 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Transistor (TO-220)", author = "Branislav Stojkovic", category = "Semiconductors",
-    instanceNamePrefix = "Q", description = "Transistors with metal tab for heat sink mounting",
+@ComponentDescriptor(name = "Transistor (TO-126)", author = "Branislav Stojkovic", category = "Semiconductors",
+    instanceNamePrefix = "Q", description = "Transistors with a hole for heat sink mounting",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO220Transformer.class)
-public class TransistorTO220 extends AbstractTransistorPackage {
+public class TransistorTO126 extends AbstractTransistorPackage {
 
   private static final long serialVersionUID = 1L;
 
@@ -61,26 +61,21 @@ public class TransistorTO220 extends AbstractTransistorPackage {
   public static Color BORDER_COLOR = Color.gray.darker();
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
-  public static Color TAB_COLOR = Color.lightGray;
-  public static Color TAB_BORDER_COLOR = TAB_COLOR.darker();
   public static Color LABEL_COLOR = Color.white;
-  public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
+  public static Size PIN_SIZE = new Size(0.8d, SizeUnit.mm);
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
-  public static Size BODY_WIDTH = new Size(0.4d, SizeUnit.in);
-  public static Size BODY_THICKNESS = new Size(4.5d, SizeUnit.mm);
-  public static Size BODY_HEIGHT = new Size(9d, SizeUnit.mm);
-  public static Size TAB_THICKNESS = new Size(1d, SizeUnit.mm);
-  public static Size TAB_HEIGHT = new Size(6.2d, SizeUnit.mm);
-  public static Size TAB_HOLE_DIAMETER = new Size(3.6d, SizeUnit.mm);
+  public static Size BODY_WIDTH = new Size(8d, SizeUnit.mm);
+  public static Size BODY_THICKNESS = new Size(3.25d, SizeUnit.mm);
+  public static Size BODY_HEIGHT = new Size(11d, SizeUnit.mm);
+  public static Size HOLE_DIAMETER = new Size(3.2d, SizeUnit.mm);
+  public static Size HOLE_OFFSET = new Size(8.1d, SizeUnit.mm);
   public static Size LEAD_LENGTH = new Size(3.5d, SizeUnit.mm);
   public static Size LEAD_THICKNESS = new Size(0.8d, SizeUnit.mm);
 
-  private Color tabColor = TAB_COLOR;
-  private Color tabBorderColor = TAB_BORDER_COLOR;
   private boolean folded = false;
   private Size leadLength = LEAD_LENGTH;
 
-  public TransistorTO220() {
+  public TransistorTO126() {
     super();
     updateControlPoints();
     alpha = (byte) 100;
@@ -125,42 +120,30 @@ public class TransistorTO220 extends AbstractTransistorPackage {
       int bodyWidth = getClosestOdd(BODY_WIDTH.convertToPixels());
       int bodyThickness = getClosestOdd(BODY_THICKNESS.convertToPixels());
       int bodyHeight = getClosestOdd(BODY_HEIGHT.convertToPixels());
-      int tabThickness = (int) TAB_THICKNESS.convertToPixels();
-      int tabHeight = (int) TAB_HEIGHT.convertToPixels();
-      int tabHoleDiameter = (int) TAB_HOLE_DIAMETER.convertToPixels();
+    
+      int tabHoleDiameter = (int) HOLE_DIAMETER.convertToPixels();
+      int holeOffset = (int) HOLE_OFFSET.convertToPixels();
       double leadLength = getLeadLength().convertToPixels();
 
       switch (orientation) {
         case DEFAULT:
           if (folded) {
             body[0] = new Area(new Rectangle2D.Double(x + leadLength, y + pinSpacing - bodyWidth / 2, bodyHeight, bodyWidth));
-            body[1] =
-                new Area(new Rectangle2D.Double(x + leadLength + bodyHeight, y + pinSpacing - bodyWidth / 2, tabHeight,
-                    bodyWidth));
-            ((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x + leadLength + bodyHeight + tabHeight / 2
+            ((Area) body[0]).subtract(new Area(new Ellipse2D.Double(x + leadLength + holeOffset
                 - tabHoleDiameter / 2, y + pinSpacing - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
           } else {
             body[0] = new Area(
                 new Rectangle2D.Double(x - bodyThickness / 2, y + pinSpacing - bodyWidth / 2, bodyThickness, bodyWidth));
-            body[1] = new Area(
-                new Rectangle2D.Double(x + bodyThickness / 2 - tabThickness, y + pinSpacing - bodyWidth / 2,
-                    tabThickness, bodyWidth));
           }
           break;
         case _90:
           if (folded) {
             body[0] = new Area(new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + leadLength, bodyWidth, bodyHeight));
-            body[1] =
-                new Area(new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + leadLength + bodyHeight, bodyWidth,
-                    tabHeight));
-            ((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x - pinSpacing - tabHoleDiameter / 2, y
-                + leadLength + bodyHeight + tabHeight / 2 - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
+            ((Area) body[0]).subtract(new Area(new Ellipse2D.Double(x - pinSpacing - tabHoleDiameter / 2, y
+                + leadLength + holeOffset - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
           } else {
             body[0] = new Area(
                 new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, bodyThickness));
-            body[1] = new Area(
-                new Rectangle2D.Double(x - pinSpacing - bodyWidth / 2, y + bodyThickness / 2 - tabThickness, bodyWidth,
-                    tabThickness));
           }
           break;
         case _180:
@@ -168,16 +151,11 @@ public class TransistorTO220 extends AbstractTransistorPackage {
             body[0] = new Area(
                 new Rectangle2D.Double(x - leadLength - bodyHeight, y - pinSpacing - bodyWidth / 2, bodyHeight,
                     bodyWidth));
-            body[1] =
-                new Area(new Rectangle2D.Double(x - leadLength - bodyHeight - tabHeight,
-                    y - pinSpacing - bodyWidth / 2, tabHeight, bodyWidth));
-            ((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x - leadLength - bodyHeight - tabHeight / 2
+            ((Area) body[0]).subtract(new Area(new Ellipse2D.Double(x - leadLength - holeOffset
                 - tabHoleDiameter / 2, y - pinSpacing - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
           } else {
             body[0] = new Area(
                 new Rectangle2D.Double(x - bodyThickness / 2, y - pinSpacing - bodyWidth / 2, bodyThickness, bodyWidth));
-            body[1] = new Area(
-                new Rectangle2D.Double(x - bodyThickness / 2, y - pinSpacing - bodyWidth / 2, tabThickness, bodyWidth));
           }
           break;
         case _270:
@@ -185,16 +163,11 @@ public class TransistorTO220 extends AbstractTransistorPackage {
             body[0] = new Area(
                 new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2, y - leadLength - bodyHeight, bodyWidth,
                     bodyHeight));
-            body[1] =
-                new Area(new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2,
-                    y - leadLength - bodyHeight - tabHeight, bodyWidth, tabHeight));
-            ((Area) body[1]).subtract(new Area(new Ellipse2D.Double(x + pinSpacing - tabHoleDiameter / 2, y
-                - leadLength - bodyHeight - tabHeight / 2 - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
+            ((Area) body[0]).subtract(new Area(new Ellipse2D.Double(x + pinSpacing - tabHoleDiameter / 2, y
+                - leadLength - holeOffset - tabHoleDiameter / 2, tabHoleDiameter, tabHoleDiameter)));
           } else {
             body[0] = new Area(
                 new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, bodyThickness));
-            body[1] = new Area(
-                new Rectangle2D.Double(x + pinSpacing - bodyWidth / 2, y - bodyThickness / 2, bodyWidth, tabThickness));
           }
           break;
         default:
@@ -280,27 +253,18 @@ public class TransistorTO220 extends AbstractTransistorPackage {
 
     
     Shape mainArea = getBody()[0];
-    Shape tabArea = getBody()[1];
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
-    g2d.fill(mainArea);
-    Color finalTabColor;
-    if (outlineMode) {      
-      finalTabColor = theme.getOutlineColor();
-    } else {
-      finalTabColor = tabColor;
-    }
-    g2d.setColor(finalTabColor);
-    g2d.fill(tabArea);
+    g2d.fill(mainArea);    
+    
     g2d.setComposite(oldComposite);
     if (!outlineMode) {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.setColor(tabBorderColor);
-      g2d.draw(tabArea);
     }
+  
     Color finalBorderColor;
     
     if (outlineMode) {
@@ -314,9 +278,8 @@ public class TransistorTO220 extends AbstractTransistorPackage {
     }
     g2d.setColor(finalBorderColor);
     g2d.draw(mainArea);
-    if (folded) {
-      g2d.draw(tabArea);
-    }
+    
+    g2d.setComposite(oldComposite);
 
     // Draw label.
     g2d.setFont(project.getFont());
@@ -353,34 +316,22 @@ public class TransistorTO220 extends AbstractTransistorPackage {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int margin = 2 * width / 32;
-    int bodySize = width * 5 / 10;
-    int tabSize = bodySize * 6 / 10;
-    int holeSize = 5 * width / 32;
-    Area a = new Area(new Rectangle2D.Double((width - bodySize) / 2, margin, bodySize, tabSize));
-    a.subtract(new Area(new Ellipse2D.Double(width / 2 - holeSize / 2, margin + tabSize / 2 - holeSize / 2, holeSize,
+    int bodyWidth = width * 5 / 10;
+    int bodyHeight = width * 7 / 10;
+    int holeSize = 6 * width / 32;
+    Area a = new Area(new Rectangle2D.Double((width - bodyWidth) / 2, margin, bodyWidth, bodyHeight));
+    a.subtract(new Area(new Ellipse2D.Double(width / 2 - holeSize / 2, margin + bodyHeight / 3 - holeSize / 2, holeSize,
         holeSize)));
-    g2d.setColor(TAB_COLOR);
+    g2d.setColor(BODY_COLOR);
     g2d.fill(a);
     g2d.setColor(BORDER_COLOR);
     g2d.draw(a);
-    g2d.setColor(BODY_COLOR);
-    g2d.fillRect((width - bodySize) / 2, margin + tabSize, bodySize, bodySize);
-    g2d.setColor(BORDER_COLOR);
-    g2d.drawRect((width - bodySize) / 2, margin + tabSize, bodySize, bodySize);
+
     g2d.setColor(METAL_COLOR);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-    g2d.drawLine(width / 2, margin + tabSize + bodySize + 1, width / 2, height - margin);
-    g2d.drawLine(width / 2 - bodySize / 3, margin + tabSize + bodySize + 1, width / 2 - bodySize / 3, height - margin);
-    g2d.drawLine(width / 2 + bodySize / 3, margin + tabSize + bodySize + 1, width / 2 + bodySize / 3, height - margin);
-  }
-
-  @EditableProperty(name = "Tab")
-  public Color getTabColor() {
-    return tabColor;
-  }
-
-  public void setTabColor(Color tabColor) {
-    this.tabColor = tabColor;
+    g2d.drawLine(width / 2, margin + bodyHeight, width / 2, height - margin);
+    g2d.drawLine(width / 2 - bodyWidth / 3, margin + bodyHeight + 1, width / 2 - bodyWidth / 3, height - margin);
+    g2d.drawLine(width / 2 + bodyWidth / 3, margin + bodyHeight + 1, width / 2 + bodyWidth / 3, height - margin);
   }
 
   @EditableProperty
@@ -407,13 +358,4 @@ public class TransistorTO220 extends AbstractTransistorPackage {
     // Invalidate the body
     this.body = null;
   }
-
-  @EditableProperty(name = "Tab Border")
-  public Color getTabBorderColor() {
-    return tabBorderColor;
-  }
-
-  public void setTabBorderColor(Color tabBorderColor) {
-    this.tabBorderColor = tabBorderColor;
-  } 
 }

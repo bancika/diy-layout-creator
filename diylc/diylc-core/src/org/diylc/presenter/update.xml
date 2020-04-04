@@ -2852,12 +2852,16 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added "Ruler Inch Subdivision" config option that allows inch rulers to be subdivided either using base of 2 (1/4", 1/8, 1/16) or base of 10 (1/10)</description>
+					<description>Added "Ruler Inch Subdivision" config option that allows inch rulers to be subdivided either using base of 2 (1/4, 1/8, 1/16) or base of 10 (1/10)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added few out-of-the-box building blocks that can be deleted if unwanted</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added TO-126 transistor package</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Duodecar B12C" tube socket type</description>
