@@ -26,37 +26,53 @@ import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
-public class MiniToolbar extends JPanel {
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigListener;
+
+public class ConfigToolbar extends JPanel {
   
   private static final long serialVersionUID = 1L;
+  
+  private final String CHECK = "\u2611";
+  private final String UNCHECK = "\u2610";
 
-  public MiniToolbar() {
+  public ConfigToolbar() {
     setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder());
   }
 
-  public void add(final Action action) {
-    final JLabel l = new JLabel();
-    l.setIcon((Icon) action.getValue(AbstractAction.SMALL_ICON));
-    l.setToolTipText((String) action.getValue(AbstractAction.NAME));
-    l.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    l.addMouseListener(new MouseAdapter() {
+  public void add(String title, String configKey, Icon icon, boolean defaultValue) {
+    final JLabel label = new JLabel();    
+    boolean checked = ConfigurationManager.getInstance().readBoolean(configKey, defaultValue);
+    label.setText(checked ? CHECK : UNCHECK);
+    label.setIcon(icon);
+    label.setToolTipText(title);
+    label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    label.addMouseListener(new MouseAdapter() {
       
       @Override
       public void mouseClicked(MouseEvent e) {
-        action.actionPerformed(null);
+        boolean checked = ConfigurationManager.getInstance().readBoolean(configKey, defaultValue);
+        checked = !checked;
+        ConfigurationManager.getInstance().writeValue(configKey, checked);
       }      
     });
-    add(l);  
-    setEnabled(false);
+    add(label);
+    
+    ConfigurationManager.getInstance().addConfigListener(configKey, new IConfigListener() {
+      
+      @Override
+      public void valueChanged(String key, Object value) {
+        boolean checked = (boolean) value;
+        label.setText(checked ? CHECK : UNCHECK);
+      }
+    });
   }
   
   @Override
@@ -67,7 +83,6 @@ public class MiniToolbar extends JPanel {
   
   public void addSpacer() {
     JSeparator l = new JSeparator();
-//    l.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.black));
     add(l);
   }
 }

@@ -46,6 +46,7 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
@@ -1562,6 +1563,13 @@ public class ActionFactory {
       putValue(AbstractAction.NAME, title);
       putValue(IView.CHECK_BOX_MENU_ITEM, true);
       putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance().readBoolean(configKey, defaultValue));
+      ConfigurationManager.getInstance().addConfigListener(configKey, new IConfigListener() {
+        
+        @Override
+        public void valueChanged(String key, Object value) {
+          putValue(AbstractAction.SELECTED_KEY, (Boolean)value);    
+        }
+      });
     }
 
     public ConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue) {

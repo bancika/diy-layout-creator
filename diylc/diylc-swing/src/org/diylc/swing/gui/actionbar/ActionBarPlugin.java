@@ -17,16 +17,20 @@
  */
 package org.diylc.swing.gui.actionbar;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.EnumSet;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 
@@ -41,7 +45,8 @@ public class ActionBarPlugin implements IPlugIn {
   private ISwingUI swingUI;
 
   private JPanel actionPanel;
-  private MiniToolbar miniToolbar;
+  private ActionToolbar contextActionToolbar;
+  private ConfigToolbar configToolbar;
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
@@ -51,31 +56,67 @@ public class ActionBarPlugin implements IPlugIn {
     if (actionPanel == null) {
       actionPanel = new JPanel();
       actionPanel.setOpaque(false);
-      actionPanel.setLayout(new BorderLayout());
-      actionPanel.add(getMiniToolbar(), BorderLayout.EAST);
+      actionPanel.setLayout(new GridBagLayout());
+      
+      GridBagConstraints gbc = new GridBagConstraints();
+      gbc.gridx = 0;
+      gbc.gridy = 0;
+      gbc.weightx = 1;
+      
+      actionPanel.add(new JPanel(), gbc);
+      
+      gbc.gridx = 1;
+      gbc.weightx = 0;      
+      actionPanel.add(getConfigToolbar(), gbc);
+      
+      gbc.gridx = 2;
+      // add some space to separate the two toolbars
+      actionPanel.add(new JLabel() {
+        
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Dimension getPreferredSize() {
+          return new Dimension(16, 16);
+        }
+      }, gbc);
+      
+      gbc.gridx = 3;
+      actionPanel.add(getContextActionToolbar(), gbc);
+      
       actionPanel.setBorder(BorderFactory.createEmptyBorder());
     }
     return actionPanel;
   }
   
-  public MiniToolbar getMiniToolbar() {
-    if (miniToolbar == null) {
-      miniToolbar = new MiniToolbar();
-      miniToolbar.add(ActionFactory.getInstance().createRotateSelectionAction(plugInPort, 1));
-      miniToolbar.add(ActionFactory.getInstance().createRotateSelectionAction(plugInPort, -1));
-      miniToolbar.addSpacer();
-      miniToolbar.add(ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.HORIZONTAL));
-      miniToolbar.add(ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.VERTICAL));
-      miniToolbar.addSpacer();
-      miniToolbar.add(ActionFactory.getInstance().createNudgeAction(plugInPort));
-      miniToolbar.addSpacer();
-      miniToolbar.add(ActionFactory.getInstance().createSendToBackAction(plugInPort));
-      miniToolbar.add(ActionFactory.getInstance().createBringToFrontAction(plugInPort));
-      miniToolbar.addSpacer();
-      miniToolbar.add(ActionFactory.getInstance().createGroupAction(plugInPort));
-      miniToolbar.add(ActionFactory.getInstance().createUngroupAction(plugInPort));
+  public ConfigToolbar getConfigToolbar() {
+    if (configToolbar == null) {
+      configToolbar = new ConfigToolbar();
+      configToolbar.add("Continuous Creation", IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
+      configToolbar.add("Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
+      configToolbar.add("Sticky Points", IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);
     }
-    return miniToolbar;
+    return configToolbar;
+  }
+  
+  public ActionToolbar getContextActionToolbar() {
+    if (contextActionToolbar == null) {
+      contextActionToolbar = new ActionToolbar();
+      contextActionToolbar.add(ActionFactory.getInstance().createRotateSelectionAction(plugInPort, 1));
+      contextActionToolbar.add(ActionFactory.getInstance().createRotateSelectionAction(plugInPort, -1));
+      contextActionToolbar.addSpacer();
+      contextActionToolbar.add(ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.HORIZONTAL));
+      contextActionToolbar.add(ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.VERTICAL));
+      contextActionToolbar.addSpacer();
+      contextActionToolbar.add(ActionFactory.getInstance().createNudgeAction(plugInPort));
+      contextActionToolbar.addSpacer();
+      contextActionToolbar.add(ActionFactory.getInstance().createSendToBackAction(plugInPort));
+      contextActionToolbar.add(ActionFactory.getInstance().createBringToFrontAction(plugInPort));
+      contextActionToolbar.addSpacer();
+      contextActionToolbar.add(ActionFactory.getInstance().createGroupAction(plugInPort));
+      contextActionToolbar.add(ActionFactory.getInstance().createUngroupAction(plugInPort));
+    }
+    return contextActionToolbar;
   }
 
   @Override
@@ -94,6 +135,6 @@ public class ActionBarPlugin implements IPlugIn {
     if (eventType != EventType.SELECTION_CHANGED)
       return;
     boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
-    getMiniToolbar().setEnabled(enabled);
+    getContextActionToolbar().setEnabled(enabled);
   }
 }
