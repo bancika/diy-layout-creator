@@ -40,8 +40,6 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
 
-import com.lowagie.text.Font;
-
 /**
  * Mini toolbar with common actions
  * 
@@ -56,6 +54,8 @@ public class ActionBarPlugin implements IPlugIn {
   private ActionToolbar contextActionToolbar;
   private ConfigToolbar configToolbar;
   private JLabel donateLabel;
+  
+  private static final String DONATE_HTML = "<html><u>Enjoying DIYLC? Click here to buy me a coffe :)</u></html>";
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
@@ -93,17 +93,17 @@ public class ActionBarPlugin implements IPlugIn {
       gbc.gridx = 3;
       actionPanel.add(getContextActionToolbar(), gbc);
       
-      actionPanel.setBorder(BorderFactory.createEmptyBorder());
+      actionPanel.setBorder(BorderFactory.createEmptyBorder());          
     }
     return actionPanel;
   }
   
   public JLabel getDonateLabel() {
     if (donateLabel == null) {
-      donateLabel = new JLabel("<html><u>Enjoying DIYLC? Click here to buy me a coffe :)</u></html>");
+      donateLabel = new JLabel(DONATE_HTML);
       donateLabel.setForeground(Color.blue);
       donateLabel.setIcon(IconLoader.Donate.getIcon());
-      donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));      
+      donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));           
       donateLabel.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
