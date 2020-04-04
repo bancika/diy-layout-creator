@@ -89,7 +89,8 @@ public class DrawingManager {
   // determine which components are invalidated when they are not in the map.
   private Map<IDIYComponent<?>, ComponentState> lastDrawnStateMap;
 
-  private Area continuityArea;
+  private Area currentContinuityArea;
+  private List<Area> continuityAreaCache = null;
 
   private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
   private Composite lockedComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
@@ -403,12 +404,12 @@ public class DrawingManager {
       }
     }
 
-    if (continuityArea != null
+    if (currentContinuityArea != null
         && (ConfigurationManager.getInstance().readBoolean(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false))) {
       Composite oldComposite = g2d.getComposite();
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
       g2d.setColor(Color.green);
-      g2d.fill(continuityArea);
+      g2d.fill(currentContinuityArea);
       g2d.setComposite(oldComposite);
     }
     
@@ -450,7 +451,8 @@ public class DrawingManager {
   }
 
   public void clearContinuityArea() {
-    this.continuityArea = null;
+    currentContinuityArea = null;
+    continuityAreaCache = null;
   }
 
   public List<IDIYComponent<?>> findComponentsAt(Point point, Project project) {
@@ -503,16 +505,17 @@ public class DrawingManager {
   }
   
   public void findContinuityAreaAtPoint(Project project, Point p) {
-    List<Area> areas = getContinuityAreas(project);
+    if (continuityAreaCache == null)
+      continuityAreaCache = getContinuityAreas(project);
 
-    for (Area a : areas) {
+    for (Area a : continuityAreaCache) {
       if (a.contains(p)) {
-        continuityArea = a;
+        currentContinuityArea = a;
         return;
       }
     }
 
-    continuityArea = null;
+    currentContinuityArea = null;
   }
   
   public List<Area> getContinuityAreas(Project project) {
@@ -598,13 +601,10 @@ public class DrawingManager {
     boolean isChanged = false;
 
     List<Area> newAreas = new ArrayList<Area>();
-    List<Boolean> consumed = new ArrayList<Boolean>();
-    for (int i = 0; i < areas.size(); i++) {
-      consumed.add(false);
-    }
+    boolean[] consumed = new boolean[areas.size()];
     for (int i = 0; i < areas.size(); i++) {
       for (int j = i + 1; j < areas.size(); j++) {
-        if (consumed.get(j))
+        if (consumed[j])
           continue;
         Area a1 = areas.get(i);
         Area a2 = areas.get(j);
@@ -616,13 +616,13 @@ public class DrawingManager {
         // if the two areas intersect, make a union and consume the second area
         if (intersection != null && !intersection.isEmpty()) {
           a1.add(a2);
-          consumed.set(j, true);
+          consumed[j] = true;
         } else { // maybe there's a connection between them
           for (Connection p : connections) { // use getBounds to optimize the computation, don't get into complex math if not needed
             if ((a1.getBounds().contains(p.getP1()) && a2.getBounds().contains(p.getP2()) && a1.contains(p.getP1()) && a2.contains(p.getP2())) || 
                 (a1.getBounds().contains(p.getP2()) && a2.getBounds().contains(p.getP1())) && a1.contains(p.getP2()) && a2.contains(p.getP1())) {
               a1.add(a2);
-              consumed.set(j, true);
+              consumed[j] = true;
               break;
             }
           }
@@ -630,7 +630,7 @@ public class DrawingManager {
       }
     }
     for (int i = 0; i < areas.size(); i++)
-      if (!consumed.get(i))
+      if (!consumed[i])
         newAreas.add(areas.get(i));
       else
         isChanged = true;

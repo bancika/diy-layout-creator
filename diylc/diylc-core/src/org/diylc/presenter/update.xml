@@ -2867,6 +2867,10 @@
 					<description>Added "Duodecar B12C" tube socket type</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved performance of "Highlight Connected Areas" feature, especially with bigger projects</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Choosing a default theme in the Config menut causes the app to fail to start and some components to fail to render</description>
 				</org.diylc.appframework.update.Change>
