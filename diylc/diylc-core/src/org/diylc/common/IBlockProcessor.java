@@ -25,7 +25,8 @@ import java.io.IOException;
 
 public interface IBlockProcessor {
 
-  public static final String BLOCKS_KEY = "buildingBlocks";
+  public static final String BLOCKS_KEY = "buildingBlocks";  
+  public static final String DEFAULT_BLOCKS_IMPORTED_KEY = "defaultBlocksImported";
 
   void saveSelectionAsBlock(String blockName);
 

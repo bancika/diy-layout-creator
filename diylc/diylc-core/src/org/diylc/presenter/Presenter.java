@@ -191,6 +191,7 @@ public class Presenter implements IPlugInPort {
     // visibleLayers = EnumSet.allOf(ComponentLayer.class);
     upgradeVariants();
     importDefaultVariants();
+    importDefaultBlocks();
   }
 
   public void installPlugin(IPlugIn plugIn) {
@@ -2457,6 +2458,40 @@ public class Presenter implements IPlugInPort {
       }
     }
   }
+  
+  @SuppressWarnings("unchecked")
+  private void importDefaultBlocks() {
+    // import default templates from variants.xml file only if we didn't do it already
+    if (!ConfigurationManager.getInstance().readBoolean(DEFAULT_BLOCKS_IMPORTED_KEY, false)) {
+      try {
+        URL resource = Presenter.class.getResource("blocks.xml");
+        if (resource != null) {
+          BufferedInputStream in = new BufferedInputStream(resource.openStream());
+          XStream xStream = new XStream(new DomDriver());
+          Map<String, List<IDIYComponent<?>>> defaults = (Map<String, List<IDIYComponent<?>>>) xStream.fromXML(in);
+          in.close();
+                    
+          Map<String, List<IDIYComponent<?>>> blocksMap =
+              (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+          if (blocksMap == null)
+            blocksMap = new HashMap<String, List<IDIYComponent<?>>>();          
+          
+          // merge default blocks with user's
+          for (Map.Entry<String, List<IDIYComponent<?>>> entry : defaults.entrySet()) {
+            if (!blocksMap.containsKey(entry.getKey()))
+              blocksMap.put(entry.getKey(), entry.getValue());            
+          }          
+          
+          // update templates and a flag marking that we imported them
+          ConfigurationManager.getInstance().writeValue(DEFAULT_BLOCKS_IMPORTED_KEY, true);
+          ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocksMap);
+          LOG.info(String.format("Imported %d default building blocks", defaults == null ? 0 : defaults.size()));         
+        }
+      } catch (Exception e) {
+        LOG.error("Could not load default blocks", e);
+      }
+    }
+  }
 
   @SuppressWarnings("unchecked")
   @Override
@@ -2667,7 +2702,31 @@ public class Presenter implements IPlugInPort {
       }
     });
     blocks.put(blockName, blockComponents);
-    ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
+    
+    if (System.getProperty("org.diylc.WriteStaticBlocks", "false").equalsIgnoreCase("true")) {
+      Map<String, List<IDIYComponent<?>>> defaultBlockMap = new HashMap<String, List<IDIYComponent<?>>>();
+      // unify default and user-variants
+      for (Map.Entry<String, List<IDIYComponent<?>>> entry : blocks.entrySet()) {
+        if (defaultBlockMap.containsKey(entry.getKey())) {
+          defaultBlockMap.get(entry.getKey()).addAll(entry.getValue());
+        } else {
+          defaultBlockMap.put(entry.getKey(), entry.getValue());
+        }
+      }
+      try {
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("blocks.xml"));
+        XStream xStream = new XStream(new DomDriver());
+        xStream.toXML(defaultBlockMap, out);
+        out.close();
+        // no more user variants
+        ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, null);
+        LOG.info("Saved default blocks");
+      } catch (IOException e) {
+        LOG.error("Could not save default blocks", e);
+      }
+    } else {
+      ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
+    }  
   }
 
   @SuppressWarnings("unchecked")

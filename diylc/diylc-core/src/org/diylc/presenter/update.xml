@@ -2849,10 +2849,14 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Ruler Inch Subdivision" config option that allows inch rulers to be subdivided either using base of 2 (1/4", 1/8, 1/16) or base of 10 (1/10)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added few out-of-the-box building blocks that can be deleted if unwanted</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Fix the issue with theme configuration that causes some components to fail to render</description>
+					<description>Fix the issue with theme configuration that causes the app to fail to start and some components to fail to render</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
