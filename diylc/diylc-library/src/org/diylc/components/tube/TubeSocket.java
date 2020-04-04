@@ -64,10 +64,15 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private static final Size B7G_PIN_SPACING = new Size(12d, SizeUnit.mm);
   private static final Size B7G_CUTOUT_DIAMETER = new Size(4d, SizeUnit.mm);
   private static final Size B9A_CUTOUT_DIAMETER = new Size(5.5d, SizeUnit.mm);
+  private static final Size B12C_HOLE_SIZE = new Size(10d, SizeUnit.mm);
+  private static final Size B12C_CUTOUT_DIAMETER = new Size(5.5d, SizeUnit.mm);
+  private static final Size B12C_PIN_SPACING_PCB = new Size(25d, SizeUnit.mm);
+  private static final Size B12C_PIN_SPACING_CHASSIS = new Size(22d, SizeUnit.mm);
 
   private static final Size OCTAL_DIAMETER = new Size(25d, SizeUnit.mm);
   private static final Size B9A_DIAMETER = new Size(3 / 4d, SizeUnit.in);
   private static final Size B7G_DIAMETER = new Size(17d, SizeUnit.mm);
+  private static final Size B12C_DIAMETER = new Size(30d, SizeUnit.mm);
 
   private static final long serialVersionUID = 1L;
 
@@ -182,6 +187,11 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
         pinSpacing = getClosestOdd(getMount() == Mount.PCB ? B9A_PIN_SPACING_PCB.convertToPixels() : B9A_PIN_SPACING_CHASSIS.convertToPixels());
         hasEmptySpace = true;
         break;
+      case B12C:
+        pinCount = 12;
+        pinSpacing = getClosestOdd(getMount() == Mount.PCB ? B12C_PIN_SPACING_PCB.convertToPixels() : B12C_PIN_SPACING_CHASSIS.convertToPixels());
+        hasEmptySpace = true;
+        break;
       default:
         throw new RuntimeException("Unexpected base: " + base);
     }
@@ -212,6 +222,9 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
         case OCTAL:
           bodyDiameter = getClosestOdd(OCTAL_DIAMETER.convertToPixels());
           break;
+        case B12C:
+          bodyDiameter = getClosestOdd(B12C_DIAMETER.convertToPixels());
+          break;
         default:
           throw new RuntimeException("Unexpected base: " + base);
       }
@@ -220,7 +233,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
           new Ellipse2D.Double(controlPoints[0].x - bodyDiameter / 2, controlPoints[0].y - bodyDiameter / 2,
               bodyDiameter, bodyDiameter);
       Area bodyArea = new Area(body);
-      int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
+      int holeSize = getClosestOdd(base == Base.B12C ? B12C_HOLE_SIZE.convertToPixels() : HOLE_SIZE.convertToPixels());
       bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - holeSize / 2, controlPoints[0].y - holeSize
           / 2, holeSize, holeSize)));
       
@@ -239,7 +252,11 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
         double cutoutDiameter = getClosestOdd(B7G_CUTOUT_DIAMETER.convertToPixels());
         bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
         bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
-      }      
+      } else if (base == Base.B12C && getMount() == Mount.CHASSIS) {
+        double cutoutDiameter = getClosestOdd(B12C_CUTOUT_DIAMETER.convertToPixels());
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+      }    
       
       body = bodyArea;
     }
@@ -388,7 +405,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   @EditableProperty(name = "Electrode Labels")
   public String getElectrodeLabels() {
     if (electrodeLabels == null)
-      electrodeLabels = "1,2,3,4,5,6,7,8,9";
+      electrodeLabels = "1,2,3,4,5,6,7,8,9,10,11,12";
     return electrodeLabels;
   }
   
@@ -423,7 +440,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   }
 
   public static enum Base {
-    B9A("Noval B9A"), OCTAL("Octal"), B7G("Small-button B7G");
+    B9A("Noval B9A"), OCTAL("Octal"), B7G("Small-button B7G"), B12C("Duodecar B12C");
 
     String name;
 
