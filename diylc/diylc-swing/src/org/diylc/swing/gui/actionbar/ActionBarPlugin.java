@@ -17,15 +17,20 @@
  */
 package org.diylc.swing.gui.actionbar;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.EnumSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
@@ -33,6 +38,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.plugins.help.HelpMenuPlugin;
 
 /**
  * Mini toolbar with common actions
@@ -47,6 +53,7 @@ public class ActionBarPlugin implements IPlugIn {
   private JPanel actionPanel;
   private ActionToolbar contextActionToolbar;
   private ConfigToolbar configToolbar;
+  private JLabel donateLabel;
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
@@ -63,7 +70,7 @@ public class ActionBarPlugin implements IPlugIn {
       gbc.gridy = 0;
       gbc.weightx = 1;
       
-      actionPanel.add(new JPanel(), gbc);
+      actionPanel.add(getDonateLabel(), gbc);
       
       gbc.gridx = 1;
       gbc.weightx = 0;      
@@ -87,6 +94,26 @@ public class ActionBarPlugin implements IPlugIn {
       actionPanel.setBorder(BorderFactory.createEmptyBorder());
     }
     return actionPanel;
+  }
+  
+  public JLabel getDonateLabel() {
+    if (donateLabel == null) {
+      donateLabel = new JLabel("Enjoying DIYLC? Buy me a coffe :)");
+      donateLabel.setForeground(Color.blue);
+      donateLabel.setIcon(IconLoader.Donate.getIcon());
+      donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      donateLabel.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          try {
+            Utils.openURL(HelpMenuPlugin.DONATE_URL);
+          } catch (Exception e1) {
+            swingUI.showMessage("Web browser launching failed. Please visit " + HelpMenuPlugin.DONATE_URL + " to donate. Thank you!", "Error", ISwingUI.INFORMATION_MESSAGE);
+          }
+        }
+      });
+    }
+    return donateLabel;
   }
   
   public ConfigToolbar getConfigToolbar() {
