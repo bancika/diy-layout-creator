@@ -230,6 +230,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     }
   }
   
+  @SuppressWarnings("unused")
   private void markStack() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
