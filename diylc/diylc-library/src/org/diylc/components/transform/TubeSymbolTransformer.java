@@ -26,6 +26,7 @@ import java.awt.geom.AffineTransform;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
+import org.diylc.components.semiconductors.SymbolFlipping;
 import org.diylc.components.tube.AbstractTubeSymbol;
 import org.diylc.core.IDIYComponent;
 
@@ -71,54 +72,33 @@ public class TubeSymbolTransformer implements IComponentTransformer {
   public void mirror(IDIYComponent<?> component, Point center, int direction) {
     AbstractTubeSymbol tube = (AbstractTubeSymbol) component;
 
+    Orientation o = tube.getOrientation();
+    SymbolFlipping flip = tube.getFlip();
+    
     if (direction == IComponentTransformer.HORIZONTAL) {
-      int dx = 2 * (center.x - tube.getControlPoint(0).x);
-      int dy = 0;
-
-      Orientation o = tube.getOrientation();
-      switch (o) {
-        case DEFAULT:
-          o = Orientation._180;
-          break;
-        case _90:
-          break;
-        case _180:
-          o = Orientation.DEFAULT;
-          break;
-        case _270: 
-          break;
-      }
-
-      for (int i = 0; i < tube.getControlPointCount(); i++) {
-        Point p = tube.getControlPoint(i);
-        tube.setControlPoint(new Point(p.x + dx, p.y + dy), i);
-      }
-
-      tube.setOrientation(o);
+     if (o == Orientation.DEFAULT || o == Orientation._180) {
+       if (flip == SymbolFlipping.NONE)
+         tube.setFlip(SymbolFlipping.X);
+       else if (flip == SymbolFlipping.X)
+         tube.setFlip(SymbolFlipping.NONE);
+     } else if (o == Orientation._90 || o == Orientation._270) {
+       if (flip == SymbolFlipping.NONE)
+         tube.setFlip(SymbolFlipping.Y);
+       else if (flip == SymbolFlipping.Y)
+         tube.setFlip(SymbolFlipping.NONE);
+     }
     } else {
-      int dx = 0;
-      int dy = 2 * (center.y - tube.getControlPoint(0).y);
-
-      Orientation o = tube.getOrientation();
-      switch (o) {
-        case DEFAULT:
-          break;
-        case _90:
-          o = Orientation._270;
-          break;
-        case _180:
-          break;
-        case _270:
-          o = Orientation._90;
-          break;
+      if (o == Orientation.DEFAULT || o == Orientation._180) {
+        if (flip == SymbolFlipping.NONE)
+          tube.setFlip(SymbolFlipping.Y);
+        else if (flip == SymbolFlipping.Y)
+          tube.setFlip(SymbolFlipping.NONE);
+      } else if (o == Orientation._90 || o == Orientation._270) {
+        if (flip == SymbolFlipping.NONE)
+          tube.setFlip(SymbolFlipping.X);
+        else if (flip == SymbolFlipping.X)
+          tube.setFlip(SymbolFlipping.NONE);
       }
-
-      for (int i = 0; i < tube.getControlPointCount(); i++) {
-        Point p = tube.getControlPoint(i);
-        tube.setControlPoint(new Point(p.x + dx, p.y + dy), i);
-      }
-
-      tube.setOrientation(o);
     }
   }
 }

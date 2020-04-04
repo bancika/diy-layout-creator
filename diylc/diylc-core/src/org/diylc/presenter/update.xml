@@ -2856,11 +2856,15 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Fix the issue with theme configuration that causes the app to fail to start and some components to fail to render</description>
+					<description>Choosing a default theme in the Config menut causes the app to fail to start and some components to fail to render</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Fix the issue tube socket pins that can be dragged independently from the socket</description>
+					<description>Fixed the issue with tube symbol mirroring</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed tube socket pins that can be dragged independently from the socket</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
