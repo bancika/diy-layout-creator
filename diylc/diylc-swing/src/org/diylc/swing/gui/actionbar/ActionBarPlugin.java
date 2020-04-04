@@ -40,6 +40,8 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
 
+import com.lowagie.text.Font;
+
 /**
  * Mini toolbar with common actions
  * 
@@ -98,10 +100,10 @@ public class ActionBarPlugin implements IPlugIn {
   
   public JLabel getDonateLabel() {
     if (donateLabel == null) {
-      donateLabel = new JLabel("Enjoying DIYLC? Buy me a coffe :)");
+      donateLabel = new JLabel("<html><u>Enjoying DIYLC? Click here to buy me a coffe :)</u></html>");
       donateLabel.setForeground(Color.blue);
       donateLabel.setIcon(IconLoader.Donate.getIcon());
-      donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));      
       donateLabel.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
