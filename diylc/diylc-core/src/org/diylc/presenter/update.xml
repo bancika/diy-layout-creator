@@ -2857,6 +2857,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fix the issue with theme configuration that causes the app to fail to start and some components to fail to render</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fix the issue tube socket pins that can be dragged independently from the socket</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

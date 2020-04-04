@@ -380,6 +380,11 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     body = null;
   }
   
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
+  
   @EditableProperty(name = "Electrode Labels")
   public String getElectrodeLabels() {
     if (electrodeLabels == null)
