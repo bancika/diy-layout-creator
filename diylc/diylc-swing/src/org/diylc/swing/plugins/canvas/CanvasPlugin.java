@@ -218,6 +218,15 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
               getScrollPane().setInSubdivision(IPlugInPort.RULER_IN_SUBDIVISION_10.equalsIgnoreCase(value == null ? null : value.toString()) ? InchSubdivision.BASE_10 : InchSubdivision.BASE_2);
           }
         });
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA,
+        new IConfigListener() {
+
+          @Override
+          public void valueChanged(String key, Object value) {            
+            canvasPanel.repaint();
+          }
+        });
 
     getScrollPane().getViewport().setVisible(false);
   }
