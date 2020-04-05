@@ -120,6 +120,10 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     continuityMarker = null;
     currentTx = new AffineTransform();
   }
+  
+  public Graphics2D getCanvasGraphics() {
+    return canvasGraphics;
+  }
 
   /**
    * Clears out the current area and caches canvas settings.
@@ -156,6 +160,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setFont(originalFont);
 //    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);    
     return new ComponentArea(currentArea, continuityPositiveAreas.values(), continuityNegativeAreas.values());
+  }
+  
+  public void merge(G2DWrapper wrapper) {
+    currentArea = wrapper.currentArea;
+    continuityPositiveAreas = wrapper.continuityPositiveAreas;
+    continuityNegativeAreas = wrapper.continuityNegativeAreas;
   }
 
   @Override
@@ -721,6 +731,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setXORMode(c1);
   }
   
+  @SuppressWarnings("unused")
   private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap,
       final boolean order) {
     List<Entry<String, Integer>> list =

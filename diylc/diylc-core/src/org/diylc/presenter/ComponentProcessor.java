@@ -94,6 +94,7 @@ public class ComponentProcessor {
     boolean flexibleZOrder;
     BomPolicy bomPolicy;
     boolean autoEdit;
+    boolean cacheDrawing;
     IComponentTransformer transformer;
     KeywordPolicy keywordPolicy;
     String keywordTag;
@@ -112,6 +113,7 @@ public class ComponentProcessor {
       transformer = getComponentTransformer(annotation.transformer());
       keywordPolicy = annotation.keywordPolicy();
       keywordTag = annotation.keywordTag();
+      cacheDrawing = annotation.enableCache();
     } else { // default
     	return null;
     }
@@ -133,7 +135,7 @@ public class ComponentProcessor {
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
-            flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag);
+            flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag, cacheDrawing);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }

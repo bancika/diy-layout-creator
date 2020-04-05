@@ -48,11 +48,12 @@ public class ComponentType {
   private IComponentTransformer transformer;
   private KeywordPolicy keywordPolicy;
   private String keywordTag;
+  private boolean enableCache;
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
       boolean flexibleZOrder, BomPolicy bomPolicy, boolean autoEdit, IComponentTransformer transformer, 
-      KeywordPolicy keywordPolicy, String keywordTag) {
+      KeywordPolicy keywordPolicy, String keywordTag, boolean enableCache) {
     super();
     this.name = name;
     this.description = description;
@@ -69,6 +70,7 @@ public class ComponentType {
     this.transformer = transformer;
     this.keywordPolicy = keywordPolicy;
     this.keywordTag = keywordTag;
+    this.enableCache = enableCache;
   }
 
   public String getName() {
@@ -129,6 +131,10 @@ public class ComponentType {
 
   public String getKeywordTag() {
     return keywordTag;
+  }
+  
+  public boolean getEnableCache() {
+    return enableCache;
   }
 
   @Override

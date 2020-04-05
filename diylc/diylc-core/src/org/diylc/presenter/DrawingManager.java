@@ -83,6 +83,7 @@ public class DrawingManager {
   private Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
       Constants.DEFAULT_THEME);
 
+  // Maps keyed by object reference.
   // Keeps Area object of each drawn component.
   private Map<IDIYComponent<?>, ComponentArea> componentAreaMap;
   // Maps components to the last state they are drawn in. Also, used to
@@ -263,7 +264,7 @@ public class DrawingManager {
       // Do not track the area if component is not invalidated and was
       // drawn in the same state.
       boolean trackArea = lastDrawnStateMap.get(component) != state;
-
+      
       synchronized (g2d) {
         g2dWrapper.startedDrawingComponent();
         if (!trackArea) {
@@ -275,11 +276,15 @@ public class DrawingManager {
         }
         // Draw the component through the g2dWrapper.
         try {
-          component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
+//          component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
+          DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, trackArea);
           if (g2dWrapper.isTrackingContinuityArea()) {
-            LOG.info("Component " + component.getName() + " of type " + component.getClass().getName() + " did not stop tracking continuity area.");
-            g2dWrapper.stopTrackingContinuityArea();
+            LOG.info("Component " + component.getName() + " of type " + component.getClass().getName() + " did not stop tracking continuity area.");            
           }
+
+          // just in case, stop all tracking
+          g2dWrapper.stopTrackingContinuityArea();
+          g2dWrapper.stopTracking();
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
           failedComponents.add(component);
