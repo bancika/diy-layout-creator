@@ -2848,7 +2848,7 @@
 			<changes>			
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Exposed the most commonly used configuration items in the top-right toolbar for faster access</description>
+					<description>Exposed few of the most commonly used configuration items in the top-right toolbar for faster access</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
