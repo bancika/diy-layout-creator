@@ -266,7 +266,9 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
       drawOptions.add(DrawOption.EXTRA_SPACE);
     }
-    drawOptions.add(DrawOption.ENABLE_CACHING);
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.CACHING_ENABLED_KEY, true)) {
+      drawOptions.add(DrawOption.ENABLE_CACHING);
+    }
     
     plugInPort.draw(g2d, drawOptions, null, null);
     
