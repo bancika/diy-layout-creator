@@ -143,12 +143,16 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     } else {
       finalBorderColor = BASE_COLOR.darker();
     }
+    
+    drawingObserver.stopTracking();
 
     g2d.setColor(finalBorderColor);
     g2d.draw(body[1]);
     g2d.draw(body[2]);
     if (body[3] != null)
       g2d.draw(body[3]);
+    
+    drawingObserver.startTracking();
 
     // draw labels
     if (showLabels) {

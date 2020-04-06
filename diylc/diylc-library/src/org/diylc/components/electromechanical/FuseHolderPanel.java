@@ -184,6 +184,11 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
           g2d.fill(a);
           break;
         }
+      
+      // Do not track these changes because the whole switch has been tracked
+      // so far.
+      drawingObserver.stopTracking();
+      
       g2d.setComposite(oldComposite);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       Color finalBorderColor;
@@ -197,9 +202,6 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
         if (a != null)
           g2d.draw(a);
     }
-    // Do not track these changes because the whole switch has been tracked
-    // so far.
-    drawingObserver.stopTracking();
 
     // Draw lugs.  
     int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());

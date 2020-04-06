@@ -218,6 +218,8 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
     } else {
       finalBorderColor = BORDER_COLOR;
     }
+    
+    drawingObserver.stopTracking();
 
     g2d.setColor(finalBorderColor);
     for (int i = 0; i < body.length - 1; i++) {

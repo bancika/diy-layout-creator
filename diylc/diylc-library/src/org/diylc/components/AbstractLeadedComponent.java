@@ -163,7 +163,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       }
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getStandingBodyColor());
       g2d.fill(body);
-      g2d.setComposite(oldComposite);
+      g2d.setComposite(oldComposite);           
+      
       Color finalBorderColor;
       if (outlineMode) {
         Theme theme =
@@ -179,7 +180,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
       g2d.setColor(finalBorderColor);
+      drawingObserver.stopTracking();
+      
       g2d.draw(body);
+      
+      drawingObserver.startTracking();
+      
       if (!outlineMode) {
         drawLead(g2d, componentState, drawingObserver, false);
       }
@@ -258,6 +264,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         }
       }
       
+      drawingObserver.stopTracking();
+      
       Composite newComposite = null;
       if (!decorateAboveBorder())
         decorateComponentBody(g2d, outlineMode);
@@ -325,6 +333,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       theta += Math.PI;
       offset = -offset;
     }
+    
+    drawingObserver.startTracking();
     
     if (getMoveLabel()) {
       g2d.setTransform(oldTransform);

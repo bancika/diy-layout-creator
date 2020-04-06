@@ -104,23 +104,24 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
     }
     
     g2d.setColor(curveColor1);
+    drawingObserver.startTracking();
     g2d.fill(firstLeadArea);
+    drawingObserver.stopTracking();
     
     if (stripe1 && componentState == ComponentState.NORMAL) {
       drawingObserver.stopTracking();
       g2d.setColor(stripeColor);
-      g2d.fill(firstLeadStripeArea);
-      drawingObserver.startTracking();
+      g2d.fill(firstLeadStripeArea);      
     }
     
     g2d.setColor(curveColor2);
+    drawingObserver.startTracking();
     g2d.fill(secondLeadArea);
+    drawingObserver.stopTracking();
     
-    if (stripe2 && componentState == ComponentState.NORMAL) {
-      drawingObserver.stopTracking();
+    if (stripe2 && componentState == ComponentState.NORMAL) {      
       g2d.setColor(stripeColor2);
-      g2d.fill(secondLeadStripeArea);
-      drawingObserver.startTracking();
+      g2d.fill(secondLeadStripeArea);      
     }
     
     if (componentState == ComponentState.NORMAL) {      
