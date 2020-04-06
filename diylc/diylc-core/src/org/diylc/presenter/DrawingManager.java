@@ -319,12 +319,9 @@ public class DrawingManager {
           // log render time stats periodically
           if (System.currentTimeMillis() - lastStatsReportedTime > statReportFrequencyMs) {
             lastStatsReportedTime = System.currentTimeMillis();
-            String mapAsString = renderStatsByType.keySet().stream()
-                .map(k -> {
-                  Pair<Integer, Long> s = renderStatsByType.get(k);
-                  return k + "=" + s.getFirst() + "x " + 
-                    TimeUnit.MILLISECONDS.convert(s.getSecond(), TimeUnit.NANOSECONDS) + "ms ";
-                })
+            String mapAsString = renderStatsByType.entrySet().stream().sorted((e1, e2) -> -e1.getValue().getSecond().compareTo(e2.getValue().getSecond()))
+                .map(e -> e.getKey() + "=" + e.getValue().getFirst() + "x " + 
+                    TimeUnit.MILLISECONDS.convert( e.getValue().getSecond(), TimeUnit.NANOSECONDS) + "ms ")
                 .collect(Collectors.joining(", ", "{", "}"));
             LOG.debug("Render stats: " + mapAsString);
           }
