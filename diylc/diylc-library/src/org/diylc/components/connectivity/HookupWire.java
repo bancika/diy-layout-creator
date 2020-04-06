@@ -90,6 +90,8 @@ public class HookupWire extends AbstractCurvedComponent<Void> implements IContin
       drawingObserver.startTracking();
     }
     
+    drawingObserver.stopTracking();
+    
     if (componentState == ComponentState.NORMAL) {
       g2d.setColor(color.darker());
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
