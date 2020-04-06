@@ -48,7 +48,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Twisted Leads", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "A pair of flexible leads twisted tighly together", zOrder = IDIYComponent.COMPONENT,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class TwistedWire extends AbstractCurvedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;

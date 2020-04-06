@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -331,6 +332,12 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   public void setMode(BoardSizingMode mode) {
     this.mode = mode;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Point finalSecondPoint = getFinalSecondPoint();    
+    return new Rectangle2D.Double(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x + 1, finalSecondPoint.y - firstPoint.y + 1);
   }
 
   public static enum CoordinateType {

@@ -668,6 +668,28 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       return null;
     return Integer.toString(index + 1);
   }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    int minX = Integer.MAX_VALUE;
+    int maxX = Integer.MIN_VALUE;
+    int minY = Integer.MAX_VALUE;
+    int maxY = Integer.MIN_VALUE;
+    int margin = (int) Math.max(Math.max(getWidth().convertToPixels(), getLength().convertToPixels()), getLeadThickness());
+    for (int i = 0; i < getControlPointCount(); i++) {
+      Point p = getControlPoint(i);
+      if (p.x < minX)
+        minX = p.x;
+      if (p.x > maxX)
+        maxX = p.x;
+      if (p.y < minY)
+        minY = p.y;
+      if (p.y > maxY)
+        maxY = p.y;
+    }
+    
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
+  }
 
   public enum LabelOriantation {
     Directional, Horizontal

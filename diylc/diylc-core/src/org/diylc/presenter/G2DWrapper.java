@@ -162,10 +162,26 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     return new ComponentArea(currentArea, continuityPositiveAreas.values(), continuityNegativeAreas.values());
   }
   
-  public void merge(G2DWrapper wrapper) {
-    currentArea = wrapper.currentArea;
-    continuityPositiveAreas = wrapper.continuityPositiveAreas;
-    continuityNegativeAreas = wrapper.continuityNegativeAreas;
+  // start - used for caching
+  
+  public Area getCurrentArea() {
+    return currentArea;
+  }
+  
+  public Map<String, Area> getContinuityPositiveAreas() {
+    return continuityPositiveAreas;
+  }
+  
+  public Map<String, Area> getContinuityNegativeAreas() {
+    return continuityNegativeAreas;
+  }
+  
+  // end - used for caching
+  
+  public void merge(Area currentArea, Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas) {
+    this.currentArea = currentArea;
+    this.continuityPositiveAreas = continuityPositiveAreas;
+    this.continuityNegativeAreas = continuityNegativeAreas;
   }
 
   @Override

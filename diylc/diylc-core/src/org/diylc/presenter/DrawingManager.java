@@ -58,7 +58,6 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.utils.Constants;
-import org.diylc.utils.Pair;
 
 /**
  * Utility that deals with painting {@link Project} on the {@link Graphics2D} and keeps areas taken
@@ -109,7 +108,7 @@ public class DrawingManager {
   private boolean debugContinuityAreas;
   
   // rendering stats
-  private Map<String, Pair<Integer, Long>> renderStatsByType = new HashMap<String, Pair<Integer, Long>>();
+  private Map<String, Counter> renderStatsByType = new HashMap<String, Counter>();
   private long lastStatsReportedTime = System.currentTimeMillis();
   private long statReportFrequencyMs = 1000 * 60;
 
@@ -305,26 +304,15 @@ public class DrawingManager {
         } finally {
           // record render stats
           long componentEnd = System.nanoTime();
-          Pair<Integer, Long> stats = null;
-          String key = component.getClass().getCanonicalName();
+          Counter stats = null;
+          String key = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
           if (renderStatsByType.containsKey(key)) {
-            stats = renderStatsByType.get(key);
-            stats.setFirst(stats.getFirst() + 1);
-            stats.setSecond(stats.getSecond() + (componentEnd - componentStart));
+            stats = renderStatsByType.get(key);            
           } else {
-            stats = new Pair<Integer, Long>(1, componentEnd - componentStart);
+            stats = new Counter();
             renderStatsByType.put(key, stats);
           }
-          
-          // log render time stats periodically
-          if (System.currentTimeMillis() - lastStatsReportedTime > statReportFrequencyMs) {
-            lastStatsReportedTime = System.currentTimeMillis();
-            String mapAsString = renderStatsByType.entrySet().stream().sorted((e1, e2) -> -e1.getValue().getSecond().compareTo(e2.getValue().getSecond()))
-                .map(e -> e.getKey() + "=" + e.getValue().getFirst() + "x " + 
-                    TimeUnit.MILLISECONDS.convert( e.getValue().getSecond(), TimeUnit.NANOSECONDS) + "ms ")
-                .collect(Collectors.joining(", ", "{", "}"));
-            LOG.debug("Render stats: " + mapAsString);
-          }
+          stats.add(componentEnd - componentStart);
         }
         ComponentArea area = g2dWrapper.finishedDrawingComponent();
         if (trackArea && area != null && !area.getOutlineArea().isEmpty()) {
@@ -469,8 +457,22 @@ public class DrawingManager {
     
     long ms = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
     LOG.trace(String.format("Render time = %d ms", ms));
+    
+    logStats();
 
     return failedComponents;
+  }
+  
+  public void logStats() {
+    // log render time stats periodically
+    if (System.currentTimeMillis() - lastStatsReportedTime > statReportFrequencyMs) {
+      lastStatsReportedTime = System.currentTimeMillis();
+      String mapAsString = renderStatsByType.entrySet().stream().sorted((e1, e2) -> -Long.compare(e1.getValue().getNanoTime(), e2.getValue().getNanoTime()))
+          .map(e -> e.toString())
+          .collect(Collectors.joining("; ", "{", "}"));
+      LOG.debug("Render stats: " + mapAsString);
+      DrawingCache.Instance.logStats();
+    }
   }
 
   public double getZoomLevel() {

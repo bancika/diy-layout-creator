@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -359,6 +360,28 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
       LOG.error("Error calculating length of " + getName(), e);
       return null;
     }
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    int minX = Integer.MAX_VALUE;
+    int maxX = Integer.MIN_VALUE;
+    int minY = Integer.MAX_VALUE;
+    int maxY = Integer.MIN_VALUE;
+    int margin = 50; // hard coded, replace with something meaningful
+    for (int i = 0; i < getControlPointCount(); i++) {
+      Point p = getControlPoint(i);
+      if (p.x < minX)
+        minX = p.x;
+      if (p.x > maxX)
+        maxX = p.x;
+      if (p.y < minY)
+        minY = p.y;
+      if (p.y > maxY)
+        maxY = p.y;
+    }
+    
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
 
   public enum PointCount {
