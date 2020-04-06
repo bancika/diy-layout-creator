@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -57,6 +58,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.utils.Constants;
+import org.diylc.utils.Pair;
 
 /**
  * Utility that deals with painting {@link Project} on the {@link Graphics2D} and keeps areas taken
@@ -105,6 +107,11 @@ public class DrawingManager {
 
   private boolean debugComponentAreas;
   private boolean debugContinuityAreas;
+  
+  // rendering stats
+  private Map<String, Pair<Integer, Long>> renderStatsByType = new HashMap<String, Pair<Integer, Long>>();
+  private long lastStatsReportedTime = System.currentTimeMillis();
+  private long statReportFrequencyMs = 1000 * 60;
 
   public DrawingManager(MessageDispatcher<EventType> messageDispatcher) {
     super();
@@ -277,6 +284,7 @@ public class DrawingManager {
           g2d.setComposite(lockedComposite);
         }
         // Draw the component through the g2dWrapper.
+        long componentStart = System.nanoTime();
         try {
           
           if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache          
@@ -294,6 +302,32 @@ public class DrawingManager {
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
           failedComponents.add(component);
+        } finally {
+          // record render stats
+          long componentEnd = System.nanoTime();
+          Pair<Integer, Long> stats = null;
+          String key = component.getClass().getCanonicalName();
+          if (renderStatsByType.containsKey(key)) {
+            stats = renderStatsByType.get(key);
+            stats.setFirst(stats.getFirst() + 1);
+            stats.setSecond(stats.getSecond() + (componentEnd - componentStart));
+          } else {
+            stats = new Pair<Integer, Long>(1, componentEnd - componentStart);
+            renderStatsByType.put(key, stats);
+          }
+          
+          // log render time stats periodically
+          if (System.currentTimeMillis() - lastStatsReportedTime > statReportFrequencyMs) {
+            lastStatsReportedTime = System.currentTimeMillis();
+            String mapAsString = renderStatsByType.keySet().stream()
+                .map(k -> {
+                  Pair<Integer, Long> s = renderStatsByType.get(k);
+                  return k + "=" + s.getFirst() + "x " + 
+                    TimeUnit.MILLISECONDS.convert(s.getSecond(), TimeUnit.NANOSECONDS) + "ms ";
+                })
+                .collect(Collectors.joining(", ", "{", "}"));
+            LOG.debug("Render stats: " + mapAsString);
+          }
         }
         ComponentArea area = g2dWrapper.finishedDrawingComponent();
         if (trackArea && area != null && !area.getOutlineArea().isEmpty()) {
