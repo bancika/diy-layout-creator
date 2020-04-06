@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -138,6 +139,7 @@ public class DrawingManager {
       IComponentFiler filter, Rectangle selectionRect, Collection<IDIYComponent<?>> selectedComponents,
       Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
       List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom) {
+    long start = System.nanoTime();
     failedComponents.clear();
     if (project == null) {
       return failedComponents;
@@ -276,8 +278,12 @@ public class DrawingManager {
         }
         // Draw the component through the g2dWrapper.
         try {
-//          component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
-          DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, trackArea);
+          
+          if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache          
+            DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, trackArea);
+          else // go stragiht to the wrapper
+            component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
+          
           if (g2dWrapper.isTrackingContinuityArea()) {
             LOG.info("Component " + component.getName() + " of type " + component.getClass().getName() + " did not stop tracking continuity area.");            
           }
@@ -427,6 +433,11 @@ public class DrawingManager {
       g2d.setColor(theme.getOutlineColor());
       g2d.fill(extraSpaceArea);
     }
+    
+    long end = System.nanoTime();
+    
+    long ms = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
+    LOG.trace(String.format("Render time = %d ms", ms));
 
     return failedComponents;
   }

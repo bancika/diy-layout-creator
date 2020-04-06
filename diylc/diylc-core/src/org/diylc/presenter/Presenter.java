@@ -284,6 +284,7 @@ public class Presenter implements IPlugInPort {
       instantiationManager.fillWithDefaultProperties(project, null);
       loadProject(project, true, null);
       projectFileManager.startNewFile();
+      DrawingCache.Instance.clear();
     } catch (Exception e) {
       LOG.error("Could not create new file", e);
       view.showMessage("Could not create a new file. Check the log for details.", "Error", IView.ERROR_MESSAGE);
@@ -309,6 +310,7 @@ public class Presenter implements IPlugInPort {
         view.showMessage(builder.toString(), "Warning", IView.WARNING_MESSAGE);
       }
       addToRecentFiles(fileName);
+      DrawingCache.Instance.clear();
     } catch (Exception ex) {
       LOG.error("Could not load file", ex);
       String errorMessage = "Could not open file " + fileName + ". Check the log for details.";

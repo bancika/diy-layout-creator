@@ -60,5 +60,9 @@ public enum DrawOption {
   /**
    * Include extra space around the layout.
    */
-  EXTRA_SPACE;
+  EXTRA_SPACE,
+  /**
+   * Whether components should be cached or not.
+   */
+  ENABLE_CACHING;
 }
