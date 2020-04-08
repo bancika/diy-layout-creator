@@ -31,6 +31,7 @@ import org.diylc.common.ComponentType;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.utils.Pair;
 
 /**
@@ -50,7 +51,40 @@ public class DrawingCache {
   private static final Logger LOG = Logger.getLogger(DrawingCache.class);
 
   public static DrawingCache Instance = new DrawingCache();
+  
+  /**
+   * Prepares cached renderings of those components from the specified map that have {@link ComponentDescriptor#enableCache()} set to true.
+   * 
+   * @param components
+   * @param g2d
+   * @param outlineMode
+   * @param project
+   * @param zoom
+   */
+  @SuppressWarnings("unchecked")
+  public void bulkPrepare(Map<IDIYComponent<?>, ComponentState> components, G2DWrapper g2d, boolean outlineMode, Project project, double zoom) {
+    // run all renders in parallel to utilize all CPU cores
+    components.entrySet().stream().parallel().forEach(x -> {      
+      ComponentType type = ComponentProcessor.getInstance()
+          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getKey().getClass());
 
+      if (type.getEnableCache()) {
+        renderAndCache(x.getKey(), g2d, x.getValue(), outlineMode, project, zoom);
+      }
+    });
+  }
+
+  /**
+   * Draws a component onto the specified {@link G2DWrapper}. If the component has {@link ComponentDescriptor#enableCache()} set to true,
+   * the drawing will come from the cache. Otherwise, it will be drawn as usual.
+   * 
+   * @param component
+   * @param g2d
+   * @param componentState
+   * @param outlineMode
+   * @param project
+   * @param zoom
+   */
   @SuppressWarnings("unchecked")
   public void draw(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
       boolean outlineMode, Project project, double zoom) {
@@ -60,87 +94,8 @@ public class DrawingCache {
     if (type.getEnableCache()) {
       // if we need to apply caching
       Point firstPoint = component.getControlPoint(0);
-
-      // cache hit!
-      CacheValue value = null;
-      if (imageCache.containsKey(component))
-        value = imageCache.get(component);
-
-      // only honor the cache if the component hasn't changed in the meantime
-      if (value == null || !value.getComponent().equalsTo(component)
-          || value.getState() != componentState || value.getZoom() != zoom) {
-        // figure out size and placement of buffer image
-        Rectangle2D rect = component.getCachingBounds();
-        int width = (int)Math.round(rect.getWidth() * zoom);
-        int height = (int)Math.round(rect.getHeight() * zoom);
-        // calculate the position of the first point relative to the caching bounds
-        int dx = (int) (firstPoint.x - rect.getX());
-        int dy = (int) (firstPoint.y - rect.getY());
-        
-        // create image
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        // create graphics
-        Graphics2D cg2d = image.createGraphics();
-
-        // copy over rendering settings so our cached image has the same features
-        cg2d.setRenderingHints(g2d.getRenderingHints());
-
-        // set clip bounds to the whole image
-        cg2d.setClip(0, 0, width, height);
-        
-        // apply zoom
-        if (Math.abs(1.0 - zoom) > 1e-4) {
-          cg2d.scale(zoom, zoom);
-        }
-        // translate to make the top-left corner of the component match (0, 0)
-        cg2d.translate(-firstPoint.x + dx, -firstPoint.y + dy);
-        
-        // wrap the graphics so we can track
-        G2DWrapper wrapper = new G2DWrapper(cg2d, zoom);
-
-        // initialize wrapper
-        wrapper.startedDrawingComponent();
-        
-        long componentStart = System.nanoTime();
-
-        // now draw the component to the buffer image
-        component.draw(wrapper, componentState, outlineMode, project, wrapper);
-        
-        long componentEnd = System.nanoTime();
-        
-        Pair<Counter, Counter> stats;
-        String key = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
-        if (renderStatsByType.containsKey(key)) {
-          stats = renderStatsByType.get(key);
-        } else {
-          stats = new Pair<Counter, Counter>(new Counter(), new Counter());
-          renderStatsByType.put(key, stats);
-        }
-        stats.getFirst().add(componentEnd - componentStart);
-
-        // finalize wrapper
-        wrapper.finishedDrawingComponent();
-
-        cg2d.dispose();
-        
-        // output cached drawings to separate files 
-//        File outputfile = new File("d:\\tmp\\image_" + component.getName() + ".png");
-//        try {
-//          ImageIO.write(image, "png", outputfile);
-//        } catch (IOException e) {
-//          // TODO Auto-generated catch block
-//          e.printStackTrace();
-//        }
-        
-        if (wrapper.getCurrentArea() == null || wrapper.getCurrentArea().isEmpty()) {
-          LOG.warn("Empty outline area detected for " + component.getName());
-        }
-        
-        // add to the cache        
-        value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
-            wrapper.getContinuityNegativeAreas(), componentState, zoom, dx, dy);        
-        imageCache.put(component, value);
-      }
+      
+      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom);     
       
       long componentStart = System.nanoTime();
 
@@ -179,7 +134,7 @@ public class DrawingCache {
     g2d.stopTracking();
     g2d.stopTrackingContinuityArea();
   }
-  
+     
   public void logStats() {
     int totalSizeMB = imageCache.values().stream().map(x -> x.image.getData().getDataBuffer().getSize()).reduce(0, Integer::sum) * 4 / 1024 / 1024; // 4 bytes per pixel
     LOG.debug(String.format("Render cache contains %d elements, approx size is %d MB", imageCache.size(), totalSizeMB));
@@ -194,6 +149,95 @@ public class DrawingCache {
 
   public void clear() {
     imageCache.clear();
+  }
+  
+  private CacheValue renderAndCache(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
+      boolean outlineMode, Project project, double zoom) {
+    // if we need to apply caching
+    Point firstPoint = component.getControlPoint(0);
+
+    // cache hit!
+    CacheValue value = null;
+    if (imageCache.containsKey(component))
+      value = imageCache.get(component);
+
+    // only honor the cache if the component hasn't changed in the meantime
+    if (value == null || !value.getComponent().equalsTo(component)
+        || value.getState() != componentState || value.getZoom() != zoom) {
+      // figure out size and placement of buffer image
+      Rectangle2D rect = component.getCachingBounds();
+      int width = (int)Math.round(rect.getWidth() * zoom);
+      int height = (int)Math.round(rect.getHeight() * zoom);
+      // calculate the position of the first point relative to the caching bounds
+      int dx = (int) (firstPoint.x - rect.getX());
+      int dy = (int) (firstPoint.y - rect.getY());
+      
+      // create image
+      BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      // create graphics
+      Graphics2D cg2d = image.createGraphics();
+
+      // copy over rendering settings so our cached image has the same features
+      cg2d.setRenderingHints(g2d.getRenderingHints());
+
+      // set clip bounds to the whole image
+      cg2d.setClip(0, 0, width, height);
+      
+      // apply zoom
+      if (Math.abs(1.0 - zoom) > 1e-4) {
+        cg2d.scale(zoom, zoom);
+      }
+      // translate to make the top-left corner of the component match (0, 0)
+      cg2d.translate(-firstPoint.x + dx, -firstPoint.y + dy);
+      
+      // wrap the graphics so we can track
+      G2DWrapper wrapper = new G2DWrapper(cg2d, zoom);
+
+      // initialize wrapper
+      wrapper.startedDrawingComponent();
+      
+      long componentStart = System.nanoTime();
+
+      // now draw the component to the buffer image
+      component.draw(wrapper, componentState, outlineMode, project, wrapper);
+      
+      long componentEnd = System.nanoTime();
+      
+      Pair<Counter, Counter> stats;
+      String key = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
+      if (renderStatsByType.containsKey(key)) {
+        stats = renderStatsByType.get(key);
+      } else {
+        stats = new Pair<Counter, Counter>(new Counter(), new Counter());
+        renderStatsByType.put(key, stats);
+      }
+      stats.getFirst().add(componentEnd - componentStart);
+
+      // finalize wrapper
+      wrapper.finishedDrawingComponent();
+
+      cg2d.dispose();
+      
+      // output cached drawings to separate files 
+//      File outputfile = new File("d:\\tmp\\image_" + component.getName() + ".png");
+//      try {
+//        ImageIO.write(image, "png", outputfile);
+//      } catch (IOException e) {
+//        // TODO Auto-generated catch block
+//        e.printStackTrace();
+//      }
+      
+      if (wrapper.getCurrentArea() == null || wrapper.getCurrentArea().isEmpty()) {
+        LOG.warn("Empty outline area detected for " + component.getName());
+      }
+      
+      // add to the cache        
+      value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
+          wrapper.getContinuityNegativeAreas(), componentState, zoom, dx, dy);        
+      imageCache.put(component, value);
+    }
+    
+    return value;
   }
 
   private class CacheValue {

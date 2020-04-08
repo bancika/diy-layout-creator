@@ -254,13 +254,10 @@ public class DrawingManager {
     // AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
 
     // g2dWrapper.resetTx();
-
-    // componentAreaMap.clear();
+    
+    // put components and their states in a map
+    Map<IDIYComponent<?>, ComponentState> componentStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
     for (IDIYComponent<?> component : project.getComponents()) {
-      // Do not draw the component if it's filtered out.
-      if (filter != null && !filter.testComponent(component)) {
-        continue;
-      }
       ComponentState state = ComponentState.NORMAL;
       if (drawOptions.contains(DrawOption.SELECTION) && selectedComponents.contains(component)) {
         if (dragInProgress) {
@@ -269,6 +266,23 @@ public class DrawingManager {
           state = ComponentState.SELECTED;
         }
       }
+      componentStateMap.put(component, state);
+    }
+    
+    boolean outlineMode = drawOptions.contains(DrawOption.OUTLINE_MODE);
+    
+    // give the cache a chance to prepare all the components in multiple threads
+    if (drawOptions.contains(DrawOption.ENABLE_CACHING)) {
+      DrawingCache.Instance.bulkPrepare(componentStateMap, g2dWrapper, outlineMode, project, zoom);
+    }
+
+    // componentAreaMap.clear();
+    for (IDIYComponent<?> component : project.getComponents()) {
+      // Do not draw the component if it's filtered out.
+      if (filter != null && !filter.testComponent(component)) {
+        continue;
+      }
+      ComponentState state = componentStateMap.get(component);
       // Do not track the area if component is not invalidated and was
       // drawn in the same state.
       boolean trackArea = lastDrawnStateMap.get(component) != state;
@@ -289,7 +303,7 @@ public class DrawingManager {
           if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache          
             DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom);
           else // go stragiht to the wrapper
-            component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
+            component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
           
           if (g2dWrapper.isTrackingContinuityArea()) {
             LOG.info("Component " + component.getName() + " of type " + component.getClass().getName() + " did not stop tracking continuity area.");            
@@ -652,32 +666,53 @@ public class DrawingManager {
     List<Area> newAreas = new ArrayList<Area>();
     boolean[] consumed = new boolean[areas.size()];
     for (int i = 0; i < areas.size(); i++) {
+      Area a1 = areas.get(i);
+      Rectangle2D bounds1 = a1.getBounds2D();
+      
+      Map<Area, Integer> candidates = new HashMap<Area, Integer>();
+      
       for (int j = i + 1; j < areas.size(); j++) {
-        if (consumed[j])
-          continue;
-        Area a1 = areas.get(i);
+//        if (consumed[j])
+//          continue;        
         Area a2 = areas.get(j);
-        Area intersection = null;
-        if (a1.getBounds2D().intersects(a2.getBounds())) {
-          intersection = new Area(a1);
-          intersection.intersect(a2);
-        }
-        // if the two areas intersect, make a union and consume the second area
-        if (intersection != null && !intersection.isEmpty()) {
-          a1.add(a2);
-          consumed[j] = true;
-        } else { // maybe there's a connection between them
-          for (Connection p : connections) { // use getBounds to optimize the computation, don't get into complex math if not needed
-            if ((a1.getBounds().contains(p.getP1()) && a2.getBounds().contains(p.getP2()) && a1.contains(p.getP1()) && a2.contains(p.getP2())) || 
-                (a1.getBounds().contains(p.getP2()) && a2.getBounds().contains(p.getP1())) && a1.contains(p.getP2()) && a2.contains(p.getP1())) {
-              a1.add(a2);
-              consumed[j] = true;
-              break;
-            }
+        Rectangle2D bounds2 = a2.getBounds2D();
+        
+        // maybe there's a direct connection between them, try that first because it's faster than area overlap
+        for (Connection p : connections) { // use getBounds to optimize the computation, don't get into complex math if not needed
+          if ((bounds1.contains(p.getP1()) && bounds2.contains(p.getP2()) && a1.contains(p.getP1()) && a2.contains(p.getP2())) || 
+              (bounds1.contains(p.getP2()) && bounds2.contains(p.getP1())) && a1.contains(p.getP2()) && a2.contains(p.getP1())) {
+            a1.add(a2);
+            consumed[j] = true;
+            break;
           }
         }
+        
+        if (bounds1.intersects(bounds2)) {
+          candidates.put(a2, j);
+        }
       }
+      
+      Set<Area> mergeQueue = new HashSet<Area>();
+      
+      // run a parallel for-each to determine which areas overlap with a1 and add them to a queue to be added to a1 later
+      if (candidates.size() > 0) {
+        candidates.entrySet().parallelStream().forEach(x -> {
+          Area intersection = new Area(a1);
+          intersection.intersect(x.getKey());
+          if (intersection != null && !intersection.isEmpty()) {
+            synchronized (mergeQueue) {
+              mergeQueue.add(x.getKey());  
+            }            
+            consumed[x.getValue()] = true;
+          }
+        });
+      }
+      
+      // if make a union of all intersecting areas
+      for(Area a2 : mergeQueue)
+        a1.add(a2);
     }
+    
     for (int i = 0; i < areas.size(); i++)
       if (!consumed[i])
         newAreas.add(areas.get(i));
