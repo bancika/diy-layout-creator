@@ -2897,6 +2897,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added component-level caching that should speed up rendering dramatically. While in experimental phase, it will be exposed as "Enable Cache Boost" item in the "Config" menu so it can be turned off if it causes any issues</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved performance math calculations used to model "Twisted Wires"</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

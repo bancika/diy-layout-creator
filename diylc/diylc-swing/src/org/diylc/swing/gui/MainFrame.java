@@ -23,6 +23,7 @@ package org.diylc.swing.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -108,6 +109,7 @@ public class MainFrame extends JFrame implements ISwingUI {
   public MainFrame() {
     super("DIYLC 3");
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    setPreferredSize(new Dimension(1024, 700));
     createBasePanels();
     menuMap = new HashMap<String, JMenu>();
     buttonGroupMap = new HashMap<String, ButtonGroup>();
