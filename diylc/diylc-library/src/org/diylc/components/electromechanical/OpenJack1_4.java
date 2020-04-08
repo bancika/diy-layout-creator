@@ -351,7 +351,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
   @EditableProperty
   public Integer getAngle() {
-    if (angle == null) {
+    if (angle == null || (orientation != null && orientation != Orientation.DEFAULT)) {
       if (orientation != null && orientation != Orientation.DEFAULT)
         angle = Integer.parseInt(orientation.name().replace("_", ""));
       else 

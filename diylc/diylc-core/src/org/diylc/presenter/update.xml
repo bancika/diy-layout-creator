@@ -2900,6 +2900,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Older files that contain "Open Jack 1/4" components sometimes open with the jacks rotated the wrong way</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Switched terminal on the "Open Jack 1/4" does not stick to other components</description>
 				</org.diylc.appframework.update.Change>							
 			</changes>
