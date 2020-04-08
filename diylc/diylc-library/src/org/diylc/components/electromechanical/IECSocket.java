@@ -29,6 +29,7 @@ import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -51,7 +52,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "IEC Socket", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted IEC power socket", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "IEC", autoEdit = false)
+    instanceNamePrefix = "IEC", autoEdit = false, enableCache = true)
 public class IECSocket extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;  
@@ -391,5 +392,12 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {    
+    int margin = 20;    
+    Rectangle2D bounds = getBody()[0].getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

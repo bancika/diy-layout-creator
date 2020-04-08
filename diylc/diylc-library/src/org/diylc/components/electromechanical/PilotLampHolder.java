@@ -53,7 +53,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Pilot Lamp Holder", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Fender-style pilot bulb holder for T2 and T-3 ¼ miniature bayonet lamps",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PL")
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PL", enableCache = true)
 public class PilotLampHolder extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -411,5 +411,17 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
   
   protected double getTheta() {
     return Math.toRadians(getAngle());
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Area area = new Area();
+    Area[] body = getBody();
+    int margin = 20;
+    for (Area a : body)
+      if (a != null)
+        area.add(a);
+    Rectangle2D bounds = area.getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

@@ -31,6 +31,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -56,7 +57,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Cliff-style closed panel mount 1/4\" phono jack",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = CliffJackTransformer.class)
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = CliffJackTransformer.class,
+    enableCache = true)
 public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -345,5 +347,17 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Area area = new Area();
+    Area[] body = getBody();
+    int margin = 20;
+    for (Area a : body)
+      if (a != null)
+        area.add(a);
+    Rectangle2D bounds = area.getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

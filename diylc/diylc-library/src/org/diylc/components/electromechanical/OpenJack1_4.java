@@ -30,6 +30,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -54,7 +55,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Open 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Switchcraft-style open panel mount 1/4\" phono jack, stereo and mono",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", enableCache = true)
 public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
   private static final double RING_THETA = Math.PI * 0.795;
@@ -323,7 +324,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
   @Override
   public boolean isControlPointSticky(int index) {
-    return index < 2 || getType() == OpenJackType.STEREO;
+    return index < 2 || (getType() == OpenJackType.STEREO || getType() == OpenJackType.SWITCHED);
   }
 
   @Override
@@ -407,6 +408,18 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Area area = new Area();
+    Area[] body = getBody();
+    int margin = 20;
+    for (Area a : body)
+      if (a != null)
+        area.add(a);
+    Rectangle2D bounds = area.getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
   
   public enum OpenJackType {

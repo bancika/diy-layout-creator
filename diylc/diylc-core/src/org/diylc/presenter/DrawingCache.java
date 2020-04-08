@@ -53,7 +53,7 @@ public class DrawingCache {
 
   @SuppressWarnings("unchecked")
   public void draw(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom, boolean trackArea) {
+      boolean outlineMode, Project project, double zoom) {
     ComponentType type = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
 
@@ -69,7 +69,7 @@ public class DrawingCache {
       // only honor the cache if the component hasn't changed in the meantime
       if (value == null || !value.getComponent().equalsTo(component)
           || value.getState() != componentState || value.getZoom() != zoom) {
-        LOG.trace("Rendering " + component.getName() + " for cache.");
+        // figure out size and placement of buffer image
         Rectangle2D rect = component.getCachingBounds();
         int width = (int)Math.round(rect.getWidth() * zoom);
         int height = (int)Math.round(rect.getHeight() * zoom);
@@ -100,9 +100,6 @@ public class DrawingCache {
 
         // initialize wrapper
         wrapper.startedDrawingComponent();
-        if (!trackArea) {
-          wrapper.stopTracking();
-        }
         
         long componentStart = System.nanoTime();
 
@@ -134,6 +131,10 @@ public class DrawingCache {
 //          // TODO Auto-generated catch block
 //          e.printStackTrace();
 //        }
+        
+        if (wrapper.getCurrentArea() == null || wrapper.getCurrentArea().isEmpty()) {
+          LOG.warn("Empty outline area detected for " + component.getName());
+        }
         
         // add to the cache        
         value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
@@ -170,11 +171,13 @@ public class DrawingCache {
       stats.getSecond().add(componentEnd - componentStart);
 
       // copy over tracking area from the cache
-      g2d.merge(value.getCurrentArea(), value.getContinuityPositiveAreas(), value.getContinuityNegativeAreas());
+      g2d.merge(value.getCurrentArea(), value.getContinuityPositiveAreas(), value.getContinuityNegativeAreas());      
     } else {
       // no caching, just draw as usual
       component.draw(g2d, componentState, outlineMode, project, g2d);
     }
+    g2d.stopTracking();
+    g2d.stopTrackingContinuityArea();
   }
   
   public void logStats() {

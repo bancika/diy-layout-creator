@@ -57,7 +57,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "DIP Switch", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "SW", description = "Dual-in-line package switch",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class,
+    enableCache = true)
 public class DIPSwitch extends AbstractTransparentComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
@@ -542,6 +543,13 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    int margin = 20;
+    Rectangle2D bounds = getBody()[0].getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
   
   private String toBinary(int n) {

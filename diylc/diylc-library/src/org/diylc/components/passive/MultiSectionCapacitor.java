@@ -29,6 +29,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.text.Format;
 
@@ -57,7 +58,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Multi-Section Capacitor", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "C", description = "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
 public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacitance[]> {
 
   private static final long serialVersionUID = 1L;
@@ -521,5 +522,12 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {    
+    int margin = 20;    
+    Rectangle2D bounds = getBody()[0].getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

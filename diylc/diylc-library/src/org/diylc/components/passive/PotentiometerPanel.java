@@ -53,7 +53,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
     description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT,
-    transformer = PotentiometerTransformer.class)
+    transformer = PotentiometerTransformer.class, enableCache = true)
 public class PotentiometerPanel extends AbstractPotentiometer {
 
   private static final long serialVersionUID = 1L;
@@ -468,6 +468,18 @@ public class PotentiometerPanel extends AbstractPotentiometer {
       return (index1 + 1) + "-" + (index2 + 1);
     
     return null;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Area area = new Area();
+    Area[] body = getBody();
+    int margin = 20;
+    for (Area a : body)
+      if (a != null)
+        area.add(a);
+    Rectangle2D bounds = area.getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
   
   @Override

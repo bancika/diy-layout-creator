@@ -32,6 +32,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.StringUtils;
@@ -56,7 +57,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Enclosed panel mount 1/4\" phono jack", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "J", autoEdit = false, transformer = ClosedJackTransformer.class)
+    instanceNamePrefix = "J", autoEdit = false, transformer = ClosedJackTransformer.class, enableCache = true)
 public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -369,5 +370,17 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Area area = new Area();
+    Shape[] body = getBody();
+    int margin = 20;
+    for (Shape a : body)
+      if (a != null)
+        area.add(new Area(a));
+    Rectangle2D bounds = area.getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

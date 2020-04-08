@@ -251,6 +251,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       if (bodyColor != null) {
         g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);    
         
+        drawingObserver.startTracking();
+        
         if (!outlineMode && ConfigurationManager.getInstance().readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
           Point p1 = new Point((int) (length / 2), 0);
           Point p2 = new Point((int) (length / 2), (int) width);
@@ -262,6 +264,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         } else {        
           g2d.fill(shape);
         }
+        
+        drawingObserver.stopTracking();
       }
       
       drawingObserver.stopTracking();
@@ -287,7 +291,15 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
                 : borderColor;
       }
       g2d.setColor(finalBorderColor);
+      
+      // if we are not filling the shape with color we need to ensure that we track the outline (e.g. with schematic symbols)
+      if (bodyColor == null)
+        drawingObserver.startTracking();
+        
       g2d.draw(shape);
+      
+      if (bodyColor == null)
+        drawingObserver.stopTracking();
       
       if (decorateAboveBorder()) {
         g2d.setComposite(newComposite);

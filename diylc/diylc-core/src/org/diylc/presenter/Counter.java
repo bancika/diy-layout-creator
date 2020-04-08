@@ -41,4 +41,8 @@ public class Counter {
   public String toString() {   
     return String.format("%dx %dms", count, TimeUnit.MILLISECONDS.convert(nanotime, TimeUnit.NANOSECONDS));
   }
+   
+  public String toAvgString() {   
+    return String.format("%dx %dms avg", count, TimeUnit.MILLISECONDS.convert(nanotime / count, TimeUnit.NANOSECONDS));
+  }
 }

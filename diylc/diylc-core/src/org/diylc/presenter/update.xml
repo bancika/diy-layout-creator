@@ -2884,6 +2884,26 @@
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>3</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-04-05 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added component-level caching that should speed up rendering dramatically. While in experimental phase, it will be exposed as "Enable Cache Boost" item in the "Config" menu so it can be turned off if it causes any issues</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Switched terminal on the "Open Jack 1/4" does not stick to other components</description>
+				</org.diylc.appframework.update.Change>							
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
 	</a>
 </java.util.Arrays_-ArrayList>

@@ -75,7 +75,7 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Continuous Creation",
             IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);
     swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Enable Caching (Beta)",
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Enable Cache Boost",
             IPlugInPort.CACHING_ENABLED_KEY, true), CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Export Grid", IPlugInPort.EXPORT_GRID_KEY, false),

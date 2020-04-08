@@ -39,7 +39,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -111,6 +110,7 @@ public class DrawingManager {
   private Map<String, Counter> renderStatsByType = new HashMap<String, Counter>();
   private long lastStatsReportedTime = System.currentTimeMillis();
   private long statReportFrequencyMs = 1000 * 60;
+  private Counter totalStats = new Counter();
 
   public DrawingManager(MessageDispatcher<EventType> messageDispatcher) {
     super();
@@ -145,7 +145,7 @@ public class DrawingManager {
       IComponentFiler filter, Rectangle selectionRect, Collection<IDIYComponent<?>> selectedComponents,
       Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
       List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom) {
-    long start = System.nanoTime();
+    long totalStartTime = System.nanoTime();
     failedComponents.clear();
     if (project == null) {
       return failedComponents;
@@ -287,7 +287,7 @@ public class DrawingManager {
         try {
           
           if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache          
-            DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, trackArea);
+            DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom);
           else // go stragiht to the wrapper
             component.draw(g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
           
@@ -453,10 +453,9 @@ public class DrawingManager {
       g2d.fill(extraSpaceArea);
     }
     
-    long end = System.nanoTime();
+    long totalEndTime = System.nanoTime();
     
-    long ms = TimeUnit.MILLISECONDS.convert(end - start, TimeUnit.NANOSECONDS);
-    LOG.trace(String.format("Render time = %d ms", ms));
+    totalStats.add(totalEndTime - totalStartTime);
     
     logStats();
 
@@ -471,6 +470,7 @@ public class DrawingManager {
           .map(e -> e.toString())
           .collect(Collectors.joining("; ", "{", "}"));
       LOG.debug("Render stats: " + mapAsString);
+      LOG.debug("Page stats: " + totalStats.toAvgString());
       DrawingCache.Instance.logStats();
     }
   }

@@ -29,6 +29,7 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -52,7 +53,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "SW", autoEdit = false)
+    instanceNamePrefix = "SW", autoEdit = false, enableCache = true)
 public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
@@ -454,5 +455,12 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
         return (index2 - index1) < 3 && index1 % 3 == 0 && index2 % 3 == position + 1;      
     }
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    int margin = 20;
+    Rectangle2D bounds = getBody().getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

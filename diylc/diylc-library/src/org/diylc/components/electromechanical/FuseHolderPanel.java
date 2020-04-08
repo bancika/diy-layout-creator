@@ -53,7 +53,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Fuse Holder (Panel)", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted fuse holder", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "FH", autoEdit = false)
+    instanceNamePrefix = "FH", autoEdit = false, enableCache = true)
 public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;  
@@ -337,5 +337,12 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {    
+    int margin = 20;    
+    Rectangle2D bounds = getBody()[0].getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }
