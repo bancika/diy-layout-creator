@@ -145,10 +145,10 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     g2d.setColor(COMMON_LUG_COLOR.darker());
     g2d.draw(body[3]);
     
-    g2d.setColor(Color.black);
-    for(int i = 0; i < getControlPointCount(); i++) {
-      g2d.drawString(i + "", controlPoints[i].x, controlPoints[i].y);
-    }
+//    g2d.setColor(Color.black);
+//    for(int i = 0; i < getControlPointCount(); i++) {
+//      g2d.drawString(i + "", controlPoints[i].x, controlPoints[i].y);
+//    }
   }
 
   @SuppressWarnings("incomplete-switch")

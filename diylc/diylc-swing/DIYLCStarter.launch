@@ -12,5 +12,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.diylc.DIYLCStarter"/>
 <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="diylc-swing"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="diylc-swing"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true -Ddorg.diylc.debugContinuityAreas=true -Dorg.diylc.debugComponentAreas=true -Ddorg.diylc.WriteStaticVariants=true -Dorg.diylc.WriteStaticBlocks=true"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true -Ddorg.diylc.debugContinuityAreas=true -Ddorg.diylc.debugComponentAreas=true -Ddorg.diylc.WriteStaticVariants=true -Dorg.diylc.WriteStaticBlocks=true"/>
 </launchConfiguration>
