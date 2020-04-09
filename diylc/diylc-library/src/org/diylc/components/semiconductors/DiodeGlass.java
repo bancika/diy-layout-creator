@@ -42,7 +42,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Diode (glass)", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D",
     description = "Glass diode, like most small signal diodes.", zOrder = IDIYComponent.COMPONENT,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class DiodeGlass extends AbstractLeadedComponent<String> {
 
   private static final long serialVersionUID = 1L;

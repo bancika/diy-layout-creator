@@ -52,7 +52,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transistor (TO-220)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistors with metal tab for heat sink mounting",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO220Transformer.class)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO220Transformer.class,
+    enableCache = true)
 public class TransistorTO220 extends AbstractTransistorPackage {
 
   private static final long serialVersionUID = 1L;

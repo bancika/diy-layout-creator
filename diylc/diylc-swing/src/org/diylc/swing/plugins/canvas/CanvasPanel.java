@@ -266,8 +266,11 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
       drawOptions.add(DrawOption.EXTRA_SPACE);
     }
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.CACHING_ENABLED_KEY, true)) {
+      drawOptions.add(DrawOption.ENABLE_CACHING);
+    }
     
-    plugInPort.draw(g2d, drawOptions, null, null);
+    plugInPort.draw(g2d, drawOptions, null, null, visibleRect);
     
     if (useHardwareAcceleration) {
       VolatileImage volatileImage = (VolatileImage) bufferImage;
@@ -322,16 +325,18 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   }
 
   // Autoscroll
+  
+  private int autoScrollSize = 64;
 
   @Override
   public void autoscroll(Point cursorLocn) {
-    scrollRectToVisible(new Rectangle(cursorLocn.x - 15, cursorLocn.y - 15, 30, 30));
+    scrollRectToVisible(new Rectangle(cursorLocn.x - autoScrollSize, cursorLocn.y - autoScrollSize, autoScrollSize * 2, autoScrollSize * 2));
   }
 
   @Override
   public Insets getAutoscrollInsets() {
     Rectangle rect = getVisibleRect();
-    return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15, rect.x + rect.width + 15);
+    return new Insets(rect.y - autoScrollSize, rect.x - autoScrollSize, rect.y + rect.height + autoScrollSize, rect.x + rect.width + autoScrollSize);
   }
   
   public void setUseHardwareAcceleration(boolean useHardwareAcceleration) {

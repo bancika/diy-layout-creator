@@ -63,7 +63,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Bridge Rectifier", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "BR", description = "Few variations of bridge rectifier chips",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class,
+    enableCache = true)
 public class BridgeRectifier extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -667,6 +668,13 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {    
+    int margin = 20;    
+    Rectangle2D bounds = getBody()[0].getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 
   public static enum RectifierType {

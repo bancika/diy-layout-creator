@@ -42,7 +42,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Diode (plastic)", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D",
     description = "Plastic diode, like most rectifier, zener, schottky, etc.", zOrder = IDIYComponent.COMPONENT,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class DiodePlastic extends AbstractLeadedComponent<String> {
 
   private static final long serialVersionUID = 1L;

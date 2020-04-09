@@ -52,7 +52,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transistor (TO-1)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with small metal body",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO1Transformer.class)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO1Transformer.class,
+    enableCache = true)
 public class TransistorTO1 extends AbstractTransistorPackage {
 
   private static final long serialVersionUID = 1L;

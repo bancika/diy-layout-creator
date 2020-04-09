@@ -24,6 +24,7 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
@@ -46,7 +47,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Eyelet", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Eyelet or turret terminal", instanceNamePrefix = "Eyelet",
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class)
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class,
+    enableCache = true)
 public class Eyelet extends AbstractComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -169,5 +171,11 @@ public class Eyelet extends AbstractComponent<String> {
   @Override
   public String getControlPointNodeName(int index) {   
     return null;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    double size = getSize().convertToPixels();
+    return new Rectangle2D.Double(point.getX() - size, point.getY() - size, size * 2, size * 2);
   }
 }

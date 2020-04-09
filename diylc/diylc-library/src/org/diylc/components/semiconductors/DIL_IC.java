@@ -57,7 +57,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "DIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Dual-in-line package IC",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class,
+    enableCache = true)
 public class DIL_IC extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -541,6 +542,28 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    int minX = Integer.MAX_VALUE;
+    int maxX = Integer.MIN_VALUE;
+    int minY = Integer.MAX_VALUE;
+    int maxY = Integer.MIN_VALUE;
+    int margin = 50;
+    for (int i = 0; i < getControlPointCount(); i++) {
+      Point p = getControlPoint(i);
+      if (p.x < minX)
+        minX = p.x;
+      if (p.x > maxX)
+        maxX = p.x;
+      if (p.y < minY)
+        minY = p.y;
+      if (p.y > maxY)
+        maxY = p.y;
+    }
+    
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
 
   public static enum PinCount {

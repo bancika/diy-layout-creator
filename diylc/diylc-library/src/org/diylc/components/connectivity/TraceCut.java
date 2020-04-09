@@ -24,6 +24,7 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
@@ -45,7 +46,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Designates the place where a trace on the vero board needs to be cut", instanceNamePrefix = "Cut",
     zOrder = IDIYComponent.BOARD + 1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class TraceCut extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;
@@ -237,5 +238,11 @@ public class TraceCut extends AbstractComponent<Void> {
   @Override
   public String getControlPointNodeName(int index) {   
     return null;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    double size = getSize().convertToPixels();
+    return new Rectangle2D.Double(point.getX() - size, point.getY() - size, size * 2, size * 2);
   }
 }

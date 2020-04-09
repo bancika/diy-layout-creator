@@ -252,4 +252,9 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public boolean canPointMoveFreely(int pointIndex) {   
     return true;
   }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    return null;
+  }
 }

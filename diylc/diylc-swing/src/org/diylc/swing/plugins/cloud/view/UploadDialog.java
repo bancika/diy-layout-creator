@@ -319,7 +319,7 @@ public class UploadDialog extends ButtonDialog {
     }
 
 //    g2d.scale(zoomRatio, zoomRatio);
-    UploadDialog.this.plugInPort.draw(g2d, EnumSet.of(DrawOption.ANTIALIASING), null, zoomRatio);
+    UploadDialog.this.plugInPort.draw(g2d, EnumSet.of(DrawOption.ANTIALIASING), null, zoomRatio, null);
   }
 
   public String getKeywords() {

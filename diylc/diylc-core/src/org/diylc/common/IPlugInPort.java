@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String FAVORITES_KEY = "favorites";
   public static final String RENUMBER_ON_PASTE_KEY = "renumberOnPaste";
   public static final String RULER_IN_SUBDIVISION_KEY = "rulerInSubdivision";
+  public static final String CACHING_ENABLED_KEY = "cachingEnabled";
   
   public static final String RULER_IN_SUBDIVISION_2 = "base of 2";
   public static final String RULER_IN_SUBDIVISION_10 = "base of 10";
@@ -192,8 +194,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param drawOptions specific drawing options
    * @param filter
    * @param externalZoom
+   * @param visibleRect
    */
-  void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter, Double externalZoom);
+  void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter, Double externalZoom, Rectangle2D visibleRect);
 
   Double[] getAvailableZoomLevels();
 

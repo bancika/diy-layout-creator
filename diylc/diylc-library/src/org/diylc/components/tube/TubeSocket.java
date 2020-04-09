@@ -55,7 +55,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes",
     instanceNamePrefix = "V", description = "Various types of tube/valve sockets",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
 public class TubeSocket extends AbstractTransparentComponent<String> {
 
   private static final Size B9A_PIN_SPACING_CHASSIS = new Size(12.5d, SizeUnit.mm);
@@ -437,6 +437,13 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     updateControlPoints();
     // Reset body shape
     body = null;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Rectangle2D rect = getBody().getBounds2D();
+    int margin = 40; // to catch the pins that are outside the body, if needed
+    return new Rectangle2D.Double(rect.getX() - margin, rect.getY() - margin, rect.getWidth() + 2 * margin, rect.getHeight() + 2 * margin);
   }
 
   public static enum Base {

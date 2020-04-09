@@ -290,7 +290,7 @@ public class TemplateDialog extends JDialog {
           super.paint(g);
           // Graphics2D g2d = (Graphics2D) g;
           // AffineTransform transform = g2d.getTransform();
-          presenter.draw((Graphics2D) g, EnumSet.of(DrawOption.ZOOM, DrawOption.ANTIALIASING), null, null);
+          presenter.draw((Graphics2D) g, EnumSet.of(DrawOption.ZOOM, DrawOption.ANTIALIASING), null, null, null);
           // g2d.setTransform(transform);
           // Rectangle rect = canvasPanel.getBounds();
           // BorderFactory.createEtchedBorder().paintBorder(canvasPanel,

@@ -76,6 +76,7 @@ import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -284,6 +285,7 @@ public class Presenter implements IPlugInPort {
       instantiationManager.fillWithDefaultProperties(project, null);
       loadProject(project, true, null);
       projectFileManager.startNewFile();
+      DrawingCache.Instance.clear();
     } catch (Exception e) {
       LOG.error("Could not create new file", e);
       view.showMessage("Could not create a new file. Check the log for details.", "Error", IView.ERROR_MESSAGE);
@@ -309,6 +311,7 @@ public class Presenter implements IPlugInPort {
         view.showMessage(builder.toString(), "Warning", IView.WARNING_MESSAGE);
       }
       addToRecentFiles(fileName);
+      DrawingCache.Instance.clear();
     } catch (Exception ex) {
       LOG.error("Could not load file", ex);
       String errorMessage = "Could not open file " + fileName + ". Check the log for details.";
@@ -457,7 +460,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFiler filter, Double externalZoom) {
+  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFiler filter, Double externalZoom, Rectangle2D visibleRect) {
     if (currentProject == null) {
       return;
     }
@@ -499,7 +502,8 @@ public class Presenter implements IPlugInPort {
                 getLockedComponents(),
                 groupedComponents,
                 Arrays.asList(instantiationManager.getFirstControlPoint(),
-                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress, externalZoom);
+                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress, externalZoom,
+                visibleRect);
     List<String> failedComponentNames = new ArrayList<String>();
     for (IDIYComponent<?> component : failedComponents) {
       failedComponentNames.add(component.getName());
@@ -859,7 +863,8 @@ public class Presenter implements IPlugInPort {
           if (selectedComponents.contains(component) && component.canPointMoveFreely(pointIndex)
               && findAllGroupedComponents(component).size() == 1) {
             try {
-              if (previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE) {
+              if (previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE && 
+                  component.getControlPointVisibilityPolicy(pointIndex) != VisibilityPolicy.NEVER) {
                 Set<Integer> indices = new HashSet<Integer>();
                 indices.add(pointIndex);
                 components.put(component, indices);

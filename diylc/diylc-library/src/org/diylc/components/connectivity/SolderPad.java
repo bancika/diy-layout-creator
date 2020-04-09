@@ -44,7 +44,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Copper solder pad, round or square", instanceNamePrefix = "Pad",
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class)
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, enableCache = true)
 public class SolderPad extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;
@@ -190,6 +190,12 @@ public class SolderPad extends AbstractComponent<Void> {
 
   @Override
   public void setValue(Void value) {}
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    double size = getSize().convertToPixels();
+    return new Rectangle2D.Double(point.getX() - size, point.getY() - size, size * 2, size * 2);
+  }
 
   public static enum Type {
     ROUND, SQUARE, OVAL_HORIZONTAL, OVAL_VERTICAL;

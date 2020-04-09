@@ -30,6 +30,7 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.diylc.common.LineStyle;
@@ -48,7 +49,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Twisted Leads", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "A pair of flexible leads twisted tighly together", zOrder = IDIYComponent.COMPONENT,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class TwistedWire extends AbstractCurvedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
@@ -314,23 +315,26 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
     else
       stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
 
-    double segmentLength = thickness * 6;
+    double segmentLength = thickness * 6; // chosen empirically
 
     // Convert to polygon
     List<Line2D> polygon = new ArrayList<Line2D>();
     for (CubicCurve2D curve : curves)
       polygon.addAll(split(curve, segmentLength));
+    
+    List<List<Path2D>> segments = new ArrayList<List<Path2D>>();
+    segments.add(new ArrayList<Path2D>());
+    segments.add(new ArrayList<Path2D>());
 
-    List<Path2D> firstCurves = new ArrayList<Path2D>();
-    List<Path2D> secondCurves = new ArrayList<Path2D>();
+    Path2D[] currentPaths = new Path2D[2];
+    currentPaths[0] = new Path2D.Double();
+    currentPaths[1] = new Path2D.Double();
+    
+    double offset = thickness * 1.5; // chosen empirically
+    double rectSize = thickness * 3.5; // chosen empirically
 
-    Path2D current1 = new Path2D.Double();
-    Path2D current2 = new Path2D.Double();
-    double offset = thickness * 1.5;
-    double rectSize = thickness * 3.5;
-
-    current1.moveTo(polygon.get(0).getX1(), polygon.get(0).getY1());
-    current2.moveTo(polygon.get(0).getX1(), polygon.get(0).getY1());
+    currentPaths[0].moveTo(polygon.get(0).getX1(), polygon.get(0).getY1());
+    currentPaths[1].moveTo(polygon.get(0).getX1(), polygon.get(0).getY1());
 
     // create curved paths for each segment of the twisted pair
     for (int i = 0; i < polygon.size(); i++) {
@@ -338,61 +342,76 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
       double centerX = (line.getX1() + line.getX2()) / 2;
       double centerY = (line.getY1() + line.getY2()) / 2;
       double theta = Math.atan2(line.getY2() - line.getY1(), line.getX2() - line.getX1());
-
+      
       double sign = i % 2 == 0 ? 1 : -1;
-
-      double theta1 = theta - sign * Math.PI / 2;
-      double theta2 = theta + sign * Math.PI / 2;
-
-      current1.quadTo(centerX + offset * Math.cos(theta1),
-          centerY + offset * Math.sin(theta1), line.getX2(), line.getY2());
-      current2.quadTo(centerX + offset * Math.cos(theta2),
-          centerY + offset * Math.sin(theta2), line.getX2(), line.getY2());
-
-      if (i % 2 == 0 || i == polygon.size() - 1) {
-        firstCurves.add(current1);
-        current1 = new Path2D.Double();
-        current1.moveTo(line.getX2(), line.getY2());
+      double[] thetas = new double[] { theta - sign * Math.PI / 2,  theta + sign * Math.PI / 2}; 
+      
+      int finalI = i;
+      
+      // calculate curve segments in parallel
+      Arrays.stream(new Integer[] { 0, 1 }).parallel().forEach((j) -> {
+        currentPaths[j].quadTo(centerX + offset * Math.cos(thetas[j]),
+            centerY + offset * Math.sin(thetas[j]), line.getX2(), line.getY2());
+        if (finalI % 2 == 0 || finalI == polygon.size() - 1) {
+          segments.get(j).add(currentPaths[j]);
+          currentPaths[j] = new Path2D.Double();
+          currentPaths[j].moveTo(line.getX2(), line.getY2());
+        }
+      });
+    }
+    
+    Area[] outputAreas = new Area[] { new Area(), new Area() };
+    
+    // create stroked areas in parallel
+    Arrays.stream(new Integer[] { 0, 1 }).parallel().forEach((j) -> {
+      for (Path2D p : segments.get(j)) {
+        outputAreas[j].add(new Area(stroke.createStrokedShape(p)));
       }
-      if (i % 2 == 1 || i == polygon.size() - 1) {
-        secondCurves.add(current2);
-        current2 = new Path2D.Double();
-        current2.moveTo(line.getX2(), line.getY2());
-      }
-    }
-
-    // convert to Area
-    for (Path2D p : firstCurves) {
-      firstLeadArea.add(new Area(stroke.createStrokedShape(p)));
-    }
-    for (Path2D p : secondCurves) {
-      secondLeadArea.add(new Area(stroke.createStrokedShape(p)));
-    }
+    });
 
     // at overlapping points, decide which lead goes on top and clear the overlapping area from the lead below
+    Integer[] idx = new Integer[polygon.size()];
     for (int i = 0; i < polygon.size(); i++) {
+      idx[i] = i;
+    }
+    
+    Arrays.stream(idx).parallel().forEach(i -> {
       Line2D line = polygon.get(i);
-      Area pointRect1 = new Area(new Rectangle2D.Double(line.getX1() - rectSize / 2, line.getY1() - rectSize / 2, rectSize, rectSize));
+      Area pointRect1 = new Area(new Rectangle2D.Double(line.getX1() - rectSize / 2,
+          line.getY1() - rectSize / 2, rectSize, rectSize));
 
       if (i % 2 == 1) {
-        pointRect1.intersect(firstLeadArea);
-        secondLeadArea.subtract(pointRect1);        
+        pointRect1.intersect(outputAreas[0]);
+        synchronized (outputAreas[1]) {
+          outputAreas[1].subtract(pointRect1);
+        }
       } else {
-        pointRect1.intersect(secondLeadArea);
-        firstLeadArea.subtract(pointRect1);        
-      }
-      
-      if (i == polygon.size() - 1) {
-        Area pointRect2 = new Area(new Rectangle2D.Double(line.getX2() - rectSize / 2, line.getY2() - rectSize / 2, rectSize, rectSize));
-        if (i % 2 == 0) {
-          pointRect2.intersect(firstLeadArea);
-          secondLeadArea.subtract(pointRect2);        
-        } else {
-          pointRect2.intersect(secondLeadArea);
-          firstLeadArea.subtract(pointRect2);        
+        pointRect1.intersect(outputAreas[1]);
+        synchronized (outputAreas[0]) {
+          outputAreas[0].subtract(pointRect1);
         }
       }
-    }
+
+      if (i == polygon.size() - 1) {
+        Area pointRect2 = new Area(new Rectangle2D.Double(line.getX2() - rectSize / 2,
+            line.getY2() - rectSize / 2, rectSize, rectSize));
+        if (i % 2 == 0) {
+          pointRect2.intersect(outputAreas[0]);
+          synchronized (outputAreas[1]) {
+            outputAreas[1].subtract(pointRect2);
+          }
+        } else {
+          pointRect2.intersect(outputAreas[1]);
+          synchronized (outputAreas[0]) {
+            outputAreas[0].subtract(pointRect2);
+          }
+        }
+      }
+    });
+
+    // dump to the output areas
+    firstLeadArea.add(outputAreas[0]);
+    secondLeadArea.add(outputAreas[1]);
   }
 
   // splits a curve into a series of lines

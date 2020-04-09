@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.StringUtils;
@@ -52,7 +53,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Plastic DC Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mount plastic DC jack", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "J", autoEdit = false)
+    instanceNamePrefix = "J", autoEdit = false, enableCache = true)
 public class PlasticDCJack extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -267,5 +268,12 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {    
+    int margin = 20;    
+    Rectangle2D bounds = getBody()[0].getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

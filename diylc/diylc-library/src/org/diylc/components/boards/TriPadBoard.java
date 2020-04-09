@@ -45,7 +45,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "TriPad Board", category = "Boards", author = "Hauke Juhls", zOrder = IDIYComponent.BOARD,
     instanceNamePrefix = "Board",
     description = "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class)
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class, enableCache = true)
 public class TriPadBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

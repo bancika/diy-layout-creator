@@ -47,7 +47,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board",
     description = "Perforated FR4 board with copper strips connecting all holes in a row",
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class VeroBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

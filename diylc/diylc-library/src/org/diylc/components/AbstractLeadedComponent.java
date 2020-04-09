@@ -251,6 +251,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       if (bodyColor != null) {
         g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);    
         
+        drawingObserver.startTracking();
+        
         if (!outlineMode && ConfigurationManager.getInstance().readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
           Point p1 = new Point((int) (length / 2), 0);
           Point p2 = new Point((int) (length / 2), (int) width);
@@ -262,6 +264,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         } else {        
           g2d.fill(shape);
         }
+        
+        drawingObserver.stopTracking();
       }
       
       drawingObserver.stopTracking();
@@ -287,7 +291,15 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
                 : borderColor;
       }
       g2d.setColor(finalBorderColor);
+      
+      // if we are not filling the shape with color we need to ensure that we track the outline (e.g. with schematic symbols)
+      if (bodyColor == null)
+        drawingObserver.startTracking();
+        
       g2d.draw(shape);
+      
+      if (bodyColor == null)
+        drawingObserver.stopTracking();
       
       if (decorateAboveBorder()) {
         g2d.setComposite(newComposite);
@@ -677,6 +689,28 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     if (index >= 2)
       return null;
     return Integer.toString(index + 1);
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    int minX = Integer.MAX_VALUE;
+    int maxX = Integer.MIN_VALUE;
+    int minY = Integer.MAX_VALUE;
+    int maxY = Integer.MIN_VALUE;
+    int margin = (int) Math.max(Math.max(getWidth().convertToPixels(), getLength().convertToPixels()), getLeadThickness());
+    for (int i = 0; i < getControlPointCount(); i++) {
+      Point p = getControlPoint(i);
+      if (p.x < minX)
+        minX = p.x;
+      if (p.x > maxX)
+        maxX = p.x;
+      if (p.y < minY)
+        minY = p.y;
+      if (p.y > maxY)
+        maxY = p.y;
+    }
+    
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
 
   public enum LabelOriantation {

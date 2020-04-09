@@ -47,7 +47,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "P-0+o (Proto) Board", category = "Boards", author = "Branislav Stojkovic",
     description = "A prototyping board for modular synths, central bus with V+ GND and V-", instanceNamePrefix = "BB",
     zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME)
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true)
 public class ProtoBoard extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;

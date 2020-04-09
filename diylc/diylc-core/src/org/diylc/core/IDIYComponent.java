@@ -23,6 +23,7 @@ package org.diylc.core;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -189,5 +190,11 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
    * @param other
    * @return
    */
-  boolean equalsTo(IDIYComponent<?> other); 
+  boolean equalsTo(IDIYComponent<?> other);
+
+  /**
+   * Used only if {@link ComponentDescriptor#enableCache()} is set to true. 
+   * @return
+   */
+  Rectangle2D getCachingBounds();
 }

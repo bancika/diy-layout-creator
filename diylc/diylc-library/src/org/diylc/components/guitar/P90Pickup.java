@@ -54,7 +54,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "P-90 Single Coil Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Single coil P-90 guitar pickup, both \"dog ear\" and \"soap bar\"",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true)
 public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
 
   private static final long serialVersionUID = 1L;

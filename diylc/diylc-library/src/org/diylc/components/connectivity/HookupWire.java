@@ -39,7 +39,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.COMPONENT,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class HookupWire extends AbstractCurvedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
@@ -78,16 +78,16 @@ public class HookupWire extends AbstractCurvedComponent<Void> implements IContin
         stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 3}, 0, BasicStroke.CAP_ROUND);
         break;
     }
-    Shape s = stroke.createStrokedShape(curve);    
+    Shape s = stroke.createStrokedShape(curve);
+    drawingObserver.startTracking();
     g2d.fill(s);
+    drawingObserver.stopTracking();
     
     if (getStriped()) {
       stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] { thickness / 2, thickness * 2 }, thickness * 10, BasicStroke.CAP_BUTT);
       Shape stripe = stroke.createStrokedShape(curve);
-      g2d.setColor(getStripeColor());
-      drawingObserver.stopTracking();
-      g2d.fill(stripe);
-      drawingObserver.startTracking();
+      g2d.setColor(getStripeColor());      
+      g2d.fill(stripe);      
     }
     
     drawingObserver.stopTracking();

@@ -57,7 +57,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Transistor (TO-3)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with large metal body",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
 public class TransistorTO3 extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -359,5 +359,17 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 
   public void setDisplay(Display display) {
     this.display = display;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Area area = new Area();
+    Area[] body = getBody();
+    int margin = 20;
+    for (Area a : body)
+      if (a != null)
+        area.add(a);
+    Rectangle2D bounds = area.getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

@@ -24,6 +24,7 @@ package org.diylc.components.semiconductors;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.Display;
 import org.diylc.common.Orientation;
@@ -51,6 +52,8 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   }
   
   protected abstract void updateControlPoints();
+  
+  public abstract Area[] getBody();
   
   @Override
   public int mapToSpiceNode(int index) {
@@ -207,5 +210,12 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
     if (index >= 3)
       return null;
     return Integer.toString(index + 1);
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {    
+    int margin = 20;    
+    Rectangle2D bounds = getBody()[0].getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

@@ -32,6 +32,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.TwoCircleTangent;
@@ -52,7 +53,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "RCA Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Panel mount RCA phono jack socket", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J")
+    description = "Panel mount RCA phono jack socket", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J",
+    enableCache = true)
 public class RCAJack extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -323,5 +325,12 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {    
+    int margin = 20;    
+    Rectangle2D bounds = getBody()[1].getBounds2D();
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
 }

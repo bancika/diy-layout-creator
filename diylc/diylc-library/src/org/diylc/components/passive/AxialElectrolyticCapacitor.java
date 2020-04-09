@@ -48,7 +48,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Electrolytic Capacitor (Axial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc", zOrder = IDIYComponent.COMPONENT,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> {
 
   private static final long serialVersionUID = 1L;

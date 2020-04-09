@@ -110,5 +110,12 @@ public @interface ComponentDescriptor {
    * 
    * @return
    */
-  String keywordTag() default "";  
+  String keywordTag() default "";
+  
+  /**
+   * Only to be used for components that span in its eternity in the rectangle defined by the two outside control points. 
+   * 
+   * @return true if the component drawing should be cached
+   */
+  boolean enableCache() default false;
 }

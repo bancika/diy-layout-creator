@@ -65,10 +65,10 @@ public class InstantiationManager {
 
   public static final ComponentType clipboardType = new ComponentType("Clipboard contents",
       "Components from the clipboard", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
-      false, null, KeywordPolicy.NEVER_SHOW, null);
+      false, null, KeywordPolicy.NEVER_SHOW, null, false);
   public static final ComponentType blockType = new ComponentType("Building block",
 	      "Components from the building block", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
-	      false, null, KeywordPolicy.NEVER_SHOW, null);
+	      false, null, KeywordPolicy.NEVER_SHOW, null, false);
 
   public InstantiationManager() {}
 
