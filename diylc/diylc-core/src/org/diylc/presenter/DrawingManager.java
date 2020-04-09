@@ -251,7 +251,8 @@ public class DrawingManager {
     // apply zoom
     if (Math.abs(1.0 - zoom) > 1e-4) {
       g2dWrapper.scale(zoom, zoom);
-      visibleRect.setRect(visibleRect.getX() / zoom, visibleRect.getY() / zoom, 
+      if (visibleRect != null)
+        visibleRect.setRect(visibleRect.getX() / zoom, visibleRect.getY() / zoom, 
           visibleRect.getWidth() / zoom, visibleRect.getHeight() / zoom);
     }
     
