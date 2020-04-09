@@ -2917,6 +2917,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Switched terminal on the "Open Jack 1/4" does not stick to other components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>With multiple components selected, if one of them is a single-point component (pad, eyelet, etc), starting a drag operation on that components results in losing the selection on the others</description>
 				</org.diylc.appframework.update.Change>							
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

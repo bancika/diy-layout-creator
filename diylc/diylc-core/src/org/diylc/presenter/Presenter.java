@@ -76,6 +76,7 @@ import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -862,7 +863,8 @@ public class Presenter implements IPlugInPort {
           if (selectedComponents.contains(component) && component.canPointMoveFreely(pointIndex)
               && findAllGroupedComponents(component).size() == 1) {
             try {
-              if (previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE) {
+              if (previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE && 
+                  component.getControlPointVisibilityPolicy(pointIndex) != VisibilityPolicy.NEVER) {
                 Set<Integer> indices = new HashSet<Integer>();
                 indices.add(pointIndex);
                 components.put(component, indices);

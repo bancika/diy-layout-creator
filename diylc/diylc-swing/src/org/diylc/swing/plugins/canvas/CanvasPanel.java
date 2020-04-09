@@ -326,7 +326,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
   // Autoscroll
   
-  private int autoScrollSize = 100;
+  private int autoScrollSize = 64;
 
   @Override
   public void autoscroll(Point cursorLocn) {
