@@ -643,7 +643,6 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       this.drawingProvider = drawingProvider;
-      this.drawingProvider = drawingProvider;
       this.swingUI = swingUI;
       this.defaultSuffix = defaultSuffix;
       putValue(AbstractAction.NAME, "Export to PNG");

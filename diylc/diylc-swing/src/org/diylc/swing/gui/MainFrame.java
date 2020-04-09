@@ -107,7 +107,7 @@ public class MainFrame extends JFrame implements ISwingUI {
   private CanvasPlugin canvasPlugin;
 
   public MainFrame() {
-    super("DIYLC 3");
+    super("DIYLC 4");
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     setPreferredSize(new Dimension(1024, 700));
     createBasePanels();
@@ -144,17 +144,22 @@ public class MainFrame extends JFrame implements ISwingUI {
     addWindowListener(new WindowAdapter() {
 
       @Override
-      public void windowClosed(WindowEvent e) {
+      public void windowClosed(WindowEvent e) {        
         if (presenter.allowFileAction()) {
           ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
           dispose();
           presenter.dispose();
+          LOG.info("Closing the app");
           System.exit(0);
         }
       }
 
       @Override
       public void windowClosing(WindowEvent e) {
+        if (getGlassPane().isVisible()) {
+          LOG.info("Prevented the app from closing because a running task is detected");
+          return;
+        }
         if (presenter.allowFileAction()) {
           ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
           dispose();
@@ -444,7 +449,7 @@ public class MainFrame extends JFrame implements ISwingUI {
         }
       }
     };
-    worker.execute();
+    worker.execute(); 
   }
 
   @Override
