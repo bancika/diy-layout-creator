@@ -325,16 +325,18 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   }
 
   // Autoscroll
+  
+  private int autoScrollSize = 100;
 
   @Override
   public void autoscroll(Point cursorLocn) {
-    scrollRectToVisible(new Rectangle(cursorLocn.x - 15, cursorLocn.y - 15, 30, 30));
+    scrollRectToVisible(new Rectangle(cursorLocn.x - autoScrollSize, cursorLocn.y - autoScrollSize, autoScrollSize * 2, autoScrollSize * 2));
   }
 
   @Override
   public Insets getAutoscrollInsets() {
     Rectangle rect = getVisibleRect();
-    return new Insets(rect.y - 15, rect.x - 15, rect.y + rect.height + 15, rect.x + rect.width + 15);
+    return new Insets(rect.y - autoScrollSize, rect.x - autoScrollSize, rect.y + rect.height + autoScrollSize, rect.x + rect.width + autoScrollSize);
   }
   
   public void setUseHardwareAcceleration(boolean useHardwareAcceleration) {
