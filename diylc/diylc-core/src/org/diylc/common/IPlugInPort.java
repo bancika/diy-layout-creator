@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -193,8 +194,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param drawOptions specific drawing options
    * @param filter
    * @param externalZoom
+   * @param visibleRect
    */
-  void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter, Double externalZoom);
+  void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter, Double externalZoom, Rectangle2D visibleRect);
 
   Double[] getAvailableZoomLevels();
 

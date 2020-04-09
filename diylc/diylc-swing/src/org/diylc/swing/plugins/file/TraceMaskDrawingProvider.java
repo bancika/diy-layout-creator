@@ -60,7 +60,7 @@ public class TraceMaskDrawingProvider implements IDrawingProvider {
 
   @Override
   public void draw(int page, Graphics g, double zoomFactor) {
-    plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ANTIALIASING), new PCBLayerFiler(getUsedLayers()[page]), zoomFactor);
+    plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ANTIALIASING), new PCBLayerFiler(getUsedLayers()[page]), zoomFactor, null);
   }
 
   @Override

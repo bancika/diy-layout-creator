@@ -270,7 +270,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       drawOptions.add(DrawOption.ENABLE_CACHING);
     }
     
-    plugInPort.draw(g2d, drawOptions, null, null);
+    plugInPort.draw(g2d, drawOptions, null, null, visibleRect);
     
     if (useHardwareAcceleration) {
       VolatileImage volatileImage = (VolatileImage) bufferImage;

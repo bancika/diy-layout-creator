@@ -2903,6 +2903,10 @@
 					<description>Improved performance math calculations used to model "Twisted Wires"</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved performance of "Highlight Connected Areas" feature</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Older files that contain "Open Jack 1/4" components sometimes open with the jacks rotated the wrong way</description>
 				</org.diylc.appframework.update.Change>	

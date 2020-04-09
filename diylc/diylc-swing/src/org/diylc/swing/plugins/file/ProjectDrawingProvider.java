@@ -72,7 +72,7 @@ public class ProjectDrawingProvider implements IDrawingProvider {
     if (includeExtraSpace) {
       drawOptions.add(DrawOption.EXTRA_SPACE);
     }
-    plugInPort.draw((Graphics2D) g, drawOptions, null, zoomFactor);
+    plugInPort.draw((Graphics2D) g, drawOptions, null, zoomFactor, null);
   }
 
   @Override

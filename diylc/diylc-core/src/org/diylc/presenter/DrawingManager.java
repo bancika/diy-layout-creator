@@ -139,12 +139,13 @@ public class DrawingManager {
    * @param componentSlot
    * @param dragInProgress
    * @param externalZoom
+   * @param visibleRect
    * @return
    */
   public List<IDIYComponent<?>> drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
       IComponentFiler filter, Rectangle selectionRect, Collection<IDIYComponent<?>> selectedComponents,
       Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
-      List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom) {
+      List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom, Rectangle2D visibleRect) {
     long totalStartTime = System.nanoTime();
     failedComponents.clear();
     if (project == null) {
@@ -242,11 +243,16 @@ public class DrawingManager {
 
       // translate to the new (0, 0)
       g2d.transform(AffineTransform.getTranslateInstance(extraSpace, extraSpace));
+      if (visibleRect != null)
+        visibleRect.setRect(visibleRect.getX() - extraSpace, visibleRect.getY() - extraSpace, 
+          visibleRect.getWidth(), visibleRect.getHeight());
     }    
 
     // apply zoom
     if (Math.abs(1.0 - zoom) > 1e-4) {
       g2dWrapper.scale(zoom, zoom);
+      visibleRect.setRect(visibleRect.getX() / zoom, visibleRect.getY() / zoom, 
+          visibleRect.getWidth() / zoom, visibleRect.getHeight() / zoom);
     }
     
     // Composite mainComposite = g2d.getComposite();
@@ -301,7 +307,7 @@ public class DrawingManager {
         try {
           
           if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache          
-            DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom);
+            DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, visibleRect);
           else // go stragiht to the wrapper
             component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
           

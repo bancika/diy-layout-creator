@@ -159,6 +159,7 @@ public class MainFrame extends JFrame implements ISwingUI {
           ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
           dispose();
           presenter.dispose();
+          LOG.info("Closing the app");
           System.exit(0);
         }
       }

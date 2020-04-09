@@ -87,7 +87,7 @@ public class DrawingCache {
    */
   @SuppressWarnings("unchecked")
   public void draw(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom) {
+      boolean outlineMode, Project project, double zoom, Rectangle2D visibleRect) {
     ComponentType type = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
 
@@ -99,17 +99,20 @@ public class DrawingCache {
       
       long componentStart = System.nanoTime();
 
-      // temporarily scale the graphic to compensate for the zoom, since we are rendering an image with the zoom appled
-      if (Math.abs(1.0 - zoom) > 1e-4) {
-        g2d.getCanvasGraphics().scale(1 / zoom, 1 / zoom);
-      }
-      try {
-        // draw cached image
-        g2d.getCanvasGraphics().drawImage(value.getImage(), (int) ((firstPoint.x - value.getDx()) * zoom),
-            (int) ((firstPoint.y - value.getDy())* zoom), null);
-      } finally {
+      // only render the cached image if it's within the clipping region
+      if (visibleRect == null || visibleRect.intersects(value.getCacheBounds())) {
+        // temporarily scale the graphic to compensate for the zoom, since we are rendering an image with the zoom appled
         if (Math.abs(1.0 - zoom) > 1e-4) {
-          g2d.getCanvasGraphics().scale(zoom, zoom);
+          g2d.getCanvasGraphics().scale(1 / zoom, 1 / zoom);
+        }
+        try {
+          // draw cached image
+          g2d.getCanvasGraphics().drawImage(value.getImage(), (int) ((firstPoint.x - value.getDx()) * zoom),
+              (int) ((firstPoint.y - value.getDy())* zoom), null);
+        } finally {
+          if (Math.abs(1.0 - zoom) > 1e-4) {
+            g2d.getCanvasGraphics().scale(zoom, zoom);
+          }
         }
       }
       
@@ -125,7 +128,7 @@ public class DrawingCache {
       }
       stats.getSecond().add(componentEnd - componentStart);
 
-      // copy over tracking area from the cache
+      // copy over tracking area from the cache, regardless if we rendered or not
       g2d.merge(value.getCurrentArea(), value.getContinuityPositiveAreas(), value.getContinuityNegativeAreas());      
     } else {
       // no caching, just draw as usual
@@ -233,7 +236,7 @@ public class DrawingCache {
       
       // add to the cache        
       value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
-          wrapper.getContinuityNegativeAreas(), componentState, zoom, dx, dy);        
+          wrapper.getContinuityNegativeAreas(), componentState, zoom, dx, dy, rect);        
       imageCache.put(component, value);
     }
     
@@ -250,11 +253,13 @@ public class DrawingCache {
     double zoom;
     int dx;
     int dy;
+    Rectangle2D cacheBounds;
 
     public CacheValue(IDIYComponent<?> component, BufferedImage image, Area currentArea,
         Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas,
-        ComponentState state, double zoom, int dx, int dy) {
+        ComponentState state, double zoom, int dx, int dy, Rectangle2D cacheBounds) {
       super();
+      this.cacheBounds = cacheBounds;
       // take a copy of the component, so we can check if it changed in the meantime
       try {
         this.component = component.clone();
@@ -304,6 +309,10 @@ public class DrawingCache {
     
     public int getDy() {
       return dy;
+    }
+    
+    public Rectangle2D getCacheBounds() {
+      return cacheBounds;
     }
 
     @Override
