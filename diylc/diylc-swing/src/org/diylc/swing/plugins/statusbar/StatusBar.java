@@ -82,7 +82,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   private static final Logger LOG = Logger.getLogger(StatusBar.class);
 
-  public static String UPDATE_URL = "http://www.diy-fever.com/update.xml";
+  public static String UPDATE_URL = "http://diy-fever.com/diylc/api/v1/update.xml";
   private static String HIGHLIGHT_CONNECTED_TIP = "Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF";
   private static final Format sizeFormat = new DecimalFormat("0.##");
 
