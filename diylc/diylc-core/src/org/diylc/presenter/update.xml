@@ -2911,6 +2911,10 @@
 					<description>Faster auto-scroll while dragging a component outside the visible portion of the canvas</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Prevent the app from closing while running background operations, like saving and exporting files</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Older files that contain "Open Jack 1/4" components sometimes open with the jacks rotated the wrong way</description>
 				</org.diylc.appframework.update.Change>	

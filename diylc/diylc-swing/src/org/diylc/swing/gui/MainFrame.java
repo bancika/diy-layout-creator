@@ -144,7 +144,11 @@ public class MainFrame extends JFrame implements ISwingUI {
     addWindowListener(new WindowAdapter() {
 
       @Override
-      public void windowClosed(WindowEvent e) {        
+      public void windowClosed(WindowEvent e) {
+        if (getGlassPane().isVisible()) {
+          LOG.info("Prevented the app from closing because a running task is detected");
+          return;
+        }
         if (presenter.allowFileAction()) {
           ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
           dispose();
