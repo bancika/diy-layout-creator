@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -694,5 +695,11 @@ public class ProtoBoard extends AbstractComponent<Void> {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Point finalSecondPoint = getControlPoint(1); 
+    return new Rectangle2D.Double(point.x, point.y, finalSecondPoint.x - point.x + 1, finalSecondPoint.y - point.y + 1);
   }
 }
