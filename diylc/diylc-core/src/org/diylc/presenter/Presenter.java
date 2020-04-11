@@ -3141,7 +3141,7 @@ public class Presenter implements IPlugInPort {
       }
     }
 
-    drawingManager.expandConnections(connections);
+    CalcUtils.expandConnections(connections);
 
     return new ArrayList<Connection>(connections);
   }

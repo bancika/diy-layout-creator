@@ -22,7 +22,9 @@
 package org.diylc.presenter;
 
 import java.awt.Point;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
@@ -56,5 +58,24 @@ public class CalcUtils {
           return;
         }
     }    
+  }
+  
+  public static void expandConnections(Set<Connection> connections) {
+    Set<Connection> toAdd = new HashSet<Connection>();
+    for (Connection c1 : connections)
+      for (Connection c2 : connections) {
+        if (c1 == c2)
+          continue;
+        if (c1.getP1().distance(c2.getP1()) < DrawingManager.CONTROL_POINT_SIZE)
+          toAdd.add(new Connection(c1.getP2(), c2.getP2()));
+        if (c1.getP1().distance(c2.getP2()) < DrawingManager.CONTROL_POINT_SIZE)
+          toAdd.add(new Connection(c1.getP2(), c2.getP1()));
+        if (c1.getP2().distance(c2.getP1()) < DrawingManager.CONTROL_POINT_SIZE)
+          toAdd.add(new Connection(c1.getP1(), c2.getP2()));
+        if (c1.getP2().distance(c2.getP2()) < DrawingManager.CONTROL_POINT_SIZE)
+          toAdd.add(new Connection(c1.getP1(), c2.getP1()));
+      }
+    if (connections.addAll(toAdd))
+      expandConnections(connections);
   }
 }
