@@ -299,6 +299,7 @@ public class DrawingManager {
         if (!trackArea) {
           g2dWrapper.stopTracking();
         }
+        Composite oldComposite = g2d.getComposite();
         // Draw locked components in a new composite.
         if (lockedComponents.contains(component)) {
           g2d.setComposite(lockedComposite);
@@ -309,20 +310,21 @@ public class DrawingManager {
           
           if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache          
             DrawingCache.Instance.draw(component, g2dWrapper, state, drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, visibleRect);
-          else // go stragiht to the wrapper
+          else // go straight to the wrapper
             component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
           
           if (g2dWrapper.isTrackingContinuityArea()) {
             LOG.info("Component " + component.getName() + " of type " + component.getClass().getName() + " did not stop tracking continuity area.");            
           }
-
-          // just in case, stop all tracking
-          g2dWrapper.stopTrackingContinuityArea();
-          g2dWrapper.stopTracking();
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
           failedComponents.add(component);
         } finally {
+          // just in case, stop all tracking
+          g2dWrapper.stopTrackingContinuityArea();
+          g2dWrapper.stopTracking();
+          // revert composite
+          g2d.setComposite(oldComposite);
           // record render stats
           long componentEnd = System.nanoTime();
           Counter stats = null;
@@ -671,57 +673,39 @@ public class DrawingManager {
     boolean isChanged = false;
 
     List<Area> newAreas = new ArrayList<Area>();
-    boolean[] consumed = new boolean[areas.size()];
+    List<Boolean> consumed = new ArrayList<Boolean>();
     for (int i = 0; i < areas.size(); i++) {
-      Area a1 = areas.get(i);
-      Rectangle2D bounds1 = a1.getBounds2D();
-      
-      Map<Area, Integer> candidates = new HashMap<Area, Integer>();
-      
-      for (int j = i + 1; j < areas.size(); j++) {
-//        if (consumed[j])
-//          continue;        
-        Area a2 = areas.get(j);
-        Rectangle2D bounds2 = a2.getBounds2D();
-        
-        // maybe there's a direct connection between them, try that first because it's faster than area overlap
-        for (Connection p : connections) { // use getBounds to optimize the computation, don't get into complex math if not needed
-          if ((bounds1.contains(p.getP1()) && bounds2.contains(p.getP2()) && a1.contains(p.getP1()) && a2.contains(p.getP2())) || 
-              (bounds1.contains(p.getP2()) && bounds2.contains(p.getP1())) && a1.contains(p.getP2()) && a2.contains(p.getP1())) {
-            a1.add(a2);
-            consumed[j] = true;
-            break;
-          }
-        }
-        
-        if (bounds1.intersects(bounds2)) {
-          candidates.put(a2, j);
-        }
-      }
-      
-      Set<Area> mergeQueue = new HashSet<Area>();
-      
-      // run a parallel for-each to determine which areas overlap with a1 and add them to a queue to be added to a1 later
-      if (candidates.size() > 0) {
-        candidates.entrySet().parallelStream().forEach(x -> {
-          Area intersection = new Area(a1);
-          intersection.intersect(x.getKey());
-          if (intersection != null && !intersection.isEmpty()) {
-            synchronized (mergeQueue) {
-              mergeQueue.add(x.getKey());  
-            }            
-            consumed[x.getValue()] = true;
-          }
-        });
-      }
-      
-      // if make a union of all intersecting areas
-      for(Area a2 : mergeQueue)
-        a1.add(a2);
+      consumed.add(false);
     }
-    
+    for (int i = 0; i < areas.size(); i++) {
+      for (int j = i + 1; j < areas.size(); j++) {
+        if (consumed.get(j))
+          continue;
+        Area a1 = areas.get(i);
+        Area a2 = areas.get(j);
+        Area intersection = null;
+        if (a1.getBounds2D().intersects(a2.getBounds())) {
+          intersection = new Area(a1);
+          intersection.intersect(a2);
+        }
+        // if the two areas intersect, make a union and consume the second area
+        if (intersection != null && !intersection.isEmpty()) {
+          a1.add(a2);
+          consumed.set(j, true);
+        } else { // maybe there's a connection between them
+          for (Connection p : connections) { // use getBounds to optimize the computation, don't get into complex math if not needed
+            if ((a1.getBounds().contains(p.getP1()) && a2.getBounds().contains(p.getP2()) && a1.contains(p.getP1()) && a2.contains(p.getP2())) || 
+                (a1.getBounds().contains(p.getP2()) && a2.getBounds().contains(p.getP1())) && a1.contains(p.getP2()) && a2.contains(p.getP1())) {
+              a1.add(a2);
+              consumed.set(j, true);
+              break;
+            }
+          }
+        }
+      }
+    }
     for (int i = 0; i < areas.size(); i++)
-      if (!consumed[i])
+      if (!consumed.get(i))
         newAreas.add(areas.get(i));
       else
         isChanged = true;
