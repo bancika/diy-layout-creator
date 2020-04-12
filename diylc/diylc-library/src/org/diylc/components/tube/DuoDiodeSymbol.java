@@ -37,19 +37,19 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
-@ComponentDescriptor(name = "Diode Tube", author = "Branislav Stojkovic", category = "Schematic Symbols",
-    instanceNamePrefix = "V", description = "Diode tube symbol", zOrder = IDIYComponent.COMPONENT,
+@ComponentDescriptor(name = "Duo-Diode", author = "Branislav Stojkovic", category = "Schematic Symbols",
+    instanceNamePrefix = "V", description = "Duo-diode tube symbol", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TubeSymbolTransformer.class)
-public class DiodeSymbol extends AbstractTubeSymbol {
+public class DuoDiodeSymbol extends AbstractTubeSymbol {
 
   private static final long serialVersionUID = 1L;
 
   protected boolean directlyHeated = false;
 
-  public DiodeSymbol() {
+  public DuoDiodeSymbol() {
     super();
     this.controlPoints =
-        new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+        new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
     updateControlPoints();
   }
 
@@ -67,6 +67,8 @@ public class DiodeSymbol extends AbstractTubeSymbol {
 
       // plate
       polyline.moveTo(x + pinSpacing * 3 / 2, y - pinSpacing);
+      polyline.lineTo(x + pinSpacing * 5 / 2, y - pinSpacing);
+      polyline.moveTo(x + pinSpacing * 7 / 2, y - pinSpacing);
       polyline.lineTo(x + pinSpacing * 9 / 2, y - pinSpacing);
 
       // cathode
@@ -86,7 +88,10 @@ public class DiodeSymbol extends AbstractTubeSymbol {
 
       // plate
       polyline.moveTo(controlPoints[1].x, controlPoints[1].y);
-      polyline.lineTo(x + pinSpacing * 3, y - pinSpacing);
+      polyline.lineTo(controlPoints[1].x, y - pinSpacing);
+      
+      polyline.moveTo(controlPoints[5].x, controlPoints[5].y);
+      polyline.lineTo(controlPoints[5].x, y - pinSpacing);
 
       // cathode
       if (directlyHeated) {
@@ -121,14 +126,17 @@ public class DiodeSymbol extends AbstractTubeSymbol {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.setColor(COLOR);
-
+    
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-
-    g2d.drawLine(width / 4, height / 3, width * 3 / 4, height / 3);
-    g2d.drawLine(width / 2, height / 3, width / 2, 0);
-
-    g2d.drawLine(width / 4 + 2 * width / 32, height * 3 / 4, width * 3 / 4 - 4 * width / 32, height * 3 / 4);
+    int plate = 5 * 32 / width;
+    g2d.drawLine(width / 4, height / 3, width / 4 + plate, height / 3);
+    g2d.drawLine(width * 3 / 4 - plate, height / 3, width * 3 / 4, height / 3);
+    
+    g2d.drawLine(width / 4 + plate / 2, height / 3, width / 4 + plate / 2, 0);
+    g2d.drawLine(width * 3 / 4 - plate / 2, height / 3, width * 3 / 4 - plate / 2, 0);
+    
     g2d.drawLine(width / 4 + 2 * width / 32, height * 3 / 4, width / 4 + 2 * width / 32, height - 1);
+    g2d.drawLine(width / 4 + 2 * width / 32, height * 3 / 4, width * 3 / 4 - 4 * width / 32, height * 3 / 4);
 
     g2d.drawOval(1, 1, width - 1 - 2 * width / 32, height - 1 - 2 * width / 32);
   }
@@ -140,9 +148,9 @@ public class DiodeSymbol extends AbstractTubeSymbol {
     int x = first.x;
     int y = first.y;
 
-    Point[] newPoints = new Point[] {first, new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+    Point[] newPoints = new Point[] {first, new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
 
-    newPoints[1].x = x + pinSpacing * 3;
+    newPoints[1].x = x + pinSpacing * 2;
     newPoints[1].y = y - pinSpacing * 3;
 
     newPoints[2].x = x + pinSpacing * 2;
@@ -153,6 +161,9 @@ public class DiodeSymbol extends AbstractTubeSymbol {
 
     newPoints[4].x = x + pinSpacing * 4;
     newPoints[4].y = y + pinSpacing * 3;
+    
+    newPoints[5].x = x + pinSpacing * 4;
+    newPoints[5].y = y - pinSpacing * 3;
 
     return newPoints;
   }
@@ -160,11 +171,11 @@ public class DiodeSymbol extends AbstractTubeSymbol {
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
     if (directlyHeated) {
-      return index > 0 && index != 3 ? VisibilityPolicy.WHEN_SELECTED : VisibilityPolicy.NEVER;
+      return (index > 0 && index != 3) || index == 5 ? VisibilityPolicy.WHEN_SELECTED : VisibilityPolicy.NEVER;
     } else if (showHeaters) {
-      return index > 0 ? VisibilityPolicy.WHEN_SELECTED : VisibilityPolicy.NEVER;
+      return index > 0? VisibilityPolicy.WHEN_SELECTED : VisibilityPolicy.NEVER;
     } else {
-      return index < 3 && index > 0 ? VisibilityPolicy.WHEN_SELECTED : VisibilityPolicy.NEVER;
+      return (index < 3 && index > 0) || index == 5 ? VisibilityPolicy.WHEN_SELECTED : VisibilityPolicy.NEVER;
     }
   }
 
