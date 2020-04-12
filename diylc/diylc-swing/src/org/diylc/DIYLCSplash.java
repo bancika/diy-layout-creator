@@ -95,7 +95,7 @@ public class DIYLCSplash extends JDialog {
 
 	private ImageIcon film = null;
 
-	public ImageIcon getFilm() {
+	private ImageIcon getFilm() {
 		if (film == null) {
 			film = (ImageIcon) IconLoader.SplashFilm.getIcon();
 		}
@@ -104,7 +104,7 @@ public class DIYLCSplash extends JDialog {
 
 	private ImageIcon ceramic = null;
 
-	public ImageIcon getCeramic() {
+	private ImageIcon getCeramic() {
 		if (ceramic == null) {
 			ceramic = (ImageIcon) IconLoader.SplashCeramic.getIcon();
 		}
@@ -113,7 +113,7 @@ public class DIYLCSplash extends JDialog {
 
 	private ImageIcon electrolytic = null;
 
-	public ImageIcon getElectrolytic() {
+	private ImageIcon getElectrolytic() {
 		if (electrolytic == null) {
 			electrolytic = (ImageIcon) IconLoader.SplashElectrolytic.getIcon();
 		}
@@ -122,7 +122,7 @@ public class DIYLCSplash extends JDialog {
 
 	private ImageIcon splash = null;
 
-	public ImageIcon getSplash() {
+	private ImageIcon getSplash() {
 		if (splash == null) {
 			splash = (ImageIcon) IconLoader.Splash.getIcon();
 		}

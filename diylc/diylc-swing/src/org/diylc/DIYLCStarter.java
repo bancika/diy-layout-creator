@@ -59,7 +59,15 @@ public class DIYLCStarter {
    */
   public static void main(String[] args) {
     // Initialize splash screen
-	DIYLCSplash splash = new DIYLCSplash();
+	DIYLCSplash splash = null;
+	Exception splashException = null;
+	
+	try {
+	  splash = new DIYLCSplash();
+	} catch (Exception e) {
+	  System.out.println("Splash screen could not be initialized: " + e.getMessage());
+	  splashException = e;
+	}
 
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
@@ -131,8 +139,12 @@ public class DIYLCStarter {
     MainFrame mainFrame = new MainFrame();
 //    mainFrame.setLocationRelativeTo(null);    
     
-    splash.setVisible(false);
-    splash.dispose();
+    if (splash == null) {
+      LOG.warn("Splash screen could not be initialized", splashException);
+    } else {
+      splash.setVisible(false);
+      splash.dispose();
+    }
     
     mainFrame.setVisible(true);
     
