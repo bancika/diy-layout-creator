@@ -24,7 +24,7 @@ and finally run the app using
 
 `./run.sh`
 
-This works on my test machine with Sierra.
+If it stills fails to start, try double clicking on *diylc.jar* file to start the app.
   
 ### User interface ###
 
