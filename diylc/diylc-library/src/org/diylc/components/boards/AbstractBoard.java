@@ -46,7 +46,6 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   private static final long serialVersionUID = 1L;
 
   public static Color BOARD_COLOR = Color.decode("#F8EBB3");
-  public static Color BORDER_COLOR = BOARD_COLOR.darker();
   public static Color COORDINATE_COLOR = Color.gray.brighter();
   public static float COORDINATE_FONT_SIZE = 9f;
   public static Size DEFAULT_WIDTH = new Size(1.5d, SizeUnit.in);
@@ -59,7 +58,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Point secondPoint = new Point();
 
   protected Color boardColor = BOARD_COLOR;
-  protected Color borderColor = BORDER_COLOR;
+  @Deprecated
+  protected Color borderColor;
   protected Color coordinateColor = COORDINATE_COLOR;
   protected Boolean drawCoordinates = null;
   protected CoordinateType xType = CoordinateType.Numbers;
@@ -92,7 +92,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     // tracked so far.
     drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-        : borderColor);
+        : getBoardColor().darker());
     g2d.drawRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
   }
   
@@ -210,15 +210,6 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   public void setCoordinateColor(Color coordinateColor) {
     this.coordinateColor = coordinateColor;
-  }
-
-  @EditableProperty(name = "Border")
-  public Color getBorderColor() {
-    return borderColor;
-  }
-
-  public void setBorderColor(Color borderColor) {
-    this.borderColor = borderColor;
   }
   
   @EditableProperty(name = "X")

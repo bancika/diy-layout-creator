@@ -104,7 +104,7 @@ public class TraceCut extends AbstractComponent<Void> {
     int factor = 32 / width;
     g2d.setColor(AbstractBoard.BOARD_COLOR);
     g2d.fillRect(0, 2 / factor, width - 1, height - 4 / factor);
-    g2d.setColor(AbstractBoard.BORDER_COLOR);
+    g2d.setColor(AbstractBoard.BOARD_COLOR.darker());
     g2d.drawRect(0, 2 / factor, width - 1, height - 4 / factor);
     g2d.setColor(COPPER_COLOR);
     g2d.fillRect(1 / factor, width / 3, width - 2 / factor, getClosestOdd(width / 3) + 1);

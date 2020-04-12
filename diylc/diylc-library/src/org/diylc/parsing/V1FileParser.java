@@ -117,7 +117,6 @@ public class V1FileParser implements IOldFileParser {
     if (type.equalsIgnoreCase("pcb")) {
       board = new BlankBoard();
       board.setBoardColor(Color.white);
-      board.setBorderColor(Color.black);
     } else if (type.equalsIgnoreCase("perfboard")) {
       board = new PerfBoard();
     } else if (type.equalsIgnoreCase("stripboard")) {

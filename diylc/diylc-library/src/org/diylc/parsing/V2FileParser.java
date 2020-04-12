@@ -285,7 +285,6 @@ public class V2FileParser implements IOldFileParser {
             if (cl != null) {
               board.setBoardColor(cl);
             }
-            board.setBorderColor(Color.black);
             if (com_name != "") {
               board.setName(com_name);
             } else {
@@ -297,7 +296,6 @@ public class V2FileParser implements IOldFileParser {
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Perfboard")) {
             PerfBoard board = new PerfBoard();
             board.setBoardColor(Color.white);
-            board.setBorderColor(Color.black);
             if (com_name != "") {
               board.setName(com_name);
             } else {

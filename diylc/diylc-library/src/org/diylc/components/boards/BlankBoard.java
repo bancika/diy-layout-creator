@@ -52,7 +52,7 @@ public class BlankBoard extends AbstractBoard {
     int factor = 32 / width;
     g2d.setColor(BOARD_COLOR);
     g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
-    g2d.setColor(BORDER_COLOR);
+    g2d.setColor(BOARD_COLOR.darker());
     g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
   }
 
@@ -84,7 +84,7 @@ public class BlankBoard extends AbstractBoard {
     // tracked so far.
     drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-        : borderColor);
+        : getBoardColor().darker());
     if (getType() == Type.SQUARE)
       g2d.drawRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
     else

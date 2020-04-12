@@ -126,7 +126,7 @@ public class PerfBoard extends AbstractBoard {
     int factor = 32 / width;
     g2d.setColor(BOARD_COLOR);
     g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
-    g2d.setColor(BORDER_COLOR);
+    g2d.setColor(BOARD_COLOR.darker());
     g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
     g2d.setColor(COPPER_COLOR);
     g2d.fillOval(width / 4, width / 4, width / 2, width / 2);
