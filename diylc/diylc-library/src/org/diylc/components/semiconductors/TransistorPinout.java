@@ -16,4 +16,9 @@ public enum TransistorPinout {
     sb.append("     ").append(parts[0]);
     return sb.toString();
   };
+  
+  public String toPinout() {
+    String[] parts = name().split("_");
+    return parts[1];
+  }
 }

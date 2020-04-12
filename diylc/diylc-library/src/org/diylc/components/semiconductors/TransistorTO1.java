@@ -34,7 +34,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.transform.TO1Transformer;
@@ -213,23 +212,27 @@ public class TransistorTO1 extends AbstractTransistorPackage {
               : getLabelColor();
     }
     g2d.setColor(finalLabelColor);
-    String label = "";
-    label = (getDisplay() == Display.NAME) ? getName() : getValue();
-    if (getDisplay() == Display.NONE) {
-      label = "";
+    if (getDisplay() == TransistorDisplay.PINOUT) {
+      drawPinout(g2d);
+    } else {
+      String label = "";
+      label = (getDisplay() == TransistorDisplay.NAME) ? getName() : getValue();
+      if (getDisplay() == TransistorDisplay.NONE) {
+        label = "";
+      }
+      if (getDisplay() == TransistorDisplay.BOTH) {
+        label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
+      }
+      FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
+      Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
+      int textHeight = (int) (rect.getHeight());
+      int textWidth = (int) (rect.getWidth());
+      // Center text horizontally and vertically
+      Rectangle bounds = mainArea.getBounds();
+      int x = bounds.x + (bounds.width - textWidth) / 2;
+      int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+      g2d.drawString(label, x, y);
     }
-    if (getDisplay() == Display.BOTH) {
-      label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
-    }
-    FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
-    Rectangle2D rect = fontMetrics.getStringBounds(label, g2d);
-    int textHeight = (int) (rect.getHeight());
-    int textWidth = (int) (rect.getWidth());
-    // Center text horizontally and vertically
-    Rectangle bounds = mainArea.getBounds();
-    int x = bounds.x + (bounds.width - textWidth) / 2;
-    int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
-    g2d.drawString(label, x, y);
   }
 
   @Override
@@ -269,5 +272,10 @@ public class TransistorTO1 extends AbstractTransistorPackage {
     updateControlPoints();
     // Reset body shape;
     body = null;
+  }
+  
+  @Override
+  protected boolean flipPinoutLabel() {    
+    return true;
   }
 }

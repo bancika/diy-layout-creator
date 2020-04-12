@@ -281,7 +281,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
           // Draw horizontal labels
           if (y == 0) {
             g2d.setColor(textColor);
-            StringUtils.drawCenteredText(g2d, Integer.toString(SEGMENTS_SUM[segment] + x + 1), padX, (int) (point.y + (yOffset - 1) * spacing) - 1,
+            StringUtils.drawCenteredText(g2d, Integer.toString(SEGMENTS_SUM[segment] + x + 1), padX, (int) (point.y + (yOffset) * spacing) - padSize / 2 - 2,
                 HorizontalAlignment.CENTER, VerticalAlignment.TOP);
           }
         }
@@ -443,7 +443,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
         HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     
     // Draw top-right labels
-    int labelY = (int) (point.y + 3.3 * spacing);
+    int labelY = (int) (point.y + 3.8 * spacing) + 1;
     StringUtils.drawCenteredText(g2d, "+5V", (int) (point.x + width - 6 * spacing), labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
     StringUtils.drawCenteredText(g2d, "+", (int) (point.x + width - 5 * spacing) - 6, labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
     StringUtils.drawCenteredText(g2d, " 12V", (int) (point.x + width - 5 * spacing) + 2, labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
@@ -467,7 +467,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
     g2d.setColor(textColor);
     g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE + 2));
     
-    StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Blåsol 2019", (int) (point.x + width * 0.70d), (int) (point.y + (yOffset + ROW_COUNT + 0.4) * spacing), 
+    StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Blåsol 2019", (int) (point.x + width * 0.70d), (int) (point.y + (yOffset + ROW_COUNT + 0.9) * spacing), 
         HorizontalAlignment.LEFT, VerticalAlignment.TOP);        
     
     // draw central mini pads

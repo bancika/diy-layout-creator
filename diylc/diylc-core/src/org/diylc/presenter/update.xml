@@ -2943,6 +2943,10 @@
 					<description>Added "Duo-Diode" tube symbol</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Transistor components can display pinout instead of name or value</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Prevent the app from closing while running background operations, like saving and exporting files</description>
 				</org.diylc.appframework.update.Change>

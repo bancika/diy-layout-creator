@@ -22,12 +22,16 @@
 package org.diylc.components.semiconductors;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 
-import org.diylc.common.Display;
+import org.diylc.awt.StringUtils;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
@@ -46,7 +50,7 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   protected Color bodyColor;
   protected Color borderColor;
   protected Color labelColor = LABEL_COLOR;
-  protected Display display = Display.NAME;  
+  protected TransistorDisplay display = TransistorDisplay.NAME;  
 
   public AbstractTransistorPackage() {
   }
@@ -180,14 +184,14 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   }
 
   @EditableProperty
-  public Display getDisplay() {
+  public TransistorDisplay getDisplay() {
     if (display == null) {
-      display = Display.NAME;
+      display = TransistorDisplay.NAME;
     }
     return display;
   }
 
-  public void setDisplay(Display display) {
+  public void setDisplay(TransistorDisplay display) {
     this.display = display;
   }  
   
@@ -217,5 +221,76 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
     int margin = 20;    
     Rectangle2D bounds = getBody()[0].getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+  
+  protected boolean flipPinoutLabel() {
+    return false;
+  }
+  
+  protected void drawPinout(Graphics2D g2d) {
+    TransistorPinout p = getPinout();
+    if (p == null)
+      return;
+    Font f = g2d.getFont();
+    f = f.deriveFont((float) (f.getSize() * 0.7));
+    g2d.setFont(f);
+    int d = 4; // hard-coded
+    String pinout = p.toPinout();
+    for (int i = 0; i < pinout.length(); i++) {
+      Point point = getControlPoint(i);
+      int dx = 0;
+      int dy = 0;
+      HorizontalAlignment ha = HorizontalAlignment.CENTER;
+      VerticalAlignment va = VerticalAlignment.CENTER;
+      switch (getOrientation()) {
+        case DEFAULT:
+          if (flipPinoutLabel()) {
+            dx = -d;    
+            ha = HorizontalAlignment.RIGHT; 
+          } else {
+            dx = d;
+            ha = HorizontalAlignment.LEFT; 
+          }
+          break;
+        case _90:
+          if (flipPinoutLabel()) {
+            dy = -d;
+            va = VerticalAlignment.TOP;
+          } else {
+            dy = d;          
+            va = VerticalAlignment.BOTTOM;
+          }
+          break;
+        case _180:
+          if (flipPinoutLabel()) {
+            dx = d;
+            ha = HorizontalAlignment.LEFT; 
+          } else {
+            dx = -d;    
+            ha = HorizontalAlignment.RIGHT;
+          }
+          break;
+        case _270:
+          if (flipPinoutLabel()) {
+            dy = d;          
+            va = VerticalAlignment.BOTTOM;
+          } else {
+            dy = -d;
+            va = VerticalAlignment.TOP;
+          }
+          break;        
+      }
+      StringUtils.drawCenteredText(g2d, pinout.charAt(i) + "", point.x + dx, point.y + dy, ha, va);
+    }
+  }
+  
+  public enum TransistorDisplay {
+
+    NAME, VALUE, NONE, BOTH, PINOUT;
+
+    @Override
+    public String toString() {
+      return name().substring(0, 1) + name().substring(1).toLowerCase();
+    }
   }
 }

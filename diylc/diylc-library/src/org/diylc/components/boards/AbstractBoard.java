@@ -168,7 +168,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
         drawPoint.x += xOffset;
         StringUtils.drawCenteredText(g2d, label, 
             drawPoint.x, firstPoint.y - 2, 
-            HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+            HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
         if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
           StringUtils.drawCenteredText(g2d, label, 
               drawPoint.x, (int) (finalSecondPoint.y - COORDINATE_FONT_SIZE), 

@@ -161,10 +161,10 @@ public class Breadboard extends AbstractComponent<Void> {
           // Draw horizontal labels
           if (y == 0) {
             g2d.setColor(COORDINATE_COLOR);
-            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y),
+            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y + COORDINATE_FONT_SIZE),
                 HorizontalAlignment.CENTER, VerticalAlignment.TOP);
             StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y
-                + spacing * 30 + COORDINATE_FONT_SIZE / 2), HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+                + spacing * 31 - COORDINATE_FONT_SIZE / 2), HorizontalAlignment.CENTER, VerticalAlignment.TOP);
           }
         }
       }

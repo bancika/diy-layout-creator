@@ -230,7 +230,7 @@ public class StringUtils {
     int textY = 0;
     switch (verticalAlignment) {
       case TOP:
-        textY = y + stringBounds.height;
+        textY = y;
         break;
       case CENTER:
         textY = y - visualBounds.height / 2 - visualBounds.y;
