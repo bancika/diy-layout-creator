@@ -1,6 +1,6 @@
 ### System requirements ###
 
-  * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.6.0_45-b06 or newer
+  * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.8 or newer
   * 1GB free RAM memory is recommended, 2GB or more is ideal
   * **Mac OSX** users must allow 3rd party apps before installing DIYLC. [This document](https://support.apple.com/en-us/HT202491) covers how to do it.
   
@@ -11,6 +11,20 @@ Make sure that you have downloaded the correct version. Windows build file ends 
   * On **Windows** run the installer wizard and follow the steps
   * On **Linux/Unix** (will also work on **Mac OSX** if using multi-platform build): extract the entire *diylc-[version number].ZIP* file into a separate directory, open the terminal, change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**), set the file *run.sh* to be executable by typing **chmod +x run.sh**, then type **./run.sh** which is the same as **sh run.sh**
   * On **OSX** just run the package to install DIYLC
+  
+### Installing on OSX Sierra and El Captain ###
+
+Since version 4.0.0, DIYLC runs on Java 8 which helps with newer Mac machines, but can cause issues on older Sierra and El Captain Macs. If the OSX application bundle "diylc-4.X.Y-osx.zip" fails on Sierra and El Captain, but you can still run the multi-platform version. Just download the latest "diylc-4.X.Y.zip" (without the "osx" in the name), extract it somewhere and go to the Terminal.
+
+Change the permissions of run.sh file to be able to run it using
+
+`sudo chmod 755 run.sh`
+
+and finally run the app using
+
+`./run.sh`
+
+This works on my test machine with Sierra.
   
 ### User interface ###
 
