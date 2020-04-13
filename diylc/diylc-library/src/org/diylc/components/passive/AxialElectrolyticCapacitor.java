@@ -87,7 +87,7 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
   @Override
   public String getValueForDisplay() {
-    return getValue().toString() + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
+    return (getValue() == null ? "" : getValue().toString()) + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
   }
 
   @Deprecated

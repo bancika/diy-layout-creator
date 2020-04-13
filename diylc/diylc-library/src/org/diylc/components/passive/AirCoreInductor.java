@@ -78,7 +78,7 @@ public class AirCoreInductor extends AbstractLeadedComponent<Inductance> {
 
   @Override
   public String getValueForDisplay() {
-    return getValue().toString();
+    return getValue() == null ? "" : getValue().toString();
   }
 
   public void drawIcon(Graphics2D g2d, int width, int height) {

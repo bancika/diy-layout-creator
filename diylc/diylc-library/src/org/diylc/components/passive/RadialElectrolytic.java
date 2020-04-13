@@ -91,7 +91,7 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
 
   @Override
   public String getValueForDisplay() {
-    return getValue().toString() + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
+    return (getValue() == null ? "" : getValue().toString()) + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
   }
 
   @Deprecated

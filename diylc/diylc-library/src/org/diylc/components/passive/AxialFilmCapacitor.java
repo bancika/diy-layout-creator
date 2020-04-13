@@ -87,7 +87,7 @@ public class AxialFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
 
   @Override
   public String getValueForDisplay() {
-    return getValue().toString() + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
+    return (getValue() == null ? "" : getValue().toString()) + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
   }
 
   @EditableProperty(name = "Voltage")
