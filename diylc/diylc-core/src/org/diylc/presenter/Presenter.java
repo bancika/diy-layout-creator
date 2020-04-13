@@ -1012,9 +1012,10 @@ public class Presenter implements IPlugInPort {
           (c.getValueForDisplay() != null && c.getValueForDisplay().toLowerCase().matches(criteria.toLowerCase())))
         matching.add(c);
     }
-    updateSelection(matching);
+    updateSelection(matching);    
     messageDispatcher.dispatchMessage(EventType.REPAINT);
-    messageDispatcher.dispatchMessage(EventType.SCROLL_TO, getSelectionBounds(true));
+    if (matching.size() > 0)
+      messageDispatcher.dispatchMessage(EventType.SCROLL_TO, getSelectionBounds(true));
   }
 
   @Override

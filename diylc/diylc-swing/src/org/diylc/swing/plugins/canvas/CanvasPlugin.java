@@ -762,7 +762,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       case SCROLL_TO:
         Rectangle visibleRect2 = canvasPanel.getVisibleRect();
         Rectangle2D targetRect = (Rectangle2D) params[0];
-        canvasPanel.scrollRectToVisible(new Rectangle((int)(targetRect.getCenterX() - visibleRect2.width / 2), 
+        if (targetRect != null)
+          canvasPanel.scrollRectToVisible(new Rectangle((int)(targetRect.getCenterX() - visibleRect2.width / 2), 
             (int)(targetRect.getCenterY() - visibleRect2.height / 2), visibleRect2.width, visibleRect2.height));
         break;
     }
