@@ -51,6 +51,7 @@ public class MarshallPerfBoard extends AbstractBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color BOARD_COLOR = Color.decode("#CD8500");
+  public static Color BORDER_COLOR = BOARD_COLOR.darker();
   public static Size SPACING = new Size(3 / 8d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(1 / 8d, SizeUnit.in);
 
@@ -60,6 +61,7 @@ public class MarshallPerfBoard extends AbstractBoard {
   public MarshallPerfBoard() {
     super();
     this.boardColor = BOARD_COLOR;
+    this.borderColor = BORDER_COLOR;
   }
 
   @Override
@@ -88,7 +90,7 @@ public class MarshallPerfBoard extends AbstractBoard {
           p.x += spacing;
           g2d.setColor(Constants.CANVAS_COLOR);
           g2d.fillOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter, holeDiameter);
-          g2d.setColor(getBoardColor().darker());
+          g2d.setColor(borderColor);
           g2d.drawOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter, holeDiameter);
         }
       }
@@ -115,34 +117,34 @@ public class MarshallPerfBoard extends AbstractBoard {
     int factor = 32 / width;
     g2d.setColor(BOARD_COLOR);
     g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
-    g2d.setColor(BOARD_COLOR.darker());
+    g2d.setColor(BORDER_COLOR);
     g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
 
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fillOval(width / 3 - 2 / factor, width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
-    g2d.setColor(BOARD_COLOR.darker());
+    g2d.setColor(BORDER_COLOR);
     g2d.drawOval(width / 3 - 2 / factor, width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
 
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fillOval(2 * width / 3 - 2 / factor, width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
-    g2d.setColor(BOARD_COLOR.darker());
+    g2d.setColor(BORDER_COLOR);
     g2d.drawOval(2 * width / 3 - 2 / factor, width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
 
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fillOval(width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
-    g2d.setColor(BOARD_COLOR.darker());
+    g2d.setColor(BORDER_COLOR);
     g2d.drawOval(width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
 
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fillOval(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
-    g2d.setColor(BOARD_COLOR.darker());
+    g2d.setColor(BORDER_COLOR);
     g2d.drawOval(2 * width / 3 - 2 / factor, 2 * width / 3 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
   }

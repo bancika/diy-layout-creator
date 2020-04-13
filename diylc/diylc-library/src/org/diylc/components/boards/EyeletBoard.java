@@ -49,6 +49,7 @@ public class EyeletBoard extends AbstractBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color BOARD_COLOR = Color.decode("#E3EAB4");
+  public static Color BORDER_COLOR = BOARD_COLOR.darker();
   public static Color EYELET_COLOR = Color.decode("#C3E4ED");
 
   public static Size SPACING = new Size(0.5d, SizeUnit.in);
@@ -62,6 +63,7 @@ public class EyeletBoard extends AbstractBoard {
   public EyeletBoard() {
     super();
     this.boardColor = BOARD_COLOR;
+    this.borderColor = BORDER_COLOR;
   }
 
   @Override
@@ -131,7 +133,7 @@ public class EyeletBoard extends AbstractBoard {
     int factor = 32 / width;
     g2d.setColor(BOARD_COLOR);
     g2d.fillRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
-    g2d.setColor(BOARD_COLOR.darker());
+    g2d.setColor(BORDER_COLOR);
     g2d.drawRect(2 / factor, 2 / factor, width - 4 / factor, height - 4 / factor);
     g2d.setColor(EYELET_COLOR);
     g2d.fillOval(width / 4, width / 4, width / 2, width / 2);
