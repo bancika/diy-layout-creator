@@ -114,4 +114,11 @@ public interface ISelectionProcessor {
    * @param includeStuckComponents
    */
   void nudgeSelection(Size xOffset, Size yOffset, boolean includeStuckComponents);
+  
+  /**
+   * Selects components that match the criteria.
+   * 
+   * @param criteria
+   */
+  void selectMatching(String criteria);
 }

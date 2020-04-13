@@ -1003,6 +1003,19 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     drawingManager.clearContinuityArea();
   }
+  
+  @Override
+  public void selectMatching(String criteria) {
+    Set<IDIYComponent<?>> matching = new HashSet<IDIYComponent<?>>();
+    for (IDIYComponent<?> c : currentProject.getComponents()) {
+      if ((c.getName() != null && c.getName().toLowerCase().matches(criteria.toLowerCase())) || 
+          (c.getValueForDisplay() != null && c.getValueForDisplay().toLowerCase().matches(criteria.toLowerCase())))
+        matching.add(c);
+    }
+    updateSelection(matching);
+    messageDispatcher.dispatchMessage(EventType.REPAINT);
+    messageDispatcher.dispatchMessage(EventType.SCROLL_TO, getSelectionBounds(true));
+  }
 
   @Override
   public VersionNumber getCurrentVersionNumber() {
@@ -1924,7 +1937,7 @@ public class Presenter implements IPlugInPort {
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.STICKY_POINTS_KEY, true)) {
       includeStuckComponents(controlPointMap);
     }
-    messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents, controlPointMap.keySet());
+    messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents, controlPointMap.keySet());    
   }
   
   private static boolean useNetlistForExpandSelection = false;

@@ -102,5 +102,9 @@ public enum EventType {
   /**
    * Called to update the status message. New status message is passed as a first parameter.
    */
-  STATUS_MESSAGE_CHANGED;
+  STATUS_MESSAGE_CHANGED,
+  /**
+   * Signals the listeners to scroll to selection.
+   */
+  SCROLL_TO;
 }

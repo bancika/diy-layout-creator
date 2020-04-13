@@ -73,13 +73,14 @@ import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
+import org.diylc.swing.plugins.edit.FindDialog;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.CheckBoxListDialog;
 import org.diylc.swingframework.IDrawingProvider;
-import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.swingframework.TextDialog;
+import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.utils.BomEntry;
 
 import com.thoughtworks.xstream.XStream;
@@ -230,6 +231,10 @@ public class ActionFactory {
 
   public NudgeAction createNudgeAction(IPlugInPort plugInPort) {
     return new NudgeAction(plugInPort);
+  }
+  
+  public FindAction createFindAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+    return new FindAction(plugInPort, swingUI);
   }
 
   // Config actions.
@@ -1543,6 +1548,38 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("Bring to Front triggered");
       plugInPort.bringSelectionToFront();
+    }
+  }
+  
+  public static class FindAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+    private ISwingUI swingUI;
+
+    public FindAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+      super();
+      this.plugInPort = plugInPort;
+      this.swingUI = swingUI;
+      putValue(AbstractAction.NAME, "Find");
+      putValue(AbstractAction.SMALL_ICON, IconLoader.SearchBox.getIcon());
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("Find triggered");
+      FindDialog dialog = DialogFactory.getInstance().createFindDialog();
+      dialog.setVisible(true);
+      
+      if (dialog.getSelectedButtonCaption() == FindDialog.OK) {
+        String criteria = dialog.getCriteria();
+        plugInPort.selectMatching(criteria);
+        if (plugInPort.getSelectedComponents().size() == 0) {
+          swingUI.showMessage("No matching components found.", "Find", ISwingUI.INFORMATION_MESSAGE);
+        }
+      }
     }
   }
 

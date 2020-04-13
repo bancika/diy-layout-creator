@@ -75,6 +75,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.RotateSelectionAction rotateCounterClockwiseAction;
   private ActionFactory.MirrorSelectionAction mirrorHorizontallyAction;
   private ActionFactory.MirrorSelectionAction mirrorVerticallyAction;
+  private ActionFactory.FindAction findAction;
 
   private UndoHandler<Project> undoHandler;
 
@@ -262,6 +263,12 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     }
     return mirrorVerticallyAction;
   }
+  
+  public ActionFactory.FindAction getFindAction() {
+    if (findAction == null)
+      findAction = ActionFactory.getInstance().createFindAction(plugInPort, swingUI);
+    return findAction;
+  }
 
   @Override
   public void connect(IPlugInPort plugInPort) {
@@ -277,6 +284,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     swingUI.injectMenuAction(getPasteAction(), EDIT_TITLE);
     swingUI.injectMenuAction(getDuplicateAction(), EDIT_TITLE);
     swingUI.injectMenuAction(null, EDIT_TITLE);
+    swingUI.injectMenuAction(getFindAction(), EDIT_TITLE);
     swingUI.injectMenuAction(actionFactory.createSelectAllAction(plugInPort), EDIT_TITLE);
     swingUI.injectMenuAction(getEditSelectionAction(), EDIT_TITLE);
     swingUI.injectMenuAction(getDeleteSelectionAction(), EDIT_TITLE);

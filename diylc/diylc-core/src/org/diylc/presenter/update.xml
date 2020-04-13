@@ -2936,6 +2936,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Find" functionality that locates and selects component(s) matching the search text</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Tag Strip" component for point-to-point layouts</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

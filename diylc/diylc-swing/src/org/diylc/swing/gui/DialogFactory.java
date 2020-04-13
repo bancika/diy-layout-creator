@@ -36,6 +36,7 @@ import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.cloud.view.UserEditDialog;
+import org.diylc.swing.plugins.edit.FindDialog;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swingframework.AboutDialog;
 import org.diylc.swingframework.IFileChooserAccessory;
@@ -194,6 +195,11 @@ public class DialogFactory {
 
   public LoginDialog createLoginDialog() {
     LoginDialog dialog = new LoginDialog(mainFrame);
+    return dialog;
+  }
+  
+  public FindDialog createFindDialog() {
+    FindDialog dialog = new FindDialog(mainFrame);
     return dialog;
   }
 
