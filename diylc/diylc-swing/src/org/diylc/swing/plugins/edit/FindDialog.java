@@ -33,6 +33,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -41,16 +42,34 @@ import org.diylc.swingframework.ButtonDialog;
 public class FindDialog extends ButtonDialog {
 
   private static final long serialVersionUID = 1L;
+  
+  private static final String TOOLTIP_HTML = "<html>Use RegEx to search for component names, types and values.<br>"
+      + "<br><b>Character classes:</b><br>"
+      + ". - matches any character<br>"
+      + "\\s - whitespace<br>"
+      + "\\S - non-whitespace<br>"
+      + "\\d - digit<br>"
+      + "\\D - non-digit<br>"
+      + "<br><b>Quantifiers:</b><br>"
+      + "* - zero or more times<br>"
+      + "? - zero or one time<br>"
+      + "+ - one or more times<br>"
+      + "<br><b>Examples:</b><br>"
+      + "'R27' - matches a component named R27<br>"
+      + "'Resistor' - matches all resistors<br>"
+      + "'R\\d+' - matches components starting with R, followed by at least one digit"
+      + "</html>";
 
   private JPanel mainPanel;
 
   private JTextField criteriaField;  
+  private JLabel tooltipLabel;
 
   private String criteria;  
 
   public FindDialog(JFrame owner) {
     super(owner, "Find", new String[] {OK, CANCEL});
-    setMinimumSize(new Dimension(240, 32));
+    setMinimumSize(new Dimension(400, 32));
     layoutGui();
     refreshState();
   }
@@ -81,8 +100,25 @@ public class FindDialog extends ButtonDialog {
 
       gbc.gridy = 0;
       mainPanel.add(getCriteriaField(), gbc);
+      
+      gbc.gridx = 0;
+      gbc.gridy = 1;
+      gbc.gridwidth = 2;
+      mainPanel.add(getTooltipLabel(), gbc);
     }
     return mainPanel;
+  }
+  
+  private JLabel getTooltipLabel() {
+    if (tooltipLabel == null) {
+      tooltipLabel = new JLabel();
+      tooltipLabel.setOpaque(true);
+      tooltipLabel.setBackground(UIManager.getColor("ToolTip.background"));
+      tooltipLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
+          BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+      tooltipLabel.setText(TOOLTIP_HTML);
+    }
+    return tooltipLabel;
   }
 
   private void refreshState() {

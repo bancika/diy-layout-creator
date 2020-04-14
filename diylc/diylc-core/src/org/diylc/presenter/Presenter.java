@@ -1004,12 +1004,15 @@ public class Presenter implements IPlugInPort {
     drawingManager.clearContinuityArea();
   }
   
+  @SuppressWarnings("unchecked")
   @Override
   public void selectMatching(String criteria) {
     Set<IDIYComponent<?>> matching = new HashSet<IDIYComponent<?>>();
     for (IDIYComponent<?> c : currentProject.getComponents()) {
+      ComponentType type = ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
       if ((c.getName() != null && c.getName().toLowerCase().matches(criteria.toLowerCase())) || 
-          (c.getValueForDisplay() != null && c.getValueForDisplay().toLowerCase().matches(criteria.toLowerCase())))
+          (c.getValueForDisplay() != null && c.getValueForDisplay().toLowerCase().matches(criteria.toLowerCase())) ||
+          type.getName().toLowerCase().matches(criteria.toLowerCase()))
         matching.add(c);
     }
     updateSelection(matching);    
