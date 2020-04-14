@@ -80,13 +80,13 @@ public class TraceCut extends AbstractComponent<Void> {
     if (getCutBetweenHoles()) {
       int holeSpacing = getClosestOdd(getHoleSpacing().convertToPixels());
       g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-          : boardColor);
+          : getBoardColor());
       drawingObserver.startTrackingContinuityArea(false);
       g2d.fillRect(point.x - holeSpacing / 2 - cutWidth / 2, point.y - size / 2 - 1, cutWidth, size + 2);
       drawingObserver.stopTrackingContinuityArea();
     } else {
       g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-          : boardColor);
+          : getBoardColor());
       drawingObserver.startTrackingContinuityArea(false);
       g2d.fillRoundRect(point.x - size / 2, point.y - size / 2, size, size, size, size);
       drawingObserver.stopTrackingContinuityArea();
@@ -94,7 +94,7 @@ public class TraceCut extends AbstractComponent<Void> {
       g2d.setColor(Constants.CANVAS_COLOR);
       int holeSize = getClosestOdd((int) HOLE_SIZE.convertToPixels());      
       g2d.fillOval(point.x - holeSize / 2, point.y - holeSize / 2, holeSize, holeSize);      
-      g2d.setColor(boardColor.darker());
+      g2d.setColor(getBoardColor().darker());
       g2d.drawOval(point.x - holeSize / 2, point.y - holeSize / 2, holeSize, holeSize);
     }
   }
