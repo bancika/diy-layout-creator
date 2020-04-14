@@ -21,7 +21,9 @@
 */
 package org.diylc.swing.plugins.help;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -71,6 +73,7 @@ public class HelpMenuPlugin implements IPlugIn {
         HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Plugin API", IconLoader.ApplicationEdit.getIcon(), PLUGIN_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Submit a Bug", IconLoader.Bug.getIcon(), BUG_URL), HELP_TITLE);
+    swingUI.injectMenuAction(new NavigateFolderAction("Access User Files", IconLoader.User.getIcon(), System.getProperty("user.home") + "/.diylc"), HELP_TITLE);
     swingUI.injectMenuAction(null, HELP_TITLE);
     swingUI.injectMenuAction(new RecentUpdatesAction(), HELP_TITLE);
     swingUI.injectMenuAction(null, HELP_TITLE);
@@ -171,6 +174,29 @@ public class HelpMenuPlugin implements IPlugIn {
         Utils.openURL(url);
       } catch (Exception e1) {
         Logger.getLogger(LinkLabel.class).error("Could not launch default browser", e1);
+      }
+    }
+  }
+  
+  class NavigateFolderAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private String url;
+
+    public NavigateFolderAction(String name, Icon icon, String url) {
+      super();
+      this.url = url;
+      putValue(AbstractAction.NAME, name);
+      putValue(AbstractAction.SMALL_ICON, icon);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      try {
+        Desktop.getDesktop().open(new File((url)));
+      } catch (Exception e1) {
+        Logger.getLogger(LinkLabel.class).error("Could not launch desktop", e1);
       }
     }
   }
