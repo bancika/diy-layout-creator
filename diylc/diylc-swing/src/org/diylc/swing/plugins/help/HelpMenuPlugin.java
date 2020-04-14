@@ -77,7 +77,7 @@ public class HelpMenuPlugin implements IPlugIn {
     swingUI.injectMenuAction(null, HELP_TITLE);
     swingUI.injectMenuAction(new RecentUpdatesAction(), HELP_TITLE);
     swingUI.injectMenuAction(null, HELP_TITLE);
-    swingUI.injectMenuAction(new NavigateURLAction("Donate", IconLoader.Donate.getIcon(), DONATE_URL), HELP_TITLE);    
+    swingUI.injectMenuAction(new NavigateURLAction("Make a Donate", IconLoader.Donate.getIcon(), DONATE_URL), HELP_TITLE);    
     swingUI.injectMenuAction(new AboutAction(), HELP_TITLE);
   }
 
