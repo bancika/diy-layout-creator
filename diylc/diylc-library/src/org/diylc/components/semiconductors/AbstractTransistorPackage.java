@@ -27,6 +27,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -218,9 +219,34 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   
   @Override
   public Rectangle2D getCachingBounds() {    
-    int margin = 20;    
-    Rectangle2D bounds = getBody()[0].getBounds2D();
-    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+    int margin = 50;    
+    double minX = Integer.MAX_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double maxY = Integer.MIN_VALUE;
+    for(Area a : getBody())
+      if (a != null) {
+        Rectangle2D b = a.getBounds2D();
+        if (b.getMinX() < minX)
+          minX = b.getMinX();
+        if (b.getMaxX() > minX)
+          maxX = b.getMaxX();
+        if (b.getMinY() < minY)
+          minY = b.getMinY();
+        if (b.getMaxY() > minY)
+          maxY = b.getMaxY();
+      }
+    for (Point p : controlPoints) {
+      if (p.getX() < minX)
+        minX = p.getX();
+      if (p.getX() > minX)
+        maxX = p.getX();
+      if (p.getY() < minY)
+        minY = p.getY() ;
+      if (p.getY()  > minY)
+        maxY = p.getY() ;
+    }
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
   
   protected boolean flipPinoutLabel() {

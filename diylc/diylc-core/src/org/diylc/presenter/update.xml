@@ -2940,7 +2940,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added "Sub-Mini" tube</description>
+					<description>Added "Sub-Mini Tube" component</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -2981,6 +2981,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>All terminals of a "Terminal Strip" were connected together by mistake</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Transistor would disappear when "Folded" is selected</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
