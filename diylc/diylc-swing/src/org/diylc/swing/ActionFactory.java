@@ -1761,7 +1761,7 @@ public class ActionFactory {
             sb.append("</p><br><hr>");
           }
           sb.append("</html>");
-          new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "DIYLC Netlist", new Dimension(600, 480)).setVisible(true);
+          new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "DIYLC Netlist", new Dimension(800, 600)).setVisible(true);
         }        
       }, true);
     }    
@@ -1830,7 +1830,7 @@ public class ActionFactory {
               sb.append("<hr>");
           }
           sb.append("</html>");
-          new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), summarizer.getName(), new Dimension(600, 480)).setVisible(true);
+          new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), summarizer.getName(), new Dimension(800, 600)).setVisible(true);
         }        
       }, true);
     }    
