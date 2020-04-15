@@ -134,7 +134,7 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.ALWAYS;
+    return getFolded() ? VisibilityPolicy.ALWAYS : VisibilityPolicy.WHEN_SELECTED;
   }
 
   @Override
@@ -166,18 +166,18 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
       switch (orientation) {
         case DEFAULT:
           dx = 0;
-          dy = leadSpacing;
+          dy = -leadSpacing;
           break;
         case _90:
-          dx = -leadSpacing;
+          dx = leadSpacing;
           dy = 0;
           break;
         case _180:
           dx = 0;
-          dy = -leadSpacing;
+          dy = leadSpacing;
           break;
         case _270:
-          dx = leadSpacing;
+          dx = -leadSpacing;
           dy = 0;
           break;
         default:
@@ -192,31 +192,31 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
         switch (orientation) {
           case DEFAULT:
             if (folded)
-              dx += length + leadLength + diameter / 2;
-            else
-              dx = -leadSpacing;
-            dy = 0;
-            break;
-          case _90:
-            dx = 0;
-            if (folded)
-              dy += length + leadLength + diameter / 2;
-            else
-              dy = -leadSpacing;
-            break;
-          case _180:
-            if (folded)
               dx -= length + leadLength + diameter / 2;
             else
               dx = leadSpacing;
             dy = 0;
             break;
-          case _270:
+          case _90:
             dx = 0;
             if (folded)
               dy -= length + leadLength + diameter / 2;
             else
               dy = leadSpacing;
+            break;
+          case _180:
+            if (folded)
+              dx += length + leadLength + diameter / 2;
+            else
+              dx = -leadSpacing;
+            dy = 0;           
+            break;
+          case _270:
+            dx = 0;
+            if (folded)
+              dy += length + leadLength + diameter / 2;
+            else
+              dy = -leadSpacing;
             break;
         }
         controlPoints[controlPoints.length - 1].setLocation(centerX + dx, centerY + dy);
@@ -263,28 +263,28 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
 
       if (folded) {        
         switch (orientation) {
-          case DEFAULT:            
-            body[0] = new Area(new RoundRectangle2D.Double(centerX + leadLength, centerY - diameter / 2,
-                length, diameter, edgeRadius, edgeRadius));
-            body[0].add(new Area(new RoundRectangle2D.Double(centerX + leadLength + length - diameter / 2, centerY - diameter / 8, 
-                diameter, diameter / 4, diameter / 4, diameter / 4)));
-            break;
-          case _90:
-            body[0] = new Area(new RoundRectangle2D.Double(centerX - diameter / 2, centerY + leadLength,
-                diameter, length, edgeRadius, edgeRadius));
-            body[0].add(new Area(new RoundRectangle2D.Double(centerX - diameter / 8, centerY + leadLength + length - diameter / 2, 
-                diameter / 4, diameter, diameter / 4, diameter / 4)));
-            break;
-          case _180:
+          case DEFAULT:  
             body[0] = new Area(new RoundRectangle2D.Double(centerX - leadLength - length, centerY - diameter / 2,
                 length, diameter, edgeRadius, edgeRadius));
             body[0].add(new Area(new RoundRectangle2D.Double(centerX - leadLength - length - diameter / 2, centerY - diameter / 8, 
                 diameter, diameter / 4, diameter / 4, diameter / 4)));
             break;
-          case _270:
+          case _90:
             body[0] = new Area(new RoundRectangle2D.Double(centerX - diameter / 2, centerY - leadLength - length,
                 diameter, length, edgeRadius, edgeRadius));
             body[0].add(new Area(new RoundRectangle2D.Double(centerX - diameter / 8, centerY - leadLength - length - diameter / 2, 
+                diameter / 4, diameter, diameter / 4, diameter / 4)));
+            break;
+          case _180:
+            body[0] = new Area(new RoundRectangle2D.Double(centerX + leadLength, centerY - diameter / 2,
+                length, diameter, edgeRadius, edgeRadius));
+            body[0].add(new Area(new RoundRectangle2D.Double(centerX + leadLength + length - diameter / 2, centerY - diameter / 8, 
+                diameter, diameter / 4, diameter / 4, diameter / 4)));
+            break;
+          case _270:
+            body[0] = new Area(new RoundRectangle2D.Double(centerX - diameter / 2, centerY + leadLength,
+                diameter, length, edgeRadius, edgeRadius));
+            body[0].add(new Area(new RoundRectangle2D.Double(centerX - diameter / 8, centerY + leadLength + length - diameter / 2, 
                 diameter / 4, diameter, diameter / 4, diameter / 4)));
             break;
           default:
@@ -357,7 +357,7 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
       int centerX = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].x + controlPoints[0].x) / 2;
       int centerY = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].y + controlPoints[0].y) / 2;      
       double increment = getDiameter().convertToPixels() / getPinCount().getValue();
-      if (orientation == Orientation._90 || orientation == Orientation._180)
+      if (orientation == Orientation.DEFAULT || orientation == Orientation._270)
         increment = -increment;
       double startX = centerX - increment * (getPinCount().getValue() - 1) / 2;
       double startY = centerY - increment * (getPinCount().getValue() - 1) / 2;
@@ -368,34 +368,34 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
           case DEFAULT:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, (int)(startY + increment * i));
+            g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, (int)(startY + increment * i));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, (int)(startY + increment * i));
+            g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, (int)(startY + increment * i));
             break;
           case _90:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y + leadLength - leadThickness / 2);
+            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y - leadLength);
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y + leadLength - leadThickness / 2);
+            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y - leadLength);
             break;
           case _180:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, (int)(startY + increment * i));
+            g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, (int)(startY + increment * i));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, (int)(startY + increment * i));
+            g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, (int)(startY + increment * i));
             break;
           case _270:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y - leadLength);
+            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y + leadLength - leadThickness / 2);
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y - leadLength);
+            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y + leadLength - leadThickness / 2);
             break;
         }
       }
