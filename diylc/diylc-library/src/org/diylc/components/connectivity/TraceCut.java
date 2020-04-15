@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.OrientationHV;
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.boards.AbstractBoard;
@@ -64,6 +65,7 @@ public class TraceCut extends AbstractComponent<Void> {
   private Color borderColor = BORDER_COLOR;
   private Color boardColor = AbstractBoard.BOARD_COLOR;
   private Boolean cutBetweenHoles = false;
+  private OrientationHV orientation = OrientationHV.VERTICAL;
   private Size holeSpacing = VeroBoard.SPACING;
 
   protected Point point = new Point(0, 0);
@@ -82,7 +84,10 @@ public class TraceCut extends AbstractComponent<Void> {
       g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
           : getBoardColor());
       drawingObserver.startTrackingContinuityArea(false);
-      g2d.fillRect(point.x - holeSpacing / 2 - cutWidth / 2, point.y - size / 2 - 1, cutWidth, size + 2);
+      if (getOrientation() == OrientationHV.VERTICAL)
+        g2d.fillRect(point.x - holeSpacing / 2 - cutWidth / 2, point.y - size / 2 - 1, cutWidth, size + 2);
+      else
+        g2d.fillRect(point.x - size / 2 - 1, point.y - holeSpacing / 2 - cutWidth / 2, size + 2, cutWidth);
       drawingObserver.stopTrackingContinuityArea();
     } else {
       g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
@@ -193,7 +198,7 @@ public class TraceCut extends AbstractComponent<Void> {
     this.borderColor = borderColor;
   }
 
-  @EditableProperty(name = "Cut between holes")
+  @EditableProperty(name = "Cut Between Holes")
   public boolean getCutBetweenHoles() {
     if (cutBetweenHoles == null) {
       cutBetweenHoles = false;
@@ -217,7 +222,7 @@ public class TraceCut extends AbstractComponent<Void> {
     this.boardColor = boardColor;
   }
 
-  @EditableProperty(name = "Hole spacing")
+  @EditableProperty(name = "Hole Spacing")
   public Size getHoleSpacing() {
     if (holeSpacing == null) {
       holeSpacing = VeroBoard.SPACING;
@@ -227,6 +232,17 @@ public class TraceCut extends AbstractComponent<Void> {
 
   public void setHoleSpacing(Size holeSpacing) {
     this.holeSpacing = holeSpacing;
+  }
+  
+  @EditableProperty(name = "Cut Orientation")
+  public OrientationHV getOrientation() {
+    if (orientation == null)
+      orientation = OrientationHV.VERTICAL;
+    return orientation;
+  }
+  
+  public void setOrientation(OrientationHV orientation) {
+    this.orientation = orientation;
   }
 
   @Deprecated
