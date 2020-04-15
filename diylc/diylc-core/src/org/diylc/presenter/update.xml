@@ -2940,6 +2940,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Sub-Mini" tube</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Tag Strip" component for point-to-point layouts</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

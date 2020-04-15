@@ -343,9 +343,9 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     Area area = new Area(new Ellipse2D.Double(1, 1, width - 2, width - 2));
     int center = width / 2;
     area.subtract(new Area(new Ellipse2D.Double(center - 2, center - 2, 5, 5)));
-    g2d.setColor(getColor());
+    g2d.setColor(BODY_COLOR);
     g2d.fill(area);
-    g2d.setColor(getColor().darker());
+    g2d.setColor(BODY_COLOR.darker());
     g2d.draw(area);
 
     int radius = width / 2 - 6;
