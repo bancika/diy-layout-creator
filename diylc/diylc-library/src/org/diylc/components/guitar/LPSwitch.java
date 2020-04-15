@@ -360,7 +360,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
       case 0:
         return index1 == 1 && index2 == 2;
       case 1:
-        return index1 > 0;
+        return index1 > 0 && index2 > 0 && index1 < index2;
       case 2:
         return index1 == 2 && index2 == 3;
     }

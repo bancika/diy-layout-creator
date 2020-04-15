@@ -22,14 +22,13 @@
 package org.diylc.netlist;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.diylc.components.electromechanical.OpenJack1_4;
 import org.diylc.components.guitar.HumbuckerPickup;
+import org.diylc.components.guitar.LPSwitch;
 import org.diylc.components.guitar.LeverSwitch;
 import org.diylc.components.guitar.LeverSwitch.LeverSwitchType;
 import org.diylc.components.guitar.SingleCoilPickup;
@@ -309,6 +308,25 @@ public class GuitarNetlistAnalyzerTests {
         for (int j = 0; j < leverSwitch.getControlPointCount(); j++) {
           String test = p + "," + i + "," + j;
           boolean isConnected = leverSwitch.arePointsConnected(i, j, p);
+          boolean isOk = (isConnected && Arrays.binarySearch(validCombinations, test) >= 0) ||
+              !isConnected && Arrays.binarySearch(validCombinations, test) < 0;
+          if (!isOk)
+            fail("Bad connection for p=" + p + ", i=" + i + ",j=" + j);          
+        }
+  }
+  
+  @Test
+  public void testLPSwitch() {
+    LPSwitch lpSwitch = new LPSwitch();
+    String[] validCombinations = new String[] {
+      "0,1,2", "1,1,2", "1,2,3", "1,1,3", "2,2,3"
+    };
+    Arrays.sort(validCombinations);
+    for (int p = 0; p < lpSwitch.getPositionCount(); p++)
+      for (int i = 0; i < lpSwitch.getControlPointCount(); i++)
+        for (int j = 0; j < lpSwitch.getControlPointCount(); j++) {
+          String test = p + "," + i + "," + j;
+          boolean isConnected = lpSwitch.arePointsConnected(i, j, p);
           boolean isOk = (isConnected && Arrays.binarySearch(validCombinations, test) >= 0) ||
               !isConnected && Arrays.binarySearch(validCombinations, test) < 0;
           if (!isOk)
