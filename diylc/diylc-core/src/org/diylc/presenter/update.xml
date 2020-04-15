@@ -2956,6 +2956,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added optional outer foil marking for all film capacitors</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>"Trace Cut" can now be placed horizontally or vertically when "Cut Between Lines" is selected</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
