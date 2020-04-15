@@ -71,7 +71,7 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
 
   @Override
   public String getName() {  
-    return "Analyze Guitar Diagrams (beta)";
+    return "Analyze Guitar Diagrams";
   }
   
   @Override

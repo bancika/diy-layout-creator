@@ -36,7 +36,7 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
 
   @Override
   public String getName() {
-    return "Generate Spice Netlist (beta)";
+    return "Generate Spice Netlist";
   }
 
   @Override
