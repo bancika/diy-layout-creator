@@ -12,6 +12,22 @@ Make sure that you have downloaded the correct version. Windows build file ends 
   * On **Linux/Unix** (will also work on **Mac OSX** if using multi-platform build): extract the entire *diylc-[version number].ZIP* file into a separate directory, open the terminal, change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**), set the file *run.sh* to be executable by typing **chmod +x run.sh**, then type **./run.sh** which is the same as **sh run.sh**
   * On **OSX** just run the package to install DIYLC
   
+### Whitelisting DIYLC with OSX Gatekeeper ###
+
+If you are getting the error saying that the application is damaged, you need to either whitelist DIYLC with the Gatekeeper or temporarily disable Gatekeeper altogether.
+
+To disable Gatekeeper run this command in the terminal
+
+`sudo spctl --master-disable`
+
+to enable it back, run
+
+`sudo spctl --master-enable`
+
+To whitelist DIYLC, move it to Applications folder and then run this command in the terminal
+
+`sudo spctl --add /Applications/DIYLC.app`
+  
 ### Installing on OSX Sierra and El Captain ###
 
 Since version 4.0.0, DIYLC runs on Java 8 which helps with newer Mac machines, but can cause issues on older Sierra and El Captain Macs. If the OSX application bundle "diylc-4.X.Y-osx.zip" fails on Sierra and El Captain, but you can still run the multi-platform version. Just download the latest "diylc-4.X.Y.zip" (without the "osx" in the name), extract it somewhere and go to the Terminal.
