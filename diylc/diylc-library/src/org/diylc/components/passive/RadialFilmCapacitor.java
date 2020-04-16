@@ -23,6 +23,7 @@ package org.diylc.components.passive;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
@@ -30,6 +31,9 @@ import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Film Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
@@ -41,6 +45,10 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor {
 
   public static Color BODY_COLOR = Color.decode("#FF8000");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
+  
+  public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
+
+  private Size pinSpacing = PIN_SPACING;
 
   public RadialFilmCapacitor() {
     super();
@@ -63,5 +71,22 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor {
     double radius = getWidth().convertToPixels() * 0.7;
     return new RoundRectangle2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth()
         .convertToPixels()), radius, radius);
+  }
+
+  @Override
+  protected int calculatePinSpacing(Rectangle shapeRect) {
+    return (int) getPinSpacing().convertToPixels();
+  }
+
+  @EditableProperty(name = "Pin Spacing")
+  public Size getPinSpacing() {
+    if (pinSpacing == null) {
+      pinSpacing = PIN_SPACING;
+    }
+    return pinSpacing;
+  }
+
+  public void setPinSpacing(Size pinSpacing) {
+    this.pinSpacing = pinSpacing;
   }
 }

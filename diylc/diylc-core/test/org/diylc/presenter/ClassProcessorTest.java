@@ -37,6 +37,6 @@ public class ClassProcessorTest {
   public void testExtractProperties() {
     List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(MockDIYComponent.class);
     assertNotNull(properties);
-    assertEquals(4, properties.size());
+    assertEquals(5, properties.size());
   };
 }

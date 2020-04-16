@@ -28,7 +28,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 /**
- * Base class for radial components. The same as {@link AbstractRadialComponent} but with added pin
+ * Base class for radial components. The same as {@link AbstractLeadedComponent} but with added pin
  * spacing.
  * 
  * @author bancika
@@ -48,7 +48,7 @@ public abstract class AbstractRadialComponent<T> extends AbstractLeadedComponent
     return (int) getPinSpacing().convertToPixels();
   }
 
-  @EditableProperty(name = "Pin spacing")
+  @EditableProperty(name = "Pin Spacing")
   public Size getPinSpacing() {
     if (pinSpacing == null) {
       pinSpacing = PIN_SPACING;
@@ -59,5 +59,4 @@ public abstract class AbstractRadialComponent<T> extends AbstractLeadedComponent
   public void setPinSpacing(Size pinSpacing) {
     this.pinSpacing = pinSpacing;
   }
-
 }
