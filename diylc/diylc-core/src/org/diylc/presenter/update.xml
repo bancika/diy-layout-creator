@@ -2988,6 +2988,22 @@
 				</org.diylc.appframework.update.Change>						
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>5</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-04-16 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Rotary Selector Switch" component</description>
+				</org.diylc.appframework.update.Change>				
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
 	</a>
 </java.util.Arrays_-ArrayList>
