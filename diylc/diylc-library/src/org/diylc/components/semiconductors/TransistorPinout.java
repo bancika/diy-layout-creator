@@ -2,7 +2,7 @@ package org.diylc.components.semiconductors;
 
 public enum TransistorPinout {
 
-  BJT_EBC, BJT_CBE, JFET_DSG, JFET_GSD, JFET_DGS, JFET_SGD, MOSFET_DSG, MOSFET_GSD, MOSFET_DGS, MOSFET_SGD;
+  BJT_EBC, BJT_CBE, JFET_DSG, JFET_GSD, JFET_DGS, JFET_SGD, JFET_GDS, MOSFET_DSG, MOSFET_GSD, MOSFET_DGS, MOSFET_SGD, MOSFET_GDS;
   
   @Override
   public String toString() {
