@@ -103,6 +103,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.RotateSelectionAction rotateCounterclockwiseAction;
   private ActionFactory.MirrorSelectionAction mirrorHorizontallyAction;
   private ActionFactory.MirrorSelectionAction mirrorVerticallyAction;
+  private ActionFactory.FlexibleLeadsAction flexibleLeadsAction;
 
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
@@ -289,6 +290,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
                 getRotateCounterclockwiseAction().setEnabled(enabled);
                 getMirrorHorizontallyAction().setEnabled(enabled);
                 getMirrorVerticallyAction().setEnabled(enabled);
+                getFlexibleLeadsAction().setEnabled(enabled);
 
                 getSaveAsTemplateAction()
                     .setEnabled(plugInPort.getSelectedComponents().size() == 1);
@@ -452,6 +454,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       popupMenu.add(getApplyTemplateMenu());
       popupMenu.add(getSaveAsBlockAction());
       popupMenu.add(getExpandMenu());
+      popupMenu.addSeparator();
+      popupMenu.add(getFlexibleLeadsAction());
       popupMenu.addSeparator();
       popupMenu.add(ActionFactory.getInstance().createEditProjectAction(plugInPort));
     }
@@ -629,6 +633,12 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           IComponentTransformer.VERTICAL);
     }
     return mirrorVerticallyAction;
+  }
+  
+  public ActionFactory.FlexibleLeadsAction getFlexibleLeadsAction() {
+    if (flexibleLeadsAction == null)
+      flexibleLeadsAction = ActionFactory.getInstance().createFlexibleLeadsAction(plugInPort);
+    return flexibleLeadsAction;
   }
 
   public ActionFactory.SaveAsTemplateAction getSaveAsTemplateAction() {

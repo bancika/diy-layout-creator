@@ -64,6 +64,7 @@ import org.diylc.core.Theme;
 import org.diylc.core.measures.Nudge;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.editor.FlexibleLeadsEditor;
 import org.diylc.images.IconLoader;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
@@ -127,30 +128,32 @@ public class ActionFactory {
     return new CreateBomAction(plugInPort);
   }
 
-  public ExportPDFAction createExportPDFAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
+  public ExportPDFAction createExportPDFAction(IPlugInPort plugInPort,
+      IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
     return new ExportPDFAction(plugInPort, drawingProvider, swingUI, defaultSuffix);
   }
 
-  public ExportPNGAction createExportPNGAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
+  public ExportPNGAction createExportPNGAction(IPlugInPort plugInPort,
+      IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
     return new ExportPNGAction(plugInPort, drawingProvider, swingUI, defaultSuffix);
   }
 
   public PrintAction createPrintAction(IDrawingProvider drawingProvider, int keyModifiers) {
     return new PrintAction(drawingProvider, keyModifiers);
   }
-  
+
   public ExportVariantsAction createExportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
     return new ExportVariantsAction(swingUI, plugInPort);
   }
-  
+
   public ImportVariantsAction createImportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
     return new ImportVariantsAction(swingUI, plugInPort);
   }
-  
+
   public ExportBlocksAction createExportBlocksAction(ISwingUI swingUI) {
     return new ExportBlocksAction(swingUI);
   }
-  
+
   public ImportBlocksAction createImportBlocksAction(ISwingUI swingUI, IPlugInPort plugInPort) {
     return new ImportBlocksAction(swingUI, plugInPort);
   }
@@ -161,11 +164,13 @@ public class ActionFactory {
 
   // Edit menu actions.
 
-  public CutAction createCutAction(IPlugInPort plugInPort, Clipboard clipboard, ClipboardOwner clipboardOwner) {
+  public CutAction createCutAction(IPlugInPort plugInPort, Clipboard clipboard,
+      ClipboardOwner clipboardOwner) {
     return new CutAction(plugInPort, clipboard, clipboardOwner);
   }
 
-  public CopyAction createCopyAction(IPlugInPort plugInPort, Clipboard clipboard, ClipboardOwner clipboardOwner) {
+  public CopyAction createCopyAction(IPlugInPort plugInPort, Clipboard clipboard,
+      ClipboardOwner clipboardOwner) {
     return new CopyAction(plugInPort, clipboard, clipboardOwner);
   }
 
@@ -209,7 +214,8 @@ public class ActionFactory {
     return new SaveAsBlockAction(plugInPort);
   }
 
-  public ExpandSelectionAction createExpandSelectionAction(IPlugInPort plugInPort, ExpansionMode expansionMode) {
+  public ExpandSelectionAction createExpandSelectionAction(IPlugInPort plugInPort,
+      ExpansionMode expansionMode) {
     return new ExpandSelectionAction(plugInPort, expansionMode);
   }
 
@@ -232,23 +238,29 @@ public class ActionFactory {
   public NudgeAction createNudgeAction(IPlugInPort plugInPort) {
     return new NudgeAction(plugInPort);
   }
-  
+
   public FindAction createFindAction(IPlugInPort plugInPort, ISwingUI swingUI) {
     return new FindAction(plugInPort, swingUI);
   }
 
+  public FlexibleLeadsAction createFlexibleLeadsAction(IPlugInPort plugInPort) {
+    return new FlexibleLeadsAction(plugInPort);
+  }
+
   // Config actions.
 
-  public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue) {
+  public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey,
+      boolean defaultValue) {
     return new ConfigAction(plugInPort, title, configKey, defaultValue);
   }
 
-  public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue,
-      String tipKey) {
+  public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey,
+      boolean defaultValue, String tipKey) {
     return new ConfigAction(plugInPort, title, configKey, defaultValue, tipKey);
   }
-  
-  public ToggleAction createToggleAction(String title, String configKey, String groupName, String defaultValue) {
+
+  public ToggleAction createToggleAction(String title, String configKey, String groupName,
+      String defaultValue) {
     return new ToggleAction(title, configKey, groupName, defaultValue);
   }
 
@@ -263,12 +275,14 @@ public class ActionFactory {
   public RenumberAction createRenumberAction(IPlugInPort plugInPort, boolean xAxisFirst) {
     return new RenumberAction(plugInPort, xAxisFirst);
   }
-  
-  public GenerateNetlistAction createGenerateNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+
+  public GenerateNetlistAction createGenerateNetlistAction(IPlugInPort plugInPort,
+      ISwingUI swingUI) {
     return new GenerateNetlistAction(plugInPort, swingUI);
   }
-  
-  public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI, INetlistAnalyzer summarizer) {
+
+  public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort,
+      ISwingUI swingUI, INetlistAnalyzer summarizer) {
     return new SummarizeNetlistAction(plugInPort, swingUI, summarizer);
   }
 
@@ -284,8 +298,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "New");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentPlain.getIcon());
     }
 
@@ -306,7 +320,8 @@ public class ActionFactory {
       // Save default values.
       for (PropertyWrapper property : editor.getDefaultedProperties()) {
         if (property.getValue() != null) {
-          plugInPort.setDefaultPropertyValue(Project.class, property.getName(), property.getValue());
+          plugInPort.setDefaultPropertyValue(Project.class, property.getName(),
+              property.getValue());
         }
       }
     }
@@ -324,8 +339,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Open");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.FolderOut.getIcon());
     }
 
@@ -335,9 +350,8 @@ public class ActionFactory {
       if (!plugInPort.allowFileAction()) {
         return;
       }
-      final File file =
-          DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
-              FileFilterEnum.DIY.getExtensions()[0], null);
+      final File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(),
+          null, FileFilterEnum.DIY.getExtensions()[0], null);
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -353,7 +367,8 @@ public class ActionFactory {
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not open file. " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
@@ -375,7 +390,8 @@ public class ActionFactory {
       this.presenter = new Presenter(new IView() {
 
         @Override
-        public int showConfirmDialog(String message, String title, int optionType, int messageType) {
+        public int showConfirmDialog(String message, String title, int optionType,
+            int messageType) {
           return JOptionPane.showConfirmDialog(null, message, title, optionType, messageType);
         }
 
@@ -390,13 +406,14 @@ public class ActionFactory {
         }
 
         @Override
-        public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+        public boolean editProperties(List<PropertyWrapper> properties,
+            Set<PropertyWrapper> defaultedProperties) {
           return false;
         }
       });
       putValue(AbstractAction.NAME, "Import");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.ElementInto.getIcon());
     }
 
@@ -404,9 +421,8 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("ImportAction triggered");
 
-      final File file =
-          DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
-              FileFilterEnum.DIY.getExtensions()[0], null);
+      final File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(),
+          null, FileFilterEnum.DIY.getExtensions()[0], null);
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -430,7 +446,8 @@ public class ActionFactory {
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not open file. " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
@@ -449,8 +466,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Save");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
     }
 
@@ -458,9 +475,8 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("SaveAction triggered");
       if (plugInPort.getCurrentFileName() == null) {
-        final File file =
-            DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.DIY.getFilter(), null,
-                FileFilterEnum.DIY.getExtensions()[0], null);
+        final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
+            FileFilterEnum.DIY.getFilter(), null, FileFilterEnum.DIY.getExtensions()[0], null);
         if (file != null) {
           swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -476,7 +492,8 @@ public class ActionFactory {
 
             @Override
             public void failed(Exception e) {
-              swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+              swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error",
+                  ISwingUI.ERROR_MESSAGE);
             }
           }, true);
         }
@@ -495,7 +512,8 @@ public class ActionFactory {
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
@@ -514,19 +532,16 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Save As");
-      putValue(
-          AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
-              | ActionEvent.SHIFT_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | ActionEvent.SHIFT_MASK));
       putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("SaveAsAction triggered");
-      final File file =
-          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.DIY.getFilter(), null,
-              FileFilterEnum.DIY.getExtensions()[0], null);
+      final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
+          FileFilterEnum.DIY.getFilter(), null, FileFilterEnum.DIY.getExtensions()[0], null);
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -542,7 +557,8 @@ public class ActionFactory {
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not save to file. " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
@@ -565,16 +581,16 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("CreateBomAction triggered");
-      List<BomEntry> bom =
-          org.diylc.utils.BomMaker.getInstance().createBom(plugInPort.getCurrentProject().getComponents());
-      
+      List<BomEntry> bom = org.diylc.utils.BomMaker.getInstance()
+          .createBom(plugInPort.getCurrentProject().getComponents());
+
       String initialFileName = null;
       String currentFile = plugInPort.getCurrentFileName();
       if (currentFile != null) {
-        File cFile = new File(currentFile);        
+        File cFile = new File(currentFile);
         initialFileName = cFile.getName().replaceAll("(?i)\\.diy", "") + " BOM";
       }
-      
+
       BomDialog dialog = DialogFactory.getInstance().createBomDialog(bom, initialFileName);
       dialog.setVisible(true);
     }
@@ -589,7 +605,8 @@ public class ActionFactory {
     private IPlugInPort plugInPort;
     private String defaultSuffix;
 
-    public ExportPDFAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
+    public ExportPDFAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider,
+        ISwingUI swingUI, String defaultSuffix) {
       super();
       this.plugInPort = plugInPort;
       this.drawingProvider = drawingProvider;
@@ -602,17 +619,17 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportPDFAction triggered");
-      
+
       File initialFile = null;
       String currentFile = plugInPort.getCurrentFileName();
       if (currentFile != null) {
-        File cFile = new File(currentFile);        
-        initialFile = new File(cFile.getName().replaceAll("(?i)\\.diy", "") + defaultSuffix + ".pdf");
+        File cFile = new File(currentFile);
+        initialFile =
+            new File(cFile.getName().replaceAll("(?i)\\.diy", "") + defaultSuffix + ".pdf");
       }
-      
-      final File file =
-          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.PDF.getFilter(), initialFile,
-              FileFilterEnum.PDF.getExtensions()[0], null);
+
+      final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
+          FileFilterEnum.PDF.getFilter(), initialFile, FileFilterEnum.PDF.getExtensions()[0], null);
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -628,7 +645,8 @@ public class ActionFactory {
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not export to PDF. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not export to PDF. " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
@@ -644,7 +662,8 @@ public class ActionFactory {
     private IPlugInPort plugInPort;
     private String defaultSuffix;
 
-    public ExportPNGAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
+    public ExportPNGAction(IPlugInPort plugInPort, IDrawingProvider drawingProvider,
+        ISwingUI swingUI, String defaultSuffix) {
       super();
       this.plugInPort = plugInPort;
       this.drawingProvider = drawingProvider;
@@ -657,17 +676,17 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportPNGAction triggered");
-      
+
       File initialFile = null;
       String currentFile = plugInPort.getCurrentFileName();
       if (currentFile != null) {
-        File cFile = new File(currentFile);        
-        initialFile = new File(cFile.getName().replaceAll("(?i)\\.diy", "") + defaultSuffix + ".png");
+        File cFile = new File(currentFile);
+        initialFile =
+            new File(cFile.getName().replaceAll("(?i)\\.diy", "") + defaultSuffix + ".png");
       }
-      
-      final File file =
-          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.PNG.getFilter(), initialFile,
-              FileFilterEnum.PNG.getExtensions()[0], null);
+
+      final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
+          FileFilterEnum.PNG.getFilter(), initialFile, FileFilterEnum.PNG.getExtensions()[0], null);
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
 
@@ -683,7 +702,8 @@ public class ActionFactory {
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not export to PNG. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not export to PNG. " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
@@ -714,20 +734,21 @@ public class ActionFactory {
       }
     }
   }
-  
+
   public static class ExportVariantsAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
 
     private ISwingUI swingUI;
-    
-    private Map<String, ComponentType> typeMap = new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
+
+    private Map<String, ComponentType> typeMap =
+        new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
 
     public ExportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
       super();
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Export Variants");
-      
+
       Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
       for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet())
         for (ComponentType type : entry.getValue()) {
@@ -739,47 +760,49 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportVariantsAction triggered");
-      
+
       Map<String, List<Template>> selectedVariants;
-      
+
       try {
-        Map<String, List<Template>> variantMap =
-            (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(IPlugInPort.TEMPLATES_KEY, null);
+        Map<String, List<Template>> variantMap = (Map<String, List<Template>>) ConfigurationManager
+            .getInstance().readObject(IPlugInPort.TEMPLATES_KEY, null);
         if (variantMap == null || variantMap.isEmpty()) {
           swingUI.showMessage("No variants found to export.", "Error", IView.ERROR_MESSAGE);
           return;
         }
-        
+
         List<ComponentType> types = new ArrayList<ComponentType>();
         for (String className : variantMap.keySet()) {
           ComponentType type = typeMap.get(className);
-          if (type != null)            
+          if (type != null)
             types.add(type);
           else
             LOG.warn("Could not find type for: " + className);
         }
-        
+
         Collections.sort(types, new Comparator<ComponentType>() {
-  
+
           @Override
           public int compare(ComponentType o1, ComponentType o2) {
             return o1.toString().compareToIgnoreCase(o2.toString());
-          }});
-        
-        CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Variants", types.toArray());
-        
-        dialog.setVisible(true);      
-        
+          }
+        });
+
+        CheckBoxListDialog dialog =
+            new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Variants", types.toArray());
+
+        dialog.setVisible(true);
+
         if (dialog.getSelectedButtonCaption() != "OK")
           return;
-        
+
         Object[] selected = dialog.getSelectedOptions();
-        
+
         if (selected.length == 0) {
           swingUI.showMessage("No variants selected for export.", "Error", IView.ERROR_MESSAGE);
-          return;      
+          return;
         }
-        
+
         selectedVariants = new HashMap<String, List<Template>>();
         for (Object key : selected) {
           ComponentType type = (ComponentType) key;
@@ -790,19 +813,19 @@ public class ActionFactory {
         }
       } catch (Exception ex) {
         LOG.error("Error preparing variants for export", ex);
-        swingUI.showMessage("Could not export variants. Please check the log for details", "Export Variants", ISwingUI.ERROR_MESSAGE);
+        swingUI.showMessage("Could not export variants. Please check the log for details",
+            "Export Variants", ISwingUI.ERROR_MESSAGE);
         return;
       }
 
-      final VariantPackage variantPkg = new VariantPackage(selectedVariants, System.getProperty("user.name"));
+      final VariantPackage variantPkg =
+          new VariantPackage(selectedVariants, System.getProperty("user.name"));
 
-      File initialFile =
-          new File(variantPkg.getOwner() == null ? "variants.xml" : ("variants by "
-              + variantPkg.getOwner().toLowerCase() + ".xml"));
+      File initialFile = new File(variantPkg.getOwner() == null ? "variants.xml"
+          : ("variants by " + variantPkg.getOwner().toLowerCase() + ".xml"));
 
-      final File file =
-          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.XML.getFilter(),
-              initialFile, FileFilterEnum.XML.getExtensions()[0], null);
+      final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
+          FileFilterEnum.XML.getFilter(), initialFile, FileFilterEnum.XML.getExtensions()[0], null);
 
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
@@ -832,13 +855,14 @@ public class ActionFactory {
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not export variants: " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not export variants: " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
     }
   }
-  
+
   public static class ImportVariantsAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
@@ -857,9 +881,8 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("ImportVariantsAction triggered");
 
-      final File file =
-          DialogFactory.getInstance().showOpenDialog(FileFilterEnum.XML.getFilter(),
-              null, FileFilterEnum.XML.getExtensions()[0], null, swingUI.getOwnerFrame());
+      final File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.XML.getFilter(),
+          null, FileFilterEnum.XML.getExtensions()[0], null, swingUI.getOwnerFrame());
 
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Integer>() {
@@ -871,19 +894,20 @@ public class ActionFactory {
 
           @Override
           public void complete(Integer result) {
-            swingUI.showMessage(result + " variant(s) imported from \"" + file.getName() + "\".", "Success",
-                ISwingUI.INFORMATION_MESSAGE);
+            swingUI.showMessage(result + " variant(s) imported from \"" + file.getName() + "\".",
+                "Success", ISwingUI.INFORMATION_MESSAGE);
           }
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not import variants: " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not import variants: " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
     }
   }
-  
+
   public static class ExportBlocksAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
@@ -901,59 +925,63 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ExportBuildingBlocksAction triggered");
-      
+
       Map<String, List<IDIYComponent<?>>> selectedBlocks;
-      
+
       try {
         Map<String, List<IDIYComponent<?>>> blocks =
-            (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(IPlugInPort.BLOCKS_KEY, null);
+            (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance()
+                .readObject(IPlugInPort.BLOCKS_KEY, null);
         if (blocks == null || blocks.isEmpty()) {
           swingUI.showMessage("No building blocks found to export.", "Error", IView.ERROR_MESSAGE);
           return;
         }
-        
+
         String[] options = blocks.keySet().toArray(new String[0]);
-        
+
         Arrays.sort(options, new Comparator<String>() {
-  
+
           @Override
           public int compare(String o1, String o2) {
             return o1.compareToIgnoreCase(o2);
-          }});
-        
-        CheckBoxListDialog dialog = new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Building Blocks", options);
-        
-        dialog.setVisible(true);      
-        
+          }
+        });
+
+        CheckBoxListDialog dialog =
+            new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Building Blocks", options);
+
+        dialog.setVisible(true);
+
         if (dialog.getSelectedButtonCaption() != "OK")
           return;
-        
+
         Object[] selected = dialog.getSelectedOptions();
-        
+
         if (selected.length == 0) {
-          swingUI.showMessage("No building blocks selected for export.", "Error", IView.ERROR_MESSAGE);
-          return;      
+          swingUI.showMessage("No building blocks selected for export.", "Error",
+              IView.ERROR_MESSAGE);
+          return;
         }
-        
+
         selectedBlocks = new HashMap<String, List<IDIYComponent<?>>>();
         for (Object key : selected) {
           selectedBlocks.put(key.toString(), blocks.get(key));
         }
       } catch (Exception ex) {
         LOG.error("Error preparing building blocks for export", ex);
-        swingUI.showMessage("Could not export building blocks. Please check the log for details", "Export Building Blocks", ISwingUI.ERROR_MESSAGE);
+        swingUI.showMessage("Could not export building blocks. Please check the log for details",
+            "Export Building Blocks", ISwingUI.ERROR_MESSAGE);
         return;
       }
-      
-      final BuildingBlockPackage variantPkg = new BuildingBlockPackage(selectedBlocks, System.getProperty("user.name"));
 
-      File initialFile =
-          new File(variantPkg.getOwner() == null ? "building blocks.xml" : ("building blocks by "
-              + variantPkg.getOwner().toLowerCase() + ".xml"));
+      final BuildingBlockPackage variantPkg =
+          new BuildingBlockPackage(selectedBlocks, System.getProperty("user.name"));
 
-      final File file =
-          DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(), FileFilterEnum.XML.getFilter(),
-              initialFile, FileFilterEnum.XML.getExtensions()[0], null);
+      File initialFile = new File(variantPkg.getOwner() == null ? "building blocks.xml"
+          : ("building blocks by " + variantPkg.getOwner().toLowerCase() + ".xml"));
+
+      final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
+          FileFilterEnum.XML.getFilter(), initialFile, FileFilterEnum.XML.getExtensions()[0], null);
 
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
@@ -977,19 +1005,20 @@ public class ActionFactory {
 
           @Override
           public void complete(Void result) {
-            swingUI.showMessage("Building blocks exported to \"" + file.getName() + "\".", "Success",
-                ISwingUI.INFORMATION_MESSAGE);
+            swingUI.showMessage("Building blocks exported to \"" + file.getName() + "\".",
+                "Success", ISwingUI.INFORMATION_MESSAGE);
           }
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not export building blocks: " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not export building blocks: " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
     }
   }
-  
+
   public static class ImportBlocksAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
@@ -1007,11 +1036,10 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ImportBlocksAction triggered");
-      
 
-      final File file =
-          DialogFactory.getInstance().showOpenDialog(FileFilterEnum.XML.getFilter(),
-              null, FileFilterEnum.XML.getExtensions()[0], null, swingUI.getOwnerFrame());
+
+      final File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.XML.getFilter(),
+          null, FileFilterEnum.XML.getExtensions()[0], null, swingUI.getOwnerFrame());
 
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Integer>() {
@@ -1023,13 +1051,15 @@ public class ActionFactory {
 
           @Override
           public void complete(Integer result) {
-            swingUI.showMessage(result + " building block(s) imported from \"" + file.getName() + "\".", "Success",
+            swingUI.showMessage(
+                result + " building block(s) imported from \"" + file.getName() + "\".", "Success",
                 ISwingUI.INFORMATION_MESSAGE);
           }
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Could not import building blocks: " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage("Could not import building blocks: " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
           }
         }, true);
       }
@@ -1074,15 +1104,16 @@ public class ActionFactory {
       this.clipboard = clipboard;
       this.clipboardOwner = clipboardOwner;
       putValue(AbstractAction.NAME, "Cut");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Cut.getIcon());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("Cut triggered");
-      clipboard.setContents(new ComponentTransferable(cloneComponents(plugInPort.getSelectedComponents())),
+      clipboard.setContents(
+          new ComponentTransferable(cloneComponents(plugInPort.getSelectedComponents())),
           clipboardOwner);
       plugInPort.deleteSelectedComponents();
     }
@@ -1100,8 +1131,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.clipboard = clipboard;
       putValue(AbstractAction.NAME, "Paste");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Paste.getIcon());
     }
 
@@ -1112,7 +1143,8 @@ public class ActionFactory {
       try {
         List<IDIYComponent<?>> components =
             (List<IDIYComponent<?>>) clipboard.getData(ComponentTransferable.listFlavor);
-        plugInPort.pasteComponents(cloneComponents(components), false, ConfigurationManager.getInstance().readBoolean(Presenter.RENUMBER_ON_PASTE_KEY, true));
+        plugInPort.pasteComponents(cloneComponents(components), false,
+            ConfigurationManager.getInstance().readBoolean(Presenter.RENUMBER_ON_PASTE_KEY, true));
       } catch (Exception ex) {
         LOG.error("Coule not paste.", ex);
       }
@@ -1133,15 +1165,16 @@ public class ActionFactory {
       this.clipboard = clipboard;
       this.clipboardOwner = clipboardOwner;
       putValue(AbstractAction.NAME, "Copy");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Copy.getIcon());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("Copy triggered");
-      clipboard.setContents(new ComponentTransferable(cloneComponents(plugInPort.getSelectedComponents())),
+      clipboard.setContents(
+          new ComponentTransferable(cloneComponents(plugInPort.getSelectedComponents())),
           clipboardOwner);
     }
   }
@@ -1157,8 +1190,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Duplicate");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentsGear.getIcon());
     }
 
@@ -1195,8 +1228,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Select All");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Selection.getIcon());
     }
 
@@ -1217,8 +1250,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Group Selection");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Group.getIcon());
     }
 
@@ -1239,8 +1272,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Ungroup Selection");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_U, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Ungroup.getIcon());
     }
 
@@ -1277,7 +1310,8 @@ public class ActionFactory {
       // Save default values.
       for (PropertyWrapper property : editor.getDefaultedProperties()) {
         if (property.getValue() != null) {
-          plugInPort.setDefaultPropertyValue(Project.class, property.getName(), property.getValue());
+          plugInPort.setDefaultPropertyValue(Project.class, property.getName(),
+              property.getValue());
         }
       }
     }
@@ -1294,8 +1328,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Nudge");
       putValue(AbstractAction.SMALL_ICON, IconLoader.FitToSize.getIcon());
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
     }
 
     @Override
@@ -1311,8 +1345,8 @@ public class ActionFactory {
         n.setyOffset(new Size(0d, SizeUnit.in));
       }
       List<PropertyWrapper> properties = plugInPort.getProperties(n);
-      PropertyEditorDialog editor =
-          DialogFactory.getInstance().createPropertyEditorDialog(properties, "Nudge Selection", false);
+      PropertyEditorDialog editor = DialogFactory.getInstance()
+          .createPropertyEditorDialog(properties, "Nudge Selection", false);
       editor.setVisible(true);
       if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
         plugInPort.applyProperties(n, properties);
@@ -1331,8 +1365,8 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Edit Selection");
-      putValue(AbstractAction.ACCELERATOR_KEY,
-          KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       putValue(AbstractAction.SMALL_ICON, IconLoader.EditComponent.getIcon());
     }
 
@@ -1385,8 +1419,8 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("Save as template triggered");
-      String templateName =
-          JOptionPane.showInputDialog(null, "Variant name:", "Save as Variant", JOptionPane.PLAIN_MESSAGE);
+      String templateName = JOptionPane.showInputDialog(null, "Variant name:", "Save as Variant",
+          JOptionPane.PLAIN_MESSAGE);
       if (templateName != null && !templateName.trim().isEmpty()) {
         plugInPort.saveSelectedComponentAsVariant(templateName);
       }
@@ -1409,8 +1443,8 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("Save as building block triggered");
-      String templateName =
-          JOptionPane.showInputDialog(null, "Block name:", "Save as Building Block", JOptionPane.PLAIN_MESSAGE);
+      String templateName = JOptionPane.showInputDialog(null, "Block name:",
+          "Save as Building Block", JOptionPane.PLAIN_MESSAGE);
       if (templateName != null && !templateName.trim().isEmpty()) {
         plugInPort.saveSelectionAsBlock(templateName);
       }
@@ -1465,11 +1499,13 @@ public class ActionFactory {
       if (direction > 0) {
         putValue(AbstractAction.NAME, "Rotate Clockwise");
         putValue(AbstractAction.SMALL_ICON, IconLoader.RotateCW.getIcon());
-        putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, ActionEvent.ALT_MASK));
+        putValue(AbstractAction.ACCELERATOR_KEY,
+            KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, ActionEvent.ALT_MASK));
       } else {
         putValue(AbstractAction.NAME, "Rotate Counterclockwise");
         putValue(AbstractAction.SMALL_ICON, IconLoader.RotateCCW.getIcon());
-        putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, ActionEvent.ALT_MASK));
+        putValue(AbstractAction.ACCELERATOR_KEY,
+            KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, ActionEvent.ALT_MASK));
       }
     }
 
@@ -1494,11 +1530,13 @@ public class ActionFactory {
       if (direction == IComponentTransformer.HORIZONTAL) {
         putValue(AbstractAction.NAME, "Mirror Horizontally");
         putValue(AbstractAction.SMALL_ICON, IconLoader.FlipHorizontal.getIcon());
-        putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.ALT_MASK));
+        putValue(AbstractAction.ACCELERATOR_KEY,
+            KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.ALT_MASK));
       } else {
         putValue(AbstractAction.NAME, "Mirror Vertically");
         putValue(AbstractAction.SMALL_ICON, IconLoader.FlipVertical.getIcon());
-        putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.ALT_MASK));
+        putValue(AbstractAction.ACCELERATOR_KEY,
+            KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.ALT_MASK));
       }
     }
 
@@ -1520,7 +1558,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Send Backward");
       putValue(AbstractAction.SMALL_ICON, IconLoader.Back.getIcon());
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
     }
 
     @Override
@@ -1541,7 +1580,8 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Bring Forward");
       putValue(AbstractAction.SMALL_ICON, IconLoader.Front.getIcon());
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_UP, ActionEvent.ALT_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_UP, ActionEvent.ALT_MASK));
     }
 
     @Override
@@ -1550,7 +1590,7 @@ public class ActionFactory {
       plugInPort.bringSelectionToFront();
     }
   }
-  
+
   public static class FindAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
@@ -1564,7 +1604,8 @@ public class ActionFactory {
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Find");
       putValue(AbstractAction.SMALL_ICON, IconLoader.SearchBox.getIcon());
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+      putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
     }
 
     @Override
@@ -1572,14 +1613,35 @@ public class ActionFactory {
       LOG.info("Find triggered");
       FindDialog dialog = DialogFactory.getInstance().createFindDialog();
       dialog.setVisible(true);
-      
+
       if (dialog.getSelectedButtonCaption() == FindDialog.OK) {
         String criteria = dialog.getCriteria();
         plugInPort.selectMatching(criteria);
         if (plugInPort.getSelectedComponents().size() == 0) {
-          swingUI.showMessage("No matching components found.", "Find", ISwingUI.INFORMATION_MESSAGE);
+          swingUI.showMessage("No matching components found.", "Find",
+              ISwingUI.INFORMATION_MESSAGE);
         }
       }
+    }
+  }
+
+  public static class FlexibleLeadsAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+
+    public FlexibleLeadsAction(IPlugInPort plugInPort) {
+      super();
+      this.plugInPort = plugInPort;
+      putValue(AbstractAction.NAME, "Add Flexible Leads");
+      putValue(AbstractAction.SMALL_ICON, IconLoader.FlexibleLeads.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("Add Flexible Leads triggered");
+      plugInPort.applyEditor(new FlexibleLeadsEditor());
     }
   }
 
@@ -1591,31 +1653,35 @@ public class ActionFactory {
     private String configKey;
     private String tipKey;
 
-    public ConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue, String tipKey) {
+    public ConfigAction(IPlugInPort plugInPort, String title, String configKey,
+        boolean defaultValue, String tipKey) {
       super();
       this.plugInPort = plugInPort;
       this.configKey = configKey;
       this.tipKey = tipKey;
       putValue(AbstractAction.NAME, title);
       putValue(IView.CHECK_BOX_MENU_ITEM, true);
-      putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance().readBoolean(configKey, defaultValue));
+      putValue(AbstractAction.SELECTED_KEY,
+          ConfigurationManager.getInstance().readBoolean(configKey, defaultValue));
       ConfigurationManager.getInstance().addConfigListener(configKey, new IConfigListener() {
-        
+
         @Override
         public void valueChanged(String key, Object value) {
-          putValue(AbstractAction.SELECTED_KEY, (Boolean)value);    
+          putValue(AbstractAction.SELECTED_KEY, (Boolean) value);
         }
       });
     }
 
-    public ConfigAction(IPlugInPort plugInPort, String title, String configKey, boolean defaultValue) {
+    public ConfigAction(IPlugInPort plugInPort, String title, String configKey,
+        boolean defaultValue) {
       this(plugInPort, title, configKey, defaultValue, null);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info(getValue(AbstractAction.NAME) + " triggered");
-      ConfigurationManager.getInstance().writeValue(configKey, getValue(AbstractAction.SELECTED_KEY));
+      ConfigurationManager.getInstance().writeValue(configKey,
+          getValue(AbstractAction.SELECTED_KEY));
       if ((Boolean) getValue(AbstractAction.SELECTED_KEY) && tipKey != null
           && !ConfigurationManager.getInstance().readBoolean(tipKey + ".dismissed", false)) {
         DialogFactory.getInstance().createInfoDialog(tipKey).setVisible(true);
@@ -1623,19 +1689,20 @@ public class ActionFactory {
       plugInPort.refresh();
     }
   }
-  
+
   public static class ToggleAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
 
-	private String configKey;
+    private String configKey;
 
     public ToggleAction(String title, String configKey, String groupName, String defaultValue) {
       super();
       this.configKey = configKey;
       putValue(AbstractAction.NAME, title);
       putValue(IView.RADIO_BUTTON_GROUP_KEY, groupName);
-      putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance().readString(configKey, defaultValue).equalsIgnoreCase(title));
+      putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance()
+          .readString(configKey, defaultValue).equalsIgnoreCase(title));
     }
 
     @Override
@@ -1658,7 +1725,8 @@ public class ActionFactory {
       this.theme = theme;
       putValue(AbstractAction.NAME, theme.getName());
       putValue(IView.RADIO_BUTTON_GROUP_KEY, "theme");
-      putValue(AbstractAction.SELECTED_KEY, plugInPort.getSelectedTheme().getName().equals(theme.getName()));
+      putValue(AbstractAction.SELECTED_KEY,
+          plugInPort.getSelectedTheme().getName().equals(theme.getName()));
     }
 
     @Override
@@ -1680,10 +1748,8 @@ public class ActionFactory {
       putValue(AbstractAction.NAME, browserType);
       putValue(IView.RADIO_BUTTON_GROUP_KEY, "componentBrowser");
 
-      putValue(
-          AbstractAction.SELECTED_KEY,
-          browserType.equals(ConfigurationManager.getInstance().readString(ConfigPlugin.COMPONENT_BROWSER,
-              ConfigPlugin.SEARCHABLE_TREE)));
+      putValue(AbstractAction.SELECTED_KEY, browserType.equals(ConfigurationManager.getInstance()
+          .readString(ConfigPlugin.COMPONENT_BROWSER, ConfigPlugin.SEARCHABLE_TREE)));
     }
 
     @Override
@@ -1714,11 +1780,11 @@ public class ActionFactory {
       plugInPort.renumberSelectedComponents(xAxisFirst);
     }
   }
-  
+
   public static class GenerateNetlistAction extends AbstractAction {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private IPlugInPort plugInPort;
     private ISwingUI swingUI;
 
@@ -1741,61 +1807,67 @@ public class ActionFactory {
 
         @Override
         public void failed(Exception e) {
-          swingUI.showMessage("Failed to generate the netlist: " + e.getMessage(), "DIYLC Netlist", ISwingUI.INFORMATION_MESSAGE);
+          swingUI.showMessage("Failed to generate the netlist: " + e.getMessage(), "DIYLC Netlist",
+              ISwingUI.INFORMATION_MESSAGE);
         }
 
         @Override
         public void complete(List<Netlist> res) {
           if (res == null) {
-            swingUI.showMessage("The generated netlist is empty, nothing to show.", "DIYLC Netlist", ISwingUI.INFORMATION_MESSAGE);
+            swingUI.showMessage("The generated netlist is empty, nothing to show.", "DIYLC Netlist",
+                ISwingUI.INFORMATION_MESSAGE);
             return;
           }
           StringBuilder sb = new StringBuilder("<html>");
-          
-          for (Netlist netlist : res) {        
-            sb.append("<p style=\"font-family: " + new JLabel().getFont().getName() + "; font-size: 9px\"><b>Switch configuration: ").
-            append(netlist.getSwitchSetup()).append("</b><br><br>Connected node groups:<br>");        
+
+          for (Netlist netlist : res) {
+            sb.append("<p style=\"font-family: " + new JLabel().getFont().getName()
+                + "; font-size: 9px\"><b>Switch configuration: ").append(netlist.getSwitchSetup())
+                .append("</b><br><br>Connected node groups:<br>");
             for (Group v : netlist.getSortedGroups()) {
-              sb.append("&nbsp;&nbsp;").append(v.getSortedNodes()).append("<br>");          
+              sb.append("&nbsp;&nbsp;").append(v.getSortedNodes()).append("<br>");
             }
             sb.append("</p><br><hr>");
           }
           sb.append("</html>");
-          new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "DIYLC Netlist", new Dimension(800, 600)).setVisible(true);
-        }        
+          new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "DIYLC Netlist",
+              new Dimension(800, 600)).setVisible(true);
+        }
       }, true);
-    }    
+    }
   }
-  
+
   public static class SummarizeNetlistAction extends AbstractAction {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private IPlugInPort plugInPort;
     private ISwingUI swingUI;
     private INetlistAnalyzer summarizer;
 
-    public SummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI, INetlistAnalyzer summarizer) {
+    public SummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI,
+        INetlistAnalyzer summarizer) {
       super();
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       this.summarizer = summarizer;
-      putValue(AbstractAction.NAME, summarizer.getName());      
-      putValue(AbstractAction.SMALL_ICON, Enum.valueOf(IconLoader.class, summarizer.getIconName()).getIcon());
+      putValue(AbstractAction.NAME, summarizer.getName());
+      putValue(AbstractAction.SMALL_ICON,
+          Enum.valueOf(IconLoader.class, summarizer.getIconName()).getIcon());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      
+
       swingUI.executeBackgroundTask(new ITask<List<Summary>>() {
 
         @Override
         public List<Summary> doInBackground() throws Exception {
           List<Netlist> netlists = plugInPort.extractNetlists(true);
           if (netlists == null || netlists.isEmpty()) {
-            throw new Exception("The generated netlist is empty, nothing to show.");            
+            throw new Exception("The generated netlist is empty, nothing to show.");
           }
-                    
+
           return summarizer.summarize(netlists, null);
         }
 
@@ -1807,32 +1879,32 @@ public class ActionFactory {
         @Override
         public void complete(List<Summary> res) {
           if (res == null) {
-            swingUI.showMessage("The generated summary is empty, nothing to show.", summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
+            swingUI.showMessage("The generated summary is empty, nothing to show.",
+                summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
             return;
           }
           StringBuilder sb = new StringBuilder("<html>");
-          
-          for (Summary summary : res) {        
-            sb.append("<p style=\"font-family: ").
-              append(summarizer.getFontName()).
-              append("; font-size: 9px\">");
-            
+
+          for (Summary summary : res) {
+            sb.append("<p style=\"font-family: ").append(summarizer.getFontName())
+                .append("; font-size: 9px\">");
+
             if (res.size() > 1)
-              sb.append("<b>Switch configuration: ").
-                append(summary.getNetlist().getSwitchSetup()).
-                append("</b><br><br>");        
-            
+              sb.append("<b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup())
+                  .append("</b><br><br>");
+
             sb.append(summary.getSummary());
-            
+
             sb.append("</p><br>");
-            
+
             if (res.size() > 1)
               sb.append("<hr>");
           }
           sb.append("</html>");
-          new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), summarizer.getName(), new Dimension(800, 600)).setVisible(true);
-        }        
+          new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), summarizer.getName(),
+              new Dimension(800, 600)).setVisible(true);
+        }
       }, true);
-    }    
+    }
   }
 }

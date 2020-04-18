@@ -76,6 +76,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   private ActionFactory.MirrorSelectionAction mirrorHorizontallyAction;
   private ActionFactory.MirrorSelectionAction mirrorVerticallyAction;
   private ActionFactory.FindAction findAction;
+  private ActionFactory.FlexibleLeadsAction flexibleLeadsAction;
 
   private UndoHandler<Project> undoHandler;
 
@@ -269,6 +270,12 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
       findAction = ActionFactory.getInstance().createFindAction(plugInPort, swingUI);
     return findAction;
   }
+  
+  public ActionFactory.FlexibleLeadsAction getFlexibleLeadsAction() {
+    if (flexibleLeadsAction == null)
+      flexibleLeadsAction = ActionFactory.getInstance().createFlexibleLeadsAction(plugInPort);
+    return flexibleLeadsAction;
+  }
 
   @Override
   public void connect(IPlugInPort plugInPort) {
@@ -311,6 +318,8 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     swingUI.injectMenuAction(getExpandSelectionAllAction(), EXPAND_TITLE);
     swingUI.injectMenuAction(getExpandSelectionImmediateAction(), EXPAND_TITLE);
     swingUI.injectMenuAction(getExpandSelectionSameTypeAction(), EXPAND_TITLE);
+    swingUI.injectMenuAction(null, EDIT_TITLE);
+    swingUI.injectMenuAction(getFlexibleLeadsAction(), EDIT_TITLE);
     swingUI.injectMenuAction(null, EDIT_TITLE);
     swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
 
@@ -365,6 +374,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     getMirrorVerticallyAction().setEnabled(enabled);
     getSaveAsTemplateAction().setEnabled(enabled);
     getSaveAsBlockAction().setEnabled(enabled);
+    getFlexibleLeadsAction().setEnabled(enabled);
   }
 
   // ClipboardOwner

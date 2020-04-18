@@ -376,4 +376,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @return size of extra space around the canvas
    */
   double getExtraSpace();
+  
+  /**
+   * Applies changes to the current project as specified by the provided {@link IProjectEditor}. 
+   * 
+   * @param editor
+   */
+  void applyEditor(IProjectEditor editor);
 }

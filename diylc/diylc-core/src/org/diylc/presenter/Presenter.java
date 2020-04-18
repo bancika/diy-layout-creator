@@ -66,6 +66,7 @@ import org.diylc.common.IKeyProcessor;
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.IProjectEditor;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.common.VariantPackage;
 import org.diylc.core.ExpansionMode;
@@ -2282,6 +2283,29 @@ public class Presenter implements IPlugInPort {
       if (!oldProject.equals(currentProject)) {
         messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
             "Edit Project");
+        drawingManager.clearContinuityArea();
+        projectFileManager.notifyFileChange();
+      }
+      drawingManager.fireZoomChanged();
+    }
+  }
+  
+  @Override
+  public void applyEditor(IProjectEditor editor) {
+    LOG.debug(String.format("applyEditor(%s)", editor.getEditAction()));
+    Project oldProject = currentProject.clone();
+    try {
+      Set<IDIYComponent<?>> newSelection = editor.edit(currentProject, selectedComponents);
+      if (newSelection != null)      
+        updateSelection(newSelection);      
+    } catch (Exception e) {
+      LOG.error("Could not apply editor", e);
+      view.showMessage("Could not apply " + editor.getEditAction() + ". Check the log for details.", "Error", IView.ERROR_MESSAGE);
+    } finally {
+      // Notify the listeners.
+      if (!oldProject.equals(currentProject)) {
+        messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
+            editor.getEditAction());
         drawingManager.clearContinuityArea();
         projectFileManager.notifyFileChange();
       }

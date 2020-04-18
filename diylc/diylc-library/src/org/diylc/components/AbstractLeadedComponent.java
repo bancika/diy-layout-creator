@@ -69,6 +69,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   public static Color LEAD_COLOR_ICON = LEAD_COLOR.darker().darker();
   public static Size LEAD_THICKNESS = new Size(0.6d, SizeUnit.mm);
   public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
+  private static final int LEAD_RENDER_THRESHOLD = 2;
 
   protected Size length;
   protected Size width;
@@ -203,32 +204,35 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         float leadThickness = getLeadThickness();
         double leadLength = (distance - calculatePinSpacing(shapeRect)) / 2;
 
-        if (shouldShadeLeads()) {
-          Stroke leadStroke = ObjectCache.getInstance().fetchBasicStroke(leadThickness - 1);     
-          Color leadColor = getLeadColorForPainting(componentState);          
-          
-          Area leadArea = new Area();
-          
-          int endX = (int) (getPoints()[0].x + Math.cos(theta) * leadLength);
-          int endY = (int) (getPoints()[0].y + Math.sin(theta) * leadLength);
-          Line2D line = new Line2D.Double(getPoints()[0].x, getPoints()[0].y, endX, endY);
-          leadArea.add(new Area(leadStroke.createStrokedShape(line)));
-          
-          endX = (int) (getPoints()[1].x + Math.cos(theta - Math.PI) * leadLength);
-          endY = (int) (getPoints()[1].y + Math.sin(theta - Math.PI) * leadLength);
-          line = new Line2D.Double(getPoints()[1].x, getPoints()[1].y, endX, endY);
-          leadArea.add(new Area(leadStroke.createStrokedShape(line)));
-          
-          g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-          g2d.setColor(leadColor);
-          g2d.fill(leadArea);
-          g2d.setColor(leadColor.darker());
-          g2d.draw(leadArea);          
-        } else {
-          g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-          Color leadColor = getLeadColorForPainting(componentState);
-          g2d.setColor(leadColor);
-          drawLeads(g2d, theta, leadLength);
+        // only draw leads longer than threshold
+        if (leadLength > LEAD_RENDER_THRESHOLD) {
+          if (shouldShadeLeads()) {
+            Stroke leadStroke = ObjectCache.getInstance().fetchBasicStroke(leadThickness - 1);     
+            Color leadColor = getLeadColorForPainting(componentState);          
+            
+            Area leadArea = new Area();
+            
+            int endX = (int) (getPoints()[0].x + Math.cos(theta) * leadLength);
+            int endY = (int) (getPoints()[0].y + Math.sin(theta) * leadLength);
+            Line2D line = new Line2D.Double(getPoints()[0].x, getPoints()[0].y, endX, endY);
+            leadArea.add(new Area(leadStroke.createStrokedShape(line)));
+            
+            endX = (int) (getPoints()[1].x + Math.cos(theta - Math.PI) * leadLength);
+            endY = (int) (getPoints()[1].y + Math.sin(theta - Math.PI) * leadLength);
+            line = new Line2D.Double(getPoints()[1].x, getPoints()[1].y, endX, endY);
+            leadArea.add(new Area(leadStroke.createStrokedShape(line)));
+            
+            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
+            g2d.setColor(leadColor);
+            g2d.fill(leadArea);
+            g2d.setColor(leadColor.darker());
+            g2d.draw(leadArea);          
+          } else {
+            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
+            Color leadColor = getLeadColorForPainting(componentState);
+            g2d.setColor(leadColor);
+            drawLeads(g2d, theta, leadLength);
+          }
         }
 //        g2d.setTransform(textTransform);
       }
