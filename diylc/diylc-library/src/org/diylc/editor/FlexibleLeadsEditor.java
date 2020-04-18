@@ -73,21 +73,29 @@ public class FlexibleLeadsEditor implements IProjectEditor {
              
       // create leads
       HookupWire w1 = new HookupWire();
+      getInstantiationManager().fillWithDefaultProperties(w1, null);      
       w1.setGauge(AWG._26);
       w1.setLeadColor(leaded.getLeadColor());
-      w1.setPointCount(PointCount.THREE);
+//      w1.setPointCount(PointCount.THREE);
       w1.setControlPoint(p1, 0);
-      w1.setControlPoint(new Point((int)Math.round(centerX - Math.cos(theta) * (len / 2 + diff / 2)), (int)Math.round(centerY - Math.sin(theta) * (len / 2 + diff / 2))), 1);   
-      w1.setControlPoint(newP1, 2);
+      for (int i = 1; i < w1.getControlPointCount() - 1; i++) {
+        double r = (len + diff) / (w1.getControlPointCount() - 1) * (w1.getControlPointCount() - i - 1);
+        w1.setControlPoint(new Point((int)Math.round(centerX - Math.cos(theta) * r), (int)Math.round(centerY - Math.sin(theta) * r)), i);   
+      }
+      w1.setControlPoint(newP1, w1.getControlPointCount() - 1);
       newSelection.add(w1);
       
       HookupWire w2 = new HookupWire();
+      getInstantiationManager().fillWithDefaultProperties(w2, null);
       w2.setGauge(AWG._26);
       w2.setLeadColor(leaded.getLeadColor());
-      w2.setPointCount(PointCount.THREE);
+//      w2.setPointCount(PointCount.THREE);
       w2.setControlPoint(p2, 0);
-      w2.setControlPoint(new Point((int)Math.round(centerX + Math.cos(theta) * (len / 2 + diff / 2)), (int)Math.round(centerY + Math.sin(theta) * (len / 2 + diff / 2))), 1);       
-      w2.setControlPoint(newP2, 2);
+      for (int i = 1; i < w2.getControlPointCount() - 1; i++) {
+        double r = (len + diff) / (w2.getControlPointCount() - 1) * (w2.getControlPointCount() - i - 1);
+        w2.setControlPoint(new Point((int)Math.round(centerX + Math.cos(theta) * r), (int)Math.round(centerY + Math.sin(theta) * r)), i);   
+      }   
+      w2.setControlPoint(newP2, w2.getControlPointCount() - 1);
       newSelection.add(w2);
       
       // inject leads right before the component
@@ -117,6 +125,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       }
       
       HookupWire w = new HookupWire();
+      getInstantiationManager().fillWithDefaultProperties(w, null);
       // make the leads thicker for TO220 and TO126
       if (c instanceof TransistorTO220 || c instanceof TransistorTO126)
         w.setGauge(AWG._24);
@@ -147,11 +156,11 @@ public class FlexibleLeadsEditor implements IProjectEditor {
   }
   
   private void addLeads(PotentiometerPanel c, Project project, Set<IDIYComponent<?>> newSelection) {
-    Size offsetY = new Size(1d, SizeUnit.in);        
+    Size offsetY = new Size(0.5d, SizeUnit.in);        
     
     // don't do it for PCB type
     if (c.getType() == Type.PCB)
-      return;
+      return;        
     
     // create leads
     for (int i = 0; i < 3; i++) {
@@ -159,22 +168,19 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       double dx = 0;
       double dy = offsetY.convertToPixels();
       
-      // calculate lead position
-      Point p1 = new Point((int)(p0.x + dx / 2), (int)(p0.y + dy / 2));
-      Point p2 = new Point((int)(p0.x + dx), (int)(p0.y + dy));
-      
-      if (c.getOrientation() != Orientation.DEFAULT) {
-        AffineTransform tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.x, p0.y);
-        tx.transform(p1, p1);
-        tx.transform(p2, p2);
-      }
-      
+      AffineTransform tx = null;
+      if (c.getOrientation() != Orientation.DEFAULT)
+        tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.x, p0.y);
+            
       HookupWire w = new HookupWire();
       getInstantiationManager().fillWithDefaultProperties(w, null);
-      w.setPointCount(PointCount.THREE);
-      w.setControlPoint(p0, 0);      
-      w.setControlPoint(p1, 1);   
-      w.setControlPoint(p2, 2);   
+      for (int j = 0; j < w.getControlPointCount(); j++) {
+        Point p = new Point((int)(p0.x + dx * j), (int)(p0.y + dy * j));
+          if (tx != null)
+          tx.transform(p, p);                  
+        w.setControlPoint(p, j);
+      }
+ 
       newSelection.add(w);    
       
       // inject leads right before the component
@@ -196,16 +202,13 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       double dx = p.x - center.x;
       double dy = p.y - center.y;
       
-      // calculate lead position
-      Point p1 = new Point((int)(p.x + dx), (int)(p.y + dy));
-      Point p2 = new Point((int)(p.x + dx * 2), (int)(p.y + dy * 2));       
-      
+      // calculate lead position    
       HookupWire w = new HookupWire();
       getInstantiationManager().fillWithDefaultProperties(w, null);
-      w.setPointCount(PointCount.THREE);
-      w.setControlPoint(p, 0);      
-      w.setControlPoint(p1, 1);   
-      w.setControlPoint(p2, 2);   
+      for (int j = 0; j < w.getControlPointCount(); j++) {
+        Point pw = new Point((int)(p.x + dx * j), (int)(p.y + dy * j));
+        w.setControlPoint(pw, j);
+      }  
       newSelection.add(w);    
       
       // inject leads right before the component
