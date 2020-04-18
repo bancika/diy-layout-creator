@@ -189,53 +189,55 @@ public class TransistorTO126 extends AbstractTransistorPackage {
     // Draw pins.
 
     if (folded) {
-      int leadThickness = getClosestOdd(LEAD_THICKNESS.convertToPixels());
-      int leadLength = (int) getLeadLength().convertToPixels();
-      Color finalPinColor;
-      Color finalPinBorderColor;
-      if (outlineMode) {
-        finalPinColor = new Color(0, 0, 0, 0);
-        finalPinBorderColor =
-            componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-                : theme.getOutlineColor();
-      } else {
-        finalPinColor = METAL_COLOR;
-        finalPinBorderColor = METAL_COLOR.darker();
-      }
-      for (Point point : controlPoints) {
-        switch (orientation) {
-          case DEFAULT:
-            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-            g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, point.y);
-            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
-            g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, point.y);
-            break;
-          case _90:
-            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-            g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, point.x, point.y + leadLength - leadThickness / 2);
-            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
-            g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, point.x, point.y + leadLength - leadThickness / 2);
-            break;
-          case _180:
-            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-            g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, point.y);
-            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
-            g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, point.y);
-            break;
-          case _270:
-            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
-            g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, point.x, point.y - leadLength);
-            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
-            g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, point.x, point.y - leadLength);
-            break;
+      if (getLeadLength().getValue() > 0) {
+        int leadThickness = getClosestOdd(LEAD_THICKNESS.convertToPixels());
+        int leadLength = (int) getLeadLength().convertToPixels();
+        Color finalPinColor;
+        Color finalPinBorderColor;
+        if (outlineMode) {
+          finalPinColor = new Color(0, 0, 0, 0);
+          finalPinBorderColor =
+              componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+                  : theme.getOutlineColor();
+        } else {
+          finalPinColor = METAL_COLOR;
+          finalPinBorderColor = METAL_COLOR.darker();
+        }
+        for (Point point : controlPoints) {
+          switch (orientation) {
+            case DEFAULT:
+              g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
+              g2d.setColor(finalPinBorderColor);
+              g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, point.y);
+              g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
+              g2d.setColor(finalPinColor);
+              g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, point.y);
+              break;
+            case _90:
+              g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
+              g2d.setColor(finalPinBorderColor);
+              g2d.drawLine(point.x, point.y, point.x, point.y + leadLength - leadThickness / 2);
+              g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
+              g2d.setColor(finalPinColor);
+              g2d.drawLine(point.x, point.y, point.x, point.y + leadLength - leadThickness / 2);
+              break;
+            case _180:
+              g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
+              g2d.setColor(finalPinBorderColor);
+              g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, point.y);
+              g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
+              g2d.setColor(finalPinColor);
+              g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, point.y);
+              break;
+            case _270:
+              g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
+              g2d.setColor(finalPinBorderColor);
+              g2d.drawLine(point.x, point.y, point.x, point.y - leadLength);
+              g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
+              g2d.setColor(finalPinColor);
+              g2d.drawLine(point.x, point.y, point.x, point.y - leadLength);
+              break;
+          }
         }
       }
     } else {

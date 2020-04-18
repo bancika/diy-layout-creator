@@ -3000,7 +3000,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>"Add Flexible Leads" action added in the context menu that replaces straight leads of leaded components with flexible leads and adds leds to some components that do not have them</description>
+					<description>"Add Flexible Leads" action added in the context menu that replaces straight leads of leaded components with flexible leads and adds leds to some components that do not have them (e.g. Transistors, Tube Sockets, Potentiometers, etc)</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>

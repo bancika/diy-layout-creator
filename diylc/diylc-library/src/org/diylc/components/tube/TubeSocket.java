@@ -94,7 +94,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private int angle;
   private Color color = BODY_COLOR;
   private String electrodeLabels = null; 
-  private Mount mount = null;
+  private Mount mount = Mount.CHASSIS;
   private Color labelColor = LABEL_COLOR;
 
   private Point[] controlPoints = new Point[] {new Point(0, 0)};
@@ -427,7 +427,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   @EditableProperty(name = "Mount")
   public Mount getMount() {
     if (mount == null)
-      mount = Mount.PCB;
+      mount = Mount.CHASSIS;
     return mount;
   }
   
@@ -461,7 +461,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     }
   }
 
-  static enum Mount {
+  public static enum Mount {
     CHASSIS("Chassis"), PCB("PCB");
 
     String name;

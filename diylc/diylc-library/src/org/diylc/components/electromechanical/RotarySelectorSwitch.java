@@ -372,7 +372,7 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
   }
 
 
-  public enum RotaryPositionCount {
+  public static enum RotaryPositionCount {
     TWO(2), THREE(3), FOUR(4);
 
     private int count;
