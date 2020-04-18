@@ -27,7 +27,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -52,6 +51,8 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   protected Color borderColor;
   protected Color labelColor = LABEL_COLOR;
   protected TransistorDisplay display = TransistorDisplay.NAME;  
+  
+  protected boolean folded = false;
 
   public AbstractTransistorPackage() {
   }
@@ -205,6 +206,18 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
     this.pinout = pinout;
   }
   
+  @EditableProperty
+  public boolean getFolded() {
+    return folded;
+  }
+
+  public void setFolded(boolean folded) {
+    this.folded = folded;
+    updateControlPoints();
+    // Reset body shape;
+    body = null;
+  }
+  
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
@@ -229,22 +242,22 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
         Rectangle2D b = a.getBounds2D();
         if (b.getMinX() < minX)
           minX = b.getMinX();
-        if (b.getMaxX() > minX)
+        if (b.getMaxX() > maxX)
           maxX = b.getMaxX();
         if (b.getMinY() < minY)
           minY = b.getMinY();
-        if (b.getMaxY() > minY)
+        if (b.getMaxY() > maxY)
           maxY = b.getMaxY();
       }
     for (Point p : controlPoints) {
       if (p.getX() < minX)
         minX = p.getX();
-      if (p.getX() > minX)
+      if (p.getX() > maxX)
         maxX = p.getX();
       if (p.getY() < minY)
         minY = p.getY() ;
-      if (p.getY()  > minY)
-        maxY = p.getY() ;
+      if (p.getY()  > maxY)
+        maxY = p.getY();
     }
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
