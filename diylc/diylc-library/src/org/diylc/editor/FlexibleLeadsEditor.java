@@ -11,6 +11,8 @@ import org.diylc.components.AbstractCurvedComponent.PointCount;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.connectivity.AWG;
 import org.diylc.components.connectivity.HookupWire;
+import org.diylc.components.guitar.AbstractGuitarPickup;
+import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.PotentiometerPanel.Type;
 import org.diylc.components.semiconductors.AbstractTransistorPackage;
@@ -40,6 +42,8 @@ public class FlexibleLeadsEditor implements IProjectEditor {
         addLeads((PotentiometerPanel) c, project, newSelection);
       else if (c instanceof TubeSocket)
         addLeads((TubeSocket) c, project, newSelection);
+      else if (c instanceof AbstractGuitarPickup)
+        addLeads((AbstractGuitarPickup) c, project, newSelection);
     }
     
     return newSelection;
@@ -209,6 +213,44 @@ public class FlexibleLeadsEditor implements IProjectEditor {
         Point pw = new Point((int)(p.x + dx * j), (int)(p.y + dy * j));
         w.setControlPoint(pw, j);
       }  
+      newSelection.add(w);    
+      
+      // inject leads right before the component
+      int index = project.getComponents().indexOf(c);
+      project.getComponents().add(index + 1, w);
+    }
+  }
+  
+  private void addLeads(AbstractGuitarPickup c, Project project, Set<IDIYComponent<?>> newSelection) {
+    Size offset = new Size(1d, SizeUnit.in);        
+    
+    // create leads
+    for (int i = 0; i < c.getControlPointCount(); i++) {
+      if (!c.isControlPointSticky(i))
+        continue;
+      Point p0 = c.getControlPoint(i);
+      double dx = 0;
+      double dy = 0;
+      
+      if (c instanceof SingleCoilPickup)
+        dy = offset.convertToPixels();
+      else
+        dx = offset.convertToPixels();      
+      
+      AffineTransform tx = null;
+      if (c.getOrientation() != Orientation.DEFAULT)
+        tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.x, p0.y);
+            
+      HookupWire w = new HookupWire();
+      w.setGauge(AWG._24);
+      getInstantiationManager().fillWithDefaultProperties(w, null);
+      for (int j = 0; j < w.getControlPointCount(); j++) {
+        Point p = new Point((int)(p0.x + dx * j), (int)(p0.y + dy * j));
+          if (tx != null)
+          tx.transform(p, p);                  
+        w.setControlPoint(p, j);
+      }
+ 
       newSelection.add(w);    
       
       // inject leads right before the component
