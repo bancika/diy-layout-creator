@@ -3001,7 +3001,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Rotary Selector Switch" component</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>			
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Standardize how folded transistors are displayed - updated TO-92 and TO-1 packages</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	

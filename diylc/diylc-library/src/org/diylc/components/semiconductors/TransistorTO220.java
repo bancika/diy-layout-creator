@@ -77,7 +77,6 @@ public class TransistorTO220 extends AbstractTransistorPackage {
 
   private Color tabColor = TAB_COLOR;
   private Color tabBorderColor = TAB_BORDER_COLOR;
-  private boolean folded = false;
   private Size leadLength = LEAD_LENGTH;
 
   public TransistorTO220() {
@@ -385,17 +384,6 @@ public class TransistorTO220 extends AbstractTransistorPackage {
 
   public void setTabColor(Color tabColor) {
     this.tabColor = tabColor;
-  }
-
-  @EditableProperty
-  public boolean getFolded() {
-    return folded;
-  }
-
-  public void setFolded(boolean folded) {
-    this.folded = folded;
-    // Invalidate the body
-    this.body = null;
   }
 
   @EditableProperty(name = "Lead Length")

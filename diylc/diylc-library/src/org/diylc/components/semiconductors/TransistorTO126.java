@@ -72,7 +72,6 @@ public class TransistorTO126 extends AbstractTransistorPackage {
   public static Size LEAD_LENGTH = new Size(3.5d, SizeUnit.mm);
   public static Size LEAD_THICKNESS = new Size(0.8d, SizeUnit.mm);
 
-  private boolean folded = false;
   private Size leadLength = LEAD_LENGTH;
 
   public TransistorTO126() {
@@ -336,17 +335,6 @@ public class TransistorTO126 extends AbstractTransistorPackage {
     g2d.drawLine(width / 2, margin + bodyHeight, width / 2, height - margin);
     g2d.drawLine(width / 2 - bodyWidth / 3, margin + bodyHeight + 1, width / 2 - bodyWidth / 3, height - margin);
     g2d.drawLine(width / 2 + bodyWidth / 3, margin + bodyHeight + 1, width / 2 + bodyWidth / 3, height - margin);
-  }
-
-  @EditableProperty
-  public boolean getFolded() {
-    return folded;
-  }
-
-  public void setFolded(boolean folded) {
-    this.folded = folded;
-    // Invalidate the body
-    this.body = null;
   }
 
   @EditableProperty(name = "Lead Length")

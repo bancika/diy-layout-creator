@@ -66,7 +66,6 @@ public class TransistorTO92 extends AbstractTransistorPackage {
   public static Size PIN_SPACING = new Size(0.05d, SizeUnit.in);
   public static Size BODY_DIAMETER = new Size(0.2d, SizeUnit.in);
 
-  private boolean folded = false;
   private Size pinSpacing = PIN_SPACING;  
 
   public TransistorTO92() {
@@ -75,17 +74,6 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     alpha = (byte) 100;
     bodyColor = BODY_COLOR;
     borderColor = BORDER_COLOR;
-  }
-
-  @EditableProperty
-  public boolean getFolded() {
-    return folded;
-  }
-
-  public void setFolded(boolean folded) {
-    this.folded = folded;
-    // Reset body shape;
-    body = null;
   }
 
   @EditableProperty(name = "Pin spacing")
@@ -142,16 +130,16 @@ public class TransistorTO92 extends AbstractTransistorPackage {
       if (folded) {
         switch (orientation) {
           case DEFAULT:
-            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
+            newBody = new Area(new Rectangle2D.Double(x, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));            
             break;
-          case _90:
-            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyDiameter, bodyDiameter, bodyDiameter));
+          case _90:            
+            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyDiameter));
             break;
           case _180:
-            newBody = new Area(new Rectangle2D.Double(x, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
+            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
             break;
           case _270:
-            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyDiameter));
+            newBody = new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyDiameter, bodyDiameter, bodyDiameter));            
             break;
           default:
             throw new RuntimeException("Unexpected orientation: " + orientation);

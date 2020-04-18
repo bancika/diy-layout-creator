@@ -67,8 +67,7 @@ public class TransistorTO1 extends AbstractTransistorPackage {
   public static Size BODY_DIAMETER = new Size(0.24d, SizeUnit.in);
   public static Size BODY_LENGTH = new Size(0.4d, SizeUnit.in);
   public static Size EDGE_RADIUS = new Size(2d, SizeUnit.mm);
-
-  private boolean folded = false;
+  
   private Size pinSpacing = PIN_SPACING;
 
   public TransistorTO1() {
@@ -121,29 +120,30 @@ public class TransistorTO1 extends AbstractTransistorPackage {
         switch (orientation) {
           case DEFAULT:
             newBody =
-                new Area(new RoundRectangle2D.Double(x - bodyLength, y - bodyDiameter / 2, bodyLength, bodyDiameter,
-                    edgeRadius, edgeRadius));
-            newBody.add(new Area(new Rectangle2D.Double(x - bodyLength / 2, y - bodyDiameter / 2, bodyLength / 2,
-                bodyDiameter)));
+            new Area(new RoundRectangle2D.Double(x, y - bodyDiameter / 2, bodyLength, bodyDiameter, edgeRadius,
+                edgeRadius));
+            newBody.add(new Area(new Rectangle2D.Double(x, y - bodyDiameter / 2, bodyLength / 2, bodyDiameter)));
             break;
           case _90:
             newBody =
-                new Area(new RoundRectangle2D.Double(x - bodyDiameter / 2, y - bodyLength, bodyDiameter, bodyLength,
-                    edgeRadius, edgeRadius));
-            newBody.add(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyLength / 2, bodyDiameter,
-                bodyLength / 2)));
+            new Area(new RoundRectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyLength, edgeRadius,
+                edgeRadius));
+            newBody.add(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyLength / 2)));
             break;
           case _180:
             newBody =
-                new Area(new RoundRectangle2D.Double(x, y - bodyDiameter / 2, bodyLength, bodyDiameter, edgeRadius,
-                    edgeRadius));
-            newBody.add(new Area(new Rectangle2D.Double(x, y - bodyDiameter / 2, bodyLength / 2, bodyDiameter)));
+            new Area(new RoundRectangle2D.Double(x - bodyLength, y - bodyDiameter / 2, bodyLength, bodyDiameter,
+                edgeRadius, edgeRadius));
+            newBody.add(new Area(new Rectangle2D.Double(x - bodyLength / 2, y - bodyDiameter / 2, bodyLength / 2,
+                bodyDiameter)));
+
             break;
           case _270:
             newBody =
-                new Area(new RoundRectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyLength, edgeRadius,
-                    edgeRadius));
-            newBody.add(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y, bodyDiameter, bodyLength / 2)));
+            new Area(new RoundRectangle2D.Double(x - bodyDiameter / 2, y - bodyLength, bodyDiameter, bodyLength,
+                edgeRadius, edgeRadius));
+            newBody.add(new Area(new Rectangle2D.Double(x - bodyDiameter / 2, y - bodyLength / 2, bodyDiameter,
+                bodyLength / 2)));            
             break;
           default:
             throw new RuntimeException("Unexpected orientation: " + orientation);
@@ -248,18 +248,6 @@ public class TransistorTO1 extends AbstractTransistorPackage {
     for (int i = 0; i < 3; i++) {
       g2d.fillOval((i == 1 ? width * 3 / 8 : width / 2) - pinSize / 2, (height / 4) * (i + 1), pinSize, pinSize);
     }
-  }
-
-  @EditableProperty
-  public boolean getFolded() {
-    return folded;
-  }
-
-  public void setFolded(boolean folded) {
-    this.folded = folded;
-    updateControlPoints();
-    // Reset body shape;
-    body = null;
   }
 
   @EditableProperty(name = "Pin spacing")
