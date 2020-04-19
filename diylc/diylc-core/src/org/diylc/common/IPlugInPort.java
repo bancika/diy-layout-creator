@@ -384,4 +384,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param editor
    */
   void applyEditor(IProjectEditor editor);
+  
+  /**
+   * Locks or unlocks a single component.
+   */
+  void lockComponent(IDIYComponent<?> c, boolean locked);
 }

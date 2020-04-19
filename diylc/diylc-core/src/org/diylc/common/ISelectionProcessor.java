@@ -52,9 +52,10 @@ public interface ISelectionProcessor {
    * depends on the current zoom level.
    * 
    * @param point
+   * @param includeLocked
    * @return
    */
-  List<IDIYComponent<?>> findComponentsAt(Point point);
+  List<IDIYComponent<?>> findComponentsAt(Point point, boolean includeLocked);
 
   /**
    * Expands the current selection to include surrounding components. Options are controlled with

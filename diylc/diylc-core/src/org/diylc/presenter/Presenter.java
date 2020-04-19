@@ -529,12 +529,12 @@ public class Presenter implements IPlugInPort {
    * 
    * @return
    */
-  public List<IDIYComponent<?>> findComponentsAtScaled(Point point) {
+  public List<IDIYComponent<?>> findComponentsAtScaled(Point point, boolean includeLocked) {
     List<IDIYComponent<?>> components = drawingManager.findComponentsAt(point, currentProject);
     Iterator<IDIYComponent<?>> iterator = components.iterator();
     while (iterator.hasNext()) {
       IDIYComponent<?> component = iterator.next();
-      if (isComponentLocked(component) || !isComponentVisible(component)) {
+      if ((includeLocked ? isComponentLayerLocked(component) : isComponentLocked(component)) || !isComponentVisible(component)) {
         iterator.remove();
       }
     }
@@ -542,9 +542,9 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public List<IDIYComponent<?>> findComponentsAt(Point point) {
+  public List<IDIYComponent<?>> findComponentsAt(Point point, boolean includeLocked) {
     Point scaledPoint = scalePoint(point);
-    List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
+    List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint, includeLocked);
     return components;
   }
 
@@ -654,7 +654,7 @@ public class Presenter implements IPlugInPort {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       } else {
         List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(selectedComponents);
-        List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint);
+        List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint, false);
         // If there's nothing under mouse cursor deselect all.
         if (components.isEmpty()) {
           if (!ctrlDown) {
@@ -1087,7 +1087,7 @@ public class Presenter implements IPlugInPort {
     this.preDragProject = currentProject.clone();
     Point scaledPoint = scalePoint(point);
     this.previousDragPoint = scaledPoint;
-    List<IDIYComponent<?>> components = forceSelectionRect ? null : findComponentsAtScaled(scaledPoint);
+    List<IDIYComponent<?>> components = forceSelectionRect ? null : findComponentsAtScaled(scaledPoint, false);
     if (controlPointMap != null && !this.controlPointMap.isEmpty()) {
       // If we're dragging control points reset selection.
       updateSelection(new ArrayList<IDIYComponent<?>>(this.controlPointMap.keySet()));
@@ -2765,9 +2765,41 @@ public class Presenter implements IPlugInPort {
     }
     return lockedComponents;
   }
+  
+  @Override
+  public void lockComponent(IDIYComponent<?> c, boolean locked) {
+    LOG.debug(String.format("lockComponent(%s, %s)", c.getName(), locked));
+    Project oldProject = currentProject.clone();
+    try {
+      if (locked) {
+        currentProject.getLockedComponents().add(c);
+        selectedComponents.remove(c);
+      } else {
+        currentProject.getLockedComponents().remove(c);        
+      }
+    } finally {
+      // Notify the listeners.
+      if (!oldProject.equals(currentProject)) {
+        messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
+            locked ? "Lock Component" : "Unlock Component");
+        projectFileManager.notifyFileChange();
+      }
+      messageDispatcher.dispatchMessage(EventType.REPAINT);
+      if (locked)
+        updateSelection(selectedComponents);      
+    }
+  }
 
   @SuppressWarnings("unchecked")
   private boolean isComponentLocked(IDIYComponent<?> component) {
+    ComponentType componentType =
+        ComponentProcessor.getInstance().extractComponentTypeFrom(
+            (Class<? extends IDIYComponent<?>>) component.getClass());
+    return currentProject.getLockedLayers().contains((int) Math.round(componentType.getZOrder())) || currentProject.getLockedComponents().contains(component);
+  }
+  
+  @SuppressWarnings("unchecked")
+  private boolean isComponentLayerLocked(IDIYComponent<?> component) {
     ComponentType componentType =
         ComponentProcessor.getInstance().extractComponentTypeFrom(
             (Class<? extends IDIYComponent<?>>) component.getClass());

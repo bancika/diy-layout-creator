@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -82,6 +83,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private JMenu expandMenu;
   private JMenu transformMenu;
   private JMenu applyTemplateMenu;
+  private JMenu lockMenu;
+  private JMenu unlockMenu;
 
   private ActionFactory.CutAction cutAction;
   private ActionFactory.CopyAction copyAction;
@@ -210,21 +213,23 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
             updateZeroLocation();
           }
         });
-    
+
     ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RULER_IN_SUBDIVISION_KEY,
         new IConfigListener() {
 
           @Override
-          public void valueChanged(String key, Object value) {            
-              getScrollPane().setInSubdivision(IPlugInPort.RULER_IN_SUBDIVISION_10.equalsIgnoreCase(value == null ? null : value.toString()) ? InchSubdivision.BASE_10 : InchSubdivision.BASE_2);
+          public void valueChanged(String key, Object value) {
+            getScrollPane().setInSubdivision(IPlugInPort.RULER_IN_SUBDIVISION_10
+                .equalsIgnoreCase(value == null ? null : value.toString()) ? InchSubdivision.BASE_10
+                    : InchSubdivision.BASE_2);
           }
         });
-    
+
     ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA,
         new IConfigListener() {
 
           @Override
-          public void valueChanged(String key, Object value) {            
+          public void valueChanged(String key, Object value) {
             canvasPanel.repaint();
           }
         });
@@ -331,18 +336,21 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private RulerScrollPane getScrollPane() {
     if (scrollPane == null) {
-      String subdivision = ConfigurationManager.getInstance().readString(IPlugInPort.RULER_IN_SUBDIVISION_KEY, IPlugInPort.RULER_IN_SUBDIVISION_DEFAULT);
-      
+      String subdivision = ConfigurationManager.getInstance().readString(
+          IPlugInPort.RULER_IN_SUBDIVISION_KEY, IPlugInPort.RULER_IN_SUBDIVISION_DEFAULT);
+
       scrollPane = new RulerScrollPane(getCanvasPanel(),
           new ProjectDrawingProvider(plugInPort, true, false, true),
           new Size(1d, SizeUnit.cm).convertToPixels(), new Size(1d, SizeUnit.in).convertToPixels(),
-          IPlugInPort.RULER_IN_SUBDIVISION_10.equalsIgnoreCase(subdivision) ? InchSubdivision.BASE_10 : InchSubdivision.BASE_2);
+          IPlugInPort.RULER_IN_SUBDIVISION_10.equalsIgnoreCase(subdivision)
+              ? InchSubdivision.BASE_10
+              : InchSubdivision.BASE_2);
       boolean metric = ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true);
 
       boolean useHardwareAcceleration =
           ConfigurationManager.getInstance().readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
       scrollPane.setUseHardwareAcceleration(useHardwareAcceleration);
-      scrollPane.setMetric(metric);      
+      scrollPane.setMetric(metric);
       scrollPane.setWheelScrollingEnabled(true);
       scrollPane.addUnitListener(new IRulerListener() {
 
@@ -434,6 +442,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private void showPopupAt(int x, int y) {
     updateSelectionMenu(x, y);
     updateApplyTemplateMenu();
+    updateLock(x, y);
     getPopupMenu().show(canvasPanel, x, y);
   }
 
@@ -454,6 +463,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       popupMenu.add(getApplyTemplateMenu());
       popupMenu.add(getSaveAsBlockAction());
       popupMenu.add(getExpandMenu());
+      popupMenu.addSeparator();
+      popupMenu.add(getLockMenu());
+      popupMenu.add(getUnlockMenu());
       popupMenu.addSeparator();
       popupMenu.add(getFlexibleLeadsAction());
       popupMenu.addSeparator();
@@ -479,6 +491,22 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       expandMenu.add(getExpandSelectionSameTypeAction());
     }
     return expandMenu;
+  }
+
+  public JMenu getLockMenu() {
+    if (lockMenu == null) {
+      lockMenu = new JMenu("Lock");
+      lockMenu.setIcon(IconLoader.Lock.getIcon());
+    }
+    return lockMenu;
+  }
+
+  public JMenu getUnlockMenu() {
+    if (unlockMenu == null) {
+      unlockMenu = new JMenu("Unlock");
+      unlockMenu.setIcon(IconLoader.Unlock.getIcon());
+    }
+    return unlockMenu;
   }
 
   public JMenu getTransformMenu() {
@@ -512,7 +540,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private void updateSelectionMenu(int x, int y) {
     getSelectionMenu().removeAll();
-    for (IDIYComponent<?> component : plugInPort.findComponentsAt(new Point(x, y))) {
+    for (IDIYComponent<?> component : plugInPort.findComponentsAt(new Point(x, y), false)) {
       JMenuItem item = new JMenuItem(component.getName());
       final IDIYComponent<?> finalComponent = component;
       item.addActionListener(new ActionListener() {
@@ -526,6 +554,30 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         }
       });
       getSelectionMenu().add(item);
+    }
+  }
+
+  private void updateLock(int x, int y) {
+    getLockMenu().removeAll();
+    getUnlockMenu().removeAll();
+    List<IDIYComponent<?>> componentsAt = plugInPort.findComponentsAt(new Point(x, y), true);
+    if (componentsAt.size() == 0) {
+      getLockMenu().setEnabled(false);
+      getUnlockMenu().setEnabled(false);
+    } else {
+      boolean hasLocked = false;
+      boolean hasUnlocked = false;
+      for (IDIYComponent<?> c : componentsAt) {
+        if (plugInPort.getCurrentProject().getLockedComponents().contains(c)) {
+          getUnlockMenu().add(new LockAction(c, false));
+          hasLocked = true;
+        } else {
+          getLockMenu().add(new LockAction(c, true));
+          hasUnlocked = true;
+        }
+      }
+      getLockMenu().setEnabled(hasUnlocked);
+      getUnlockMenu().setEnabled(hasLocked);
     }
   }
 
@@ -634,7 +686,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     }
     return mirrorVerticallyAction;
   }
-  
+
   public ActionFactory.FlexibleLeadsAction getFlexibleLeadsAction() {
     if (flexibleLeadsAction == null)
       flexibleLeadsAction = ActionFactory.getInstance().createFlexibleLeadsAction(plugInPort);
@@ -716,7 +768,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    return EnumSet.of(EventType.PROJECT_LOADED, EventType.ZOOM_CHANGED, EventType.REPAINT, EventType.SCROLL_TO);
+    return EnumSet.of(EventType.PROJECT_LOADED, EventType.ZOOM_CHANGED, EventType.REPAINT,
+        EventType.SCROLL_TO);
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -773,8 +826,10 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         Rectangle visibleRect2 = canvasPanel.getVisibleRect();
         Rectangle2D targetRect = (Rectangle2D) params[0];
         if (targetRect != null)
-          canvasPanel.scrollRectToVisible(new Rectangle((int)(targetRect.getCenterX() - visibleRect2.width / 2), 
-            (int)(targetRect.getCenterY() - visibleRect2.height / 2), visibleRect2.width, visibleRect2.height));
+          canvasPanel.scrollRectToVisible(
+              new Rectangle((int) (targetRect.getCenterX() - visibleRect2.width / 2),
+                  (int) (targetRect.getCenterY() - visibleRect2.height / 2), visibleRect2.width,
+                  visibleRect2.height));
         break;
     }
     // }
@@ -811,5 +866,26 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private void updateZeroLocation() {
     double extraSpace = CanvasPlugin.this.plugInPort.getExtraSpace();
     getScrollPane().setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
+  }
+  
+  class LockAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IDIYComponent<?> component;
+    private boolean locked;
+
+    public LockAction(IDIYComponent<?> component, boolean locked) {
+      super();
+      this.locked = locked;
+      this.component = component;
+      putValue(AbstractAction.NAME, component.getName());      
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+     plugInPort.lockComponent(component, locked); 
+    } 
+  
   }
 }

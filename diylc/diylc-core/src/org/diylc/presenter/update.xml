@@ -3004,7 +3004,15 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to lock and unlock individual components from the context menu</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Rotary Selector Switch" component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added support for automated regression testing of core functionalities which should reduce regression bugs in the long run</description>
 				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

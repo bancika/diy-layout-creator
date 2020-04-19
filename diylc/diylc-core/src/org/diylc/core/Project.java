@@ -68,6 +68,7 @@ public class Project implements Serializable, Cloneable {
   private List<IDIYComponent<?>> components;
   private Set<Set<IDIYComponent<?>>> groups;
   private Set<Integer> lockedLayers;
+  private Set<IDIYComponent<?>> lockedComponents;
   private Set<Integer> hiddenLayers;
   private Font font = DEFAULT_FONT;
 
@@ -76,6 +77,7 @@ public class Project implements Serializable, Cloneable {
     groups = new HashSet<Set<IDIYComponent<?>>>();
     lockedLayers = new HashSet<Integer>();
     hiddenLayers = new HashSet<Integer>();
+    lockedComponents = new HashSet<IDIYComponent<?>>();
     title = DEFAULT_TITLE;
     author = System.getProperty("user.name");
     width = DEFAULT_WIDTH;
@@ -165,6 +167,12 @@ public class Project implements Serializable, Cloneable {
    */
   public Set<Set<IDIYComponent<?>>> getGroups() {
     return groups;
+  }
+  
+  public Set<IDIYComponent<?>> getLockedComponents() {
+    if (lockedComponents == null)
+      lockedComponents = new HashSet<IDIYComponent<?>>();
+    return lockedComponents;
   }
 
   public Set<Integer> getLockedLayers() {
@@ -289,6 +297,11 @@ public class Project implements Serializable, Cloneable {
         return false;
     } else if (!lockedLayers.equals(other.lockedLayers))
       return false;
+    if (getLockedComponents() == null) {
+      if (other.lockedComponents != null)
+        return false;
+    } else if (!getLockedComponents().equals(other.lockedComponents))
+      return false;
     if (hiddenLayers == null) {
       if (other.hiddenLayers != null)
         return false;
@@ -328,14 +341,14 @@ public class Project implements Serializable, Cloneable {
     project.setHeight(this.getHeight());
     project.setWidth(this.getWidth());
     project.getLockedLayers().addAll(this.getLockedLayers());
-    project.getHiddenLayers().addAll(this.getHiddenLayers());
+    project.getHiddenLayers().addAll(this.getHiddenLayers());    
     project.setFont(this.getFont());    
 
     Map<IDIYComponent<?>, IDIYComponent<?>> cloneMap = new HashMap<IDIYComponent<?>, IDIYComponent<?>>();
 
     for (IDIYComponent<?> component : this.components) {
       try {
-        IDIYComponent<?> clone = component.clone();
+        IDIYComponent<?> clone = component.clone();        
         project.getComponents().add(clone);
         cloneMap.put(component, clone);
       } catch (CloneNotSupportedException e) {
@@ -349,6 +362,10 @@ public class Project implements Serializable, Cloneable {
         cloneGroup.add(cloneMap.get(component));
       }
       project.groups.add(cloneGroup);
+    }
+    
+    for (IDIYComponent<?> component : this.getLockedComponents()) {
+      project.lockedComponents.add(cloneMap.get(component));
     }
     return project;
   }
