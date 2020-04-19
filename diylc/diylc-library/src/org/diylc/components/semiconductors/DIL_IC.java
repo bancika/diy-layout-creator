@@ -454,13 +454,27 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
         } else {
           g2d.drawString(Integer.toString(pinNo), textX2, textY2);
         }
-      }
-      if (displayNumbers == DisplayNumbers.CONNECTOR) {
+      } else if (displayNumbers == DisplayNumbers.CONNECTOR) {
         if (pinNo > pinCount.getValue() / 2) {
           k++;
           g2d.drawString(Integer.toString(pinNo - (pinCount.getValue() / 2) + k), textX1, textY1);
         } else {
           g2d.drawString(Integer.toString(pinNo + j), textX2, textY2);
+          j++;
+        }
+      } else if (displayNumbers == DisplayNumbers.DIP_MIRROR) {
+        if (pinNo > pinCount.getValue() / 2) {
+          g2d.drawString(Integer.toString(pinCount.getValue() - pinCount.getValue() + j + 1), textX1, textY1);
+          j++;
+        } else {
+          g2d.drawString(Integer.toString(pinCount.getValue() - pinNo + 1), textX2, textY2);
+        }
+      } else if (displayNumbers == DisplayNumbers.CONNECTOR_MIRROR) {
+        if (pinNo > pinCount.getValue() / 2) {
+          k++;
+          g2d.drawString(Integer.toString(pinNo - (pinCount.getValue() / 2) + k - 1), textX1, textY1);
+        } else {
+          g2d.drawString(Integer.toString(pinNo + j + 1), textX2, textY2);
           j++;
         }
       }
@@ -582,7 +596,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
   public enum DisplayNumbers {
 
-    NO("No"), DIP("DIP"), CONNECTOR("Connector");
+    NO("No"), DIP("DIP"), CONNECTOR("Connector"), DIP_MIRROR("DIP (Mirrored)"), CONNECTOR_MIRROR("Connector (Mirrored)");
 
     private String label;
 
