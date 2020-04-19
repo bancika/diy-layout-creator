@@ -176,8 +176,8 @@ public class TestMenuPlugin implements IPlugIn {
       
       final File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.TEST.getFilter(),
           null, FileFilterEnum.TEST.getExtensions()[0], null);
-      
-      final Presenter presenter = new Presenter(new MockView());
+            
+      plugInPort.createNewProject();
       
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<List<StepResult>>() {
@@ -185,7 +185,7 @@ public class TestMenuPlugin implements IPlugIn {
           @Override
           public List<StepResult> doInBackground() throws Exception {
             DIYTest test = projectFileManager.deserializeTestFromFile(file.getAbsolutePath());
-            List<StepResult> testResults = testPlayer.play(presenter, test);
+            List<StepResult> testResults = testPlayer.play(plugInPort, test);
             return testResults;
           }
 

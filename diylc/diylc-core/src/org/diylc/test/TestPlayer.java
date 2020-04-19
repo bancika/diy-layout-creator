@@ -15,7 +15,7 @@ public class TestPlayer {
   
   private static final Logger LOG = Logger.getLogger(TestPlayer.class);
   
-  public static final int DELAY_MS = 5;
+  public static final int DELAY_MS = 2;
   
   public List<StepResult> play(IPlugInPort plugInPort, DIYTest test) {
     LOG.info("Playing test: " + test.getName());
