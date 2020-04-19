@@ -39,7 +39,7 @@ public class CalcUtils {
    */
   public static int roundToGrid(double x, Size gridSpacing) {
     double grid = gridSpacing.convertToPixels();
-    return (int) (Math.round(1f * x / grid) * grid);
+    return (int) Math.round((Math.round(1f * x / grid) * grid));
   }
 
   public static void snapPointToGrid(Point point, Size gridSpacing) {
