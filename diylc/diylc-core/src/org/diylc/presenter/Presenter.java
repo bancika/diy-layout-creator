@@ -87,6 +87,8 @@ import org.diylc.netlist.NetlistAnalyzer;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Position;
 import org.diylc.netlist.SwitchSetup;
+import org.diylc.test.DIYTest;
+import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
 
 import com.thoughtworks.xstream.XStream;
@@ -175,6 +177,8 @@ public class Presenter implements IPlugInPort {
   private Project preDragProject = null;
   private int dragAction;
   private Point previousScaledPoint;
+  
+  private DIYTest test = null;
 
   public Presenter(IView view) {
     super();
@@ -547,6 +551,19 @@ public class Presenter implements IPlugInPort {
   @Override
   public void mouseClicked(Point point, int button, boolean ctrlDown, boolean shiftDown, boolean altDown, int clickCount) {
     LOG.debug(String.format("mouseClicked(%s, %s, %s, %s, %s)", point, button, ctrlDown, shiftDown, altDown));
+
+    // record a test step if needed
+    if (test != null) {
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put("point", point);
+      params.put("button", button);
+      params.put("ctrlDown", ctrlDown);
+      params.put("shiftDown", shiftDown);
+      params.put("altDown", altDown);
+      params.put("clickCount", clickCount);
+      test.addStep(DIYTest.MOUSE_CLICKED, params);
+    }    
+      
     Point scaledPoint = scalePoint(point);
     if (clickCount >= 2) {
       editSelection();
@@ -827,6 +844,16 @@ public class Presenter implements IPlugInPort {
   public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     if (point == null)
       return;
+    
+    // record a test step if needed
+    if (test != null) {
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put("point", point);
+      params.put("ctrlDown", ctrlDown);
+      params.put("shiftDown", shiftDown);
+      params.put("altDown", altDown);
+      test.addStep(DIYTest.MOUSE_MOVED, params);
+    }      
 
     if (shiftDown) {
       dragAction = IPlugInPort.DND_TOGGLE_SNAP;
@@ -1035,6 +1062,16 @@ public class Presenter implements IPlugInPort {
   @Override
   public void dragStarted(Point point, int dragAction, boolean forceSelectionRect) {
     LOG.debug(String.format("dragStarted(%s, %s)", point, dragAction));
+    
+    // record a test step if needed
+    if (test != null) {
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put("point", point);
+      params.put("dragAction", dragAction);
+      params.put("forceSelectionRect", forceSelectionRect);
+      test.addStep(DIYTest.DRAG_START, params);
+    }    
+    
     if (instantiationManager.getComponentTypeSlot() != null) {
       LOG.debug("Cannot start drag because a new component is being created.");
       mouseClicked(point, IPlugInPort.BUTTON1, dragAction == DnDConstants.ACTION_COPY,
@@ -1051,7 +1088,7 @@ public class Presenter implements IPlugInPort {
     Point scaledPoint = scalePoint(point);
     this.previousDragPoint = scaledPoint;
     List<IDIYComponent<?>> components = forceSelectionRect ? null : findComponentsAtScaled(scaledPoint);
-    if (!this.controlPointMap.isEmpty()) {
+    if (controlPointMap != null && !this.controlPointMap.isEmpty()) {
       // If we're dragging control points reset selection.
       updateSelection(new ArrayList<IDIYComponent<?>>(this.controlPointMap.keySet()));
       // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
@@ -1193,11 +1230,18 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public boolean dragOver(Point point) {
+    // record a test step if needed
+    if (test != null) {
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put("point", point);
+      test.addStep(DIYTest.DRAG_OVER, params);
+    }    
+    
     if (point == null || ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
       return false;
     }
     Point scaledPoint = scalePoint(point);
-    if (!controlPointMap.isEmpty()) {
+    if (controlPointMap != null && !controlPointMap.isEmpty()) {
       // We're dragging control point(s).
       int dx = (scaledPoint.x - previousDragPoint.x);
       int dy = (scaledPoint.y - previousDragPoint.y);
@@ -1522,6 +1566,14 @@ public class Presenter implements IPlugInPort {
   @Override
   public void dragEnded(Point point) {
     LOG.debug(String.format("dragEnded(%s)", point));
+    
+    // record a test step if needed
+    if (test != null) {
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put("point", point);
+      params.put("dragAction", dragAction);
+      test.addStep(DIYTest.DRAG_END, params);
+    }
 
     Point scaledPoint = scalePoint(point);
 
@@ -2320,7 +2372,17 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public void setNewComponentTypeSlot(ComponentType componentType, Template template, boolean forceInstatiate) {
-    LOG.info(String.format("setNewComponentSlot(%s)", componentType == null ? null : componentType.getName()));
+    LOG.info(String.format("setNewComponentSlot(%s)", componentType == null ? null : componentType.getName()));    
+    
+    // record a test step if needed
+    if (test != null) {
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put("componentType", componentType);
+      params.put("template", template);
+      params.put("forceInstatiate", forceInstatiate);
+      test.addStep(DIYTest.SET_COMPONENT_SLOT, params);
+    }    
+    
     if (componentType != null && componentType.getInstanceClass() == null) {
       LOG.info("Cannot set new component type slot for type " + componentType.getName());
       setNewComponentTypeSlot(null, null, false);
@@ -3213,5 +3275,35 @@ public class Presenter implements IPlugInPort {
       LOG.error("Could not load INetlistSummarizer implementations", e);
       return null;
     }
+  }
+  
+  // Test stuff
+  
+  @Override
+  public void startRecording(String name) {
+    test = new DIYTest(name);
+  }
+  
+  @Override
+  public DIYTest stopRecording() {
+    DIYTest res = test;
+    test = null;
+    return res;
+  }
+  
+  @Override
+  public void addValidation(Map<String, Object> params) {   
+    if (test != null)
+      test.addStep(DIYTest.VALIDATION, params);
+  }
+  
+  @Override
+  public Snapshot createTestSnapshot() {
+    Map<IDIYComponent<?>, ComponentArea> areas = new HashMap<IDIYComponent<?>, ComponentArea>();
+    for (IDIYComponent<?> c : currentProject.getComponents()) {
+      ComponentArea componentArea = drawingManager.getComponentArea(c);
+      areas.put(c, componentArea);
+    }
+    return new Snapshot(currentProject.clone(), new HashSet<IDIYComponent<?>>(selectedComponents), areas, new HashSet<Area>(drawingManager.getContinuityAreas(currentProject)));
   }
 }

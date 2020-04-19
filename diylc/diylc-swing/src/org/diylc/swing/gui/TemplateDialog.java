@@ -97,6 +97,11 @@ public class TemplateDialog extends JDialog {
       public void showMessage(String message, String title, int messageType) {
         JOptionPane.showMessageDialog(TemplateDialog.this, message, title, messageType);
       }
+      
+      @Override
+      public String showInputDialog(String message, String title) {
+        return JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
+      }
 
       @Override
       public File promptFileSave() {

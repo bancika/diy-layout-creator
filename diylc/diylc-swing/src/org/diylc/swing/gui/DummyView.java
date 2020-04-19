@@ -47,4 +47,9 @@ public class DummyView implements IView {
   public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
     return false;
   }
+
+  @Override
+  public String showInputDialog(String message, String title) {
+    return null;
+  }
 }

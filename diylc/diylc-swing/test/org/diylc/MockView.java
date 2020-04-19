@@ -34,4 +34,10 @@ public class MockView implements IView {
     return null;
   }
 
+  @Override
+  public String showInputDialog(String message, String title) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

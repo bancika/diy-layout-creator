@@ -40,6 +40,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
+import org.diylc.test.ITestProcessor;
 
 /**
  * Interface for communication between plug-ins and the application. Plug-ins may acquire
@@ -54,7 +55,7 @@ import org.diylc.core.Theme;
  * @see EventType
  */
 public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, IVariantProcessor,
-    IBlockProcessor, INetlistProcessor {
+    IBlockProcessor, INetlistProcessor, ITestProcessor {
 
   public static final String ANTI_ALIASING_KEY = "antiAliasing";
   public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";

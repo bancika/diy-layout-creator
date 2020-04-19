@@ -195,11 +195,12 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
       Field[] fields = clazz.getDeclaredFields();
       clazz = clazz.getSuperclass();
       // fields = this.getClass().getDeclaredFields();
-      // Copy over all non-static, non-final fields that are declared
+      // Copy over all non-static, non-final and non-transient fields that are declared
       // in
       // AbstractComponent or one of it's child classes
       for (Field field : fields) {
-        if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers())) {
+        if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers()) &&
+            !Modifier.isTransient(field.getModifiers())) {
           field.setAccessible(true);
           try {
             Object value = field.get(this);

@@ -48,6 +48,7 @@ import org.diylc.appframework.update.VersionNumber;
 import org.diylc.common.EventType;
 import org.diylc.core.Project;
 import org.diylc.parsing.IOldFileParser;
+import org.diylc.test.DIYTest;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -104,6 +105,7 @@ public class ProjectFileManager {
     xStream.registerConverter(new ColorConverter());
     xStream.registerConverter(new FontConverter());
     xStream.registerConverter(new MeasureConverter());
+    xStream.registerConverter(new AreaConverter());
     xStream.addImmutableType(Color.class);
     xStream.addImmutableType(java.awt.Point.class);
     xStream.addImmutableType(org.diylc.core.measures.Voltage.class);
@@ -191,6 +193,27 @@ public class ProjectFileManager {
     Collections.sort(warnings);
     this.currentFileName = fileName;
     this.modified = false;
+    return project;
+  }
+  
+  public void serializeTestToFile(DIYTest test, String fileName) throws IOException {
+    LOG.info(String.format("serializeTestToFile(%s)", fileName));
+    FileOutputStream fos;
+    fos = new FileOutputStream(fileName);
+    Writer writer = new OutputStreamWriter(fos, "UTF-8");
+    writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+    xStream.toXML(test, writer);
+    fos.close();
+  }
+
+  public DIYTest deserializeTestFromFile(String fileName)
+      throws SAXException, IOException, ParserConfigurationException {
+    LOG.info(String.format("deserializeTestFromFile(%s)", fileName));
+    DIYTest project = null;
+    FileInputStream fis = new FileInputStream(fileName);
+    Reader reader = new InputStreamReader(fis, "UTF-8");
+    project = (DIYTest) xStream.fromXML(reader);
+    fis.close();
     return project;
   }
 

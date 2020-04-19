@@ -17,6 +17,8 @@
  */
 package org.diylc.common;
 
+import java.io.Serializable;
+
 import javax.swing.Icon;
 
 import org.diylc.core.CreationMethod;
@@ -31,8 +33,11 @@ import org.diylc.core.annotations.KeywordPolicy;
  * 
  * @see IDIYComponent
  */
-public class ComponentType {
+public class ComponentType implements Serializable {
 
+
+  private static final long serialVersionUID = 1L;
+  
   private String name;
   private String description;
   private CreationMethod creationMethod;
@@ -49,6 +54,9 @@ public class ComponentType {
   private KeywordPolicy keywordPolicy;
   private String keywordTag;
   private boolean enableCache;
+  
+  public ComponentType() {  
+  }
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,

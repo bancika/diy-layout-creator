@@ -277,7 +277,7 @@ public class Project implements Serializable, Cloneable {
     if (font == null) {
       if (other.font != null)
         return false;
-    } else if (!font.equals(other.font))
+    } else if (!font.getFamily().equals(other.font.getFamily()) || font.getSize() != other.font.getSize() || font.getStyle() != other.font.getStyle())
       return false;
     if (groups == null) {
       if (other.groups != null)

@@ -399,6 +399,11 @@ public class ActionFactory {
         public void showMessage(String message, String title, int messageType) {
           JOptionPane.showMessageDialog(null, message, title, messageType);
         }
+        
+        @Override
+        public String showInputDialog(String message, String title) {
+          return JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
+        }
 
         @Override
         public File promptFileSave() {

@@ -22,13 +22,19 @@
 package org.diylc.presenter;
 
 import java.awt.geom.Area;
+import java.io.Serializable;
 import java.util.Collection;
 
-public class ComponentArea {
+public class ComponentArea implements Serializable {
 
+  private static final long serialVersionUID = 1L;
+  
   private Area outlineArea;
   private Collection<Area> continuityPositiveAreas;
   private Collection<Area> continuityNegativeAreas;
+  
+  public ComponentArea() {   
+  }
 
   public ComponentArea(Area outlineArea, Collection<Area> continuityPositiveAreas, Collection<Area> continuityNegativeAreas) {
     super();

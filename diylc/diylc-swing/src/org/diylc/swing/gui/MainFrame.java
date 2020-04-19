@@ -82,6 +82,7 @@ import org.diylc.swing.plugins.file.FileMenuPlugin;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
 import org.diylc.swing.plugins.layers.LayersMenuPlugin;
 import org.diylc.swing.plugins.statusbar.StatusBar;
+import org.diylc.swing.plugins.test.TestMenuPlugin;
 import org.diylc.swing.plugins.toolbox.ToolBox;
 import org.diylc.swing.plugins.tree.ComponentTree;
 import org.diylc.swingframework.ButtonDialog;
@@ -127,6 +128,8 @@ public class MainFrame extends JFrame implements ISwingUI {
     presenter.installPlugin(new ConfigPlugin(this));
     presenter.installPlugin(new LayersMenuPlugin(this));
     presenter.installPlugin(new CloudPlugIn(this));
+    if ("true".equalsIgnoreCase(System.getProperty("org.diylc.enableTests")))
+        presenter.installPlugin(new TestMenuPlugin(this));
     presenter.installPlugin(new HelpMenuPlugin(this));
     presenter.installPlugin(new ActionBarPlugin(this));
 
@@ -282,6 +285,11 @@ public class MainFrame extends JFrame implements ISwingUI {
   @Override
   public int showConfirmDialog(String message, String title, int optionType, int messageType) {
     return JOptionPane.showConfirmDialog(this, message, title, optionType, messageType);
+  }
+  
+  @Override
+  public String showInputDialog(String message, String title) {
+    return JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
   }
 
   @Override

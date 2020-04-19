@@ -53,6 +53,7 @@ import java.awt.image.renderable.RenderableImage;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.AttributedCharacterIterator;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -159,7 +160,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setComposite(originalComposite);
     canvasGraphics.setFont(originalFont);
 //    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);    
-    return new ComponentArea(currentArea, continuityPositiveAreas.values(), continuityNegativeAreas.values());
+    return new ComponentArea(currentArea, new ArrayList<Area>(continuityPositiveAreas.values()), new ArrayList<Area>(continuityNegativeAreas.values()));
   }
   
   // start - used for caching

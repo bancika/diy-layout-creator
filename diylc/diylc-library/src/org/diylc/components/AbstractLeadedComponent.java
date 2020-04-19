@@ -85,8 +85,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   protected boolean moveLabel = false;
   
   // parameters for adjusting the label control point
-  protected Double gamma = null;
-  protected Double r = null;
+  protected transient Double gamma = null;
+  protected transient Double r = null;
 
   protected AbstractLeadedComponent() {
     super();
@@ -576,11 +576,11 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         double beta = Math.atan2(getPoints()[2].y - y, getPoints()[2].x - x);
         gamma = beta + (Math.PI / 2 - theta);
         r = getPoints()[2].distance(x, y);
-      } else { // in case when we are copy pasting we don't want to recalculate 3rd point position as they will all move in unison
-        // when we moved the first point, gamma and r were initialized, so now we are canceling
-        gamma = null;
-        r = null;
       }
+    } else { // in case when we are copy pasting we don't want to recalculate 3rd point position as they will all move in unison
+      // when we moved the first point, gamma and r were initialized, so now we are canceling
+      gamma = null;
+      r = null;
     }
     
     getPoints()[index].setLocation(point);   
