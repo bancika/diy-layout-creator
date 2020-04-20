@@ -45,7 +45,7 @@ import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.GridType;
-import org.diylc.common.IComponentFiler;
+import org.diylc.common.IComponentFilter;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
@@ -141,7 +141,7 @@ public class DrawingManager {
    * @return
    */
   public List<IDIYComponent<?>> drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
-      IComponentFiler filter, Rectangle selectionRect, Collection<IDIYComponent<?>> selectedComponents,
+      IComponentFilter filter, Rectangle selectionRect, Collection<IDIYComponent<?>> selectedComponents,
       Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
       List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom, Rectangle2D visibleRect) {
     long totalStartTime = System.nanoTime();

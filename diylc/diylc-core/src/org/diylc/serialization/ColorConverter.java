@@ -19,9 +19,9 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.presenter;
+package org.diylc.serialization;
 
-import java.awt.Font;
+import java.awt.Color;
 
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -29,31 +29,28 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
- * Serializes {@link Font} objects in a more compact fashion. Backwards compatible when unmarshalling.
+ * Serializes {@link Color} objects as hex values instead of r/g/b. Backwards compatible when unmarshalling.
  * 
  * @author Branislav Stojkovic
  */
-public class FontConverter extends com.thoughtworks.xstream.converters.extended.FontConverter {
+public class ColorConverter extends com.thoughtworks.xstream.converters.extended.ColorConverter {
 
   @Override
   public void marshal(Object object, HierarchicalStreamWriter writer, MarshallingContext context) {
-    Font f = (Font) object;
-    writer.addAttribute("name", f.getFontName());
-    writer.addAttribute("size", Integer.toString(f.getSize()));
-    writer.addAttribute("style", Integer.toString(f.getStyle()));
+    Color c = (Color) object;
+    writer.addAttribute("hex", String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()));
   }
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    if (reader.getAttribute("name") != null) {
-      return new Font(reader.getAttribute("name"), Integer.parseInt(reader.getAttribute("style")), Integer.parseInt(reader.getAttribute("size")));
-    }
+    if (reader.getAttribute("hex") != null)
+      return Color.decode("#" + reader.getAttribute("hex"));
     return super.unmarshal(reader, context);
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public boolean canConvert(Class clazz) {
-    return Font.class.isAssignableFrom(clazz);
+    return Color.class.isAssignableFrom(clazz);
   }
 }

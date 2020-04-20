@@ -39,7 +39,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.presenter.Presenter;
-import org.diylc.presenter.ProjectFileManager;
+import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.plugins.file.FileFilterEnum;

@@ -19,11 +19,32 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.common;
+package org.diylc.presenter;
 
+import java.lang.reflect.Method;
+
+import org.diylc.common.IComponentFilter;
+import org.diylc.common.PCBLayer;
 import org.diylc.core.IDIYComponent;
 
-public interface IComponentFiler {
+public class PCBLayerFilter implements IComponentFilter {
 
-  boolean testComponent(IDIYComponent<?> component);
+  private PCBLayer layer;
+
+  public PCBLayerFilter(PCBLayer layer) {
+    super();
+    this.layer = layer;
+  }
+
+  @Override
+  public boolean testComponent(IDIYComponent<?> component) {
+    Class<?> clazz = component.getClass();
+    try {
+      Method m = clazz.getMethod("getLayer");
+      PCBLayer l = (PCBLayer) m.invoke(component);
+      return layer == l;
+    } catch (Exception e) {
+      return false;
+    }
+  }
 }

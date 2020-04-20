@@ -197,7 +197,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param externalZoom
    * @param visibleRect
    */
-  void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFiler filter, Double externalZoom, Rectangle2D visibleRect);
+  void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFilter filter, Double externalZoom, Rectangle2D visibleRect);
 
   Double[] getAvailableZoomLevels();
 

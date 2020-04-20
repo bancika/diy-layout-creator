@@ -60,7 +60,7 @@ import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
-import org.diylc.common.IComponentFiler;
+import org.diylc.common.IComponentFilter;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IKeyProcessor;
 import org.diylc.common.INetlistAnalyzer;
@@ -87,6 +87,7 @@ import org.diylc.netlist.NetlistAnalyzer;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Position;
 import org.diylc.netlist.SwitchSetup;
+import org.diylc.serialization.ProjectFileManager;
 import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
@@ -465,7 +466,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFiler filter, Double externalZoom, Rectangle2D visibleRect) {
+  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFilter filter, Double externalZoom, Rectangle2D visibleRect) {
     if (currentProject == null) {
       return;
     }
@@ -478,7 +479,7 @@ public class Presenter implements IPlugInPort {
     }
 
     // Concatenate the specified filter with our own filter that removes hidden layers
-    IComponentFiler newFiler = new IComponentFiler() {
+    IComponentFilter newFiler = new IComponentFilter() {
 
       @Override
       public boolean testComponent(IDIYComponent<?> component) {

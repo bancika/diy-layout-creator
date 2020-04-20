@@ -19,7 +19,7 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.presenter;
+package org.diylc.serialization;
 
 import java.awt.Color;
 import java.io.File;
@@ -48,6 +48,7 @@ import org.diylc.appframework.update.VersionNumber;
 import org.diylc.common.EventType;
 import org.diylc.core.Project;
 import org.diylc.parsing.IOldFileParser;
+import org.diylc.presenter.Presenter;
 import org.diylc.test.DIYTest;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
