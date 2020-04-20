@@ -3016,6 +3016,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added support for rotating and mirroring potentiometer symbol and transistor symbols</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added mirrored pin display options for "DIL IC"</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

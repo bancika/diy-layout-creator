@@ -29,6 +29,7 @@ import java.awt.geom.GeneralPath;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.components.Abstract3LegSymbol;
+import org.diylc.components.transform.ThreeLegTransformer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -36,7 +37,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "JFET", author = "Branislav Stojkovic", category = "Schematic Symbols",
     instanceNamePrefix = "Q", description = "JFET transistor schematic symbol", 
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
+    zOrder = IDIYComponent.COMPONENT, transformer = ThreeLegTransformer.class, keywordPolicy = KeywordPolicy.SHOW_TAG_AND_VALUE, keywordTag = "Schematic")
 public class JFETSymbol extends Abstract3LegSymbol {
 
   private static final long serialVersionUID = 1L;
