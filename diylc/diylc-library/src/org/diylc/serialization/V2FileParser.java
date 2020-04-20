@@ -19,7 +19,7 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.parsing;
+package org.diylc.serialization;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -78,6 +78,7 @@ import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.Presenter;
+import org.diylc.serialization.IOldFileParser;
 import org.diylc.utils.Constants;
 import org.nfunk.jep.JEP;
 import org.w3c.dom.Element;

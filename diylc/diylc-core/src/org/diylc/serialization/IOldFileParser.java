@@ -19,7 +19,7 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.parsing;
+package org.diylc.serialization;
 
 import java.util.List;
 

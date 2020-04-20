@@ -47,7 +47,6 @@ import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.VersionNumber;
 import org.diylc.common.EventType;
 import org.diylc.core.Project;
-import org.diylc.parsing.IOldFileParser;
 import org.diylc.presenter.Presenter;
 import org.diylc.test.DIYTest;
 import org.w3c.dom.Document;
