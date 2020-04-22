@@ -91,6 +91,8 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String SNAP_TO_GRID = "Grid";
   public static final String SNAP_TO_COMPONENTS = "Components";
   public static final String SNAP_TO_DEFAULT = SNAP_TO_GRID;
+  
+  public static final String LANGUAGE = "language";
 
   public static final int DND_TOGGLE_STICKY = 0x1;
   public static final int DND_TOGGLE_SNAP = 0x40000000;
@@ -101,7 +103,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final int NOBUTTON = 0;
   public static final int BUTTON1 = 1;
   public static final int BUTTON2 = 2;
-  public static final int BUTTON3 = 3;
+  public static final int BUTTON3 = 3;  
 
   /**
    * Returns size of the canvas that takes project dimensions into account as well as zoom level.

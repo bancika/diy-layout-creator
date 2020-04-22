@@ -162,7 +162,7 @@ public class Line extends AbstractLeadedComponent<Void> {
     this.thickness = thickness;   
   }
   
-  @EditableProperty
+  @EditableProperty(name = "Arrow Size")
   public Size getArrowSize() {
     if (arrowSize == null)
       arrowSize = thickness = new Size(1d, SizeUnit.px); 

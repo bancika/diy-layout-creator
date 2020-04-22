@@ -1,0 +1,403 @@
+180 degrees clockwise|180 degrés dans le sens horaire
+270 degrees clockwise|270 degrés dans le sens des aiguilles d'une montre
+90 degrees clockwise|90 degrés dans le sens horaire
+A variant with that name already exists. Overwrite?|Une variante avec ce nom existe déjà. Écraser?
+About|À propos de
+Above|Au dessus de
+Access User Files|Accéder aux fichiers utilisateur
+Add Flexible Leads|Ajouter des prospects flexibles
+Add Validation Step|Ajouter une étape de validation
+All Connected|Tous connectés
+Alpha|Alpha
+Analyze|Analyser
+Analyze Guitar Diagrams|Analyser les diagrammes de guitare
+And|Et
+Angle|Angle
+Anti-Aliasing|Anti crénelage
+Arrow Size|Taille de la flèche
+Author|Auteur
+Auto-Create Pads|Pads de création automatique
+Auto-Edit Mode|Mode d'édition automatique
+Base|Base
+Below|Au dessous de
+Blueprint|Plan
+Board|Planche
+Board Color|Couleur du plateau
+Board Width|Largeur du panneau
+Bobin 1|Bobin 1
+Bobin 2|Bobin 2
+Body|Corps
+Border|Frontière
+Border Thickness|Épaisseur de bordure
+Both|Tous les deux
+Both Sides|Des deux côtés
+Bottom|Bas
+Bottom Left|En bas à gauche
+Bottom Right|En bas à droite
+Bring Forward|Avancer
+Bring Selection to Front|Mettre la sélection au premier plan
+Buffer|Tampon
+Center|Centre
+Center Negative|Centre négatif
+Center Positive|Centre positif
+Center Terminal|Terminal central
+Central|Central
+Change Password|Changer le mot de passe
+Channel|Canal
+Chassis|Châssis
+Circular|Circulaire
+Coil|Bobine
+Coil Border|Bordure de bobine
+Coil Length|Longueur de bobine
+Coil Width|Largeur de bobine
+Color|Couleur
+Color 1|Couleur 1
+Color 2|Couleur 2
+Color code|Code couleur
+Columns|Colonnes
+Component|Composant
+Component API|API de composant
+Components|Composants
+Config|Config
+Connector|Connecteur
+Connector (Mirrored)|Connecteur (en miroir)
+Contacts|Contacts
+Continuous Creation|Création continue
+Coordinate Color|Couleur coordonnée
+Coordinate Origin|Origine des coordonnées
+Coordinates|Coordonnées
+Copy|Copie
+Core|Coeur
+Core Border|Frontière centrale
+Core Thickness|Épaisseur du noyau
+Core Width|Largeur de noyau
+Could not create a new file. Check the log for details.|Impossible de créer un nouveau fichier. Consultez le journal pour plus de détails.
+Could not create component. Check log for details.|Impossible de créer le composant. Consultez le journal pour plus de détails.
+Could not save the project to file. Check the log for details.|Impossible d'enregistrer le projet dans un fichier. Consultez le journal pour plus de détails.
+Could not set component type slot. Check log for details.|Impossible de définir l'emplacement du type de composant. Consultez le journal pour plus de détails.
+Cover|Couverture
+Create B.O.M.|Créez B.O.M.
+Create New Account|Créer un nouveau compte
+Current|Courant
+Cut|Couper
+Cut Between Holes|Couper entre les trous
+Cut Orientation|Orientation de coupe
+DIP (Mirrored)|DIP (en miroir)
+DP3T (Standard 3-Position Strat)|DP3T (Strat standard à 3 positions)
+DP3T (Standard 5-Position Strat)|DP3T (Strat standard à 5 positions)
+DP4T (4-Position Tele)|DP4T (télé 4 positions)
+Dark|Foncé
+Dashed|Dashed
+Decimals|Décimales
+Default|Défaut
+Default Font|Police par défaut
+Default Font Size|Taille de police par défaut
+Delete Selection|Supprimer la sélection
+Description|La description
+Diameter|Diamètre
+Directional|Directionnel
+Directly heated|Directement chauffé
+Display|Afficher
+Display Pin #s|Afficher les broches #
+Dog Ear|Oreille de chien
+Dot Spacing|Espacement des points
+Dotted|À pois
+Dual Rail Humbucker|Humbucker à double rail
+Dual Rods|Dual Rods
+Duodecar B12C|Duodecar B12C
+Duplicate|Dupliquer
+Edges|Bords
+Edit|Éditer
+Edit Project Settings|Modifier les paramètres du projet
+Edit Selection|Modifier la sélection
+Electrode Labels|Étiquettes d'électrode
+Enable Cache Boost|Activer le boost de cache
+End Arrow|Flèche de fin
+Enjoying DIYLC? Click here to buy me a coffe :)|Vous aimez DIYLC? Cliquez ici pour m'acheter un café :)
+Error|Erreur
+Error occured while editing selection. Check the log for details.|Une erreur s'est produite lors de la modification de la sélection. Consultez le journal pour plus de détails.
+Exit|Sortie
+Expand Selection|Développer la sélection
+Explicit Dimensions|Dimensions explicites
+Explicit Length|Longueur explicite
+Explicit Width|Largeur explicite
+Export Building Blocks|Exporter des blocs de construction
+Export Grid|Grille d'exportation
+Export Variants|Exporter les variantes
+Export to PDF|Exporter au format PDF
+Export to PNG|Exporter en PNG
+Extra Working Area|Zone de travail supplémentaire
+Eyelet color|Couleur oeillet
+FAQ|FAQ
+File|Fichier
+Fill|Remplir
+Filtertron|Filtertron
+Find|Trouver
+Five|Cinq
+Flip|Retourner
+Folded|Plié
+Font|Police de caractère
+Font Bold|Caractères gras
+Font Italic|Italic
+Font Size|Taille de police
+Four|Quatre
+Full|Plein
+Fuse|Fusible
+Generate DIYLC Netlist|Générer une netlist DIYLC
+Generate Spice Netlist|Générer la netlist Spice
+Grid|la grille
+Grid Spacing|Espacement de la grille
+Group Selection|Sélection de groupe
+Half|Moitié
+Hardware Acceleration|Accélération matérielle
+Heaters|Radiateurs
+Height|la taille
+Help|Aider
+Hi-Quality Rendering|Rendu de haute qualité
+Highlight Connected Areas|Mettez en surbrillance les zones connectées
+Hole|Trou
+Hole Size|Taille du trou
+Hole Spacing|Espacement des trous
+Hole size|Taille du trou
+Holes per strip|Trous par bande
+Horizontal|Horizontal
+Horizontal Alignment|Alignement horizontal
+Horizontal Large|Horizontal Large
+Horizontal Medium|Moyen horizontal
+Horizontal Small 1|Horizontal petit 1
+Horizontal Small 2|Horizontal petit 2
+Horizontal X-Small|X-Small horizontal
+Humbucking|Humbucking
+Image|Image
+Immediate Only|Immédiatement seulement
+Import|Importation
+Import Building Blocks|Importer des blocs de construction
+Import Variants|Importer des variantes
+In-Line D-44|En ligne D-44
+In-line|En ligne
+Indent|Retrait
+Inline|En ligne
+Inside color|Couleur intérieure
+Integration|L'intégration
+Invert polarity|Inverser la polarité
+Label|Étiquette
+Label Color|Couleur de l'étiquette
+Label Orientation|Orientation de l'étiquette
+Label Position|Position de l'étiquette
+Labels|Étiquettes
+Layer|Couche
+Layers|Couches
+Lead Color|Couleur de plomb
+Lead Count|Nombre de prospects
+Lead Length|Longueur de fil
+Lead Spacing|Espacement des fils
+Left|La gauche
+Left-to-Right|De gauche à droite
+Legs|Jambes
+Length|Longueur
+Letters|Des lettres
+Light|Lumière
+Lin|Lin
+Lip|Lèvre
+Lock|Fermer à clé
+Log|Journal
+Log In|S'identifier
+Log Out|Se déconnecter
+Lug Size|Taille des cosses
+Lugs|Cosses
+Make a Donation|Faire un don
+Manage Account|Gérer son compte
+Manage My Uploads|Gérer mes téléchargements
+Mark Common Lugs|Marquer les cosses communes
+Marker|Marqueur
+Mini|Mini
+Miniature|Miniature
+Mirror Horizontally|Miroir horizontalement
+Mirror Selection|Sélection miroir
+Mirror Vertically|Miroir verticalement
+Mirroring operation will change the circuit. Do you want to continue?|L'opération de mise en miroir changera le circuit. Voulez-vous continuer?
+Model|Modèle
+Mono|Mono
+Mount|Monter
+Mounting Lugs|Pattes de montage
+Mouse Wheel Zoom|Zoom de la molette de la souris
+Moveable Label|Étiquette mobile
+Name|Nom
+Nand|Nand
+Negative|Négatif
+New|Nouveau
+No|Non
+None|Aucun
+North|Nord
+Noval B9A|Noval B9A
+Nudge|Coup de coude
+Numbers|Nombres
+Nut|Écrou
+Octal|Octal
+Offset|Décalage
+One Side|Un côté
+Open|Ouvert
+Opposing Points|Points opposés
+Orientation|Orientation
+Outer Foil|Feuille extérieure
+Outer Foil Mark|Marque de feuille extérieure
+Outline Mode|Mode contour
+Outside|À l'extérieur
+Oval horizontal|Ovale horizontal
+Oval vertical|Verticale ovale
+Pad Color|Couleur du tampon
+Paste|Pâte
+Pin Arrangement|Disposition des broches
+Pin Color|Couleur de broche
+Pin Spacing|Espacement des broches
+Pin spacing|Espacement des broches
+Pinout|Brochage
+Pins|Épingles
+Play Test|Jouer le test
+Plugin API|API de plugin
+Point Count|Nombre de points
+Polarity|Polarité
+Polarized|Polarisé
+Pole Color|Couleur de poteau
+Pole Pieces|Pièces de poteau
+Pole Pieces 1|Pièces de poteau 1
+Pole Pieces 2|Pièces de poteau 2
+Positions|Postes
+Positive|Positif
+Power Rating|Puissance nominale
+Power Strip|Power Strip
+Primary CT|TDM primaire
+Print...|Impression...
+Radius|Rayon
+Rail|Rail
+Recent Files|Fichiers récents
+Recent Updates|Mises à jour récentes
+Redo|Refaire
+Renumber On Paste|Renuméroter sur la pâte
+Renumber Selection|Renuméroter la sélection
+Resistance|La résistance
+Rev log|Journal de rév.
+Reverse (standing)|Marche arrière (debout)
+Right|Droite
+Rods|Cannes
+Rotate Clockwise|Le sens des aiguilles d'une montre
+Rotate Counterclockwise|Rotation dans le sens antihoraire
+Rotate Selection|Faire pivoter la sélection
+Round|Rond
+Round WOG A|Round WOG A
+Round WOG B|Round WOG B
+Row Spacing|Écartement des rangs
+Rows|Lignes
+Ruler Inch Subdivision...|Subdivision en pouces de la règle ...
+Same Type Only|Même type uniquement
+Save|sauvegarder
+Save As|Enregistrer sous
+Save as Variant|Enregistrer en tant que variante
+Scale|Échelle
+Screws|Des vis
+Search The Cloud|Rechercher dans le cloud
+Searchable Tree|Arbre consultable
+Secondary CT|CT secondaire
+Select All|Tout sélectionner
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Les composants sélectionnés ont atteint le bas de leur couche. Voulez-vous forcer la sélection vers l'arrière?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Les composants sélectionnés ont atteint le haut de leur couche. Voulez-vous forcer la sélection vers le haut?
+Selection contains components that cannot be mirrored. Do you want to exclude them?|La sélection contient des composants qui ne peuvent pas être mis en miroir. Voulez-vous les exclure?
+Selection contains components that cannot be rotated. Do you want to exclude them?|La sélection contient des composants qui ne peuvent pas être pivotés. Voulez-vous les exclure?
+Send Backward|Envoyer vers l'arrière
+Send Selection to Back|Envoyer la sélection à l'arrière
+Seven|Sept
+Shaft Down|Shaft Down
+Shaft Up|Shaft Up
+Shape|Forme
+Show Grid|Afficher la grille
+Show Rulers|Afficher les règles
+Shroud|Envelopper
+Shrouded|Enveloppé
+Single Rail|Rail unique
+Single Rods|Tiges simples
+Size|Taille
+Sizing Mode|Mode de dimensionnement
+Small-button B7G|Petit bouton B7G
+Smooth|Lisse
+Snap To...|Accrocher à ...
+Soap Bar|Barre de savon
+Solid|Solide
+South|Sud
+Spacing|Espacement
+Square|Carré
+Square BR-3|Carré BR-3
+Standard|la norme
+Start Arrow|Flèche de départ
+Start Recording|Commencer l'enregistrement
+Stereo|Stéréo
+Sticky Points|Points collants
+Stop Recording|Arrête d'enregistrer
+Stratocaster|Stratocaster
+Strip Color|Couleur de bande
+Stripe|Bande
+Stripe 1|Stripe 1
+Stripe 2|Stripe 2
+Stripe Color|Couleur des rayures
+Stripe Color 1|Couleur de rayure 1
+Stripe Color 2|Couleur de rayure 2
+Style|Style
+Submit a Bug|Soumettre un bug
+Suppressor grid|Grille de suppression
+Switched|Switched
+Switches|Commutateurs
+Tab|Languette
+Tab Border|Bordure de tabulation
+Tabbed Toolbar|Barre d'outils à onglets
+Taper|Taper
+Telecaster|Telecaster
+Terminal Spacing|Espacement des bornes
+Terminals|Terminaux
+Test|Tester
+Text|Texte
+Text Color|Couleur du texte
+Theme|Thème
+There are unsaved changes. Would you like to save them?|Il y a des modifications non enregistrées. Voulez-vous les enregistrer?
+Thickness|Épaisseur
+Three|Trois
+Through Hole|À travers le trou
+Tick|Cocher
+Title|Titre
+Toolbox|Boîte à outils
+Top|Haut
+Top Lead|Plaider
+Top Left|En haut à gauche
+Top Right|En haut à droite
+Top-to-Bottom|De haut en bas
+Trace|Trace
+Trace Color|Couleur de trace
+Trace Mask|Masque Trace
+Transform Selection|Transformer la sélection
+Triangle|Triangle
+Tubular|Tubulaire
+Two|Deux
+Type|Type
+Ultra-miniature|Ultra-miniature
+Underside Pad Color|Couleur du tampon inférieur
+Underside Trace Color|Couleur de trace en dessous
+Undo|annuler
+Ungroup Selection|Dissocier la sélection
+Unit|Unité
+Upload A Project|Télécharger un projet
+User Manual|Manuel de l'Utilisateur
+Value|Valeur
+Vertical|Verticale
+Vertical Alignment|Alignement vertical
+Vertical Inline|Vertical en ligne
+Vertical Offset 1|Décalage vertical 1
+Vertical Offset 2|Décalage vertical 2
+View|Vue
+Visible|Visible
+Voltage|Tension
+Wafer|Tranche
+Warning|avertissement
+Width|Largeur
+Winding Spacing|Espacement des enroulements
+X-axis|Axe X
+Y-axis|Axe Y
+base of 10|base de 10
+base of 2|base de 2

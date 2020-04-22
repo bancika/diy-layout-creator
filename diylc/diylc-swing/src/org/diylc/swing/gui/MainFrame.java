@@ -67,6 +67,7 @@ import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
+import org.diylc.lang.TranslateUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
@@ -279,7 +280,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   @Override
   public void showMessage(String message, String title, int messageType) {
-    JOptionPane.showMessageDialog(this, message, title, messageType);
+    JOptionPane.showMessageDialog(this, message, TranslateUtil.translate(title), messageType);
   }
 
   @Override
@@ -295,7 +296,7 @@ public class MainFrame extends JFrame implements ISwingUI {
   @Override
   public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
     PropertyEditorDialog editor =
-        DialogFactory.getInstance().createPropertyEditorDialog(properties, "Edit Selection", true);
+        DialogFactory.getInstance().createPropertyEditorDialog(properties, TranslateUtil.translate("Edit Selection"), true);
     editor.setVisible(true);
     defaultedProperties.addAll(editor.getDefaultedProperties());
     return ButtonDialog.OK.equals(editor.getSelectedButtonCaption());
@@ -347,10 +348,18 @@ public class MainFrame extends JFrame implements ISwingUI {
   public void injectMenuAction(Action action, String menuName) {
     LOG.info(String.format("injectMenuAction(%s, %s)", action == null ? "Separator" : action.getValue(Action.NAME),
         menuName));
-    JMenu menu = findOrCreateMenu(menuName);
+    if (menuName != null)
+      menuName = TranslateUtil.translate(menuName);
+    
+    JMenu menu = findOrCreateMenu(menuName);   
     if (action == null) {
       menu.addSeparator();
     } else {
+      // translate
+      String name = (String) action.getValue(Action.NAME);
+      if (name != null)
+        action.putValue(Action.NAME, TranslateUtil.translate(name));
+      
       Boolean isCheckBox = (Boolean) action.getValue(IView.CHECK_BOX_MENU_ITEM);
       String groupName = (String) action.getValue(IView.RADIO_BUTTON_GROUP_KEY);
       if (isCheckBox != null && isCheckBox) {
@@ -373,8 +382,13 @@ public class MainFrame extends JFrame implements ISwingUI {
   }  
 
   @Override
-  public void injectSubmenu(String name, Icon icon, String parentMenuName) {
+  public void injectSubmenu(String name, Icon icon, String parentMenuName) {  
     LOG.info(String.format("injectSubmenu(%s, icon, %s)", name, parentMenuName));
+    
+    // translate
+    name = TranslateUtil.translate(name);
+    parentMenuName = parentMenuName == null ? null : TranslateUtil.translate(parentMenuName);
+    
     JMenu menu = findOrCreateMenu(parentMenuName);
     JMenu submenu = new JMenu(name);
     submenu.setIcon(icon);
@@ -390,6 +404,11 @@ public class MainFrame extends JFrame implements ISwingUI {
   @Override
   public void injectDynamicSubmenu(String name, Icon icon, String parentMenuName, final IDynamicSubmenuHandler handler) {
     LOG.info(String.format("injectDynamicSubmenu(%s, icon, %s)", name, parentMenuName));
+    
+    // translate
+    name = TranslateUtil.translate(name);
+    parentMenuName = parentMenuName == null ? null : TranslateUtil.translate(parentMenuName);
+    
     final JMenu menu = findOrCreateMenu(parentMenuName);
     final JMenu submenu = new JMenu(name);
     submenu.setIcon(icon);

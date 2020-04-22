@@ -36,6 +36,7 @@ import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.images.IconLoader;
+import org.diylc.lang.TranslateUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
@@ -55,7 +56,7 @@ public class ActionBarPlugin implements IPlugIn {
   private ConfigToolbar configToolbar;
   private JLabel donateLabel;
   
-  private static final String DONATE_HTML = "<html><u>Enjoying DIYLC? Click here to buy me a coffe :)</u></html>";
+  private static final String DONATE_HTML = "<html><u>" + TranslateUtil.translate("Enjoying DIYLC? Click here to buy me a coffe :)") + "</u></html>";
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;

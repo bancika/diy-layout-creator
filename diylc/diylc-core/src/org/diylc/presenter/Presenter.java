@@ -81,6 +81,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.lang.TranslateUtil;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
@@ -101,6 +102,32 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * @author Branislav Stojkovic
  */
 public class Presenter implements IPlugInPort {
+
+  private static final String REACHED_BOTTOM =
+      TranslateUtil.translate("Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?");
+  private static final String SEND_SELECTION_TO_BACK = TranslateUtil.translate("Send Selection to Back");
+  private static final String SAVE_AS_VARIANT = TranslateUtil.translate("Save as Variant");
+  private static final String VARIANT_EXISTS = TranslateUtil.translate("A variant with that name already exists. Overwrite?");
+  private static final String ROTATE_CHANGE =
+      TranslateUtil.translate("Selection contains components that cannot be rotated. Do you want to exclude them?");
+  private static final String MIRRORING_CHANGE =
+      TranslateUtil.translate("Mirroring operation will change the circuit. Do you want to continue?");
+  private static final String MIRROR_SELECTION = TranslateUtil.translate("Mirror Selection");
+  private static final String ROTATE_SELECTION = TranslateUtil.translate("Rotate Selection");
+  private static final String CANNOT_MIRROR =
+      TranslateUtil.translate("Selection contains components that cannot be mirrored. Do you want to exclude them?");
+  private static final String BRING_SELECTION_TO_FRONT = TranslateUtil.translate("Bring Selection to Front");
+  private static final String REACHED_TOP =
+      TranslateUtil.translate("Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?");
+  private static final String WARNING = TranslateUtil.translate("Warning");
+  private static final String UNSAVED_CHANGES = TranslateUtil.translate("There are unsaved changes. Would you like to save them?");
+  private static final String ERROR_SLOT = TranslateUtil.translate("Could not set component type slot. Check log for details.");
+  private static final String ERROR_SAVE = TranslateUtil.translate("Could not save the project to file. Check the log for details.");
+  private static final String ERROR_CREATE = TranslateUtil.translate("Could not create component. Check log for details.");
+  private static final String ERROR_EDIT = TranslateUtil.translate("Error occured while editing selection. Check the log for details.");
+  private static final String ERROR_NEW = TranslateUtil.translate("Could not create a new file. Check the log for details.");
+  private static final String ERROR = TranslateUtil.translate("Error");
+  private static final String APPLY_ERROR = "Could not apply changes. Check the log for details.";
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
@@ -137,7 +164,7 @@ public class Presenter implements IPlugInPort {
 
   public static final int ICON_SIZE = 32;
 
-  private static final int MAX_RECENT_FILES = 20;
+  private static final int MAX_RECENT_FILES = 20;  
 
   private Project currentProject;
   private Map<String, List<ComponentType>> componentTypes;
@@ -294,7 +321,7 @@ public class Presenter implements IPlugInPort {
       DrawingCache.Instance.clear();
     } catch (Exception e) {
       LOG.error("Could not create new file", e);
-      view.showMessage("Could not create a new file. Check the log for details.", "Error", IView.ERROR_MESSAGE);
+      view.showMessage(ERROR_NEW, ERROR, IView.ERROR_MESSAGE);
     }
   }
 
@@ -314,7 +341,7 @@ public class Presenter implements IPlugInPort {
           builder.append("<br>");
         }
         builder.append("</html");
-        view.showMessage(builder.toString(), "Warning", IView.WARNING_MESSAGE);
+        view.showMessage(builder.toString(), WARNING, IView.WARNING_MESSAGE);
       }
       addToRecentFiles(fileName);
       DrawingCache.Instance.clear();
@@ -328,7 +355,7 @@ public class Presenter implements IPlugInPort {
           errorMessage += "\n";
         }
       }
-      view.showMessage(errorMessage, "Error", IView.ERROR_MESSAGE);
+      view.showMessage(errorMessage, ERROR, IView.ERROR_MESSAGE);
     }
   }
 
@@ -348,7 +375,7 @@ public class Presenter implements IPlugInPort {
   public boolean allowFileAction() {
     if (projectFileManager.isModified()) {
       int response =
-          view.showConfirmDialog("There are unsaved changes. Would you like to save them?", "Warning",
+          view.showConfirmDialog(UNSAVED_CHANGES, WARNING,
               IView.YES_NO_CANCEL_OPTION, IView.WARNING_MESSAGE);
       if (response == IView.YES_OPTION) {
         if (this.getCurrentFileName() == null) {
@@ -377,7 +404,7 @@ public class Presenter implements IPlugInPort {
     } catch (Exception ex) {
       LOG.error("Could not save file", ex);
       if (!isBackup) {
-        view.showMessage("Could not save file " + fileName + ". Check the log for details.", "Error",
+        view.showMessage(ERROR_SAVE, ERROR,
             IView.ERROR_MESSAGE);
       }
     }
@@ -417,6 +444,10 @@ public class Presenter implements IPlugInPort {
                 ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
             if (componentType == null)
               continue;
+            
+            // just to store in the cache
+            ComponentProcessor.getInstance().extractProperties(clazz);
+            
             List<ComponentType> nestedList;
             if (componentTypes.containsKey(componentType.getCategory())) {
               nestedList = componentTypes.get(componentType.getCategory());
@@ -628,7 +659,7 @@ public class Presenter implements IPlugInPort {
               try {
                 instantiationManager.instatiatePointByPoint(scaledPoint, currentProject);
               } catch (Exception e) {
-                view.showMessage("Could not create component. Check log for details.", "Error", IView.ERROR_MESSAGE);
+                view.showMessage(ERROR_CREATE, ERROR, IView.ERROR_MESSAGE);
                 LOG.error("Could not create component", e);
               }
               messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentTypeSlot,
@@ -827,7 +858,7 @@ public class Presenter implements IPlugInPort {
         try {
           applyPropertiesToSelection(properties);
         } catch (Exception e1) {
-          view.showMessage("Error occured while editing selection. Check the log for details.", "Error",
+          view.showMessage(ERROR_EDIT, ERROR,
               JOptionPane.ERROR_MESSAGE);
           LOG.error("Error applying properties", e1);
         }
@@ -1395,8 +1426,8 @@ public class Presenter implements IPlugInPort {
     }
 
     if (!canRotate)
-      if (view.showConfirmDialog("Selection contains components that cannot be rotated. Do you want to exclude them?",
-          "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
+      if (view.showConfirmDialog(ROTATE_CHANGE,
+          ROTATE_SELECTION, IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
         return;
 
     for (IDIYComponent<?> component : selectedComponents) {
@@ -1482,7 +1513,7 @@ public class Presenter implements IPlugInPort {
       mirrorComponents(selectedComponents, direction, isSnapToGrid());
 
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(),
-          "Mirror Selection");
+          MIRROR_SELECTION);
       messageDispatcher.dispatchMessage(EventType.REPAINT);
       drawingManager.clearContinuityArea();
     }
@@ -1507,13 +1538,13 @@ public class Presenter implements IPlugInPort {
     }
 
     if (!canMirror)
-      if (view.showConfirmDialog("Selection contains components that cannot be mirrored. Do you want to exclude them?",
-          "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
+      if (view.showConfirmDialog(CANNOT_MIRROR,
+          MIRROR_SELECTION, IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
         return;
 
     if (changesCircuit)
-      if (view.showConfirmDialog("Mirroring operation will change the circuit. Do you want to continue?",
-          "Mirror Selection", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
+      if (view.showConfirmDialog(MIRRORING_CHANGE,
+          MIRROR_SELECTION, IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
         return;
 
     for (IDIYComponent<?> component : components) {
@@ -1821,8 +1852,8 @@ public class Presenter implements IPlugInPort {
                 && (forceConfirmation =
                     this.view
                         .showConfirmDialog(
-                            "Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?",
-                            "Send Selection to Back", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
+                            REACHED_BOTTOM,
+                            SEND_SELECTION_TO_BACK, IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
               break;
           }
           Collections.swap(currentProject.getComponents(), index, index - 1);
@@ -1874,8 +1905,8 @@ public class Presenter implements IPlugInPort {
                 && (forceConfirmation =
                     this.view
                         .showConfirmDialog(
-                            "Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?",
-                            "Bring Selection to Front", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
+                            REACHED_TOP,
+                            BRING_SELECTION_TO_FRONT, IView.YES_NO_OPTION, IView.QUESTION_MESSAGE)) != IView.YES_OPTION)
               break;
           }
           Collections.swap(currentProject.getComponents(), index, index + 1);
@@ -2291,7 +2322,7 @@ public class Presenter implements IPlugInPort {
       }
     } catch (Exception e) {
       LOG.error("Could not apply selection properties", e);
-      view.showMessage("Could not apply changes to the selection. Check the log for details.", "Error",
+      view.showMessage("Could not apply changes to the selection. Check the log for details.", ERROR,
           IView.ERROR_MESSAGE);
     } finally {
       // Notify the listeners.
@@ -2330,7 +2361,7 @@ public class Presenter implements IPlugInPort {
       }
     } catch (Exception e) {
       LOG.error("Could not apply properties", e);
-      view.showMessage("Could not apply changes. Check the log for details.", "Error", IView.ERROR_MESSAGE);
+      view.showMessage(APPLY_ERROR, ERROR, IView.ERROR_MESSAGE);
     } finally {
       // Notify the listeners.
       if (!oldProject.equals(currentProject)) {
@@ -2353,7 +2384,7 @@ public class Presenter implements IPlugInPort {
         updateSelection(newSelection);      
     } catch (Exception e) {
       LOG.error("Could not apply editor", e);
-      view.showMessage("Could not apply " + editor.getEditAction() + ". Check the log for details.", "Error", IView.ERROR_MESSAGE);
+      view.showMessage("Could not apply " + editor.getEditAction() + ". Check the log for details.", ERROR, IView.ERROR_MESSAGE);
     } finally {
       // Notify the listeners.
       if (!oldProject.equals(currentProject)) {
@@ -2425,7 +2456,7 @@ public class Presenter implements IPlugInPort {
           instantiationManager.getFirstControlPoint(), forceInstatiate);
     } catch (Exception e) {
       LOG.error("Could not set component type slot", e);
-      view.showMessage("Could not set component type slot. Check log for details.", "Error", IView.ERROR_MESSAGE);
+      view.showMessage(ERROR_SLOT, ERROR, IView.ERROR_MESSAGE);
     }
   }
 
@@ -2486,7 +2517,7 @@ public class Presenter implements IPlugInPort {
 
     if (exists) {
       int result =
-          view.showConfirmDialog("A variant with that name already exists. Overwrite?", "Save as Variant",
+          view.showConfirmDialog(VARIANT_EXISTS, SAVE_AS_VARIANT,
               IView.YES_NO_OPTION, IView.WARNING_MESSAGE);
       if (result != IView.YES_OPTION) {
         return;

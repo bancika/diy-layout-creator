@@ -47,6 +47,7 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.lang.TranslateUtil;
 
 /**
  * Utility class with component processing methods.
@@ -174,6 +175,14 @@ public class ComponentProcessor {
             } catch (NoSuchMethodException e) {
               LOG.debug("No matching setter found for \"" + getter.getName() + "\". Skipping...");
             }
+            
+            TranslateUtil.translate(name); // temporary, just to make sure we catch it in the dict
+            if (getter.getReturnType().isEnum()) {
+              for(Object o : getter.getReturnType().getEnumConstants()) {
+                TranslateUtil.translate(o.toString());
+              }
+            }
+            
             PropertyWrapper property =
                 new PropertyWrapper(name, getter.getReturnType(), getter.getName(), setterName,
                     annotation.defaultable(), validator, annotation.sortOrder());

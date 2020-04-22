@@ -43,6 +43,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ValidationException;
+import org.diylc.lang.TranslateUtil;
 import org.diylc.swingframework.ButtonDialog;
 
 public class PropertyEditorDialog extends ButtonDialog {
@@ -127,7 +128,7 @@ public class PropertyEditorDialog extends ButtonDialog {
       gbc.weightx = 0;
       gbc.insets = new Insets(4, 2, 2, 2);
       gbc.anchor = GridBagConstraints.WEST;
-      editorPanel.add(new JLabel(property.getName() + ": "), gbc);
+      editorPanel.add(new JLabel(TranslateUtil.translate(property.getName()) + ": "), gbc);
 
       gbc.gridx = 1;
       gbc.fill = GridBagConstraints.HORIZONTAL;

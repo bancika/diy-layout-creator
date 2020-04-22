@@ -39,6 +39,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
+import org.diylc.lang.TranslateUtil;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swingframework.AboutDialog;
@@ -122,7 +123,7 @@ public class HelpMenuPlugin implements IPlugIn {
 
     public AboutAction() {
       super();
-      putValue(AbstractAction.NAME, "About");
+      putValue(AbstractAction.NAME, TranslateUtil.translate("About"));
       putValue(AbstractAction.SMALL_ICON, IconLoader.About.getIcon());
     }
 
@@ -138,7 +139,7 @@ public class HelpMenuPlugin implements IPlugIn {
 
     public RecentUpdatesAction() {
       super();
-      putValue(AbstractAction.NAME, "Recent Updates");
+      putValue(AbstractAction.NAME, TranslateUtil.translate("Recent Updates"));
       putValue(AbstractAction.SMALL_ICON, IconLoader.ScrollInformation.getIcon());
     }
 
@@ -164,7 +165,7 @@ public class HelpMenuPlugin implements IPlugIn {
     public NavigateURLAction(String name, Icon icon, String url) {
       super();
       this.url = url;
-      putValue(AbstractAction.NAME, name);
+      putValue(AbstractAction.NAME, TranslateUtil.translate(name));
       putValue(AbstractAction.SMALL_ICON, icon);
     }
 
@@ -187,7 +188,7 @@ public class HelpMenuPlugin implements IPlugIn {
     public NavigateFolderAction(String name, Icon icon, String url) {
       super();
       this.url = url;
-      putValue(AbstractAction.NAME, name);
+      putValue(AbstractAction.NAME, TranslateUtil.translate(name));
       putValue(AbstractAction.SMALL_ICON, icon);
     }
 

@@ -213,7 +213,7 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     this.thickness = thickness;   
   }
   
-  @EditableProperty
+  @EditableProperty(name = "Arrow Size")
   public Size getArrowSize() {
     if (arrowSize == null)
       arrowSize = thickness = new Size(1d, SizeUnit.px); 
