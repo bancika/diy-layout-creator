@@ -93,6 +93,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String SNAP_TO_DEFAULT = SNAP_TO_GRID;
   
   public static final String LANGUAGE = "language";
+  public static final String LANGUAGE_DEFAULT = "English";
 
   public static final int DND_TOGGLE_STICKY = 0x1;
   public static final int DND_TOGGLE_SNAP = 0x40000000;

@@ -22,12 +22,7 @@
 5 band
 5PDT
 5PDT  (Center OFF)
-API de complemento
-API de componentes
 AWG
-Acceder a archivos de usuario
-Acerca de
-Actualizaciones recientes
 C-B-E     BJT
 D-G-S     JFET
 D-G-S     MOSFET
@@ -41,14 +36,13 @@ DP5T
 DPDT
 DPDT  (Center OFF)
 E-B-C     BJT
-Enviar un error
+English
+French
 G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
-Haz una donación
-Help
-Manual de usuario
+Language
 NPN
 Nor
 Not
@@ -56,19 +50,21 @@ Or
 PAF
 PCB
 PNP
-Preguntas más frecuentes
 Project Cloud
 S-G-D     JFET
 S-G-D     MOSFET
 SPDT
 SPDT  (Center OFF)
 SPST
-Test
+Spanish
 Xnor
 Xor
 cm
 ft
 in
+lang\English.txt
+lang\French.txt
+lang\Spanish.txt
 mm
 px
 yd

@@ -81,7 +81,7 @@ public class TranslateUtil {
   }
 
   public static void configure() {    
-    String language = ConfigurationManager.getInstance().readString(IPlugInPort.LANGUAGE, "English");
+    String language = ConfigurationManager.getInstance().readString(IPlugInPort.LANGUAGE, IPlugInPort.LANGUAGE_DEFAULT);
     if (language != null)
       load(language);
   }
@@ -128,7 +128,8 @@ public class TranslateUtil {
   public static List<String> getAvailableLanguages() {
     try (Stream<Path> walk = Files.walk(Paths.get(LANG_DIR))) {
 
-      return walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
+      return walk.filter(Files::isRegularFile).map(x -> x.getFileName().toString().replaceFirst("[.][^.]+$", ""))
+          .collect(Collectors.toList());
     } catch (IOException e) {
       LOG.error("Error fetching available languages");
       return null;
