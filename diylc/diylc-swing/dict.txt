@@ -39,7 +39,7 @@ DPDT  (Center OFF)
 Deutsch
 E-B-C     BJT
 English
-Espanol
+Español
 Français
 G-D-S     JFET
 G-D-S     MOSFET
@@ -64,7 +64,6 @@ SPST
 Xnor
 Xor
 cm
-es
 ft
 in
 mm
