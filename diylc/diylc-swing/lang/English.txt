@@ -14,7 +14,6 @@ All Connected
 Alpha
 Analyze
 Analyze Guitar Diagrams
-And
 Angle
 Anti-Aliasing
 Arrow Size

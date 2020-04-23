@@ -23,6 +23,7 @@
 5PDT
 5PDT  (Center OFF)
 AWG
+And
 C-B-E     BJT
 D-G-S     JFET
 D-G-S     MOSFET
@@ -35,15 +36,19 @@ DP3T
 DP5T
 DPDT
 DPDT  (Center OFF)
+Deutsch
 E-B-C     BJT
 English
-French
+Espanol
+Français
 G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
-La langue
+Idioma
+Italiano
 NPN
+Nederlands
 Nor
 Not
 Or
@@ -56,12 +61,11 @@ SMD
 SPDT
 SPDT  (Center OFF)
 SPST
-Spanish
 Xnor
 Xor
 cm
+es
 ft
-hold {0} and drag to unstuck from
 in
 mm
 px
