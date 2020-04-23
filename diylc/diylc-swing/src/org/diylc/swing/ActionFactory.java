@@ -1690,7 +1690,7 @@ public class ActionFactory {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      LOG.info(getValue(AbstractAction.NAME) + " triggered");
+      LOG.info(configKey + " config triggered");
       ConfigurationManager.getInstance().writeValue(configKey,
           getValue(AbstractAction.SELECTED_KEY));
       if ((Boolean) getValue(AbstractAction.SELECTED_KEY) && tipKey != null
