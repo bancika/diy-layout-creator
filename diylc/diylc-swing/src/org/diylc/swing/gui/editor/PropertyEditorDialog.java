@@ -46,14 +46,21 @@ import org.diylc.core.ValidationException;
 import org.diylc.lang.TranslateUtil;
 import org.diylc.swingframework.ButtonDialog;
 
-public class PropertyEditorDialog extends ButtonDialog {
+public class PropertyEditorDialog extends ButtonDialog { 
 
   private static final Logger LOG = Logger.getLogger(PropertyEditorDialog.class);
 
   private static final long serialVersionUID = 1L;
+  
+  private static final String ERROR_TITLE = TranslateUtil.translate("Error");
+  private static final String INPUT_ERROR = TranslateUtil.translate("Input error for \"%s\": %s");
 
+  private static final String DEFAULT_BOX_TOOLTIP_TEXT =
+      TranslateUtil.translate("If this box is checked application will use the current value as a<br>default when creating new components of the same type");
   private static final String DEFAULT_BOX_TOOLTIP =
-      "<html>If this box is checked application will use the current value as a<br>default when creating new components of the same type</html>";
+      "<html>"
+      + DEFAULT_BOX_TOOLTIP_TEXT
+      + "</html>";
 
   private List<PropertyWrapper> properties;
   private Set<PropertyWrapper> defaultedProperties;
@@ -103,7 +110,7 @@ public class PropertyEditorDialog extends ButtonDialog {
           property.getValidator().validate(testObject, property.getValue());
         } catch (ValidationException ve) {
           JOptionPane.showMessageDialog(PropertyEditorDialog.this,
-              "Input error for \"" + property.getName() + "\": " + ve.getMessage(), "Error",
+              String.format(INPUT_ERROR, property.getName(), ve.getMessage()), ERROR_TITLE,
               JOptionPane.ERROR_MESSAGE);
           return false;
         }

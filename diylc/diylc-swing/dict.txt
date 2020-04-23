@@ -42,7 +42,7 @@ G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
-Language
+La langue
 NPN
 Nor
 Not
@@ -50,9 +50,9 @@ Or
 PAF
 PCB
 PNP
-Project Cloud
 S-G-D     JFET
 S-G-D     MOSFET
+SMD
 SPDT
 SPDT  (Center OFF)
 SPST
@@ -61,10 +61,8 @@ Xnor
 Xor
 cm
 ft
+hold {0} and drag to unstuck from
 in
-lang\English.txt
-lang\French.txt
-lang\Spanish.txt
 mm
 px
 yd

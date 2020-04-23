@@ -46,6 +46,7 @@ Change Password|Cambia la contraseña
 Channel|Canal
 Chassis|Chasis
 Circular|Circular
+Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|Haga clic en un componente para resaltar el área conectada directa o indirectamente al área debajo del cursor. Para continuar editando, este modo necesita estar apagado
 Coil|Bobina
 Coil Border|Borde de la bobina
 Coil Length|Longitud de la bobina
@@ -185,6 +186,8 @@ Label Color|Color de etiqueta
 Label Orientation|Orientación de etiqueta
 Label Position|Posición de etiqueta
 Labels|Etiquetas
+Language|Lenguaje
+Language selection will be applied after the application is restarted.|La selección del lenguaje se aplicará después de reiniciar la aplicación.
 Layer|Capa
 Layers|Capas
 Lead Color|Color de plomo

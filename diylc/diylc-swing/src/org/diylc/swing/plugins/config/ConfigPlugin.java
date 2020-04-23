@@ -44,7 +44,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * 
  * @author Branislav Stojkovic
  */
-public class ConfigPlugin implements IPlugIn {
+public class ConfigPlugin implements IPlugIn {   
 
   private static final Logger LOG = Logger.getLogger(ConfigPlugin.class);
 
@@ -56,7 +56,9 @@ public class ConfigPlugin implements IPlugIn {
   public static final String COMPONENT_BROWSER = "componentBrowser";
   public static final String SEARCHABLE_TREE = "Searchable Tree";
   public static final String TABBED_TOOLBAR = "Tabbed Toolbar";
-  private static final String LANGUAGE_MENU = "Language";
+  private static final String LANGUAGE_MENU = TranslateUtil.translate("Language");
+  
+  private static final String LANG_RESTART = TranslateUtil.translate("Language selection will be applied after the application is restarted.");  
 
   private ISwingUI swingUI;
 
@@ -183,7 +185,7 @@ public class ConfigPlugin implements IPlugIn {
       
       @Override
       public void valueChanged(String key, Object value) {
-        swingUI.showMessage("Language selection will be applied after the application is restarted.", "Language", ISwingUI.INFORMATION_MESSAGE);
+        swingUI.showMessage(LANG_RESTART, LANGUAGE_MENU, ISwingUI.INFORMATION_MESSAGE);
       }
     });
   }

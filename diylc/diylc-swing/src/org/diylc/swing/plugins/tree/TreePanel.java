@@ -84,6 +84,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Template;
 import org.diylc.images.IconLoader;
+import org.diylc.lang.TranslateUtil;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
@@ -93,6 +94,9 @@ public class TreePanel extends JPanel {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(TreePanel.class);
+  
+  private static final String CLICK_TO_INSTANTIATE =
+      TranslateUtil.translate("Left click to instantiate this component, right click for more options");
 
   public static final String COMPONENT_SHORTCUT_KEY = "componentShortcuts";
 
@@ -751,11 +755,11 @@ public class TreePanel extends JPanel {
           if (payload.isVisible())
             setPreferredSize(new Dimension(250, 20));
           else
-            setPreferredSize(new Dimension(0, 0));
+            setPreferredSize(new Dimension(0, 0));         
         } else {
           setToolTipText("<html><b>" + payload.getComponentType().getName() + "</b><br>"
               + payload.getComponentType().getDescription() + "<br>Author: " + payload.getComponentType().getAuthor()
-              + "<br><br>Left click to instantiate this component, right click for more options" + "</html>");
+              + "<br><br>" + CLICK_TO_INSTANTIATE + "</html>");
           setIcon(payload.getComponentType().getIcon());
           if (payload.isVisible())
             setPreferredSize(new Dimension(250, 32));
@@ -791,7 +795,8 @@ public class TreePanel extends JPanel {
           }
         }
         
-        setText("<html>" + payload.forDisplay() + shortCutHtml + variantsHtml + "</html>");
+        // translate categories
+        setText("<html>" + (payload.getComponentType() == null ? TranslateUtil.translate(payload.forDisplay()) : payload.forDisplay()) + shortCutHtml + variantsHtml + "</html>");
       }
 
       return this;

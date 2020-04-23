@@ -1,3 +1,6 @@
+(Building Blocks)
+(Favorites)
+(Recently Used)
 180 degrees clockwise
 270 degrees clockwise
 90 degrees clockwise
@@ -22,6 +25,7 @@ Base
 Below
 Blueprint
 Board
+Boards
 Board Color
 Board Width
 Bobin 1
@@ -46,6 +50,12 @@ Change Password
 Channel
 Chassis
 Circular
+Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF
+Click on the canvas to create a new %s or press %s to cancel
+Click on the canvas to set the %s control point of a new %s or press %s to cancel
+Click the lighbulb icon in the bottom-right corner of the window for more info.
+Click to fetch the most recent public announcement
+Click to show recent changes and updates
 Coil
 Coil Border
 Coil Length
@@ -61,6 +71,7 @@ Components
 Config
 Connector
 Connector (Mirrored)
+Connectivity
 Contacts
 Continuous Creation
 Coordinate Color
@@ -73,6 +84,7 @@ Core Thickness
 Core Width
 Could not create a new file. Check the log for details.
 Could not create component. Check log for details.
+Could not fetch public announcements.
 Could not save the project to file. Check the log for details.
 Could not set component type slot. Check log for details.
 Cover
@@ -102,6 +114,8 @@ Display Pin #s
 Dog Ear
 Dot Spacing
 Dotted
+Drag control point(s) of
+Drag the mouse over the canvas to place a new
 Dual Rail Humbucker
 Dual Rods
 Duodecar B12C
@@ -111,6 +125,7 @@ Edit
 Edit Project Settings
 Edit Selection
 Electrode Labels
+Electro-Mechanical
 Enable Cache Boost
 End Arrow
 Enjoying DIYLC? Click here to buy me a coffe :)
@@ -148,6 +163,7 @@ Generate Spice Netlist
 Grid
 Grid Spacing
 Group Selection
+Guitar
 Half
 Hardware Acceleration
 Heaters
@@ -168,6 +184,7 @@ Horizontal Small 1
 Horizontal Small 2
 Horizontal X-Small
 Humbucking
+If this box is checked application will use the current value as a<br>default when creating new components of the same type
 Image
 Immediate Only
 Import
@@ -176,7 +193,9 @@ Import Variants
 In-Line D-44
 In-line
 Indent
+Information
 Inline
+Input error for "%s": %s
 Inside color
 Integration
 Invert polarity
@@ -185,6 +204,8 @@ Label Color
 Label Orientation
 Label Position
 Labels
+Language
+Language selection will be applied after the application is restarted.
 Layer
 Layers
 Lead Color
@@ -193,6 +214,7 @@ Lead Length
 Lead Spacing
 Left
 Left-to-Right
+Left click to instantiate this component, right click for more options
 Legs
 Length
 Letters
@@ -216,6 +238,7 @@ Mirror Horizontally
 Mirror Selection
 Mirror Vertically
 Mirroring operation will change the circuit. Do you want to continue?
+Misc
 Model
 Mono
 Mount
@@ -226,6 +249,8 @@ Name
 Nand
 Negative
 New
+New version available
+No new public announcements available.
 No
 None
 North
@@ -246,6 +271,7 @@ Outside
 Oval horizontal
 Oval vertical
 Pad Color
+Passive
 Paste
 Pin Arrangement
 Pin Color
@@ -268,6 +294,8 @@ Power Rating
 Power Strip
 Primary CT
 Print...
+Project Cloud
+Public Announcement
 Radius
 Rail
 Recent Files
@@ -294,7 +322,11 @@ Save
 Save As
 Save as Variant
 Scale
+Schematic Symbols
 Screws
+Selection
+Selection Size
+Selection is empty.
 Search The Cloud
 Searchable Tree
 Secondary CT
@@ -303,12 +335,14 @@ Selected component(s) have reached the bottom of their layer. Do you want to for
 Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?
 Selection contains components that cannot be mirrored. Do you want to exclude them?
 Selection contains components that cannot be rotated. Do you want to exclude them?
+Semiconductors
 Send Backward
 Send Selection to Back
 Seven
 Shaft Down
 Shaft Up
 Shape
+Shapes
 Show Grid
 Show Rulers
 Shroud
@@ -374,6 +408,7 @@ Trace Mask
 Transform Selection
 Triangle
 Tubular
+Tubes
 Two
 Type
 Ultra-miniature
@@ -385,6 +420,7 @@ Unit
 Upload A Project
 User Manual
 Value
+Version history is not available.
 Vertical
 Vertical Alignment
 Vertical Inline
@@ -399,5 +435,7 @@ Width
 Winding Spacing
 X-axis
 Y-axis
+Zoom
 base of 10
 base of 2
+hold %s and drag to unstuck from

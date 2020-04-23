@@ -173,7 +173,7 @@ public class ComponentProcessor {
               Method setter = clazz.getMethod("set" + getter.getName().substring(3), getter.getReturnType());
               setterName = setter.getName();
             } catch (NoSuchMethodException e) {
-              LOG.debug("No matching setter found for \"" + getter.getName() + "\". Skipping...");
+              LOG.debug("No matching setter found for " + clazz.getName() + "." + getter.getName() + ". Skipping...");
             }
             
             TranslateUtil.translate(name); // temporary, just to make sure we catch it in the dict

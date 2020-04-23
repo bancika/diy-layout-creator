@@ -54,6 +54,9 @@ import org.diylc.swingframework.update.UpdateDialog;
 public class HelpMenuPlugin implements IPlugIn {
 
   private static final String HELP_TITLE = "Help";
+  
+  private static final String INFORMATION = TranslateUtil.translate("Information");
+  private static final String HISTORY_NOT_AVAILABLE = TranslateUtil.translate("Version history is not available.");
 
   public static String MANUAL_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/Manual.md";
   public static String FAQ_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/FAQ.md";
@@ -123,7 +126,7 @@ public class HelpMenuPlugin implements IPlugIn {
 
     public AboutAction() {
       super();
-      putValue(AbstractAction.NAME, TranslateUtil.translate("About"));
+      putValue(AbstractAction.NAME, "About");
       putValue(AbstractAction.SMALL_ICON, IconLoader.About.getIcon());
     }
 
@@ -139,7 +142,7 @@ public class HelpMenuPlugin implements IPlugIn {
 
     public RecentUpdatesAction() {
       super();
-      putValue(AbstractAction.NAME, TranslateUtil.translate("Recent Updates"));
+      putValue(AbstractAction.NAME, "Recent Updates");
       putValue(AbstractAction.SMALL_ICON, IconLoader.ScrollInformation.getIcon());
     }
 
@@ -147,7 +150,7 @@ public class HelpMenuPlugin implements IPlugIn {
     public void actionPerformed(ActionEvent e) {
       List<Version> updates = plugInPort.getRecentUpdates();
       if (updates == null)
-        swingUI.showMessage("Version history is not available.", "Information", IView.INFORMATION_MESSAGE);
+        swingUI.showMessage(HISTORY_NOT_AVAILABLE, INFORMATION, IView.INFORMATION_MESSAGE);
       else {
         String html = UpdateChecker.createUpdateHTML(updates);
         UpdateDialog updateDialog = new UpdateDialog(swingUI.getOwnerFrame().getRootPane(), html, (String)null);
@@ -165,7 +168,7 @@ public class HelpMenuPlugin implements IPlugIn {
     public NavigateURLAction(String name, Icon icon, String url) {
       super();
       this.url = url;
-      putValue(AbstractAction.NAME, TranslateUtil.translate(name));
+      putValue(AbstractAction.NAME, name);
       putValue(AbstractAction.SMALL_ICON, icon);
     }
 
@@ -188,7 +191,7 @@ public class HelpMenuPlugin implements IPlugIn {
     public NavigateFolderAction(String name, Icon icon, String url) {
       super();
       this.url = url;
-      putValue(AbstractAction.NAME, TranslateUtil.translate(name));
+      putValue(AbstractAction.NAME, name);
       putValue(AbstractAction.SMALL_ICON, icon);
     }
 
