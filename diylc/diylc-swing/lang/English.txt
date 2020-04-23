@@ -130,9 +130,9 @@ Electrode Labels
 Electro-Mechanical
 Enable Cache Boost
 End Arrow
-Enjoying DIYLC? Click here to buy me a coffe :)
+Enjoying DIYLC? Click here to buy me a coffee :)
 Error
-Error occured while editing selection. Check the log for details.
+Error occurred while editing selection. Check the log for details.
 Exit
 Expand Selection
 Explicit Dimensions
