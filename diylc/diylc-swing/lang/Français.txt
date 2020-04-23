@@ -1,3 +1,6 @@
+#start-internal
+icon=france
+#end-internal
 (Building Blocks)|(Blocs de construction)
 (Favorites)|(Favoris)
 (Recently Used)|(Récemment utilisé)

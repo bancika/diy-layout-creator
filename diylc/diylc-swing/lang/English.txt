@@ -1,3 +1,6 @@
+#start-internal
+icon=usa
+#end-internal
 (Building Blocks)
 (Favorites)
 (Recently Used)

@@ -1,3 +1,6 @@
+#start-internal
+icon=germany
+#end-internal
 (Building Blocks)|(Bausteine)
 (Favorites)|(Favoriten)
 (Recently Used)|(Kürzlich verwendet)

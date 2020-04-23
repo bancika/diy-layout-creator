@@ -22,6 +22,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
+
+import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -31,6 +34,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.components.autocreate.SolderPadAutoCreator;
 import org.diylc.core.Theme;
+import org.diylc.flags.FlagLoader;
 import org.diylc.images.IconLoader;
 import org.diylc.lang.TranslateUtil;
 import org.diylc.swing.ActionFactory;
@@ -99,6 +103,26 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, 
             false), CONFIG_MENU);
+    
+    try {
+      Map<String, Map<String, String>> languages = TranslateUtil.getAvailableLanguages(); 
+      if (languages != null && languages.size() > 0) {
+        swingUI.injectSubmenu(LANGUAGE_MENU, IconLoader.Earth.getIcon(), CONFIG_MENU);
+        for(Map.Entry<String, Map<String, String>> language : languages.entrySet()) {
+          Icon icon = null;
+          if (language.getValue().containsKey("icon"))
+            icon = FlagLoader.getIcon(language.getValue().get("icon"));
+          swingUI.injectMenuAction(                              
+              ActionFactory.getInstance().createToggleAction(language.getKey(), IPlugInPort.LANGUAGE, LANGUAGE_MENU, IPlugInPort.LANGUAGE_DEFAULT, 
+                  icon),
+              LANGUAGE_MENU);       
+        }
+      }
+    } catch (Exception e) {
+      LOG.error("Error while setting up language menu", e);
+    }
+   
+    
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY,
             false), CONFIG_MENU);
@@ -138,22 +162,7 @@ public class ConfigPlugin implements IPlugIn {
     
     swingUI.injectMenuAction(
         ActionFactory.getInstance()
-            .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
-       
-    try {
-      List<String> languages = TranslateUtil.getAvailableLanguages(); 
-      if (languages != null && languages.size() > 0) {
-        swingUI.injectSubmenu(LANGUAGE_MENU, IconLoader.Earth.getIcon(), CONFIG_MENU);
-        for(String language : languages) {
-          swingUI.injectMenuAction(
-              ActionFactory.getInstance().createToggleAction(language, IPlugInPort.LANGUAGE, LANGUAGE_MENU, IPlugInPort.LANGUAGE_DEFAULT),
-              LANGUAGE_MENU);       
-        }
-      }
-    } catch (Exception e) {
-      LOG.error("Error while setting up language menu", e);
-    }
-   
+            .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);      
 
     File themeDir = new File("themes");
     if (themeDir.exists()) {

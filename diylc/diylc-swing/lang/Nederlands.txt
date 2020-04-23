@@ -1,3 +1,6 @@
+#start-internal
+icon=netherlands
+#end-internal
 (Building Blocks)|(Bouwstenen)
 (Favorites)|(Favorieten)
 (Recently Used)|(Onlangs gebruikt)

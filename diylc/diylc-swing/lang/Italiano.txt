@@ -1,3 +1,6 @@
+#start-internal
+icon=italy
+#end-internal
 (Building Blocks)|(Building Blocks)
 (Favorites)|(Preferiti)
 (Recently Used)|(Usato di recente)

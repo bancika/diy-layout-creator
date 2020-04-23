@@ -125,11 +125,29 @@ public class TranslateUtil {
     return missing;
   }
 
-  public static List<String> getAvailableLanguages() {
+  public static Map<String, Map<String, String>> getAvailableLanguages() {
     try (Stream<Path> walk = Files.walk(Paths.get(LANG_DIR))) {
-
-      return walk.filter(Files::isRegularFile).map(x -> x.getFileName().toString().replaceFirst("[.][^.]+$", ""))
+      Map<String, Map<String, String>> res = new HashMap<String, Map<String, String>>();
+      List<String> files = walk.filter(Files::isRegularFile).map(x -> x.getFileName().toString())
           .collect(Collectors.toList());
+      for (String file : files) {
+        String key = file.replaceFirst("[.][^.]+$", "");
+        Map<String, String> details = new HashMap<String, String>();
+        try (Stream<String> stream = Files.lines(
+            Paths.get(LANG_DIR + File.separator + file), StandardCharsets.UTF_8)) {
+          stream.forEach(s -> {
+            if (s.contains("=")) {
+              String[] parts = s.split("=");
+              if (parts.length == 2)
+                details.put(parts[0].toLowerCase().trim(), parts[1].trim());
+            }
+          });
+        } catch (IOException e) {
+          LOG.error("Error loading language file", e);
+        }
+        res.put(key, details);
+      }
+      return res;
     } catch (IOException e) {
       LOG.error("Error fetching available languages");
       return null;

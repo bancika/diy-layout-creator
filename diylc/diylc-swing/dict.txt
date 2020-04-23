@@ -45,7 +45,6 @@ G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
-Idioma
 Italiano
 NPN
 Nederlands

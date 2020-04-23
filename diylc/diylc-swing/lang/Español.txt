@@ -1,3 +1,6 @@
+#start-internal
+icon=spain
+#end-internal
 (Building Blocks)|(Bloques de construcción)
 (Favorites)|(Favoritos)
 (Recently Used)|(Recientemente usado)
