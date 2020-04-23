@@ -88,6 +88,13 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
           case 1: return 2;
           case 2: return 0;
         }
+      case JFET_GDS:
+      case MOSFET_GDS:
+        switch (index) {
+          case 0: return 1;
+          case 1: return 0;
+          case 2: return 2;
+        }
       case JFET_SGD:
       case MOSFET_SGD:
         return 2 - index;
