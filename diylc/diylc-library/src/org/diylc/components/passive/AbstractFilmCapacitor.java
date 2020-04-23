@@ -48,11 +48,6 @@ public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capa
   protected Boolean showOuterFoil = false;
   protected Color outerFoilColor = OUTER_FOIL_COLOR;
 
-  @Override
-  protected boolean supportsStandingMode() {
-    return true;
-  }
-
   @EditableProperty(validatorClass = PositiveMeasureValidator.class)
   public Capacitance getValue() {
     return value;

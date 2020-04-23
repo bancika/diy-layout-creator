@@ -3046,6 +3046,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Component leads on resistors, capacitors, etc disappear when they are very short</description>
 				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Prevent "Radial Film Capacitor" from switching to standing mode when end points are too close</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	

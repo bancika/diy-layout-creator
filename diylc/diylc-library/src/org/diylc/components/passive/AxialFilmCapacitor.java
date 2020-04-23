@@ -61,4 +61,9 @@ public class AxialFilmCapacitor extends AbstractFilmCapacitor {
     return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(),
         getClosestOdd(getWidth().convertToPixels()));
   }
+  
+  @Override
+  protected boolean supportsStandingMode() {
+    return true;
+  }
 }
