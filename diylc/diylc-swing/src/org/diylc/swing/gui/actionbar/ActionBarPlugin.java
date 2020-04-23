@@ -122,9 +122,9 @@ public class ActionBarPlugin implements IPlugIn {
   public ConfigToolbar getConfigToolbar() {
     if (configToolbar == null) {
       configToolbar = new ConfigToolbar();
-      configToolbar.add("Continuous Creation", IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
-      configToolbar.add("Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
-      configToolbar.add("Sticky Points", IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);
+      configToolbar.add(TranslateUtil.translate("Continuous Creation"), IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
+      configToolbar.add(TranslateUtil.translate("Highlight Connected Areas"), IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
+      configToolbar.add(TranslateUtil.translate("Sticky Points"), IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);
     }
     return configToolbar;
   }

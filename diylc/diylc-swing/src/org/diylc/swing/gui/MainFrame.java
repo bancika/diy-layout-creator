@@ -280,7 +280,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   @Override
   public void showMessage(String message, String title, int messageType) {
-    JOptionPane.showMessageDialog(this, message, TranslateUtil.translate(title), messageType);
+    JOptionPane.showMessageDialog(this, message, title, messageType);
   }
 
   @Override
