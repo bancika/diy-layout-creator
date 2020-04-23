@@ -56,7 +56,7 @@ public class ActionBarPlugin implements IPlugIn {
   private ConfigToolbar configToolbar;
   private JLabel donateLabel;
   
-  private static final String DONATE_HTML = "<html><u>" + TranslateUtil.translate("Enjoying DIYLC? Click here to buy me a coffe :)") + "</u></html>";
+  private static final String DONATE_HTML = "<html><u>" + TranslateUtil.translate("Enjoying DIYLC? Click here to buy me a coffee :)") + "</u></html>";
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;

@@ -46,6 +46,7 @@ G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
 Italiano
+Jezik
 NPN
 Nederlands
 Nor
@@ -60,6 +61,7 @@ SMD
 SPDT
 SPDT  (Center OFF)
 SPST
+Srpski
 Xnor
 Xor
 cm

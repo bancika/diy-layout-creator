@@ -124,7 +124,7 @@ public class Presenter implements IPlugInPort {
   private static final String ERROR_SLOT = TranslateUtil.translate("Could not set component type slot. Check log for details.");
   private static final String ERROR_SAVE = TranslateUtil.translate("Could not save the project to file. Check the log for details.");
   private static final String ERROR_CREATE = TranslateUtil.translate("Could not create component. Check log for details.");
-  private static final String ERROR_EDIT = TranslateUtil.translate("Error occured while editing selection. Check the log for details.");
+  private static final String ERROR_EDIT = TranslateUtil.translate("Error occurred while editing selection. Check the log for details.");
   private static final String ERROR_NEW = TranslateUtil.translate("Could not create a new file. Check the log for details.");
   private static final String ERROR = TranslateUtil.translate("Error");
   private static final String APPLY_ERROR = "Could not apply changes. Check the log for details.";

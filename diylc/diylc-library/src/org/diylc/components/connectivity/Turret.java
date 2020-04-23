@@ -107,7 +107,7 @@ public class Turret extends AbstractComponent<String> {
     this.size = size;
   }
 
-  @EditableProperty(name = "Hole size")
+  @EditableProperty(name = "Hole Size")
   public Size getHoleSize() {
     return holeSize;
   }

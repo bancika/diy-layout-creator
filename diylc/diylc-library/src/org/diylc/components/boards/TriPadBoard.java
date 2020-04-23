@@ -227,7 +227,7 @@ public class TriPadBoard extends AbstractBoard {
     }
   }
 
-  @EditableProperty(name = "Holes per strip")
+  @EditableProperty(name = "Holes Per Strip")
   public int getStripSpan() {
     return stripSpan;
   }
