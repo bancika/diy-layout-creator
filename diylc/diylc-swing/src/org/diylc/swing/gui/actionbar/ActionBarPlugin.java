@@ -36,7 +36,7 @@ import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.images.IconLoader;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
@@ -56,7 +56,7 @@ public class ActionBarPlugin implements IPlugIn {
   private ConfigToolbar configToolbar;
   private JLabel donateLabel;
   
-  private static final String DONATE_HTML = "<html><u>" + TranslateUtil.translate("Enjoying DIYLC? Click here to buy me a coffee :)") + "</u></html>";
+  private static final String DONATE_HTML = "<html><u>" + LangUtil.translate("Enjoying DIYLC? Click here to buy me a coffee :)") + "</u></html>";
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
@@ -122,9 +122,9 @@ public class ActionBarPlugin implements IPlugIn {
   public ConfigToolbar getConfigToolbar() {
     if (configToolbar == null) {
       configToolbar = new ConfigToolbar();
-      configToolbar.add(TranslateUtil.translate("Continuous Creation"), IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
-      configToolbar.add(TranslateUtil.translate("Highlight Connected Areas"), IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
-      configToolbar.add(TranslateUtil.translate("Sticky Points"), IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);
+      configToolbar.add(LangUtil.translate("Continuous Creation"), IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
+      configToolbar.add(LangUtil.translate("Highlight Connected Areas"), IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
+      configToolbar.add(LangUtil.translate("Sticky Points"), IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);
     }
     return configToolbar;
   }

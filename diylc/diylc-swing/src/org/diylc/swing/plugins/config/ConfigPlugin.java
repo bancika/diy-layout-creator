@@ -35,7 +35,7 @@ import org.diylc.components.autocreate.SolderPadAutoCreator;
 import org.diylc.core.Theme;
 import org.diylc.flags.FlagLoader;
 import org.diylc.images.IconLoader;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.ResourceLoader;
@@ -60,9 +60,9 @@ public class ConfigPlugin implements IPlugIn {
   public static final String COMPONENT_BROWSER = "componentBrowser";
   public static final String SEARCHABLE_TREE = "Searchable Tree";
   public static final String TABBED_TOOLBAR = "Tabbed Toolbar";
-  private static final String LANGUAGE_MENU = TranslateUtil.translate("Language");
+  private static final String LANGUAGE_MENU = LangUtil.translate("Language");
   
-  private static final String LANG_RESTART = TranslateUtil.translate("Language selection will be applied after the application is restarted.");  
+  private static final String LANG_RESTART = LangUtil.translate("Language selection will be applied after the application is restarted.");  
 
   private ISwingUI swingUI;
 
@@ -105,7 +105,7 @@ public class ConfigPlugin implements IPlugIn {
             false), CONFIG_MENU);
     
     try {
-      Map<String, Map<String, String>> languages = TranslateUtil.getAvailableLanguages(); 
+      Map<String, Map<String, String>> languages = LangUtil.getAvailableLanguages(); 
       if (languages != null && languages.size() > 0) {
         swingUI.injectSubmenu(LANGUAGE_MENU, IconLoader.Earth.getIcon(), CONFIG_MENU);
         for(Map.Entry<String, Map<String, String>> language : languages.entrySet()) {

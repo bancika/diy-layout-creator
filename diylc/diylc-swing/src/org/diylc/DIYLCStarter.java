@@ -34,7 +34,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
 import org.diylc.core.IView;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
@@ -82,7 +82,7 @@ public class DIYLCStarter {
 
     ConfigurationManager.initialize("diylc");
     
-    TranslateUtil.configure();
+    LangUtil.configure();
 
     LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
         + System.getProperty("java.vm.vendor"));

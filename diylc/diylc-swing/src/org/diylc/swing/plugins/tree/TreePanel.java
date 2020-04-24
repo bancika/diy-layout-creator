@@ -84,7 +84,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Template;
 import org.diylc.images.IconLoader;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
@@ -96,7 +96,7 @@ public class TreePanel extends JPanel {
   private static final Logger LOG = Logger.getLogger(TreePanel.class);
   
   private static final String CLICK_TO_INSTANTIATE =
-      TranslateUtil.translate("Left click to instantiate this component, right click for more options");
+      LangUtil.translate("Left click to instantiate this component, right click for more options");
 
   public static final String COMPONENT_SHORTCUT_KEY = "componentShortcuts";
 
@@ -796,7 +796,7 @@ public class TreePanel extends JPanel {
         }
         
         // translate categories
-        setText("<html>" + (payload.getComponentType() == null ? TranslateUtil.translate(payload.forDisplay()) : payload.forDisplay()) + shortCutHtml + variantsHtml + "</html>");
+        setText("<html>" + (payload.getComponentType() == null ? LangUtil.translate(payload.forDisplay()) : payload.forDisplay()) + shortCutHtml + variantsHtml + "</html>");
       }
 
       return this;

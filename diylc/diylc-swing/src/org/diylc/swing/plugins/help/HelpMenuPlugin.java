@@ -39,7 +39,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swingframework.AboutDialog;
@@ -55,8 +55,8 @@ public class HelpMenuPlugin implements IPlugIn {
 
   private static final String HELP_TITLE = "Help";
   
-  private static final String INFORMATION = TranslateUtil.translate("Information");
-  private static final String HISTORY_NOT_AVAILABLE = TranslateUtil.translate("Version history is not available.");
+  private static final String INFORMATION = LangUtil.translate("Information");
+  private static final String HISTORY_NOT_AVAILABLE = LangUtil.translate("Version history is not available.");
 
   public static String MANUAL_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/Manual.md";
   public static String FAQ_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/FAQ.md";

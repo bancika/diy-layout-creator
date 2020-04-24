@@ -43,7 +43,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ValidationException;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.swingframework.ButtonDialog;
 
 public class PropertyEditorDialog extends ButtonDialog { 
@@ -52,11 +52,11 @@ public class PropertyEditorDialog extends ButtonDialog {
 
   private static final long serialVersionUID = 1L;
   
-  private static final String ERROR_TITLE = TranslateUtil.translate("Error");
-  private static final String INPUT_ERROR = TranslateUtil.translate("Input error for \"%s\": %s");
+  private static final String ERROR_TITLE = LangUtil.translate("Error");
+  private static final String INPUT_ERROR = LangUtil.translate("Input error for \"%s\": %s");
 
   private static final String DEFAULT_BOX_TOOLTIP_TEXT =
-      TranslateUtil.translate("If this box is checked application will use the current value as a<br>default when creating new components of the same type");
+      LangUtil.translate("If this box is checked application will use the current value as a<br>default when creating new components of the same type");
   private static final String DEFAULT_BOX_TOOLTIP =
       "<html>"
       + DEFAULT_BOX_TOOLTIP_TEXT
@@ -135,7 +135,7 @@ public class PropertyEditorDialog extends ButtonDialog {
       gbc.weightx = 0;
       gbc.insets = new Insets(4, 2, 2, 2);
       gbc.anchor = GridBagConstraints.WEST;
-      editorPanel.add(new JLabel(TranslateUtil.translate(property.getName()) + ": "), gbc);
+      editorPanel.add(new JLabel(LangUtil.translate(property.getName()) + ": "), gbc);
 
       gbc.gridx = 1;
       gbc.fill = GridBagConstraints.HORIZONTAL;

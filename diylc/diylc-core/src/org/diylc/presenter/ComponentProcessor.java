@@ -47,7 +47,7 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 
 /**
  * Utility class with component processing methods.
@@ -176,10 +176,10 @@ public class ComponentProcessor {
               LOG.debug("No matching setter found for " + clazz.getName() + "." + getter.getName() + ". Skipping...");
             }
             
-            TranslateUtil.translate(name); // temporary, just to make sure we catch it in the dict
+            LangUtil.translate(name); // temporary, just to make sure we catch it in the dict
             if (getter.getReturnType().isEnum()) {
               for(Object o : getter.getReturnType().getEnumConstants()) {
-                TranslateUtil.translate(o.toString());
+                LangUtil.translate(o.toString());
               }
             }
             

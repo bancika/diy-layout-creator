@@ -81,7 +81,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
@@ -104,29 +104,29 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 public class Presenter implements IPlugInPort {
 
   private static final String REACHED_BOTTOM =
-      TranslateUtil.translate("Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?");
-  private static final String SEND_SELECTION_TO_BACK = TranslateUtil.translate("Send Selection to Back");
-  private static final String SAVE_AS_VARIANT = TranslateUtil.translate("Save as Variant");
-  private static final String VARIANT_EXISTS = TranslateUtil.translate("A variant with that name already exists. Overwrite?");
+      LangUtil.translate("Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?");
+  private static final String SEND_SELECTION_TO_BACK = LangUtil.translate("Send Selection to Back");
+  private static final String SAVE_AS_VARIANT = LangUtil.translate("Save as Variant");
+  private static final String VARIANT_EXISTS = LangUtil.translate("A variant with that name already exists. Overwrite?");
   private static final String ROTATE_CHANGE =
-      TranslateUtil.translate("Selection contains components that cannot be rotated. Do you want to exclude them?");
+      LangUtil.translate("Selection contains components that cannot be rotated. Do you want to exclude them?");
   private static final String MIRRORING_CHANGE =
-      TranslateUtil.translate("Mirroring operation will change the circuit. Do you want to continue?");
-  private static final String MIRROR_SELECTION = TranslateUtil.translate("Mirror Selection");
-  private static final String ROTATE_SELECTION = TranslateUtil.translate("Rotate Selection");
+      LangUtil.translate("Mirroring operation will change the circuit. Do you want to continue?");
+  private static final String MIRROR_SELECTION = LangUtil.translate("Mirror Selection");
+  private static final String ROTATE_SELECTION = LangUtil.translate("Rotate Selection");
   private static final String CANNOT_MIRROR =
-      TranslateUtil.translate("Selection contains components that cannot be mirrored. Do you want to exclude them?");
-  private static final String BRING_SELECTION_TO_FRONT = TranslateUtil.translate("Bring Selection to Front");
+      LangUtil.translate("Selection contains components that cannot be mirrored. Do you want to exclude them?");
+  private static final String BRING_SELECTION_TO_FRONT = LangUtil.translate("Bring Selection to Front");
   private static final String REACHED_TOP =
-      TranslateUtil.translate("Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?");
-  private static final String WARNING = TranslateUtil.translate("Warning");
-  private static final String UNSAVED_CHANGES = TranslateUtil.translate("There are unsaved changes. Would you like to save them?");
-  private static final String ERROR_SLOT = TranslateUtil.translate("Could not set component type slot. Check log for details.");
-  private static final String ERROR_SAVE = TranslateUtil.translate("Could not save the project to file. Check the log for details.");
-  private static final String ERROR_CREATE = TranslateUtil.translate("Could not create component. Check log for details.");
-  private static final String ERROR_EDIT = TranslateUtil.translate("Error occurred while editing selection. Check the log for details.");
-  private static final String ERROR_NEW = TranslateUtil.translate("Could not create a new file. Check the log for details.");
-  private static final String ERROR = TranslateUtil.translate("Error");
+      LangUtil.translate("Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?");
+  private static final String WARNING = LangUtil.translate("Warning");
+  private static final String UNSAVED_CHANGES = LangUtil.translate("There are unsaved changes. Would you like to save them?");
+  private static final String ERROR_SLOT = LangUtil.translate("Could not set component type slot. Check log for details.");
+  private static final String ERROR_SAVE = LangUtil.translate("Could not save the project to file. Check the log for details.");
+  private static final String ERROR_CREATE = LangUtil.translate("Could not create component. Check log for details.");
+  private static final String ERROR_EDIT = LangUtil.translate("Error occurred while editing selection. Check the log for details.");
+  private static final String ERROR_NEW = LangUtil.translate("Could not create a new file. Check the log for details.");
+  private static final String ERROR = LangUtil.translate("Error");
   private static final String APPLY_ERROR = "Could not apply changes. Check the log for details.";
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);

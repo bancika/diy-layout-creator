@@ -32,7 +32,7 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 
 import org.diylc.common.PropertyWrapper;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.utils.Constants;
 
 public class EnumEditor extends JComboBox {
@@ -57,7 +57,7 @@ public class EnumEditor extends JComboBox {
       public Component getListCellRendererComponent(JList<?> list, Object value, int index,
           boolean isSelected, boolean cellHasFocus) {
         // TODO Auto-generated method stub
-        return super.getListCellRendererComponent(list, value == null ? null : TranslateUtil.translate(value.toString()), index, isSelected, cellHasFocus);
+        return super.getListCellRendererComponent(list, value == null ? null : LangUtil.translate(value.toString()), index, isSelected, cellHasFocus);
       }
       
     });

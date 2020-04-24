@@ -37,7 +37,7 @@ import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.swingframework.ButtonDialog;
 
 public class FindDialog extends ButtonDialog {    
@@ -61,8 +61,8 @@ public class FindDialog extends ButtonDialog {
       + "'R\\d+' - matches components starting with R, followed by at least one digit"
       + "</html>";
   
-  private static final String FIND = TranslateUtil.translate("Find");
-  private static final String LOOK_FOR = TranslateUtil.translate("Look for");
+  private static final String FIND = LangUtil.translate("Find");
+  private static final String LOOK_FOR = LangUtil.translate("Look for");
 
   private JPanel mainPanel;
 

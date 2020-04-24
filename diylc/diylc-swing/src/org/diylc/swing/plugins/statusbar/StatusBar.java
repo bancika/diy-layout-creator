@@ -69,7 +69,7 @@ import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swingframework.MemoryBar;
@@ -79,27 +79,27 @@ import org.diylc.swingframework.update.UpdateLabel;
 
 public class StatusBar extends JPanel implements IPlugIn {
 
-  private static final String CLICK_TO_CREATE = TranslateUtil.translate("Click on the canvas to create a new %s or press %s to cancel");
+  private static final String CLICK_TO_CREATE = LangUtil.translate("Click on the canvas to create a new %s or press %s to cancel");
   private static final String CLICK_TO_SET_POINT =
-      TranslateUtil.translate("Click on the canvas to set the %s control point of a new %s or press %s to cancel");
-  private static final String HOLD_TO_UNSTUCK = TranslateUtil.translate("hold %s and drag to unstuck from");
-  private static final String SELECTION = TranslateUtil.translate("Selection");
-  private static final String DRAG_POINTS_OF = TranslateUtil.translate("Drag control point(s) of");
-  private static final String DRAG_TO_PLACE_A_NEW = TranslateUtil.translate("Drag the mouse over the canvas to place a new");
-  private static final String ZOOM = TranslateUtil.translate("Zoom");
-  private static final String SELECTION_SIZE = TranslateUtil.translate("Selection Size");
-  private static final String SELECTION_IS_EMPTY = TranslateUtil.translate("Selection is empty.");
-  private static final String INFORMATION = TranslateUtil.translate("Information");
-  private static final String NO_HISTORY = TranslateUtil.translate("Version history is not available.");
-  private static final String CLICK_UPDATES = TranslateUtil.translate("Click to show recent changes and updates");
-  private static final String NO_ANNOUNCEMENTS = TranslateUtil.translate("No new public announcements available.");
-  private static final String ERROR_TITLE = TranslateUtil.translate("Error");
-  private static final String PUBLIC_ANNOUNCEMENT = TranslateUtil.translate("Public Announcement");
-  private static final String COULD_NOT_FETCH_ANNOUNCEMENTS = TranslateUtil.translate("Could not fetch public announcements.");
-  private static final String CLICK_TO_FETCH_ANNOUNCEMENT = TranslateUtil.translate("Click to fetch the most recent public announcement");
-  private static final String CLICK_THE_LIGHBULB = TranslateUtil.translate("Click the lighbulb icon in the bottom-right corner of the window for more info.");
-  private static final String NEW_VERSION_AVAILABLE = TranslateUtil.translate("New version available");
-  private static String HIGHLIGHT_CONNECTED_TIP = TranslateUtil.translate("Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF");
+      LangUtil.translate("Click on the canvas to set the %s control point of a new %s or press %s to cancel");
+  private static final String HOLD_TO_UNSTUCK = LangUtil.translate("hold %s and drag to unstuck from");
+  private static final String SELECTION = LangUtil.translate("Selection");
+  private static final String DRAG_POINTS_OF = LangUtil.translate("Drag control point(s) of");
+  private static final String DRAG_TO_PLACE_A_NEW = LangUtil.translate("Drag the mouse over the canvas to place a new");
+  private static final String ZOOM = LangUtil.translate("Zoom");
+  private static final String SELECTION_SIZE = LangUtil.translate("Selection Size");
+  private static final String SELECTION_IS_EMPTY = LangUtil.translate("Selection is empty.");
+  private static final String INFORMATION = LangUtil.translate("Information");
+  private static final String NO_HISTORY = LangUtil.translate("Version history is not available.");
+  private static final String CLICK_UPDATES = LangUtil.translate("Click to show recent changes and updates");
+  private static final String NO_ANNOUNCEMENTS = LangUtil.translate("No new public announcements available.");
+  private static final String ERROR_TITLE = LangUtil.translate("Error");
+  private static final String PUBLIC_ANNOUNCEMENT = LangUtil.translate("Public Announcement");
+  private static final String COULD_NOT_FETCH_ANNOUNCEMENTS = LangUtil.translate("Could not fetch public announcements.");
+  private static final String CLICK_TO_FETCH_ANNOUNCEMENT = LangUtil.translate("Click to fetch the most recent public announcement");
+  private static final String CLICK_THE_LIGHBULB = LangUtil.translate("Click the lighbulb icon in the bottom-right corner of the window for more info.");
+  private static final String NEW_VERSION_AVAILABLE = LangUtil.translate("New version available");
+  private static String HIGHLIGHT_CONNECTED_TIP = LangUtil.translate("Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF");
 
   private static final long serialVersionUID = 1L;
 

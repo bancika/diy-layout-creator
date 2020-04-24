@@ -67,7 +67,7 @@ import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
-import org.diylc.lang.TranslateUtil;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
@@ -296,7 +296,7 @@ public class MainFrame extends JFrame implements ISwingUI {
   @Override
   public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
     PropertyEditorDialog editor =
-        DialogFactory.getInstance().createPropertyEditorDialog(properties, TranslateUtil.translate("Edit Selection"), true);
+        DialogFactory.getInstance().createPropertyEditorDialog(properties, LangUtil.translate("Edit Selection"), true);
     editor.setVisible(true);
     defaultedProperties.addAll(editor.getDefaultedProperties());
     return ButtonDialog.OK.equals(editor.getSelectedButtonCaption());
@@ -349,7 +349,7 @@ public class MainFrame extends JFrame implements ISwingUI {
     LOG.info(String.format("injectMenuAction(%s, %s)", action == null ? "Separator" : action.getValue(Action.NAME),
         menuName));
     if (menuName != null)
-      menuName = TranslateUtil.translate(menuName);
+      menuName = LangUtil.translate(menuName);
     
     JMenu menu = findOrCreateMenu(menuName);   
     if (action == null) {
@@ -358,7 +358,7 @@ public class MainFrame extends JFrame implements ISwingUI {
       // translate
       String name = (String) action.getValue(Action.NAME);
       if (name != null)
-        action.putValue(Action.NAME, TranslateUtil.translate(name));
+        action.putValue(Action.NAME, LangUtil.translate(name));
       
       Boolean isCheckBox = (Boolean) action.getValue(IView.CHECK_BOX_MENU_ITEM);
       String groupName = (String) action.getValue(IView.RADIO_BUTTON_GROUP_KEY);
@@ -386,8 +386,8 @@ public class MainFrame extends JFrame implements ISwingUI {
     LOG.info(String.format("injectSubmenu(%s, icon, %s)", name, parentMenuName));
     
     // translate
-    name = TranslateUtil.translate(name);
-    parentMenuName = parentMenuName == null ? null : TranslateUtil.translate(parentMenuName);
+    name = LangUtil.translate(name);
+    parentMenuName = parentMenuName == null ? null : LangUtil.translate(parentMenuName);
     
     JMenu menu = findOrCreateMenu(parentMenuName);
     JMenu submenu = new JMenu(name);
@@ -406,8 +406,8 @@ public class MainFrame extends JFrame implements ISwingUI {
     LOG.info(String.format("injectDynamicSubmenu(%s, icon, %s)", name, parentMenuName));
     
     // translate
-    name = TranslateUtil.translate(name);
-    parentMenuName = parentMenuName == null ? null : TranslateUtil.translate(parentMenuName);
+    name = LangUtil.translate(name);
+    parentMenuName = parentMenuName == null ? null : LangUtil.translate(parentMenuName);
     
     final JMenu menu = findOrCreateMenu(parentMenuName);
     final JMenu submenu = new JMenu(name);

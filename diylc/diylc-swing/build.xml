@@ -127,6 +127,7 @@
 			<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />
 			<zipfileset filemode="755" dir="${basedir}/themes" prefix="DIYLC.app/Contents/Resources/themes" />
 			<zipfileset filemode="755" dir="${basedir}/fonts" prefix="DIYLC.app/Contents/Resources/fonts" />
+			<zipfileset filemode="755" dir="${basedir}/lang" prefix="DIYLC.app/Contents/Resources/lang" />
 		</zip>
 	</target>
 	
