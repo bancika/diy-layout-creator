@@ -23,18 +23,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.lf5.util.ResourceUtils;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.utils.ResourceLoader;
@@ -137,7 +134,7 @@ public class LangUtil {
         String key = file.getName().replaceFirst("[.][^.]+$", "");
         Map<String, String> details = new HashMap<String, String>();
         try (Stream<String> stream = Files.lines(
-            Paths.get(LANG_DIR + File.separator + file), StandardCharsets.UTF_8)) {
+            Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8)) {
           stream.forEach(s -> {
             if (s.contains("=")) {
               String[] parts = s.split("=");
