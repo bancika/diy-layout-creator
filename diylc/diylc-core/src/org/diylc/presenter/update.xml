@@ -3044,6 +3044,10 @@
 			<changes>				
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Some boards (e.g. Breadboard) stop working at certain orientations</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Component leads on resistors, capacitors, etc disappear when they are very short</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>

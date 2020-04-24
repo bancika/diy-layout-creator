@@ -337,7 +337,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   @Override
   public Rectangle2D getCachingBounds() {
     Point finalSecondPoint = getFinalSecondPoint();    
-    return new Rectangle2D.Double(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x + 1, finalSecondPoint.y - firstPoint.y + 1);
+    return new Rectangle2D.Double(Math.min(firstPoint.x, finalSecondPoint.x), Math.min(firstPoint.y, finalSecondPoint.y), 
+        Math.abs(finalSecondPoint.x - firstPoint.x) + 2, Math.abs(finalSecondPoint.y - firstPoint.y) + 2);
   }
 
   public static enum CoordinateType {

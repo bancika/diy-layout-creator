@@ -382,7 +382,8 @@ public class Breadboard extends AbstractComponent<Void> {
   @Override
   public Rectangle2D getCachingBounds() {
     Point finalSecondPoint = getControlPoint(1); 
-    return new Rectangle2D.Double(point.x, point.y, finalSecondPoint.x - point.x + 1, finalSecondPoint.y - point.y + 1);
+    return new Rectangle2D.Double(Math.min(point.x, finalSecondPoint.x), Math.min(point.y, finalSecondPoint.y), 
+        Math.abs(finalSecondPoint.x - point.x) + 2, Math.abs(finalSecondPoint.y - point.y) + 2);
   }
 
   public enum BreadboardSize {
