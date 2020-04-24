@@ -235,10 +235,10 @@ Mark Common Lugs|Označi Zajedničke Ušice
 Marker
 Mini
 Miniature|Minijaturni
-Mirror Horizontally|
-Mirror Selection
-Mirror Vertically
-Mirroring operation will change the circuit. Do you want to continue?
+Mirror Horizontally|Preslikaj Horizontalno
+Mirror Selection|Preslikaj Izabrane
+Mirror Vertically|Preslikaj Vertikalno
+Mirroring operation will change the circuit. Do you want to continue?|Preslikavanje će uticati na kolo. Da li želite da nastavite?
 Misc|Razno
 Model
 Mono
@@ -246,38 +246,36 @@ Mount|Montaža
 Mounting Lugs
 Mouse Wheel Zoom
 Moveable Label
-Name
-Nand
-Negative
-New
-New version available
-No new public announcements available.
-No
-None
-North
+Name|Naziv
+Negative|Negativno
+New|Novi
+New version available|Nova verzija je dostupna
+No new public announcements available.|Nema novih javnih objava.
+No|Ne
+None|Ništa
+North|Sever
 Noval B9A
-Nudge
-Numbers
+Nudge|Pomeri
+Numbers|Brojevi
 Nut
 Octal
 Offset
 One Side
-Open
-Opposing Points
-Orientation
-Outer Foil
-Outer Foil Mark
-Outline Mode
-Outside
-Oval horizontal
-Oval vertical
+Open|Otvori
+Opposing Points|Suprotne Tačke
+Orientation|Smer
+Outer Foil|Prikaz Spoljne Folije
+Outer Foil Mark|Oznaka Spoljne Folije
+Outline Mode|Mod Oivičenja
+Outside|Spolja
+Oval horizontal|Ovalni Horizontalni
+Oval vertical|Ovalni Vertikalni
 Pad Color
-Passive
-Paste
+Passive|Pasivne
+Paste|Nalepi
 Pin Arrangement
 Pin Color
 Pin Spacing
-Pin spacing
 Pinout
 Pins
 Play Test
@@ -289,39 +287,39 @@ Pole Color
 Pole Pieces
 Pole Pieces 1
 Pole Pieces 2
-Positions
-Positive
+Positions|Pozicije
+Positive|Pozitivni
 Power Rating
 Power Strip
 Primary CT
-Print...
+Print...|Štampa...
 Project Cloud
-Public Announcement
-Radius
+Public Announcement|Javna Objava
+Radius|Poluprečnik
 Rail
 Recent Files
 Recent Updates
 Redo
 Renumber On Paste
 Renumber Selection
-Resistance
+Resistance|Otpor
 Rev log
 Reverse (standing)
 Right
 Rods
-Rotate Clockwise
-Rotate Counterclockwise
-Rotate Selection
-Round
+Rotate Clockwise|Rotiraj u Smeru Kazaljke
+Rotate Counterclockwise|Rotiraj Suprotno od Smera Kazaljke
+Rotate Selection|Rotiraj Izabrane
+Round|Okrugli
 Round WOG A
 Round WOG B
 Row Spacing
-Rows
-Ruler Inch Subdivision...
+Rows|Vrste
+Ruler Inch Subdivision...|Deljenje Inča Na Lenjiru
 Same Type Only
-Save
-Save As
-Save as Variant
+Save|Sačuvaj
+Save As|Sačuvaj Kao
+Save as Variant|Sačuvaj Kao Varijaciju
 Scale
 Schematic Symbols
 Screws
@@ -331,38 +329,38 @@ Selection is empty.
 Search The Cloud
 Searchable Tree
 Secondary CT
-Select All
+Select All|Odaberi Sve
 Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?
 Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?
 Selection contains components that cannot be mirrored. Do you want to exclude them?
 Selection contains components that cannot be rotated. Do you want to exclude them?
-Semiconductors
+Semiconductors|Poluprovodnici
 Send Backward
 Send Selection to Back
-Seven
+Seven|Sedam
 Shaft Down
 Shaft Up
-Shape
-Shapes
+Shape|Oblik
+Shapes|Oblici
 Show Grid
 Show Rulers
 Shroud
 Shrouded
 Single Rail
 Single Rods
-Size
+Size|Veličina
 Sizing Mode
 Small-button B7G
-Smooth
-Snap To...
+Smooth|Glatko
+Snap To...|Zalepi Uz...
 Soap Bar
 Solid
-South
-Spacing
-Square
+South|Jug
+Spacing|Razmak
+Square|Kvadrat
 Square BR-3
 Standard
-Start Arrow
+Start Arrow|Početna Strelica
 Start Recording
 Stereo
 Sticky Points
@@ -375,40 +373,40 @@ Stripe 2
 Stripe Color
 Stripe Color 1
 Stripe Color 2
-Style
-Submit a Bug
+Style|Stil
+Submit a Bug|Prijavi Problem
 Suppressor grid
-Switched
-Switches
+Switched|Sa Prekidačem
+Switches|Prekidači
 Tab
 Tab Border
 Tabbed Toolbar
 Taper
 Telecaster
 Terminal Spacing
-Terminals
+Terminals|Terminali
 Test
-Text
-Text Color
+Text|Tekst
+Text Color|Boja Teksta
 Theme
-There are unsaved changes. Would you like to save them?
-Thickness
+There are unsaved changes. Would you like to save them?|Ima nesačuvanih izmena. Da li želite da ih sačuvate?
+Thickness|Debljinja
 Three
 Through Hole
 Tick
-Title
+Title|Naslov
 Toolbox
-Top
+Top|Vrh
 Top Lead
 Top Left
 Top Right
 Top-to-Bottom
-Trace
-Trace Color
+Trace|Vod
+Trace Color|Boja Voda
 Trace Mask
-Transform Selection
-Triangle
-Tubular
+Transform Selection|Transformiši Izabrane
+Triangle|Trougao
+Tubular|Cevasti
 Tubes|Cevi
 Two|Dva
 Type|Tip
@@ -419,24 +417,24 @@ Undo
 Ungroup Selection
 Unit
 Upload A Project
-User Manual
-Value
-Version history is not available.
-Vertical
-Vertical Alignment
+User Manual|Korisničko Uputsvo
+Value|Vrednost
+Version history is not available.|Istorija verzija nije dostupna.
+Vertical|Verikalno
+Vertical Alignment|Vertikalno Poravnanje
 Vertical Inline
 Vertical Offset 1
 Vertical Offset 2
-View
-Visible
-Voltage
+View|Pogled
+Visible|Vidljivo
+Voltage|Napon
 Wafer
-Warning
-Width
+Warning|Upozorenje
+Width|Širina
 Winding Spacing
 X-axis|X-osa
 Y-axis|Y-osa
-Zoom
-base of 10
-base of 2
-hold %s and drag to unstuck from
+Zoom|Uveličanje
+base of 10|Osnova 10
+base of 2|Osnova 2
+hold %s and drag to unstuck from|Drži %s i vuci da odlepiš od

@@ -249,7 +249,6 @@ Mounting Lugs
 Mouse Wheel Zoom
 Moveable Label
 Name
-Nand
 Negative
 New
 New version available
@@ -279,7 +278,6 @@ Paste
 Pin Arrangement
 Pin Color
 Pin Spacing
-Pin spacing
 Pinout
 Pins
 Play Test
