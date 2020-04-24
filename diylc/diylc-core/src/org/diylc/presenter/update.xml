@@ -3041,7 +3041,11 @@
 			</versionNumber>
 			<releaseDate>2020-04-20 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>				
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Include themes and fonts in OSX app package</description>
+				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Some boards (e.g. Breadboard) stop working at certain orientations</description>

@@ -125,6 +125,8 @@
 		</bundleapp>
 		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
 			<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />
+			<zipfileset filemode="755" dir="${basedir}/themes" prefix="DIYLC.app/Contents/Resources/themes" />
+			<zipfileset filemode="755" dir="${basedir}/fonts" prefix="DIYLC.app/Contents/Resources/fonts" />
 		</zip>
 	</target>
 	
@@ -165,7 +167,7 @@
 		</zip>
 	</target>
 
-	<target name="full" depends="win,mac,universal" />
+	<target name="full" depends="win,universal,mac" />
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">
