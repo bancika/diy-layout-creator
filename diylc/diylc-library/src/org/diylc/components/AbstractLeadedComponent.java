@@ -87,6 +87,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   // parameters for adjusting the label control point
   protected transient Double gamma = null;
   protected transient Double r = null;
+  
+  private Boolean hideShortLeads = false;
 
   protected AbstractLeadedComponent() {
     super();
@@ -205,7 +207,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         double leadLength = (distance - calculatePinSpacing(shapeRect)) / 2;
 
         // only draw leads longer than threshold
-        if (leadLength > LEAD_RENDER_THRESHOLD) {
+        if (leadLength > LEAD_RENDER_THRESHOLD || !getHideShortLeads()) {
           if (shouldShadeLeads()) {
             Stroke leadStroke = ObjectCache.getInstance().fetchBasicStroke(leadThickness - 1);     
             Color leadColor = getLeadColorForPainting(componentState);          
@@ -715,6 +717,17 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
+  }
+  
+  // for internal use. Set this flag to true when replacing standard leads with flexible ones
+  public Boolean getHideShortLeads() {
+    if (hideShortLeads == null)
+      hideShortLeads = false;
+    return hideShortLeads;
+  }
+  
+  public void setHideShortLeads(Boolean hideShortLeads) {
+    this.hideShortLeads = hideShortLeads;
   }
 
   public enum LabelOriantation {

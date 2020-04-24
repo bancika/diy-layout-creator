@@ -38,6 +38,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.lang.TranslateUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
+import org.diylc.utils.ResourceLoader;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -163,11 +164,11 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance()
             .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);      
 
-    File themeDir = new File("themes");
-    if (themeDir.exists()) {
+    File[] themeFiles = ResourceLoader.getFiles("themes");
+    if (themeFiles != null && themeFiles.length > 0) {
       XStream xStream = new XStream(new DomDriver());
       swingUI.injectSubmenu(THEME_MENU, IconLoader.Pens.getIcon(), CONFIG_MENU);
-      for (File file : themeDir.listFiles()) {
+      for (File file : themeFiles) {
         if (file.getName().toLowerCase().endsWith(".xml")) {
           try {
             InputStream in = new FileInputStream(file);

@@ -74,6 +74,9 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       Point newP2 = new Point((int)Math.round(centerX + Math.cos(theta) * len / 2), (int)Math.round(centerY + Math.sin(theta) * len / 2));
       leaded.setControlPoint(newP1, 0);
       leaded.setControlPoint(newP2, 1);
+      
+      // make the standard leads go away
+      leaded.setHideShortLeads(true);
              
       // create leads
       HookupWire w1 = new HookupWire();

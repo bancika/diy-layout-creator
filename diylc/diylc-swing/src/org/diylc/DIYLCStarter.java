@@ -39,6 +39,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swingframework.FontChooserComboBox;
+import org.diylc.utils.ResourceLoader;
 
 /**
  * Main class that runs DIYLC.
@@ -100,23 +101,23 @@ public class DIYLCStarter {
       @Override
       public void run() {        
         LOG.debug("Starting font pre-loading");
-        
-        File dir = new File("fonts");
-        File[] fonts = dir.listFiles();
+                
+        File[] fonts = ResourceLoader.getFiles("fonts");
 
-        for (int i = 0; i < fonts.length; i++) {
-          try {
-            LOG.info("Dynamically loading font: " + fonts[i].getName());
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fonts[i].getAbsolutePath())).deriveFont(12f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            // register the font
-            ge.registerFont(customFont);
-          } catch (IOException e) {
-            LOG.error("Could not load font", e);
-          } catch (FontFormatException e) {
-            LOG.error("Font format error", e);
+        if (fonts != null)
+          for (int i = 0; i < fonts.length; i++) {
+            try {
+              LOG.info("Dynamically loading font: " + fonts[i].getName());
+              Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fonts[i].getAbsolutePath())).deriveFont(12f);
+              GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+              // register the font
+              ge.registerFont(customFont);
+            } catch (IOException e) {
+              LOG.error("Could not load font", e);
+            } catch (FontFormatException e) {
+              LOG.error("Font format error", e);
+            }
           }
-        }
         
         FontChooserComboBox box = new FontChooserComboBox();
         box.getPreferredSize();

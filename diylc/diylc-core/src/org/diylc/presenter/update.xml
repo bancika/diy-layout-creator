@@ -3032,6 +3032,34 @@
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>6</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-04-20 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Include themes and fonts in OSX app package</description>
+				</org.diylc.appframework.update.Change>					
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Some boards (e.g. Breadboard) stop working at certain orientations</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Component leads on resistors, capacitors, etc disappear when they are very short</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Prevent "Radial Film Capacitor" from switching to standing mode when end points are too close</description>
+				</org.diylc.appframework.update.Change>	
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>	
 	</a>
 </java.util.Arrays_-ArrayList>
