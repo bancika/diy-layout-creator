@@ -34,14 +34,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.lf5.util.ResourceUtils;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
+import org.diylc.utils.ResourceLoader;
 
-public class TranslateUtil {
+public class LangUtil {
 
   private static final String LANG_DIR = "lang";
 
-  private static final Logger LOG = Logger.getLogger(TranslateUtil.class);
+  private static final Logger LOG = Logger.getLogger(LangUtil.class);
 
   private static Map<String, String> dict = null;
   private static List<String> missing;
@@ -126,12 +128,13 @@ public class TranslateUtil {
   }
 
   public static Map<String, Map<String, String>> getAvailableLanguages() {
-    try (Stream<Path> walk = Files.walk(Paths.get(LANG_DIR))) {
-      Map<String, Map<String, String>> res = new HashMap<String, Map<String, String>>();
-      List<String> files = walk.filter(Files::isRegularFile).map(x -> x.getFileName().toString())
-          .collect(Collectors.toList());
-      for (String file : files) {
-        String key = file.replaceFirst("[.][^.]+$", "");
+    Map<String, Map<String, String>> res = new HashMap<String, Map<String, String>>();
+    File[] files = ResourceLoader.getFiles(LANG_DIR);
+    if (files == null)
+      return res;
+    try {      
+      for (File file : files) {        
+        String key = file.getName().replaceFirst("[.][^.]+$", "");
         Map<String, String> details = new HashMap<String, String>();
         try (Stream<String> stream = Files.lines(
             Paths.get(LANG_DIR + File.separator + file), StandardCharsets.UTF_8)) {
@@ -148,7 +151,7 @@ public class TranslateUtil {
         res.put(key, details);
       }
       return res;
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.error("Error fetching available languages");
       return null;
     }
