@@ -157,6 +157,7 @@
 			<zipfileset dir="templates" prefix="templates" />
 			<zipfileset dir="themes" prefix="themes" />
 			<zipfileset dir="fonts" prefix="fonts" />
+			<zipfileset dir="lang" prefix="lang" />
 			<zipfileset dir="." includes="splash.png" />
 			<zipfileset dir="." includes="run.sh" />
 			<zipfileset dir="." includes="diylc.l4j.ini" />

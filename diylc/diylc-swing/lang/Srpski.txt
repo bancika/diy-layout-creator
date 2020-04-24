@@ -209,40 +209,40 @@ Language|Jezik
 Language selection will be applied after the application is restarted.|Odabir jezika će biti primenjen nakon sledećeg pokretanja aplikacije.
 Layer|Sloj
 Layers|Slojevi
-Lead Color
-Lead Count
-Lead Length
-Lead Spacing
-Left
-Left-to-Right
-Left click to instantiate this component, right click for more options
-Legs
-Length
-Letters
+Lead Color|Boja Izvoda
+Lead Count|Broj Izvoda
+Lead Length|Dužina Izvoda
+Lead Spacing|Rastojanje Izvoda
+Left|Levo
+Left-to-Right|Levo-do-Desno
+Left click to instantiate this component, right click for more options|Levi klik instancira ovu komponentu, desni klik nudi više mogućnosti
+Legs|Nožice
+Length|Dužina
+Letters|Slova
 Light
 Lin
 Lip
-Lock
+Lock|Zaključaj
 Log
-Log In
-Log Out
-Lug Size
-Lugs
-Make a Donation
-Manage Account
-Manage My Uploads
-Mark Common Lugs
+Log In|Prijava
+Log Out|Odjava
+Lug Size|Veličina Ušica
+Lugs|Ušice
+Make a Donation|Doniraj
+Manage Account|Upravljanje Nalogom
+Manage My Uploads|Upravljanje Mojim Projektima
+Mark Common Lugs|Označi Zajedničke Ušice
 Marker
 Mini
-Miniature
-Mirror Horizontally
+Miniature|Minijaturni
+Mirror Horizontally|
 Mirror Selection
 Mirror Vertically
 Mirroring operation will change the circuit. Do you want to continue?
-Misc
+Misc|Razno
 Model
 Mono
-Mount
+Mount|Montaža
 Mounting Lugs
 Mouse Wheel Zoom
 Moveable Label
