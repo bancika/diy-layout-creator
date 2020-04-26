@@ -40,12 +40,15 @@ Deutsch
 E-B-C     BJT
 English
 Español
+Fill
 Français
 G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
 Italiano
+Lin
+Log
 NPN
 Nand
 Nederlands
@@ -55,6 +58,7 @@ Or
 PAF
 PCB
 PNP
+Rev log
 S-G-D     JFET
 S-G-D     MOSFET
 SMD

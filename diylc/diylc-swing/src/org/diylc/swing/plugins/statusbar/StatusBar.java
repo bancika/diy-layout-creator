@@ -82,7 +82,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private static final String CLICK_TO_CREATE = LangUtil.translate("Click on the canvas to create a new %s or press %s to cancel");
   private static final String CLICK_TO_SET_POINT =
       LangUtil.translate("Click on the canvas to set the %s control point of a new %s or press %s to cancel");
-  private static final String HOLD_TO_UNSTUCK = LangUtil.translate("hold %s and drag to unstuck from");
+  private static final String HOLD_TO_UNSTUCK = LangUtil.translate("hold %s and drag to unstick from");
   private static final String SELECTION = LangUtil.translate("Selection");
   private static final String DRAG_POINTS_OF = LangUtil.translate("Drag control point(s) of");
   private static final String DRAG_TO_PLACE_A_NEW = LangUtil.translate("Drag the mouse over the canvas to place a new");

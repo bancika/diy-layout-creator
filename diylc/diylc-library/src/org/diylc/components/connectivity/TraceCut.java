@@ -60,7 +60,9 @@ public class TraceCut extends AbstractComponent<Void> {
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
   private Size size = SIZE;
-  private Color fillColor = FILL_COLOR;
+  @SuppressWarnings("unused")
+  @Deprecated
+  private transient Color fillColor = FILL_COLOR;
   @Deprecated
   private Color borderColor = BORDER_COLOR;
   private Color boardColor = AbstractBoard.BOARD_COLOR;
@@ -177,15 +179,6 @@ public class TraceCut extends AbstractComponent<Void> {
 
   public void setSize(Size size) {
     this.size = size;
-  }
-
-  @EditableProperty(name = "Fill")
-  public Color getFillColor() {
-    return fillColor;
-  }
-
-  public void setFillColor(Color fillColor) {
-    this.fillColor = fillColor;
   }
 
   @Deprecated

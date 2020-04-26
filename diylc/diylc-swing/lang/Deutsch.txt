@@ -440,4 +440,4 @@ Y-axis|Y-Achse
 Zoom|Zoom
 base of 10|Basis von 10
 base of 2|Basis von 2
-hold %s and drag to unstuck from|Halten Sie %s gedrückt und ziehen Sie, um sich von zu lösen
+hold %s and drag to unstick from|Halten Sie %s gedrückt und ziehen Sie, um sich von zu lösen

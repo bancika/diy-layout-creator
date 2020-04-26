@@ -23,9 +23,9 @@ Arrow Size|Veličina Strelice
 Author|Autor
 Auto-Create Pads|Auto-Kreiranje Pad
 Auto-Edit Mode|Automatsko Editovanje
-Base
+Base|Osnova
 Below|Ispod
-Blueprint
+Blueprint|Tamnoplava
 Board|Pločica
 Boards|Pločice
 Board Color|Boja Pločice
@@ -42,7 +42,7 @@ Bottom Left|Dole Levo
 Bottom Right|Dole Desno
 Bring Forward|Prinesi Napred
 Bring Selection to Front|Prinesi Odabrane Napred
-Buffer
+Buffer|Bafer
 Center|Centar
 Center Negative|Negativni Centar
 Center Positive|Pozitivni Centar
@@ -57,7 +57,7 @@ Click on the canvas to create a new %s or press %s to cancel|Klikni na platno da
 Click on the canvas to set the %s control point of a new %s or press %s to cancel|Klikni na platno da postaviš %s kontrolnu tačku nove %s ili pritisni %s za odustajanje
 Click the lighbulb icon in the bottom-right corner of the window for more info.|Klikni na ikonicu sa sijalicom u donjem-desnom uglu prozora za više informacija.
 Click to fetch the most recent public announcement|Klikni za preuzimanje najnovijih objava
-Click to show recent changes and updates|Klikni za prikaz skorih unapredjenja
+Click to show recent changes and updates|Klikni za prikaz skorih unapređenja
 Coil|Kalem
 Coil Border|Ivica Kalema
 Coil Length|Dužina Kalema
@@ -94,13 +94,13 @@ Create B.O.M.|Kreiraj Spisak za Kupovinu
 Create New Account|Kreiraj Novi Nalog
 Current|Trenutni
 Cut|Iseci
-Cut Between Holes|Seci Izmedju Rupa
+Cut Between Holes|Seci Između Rupa
 Cut Orientation|Smer Zaseka
 DIP (Mirrored)|DIP (u ogledalu)
 DP3T (Standard 3-Position Strat)
 DP3T (Standard 5-Position Strat)
 DP4T (4-Position Tele)
-Dark
+Dark|Tamna
 Dashed|Isprekidana
 Decimals|Decimale
 Default|Podrazumevano
@@ -114,7 +114,7 @@ Directly heated|Direktno grejanje
 Display|Prikaz
 Display Pin #s|Prikaz Brojeva Pinova
 Dog Ear
-Dot Spacing|Razmak Izmedju Tačaka
+Dot Spacing|Razmak Između Tačaka
 Dotted|Tačkasta
 Drag control point(s) of|Vuci kontrolne tačke
 Drag the mouse over the canvas to place a new|Prevuci kursor miša preko platna da postaviš novu
@@ -147,7 +147,6 @@ Extra Working Area|Dodatna Radna Površina
 Eyelet color|Boja Terminala
 FAQ
 File|Datoteka
-Fill
 Filtertron
 Find|Traži
 Five|Pet
@@ -156,7 +155,7 @@ Folded|Ležeće
 Font
 Font Bold
 Font Italic
-Font Size
+Font Size|Veličina Fonta
 Four|Četiri
 Full|Puno
 Fuse|Osigurač
@@ -191,11 +190,11 @@ Immediate Only|Samo Neposredne
 Import|Uvoz
 Import Building Blocks|Uvezi Blokove za Gradnju
 Import Variants|Uvezi Varijacije
-In-Line D-44
-In-line
+In-Line D-44|U Redu D-44
+In-line|U Redu
 Indent|Zasek
 Information|Informacije
-Inline
+Inline|U Redu
 Input error for "%s": %s|Greška u unosu za "%s": %s
 Inside color|Boja Unutrašnjosti
 Integration|Integracija
@@ -219,11 +218,9 @@ Left click to instantiate this component, right click for more options|Levi klik
 Legs|Nožice
 Length|Dužina
 Letters|Slova
-Light
-Lin
+Light|Svetla
 Lip
 Lock|Zaključaj
-Log
 Log In|Prijava
 Log Out|Odjava
 Lug Size|Veličina Ušica
@@ -244,8 +241,8 @@ Model
 Mono
 Mount|Montaža
 Mounting Lugs
-Mouse Wheel Zoom
-Moveable Label
+Mouse Wheel Zoom|Uvećanje Točkićem Miša
+Moveable Label|Pomeranje Oznake
 Name|Naziv
 Negative|Negativno
 New|Novi
@@ -257,10 +254,10 @@ North|Sever
 Noval B9A
 Nudge|Pomeri
 Numbers|Brojevi
-Nut
+Nut|Matica
 Octal
-Offset
-One Side
+Offset|Ofset
+One Side|Jedna Strana
 Open|Otvori
 Opposing Points|Suprotne Tačke
 Orientation|Smer
@@ -273,162 +270,161 @@ Oval vertical|Ovalni Vertikalni
 Pad Color
 Passive|Pasivne
 Paste|Nalepi
-Pin Arrangement
-Pin Color
-Pin Spacing
+Pin Arrangement|Uređenje Pinova
+Pin Color|Boja Pina
+Pin Spacing|Razmak Pinova
 Pinout
-Pins
-Play Test
+Pins|Pinovi
+Play Test|Izvršavanje Testa
 Plugin API
-Point Count
-Polarity
-Polarized
-Pole Color
-Pole Pieces
-Pole Pieces 1
-Pole Pieces 2
+Point Count|Broj Tačaka
+Polarity|Polaritet
+Polarized|Polarizovani
+Pole Color|Boja Šipkica
+Pole Pieces|Šipkice
+Pole Pieces 1|Šipkice 1
+Pole Pieces 2|Šipkice 2
 Positions|Pozicije
 Positive|Pozitivni
-Power Rating
-Power Strip
-Primary CT
+Power Rating|Snaga
+Power Strip|Naponska Magistrala
+Primary CT|Primarni Srednji Izvod
 Print...|Štampa...
-Project Cloud
+Project Cloud|Projektni Oblak
 Public Announcement|Javna Objava
 Radius|Poluprečnik
-Rail
-Recent Files
-Recent Updates
-Redo
-Renumber On Paste
-Renumber Selection
+Rail|Šina
+Recent Files|Skorašnje Datoteke
+Recent Updates|Skorašnja Unapređenja
+Redo|Korak Napred
+Renumber On Paste|Dodale Brojeva Nakon Nalepljivanja
+Renumber Selection|Dodeli Nove Brojeve
 Resistance|Otpor
-Rev log
-Reverse (standing)
-Right
-Rods
+Reverse (standing)|Izvrni (stajanje)
+Right|Desno
+Rods|Šipkice
 Rotate Clockwise|Rotiraj u Smeru Kazaljke
 Rotate Counterclockwise|Rotiraj Suprotno od Smera Kazaljke
 Rotate Selection|Rotiraj Izabrane
 Round|Okrugli
 Round WOG A
 Round WOG B
-Row Spacing
+Row Spacing|Razmak Između Vrsta
 Rows|Vrste
 Ruler Inch Subdivision...|Deljenje Inča Na Lenjiru
-Same Type Only
+Same Type Only|Samo Istog Tipa
 Save|Sačuvaj
 Save As|Sačuvaj Kao
 Save as Variant|Sačuvaj Kao Varijaciju
-Scale
-Schematic Symbols
-Screws
-Selection
-Selection Size
-Selection is empty.
-Search The Cloud
-Searchable Tree
-Secondary CT
+Scale|Razmer
+Schematic Symbols|Simboli Šema
+Screws|Šrafovi
+Selection|Izabrano
+Selection Size|Veličina Izabranih
+Selection is empty.|Nema izabranih komponenti.
+Search The Cloud|Pretraga Oblaka
+Searchable Tree|Stablo sa Pretragom
+Secondary CT|Sekundarni Srednji Izvod
 Select All|Odaberi Sve
-Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?
-Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?
-Selection contains components that cannot be mirrored. Do you want to exclude them?
-Selection contains components that cannot be rotated. Do you want to exclude them?
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Izabrane komponente su stigle do dna svog sloja. Da li želite da ih na silu pošaljete ispod?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Izabrane komponente su stigle do vrha svog sloja. Da li želite da ih na silu pošaljete iznad?
+Selection contains components that cannot be mirrored. Do you want to exclude them?|Neke od izabranih komponenti ne mogu biti preslikane. Da li želite da ih preskočite?
+Selection contains components that cannot be rotated. Do you want to exclude them?|Neke od izabranih komponenti ne mogu biti rotirane. Da li želite da ih preskočite?
 Semiconductors|Poluprovodnici
-Send Backward
-Send Selection to Back
+Send Backward|Pošalji Nazad
+Send Selection to Back|Pošalji Izabrane Nazad
 Seven|Sedam
-Shaft Down
-Shaft Up
+Shaft Down|Osovina Dole
+Shaft Up|Osovina Gore
 Shape|Oblik
 Shapes|Oblici
-Show Grid
-Show Rulers
-Shroud
-Shrouded
-Single Rail
-Single Rods
+Show Grid|Prikaz Rešetke
+Show Rulers|Prikaz Lenjira
+Shroud|Kućište
+Shrouded|Sa Kućištem
+Single Rail|Single - Šina
+Single Rods|Single - Šipkice
 Size|Veličina
-Sizing Mode
+Sizing Mode|Zadavanje Veličine
 Small-button B7G
 Smooth|Glatko
 Snap To...|Zalepi Uz...
 Soap Bar
-Solid
+Solid|Puna Linija
 South|Jug
 Spacing|Razmak
 Square|Kvadrat
 Square BR-3
-Standard
+Standard|Standardno
 Start Arrow|Početna Strelica
-Start Recording
+Start Recording|Kreni Snimanje
 Stereo
-Sticky Points
-Stop Recording
+Sticky Points|Lepljive Kontrolne Tačke
+Stop Recording|Zaustavi Snimanje
 Stratocaster
-Strip Color
-Stripe
-Stripe 1
-Stripe 2
-Stripe Color
-Stripe Color 1
-Stripe Color 2
+Strip Color|Boja Magistrala
+Stripe|Štrafte
+Stripe 1|Štrafte 1
+Stripe 2|Štrafte 2
+Stripe Color|Boja Štrafte
+Stripe Color 1|Boja Štrafte 1
+Stripe Color 2|Boja Štrafte 2
 Style|Stil
 Submit a Bug|Prijavi Problem
-Suppressor grid
+Suppressor grid|Treća Rešetka
 Switched|Sa Prekidačem
 Switches|Prekidači
-Tab
-Tab Border
-Tabbed Toolbar
+Tab|Hladnjak
+Tab Border|Ivica Hladnjaka
+Tabbed Toolbar|Kartice
 Taper
 Telecaster
-Terminal Spacing
+Terminal Spacing|Rastojanje Terminala
 Terminals|Terminali
 Test
 Text|Tekst
 Text Color|Boja Teksta
-Theme
+Theme|Tema
 There are unsaved changes. Would you like to save them?|Ima nesačuvanih izmena. Da li želite da ih sačuvate?
 Thickness|Debljinja
-Three
-Through Hole
-Tick
+Three|Tri
+Through Hole|Kroz Rupu
+Tick|Crtica
 Title|Naslov
-Toolbox
+Toolbox|Kutija sa Alatima
 Top|Vrh
-Top Lead
-Top Left
-Top Right
-Top-to-Bottom
+Top Lead|Gornji Izvod
+Top Left|Gore Levo
+Top Right|Gore Desno
+Top-to-Bottom|Gore-do-Dole
 Trace|Vod
 Trace Color|Boja Voda
-Trace Mask
+Trace Mask|Maska Vodova
 Transform Selection|Transformiši Izabrane
 Triangle|Trougao
 Tubular|Cevasti
 Tubes|Cevi
 Two|Dva
 Type|Tip
-Ultra-miniature
+Ultra-miniature|Ultra-minijaturni
 Underside Pad Color
 Underside Trace Color
-Undo
-Ungroup Selection
-Unit
-Upload A Project
+Undo|Korak Nazad
+Ungroup Selection|Odgrupiš Izabrane
+Unit|Jedinica
+Upload A Project|Slanje Projekta
 User Manual|Korisničko Uputsvo
 Value|Vrednost
 Version history is not available.|Istorija verzija nije dostupna.
 Vertical|Verikalno
 Vertical Alignment|Vertikalno Poravnanje
-Vertical Inline
-Vertical Offset 1
-Vertical Offset 2
+Vertical Inline|Vertikalno u Liniji
+Vertical Offset 1|Verikalni Ofset 1
+Vertical Offset 2|Vertikalni Ofset 2
 View|Pogled
 Visible|Vidljivo
 Voltage|Napon
-Wafer
+Wafer|Izolator
 Warning|Upozorenje
 Width|Širina
 Winding Spacing
@@ -437,4 +433,4 @@ Y-axis|Y-osa
 Zoom|Uveličanje
 base of 10|Osnova 10
 base of 2|Osnova 2
-hold %s and drag to unstuck from|Drži %s i vuci da odlepiš od
+hold %s and drag to unstick from|Drži %s i vuci da odlepiš od
