@@ -14,7 +14,7 @@ Access User Files|Pristupi Korisničkim Datotekama
 Add Flexible Leads|Dodaj Fleksibilne Izvode
 Add Validation Step|Dodaj Korak Provere
 All Connected|Svi Povezani
-Alpha
+Alpha|Transparentnost
 Analyze|Analiziraj
 Analyze Guitar Diagrams|Analiziraj Gitarske Dijagrame
 Angle|Ugao
@@ -219,7 +219,7 @@ Legs|Nožice
 Length|Dužina
 Letters|Slova
 Light|Svetla
-Lip
+Lip|Usek
 Lock|Zaključaj
 Log In|Prijava
 Log Out|Odjava
