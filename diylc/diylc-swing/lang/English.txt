@@ -147,7 +147,6 @@ Extra Working Area
 Eyelet color
 FAQ
 File
-Fill
 Filtertron
 Find
 Five
@@ -221,10 +220,8 @@ Legs
 Length
 Letters
 Light
-Lin
 Lip
 Lock
-Log
 Log In
 Log Out
 Look for
@@ -305,7 +302,6 @@ Redo
 Renumber On Paste
 Renumber Selection
 Resistance
-Rev log
 Reverse (standing)
 Right
 Rods
@@ -439,4 +435,4 @@ Y-axis
 Zoom
 base of 10
 base of 2
-hold %s and drag to unstuck from
+hold %s and drag to unstick from
