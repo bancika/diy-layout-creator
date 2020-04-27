@@ -22,13 +22,17 @@
 package org.diylc.swing.gui.editor;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 
 import org.diylc.common.PropertyWrapper;
+import org.diylc.lang.LangUtil;
 import org.diylc.utils.Constants;
 
 public class EnumEditor extends JComboBox {
@@ -45,6 +49,18 @@ public class EnumEditor extends JComboBox {
     if (property.isReadOnly())
       setEnabled(false);
     setModel(new DefaultComboBoxModel(values));
+    setRenderer(new DefaultListCellRenderer() {
+
+      private static final long serialVersionUID = 1L;
+      
+      @Override
+      public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+          boolean isSelected, boolean cellHasFocus) {
+        // TODO Auto-generated method stub
+        return super.getListCellRendererComponent(list, value == null ? null : LangUtil.translate(value.toString()), index, isSelected, cellHasFocus);
+      }
+      
+    });
     setSelectedItem(property.getValue());
     addItemListener(new ItemListener() {
 

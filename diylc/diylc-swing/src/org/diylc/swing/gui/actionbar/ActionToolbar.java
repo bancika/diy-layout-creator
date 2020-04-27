@@ -34,6 +34,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
+import org.diylc.lang.LangUtil;
+
 public class ActionToolbar extends JPanel {
   
   private static final long serialVersionUID = 1L;
@@ -46,7 +48,7 @@ public class ActionToolbar extends JPanel {
   public void add(final Action action) {
     final JLabel l = new JLabel();
     l.setIcon((Icon) action.getValue(AbstractAction.SMALL_ICON));
-    l.setToolTipText((String) action.getValue(AbstractAction.NAME));
+    l.setToolTipText(LangUtil.translate((String) action.getValue(AbstractAction.NAME)));
     l.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     l.addMouseListener(new MouseAdapter() {
       

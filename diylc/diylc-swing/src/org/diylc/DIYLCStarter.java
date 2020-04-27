@@ -34,6 +34,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
 import org.diylc.core.IView;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
@@ -68,7 +69,7 @@ public class DIYLCStarter {
 	} catch (Exception e) {
 	  System.out.println("Splash screen could not be initialized: " + e.getMessage());
 	  splashException = e;
-	}
+	}	
 
     URL url = DIYLCStarter.class.getResource("log4j.properties");
     Properties properties = new Properties();
@@ -80,6 +81,8 @@ public class DIYLCStarter {
     }
 
     ConfigurationManager.initialize("diylc");
+    
+    LangUtil.configure();
 
     LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
         + System.getProperty("java.vm.vendor"));

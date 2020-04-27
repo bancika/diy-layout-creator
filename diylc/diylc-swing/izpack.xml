@@ -69,6 +69,10 @@
 				targetdir="${INSTALL_PATH}/fonts" override="true" >
 				<include name="*.*" />				
 			</fileset>
+			<fileset dir="lang"
+				targetdir="${INSTALL_PATH}/lang" override="true" >
+				<include name="*.*" />				
+			</fileset>
 		</pack>
 	</packs>
 

@@ -156,7 +156,7 @@ public class DiodeGlass extends AbstractLeadedComponent<String> {
     this.markerColor = markerColor;
   }
 
-  @EditableProperty(name = "Inside color")
+  @EditableProperty(name = "Inside Color")
   public Color getInsideColor() {
     if (insideColor == null)
       insideColor = INSIDE_COLOR;

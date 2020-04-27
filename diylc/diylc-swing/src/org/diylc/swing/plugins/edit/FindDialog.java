@@ -37,9 +37,10 @@ import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.diylc.lang.LangUtil;
 import org.diylc.swingframework.ButtonDialog;
 
-public class FindDialog extends ButtonDialog {
+public class FindDialog extends ButtonDialog {    
 
   private static final long serialVersionUID = 1L;
   
@@ -59,6 +60,9 @@ public class FindDialog extends ButtonDialog {
       + "'Resistor' - matches all resistors<br>"
       + "'R\\d+' - matches components starting with R, followed by at least one digit"
       + "</html>";
+  
+  private static final String FIND = LangUtil.translate("Find");
+  private static final String LOOK_FOR = LangUtil.translate("Look for");
 
   private JPanel mainPanel;
 
@@ -68,7 +72,7 @@ public class FindDialog extends ButtonDialog {
   private String criteria;  
 
   public FindDialog(JFrame owner) {
-    super(owner, "Find", new String[] {OK, CANCEL});
+    super(owner, FIND, new String[] {OK, CANCEL});
     setMinimumSize(new Dimension(400, 32));
     layoutGui();
     refreshState();
@@ -92,7 +96,7 @@ public class FindDialog extends ButtonDialog {
       gbc.gridx = 0;
 
       gbc.gridy = 0;
-      mainPanel.add(new JLabel("Look for:"), gbc);
+      mainPanel.add(new JLabel(LOOK_FOR + ":"), gbc);
 
       gbc.gridx = 1;
       gbc.fill = GridBagConstraints.HORIZONTAL;

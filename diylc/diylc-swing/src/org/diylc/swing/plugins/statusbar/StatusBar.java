@@ -69,6 +69,7 @@ import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.images.IconLoader;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swingframework.MemoryBar;
@@ -78,12 +79,33 @@ import org.diylc.swingframework.update.UpdateLabel;
 
 public class StatusBar extends JPanel implements IPlugIn {
 
+  private static final String CLICK_TO_CREATE = LangUtil.translate("Click on the canvas to create a new %s or press %s to cancel");
+  private static final String CLICK_TO_SET_POINT =
+      LangUtil.translate("Click on the canvas to set the %s control point of a new %s or press %s to cancel");
+  private static final String HOLD_TO_UNSTUCK = LangUtil.translate("hold %s and drag to unstick from");
+  private static final String SELECTION = LangUtil.translate("Selection");
+  private static final String DRAG_POINTS_OF = LangUtil.translate("Drag control point(s) of");
+  private static final String DRAG_TO_PLACE_A_NEW = LangUtil.translate("Drag the mouse over the canvas to place a new");
+  private static final String ZOOM = LangUtil.translate("Zoom");
+  private static final String SELECTION_SIZE = LangUtil.translate("Selection Size");
+  private static final String SELECTION_IS_EMPTY = LangUtil.translate("Selection is empty.");
+  private static final String INFORMATION = LangUtil.translate("Information");
+  private static final String NO_HISTORY = LangUtil.translate("Version history is not available.");
+  private static final String CLICK_UPDATES = LangUtil.translate("Click to show recent changes and updates");
+  private static final String NO_ANNOUNCEMENTS = LangUtil.translate("No new public announcements available.");
+  private static final String ERROR_TITLE = LangUtil.translate("Error");
+  private static final String PUBLIC_ANNOUNCEMENT = LangUtil.translate("Public Announcement");
+  private static final String COULD_NOT_FETCH_ANNOUNCEMENTS = LangUtil.translate("Could not fetch public announcements.");
+  private static final String CLICK_TO_FETCH_ANNOUNCEMENT = LangUtil.translate("Click to fetch the most recent public announcement");
+  private static final String CLICK_THE_LIGHBULB = LangUtil.translate("Click the lighbulb icon in the bottom-right corner of the window for more info.");
+  private static final String NEW_VERSION_AVAILABLE = LangUtil.translate("New version available");
+  private static String HIGHLIGHT_CONNECTED_TIP = LangUtil.translate("Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF");
+
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(StatusBar.class);
 
-  public static String UPDATE_URL = "http://diy-fever.com/diylc/api/v1/update.xml";
-  private static String HIGHLIGHT_CONNECTED_TIP = "Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF";
+  public static String UPDATE_URL = "http://diy-fever.com/diylc/api/v1/update.xml";  
   private static final Format sizeFormat = new DecimalFormat("0.##");
 
   private JComboBox zoomBox;
@@ -138,8 +160,9 @@ public class StatusBar extends JPanel implements IPlugIn {
 
         if (update != null) {          
           String updateHtml =
-              "<font size='4'><b>New version available:</b> " + update
-                  + "</font><br>Click the lighbulb icon in the bottom-right corner of the window for more info.";
+              "<font size='4'><b>" + NEW_VERSION_AVAILABLE + ":</b> " + update
+                  + "</font><br>"
+                      + CLICK_THE_LIGHBULB;
           if (announcements == null || announcements.length() == 0)
             return "<html>" + updateHtml + "</html>";
           announcements = announcements.replace("<html>", "<html>" + updateHtml + "<br>");
@@ -225,7 +248,7 @@ public class StatusBar extends JPanel implements IPlugIn {
           return new Point(0, -16);
         }
       };
-      announcementLabel.setToolTipText("Click to fetch the most recent public announcement");
+      announcementLabel.setToolTipText(CLICK_TO_FETCH_ANNOUNCEMENT);
       announcementLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
       announcementLabel.addMouseListener(new MouseAdapter() {
 
@@ -241,16 +264,16 @@ public class StatusBar extends JPanel implements IPlugIn {
             @Override
             public void failed(Exception e) {
               LOG.error("Error while fetching announcements", e);
-              swingUI.showMessage("Could not fetch public announcements.", "Error", IView.ERROR_MESSAGE);
+              swingUI.showMessage(COULD_NOT_FETCH_ANNOUNCEMENTS, ERROR_TITLE, IView.ERROR_MESSAGE);
             }
 
             @Override
             public void complete(String result) {
               if (result != null && result.length() > 0) {
-                swingUI.showMessage(result, "Public Announcement", IView.INFORMATION_MESSAGE);
+                swingUI.showMessage(result, PUBLIC_ANNOUNCEMENT, IView.INFORMATION_MESSAGE);
                 announcementProvider.dismissed();
               } else
-                swingUI.showMessage("No new public announcements available.", "Public Announcement",
+                swingUI.showMessage(NO_ANNOUNCEMENTS, PUBLIC_ANNOUNCEMENT,
                     IView.INFORMATION_MESSAGE);
             }
 
@@ -272,7 +295,7 @@ public class StatusBar extends JPanel implements IPlugIn {
           return new Point(0, -16);
         }
       };
-      recentChangesLabel.setToolTipText("Click to show recent changes and updates");
+      recentChangesLabel.setToolTipText(CLICK_UPDATES);
       recentChangesLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
       
       recentChangesLabel.addMouseListener(new MouseAdapter() {
@@ -281,7 +304,7 @@ public class StatusBar extends JPanel implements IPlugIn {
         public void mouseClicked(MouseEvent e) {
           List<Version> updates = plugInPort.getRecentUpdates();
           if (updates == null)
-            swingUI.showMessage("Version history is not available.", "Information", IView.INFORMATION_MESSAGE);
+            swingUI.showMessage(NO_HISTORY, INFORMATION, IView.INFORMATION_MESSAGE);
           else {
             String html = UpdateChecker.createUpdateHTML(updates);
             UpdateDialog updateDialog = new UpdateDialog(swingUI.getOwnerFrame().getRootPane(), html, (String)null);
@@ -344,13 +367,13 @@ public class StatusBar extends JPanel implements IPlugIn {
           Point2D[] sizes = plugInPort.calculateSelectionDimension();
           String text;
           if (sizes == null) {
-            text = "Selection is empty.";
+            text = SELECTION_IS_EMPTY;
           } else {
             text =
                 sizeFormat.format(sizes[0].getX()) + " x " + sizeFormat.format(sizes[0].getY()) + " in\n"
                     + sizeFormat.format(sizes[1].getX()) + " x " + sizeFormat.format(sizes[1].getY()) + " cm";
           }
-          JOptionPane.showMessageDialog(SwingUtilities.getRootPane(StatusBar.this), text, "Selection Size",
+          JOptionPane.showMessageDialog(SwingUtilities.getRootPane(StatusBar.this), text, SELECTION_SIZE,
               JOptionPane.INFORMATION_MESSAGE);
         }
       });
@@ -372,7 +395,7 @@ public class StatusBar extends JPanel implements IPlugIn {
     add(getPositionLabel(), gbc);
 
     JPanel zoomPanel = new JPanel(new BorderLayout());
-    zoomPanel.add(new JLabel("Zoom: "), BorderLayout.WEST);
+    zoomPanel.add(new JLabel(ZOOM + ": "), BorderLayout.WEST);
     zoomPanel.add(getZoomBox(), BorderLayout.CENTER);
     // zoomPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory
     // .createEtchedBorder(), BorderFactory.createEmptyBorder(2, 4, 2,
@@ -502,7 +525,7 @@ public class StatusBar extends JPanel implements IPlugIn {
     if (componentSlot == null) {
       if (componentNamesUnderCursor != null && !componentNamesUnderCursor.isEmpty()) {
         String formattedNames = Utils.toCommaString(componentNamesUnderCursor);
-        statusText = "<html>Drag control point(s) of " + formattedNames + "</html>";
+        statusText = "<html>" + DRAG_POINTS_OF + " " + formattedNames + "</html>";
       } else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
         StringBuilder builder = new StringBuilder();
         builder.append(Utils.toCommaString(selectedComponentNames.subList(0,
@@ -511,18 +534,18 @@ public class StatusBar extends JPanel implements IPlugIn {
           builder.append(" and " + (selectedComponentNames.size() - 15) + " more");
         }
         if (!stuckComponentNames.isEmpty()) {
-          builder.append(" (hold <b>Ctrl</b> and drag to unstuck from ");
+          builder.append(" (" + String.format(HOLD_TO_UNSTUCK, "<b>Ctrl</b>") + " ");
           builder.append(Utils.toCommaString(stuckComponentNames.subList(0, Math.min(5, stuckComponentNames.size()))));
           if (stuckComponentNames.size() > 5) {
             builder.append(" and " + (stuckComponentNames.size() - 5) + " more");
           }
           builder.append(")");
         }
-        statusText = "<html>Selection: " + builder.toString() + "</html>";
+        statusText = "<html>" + SELECTION + ": " + builder.toString() + "</html>";
       }
     } else {
       if (forceInstatiate != null && forceInstatiate)
-        statusText =  "<html>Drag the mouse over the canvas to place a new <font color='blue'>" + componentSlot.getName()
+        statusText =  "<html>" + DRAG_TO_PLACE_A_NEW + " <font color='blue'>" + componentSlot.getName()
             + "</font></html>";
       else
       switch (componentSlot.getCreationMethod()) {
@@ -534,13 +557,13 @@ public class StatusBar extends JPanel implements IPlugIn {
             count = "second";
           }
           statusText =
-              "<html>Click on the canvas to set the " + count + " control point of a new <font color='blue'>"
-                  + componentSlot.getName() + "</font> or press <b>Esc</b> to cancel</html>";
+              "<html>" + String.format(CLICK_TO_SET_POINT, count, "<font color='blue'>"
+                  + componentSlot.getName() + "</font>", "<b>Esc</b>") + "</html>";
           break;
         case SINGLE_CLICK:
           statusText =
-              "<html>Click on the canvas to create a new <font color='blue'>" + componentSlot.getName()
-                  + "</font> or press <b>Esc</b> to cancel</html>";
+              "<html>" + String.format(CLICK_TO_CREATE, "<font color='blue'>" + componentSlot.getName()
+              + "</font>", "<b>Esc</b>") + "</html>";
           break;
       }
     }

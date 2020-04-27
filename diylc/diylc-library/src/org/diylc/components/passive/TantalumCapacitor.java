@@ -226,7 +226,7 @@ public class TantalumCapacitor extends AbstractRadialComponent<Capacitance> {
     this.height = height;
   }
 
-  @EditableProperty(name = "Invert polarity")
+  @EditableProperty(name = "Invert Polarity")
   public boolean getInvert() {
     return invert;
   }

@@ -21,14 +21,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.EnumSet;
+import java.util.Map;
+
+import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.components.autocreate.SolderPadAutoCreator;
 import org.diylc.core.Theme;
+import org.diylc.flags.FlagLoader;
 import org.diylc.images.IconLoader;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.ResourceLoader;
@@ -41,7 +48,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * 
  * @author Branislav Stojkovic
  */
-public class ConfigPlugin implements IPlugIn {
+public class ConfigPlugin implements IPlugIn {   
 
   private static final Logger LOG = Logger.getLogger(ConfigPlugin.class);
 
@@ -53,6 +60,9 @@ public class ConfigPlugin implements IPlugIn {
   public static final String COMPONENT_BROWSER = "componentBrowser";
   public static final String SEARCHABLE_TREE = "Searchable Tree";
   public static final String TABBED_TOOLBAR = "Tabbed Toolbar";
+  private static final String LANGUAGE_MENU = LangUtil.translate("Language");
+  
+  private static final String LANG_RESTART = LangUtil.translate("Language selection will be applied after the application is restarted.");  
 
   private ISwingUI swingUI;
 
@@ -93,6 +103,26 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, 
             false), CONFIG_MENU);
+    
+    try {
+      Map<String, Map<String, String>> languages = LangUtil.getAvailableLanguages(); 
+      if (languages != null && languages.size() > 0) {
+        swingUI.injectSubmenu(LANGUAGE_MENU, IconLoader.Earth.getIcon(), CONFIG_MENU);
+        for(Map.Entry<String, Map<String, String>> language : languages.entrySet()) {
+          Icon icon = null;
+          if (language.getValue().containsKey("icon"))
+            icon = FlagLoader.getIcon(language.getValue().get("icon"));
+          swingUI.injectMenuAction(                              
+              ActionFactory.getInstance().createToggleAction(language.getKey(), IPlugInPort.LANGUAGE, LANGUAGE_MENU, IPlugInPort.LANGUAGE_DEFAULT, 
+                  icon),
+              LANGUAGE_MENU);       
+        }
+      }
+    } catch (Exception e) {
+      LOG.error("Error while setting up language menu", e);
+    }
+   
+    
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY,
             false), CONFIG_MENU);
@@ -132,7 +162,7 @@ public class ConfigPlugin implements IPlugIn {
     
     swingUI.injectMenuAction(
         ActionFactory.getInstance()
-            .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);
+            .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);      
 
     File[] themeFiles = ResourceLoader.getFiles("themes");
     if (themeFiles != null && themeFiles.length > 0) {
@@ -158,6 +188,15 @@ public class ConfigPlugin implements IPlugIn {
         COMPONENT_BROWSER_MENU);
     swingUI.injectMenuAction(ActionFactory.getInstance().createComponentBrowserAction(TABBED_TOOLBAR),
         COMPONENT_BROWSER_MENU);
+    
+    // notify the user that language selection is not immediate
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.LANGUAGE, new IConfigListener() {
+      
+      @Override
+      public void valueChanged(String key, Object value) {
+        swingUI.showMessage(LANG_RESTART, LANGUAGE_MENU, ISwingUI.INFORMATION_MESSAGE);
+      }
+    });
   }
 
   @Override

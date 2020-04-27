@@ -19,6 +19,7 @@ Source: "build\jar\diylc.jar"; DestDir: "{app}"
 Source: "build\jar\lib\*"; DestDir: "{app}\lib"
 Source: "build\jar\library\*"; DestDir: "{app}\library"
 Source: "themes\*"; DestDir: "{app}\themes"
+Source: "lang\*"; DestDir: "{app}\lang"
 Source: "fonts\*"; DestDir: "{app}\fonts"
 Source: "innosetup\donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
 

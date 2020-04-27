@@ -1,0 +1,436 @@
+#start-internal
+icon=serbia
+#end-internal
+(Building Blocks)|(Blokovi za Gradnju)
+(Favorites)|(Omiljene)
+(Recently Used)|(Skoro Korišćene)
+180 degrees clockwise|(180 stepeni u pravcu kazaljke)
+270 degrees clockwise|(270 stepeni u pravcu kazaljke)
+90 degrees clockwise|(90 stepeni u pravcu kazaljke)
+A variant with that name already exists. Overwrite?|Varijacija pod tim imenom već postoji. Prepisati?
+About|O Autoru
+Above|Iznad
+Access User Files|Pristupi Korisničkim Datotekama
+Add Flexible Leads|Dodaj Fleksibilne Izvode
+Add Validation Step|Dodaj Korak Provere
+All Connected|Svi Povezani
+Alpha|Transparentnost
+Analyze|Analiziraj
+Analyze Guitar Diagrams|Analiziraj Gitarske Dijagrame
+Angle|Ugao
+Anti-Aliasing
+Arrow Size|Veličina Strelice
+Author|Autor
+Auto-Create Pads|Auto-Kreiranje Pad
+Auto-Edit Mode|Automatsko Editovanje
+Base|Osnova
+Below|Ispod
+Blueprint|Tamnoplava
+Board|Pločica
+Boards|Pločice
+Board Color|Boja Pločice
+Board Width|Širina Pločice
+Bobin 1|Bobina 1
+Bobin 2|Bobina 2
+Body|Telo
+Border|Ivica
+Border Thickness|Debljina Ivice
+Both|Oba
+Both Sides|Obe Strane
+Bottom|Dole
+Bottom Left|Dole Levo
+Bottom Right|Dole Desno
+Bring Forward|Prinesi Napred
+Bring Selection to Front|Prinesi Odabrane Napred
+Buffer|Bafer
+Center|Centar
+Center Negative|Negativni Centar
+Center Positive|Pozitivni Centar
+Center Terminal|Centralni Terminal
+Central|Centralni
+Change Password|Promena Lozinke
+Channel|Kanal
+Chassis|Šasija
+Circular|Kružno
+Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|Klikni na komponentu da označiš oblast direktno ili indirektno povezanu sa oblašću ispod kursora. Za dalje izmene, ovaj mod treba biti isključen
+Click on the canvas to create a new %s or press %s to cancel|Klikni na platno da kreiraš novu %s ili pritisni %s za odustajanje
+Click on the canvas to set the %s control point of a new %s or press %s to cancel|Klikni na platno da postaviš %s kontrolnu tačku nove %s ili pritisni %s za odustajanje
+Click the lighbulb icon in the bottom-right corner of the window for more info.|Klikni na ikonicu sa sijalicom u donjem-desnom uglu prozora za više informacija.
+Click to fetch the most recent public announcement|Klikni za preuzimanje najnovijih objava
+Click to show recent changes and updates|Klikni za prikaz skorih unapređenja
+Coil|Kalem
+Coil Border|Ivica Kalema
+Coil Length|Dužina Kalema
+Coil Width|Širina Kalema
+Color|Boja
+Color 1|Boja 1
+Color 2|Boja 2
+Color code|Boje
+Columns|Kolone
+Component|Komponenta
+Component API|Komponentni API
+Components|Komponente
+Config|Konfiguracija
+Connector|Konektor
+Connector (Mirrored)|Konektor (u ogledalu)
+Connectivity|Veze
+Contacts|Kontakti
+Continuous Creation|Kontinualno Dodavanje
+Coordinate Color|Boja Koordinata
+Coordinate Origin|Položaj Koordinata
+Coordinates|Koordinate
+Copy|Kopiraj
+Core|Jezgro
+Core Border|Ivica Jezgra
+Core Thickness|Debljina Jezgra
+Core Width|Širina Jezgra
+Could not create a new file. Check the log for details.|Neuspelo kreiranje nove datoteke. Proverite log za više informacija.
+Could not create component. Check log for details.|Neuspelo dodavanje komponente. Proverite log za više informacija.
+Could not fetch public announcements.|Neuspelo preuzimanje objava.
+Could not save the project to file. Check the log for details.|Neuspelo čuvanje projekta u datoteku. Proverite log za više informacija.
+Could not set component type slot. Check log for details.|Neuspelo postavljanje komponente. Proverite log za više informacija.
+Cover|Poklopac
+Create B.O.M.|Kreiraj Spisak za Kupovinu
+Create New Account|Kreiraj Novi Nalog
+Current|Trenutni
+Cut|Iseci
+Cut Between Holes|Seci Između Rupa
+Cut Orientation|Smer Zaseka
+DIP (Mirrored)|DIP (u ogledalu)
+DP3T (Standard 3-Position Strat)
+DP3T (Standard 5-Position Strat)
+DP4T (4-Position Tele)
+Dark|Tamna
+Dashed|Isprekidana
+Decimals|Decimale
+Default|Podrazumevano
+Default Font|Podrazumevani Font
+Default Font Size|Podrazumevana Veličina Fonta
+Delete Selection|Obriši Izabrane
+Description|Opis
+Diameter|Prečnik
+Directional|Usmereni
+Directly heated|Direktno grejanje
+Display|Prikaz
+Display Pin #s|Prikaz Brojeva Pinova
+Dog Ear
+Dot Spacing|Razmak Između Tačaka
+Dotted|Tačkasta
+Drag control point(s) of|Vuci kontrolne tačke
+Drag the mouse over the canvas to place a new|Prevuci kursor miša preko platna da postaviš novu
+Dual Rail Humbucker
+Dual Rods
+Duodecar B12C
+Duplicate|Duplikat
+Edges|Ivice
+Edit|Izmena
+Edit Project Settings|Izmeni Podešavanja Projekta
+Edit Selection|Izmeni Izabrane
+Electrode Labels|Oznake Elektroda
+Electro-Mechanical|Elektro-Mehaničke
+Enable Cache Boost|Uključi Keš-Ubrzanje
+End Arrow|Krajnja Strelica
+Enjoying DIYLC? Click here to buy me a coffee :)|Uživate koristeći DIYLC? Kupite mi kafu :)
+Error|Greška
+Error occurred while editing selection. Check the log for details.|Nastala je greška prilikom izmene. Proverite log za više informacija.
+Exit|Izlaz
+Expand Selection|Proširi Izabrane
+Explicit Dimensions|Tačne Dimenzije
+Explicit Length|Tačna Dužina
+Explicit Width|Tačna Širina
+Export Building Blocks
+Export Grid|Izvoz Rešetke
+Export Variants|Izvoz Varijacija
+Export to PDF|Izvoz u PDF
+Export to PNG|Izvoz u PNG
+Extra Working Area|Dodatna Radna Površina
+Eyelet color|Boja Terminala
+FAQ
+File|Datoteka
+Filtertron
+Find|Traži
+Five|Pet
+Flip|Izvrni
+Folded|Ležeće
+Font
+Font Bold
+Font Italic
+Font Size|Veličina Fonta
+Four|Četiri
+Full|Puno
+Fuse|Osigurač
+Generate DIYLC Netlist|Generiši DIYLC Netlistu
+Generate Spice Netlist|Generiši Spice Netlistu
+Grid|Rešetka
+Grid Spacing|Razmak Rešetke
+Group Selection|Odabir Grupe
+Guitar|Gitara
+Half|Pola
+Hardware Acceleration|Hardversko Ubrzanje
+Heaters|Grejaci
+Height|Visina
+Help|Pomoć
+Hi-Quality Rendering|Visoko-Kvalitetno Iscrtavanje
+Highlight Connected Areas|Označi Povezane Oblasti
+Hole|Rupa
+Hole Size|Veličina Rupe
+Hole Spacing|Razmak Rupa
+Holes per strip|Rupa Po Traci
+Horizontal|Horizontalno
+Horizontal Alignment|Horizontalno Poravnanje
+Horizontal Large|Horizontalni Veliki
+Horizontal Medium|Horizontalni Srednji
+Horizontal Small 1|Horizontalni Mali 1
+Horizontal Small 2|Horizontalni Mali 2
+Horizontal X-Small|Horizontalni Vrlo Mali
+Humbucking
+If this box is checked application will use the current value as a<br>default when creating new components of the same type|Ako je ova kutija označena, aplikacija će nadalje koristiti trenutnu<br>vrednost prilikom kreiranje novih komponenti ovog tipa
+Image|Slika
+Immediate Only|Samo Neposredne
+Import|Uvoz
+Import Building Blocks|Uvezi Blokove za Gradnju
+Import Variants|Uvezi Varijacije
+In-Line D-44|U Redu D-44
+In-line|U Redu
+Indent|Zasek
+Information|Informacije
+Inline|U Redu
+Input error for "%s": %s|Greška u unosu za "%s": %s
+Inside color|Boja Unutrašnjosti
+Integration|Integracija
+Invert polarity|Obrnuti Polaritet
+Label|Natpis
+Label Color|Boja Natpisa
+Label Orientation|Smer Natpisa
+Label Position|Pozicija Natpisa
+Labels|Natpisi
+Language|Jezik
+Language selection will be applied after the application is restarted.|Odabir jezika će biti primenjen nakon sledećeg pokretanja aplikacije.
+Layer|Sloj
+Layers|Slojevi
+Lead Color|Boja Izvoda
+Lead Count|Broj Izvoda
+Lead Length|Dužina Izvoda
+Lead Spacing|Rastojanje Izvoda
+Left|Levo
+Left-to-Right|Levo-do-Desno
+Left click to instantiate this component, right click for more options|Levi klik instancira ovu komponentu, desni klik nudi više mogućnosti
+Legs|Nožice
+Length|Dužina
+Letters|Slova
+Light|Svetla
+Lip|Usek
+Lock|Zaključaj
+Log In|Prijava
+Log Out|Odjava
+Lug Size|Veličina Ušica
+Lugs|Ušice
+Make a Donation|Doniraj
+Manage Account|Upravljanje Nalogom
+Manage My Uploads|Upravljanje Mojim Projektima
+Mark Common Lugs|Označi Zajedničke Ušice
+Marker
+Mini
+Miniature|Minijaturni
+Mirror Horizontally|Preslikaj Horizontalno
+Mirror Selection|Preslikaj Izabrane
+Mirror Vertically|Preslikaj Vertikalno
+Mirroring operation will change the circuit. Do you want to continue?|Preslikavanje će uticati na kolo. Da li želite da nastavite?
+Misc|Razno
+Model
+Mono
+Mount|Montaža
+Mounting Lugs
+Mouse Wheel Zoom|Uvećanje Točkićem Miša
+Moveable Label|Pomeranje Oznake
+Name|Naziv
+Negative|Negativno
+New|Novi
+New version available|Nova verzija je dostupna
+No new public announcements available.|Nema novih javnih objava.
+No|Ne
+None|Ništa
+North|Sever
+Noval B9A
+Nudge|Pomeri
+Numbers|Brojevi
+Nut|Matica
+Octal
+Offset|Ofset
+One Side|Jedna Strana
+Open|Otvori
+Opposing Points|Suprotne Tačke
+Orientation|Smer
+Outer Foil|Prikaz Spoljne Folije
+Outer Foil Mark|Oznaka Spoljne Folije
+Outline Mode|Mod Oivičenja
+Outside|Spolja
+Oval horizontal|Ovalni Horizontalni
+Oval vertical|Ovalni Vertikalni
+Pad Color
+Passive|Pasivne
+Paste|Nalepi
+Pin Arrangement|Uređenje Pinova
+Pin Color|Boja Pina
+Pin Spacing|Razmak Pinova
+Pinout
+Pins|Pinovi
+Play Test|Izvršavanje Testa
+Plugin API
+Point Count|Broj Tačaka
+Polarity|Polaritet
+Polarized|Polarizovani
+Pole Color|Boja Šipkica
+Pole Pieces|Šipkice
+Pole Pieces 1|Šipkice 1
+Pole Pieces 2|Šipkice 2
+Positions|Pozicije
+Positive|Pozitivni
+Power Rating|Snaga
+Power Strip|Naponska Magistrala
+Primary CT|Primarni Srednji Izvod
+Print...|Štampa...
+Project Cloud|Projektni Oblak
+Public Announcement|Javna Objava
+Radius|Poluprečnik
+Rail|Šina
+Recent Files|Skorašnje Datoteke
+Recent Updates|Skorašnja Unapređenja
+Redo|Korak Napred
+Renumber On Paste|Dodale Brojeva Nakon Nalepljivanja
+Renumber Selection|Dodeli Nove Brojeve
+Resistance|Otpor
+Reverse (standing)|Izvrni (stajanje)
+Right|Desno
+Rods|Šipkice
+Rotate Clockwise|Rotiraj u Smeru Kazaljke
+Rotate Counterclockwise|Rotiraj Suprotno od Smera Kazaljke
+Rotate Selection|Rotiraj Izabrane
+Round|Okrugli
+Round WOG A
+Round WOG B
+Row Spacing|Razmak Između Vrsta
+Rows|Vrste
+Ruler Inch Subdivision...|Deljenje Inča Na Lenjiru
+Same Type Only|Samo Istog Tipa
+Save|Sačuvaj
+Save As|Sačuvaj Kao
+Save as Variant|Sačuvaj Kao Varijaciju
+Scale|Razmer
+Schematic Symbols|Simboli Šema
+Screws|Šrafovi
+Selection|Izabrano
+Selection Size|Veličina Izabranih
+Selection is empty.|Nema izabranih komponenti.
+Search The Cloud|Pretraga Oblaka
+Searchable Tree|Stablo sa Pretragom
+Secondary CT|Sekundarni Srednji Izvod
+Select All|Odaberi Sve
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Izabrane komponente su stigle do dna svog sloja. Da li želite da ih na silu pošaljete ispod?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Izabrane komponente su stigle do vrha svog sloja. Da li želite da ih na silu pošaljete iznad?
+Selection contains components that cannot be mirrored. Do you want to exclude them?|Neke od izabranih komponenti ne mogu biti preslikane. Da li želite da ih preskočite?
+Selection contains components that cannot be rotated. Do you want to exclude them?|Neke od izabranih komponenti ne mogu biti rotirane. Da li želite da ih preskočite?
+Semiconductors|Poluprovodnici
+Send Backward|Pošalji Nazad
+Send Selection to Back|Pošalji Izabrane Nazad
+Seven|Sedam
+Shaft Down|Osovina Dole
+Shaft Up|Osovina Gore
+Shape|Oblik
+Shapes|Oblici
+Show Grid|Prikaz Rešetke
+Show Rulers|Prikaz Lenjira
+Shroud|Kućište
+Shrouded|Sa Kućištem
+Single Rail|Single - Šina
+Single Rods|Single - Šipkice
+Size|Veličina
+Sizing Mode|Zadavanje Veličine
+Small-button B7G
+Smooth|Glatko
+Snap To...|Zalepi Uz...
+Soap Bar
+Solid|Puna Linija
+South|Jug
+Spacing|Razmak
+Square|Kvadrat
+Square BR-3
+Standard|Standardno
+Start Arrow|Početna Strelica
+Start Recording|Kreni Snimanje
+Stereo
+Sticky Points|Lepljive Kontrolne Tačke
+Stop Recording|Zaustavi Snimanje
+Stratocaster
+Strip Color|Boja Magistrala
+Stripe|Štrafte
+Stripe 1|Štrafte 1
+Stripe 2|Štrafte 2
+Stripe Color|Boja Štrafte
+Stripe Color 1|Boja Štrafte 1
+Stripe Color 2|Boja Štrafte 2
+Style|Stil
+Submit a Bug|Prijavi Problem
+Suppressor grid|Treća Rešetka
+Switched|Sa Prekidačem
+Switches|Prekidači
+Tab|Hladnjak
+Tab Border|Ivica Hladnjaka
+Tabbed Toolbar|Kartice
+Taper
+Telecaster
+Terminal Spacing|Rastojanje Terminala
+Terminals|Terminali
+Test
+Text|Tekst
+Text Color|Boja Teksta
+Theme|Tema
+There are unsaved changes. Would you like to save them?|Ima nesačuvanih izmena. Da li želite da ih sačuvate?
+Thickness|Debljinja
+Three|Tri
+Through Hole|Kroz Rupu
+Tick|Crtica
+Title|Naslov
+Toolbox|Kutija sa Alatima
+Top|Vrh
+Top Lead|Gornji Izvod
+Top Left|Gore Levo
+Top Right|Gore Desno
+Top-to-Bottom|Gore-do-Dole
+Trace|Vod
+Trace Color|Boja Voda
+Trace Mask|Maska Vodova
+Transform Selection|Transformiši Izabrane
+Triangle|Trougao
+Tubular|Cevasti
+Tubes|Cevi
+Two|Dva
+Type|Tip
+Ultra-miniature|Ultra-minijaturni
+Underside Pad Color
+Underside Trace Color
+Undo|Korak Nazad
+Ungroup Selection|Odgrupiš Izabrane
+Unit|Jedinica
+Upload A Project|Slanje Projekta
+User Manual|Korisničko Uputsvo
+Value|Vrednost
+Version history is not available.|Istorija verzija nije dostupna.
+Vertical|Verikalno
+Vertical Alignment|Vertikalno Poravnanje
+Vertical Inline|Vertikalno u Liniji
+Vertical Offset 1|Verikalni Ofset 1
+Vertical Offset 2|Vertikalni Ofset 2
+View|Pogled
+Visible|Vidljivo
+Voltage|Napon
+Wafer|Izolator
+Warning|Upozorenje
+Width|Širina
+Winding Spacing
+X-axis|X-osa
+Y-axis|Y-osa
+Zoom|Uveličanje
+base of 10|Osnova 10
+base of 2|Osnova 2
+hold %s and drag to unstick from|Drži %s i vuci da odlepiš od

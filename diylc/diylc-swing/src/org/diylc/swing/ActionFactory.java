@@ -40,6 +40,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import javax.swing.AbstractAction;
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -261,7 +262,12 @@ public class ActionFactory {
 
   public ToggleAction createToggleAction(String title, String configKey, String groupName,
       String defaultValue) {
-    return new ToggleAction(title, configKey, groupName, defaultValue);
+    return new ToggleAction(title, configKey, groupName, defaultValue, null);
+  }
+  
+  public ToggleAction createToggleAction(String title, String configKey, String groupName,
+      String defaultValue, Icon icon) {
+    return new ToggleAction(title, configKey, groupName, defaultValue, icon);
   }
 
   public ThemeAction createThemeAction(IPlugInPort plugInPort, Theme theme) {
@@ -1684,7 +1690,7 @@ public class ActionFactory {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      LOG.info(getValue(AbstractAction.NAME) + " triggered");
+      LOG.info(configKey + " config triggered");
       ConfigurationManager.getInstance().writeValue(configKey,
           getValue(AbstractAction.SELECTED_KEY));
       if ((Boolean) getValue(AbstractAction.SELECTED_KEY) && tipKey != null
@@ -1701,13 +1707,15 @@ public class ActionFactory {
 
     private String configKey;
 
-    public ToggleAction(String title, String configKey, String groupName, String defaultValue) {
+    public ToggleAction(String title, String configKey, String groupName, String defaultValue, Icon icon) {
       super();
       this.configKey = configKey;
       putValue(AbstractAction.NAME, title);
       putValue(IView.RADIO_BUTTON_GROUP_KEY, groupName);
       putValue(AbstractAction.SELECTED_KEY, ConfigurationManager.getInstance()
           .readString(configKey, defaultValue).equalsIgnoreCase(title));
+      if (icon != null)
+        putValue(AbstractAction.SMALL_ICON, icon);
     }
 
     @Override
