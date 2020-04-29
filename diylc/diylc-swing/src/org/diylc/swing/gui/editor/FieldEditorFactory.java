@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.components.misc.LoadlineEntity;
 import org.diylc.core.annotations.DynamicList;
 import org.diylc.core.annotations.MultiLineText;
 import org.diylc.core.measures.AbstractMeasure;
@@ -98,6 +99,10 @@ public class FieldEditorFactory {
     }
     if (Integer.class.isAssignableFrom(property.getType()) || int.class.isAssignableFrom(property.getType())) {
       IntEditor editor = new IntEditor(property);
+      return editor;
+    }
+    if (LoadlineEntity.class.isAssignableFrom(property.getType())) {
+      LoadlineEditor editor = new LoadlineEditor(property);
       return editor;
     }
     LOG.error("Unrecognized parameter type: " + property.getType().getName());

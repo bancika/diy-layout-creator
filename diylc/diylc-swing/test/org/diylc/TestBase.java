@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.ComponentType;
 import org.diylc.core.IView;
 import org.diylc.presenter.Presenter;
@@ -18,7 +19,7 @@ public class TestBase {
   public TestBase() {
     ConfigurationManager.initialize("diylc-test");
     view = new MockView();
-    presenter = new Presenter(view);
+    presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());
   }
   
   protected void instantiateOneClick(String category, String name, Point point1) {

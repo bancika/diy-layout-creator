@@ -51,6 +51,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
@@ -191,6 +192,7 @@ public class Presenter implements IPlugInPort {
   private Rectangle selectionRect;
 
   private final IView view;
+  private IConfigurationManager configManager;
 
   private MessageDispatcher<EventType> messageDispatcher;
 
@@ -208,16 +210,17 @@ public class Presenter implements IPlugInPort {
   
   private DIYTest test = null;
 
-  public Presenter(IView view) {
+  public Presenter(IView view, IConfigurationManager configManager) {
     super();
     this.view = view;
+    this.configManager = configManager;
     plugIns = new ArrayList<IPlugIn>();
     messageDispatcher = new MessageDispatcher<EventType>(true);
     selectedComponents = new HashSet<IDIYComponent<?>>();
     lockedComponents = new HashSet<IDIYComponent<?>>();
     currentProject = new Project();
     // cloner = new Cloner();
-    drawingManager = new DrawingManager(messageDispatcher);
+    drawingManager = new DrawingManager(messageDispatcher, configManager);
     projectFileManager = new ProjectFileManager(messageDispatcher);
     instantiationManager = new InstantiationManager();
 
@@ -265,7 +268,7 @@ public class Presenter implements IPlugInPort {
   @Override
   public Cursor getCursorAt(Point point) {
     // Only change the cursor if we're not making a new component.
-    if (ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
+    if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
       return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     if (instantiationManager.getComponentTypeSlot() == null) {
       // Scale point to remove zoom factor.
@@ -275,7 +278,7 @@ public class Presenter implements IPlugInPort {
       }
       for (IDIYComponent<?> component : currentProject.getComponents()) {
         if (!isComponentLocked(component) && isComponentVisible(component)
-            && !ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+            && !configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
           ComponentArea area = drawingManager.getComponentArea(component);
           if (area != null && area.getOutlineArea() != null && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -361,14 +364,14 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   private void addToRecentFiles(String fileName) {
-    List<String> recentFiles = (List<String>) ConfigurationManager.getInstance().readObject(RECENT_FILES_KEY, null);
+    List<String> recentFiles = (List<String>) configManager.readObject(RECENT_FILES_KEY, null);
     if (recentFiles == null)
       recentFiles = new ArrayList<String>();
     recentFiles.remove(fileName);
     recentFiles.add(0, fileName);
     while (recentFiles.size() > MAX_RECENT_FILES)
       recentFiles.remove(recentFiles.size() - 1);
-    ConfigurationManager.getInstance().writeValue(RECENT_FILES_KEY, recentFiles);
+    configManager.writeValue(RECENT_FILES_KEY, recentFiles);
   }
 
   @Override
@@ -640,10 +643,10 @@ public class Presenter implements IPlugInPort {
             }
 
             if (componentTypeSlot.isAutoEdit()
-                && ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_EDIT_KEY, false)) {
+                && configManager.readBoolean(IPlugInPort.AUTO_EDIT_KEY, false)) {
               editSelection();
             }
-            if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
+            if (configManager.readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
               setNewComponentTypeSlot(componentTypeSlot, template, false);
             } else {
               setNewComponentTypeSlot(null, null, false);
@@ -681,7 +684,7 @@ public class Presenter implements IPlugInPort {
           drawingManager.clearContinuityArea();
           projectFileManager.notifyFileChange();
         }
-      } else if (ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+      } else if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
         drawingManager.findContinuityAreaAtPoint(currentProject, scaledPoint);
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       } else {
@@ -742,10 +745,10 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
 
     if (componentTypeSlot.isAutoEdit()
-        && ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_EDIT_KEY, false)) {
+        && configManager.readBoolean(IPlugInPort.AUTO_EDIT_KEY, false)) {
       editSelection();
     }
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
+    if (configManager.readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
       setNewComponentTypeSlot(componentTypeSlot, template, false);
     } else {
       setNewComponentTypeSlot(null, null, false);
@@ -776,7 +779,7 @@ public class Presenter implements IPlugInPort {
       return false;
     }
 
-    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);
+    String snapTo = configManager.readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);
     if (shiftDown) {
         snapTo = IPlugInPort.SNAP_TO_NONE;
     }
@@ -807,7 +810,7 @@ public class Presenter implements IPlugInPort {
     }
 
     // Expand control points to include all stuck components.
-    boolean sticky = ConfigurationManager.getInstance().readBoolean(IPlugInPort.STICKY_POINTS_KEY, true);
+    boolean sticky = configManager.readBoolean(IPlugInPort.STICKY_POINTS_KEY, true);
     if (ctrlDown) {
       sticky = !sticky;
     }
@@ -1010,7 +1013,7 @@ public class Presenter implements IPlugInPort {
         LOG.debug("Area is null for " + c.getName() + " of type " + c.getClass().getName());
     }
 
-    if (ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true)) {
+    if (configManager.readBoolean(EXTRA_SPACE_KEY, true)) {
       double extraSpace = drawingManager.getExtraSpace(currentProject);
       minX += extraSpace;
       maxX += extraSpace;
@@ -1110,7 +1113,7 @@ public class Presenter implements IPlugInPort {
           dragAction == DnDConstants.ACTION_LINK, dragAction == DnDConstants.ACTION_MOVE, 1);
       return;
     }
-    if (ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+    if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
       LOG.debug("Cannot start drag in hightlight continuity mode.");
       return;
     }
@@ -1162,7 +1165,7 @@ public class Presenter implements IPlugInPort {
         }
       }
       // Expand control points to include all stuck components.
-      boolean sticky = ConfigurationManager.getInstance().readBoolean(IPlugInPort.STICKY_POINTS_KEY, true);
+      boolean sticky = configManager.readBoolean(IPlugInPort.STICKY_POINTS_KEY, true);
       if (this.dragAction == IPlugInPort.DND_TOGGLE_STICKY) {
         sticky = !sticky;
       }
@@ -1247,14 +1250,14 @@ public class Presenter implements IPlugInPort {
   }
 
   private boolean isSnapToGrid() {
-    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
+    String snapTo = configManager.readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
     if (this.dragAction == IPlugInPort.DND_TOGGLE_SNAP)
       return false;
     return snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID);
   }
   
   private boolean isSnapToObjects() {
-    String snapTo = ConfigurationManager.getInstance().readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
+    String snapTo = configManager.readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);    
     if (this.dragAction == IPlugInPort.DND_TOGGLE_SNAP)
       return false;
     return snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_COMPONENTS);
@@ -1269,7 +1272,7 @@ public class Presenter implements IPlugInPort {
       test.addStep(DIYTest.DRAG_OVER, params);
     }    
     
-    if (point == null || ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+    if (point == null || configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
       return false;
     }
     Point scaledPoint = scalePoint(point);
@@ -1310,7 +1313,7 @@ public class Presenter implements IPlugInPort {
     // For each component, do a simulation of the move to see if any of
     // them will overlap or go out of bounds.
 
-    boolean useExtraSpace = ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true);
+    boolean useExtraSpace = configManager.readBoolean(EXTRA_SPACE_KEY, true);
     Dimension d = drawingManager.getCanvasDimensions(currentProject, 1d, useExtraSpace);
     double extraSpace = useExtraSpace ? drawingManager.getExtraSpace(currentProject) : 0;
 
@@ -1620,7 +1623,7 @@ public class Presenter implements IPlugInPort {
         this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
       }
       List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
-      if (!ConfigurationManager.getInstance().readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
+      if (!configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
         for (IDIYComponent<?> component : currentProject.getComponents()) {
           if (!isComponentLocked(component) && isComponentVisible(component)) {
             ComponentArea area = drawingManager.getComponentArea(component);
@@ -1731,7 +1734,7 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> component : selectedComponents) {
       String className = component.getClass().getName();
       LOG.debug("Default property value set for " + className + ":" + propertyName);
-      ConfigurationManager.getInstance().writeValue(DEFAULTS_KEY_PREFIX + className + ":" + propertyName, value);
+      configManager.writeValue(DEFAULTS_KEY_PREFIX + className + ":" + propertyName, value);
     }
   }
 
@@ -1739,12 +1742,12 @@ public class Presenter implements IPlugInPort {
   public void setDefaultPropertyValue(Class<?> clazz, String propertyName, Object value) {
     LOG.info(String.format("setProjectDefaultPropertyValue(%s, %s, %s)", clazz.getName(), propertyName, value));
     LOG.debug("Default property value set for " + Project.class.getName() + ":" + propertyName);
-    ConfigurationManager.getInstance().writeValue(DEFAULTS_KEY_PREFIX + clazz.getName() + ":" + propertyName, value);
+    configManager.writeValue(DEFAULTS_KEY_PREFIX + clazz.getName() + ":" + propertyName, value);
   }
 
   @Override
   public void setMetric(boolean isMetric) {
-    ConfigurationManager.getInstance().writeValue(Presenter.METRIC_KEY, isMetric);
+    configManager.writeValue(Presenter.METRIC_KEY, isMetric);
   }
 
   @Override
@@ -2023,7 +2026,7 @@ public class Presenter implements IPlugInPort {
       }
       controlPointMap.put(component, indices);
     }
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.STICKY_POINTS_KEY, true)) {
+    if (configManager.readBoolean(IPlugInPort.STICKY_POINTS_KEY, true)) {
       includeStuckComponents(controlPointMap);
     }
     messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED, selectedComponents, controlPointMap.keySet());    
@@ -2472,7 +2475,7 @@ public class Presenter implements IPlugInPort {
         ComponentProcessor.getInstance().extractComponentTypeFrom(
             (Class<? extends IDIYComponent<?>>) component.getClass());
     Map<String, List<Template>> variantMap =
-        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
     if (variantMap == null) {
       variantMap = new HashMap<String, List<Template>>();
     }
@@ -2550,20 +2553,20 @@ public class Presenter implements IPlugInPort {
         xStream.toXML(defaultVariantMap, out);
         out.close();
         // no more user variants
-        ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, null);
+        configManager.writeValue(TEMPLATES_KEY, null);
         LOG.info("Saved default variants");
       } catch (IOException e) {
         LOG.error("Could not save default variants", e);
       }
     } else {
-      ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, variantMap);
+      configManager.writeValue(TEMPLATES_KEY, variantMap);
     }
   }
   
   @SuppressWarnings("unchecked")
   private void importDefaultVariants() {
     // import default templates from variants.xml file only if we didn't do it already
-    if (!ConfigurationManager.getInstance().readBoolean(DEFAULT_TEMPLATES_IMPORTED_KEY, false)) {
+    if (!configManager.readBoolean(DEFAULT_TEMPLATES_IMPORTED_KEY, false)) {
       try {
         URL resource = Presenter.class.getResource("variants.xml");
         if (resource != null) {
@@ -2573,7 +2576,7 @@ public class Presenter implements IPlugInPort {
           in.close();
                     
           Map<String, List<Template>> variantMap =
-              (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+              (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
           if (variantMap == null)
             variantMap = new HashMap<String, List<Template>>();          
           
@@ -2588,8 +2591,8 @@ public class Presenter implements IPlugInPort {
           }          
           
           // update templates and a flag marking that we imported them
-          ConfigurationManager.getInstance().writeValue(DEFAULT_TEMPLATES_IMPORTED_KEY, true);
-          ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, variantMap);
+          configManager.writeValue(DEFAULT_TEMPLATES_IMPORTED_KEY, true);
+          configManager.writeValue(TEMPLATES_KEY, variantMap);
           LOG.info(String.format("Imported default variants for %d components",
               defaults == null ? 0 : defaults.size()));         
         }
@@ -2602,7 +2605,7 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   private void importDefaultBlocks() {
     // import default templates from variants.xml file only if we didn't do it already
-    if (!ConfigurationManager.getInstance().readBoolean(DEFAULT_BLOCKS_IMPORTED_KEY, false)) {
+    if (!configManager.readBoolean(DEFAULT_BLOCKS_IMPORTED_KEY, false)) {
       try {
         URL resource = Presenter.class.getResource("blocks.xml");
         if (resource != null) {
@@ -2612,7 +2615,7 @@ public class Presenter implements IPlugInPort {
           in.close();
                     
           Map<String, List<IDIYComponent<?>>> blocksMap =
-              (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+              (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
           if (blocksMap == null)
             blocksMap = new HashMap<String, List<IDIYComponent<?>>>();          
           
@@ -2623,8 +2626,8 @@ public class Presenter implements IPlugInPort {
           }          
           
           // update templates and a flag marking that we imported them
-          ConfigurationManager.getInstance().writeValue(DEFAULT_BLOCKS_IMPORTED_KEY, true);
-          ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocksMap);
+          configManager.writeValue(DEFAULT_BLOCKS_IMPORTED_KEY, true);
+          configManager.writeValue(BLOCKS_KEY, blocksMap);
           LOG.info(String.format("Imported %d default building blocks", defaults == null ? 0 : defaults.size()));         
         }
       } catch (Exception e) {
@@ -2639,7 +2642,7 @@ public class Presenter implements IPlugInPort {
     Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
 
     Map<String, List<Template>> variantMap =
-        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
     if (variantMap != null)
       lookupMap.putAll(variantMap);
 
@@ -2717,7 +2720,7 @@ public class Presenter implements IPlugInPort {
   public void deleteVariant(ComponentType type, String templateName) {
     LOG.debug(String.format("deleteTemplate(%s, %s)", type, templateName));
     Map<String, List<Template>> templateMap =
-        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
     if (templateMap != null) {
       // try by class name and then by old category.type format
       String key1 = type.getInstanceClass().getCanonicalName();
@@ -2744,7 +2747,7 @@ public class Presenter implements IPlugInPort {
         }
       }
     }
-    ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, templateMap);
+    configManager.writeValue(TEMPLATES_KEY, templateMap);
   }
 
   @SuppressWarnings("unchecked")
@@ -2752,7 +2755,7 @@ public class Presenter implements IPlugInPort {
   public void setDefaultVariant(ComponentType type, String templateName) {
     LOG.debug(String.format("setTemplateDefault(%s, %s)", type, templateName));
     Map<String, String> defaultTemplateMap =
-        (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
+        (Map<String, String>) configManager.readObject(DEFAULT_TEMPLATES_KEY, null);
     if (defaultTemplateMap == null)
       defaultTemplateMap = new HashMap<String, String>();
 
@@ -2768,14 +2771,14 @@ public class Presenter implements IPlugInPort {
       defaultTemplateMap.remove(key2);
       defaultTemplateMap.put(key1, templateName);
     }
-    ConfigurationManager.getInstance().writeValue(DEFAULT_TEMPLATES_KEY, defaultTemplateMap);
+    configManager.writeValue(DEFAULT_TEMPLATES_KEY, defaultTemplateMap);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public String getDefaultVariant(ComponentType type) {
     Map<String, String> defaultTemplateMap =
-        (Map<String, String>) ConfigurationManager.getInstance().readObject(DEFAULT_TEMPLATES_KEY, null);
+        (Map<String, String>) configManager.readObject(DEFAULT_TEMPLATES_KEY, null);
     if (defaultTemplateMap == null)
       return null;
 
@@ -2849,7 +2852,7 @@ public class Presenter implements IPlugInPort {
         point == null ? null : new Point((int) (point.x / drawingManager.getZoomLevel()),
             (int) (point.y / drawingManager.getZoomLevel()));
 
-    if (p != null && ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true)) {
+    if (p != null && configManager.readBoolean(EXTRA_SPACE_KEY, true)) {
       double extraSpace = drawingManager.getExtraSpace(currentProject);
       p.translate((int) (-extraSpace), (int) (-extraSpace));
     }
@@ -2861,7 +2864,7 @@ public class Presenter implements IPlugInPort {
   public void saveSelectionAsBlock(String blockName) {
     LOG.debug(String.format("saveSelectionAsBlock(%s)", blockName));
     Map<String, List<IDIYComponent<?>>> blocks =
-        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
     if (blocks == null)
       blocks = new HashMap<String, List<IDIYComponent<?>>>();
     List<IDIYComponent<?>> blockComponents = new ArrayList<IDIYComponent<?>>(this.selectedComponents);
@@ -2891,13 +2894,13 @@ public class Presenter implements IPlugInPort {
         xStream.toXML(defaultBlockMap, out);
         out.close();
         // no more user variants
-        ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, null);
+        configManager.writeValue(BLOCKS_KEY, null);
         LOG.info("Saved default blocks");
       } catch (IOException e) {
         LOG.error("Could not save default blocks", e);
       }
     } else {
-      ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
+      configManager.writeValue(BLOCKS_KEY, blocks);
     }  
   }
 
@@ -2906,7 +2909,7 @@ public class Presenter implements IPlugInPort {
   public void loadBlock(String blockName) throws InvalidBlockException {
     LOG.debug(String.format("loadBlock(%s)", blockName));
     Map<String, List<IDIYComponent<?>>> blocks =
-        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
     if (blocks != null) {
       Collection<IDIYComponent<?>> components = blocks.get(blockName);
       if (components == null)
@@ -2937,20 +2940,20 @@ public class Presenter implements IPlugInPort {
   public void deleteBlock(String blockName) {
     LOG.debug(String.format("deleteBlock(%s)", blockName));
     Map<String, List<IDIYComponent<?>>> blocks =
-        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
     if (blocks != null) {
       blocks.remove(blockName);
-      ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
+      configManager.writeValue(BLOCKS_KEY, blocks);
     }
   }
 
   @Override
   public double getExtraSpace() {
-    if (!ConfigurationManager.getInstance().readBoolean(EXTRA_SPACE_KEY, true))
+    if (!configManager.readBoolean(EXTRA_SPACE_KEY, true))
       return 0;
 
     double extraSpace = drawingManager.getExtraSpace(currentProject);
-    boolean metric = ConfigurationManager.getInstance().readBoolean(Presenter.METRIC_KEY, true);
+    boolean metric = configManager.readBoolean(Presenter.METRIC_KEY, true);
 
     extraSpace /= Constants.PIXELS_PER_INCH;
 
@@ -2975,7 +2978,7 @@ public class Presenter implements IPlugInPort {
       return 0;
 
     Map<String, List<Template>> variantMap =
-        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
     if (variantMap == null) {
       variantMap = new HashMap<String, List<Template>>();
     }
@@ -2992,7 +2995,7 @@ public class Presenter implements IPlugInPort {
       }
     }
 
-    ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, variantMap);
+    configManager.writeValue(TEMPLATES_KEY, variantMap);
 
     LOG.info(String.format("Loaded variants for %d components", pkg.getVariants().size()));
 
@@ -3014,7 +3017,7 @@ public class Presenter implements IPlugInPort {
       return 0;
 
     Map<String, List<IDIYComponent<?>>> blocks =
-        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(BLOCKS_KEY, null);
+        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
     if (blocks == null) {
       blocks = new HashMap<String, List<IDIYComponent<?>>>();
     }
@@ -3023,7 +3026,7 @@ public class Presenter implements IPlugInPort {
       blocks.put(entry.getKey() + " [" + pkg.getOwner() + "]", entry.getValue());
     }
 
-    ConfigurationManager.getInstance().writeValue(BLOCKS_KEY, blocks);
+    configManager.writeValue(BLOCKS_KEY, blocks);
 
     LOG.info(String.format("Loaded building blocks for %d components", pkg.getBlocks().size()));
 
@@ -3042,7 +3045,7 @@ public class Presenter implements IPlugInPort {
     LOG.info("Checking if variants need to be updated");
     Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
     Map<String, List<Template>> variantMap =
-        (Map<String, List<Template>>) ConfigurationManager.getInstance().readObject(TEMPLATES_KEY, null);
+        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
 
     if (variantMap == null)
       return;
@@ -3074,7 +3077,7 @@ public class Presenter implements IPlugInPort {
       }
     }
 
-    ConfigurationManager.getInstance().writeValue(TEMPLATES_KEY, newVariantMap);
+    configManager.writeValue(TEMPLATES_KEY, newVariantMap);
   }
 
   @SuppressWarnings("unchecked")

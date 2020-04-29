@@ -32,6 +32,7 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -80,7 +81,7 @@ public class CloudPlugIn implements IPlugIn {
     super();
 
     this.swingUI = swingUI;
-    this.thumbnailPresenter = new Presenter(new DummyView());
+    this.thumbnailPresenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
 
     swingUI.injectMenuAction(getLibraryAction(), ONLINE_TITLE);
     swingUI.injectMenuAction(null, ONLINE_TITLE);

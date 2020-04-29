@@ -48,6 +48,7 @@ import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
@@ -421,7 +422,7 @@ public class ActionFactory {
             Set<PropertyWrapper> defaultedProperties) {
           return false;
         }
-      });
+      }, InMemoryConfigurationManager.getInstance());
       putValue(AbstractAction.NAME, "Import");
       putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
           Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));

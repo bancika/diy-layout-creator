@@ -1,24 +1,21 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.swing.plugins.canvas;
 
 import java.awt.Graphics;
@@ -52,6 +49,7 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
@@ -68,7 +66,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);
-  
+
   public static boolean RENDER_VISIBLE_RECT_ONLY = true;
 
   private IPlugInPort plugInPort;
@@ -76,7 +74,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   private Image bufferImage;
   private GraphicsConfiguration screenGraphicsConfiguration;
 
-  public boolean useHardwareAcceleration = ConfigurationManager.getInstance().readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
+  public boolean useHardwareAcceleration;
 
   // static final EnumSet<DrawOption> DRAW_OPTIONS =
   // EnumSet.of(DrawOption.GRID,
@@ -88,9 +86,14 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
   private HashMap<String, ComponentType> componentTypeCache;
 
-  public CanvasPanel(IPlugInPort plugInPort) {
-    super();
+  private IConfigurationManager configManager;
+
+  public CanvasPanel(IPlugInPort plugInPort, IConfigurationManager configManager) {
     this.plugInPort = plugInPort;
+    this.configManager = configManager;
+    
+    this.useHardwareAcceleration =
+        configManager.readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
     setFocusable(true);
     initializeListeners();
     initializeDnD();
@@ -108,7 +111,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   public HashMap<String, ComponentType> getComponentTypeCache() {
     if (componentTypeCache == null) {
       componentTypeCache = new HashMap<String, ComponentType>();
-      for (Entry<String, List<ComponentType>> entry : this.plugInPort.getComponentTypes().entrySet()) {
+      for (Entry<String, List<ComponentType>> entry : this.plugInPort.getComponentTypes()
+          .entrySet()) {
         for (ComponentType type : entry.getValue())
           componentTypeCache.put(type.getInstanceClass().getCanonicalName(), type);
       }
@@ -119,20 +123,24 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   private void initializeDnD() {
     // Initialize drag source recognizer.
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
-        DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK, new CanvasGestureListener(plugInPort));
+        DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK,
+        new CanvasGestureListener(plugInPort));
     // Initialize drop target.
-    new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CanvasTargetListener(plugInPort), true);
+    new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CanvasTargetListener(plugInPort),
+        true);
   }
 
   private void initializeActions() {
-    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_QUOTE, 0), "repeatLast");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_QUOTE, 0), "repeatLast");
 
-    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearSlot");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearSlot");
 
     for (int i = 1; i <= 12; i++) {
       final int x = i;
-      getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F1 + i - 1, 0),
-          "functionKey" + i);
+      getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+          .put(KeyStroke.getKeyStroke(KeyEvent.VK_F1 + i - 1, 0), "functionKey" + i);
       getActionMap().put("functionKey" + i, new AbstractAction() {
 
         private static final long serialVersionUID = 1L;
@@ -161,11 +169,12 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       @SuppressWarnings("unchecked")
       @Override
       public void actionPerformed(ActionEvent e) {
-        List<String> recent =
-            (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
+        List<String> recent = (List<String>) configManager
+            .readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
         if (recent != null && !recent.isEmpty()) {
           String clazz = recent.get(0);
-          Map<String, List<ComponentType>> componentTypes = CanvasPanel.this.plugInPort.getComponentTypes();
+          Map<String, List<ComponentType>> componentTypes =
+              CanvasPanel.this.plugInPort.getComponentTypes();
           for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet()) {
             for (ComponentType type : entry.getValue()) {
               if (type.getInstanceClass().getCanonicalName().equals(clazz)) {
@@ -183,8 +192,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
   @SuppressWarnings("unchecked")
   protected void functionKeyPressed(int i) {
-    HashMap<String, String> shortcutMap =
-        (HashMap<String, String>) ConfigurationManager.getInstance().readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
+    HashMap<String, String> shortcutMap = (HashMap<String, String>) configManager.readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
     if (shortcutMap == null)
       return;
     String typeName = shortcutMap.get("F" + i);
@@ -221,9 +229,10 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       imageWidth = getWidth();
       imageHeight = getHeight();
     }
-    
+
     if (useHardwareAcceleration) {
-      bufferImage = screenGraphicsConfiguration.createCompatibleVolatileImage(imageWidth, imageHeight);
+      bufferImage =
+          screenGraphicsConfiguration.createCompatibleVolatileImage(imageWidth, imageHeight);
       ((VolatileImage) bufferImage).validate(screenGraphicsConfiguration);
     } else {
       bufferImage = createImage(imageWidth, imageHeight);
@@ -239,39 +248,45 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       createBufferImage();
     }
     Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
-    
+
     Rectangle visibleRect = getVisibleRect();
-    
+
     int x = 0;
     int y = 0;
-    
-    if (RENDER_VISIBLE_RECT_ONLY) {      
+
+    if (RENDER_VISIBLE_RECT_ONLY) {
       x = visibleRect.x;
       y = visibleRect.y;
       g2d.translate(-x, -y);
-    } else {      
+    } else {
       g2d.setClip(visibleRect);
     }
-    
-    Set<DrawOption> drawOptions = EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
+
+
+    Set<DrawOption> drawOptions = EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM,
+        DrawOption.CONTROL_POINTS);
+
+    if (configManager.readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
       drawOptions.add(DrawOption.ANTIALIASING);
     }
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
+    if (configManager.readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
       drawOptions.add(DrawOption.OUTLINE_MODE);
     }
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_GRID_KEY, true)) {
+    if (configManager.readBoolean(IPlugInPort.SHOW_GRID_KEY, true)) {
       drawOptions.add(DrawOption.GRID);
     }
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
+    if (configManager.readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
       drawOptions.add(DrawOption.EXTRA_SPACE);
     }
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.CACHING_ENABLED_KEY, true)) {
+    if (configManager.readBoolean(IPlugInPort.CACHING_ENABLED_KEY, true)) {
       drawOptions.add(DrawOption.ENABLE_CACHING);
     }
-    
+    if (configManager.readBoolean(IPlugInPort.LOCKED_ALPHA, true)) {
+      drawOptions.add(DrawOption.LOCKED_ALPHA);
+    }
+
     plugInPort.draw(g2d, drawOptions, null, null, visibleRect);
-    
+
     if (useHardwareAcceleration) {
       VolatileImage volatileImage = (VolatileImage) bufferImage;
       do {
@@ -325,20 +340,22 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   }
 
   // Autoscroll
-  
+
   private int autoScrollSize = 64;
 
   @Override
   public void autoscroll(Point cursorLocn) {
-    scrollRectToVisible(new Rectangle(cursorLocn.x - autoScrollSize, cursorLocn.y - autoScrollSize, autoScrollSize * 2, autoScrollSize * 2));
+    scrollRectToVisible(new Rectangle(cursorLocn.x - autoScrollSize, cursorLocn.y - autoScrollSize,
+        autoScrollSize * 2, autoScrollSize * 2));
   }
 
   @Override
   public Insets getAutoscrollInsets() {
     Rectangle rect = getVisibleRect();
-    return new Insets(rect.y - autoScrollSize, rect.x - autoScrollSize, rect.y + rect.height + autoScrollSize, rect.x + rect.width + autoScrollSize);
+    return new Insets(rect.y - autoScrollSize, rect.x - autoScrollSize,
+        rect.y + rect.height + autoScrollSize, rect.x + rect.width + autoScrollSize);
   }
-  
+
   public void setUseHardwareAcceleration(boolean useHardwareAcceleration) {
     this.useHardwareAcceleration = useHardwareAcceleration;
     bufferImage = null;

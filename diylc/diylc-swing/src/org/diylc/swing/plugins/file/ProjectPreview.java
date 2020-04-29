@@ -37,6 +37,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.Project;
@@ -68,7 +69,7 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
     super();
 
     setPreferredSize(new Dimension(140, 128));
-    presenter = new Presenter(new DummyView());
+    presenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
     xStream = new XStream(new DomDriver());
 
     emptyProject = new Project();

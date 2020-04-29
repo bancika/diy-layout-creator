@@ -64,5 +64,9 @@ public enum DrawOption {
   /**
    * Whether components should be cached or not.
    */
-  ENABLE_CACHING;
+  ENABLE_CACHING, 
+  /**
+   * Whether locked components should be rendered as transparent or not.
+   */
+  LOCKED_ALPHA;
 }

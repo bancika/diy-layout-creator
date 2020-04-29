@@ -40,7 +40,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
@@ -79,8 +79,7 @@ public class DrawingManager {
   public static Color CONTROL_POINT_COLOR = Color.blue;
   public static Color SELECTED_CONTROL_POINT_COLOR = Color.green;
 
-  private Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
-      Constants.DEFAULT_THEME);
+  private Theme theme;
 
   // Maps keyed by object reference.
   // Keeps Area object of each drawn component.
@@ -96,7 +95,7 @@ public class DrawingManager {
   private Composite lockedComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
   private List<IDIYComponent<?>> failedComponents = new ArrayList<IDIYComponent<?>>();
 
-  private double zoomLevel = 1d;// ConfigurationManager.getInstance().readDouble(ZOOM_KEY,
+  private double zoomLevel = 1d;// configManager.readDouble(ZOOM_KEY,
   // 1d);
 
   private MessageDispatcher<EventType> messageDispatcher;
@@ -110,9 +109,16 @@ public class DrawingManager {
   private long statReportFrequencyMs = 1000 * 60;
   private Counter totalStats = new Counter();
 
-  public DrawingManager(MessageDispatcher<EventType> messageDispatcher) {
+  private IConfigurationManager configManager;
+
+  public DrawingManager(MessageDispatcher<EventType> messageDispatcher, IConfigurationManager configManager) {
     super();
     this.messageDispatcher = messageDispatcher;
+    this.configManager = configManager;
+    
+    this.theme = (Theme) configManager.readObject(IPlugInPort.THEME_KEY,
+        Constants.DEFAULT_THEME);
+        
     componentAreaMap = new HashMap<IDIYComponent<?>, ComponentArea>();
     lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
     String debugComponentAreasStr = System.getProperty(DEBUG_COMPONENT_AREAS);
@@ -169,7 +175,7 @@ public class DrawingManager {
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
       g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     }
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
+    if (configManager.readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
       g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
       g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
       g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -299,7 +305,7 @@ public class DrawingManager {
         }
         Composite oldComposite = g2d.getComposite();
         // Draw locked components in a new composite.
-        if (lockedComponents.contains(component)) {
+        if (lockedComponents.contains(component) && drawOptions.contains(DrawOption.LOCKED_ALPHA)) {
           g2d.setComposite(lockedComposite);
         }
         // Draw the component through the g2dWrapper.
@@ -456,7 +462,7 @@ public class DrawingManager {
     }
 
     if (currentContinuityArea != null
-        && (ConfigurationManager.getInstance().readBoolean(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false))) {
+        && (configManager.readBoolean(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false))) {
       Composite oldComposite = g2d.getComposite();
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
       g2d.setColor(Color.green);
@@ -503,7 +509,7 @@ public class DrawingManager {
   public void setZoomLevel(double zoomLevel) {
     this.zoomLevel = zoomLevel;
     fireZoomChanged();
-    // ConfigurationManager.getInstance().writeValue(ZOOM_KEY, zoomLevel);
+    // configManager.writeValue(ZOOM_KEY, zoomLevel);
   }
 
   public void invalidateComponent(IDIYComponent<?> component) {
@@ -570,7 +576,7 @@ public class DrawingManager {
 
   public void setTheme(Theme theme) {
     this.theme = theme;
-    ConfigurationManager.getInstance().writeValue(IPlugInPort.THEME_KEY, theme);
+    configManager.writeValue(IPlugInPort.THEME_KEY, theme);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
   

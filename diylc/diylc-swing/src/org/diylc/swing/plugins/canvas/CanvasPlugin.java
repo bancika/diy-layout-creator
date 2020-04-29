@@ -52,6 +52,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
@@ -115,8 +116,11 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private double zoomLevel = 1;
 
-  public CanvasPlugin(ISwingUI swingUI) {
+  private IConfigurationManager configManager;
+
+  public CanvasPlugin(ISwingUI swingUI, IConfigurationManager configManager) {
     this.swingUI = swingUI;
+    this.configManager = configManager;
     clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
   }
 
@@ -145,7 +149,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     }
 
     getScrollPane().setRulerVisible(
-        ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_RULERS_KEY, true));
+        configManager.readBoolean(IPlugInPort.SHOW_RULERS_KEY, true));
 
     // revalidate canvas on scrolling when we render visible rect only
     if (CanvasPanel.RENDER_VISIBLE_RECT_ONLY) {
@@ -168,7 +172,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       });
     }
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.SHOW_RULERS_KEY,
+    configManager.addConfigListener(IPlugInPort.SHOW_RULERS_KEY,
         new IConfigListener() {
 
           @Override
@@ -178,7 +182,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           }
         });
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HARDWARE_ACCELERATION,
+    configManager.addConfigListener(IPlugInPort.HARDWARE_ACCELERATION,
         new IConfigListener() {
 
           @Override
@@ -188,7 +192,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           }
         });
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.METRIC_KEY,
+    configManager.addConfigListener(IPlugInPort.METRIC_KEY,
         new IConfigListener() {
 
           @Override
@@ -197,7 +201,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           }
         });
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.EXTRA_SPACE_KEY,
+    configManager.addConfigListener(IPlugInPort.EXTRA_SPACE_KEY,
         new IConfigListener() {
 
           @Override
@@ -214,7 +218,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           }
         });
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RULER_IN_SUBDIVISION_KEY,
+    configManager.addConfigListener(IPlugInPort.RULER_IN_SUBDIVISION_KEY,
         new IConfigListener() {
 
           @Override
@@ -225,7 +229,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           }
         });
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA,
+    configManager.addConfigListener(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA,
         new IConfigListener() {
 
           @Override
@@ -239,7 +243,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public CanvasPanel getCanvasPanel() {
     if (canvasPanel == null) {
-      canvasPanel = new CanvasPanel(plugInPort);
+      canvasPanel = new CanvasPanel(plugInPort, configManager);
       canvasPanel.addMouseListener(new MouseAdapter() {
 
         private MouseEvent pressedEvent;
@@ -336,7 +340,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private RulerScrollPane getScrollPane() {
     if (scrollPane == null) {
-      String subdivision = ConfigurationManager.getInstance().readString(
+      String subdivision = configManager.readString(
           IPlugInPort.RULER_IN_SUBDIVISION_KEY, IPlugInPort.RULER_IN_SUBDIVISION_DEFAULT);
 
       scrollPane = new RulerScrollPane(getCanvasPanel(),
@@ -345,10 +349,10 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           IPlugInPort.RULER_IN_SUBDIVISION_10.equalsIgnoreCase(subdivision)
               ? InchSubdivision.BASE_10
               : InchSubdivision.BASE_2);
-      boolean metric = ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true);
+      boolean metric = configManager.readBoolean(IPlugInPort.METRIC_KEY, true);
 
       boolean useHardwareAcceleration =
-          ConfigurationManager.getInstance().readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
+          configManager.readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
       scrollPane.setUseHardwareAcceleration(useHardwareAcceleration);
       scrollPane.setMetric(metric);
       scrollPane.setWheelScrollingEnabled(true);
@@ -374,7 +378,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           final JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
 
           boolean wheelZoom =
-              ConfigurationManager.getInstance().readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
+              configManager.readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
           if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
 
@@ -817,7 +821,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
           @Override
           public void run() {
-            if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.SHOW_RULERS_KEY, true))
+            if (configManager.readBoolean(IPlugInPort.SHOW_RULERS_KEY, true))
               scrollPane.setSelectionRectangle(plugInPort.getSelectionBounds(true));
           }
         });
@@ -838,7 +842,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private void refreshSize() {
     Dimension d = plugInPort.getCanvasDimensions(true,
-        ConfigurationManager.getInstance().readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true));
+        configManager.readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true));
     canvasPanel.setSize(d);
     canvasPanel.setPreferredSize(d);
     getScrollPane().setZoomLevel(plugInPort.getZoomLevel());

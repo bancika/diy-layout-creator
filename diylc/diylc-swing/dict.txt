@@ -40,7 +40,6 @@ Deutsch
 E-B-C     BJT
 English
 Español
-Fill
 Français
 G-D-S     JFET
 G-D-S     MOSFET

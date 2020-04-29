@@ -59,6 +59,8 @@ import javax.swing.event.MenuListener;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigurationManager;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -118,10 +120,12 @@ public class MainFrame extends JFrame implements ISwingUI {
     setIconImages(Arrays.asList(IconLoader.IconSmall.getImage(), IconLoader.IconMedium.getImage(),
         IconLoader.IconLarge.getImage()));
     DialogFactory.getInstance().initialize(this);
+    
+    IConfigurationManager configManager = ConfigurationManager.getInstance();
 
-    this.presenter = new Presenter(this);
+    this.presenter = new Presenter(this, configManager);
 
-    canvasPlugin = new CanvasPlugin(this);
+    canvasPlugin = new CanvasPlugin(this, configManager);
 
     presenter.installPlugin(new ToolBox(this));
     presenter.installPlugin(new FileMenuPlugin(this));

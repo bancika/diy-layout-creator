@@ -55,6 +55,7 @@ import javax.swing.SwingWorker;
 import javax.swing.text.DefaultCaret;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
@@ -402,7 +403,7 @@ public class ResultsScrollPanel extends JScrollPane {
                 + project.getName()
                 + "\" with a new file?\nThis opperation is irreversible. Once replaced, the old version of the project cannot be restored.",
             "Replace Project", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION) {
-          final Presenter thumbnailPresenter = new Presenter(new DummyView());
+          final Presenter thumbnailPresenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
           final File file =
               DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
                   FileFilterEnum.DIY.getExtensions()[0], null, cloudUI.getOwnerFrame());

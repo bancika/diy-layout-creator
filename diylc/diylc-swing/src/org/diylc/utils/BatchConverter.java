@@ -29,6 +29,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.DIYLCStarter;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DummyView;
 
@@ -52,7 +53,7 @@ public class BatchConverter {
         return true;
       }
     });
-    Presenter presenter = new Presenter(new DummyView());
+    Presenter presenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
     for (File file : matchingFiles) {
       if (file.getName() != "" && file.getName() != "." && file.getName() != ".." && !file.isDirectory())
       presenter.loadProjectFromFile(file.getAbsolutePath());
