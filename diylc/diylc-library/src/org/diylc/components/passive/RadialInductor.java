@@ -212,7 +212,7 @@ public class RadialInductor extends AbstractRadialComponent<Inductance> {
     this.resistance = resistance;
   }
   
-  @EditableProperty
+  @EditableProperty(name = "Rim")
   public Size getLip() {
     return lip;
   }

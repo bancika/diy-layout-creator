@@ -30,8 +30,8 @@ Board|Plaque
 Boards|Plaques
 Board Color|Couleur de la plaque
 Board Width|Largeur de la plaque
-Bobin 1|Bobine 1
-Bobin 2|Bobine 2
+Bobbin 1|Bobine 1
+Bobbin 2|Bobine 2
 Body|Corps
 Border|Bordure
 Border Thickness|Épaisseur de la bordure
@@ -221,7 +221,6 @@ Legs|Jambes
 Length|Longueur
 Letters|Lettres
 Light|Lumière
-Lip|Lèvre
 Lock|Verrouiller
 Log In|Se connecter
 Log Out|Se déconnecter
@@ -306,6 +305,7 @@ Resistance|Résistance
 Rev log|Journal de révision
 Reverse (standing)|Renverser (debout)
 Right|Droit
+Rim|Bord
 Rods|Rangée
 Rotate Clockwise|Rotation dans le sens horaire
 Rotate Counterclockwise|Rotation dans le sens antihoraire

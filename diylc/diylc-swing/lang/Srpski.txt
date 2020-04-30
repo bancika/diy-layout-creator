@@ -30,8 +30,8 @@ Board|Pločica
 Boards|Pločice
 Board Color|Boja Pločice
 Board Width|Širina Pločice
-Bobin 1|Bobina 1
-Bobin 2|Bobina 2
+Bobbin 1|Bobina 1
+Bobbin 2|Bobina 2
 Body|Telo
 Border|Ivica
 Border Thickness|Debljina Ivice
@@ -219,7 +219,6 @@ Legs|Nožice
 Length|Dužina
 Letters|Slova
 Light|Svetla
-Lip|Usek
 Lock|Zaključaj
 Log In|Prijava
 Log Out|Odjava
@@ -302,6 +301,7 @@ Renumber Selection|Dodeli Nove Brojeve
 Resistance|Otpor
 Reverse (standing)|Izvrni (stajanje)
 Right|Desno
+Rim|Obod
 Rods|Šipkice
 Rotate Clockwise|Rotiraj u Smeru Kazaljke
 Rotate Counterclockwise|Rotiraj Suprotno od Smera Kazaljke

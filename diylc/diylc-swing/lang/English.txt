@@ -30,8 +30,8 @@ Board
 Boards
 Board Color
 Board Width
-Bobin 1
-Bobin 2
+Bobbin 1
+Bobbin 2
 Body
 Border
 Border Thickness
@@ -220,7 +220,6 @@ Legs
 Length
 Letters
 Light
-Lip
 Lock
 Log In
 Log Out
@@ -304,6 +303,7 @@ Renumber Selection
 Resistance
 Reverse (standing)
 Right
+Rim
 Rods
 Rotate Clockwise
 Rotate Counterclockwise

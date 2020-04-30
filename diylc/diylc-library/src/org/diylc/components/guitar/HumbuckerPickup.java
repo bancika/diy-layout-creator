@@ -426,7 +426,7 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
     body = null;
   }
 
-  @EditableProperty(name = "Bobin 1")
+  @EditableProperty(name = "Bobbin 1")
   public Color getBobinColor1() {
     if (bobinColor1 == null)
       bobinColor1 = BOBIN_COLOR1;
@@ -437,7 +437,7 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
     this.bobinColor1 = bobinColor1;
   }
 
-  @EditableProperty(name = "Bobin 2")
+  @EditableProperty(name = "Bobbin 2")
   public Color getBobinColor2() {
     if (bobinColor2 == null)
       bobinColor2 = BOBIN_COLOR2;
