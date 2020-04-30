@@ -72,6 +72,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   }
 
   private Point point = new Point(0, 0);
+  private Point secondPoint = null;
 
   @XStreamConverter(IconImageConverter.class)
   @Deprecated
@@ -79,6 +80,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   private byte[] data;
   private Byte scale;
   private byte newScale = DEFAULT_SCALE;
+  private ImageSizingMode sizingMode = ImageSizingMode.Scale;
 
   public Image() {
     try {
@@ -91,25 +93,47 @@ public class Image extends AbstractTransparentComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    double s = 1d * getScale() / DEFAULT_SCALE;
+    double scaleX;
+    double scaleY;
+    ImageIcon imageIcon = getImage();
+    if (getSizingMode() == ImageSizingMode.Scale) {
+      scaleX = scaleY = 1d * getScale() / DEFAULT_SCALE;
+    } else {
+      Point secondPoint = getControlPoint(1);
+      scaleX = 1d * Math.abs(point.x - secondPoint.x) / imageIcon.getIconWidth();
+      scaleY = 1d * Math.abs(point.y - secondPoint.y) / imageIcon.getIconHeight();
+    }
+    
     Shape clip = g2d.getClip().getBounds();
-    if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(), getImage().getIconWidth() * s, getImage()
-        .getIconHeight() * s))) {
+    if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(), imageIcon.getIconWidth() * scaleX, imageIcon
+        .getIconHeight() * scaleY))) {
       return;
     }
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
+    
+    int x;
+    int y;
+    if (getSizingMode() == ImageSizingMode.Scale)
+    {
+      x = point.x;
+      y = point.y;
+    } else {
+      Point secondPoint = getControlPoint(1);
+      x = Math.min(point.x, secondPoint.x);
+      y = Math.min(point.y, secondPoint.y);
+    }
 
-    g2d.scale(s, s);
-    g2d.drawImage(getImage().getImage(), (int) (point.x / s), (int) (point.y / s), null);
+    g2d.scale(scaleX, scaleY);
+    g2d.drawImage(imageIcon.getImage(), (int) (x / scaleX), (int) (y / scaleY), null);
     if (componentState == ComponentState.SELECTED) {
       g2d.setComposite(oldComposite);
-      g2d.scale(1 / s, 1 / s);
+      g2d.scale(1 / scaleX, 1 / scaleY);
       g2d.setColor(SELECTION_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-      g2d.drawRect(point.x, point.y, (int) (getImage().getIconWidth() * s), (int) (getImage().getIconHeight() * s));
+      g2d.drawRect(x, y, (int) (imageIcon.getIconWidth() * scaleX), (int) (imageIcon.getIconHeight() * scaleY));
     }
   }
 
@@ -120,12 +144,18 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   @Override
   public int getControlPointCount() {
-    return 1;
+    return getSizingMode() == ImageSizingMode.Scale ? 1 : 2;
   }
 
   @Override
   public Point getControlPoint(int index) {
-    return point;
+    if (index == 0)
+      return point;
+    if (secondPoint == null) {
+      ImageIcon imageIcon = getImage();
+      secondPoint = new Point(point.x + imageIcon.getIconWidth(), point.y + imageIcon.getIconHeight());
+    }
+    return secondPoint;
   }
 
   @Override
@@ -135,12 +165,19 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.NEVER;
+    return getSizingMode() == ImageSizingMode.Scale ? VisibilityPolicy.NEVER : VisibilityPolicy.WHEN_SELECTED;
   }
 
   @Override
   public void setControlPoint(Point point, int index) {
-    this.point.setLocation(point);
+    if (index == 0) {
+      this.point.setLocation(point);
+    } else {
+      if (secondPoint == null)
+        secondPoint = new Point(point);
+      else
+        secondPoint.setLocation(point);
+    }
   }
 
   public ImageIcon getImage() {
@@ -169,6 +206,10 @@ public class Image extends AbstractTransparentComponent<Void> {
   public void setData(byte[] data) {
     this.data = data;
     this.image = null;
+    if (getSizingMode() == ImageSizingMode.TwoPoints) {
+      ImageIcon imageIcon = getImage();
+      setControlPoint(new Point(point.x + imageIcon.getIconWidth(), point.y + imageIcon.getIconHeight()), 1);
+    }
   }
 
   @PercentEditor(_100PercentValue = 25)
@@ -194,7 +235,33 @@ public class Image extends AbstractTransparentComponent<Void> {
   public Void getValue() {
     return null;
   }
+  
+  @EditableProperty(name = "Sizing Mode")
+  public ImageSizingMode getSizingMode() {
+    if (sizingMode == null)
+      sizingMode = ImageSizingMode.Scale;
+    return sizingMode;
+  }
+  
+  public void setSizingMode(ImageSizingMode sizingMode) {
+    this.sizingMode = sizingMode;
+  }
 
   @Override
   public void setValue(Void value) {}
+  
+  public static enum ImageSizingMode {
+    TwoPoints("Opposing Points"), Scale("Scale");
+    
+    private String label;
+
+    private ImageSizingMode(String label) {
+      this.label = label;
+    }
+    
+    @Override
+    public String toString() {
+      return label;
+    }
+  }
 }

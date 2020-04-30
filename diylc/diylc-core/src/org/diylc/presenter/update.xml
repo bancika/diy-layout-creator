@@ -3045,6 +3045,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Internationalization - added support for translating UI of the app to other languages. Get in touch if you wish to translate DIYLC to your language</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Sizing Mode" to Image component that allows stretching the image freely using two control points</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
