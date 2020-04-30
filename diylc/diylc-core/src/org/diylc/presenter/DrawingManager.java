@@ -355,6 +355,8 @@ public class DrawingManager {
       if (dragInProgress || drawOptions.contains(DrawOption.OUTLINE_MODE)) {
         for (IDIYComponent<?> component : project.getComponents()) {
           for (int i = 0; i < component.getControlPointCount(); i++) {
+            if (lockedComponents.contains(component))
+              continue;
             VisibilityPolicy visibilityPolicy = component.getControlPointVisibilityPolicy(i);
             if ((groupedComponents.contains(component)
                 && (visibilityPolicy == VisibilityPolicy.ALWAYS || (selectedComponents.contains(component) && visibilityPolicy == VisibilityPolicy.WHEN_SELECTED)) || (!groupedComponents
