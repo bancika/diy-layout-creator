@@ -3043,6 +3043,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Internationalization - added support for translating UI of the app to other languages. Get in touch if you wish to translate DIYLC to your language</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Include themes and fonts in OSX app package</description>
 				</org.diylc.appframework.update.Change>					
