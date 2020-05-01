@@ -1675,6 +1675,9 @@ public class ActionFactory {
       putValue(IView.CHECK_BOX_MENU_ITEM, true);
       putValue(AbstractAction.SELECTED_KEY,
           ConfigurationManager.getInstance().readBoolean(configKey, defaultValue));
+      
+      LOG.info("Initializing " + configKey + " to " + getValue(AbstractAction.SELECTED_KEY));
+      
       ConfigurationManager.getInstance().addConfigListener(configKey, new IConfigListener() {
 
         @Override
@@ -1691,7 +1694,7 @@ public class ActionFactory {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      LOG.info(configKey + " config triggered");
+      LOG.info(configKey + " config set to " + getValue(AbstractAction.SELECTED_KEY));
       ConfigurationManager.getInstance().writeValue(configKey,
           getValue(AbstractAction.SELECTED_KEY));
       if ((Boolean) getValue(AbstractAction.SELECTED_KEY) && tipKey != null
