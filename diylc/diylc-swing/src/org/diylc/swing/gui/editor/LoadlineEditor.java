@@ -21,35 +21,37 @@
 */
 package org.diylc.swing.gui.editor;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.components.misc.LoadlineEntity;
-import org.diylc.swingframework.ButtonDialog;
+import org.diylc.swing.gui.DialogFactory;
+import org.diylc.swing.loadline.LoadlineEditorFrame;
+import org.diylc.swing.plugins.file.FileFilterEnum;
+
+import com.thoughtworks.xstream.XStream;
 
 public class LoadlineEditor extends JButton {
 
   private static final long serialVersionUID = 1L;
-
-  private static final String title = "Click to edit";
   
-  private PropertyWrapper property;
+  private static final Logger LOG = Logger.getLogger(LoadlineEditor.class);
 
+  private static final String title = " (click to load from a file)";
+  
   public LoadlineEditor(final PropertyWrapper property) {
     super();
-    this.property = property;
 
     LoadlineEntity loadline = (LoadlineEntity) property.getValue();
     
@@ -64,13 +66,25 @@ public class LoadlineEditor extends JButton {
 
       @Override
       public void actionPerformed(ActionEvent arg0) {
-        LoadlineEditorDialog dialog = new LoadlineEditorDialog(null, "Edit Loadline", loadline);
-        dialog.setVisible(true);
-        if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption()))
-        {          
-          property.setChanged(true);
-//          property.setValue(newColor);            
-        }
+        final File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.CRV.getFilter(), null, 
+            FileFilterEnum.CRV.getExtensions()[0], null);
+        if (file != null) {
+          try {
+            XStream xStream = LoadlineEditorFrame.loadlineXStream();
+
+            FileInputStream fis = new FileInputStream(file);
+            Reader reader = new InputStreamReader(fis, "UTF-8");
+            LoadlineEntity loadline = (LoadlineEntity) xStream.fromXML(reader);
+            fis.close();
+            property.setValue(loadline);
+            property.setChanged(true);
+            
+            String name = (loadline == null ? "<empty>" : loadline.getName()) + " ";            
+            setText(property.isUnique() ? (name + title ): ("(multi value) " + title));
+          } catch (Exception ex) {
+            LOG.error("Error loading loadline file", ex);
+          }
+        }        
       }
     });
     

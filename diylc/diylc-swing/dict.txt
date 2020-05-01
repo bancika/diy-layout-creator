@@ -42,6 +42,7 @@ G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
 Lin
+Loadline Editor
 Log
 NPN
 Nand

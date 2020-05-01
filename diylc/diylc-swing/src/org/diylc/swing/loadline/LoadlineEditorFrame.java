@@ -1,4 +1,4 @@
-package org.diylc.swing.gui.editor;
+package org.diylc.swing.loadline;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,6 +28,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
@@ -59,6 +60,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
+import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.canvas.CanvasPanel;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
@@ -67,11 +69,11 @@ import org.diylc.swingframework.DoubleTextField;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-public class LoadlineEditorDialog extends ButtonDialog implements IView {
+public class LoadlineEditorFrame extends JFrame implements IView {
 
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOG = Logger.getLogger(LoadlineEditorDialog.class);
+  private static final Logger LOG = Logger.getLogger(LoadlineEditorFrame.class);
 
   private static final String AXIS_LABEL = "AXIS_LABEL";
   private static final String CURVE = "CURVE";
@@ -84,6 +86,7 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
   private Presenter plugInPort;
   private IConfigurationManager configManager;
 
+  private JTextField nameEditor;
   private DoubleTextField vEditor;
   private DoubleTextField iEditor;
   private DoubleTextField dEditor;
@@ -92,8 +95,8 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
   private int xIncrement;
   private int yIncrement;
 
-  public LoadlineEditorDialog(JFrame owner, String title, LoadlineEntity loadline) {
-    super(owner, title, new String[] {ButtonDialog.OK, ButtonDialog.CANCEL});
+  public LoadlineEditorFrame() {
+    super("Loadline Editor");
 
     if (loadline == null) {
       loadline = new LoadlineEntity();
@@ -113,7 +116,6 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     });
 
 
-    this.loadline = loadline;
     this.plugInPort = new Presenter(this, configManager);
     this.plugInPort.installPlugin(new IPlugIn() {
 
@@ -138,19 +140,21 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     });
 
     loadProject();
-
-    layoutGui();
+    
+    setContentPane(getMainComponent());
+    pack();
+    setLocationRelativeTo(null);
   }
 
   private void loadProject() {
     getvEditor().setValue(loadline.getMaxVoltage());
     getiEditor().setValue(loadline.getMaxCurrent());
     getdEditor().setValue(loadline.getMaxDissipation());
+    getNameEditor().setText(loadline.getName());
     loadlineToProject();
     updateAxis();
   }
 
-  @Override
   protected JComponent getMainComponent() {
     if (panel == null) {
       panel = new JPanel();
@@ -209,22 +213,36 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     }
     return canvasPanel;
   }
+  
+  public JTextField getNameEditor() {
+    if (nameEditor == null) {
+      nameEditor = new JTextField();
+      nameEditor.setColumns(12);
+    }
+    return nameEditor;
+  }
 
   public DoubleTextField getvEditor() {
-    if (vEditor == null)
+    if (vEditor == null) {
       vEditor = new DoubleTextField();
+      vEditor.setColumns(8);
+    }
     return vEditor;
   }
 
   public DoubleTextField getiEditor() {
-    if (iEditor == null)
+    if (iEditor == null) {
       iEditor = new DoubleTextField();
+      iEditor.setColumns(8);
+    }
     return iEditor;
   }
 
   public DoubleTextField getdEditor() {
-    if (dEditor == null)
+    if (dEditor == null) {
       dEditor = new DoubleTextField();
+      dEditor.setColumns(8);
+    }
     return dEditor;
   }
 
@@ -232,17 +250,16 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     if (controlPanel == null) {
       controlPanel = new JPanel();
 
-
+      controlPanel.add(new JLabel("Name: "));
+      controlPanel.add(getNameEditor());
+      
       controlPanel.add(new JLabel("Max Voltage (V): "));
-      vEditor.setColumns(8);
       controlPanel.add(getvEditor());
 
       controlPanel.add(new JLabel("Max Current (mA): "));
-      iEditor.setColumns(8);
       controlPanel.add(getiEditor());
 
       controlPanel.add(new JLabel("Max Dissipation (W): "));
-      dEditor.setColumns(8);
       controlPanel.add(getdEditor());
 
       JButton updateButton = new JButton(new UpdateValuesAction());
@@ -443,6 +460,7 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     Project project = plugInPort.getCurrentProject();
     double spacing = project.getGridSpacing().convertToPixels();
 
+    loadline.setName(getNameEditor().getText());
     int centerX = (int) (spacing * 3);
     int centerY = (int) (project.getHeight().convertToPixels() - spacing * 3);
     double v = loadline.getMaxVoltage();
@@ -469,6 +487,15 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
       }
     }
     loadline.setLines(lines);
+  }
+  
+  public static XStream loadlineXStream() {
+    XStream xStream = new XStream(new DomDriver("UTF-8"));
+    xStream.autodetectAnnotations(true);
+    xStream.alias("point", Point2D.Double.class);
+    xStream.alias("curve", org.diylc.components.misc.LoadlineEntity.Line.class);
+    xStream.alias("loadline", org.diylc.components.misc.LoadlineEntity.class);
+    return xStream;
   }
 
   @Override
@@ -519,15 +546,11 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     public void actionPerformed(ActionEvent e) {
       applyToLoadline();
 
-      final File file = DialogFactory.getInstance().showSaveDialog(LoadlineEditorDialog.this,
+      final File file = DialogFactory.getInstance().showSaveDialog(LoadlineEditorFrame.this,
           FileFilterEnum.CRV.getFilter(), null, FileFilterEnum.CRV.getExtensions()[0], null);
       if (file != null) {
         try {
-          XStream xStream = new XStream(new DomDriver("UTF-8"));
-          xStream.autodetectAnnotations(true);
-          xStream.alias("point", Point2D.Double.class);
-          xStream.alias("curve", org.diylc.components.misc.LoadlineEntity.Line.class);
-          xStream.alias("loadline", org.diylc.components.misc.LoadlineEntity.class);
+          XStream xStream = loadlineXStream();
 
           FileOutputStream fos;
           fos = new FileOutputStream(file);
@@ -557,6 +580,7 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
       loadline = new LoadlineEntity();
       loadline.setMaxVoltage(300);
       loadline.setMaxCurrent(5);
+      loadline.setName("New");
       loadline.setLines(new ArrayList<LoadlineEntity.Line>());
 
       loadProject();
@@ -579,11 +603,7 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
           FileFilterEnum.CRV.getExtensions()[0], null);
       if (file != null) {
         try {
-          XStream xStream = new XStream(new DomDriver("UTF-8"));
-          xStream.autodetectAnnotations(true);
-          xStream.alias("point", Point2D.Double.class);
-          xStream.alias("curve", org.diylc.components.misc.LoadlineEntity.Line.class);
-          xStream.alias("loadline", org.diylc.components.misc.LoadlineEntity.class);
+          XStream xStream = loadlineXStream();
 
           FileInputStream fis = new FileInputStream(file);
           Reader reader = new InputStreamReader(fis, "UTF-8");
@@ -672,6 +692,22 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
           LOG.error("Error loading image", e1);
         }
       }
+    }
+  }
+  
+  public static class LoadlineEditorAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    public LoadlineEditorAction() {
+      super();
+      putValue(Action.NAME, "Loadline Editor");
+//      putValue(Action.SMALL_ICON, IconLoader.Delete.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      new LoadlineEditorFrame().setVisible(true);
     }
   }
 }
