@@ -25,10 +25,6 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.List;
 
-import org.diylc.core.measures.Current;
-import org.diylc.core.measures.Power;
-import org.diylc.core.measures.Voltage;
-
 /**
  * Represents a complete load characteristics, used for tubes and transistors.
  * 
@@ -39,9 +35,9 @@ public class LoadlineEntity implements Serializable {
   private static final long serialVersionUID = 1L;
   
   private String name;
-  private Power maxDissipation;
-  private Voltage maxVoltage;
-  private Current maxCurrent;
+  private double maxDissipation;
+  private double maxVoltage;
+  private double maxCurrent;
   private List<Line> lines;
   
   public LoadlineEntity() {
@@ -55,27 +51,27 @@ public class LoadlineEntity implements Serializable {
     this.name = name;
   }
   
-  public Power getMaxDissipation() {
+  public double getMaxDissipation() {
     return maxDissipation;
   }
   
-  public void setMaxDissipation(Power maxDissipation) {
+  public void setMaxDissipation(double maxDissipation) {
     this.maxDissipation = maxDissipation;
   }
   
-  public Voltage getMaxVoltage() {
+  public double getMaxVoltage() {
     return maxVoltage;
   }
 
-  public void setMaxVoltage(Voltage maxVoltage) {
+  public void setMaxVoltage(double maxVoltage) {
     this.maxVoltage = maxVoltage;
   }
 
-  public Current getMaxCurrent() {
+  public double getMaxCurrent() {
     return maxCurrent;
   }
 
-  public void setMaxCurrent(Current maxCurrent) {
+  public void setMaxCurrent(double maxCurrent) {
     this.maxCurrent = maxCurrent;
   }
   
@@ -89,14 +85,14 @@ public class LoadlineEntity implements Serializable {
 
   // Individual load line, tied to the grid voltage
   public static class Line {
-    private Voltage voltage;
+    private double voltage;
     private Point2D[] controlPoints;
     
-    public Voltage getVoltage() {
+    public double getVoltage() {
       return voltage;
     }
     
-    public void setVoltage(Voltage voltage) {
+    public void setVoltage(double voltage) {
       this.voltage = voltage;
     }
     

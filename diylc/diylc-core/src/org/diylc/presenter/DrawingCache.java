@@ -68,7 +68,7 @@ public class DrawingCache {
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getKey().getClass());
 
-      if (type.getEnableCache()) {
+      if (type != null && type.getEnableCache()) {
         renderAndCache(x.getKey(), g2d, x.getValue(), outlineMode, project, zoom);
       }
     });
@@ -91,7 +91,7 @@ public class DrawingCache {
     ComponentType type = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
 
-    if (type.getEnableCache()) {
+    if (type != null && type.getEnableCache()) {
       // if we need to apply caching
       Point firstPoint = component.getControlPoint(0);
       

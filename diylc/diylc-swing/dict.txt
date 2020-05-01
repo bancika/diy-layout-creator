@@ -37,9 +37,6 @@ DP5T
 DPDT
 DPDT  (Center OFF)
 E-B-C     BJT
-English
-Español
-Français
 G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
@@ -61,7 +58,6 @@ SMD
 SPDT
 SPDT  (Center OFF)
 SPST
-Srpski
 Xnor
 Xor
 cm

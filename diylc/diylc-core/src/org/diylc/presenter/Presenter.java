@@ -50,7 +50,6 @@ import java.util.TreeMap;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
-import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
@@ -496,6 +495,9 @@ public class Presenter implements IPlugInPort {
     ComponentType componentType =
         ComponentProcessor.getInstance().extractComponentTypeFrom(
             (Class<? extends IDIYComponent<?>>) component.getClass());
+    // for internal types
+    if (componentType == null)
+      return true;
     return !currentProject.getHiddenLayers().contains((int) Math.round(componentType.getZOrder()));
   }
 
@@ -1075,7 +1077,7 @@ public class Presenter implements IPlugInPort {
       ComponentType type = ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
       if ((c.getName() != null && c.getName().toLowerCase().matches(criteria.toLowerCase())) || 
           (c.getValueForDisplay() != null && c.getValueForDisplay().toLowerCase().matches(criteria.toLowerCase())) ||
-          type.getName().toLowerCase().matches(criteria.toLowerCase()))
+          (type != null && type.getName().toLowerCase().matches(criteria.toLowerCase())))
         matching.add(c);
     }
     updateSelection(matching);    
@@ -2830,6 +2832,9 @@ public class Presenter implements IPlugInPort {
     ComponentType componentType =
         ComponentProcessor.getInstance().extractComponentTypeFrom(
             (Class<? extends IDIYComponent<?>>) component.getClass());
+    // for internal-use components
+    if (componentType == null)
+      return false;
     return currentProject.getLockedLayers().contains((int) Math.round(componentType.getZOrder())) || currentProject.getLockedComponents().contains(component);
   }
   

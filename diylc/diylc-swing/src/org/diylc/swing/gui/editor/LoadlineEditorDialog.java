@@ -2,11 +2,20 @@ package org.diylc.swing.gui.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +28,9 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
@@ -31,29 +41,41 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractCurvedComponent.PointCount;
-import org.diylc.components.connectivity.CurvedTrace;
 import org.diylc.components.connectivity.Dot;
 import org.diylc.components.connectivity.Line;
+import org.diylc.components.misc.Image;
+import org.diylc.components.misc.Image.ImageSizingMode;
 import org.diylc.components.misc.Label;
+import org.diylc.components.misc.LoadlineCurve;
 import org.diylc.components.misc.LoadlineEntity;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
-import org.diylc.core.measures.Current;
-import org.diylc.core.measures.CurrentUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.Voltage;
 import org.diylc.core.measures.VoltageUnit;
 import org.diylc.images.IconLoader;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
+import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.plugins.canvas.CanvasPanel;
+import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.DoubleTextField;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class LoadlineEditorDialog extends ButtonDialog implements IView {
 
   private static final long serialVersionUID = 1L;
+
+  private static final Logger LOG = Logger.getLogger(LoadlineEditorDialog.class);
+
   private static final String AXIS_LABEL = "AXIS_LABEL";
+  private static final String CURVE = "CURVE";
+
   private LoadlineEntity loadline;
   private JPanel panel;
   private JPanel toolbar;
@@ -61,6 +83,10 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
   private CanvasPanel canvasPanel;
   private Presenter plugInPort;
   private IConfigurationManager configManager;
+
+  private DoubleTextField vEditor;
+  private DoubleTextField iEditor;
+  private DoubleTextField dEditor;
 
   private static int[] INCREMENTS = new int[] {100, 50, 20, 10, 5, 1};
   private int xIncrement;
@@ -71,28 +97,32 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
 
     if (loadline == null) {
       loadline = new LoadlineEntity();
-      loadline.setMaxVoltage(new Voltage(300d, VoltageUnit.V));
-      loadline.setMaxCurrent(new Current(5d, CurrentUnit.mA));
+      loadline.setMaxVoltage(300);
+      loadline.setMaxCurrent(5);
+      loadline.setLines(new ArrayList<LoadlineEntity.Line>());
     }
-    
+
     configManager = new InMemoryConfigurationManager(new HashMap<String, Object>() {
       private static final long serialVersionUID = 1L;
 
       {
         put(IPlugInPort.LOCKED_ALPHA, false);
         put(IPlugInPort.EXTRA_SPACE_KEY, false);
+        put(IPlugInPort.SHOW_GRID_KEY, false);
       }
     });
-    
+
 
     this.loadline = loadline;
     this.plugInPort = new Presenter(this, configManager);
     this.plugInPort.installPlugin(new IPlugIn() {
 
+      @SuppressWarnings("incomplete-switch")
       @Override
       public void processMessage(EventType type, Object... params) {
         switch (type) {
           case REPAINT:
+            applyToLoadline();
             getCanvasPanel().repaint();
             break;
         }
@@ -106,10 +136,18 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
       @Override
       public void connect(IPlugInPort plugInPort) {}
     });
-    initializeProject();
-    updateAxis();
+
+    loadProject();
 
     layoutGui();
+  }
+
+  private void loadProject() {
+    getvEditor().setValue(loadline.getMaxVoltage());
+    getiEditor().setValue(loadline.getMaxCurrent());
+    getdEditor().setValue(loadline.getMaxDissipation());
+    loadlineToProject();
+    updateAxis();
   }
 
   @Override
@@ -127,6 +165,7 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
   public JPanel getToolbar() {
     if (toolbar == null) {
       toolbar = new JPanel();
+      toolbar.add(new JButton(new ClearAction()));
       toolbar.add(new JButton(new LoadAction()));
       toolbar.add(new JButton(new SaveAction()));
       toolbar.add(new JButton(new LoadImageAction()));
@@ -141,6 +180,23 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
       canvasPanel = new CanvasPanel(plugInPort, configManager);
       canvasPanel.setPreferredSize(plugInPort.getCanvasDimensions(true, false));
 
+      canvasPanel.addMouseListener(new MouseAdapter() {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          if (e.getButton() == MouseEvent.BUTTON2)
+            return;
+          plugInPort.mouseClicked(e.getPoint(), e.getButton(),
+              Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown(),
+              e.getClickCount());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+          canvasPanel.requestFocus();
+        }
+      });
+
       canvasPanel.addMouseMotionListener(new MouseAdapter() {
 
         @Override
@@ -154,27 +210,42 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     return canvasPanel;
   }
 
+  public DoubleTextField getvEditor() {
+    if (vEditor == null)
+      vEditor = new DoubleTextField();
+    return vEditor;
+  }
+
+  public DoubleTextField getiEditor() {
+    if (iEditor == null)
+      iEditor = new DoubleTextField();
+    return iEditor;
+  }
+
+  public DoubleTextField getdEditor() {
+    if (dEditor == null)
+      dEditor = new DoubleTextField();
+    return dEditor;
+  }
+
   public JPanel getControlPanel() {
     if (controlPanel == null) {
       controlPanel = new JPanel();
 
 
       controlPanel.add(new JLabel("Max Voltage (V): "));
-      JTextField vEditor = new DoubleTextField();
       vEditor.setColumns(8);
-      controlPanel.add(vEditor);
+      controlPanel.add(getvEditor());
 
       controlPanel.add(new JLabel("Max Current (mA): "));
-      JTextField iEditor = new DoubleTextField();
       iEditor.setColumns(8);
-      controlPanel.add(iEditor);
+      controlPanel.add(getiEditor());
 
       controlPanel.add(new JLabel("Max Dissipation (W): "));
-      JTextField dEditor = new DoubleTextField();
       dEditor.setColumns(8);
-      controlPanel.add(dEditor);
+      controlPanel.add(getdEditor());
 
-      JButton updateButton = new JButton("Update");
+      JButton updateButton = new JButton(new UpdateValuesAction());
       controlPanel.add(updateButton);
 
     }
@@ -182,7 +253,7 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
   }
 
 
-  private void initializeProject() {
+  private void loadlineToProject() {
     Project project = new Project();
     project.setWidth(new Size(5d, SizeUnit.in));
     project.setHeight(new Size(3d, SizeUnit.in));
@@ -234,13 +305,45 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     dot.setControlPoint(new Point(centerX, centerY), 0);
     project.getComponents().add(dot);
     project.getLockedComponents().add(dot);
+    
+    double v = loadline.getMaxVoltage();
+    double i = loadline.getMaxCurrent();
+    int maxX = (int) (project.getWidth().convertToPixels() - spacing * 4);
+    int maxY = (int) (spacing * 5);
+    
+    for(LoadlineEntity.Line l : loadline.getLines()) {
+      LoadlineCurve t = new LoadlineCurve();
+      t.setName(CURVE);
+      
+      if (l.getControlPoints().length == 2)
+        t.setPointCount(PointCount.TWO);
+      else if (l.getControlPoints().length == 3)
+        t.setPointCount(PointCount.THREE);
+      else if (l.getControlPoints().length == 4)
+        t.setPointCount(PointCount.FOUR);
+      else if (l.getControlPoints().length == 5)
+        t.setPointCount(PointCount.FIVE);
+      else if (l.getControlPoints().length == 7)
+        t.setPointCount(PointCount.SEVEN);
+      
+      for (int j = 0; j < l.getControlPoints().length; j++) {
+        Point2D p = l.getControlPoints()[j];
+//        points[j] = new Point2D.Double(1.0f * (p.x - centerX) / (maxX - centerX) * v,
+//            1.0f * (p.y - centerY) / (maxY - centerY) * i);
+        t.setControlPoint(new Point((int) (p.getX() / v * (maxX - centerX) + centerX), (int) (p.getY() / i * (maxY - centerY) + centerY)), j);
+      }      
+      t.setThickness(new Size(2d, SizeUnit.px));
+      t.setLeadColor(Color.blue);
+      t.setVoltage(new Voltage(l.getVoltage(), VoltageUnit.V));
+      project.getComponents().add(t);
+    }
 
     plugInPort.loadProject(project, true, "n/a");
   }
 
   private void updateAxis() {
-    int v = loadline.getMaxVoltage().getValue().intValue();
-    int i = loadline.getMaxCurrent().getValue().intValue();
+    int v = (int) loadline.getMaxVoltage();
+    int i = (int) loadline.getMaxCurrent();
 
     for (int j = 0; j < INCREMENTS.length; j++) {
       int increment = INCREMENTS[j];
@@ -281,6 +384,7 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
       project.getLockedComponents().add(tick);
 
       Label xLabel = new Label();
+      xLabel.setName(AXIS_LABEL);
       xLabel.setValue(String.valueOf(j));
       xLabel.setControlPoint(new Point((int) (centerX + offset), (int) (centerY + spacing / 2 + 1)),
           0);
@@ -302,6 +406,7 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
       project.getLockedComponents().add(tick);
 
       Label yLabel = new Label();
+      yLabel.setName(AXIS_LABEL);
       yLabel.setValue(String.valueOf(j));
       yLabel.setControlPoint(new Point((int) (centerX - spacing / 2 - 1), (int) (centerY + offset)),
           0);
@@ -320,7 +425,8 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     int centerX = (int) (spacing * 3);
     int centerY = (int) (project.getHeight().convertToPixels() - spacing * 3);
 
-    CurvedTrace t = new CurvedTrace();
+    LoadlineCurve t = new LoadlineCurve();
+    t.setName(CURVE);
     t.setPointCount(PointCount.FOUR);
     t.setControlPoint(new Point(centerX, centerY), 0);
     t.setControlPoint(new Point((int) (centerX + 30 * spacing), (int) (centerY - 10 * spacing)), 1);
@@ -331,6 +437,38 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     project.getComponents().add(t);
 
     plugInPort.loadProject(plugInPort.getCurrentProject(), false, "n/a");
+  }
+
+  private void applyToLoadline() {
+    Project project = plugInPort.getCurrentProject();
+    double spacing = project.getGridSpacing().convertToPixels();
+
+    int centerX = (int) (spacing * 3);
+    int centerY = (int) (project.getHeight().convertToPixels() - spacing * 3);
+    double v = loadline.getMaxVoltage();
+    double i = loadline.getMaxCurrent();
+    int maxX = (int) (project.getWidth().convertToPixels() - spacing * 4);
+    int maxY = (int) (spacing * 5);
+
+    List<org.diylc.components.misc.LoadlineEntity.Line> lines =
+        new ArrayList<org.diylc.components.misc.LoadlineEntity.Line>();
+    for (IDIYComponent<?> c : project.getComponents()) {
+      if (CURVE.equals(c.getName())) {
+        Point2D[] points = new Point2D[c.getControlPointCount()];
+        for (int j = 0; j < c.getControlPointCount(); j++) {
+          Point p = c.getControlPoint(j);
+          points[j] = new Point2D.Double(1.0f * (p.x - centerX) / (maxX - centerX) * v,
+              1.0f * (p.y - centerY) / (maxY - centerY) * i);
+        }
+        LoadlineCurve curve = (LoadlineCurve)c;
+        org.diylc.components.misc.LoadlineEntity.Line line =
+            new org.diylc.components.misc.LoadlineEntity.Line();
+        line.setControlPoints(points);
+        line.setVoltage(curve.getVoltage() == null ? 0 : curve.getVoltage().getValue());
+        lines.add(line);
+      }
+    }
+    loadline.setLines(lines);
   }
 
   @Override
@@ -348,8 +486,11 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
   @Override
   public boolean editProperties(List<PropertyWrapper> properties,
       Set<PropertyWrapper> defaultedProperties) {
-    // TODO Auto-generated method stub
-    return false;
+    PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(properties,
+        LangUtil.translate("Edit Selection"), true);
+    editor.setVisible(true);
+    defaultedProperties.addAll(editor.getDefaultedProperties());
+    return ButtonDialog.OK.equals(editor.getSelectedButtonCaption());
   }
 
   @Override
@@ -375,7 +516,51 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+      applyToLoadline();
+
+      final File file = DialogFactory.getInstance().showSaveDialog(LoadlineEditorDialog.this,
+          FileFilterEnum.CRV.getFilter(), null, FileFilterEnum.CRV.getExtensions()[0], null);
+      if (file != null) {
+        try {
+          XStream xStream = new XStream(new DomDriver("UTF-8"));
+          xStream.autodetectAnnotations(true);
+          xStream.alias("point", Point2D.Double.class);
+          xStream.alias("curve", org.diylc.components.misc.LoadlineEntity.Line.class);
+          xStream.alias("loadline", org.diylc.components.misc.LoadlineEntity.class);
+
+          FileOutputStream fos;
+          fos = new FileOutputStream(file);
+          Writer writer = new OutputStreamWriter(fos, "UTF-8");
+          writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+          xStream.toXML(loadline, writer);
+          fos.close();
+        } catch (Exception ex) {
+          LOG.error("Error saving loadline file", ex);
+        }
+      }
+    }
+  }
+
+  class ClearAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    public ClearAction() {
+      super();
+      putValue(Action.NAME, "Clear");
+      putValue(Action.SMALL_ICON, IconLoader.Delete.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      loadline = new LoadlineEntity();
+      loadline.setMaxVoltage(300);
+      loadline.setMaxCurrent(5);
+      loadline.setLines(new ArrayList<LoadlineEntity.Line>());
+
+      loadProject();
+    }
   }
 
   class LoadAction extends AbstractAction {
@@ -389,7 +574,46 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+      final File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.CRV.getFilter(), null, 
+          FileFilterEnum.CRV.getExtensions()[0], null);
+      if (file != null) {
+        try {
+          XStream xStream = new XStream(new DomDriver("UTF-8"));
+          xStream.autodetectAnnotations(true);
+          xStream.alias("point", Point2D.Double.class);
+          xStream.alias("curve", org.diylc.components.misc.LoadlineEntity.Line.class);
+          xStream.alias("loadline", org.diylc.components.misc.LoadlineEntity.class);
+
+          FileInputStream fis = new FileInputStream(file);
+          Reader reader = new InputStreamReader(fis, "UTF-8");
+          loadline = (LoadlineEntity) xStream.fromXML(reader);
+          fis.close();
+          loadProject();
+        } catch (Exception ex) {
+          LOG.error("Error loading loadline file", ex);
+        }
+      }          
+    }
+  }
+
+  class UpdateValuesAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    public UpdateValuesAction() {
+      super();
+      putValue(Action.NAME, "Update Axis");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      loadline.setMaxVoltage(getvEditor().getValue());
+      loadline.setMaxCurrent(getiEditor().getValue());
+      loadline.setMaxDissipation(getdEditor().getValue());
+      updateAxis();
+      applyToLoadline();
+    }
   }
 
   class AddCurveAction extends AbstractAction {
@@ -419,6 +643,35 @@ public class LoadlineEditorDialog extends ButtonDialog implements IView {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+      File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.IMAGES.getFilter(),
+          null, FileFilterEnum.IMAGES.getExtensions()[0], null);
+      if (file != null) {
+        FileInputStream fis;
+        try {
+          fis = new FileInputStream(file);
+          byte[] byteArray = IOUtils.toByteArray(fis);
+          Image image = new Image();
+          image.setData(byteArray);
+          image.setSizingMode(ImageSizingMode.TwoPoints);
+          Dimension canvasDimensions = plugInPort.getCanvasDimensions(true, false);
+          Project project = plugInPort.getCurrentProject();
+
+          double spacing = project.getGridSpacing().convertToPixels();
+          // stretch the image across the canvas
+          image.setControlPoint(new Point((int) spacing, (int) spacing), 0);
+          image.setControlPoint(new Point((int) (canvasDimensions.width - spacing),
+              (int) (canvasDimensions.height - spacing)), 1);
+          image.setAlpha((byte) 50); // make it transparent
+          fis.close();
+          // add to the bottom
+          project.getComponents().add(0, image);
+          // reload the project
+          plugInPort.loadProject(plugInPort.getCurrentProject(), false, "n/a");
+        } catch (Exception e1) {
+          LOG.error("Error loading image", e1);
+        }
+      }
+    }
   }
 }
