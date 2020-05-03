@@ -3089,6 +3089,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Dismissing the closing confirmation dialog using the "X" button should behave the same as selecting "Cancel"</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply translation to the context menu</description>
 				</org.diylc.appframework.update.Change>									
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
