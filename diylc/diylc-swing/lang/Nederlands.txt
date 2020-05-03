@@ -76,10 +76,10 @@ Connector (Mirrored)|Connector (gespiegeld)
 Connectivity|Connectiviteit 
 Contacts|Contacten 
 Continuous Creation|Doorgaan met Invoegen
-Coordinate Color Value|Coördinaatkleur
-Coordinate Origin Value|Coördinaatoorsprong
-Coordinates|Coördinaten 
-Copy|Kopiëren
+Coordinate Color Value|CoÃ¶rdinaatkleur
+Coordinate Origin Value|CoÃ¶rdinaatoorsprong
+Coordinates|CoÃ¶rdinaten 
+Copy|KopiÃ«ren
 Core|Kern
 Core Border|Kernrand
 Core Thickness|Kerndikte
@@ -95,7 +95,7 @@ Create New Account|Nieuw Account Aanmaken
 Current|Stroom
 Cut|Snijden
 Cut Between Holes|Tussen Gaten Snijden
-Cut Orientation|Snijoriëntatie
+Cut Orientation|SnijoriÃ«ntatie
 DIP (Mirrored)|DIP (gespiegeld) 
 DP3T (Standard 3-Position Strat)|DP3T (standaard Strat met 3 posities) 
 DP3T (Standard 5-Position Strat)|DP3T (standaard Strat met 5 posities) 
@@ -202,7 +202,7 @@ Integration|Integratie
 Invert polarity|Polariteit Omkeren
 Label|Label
 Label Color|Labelkleur
-Label Orientation|Labeloriëntatie
+Label Orientation|LabeloriÃ«ntatie
 Label Position|Labelpositie
 Labels|Labels
 Language|Taal 
@@ -215,7 +215,7 @@ Lead Length|Aansluitdraad Lengte
 Lead Spacing|Aansluitdraad Afstand
 Left|Linkerzijde
 Left-to-Right|Links naar Rechts
-Left click to instantiate this component, right click for more options|Klik met de linkermuisknop om dit onderdeel te instantiëren, klik met de rechtermuisknop voor meer opties 
+Left click to instantiate this component, right click for more options|Klik met de linkermuisknop om dit onderdeel te instantiÃ«ren, klik met de rechtermuisknop voor meer opties 
 Legs|Benen 
 Length|Lengte 
 Letters|Letteren
@@ -262,7 +262,7 @@ Offset|Offset
 One Side|Een Kant
 Open|Open
 Opposing Points|Tegenoverstaande Punten
-Orientation|Oriëntatie
+Orientation|OriÃ«ntatie
 Outer Foil|Buitentste Folie
 Outer Foil Mark|Buitenste Folie Markering
 Outline Mode|OmtrekModus
@@ -292,7 +292,7 @@ Power Rating|Nominale Vermogen
 Power Strip|Voedingslijn
 Primary CT|Primaire met Middenaftakking
 Print...|Afdrukken
-Project Cloud|Project “Cloud”
+Project Cloud|Project â€œCloudâ€
 Public Announcement|Openbare Aankondiging 
 Radius|Straal 
 Rail|Rail 
@@ -314,7 +314,7 @@ Round package A|Ronde Behuizing A
 Round package B|Ronde Behuizing B
 Row Spacing|Rijafstand
 Rows|Rijen
-Ruler Inch Subdivision…|Liniaal Inch Gradatie
+Ruler Inch Subdivisionâ€¦|Liniaal Inch Gradatie
 Same Type Only|Alleen Hetzelfde Soort
 Save|Opslaan
 Save As|Opslaan Als
@@ -325,7 +325,7 @@ Screws|Schroeven
 Selection|Selectie 
 Selection Size|Selectie Grootte 
 Selection is empty|Selectie is Leeg
-Search The Cloud|Zoek in “De Cloud”
+Search The Cloud|Zoek in â€œDe Cloudâ€
 Searchable Tree|Doorzoekbare Boom
 Secondary CT|Secundaire met Middenaftakking
 Select All|Alles Selecteren 
