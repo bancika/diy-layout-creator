@@ -104,6 +104,16 @@ public class DialogFactory {
 
     return processFileChooserResult(result, openFileChooser, defaultExtension);
   }
+  
+  public File showOpenDialog(Window owner, FileFilter fileFilter, File initialFile, String defaultExtension,
+      IFileChooserAccessory accessory) {
+    JFileChooser openFileChooser = new JFileChooser();
+    initializeFileChooser(openFileChooser, fileFilter, initialFile, defaultExtension, accessory, false);
+
+    int result = openFileChooser.showOpenDialog(owner);
+
+    return processFileChooserResult(result, openFileChooser, defaultExtension);
+  }
 
   public File showOpenDialog(FileFilter fileFilter, File initialFile, String defaultExtension,
       IFileChooserAccessory accessory, JFrame ownerFrame) {

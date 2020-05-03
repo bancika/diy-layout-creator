@@ -36,6 +36,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.loadline.LoadlineEditorFrame;
 
 /**
  * Entry point class for File management utilities.
@@ -104,6 +105,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(null, INTEGRATION_TITLE);
     swingUI.injectMenuAction(actionFactory.createImportVariantsAction(swingUI, plugInPort), INTEGRATION_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportVariantsAction(swingUI, plugInPort), INTEGRATION_TITLE);    
+    swingUI.injectMenuAction(new LoadlineEditorFrame.LoadlineEditorAction(), FILE_TITLE);
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExitAction(plugInPort), FILE_TITLE);
   }

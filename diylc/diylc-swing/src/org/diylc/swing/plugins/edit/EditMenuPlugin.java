@@ -40,7 +40,6 @@ import org.diylc.core.Project;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.loadline.LoadlineEditorFrame;
 
 public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
@@ -322,8 +321,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     swingUI.injectMenuAction(null, EDIT_TITLE);
     swingUI.injectMenuAction(getFlexibleLeadsAction(), EDIT_TITLE);
     swingUI.injectMenuAction(null, EDIT_TITLE);
-    swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);
-    swingUI.injectMenuAction(new LoadlineEditorFrame.LoadlineEditorAction(), EDIT_TITLE);
+    swingUI.injectMenuAction(actionFactory.createEditProjectAction(plugInPort), EDIT_TITLE);    
 
     refreshActions();
   }

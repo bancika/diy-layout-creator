@@ -36,10 +36,10 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "Loadline", category = "Misc", author = "Branislav Stojkovic",
-    zOrder = IDIYComponent.BOARD, instanceNamePrefix = "LL",
-    description = "Loadline of a tube or transistor", bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
-    autoEdit = false, transformer = SimpleComponentTransformer.class)
+//@ComponentDescriptor(name = "Loadline", category = "Misc", author = "Branislav Stojkovic",
+//    zOrder = IDIYComponent.BOARD, instanceNamePrefix = "LL",
+//    description = "Loadline of a tube or transistor", bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
+//    autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class Loadline extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

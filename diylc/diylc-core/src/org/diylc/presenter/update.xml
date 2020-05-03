@@ -3039,7 +3039,7 @@
 				<minor>6</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2020-04-20 00:00:00.000 CET</releaseDate>
+			<releaseDate>2020-05-03 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -3049,6 +3049,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Sizing Mode" to Image component that allows stretching the image freely using two control points</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Loadline Editor" to the File menu, to be used in the future to calculate tube or transistor bias point using loadlines</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

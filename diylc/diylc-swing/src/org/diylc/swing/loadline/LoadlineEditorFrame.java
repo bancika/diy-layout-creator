@@ -23,12 +23,14 @@ import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
@@ -97,6 +99,8 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
   public LoadlineEditorFrame() {
     super("Loadline Editor");
+    setIconImage(IconLoader.Loadline.getImage());
+    setResizable(false);
 
     if (loadline == null) {
       loadline = new LoadlineEntity();
@@ -174,6 +178,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
       toolbar.add(new JButton(new SaveAction()));
       toolbar.add(new JButton(new LoadImageAction()));
       toolbar.add(new JButton(new AddCurveAction()));
+      toolbar.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, UIManager.getColor("InternalFrame.borderShadow")));
     }
     return toolbar;
   }
@@ -265,6 +270,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
       JButton updateButton = new JButton(new UpdateValuesAction());
       controlPanel.add(updateButton);
 
+      controlPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UIManager.getColor("InternalFrame.borderShadow")));
     }
     return controlPanel;
   }
@@ -513,7 +519,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
   @Override
   public boolean editProperties(List<PropertyWrapper> properties,
       Set<PropertyWrapper> defaultedProperties) {
-    PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(properties,
+    PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(LoadlineEditorFrame.this, properties,
         LangUtil.translate("Edit Selection"), true);
     editor.setVisible(true);
     defaultedProperties.addAll(editor.getDefaultedProperties());
@@ -599,7 +605,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      final File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.CRV.getFilter(), null, 
+      final File file = DialogFactory.getInstance().showOpenDialog(LoadlineEditorFrame.this, FileFilterEnum.CRV.getFilter(), null, 
           FileFilterEnum.CRV.getExtensions()[0], null);
       if (file != null) {
         try {
@@ -643,7 +649,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
     public AddCurveAction() {
       super();
       putValue(Action.NAME, "Add a Curve");
-      // putValue(Action.SMALL_ICON, IconLoader.DiskBlue.getIcon());
+      putValue(Action.SMALL_ICON, IconLoader.LoadlineAdd.getIcon());
     }
 
     @Override
@@ -664,7 +670,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.IMAGES.getFilter(),
+      File file = DialogFactory.getInstance().showOpenDialog(LoadlineEditorFrame.this, FileFilterEnum.IMAGES.getFilter(),
           null, FileFilterEnum.IMAGES.getExtensions()[0], null);
       if (file != null) {
         FileInputStream fis;
@@ -702,7 +708,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
     public LoadlineEditorAction() {
       super();
       putValue(Action.NAME, "Loadline Editor");
-//      putValue(Action.SMALL_ICON, IconLoader.Delete.getIcon());
+      putValue(Action.SMALL_ICON, IconLoader.Loadline.getIcon());
     }
 
     @Override
