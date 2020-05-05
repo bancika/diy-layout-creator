@@ -24,7 +24,6 @@
 5PDT  (Center OFF)
 AWG
 And
-Apply Variant
 C-B-E     BJT
 D-G-S     JFET
 D-G-S     MOSFET
@@ -45,7 +44,6 @@ G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
-Jezik
 Lin
 Loadline Editor
 Log
@@ -65,10 +63,7 @@ SMD
 SPDT
 SPDT  (Center OFF)
 SPST
-Save as Building Block
-Select
 Srpski
-Unlock
 Xnor
 Xor
 cm

@@ -101,11 +101,11 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
           return "South Finish";
         if (getPolarity() == Polarity.North)
           return "North Finish";
-        return "South Start";
+        return "South Finish";
       case 3:
         if (getPolarity() != Polarity.Humbucking)
           return null;
-        return "South Finish";
+        return "South Start";
     }
     return null;
   }
