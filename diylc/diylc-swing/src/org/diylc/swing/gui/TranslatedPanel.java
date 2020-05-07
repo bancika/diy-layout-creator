@@ -40,8 +40,20 @@ public class TranslatedPanel extends JPanel {
     if (comp instanceof JLabel) {
       JLabel button = (JLabel)comp;
       String name = button.getText();
-      if (name != null)
-        button.setText(LangUtil.translate(name));
+      
+      if (name != null) {        
+        boolean containsColon = false;
+        if (name.contains(": ")) {
+          containsColon = true;
+          name = name.replace(": ", "");
+        }
+        
+        String translated = LangUtil.translate(name);
+        if (containsColon)
+          translated += ": ";
+        
+        button.setText(translated);
+      }
     }
     return super.add(comp);
   }

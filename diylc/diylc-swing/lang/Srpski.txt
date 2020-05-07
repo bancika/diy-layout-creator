@@ -1,7 +1,7 @@
 #start-internal
 icon=serbia
 #end-internal
-(Building Blocks)|(Blokovi za Gradnju)
+(Building Blocks)|(Blokovi)
 (Favorites)|(Omiljene)
 (Recently Used)|(Skoro Korišćene)
 180 degrees clockwise|(180 stepeni u pravcu kazaljke)
@@ -410,7 +410,7 @@ Ultra-miniature|Ultra-minijaturni
 Underside Pad Color
 Underside Trace Color
 Undo|Korak Nazad
-Ungroup Selection|Odgrupiš Izabrane
+Ungroup Selection|Odgrupiši Izabrane
 Unit|Jedinica
 Upload A Project|Slanje Projekta
 User Manual|Korisničko Uputsvo
@@ -434,3 +434,17 @@ Zoom|Uveličanje
 base of 10|Osnova 10
 base of 2|Osnova 2
 hold %s and drag to unstick from|Drži %s i vuci da odlepiš od
+Add a Curve|Dodaj Krivu
+Clear|Očisti
+Insert Image|Dodaj Sliku
+Load From File|Učitaj iz Datoteke
+Loadline Editor|Editor Loadline
+Max Current (mA)|Maks. Struja (mA)
+Max Dissipation (W)|Maks. Snaga (W)
+Max Voltage (V)|Maks. Napon (V)
+Save To File|Sačuvaj u Datoteku
+Update Axis|Osveži Ose
+Apply Variant|Primeni Varijaciju
+Save as Building Block|Sačuvaj Kao Blok
+Select|Izaberi
+Unlock|Otključaj
