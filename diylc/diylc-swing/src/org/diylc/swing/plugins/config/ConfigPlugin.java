@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.EnumSet;
-import java.util.Map;
+import java.util.List;
 
 import javax.swing.Icon;
 
@@ -36,6 +36,7 @@ import org.diylc.core.Theme;
 import org.diylc.flags.FlagLoader;
 import org.diylc.images.IconLoader;
 import org.diylc.lang.LangUtil;
+import org.diylc.lang.Language;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.ResourceLoader;
@@ -105,15 +106,15 @@ public class ConfigPlugin implements IPlugIn {
             false), CONFIG_MENU);
     
     try {
-      Map<String, Map<String, String>> languages = LangUtil.getAvailableLanguages(); 
+      List<Language> languages = LangUtil.getAvailableLanguages(); 
       if (languages != null && languages.size() > 0) {
         swingUI.injectSubmenu(LANGUAGE_MENU, IconLoader.Earth.getIcon(), CONFIG_MENU);
-        for(Map.Entry<String, Map<String, String>> language : languages.entrySet()) {
+        for(Language language : languages) {
           Icon icon = null;
-          if (language.getValue().containsKey("icon"))
-            icon = FlagLoader.getIcon(language.getValue().get("icon"));
+          if (language.getProperties().containsKey("icon"))
+            icon = FlagLoader.getIcon(language.getProperties().get("icon"));
           swingUI.injectMenuAction(                              
-              ActionFactory.getInstance().createToggleAction(language.getKey(), IPlugInPort.LANGUAGE, LANGUAGE_MENU, IPlugInPort.LANGUAGE_DEFAULT, 
+              ActionFactory.getInstance().createToggleAction(language.getName(), IPlugInPort.LANGUAGE, LANGUAGE_MENU, IPlugInPort.LANGUAGE_DEFAULT, 
                   icon),
               LANGUAGE_MENU);       
         }

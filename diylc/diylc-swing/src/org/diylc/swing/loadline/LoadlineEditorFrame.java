@@ -62,6 +62,7 @@ import org.diylc.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
+import org.diylc.swing.gui.TranslatedPanel;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.plugins.canvas.CanvasPanel;
 import org.diylc.swing.plugins.file.FileFilterEnum;
@@ -172,7 +173,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
   public JPanel getToolbar() {
     if (toolbar == null) {
-      toolbar = new JPanel();
+      toolbar = new TranslatedPanel();
       toolbar.add(new JButton(new ClearAction()));
       toolbar.add(new JButton(new LoadAction()));
       toolbar.add(new JButton(new SaveAction()));
@@ -253,7 +254,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
   public JPanel getControlPanel() {
     if (controlPanel == null) {
-      controlPanel = new JPanel();
+      controlPanel = new TranslatedPanel();
 
       controlPanel.add(new JLabel("Name: "));
       controlPanel.add(getNameEditor());

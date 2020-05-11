@@ -1,67 +1,67 @@
 #start-internal
 icon=netherlands
 #end-internal
-(Building Blocks)|(Bouwblokken)
+(Building Blocks)|(Bouwstenen)
 (Favorites)|(Favorieten) 
-(Recently Used)|(Onlangs gebruikt) 
-180 degrees clockwise|180 graden rechtsom 
+(Recently Used)|(Recentelijk gebruikt) 
+180 degrees clockwise|180 graden
 270 degrees clockwise|270 graden rechtsom 
 90 degrees clockwise|90 graden rechtsom 
 A variant with that name already exists. Overwrite?|Er bestaat al een variant met die naam. Overschrijven? 
 About|Over 
 Above|Boven
-Access User Files|Toegang tot Gebruikers Bestanden Krijgen
-Add Flexible Leads|Flexibele Aansluitdraaden Toevoegen
-Add Validation Step|Validatie Stap Toevoegen 
-All Connected|Allemaal Verbonden 
-Alpha|Alpha 
+Access User Files|Toegang tot gebruikersbestanden
+Add Flexible Leads|Flexibele draaden toevoegen
+Add Validation Step|Controlestap toevoegen 
+All Connected|Alle verbonden 
+Alpha|Opaciteit 
 Analyze|Analyseren 
-Analyze Guitar Diagrams|Gitaar Diagrammen Analyseren
+Analyze Guitar Diagrams|Gitaar diagrammen analyseren
 Angle|Hoek 
-Anti-Aliasing|Anti-Aliasing 
+Anti-Aliasing|Anti-aliasing 
 Arrow Size|Pijlgrootte 
 Author|Ontwerper
-Auto-Create Pads|Automatisch Aanmaken van Soldeereilandjes 
-Auto-Edit Mode|Automatisch-Bewerken Modus
+Auto-Create Pads|Automatisch aanmaken van soldeereilandjes 
+Auto-Edit Mode|Automatisch bewerken modus
 Base|Basis
 Below|Beneden
 Blueprint|Blauwdruk
 Board|Printplaat
 Boards|Printplaten
-Board Color|Printplaat Kleur
-Board Width|Printplaat Breedte
+Board Color|Printplaat kleur
+Board Width|Printplaat breedte
 Bobbin 1|Spoel 1 
 Bobbin 2|Spoel 2 
 Body|Lichaam 
 Border|Rand
 Border Thickness|Randdikte 
 Both|Beide 
-Both Sides|Beide Kanten 
-Bottom|Onderaan
+Both Sides|Beide kanten 
+Bottom|Onderkant
 Bottom Left|Linksonder 
 Bottom Right|Rechtsonder 
-Bring Forward|Naar Voren Brengen
-Bring Selection to Front|Selectie naar Voren Brengen
+Bring Forward|Naar voren halen
+Bring Selection to Front|Selectie naar voren halen
 Buffer|Buffer 
-Center|Centrum 
-Center Negative|Centrum Negatief 
-Center Positive|Centrum Positief 
-Center Terminal|Centrale Aansluiting
+Center|Midden 
+Center Negative|Middenpin negatief 
+Center Positive|Middenpin positief 
+Center Terminal|Middenpin aansluiting
 Central|Centraal 
-Change Password|Wachtwoord Wijzigen 
+Change Password|Wachtwoord wijzigen 
 Channel|Channel
 Chassis|Chassis
 Circular|Rond
 Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|Klik op een component om het gebied te markeren dat direct of indirect verbonden is met het gebied onder de cursor. Om door te gaan met bewerken, moet deze modus worden uitgeschakeld 
 Click on the canvas to create a new %s or press %s to cancel|Klik op het canvas om een nieuwe %s te maken of druk op %s om te annuleren 
 Click on the canvas to set the %s control point of a new %s or press %s to cancel|Klik op het canvas om het %s-controlepunt van een nieuwe %s in te stellen of druk op %s om te annuleren 
-Click the lightbulb icon in the bottom-right corner of the window for more info.|Klik op het gloeilamppictogram in de rechterbenedenhoek van het computervenster voor meer informatie.
+Click the lightbulb icon in the bottom-right corner of the window for more info.|Klik op het gloeilampicoon in de rechteronderhoek van het venster voor meer informatie.
 Click to fetch the most recent public announcement|Klik om de meest recente openbare aankondiging op te halen 
 Click to show recent changes and updates|Klik om recente wijzigingen en updates weer te geven 
 Coil|Spoel
-Coil Border|Spoel Rand
-Coil Length|Spoel Lengte
-Coil Width|Spoel Breedte
+Coil Border|Spoelrand
+Coil Length|Spoellengte
+Coil Width|Spoelbreedte
 Color|Kleur 
 Color 1|Kleur 1 
 Color 2|Kleur 2 
@@ -75,7 +75,7 @@ Connector|Connector
 Connector (Mirrored)|Connector (gespiegeld) 
 Connectivity|Connectiviteit 
 Contacts|Contacten 
-Continuous Creation|Doorgaan met Invoegen
+Continuous Creation|Doorgaan met invoegen
 Coordinate Color Value|Coördinaatkleur
 Coordinate Origin Value|Coördinaatoorsprong
 Coordinates|Coördinaten 
@@ -90,62 +90,62 @@ Could not fetch public announcements.|Kon geen openbare aankondigingen ophalen.
 Could not save the project to file. Check the log for details.|Kon het project niet opslaan in  bestand. Controleer het logbestand voor details.
 Could not set component type slot. Check log for details.|Kon sleuf voor componenttype niet instellen. Controleer logbestand voor details. 
 Cover|Deksel
-Create B.O.M.|Stuklijst Maaken
-Create New Account|Nieuw Account Aanmaken
+Create B.O.M.|Stuklijst maaken
+Create New Account|Nieuw account aanmaken
 Current|Stroom
 Cut|Snijden
-Cut Between Holes|Tussen Gaten Snijden
-Cut Orientation|Snijoriëntatie
+Cut Between Holes|Tussen gaten onderbreken
+Cut Orientation|Onderbrekingsoriëntatie
 DIP (Mirrored)|DIP (gespiegeld) 
 DP3T (Standard 3-Position Strat)|DP3T (standaard Strat met 3 posities) 
 DP3T (Standard 5-Position Strat)|DP3T (standaard Strat met 5 posities) 
 DP4T (4-Position Tele)|DP4T (Tele met 4 posities) 
 Dark|Donker 
-Dashed|Streeplijn
+Dashed|Gestreept
 Decimals|Decimalen
-Default|Standardwaarde
+Default|Standard waarde
 Default Font|Standaard lettertype 
 Default Font Size|Standaard lettergrootte 
 Delete Selection|Selectie verwijderen 
 Description|Beschrijving 
 Diameter|Diameter 
 Directional|Directioneel
-Directly heated|Direct Verwarmd
+Directly heated|Direct verwarmd
 Display name or value|Weergeven
-Display Pin #s|Pin Nummers Weergeven
+Display Pin #s|Pin #s weergeven
 Dog Ear|Dog Ear
-Dot Spacing|Stippelafstand
-Dotted|Stippellijn
-Drag control point(s) of|Sleep de Controlepunt(en) van
+Dot Spacing|Spatiëring
+Dotted|Gestippeld
+Drag control point(s) of|Sleep de controlepunt(en) van
 Drag the mouse over the canvas to place a new|Sleep de muis over het canvas om een nieuw(e)  te plaatsen
-Dual Rail Humbucker|Dubbele Rail Humbucker
-Dual Rods|Dubbele Staven 
+Dual Rail Humbucker|Dubbele rail Humbucker
+Dual Rods|Dubbele staven 
 Duodecar B12C|Duodecar B12C 
 Duplicate|Dupliceren
 Edges|Randen
 Edit|Bewerken
-Edit Project Settings|Projectinstellingen Bewerken 
-Edit Selection|Selectie Bewerken 
+Edit Project Settings|Projectinstellingen bewerken 
+Edit Selection|Selectie bewerken 
 Electrode Labels|Elektrodelabels
 Electro-Mechanical|Elektromechanische
-Enable Cache Boost|Cacheboost Inschakelen
+Enable Cache Boost|Cachegeheugen boost inschakelen
 End Arrow|Eindpijl
-Enjoying DIYLC? Click here to buy me a coffee :)|Vind je het leuk om DIYLC te gebruiken? Klik hier om een kopje koffie voor me te kopen :)
+Enjoying DIYLC? Click here to buy me a coffee :)|Vindt je DIYLC leuk? Klik hier om een kopje koffie voor me te kopen :)
 Error|Fout
 Error occurred while editing selection. Check the log for details.|Er is een fout opgetreden bij het bewerken van de selectie. Controleer het logbestand voor details. 
 Exit|Afsluiten
-Expand Selection|Selectie Uitbreiden
-Explicit Dimensions|Expliciete Dimensies 
-Explicit Length|Expliciete Lengte 
-Explicit Width|Expliciete Breedte 
-Export Building Blocks|Bouwblokken Exporteren
-Export Grid|Raster Exporteren 
-Export Variants|Varianten Exporteren 
-Export to PDF|Naar PDF Exporteren
-Export to PNG|Naar PNG Exporteren 
-Extra Working Area|Extra Werkruimte
-Eyelet color|Rondje Kleur
-FAQ|FAQ
+Expand Selection|Selectie uitbreiden
+Explicit Dimensions|Expliciete dimensies 
+Explicit Length|Expliciete lengte 
+Explicit Width|Expliciete breedte 
+Export Building Blocks|Bouwblokken exporteren
+Export Grid|Raster exporteren 
+Export Variants|Varianten exporteren 
+Export to PDF|Naar PDF exporteren
+Export to PNG|Naar PNG exporteren 
+Extra Working Area|Extra werkruimte
+Eyelet color|Via kleur
+FAQ|Veelgestelde vragen
 File|Bestand
 Fill|Vullen
 Filtertron|Filtertron
@@ -153,97 +153,96 @@ Find|Vinden
 Five|Vijf
 Flip|Omkeren
 Folded|Gevouwen 
-Font|Doopvont 
+Font|Lettertype 
 Font Bold|Vet lettertype 
 Font Italic|Cursief lettertype 
 Font Size|Tekengrootte
 Four|Vier
 Full|Vol
 Fuse|Zekering
-Generate DIYLC Netlist|DIYLC Net-lijst genereren
-Generate Spice Netlist|Spice Net-lijst genereren
+Generate DIYLC Netlist|DIYLC netlist genereren
+Generate Spice Netlist|Spice netlist genereren
 Grid|Raster
 Grid Spacing|Rasterafstand
-Group Selection|Geselecteerde Items Groeperen
+Group Selection|Selectie groeperen
 Guitar|Gitaar 
 Half|Helft 
-Hardware Acceleration|Hardwareversnelling 
+Hardware Acceleration|Hardware versnelling 
 Heaters|Gloeidraad
 Height|Hoogte
 Help|Hulp
-Hi-Quality Rendering|Hoge Kwaliteit Rendering
-Highlight Connected Areas|Verbonden Gebieden Markeren
+Hi-Quality Rendering|Hoge kwaliteit rendering
+Highlight Connected Areas|Verbonden gebieden markeren
 Hole|Gat 
-Hole Size|Grootte Gat 
+Hole Size|Gatgrootte 
 Hole Spacing|Gatafstand 
-Holes per strip|Gaten per Strip 
+Holes per strip|Gaten per strip 
 Horizontal|Horizontaal 
-Horizontal Alignment|Horizontale Uitlijning 
-Horizontal Large|Horizontaal Groot 
-Horizontal Medium|Horizontaal Medium 
-Horizontal Small 1|Horizontaal Klein 1 
-Horizontal Small 2|Horizontaal Klein 2 
-Horizontal X-Small|Horizontaal Extra Klein
+Horizontal Alignment|Horizontale uitlijning 
+Horizontal Large|Horizontaal groot 
+Horizontal Medium|Horizontaal medium 
+Horizontal Small 1|Horizontaal klein 1 
+Horizontal Small 2|Horizontaal klein 2 
+Horizontal X-Small|Horizontaal extra klein
 Humbucking|Humbucking 
-If this box is checked application will use the current value as a<br>default when creating new components of the same type|Als dit vakje is aangevinkt, gebruikt de toepassing de huidige waarde als<br>standaardinstelling bij het maken van nieuwe componenten van hetzelfde type 
+If this box is checked application will use the current value as a<br>default when creating new components of the same type|Als dit vakje is aangevinkt, gebruikt het programma de huidige waarde als<br>standaardinstelling bij het maken van nieuwe componenten van hetzelfde type 
 Image|Afbeelding 
-Immediate Only|Alleen Direct 
+Immediate Only|Alleen direct 
 Import|Importeren
-Import Building Blocks|Bouwblokken Importeren
-Import Variants|Varianten Importeren
+Import Building Blocks|Bouwstenen importeren
+Import Variants|Varianten importeren
 In-Line D-44|In-Line D-44
 In-line|In-Line
 Indent|Inspringen 
 Information|Informatie 
 Inline|Inline
 Input error for "%s": %s|Invoerfout voor " %s": %s
-Inside color|Binenkant Kleur
+Inside color|Binenkant kleur
 Integration|Integratie
-Invert polarity|Polariteit Omkeren
+Invert polarity|Wissel polariteit
 Label|Label
 Label Color|Labelkleur
 Label Orientation|Labeloriëntatie
 Label Position|Labelpositie
 Labels|Labels
 Language|Taal 
-Language selection will be applied after the application is restarted.|Taalkeuze wordt toegepast nadat de toepassing opnieuw is opgestart. 
+Language selection will be applied after the application is restarted.|Taalkeuze wordt toegepast nadat het programma opnieuw is opgestart. 
 Layer|Laag 
 Layers|Lagen 
-Lead Color|Aansluitdraad Kleur
-Lead Count|Aantal Aansluitdraaden 
-Lead Length|Aansluitdraad Lengte
-Lead Spacing|Aansluitdraad Afstand
+Lead Color|Draadkleur
+Lead Count|Aantal draaden 
+Lead Length|Draad lengte
+Lead Spacing|Pitch
 Left|Linkerzijde
-Left-to-Right|Links naar Rechts
+Left-to-Right|Links naar rechts
 Left click to instantiate this component, right click for more options|Klik met de linkermuisknop om dit onderdeel te instantiëren, klik met de rechtermuisknop voor meer opties 
-Legs|Benen 
+Legs|Pootjes
 Length|Lengte 
 Letters|Letteren
 Light|Licht
-Rim|Velg
 Lock|Vastpinnen
 Log In|Inloggen
 Log Out|Uitloggen
 Lug Size|Solderooggrootte
 Lugs|Solderogen
 Make a Donation|Doneren
-Manage Account|Account Beheren
-Manage My Uploads|Uploads Beheren
-Mark Common Lugs|Gemeenschappelijke Solderogen Markeren
+Manage Account|Account beheren
+Manage My Uploads|Uploads beheren
+Mark Common Lugs|Gemeenschappelijke Solderogen markeren
 Marker|Merkteken
 Mini|Mini
 Miniature|Miniatuur
-Mirror Horizontally|Horizontaal Spiegelen
-Mirror Selection|Selectie Spiegelen
-Mirror Vertically|Verticaal Spiegelen
+Mirror Horizontally|Horizontaal spiegelen
+Mirror Selection|Selectie spiegelen
+Mirror Vertically|Verticaal spiegelen
 Mirroring operation will change the circuit. Do you want to continue?|Het spiegelen zal het circuit veranderen. Wil je doorgaan? 
 Misc|Diversen
 Model|Model
 Mono|Mono
 Mount|Bevestiging
 Mounting Lugs|Bevestingslippen
-Mouse Wheel Zoom|Muiswiel Zoom
-Moveable Label|Verplaatsbaar Label
+Mouse Wheel Zoom|Muiswiel zoom
+Moveable Label|Verplaatsbaar label
 Name|Naam
 Nand|NAND
 Negative|Negatief 
@@ -251,7 +250,7 @@ New|Nieuw
 New version available|Nieuwe versie beschikbaar 
 No new public announcements available.|Geen nieuwe aankondigingen beschikbaar. 
 No|Nr.
-None|Geen
+None|Niets
 North|Noord
 Noval B9A|Noval B9A
 Nudge|Duwen
@@ -259,100 +258,100 @@ Numbers|Nummeren
 Nut|Moer
 Octal|Octal
 Offset|Offset
-One Side|Een Kant
+One Side|Een kant
 Open|Open
-Opposing Points|Tegenoverstaande Punten
+Opposing Points|Tegenoverstaande punten
 Orientation|Oriëntatie
-Outer Foil|Buitentste Folie
-Outer Foil Mark|Buitenste Folie Markering
-Outline Mode|OmtrekModus
+Outer Foil|Buitentste folie
+Outer Foil Mark|Buitenste folie markering
+Outline Mode|Omtrekmodus
 Outside|Buiten
-Oval horizontal|Horizontaale Ovaal
-Oval vertical|Verticale Ovaal
-Pad Color|Soldeereilandje Kleur
+Oval horizontal|Horizontaale ovaal
+Oval vertical|Verticale ovaal
+Pad Color|Soldeereilandje kleur
 Passive|Passief
 Paste|Plakken
-Pin Arrangement|Pin Indeling
-Pin Color|Pin Kleur 
-Pin Spacing|Pin Afstand 
+Pin Arrangement|Pin indeling
+Pin Color|Pin kleur 
+Pin Spacing|Pin afstand 
 Pinout|Pinout
 Pins|Pins
-Play Test|Test Afspelen
-Plugin API|API-plug-in
-Point Count|Aantal Punten
+Play Test|Test afspelen
+Plugin API|API plugin
+Point Count|Aantal punten
 Polarity|Polariteit 
 Polarized|Gepolariseerd 
-Pole Color|Pool Kleur 
+Pole Color|Pool kleur 
 Pole Pieces|Poolstukken
 Pole Pieces 1|Poolstukken 1
 Pole Pieces 2|Poolstukken 2
 Positions|Posities 
 Positive|Positief 
-Power Rating|Nominale Vermogen
+Power Rating|Nominale vermogen
 Power Strip|Voedingslijn
-Primary CT|Primaire met Middenaftakking
+Primary CT|Primaire middenaftakking
 Print...|Afdrukken
-Project Cloud|Project “Cloud”
-Public Announcement|Openbare Aankondiging 
+Project Cloud|Project cloud
+Public Announcement|Openbare aankondiging 
 Radius|Straal 
 Rail|Rail 
-Recent Files|Recente Bestanden 
-Recent Updates|Recente Updates 
-Redo|Opniew Uitvoeren
-Renumber On Paste|Bij Plakken Hernummeren
-Renumber Selection|Selectie Hernummeren
+Recent Files|Recente bestanden 
+Recent Updates|Recente updates 
+Redo|Opniew uitvoeren
+Renumber On Paste|Bij plakken hernummeren
+Renumber Selection|Selectie hernummeren
 Resistance|Weerstand
-Rev log|Antilog.
-Reverse (standing)|Omgekeerd
+Rev log|Antilog
+Reverse (standing)|Kopstaand
 Right|Rechts
+Rim|Zijwand
 Rods|Staven
-Rotate Clockwise|Rechtsom Draaien
-Rotate Counterclockwise|Linksom Draaien
-Rotate Selection|Selectie Draaien
+Rotate Clockwise|Rechtsom draaien
+Rotate Counterclockwise|Linksom draaien
+Rotate Selection|Selectie draaien
 Round|Rond
-Round package A|Ronde Behuizing A
-Round package B|Ronde Behuizing B
+Round package A|Ronde behuizing A
+Round package B|Ronde behuizing B
 Row Spacing|Rijafstand
 Rows|Rijen
-Ruler Inch Subdivision…|Liniaal Inch Gradatie
-Same Type Only|Alleen Hetzelfde Soort
+Ruler Inch Subdivision...|Inch lineaal onderverdelen in
+Same Type Only|Alleen hetzelfde type
 Save|Opslaan
-Save As|Opslaan Als
-Save as Variant|Als Variant Opslaan
+Save As|Opslaan als
+Save as Variant|Als variant opslaan
 Scale|Schaal
-Schematic Symbols|Schematische Symbolen 
+Schematic Symbols|Schemasymbolen 
 Screws|Schroeven 
 Selection|Selectie 
-Selection Size|Selectie Grootte 
-Selection is empty|Selectie is Leeg
-Search The Cloud|Zoek in “De Cloud”
-Searchable Tree|Doorzoekbare Boom
-Secondary CT|Secundaire met Middenaftakking
-Select All|Alles Selecteren 
+Selection Size|Selectie grootte 
+Selection is empty|Selectie is leeg
+Search The Cloud|Zoek in de cloud
+Searchable Tree|Doorzoekbare boom
+Secondary CT|Secundaire met middenaftakking
+Select All|Alles selecteren 
 Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Geselecteerde component(en) hebben de achterkant van hun laag bereikt. Wil je de selectie naar achteren forceren? 
 Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Geselecteerde component (en) hebben de bovenkant van hun laag bereikt. Wil je de selectie naar boven forceren? 
 Selection contains components that cannot be mirrored. Do you want to exclude them?|Selectie bevat componenten die niet kunnen worden gespiegeld. Wil je ze uitsluiten? 
-Rim|Velg
 Selection contains components that cannot be rotated. Do you want to exclude them?|Selectie bevat componenten die niet kunnen worden geroteerd. Wil je ze uitsluiten? 
 Semiconductors|Transistors
-Send Backward|Achteruit Sturen
-Send Selection to Back|Stuur selectie naar achterkant
+Send Backward|Naar achteren sturen
+Send Selection to Back|Stuur selectie naar achteren
 Seven|Zeven
-Shaft Down|As Naar Beneden
-Shaft Up|As Omhoog
+Shaft Down|As naar beneden
+Shaft Up|As omhoog
 Shape|Vorm
 Shapes|Vormen
-Show Grid|Raster Weergeven
-Show Rulers|Linialen Weergeven
-Shroud|Beschermend schild
+Show Grid|Raster weergeven
+Show Rulers|Linialen weergeven
+Shroud|Beschermrand
 Shrouded|Afgeschermd
-Single Rail|Enkele Rail 
-Single Rods|Enkele Staven 
+Single Rail|Enkele rail 
+Single Rods|Enkele staven 
 Size|Maat 
 Sizing Mode|Dimensioneringsmethode
 Small-button B7G|B7G met Kleine Knop
-Smooth|Gladmaken
-Snap To...|Uitlijnen Op ...
+Smooth|Egaliseren
+Snap To...|Uitlijnen op ...
 Soap Bar|Soap Bar
 Solid|Ononderbroken
 South|Zuid
@@ -360,31 +359,31 @@ Spacing|Afstand
 Square|Vierkant
 Square BR-3|Vierkant BR-3
 Standard|Standaard 
-Start Arrow|Start Pijl 
-Start Recording|Met Opnemen Beginnen
+Start Arrow|Startpijl 
+Start Recording|Met opnemen beginnen
 Stereo|Stereo
-Sticky Points|Kleverige Punten
-Stop Recording|Met Opnemen Stoppen
+Sticky Points|Kleverige punten
+Stop Recording|Met opnemen stoppen
 Stratocaster|Stratocaster 
-Strip Color|Strip kleur 
+Strip Color|Stripkleur 
 Stripe|Streep 
 Stripe 1|Streep 1 
 Stripe 2|Streep 2 
-Stripe Color|Streep Kleur 
+Stripe Color|Streep kleur 
 Stripe Color 1|Streepkleur 1 
 Stripe Color 2|Streepkleur 2 
 Style|Stijl 
-Submit a Bug|Bugrapport Indienen
+Submit a Bug|Bugrapport indienen
 Suppressor grid|Suppressorrooster
 Switched|Geschakeld
 Switches|Schakelaars
 Tab|Tab
-Tab Border|Tabrand
-Tabbed Toolbar|Werkbalk met Tabbladen
-Taper|Verloop
+Tab Border|Tabbladkleur
+Tabbed Toolbar|Werkbalk met tabbladen
+Taper|Weerstandsverloop
 Telecaster|Telecaster
-Terminal Spacing|Terminaal Afstand
-Terminals|Terminalen
+Terminal Spacing|Aansluitpunt afstand
+Terminals|Aansluitpunt
 Test|Test 
 Text|Tekst 
 Text Color|Tekstkleur 
@@ -392,31 +391,31 @@ Theme|Thema
 There are unsaved changes. Would you like to save them?|Er zijn niet-opgeslagen wijzigingen. Wil je ze opslaan? 
 Thickness|Breedte
 Three|Drie
-Through Hole|Through-Hole
-Tick|Gradatie
+Through Hole|THT
+Tick|Maatstreep
 Title|Titel
 Toolbox|Gereedschapskist
 Top|Bovenkant
-Top Lead|Bovenste Aansluitdraad
+Top Lead|Bovenste draad
 Top Left|Linksboven 
 Top Right|Rechtsboven 
-Top-to-Bottom|Boven Naar Beneden
+Top-to-Bottom|Boven naar beneden
 Trace|Spoor
 Trace Color|Spoorkleur
 Trace Mask|Spoormasker
-Transform Selection|Geselecteerde Voorwerpen Transformeren
+Transform Selection|Selectie transformeren
 Triangle|Driehoek 
-Tubular|Buisvormig 
+Tubular|Buis
 Tubes|Elektronenbuizen
 Two|Twee
 Type|Soort
 Ultra-miniature|Ultra-miniatuur
-Underside Pad Color|Onderzijde Soldeereilandje Kleur
-Underside Trace Color|Onderzijde Spoor Kleur
-Undo|Ongedaan Maken
-Ungroup Selection|Geselecteerde Groep Opheffen
-Unit|Meteenheed
-Upload A Project|Een Project Uploaden
+Underside Pad Color|Kleur soldeereilandje aan onderzijde
+Underside Trace Color|Spoorkleur aan onderzijde 
+Undo|Ongedaan maken
+Ungroup Selection|Selectie degroeperen
+Unit|Metenheed
+Upload A Project|Een project uploaden
 User Manual|Gebruikershandleiding
 Value|Waarde 
 Version history is not available|Versiegeschiedenis is niet beschikbaar
@@ -435,6 +434,20 @@ Winding Spacing|Wikkelafstand
 X-axis|X-as 
 Y-axis|Y-as 
 Zoom|Zoom 
-base of 10|Basis van 10 
-base of 2|Basis van 2 
-hold %s and drag to unstick from|houd %s vast en sleep, om los te maken van
+base of 10|Tienden 
+base of 2|Achsten
+hold %s and drag to unstick from|houd X vast en sleep, om los te maken van
+Add a Curve
+Clear
+Insert Image
+Load From File
+Loadline Editor
+Max Current (mA)
+Max Dissipation (W)
+Max Voltage (V)
+Save To File
+Update Axis
+Apply Variant
+Save as Building Block
+Select
+Unlock

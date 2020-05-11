@@ -62,7 +62,7 @@ public class TraceCut extends AbstractComponent<Void> {
   private Size size = SIZE;
   @SuppressWarnings("unused")
   @Deprecated
-  private transient Color fillColor = FILL_COLOR;
+  private Color fillColor = FILL_COLOR;
   @Deprecated
   private Color borderColor = BORDER_COLOR;
   private Color boardColor = AbstractBoard.BOARD_COLOR;

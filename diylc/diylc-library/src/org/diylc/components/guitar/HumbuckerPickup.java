@@ -529,13 +529,13 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
   public String getControlPointNodeName(int index) {
     switch (index) {
       case 0:
-        return"North Start";
+        return "North Start";
       case 1:
         return "North Finish";
       case 2:
-        return "South Start";
-      case 3:
         return "South Finish";
+      case 3:
+        return "South Start";
     }
     return null;
   }

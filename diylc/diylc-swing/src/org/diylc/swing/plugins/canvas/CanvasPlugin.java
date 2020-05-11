@@ -50,7 +50,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
@@ -67,6 +66,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.gui.TranslatedMenu;
+import org.diylc.swing.gui.TranslatedPopupMenu;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 import org.diylc.swingframework.ruler.IRulerListener;
@@ -452,7 +453,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public JPopupMenu getPopupMenu() {
     if (popupMenu == null) {
-      popupMenu = new JPopupMenu();
+      popupMenu = new TranslatedPopupMenu();
       popupMenu.add(getSelectionMenu());
       popupMenu.addSeparator();
       popupMenu.add(getCutAction());
@@ -480,7 +481,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public JMenu getSelectionMenu() {
     if (selectionMenu == null) {
-      selectionMenu = new JMenu("Select");
+      selectionMenu = new TranslatedMenu("Select");
       selectionMenu.setIcon(IconLoader.ElementsSelection.getIcon());
     }
     return selectionMenu;
@@ -488,7 +489,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public JMenu getExpandMenu() {
     if (expandMenu == null) {
-      expandMenu = new JMenu("Expand Selection");
+      expandMenu = new TranslatedMenu("Expand Selection");
       expandMenu.setIcon(IconLoader.BranchAdd.getIcon());
       expandMenu.add(getExpandSelectionAllAction());
       expandMenu.add(getExpandSelectionImmediateAction());
@@ -499,7 +500,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public JMenu getLockMenu() {
     if (lockMenu == null) {
-      lockMenu = new JMenu("Lock");
+      lockMenu = new TranslatedMenu("Lock");
       lockMenu.setIcon(IconLoader.Lock.getIcon());
     }
     return lockMenu;
@@ -507,7 +508,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public JMenu getUnlockMenu() {
     if (unlockMenu == null) {
-      unlockMenu = new JMenu("Unlock");
+      unlockMenu = new TranslatedMenu("Unlock");
       unlockMenu.setIcon(IconLoader.Unlock.getIcon());
     }
     return unlockMenu;
@@ -515,7 +516,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public JMenu getTransformMenu() {
     if (transformMenu == null) {
-      transformMenu = new JMenu("Transform Selection");
+      transformMenu = new TranslatedMenu("Transform Selection");
       transformMenu.setIcon(IconLoader.MagicWand.getIcon());
       transformMenu.add(getRotateClockwiseAction());
       transformMenu.add(getRotateCounterclockwiseAction());
@@ -536,7 +537,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   public JMenu getApplyTemplateMenu() {
     if (applyTemplateMenu == null) {
-      applyTemplateMenu = new JMenu("Apply Variant");
+      applyTemplateMenu = new TranslatedMenu("Apply Variant");
       applyTemplateMenu.setIcon(IconLoader.BriefcaseInto.getIcon());
     }
     return applyTemplateMenu;

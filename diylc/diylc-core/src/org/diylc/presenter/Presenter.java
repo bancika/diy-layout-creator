@@ -378,7 +378,7 @@ public class Presenter implements IPlugInPort {
     if (projectFileManager.isModified()) {
       int response =
           view.showConfirmDialog(UNSAVED_CHANGES, WARNING,
-              IView.YES_NO_CANCEL_OPTION, IView.WARNING_MESSAGE);
+              IView.YES_NO_CANCEL_OPTION, IView.WARNING_MESSAGE);      
       if (response == IView.YES_OPTION) {
         if (this.getCurrentFileName() == null) {
           File file = view.promptFileSave();
@@ -390,7 +390,7 @@ public class Presenter implements IPlugInPort {
           saveProjectToFile(this.getCurrentFileName(), false);
         }
       }
-      return response != IView.CANCEL_OPTION;
+      return response != IView.CANCEL_OPTION && response >= 0;
     }
     return true;
   }
