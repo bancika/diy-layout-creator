@@ -441,7 +441,7 @@ Y-axis|Eje Y
 Zoom|Zoom
 base of 10|Base de 10
 base of 2|Base de 2
-hold %s and drag to unstuck from|Mantenga presionado %s y arrastre para despegar
+hold %s and drag to unstick from|Mantenga presionado %s y arrastre para despegar
 Add a Curve|Agregar una Curva
 Clear|Limpiar
 Insert Image|Insertar Imagen

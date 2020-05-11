@@ -124,12 +124,12 @@ public class LangUtil {
     return missing;
   }
 
-  public static Map<String, Map<String, String>> getAvailableLanguages() {
-    Map<String, Map<String, String>> res = new HashMap<String, Map<String, String>>();
+  public static List<Language> getAvailableLanguages() {
+    List<Language> res = new ArrayList<Language>();
     File[] files = ResourceLoader.getFiles(LANG_DIR);
     if (files == null)
       return res;
-    try {      
+    try {
       for (File file : files) {        
         String key = file.getName().replaceFirst("[.][^.]+$", "");
         Map<String, String> details = new HashMap<String, String>();
@@ -145,8 +145,9 @@ public class LangUtil {
         } catch (IOException e) {
           LOG.error("Error loading language file", e);
         }
-        res.put(key, details);
+        res.add(new Language(key, details));
       }
+      Collections.sort(res);
       return res;
     } catch (Exception e) {
       LOG.error("Error fetching available languages");

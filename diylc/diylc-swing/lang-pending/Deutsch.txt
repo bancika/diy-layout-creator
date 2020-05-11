@@ -441,3 +441,17 @@ Zoom|Zoom
 base of 10|Basis von 10
 base of 2|Basis von 2
 hold %s and drag to unstick from|Halten Sie %s gedrückt und ziehen Sie, um sich von zu lösen
+Add a Curve
+Clear
+Insert Image
+Load From File
+Loadline Editor
+Max Current (mA)
+Max Dissipation (W)
+Max Voltage (V)
+Save To File
+Update Axis
+Apply Variant
+Save as Building Block
+Select
+Unlock
