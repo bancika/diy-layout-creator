@@ -3083,7 +3083,7 @@
 				<minor>7</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2020-05-03 00:00:00.000 CET</releaseDate>
+			<releaseDate>2020-05-11 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>	
 				<org.diylc.appframework.update.Change>
@@ -3113,6 +3113,26 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Projects created with version older than 4.5 that contain "Trace Cut" are showing errors when loaded in 4.5</description>
+				</org.diylc.appframework.update.Change>									
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>8</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-05-11 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>				
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved Dutch translation</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>"Outline Mode" produces rendering issues when "Cache Boost" feature is enabled</description>
 				</org.diylc.appframework.update.Change>									
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
