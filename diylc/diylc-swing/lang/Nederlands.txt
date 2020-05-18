@@ -42,8 +42,8 @@ Both Sides|Beide kanten
 Bottom|Onderkant
 Bottom Left|Linksonder 
 Bottom Right|Rechtsonder 
-Bring Forward|Naar voren halen
-Bring Selection to Front|Selectie naar voren halen
+Bring Forward|Verhogen
+Bring Selection to Front|Selectie naar top brengen
 Buffer|Buffer 
 Center|Midden 
 Center Negative|Middenpin negatief 
@@ -120,7 +120,7 @@ Dog Ear|Dog Ear
 Dot Spacing|Spatiëring
 Dotted|Gestippeld
 Drag control point(s) of|Sleep de controlepunt(en) van
-Drag the mouse over the canvas to place a new|Sleep de muis over het werkblad om een nieuw(e) # te plaatsen
+Drag the mouse over the canvas to place a new|De muis over het doek slepen plaatst een nieuwe
 Dual Rail Humbucker|Dubbele rail Humbucker
 Dual Rods|Dubbele polen 
 Duodecar B12C|Duodecar B12C 
@@ -198,7 +198,6 @@ In-Line D-44|Inline D-44
 In-line|Inline
 Indent|Inspringen 
 Information|Informatie 
-Inline|Inline
 Input error for "%s": %s|Invoerfout voor " %s": %s
 Insert Image|Afbeelding invoegen
 Inside color|Binenkant kleur
@@ -301,7 +300,7 @@ Positive|Positief
 Power Rating|Nominale vermogen
 Power Strip|Voedingslijn
 Primary CT|Primaire middenaftakking
-Print...|Afdrukken
+Print...|Afdrukken...
 Project Cloud|Project cloud
 Public Announcement|Openbare aankondiging 
 Radius|Straal 
@@ -325,7 +324,7 @@ Round package A|Ronde behuizing A
 Round package B|Ronde behuizing B
 Row Spacing|Rijafstand
 Rows|Rijen
-Ruler Inch Subdivision...|Inch lineaal onderverdelen in...
+Ruler Inch Subdivision. . .|Inch lineaal onderverdelen in. . .
 Same Type Only|Alleen hetzelfde type
 Save|Opslaan
 Save As|Opslaan als
@@ -338,22 +337,21 @@ Save as Building Block|Als Bouwsteen Opslaan
 Select|Selecteren
 Selection|Selectie 
 Selection Size|Selectie grootte 
-Selection is empty|Selectie is leeg
+Selection is empty.|Selectie is leeg.
 Search The Cloud|Zoek in de cloud
 Searchable Tree|Doorzoekbare boom
 Secondary CT|Secundaire middenaftakking
 Select All|Alles selecteren 
-Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Geselecteerde component(en) hebben de achterkant van hun laag bereikt. Wil je de selectie naar achteren forceren? 
-Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Geselecteerde component (en) hebben de bovenkant van hun laag bereikt. Wil je de selectie naar boven forceren? 
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Geselecteerde componenten hebben de bodem van hun laag bereikt. Wilt u ze honder hun laag dwingen?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Geselecteerde componenten hebben de top van hun laag bereikt. Wilt u ze boven hun laag dwingen?
 Selection contains components that cannot be mirrored. Do you want to exclude them?|Selectie bevat componenten die niet kunnen worden gespiegeld. Wil je ze uitsluiten? 
-Rim|Zijwand
 Save as Building Block|Als bouwsteen opslaan
 Save To File|Opslaan
 Select|Selecteer
 Selection contains components that cannot be rotated. Do you want to exclude them?|Selectie bevat componenten die niet kunnen worden geroteerd. Wil je ze uitsluiten? 
 Semiconductors|Transistors
-Send Backward|Naar achteren sturen
-Send Selection to Back|Stuur selectie naar achteren
+Send Backward|Verlagen
+Send Selection to Back|Selectie naar bodem zenden
 Seven|Zeven
 Shaft Down|As naar beneden
 Shaft Up|As omhoog
@@ -438,7 +436,7 @@ Update Axis|Grafiek-as bijwerken
 Upload A Project|Een project uploaden
 User Manual|Gebruikershandleiding
 Value|Waarde 
-Version history is not available|Versiegeschiedenis is niet beschikbaar
+Version history is not available.|Versiegeschiedenis is niet beschikbaar.
 Vertical|Verticaal 
 Vertical Alignment|Verticale uitlijning 
 Vertical Inline|Verticaal inline 

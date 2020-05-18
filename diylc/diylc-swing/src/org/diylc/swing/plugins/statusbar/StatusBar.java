@@ -97,7 +97,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private static final String PUBLIC_ANNOUNCEMENT = LangUtil.translate("Public Announcement");
   private static final String COULD_NOT_FETCH_ANNOUNCEMENTS = LangUtil.translate("Could not fetch public announcements.");
   private static final String CLICK_TO_FETCH_ANNOUNCEMENT = LangUtil.translate("Click to fetch the most recent public announcement");
-  private static final String CLICK_THE_LIGHBULB = LangUtil.translate("Click the lighbulb icon in the bottom-right corner of the window for more info.");
+  private static final String CLICK_THE_LIGHTBULB = LangUtil.translate("Click the lightbulb icon in the bottom-right corner of the window for more info.");
   private static final String NEW_VERSION_AVAILABLE = LangUtil.translate("New version available");
   private static String HIGHLIGHT_CONNECTED_TIP = LangUtil.translate("Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF");
 
@@ -162,7 +162,7 @@ public class StatusBar extends JPanel implements IPlugIn {
           String updateHtml =
               "<font size='4'><b>" + NEW_VERSION_AVAILABLE + ":</b> " + update
                   + "</font><br>"
-                      + CLICK_THE_LIGHBULB;
+                      + CLICK_THE_LIGHTBULB;
           if (announcements == null || announcements.length() == 0)
             return "<html>" + updateHtml + "</html>";
           announcements = announcements.replace("<html>", "<html>" + updateHtml + "<br>");

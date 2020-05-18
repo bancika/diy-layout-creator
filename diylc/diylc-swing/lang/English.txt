@@ -55,7 +55,7 @@ Circular
 Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF
 Click on the canvas to create a new %s or press %s to cancel
 Click on the canvas to set the %s control point of a new %s or press %s to cancel
-Click the lighbulb icon in the bottom-right corner of the window for more info.
+Click the lightbulb icon in the bottom-right corner of the window for more info.
 Click to fetch the most recent public announcement
 Click to show recent changes and updates
 Coil

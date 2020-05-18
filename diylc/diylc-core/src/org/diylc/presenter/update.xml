@@ -3127,6 +3127,10 @@
 			<name></name>
 			<changes>				
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added German UI translation</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved Dutch translation</description>
 				</org.diylc.appframework.update.Change>		
