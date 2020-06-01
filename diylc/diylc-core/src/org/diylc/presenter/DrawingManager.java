@@ -116,8 +116,13 @@ public class DrawingManager {
     this.messageDispatcher = messageDispatcher;
     this.configManager = configManager;
     
-    this.theme = (Theme) configManager.readObject(IPlugInPort.THEME_KEY,
+    try {
+      this.theme = (Theme) configManager.readObject(IPlugInPort.THEME_KEY,
         Constants.DEFAULT_THEME);
+    } catch (Exception e) {
+      LOG.error("Error loading theme", e);
+      this.theme = Constants.DEFAULT_THEME;
+    }
         
     componentAreaMap = new HashMap<IDIYComponent<?>, ComponentArea>();
     lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();

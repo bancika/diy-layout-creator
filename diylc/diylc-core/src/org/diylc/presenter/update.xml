@@ -3137,6 +3137,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>"Outline Mode" produces rendering issues when "Cache Boost" feature is enabled</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Program won't start with some older configuration files due to different format of themes</description>
 				</org.diylc.appframework.update.Change>									
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
