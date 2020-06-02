@@ -122,6 +122,8 @@ public class DrawingManager {
     } catch (Exception e) {
       LOG.error("Error loading theme", e);
       this.theme = Constants.DEFAULT_THEME;
+      // replace bad value with default
+      configManager.writeValue(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     }
         
     componentAreaMap = new HashMap<IDIYComponent<?>, ComponentArea>();
