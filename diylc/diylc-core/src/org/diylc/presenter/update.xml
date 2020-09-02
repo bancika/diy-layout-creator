@@ -3133,7 +3133,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved Dutch translation</description>
-				</org.diylc.appframework.update.Change>		
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Make file writes more resilient to crashes to avoid loss of data</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>"Outline Mode" produces rendering issues when "Cache Boost" feature is enabled</description>

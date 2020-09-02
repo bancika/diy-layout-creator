@@ -148,14 +148,19 @@ public class ProjectFileManager {
   public synchronized void serializeProjectToFile(Project project, String fileName, boolean isBackup)
       throws IOException {
     if (!isBackup) {
-      LOG.info(String.format("saveProjectToFile(%s)", fileName));
+      LOG.info(String.format("serializeProjectToFile(%s)", fileName));
     }
     FileOutputStream fos;
-    fos = new FileOutputStream(fileName);
+    // write to a temp file to avoid loss of data in case of crash
+    String tempName = fileName + ".temp";
+    fos = new FileOutputStream(tempName);
     Writer writer = new OutputStreamWriter(fos, "UTF-8");
     writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
     xStream.toXML(project, writer);
     fos.close();
+    // switch the files at the end
+    new File(fileName).delete();
+    new File(tempName).renameTo(new File(fileName));
     if (!isBackup) {
       this.currentFileName = fileName;
       this.modified = false;
