@@ -3131,6 +3131,14 @@
 					<description>Added German UI translation</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Use ALT key to temporarily switch to "Highlight Continuity Area" mode</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Reset "Highlight Continuity Area" mode configuration on application exit to avoid confusion in the next session</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved Dutch translation</description>
 				</org.diylc.appframework.update.Change>	

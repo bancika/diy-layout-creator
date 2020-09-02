@@ -211,7 +211,8 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-          canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
+          canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
+              e.isShiftDown(), e.isAltDown()));
           plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
               e.isShiftDown(), e.isAltDown());
         }

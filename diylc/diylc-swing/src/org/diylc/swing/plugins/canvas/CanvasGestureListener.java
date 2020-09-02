@@ -51,7 +51,7 @@ class CanvasGestureListener implements DragGestureListener {
       forceReSelection = me.getButton() != MouseEvent.BUTTON1;
     }
     presenter.dragStarted(dge.getDragOrigin(), dge.getDragAction(), forceReSelection);
-    dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(), new CanvasSourceListener(
+    dge.startDrag(presenter.getCursorAt(dge.getDragOrigin(), false, false, false), new EmptyTransferable(), new CanvasSourceListener(
         presenter));
   }
 }

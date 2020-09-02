@@ -76,7 +76,7 @@ class TreeGestureListener implements DragGestureListener {
     }
 
     if (start)
-      dge.startDrag(presenter.getCursorAt(dge.getDragOrigin()), new EmptyTransferable(),
+      dge.startDrag(presenter.getCursorAt(dge.getDragOrigin(), false, false, false), new EmptyTransferable(),
         new TreeSourceListener(presenter));
   }
 }

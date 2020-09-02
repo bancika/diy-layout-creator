@@ -126,9 +126,12 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * Note: point coordinates are scaled for zoom factor.
    * 
    * @param point
+   * @param ctrlDown
+   * @param shiftDown
+   * @param altDown
    * @return cursor
    */
-  Cursor getCursorAt(Point point);
+  Cursor getCursorAt(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
   /**
    * Returns an instance of currently loaded project.

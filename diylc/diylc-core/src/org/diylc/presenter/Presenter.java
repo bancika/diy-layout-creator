@@ -265,9 +265,9 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public Cursor getCursorAt(Point point) {
+  public Cursor getCursorAt(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     // Only change the cursor if we're not making a new component.
-    if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
+    if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false) || altDown)
       return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     if (instantiationManager.getComponentTypeSlot() == null) {
       // Scale point to remove zoom factor.
@@ -686,7 +686,7 @@ public class Presenter implements IPlugInPort {
           drawingManager.clearContinuityArea();
           projectFileManager.notifyFileChange();
         }
-      } else if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+      } else if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false) || altDown) {
         drawingManager.findContinuityAreaAtPoint(currentProject, scaledPoint);
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       } else {
@@ -717,6 +717,7 @@ public class Presenter implements IPlugInPort {
             newSelection.addAll(findAllGroupedComponents(topComponent));
           }
         }
+        drawingManager.clearContinuityArea();
         updateSelection(newSelection);
         // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
         // selectedComponents);

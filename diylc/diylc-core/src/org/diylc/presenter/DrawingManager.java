@@ -470,8 +470,7 @@ public class DrawingManager {
       }
     }
 
-    if (currentContinuityArea != null
-        && (configManager.readBoolean(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false))) {
+    if (currentContinuityArea != null) {
       Composite oldComposite = g2d.getComposite();
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
       g2d.setColor(Color.green);
