@@ -58,7 +58,7 @@ Clear |Libera
 Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|Clicca su un componente per evidenziare l'area direttamente o indirettamente connessa all'area sotto il cursore. Per continuare la modifica, questa modalità deve essere disattivata
 Click on the canvas to create a new %s or press %s to cancel|Fai clic sull'area di disegno per crearne un nuovo %s oppure premi %s per annullare
 Click on the canvas to set the %s control point of a new %s or press %s to cancel|Clicca sull'area di disegno per impostare il punto di controllo %s di un nuovo %s oppure premi %s per annullare
-Click the lighbulb icon in the bottom-right corner of the window for more info.|Clicca sull'icona della lampadina nell'angolo in basso a destra della finestra per ulteriori informazioni.
+Click the lightbulb icon in the bottom-right corner of the window for more info.|Clicca sull'icona della lampadina nell'angolo in basso a destra della finestra per ulteriori informazioni.
 Click to fetch the most recent public announcement|Clicca per recuperare l'annuncio pubblico più recente
 Click to show recent changes and updates|Clicca per mostrare le modifiche e gli aggiornamenti recenti
 Coil|Bobina

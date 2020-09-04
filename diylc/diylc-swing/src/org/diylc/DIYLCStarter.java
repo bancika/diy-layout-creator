@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
+import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
@@ -81,6 +82,11 @@ public class DIYLCStarter {
     }
 
     ConfigurationManager.initialize("diylc");
+    
+    // disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
+    ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
+    
+    LOG.info("Loading languages...");
     
     LangUtil.configure();
 

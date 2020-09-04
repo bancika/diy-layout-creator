@@ -10,12 +10,14 @@ icon=netherlands
 A variant with that name already exists. Overwrite?|Er bestaat al een variant met die naam. Overschrijven? 
 About|Over 
 Above|Boven
-Access User Files|Toegang tot gebruikersbestanden
+Open User Directory|Map van de gebruiker openen
+Add a Curve|Lijn toevoegen
 Add Flexible Leads|Flexibele draaden toevoegen
 Add Validation Step|Controlestap toevoegen 
 All Connected|Alle verbonden 
 Alpha|Opaciteit 
 Analyze|Analyseren 
+Apply Variant|Variant toepassen
 Analyze Guitar Diagrams|Gitaar diagrammen analyseren
 Angle|Hoek 
 Anti-Aliasing|Anti-aliasing 
@@ -24,7 +26,7 @@ Author|Ontwerper
 Auto-Create Pads|Automatisch aanmaken van soldeereilandjes 
 Auto-Edit Mode|Automatisch bewerken modus
 Base|Basis
-Below|Beneden
+Below|Onder
 Blueprint|Blauwdruk
 Board|Printplaat
 Boards|Printplaten
@@ -40,8 +42,8 @@ Both Sides|Beide kanten
 Bottom|Onderkant
 Bottom Left|Linksonder 
 Bottom Right|Rechtsonder 
-Bring Forward|Naar voren halen
-Bring Selection to Front|Selectie naar voren halen
+Bring Forward|Verhogen
+Bring Selection to Front|Selectie naar top brengen
 Buffer|Buffer 
 Center|Midden 
 Center Negative|Middenpin negatief 
@@ -52,9 +54,10 @@ Change Password|Wachtwoord wijzigen
 Channel|Channel
 Chassis|Chassis
 Circular|Rond
+Clear|Alles wissen
 Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|Klik op een component om het gebied te markeren dat direct of indirect verbonden is met het gebied onder de cursor. Om door te gaan met bewerken, moet deze modus worden uitgeschakeld 
-Click on the canvas to create a new %s or press %s to cancel|Klik op het canvas om een nieuwe %s te maken of druk op %s om te annuleren 
-Click on the canvas to set the %s control point of a new %s or press %s to cancel|Klik op het canvas om het %s-controlepunt van een nieuwe %s in te stellen of druk op %s om te annuleren 
+Click on the canvas to create a new %s or press %s to cancel|Klik op het werkblad om een nieuwe %s te maken of druk op %s om te annuleren 
+Click on the canvas to set the %s control point of a new %s or press %s to cancel|Klik op het werkblad om het %s-controlepunt van een nieuwe %s in te stellen of druk op %s om te annuleren 
 Click the lightbulb icon in the bottom-right corner of the window for more info.|Klik op het gloeilampicoon in de rechteronderhoek van het venster voor meer informatie.
 Click to fetch the most recent public announcement|Klik om de meest recente openbare aankondiging op te halen 
 Click to show recent changes and updates|Klik om recente wijzigingen en updates weer te geven 
@@ -76,8 +79,8 @@ Connector (Mirrored)|Connector (gespiegeld)
 Connectivity|Connectiviteit 
 Contacts|Contacten 
 Continuous Creation|Doorgaan met invoegen
-Coordinate Color Value|Coördinaatkleur
-Coordinate Origin Value|Coördinaatoorsprong
+Coordinate Color|Coördinaatkleur
+Coordinate Origin|Coördinaatoorsprong
 Coordinates|Coördinaten 
 Copy|Kopiëren
 Core|Kern
@@ -90,7 +93,7 @@ Could not fetch public announcements.|Kon geen openbare aankondigingen ophalen.
 Could not save the project to file. Check the log for details.|Kon het project niet opslaan in  bestand. Controleer het logbestand voor details.
 Could not set component type slot. Check log for details.|Kon sleuf voor componenttype niet instellen. Controleer logbestand voor details. 
 Cover|Deksel
-Create B.O.M.|Stuklijst maaken
+Create B.O.M.|Stuklijst maken
 Create New Account|Nieuw account aanmaken
 Current|Stroom
 Cut|Snijden
@@ -111,15 +114,15 @@ Description|Beschrijving
 Diameter|Diameter 
 Directional|Directioneel
 Directly heated|Direct verwarmd
-Display name or value|Weergeven
+Display|Weergeven
 Display Pin #s|Pin #s weergeven
 Dog Ear|Dog Ear
 Dot Spacing|Spatiëring
 Dotted|Gestippeld
 Drag control point(s) of|Sleep de controlepunt(en) van
-Drag the mouse over the canvas to place a new|Sleep de muis over het canvas om een nieuw(e)  te plaatsen
+Drag the mouse over the canvas to place a new|De muis over het doek slepen plaatst een nieuwe
 Dual Rail Humbucker|Dubbele rail Humbucker
-Dual Rods|Dubbele staven 
+Dual Rods|Dubbele polen 
 Duodecar B12C|Duodecar B12C 
 Duplicate|Dupliceren
 Edges|Randen
@@ -138,7 +141,7 @@ Expand Selection|Selectie uitbreiden
 Explicit Dimensions|Expliciete dimensies 
 Explicit Length|Expliciete lengte 
 Explicit Width|Expliciete breedte 
-Export Building Blocks|Bouwblokken exporteren
+Export Building Blocks|Bouwstenen exporteren
 Export Grid|Raster exporteren 
 Export Variants|Varianten exporteren 
 Export to PDF|Naar PDF exporteren
@@ -168,7 +171,7 @@ Group Selection|Selectie groeperen
 Guitar|Gitaar 
 Half|Helft 
 Hardware Acceleration|Hardware versnelling 
-Heaters|Gloeidraad
+Heaters|Gloeidraden
 Height|Hoogte
 Help|Hulp
 Hi-Quality Rendering|Hoge kwaliteit rendering
@@ -191,12 +194,12 @@ Immediate Only|Alleen direct
 Import|Importeren
 Import Building Blocks|Bouwstenen importeren
 Import Variants|Varianten importeren
-In-Line D-44|In-Line D-44
-In-line|In-Line
+In-Line D-44|Inline D-44
+In-line|Inline
 Indent|Inspringen 
 Information|Informatie 
-Inline|Inline
 Input error for "%s": %s|Invoerfout voor " %s": %s
+Insert Image|Afbeelding invoegen
 Inside color|Binenkant kleur
 Integration|Integratie
 Invert polarity|Wissel polariteit
@@ -220,7 +223,11 @@ Legs|Pootjes
 Length|Lengte 
 Letters|Letteren
 Light|Licht
+Lin|Lineair
+Load From File|Bestand Laden
+Loadline Editor|Belastingslijn opmaakprogramma
 Lock|Vastpinnen
+Log|Logaritmisch
 Log In|Inloggen
 Log Out|Uitloggen
 Lug Size|Solderooggrootte
@@ -230,6 +237,9 @@ Manage Account|Account beheren
 Manage My Uploads|Uploads beheren
 Mark Common Lugs|Gemeenschappelijke Solderogen markeren
 Marker|Merkteken
+Max Current (mA)|Max. stroom (mA)
+Max Dissipation (W)|Max. dissipatie (W)
+Max Voltage (V)|Max. spanning (V)
 Mini|Mini
 Miniature|Miniatuur
 Mirror Horizontally|Horizontaal spiegelen
@@ -290,7 +300,7 @@ Positive|Positief
 Power Rating|Nominale vermogen
 Power Strip|Voedingslijn
 Primary CT|Primaire middenaftakking
-Print...|Afdrukken
+Print...|Afdrukken...
 Project Cloud|Project cloud
 Public Announcement|Openbare aankondiging 
 Radius|Straal 
@@ -305,7 +315,7 @@ Rev log|Antilog
 Reverse (standing)|Kopstaand
 Right|Rechts
 Rim|Zijwand
-Rods|Staven
+Rods|Poolstaven
 Rotate Clockwise|Rechtsom draaien
 Rotate Counterclockwise|Linksom draaien
 Rotate Selection|Selectie draaien
@@ -314,28 +324,34 @@ Round package A|Ronde behuizing A
 Round package B|Ronde behuizing B
 Row Spacing|Rijafstand
 Rows|Rijen
-Ruler Inch Subdivision...|Inch lineaal onderverdelen in
+Ruler Inch Subdivision. . .|Inch lineaal onderverdelen in. . .
 Same Type Only|Alleen hetzelfde type
 Save|Opslaan
 Save As|Opslaan als
 Save as Variant|Als variant opslaan
+Save to File|Opslaan
 Scale|Schaal
 Schematic Symbols|Schemasymbolen 
 Screws|Schroeven 
+Save as Building Block|Als Bouwsteen Opslaan
+Select|Selecteren
 Selection|Selectie 
 Selection Size|Selectie grootte 
-Selection is empty|Selectie is leeg
+Selection is empty.|Selectie is leeg.
 Search The Cloud|Zoek in de cloud
 Searchable Tree|Doorzoekbare boom
-Secondary CT|Secundaire met middenaftakking
+Secondary CT|Secundaire middenaftakking
 Select All|Alles selecteren 
-Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Geselecteerde component(en) hebben de achterkant van hun laag bereikt. Wil je de selectie naar achteren forceren? 
-Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Geselecteerde component (en) hebben de bovenkant van hun laag bereikt. Wil je de selectie naar boven forceren? 
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Geselecteerde componenten hebben de bodem van hun laag bereikt. Wilt u ze honder hun laag dwingen?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Geselecteerde componenten hebben de top van hun laag bereikt. Wilt u ze boven hun laag dwingen?
 Selection contains components that cannot be mirrored. Do you want to exclude them?|Selectie bevat componenten die niet kunnen worden gespiegeld. Wil je ze uitsluiten? 
+Save as Building Block|Als bouwsteen opslaan
+Save To File|Opslaan
+Select|Selecteer
 Selection contains components that cannot be rotated. Do you want to exclude them?|Selectie bevat componenten die niet kunnen worden geroteerd. Wil je ze uitsluiten? 
 Semiconductors|Transistors
-Send Backward|Naar achteren sturen
-Send Selection to Back|Stuur selectie naar achteren
+Send Backward|Verlagen
+Send Selection to Back|Selectie naar bodem zenden
 Seven|Zeven
 Shaft Down|As naar beneden
 Shaft Up|As omhoog
@@ -346,12 +362,12 @@ Show Rulers|Linialen weergeven
 Shroud|Beschermrand
 Shrouded|Afgeschermd
 Single Rail|Enkele rail 
-Single Rods|Enkele staven 
+Single Rods|Enkelvoudige polen 
 Size|Maat 
 Sizing Mode|Dimensioneringsmethode
 Small-button B7G|B7G met Kleine Knop
 Smooth|Egaliseren
-Snap To...|Uitlijnen op ...
+Snap To...|Uitlijnen op...
 Soap Bar|Soap Bar
 Solid|Ononderbroken
 South|Zuid
@@ -383,7 +399,7 @@ Tabbed Toolbar|Werkbalk met tabbladen
 Taper|Weerstandsverloop
 Telecaster|Telecaster
 Terminal Spacing|Aansluitpunt afstand
-Terminals|Aansluitpunt
+Terminals|Aansluitpunten
 Test|Test 
 Text|Tekst 
 Text Color|Tekstkleur 
@@ -415,19 +431,21 @@ Underside Trace Color|Spoorkleur aan onderzijde
 Undo|Ongedaan maken
 Ungroup Selection|Selectie degroeperen
 Unit|Metenheed
+Unlock|Ontgrendelen
+Update Axis|Grafiek-as bijwerken
 Upload A Project|Een project uploaden
 User Manual|Gebruikershandleiding
 Value|Waarde 
-Version history is not available|Versiegeschiedenis is niet beschikbaar
+Version history is not available.|Versiegeschiedenis is niet beschikbaar.
 Vertical|Verticaal 
 Vertical Alignment|Verticale uitlijning 
 Vertical Inline|Verticaal inline 
 Vertical Offset 1|Verticale offset 1 
 Vertical Offset 2|Verticale offset 2 
 View|Weergave
-Visible|Zichtbaar
+Visible|Zichtbaarheid
 Voltage|Spanning
-Wafer|Wafeltje
+Wafer|Dek
 Warning|Waarschuwing
 Width|Breedte 
 Winding Spacing|Wikkelafstand 
@@ -435,19 +453,5 @@ X-axis|X-as
 Y-axis|Y-as 
 Zoom|Zoom 
 base of 10|Tienden 
-base of 2|Achsten
-hold %s and drag to unstick from|houd X vast en sleep, om los te maken van
-Add a Curve
-Clear
-Insert Image
-Load From File
-Loadline Editor
-Max Current (mA)
-Max Dissipation (W)
-Max Voltage (V)
-Save To File
-Update Axis
-Apply Variant
-Save as Building Block
-Select
-Unlock
+base of 2|Achtsten
+hold %s and drag to unstick from|houd %s vast en sleep, om los te maken van

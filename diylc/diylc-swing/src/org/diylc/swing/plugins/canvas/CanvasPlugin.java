@@ -311,12 +311,19 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
             }
           });
         }
-      });
+      });           
 
       canvasPanel.addKeyListener(new KeyAdapter() {
+        
+        @Override
+        public void keyReleased(KeyEvent e) {
+          canvasPanel.setCursor(plugInPort.getCursorAt(canvasPanel.getMousePosition(), false, false, false));
+        }
 
         @Override
-        public void keyPressed(KeyEvent e) {
+        public void keyPressed(KeyEvent e) {      
+          canvasPanel.setCursor(plugInPort.getCursorAt(canvasPanel.getMousePosition(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
+              e.isShiftDown(), e.isAltDown()));
           if (plugInPort.keyPressed(e.getKeyCode(),
               Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown())) {
             e.consume();
@@ -330,7 +337,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         public void mouseMoved(MouseEvent e) {
           if (scrollPane.isMouseScrollMode())
             return;
-          canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint()));
+          canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
+              e.isShiftDown(), e.isAltDown()));
           plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
               e.isShiftDown(), e.isAltDown());
         }

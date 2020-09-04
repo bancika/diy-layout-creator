@@ -26,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.plugins.cloud.model.IServiceAPI;
@@ -37,6 +38,7 @@ public class AnnouncementProvider {
 
   private String serviceUrl = "http://www.diy-fever.com/diylc/api/v1/announcements.html";
   private String LAST_READ_KEY = "announcement.lastReadDate";
+  private String USER_ID_KEY = "userId";
 
   private IAnnouncementService service;
 
@@ -56,9 +58,18 @@ public class AnnouncementProvider {
     ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
     service = factory.createProxy(IAnnouncementService.class, serviceUrl);
   }
+  
+  private String getUserId() {
+    String userId = ConfigurationManager.getInstance().readString(USER_ID_KEY, null);
+    if (userId == null) {
+      userId = UUID.randomUUID().toString();
+      ConfigurationManager.getInstance().writeValue(USER_ID_KEY, userId);
+    }
+    return userId;
+  }
 
   public String getCurrentAnnouncements(boolean forceLast) throws ParseException {
-    announcements = service.getAnnouncements();
+    announcements = service.getAnnouncements(getUserId());
     if (announcements == null)
     	return null;
     boolean hasUnread = false;

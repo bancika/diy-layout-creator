@@ -166,7 +166,7 @@ public class DrawingCache {
 
     // only honor the cache if the component hasn't changed in the meantime
     if (value == null || !value.getComponent().equalsTo(component)
-        || value.getState() != componentState || value.getZoom() != zoom) {
+        || value.getState() != componentState || value.getZoom() != zoom || value.getOutlineMode() != outlineMode) {
       // figure out size and placement of buffer image
       Rectangle2D rect = component.getCachingBounds();
       int width = (int)Math.round(rect.getWidth() * zoom);
@@ -236,7 +236,7 @@ public class DrawingCache {
       
       // add to the cache        
       value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
-          wrapper.getContinuityNegativeAreas(), componentState, zoom, dx, dy, rect);        
+          wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, dx, dy, rect);        
       imageCache.put(component, value);
     }
     
@@ -250,6 +250,7 @@ public class DrawingCache {
     Map<String, Area> continuityPositiveAreas;
     Map<String, Area> continuityNegativeAreas;
     ComponentState state;
+    boolean outlineMode;
     double zoom;
     int dx;
     int dy;
@@ -257,7 +258,7 @@ public class DrawingCache {
 
     public CacheValue(IDIYComponent<?> component, BufferedImage image, Area currentArea,
         Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas,
-        ComponentState state, double zoom, int dx, int dy, Rectangle2D cacheBounds) {
+        ComponentState state, boolean outlineMode, double zoom, int dx, int dy, Rectangle2D cacheBounds) {
       super();
       this.cacheBounds = cacheBounds;
       // take a copy of the component, so we can check if it changed in the meantime
@@ -270,6 +271,7 @@ public class DrawingCache {
       this.continuityPositiveAreas = continuityPositiveAreas;
       this.continuityNegativeAreas = continuityNegativeAreas;
       this.state = state;
+      this.outlineMode = outlineMode;
       this.zoom = zoom;
       this.dx = dx;
       this.dy = dy;
@@ -297,6 +299,10 @@ public class DrawingCache {
 
     public ComponentState getState() {
       return state;
+    }
+    
+    public boolean getOutlineMode() {
+      return outlineMode;
     }
     
     public double getZoom() {

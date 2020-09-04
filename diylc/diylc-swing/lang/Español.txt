@@ -55,7 +55,7 @@ Circular|Circular
 Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|Haga clic en un componente para resaltar el área conectada directa o indirectamente al área debajo del cursor. Para continuar editando, este modo necesita estar desactivado
 Click on the canvas to create a new %s or press %s to cancel|Haga clic sobre el área de trabajo para crear un nuevo %s o presione %s para cancelar
 Click on the canvas to set the %s control point of a new %s or press %s to cancel|Haga clic sobre el área de trabajo para establecer el %s punto de control de un nuevo %s o presione %s para cancelar
-Click the lighbulb icon in the bottom-right corner of the window for more info.|Haga clic en el icono de la bombilla en la esquina inferior derecha de la ventana para obtener más información.
+Click the lightbulb icon in the bottom-right corner of the window for more info.|Haga clic en el icono de la bombilla en la esquina inferior derecha de la ventana para obtener más información.
 Click to fetch the most recent public announcement|Haga clic para obtener el anuncio público más reciente.
 Click to show recent changes and updates|Haga clic para ver cambios y actualizaciones recientes
 Coil|Bobina

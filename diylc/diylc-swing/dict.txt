@@ -23,8 +23,10 @@
 5PDT
 5PDT  (Center OFF)
 AWG
+Access User Files
 And
 C-B-E     BJT
+Click the lighbulb icon in the bottom-right corner of the window for more info.
 D-G-S     JFET
 D-G-S     MOSFET
 D-S-G     JFET
@@ -36,6 +38,7 @@ DP3T
 DP5T
 DPDT
 DPDT  (Center OFF)
+Deutsch
 E-B-C     BJT
 English
 Español
@@ -44,11 +47,9 @@ G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
+Inline
 Italiano
-Lin
-Log
 NPN
-Nand
 Nederlands
 Nor
 Not
@@ -56,14 +57,19 @@ Or
 PAF
 PCB
 PNP
-Rev log
+Round WOG A
+Round WOG B
 S-G-D     JFET
 S-G-D     MOSFET
 SMD
 SPDT
 SPDT  (Center OFF)
 SPST
+Selection is empty.
+Soap Bar
+Sprache
 Srpski
+Version history is not available.
 Xnor
 Xor
 cm
