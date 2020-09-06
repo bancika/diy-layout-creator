@@ -27,7 +27,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 
+import org.apache.poi.hssf.record.formula.eval.BoolEval;
 import org.diylc.common.SimpleComponentTransformer;
+import org.diylc.components.boards.AbstractBoard.CoordinateType;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -54,11 +56,14 @@ public class PerfBoard extends AbstractBoard {
   public static Size SPACING = new Size(0.1d, SizeUnit.in);
   public static Size PAD_SIZE = new Size(0.08d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
-
+  
   // private Area copperArea;
   protected Size spacing = SPACING;
   protected Color padColor = COPPER_COLOR;
+  
+ protected PadDisplay ShowPad;
 
+  
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -84,10 +89,14 @@ public class PerfBoard extends AbstractBoard {
         p.y += spacing;
         while (p.x < finalSecondPoint.x - spacing - diameter) {
           p.x += spacing;
-          g2d.setColor(padColor);
-          g2d.fillOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
-          g2d.setColor(padColor.darker());
-          g2d.drawOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
+// draw copper pad only at p.x,p.y and outline it with a darker color 
+          if (ShowPad == PadDisplay.Show) {
+        	  g2d.setColor(padColor);
+        	  g2d.fillOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
+        	  g2d.setColor(padColor.darker());
+        	  g2d.drawOval(p.x - diameter / 2, p.y - diameter / 2, diameter, diameter);
+          }
+// draw hole at p.x,p.y the color of the backgnd and outline it with a darker color         
           g2d.setColor(Constants.CANVAS_COLOR);
           g2d.fillOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter, holeDiameter);
           g2d.setColor(padColor.darker());
@@ -98,6 +107,17 @@ public class PerfBoard extends AbstractBoard {
     }
   }
 
+  @EditableProperty(name = "Show Pad")
+  public PadDisplay getShowPad() {
+    if (ShowPad == null)
+    	ShowPad = PadDisplay.Show;  // if ShowPad isn't found, set to default - for back compat
+    return ShowPad;
+  }
+
+  public void setShowPad(PadDisplay ShowPad) {
+	  this.ShowPad = ShowPad;
+  }
+  
   @EditableProperty(name = "Pad color")
   public Color getPadColor() {
     return padColor;
@@ -139,4 +159,13 @@ public class PerfBoard extends AbstractBoard {
     g2d.drawOval(width / 2 - 2 / factor, width / 2 - 2 / factor, getClosestOdd(5.0 / factor),
         getClosestOdd(5.0 / factor));
   }
+  
+	public static enum PadDisplay {
+		Show, No_Show;
+
+		@Override
+		public String toString() {
+			return super.toString().replace('_', ' ');
+		};
+	}
 }
