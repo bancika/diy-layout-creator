@@ -97,17 +97,28 @@
 					<arg value="-nosign"/>
 					<arg value="-v"/>
 		</exec>-->
-		<bundleapp 
-	        outputdirectory="${build.dir}" 
-	        name="DIYLC" 
-			jvmrequired="1.8"
-			copyright="2020 bancika"
-	        displayname="DIY Layout Creator" 
-	        identifier="org.diylc.Desktop" 
+		<bundleapp
+	        outputdirectory="${build.dir}"
+	        name="DIYLC"
+					jvmrequired="1.8"
+					copyright="2020 bancika"
+	        displayname="DIY Layout Creator"
+	        identifier="org.diylc.Desktop"
 	        shortversion="${diylc.version}"
 	        applicationCategory="public.app-category.graphics-design"
-			icon="icons/diylc.icns"
+					icon="icons/diylc.icns"
 	        mainclassname="${main.class}">
+					<bundledocument contentTypes="org.diylc.diy"
+						name="DIYLC document"
+						role="Editor"
+						handlerRank="Owner">
+					</bundledocument>
+					<typedeclaration
+						identifier="org.diylc.diy"
+						description="DIYLC file type"
+						icon="icons/diylc.icns"
+						conformsTo="public.xml,public.text"
+						extensions="diy" />
 			<!--<runtime dir="${env.JAVA_HOME}" />-->
 			<classpath file="${jar.dir}\diylc.jar" />
 			<classpath file="${jar.dir}\lib\*.jar" />
@@ -130,7 +141,7 @@
 			<zipfileset filemode="755" dir="${basedir}/lang" prefix="DIYLC.app/Contents/Resources/lang" />
 		</zip>
 	</target>
-	
+
 	<property name="izpack-dist" value="e:\bane\dev\IzPack" />
 
 	<path id="lib.path">
@@ -146,8 +157,8 @@
 			<arg value="install.iss"/>
 		</exec>
 		<izpack input="${basedir}/izpack.xml"
-		            output="${build.dir}/diylc-${diylc.version}-setup.jar" 
-		            installerType="standard"             
+		            output="${build.dir}/diylc-${diylc.version}-setup.jar"
+		            installerType="standard"
 		            basedir="."
 		            izPackDir="${izpack-dist}"/>
 	</target>
