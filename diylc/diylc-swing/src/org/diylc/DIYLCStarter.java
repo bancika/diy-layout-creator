@@ -23,10 +23,12 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
@@ -41,6 +43,9 @@ import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swingframework.FontChooserComboBox;
 import org.diylc.utils.ResourceLoader;
+
+import com.apple.eawt.AppEvent;
+import com.apple.eawt.Application;
 
 /**
  * Main class that runs DIYLC.
@@ -147,6 +152,7 @@ public class DIYLCStarter {
     }
 
     MainFrame mainFrame = new MainFrame();
+    Presenter presenter = mainFrame.getPresenter();
 //    mainFrame.setLocationRelativeTo(null);    
     
     if (splash == null) {
@@ -158,8 +164,20 @@ public class DIYLCStarter {
     
     mainFrame.setVisible(true);
     
+    SwingUtilities.invokeLater(() -> {
+      Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
+        List<File> files = ofe.getFiles();
+        if (files != null && files.size() > 0) {
+          String filePath = files.get(0).getAbsolutePath();
+          if (presenter.allowFileAction()) {
+            presenter.loadProjectFromFile(filePath);
+          }
+        }
+      });
+    });
+
     if (args.length > 0) {
-      mainFrame.getPresenter().loadProjectFromFile(args[0]);
+      presenter.loadProjectFromFile(args[0]);
     } else {
       boolean showTemplates = ConfigurationManager.getInstance().readBoolean(TemplateDialog.SHOW_TEMPLATES_KEY, false);
       if (showTemplates) {
