@@ -22,6 +22,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.EnumSet;
@@ -29,6 +31,8 @@ import java.util.EnumSet;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
 
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.EventType;
@@ -57,6 +61,7 @@ public class ActionBarPlugin implements IPlugIn {
   private JLabel donateLabel;
   
   private static final String DONATE_HTML = "<html><u>" + LangUtil.translate("Enjoying DIYLC? Click here to buy me a coffee :)") + "</u></html>";
+  private static final String DONATE_HTML_SHORT = "<html><u>" + LangUtil.translate("Donate") + "</u></html>";
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
@@ -104,7 +109,26 @@ public class ActionBarPlugin implements IPlugIn {
       donateLabel = new JLabel(DONATE_HTML);
       donateLabel.setForeground(Color.blue);
       donateLabel.setIcon(IconLoader.Donate.getIcon());
-      donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));           
+      donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      this.swingUI.getOwnerFrame().addComponentListener(new ComponentAdapter() {
+        
+        @Override
+        public void componentShown(ComponentEvent e) {
+          JRootPane rootPane = SwingUtilities.getRootPane(donateLabel);
+          rootPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+              if (rootPane.getWidth() < 920) {
+                if (!DONATE_HTML_SHORT.equals(donateLabel.getText()))
+                    donateLabel.setText(DONATE_HTML_SHORT);
+              } else {
+                if (!DONATE_HTML.equals(donateLabel.getText()))
+                  donateLabel.setText(DONATE_HTML);
+              }
+            }
+          });
+        }        
+      });
       donateLabel.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
