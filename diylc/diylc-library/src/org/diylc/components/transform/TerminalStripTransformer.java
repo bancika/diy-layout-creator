@@ -23,6 +23,7 @@ package org.diylc.components.transform;
 
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
@@ -47,11 +48,11 @@ public class TerminalStripTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void rotate(IDIYComponent<?> component, Point center, int direction) {
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x, center.y);
+  public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(), center.getY());
     for (int index = 0; index < component.getControlPointCount(); index++) {
-      Point p = new Point(component.getControlPoint(index));
-      rotate.transform(p, p);
+      Point2D p = new Point2D.Double();
+      rotate.transform(component.getControlPoint(index), p);
       component.setControlPoint(p, index);
     }
 
@@ -68,64 +69,64 @@ public class TerminalStripTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void mirror(IDIYComponent<?> component, Point center, int direction) {
+  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
     TerminalStrip strip = (TerminalStrip) component;
 
     if (direction == IComponentTransformer.HORIZONTAL) {
-      int dx = 2 * (center.x - strip.getControlPoint(1).x);
-      int dy = 0;
+      double dx = 2 * (center.getX() - strip.getControlPoint(1).getX());
+      double dy = 0;
       Orientation o = strip.getOrientation();
       switch (o) {
         case DEFAULT:
-          dx += strip.getControlPoint(0).x - strip.getControlPoint(strip.getControlPointCount() - 1).x;
+          dx += strip.getControlPoint(0).getX() - strip.getControlPoint(strip.getControlPointCount() - 1).getX();
           break;
         case _90:
           o = Orientation._270;
-          dx -= 2 * (strip.getControlPoint(0).x - strip.getControlPoint(1).x);
-          dy -= strip.getControlPoint(0).y - strip.getControlPoint(strip.getControlPointCount() - 1).y;
+          dx -= 2 * (strip.getControlPoint(0).getX() - strip.getControlPoint(1).getX());
+          dy -= strip.getControlPoint(0).getY() - strip.getControlPoint(strip.getControlPointCount() - 1).getY();
           break;
         case _180:
-          dx += strip.getControlPoint(0).x - strip.getControlPoint(strip.getControlPointCount() - 1).x;
+          dx += strip.getControlPoint(0).getX() - strip.getControlPoint(strip.getControlPointCount() - 1).getX();
           break;
         case _270:
-          dx -= 2 * (strip.getControlPoint(0).x - strip.getControlPoint(1).x);
-          dy -= strip.getControlPoint(0).y - strip.getControlPoint(strip.getControlPointCount() - 1).y;
+          dx -= 2 * (strip.getControlPoint(0).getX() - strip.getControlPoint(1).getX());
+          dy -= strip.getControlPoint(0).getY() - strip.getControlPoint(strip.getControlPointCount() - 1).getY();
           o = Orientation._90;
           break;
       }
 
       for (int i = 0; i < strip.getControlPointCount(); i++) {
         Point p = strip.getControlPoint(i);
-        strip.setControlPoint(new Point(p.x + dx, p.y + dy), i);
+        strip.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
       strip.setOrientation(o);
     } else {
-      int dx = 0;
-      int dy = 2 * (center.y - strip.getControlPoint(1).y);
+      double dx = 0;
+      double dy = 2 * (center.getY() - strip.getControlPoint(1).getY());
       Orientation o = strip.getOrientation();
       switch (o) {
         case DEFAULT:
-          dx -= strip.getControlPoint(0).x - strip.getControlPoint(strip.getControlPointCount() - 1).x;
-          dy -= 2 * (strip.getControlPoint(0).y - strip.getControlPoint(1).y);
+          dx -= strip.getControlPoint(0).getX() - strip.getControlPoint(strip.getControlPointCount() - 1).getX();
+          dy -= 2 * (strip.getControlPoint(0).getY() - strip.getControlPoint(1).getY());
           o = Orientation._180;
           break;
         case _90:
-          dy += strip.getControlPoint(0).y - strip.getControlPoint(strip.getControlPointCount() - 1).y;
+          dy += strip.getControlPoint(0).getY() - strip.getControlPoint(strip.getControlPointCount() - 1).getY();
           break;
         case _180:
-          dx -= strip.getControlPoint(0).x - strip.getControlPoint(strip.getControlPointCount() - 1).x;
-          dy -= 2 * (strip.getControlPoint(0).y - strip.getControlPoint(1).y);
+          dx -= strip.getControlPoint(0).getX() - strip.getControlPoint(strip.getControlPointCount() - 1).getX();
+          dy -= 2 * (strip.getControlPoint(0).getY() - strip.getControlPoint(1).getY());
           o = Orientation.DEFAULT;
           break;
         case _270:
-          dy += strip.getControlPoint(0).y - strip.getControlPoint(strip.getControlPointCount() - 1).y;
+          dy += strip.getControlPoint(0).getY() - strip.getControlPoint(strip.getControlPointCount() - 1).getY();
           break;
       }
 
       for (int i = 0; i < strip.getControlPointCount(); i++) {
         Point p = strip.getControlPoint(i);
-        strip.setControlPoint(new Point(p.x + dx, p.y + dy), i);
+        strip.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
       strip.setOrientation(o);

@@ -29,6 +29,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -155,7 +156,7 @@ public class DrawingManager {
    */
   public List<IDIYComponent<?>> drawProject(Graphics2D g2d, Project project, Set<DrawOption> drawOptions,
       IComponentFilter filter, Rectangle selectionRect, Collection<IDIYComponent<?>> selectedComponents,
-      Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents, List<Point> controlPointSlot,
+      Set<IDIYComponent<?>> lockedComponents, Set<IDIYComponent<?>> groupedComponents, List<Point2D> controlPointSlot,
       List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom, Rectangle2D visibleRect) {
     long totalStartTime = System.nanoTime();
     failedComponents.clear();
@@ -370,9 +371,9 @@ public class DrawingManager {
                 .contains(component) && !selectedComponents.contains(component) && component
                   .getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS))) {
               g2dWrapper.setColor(CONTROL_POINT_COLOR);
-              Point controlPoint = component.getControlPoint(i);
+              Point2D controlPoint = component.getControlPoint(i);
               int pointSize = CONTROL_POINT_SIZE - 2;
-              g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y - pointSize / 2, pointSize, pointSize);
+              g2dWrapper.fillOval((int)(controlPoint.getX() - pointSize / 2), (int)(controlPoint.getY() - pointSize / 2), pointSize, pointSize);
             }
           }
         }
@@ -384,14 +385,14 @@ public class DrawingManager {
               && (component.getControlPointVisibilityPolicy(i) == VisibilityPolicy.WHEN_SELECTED || component
                   .getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS)) {
 
-            Point controlPoint = component.getControlPoint(i);
+            Point2D controlPoint = component.getControlPoint(i);
             int pointSize = CONTROL_POINT_SIZE;
 
             g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
-            g2dWrapper.fillOval(controlPoint.x - pointSize / 2, controlPoint.y - pointSize / 2, pointSize, pointSize);
+            g2dWrapper.fillOval((int)(controlPoint.getX() - pointSize / 2), (int)(controlPoint.getY() - pointSize / 2), pointSize, pointSize);
             g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
-            g2dWrapper.fillOval(controlPoint.x - CONTROL_POINT_SIZE / 2 + 1, controlPoint.y - CONTROL_POINT_SIZE / 2
-                + 1, CONTROL_POINT_SIZE - 2, CONTROL_POINT_SIZE - 2);
+            g2dWrapper.fillOval((int)(controlPoint.getX() - CONTROL_POINT_SIZE / 2 + 1), (int)(controlPoint.getY() - CONTROL_POINT_SIZE / 2
+                + 1), CONTROL_POINT_SIZE - 2, CONTROL_POINT_SIZE - 2);
           }
         }
       }
@@ -417,13 +418,13 @@ public class DrawingManager {
 
     // Draw control points of the component in the slot.
     if (controlPointSlot != null) {
-      for (Point point : controlPointSlot) {
+      for (Point2D point : controlPointSlot) {
         if (point != null) {
           g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
-          g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2, point.y - CONTROL_POINT_SIZE / 2, CONTROL_POINT_SIZE,
+          g2dWrapper.fillOval((int)(point.getX() - CONTROL_POINT_SIZE / 2), (int)(point.getY() - CONTROL_POINT_SIZE / 2), CONTROL_POINT_SIZE,
               CONTROL_POINT_SIZE);
           g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
-          g2dWrapper.fillOval(point.x - CONTROL_POINT_SIZE / 2 + 1, point.y - CONTROL_POINT_SIZE / 2 + 1,
+          g2dWrapper.fillOval((int)(point.getX() - CONTROL_POINT_SIZE / 2 + 1), (int)(point.getY() - CONTROL_POINT_SIZE / 2 + 1),
               CONTROL_POINT_SIZE - 2, CONTROL_POINT_SIZE - 2);
         }
       }
@@ -539,7 +540,7 @@ public class DrawingManager {
     continuityAreaCache = null;
   }
 
-  public List<IDIYComponent<?>> findComponentsAt(Point point, Project project) {
+  public List<IDIYComponent<?>> findComponentsAt(Point2D point, Project project) {
     List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
     for (int i = 0; i < project.getComponents().size(); i++) {
       ComponentArea area = componentAreaMap.get(project.getComponents().get(i));
@@ -588,7 +589,7 @@ public class DrawingManager {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
   
-  public void findContinuityAreaAtPoint(Project project, Point p) {
+  public void findContinuityAreaAtPoint(Project project, Point2D p) {
     if (continuityAreaCache == null)
       continuityAreaCache = getContinuityAreas(project);
 

@@ -23,8 +23,8 @@ package org.diylc.components.misc;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -50,7 +50,7 @@ public class GroundSymbol extends AbstractComponent<Void> {
   public static Color COLOR = Color.black;
   public static Size SIZE = new Size(0.15d, SizeUnit.in);
 
-  private Point point = new Point(0, 0);
+  private Point2D point = new Point2D.Double(0, 0);
   private Color color = COLOR;
   private Size size = SIZE;
   private GroundSymbolType type = GroundSymbolType.DEFAULT;
@@ -60,35 +60,35 @@ public class GroundSymbol extends AbstractComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    int sizePx = (int) size.convertToPixels();
+    double sizePx = size.convertToPixels();
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.setColor(color);
-    int x = point.x;
-    int y = point.y;
+    double x = point.getX();
+    double y = point.getY();
 
     switch (getOrientation()) {
       case _90:
-        g2d.rotate(Math.PI / 2, point.x, point.y);
+        g2d.rotate(Math.PI / 2, point.getX(), point.getY());
         break;
       case _180:
-        g2d.rotate(Math.PI, point.x, point.y);
+        g2d.rotate(Math.PI, point.getX(), point.getY());
         break;
       case _270:
-        g2d.rotate(Math.PI * 3 / 2, point.x, point.y);
+        g2d.rotate(Math.PI * 3 / 2, point.getX(), point.getY());
         break;
     }
 
-    g2d.drawLine(x, y, x, y + sizePx / 6);
+    g2d.drawLine((int)x, (int)y, (int)x, (int)(y + sizePx / 6));
     if (type == GroundSymbolType.DEFAULT) {
-      int delta = sizePx / 7;
+      double delta = sizePx / 7;
       for (int i = 0; i < 5; i++) {
-        g2d.drawLine(x - sizePx / 2 + delta * i, y + sizePx / 6 * (i + 1), x + sizePx / 2 - delta * i, y + sizePx / 6
-            * (i + 1));
+        g2d.drawLine((int)(x - sizePx / 2 + delta * i), (int)(y + sizePx / 6 * (i + 1)), (int)(x + sizePx / 2 - delta * i), (int)(y + sizePx / 6
+            * (i + 1)));
       }
     } else {
       Polygon poly =
-          new Polygon(new int[] {x - sizePx / 2, x + sizePx / 2, x}, new int[] {y + sizePx / 6, y + sizePx / 6,
-              y + sizePx}, 3);
+          new Polygon(new int[] {(int)(x - sizePx / 2), (int)(x + sizePx / 2), (int)x}, new int[] {(int)(y + sizePx / 6), (int)(y + sizePx / 6),
+              (int)(y + sizePx)}, 3);
       g2d.draw(poly);
     }
   }
@@ -126,7 +126,7 @@ public class GroundSymbol extends AbstractComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return point;
   }
 
@@ -159,7 +159,7 @@ public class GroundSymbol extends AbstractComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.point.setLocation(point);
   }
 //  

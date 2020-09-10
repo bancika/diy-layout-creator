@@ -25,7 +25,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.List;
@@ -57,7 +57,7 @@ public class BOM extends AbstractComponent<Void> {
   private static final long serialVersionUID = 1L;
   private Size size = DEFAULT_SIZE;
 
-  private Point point = new Point(0, 0);
+  private Point2D point = new Point2D.Double(0, 0);
   private Color color = COLOR;
   
   @Override
@@ -116,7 +116,7 @@ public class BOM extends AbstractComponent<Void> {
     int columnWidth = (int) size.convertToPixels() / columnCount;
     int entriesPerColumn = (int) Math.ceil(1.d * bom.size() / columnCount);
     if (entriesPerColumn == 0) {
-      g2d.drawString(DEFAULT_TEXT, point.x, point.y);
+      g2d.drawString(DEFAULT_TEXT, (int)point.getX(), (int)point.getY());
       return;
     }
     for (int i = 0; i < bom.size(); i++) {
@@ -129,8 +129,8 @@ public class BOM extends AbstractComponent<Void> {
       }
       int columnIndex = i / entriesPerColumn;
       int rowIndex = i % entriesPerColumn;
-      int x = point.x + columnIndex * columnWidth;
-      int y = point.y + rowIndex * maxHeight;
+      int x = (int)(point.getX() + columnIndex * columnWidth);
+      int y = (int)(point.getY() + rowIndex * maxHeight);
       g2d.drawString(entry.getName(), x, y);
       x += maxNameWidth + SPACING.convertToPixels();
       g2d.drawString(valueStr, x, y);
@@ -176,7 +176,7 @@ public class BOM extends AbstractComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return point;
   }
 
@@ -191,7 +191,7 @@ public class BOM extends AbstractComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.point.setLocation(point);
   }
 

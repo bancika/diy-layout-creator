@@ -32,6 +32,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -73,8 +74,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
   protected Size length;
   protected Size width;
-  protected Point[] points = new Point[] {new Point((int) (-DEFAULT_SIZE.convertToPixels() / 2), 0),
-      new Point((int) (DEFAULT_SIZE.convertToPixels() / 2), 0), new Point(0, 0)};
+  protected Point2D[] points = new Point2D[] {new Point2D.Double(-DEFAULT_SIZE.convertToPixels() / 2, 0),
+      new Point2D.Double(DEFAULT_SIZE.convertToPixels() / 2, 0), new Point2D.Double(0, 0)};
   protected Color bodyColor = Color.white;
   protected Color borderColor = Color.black;
   protected Color labelColor = LABEL_COLOR;
@@ -85,8 +86,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   protected boolean moveLabel = false;
   
   // parameters for adjusting the label control point
-  protected transient Double gamma = null;
-  protected transient Double r = null;
+  protected transient java.lang.Double gamma = null;
+  protected transient java.lang.Double r = null;
   
   private Boolean hideShortLeads = false;
 
@@ -107,10 +108,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     return false;
   }
   
-  protected Point[] getPoints() {
+  protected Point2D[] getPoints() {
     // convert old points to new
     if (points.length == 2) {      
-      points = new Point[] { points[0], points[1], calculateLabelPosition(points[0], points[1]) };
+      points = new Point2D[] { points[0], points[1], calculateLabelPosition(points[0], points[1]) };
       // to make standing components backward compatible and not show a label until the user switches the display to something else
       if (isStanding())
         display = Display.NONE;
@@ -118,10 +119,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     return points;
   }
   
-  protected Point calculateLabelPosition(Point point1, Point point2) {
-    double x = (point1.x + point2.x) / 2.0;
-    double y = (point1.y + point2.y) / 2.0;
-    return new Point((int) x, (int) y);
+  protected Point2D calculateLabelPosition(Point2D point1, Point2D point2) {
+    double x = (point1.getX() + point2.getX()) / 2.0;
+    double y = (point1.getY() + point2.getY()) / 2.0;
+    return new Point2D.Double(x, y);
   }
 
   @Override
@@ -129,9 +130,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       IDrawingObserver drawingObserver) {
     if (gamma != null) {
       // recalculate center position and theta, then adjust label point accordingly, while preserving alpha and p
-      double x = (getPoints()[1].x + getPoints()[0].x) / 2.0;
-      double y = (getPoints()[1].y + getPoints()[0].y) / 2.0;
-      double theta = Math.atan2(getPoints()[1].y - getPoints()[0].y, getPoints()[1].x - getPoints()[0].x);
+      double x = (getPoints()[1].getX() + getPoints()[0].getX()) / 2.0;
+      double y = (getPoints()[1].getY() + getPoints()[0].getY()) / 2.0;
+      double theta = Math.atan2(getPoints()[1].getY() - getPoints()[0].getY(), getPoints()[1].getX() - getPoints()[0].getX());
       double beta = gamma - (Math.PI / 2 - theta);
       getPoints()[2].setLocation(x + Math.cos(beta) * r, y + Math.sin(beta) * r);
       gamma = null;
@@ -150,15 +151,15 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     double width;
     double length;
     Rectangle shapeRect;
-    double theta = Math.atan2(getPoints()[1].y - getPoints()[0].y, getPoints()[1].x - getPoints()[0].x);
+    double theta = Math.atan2(getPoints()[1].getY() - getPoints()[0].getY(), getPoints()[1].getX() - getPoints()[0].getX());
     
     if (isStanding()) {
       // When ending points are too close draw the component in standing
       // mode.
       width = length = getClosestOdd(this.width.convertToPixels());      
       Shape body =
-          new Ellipse2D.Double((getFlipStanding() ? getPoints()[1] : getPoints()[0]).x - width / 2,
-              (getFlipStanding() ? getPoints()[1] : getPoints()[0]).y - width / 2, width, width);
+          new Ellipse2D.Double((getFlipStanding() ? getPoints()[1] : getPoints()[0]).getX() - width / 2,
+              (getFlipStanding() ? getPoints()[1] : getPoints()[0]).getY() - width / 2, width, width);
       shapeRect = body.getBounds();
       Composite oldComposite = g2d.getComposite();
       if (alpha < MAX_ALPHA) {
@@ -214,14 +215,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
             
             Area leadArea = new Area();
             
-            int endX = (int) (getPoints()[0].x + Math.cos(theta) * leadLength);
-            int endY = (int) (getPoints()[0].y + Math.sin(theta) * leadLength);
-            Line2D line = new Line2D.Double(getPoints()[0].x, getPoints()[0].y, endX, endY);
+            int endX = (int) (getPoints()[0].getX() + Math.cos(theta) * leadLength);
+            int endY = (int) (getPoints()[0].getY() + Math.sin(theta) * leadLength);
+            Line2D line = new Line2D.Double(getPoints()[0].getX(), getPoints()[0].getY(), endX, endY);
             leadArea.add(new Area(leadStroke.createStrokedShape(line)));
             
-            endX = (int) (getPoints()[1].x + Math.cos(theta - Math.PI) * leadLength);
-            endY = (int) (getPoints()[1].y + Math.sin(theta - Math.PI) * leadLength);
-            line = new Line2D.Double(getPoints()[1].x, getPoints()[1].y, endX, endY);
+            endX = (int) (getPoints()[1].getX() + Math.cos(theta - Math.PI) * leadLength);
+            endY = (int) (getPoints()[1].getY() + Math.sin(theta - Math.PI) * leadLength);
+            line = new Line2D.Double(getPoints()[1].getX(), getPoints()[1].getY(), endX, endY);
             leadArea.add(new Area(leadStroke.createStrokedShape(line)));
             
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
@@ -247,7 +248,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         width = getWidth().convertToPixels();
         length = getLength().convertToPixels();
       }
-      g2d.translate((getPoints()[0].x + getPoints()[1].x - length) / 2, (getPoints()[0].y + getPoints()[1].y - width) / 2);
+      g2d.translate((getPoints()[0].getX() + getPoints()[1].getX() - length) / 2, (getPoints()[0].getY() + getPoints()[1].getY() - width) / 2);
       g2d.rotate(theta, length / 2, width / 2);
       // Draw body.
       Composite oldComposite = g2d.getComposite();
@@ -317,7 +318,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     // Draw label.
     g2d.setFont(project.getFont());
     if (useShapeRectAsPosition()) {
-      g2d.translate(shapeRect.x, shapeRect.y);
+      g2d.translate(shapeRect.getX(), shapeRect.getY());
     }
     Color finalLabelColor;
     if (outlineMode) {
@@ -356,7 +357,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     
     if (getMoveLabel()) {
       g2d.setTransform(oldTransform);
-      g2d.translate(getPoints()[2].x, getPoints()[2].y);
+      g2d.translate(getPoints()[2].getX(), getPoints()[2].getY());
       if (getLabelOriantation() != LabelOriantation.Horizontal) {
         g2d.rotate(theta);
       }
@@ -365,8 +366,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     } else {
       if (isStanding() || getLabelOriantation() == LabelOriantation.Horizontal) {
         g2d.setTransform(oldTransform);
-        double x = (getPoints()[0].x + getPoints()[1].x - length) / 2.0;
-        double y = (getPoints()[0].y + getPoints()[1].y - width) / 2.0;
+        double x = (getPoints()[0].getX() + getPoints()[1].getX() - length) / 2.0;
+        double y = (getPoints()[0].getY() + getPoints()[1].getY() - width) / 2.0;
         g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
             (int)(y + calculateLabelYOffset(shapeRect, textRect, fontMetrics)));
       } else {
@@ -377,7 +378,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     }
 //      if (getLabelOriantation() == LabelOriantation.Horizontal) {        
 //
-//        drawCenteredText(g2d, label, getNewPoints()[2].x, getNewPoints()[2].x, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+//        drawCenteredText(g2d, label, getNewPoints()[2].getX(), getNewPoints()[2].getX(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 //        g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
 //            (int)(y + calculateLabelYCoordinate(shapeRect, textRect, fontMetrics)));
 //      } else {
@@ -392,13 +393,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   }
 
   private void drawLeads(Graphics2D g2d, double theta, double leadLength) {
-    double endX = getPoints()[0].x + Math.cos(theta) * leadLength;
-    double endY = getPoints()[0].y + Math.sin(theta) * leadLength;
-    g2d.draw(new Line2D.Double(getPoints()[0].x, getPoints()[0].y, endX, endY));
+    double endX = getPoints()[0].getX() + Math.cos(theta) * leadLength;
+    double endY = getPoints()[0].getY() + Math.sin(theta) * leadLength;
+    g2d.draw(new Line2D.Double(getPoints()[0].getX(), getPoints()[0].getY(), endX, endY));
 
-    endX = getPoints()[1].x + Math.cos(theta - Math.PI) * leadLength;
-    endY = getPoints()[1].y + Math.sin(theta - Math.PI) * leadLength;
-    g2d.draw(new Line2D.Double(getPoints()[1].x, getPoints()[1].y, endX, endY));
+    endX = getPoints()[1].getX() + Math.cos(theta - Math.PI) * leadLength;
+    endY = getPoints()[1].getY() + Math.sin(theta - Math.PI) * leadLength;
+    g2d.draw(new Line2D.Double(getPoints()[1].getX(), getPoints()[1].getY(), endX, endY));
   }
 
   private void drawLead(Graphics2D g2d, ComponentState componentState, IDrawingObserver observer, boolean isCopperArea) {
@@ -407,7 +408,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
     
     float thickness = getLeadThickness();
     
-    Line2D line = new Line2D.Double(getPoints()[0].x, getPoints()[0].y, getPoints()[1].x, getPoints()[1].y);
+    Line2D line = new Line2D.Double(getPoints()[0].getX(), getPoints()[0].getY(), getPoints()[1].getX(), getPoints()[1].getY());
     
     if (shouldShadeLeads()) {
       // for some reason the stroked line gets approx 1px thicker when converted to shape
@@ -548,8 +549,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   }
 
   @Override
-  public Point getControlPoint(int index) {
-    return (Point) getPoints()[index];
+  public Point2D getControlPoint(int index) {
+    return (Point2D) getPoints()[index];
   }
 
   @Override
@@ -568,14 +569,14 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {        
+  public void setControlPoint(Point2D point, int index) {        
     // when moving one of the ending points, try to retain the angle and distance from the center point to label point
     if (index < 2) {
       if (gamma == null) {
-        double x = (getPoints()[1].x + getPoints()[0].x) / 2.0;
-        double y = (getPoints()[1].y + getPoints()[0].y) / 2.0;
-        double theta = Math.atan2(getPoints()[1].y - getPoints()[0].y, getPoints()[1].x - getPoints()[0].x);
-        double beta = Math.atan2(getPoints()[2].y - y, getPoints()[2].x - x);
+        double x = (getPoints()[1].getX() + getPoints()[0].getX()) / 2.0;
+        double y = (getPoints()[1].getY() + getPoints()[0].getY()) / 2.0;
+        double theta = Math.atan2(getPoints()[1].getY() - getPoints()[0].getY(), getPoints()[1].getX() - getPoints()[0].getX());
+        double beta = Math.atan2(getPoints()[2].getY() - y, getPoints()[2].getX() - x);
         gamma = beta + (Math.PI / 2 - theta);
         r = getPoints()[2].distance(x, y);
       }
@@ -699,21 +700,21 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
   
   @Override
   public Rectangle2D getCachingBounds() {
-    int minX = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxY = Integer.MIN_VALUE;
-    int margin = (int) Math.max(Math.max(getWidth().convertToPixels(), getLength().convertToPixels()), getLeadThickness());
+    double minX = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxY = Integer.MIN_VALUE;
+    double margin = (int) Math.max(Math.max(getWidth().convertToPixels(), getLength().convertToPixels()), getLeadThickness());
     for (int i = 0; i < getControlPointCount(); i++) {
-      Point p = getControlPoint(i);
-      if (p.x < minX)
-        minX = p.x;
-      if (p.x > maxX)
-        maxX = p.x;
-      if (p.y < minY)
-        minY = p.y;
-      if (p.y > maxY)
-        maxY = p.y;
+      Point2D p = getControlPoint(i);
+      if (p.getX() < minX)
+        minX = p.getX();
+      if (p.getX() > maxX)
+        maxX = p.getX();
+      if (p.getY() < minY)
+        minY = p.getY();
+      if (p.getY() > maxY)
+        maxY = p.getY();
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);

@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -149,7 +150,7 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }

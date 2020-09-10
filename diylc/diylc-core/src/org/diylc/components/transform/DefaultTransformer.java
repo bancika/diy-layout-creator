@@ -21,7 +21,7 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.core.IDIYComponent;
@@ -44,11 +44,11 @@ public class DefaultTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void rotate(IDIYComponent<?> component, Point center, int direction) {
+  public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
   }
 
   @Override
-  public void mirror(IDIYComponent<?> component, Point center, int direction) {
+  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
   }
 
 }

@@ -27,6 +27,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -283,8 +284,8 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
       default:
         break;
     }
-    controlPoints[1].setLocation(controlPoints[0].x + dx1, controlPoints[0].y + dy1);
-    controlPoints[2].setLocation(controlPoints[0].x + dx2, controlPoints[0].y + dy2);
+    controlPoints[1].setLocation(controlPoints[0].getX() + dx1, controlPoints[0].getY() + dy1);
+    controlPoints[2].setLocation(controlPoints[0].getX() + dx2, controlPoints[0].getY() + dy2);
   }
 
   public Shape[] getBody() {
@@ -293,12 +294,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 
       // Calculate the center point as center of the minimum bounding
       // rectangle.
-      int centerX =
-          (Math.max(Math.max(controlPoints[0].x, controlPoints[1].x), controlPoints[2].x) + Math.min(
-              Math.min(controlPoints[0].x, controlPoints[1].x), controlPoints[2].x)) / 2;
-      int centerY =
-          (Math.max(Math.max(controlPoints[0].y, controlPoints[1].y), controlPoints[2].y) + Math.min(
-              Math.min(controlPoints[0].y, controlPoints[1].y), controlPoints[2].y)) / 2;
+      double centerX =
+          (Math.max(Math.max(controlPoints[0].getX(), controlPoints[1].getX()), controlPoints[2].getX()) + Math.min(
+              Math.min(controlPoints[0].getX(), controlPoints[1].getX()), controlPoints[2].getX())) / 2;
+      double centerY =
+          (Math.max(Math.max(controlPoints[0].getY(), controlPoints[1].getY()), controlPoints[2].getY()) + Math.min(
+              Math.min(controlPoints[0].getY(), controlPoints[1].getY()), controlPoints[2].getY())) / 2;
 
       // Calculate body dimensions based on the selected type.
       int length = 0;
@@ -350,7 +351,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     super.setControlPoint(point, index);
     body = null;
   }
@@ -404,13 +405,13 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
 
     // Draw pins.
     int pinSize = getClosestOdd(PIN_SIZE.convertToPixels());
-    for (Point point : controlPoints) {
+    for (Point2D point : controlPoints) {
       if (!outlineMode) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
       }
       g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-      g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+      g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
     }
 
     // Draw label.

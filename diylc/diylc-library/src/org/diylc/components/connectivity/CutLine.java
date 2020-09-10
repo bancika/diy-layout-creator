@@ -21,7 +21,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;
@@ -52,7 +52,7 @@ public class CutLine extends AbstractTransparentComponent<Void> {
   private Size width = WIDTH;
   private Size length = LENGTH;
   private Color color = COLOR;
-  private Point point = new Point(0, 0);
+  private Point2D point = new Point2D.Double(0, 0);
   private OrientationHV orientation = OrientationHV.VERTICAL;
 
   @Override
@@ -70,9 +70,9 @@ public class CutLine extends AbstractTransparentComponent<Void> {
     }
 
     if (getOrientation() == OrientationHV.HORIZONTAL)
-      g2d.drawLine(point.x, point.y, point.x + l, point.y);
+      g2d.drawLine((int)point.getX(), (int)point.getY(), (int)point.getX() + l, (int)point.getY());
     else
-      g2d.drawLine(point.x, point.y, point.x, point.y + l);
+      g2d.drawLine((int)point.getX(), (int)point.getY(), (int)point.getX(), (int)point.getY() + l);
 
     g2d.setComposite(oldComposite);
   }
@@ -132,12 +132,12 @@ public class CutLine extends AbstractTransparentComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return point;
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.point.setLocation(point);
   }
 

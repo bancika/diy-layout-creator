@@ -21,8 +21,8 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
@@ -47,11 +47,11 @@ public class CliffJackTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void rotate(IDIYComponent<?> component, Point center, int direction) {
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x, center.y);
+  public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(), center.getY());
     for (int index = 0; index < component.getControlPointCount(); index++) {
-      Point p = new Point(component.getControlPoint(index));
-      rotate.transform(p, p);
+      Point2D p = new Point2D.Double();
+      rotate.transform(component.getControlPoint(index), p);
       component.setControlPoint(p, index);
     }
 
@@ -68,64 +68,64 @@ public class CliffJackTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void mirror(IDIYComponent<?> component, Point center, int direction) {
+  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
     CliffJack1_4 ic = (CliffJack1_4) component;
 
     if (direction == IComponentTransformer.HORIZONTAL) {
-      int dx = 2 * (center.x - ic.getControlPoint(1).x);
-      int dy = 0;
+      double dx = 2 * (center.getX() - ic.getControlPoint(1).getX());
+      double dy = 0;
 
       Orientation o = ic.getOrientation();
       switch (o) {
         case DEFAULT:
-          dy += (ic.getControlPoint(0).y - ic.getControlPoint(ic.getControlPointCount() - 1).y);
+          dy += (ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY());
           o = Orientation._180;
           break;
         case _90:
-          // dy += ic.getControlPoint(0).y - ic.getControlPoint(ic.getControlPointCount() - 1).y;
+          // dy += ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY();
           break;
         case _180:
-          dy += (ic.getControlPoint(0).y - ic.getControlPoint(ic.getControlPointCount() - 1).y);
+          dy += (ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY());
           o = Orientation.DEFAULT;
           break;
         case _270:
-          // dy += ic.getControlPoint(0).y - ic.getControlPoint(ic.getControlPointCount() - 1).y;
+          // dy += ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY();
           break;
       }
 
       for (int i = 0; i < ic.getControlPointCount(); i++) {
-        Point p = ic.getControlPoint(i);
-        ic.setControlPoint(new Point(p.x + dx, p.y + dy), i);
+        Point2D p = ic.getControlPoint(i);
+        ic.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
       ic.setOrientation(o);
     } else {
-      int dx = 0;
-      int dy = 2 * (center.y - ic.getControlPoint(1).y);
+      double dx = 0;
+      double dy = 2 * (center.getY() - ic.getControlPoint(1).getY());
 
       Orientation o = ic.getOrientation();
       switch (o) {
         case DEFAULT:
-          // dx += ic.getControlPoint(0).x - ic.getControlPoint(ic.getControlPointCount() - 1).x;
+          // dx += ic.getControlPoint(0).getX() - ic.getControlPoint(ic.getControlPointCount() - 1).getX();
           break;
         case _90:
           o = Orientation._270;
-          // dx -= 2 * (ic.getControlPoint(0).x - ic.getControlPoint(1).x);
-          // dy -= ic.getControlPoint(0).y - ic.getControlPoint(ic.getControlPointCount() - 1).y;
+          // dx -= 2 * (ic.getControlPoint(0).getX() - ic.getControlPoint(1).getX());
+          // dy -= ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY();
           break;
         case _180:
-          // dx += ic.getControlPoint(0).x - ic.getControlPoint(ic.getControlPointCount() - 1).x;
+          // dx += ic.getControlPoint(0).getX() - ic.getControlPoint(ic.getControlPointCount() - 1).getX();
           break;
         case _270:
-          // dx -= 2 * (ic.getControlPoint(0).x - ic.getControlPoint(1).x);
-          // dy -= ic.getControlPoint(0).y - ic.getControlPoint(ic.getControlPointCount() - 1).y;
+          // dx -= 2 * (ic.getControlPoint(0).getX() - ic.getControlPoint(1).getX());
+          // dy -= ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY();
           o = Orientation._90;
           break;
       }
 
       for (int i = 0; i < ic.getControlPointCount(); i++) {
-        Point p = ic.getControlPoint(i);
-        ic.setControlPoint(new Point(p.x + dx, p.y + dy), i);
+        Point2D p = ic.getControlPoint(i);
+        ic.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
       ic.setOrientation(o);

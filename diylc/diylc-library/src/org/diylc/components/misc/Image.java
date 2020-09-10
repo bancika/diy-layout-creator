@@ -20,8 +20,8 @@ package org.diylc.components.misc;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +47,6 @@ import org.diylc.core.annotations.PercentEditor;
 
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
-
 @ComponentDescriptor(name = "Image", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined image", instanceNamePrefix = "Img", zOrder = IDIYComponent.COMPONENT,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW)
@@ -57,6 +56,9 @@ public class Image extends AbstractTransparentComponent<Void> {
   public static String DEFAULT_TEXT = "Double click to edit text";
   private static ImageIcon ICON;
   private static byte DEFAULT_SCALE = 25;
+  
+  private Point2D point = new Point2D.Double(0, 0);
+  private Point2D secondPoint = null;
 
   static {
     String name = "image.png";
@@ -69,10 +71,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
-  }
-
-  private Point point = new Point(0, 0);
-  private Point secondPoint = null;
+  }  
 
   @XStreamConverter(IconImageConverter.class)
   @Deprecated
@@ -99,9 +98,9 @@ public class Image extends AbstractTransparentComponent<Void> {
     if (getSizingMode() == ImageSizingMode.Scale) {
       scaleX = scaleY = 1d * getScale() / DEFAULT_SCALE;
     } else {
-      Point secondPoint = getControlPoint(1);
-      scaleX = 1d * Math.abs(point.x - secondPoint.x) / imageIcon.getIconWidth();
-      scaleY = 1d * Math.abs(point.y - secondPoint.y) / imageIcon.getIconHeight();
+      Point2D secondPoint = getControlPoint(1);
+      scaleX = 1d * Math.abs(point.getX() - secondPoint.getX()) / imageIcon.getIconWidth();
+      scaleY = 1d * Math.abs(point.getY() - secondPoint.getY()) / imageIcon.getIconHeight();
     }
     
     Shape clip = g2d.getClip().getBounds();
@@ -114,16 +113,16 @@ public class Image extends AbstractTransparentComponent<Void> {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     
-    int x;
-    int y;
+    double x;
+    double y;
     if (getSizingMode() == ImageSizingMode.Scale)
     {
-      x = point.x;
-      y = point.y;
+      x = point.getX();
+      y = point.getY();
     } else {
-      Point secondPoint = getControlPoint(1);
-      x = Math.min(point.x, secondPoint.x);
-      y = Math.min(point.y, secondPoint.y);
+      Point2D secondPoint = getControlPoint(1);
+      x = Math.min(point.getX(), secondPoint.getX());
+      y = Math.min(point.getY(), secondPoint.getY());
     }
 
     g2d.scale(scaleX, scaleY);
@@ -133,13 +132,13 @@ public class Image extends AbstractTransparentComponent<Void> {
       g2d.scale(1 / scaleX, 1 / scaleY);
       g2d.setColor(SELECTION_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-      g2d.drawRect(x, y, (int) (imageIcon.getIconWidth() * scaleX), (int) (imageIcon.getIconHeight() * scaleY));
+      g2d.drawRect((int)x, (int)y, (int) (imageIcon.getIconWidth() * scaleX), (int) (imageIcon.getIconHeight() * scaleY));
     }
   }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    g2d.drawImage(ICON.getImage(), point.x, point.y, null);
+    g2d.drawImage(ICON.getImage(), (int)point.getX(), (int)point.getY(), null);
   }
 
   @Override
@@ -148,12 +147,12 @@ public class Image extends AbstractTransparentComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     if (index == 0)
       return point;
     if (secondPoint == null) {
       ImageIcon imageIcon = getImage();
-      secondPoint = new Point(point.x + imageIcon.getIconWidth(), point.y + imageIcon.getIconHeight());
+      secondPoint = new Point2D.Double(point.getX() + imageIcon.getIconWidth(), point.getY() + imageIcon.getIconHeight());
     }
     return secondPoint;
   }
@@ -169,14 +168,14 @@ public class Image extends AbstractTransparentComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     if (index == 0) {
-      this.point.setLocation(point);
+      this.point.setLocation(point.getX(), point.getY());
     } else {
       if (secondPoint == null)
-        secondPoint = new Point(point);
+        secondPoint = new Point2D.Double(point.getX(), point.getY());
       else
-        secondPoint.setLocation(point);
+        secondPoint.setLocation(point.getX(), point.getY());
     }
   }
 
@@ -208,7 +207,7 @@ public class Image extends AbstractTransparentComponent<Void> {
     this.image = null;
     if (getSizingMode() == ImageSizingMode.TwoPoints) {
       ImageIcon imageIcon = getImage();
-      setControlPoint(new Point(point.x + imageIcon.getIconWidth(), point.y + imageIcon.getIconHeight()), 1);
+      setControlPoint(new Point2D.Double(point.getX() + imageIcon.getIconWidth(), point.getY() + imageIcon.getIconHeight()), 1);
     }
   }
 

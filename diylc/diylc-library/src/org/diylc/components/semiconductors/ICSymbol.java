@@ -25,11 +25,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -66,8 +66,8 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
 
   protected ICPointCount icPointCount = ICPointCount._5;
   protected String value = "";
-  protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-      new Point(0, 0)};
+  protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0),
+      new Point2D.Double(0, 0)};
   protected Color bodyColor = BODY_COLOR;
   protected Color borderColor = BORDER_COLOR;
   protected Display display = Display.NAME;
@@ -126,7 +126,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
               : LABEL_COLOR;
     }
     g2d.setColor(finalLabelColor);
-    int x = (controlPoints[0].x + controlPoints[2].x) / 2;
+    double x = (controlPoints[0].getX() + controlPoints[2].getX()) / 2;
     String label = "";
     label = display == Display.VALUE ? getValue() : getName();
     if (display == Display.NONE) {
@@ -135,12 +135,12 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
     if (display == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    StringUtils.drawCenteredText(g2d, label, x, controlPoints[0].y + pinSpacing, HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, label, x, controlPoints[0].getY() + pinSpacing, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
     // Draw +/- markers    
-    StringUtils.drawCenteredText(g2d, getFlip() ? "+" : "-", controlPoints[0].x + pinSpacing, controlPoints[0].y, HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, getFlip() ? "+" : "-", controlPoints[0].getX() + pinSpacing, controlPoints[0].getY(), HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
-    StringUtils.drawCenteredText(g2d, getFlip() ? "-" : "+", controlPoints[1].x + pinSpacing, controlPoints[1].y, HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, getFlip() ? "-" : "+", controlPoints[1].getX() + pinSpacing, controlPoints[1].getY(), HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
   }
 
@@ -165,7 +165,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -177,45 +177,38 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
   private void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
 
-    controlPoints[1].x = x;
-    controlPoints[1].y = y + pinSpacing * 2;
-
-    controlPoints[2].x = x + pinSpacing * 6;
-    controlPoints[2].y = y + pinSpacing;
-
-    controlPoints[3].x = x + pinSpacing * 3;
-    controlPoints[3].y = y - pinSpacing;
-
-    controlPoints[4].x = x + pinSpacing * 3;
-    controlPoints[4].y = y + pinSpacing * 3;
+    controlPoints[1].setLocation(x, y + pinSpacing * 2);
+    controlPoints[2].setLocation(x + pinSpacing * 6, y + pinSpacing);
+    controlPoints[3].setLocation(x + pinSpacing * 3, y - pinSpacing);
+    controlPoints[4].setLocation(x + pinSpacing * 3, y + pinSpacing * 3);
   }
 
   public Shape[] getBody() {
     if (body == null) {
       body = new Shape[2];
       int pinSpacing = (int) PIN_SPACING.convertToPixels();
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      int x = (int) controlPoints[0].getX();
+      int y = (int) controlPoints[0].getY();
       Shape triangle =
           new Polygon(new int[] {x + pinSpacing / 2, x + pinSpacing * 11 / 2, x + pinSpacing / 2}, new int[] {
               y - pinSpacing * 3 / 2, y + pinSpacing, y + pinSpacing * 7 / 2}, 3);
       body[0] = triangle;
 
       GeneralPath polyline = new GeneralPath();
-      polyline.moveTo(controlPoints[0].x, controlPoints[0].y);
-      polyline.lineTo(controlPoints[0].x + pinSpacing / 2, controlPoints[0].y);
-      polyline.moveTo(controlPoints[1].x, controlPoints[1].y);
-      polyline.lineTo(controlPoints[1].x + pinSpacing / 2, controlPoints[1].y);
-      polyline.moveTo(controlPoints[2].x, controlPoints[2].y);
-      polyline.lineTo(controlPoints[2].x - pinSpacing / 2, controlPoints[2].y);
+      polyline.moveTo(controlPoints[0].getX(), controlPoints[0].getY());
+      polyline.lineTo(controlPoints[0].getX() + pinSpacing / 2, controlPoints[0].getY());
+      polyline.moveTo(controlPoints[1].getX(), controlPoints[1].getY());
+      polyline.lineTo(controlPoints[1].getX() + pinSpacing / 2, controlPoints[1].getY());
+      polyline.moveTo(controlPoints[2].getX(), controlPoints[2].getY());
+      polyline.lineTo(controlPoints[2].getX() - pinSpacing / 2, controlPoints[2].getY());
       if (icPointCount == ICPointCount._5) {
-        polyline.moveTo(controlPoints[3].x, controlPoints[3].y);
-        polyline.lineTo(controlPoints[3].x, controlPoints[3].y + pinSpacing * 3 / 4);
-        polyline.moveTo(controlPoints[4].x, controlPoints[4].y);
-        polyline.lineTo(controlPoints[4].x, controlPoints[4].y - pinSpacing * 3 / 4);
+        polyline.moveTo(controlPoints[3].getX(), controlPoints[3].getY());
+        polyline.lineTo(controlPoints[3].getX(), controlPoints[3].getY() + pinSpacing * 3 / 4);
+        polyline.moveTo(controlPoints[4].getX(), controlPoints[4].getY());
+        polyline.lineTo(controlPoints[4].getX(), controlPoints[4].getY() - pinSpacing * 3 / 4);
       }
       body[1] = polyline;
     }
@@ -244,7 +237,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }

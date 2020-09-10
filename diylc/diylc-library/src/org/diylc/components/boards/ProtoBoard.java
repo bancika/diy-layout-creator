@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -679,7 +680,7 @@ public class ProtoBoard extends AbstractComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     if (index == 0)
       this.point.setLocation(point);
   }

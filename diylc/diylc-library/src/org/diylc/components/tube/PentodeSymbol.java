@@ -23,10 +23,10 @@ package org.diylc.components.tube;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.components.transform.TubeSymbolTransformer;
@@ -49,19 +49,19 @@ public class PentodeSymbol extends AbstractTubeSymbol {
   public PentodeSymbol() {
     super();
     this.controlPoints =
-        new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-            new Point(0, 0), new Point(0, 0)};
+        new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0),
+            new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
     updateControlPoints();
   }
 
   public Shape[] initializeBody() {
     if (body == null) {
-      Point[] controlPoints = initializeControlPoints(this.controlPoints[0]);
+      Point2D[] controlPoints = initializeControlPoints(this.controlPoints[0]);
 
       body = new Shape[3];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
-      int pinSpacing = (int) PIN_SPACING.convertToPixels();
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
+      double pinSpacing = PIN_SPACING.convertToPixels();
 
       // electrodes
       GeneralPath polyline = new GeneralPath();
@@ -115,13 +115,13 @@ public class PentodeSymbol extends AbstractTubeSymbol {
       polyline.lineTo(x + pinSpacing * 5 / 4, y - pinSpacing * 3 / 8);
 
       // grid2
-      polyline.moveTo(controlPoints[3].x, controlPoints[3].y);
+      polyline.moveTo(controlPoints[3].getX(), controlPoints[3].getY());
       polyline.lineTo(x + pinSpacing * 19 / 4, y - pinSpacing);
 
       // grid3
       if (exposeSuppressorGrid) {
-        polyline.moveTo(controlPoints[4].x, controlPoints[4].y);
-        polyline.lineTo(x + pinSpacing, controlPoints[4].y);
+        polyline.moveTo(controlPoints[4].getX(), controlPoints[4].getY());
+        polyline.lineTo(x + pinSpacing, controlPoints[4].getY());
         polyline.lineTo(x + pinSpacing * 5 / 4, y - pinSpacing - pinSpacing * 5 / 8);
       } else {
         polyline.moveTo(x + pinSpacing * 19 / 4, y - pinSpacing - pinSpacing * 5 / 8);
@@ -135,21 +135,21 @@ public class PentodeSymbol extends AbstractTubeSymbol {
       }
 
       // plate
-      polyline.moveTo(controlPoints[1].x, controlPoints[1].y);
+      polyline.moveTo(controlPoints[1].getX(), controlPoints[1].getY());
       polyline.lineTo(x + pinSpacing * 3, y - pinSpacing * 9 / 4);
 
       // cathode
-      polyline.moveTo(controlPoints[2].x, controlPoints[2].y);
+      polyline.moveTo(controlPoints[2].getX(), controlPoints[2].getY());
       polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 3 / 8);
 
       if (showHeaters) {
-        polyline.moveTo(controlPoints[5].x, controlPoints[5].y);
-        polyline.lineTo(controlPoints[5].x, controlPoints[5].y - pinSpacing * 6 / 8);
-        polyline.lineTo(controlPoints[5].x + pinSpacing / 2, controlPoints[5].y - pinSpacing * 10 / 8);
+        polyline.moveTo(controlPoints[5].getX(), controlPoints[5].getY());
+        polyline.lineTo(controlPoints[5].getX(), controlPoints[5].getY() - pinSpacing * 6 / 8);
+        polyline.lineTo(controlPoints[5].getX() + pinSpacing / 2, controlPoints[5].getY() - pinSpacing * 10 / 8);
 
-        polyline.moveTo(controlPoints[6].x, controlPoints[6].y);
-        polyline.lineTo(controlPoints[6].x, controlPoints[6].y - pinSpacing * 6 / 8);
-        polyline.lineTo(controlPoints[6].x - pinSpacing / 2, controlPoints[6].y - pinSpacing * 10 / 8);
+        polyline.moveTo(controlPoints[6].getX(), controlPoints[6].getY());
+        polyline.lineTo(controlPoints[6].getX(), controlPoints[6].getY() - pinSpacing * 6 / 8);
+        polyline.lineTo(controlPoints[6].getX() - pinSpacing / 2, controlPoints[6].getY() - pinSpacing * 10 / 8);
       }
 
       body[1] = polyline;
@@ -181,33 +181,20 @@ public class PentodeSymbol extends AbstractTubeSymbol {
     g2d.drawLine(width / 8, height * 5 / 8, width * 7 / 8, height * 5 / 8);
   }
 
-  protected Point[] initializeControlPoints(Point first) {
+  protected Point2D[] initializeControlPoints(Point2D first) {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
-    int x = first.x;
-    int y = first.y;
+    double x = first.getX();
+    double y = first.getY();
 
-    Point[] newPoints =
-        new Point[] {first, new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-            new Point(0, 0)};
-
-    newPoints[1].x = x + pinSpacing * 3;
-    newPoints[1].y = y - pinSpacing * 4;
-
-    newPoints[2].x = x + pinSpacing * 2;
-    newPoints[2].y = y + pinSpacing * 2;
-
-    newPoints[3].x = x + pinSpacing * 6;
-    newPoints[3].y = y - pinSpacing;
-
-    newPoints[4].x = x;
-    newPoints[4].y = y - pinSpacing * 2;
-
-    newPoints[5].x = x + pinSpacing * 3;
-    newPoints[5].y = y + pinSpacing * 2;
-
-    newPoints[6].x = x + pinSpacing * 4;
-    newPoints[6].y = y + pinSpacing * 2;
+    Point2D[] newPoints =
+        new Point2D[] {first, 
+            new Point2D.Double(x + pinSpacing * 3, y - pinSpacing * 4), 
+            new Point2D.Double(x + pinSpacing * 2, y + pinSpacing * 2), 
+            new Point2D.Double(x + pinSpacing * 6, y - pinSpacing), 
+            new Point2D.Double(x, y - pinSpacing * 2), 
+            new Point2D.Double(x + pinSpacing * 3, y + pinSpacing * 2),
+            new Point2D.Double(x + pinSpacing * 4, y + pinSpacing * 2)};
 
     return newPoints;
   }

@@ -23,10 +23,10 @@ package org.diylc.components.tube;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.StringUtils;
@@ -62,7 +62,7 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   protected boolean showHeaters;
   protected Orientation orientation = Orientation.DEFAULT;
   protected SymbolFlipping flip = SymbolFlipping.NONE;
-  protected Point[] controlPoints;
+  protected Point2D[] controlPoints;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -122,12 +122,12 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     if (display == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    StringUtils.drawCenteredText(g2d, label, rect.x + rect.width, rect.y + rect.height, HorizontalAlignment.RIGHT,
+    StringUtils.drawCenteredText(g2d, label, rect.getX() + rect.width, rect.getY() + rect.height, HorizontalAlignment.RIGHT,
         VerticalAlignment.BOTTOM);
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -137,7 +137,7 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
 
     if (index == controlPoints.length - 1)
@@ -225,8 +225,8 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
       Shape[] newBody = initializeBody();
       
 //      int pinSpacing = (int) PIN_SPACING.convertToPixels();
-      int centerX = this.controlPoints[0].x;// + pinSpacing * 3;
-      int centerY = this.controlPoints[0].y;
+      double centerX = this.controlPoints[0].getX();// + pinSpacing * 3;
+      double centerY = this.controlPoints[0].getY();
 
       if (getFlip() == SymbolFlipping.X) {
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
@@ -247,10 +247,9 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
       }
 
       if (getOrientation() != Orientation.DEFAULT) {
-
-        Point first = this.controlPoints[0];
+        Point2D first = this.controlPoints[0];
         double angle = Double.parseDouble(getOrientation().name().replace("_", ""));
-        AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
+        AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.getX(), first.getY());
         if (newBody != null) {
           for (int i = 0; i < newBody.length; i++) {
             newBody[i] = rotate.createTransformedShape(newBody[i]);
@@ -264,15 +263,15 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     return this.body;
   }
 
-  protected abstract Point[] initializeControlPoints(Point first);
+  protected abstract Point2D[] initializeControlPoints(Point2D first);
 
   protected void updateControlPoints() {
-    Point[] newPoints = initializeControlPoints(this.controlPoints[0]);
+    Point2D[] newPoints = initializeControlPoints(this.controlPoints[0]);
     this.controlPoints = newPoints;
 
 //    int pinSpacing = (int) PIN_SPACING.convertToPixels();
-    int centerX = this.controlPoints[0].x;// + pinSpacing * 3;
-    int centerY = this.controlPoints[0].y;
+    double centerX = this.controlPoints[0].getX();// + pinSpacing * 3;
+    double centerY = this.controlPoints[0].getY();
 
     if (getFlip() == SymbolFlipping.X) {
       AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
@@ -291,9 +290,9 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     if (getOrientation() == Orientation.DEFAULT)
       return;
 
-    Point first = this.controlPoints[0];
+    Point2D first = this.controlPoints[0];
     double angle = Double.parseDouble(getOrientation().name().replace("_", ""));
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.getX(), first.getY());
     for (int i = 1; i < this.controlPoints.length; i++) {
       rotate.transform(this.controlPoints[i], this.controlPoints[i]);
     }

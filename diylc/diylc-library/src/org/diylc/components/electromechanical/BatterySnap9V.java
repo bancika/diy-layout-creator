@@ -31,6 +31,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -235,7 +236,7 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoint.setLocation(point);
     // Invalidate the body
     body = null;

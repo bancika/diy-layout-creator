@@ -25,13 +25,13 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -75,7 +75,7 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
   private static Size BODY_WIDTH = new Size(0.65d, SizeUnit.in);
   private static Size BODY_LENGTH = new Size(0.8d, SizeUnit.in);
 
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private JackType type = JackType.MONO;
   private Orientation orientation = Orientation.DEFAULT;
   transient private Shape[] body;
@@ -89,16 +89,16 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
   private void updateControlPoints() {
     // invalidate body shape
     body = null;
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     int spacing = (int) SPACING.convertToPixels();
     int bodyLength = (int) BODY_LENGTH.convertToPixels();
-    controlPoints = new Point[type == JackType.STEREO ? 3 : 2];
+    controlPoints = new Point2D[type == JackType.STEREO ? 3 : 2];
 
-    controlPoints[0] = new Point(x, y);
-    controlPoints[1] = new Point(x + bodyLength, y);
+    controlPoints[0] = new Point2D.Double(x, y);
+    controlPoints[1] = new Point2D.Double(x + bodyLength, y);
     if (type == JackType.STEREO) {
-      controlPoints[2] = new Point(x, y + 2 * spacing);
+      controlPoints[2] = new Point2D.Double(x, y + 2 * spacing);
     }
 
     // Apply rotation if necessary
@@ -136,18 +136,18 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
       body = new Shape[5];
 
       // Create body.
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int lugWidth = (int) LUG_WIDTH.convertToPixels();
       int lugLength = (int) LUG_LENGTH.convertToPixels();
       int lugHoleSize = (int) LUG_HOLE_SIZE.convertToPixels();
       int bodyLength = (int) BODY_LENGTH.convertToPixels();
       int bodyWidth = (int) BODY_WIDTH.convertToPixels();
-      body[0] = new Area(new Rectangle(x + lugLength, y - bodyWidth / 2, bodyLength, bodyWidth));
+      body[0] = new Area(new Rectangle2D.Double(x + lugLength, y - bodyWidth / 2, bodyLength, bodyWidth));
 
       int shaftLength = (int) SHAFT_LENGTH.convertToPixels();
       int shaftWidth = (int) SHAFT_WIDTH.convertToPixels();
-      Area shaft = new Area(new Rectangle(x + lugLength + bodyLength, y - shaftWidth / 2, shaftLength, shaftWidth));
+      Area shaft = new Area(new Rectangle2D.Double(x + lugLength + bodyLength, y - shaftWidth / 2, shaftLength, shaftWidth));
       body[1] = shaft;
 
       double angle = getAngle();
@@ -158,17 +158,17 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
 
       GeneralPath path = new GeneralPath();
       int step = 4;
-      for (int i = x + lugLength + bodyLength + step; i <= x + lugLength + bodyLength + shaftLength; i += step) {
-        Point p = new Point(i, y - shaftWidth / 2 + 1);
+      for (double i = x + lugLength + bodyLength + step; i <= x + lugLength + bodyLength + shaftLength; i += step) {
+        Point2D p = new Point2D.Double(i, y - shaftWidth / 2 + 1);
         if (rotation != null) {
           rotation.transform(p, p);
         }
-        path.moveTo(p.x, p.y);
-        p = new Point(i - step, y + shaftWidth / 2 - 1);
+        path.moveTo(p.getX(), p.getY());
+        p = new Point2D.Double(i - step, y + shaftWidth / 2 - 1);
         if (rotation != null) {
           rotation.transform(p, p);
         }
-        path.lineTo(p.x, p.y);
+        path.lineTo(p.getX(), p.getY());
       }
 //      Area pathArea = new Area(path);
 //      pathArea.intersect(shaft);
@@ -178,19 +178,19 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
       Area lugs = new Area();
 
       int spacing = (int) SPACING.convertToPixels();
-      Point[] untransformedControlPoints = new Point[type == JackType.STEREO ? 3 : 2];
+      Point2D[] untransformedControlPoints = new Point2D[type == JackType.STEREO ? 3 : 2];
 
-      untransformedControlPoints[0] = new Point(x, y);
-      untransformedControlPoints[1] = new Point(x + bodyLength, y);
+      untransformedControlPoints[0] = new Point2D.Double(x, y);
+      untransformedControlPoints[1] = new Point2D.Double(x + bodyLength, y);
       if (type == JackType.STEREO) {
-        untransformedControlPoints[2] = new Point(x, y + 2 * spacing);
+        untransformedControlPoints[2] = new Point2D.Double(x, y + 2 * spacing);
       }
 
       for (int i = 0; i < untransformedControlPoints.length; i++) {
-        Point point = untransformedControlPoints[i];
-        Area lug = new Area(new Ellipse2D.Double(point.x - lugWidth / 2, point.y - lugWidth / 2, lugWidth, lugWidth));
-        lug.add(new Area(new Rectangle(point.x, point.y - lugWidth / 2, lugLength, lugWidth)));
-        lug.subtract(new Area(new Ellipse2D.Double(point.x - lugHoleSize / 2, point.y - lugHoleSize / 2, lugHoleSize,
+        Point2D point = untransformedControlPoints[i];
+        Area lug = new Area(new Ellipse2D.Double(point.getX() - lugWidth / 2, point.getY() - lugWidth / 2, lugWidth, lugWidth));
+        lug.add(new Area(new Rectangle2D.Double(point.getX(), point.getY() - lugWidth / 2, lugLength, lugWidth)));
+        lug.subtract(new Area(new Ellipse2D.Double(point.getX() - lugHoleSize / 2, point.getY() - lugHoleSize / 2, lugHoleSize,
             lugHoleSize)));
         lugs.add(lug);
       }
@@ -269,8 +269,8 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
     g2d.setColor(finalLabelColor);
     g2d.setFont(project.getFont());
     Rectangle bounds = body[0].getBounds();
-    int centerX = bounds.x + bounds.width / 2;
-    int centerY = bounds.y + bounds.height / 2;
+    double centerX = bounds.getX() + bounds.width / 2;
+    double centerY = bounds.getY() + bounds.height / 2;
     StringUtils.drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
@@ -303,12 +303,12 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }

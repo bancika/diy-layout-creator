@@ -21,8 +21,8 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
@@ -47,11 +47,11 @@ public class SIL_ICTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void rotate(IDIYComponent<?> component, Point center, int direction) {
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x, center.y);
+  public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(), center.getY());
     for (int index = 0; index < component.getControlPointCount(); index++) {
-      Point p = new Point(component.getControlPoint(index));
-      rotate.transform(p, p);
+      Point2D p = new Point2D.Double();
+      rotate.transform(component.getControlPoint(index), p);
       component.setControlPoint(p, index);
     }
 
@@ -69,10 +69,10 @@ public class SIL_ICTransformer implements IComponentTransformer {
 
   @SuppressWarnings("incomplete-switch")
   @Override
-  public void mirror(IDIYComponent<?> component, Point center, int direction) {
+  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
     SIL_IC ic = (SIL_IC) component;
-    int dx = center.x - ic.getControlPoint(0).x;
-    int dy = center.y - ic.getControlPoint(0).y;
+    double dx = center.getX() - ic.getControlPoint(0).getX();
+    double dy = center.getY() - ic.getControlPoint(0).getY();
     if (direction == IComponentTransformer.HORIZONTAL) {
       Orientation o = ic.getOrientation();
       switch (o) {
@@ -84,8 +84,8 @@ public class SIL_ICTransformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < ic.getControlPointCount(); i++) {
-        Point p = ic.getControlPoint(i);
-        ic.setControlPoint(new Point(p.x + 2 * dx, p.y), i);
+        Point2D p = ic.getControlPoint(i);
+        ic.setControlPoint(new Point2D.Double(p.getX() + 2 * dx, p.getY()), i);
       }
 
       ic.setOrientation(o);
@@ -100,8 +100,8 @@ public class SIL_ICTransformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < ic.getControlPointCount(); i++) {
-        Point p = ic.getControlPoint(i);
-        ic.setControlPoint(new Point(p.x, p.y + 2 * dy), i);
+        Point2D p = ic.getControlPoint(i);
+        ic.setControlPoint(new Point2D.Double(p.getX(), p.getY() + 2 * dy), i);
       }
 
       ic.setOrientation(o);

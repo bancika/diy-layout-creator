@@ -22,18 +22,14 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.ObjectCache;
-import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.boards.AbstractBoard;
 import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
-import org.diylc.core.annotations.BomPolicy;
-import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
 //@ComponentDescriptor(name = "Loadline", category = "Misc", author = "Branislav Stojkovic",
@@ -66,11 +62,11 @@ public class Loadline extends AbstractBoard {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
       Project project, IDrawingObserver drawingObserver) {
-    Point finalSecondPoint = getFinalSecondPoint();
+    Point2D finalSecondPoint = getFinalSecondPoint();
 
     Shape clip = g2d.getClip();
-    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, finalSecondPoint.y)
-        && !clip.contains(finalSecondPoint.x, firstPoint.y)) {
+    if (checkPointsClipped(clip) && !clip.contains(firstPoint.getX(), finalSecondPoint.getY())
+        && !clip.contains(finalSecondPoint.getX(), firstPoint.getY())) {
       return;
     }
 
@@ -83,8 +79,8 @@ public class Loadline extends AbstractBoard {
       }
       g2d.setColor(boardColor);
 
-      g2d.fillRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x,
-          finalSecondPoint.y - firstPoint.y);
+      g2d.fillRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()),
+          (int)(finalSecondPoint.getY() - firstPoint.getY()));
 
       g2d.setComposite(oldComposite);
     }
@@ -96,8 +92,8 @@ public class Loadline extends AbstractBoard {
             ? SELECTION_COLOR
             : borderColor);
 
-    g2d.drawRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x,
-        finalSecondPoint.y - firstPoint.y);
+    g2d.drawRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()),
+        (int)(finalSecondPoint.getY() - firstPoint.getY()));
 
   }
 

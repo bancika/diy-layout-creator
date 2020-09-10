@@ -26,10 +26,10 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -79,7 +79,7 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
   private SwitchCount switchCount = SwitchCount._8;
   private Size pinSpacing = new Size(0.1d, SizeUnit.in);
   private Size rowSpacing = new Size(0.3d, SizeUnit.in);
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   protected Display display = Display.NONE;
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
@@ -179,7 +179,7 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -194,14 +194,14 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
-    controlPoints = new Point[switchCount.getValue() * 2];
+    Point2D firstPoint = controlPoints[0];
+    controlPoints = new Point2D[switchCount.getValue() * 2];
     controlPoints[0] = firstPoint;
     double pinSpacing = this.pinSpacing.convertToPixels();
     double rowSpacing = this.rowSpacing.convertToPixels();
@@ -239,16 +239,16 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point((int) (firstPoint.x + dx1), (int) (firstPoint.y + dy1));
-      controlPoints[i + switchCount.getValue()] = new Point((int) (firstPoint.x + dx2), (int) (firstPoint.y + dy2));
+      controlPoints[i] = new Point2D.Double(firstPoint.getX() + dx1, firstPoint.getY() + dy1);
+      controlPoints[i + switchCount.getValue()] = new Point2D.Double(firstPoint.getX() + dx2, firstPoint.getY() + dy2);
     }
   }
 
   public Area[] getBody() {
     if (body == null) {
       body = new Area[3];
-      double x = controlPoints[0].x;
-      double y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       double width;
       double height;
       double pinSpacing = this.pinSpacing.convertToPixels();
@@ -265,8 +265,8 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
           x -= (bodyWidth - rowSpacing) / 2;
           y -= pinSpacing / 2;
           for (int i = 0; i < getSwitchCount().getValue(); i++) {
-            tickHoleArea.add(new Area(new Rectangle2D.Double(controlPoints[i].x + (rowSpacing - tickHoleLength) / 2, controlPoints[i].y - tickSize / 2, tickHoleLength, tickSize)));
-            tickArea.add(new Area(new Rectangle2D.Double(controlPoints[i].x + (rowSpacing - tickHoleLength) / 2, controlPoints[i].y - tickSize / 2, tickSize, tickSize)));
+            tickHoleArea.add(new Area(new Rectangle2D.Double(controlPoints[i].getX() + (rowSpacing - tickHoleLength) / 2, controlPoints[i].getY() - tickSize / 2, tickHoleLength, tickSize)));
+            tickArea.add(new Area(new Rectangle2D.Double(controlPoints[i].getX() + (rowSpacing - tickHoleLength) / 2, controlPoints[i].getY() - tickSize / 2, tickSize, tickSize)));
           }
           break;
         case _90:
@@ -275,8 +275,8 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
           x -= (pinSpacing / 2) + width - pinSpacing;
           y -= (bodyWidth - rowSpacing) / 2;
           for (int i = 0; i < getSwitchCount().getValue(); i++) {
-            tickHoleArea.add(new Area(new Rectangle2D.Double(controlPoints[i].x - tickSize / 2, controlPoints[i].y + (rowSpacing - tickHoleLength) / 2, tickSize, tickHoleLength)));
-            tickArea.add(new Area(new Rectangle2D.Double(controlPoints[i].x - tickSize / 2, controlPoints[i].y + (rowSpacing - tickHoleLength) / 2, tickSize, tickSize)));
+            tickHoleArea.add(new Area(new Rectangle2D.Double(controlPoints[i].getX() - tickSize / 2, controlPoints[i].getY() + (rowSpacing - tickHoleLength) / 2, tickSize, tickHoleLength)));
+            tickArea.add(new Area(new Rectangle2D.Double(controlPoints[i].getX() - tickSize / 2, controlPoints[i].getY() + (rowSpacing - tickHoleLength) / 2, tickSize, tickSize)));
           }
           break;
         case _180:
@@ -285,8 +285,8 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
           x -= rowSpacing + (bodyWidth - rowSpacing) / 2;
           y -= (pinSpacing / 2) + height - pinSpacing;
           for (int i = getSwitchCount().getValue(); i < controlPoints.length; i++) {
-            tickHoleArea.add(new Area(new Rectangle2D.Double(controlPoints[i].x + (rowSpacing - tickHoleLength) / 2, controlPoints[i].y - tickSize / 2, tickHoleLength, tickSize)));
-            tickArea.add(new Area(new Rectangle2D.Double(controlPoints[i].x + (rowSpacing + tickHoleLength) / 2 - tickSize, controlPoints[i].y - tickSize / 2, tickSize, tickSize)));
+            tickHoleArea.add(new Area(new Rectangle2D.Double(controlPoints[i].getX() + (rowSpacing - tickHoleLength) / 2, controlPoints[i].getY() - tickSize / 2, tickHoleLength, tickSize)));
+            tickArea.add(new Area(new Rectangle2D.Double(controlPoints[i].getX() + (rowSpacing + tickHoleLength) / 2 - tickSize, controlPoints[i].getY() - tickSize / 2, tickSize, tickSize)));
           }
           break;
         case _270:
@@ -295,8 +295,8 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
           x -= pinSpacing / 2;
           y -= rowSpacing + (bodyWidth - rowSpacing) / 2;
           for (int i = getSwitchCount().getValue(); i < controlPoints.length; i++) {
-            tickHoleArea.add(new Area(new Rectangle2D.Double(controlPoints[i].x - tickSize / 2, controlPoints[i].y + (rowSpacing - tickHoleLength) / 2, tickSize, tickHoleLength)));
-            tickArea.add(new Area(new Rectangle2D.Double(controlPoints[i].x - tickSize / 2, controlPoints[i].y + (rowSpacing - tickHoleLength) / 2 + tickHoleLength - tickSize, tickSize, tickSize)));
+            tickHoleArea.add(new Area(new Rectangle2D.Double(controlPoints[i].getX() - tickSize / 2, controlPoints[i].getY() + (rowSpacing - tickHoleLength) / 2, tickSize, tickHoleLength)));
+            tickArea.add(new Area(new Rectangle2D.Double(controlPoints[i].getX() - tickSize / 2, controlPoints[i].getY() + (rowSpacing - tickHoleLength) / 2 + tickHoleLength - tickSize, tickSize, tickSize)));
           }
           break;
         default:
@@ -319,13 +319,13 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
     Area mainArea = getBody()[0];
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
         g2d.setColor(PIN_COLOR);
         int pinWidth = getClosestOdd(pinSize / (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180 ? 2f : 1f));
         int pinHeight = getClosestOdd(pinSize / (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180 ? 1f : 2f));
-        g2d.fillRect(point.x - pinWidth / 2, point.y - pinHeight / 2, pinWidth, pinHeight);
+        g2d.fillRect((int)(point.getX() - pinWidth / 2), (int)(point.getY() - pinHeight / 2), pinWidth, pinHeight);
         g2d.setColor(PIN_BORDER_COLOR);
-        g2d.drawRect(point.x - pinWidth / 2, point.y - pinHeight / 2, pinWidth, pinHeight);
+        g2d.drawRect((int)(point.getX() - pinWidth / 2), (int)(point.getY() - pinHeight / 2), pinWidth, pinHeight);
       }
     }
     Composite oldComposite = g2d.getComposite();
@@ -407,14 +407,14 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
         int textWidth = (int) (rect.getWidth());
         // Center text horizontally and vertically
         Rectangle bounds = mainArea.getBounds();
-        int x = bounds.x + (bounds.width - textWidth) / 2;
-        int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+        double x = bounds.getX() + (bounds.width - textWidth) / 2;
+        double y = bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
 
         AffineTransform oldTransform = g2d.getTransform();
 
         if (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180) {
-          int centerX = bounds.x + bounds.width / 2;
-          int centerY = bounds.y + bounds.height / 2;
+          double centerX = bounds.getX() + bounds.width / 2;
+          double centerY = bounds.getY() + bounds.height / 2;
           g2d.rotate(-Math.PI / 2, centerX, centerY);
         }
 
@@ -425,7 +425,7 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
             g2d.translate(0, textHeight / 2);
         }
 
-        g2d.drawString(l, x, y);
+        g2d.drawString(l, (int)x, (int)y);
 
         g2d.setTransform(oldTransform);
       }

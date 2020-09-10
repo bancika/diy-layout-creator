@@ -48,7 +48,6 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
-import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;

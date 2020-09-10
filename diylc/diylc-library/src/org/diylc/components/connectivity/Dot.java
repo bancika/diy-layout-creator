@@ -23,7 +23,7 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
@@ -51,7 +51,7 @@ public class Dot extends AbstractComponent<Void> {
 
   private Size size = SIZE;
   private Color color = COLOR;
-  private Point point = new Point(0, 0);
+  private Point2D point = new Point2D.Double(0, 0);
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -62,7 +62,7 @@ public class Dot extends AbstractComponent<Void> {
     int diameter = getClosestOdd((int) getSize().convertToPixels());
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color);
-    g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+    g2d.fillOval((int)(point.getX() - diameter / 2), (int)(point.getY() - diameter / 2), diameter, diameter);
   }
 
   @Override
@@ -102,12 +102,12 @@ public class Dot extends AbstractComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return point;
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.point.setLocation(point);
   }
 

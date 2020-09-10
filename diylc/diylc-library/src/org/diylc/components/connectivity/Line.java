@@ -24,11 +24,11 @@ package org.diylc.components.connectivity;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.Display;
 import org.diylc.common.LineStyle;
@@ -91,13 +91,15 @@ public class Line extends AbstractLeadedComponent<Void> {
     g2d.setStroke(stroke);
     g2d.setColor(componentState == ComponentState.SELECTED ? SELECTION_COLOR : color);
     
-    Point startPoint = new Point(getControlPoint(0));
-    Point endPoint = new Point(getControlPoint(1));
+    Point2D first = getControlPoint(0);
+    Point2D second = getControlPoint(1);
+    Point2D startPoint = new Point2D.Double(first.getX(), first.getY());
+    Point2D endPoint = new Point2D.Double(second.getX(), second.getY());
     
     if (arrowStart) {
       arrowTx.setToIdentity();
-      double angle = Math.atan2(getControlPoint(1).y - getControlPoint(0).y, getControlPoint(1).x - getControlPoint(0).x);
-      arrowTx.translate(getControlPoint(0).x, getControlPoint(0).y);
+      double angle = Math.atan2(getControlPoint(1).getY() - getControlPoint(0).getY(), getControlPoint(1).getX() - getControlPoint(0).getX());
+      arrowTx.translate(getControlPoint(0).getX(), getControlPoint(0).getY());
       arrowTx.rotate((angle + Math.PI / 2d));
       AffineTransform oldTx = g2d.getTransform();
       g2d.transform(arrowTx);         
@@ -110,8 +112,8 @@ public class Line extends AbstractLeadedComponent<Void> {
     }
     if (arrowEnd) {
       arrowTx.setToIdentity();
-      double angle = Math.atan2(getControlPoint(1).y - getControlPoint(0).y, getControlPoint(1).x - getControlPoint(0).x);
-      arrowTx.translate(getControlPoint(1).x, getControlPoint(1).y);
+      double angle = Math.atan2(getControlPoint(1).getY() - getControlPoint(0).getY(), getControlPoint(1).getX() - getControlPoint(0).getX());
+      arrowTx.translate(getControlPoint(1).getX(), getControlPoint(1).getY());
       arrowTx.rotate((angle - Math.PI / 2d));
       AffineTransform oldTx = g2d.getTransform();
       g2d.transform(arrowTx);   
@@ -123,15 +125,15 @@ public class Line extends AbstractLeadedComponent<Void> {
       interpolate(endPoint, startPoint, getArrowSize().convertToPixels() * 0.9 / distance, endPoint);
     }
     
-    g2d.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+    g2d.drawLine((int)startPoint.getX(), (int)startPoint.getY(), (int)endPoint.getX(), (int)endPoint.getY());
   }
   
-  private void interpolate(Point p1, Point p2, double t, Point p) {
-    p.setLocation((int)Math.round(p1.x * (1-t) + p2.x * t), (int)Math.round(p1.y * (1-t) + p2.y * t));
+  private void interpolate(Point2D p1, Point2D p2, double t, Point2D p) {
+    p.setLocation((int)Math.round(p1.getX() * (1-t) + p2.getX() * t), (int)Math.round(p1.getY() * (1-t) + p2.getY() * t));
   }
   
-  private double distance(Point p1, Point p2) {
-    return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+  private double distance(Point2D p1, Point2D p2) {
+    return Math.sqrt((p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) + (p1.getY() - p2.getY()) * (p1.getY() - p2.getY()));
   }
 
   @Override

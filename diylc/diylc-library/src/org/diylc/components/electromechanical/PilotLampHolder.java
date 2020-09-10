@@ -25,12 +25,12 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -76,7 +76,7 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
   private static Size HOLE_SPACING = new Size(0.1d, SizeUnit.in);
 
   private String value = "";
-  private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0) };
+  private Point2D[] controlPoints = new Point2D[] { new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0) };
   transient Area[] body;
   @Deprecated
   private Orientation orientation = Orientation.DEFAULT;
@@ -162,8 +162,8 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
     if (body == null) {
       body = new Area[6];
 
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int threadOuterDiameter = getClosestOdd(THREAD_OUTER_DIAMETER.convertToPixels());
       int threadThickness = getClosestOdd(THREAD_THICKNESS.convertToPixels());
       int nutDiameter = getClosestOdd(NUT_DIAMETER.convertToPixels());
@@ -175,7 +175,7 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
       int holeDiameter = getClosestOdd(HOLE_DIAMETER.convertToPixels());
       int holeToEdge = (int) HOLE_TO_EDGE.convertToPixels();
 
-      int centerY = y + springLength - holeToEdge;
+      double centerY = y + springLength - holeToEdge;
 
       Area wafer =
           new Area(new Ellipse2D.Double(x - waferDiameter / 2, centerY - waferDiameter / 2, waferDiameter,
@@ -244,34 +244,34 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
       }
       
       for (int i = 1; i <= 2; i++)
-        for (Point p : controlPoints)
-          body[i].subtract(new Area(new Ellipse2D.Double(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter, holeDiameter)));
+        for (Point2D p : controlPoints)
+          body[i].subtract(new Area(new Ellipse2D.Double(p.getX() - holeDiameter / 2, p.getY() - holeDiameter / 2, holeDiameter, holeDiameter)));
     }
 
     return body;
   }
 
   private void updateControlPoints() {
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
 
     int springLength = (int) SPRING_LENGTH.convertToPixels();
     int holeToEdge = (int) HOLE_TO_EDGE.convertToPixels();
     int holeSpacing = (int) HOLE_SPACING.convertToPixels();
 
-    int centerY = y + springLength - holeToEdge;
+    double centerY = y + springLength - holeToEdge;
     
     AffineTransform rotation = AffineTransform.getRotateInstance(Math.PI * 0.295, x, centerY);
 
     rotation.transform(controlPoints[0], controlPoints[1]);
     
-    controlPoints[2].setLocation(controlPoints[0].x, controlPoints[0].y + holeSpacing);
+    controlPoints[2].setLocation(controlPoints[0].getX(), controlPoints[0].getY() + holeSpacing);
     rotation.transform(controlPoints[2], controlPoints[3]);
 
     // Rotate if needed
     if (getTheta() != 0) {
       rotation = AffineTransform.getRotateInstance(getTheta(), x, y);
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
         rotation.transform(point, point);
       }
     }
@@ -365,12 +365,12 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoints[index].setLocation(point);
     // Invalidate the body
     body = null;

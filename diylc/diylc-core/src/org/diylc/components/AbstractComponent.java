@@ -23,8 +23,8 @@ package org.diylc.components;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -117,23 +117,23 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
         return false;
       }
     }
-    int minX = Integer.MAX_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int maxY = Integer.MIN_VALUE;
+    double minX = Integer.MAX_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double maxY = Integer.MIN_VALUE;
     for (int i = 0; i < getControlPointCount(); i++) {
-      Point p = getControlPoint(i);
-      if (minX > p.x) {
-        minX = p.x;
+      Point2D p = getControlPoint(i);
+      if (minX > p.getX()) {
+        minX = p.getX();
       }
-      if (maxX < p.x) {
-        maxX = p.x;
+      if (maxX < p.getX()) {
+        maxX = p.getX();
       }
-      if (minY > p.y) {
-        minY = p.y;
+      if (minY > p.getY()) {
+        minY = p.getY();
       }
-      if (maxY < p.y) {
-        maxY = p.y;
+      if (maxY < p.getY()) {
+        maxY = p.getY();
       }
     }
     Rectangle2D rect = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
@@ -160,18 +160,19 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
             // Deep copy point arrays.
             // TODO: something nicer
             if (value != null && value.getClass().isArray()
-                && value.getClass().getComponentType().isAssignableFrom(Point.class)) {
+                && value.getClass().getComponentType().isAssignableFrom(Point2D.class)) {
               Object newArray = Array.newInstance(value.getClass().getComponentType(), Array.getLength(value));
               for (int i = 0; i < Array.getLength(value); i++) {
-                Point p = (Point) Array.get(value, i);
-                Array.set(newArray, i, new Point(p));
+                Point2D p = (Point2D) Array.get(value, i);
+                Array.set(newArray, i, new Point2D.Double(p.getX(), p.getY()));
               }
               value = newArray;
             }
             // Deep copy points.
             // TODO: something nicer
-            if (value != null && value instanceof Point) {
-              value = new Point((Point) value);
+            if (value != null && value instanceof Point2D) {
+              Point2D p = (Point2D) value;
+              value = new Point2D.Double(p.getX(), p.getY());
             }
 
             field.set(newInstance, value);

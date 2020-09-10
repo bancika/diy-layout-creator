@@ -21,7 +21,7 @@
 */
 package org.diylc.core;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public class Template {
 
   private String name;
   private Map<String, Object> values;
-  private List<Point> points;
+  private List<Point2D> points;
   @SuppressWarnings("unused")
   @Deprecated
   private boolean defaultFlag;
@@ -37,7 +37,7 @@ public class Template {
   public Template() {    
   }
 
-  public Template(String name, Map<String, Object> values, List<Point> points) {    
+  public Template(String name, Map<String, Object> values, List<Point2D> points) {    
     this.name = name;
     this.values = values;
     this.points = points;
@@ -59,11 +59,11 @@ public class Template {
     this.values = values;
   }
 
-  public List<Point> getPoints() {
+  public List<Point2D> getPoints() {
     return points;
   }
 
-  public void setPoints(List<Point> points) {
+  public void setPoints(List<Point2D> points) {
     this.points = points;
   }
 

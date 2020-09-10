@@ -26,6 +26,7 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.components.transform.TubeSymbolTransformer;
@@ -55,12 +56,12 @@ public class DuoDiodeSymbol extends AbstractTubeSymbol {
 
   public Shape[] initializeBody() {
     if (body == null) {
-      Point[] controlPoints = initializeControlPoints(this.controlPoints[0]);
+      Point2D[] controlPoints = initializeControlPoints(this.controlPoints[0]);
 
       body = new Shape[3];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
-      int pinSpacing = (int) PIN_SPACING.convertToPixels();
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
+      double pinSpacing = PIN_SPACING.convertToPixels();
 
       // electrodes
       GeneralPath polyline = new GeneralPath();
@@ -73,9 +74,9 @@ public class DuoDiodeSymbol extends AbstractTubeSymbol {
 
       // cathode
       if (directlyHeated) {
-        polyline.moveTo(controlPoints[2].x, controlPoints[2].y - pinSpacing);
-        polyline.lineTo(controlPoints[2].x + pinSpacing, controlPoints[2].y - pinSpacing * 2);
-        polyline.lineTo(controlPoints[4].x, controlPoints[4].y - pinSpacing);
+        polyline.moveTo(controlPoints[2].getX(), controlPoints[2].getY() - pinSpacing);
+        polyline.lineTo(controlPoints[2].getX() + pinSpacing, controlPoints[2].getY() - pinSpacing * 2);
+        polyline.lineTo(controlPoints[4].getX(), controlPoints[4].getY() - pinSpacing);
       } else {
         polyline.moveTo(x + pinSpacing * 2, y + pinSpacing);
         polyline.lineTo(x + pinSpacing * 4, y + pinSpacing);
@@ -87,31 +88,31 @@ public class DuoDiodeSymbol extends AbstractTubeSymbol {
       polyline = new GeneralPath();
 
       // plate
-      polyline.moveTo(controlPoints[1].x, controlPoints[1].y);
-      polyline.lineTo(controlPoints[1].x, y - pinSpacing);
+      polyline.moveTo(controlPoints[1].getX(), controlPoints[1].getY());
+      polyline.lineTo(controlPoints[1].getX(), y - pinSpacing);
       
-      polyline.moveTo(controlPoints[5].x, controlPoints[5].y);
-      polyline.lineTo(controlPoints[5].x, y - pinSpacing);
+      polyline.moveTo(controlPoints[5].getX(), controlPoints[5].getY());
+      polyline.lineTo(controlPoints[5].getX(), y - pinSpacing);
 
       // cathode
       if (directlyHeated) {
-        polyline.moveTo(controlPoints[2].x, controlPoints[2].y);
-        polyline.lineTo(controlPoints[2].x, controlPoints[2].y - pinSpacing);
+        polyline.moveTo(controlPoints[2].getX(), controlPoints[2].getY());
+        polyline.lineTo(controlPoints[2].getX(), controlPoints[2].getY() - pinSpacing);
 
-        polyline.moveTo(controlPoints[4].x, controlPoints[4].y);
-        polyline.lineTo(controlPoints[4].x, controlPoints[4].y - pinSpacing);
+        polyline.moveTo(controlPoints[4].getX(), controlPoints[4].getY());
+        polyline.lineTo(controlPoints[4].getX(), controlPoints[4].getY() - pinSpacing);
       } else {
-        polyline.moveTo(controlPoints[2].x, controlPoints[2].y);
+        polyline.moveTo(controlPoints[2].getX(), controlPoints[2].getY());
         polyline.lineTo(x + pinSpacing * 2, y + pinSpacing);
 
         if (showHeaters) {
-          polyline.moveTo(controlPoints[3].x, controlPoints[3].y);
-          polyline.lineTo(controlPoints[3].x, controlPoints[3].y - pinSpacing);
-          polyline.lineTo(controlPoints[3].x + pinSpacing / 2, controlPoints[3].y - 3 * pinSpacing / 2);
+          polyline.moveTo(controlPoints[3].getX(), controlPoints[3].getY());
+          polyline.lineTo(controlPoints[3].getX(), controlPoints[3].getY() - pinSpacing);
+          polyline.lineTo(controlPoints[3].getX() + pinSpacing / 2, controlPoints[3].getY() - 3 * pinSpacing / 2);
 
-          polyline.moveTo(controlPoints[4].x, controlPoints[4].y);
-          polyline.lineTo(controlPoints[4].x, controlPoints[4].y - pinSpacing);
-          polyline.lineTo(controlPoints[4].x - pinSpacing / 2, controlPoints[4].y - 3 * pinSpacing / 2);
+          polyline.moveTo(controlPoints[4].getX(), controlPoints[4].getY());
+          polyline.lineTo(controlPoints[4].getX(), controlPoints[4].getY() - pinSpacing);
+          polyline.lineTo(controlPoints[4].getX() - pinSpacing / 2, controlPoints[4].getY() - 3 * pinSpacing / 2);
         }
       }
 
@@ -142,28 +143,19 @@ public class DuoDiodeSymbol extends AbstractTubeSymbol {
   }
 
   @Override
-  protected Point[] initializeControlPoints(Point first) {
+  protected Point2D[] initializeControlPoints(Point2D first) {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
-    int x = first.x;
-    int y = first.y;
+    double x = first.getX();
+    double y = first.getY();
 
-    Point[] newPoints = new Point[] {first, new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-
-    newPoints[1].x = x + pinSpacing * 2;
-    newPoints[1].y = y - pinSpacing * 3;
-
-    newPoints[2].x = x + pinSpacing * 2;
-    newPoints[2].y = y + pinSpacing * 3;
-
-    newPoints[3].x = x + pinSpacing * 3;
-    newPoints[3].y = y + pinSpacing * 3;
-
-    newPoints[4].x = x + pinSpacing * 4;
-    newPoints[4].y = y + pinSpacing * 3;
-    
-    newPoints[5].x = x + pinSpacing * 4;
-    newPoints[5].y = y - pinSpacing * 3;
+    Point2D[] newPoints = new Point2D[] {
+        first, 
+        new Point2D.Double(x + pinSpacing * 2, y - pinSpacing * 3),
+        new Point2D.Double(x + pinSpacing * 2, y + pinSpacing * 3), 
+        new Point2D.Double(x + pinSpacing * 3, y + pinSpacing * 3), 
+        new Point2D.Double(x + pinSpacing * 4, y + pinSpacing * 3), 
+        new Point2D.Double(x + pinSpacing * 4, y - pinSpacing * 3)};
 
     return newPoints;
   }

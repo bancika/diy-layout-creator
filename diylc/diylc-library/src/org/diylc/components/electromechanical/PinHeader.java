@@ -29,6 +29,7 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -65,7 +66,7 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
 
   private Orientation orientation = Orientation.DEFAULT;
 
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private int rowCount = 2;
   private int columnCount = 5;
   private Size spacing = PIN_SPACING;
@@ -99,7 +100,7 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -114,26 +115,26 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     int pinCount = rowCount * columnCount;
-    controlPoints = new Point[pinCount];
+    controlPoints = new Point2D[pinCount];
     controlPoints[0] = firstPoint;
     double pinSpacing = spacing.convertToPixels();   
     
     for (int i = 0; i < columnCount; i++)
       for (int j = 0; j < rowCount; j++) 
-        controlPoints[i + j * columnCount] = new Point((int)Math.round(firstPoint.x + j * pinSpacing), (int)Math.round(firstPoint.y + i * pinSpacing));
+        controlPoints[i + j * columnCount] = new Point((int)Math.round(firstPoint.getX() + j * pinSpacing), (int)Math.round(firstPoint.getY() + i * pinSpacing));
     
     // Apply rotation if necessary
     double angle = getAngle();
     if (angle != 0) {
-      AffineTransform rotation = AffineTransform.getRotateInstance(angle, controlPoints[0].x, controlPoints[0].y);
+      AffineTransform rotation = AffineTransform.getRotateInstance(angle, controlPoints[0].getX(), controlPoints[0].getY());
       for (int i = 1; i < controlPoints.length; i++) {
         rotation.transform(controlPoints[i], controlPoints[i]);
       }
@@ -163,11 +164,11 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      int centerX = (controlPoints[0].x + controlPoints[controlPoints.length - 1].x) / 2;
-      int centerY = (controlPoints[0].y + controlPoints[controlPoints.length - 1].y) / 2;
+      double centerX = (controlPoints[0].getX() + controlPoints[controlPoints.length - 1].getX()) / 2;
+      double centerY = (controlPoints[0].getY() + controlPoints[controlPoints.length - 1].getY()) / 2;
       double pinSpacing = spacing.convertToPixels();
-      double width = Math.abs((controlPoints[0].x - controlPoints[controlPoints.length - 1].x)) + pinSpacing;
-      double height = Math.abs((controlPoints[0].y - controlPoints[controlPoints.length - 1].y)) + pinSpacing;
+      double width = Math.abs((controlPoints[0].getX() - controlPoints[controlPoints.length - 1].getX())) + pinSpacing;
+      double height = Math.abs((controlPoints[0].getY() - controlPoints[controlPoints.length - 1].getY())) + pinSpacing;
       if (shrouded) {
         if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
           height += 2 * pinSpacing;
@@ -236,13 +237,13 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
 
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-    for (Point point : controlPoints) {
+    for (Point2D point : controlPoints) {
       if (!outlineMode) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fillRect((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
       }
       g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-      g2d.drawRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+      g2d.drawRect((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
     }
 
     Color finalBorderColor;
@@ -358,21 +359,21 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
   
   @Override
   public Rectangle2D getCachingBounds() {
-    int minX = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxY = Integer.MIN_VALUE;
+    double minX = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxY = Integer.MIN_VALUE;
     int margin = 50;
     for (int i = 0; i < getControlPointCount(); i++) {
-      Point p = getControlPoint(i);
-      if (p.x < minX)
-        minX = p.x;
-      if (p.x > maxX)
-        maxX = p.x;
-      if (p.y < minY)
-        minY = p.y;
-      if (p.y > maxY)
-        maxY = p.y;
+      Point2D p = getControlPoint(i);
+      if (p.getX() < minX)
+        minX = p.getX();
+      if (p.getX() > maxX)
+        maxX = p.getX();
+      if (p.getY() < minY)
+        minY = p.getY();
+      if (p.getY() > maxY)
+        maxY = p.getY();
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);

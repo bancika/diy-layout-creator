@@ -172,7 +172,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
   }
   
   @Override
-  public void setControlPoint(Point point, int index) {   
+  public void setControlPoint(Point2D point, int index) {   
     super.setControlPoint(point, index);
     
     // invalidate cached areas

@@ -21,7 +21,7 @@
 */
 package org.diylc.common;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.core.IDIYComponent;
 
@@ -39,7 +39,7 @@ public interface IComponentTransformer {
   
   boolean mirroringChangesCircuit();
 
-  void rotate(IDIYComponent<?> component, Point center, int direction);
+  void rotate(IDIYComponent<?> component, Point2D center, int direction);
 
-  void mirror(IDIYComponent<?> component, Point center, int direction);
+  void mirror(IDIYComponent<?> component, Point2D center, int direction);
 }

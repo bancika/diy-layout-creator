@@ -23,7 +23,7 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.Arrays;
 
 import org.diylc.common.ObjectCache;
@@ -52,9 +52,9 @@ public class GroundFill extends AbstractComponent<Void> {
   public static Size DEFAULT_WIDTH = new Size(1.5d, SizeUnit.in);
   public static Size DEFAULT_HEIGHT = new Size(1.2d, SizeUnit.in);
 
-  protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, (int) DEFAULT_HEIGHT.convertToPixels()),
-      new Point((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels()),
-      new Point((int) DEFAULT_WIDTH.convertToPixels(), 0)};
+  protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, (int) DEFAULT_HEIGHT.convertToPixels()),
+      new Point2D.Double((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels()),
+      new Point2D.Double((int) DEFAULT_WIDTH.convertToPixels(), 0)};
 
   protected Color color = COLOR;
   protected PointCount pointCount = PointCount._4;
@@ -71,8 +71,8 @@ public class GroundFill extends AbstractComponent<Void> {
     int[] xPoints = new int[controlPoints.length];
     int[] yPoints = new int[controlPoints.length];
     for (int i = 0; i < controlPoints.length; i++) {
-      xPoints[i] = controlPoints[i].x;
-      yPoints[i] = controlPoints[i].y;
+      xPoints[i] = (int)controlPoints[i].getX();
+      yPoints[i] = (int)controlPoints[i].getY();
     }
     drawingObserver.startTrackingContinuityArea(true);
     g2d.fillPolygon(xPoints, yPoints, controlPoints.length);
@@ -97,7 +97,7 @@ public class GroundFill extends AbstractComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -112,7 +112,7 @@ public class GroundFill extends AbstractComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
   }
 
@@ -131,8 +131,8 @@ public class GroundFill extends AbstractComponent<Void> {
       this.controlPoints[newPointCount - 1] = this.controlPoints[oldPointCount - 1];
       for (int i = oldPointCount - 1; i < newPointCount - 1; i++) {
         this.controlPoints[i] =
-            new Point((this.controlPoints[i - 1].x + this.controlPoints[newPointCount - 1].x) / 2,
-                (this.controlPoints[i - 1].y + this.controlPoints[newPointCount - 1].y) / 2);
+            new Point2D.Double((this.controlPoints[i - 1].getX() + this.controlPoints[newPointCount - 1].getX()) / 2,
+                (this.controlPoints[i - 1].getY() + this.controlPoints[newPointCount - 1].getY()) / 2);
       }
     }
     this.pointCount = pointCount;

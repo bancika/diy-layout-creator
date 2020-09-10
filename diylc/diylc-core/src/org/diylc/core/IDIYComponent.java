@@ -22,7 +22,7 @@
 package org.diylc.core;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
@@ -89,7 +89,7 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
    * @param index
    * @return control point at the specified index.
    */
-  Point getControlPoint(int index);
+  Point2D getControlPoint(int index);
 
   /**
    * Updates the control point at the specified index.
@@ -97,7 +97,7 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
    * @param point
    * @param index
    */
-  void setControlPoint(Point point, int index);
+  void setControlPoint(Point2D point, int index);
 
   /**
    * @param index

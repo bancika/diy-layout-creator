@@ -18,8 +18,8 @@
 package org.diylc.presenter;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -93,7 +93,7 @@ public class DrawingCache {
 
     if (type != null && type.getEnableCache()) {
       // if we need to apply caching
-      Point firstPoint = component.getControlPoint(0);
+      Point2D firstPoint = component.getControlPoint(0);
       
       CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom);     
       
@@ -107,8 +107,8 @@ public class DrawingCache {
         }
         try {
           // draw cached image
-          g2d.getCanvasGraphics().drawImage(value.getImage(), (int) ((firstPoint.x - value.getDx()) * zoom),
-              (int) ((firstPoint.y - value.getDy())* zoom), null);
+          g2d.getCanvasGraphics().drawImage(value.getImage(), (int) ((firstPoint.getX() - value.getDx()) * zoom),
+              (int) ((firstPoint.getY() - value.getDy())* zoom), null);
         } finally {
           if (Math.abs(1.0 - zoom) > 1e-4) {
             g2d.getCanvasGraphics().scale(zoom, zoom);
@@ -157,7 +157,7 @@ public class DrawingCache {
   private CacheValue renderAndCache(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
       boolean outlineMode, Project project, double zoom) {
     // if we need to apply caching
-    Point firstPoint = component.getControlPoint(0);
+    Point2D firstPoint = component.getControlPoint(0);
 
     // cache hit!
     CacheValue value = null;
@@ -172,8 +172,8 @@ public class DrawingCache {
       int width = (int)Math.round(rect.getWidth() * zoom);
       int height = (int)Math.round(rect.getHeight() * zoom);
       // calculate the position of the first point relative to the caching bounds
-      int dx = (int) (firstPoint.x - rect.getX());
-      int dy = (int) (firstPoint.y - rect.getY());
+      int dx = (int) (firstPoint.getX() - rect.getX());
+      int dy = (int) (firstPoint.getY() - rect.getY());
       
       // create image
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -191,7 +191,7 @@ public class DrawingCache {
         cg2d.scale(zoom, zoom);
       }
       // translate to make the top-left corner of the component match (0, 0)
-      cg2d.translate(-firstPoint.x + dx, -firstPoint.y + dy);
+      cg2d.translate(-firstPoint.getX() + dx, -firstPoint.getY() + dy);
       
       // wrap the graphics so we can track
       G2DWrapper wrapper = new G2DWrapper(cg2d, zoom);

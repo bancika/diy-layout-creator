@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.Arrays;
 
 import org.diylc.common.ObjectCache;
@@ -61,8 +62,8 @@ public class PolygonalCutout extends AbstractShape {
     int[] xPoints = new int[controlPoints.length];
     int[] yPoints = new int[controlPoints.length];
     for (int i = 0; i < controlPoints.length; i++) {
-      xPoints[i] = controlPoints[i].x;
-      yPoints[i] = controlPoints[i].y;
+      xPoints[i] = (int)controlPoints[i].getX();
+      yPoints[i] = (int)controlPoints[i].getY();
     }
 
     Composite oldComposite = g2d.getComposite();
@@ -97,8 +98,8 @@ public class PolygonalCutout extends AbstractShape {
       this.controlPoints[newPointCount - 1] = this.controlPoints[oldPointCount - 1];
       for (int i = oldPointCount - 1; i < newPointCount - 1; i++) {
         this.controlPoints[i] =
-            new Point((this.controlPoints[i - 1].x + this.controlPoints[newPointCount - 1].x) / 2,
-                (this.controlPoints[i - 1].y + this.controlPoints[newPointCount - 1].y) / 2);
+            new Point2D.Double((this.controlPoints[i - 1].getX() + this.controlPoints[newPointCount - 1].getX()) / 2,
+                (this.controlPoints[i - 1].getY() + this.controlPoints[newPointCount - 1].getY()) / 2);
       }
     }
     this.pointCount = pointCount;

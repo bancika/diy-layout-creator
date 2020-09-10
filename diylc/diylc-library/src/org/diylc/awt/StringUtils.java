@@ -195,7 +195,7 @@ public class StringUtils {
     return strings;
   }
 
-  public static void drawCenteredText(Graphics2D g2d, String text, int x, int y, HorizontalAlignment horizontalAlignment,
+  public static void drawCenteredText(Graphics2D g2d, String text, double x, double y, HorizontalAlignment horizontalAlignment,
       VerticalAlignment verticalAlignment) {
     String[] parts = text.split("\n");
     if (parts.length > 1) {
@@ -214,7 +214,7 @@ public class StringUtils {
     GlyphVector glyphVector = font.createGlyphVector(renderContext, text);
     Rectangle visualBounds = glyphVector.getVisualBounds().getBounds();
 
-    int textX = 0;
+    double textX = 0;
     switch (horizontalAlignment) {
       case CENTER:
         textX = x - stringBounds.width / 2;
@@ -227,7 +227,7 @@ public class StringUtils {
         break;
     }
 
-    int textY = 0;
+    double textY = 0;
     switch (verticalAlignment) {
       case TOP:
         textY = y;
@@ -240,6 +240,6 @@ public class StringUtils {
         break;
     }
 
-    g2d.drawString(text, textX, textY);
+    g2d.drawString(text, (int)Math.round(textX), (int)Math.round(textY));
   }
 }

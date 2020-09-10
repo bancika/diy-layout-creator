@@ -25,13 +25,13 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -195,9 +195,9 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
     if (body == null) {
       body = new Shape[4];
 
-      Point[] points = getControlPoints();
-      int x = points[0].x;
-      int y = points[0].y;
+      Point2D[] points = getControlPoints();
+      double x = points[0].getX();
+      double y = points[0].getY();
       int width = (int) getType().getWidth().convertToPixels();
       int length = (int) getType().getLength().convertToPixels();
       int edgeRadius = (int) getType().getEdgeRadius().convertToPixels();

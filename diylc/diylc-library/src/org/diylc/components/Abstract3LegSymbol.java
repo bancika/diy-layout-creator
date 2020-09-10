@@ -24,10 +24,10 @@ package org.diylc.components;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -57,7 +57,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   public static Color COLOR = Color.black;
   
   protected String value = "";
-  protected Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0) };
+  protected Point2D[] controlPoints = new Point2D[] { new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0) };
   protected Color color = COLOR;
   protected SymbolFlipping flip = SymbolFlipping.NONE;
   protected Display display = Display.NAME;
@@ -71,17 +71,17 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     controlPoints[3] = getDefaultLabelPosition(controlPoints);
   }
   
-  public Point[] getControlPoints() {
+  public Point2D[] getControlPoints() {
     if (controlPoints.length == 3) {
-      controlPoints = new Point[] { controlPoints[0], controlPoints[1], controlPoints[2], getDefaultLabelPosition(controlPoints) };
+      controlPoints = new Point2D[] { controlPoints[0], controlPoints[1], controlPoints[2], getDefaultLabelPosition(controlPoints) };
     }
     return controlPoints;
   }
   
-  protected Point getDefaultLabelPosition(Point[] oldControlPoints) {
+  protected Point2D getDefaultLabelPosition(Point2D[] oldControlPoints) {
     int f = flip == SymbolFlipping.X ? -1 : 1;
     int d = flip == SymbolFlipping.X ? (int) PIN_SPACING.convertToPixels() / 2 : 0;
-    return new Point(oldControlPoints[0].x + f * (int) (PIN_SPACING.convertToPixels() * 1.5 + d), oldControlPoints[0].y);
+    return new Point2D.Double(oldControlPoints[0].getX() + f * (PIN_SPACING.convertToPixels() * 1.5 + d), oldControlPoints[0].getY());
   }
 
   @Override
@@ -110,16 +110,16 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
 
     AffineTransform old = g2d.getTransform();
     
-    Point[] controlPoints = getControlPoints();
+    Point2D[] controlPoints = getControlPoints();
 
     if (this.flip == SymbolFlipping.Y) {
-      g2d.translate(0, controlPoints[0].y);
+      g2d.translate(0, controlPoints[0].getY());
       g2d.scale(1, -1);
-      g2d.translate(0, -1 * controlPoints[0].y);
+      g2d.translate(0, -1 * controlPoints[0].getY());
     } else if (this.flip == SymbolFlipping.X) {
-      g2d.translate(controlPoints[0].x, 0);
+      g2d.translate(controlPoints[0].getX(), 0);
       g2d.scale(-1, 1);
-      g2d.translate(-1 * controlPoints[0].x, 0);
+      g2d.translate(-1 * controlPoints[0].getX(), 0);
     }
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
@@ -160,7 +160,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     Rectangle shapeRect = body[0].getBounds().union(body[1].getBounds()).union(body[2].getBounds());
     
     if (getMoveLabel()) {
-      StringUtils.drawCenteredText(g2d, label, controlPoints[3].x, controlPoints[3].y, flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
+      StringUtils.drawCenteredText(g2d, label, controlPoints[3].getX(), controlPoints[3].getY(), flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
               : HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     } else {
       StringUtils.drawCenteredText(g2d, label, getLabelX(shapeRect, textRect, fontMetrics, outlineMode),
@@ -170,7 +170,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return getControlPoints()[index];
   }
 
@@ -179,39 +179,36 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     return getControlPoints().length;
   }
 
-  protected int getLabelX(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
+  protected double getLabelX(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
     int f = flip == SymbolFlipping.X ? -1 : 1;
     int d = flip == SymbolFlipping.X ? (int) PIN_SPACING.convertToPixels() / 2 : 0;
-    return getControlPoints()[0].x + f * (int) (PIN_SPACING.convertToPixels() * 1.5 + d);
+    return getControlPoints()[0].getX() + f * (int) (PIN_SPACING.convertToPixels() * 1.5 + d);
   }
 
-  protected int getLabelY(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
-    return getControlPoints()[0].y;
+  protected double getLabelY(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
+    return getControlPoints()[0].getY();
   }
 
   protected void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
-    Point[] controlPoints = getControlPoints();
+    Point2D[] controlPoints = getControlPoints();
         
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
 
     // set default point positions
-    controlPoints[1].x = x +  pinSpacing * 2;
-    controlPoints[1].y = y - pinSpacing * 2;
+    controlPoints[1].setLocation(x +  pinSpacing * 2, y - pinSpacing * 2);
 
-    controlPoints[2].x = x + pinSpacing * 2;
-    controlPoints[2].y = y + pinSpacing * 2;
+    controlPoints[2].setLocation(x + pinSpacing * 2, y + pinSpacing * 2);
     
-    controlPoints[3].x = x + (int) (PIN_SPACING.convertToPixels() * 2);
-    controlPoints[3].y = y;
+    controlPoints[3].setLocation(x + PIN_SPACING.convertToPixels() * 2, y);
     
     // apply rotation if needed
     if (getOrientation() != Orientation.DEFAULT)
     {    
-      Point first = controlPoints[0];
+      Point2D first = controlPoints[0];
       double angle = Double.parseDouble(getOrientation().name().replace("_", ""));
-      AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
+      AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.getX(), first.getY());
       for (int i = 1; i < controlPoints.length; i++) {
         rotate.transform(controlPoints[i], controlPoints[i]);
       }
@@ -219,14 +216,14 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     
     // flip at the end
     if (flip == SymbolFlipping.X) {
-      controlPoints[1].x = controlPoints[0].x - (controlPoints[1].x - controlPoints[0].x);
-      controlPoints[2].x = controlPoints[0].x - (controlPoints[2].x - controlPoints[0].x);
-      controlPoints[3].x = controlPoints[0].x - (controlPoints[3].x - controlPoints[0].x);
+      controlPoints[1].setLocation(controlPoints[0].getX() - (controlPoints[1].getX() - controlPoints[0].getX()), controlPoints[1].getY());
+      controlPoints[2].setLocation(controlPoints[0].getX() - (controlPoints[2].getX() - controlPoints[0].getX()), controlPoints[2].getY());
+      controlPoints[3].setLocation(controlPoints[0].getX() - (controlPoints[3].getX() - controlPoints[0].getX()), controlPoints[3].getY());
     }
     if (flip == SymbolFlipping.Y) {
-      controlPoints[1].y = controlPoints[0].y - (controlPoints[1].y - controlPoints[0].y);
-      controlPoints[2].y = controlPoints[0].y - (controlPoints[2].y - controlPoints[0].y);
-      controlPoints[3].y = controlPoints[0].y - (controlPoints[3].y - controlPoints[0].y);
+      controlPoints[1].setLocation(controlPoints[1].getX(), controlPoints[0].getY() - (controlPoints[1].getY() - controlPoints[0].getY()));
+      controlPoints[2].setLocation(controlPoints[2].getX(), controlPoints[0].getY() - (controlPoints[2].getY() - controlPoints[0].getY()));
+      controlPoints[3].setLocation(controlPoints[3].getX(), controlPoints[0].getY() - (controlPoints[3].getY() - controlPoints[0].getY()));
     }
   }
 
@@ -252,7 +249,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     getControlPoints()[index].setLocation(point);
 
     // make sure we have a new drawing
@@ -329,9 +326,9 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     if (getOrientation() == Orientation.DEFAULT)
       return;
 
-    Point first = getControlPoints()[0];
+    Point2D first = getControlPoints()[0];
     double angle = Double.parseDouble(getOrientation().name().replace("_", ""));
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.x, first.y);
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(angle), first.getX(), first.getY());
     
     if (body != null) {
       for (int i = 0; i < body.length; i++) {

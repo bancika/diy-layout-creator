@@ -25,11 +25,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -77,7 +77,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   private static Size TERMINAL_SPACING = new Size(0.1d, SizeUnit.in);
 
   private String value = "";
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private LeverSwitchType type = LeverSwitchType.DP3T;
@@ -147,7 +147,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     
 //    g2d.setColor(Color.black);
 //    for(int i = 0; i < getControlPointCount(); i++) {
-//      g2d.drawString(i + "", controlPoints[i].x, controlPoints[i].y);
+//      g2d.drawString(i + "", controlPoints[i].getX(), controlPoints[i].getY());
 //    }
   }
 
@@ -156,8 +156,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     if (body == null) {
       body = new Shape[4];
 
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int baseWidth = (int) BASE_WIDTH.convertToPixels();
       int baseLength = (int) BASE_LENGTH.convertToPixels();
       int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
@@ -177,8 +177,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
         yOffset = 12;
       }      
 
-      int baseX = x - terminalLength / 2 - waferSpacing;
-      int baseY = y - (baseLength - terminalSpacing * yOffset) / 2;
+      double baseX = x - terminalLength / 2 - waferSpacing;
+      double baseY = y - (baseLength - terminalSpacing * yOffset) / 2;
       Area baseArea = new Area(new Rectangle2D.Double(baseX, baseY, baseWidth, baseLength));
       baseArea.subtract(new Area(new Ellipse2D.Double(baseX + baseWidth / 2 - holeSize / 2, baseY
           + (baseLength - holeSpacing) / 2 - holeSize / 2, holeSize, holeSize)));
@@ -217,15 +217,15 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       Area terminalArea = new Area();
       Area commonTerminalArea = new Area();
       for (int i = 0; i < controlPoints.length; i++) {
-        Point point = controlPoints[i];
+        Point2D point = controlPoints[i];
         Area terminal =
-            new Area(new RoundRectangle2D.Double(point.x - terminalLength / 2, point.y - terminalWidth / 2,
+            new Area(new RoundRectangle2D.Double(point.getX() - terminalLength / 2, point.getY() - terminalWidth / 2,
                 terminalLength, terminalWidth, terminalWidth / 2, terminalWidth / 2));
-        terminal.subtract(new Area(new RoundRectangle2D.Double(point.x - terminalLength / 4, point.y - terminalWidth
+        terminal.subtract(new Area(new RoundRectangle2D.Double(point.getX() - terminalLength / 4, point.getY() - terminalWidth
             / 4, terminalLength / 2, terminalWidth / 2, terminalWidth / 2, terminalWidth / 2)));
         // Rotate the terminal if needed
         if (theta != 0) {
-          AffineTransform rotation = AffineTransform.getRotateInstance(theta, point.x, point.y);
+          AffineTransform rotation = AffineTransform.getRotateInstance(theta, point.getX(), point.getY());
           terminal.transform(rotation);
         }
         terminalArea.add(terminal);
@@ -242,7 +242,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
 
       // Rotate if needed
       if (theta != 0) {
-        AffineTransform rotation = AffineTransform.getRotateInstance(theta, controlPoints[0].x, controlPoints[0].y);
+        AffineTransform rotation = AffineTransform.getRotateInstance(theta, controlPoints[0].getX(), controlPoints[0].getY());
         // Skip the last two because terminals are already rotated
         for (int i = 0; i < body.length - 2; i++) {
           Shape shape = body[i];
@@ -256,8 +256,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
 
   @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     int waferSpacing = (int) WAFER_SPACING.convertToPixels();
     int terminalSpacing = (int) TERMINAL_SPACING.convertToPixels();
     int terminalLength = (int) TERMINAL_LENGTH.convertToPixels();
@@ -265,28 +265,28 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     switch (type) {
       case DP3T:
       case DP3T_5pos:
-        controlPoints = new Point[8];
+        controlPoints = new Point2D[8];
         for (int i = 0; i < 8; i++) {
-          controlPoints[i] = new Point(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
+          controlPoints[i] = new Point2D.Double(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
         }
         break;
       case DP4T:
-        controlPoints = new Point[10];
+        controlPoints = new Point2D[10];
         for (int i = 0; i < 10; i++) {
-          controlPoints[i] = new Point(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
+          controlPoints[i] = new Point2D.Double(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
         }
         break;
       case DP5T:
-        controlPoints = new Point[12];
+        controlPoints = new Point2D[12];
         for (int i = 0; i < 12; i++) {
-          controlPoints[i] = new Point(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
+          controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
         }
         break;
       case _4P5T:
-        controlPoints = new Point[24];
+        controlPoints = new Point2D[24];
         for (int i = 0; i < 12; i++) {
-          controlPoints[i] = new Point(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
-          controlPoints[i + 12] = new Point(x + waferSpacing, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
+          controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
+          controlPoints[i + 12] = new Point2D.Double(x + waferSpacing, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
         }
         break;
     }
@@ -306,7 +306,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
           break;
       }
       AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
         rotation.transform(point, point);
       }
     }        
@@ -360,12 +360,12 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoints[index].setLocation(point);
     // Invalidate the body
     body = null;

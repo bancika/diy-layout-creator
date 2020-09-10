@@ -21,7 +21,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -53,12 +52,12 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
 
   // for backward compatibility
-  protected Point[] controlPoints = null;
+  protected Point2D[] controlPoints = null;
 
-  protected Point[] controlPoints2 = new Point[] {new Point(0, 0),
-      new Point((int) (DEFAULT_SIZE.convertToPixels() / 2), 0),
-      new Point((int) (DEFAULT_SIZE.convertToPixels() / 2), (int) (DEFAULT_SIZE.convertToPixels())),
-      new Point((int) DEFAULT_SIZE.convertToPixels(), (int) DEFAULT_SIZE.convertToPixels())};
+  protected Point2D[] controlPoints2 = new Point2D[] {new Point2D.Double(0, 0),
+      new Point2D.Double(DEFAULT_SIZE.convertToPixels() / 2, 0),
+      new Point2D.Double(DEFAULT_SIZE.convertToPixels() / 2, DEFAULT_SIZE.convertToPixels()),
+      new Point2D.Double(DEFAULT_SIZE.convertToPixels(), DEFAULT_SIZE.convertToPixels())};
 
   protected Color color = getDefaultColor();
   protected PointCount pointCount = PointCount.FOUR;
@@ -102,7 +101,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
       return;
     }
 
-    Point[] p = getControlPoints();
+    Point2D[] p = getControlPoints();
 
     // smoothen the curve if needed
     if (getSmooth() && lastUpdatePointIndex >= 0) {
@@ -127,25 +126,25 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
       g2d.setStroke(Constants.DASHED_STROKE);
       g2d.setColor(GUIDELINE_COLOR);
       for (int i = 0; i < p.length - 1; i++) {
-        g2d.drawLine(p[i].x, p[i].y, p[i + 1].x, p[i + 1].y);
+        g2d.drawLine((int)p[i].getX(), (int)p[i].getY(), (int)p[i + 1].getX(), (int)p[i + 1].getY());
       }
       drawingObserver.startTracking();
     }
 
     Path2D path = new Path2D.Double();
-    path.moveTo(p[0].x, p[0].y);
+    path.moveTo(p[0].getX(), p[0].getY());
     if (getPointCount() == PointCount.TWO) {
-      path.lineTo(p[1].x, p[1].y);
+      path.lineTo(p[1].getX(), p[1].getY());
     } else if (getPointCount() == PointCount.THREE) {
-      path.curveTo(p[1].x, p[1].y, p[1].x, p[1].y, p[2].x, p[2].y);
+      path.curveTo(p[1].getX(), p[1].getY(), p[1].getX(), p[1].getY(), p[2].getX(), p[2].getY());
     } else if (getPointCount() == PointCount.FOUR) {
-      path.curveTo(p[1].x, p[1].y, p[2].x, p[2].y, p[3].x, p[3].y);
+      path.curveTo(p[1].getX(), p[1].getY(), p[2].getX(), p[2].getY(), p[3].getX(), p[3].getY());
     } else if (getPointCount() == PointCount.FIVE) {
-      path.quadTo(p[1].x, p[1].y, p[2].x, p[2].y);
-      path.quadTo(p[3].x, p[3].y, p[4].x, p[4].y);
+      path.quadTo(p[1].getX(), p[1].getY(), p[2].getX(), p[2].getY());
+      path.quadTo(p[3].getX(), p[3].getY(), p[4].getX(), p[4].getY());
     } else if (getPointCount() == PointCount.SEVEN) {
-      path.curveTo(p[1].x, p[1].y, p[2].x, p[2].y, p[3].x, p[3].y);
-      path.curveTo(p[4].x, p[4].y, p[5].x, p[5].y, p[6].x, p[6].y);
+      path.curveTo(p[1].getX(), p[1].getY(), p[2].getX(), p[2].getY(), p[3].getX(), p[3].getY());
+      path.curveTo(p[4].getX(), p[4].getY(), p[5].getX(), p[5].getY(), p[6].getX(), p[6].getY());
     }
 
     Composite oldComposite = g2d.getComposite();
@@ -166,23 +165,23 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     return pointCount;
   }
 
-  protected Point[] getControlPoints() {
+  protected Point2D[] getControlPoints() {
     if (this.controlPoints != null) {
       // ensure backward compatibility by copying points from the old structure to the new one
       switch (getPointCount()) {
         case TWO:
-          this.controlPoints2 = new Point[2];
+          this.controlPoints2 = new Point2D[2];
           this.controlPoints2[0] = this.controlPoints[0];
           this.controlPoints2[1] = this.controlPoints[3];
           break;
         case THREE:
-          this.controlPoints2 = new Point[3];
+          this.controlPoints2 = new Point2D[3];
           this.controlPoints2[0] = this.controlPoints[0];
           this.controlPoints2[1] = this.controlPoints[1];
           this.controlPoints2[2] = this.controlPoints[3];
           break;
         case FOUR:
-          this.controlPoints2 = new Point[4];
+          this.controlPoints2 = new Point2D[4];
           this.controlPoints2[0] = this.controlPoints[0];
           this.controlPoints2[1] = this.controlPoints[1];
           this.controlPoints2[2] = this.controlPoints[2];
@@ -198,42 +197,42 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   }
 
   public void setPointCount(PointCount pointCount) {
-    Point[] p = getControlPoints();
-    Point[] newPoints = new Point[pointCount.count];
+    Point2D[] p = getControlPoints();
+    Point2D[] newPoints = new Point2D[pointCount.count];
     newPoints[0] = p[0];
     newPoints[pointCount.count - 1] = p[p.length - 1];
 
     if (pointCount == PointCount.THREE) {
       newPoints[1] =
-          new Point((newPoints[pointCount.count - 1].x + newPoints[0].x) / 2,
-              (newPoints[pointCount.count - 1].y + newPoints[0].y) / 2);
+          new Point2D.Double((newPoints[pointCount.count - 1].getX() + newPoints[0].getX()) / 2,
+              (newPoints[pointCount.count - 1].getY() + newPoints[0].getY()) / 2);
     } else if (pointCount == PointCount.FOUR) {
       newPoints[1] =
-          new Point((newPoints[pointCount.count - 1].x + newPoints[0].x) / 2,
-              (newPoints[pointCount.count - 1].y + newPoints[0].y) / 2);
+          new Point2D.Double((newPoints[pointCount.count - 1].getX() + newPoints[0].getX()) / 2,
+              (newPoints[pointCount.count - 1].getY() + newPoints[0].getY()) / 2);
       newPoints[2] =
-          new Point((newPoints[pointCount.count - 1].x + newPoints[0].x) / 2,
-              (newPoints[pointCount.count - 1].y + newPoints[0].y) / 2);
+          new Point2D.Double((newPoints[pointCount.count - 1].getX() + newPoints[0].getX()) / 2,
+              (newPoints[pointCount.count - 1].getY() + newPoints[0].getY()) / 2);
     } else if (pointCount == PointCount.FIVE) {
       newPoints[2] =
-          new Point((newPoints[pointCount.count - 1].x + newPoints[0].x) / 2,
-              (newPoints[pointCount.count - 1].y + newPoints[0].y) / 2);
-      newPoints[1] = new Point((newPoints[2].x + newPoints[0].x) / 2, (newPoints[2].y + newPoints[0].y) / 2);
+          new Point2D.Double((newPoints[pointCount.count - 1].getX() + newPoints[0].getX()) / 2,
+              (newPoints[pointCount.count - 1].getY() + newPoints[0].getY()) / 2);
+      newPoints[1] = new Point2D.Double((newPoints[2].getX() + newPoints[0].getX()) / 2, (newPoints[2].getY() + newPoints[0].getY()) / 2);
       newPoints[3] =
-          new Point((newPoints[pointCount.count - 1].x + newPoints[2].x) / 2,
-              (newPoints[pointCount.count - 1].y + newPoints[2].y) / 2);
+          new Point2D.Double((newPoints[pointCount.count - 1].getX() + newPoints[2].getX()) / 2,
+              (newPoints[pointCount.count - 1].getY() + newPoints[2].getY()) / 2);
     } else if (pointCount == PointCount.SEVEN) {
       newPoints[3] =
-          new Point((newPoints[pointCount.count - 1].x + newPoints[0].x) / 2,
-              (newPoints[pointCount.count - 1].y + newPoints[0].y) / 2);
-      newPoints[2] = new Point((newPoints[3].x + newPoints[0].x) / 2, (newPoints[3].y + newPoints[0].y) / 2);
-      newPoints[1] = new Point((newPoints[3].x + newPoints[0].x) / 2, (newPoints[3].y + newPoints[0].y) / 2);
+          new Point2D.Double((newPoints[pointCount.count - 1].getX() + newPoints[0].getX()) / 2,
+              (newPoints[pointCount.count - 1].getY() + newPoints[0].getY()) / 2);
+      newPoints[2] = new Point2D.Double((newPoints[3].getX() + newPoints[0].getX()) / 2, (newPoints[3].getY() + newPoints[0].getY()) / 2);
+      newPoints[1] = new Point2D.Double((newPoints[3].getX() + newPoints[0].getX()) / 2, (newPoints[3].getY() + newPoints[0].getY()) / 2);
       newPoints[4] =
-          new Point((newPoints[pointCount.count - 1].x + newPoints[3].x) / 2,
-              (newPoints[pointCount.count - 1].y + newPoints[3].y) / 2);
+          new Point2D.Double((newPoints[pointCount.count - 1].getX() + newPoints[3].getX()) / 2,
+              (newPoints[pointCount.count - 1].getY() + newPoints[3].getY()) / 2);
       newPoints[5] =
-          new Point((newPoints[pointCount.count - 1].x + newPoints[3].x) / 2,
-              (newPoints[pointCount.count - 1].y + newPoints[3].y) / 2);
+          new Point2D.Double((newPoints[pointCount.count - 1].getX() + newPoints[3].getX()) / 2,
+              (newPoints[pointCount.count - 1].getY() + newPoints[3].getY()) / 2);
     }
 
     this.controlPoints2 = newPoints;
@@ -261,13 +260,13 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return getControlPoints()[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
-    Point[] p = getControlPoints();
+  public void setControlPoint(Point2D point, int index) {
+    Point2D[] p = getControlPoints();
     p[index].setLocation(point);
     this.lastUpdatePointIndex = index;
     // if (getSmooth()) {
@@ -286,8 +285,8 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     // }
   }
 
-  private Point findThirdPoint(Point p0, Point p) {
-    return new Point(2 * p0.x - p.x, 2 * p0.y - p.y);
+  private Point2D findThirdPoint(Point2D p0, Point2D p) {
+    return new Point2D.Double(2 * p0.getX() - p.getX(), 2 * p0.getY() - p.getY());
   }
 
   @EditableProperty(name = "Color")
@@ -335,7 +334,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   public Size getLength() {
     double d = 0;
       try {
-      Point[] p = getControlPoints();
+      Point2D[] p = getControlPoints();
       if (getPointCount() == PointCount.TWO) {
         d = p[0].distance(p[1]);
       } else if (getPointCount() == PointCount.THREE) {
@@ -364,21 +363,21 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   
   @Override
   public Rectangle2D getCachingBounds() {
-    int minX = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxY = Integer.MIN_VALUE;
-    int margin = 50; // hard coded, replace with something meaningful
+    double minX = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxY = Integer.MIN_VALUE;
+    double margin = 50; // hard coded, replace with something meaningful
     for (int i = 0; i < getControlPointCount(); i++) {
-      Point p = getControlPoint(i);
-      if (p.x < minX)
-        minX = p.x;
-      if (p.x > maxX)
-        maxX = p.x;
-      if (p.y < minY)
-        minY = p.y;
-      if (p.y > maxY)
-        maxY = p.y;
+      Point2D p = getControlPoint(i);
+      if (p.getX() < minX)
+        minX = p.getX();
+      if (p.getX() > maxX)
+        maxX = p.getX();
+      if (p.getY() < minY)
+        minY = p.getY();
+      if (p.getY() > maxY)
+        maxY = p.getY();
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);

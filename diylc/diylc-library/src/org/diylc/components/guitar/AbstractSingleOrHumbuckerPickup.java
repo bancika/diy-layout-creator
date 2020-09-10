@@ -19,7 +19,7 @@ package org.diylc.components.guitar;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -35,7 +35,7 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
     
   @Override
   protected void drawlTerminalLabels(Graphics2D g2d, Color color, Project project) {
-    Point[] points = getControlPoints();
+    Point2D[] points = getControlPoints();
     g2d.setColor(color);
 
     g2d.setFont(project.getFont().deriveFont(TERMINAL_FONT_SIZE * 1f));
@@ -61,11 +61,11 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
     }
     
     if (getPolarity() == Polarity.North || getPolarity() == Polarity.South) {
-      StringUtils.drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].x + points[2].x) / 2 + dx, (points[1].y + points[2].y) / 2 + dy, HorizontalAlignment.CENTER,
+      StringUtils.drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].getX() + points[2].getX()) / 2 + dx, (points[1].getY() + points[2].getY()) / 2 + dy, HorizontalAlignment.CENTER,
           VerticalAlignment.CENTER);
     } else {
-      StringUtils.drawCenteredText(g2d, "N", (points[0].x + points[1].x) / 2 + dx, (points[0].y + points[1].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "S", (points[2].x + points[3].x) / 2 + dx, (points[2].y + points[3].y) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "N", (points[0].getX() + points[1].getX()) / 2 + dx, (points[0].getY() + points[1].getY()) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "S", (points[2].getX() + points[3].getX()) / 2 + dx, (points[2].getY() + points[3].getY()) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
   }
   
