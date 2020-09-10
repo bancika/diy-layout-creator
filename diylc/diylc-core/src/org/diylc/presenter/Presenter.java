@@ -2508,10 +2508,10 @@ public class Presenter implements IPlugInPort {
       Point2D p = new Point2D.Double(oldP.getX(), oldP.getY());
       points.add(p);
     }
-    double x = points.iterator().next().getX();
-    double y = points.iterator().next().getY();
+    double x = points.get(0).getX();
+    double y = points.get(0).getY();
     for (Point2D point : points) {
-      point.setLocation(point.getX() + x, point.getY() + y);
+      point.setLocation(point.getX() - x, point.getY() - y);
     }
 
     Template template = new Template(variantName, values, points);
