@@ -24,7 +24,6 @@ import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -215,13 +214,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
             
             Area leadArea = new Area();
             
-            int endX = (int) (getPoints()[0].getX() + Math.cos(theta) * leadLength);
-            int endY = (int) (getPoints()[0].getY() + Math.sin(theta) * leadLength);
+            double endX = getPoints()[0].getX() + Math.cos(theta) * leadLength;
+            double endY = getPoints()[0].getY() + Math.sin(theta) * leadLength;
             Line2D line = new Line2D.Double(getPoints()[0].getX(), getPoints()[0].getY(), endX, endY);
             leadArea.add(new Area(leadStroke.createStrokedShape(line)));
             
-            endX = (int) (getPoints()[1].getX() + Math.cos(theta - Math.PI) * leadLength);
-            endY = (int) (getPoints()[1].getY() + Math.sin(theta - Math.PI) * leadLength);
+            endX = getPoints()[1].getX() + Math.cos(theta - Math.PI) * leadLength;
+            endY = getPoints()[1].getY() + Math.sin(theta - Math.PI) * leadLength;
             line = new Line2D.Double(getPoints()[1].getX(), getPoints()[1].getY(), endX, endY);
             leadArea.add(new Area(leadStroke.createStrokedShape(line)));
             
@@ -261,8 +260,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
         drawingObserver.startTracking();
         
         if (!outlineMode && ConfigurationManager.getInstance().readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
-          Point p1 = new Point((int) (length / 2), 0);
-          Point p2 = new Point((int) (length / 2), (int) width);
+          Point2D p1 = new Point2D.Double(length / 2, 0);
+          Point2D p2 = new Point2D.Double(length / 2, width);
           ShadedPaint paint = theta > 0 && theta < Math.PI ? new ShadedPaint(p2, p1, bodyColor) : new ShadedPaint(p1, p2, bodyColor);
           Paint oldPaint = g2d.getPaint();
           g2d.setPaint(paint);
