@@ -315,10 +315,11 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point2D point : controlPoints) {
+        Rectangle2D rect = new Rectangle2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize); 
         g2d.setColor(PIN_COLOR);
-        g2d.fillRect((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.fill(rect);
         g2d.setColor(PIN_BORDER_COLOR);        
-        g2d.drawRect((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.draw(rect);
       }
     }
     Composite oldComposite = g2d.getComposite();

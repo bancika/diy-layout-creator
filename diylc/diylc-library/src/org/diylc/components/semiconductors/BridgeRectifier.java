@@ -27,6 +27,7 @@ import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -360,15 +361,14 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
     if (!outlineMode) {      
       for (Point2D point : controlPoints) {
         g2d.setColor(PIN_COLOR);
+        Shape shape;
         if (pinShape == PinShape.Round)
-          g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+          shape = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
         else
-          g2d.fillRect((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+          shape = new Rectangle2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
+        g2d.fill(shape);
         g2d.setColor(PIN_BORDER_COLOR);
-        if (pinShape == PinShape.Round)
-          g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
-        else 
-          g2d.drawRect((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.draw(shape);
       }
     }
     
