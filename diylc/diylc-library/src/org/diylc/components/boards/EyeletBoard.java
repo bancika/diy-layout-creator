@@ -82,7 +82,7 @@ public class EyeletBoard extends AbstractBoard {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
       double x = firstPoint.getX();
-      double y = finalSecondPoint.getY();
+      double y = firstPoint.getY();
       int diameter = getClosestOdd((int) EYELET_SIZE.convertToPixels());
       int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
       int spacing = (int) this.spacing.convertToPixels();

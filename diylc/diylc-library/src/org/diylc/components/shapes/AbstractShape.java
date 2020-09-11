@@ -22,7 +22,6 @@
 package org.diylc.components.shapes;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.geom.Point2D;
 
 import org.diylc.components.AbstractTransparentComponent;
@@ -42,10 +41,10 @@ public abstract class AbstractShape extends AbstractTransparentComponent<Void> {
   public static Size DEFAULT_HEIGHT = new Size(0.4d, SizeUnit.in);
 
   protected String value = "";
-  protected Point2D[] controlPoints = new Point2D[] {new Point(0, 0),
+  protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0),
       new Point2D.Double(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels())};
-  protected Point2D firstPoint = new Point();
-  protected Point2D secondPoint = new Point();
+  protected Point2D firstPoint = new Point2D.Double();
+  protected Point2D secondPoint = new Point2D.Double();
 
   protected Color color = COLOR;
   protected Color borderColor = BORDER_COLOR;

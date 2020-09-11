@@ -21,7 +21,6 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
@@ -96,7 +95,7 @@ public class TerminalStripTransformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < strip.getControlPointCount(); i++) {
-        Point p = strip.getControlPoint(i);
+        Point2D p = strip.getControlPoint(i);
         strip.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
@@ -125,7 +124,7 @@ public class TerminalStripTransformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < strip.getControlPointCount(); i++) {
-        Point p = strip.getControlPoint(i);
+        Point2D p = strip.getControlPoint(i);
         strip.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 

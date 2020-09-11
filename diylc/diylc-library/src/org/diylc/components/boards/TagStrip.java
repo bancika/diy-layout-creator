@@ -25,7 +25,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -72,7 +71,7 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
   private int terminalCount = 7;
   private static Size BOARD_THICKNESS = new Size(0.05d, SizeUnit.in);
   private Size terminalSpacing = new Size(0.375d, SizeUnit.in);
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private Color boardColor = BOARD_COLOR;
   
   private TagStripMount mount = TagStripMount.Central;
@@ -135,7 +134,7 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -156,8 +155,8 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
-    controlPoints = new Point[getTerminalCount()];
+    Point2D firstPoint = controlPoints[0];
+    controlPoints = new Point2D[getTerminalCount()];
     controlPoints[0] = firstPoint;
     int pinSpacing = (int) this.terminalSpacing.convertToPixels();
     // Update control points.
@@ -184,15 +183,15 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point(firstPoint.x + dx1, firstPoint.y + dy1);  
+      controlPoints[i] = new Point2D.Double(firstPoint.getX() + dx1, firstPoint.getY() + dy1);  
     }
   }
 
   public Area[] getBody() {
     if (body == null) {
       body = new Area[1 + getTerminalCount()];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int width;
       int height;
       int terminalSpacing = (int) getTerminalSpacing().convertToPixels();
@@ -254,9 +253,9 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
       body[0] = bodyArea;
 
       for (int i = 0; i < getTerminalCount(); i++) {
-        Point p1 = getControlPoint(i);       
+        Point2D p1 = getControlPoint(i);       
         Area terminal =
-            new Area(new Rectangle2D.Double(p1.x - terminalWidth/ 2, p1.y - terminalHeight / 2, terminalWidth, terminalHeight));    
+            new Area(new Rectangle2D.Double(p1.getX() - terminalWidth/ 2, p1.getY() - terminalHeight / 2, terminalWidth, terminalHeight));    
 
         body[1 + i] = terminal;
         

@@ -21,7 +21,6 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
@@ -93,7 +92,7 @@ public class TO220Transformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < transistor.getControlPointCount(); i++) {
-        Point p = transistor.getControlPoint(i);
+        Point2D p = transistor.getControlPoint(i);
         transistor.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
@@ -120,7 +119,7 @@ public class TO220Transformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < transistor.getControlPointCount(); i++) {
-        Point p = transistor.getControlPoint(i);
+        Point2D p = transistor.getControlPoint(i);
         transistor.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 

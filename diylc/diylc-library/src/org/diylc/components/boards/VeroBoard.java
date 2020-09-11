@@ -79,7 +79,7 @@ public class VeroBoard extends AbstractBoard {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
       double x = firstPoint.getX();
-      double y = finalSecondPoint.getY();
+      double y = firstPoint.getY();
       int stripSize = getClosestOdd((int) STRIP_SIZE.convertToPixels());
       int holeSize = getClosestOdd((int) HOLE_SIZE.convertToPixels());
       int spacing = (int) this.spacing.convertToPixels();

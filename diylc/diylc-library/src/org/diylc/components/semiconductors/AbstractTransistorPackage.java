@@ -24,7 +24,6 @@ package org.diylc.components.semiconductors;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -45,7 +44,7 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   protected String value = "";
   protected TransistorPinout pinout;
   protected Orientation orientation = Orientation.DEFAULT;
-  protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient protected Area[] body;
   
   protected Color bodyColor;
@@ -143,7 +142,7 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -257,7 +256,7 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
         if (b.getMaxY() > maxY)
           maxY = b.getMaxY();
       }
-    for (Point p : controlPoints) {
+    for (Point2D p : controlPoints) {
       if (p.getX() < minX)
         minX = p.getX();
       if (p.getX() > maxX)
@@ -284,7 +283,7 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
     int d = 4; // hard-coded
     String pinout = p.toPinout();
     for (int i = 0; i < pinout.length(); i++) {
-      Point point = getControlPoint(i);
+      Point2D point = getControlPoint(i);
       int dx = 0;
       int dy = 0;
       HorizontalAlignment ha = HorizontalAlignment.CENTER;
@@ -327,7 +326,7 @@ public abstract class AbstractTransistorPackage extends AbstractTransparentCompo
           }
           break;        
       }
-      StringUtils.drawCenteredText(g2d, pinout.charAt(i) + "", point.x + dx, point.y + dy, ha, va);
+      StringUtils.drawCenteredText(g2d, pinout.charAt(i) + "", point.getX() + dx, point.getY() + dy, ha, va);
     }
   }
   

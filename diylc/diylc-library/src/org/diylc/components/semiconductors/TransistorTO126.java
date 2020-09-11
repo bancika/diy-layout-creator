@@ -26,11 +26,12 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -86,8 +87,8 @@ public class TransistorTO126 extends AbstractTransistorPackage {
   protected void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     switch (orientation) {
       case DEFAULT:
         controlPoints[1].setLocation(x, y + pinSpacing);
@@ -113,8 +114,8 @@ public class TransistorTO126 extends AbstractTransistorPackage {
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int pinSpacing = (int) PIN_SPACING.convertToPixels();
       int bodyWidth = getClosestOdd(BODY_WIDTH.convertToPixels());
       int bodyThickness = getClosestOdd(BODY_THICKNESS.convertToPixels());
@@ -203,51 +204,57 @@ public class TransistorTO126 extends AbstractTransistorPackage {
           finalPinColor = METAL_COLOR;
           finalPinBorderColor = METAL_COLOR.darker();
         }
-        for (Point point : controlPoints) {
+        Line2D line;
+        for (Point2D point : controlPoints) {
           switch (orientation) {
             case DEFAULT:
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
               g2d.setColor(finalPinBorderColor);
-              g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, point.y);
+              line = new Line2D.Double(point.getX(), point.getY(), point.getX() + leadLength - leadThickness / 2, point.getY());
+              g2d.draw(line);
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
               g2d.setColor(finalPinColor);
-              g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, point.y);
+              g2d.draw(line);
               break;
             case _90:
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
               g2d.setColor(finalPinBorderColor);
-              g2d.drawLine(point.x, point.y, point.x, point.y + leadLength - leadThickness / 2);
+              line = new Line2D.Double(point.getX(), point.getY(), point.getX(), point.getY() + leadLength - leadThickness / 2);
+              g2d.draw(line);
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
               g2d.setColor(finalPinColor);
-              g2d.drawLine(point.x, point.y, point.x, point.y + leadLength - leadThickness / 2);
+              g2d.draw(line);
               break;
             case _180:
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
               g2d.setColor(finalPinBorderColor);
-              g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, point.y);
+              line = new Line2D.Double(point.getX(), point.getY(), point.getX() - leadLength - leadThickness / 2, point.getY());
+              g2d.draw(line);
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
               g2d.setColor(finalPinColor);
-              g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, point.y);
+              g2d.draw(line);
               break;
             case _270:
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
               g2d.setColor(finalPinBorderColor);
-              g2d.drawLine(point.x, point.y, point.x, point.y - leadLength);
+              line = new Line2D.Double(point.getX(), point.getY(), point.getX(), point.getY() - leadLength);
+              g2d.draw(line);
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
               g2d.setColor(finalPinColor);
-              g2d.drawLine(point.x, point.y, point.x, point.y - leadLength);
+              g2d.draw(line);
               break;
           }
         }
       }
     } else {
       if (!outlineMode) {
-        for (Point point : controlPoints) {
+        for (Point2D point : controlPoints) {
 
           g2d.setColor(PIN_COLOR);
-          g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+          Shape pin = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
+          g2d.fill(pin);
           g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-          g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+          g2d.draw(pin);
         }
       }
     }
@@ -312,8 +319,8 @@ public class TransistorTO126 extends AbstractTransistorPackage {
       int textWidth = (int) (rect.getWidth());
       // Center text horizontally and vertically
       Rectangle bounds = mainArea.getBounds();
-      int x = bounds.x + (bounds.width - textWidth) / 2;
-      int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+      int x = (int) (bounds.getX() + (bounds.width - textWidth) / 2);
+      int y = (int) (bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent());
       g2d.drawString(label, x, y);
     }
   }

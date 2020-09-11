@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -86,7 +85,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
   transient protected Area[] body = null;
 
   public PotentiometerPanel() {
-    controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+    controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
     updateControlPoints();
   }
 

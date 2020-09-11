@@ -25,7 +25,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -166,8 +165,8 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
       Point2D tipLabel = new Point2D.Double(controlPoints[0].getX(), (int) (controlPoints[0].getY() + holeToEdge * 1.25));
       AffineTransform ringTransform = AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SWITCH_THETA : RING_THETA, controlPoints[0].getX(), centerY);
       AffineTransform sleeveTransform = AffineTransform.getRotateInstance(getType() == OpenJackType.SWITCHED ? SLEEVE_SWITCHED_THETA : SLEEVE_THETA, controlPoints[0].getX(), centerY);
-      Point ringOrSwitchLabel = new Point(0, 0);
-      Point sleeveLabel = new Point(0, 0);
+      Point2D ringOrSwitchLabel = new Point2D.Double(0, 0);
+      Point2D sleeveLabel = new Point2D.Double(0, 0);
       ringTransform.transform(tipLabel, ringOrSwitchLabel);
       sleeveTransform.transform(tipLabel, sleeveLabel);
 

@@ -22,7 +22,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -82,7 +81,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   protected TrimmerType type = TrimmerType.FLAT_SMALL;
 
   public TrimmerPotentiometer() {
-    controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+    controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
     updateControlPoints();
   }
 
