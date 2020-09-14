@@ -21,7 +21,6 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
@@ -90,7 +89,7 @@ public class BatterySnapTransformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < snap.getControlPointCount(); i++) {
-        Point p = snap.getControlPoint(i);
+        Point2D p = snap.getControlPoint(i);
         snap.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
@@ -113,7 +112,7 @@ public class BatterySnapTransformer implements IComponentTransformer {
       }     
 
       for (int i = 0; i < snap.getControlPointCount(); i++) {
-        Point p = snap.getControlPoint(i);
+        Point2D p = snap.getControlPoint(i);
         snap.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 

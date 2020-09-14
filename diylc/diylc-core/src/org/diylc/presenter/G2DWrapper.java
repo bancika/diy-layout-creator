@@ -304,7 +304,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void draw(Shape s) {
     canvasGraphics.draw(s);
-    if (drawingComponent && trackingAllowed) {
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(s);
     }
   }
@@ -378,7 +378,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fill(Shape s) {
     canvasGraphics.fill(s);
-    appendShape(s);
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
+      appendShape(s);
+    }
   }
 
   @Override

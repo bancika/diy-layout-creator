@@ -25,7 +25,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -129,7 +128,8 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
     
     for (int i = 0; i < columnCount; i++)
       for (int j = 0; j < rowCount; j++) 
-        controlPoints[i + j * columnCount] = new Point((int)Math.round(firstPoint.getX() + j * pinSpacing), (int)Math.round(firstPoint.getY() + i * pinSpacing));
+        controlPoints[i + j * columnCount] = new Point2D.Double(Math.round(firstPoint.getX() + j * pinSpacing), 
+            Math.round(firstPoint.getY() + i * pinSpacing));
     
     // Apply rotation if necessary
     double angle = getAngle();

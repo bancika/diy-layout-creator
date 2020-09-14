@@ -26,11 +26,12 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -95,8 +96,8 @@ public class TransistorTO92 extends AbstractTransistorPackage {
   protected void updateControlPoints() {
     int pinSpacing = (int) getPinSpacing().convertToPixels();
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     switch (orientation) {
       case DEFAULT:
         controlPoints[1].setLocation(x, y + pinSpacing);
@@ -121,8 +122,8 @@ public class TransistorTO92 extends AbstractTransistorPackage {
 
   public Area[] getBody() {
     if (body == null) {
-      int x = (controlPoints[0].x + controlPoints[1].x + controlPoints[2].x) / 3;
-      int y = (controlPoints[0].y + controlPoints[1].y + controlPoints[2].y) / 3;
+      double x = (controlPoints[0].getX() + controlPoints[1].getX() + controlPoints[2].getX()) / 3;
+      double y = (controlPoints[0].getY() + controlPoints[1].getY() + controlPoints[2].getY()) / 3;
       int bodyDiameter = getClosestOdd(BODY_DIAMETER.convertToPixels());
       
       Area newBody = null;
@@ -190,11 +191,12 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     
     if (!outlineMode) {
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
+        Shape pin = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fill(pin);
         g2d.setColor(PIN_BORDER_COLOR);        
-        g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.draw(pin);
       }
     }
     
@@ -254,8 +256,8 @@ public class TransistorTO92 extends AbstractTransistorPackage {
       int textWidth = (int) (rect.getWidth());
       // Center text horizontally and vertically
       Rectangle bounds = mainArea.getBounds();
-      int x = bounds.x + (bounds.width - textWidth) / 2;
-      int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+      int x = (int) (bounds.getX() + (bounds.width - textWidth) / 2);
+      int y = (int) (bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent());
       g2d.drawString(label, x, y);
     }
   }

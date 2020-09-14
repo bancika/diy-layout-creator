@@ -25,7 +25,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -57,7 +56,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0),
       new Point2D.Double(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels())};
   protected Point2D firstPoint = new Point2D.Double();
-  protected Point2D secondPoint = new Point.Double();
+  protected Point2D secondPoint = new Point2D.Double();
 
   protected Color boardColor = BOARD_COLOR;
   protected Color borderColor = BORDER_COLOR;
@@ -340,8 +339,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   @Override
   public Rectangle2D getCachingBounds() {
     Point2D finalSecondPoint = getFinalSecondPoint();    
-    return new Rectangle2D.Double(Math.min(firstPoint.getX(), finalSecondPoint.getX()), Math.min(firstPoint.getY(), finalSecondPoint.getY()), 
-        Math.abs(finalSecondPoint.getX() - firstPoint.getX()) + 2, Math.abs(finalSecondPoint.getY() - firstPoint.getY()) + 2);
+    return new Rectangle2D.Double(Math.min(firstPoint.getX(), finalSecondPoint.getX()) - 2, Math.min(firstPoint.getY(), finalSecondPoint.getY()) - 2, 
+        Math.abs(finalSecondPoint.getX() - firstPoint.getX()) + 4, Math.abs(finalSecondPoint.getY() - firstPoint.getY()) + 4);
   }
 
   public static enum CoordinateType {

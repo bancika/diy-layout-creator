@@ -25,7 +25,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 
@@ -52,9 +51,10 @@ public class Polygon extends AbstractShape {
   public Polygon() {
     super();
     this.controlPoints =
-        new Point[] {new Point(0, 0), new Point(0, (int) DEFAULT_HEIGHT.convertToPixels()),
-            new Point((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels()),
-            new Point((int) DEFAULT_WIDTH.convertToPixels(), 0)};
+        new Point2D[] {new Point2D.Double(0, 0), 
+            new Point2D.Double(0, (int) DEFAULT_HEIGHT.convertToPixels()),
+            new Point2D.Double((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels()),
+            new Point2D.Double((int) DEFAULT_WIDTH.convertToPixels(), 0)};
   }
 
   @Override

@@ -22,7 +22,6 @@
 package org.diylc.components.tube;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
@@ -50,7 +49,8 @@ public class DuoDiodeSymbol extends AbstractTubeSymbol {
   public DuoDiodeSymbol() {
     super();
     this.controlPoints =
-        new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+        new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), 
+            new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
     updateControlPoints();
   }
 
