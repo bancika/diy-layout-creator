@@ -23,6 +23,7 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
 import org.diylc.common.SimpleComponentTransformer;
@@ -59,10 +60,10 @@ public class Dot extends AbstractComponent<Void> {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
-    int diameter = getClosestOdd((int) getSize().convertToPixels());
+    double diameter = getSize().convertToPixels();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color);
-    g2d.fillOval((int)(point.getX() - diameter / 2), (int)(point.getY() - diameter / 2), diameter, diameter);
+    g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2, diameter, diameter));
   }
 
   @Override
