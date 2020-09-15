@@ -279,7 +279,7 @@ public class Presenter implements IPlugInPort {
         if (!isComponentLocked(component) && isComponentVisible(component)
             && !configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
           ComponentArea area = drawingManager.getComponentArea(component);
-          if (area != null && area.getOutlineArea() != null && area.getOutlineArea().contains(scaledPoint)) {
+          if (area != null && area.getOutlineArea() != null && scaledPoint != null && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
           }
         }
@@ -1320,20 +1320,30 @@ public class Presenter implements IPlugInPort {
     boolean useExtraSpace = configManager.readBoolean(EXTRA_SPACE_KEY, true);
     Dimension d = drawingManager.getCanvasDimensions(currentProject, 1d, useExtraSpace);
     double extraSpace = useExtraSpace ? drawingManager.getExtraSpace(currentProject) : 0;
+    
+    List<Point2D> points = new ArrayList<Point2D>();    
+    for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+      for (Integer i : entry.getValue())
+      {
+        Point2D p = entry.getKey().getControlPoint(i);
+        points.add(p);
+      }
+    }
 
-    if (controlPointMap.size() == 1) {
-      Map.Entry<IDIYComponent<?>, Set<Integer>> entry = controlPointMap.entrySet().iterator().next();
-
-      Point2D firstPoint = entry.getKey().getControlPoint(entry.getValue().toArray(new Integer[] {})[0]);
-      Point2D testPoint = new Point2D.Double(firstPoint.getX() + dx, firstPoint.getY() + dy);      
+    Point2D firstPoint = points.iterator().next();
+    if (points.size() == 1 || points.stream().allMatch((x) -> x.equals(firstPoint))) {    
+      double avgX = points.stream().mapToDouble((x) -> x.getX()).average().getAsDouble();
+      double avgY = points.stream().mapToDouble((x) -> x.getY()).average().getAsDouble();      
+      
+      Point2D testPoint = new Point2D.Double(avgX + dx, avgY + dy);      
       if (snapToGrid) {
         CalcUtils.snapPointToGrid(testPoint, currentProject.getGridSpacing());
-      } else if (snapToObjects) {
-        CalcUtils.snapPointToObjects(testPoint, currentProject.getGridSpacing(), entry.getKey(), currentProject.getComponents());
+      } else if (snapToObjects && controlPointMap.size() == 1) {
+        CalcUtils.snapPointToObjects(testPoint, currentProject.getGridSpacing(), controlPointMap.entrySet().iterator().next().getKey(), currentProject.getComponents());
       }
 
-      actualDx = testPoint.getX() - firstPoint.getX();
-      actualDy = testPoint.getY() - firstPoint.getY();
+      actualDx = testPoint.getX() - avgX;
+      actualDy = testPoint.getY() - avgY;
     } else if (snapToGrid) {
       actualDx = CalcUtils.roundToGrid(dx, currentProject.getGridSpacing());
       actualDy = CalcUtils.roundToGrid(dy, currentProject.getGridSpacing());
