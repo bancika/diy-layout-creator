@@ -62,6 +62,10 @@ public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> 
     throw new IllegalArgumentException("Could not parse size: " + value);
   }
   
+  public static Size fromPixels(double pixels, SizeUnit unit) {
+    return new Size(pixels / unit.getFactor() * SizeUnit.in.getFactor() / Constants.PIXELS_PER_INCH, unit);
+  }
+  
   public Size scale(double factor) {
     return new Size(value * factor, unit);
   }

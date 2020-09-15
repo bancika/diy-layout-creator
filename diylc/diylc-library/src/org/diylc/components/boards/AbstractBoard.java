@@ -28,8 +28,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
@@ -53,8 +55,10 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public static Size DEFAULT_HEIGHT = new Size(1.2d, SizeUnit.in);
 
   protected String value = "";
+  // two control points used for controlling the position
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0),
       new Point2D.Double(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels())};
+  // top-left and bottom-right points
   protected Point2D firstPoint = new Point2D.Double();
   protected Point2D secondPoint = new Point2D.Double();
 
@@ -306,26 +310,50 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public void setValue(String value) {
     this.value = value;
   }
+  
+  private SizeUnit getDefaultUnit() {
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true))
+      return SizeUnit.mm;
+    return SizeUnit.in;      
+  }
     
   @EditableProperty(name = "Explicit Length", validatorClass = BoardModeValidator.class)
   public Size getLength() {
-    return length;
+    if (getMode() == BoardSizingMode.TwoPoints) {
+      double lengthPx = Math.abs(this.firstPoint.getX() - this.secondPoint.getX());
+      this.length = Size.fromPixels(lengthPx, length == null ? getDefaultUnit() : length.getUnit());
+    }
+    return this.length;
   }
 
   public void setLength(Size length) {
-    this.length = length;
+    if (getMode() == BoardSizingMode.Explicit) {
+      setControlPoint(firstPoint, 0);
+      Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(), firstPoint.getY() + width.convertToPixels());
+      setControlPoint(second, 1);
+    }
+    this.length = length;    
   }
 
   @EditableProperty(name = "Explicit Width", validatorClass = BoardModeValidator.class)
-  public Size getWidth() {    
-    return width;
+  public Size getWidth() {
+    if (getMode() == BoardSizingMode.TwoPoints) {
+      double widthPx = Math.abs(this.firstPoint.getY() - this.secondPoint.getY());
+      this.width = Size.fromPixels(widthPx, width == null ? getDefaultUnit() : width.getUnit());
+    }
+    return this.width;
   }
 
   public void setWidth(Size width) {
+    if (getMode() == BoardSizingMode.Explicit) {
+      setControlPoint(firstPoint, 0);
+      Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(), firstPoint.getY() + width.convertToPixels());
+      setControlPoint(second, 1);
+    }
     this.width = width;
   }
   
-  @EditableProperty(name = "Sizing Mode")
+  @EditableProperty(name = "Dimension Mode")
   public BoardSizingMode getMode() {
     if (mode == null)
       mode = BoardSizingMode.TwoPoints;

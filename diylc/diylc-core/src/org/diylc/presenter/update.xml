@@ -3172,6 +3172,14 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improve snap to grid when moving a node that connects several components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved board sizing, keep explicit dimensions in sync with control point location</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Shorten donation label when the window is smaller</description>
 				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
