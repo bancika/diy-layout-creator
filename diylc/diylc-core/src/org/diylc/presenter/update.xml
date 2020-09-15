@@ -3185,6 +3185,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>On MacOS the app registers to open .DIY files</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow rotate and mirror actions on Pin Header component</description>
 				</org.diylc.appframework.update.Change>												
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

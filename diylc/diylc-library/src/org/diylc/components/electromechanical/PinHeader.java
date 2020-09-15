@@ -36,6 +36,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.PinHeaderTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -50,7 +51,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Pin Header", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "PH", description = "PCB mount male pin header with editable number or pins and pin spacing",
-    zOrder = IDIYComponent.COMPONENT, enableCache = true)
+    zOrder = IDIYComponent.COMPONENT, enableCache = true, transformer = PinHeaderTransformer.class)
 public class PinHeader extends AbstractTransparentComponent<Void> {
 
   private static final long serialVersionUID = 1L;
