@@ -257,10 +257,10 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public void setZoomLevel(double zoomLevel) {
-    LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
     if (drawingManager.getZoomLevel() == zoomLevel) {
       return;
     }
+    LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
     drawingManager.setZoomLevel(zoomLevel);
   }
 

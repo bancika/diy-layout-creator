@@ -3167,6 +3167,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added keyboard shortcuts for zoom in and out using standard Ctrl and +/- key combination</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved rendering precision, especially when using metric units</description>
 				</org.diylc.appframework.update.Change>	

@@ -36,6 +36,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.VolatileImage;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -135,6 +136,11 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearSlot");
+    
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, KeyEvent.CTRL_DOWN_MASK), "zoomIn");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.CTRL_DOWN_MASK), "zoomOut");
 
     for (int i = 1; i <= 12; i++) {
       final int x = i;
@@ -150,6 +156,36 @@ public class CanvasPanel extends JComponent implements Autoscroll {
         }
       });
     }
+    
+    getActionMap().put("zoomIn", new AbstractAction() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        LOG.debug("Keyboard zoom-in triggered");   
+        double oldZoom = CanvasPanel.this.plugInPort.getZoomLevel();
+        Double[] availableZoomLevels = CanvasPanel.this.plugInPort.getAvailableZoomLevels();
+        int index = Arrays.binarySearch(availableZoomLevels, oldZoom);
+        if (index < availableZoomLevels.length - 1)
+          CanvasPanel.this.plugInPort.setZoomLevel(availableZoomLevels[index + 1]);
+      }
+    });
+    
+    getActionMap().put("zoomOut", new AbstractAction() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        LOG.debug("Keyboard zoom-out triggered");   
+        double oldZoom = CanvasPanel.this.plugInPort.getZoomLevel();
+        Double[] availableZoomLevels = CanvasPanel.this.plugInPort.getAvailableZoomLevels();
+        int index = Arrays.binarySearch(availableZoomLevels, oldZoom);
+        if (index > 0)
+          CanvasPanel.this.plugInPort.setZoomLevel(availableZoomLevels[index - 1]);
+      }
+    });
 
     getActionMap().put("clearSlot", new AbstractAction() {
 

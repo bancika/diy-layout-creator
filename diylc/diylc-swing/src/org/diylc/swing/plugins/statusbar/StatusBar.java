@@ -214,7 +214,9 @@ public class StatusBar extends JPanel implements IPlugIn {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          plugInPort.setZoomLevel((Double) zoomBox.getSelectedItem());
+          Double newZoom = (Double) zoomBox.getSelectedItem();
+          if (!newZoom.equals(plugInPort.getZoomLevel()))
+            plugInPort.setZoomLevel((Double) zoomBox.getSelectedItem());
         }
       });
     }
