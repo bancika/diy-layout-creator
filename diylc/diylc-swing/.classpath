@@ -6,7 +6,6 @@
 	<classpathentry kind="lib" path="lib/janino-3.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.7.jar"/>
-	<classpathentry kind="lib" path="lib/iText-2.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/app-framework.jar" sourcepath="/app-framework"/>
 	<classpathentry kind="lib" path="lib/swing-framework.jar" sourcepath="/swing-framework"/>
@@ -15,6 +14,7 @@
 	<classpathentry kind="lib" path="lib/jep-2.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
 	<classpathentry kind="lib" path="lib/AppleJavaExtensions.jar"/>
+	<classpathentry kind="lib" path="lib/orsonpdf-1.8.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.3.jar"/>
 	<classpathentry kind="lib" path="lib/java-http-proxy.jar"/>

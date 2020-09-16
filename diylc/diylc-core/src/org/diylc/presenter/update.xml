@@ -3176,6 +3176,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Switched from iText to OrsonPDF library for PDF creation. Render text as vectors to ensure consistency with display and avoid font issues</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved rendering precision, especially when using metric units</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
