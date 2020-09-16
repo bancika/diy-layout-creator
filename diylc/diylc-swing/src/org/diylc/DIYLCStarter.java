@@ -22,10 +22,12 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
+import javax.activity.InvalidActivityException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -101,6 +103,24 @@ public class DIYLCStarter {
     LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 
     LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
+    
+    LOG.info("Configuration dump start.");
+    // log configuration
+    Field[] fields = IPlugInPort.class.getFields();
+    for (Field f : fields) {
+      if (f.getType() != String.class || !f.getName().toUpperCase().equals(f.getName()))
+        continue;
+      try {
+          String key = (String) f.get(null);
+          Object configValue = ConfigurationManager.getInstance().readObject(key, null);
+          if (configValue != null && (configValue.getClass() == Boolean.class || configValue.getClass() == String.class)) {
+              LOG.info(key + " = " + configValue);
+          }
+      } catch (Exception e) {      
+        LOG.info("Error logging for field: " + f.getName());
+      }
+    }
+    LOG.info("Configuration dump end.");
 
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

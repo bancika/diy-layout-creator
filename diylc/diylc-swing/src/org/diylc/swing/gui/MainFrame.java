@@ -157,7 +157,7 @@ public class MainFrame extends JFrame implements ISwingUI {
           return;
         }
         if (presenter.allowFileAction()) {
-          ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
+          //ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
           dispose();
           presenter.dispose();
           LOG.info("Closing the app");
@@ -172,7 +172,7 @@ public class MainFrame extends JFrame implements ISwingUI {
           return;
         }
         if (presenter.allowFileAction()) {
-          ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
+          //ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
           dispose();
           presenter.dispose();
           LOG.info("Closing the app");

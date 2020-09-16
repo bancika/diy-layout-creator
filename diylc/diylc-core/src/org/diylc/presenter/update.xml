@@ -3171,6 +3171,10 @@
 					<description>Added keyboard shortcuts for zoom in and out using standard Ctrl and +/- key combination and Ctrl+0 to reset to 100%</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>On MacOS the app registers to open .DIY files</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved rendering precision, especially when using metric units</description>
 				</org.diylc.appframework.update.Change>	
@@ -3186,10 +3190,6 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Shorten donation label when the window is smaller</description>
 				</org.diylc.appframework.update.Change>			
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>On MacOS the app registers to open .DIY files</description>
-				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow rotate and mirror actions on Pin Header component</description>
