@@ -141,6 +141,10 @@ public class CanvasPanel extends JComponent implements Autoscroll {
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, KeyEvent.CTRL_DOWN_MASK), "zoomIn");
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.CTRL_DOWN_MASK), "zoomOut");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.CTRL_DOWN_MASK), "resetZoom");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+    .put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, KeyEvent.CTRL_DOWN_MASK), "resetZoom");
 
     for (int i = 1; i <= 12; i++) {
       final int x = i;
@@ -184,6 +188,17 @@ public class CanvasPanel extends JComponent implements Autoscroll {
         int index = Arrays.binarySearch(availableZoomLevels, oldZoom);
         if (index > 0)
           CanvasPanel.this.plugInPort.setZoomLevel(availableZoomLevels[index - 1]);
+      }
+    });
+    
+    getActionMap().put("resetZoom", new AbstractAction() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        LOG.debug("Keyboard reset zoom triggered");   
+        CanvasPanel.this.plugInPort.setZoomLevel(1d);
       }
     });
 
