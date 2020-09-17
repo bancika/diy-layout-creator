@@ -173,22 +173,29 @@ public class DIYLCStarter {
         System.exit(0);
       }
     }
+    
+    LOG.info("Creating the main frame...");
 
     MainFrame mainFrame = new MainFrame();
     Presenter presenter = mainFrame.getPresenter();
+    
+    LOG.info("Main frame created.");
     // mainFrame.setLocationRelativeTo(null);
 
     if (splash == null) {
       LOG.warn("Splash screen could not be initialized", splashException);
     } else {
+      LOG.info("Hiding splash screen...");
       splash.setVisible(false);
       splash.dispose();
+      LOG.info("Done hiding splash screen.");
     }
 
     mainFrame.setVisible(true);
 
     // assign open file handler for Mac
     if (Utils.isMac()) {
+      LOG.info("Setting up open file handler for Mac...");      
       SwingUtilities.invokeLater(() -> {
         Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
           List<File> files = ofe.getFiles();
@@ -198,6 +205,7 @@ public class DIYLCStarter {
               presenter.loadProjectFromFile(filePath);
             }
           }
+          LOG.info("Finished setting up open file handler for Mac.");
         });
       });
     }
