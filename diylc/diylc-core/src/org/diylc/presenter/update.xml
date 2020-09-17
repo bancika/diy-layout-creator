@@ -3184,6 +3184,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Rewritten most of the code behind Searchable Tree functionality to make it faster and more stable</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved rendering precision, especially when using metric units</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
