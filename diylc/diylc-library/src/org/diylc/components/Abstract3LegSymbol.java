@@ -123,12 +123,15 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     }
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-    g2d.draw(body[0]);
+    if (body[0] != null)
+      g2d.draw(body[0]);
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    g2d.draw(body[1]);
+    if (body[1] != null)
+      g2d.draw(body[1]);
 
-    g2d.fill(body[2]);
+    if (body[2] != null)
+      g2d.fill(body[2]);
     g2d.setTransform(old);
 
     // Draw label
@@ -157,7 +160,15 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
 
     FontMetrics fontMetrics = g2d.getFontMetrics();
     Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
-    Rectangle shapeRect = body[0].getBounds().union(body[1].getBounds()).union(body[2].getBounds());
+    Rectangle shapeRect = null;;
+    for (int i = 0; i < 3; i++)
+      if (body[i] != null) {
+        Rectangle bounds = body[i].getBounds();
+        if (shapeRect == null)
+          shapeRect = bounds;
+        else
+          shapeRect = shapeRect.union(bounds);
+      }
     
     if (getMoveLabel()) {
       StringUtils.drawCenteredText(g2d, label, controlPoints[3].getX(), controlPoints[3].getY(), flip == SymbolFlipping.X ? HorizontalAlignment.RIGHT
@@ -188,6 +199,12 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
   protected double getLabelY(Rectangle2D shapeRect, Rectangle2D textRect, FontMetrics fontMetrics, boolean outlineMode) {
     return getControlPoints()[0].getY();
   }
+  
+  protected void setDefaultPointLocations(Point2D[] controlPoints, int pinSpacing, double x, double y) {   
+    controlPoints[1].setLocation(x + pinSpacing * 2, y - pinSpacing * 2);
+    controlPoints[2].setLocation(x + pinSpacing * 2, y + pinSpacing * 2);    
+    controlPoints[3].setLocation(x + pinSpacing * 2, y);
+  }
 
   protected void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
@@ -196,12 +213,7 @@ public abstract class Abstract3LegSymbol extends AbstractComponent<String> {
     double x = controlPoints[0].getX();
     double y = controlPoints[0].getY();
 
-    // set default point positions
-    controlPoints[1].setLocation(x +  pinSpacing * 2, y - pinSpacing * 2);
-
-    controlPoints[2].setLocation(x + pinSpacing * 2, y + pinSpacing * 2);
-    
-    controlPoints[3].setLocation(x + PIN_SPACING.convertToPixels() * 2, y);
+    setDefaultPointLocations(controlPoints, pinSpacing, x, y);
     
     // apply rotation if needed
     if (getOrientation() != Orientation.DEFAULT)
