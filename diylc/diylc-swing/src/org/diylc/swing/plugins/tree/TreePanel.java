@@ -60,7 +60,6 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -188,24 +187,6 @@ public class TreePanel extends JPanel {
       });
     }
     return treeModel;
-  }
-
-  @SuppressWarnings("unchecked")
-  public static void setNodeExpandedState(JTree tree, DefaultMutableTreeNode node,
-      boolean expanded) {
-    ArrayList<DefaultMutableTreeNode> list = Collections.list(node.children());
-    for (DefaultMutableTreeNode treeNode : list) {
-      setNodeExpandedState(tree, treeNode, expanded);
-    }
-    if (!expanded && node.isRoot()) {
-      return;
-    }
-    TreePath path = new TreePath(node.getPath());
-    if (expanded) {
-      tree.expandPath(path);
-    } else {
-      tree.collapsePath(path);
-    }
   }
 
   public JTree getTree() {
