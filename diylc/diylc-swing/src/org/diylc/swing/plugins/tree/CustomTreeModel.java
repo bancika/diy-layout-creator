@@ -60,6 +60,10 @@ public class CustomTreeModel implements TreeModel {
   private List<Favorite> favorites;
   private List<String> recentComponents;
   private List<String> blocks;
+  
+  private TreeNode favoritesNode;
+  private TreeNode recentNode;
+  private TreeNode blocksNode;
 
   private EventListenerList listenerList = new EventListenerList();
 
@@ -233,8 +237,16 @@ public class CustomTreeModel implements TreeModel {
 
   @Override
   public Object getChild(Object parent, int index) {
-    if (parent == root)
-      return visibleCategories.get(index);
+    if (parent == root) {
+      TreeNode node = visibleCategories.get(index);
+      if (RECENTLY_USED.equals(node.getCategory()))
+          recentNode = node;
+      if (FAVORITES.equals(node.getCategory()))
+        favoritesNode = node;
+      if (BUILDING_BLOCKS.equals(node.getCategory()))
+        blocksNode = node;
+      return node;
+    }
 
     List<TreeNode> typesFor = getLeavesFor(parent.toString());
     Object obj = typesFor.get(index);
@@ -303,7 +315,7 @@ public class CustomTreeModel implements TreeModel {
               LOG.info("Detected favorites change");
               CustomTreeModel.this.favorites = new ArrayList<Favorite>(newFavorites);
               CustomTreeModel.this.visibleLeaves.remove(FAVORITES);
-              fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.visibleCategories.get(0) });
+              fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.favoritesNode });
             } else
               LOG.info("Detected no favorites change");
           }
@@ -322,7 +334,7 @@ public class CustomTreeModel implements TreeModel {
               LOG.info("Detected recent component change");
               CustomTreeModel.this.recentComponents = new ArrayList<String>(newComponents);
               CustomTreeModel.this.visibleLeaves.remove(RECENTLY_USED);
-              fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.visibleCategories.get(1) });
+              fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.recentNode });
             } else
               LOG.info("Detected no recent component change");
           }
@@ -344,7 +356,7 @@ public class CustomTreeModel implements TreeModel {
                 LOG.info("Detected block change");
                 CustomTreeModel.this.blocks = blockNames;
                 CustomTreeModel.this.visibleLeaves.remove(BUILDING_BLOCKS);
-                fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.visibleCategories.get(2 )});
+                fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.blocksNode});
               } else
                 LOG.info("Detected no block change");
             } else

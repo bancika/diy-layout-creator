@@ -52,6 +52,10 @@ public class TreeNode {
   public ComponentType getComponentType() {
     return componentType;
   }
+  
+  public String getCategory() {
+    return category;
+  }
 
   public MouseListener getClickListener() {
     return clickListener;
