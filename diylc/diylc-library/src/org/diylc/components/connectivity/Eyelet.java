@@ -60,7 +60,7 @@ public class Eyelet extends AbstractComponent<String> {
   private Size size = SIZE;
   private Size holeSize = HOLE_SIZE;
   private Color color = COLOR;
-  private Point2D point = new Point2D.Double(0, 0);
+  private Point2D.Double point = new Point2D.Double(0, 0);
   private String value = "";
 
   @Override

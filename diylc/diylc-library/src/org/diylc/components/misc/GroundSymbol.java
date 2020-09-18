@@ -50,7 +50,7 @@ public class GroundSymbol extends AbstractComponent<Void> {
   public static Color COLOR = Color.black;
   public static Size SIZE = new Size(0.15d, SizeUnit.in);
 
-  private Point2D point = new Point2D.Double(0, 0);
+  private Point2D.Double point = new Point2D.Double(0, 0);
   private Color color = COLOR;
   private Size size = SIZE;
   private GroundSymbolType type = GroundSymbolType.DEFAULT;

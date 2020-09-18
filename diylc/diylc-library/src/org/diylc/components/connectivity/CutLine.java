@@ -52,7 +52,7 @@ public class CutLine extends AbstractTransparentComponent<Void> {
   private Size width = WIDTH;
   private Size length = LENGTH;
   private Color color = COLOR;
-  private Point2D point = new Point2D.Double(0, 0);
+  private Point2D.Double point = new Point2D.Double(0, 0);
   private OrientationHV orientation = OrientationHV.VERTICAL;
 
   @Override

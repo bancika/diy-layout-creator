@@ -68,6 +68,8 @@ public class TreeNode {
   public String forDisplay() {
     if (componentType == null) {
       String display = category;
+      if (display == null)
+        return null;
       Matcher match = contributedPattern.matcher(display);
       if (match.find()) {
         String name = match.group(1);

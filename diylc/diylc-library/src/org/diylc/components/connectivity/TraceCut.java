@@ -70,7 +70,7 @@ public class TraceCut extends AbstractComponent<Void> {
   private OrientationHV orientation = OrientationHV.VERTICAL;
   private Size holeSpacing = VeroBoard.SPACING;
 
-  protected Point2D point = new Point2D.Double(0, 0);
+  protected Point2D.Double point = new Point2D.Double(0, 0);
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,

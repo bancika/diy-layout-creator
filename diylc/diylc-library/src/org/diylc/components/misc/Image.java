@@ -57,8 +57,8 @@ public class Image extends AbstractTransparentComponent<Void> {
   private static ImageIcon ICON;
   private static byte DEFAULT_SCALE = 25;
   
-  private Point2D point = new Point2D.Double(0, 0);
-  private Point2D secondPoint = null;
+  private Point2D.Double point = new Point2D.Double(0, 0);
+  private Point2D.Double secondPoint = null;
 
   static {
     String name = "image.png";
