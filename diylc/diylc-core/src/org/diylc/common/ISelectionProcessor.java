@@ -21,7 +21,7 @@
 */
 package org.diylc.common;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
@@ -55,7 +55,7 @@ public interface ISelectionProcessor {
    * @param includeLocked
    * @return
    */
-  List<IDIYComponent<?>> findComponentsAt(Point point, boolean includeLocked);
+  List<IDIYComponent<?>> findComponentsAt(Point2D point, boolean includeLocked);
 
   /**
    * Expands the current selection to include surrounding components. Options are controlled with

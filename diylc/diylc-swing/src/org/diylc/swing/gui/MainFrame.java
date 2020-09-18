@@ -60,7 +60,6 @@ import javax.swing.event.MenuListener;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigurationManager;
-import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -158,7 +157,7 @@ public class MainFrame extends JFrame implements ISwingUI {
           return;
         }
         if (presenter.allowFileAction()) {
-          ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
+          //ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
           dispose();
           presenter.dispose();
           LOG.info("Closing the app");
@@ -173,7 +172,7 @@ public class MainFrame extends JFrame implements ISwingUI {
           return;
         }
         if (presenter.allowFileAction()) {
-          ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
+          //ConfigurationManager.getInstance().writeValue(IPlugInPort.ABNORMAL_EXIT_KEY, false);
           dispose();
           presenter.dispose();
           LOG.info("Closing the app");

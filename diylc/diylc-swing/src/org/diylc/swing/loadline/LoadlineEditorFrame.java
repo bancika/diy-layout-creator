@@ -482,9 +482,9 @@ public class LoadlineEditorFrame extends JFrame implements IView {
       if (CURVE.equals(c.getName())) {
         Point2D[] points = new Point2D[c.getControlPointCount()];
         for (int j = 0; j < c.getControlPointCount(); j++) {
-          Point p = c.getControlPoint(j);
-          points[j] = new Point2D.Double(1.0f * (p.x - centerX) / (maxX - centerX) * v,
-              1.0f * (p.y - centerY) / (maxY - centerY) * i);
+          Point2D p = c.getControlPoint(j);
+          points[j] = new Point2D.Double(1.0f * (p.getX() - centerX) / (maxX - centerX) * v,
+              1.0f * (p.getY() - centerY) / (maxY - centerY) * i);
         }
         LoadlineCurve curve = (LoadlineCurve)c;
         org.diylc.components.misc.LoadlineEntity.Line line =

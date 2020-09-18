@@ -25,10 +25,10 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -68,7 +68,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   private static Color BORDER_COLOR = BODY_COLOR.darker();
   private static Color CIRCLE_COLOR = Color.decode("#FFFFAA");
 
-  protected Point[] controlPoints = new Point[] {new Point(0, 0)};
+  protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   transient protected Shape body;
   protected ToggleSwitchType switchType = ToggleSwitchType.DPDT;
   private OrientationHV orientation = OrientationHV.VERTICAL;
@@ -83,81 +83,85 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     int spacing = (int) getSpacing().convertToPixels();
     switch (switchType) {
       case SPST:
-        controlPoints = new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing)};
+        controlPoints = new Point2D[] {firstPoint, new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing)};
         break;
       case SPDT:
       case SPDT_off:
         controlPoints =
-            new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
-                new Point(firstPoint.x, firstPoint.y + 2 * spacing)};
+            new Point2D[] {firstPoint, new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 2 * spacing)};
         break;
       case DPDT:
       case DPDT_off:
         controlPoints =
-            new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
-                new Point(firstPoint.x, firstPoint.y + 2 * spacing), new Point(firstPoint.x + spacing, firstPoint.y),
-                new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing)};
+            new Point2D[] {firstPoint, new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 2 * spacing), 
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + 2 * spacing)};
         break;
       case _DP3T_mustang:
         controlPoints =
-                new Point[] {firstPoint,
-                        new Point(firstPoint.x, firstPoint.y + spacing),
-                        new Point(firstPoint.x, firstPoint.y + 2 * spacing),
-                        new Point(firstPoint.x, firstPoint.y + 3 * spacing),
-                        new Point(firstPoint.x + spacing, firstPoint.y),
-                        new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-                        new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing),
-                        new Point(firstPoint.x + spacing, firstPoint.y + 3 * spacing)};
+                new Point2D[] {firstPoint,
+                        new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing),
+                        new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 2 * spacing),
+                        new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 3 * spacing),
+                        new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY()),
+                        new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + spacing),
+                        new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + 2 * spacing),
+                        new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + 3 * spacing)};
         break;
       case _3PDT:
       case _3PDT_off:
         controlPoints =
-            new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
-                new Point(firstPoint.x, firstPoint.y + 2 * spacing), new Point(firstPoint.x + spacing, firstPoint.y),
-                new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2 * spacing)};
+            new Point2D[] {firstPoint, new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 2 * spacing), 
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + 2 * spacing),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY() + 2 * spacing)};
         break;
       case _4PDT:
       case _4PDT_off:
         controlPoints =
-            new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
-                new Point(firstPoint.x, firstPoint.y + 2 * spacing), new Point(firstPoint.x + spacing, firstPoint.y),
-                new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2 * spacing),
-                new Point(firstPoint.x + 3 * spacing, firstPoint.y),
-                new Point(firstPoint.x + 3 * spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + 3 * spacing, firstPoint.y + 2 * spacing)};
+            new Point2D[] {firstPoint, new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 2 * spacing), 
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + 2 * spacing),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY() + 2 * spacing),
+                new Point2D.Double(firstPoint.getX() + 3 * spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + 3 * spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + 3 * spacing, firstPoint.getY() + 2 * spacing)};
         break;
       case _5PDT:
       case _5PDT_off:
         controlPoints =
-            new Point[] {firstPoint, new Point(firstPoint.x, firstPoint.y + spacing),
-                new Point(firstPoint.x, firstPoint.y + 2 * spacing), new Point(firstPoint.x + spacing, firstPoint.y),
-                new Point(firstPoint.x + spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + spacing, firstPoint.y + 2 * spacing),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + 2 * spacing, firstPoint.y + 2 * spacing),
-                new Point(firstPoint.x + 3 * spacing, firstPoint.y),
-                new Point(firstPoint.x + 3 * spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + 3 * spacing, firstPoint.y + 2 * spacing),
-                new Point(firstPoint.x + 4 * spacing, firstPoint.y),
-                new Point(firstPoint.x + 4 * spacing, firstPoint.y + spacing),
-                new Point(firstPoint.x + 4 * spacing, firstPoint.y + 2 * spacing)};
+            new Point2D[] {firstPoint, new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 2 * spacing), 
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + spacing, firstPoint.getY() + 2 * spacing),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + 2 * spacing, firstPoint.getY() + 2 * spacing),
+                new Point2D.Double(firstPoint.getX() + 3 * spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + 3 * spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + 3 * spacing, firstPoint.getY() + 2 * spacing),
+                new Point2D.Double(firstPoint.getX() + 4 * spacing, firstPoint.getY()),
+                new Point2D.Double(firstPoint.getX() + 4 * spacing, firstPoint.getY() + spacing),
+                new Point2D.Double(firstPoint.getX() + 4 * spacing, firstPoint.getY() + 2 * spacing)};
         break;
     }
-    AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.x, firstPoint.y);
+    AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
     if (getOrientation() == OrientationHV.HORIZONTAL) {
       for (int i = 1; i < controlPoints.length; i++) {
         xform.transform(controlPoints[i], controlPoints[i]);
@@ -166,7 +170,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -186,7 +190,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     // Reset body shape.
     body = null;
@@ -285,68 +289,68 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     int circleDiameter = getClosestOdd((int) CIRCLE_SIZE.convertToPixels());
     int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
     int lugHeight = getClosestOdd((int) LUG_THICKNESS.convertToPixels());
-    for (Point p : controlPoints) {
+    for (Point2D p : controlPoints) {
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+        g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       } else {
         g2d.setColor(CIRCLE_COLOR);
-        g2d.fillOval(p.x - circleDiameter / 2, p.y - circleDiameter / 2, circleDiameter, circleDiameter);
+        g2d.fillOval((int)(p.getX() - circleDiameter / 2), (int)(p.getY() - circleDiameter / 2), circleDiameter, circleDiameter);
         g2d.setColor(METAL_COLOR);
-        g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       }
     }
   }
 
   public Shape getBody() {
     if (body == null) {
-      Point firstPoint = controlPoints[0];
+      Point2D firstPoint = controlPoints[0];
       int margin = (int) MARGIN.convertToPixels();
       int spacing = (int) getSpacing().convertToPixels();
       switch (switchType) {
         case SPST:
           body =
-              new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin, 2 * margin
+              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin, 2 * margin
                   + spacing, margin, margin);
           break;
         case SPDT:
         case SPDT_off:
           body =
-              new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin, 2 * margin + 2
+              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin, 2 * margin + 2
                   * spacing, margin, margin);
           break;
         case DPDT:
         case DPDT_off:
           body =
-              new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + spacing, 2
+              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + spacing, 2
                   * margin + 2 * spacing, margin, margin);
           break;
         case _DP3T_mustang:
           body =
-                  new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + spacing, 2
+                  new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + spacing, 2
                           * margin + 3 * spacing, margin, margin);
           break;
         case _3PDT:
         case _3PDT_off:
           body =
-              new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + 2 * spacing, 2
+              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + 2 * spacing, 2
                   * margin + 2 * spacing, margin, margin);
           break;
         case _4PDT:
         case _4PDT_off:
           body =
-              new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + 3 * spacing, 2
+              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + 3 * spacing, 2
                   * margin + 2 * spacing, margin, margin);
           break;
         case _5PDT:
         case _5PDT_off:
           body =
-              new RoundRectangle2D.Double(firstPoint.x - margin, firstPoint.y - margin, 2 * margin + 4 * spacing, 2
+              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + 4 * spacing, 2
                   * margin + 2 * spacing, margin, margin);
           break;
       }
       if (getOrientation() == OrientationHV.HORIZONTAL) {
-        AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.x, firstPoint.y);
+        AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
         body = new Area(body);
         ((Area) body).transform(xform);
       }

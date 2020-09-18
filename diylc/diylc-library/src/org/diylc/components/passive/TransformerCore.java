@@ -23,8 +23,8 @@ package org.diylc.components.passive;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
@@ -54,7 +54,7 @@ public class TransformerCore extends AbstractComponent<Void> {
   public static Size SPACING = new Size(0.025d, SizeUnit.in);
   public static Color COLOR = Color.blue;
 
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
 
   protected Color color = COLOR;
 
@@ -68,12 +68,12 @@ public class TransformerCore extends AbstractComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return this.controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoints[index].setLocation(point);
   }
 
@@ -115,7 +115,7 @@ public class TransformerCore extends AbstractComponent<Void> {
     }
 
     double theta =
-        Math.atan2(this.controlPoints[1].y - this.controlPoints[0].y, this.controlPoints[1].x - this.controlPoints[0].x)
+        Math.atan2(this.controlPoints[1].getY() - this.controlPoints[0].getY(), this.controlPoints[1].getX() - this.controlPoints[0].getX())
             + Math.PI / 2;
     double spacing = SPACING.convertToPixels();
     // System.out.println(theta);
@@ -124,9 +124,9 @@ public class TransformerCore extends AbstractComponent<Void> {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 
     g2d.translate(spacing * Math.cos(theta) / 2, spacing * Math.sin(theta) / 2);
-    g2d.drawLine(this.controlPoints[0].x, this.controlPoints[0].y, this.controlPoints[1].x, this.controlPoints[1].y);
+    g2d.drawLine((int)this.controlPoints[0].getX(), (int)this.controlPoints[0].getY(), (int)this.controlPoints[1].getX(), (int)this.controlPoints[1].getY());
     g2d.translate(-spacing * Math.cos(theta), -spacing * Math.sin(theta));
-    g2d.drawLine(this.controlPoints[0].x, this.controlPoints[0].y, this.controlPoints[1].x, this.controlPoints[1].y);
+    g2d.drawLine((int)this.controlPoints[0].getX(), (int)this.controlPoints[0].getY(), (int)this.controlPoints[1].getX(), (int)this.controlPoints[1].getY());
   }
 
   @Override

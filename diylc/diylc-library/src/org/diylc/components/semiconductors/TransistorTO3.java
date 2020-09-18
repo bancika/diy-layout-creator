@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -79,7 +78,7 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient private Area[] body;
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
@@ -119,7 +118,7 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -134,7 +133,7 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
@@ -142,8 +141,8 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
   private void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     switch (orientation) {
       case DEFAULT:
         controlPoints[1].setLocation(x, y + pinSpacing);
@@ -166,8 +165,8 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
     if (body == null) {
       body = new Area[2];
       int pinOffset = (int) PIN_OFFSET.convertToPixels();
-      int x = (controlPoints[0].x + controlPoints[1].x) / 2;
-      int y = (controlPoints[0].y + controlPoints[1].y) / 2;
+      double x = (controlPoints[0].getX() + controlPoints[1].getX()) / 2;
+      double y = (controlPoints[0].getY() + controlPoints[1].getY()) / 2;
 
       switch (orientation) {
         case DEFAULT:
@@ -235,13 +234,13 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     
-    for (Point point : controlPoints) {
+    for (Point2D point : controlPoints) {
       if (!outlineMode) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
       }
       g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);      
-      g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+      g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
     }
     
     Area mainArea = getBody()[0];
@@ -296,8 +295,8 @@ public class TransistorTO3 extends AbstractTransparentComponent<String> {
     int textWidth = (int) (rect.getWidth());
     // Center text horizontally and vertically
     Rectangle bounds = mainArea.getBounds();
-    int x = bounds.x + (bounds.width - textWidth) / 2;
-    int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+    int x = (int) (bounds.getX() + (bounds.width - textWidth) / 2);
+    int y = (int) (bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent());
     g2d.drawString(label, x, y);
   }
 

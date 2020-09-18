@@ -3,7 +3,7 @@ package org.diylc.components.misc;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -34,10 +34,10 @@ public class LoadlineCurve extends CurvedTrace {
     g2d.setColor(Color.black);
     Font oldFont = g2d.getFont();
     g2d.setFont(project.getFont().deriveFont(12f).deriveFont(Font.BOLD));
-    Point lastPoint = getControlPoint(getControlPointCount() - 1);
+    Point2D lastPoint = getControlPoint(getControlPointCount() - 1);
     int spacing = (int) LABEL_SPACING.convertToPixels();
-    int x = lastPoint.x + spacing;
-    int y = lastPoint.y - spacing;
+    double x = lastPoint.getX() + spacing;
+    double y = lastPoint.getY() - spacing;
     StringUtils.drawCenteredText(g2d, getVoltage().toString(), x, y, HorizontalAlignment.LEFT, VerticalAlignment.TOP);
     g2d.setFont(oldFont);
   }

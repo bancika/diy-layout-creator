@@ -34,17 +34,12 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -65,9 +60,7 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -78,14 +71,12 @@ import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
 import org.diylc.common.Favorite.FavoriteType;
-import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Template;
 import org.diylc.images.IconLoader;
 import org.diylc.lang.LangUtil;
-import org.diylc.presenter.ComponentProcessor;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
 
@@ -94,29 +85,24 @@ public class TreePanel extends JPanel {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(TreePanel.class);
-  
+
   private static final String CLICK_TO_INSTANTIATE =
       LangUtil.translate("Left click to instantiate this component, right click for more options");
 
   public static final String COMPONENT_SHORTCUT_KEY = "componentShortcuts";
 
-  private DefaultTreeModel treeModel;
+  private CustomTreeModel treeModel;
   private JTree tree;
   private JScrollPane treeScroll;
   private JTextField searchField;
-  private DefaultMutableTreeNode recentNode;
-  private DefaultMutableTreeNode blocksNode;
-  private DefaultMutableTreeNode favoritesNode;
-  private List<String> recentComponents;
   private List<Favorite> favorites;
-  private List<String> blocks;
 
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
-  private boolean initializing = false;
 
-  private JPopupMenu popup;  
+  private JPopupMenu popup;
 
+  @SuppressWarnings("unchecked")
   public TreePanel(IPlugInPort plugInPort, ISwingUI swingUI) {
     this.plugInPort = plugInPort;
     this.swingUI = swingUI;
@@ -140,76 +126,36 @@ public class TreePanel extends JPanel {
     add(getTreeScroll(), gbc);
 
     setPreferredSize(new Dimension(240, 200));
+   
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.FAVORITES_KEY,
+        new IConfigListener() {
 
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RECENT_COMPONENTS_KEY, new IConfigListener() {
-
-      @SuppressWarnings("unchecked")
-      @Override
-      public void valueChanged(String key, Object value) {
-        List<String> newComponents = (List<String>) value;
-        if (newComponents != null
-            && !new HashSet<String>(newComponents).equals(new HashSet<String>(TreePanel.this.recentComponents))) {
-          LOG.info("Detected recent component change");
-          refreshRecentComponents(newComponents);
-        } else
-          LOG.info("Detected no recent component change");
-        TreePanel.this.recentComponents = new ArrayList<String>(newComponents);
-      }
-    });
-
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.BLOCKS_KEY, new IConfigListener() {
-
-      @SuppressWarnings("unchecked")
-      @Override
-      public void valueChanged(String key, Object value) {
-        Map<String, List<IDIYComponent<?>>> newBlocks = (Map<String, List<IDIYComponent<?>>>) value;
-        if (newBlocks != null) {
-          List<String> blockNames = new ArrayList<String>(newBlocks.keySet());
-          Collections.sort(blockNames);
-          if (!blockNames.equals(TreePanel.this.blocks)) {
-            LOG.info("Detected block change");
-            refreshBuildingBlocks(blockNames);
-          } else
-            LOG.info("Detected no block change");
-        } else
-          LOG.info("Detected no block change");
-      }
-    });
-    
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.TEMPLATES_KEY, new IConfigListener() {
-      
-      @Override
-      public void valueChanged(String key, Object value) {
-        LOG.info("Detected variants change, repainting the tree");
-        repaint();
-      }
-    });
-    
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.FAVORITES_KEY, new IConfigListener() {
-
-      @SuppressWarnings("unchecked")
-      @Override
-      public void valueChanged(String key, Object value) {
-        List<Favorite> newFavorites = (List<Favorite>) value;
-        if (newFavorites != null && !newFavorites.equals(TreePanel.this.favorites)) {
-          LOG.info("Detected favorites change");
-          refreshFavorites(newFavorites);
-        } else
-          LOG.info("Detected no favorites change");        
-      }
-    });
+          @Override
+          public void valueChanged(String key, Object value) {
+            List<Favorite> newFavorites = (List<Favorite>) value;
+            if (newFavorites != null && !newFavorites.equals(TreePanel.this.favorites)) {
+              LOG.info("Detected favorites change");
+              TreePanel.this.favorites = new ArrayList<Favorite>(newFavorites);
+            } else
+              LOG.info("Detected no favorites change");
+          }
+        });
+    this.favorites = (List<Favorite>) ConfigurationManager.getInstance()
+        .readObject(IPlugInPort.FAVORITES_KEY, new ArrayList<Favorite>());
 
     getTree().expandRow(0);
-    
+
     initializeDnD();
   }
-  
+
   private void initializeDnD() {
     // Initialize drag source recognizer.
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(getTree(),
-        DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK, new TreeGestureListener(plugInPort));
+        DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK,
+        new TreeGestureListener(plugInPort));
     // Initialize drop target.
-    new DropTarget(getTree(), DnDConstants.ACTION_COPY_OR_MOVE, new TreeTargetListener(plugInPort), true);
+    new DropTarget(getTree(), DnDConstants.ACTION_COPY_OR_MOVE, new TreeTargetListener(plugInPort),
+        true);
   }
 
   public JScrollPane getTreeScroll() {
@@ -218,214 +164,25 @@ public class TreePanel extends JPanel {
       treeScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
     return treeScroll;
-  }
+  }  
 
-  public DefaultMutableTreeNode getRecentNode() {
-    if (this.recentNode == null) {
-      this.recentNode = new DefaultMutableTreeNode(new Payload("(Recently Used)", null), true);
-      
-      @SuppressWarnings("unchecked")
-      List<String> recent =
-          (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
-      if (recent != null) {
-        this.recentComponents = new ArrayList<String>(recent);
-        refreshRecentComponents(recent);
-      } else {
-        this.recentComponents = new ArrayList<String>();
-      }
-    }
-    return this.recentNode;
-  }
-
-  public DefaultMutableTreeNode getBlocksNode() {
-    if (this.blocksNode == null) {
-      this.blocksNode = new DefaultMutableTreeNode(new Payload("(Building Blocks)", null), true);
-      
-      @SuppressWarnings("unchecked")
-      Map<String, List<IDIYComponent<?>>> newBlocks =
-          (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance().readObject(
-              IPlugInPort.BLOCKS_KEY, null);
-      if (newBlocks != null) {
-        List<String> blockNames = new ArrayList<String>(newBlocks.keySet());
-        Collections.sort(blockNames);
-        refreshBuildingBlocks(blockNames);
-      } else {
-        this.blocks = new ArrayList<String>();
-      }
-    }
-    return this.blocksNode;
-  }
-  
-  public DefaultMutableTreeNode getFavoritesNode() {
-    if (this.favoritesNode == null) {
-      this.favoritesNode = new DefaultMutableTreeNode(new Payload("(Favorites)", null), true);
-      
-      @SuppressWarnings("unchecked")
-      List<Favorite> favorites = (List<Favorite>) ConfigurationManager.getInstance().readObject(IPlugInPort.FAVORITES_KEY, null);
-      if (favorites != null) {        
-        refreshFavorites(favorites);
-      } else {
-        this.favorites = new ArrayList<Favorite>();
-      }
-    }
-    return this.favoritesNode;
-  }
-
-  @SuppressWarnings("unchecked")
-  private void refreshRecentComponents(List<String> recentComponentClassList) {
-    getRecentNode().removeAllChildren();
-    for (String componentClassName : recentComponentClassList) {
-      final ComponentType componentType;
-      try {
-        componentType =
-            ComponentProcessor.getInstance().extractComponentTypeFrom(
-                (Class<? extends IDIYComponent<?>>) Class.forName(componentClassName));
-        Payload payload = new Payload(componentType, new MouseAdapter() {
-
-          @Override
-          public void mouseClicked(MouseEvent e) {
-            if (plugInPort.getNewComponentTypeSlot() != componentType)
-              plugInPort.setNewComponentTypeSlot(componentType, null, false);
-          }
-        });
-        final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(payload, false);
-        String text = getSearchField().getText();
-        boolean visible =
-            text.trim().length() == 0 || componentType.getName().toLowerCase().contains(text.toLowerCase())
-                || componentType.getDescription().toLowerCase().contains(text.toLowerCase())
-                || componentType.getCategory().toLowerCase().contains(text.toLowerCase());
-        payload.setVisible(visible);
-        getRecentNode().add(componentNode);
-      } catch (ClassNotFoundException e) {
-        LOG.error("Could not create recent component button for " + componentClassName, e);
-      }
-    }
-    if (!initializing)
-      getTreeModel().nodeStructureChanged(getRecentNode());
-  }
-
-  private void refreshBuildingBlocks(List<String> blocks) {
-    this.blocks = blocks;
-    
-    getBlocksNode().removeAllChildren();
-    for (final String block : blocks) {
-      Payload payload = new Payload(block, new MouseAdapter() {
-    	  
-    	long previousActionTime = 0;
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          if (e == null || SwingUtilities.isLeftMouseButton(e) && System.currentTimeMillis() - previousActionTime > 100) {
-        	previousActionTime = System.currentTimeMillis();
-            try {
-              plugInPort.loadBlock(block);
-            } catch (InvalidBlockException e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-            }
-          }
-        }
-      });
-      final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(payload, false);
-      String text = getSearchField().getText();
-      boolean visible = text.trim().length() == 0 || block.toLowerCase().contains(text.toLowerCase());
-      payload.setVisible(visible);
-      getBlocksNode().add(componentNode);
-    }
-    if (!initializing)
-      getTreeModel().nodeStructureChanged(getBlocksNode());
-  }
-  
-  private void refreshFavorites(List<Favorite> favorites) {
-    this.favorites = new ArrayList<Favorite>(favorites);
-    
-    getFavoritesNode().removeAllChildren();
-    
-    Map<String, List<ComponentType>> types = plugInPort.getComponentTypes();
-    Map<String, ComponentType> typesByClass = new HashMap<String, ComponentType>();
-    for (Map.Entry<String, List<ComponentType>> e : types.entrySet())
-      for (ComponentType c : e.getValue())
-        typesByClass.put(c.getInstanceClass().getCanonicalName(), c);
-    
-    for (Favorite f : favorites) {
-      if (f.getType() == FavoriteType.Component) {
-        final ComponentType type = typesByClass.get(f.getName());
-        if (type != null) {
-          DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(new Payload(type, new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-              plugInPort.setNewComponentTypeSlot(type, null, false);
-            }
-          }), false);
-          getFavoritesNode().add(componentNode);
-        }
-      } else if (f.getType() == FavoriteType.Block) {
-        final String block = f.getName();
-        Payload payload = new Payload(block, new MouseAdapter() {
-          
-          long previousActionTime = 0;
-
-          @Override
-          public void mouseClicked(MouseEvent e) {
-            if (e == null || SwingUtilities.isLeftMouseButton(e) && System.currentTimeMillis() - previousActionTime > 100) {
-              previousActionTime = System.currentTimeMillis();
-              try {
-                plugInPort.loadBlock(block);
-              } catch (InvalidBlockException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-              }
-            }
-          }
-        });
-        final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(payload, false);
-        String text = getSearchField().getText();
-        boolean visible = text.trim().length() == 0 || block.toLowerCase().contains(text.toLowerCase());
-        payload.setVisible(visible);
-        getFavoritesNode().add(componentNode);
-      }
-    }
-    if (!initializing)
-      getTreeModel().nodeStructureChanged(getFavoritesNode());
-  }
-
-  public DefaultTreeModel getTreeModel() {
+  public CustomTreeModel getTreeModel() {
     if (treeModel == null) {
-      final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Components", true);
-      initializing = true;
-      rootNode.add(getFavoritesNode());
-      rootNode.add(getRecentNode());
-      rootNode.add(getBlocksNode());
-      initializing = false;
-      Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
-      List<String> categories = new ArrayList<String>(componentTypes.keySet());
-      Collections.sort(categories);
-      for (String category : categories) {
-        final DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(new Payload(category, null));
-        rootNode.add(categoryNode);
-        for (final ComponentType type : componentTypes.get(category)) {
-          final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(new Payload(type, new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-              plugInPort.setNewComponentTypeSlot(type, null, false);
-            }
-          }), false);
-          categoryNode.add(componentNode);
-        }
-      }
-      treeModel = new DefaultTreeModel(rootNode);
+      treeModel = new CustomTreeModel(plugInPort);
       treeModel.addTreeModelListener(new TreeModelAdapter() {
+
         @Override
-        public void treeNodesRemoved(TreeModelEvent e) {
-          super.treeNodesRemoved(e);
-        }
-        
-        @Override
-        public void treeNodesChanged(TreeModelEvent e) {
-          // TODO Auto-generated method stub
-          super.treeNodesChanged(e);
+        public void treeStructureChanged(TreeModelEvent e) {
+          String searchText = treeModel.getSearchText();
+          
+          // when we are searching for something, expand all nodes
+          if (searchText != null && !searchText.isEmpty()) {
+            int n = treeModel.getChildCount(treeModel.getRoot());
+            for (int i = 0; i < n; i++) {
+              Object toExpand = treeModel.getChild(treeModel.getRoot(), i);
+              tree.expandPath(new TreePath(new Object[] { treeModel.getRoot(), toExpand } ));
+            }
+          }
         }
       });
     }
@@ -447,10 +204,10 @@ public class TreePanel extends JPanel {
         public void valueChanged(TreeSelectionEvent e) {
           if (!e.isAddedPath())
             return;
-          
-          DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-          if (node != null && node.getUserObject() != null) {
-            Payload payload = (Payload) node.getUserObject();
+
+          Object node = e.getPath().getLastPathComponent();
+          if (node != null && node instanceof TreeNode) {
+            TreeNode payload = (TreeNode) node;
             if (payload.getClickListener() != null) {
               payload.getClickListener().mouseClicked(null);
             }
@@ -471,9 +228,9 @@ public class TreePanel extends JPanel {
             getPopup().show(e.getComponent(), e.getX(), e.getY());
           } else {
             TreePath path = tree.getClosestPathForLocation(e.getX(), e.getY());
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            if (node != null && node.getUserObject() != null) {
-              Payload payload = (Payload) node.getUserObject();
+            Object node = path.getLastPathComponent();
+            if (node != null && node instanceof TreeNode) {
+              TreeNode payload = (TreeNode) node;
               if (payload.getClickListener() != null) {
                 payload.getClickListener().mouseClicked(e);
               }
@@ -495,18 +252,16 @@ public class TreePanel extends JPanel {
         public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
           popup.removeAll();
 
-          DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+          Object selectedNode = tree.getLastSelectedPathComponent();
 
-          if (selectedNode == null || selectedNode.getUserObject() == null)
+          if (selectedNode == null || !(selectedNode instanceof TreeNode))
             return;
 
-          Payload payload = (Payload) selectedNode.getUserObject();
-
+          TreeNode payload = (TreeNode) selectedNode;
           final ComponentType componentType = payload.getComponentType();
 
-          final String identifier =
-              componentType == null ? "block:" + payload.toString() : componentType.getInstanceClass()
-                  .getCanonicalName();
+          final String identifier = componentType == null ? "block:" + payload.toString()
+              : componentType.getInstanceClass().getCanonicalName();
 
           JMenu shortcutSubmenu = new JMenu("Assign Shortcut");
           final JMenuItem noneItem = new JMenuItem("None");
@@ -515,8 +270,8 @@ public class TreePanel extends JPanel {
             @SuppressWarnings("unchecked")
             @Override
             public void actionPerformed(ActionEvent e) {
-              HashMap<String, String> map =
-                  (HashMap<String, String>) ConfigurationManager.getInstance().readObject(COMPONENT_SHORTCUT_KEY, null);
+              HashMap<String, String> map = (HashMap<String, String>) ConfigurationManager
+                  .getInstance().readObject(COMPONENT_SHORTCUT_KEY, null);
               if (map == null)
                 map = new HashMap<String, String>();
 
@@ -544,9 +299,8 @@ public class TreePanel extends JPanel {
               @SuppressWarnings("unchecked")
               @Override
               public void actionPerformed(ActionEvent e) {
-                HashMap<String, String> map =
-                    (HashMap<String, String>) ConfigurationManager.getInstance().readObject(COMPONENT_SHORTCUT_KEY,
-                        null);
+                HashMap<String, String> map = (HashMap<String, String>) ConfigurationManager
+                    .getInstance().readObject(COMPONENT_SHORTCUT_KEY, null);
                 if (map == null)
                   map = new HashMap<String, String>();
 
@@ -570,11 +324,12 @@ public class TreePanel extends JPanel {
             });
             shortcutSubmenu.add(item);
           }
-                    
-          if (selectedNode.isLeaf()) {
+
+          if (getTreeModel().isLeaf(selectedNode)) {
             final Favorite fav =
                 new Favorite(componentType == null ? FavoriteType.Block : FavoriteType.Component,
-                    componentType == null ? payload.toString() : componentType.getInstanceClass().getCanonicalName());
+                    componentType == null ? payload.toString()
+                        : componentType.getInstanceClass().getCanonicalName());
             final boolean isFavorite = favorites != null && favorites.indexOf(fav) >= 0;
             final JMenuItem favoritesItem =
                 new JMenuItem(isFavorite ? "Remove From Favorites" : "Add To Favorites",
@@ -608,11 +363,12 @@ public class TreePanel extends JPanel {
               popup.add(item);
             } else {
               for (Template template : templates) {
-                JMenuItem item = ComponentButtonFactory.createVariantItem(plugInPort, template, componentType);
+                JMenuItem item =
+                    ComponentButtonFactory.createVariantItem(plugInPort, template, componentType);
                 popup.add(item);
               }
             }
-          } else if (selectedNode.isLeaf()) {
+          } else if (getTreeModel().isLeaf(selectedNode)) {
             popup.add(shortcutSubmenu);
             popup.add(new DeleteBlockAction(plugInPort, swingUI, payload.toString()));
           }
@@ -679,55 +435,8 @@ public class TreePanel extends JPanel {
 
         public void process() {
           String text = searchField.getText();
-          DefaultTreeModel model = getTreeModel();
-          DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) model.getRoot();
-          for (int i = 0; i < model.getChildCount(rootNode); i++) {
-            int visibleCount = 0;
-            DefaultMutableTreeNode categoryNode = (DefaultMutableTreeNode) model.getChild(rootNode, i);
-            for (int j = 0; j < model.getChildCount(categoryNode); j++) {
-              DefaultMutableTreeNode componentNode = (DefaultMutableTreeNode) model.getChild(categoryNode, j);
-              Object obj = componentNode.getUserObject();
-              if (obj != null && obj.getClass().equals(Payload.class)) {
-                Payload payload = (Payload) obj;
-                boolean visible = false;
-                if (text.trim().length() == 0) {
-                  visible = true;
-                } else if (payload.getComponentType() != null) {
-                  ComponentType type = payload.getComponentType();
-                  visible =
-                      type.getName().toLowerCase().contains(text.toLowerCase())
-                          || type.getDescription().toLowerCase().contains(text.toLowerCase())
-                          || type.getCategory().toLowerCase().contains(text.toLowerCase());
-                } else {
-                  visible = payload.toString().toLowerCase().contains(text.toLowerCase());
-                }
-                if (visible != payload.isVisible()) {
-                  payload.setVisible(visible);
-                  model.nodeStructureChanged(componentNode);
-                }
-                if (visible)
-                  visibleCount++;
-              }
-            }
-
-            Object obj = categoryNode.getUserObject();
-            if (obj != null && obj.getClass().equals(Payload.class)) {
-              Payload payload = (Payload) obj;
-              boolean categoryVisible = visibleCount > 0;
-              if (categoryVisible != payload.isVisible()) {
-                payload.setVisible(categoryVisible);
-                model.nodeStructureChanged(rootNode);
-              }
-              if (categoryVisible && text.trim().length() > 0) {
-                getTree().expandPath(new TreePath(categoryNode.getPath()));
-              }
-            }
-          }
-
-          for (int i = 0; i < model.getChildCount(rootNode); i++) {
-            DefaultMutableTreeNode categoryNode = (DefaultMutableTreeNode) model.getChild(rootNode, i);
-            getTree().expandPath(new TreePath(categoryNode.getPath()));
-          }
+          CustomTreeModel model = getTreeModel();
+          model.setSearchText(text);
         }
       });
     }
@@ -740,124 +449,65 @@ public class TreePanel extends JPanel {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean selected,
-        final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
+    public Component getTreeCellRendererComponent(final JTree tree, final Object value,
+        final boolean selected, final boolean expanded, final boolean leaf, final int row,
+        final boolean hasFocus) {
 
       super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
-      Object obj = ((DefaultMutableTreeNode) value).getUserObject();
-      if (obj != null && obj.getClass().equals(Payload.class)) {
-        Payload payload = (Payload) obj;
+      Object obj = value;
+      if (obj != null && obj.getClass().equals(TreeNode.class)) {
+        TreeNode payload = (TreeNode) obj;
         if (payload.getComponentType() == null) {
           setToolTipText(null);
           if (leaf)
             setIcon(IconLoader.Component.getIcon());
-          if (payload.isVisible())
-            setPreferredSize(new Dimension(250, 20));
-          else
-            setPreferredSize(new Dimension(0, 0));         
+
+          setPreferredSize(new Dimension(250, 20));
         } else {
           setToolTipText("<html><b>" + payload.getComponentType().getName() + "</b><br>"
-              + payload.getComponentType().getDescription() + "<br>Author: " + payload.getComponentType().getAuthor()
-              + "<br><br>" + CLICK_TO_INSTANTIATE + "</html>");
+              + payload.getComponentType().getDescription() + "<br>Author: "
+              + payload.getComponentType().getAuthor() + "<br><br>" + CLICK_TO_INSTANTIATE
+              + "</html>");
           setIcon(payload.getComponentType().getIcon());
-          if (payload.isVisible())
-            setPreferredSize(new Dimension(250, 32));
-          else
-            setPreferredSize(new Dimension(0, 0));
+          setPreferredSize(new Dimension(250, 32));
         }
-        
+
         String shortCutHtml = "";
         String variantsHtml = "";
 
-        if (payload.isVisible()) {
-          HashMap<String, String> shortcutMap =
-              (HashMap<String, String>) ConfigurationManager.getInstance().readObject(TreePanel.COMPONENT_SHORTCUT_KEY,
-                  null);
-          String identifier =
-              payload.getComponentType() == null ? "block:" + payload.toString() : payload.getComponentType()
-                  .getInstanceClass().getCanonicalName();
-          if (shortcutMap != null && shortcutMap.containsValue(identifier)) {
-            for (String key : shortcutMap.keySet()) {
-              if (shortcutMap.get(key).equals(identifier)) {
-                shortCutHtml = " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #eeeeee; color: #666666;\">&nbsp;"
-                    + key + "&nbsp;</a>";                
-              }
+        HashMap<String, String> shortcutMap = (HashMap<String, String>) ConfigurationManager
+            .getInstance().readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
+        String identifier = payload.getComponentType() == null ? "block:" + payload.toString()
+            : payload.getComponentType().getInstanceClass().getCanonicalName();
+        if (shortcutMap != null && shortcutMap.containsValue(identifier)) {
+          for (String key : shortcutMap.keySet()) {
+            if (shortcutMap.get(key).equals(identifier)) {
+              shortCutHtml =
+                  " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #eeeeee; color: #666666;\">&nbsp;"
+                      + key + "&nbsp;</a>";
             }
           }
         }
-        
+
+
         if (payload.getComponentType() != null) {
           List<Template> variants = plugInPort.getVariantsFor(payload.getComponentType());
           if (variants != null && !variants.isEmpty()) {
-            variantsHtml = " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #D7FFC6; color: #666666;\">[+"
-                + variants.size() + "]</a>";  
+            variantsHtml =
+                " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #D7FFC6; color: #666666;\">[+"
+                    + variants.size() + "]</a>";
           }
         }
-        
+
         // translate categories
-        setText("<html>" + (payload.getComponentType() == null ? LangUtil.translate(payload.forDisplay()) : payload.forDisplay()) + shortCutHtml + variantsHtml + "</html>");
+        setText("<html>"
+            + (payload.getComponentType() == null ? LangUtil.translate(payload.forDisplay())
+                : payload.forDisplay())
+            + shortCutHtml + variantsHtml + "</html>");
       }
 
       return this;
-    }
-  }
-
-  public class Payload {
-    private ComponentType componentType;
-    private String category;
-    private boolean isVisible;
-    private MouseListener clickListener;
-    
-    private final Pattern contributedPattern = Pattern.compile("^(.*)\\[(.*)\\]");
-
-    public Payload(ComponentType componentType, MouseListener clickListener) {
-      super();
-      this.componentType = componentType;
-      this.clickListener = clickListener;
-      this.isVisible = true;
-    }
-
-    public Payload(String category, MouseListener clickListener) {
-      super();
-      this.category = category;
-      this.clickListener = clickListener;
-      this.isVisible = true;
-    }
-
-    public ComponentType getComponentType() {
-      return componentType;
-    }
-
-    public boolean isVisible() {
-      return isVisible;
-    }
-
-    public void setVisible(boolean isVisible) {
-      this.isVisible = isVisible;
-    }
-
-    public MouseListener getClickListener() {
-      return clickListener;
-    }
-    
-    public String forDisplay() {
-      if (componentType == null) {
-        String display = category;
-        Matcher match = contributedPattern.matcher(display);
-        if (match.find()) {
-          String name = match.group(1);
-          String owner = match.group(2);
-          display = name + "<font color='gray'>[" + owner + "]</font>"; 
-        }
-        return display;
-      }
-      return componentType.getName();
-    }
-
-    @Override
-    public String toString() {
-      return componentType == null ? category : componentType.getName();
     }
   }
 
@@ -877,7 +527,7 @@ public class TreePanel extends JPanel {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      LOG.info(getValue(AbstractAction.NAME) + " triggered");      
+      LOG.info(getValue(AbstractAction.NAME) + " triggered");
       if (componentType != null) {
         plugInPort.setNewComponentTypeSlot(null, null, false);
         List<IDIYComponent<?>> components = plugInPort.getCurrentProject().getComponents();
@@ -888,7 +538,7 @@ public class TreePanel extends JPanel {
           }
         }
 
-        plugInPort.updateSelection(newSelection);        
+        plugInPort.updateSelection(newSelection);
         plugInPort.refresh();
       }
     }
@@ -900,7 +550,7 @@ public class TreePanel extends JPanel {
 
     private IPlugInPort plugInPort;
     private ISwingUI swingUI;
-    private String blockName;    
+    private String blockName;
 
     public DeleteBlockAction(IPlugInPort plugInPort, ISwingUI swingUI, String blockName) {
       super();
@@ -913,7 +563,9 @@ public class TreePanel extends JPanel {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info(getValue(AbstractAction.NAME) + " triggered");
-      if (swingUI.showConfirmDialog("Are you sure you want to delete building block \"" + blockName + "\"?", "Delete Building Block", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION)
+      if (swingUI.showConfirmDialog(
+          "Are you sure you want to delete building block \"" + blockName + "\"?",
+          "Delete Building Block", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION)
         plugInPort.deleteBlock(blockName);
     }
   }

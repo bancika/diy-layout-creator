@@ -26,11 +26,11 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -69,7 +69,7 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
   private static Color BORDER_COLOR = BODY_COLOR.darker();
   private static Color LABEL_COLOR = Color.white;
 
-  protected Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0) };
+  protected Point2D[] controlPoints = new Point2D[] { new Point2D.Double(0, 0), new Point2D.Double(0, 0) };
   transient protected Area[] body;
   protected String name;
   protected String value = "";
@@ -87,14 +87,14 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
   }
   
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     int spacing = (int) SPACING.convertToPixels();
    
-    controlPoints[1].setLocation(firstPoint.x + (orientation == OrientationHV.HORIZONTAL ? spacing : 0), firstPoint.y + (orientation == OrientationHV.HORIZONTAL ? 0 : spacing));    
+    controlPoints[1].setLocation(firstPoint.getX() + (orientation == OrientationHV.HORIZONTAL ? spacing : 0), firstPoint.getY() + (orientation == OrientationHV.HORIZONTAL ? 0 : spacing));    
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -114,7 +114,7 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     // Reset body shape.
     body = null;
@@ -213,13 +213,13 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
       lugWidth = p;
     }
     
-    for (Point p : controlPoints) {
+    for (Point2D p : controlPoints) {
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+        g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       } else {
         g2d.setColor(METAL_COLOR);
-        g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       }
     }
     
@@ -250,9 +250,9 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
     int textWidth = (int) (rect.getWidth());
     // Center text horizontally and vertically
     Rectangle bounds = body[0].getBounds();
-    int x = bounds.x + (bounds.width - textWidth) / 2;
-    int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
-    g2d.drawString(label, x, y);
+    double x = bounds.getX() + (bounds.width - textWidth) / 2;
+    double y = bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+    g2d.drawString(label, (int)x, (int)y);
     
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
   }
@@ -260,7 +260,7 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
   @Override
   public Area[] getBody() {
     if (body == null) {
-      Point firstPoint = controlPoints[0];
+      Point2D firstPoint = controlPoints[0];
       int spacing = (int) SPACING.convertToPixels();
       int outerDiameter = (int) OUTER_DIAMETER.convertToPixels();
       int innerDiameter = (int) INNER_DIAMETER.convertToPixels();
@@ -272,8 +272,8 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
       else 
         dy = spacing / 2;
       body = new Area[2];
-      body[0] = new Area(new Ellipse2D.Double(firstPoint.x + dx - outerDiameter / 2, firstPoint.y + dy - outerDiameter / 2, outerDiameter, outerDiameter));      
-      body[1] = new Area(new Ellipse2D.Double(firstPoint.x + dx - innerDiameter / 2, firstPoint.y + dy - innerDiameter / 2, innerDiameter, innerDiameter));
+      body[0] = new Area(new Ellipse2D.Double(firstPoint.getX() + dx - outerDiameter / 2, firstPoint.getY() + dy - outerDiameter / 2, outerDiameter, outerDiameter));      
+      body[1] = new Area(new Ellipse2D.Double(firstPoint.getX() + dx - innerDiameter / 2, firstPoint.getY() + dy - innerDiameter / 2, innerDiameter, innerDiameter));
     }
     return body;
   }

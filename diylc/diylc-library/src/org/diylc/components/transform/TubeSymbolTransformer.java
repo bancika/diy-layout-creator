@@ -21,8 +21,8 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
@@ -48,11 +48,11 @@ public class TubeSymbolTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void rotate(IDIYComponent<?> component, Point center, int direction) {
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x, center.y);
+  public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(), center.getY());
     for (int index = 0; index < component.getControlPointCount(); index++) {
-      Point p = new Point(component.getControlPoint(index));
-      rotate.transform(p, p);
+      Point2D p = new Point2D.Double();
+      rotate.transform(component.getControlPoint(index), p);
       component.setControlPoint(p, index);
     }
 
@@ -69,7 +69,7 @@ public class TubeSymbolTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void mirror(IDIYComponent<?> component, Point center, int direction) {
+  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
     AbstractTubeSymbol tube = (AbstractTubeSymbol) component;
 
     Orientation o = tube.getOrientation();

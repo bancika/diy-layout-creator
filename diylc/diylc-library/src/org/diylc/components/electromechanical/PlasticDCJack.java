@@ -25,11 +25,10 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -67,7 +66,7 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
   private static Color BORDER_COLOR = Color.black;
   private static Color MARKING_COLOR = Color.lightGray;
 
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   private String value = "";
   private DCPolarity polarity = DCPolarity.CENTER_NEGATIVE;
   transient private Area[] body;
@@ -80,12 +79,12 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
     // invalidate body shape
     body = null;
 
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
 
     int spacing = (int) SPACING.convertToPixels();
-    controlPoints[1] = new Point(x + spacing, y + spacing);
-    controlPoints[2] = new Point(x - spacing, y + spacing * 2);
+    controlPoints[1] = new Point2D.Double(x + spacing, y + spacing);
+    controlPoints[2] = new Point2D.Double(x - spacing, y + spacing * 2);
   }
 
   @Override
@@ -93,36 +92,36 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
     if (body == null) {
       body = new Area[4];
 
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int spacing = (int) SPACING.convertToPixels();
       int diameter = getClosestOdd(DIAMETER.convertToPixels());
       body[0] = new Area(new Ellipse2D.Double(x - diameter / 2, y + spacing - diameter / 2, diameter, diameter));
 
       int rectWidth = (int) (diameter / Math.sqrt(2)) - 2;
-      body[1] = new Area(new Rectangle(x - rectWidth / 2, y + spacing - rectWidth / 2, rectWidth, rectWidth));
+      body[1] = new Area(new Rectangle2D.Double(x - rectWidth / 2, y + spacing - rectWidth / 2, rectWidth, rectWidth));
 
       int lugWidth = getClosestOdd(LUG_WIDTH.convertToPixels());
       int lugThickness = getClosestOdd(LUG_THICKNESS.convertToPixels());
 
-      Point groundPoint = controlPoints[controlPoints.length - 1];
+      Point2D groundPoint = controlPoints[controlPoints.length - 1];
       Area groundLug =
-          new Area(new Ellipse2D.Double(groundPoint.x + spacing - lugWidth / 2, groundPoint.y - lugWidth / 2, lugWidth,
+          new Area(new Ellipse2D.Double(groundPoint.getX() + spacing - lugWidth / 2, groundPoint.getY() - lugWidth / 2, lugWidth,
               lugWidth));
-      groundLug.add(new Area(new Rectangle(groundPoint.x, groundPoint.y - lugWidth / 2, spacing, lugWidth)));
-      groundLug.subtract(new Area(new Ellipse2D.Double(groundPoint.x + spacing - lugWidth / 6, groundPoint.y - lugWidth
+      groundLug.add(new Area(new Rectangle2D.Double(groundPoint.getX(), groundPoint.getY() - lugWidth / 2, spacing, lugWidth)));
+      groundLug.subtract(new Area(new Ellipse2D.Double(groundPoint.getX() + spacing - lugWidth / 6, groundPoint.getY() - lugWidth
           / 6, lugWidth / 3, lugWidth / 3)));
       body[2] = groundLug;
 
       Area lugArea = new Area();
       for (int i = 0; i < controlPoints.length; i++) {
-        Point point = controlPoints[i];
+        Point2D point = controlPoints[i];
         if (i == getControlPointCount() - 1) {
           lugArea.add(new Area(
-              new Rectangle(point.x - lugThickness / 2, point.y - lugWidth / 2, lugThickness, lugWidth)));
+              new Rectangle2D.Double(point.getX() - lugThickness / 2, point.getY() - lugWidth / 2, lugThickness, lugWidth)));
         } else {
           lugArea.add(new Area(
-              new Rectangle(point.x - lugWidth / 2, point.y - lugThickness / 2, lugWidth, lugThickness)));
+              new Rectangle2D.Double(point.getX() - lugWidth / 2, point.getY() - lugThickness / 2, lugWidth, lugThickness)));
         }
       }
       body[3] = lugArea;
@@ -184,10 +183,10 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
       int spacing = (int) SPACING.convertToPixels();
       g2d.setColor(MARKING_COLOR);
       g2d.setFont(project.getFont().deriveFont(12f));
-      StringUtils.drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-", controlPoints[0].x,
-          controlPoints[0].y - spacing * 7 / 16, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+", controlPoints[2].x,
-          controlPoints[2].y - spacing * 3 / 4, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-", controlPoints[0].getX(),
+          controlPoints[0].getY() - spacing * 7 / 16, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+", controlPoints[2].getX(),
+          controlPoints[2].getY() - spacing * 3 / 4, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
     
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
@@ -222,12 +221,12 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     this.body = null;
   }

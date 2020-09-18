@@ -21,7 +21,6 @@
 */
 package org.diylc.serialization;
 
-import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
@@ -35,7 +34,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
- * Serializes {@link Point} objects by converting coordinates from pixels to inches, thus avoiding
+ * Serializes {@link Area} objects by converting coordinates from pixels to inches, thus avoiding
  * the resolution to affect point placement.
  * 
  * @author Branislav Stojkovic

@@ -25,11 +25,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -186,9 +186,9 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
     if (body == null) {
       body = new Shape[5];
 
-      Point[] points = getControlPoints();
-      int x = (points[0].x + points[3].x) / 2;
-      int y = (points[0].y + points[3].y) / 2;;
+      Point2D[] points = getControlPoints();
+      double x = (points[0].getX() + points[3].getX()) / 2;
+      double y = (points[0].getY() + points[3].getY()) / 2;;
       int width = (int) WIDTH.convertToPixels();
       int length = (int) LENGTH.convertToPixels();
       int stratInnerLength = (int) STRAT_INNER_LENGTH.convertToPixels();
@@ -327,9 +327,9 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
       body[1] = new Area();
       double lugHole = getClosestOdd(lugDiameter * 0.4);
       for (int i = getPolarity() == Polarity.Humbucking ? 0 : 1; i < (getPolarity() == Polarity.Humbucking ? 4 : 3); i++) {
-        Point p = points[i];
-        ((Area)body[1]).add(new Area(new Ellipse2D.Double(p.x - lugDiameter / 2, p.y - lugDiameter / 2, lugDiameter, lugDiameter)));
-        ((Area)body[1]).subtract(new Area(new Ellipse2D.Double(p.x - lugHole / 2, p.y - lugHole / 2, lugHole, lugHole)));
+        Point2D p = points[i];
+        ((Area)body[1]).add(new Area(new Ellipse2D.Double(p.getX() - lugDiameter / 2, p.getY() - lugDiameter / 2, lugDiameter, lugDiameter)));
+        ((Area)body[1]).subtract(new Area(new Ellipse2D.Double(p.getX() - lugHole / 2, p.getY() - lugHole / 2, lugHole, lugHole)));
       } 
     }
     return body;

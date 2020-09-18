@@ -23,9 +23,9 @@ package org.diylc.components.passive;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
@@ -60,7 +60,7 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
   public static Color COLOR = Color.blue;
   public static Color LEAD_COLOR = Color.black;
 
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   private Orientation orientation = Orientation.DEFAULT;
   private org.diylc.core.measures.Voltage voltage = null;
   private Color color = COLOR;
@@ -96,9 +96,9 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
         break;
     }
 
-    Point refPoint = this.controlPoints[0];
+    Point2D refPoint = this.controlPoints[0];
     for (int i = 1; i < controlPoints.length; i++) {
-      this.controlPoints[i].setLocation(refPoint.x + i * fx * spacing, refPoint.y + i * fy * spacing);
+      this.controlPoints[i].setLocation(refPoint.getX() + i * fx * spacing, refPoint.getY() + i * fy * spacing);
     }
   }
 
@@ -130,12 +130,12 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return this.controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoints[index].setLocation(point);
     this.body = null;
   }
@@ -248,11 +248,11 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
       double offset = OFFSET.convertToPixels();
 
       int i = 0;
-      leads.moveTo(this.controlPoints[i].x, this.controlPoints[i].y);
+      leads.moveTo(this.controlPoints[i].getX(), this.controlPoints[i].getY());
       leads
-          .lineTo(this.controlPoints[i].x + fx * (spacing + offset), this.controlPoints[i].y + fy * (spacing + offset));
-      leads.moveTo(this.controlPoints[i + 1].x, this.controlPoints[i + 1].y);
-      leads.lineTo(this.controlPoints[i + 1].x + fx * (spacing + offset), this.controlPoints[i + 1].y + fy
+          .lineTo(this.controlPoints[i].getX() + fx * (spacing + offset), this.controlPoints[i].getY() + fy * (spacing + offset));
+      leads.moveTo(this.controlPoints[i + 1].getX(), this.controlPoints[i + 1].getY());
+      leads.lineTo(this.controlPoints[i + 1].getX() + fx * (spacing + offset), this.controlPoints[i + 1].getY() + fy
           * (spacing + offset));
 
       double dx = this.controlPoints[i + 1].getX() - this.controlPoints[i].getX();
@@ -262,7 +262,7 @@ public class TransformerCoil extends AbstractComponent<org.diylc.core.measures.V
       double x1 = this.controlPoints[i].getX() + fx * (spacing + d + offset);
       double y1 = this.controlPoints[i].getY() + fy * (spacing + d + offset);
       double x2 = this.controlPoints[i + 1].getX() + fx * (spacing + d + offset);
-      double y2 = this.controlPoints[i + 1].y + fy * (spacing + d + offset);
+      double y2 = this.controlPoints[i + 1].getY() + fy * (spacing + d + offset);
       double dxa = x2 - x1;
       double dya = y2 - y1;
 

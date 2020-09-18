@@ -26,9 +26,9 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -62,7 +62,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
   private Orientation orientation = Orientation.DEFAULT;
 
   private SMDSize size = SMDSize._1206;
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   protected Display display = Display.NAME;
   protected Color bodyColor;
   protected Color borderColor;
@@ -116,7 +116,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -131,21 +131,21 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     controlPoints[0] = firstPoint;
-    int pinSize = (int) PIN_SIZE.convertToPixels();
-    int smdLength = (int) getSize().getLength().convertToPixels();
-    int pinSpacing = smdLength - pinSize;
+    double pinSize = PIN_SIZE.convertToPixels();
+    double smdLength = getSize().getLength().convertToPixels();
+    double pinSpacing = smdLength - pinSize;
 
     // Update control points.
-    int dx1;
-    int dy1;
+    double dx1;
+    double dy1;
     switch (orientation) {
       case DEFAULT:
         dx1 = 0;
@@ -166,45 +166,45 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
       default:
         throw new RuntimeException("Unexpected orientation: " + orientation);
     }
-    controlPoints[1] = new Point(firstPoint.x + dx1, firstPoint.y + dy1);
+    controlPoints[1] = new Point2D.Double(firstPoint.getX() + dx1, firstPoint.getY() + dy1);
   }
 
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
-      int smdWidth = (int) getSize().getWidth().convertToPixels();
-      int smdLength = (int) getSize().getLength().convertToPixels();
-      int pinSize = (int) PIN_SIZE.convertToPixels();
-      int width;
-      int height;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
+      double smdWidth = getSize().getWidth().convertToPixels();
+      double smdLength = getSize().getLength().convertToPixels();
+      double pinSize = PIN_SIZE.convertToPixels();
+      double width;
+      double height;
 
       // create main body
       switch (orientation) {
         case DEFAULT:
           width = smdWidth;
           height = smdLength;
-          x = controlPoints[0].x - smdWidth / 2;
-          y = controlPoints[0].y - pinSize / 2;
+          x = controlPoints[0].getX() - smdWidth / 2;
+          y = controlPoints[0].getY() - pinSize / 2;
           break;
         case _90:
           width = smdLength;
           height = smdWidth;
-          x = controlPoints[1].x - pinSize / 2;
-          y = controlPoints[1].y - smdWidth / 2;
+          x = controlPoints[1].getX() - pinSize / 2;
+          y = controlPoints[1].getY() - smdWidth / 2;
           break;
         case _180:
           width = smdWidth;
           height = smdLength;
-          x = controlPoints[1].x - smdWidth / 2;
-          y = controlPoints[1].y - pinSize / 2;
+          x = controlPoints[1].getX() - smdWidth / 2;
+          y = controlPoints[1].getY() - pinSize / 2;
           break;
         case _270:
           width = smdLength;
           height = smdWidth;
-          x = controlPoints[0].x - pinSize / 2;
-          y = controlPoints[0].y - smdWidth / 2;
+          x = controlPoints[0].getX() - pinSize / 2;
+          y = controlPoints[0].getY() - smdWidth / 2;
           break;
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);

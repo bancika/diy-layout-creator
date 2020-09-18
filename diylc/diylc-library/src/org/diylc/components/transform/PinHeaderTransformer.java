@@ -26,24 +26,24 @@ import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
-import org.diylc.components.semiconductors.DIL_IC;
+import org.diylc.components.electromechanical.PinHeader;
 import org.diylc.core.IDIYComponent;
 
-public class DIL_ICTransformer implements IComponentTransformer {
+public class PinHeaderTransformer implements IComponentTransformer {
 
   @Override
   public boolean canRotate(IDIYComponent<?> component) {
-    return component.getClass().equals(DIL_IC.class);
+    return component.getClass().equals(PinHeader.class);
   }
 
   @Override
   public boolean canMirror(IDIYComponent<?> component) {
-    return component.getClass().equals(DIL_IC.class);
+    return component.getClass().equals(PinHeader.class);
   }
 
   @Override
   public boolean mirroringChangesCircuit() {
-    return true;
+    return false;
   }
 
   @Override
@@ -55,8 +55,8 @@ public class DIL_ICTransformer implements IComponentTransformer {
       component.setControlPoint(p, index);
     }
 
-    DIL_IC ic = (DIL_IC) component;
-    Orientation o = ic.getOrientation();
+    PinHeader header = (PinHeader) component;
+    Orientation o = header.getOrientation();
     int oValue = o.ordinal();
     oValue += direction;
     if (oValue < 0)
@@ -64,71 +64,71 @@ public class DIL_ICTransformer implements IComponentTransformer {
     if (oValue >= Orientation.values().length)
       oValue = 0;
     o = Orientation.values()[oValue];
-    ic.setOrientation(o);
+    header.setOrientation(o);
   }
 
   @Override
   public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
-    DIL_IC ic = (DIL_IC) component;
+    PinHeader header = (PinHeader) component;
 
     if (direction == IComponentTransformer.HORIZONTAL) {
-      double dx = 2 * (center.getX() - ic.getControlPoint(1).getX());
+      double dx = 2 * (center.getX() - header.getControlPoint(1).getX());
       double dy = 0;
-      Orientation o = ic.getOrientation();
+      Orientation o = header.getOrientation();
       switch (o) {
         case DEFAULT:
-          dx += ic.getControlPoint(0).getX() - ic.getControlPoint(ic.getControlPointCount() - 1).getX();
+          dx += header.getControlPoint(0).getX() - header.getControlPoint(header.getControlPointCount() - 1).getX();
           break;
         case _90:
           o = Orientation._270;
-          dx -= 2 * (ic.getControlPoint(0).getX() - ic.getControlPoint(1).getX());
-          dy -= ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY();
+          dx -= 2 * (header.getControlPoint(0).getX() - header.getControlPoint(1).getX());
+          dy -= header.getControlPoint(0).getY() - header.getControlPoint(header.getControlPointCount() - 1).getY();
           break;
         case _180:
-          dx += ic.getControlPoint(0).getX() - ic.getControlPoint(ic.getControlPointCount() - 1).getX();
+          dx += header.getControlPoint(0).getX() - header.getControlPoint(header.getControlPointCount() - 1).getX();
           break;
         case _270:
-          dx -= 2 * (ic.getControlPoint(0).getX() - ic.getControlPoint(1).getX());
-          dy -= ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY();
+          dx -= 2 * (header.getControlPoint(0).getX() - header.getControlPoint(1).getX());
+          dy -= header.getControlPoint(0).getY() - header.getControlPoint(header.getControlPointCount() - 1).getY();
           o = Orientation._90;
           break;
       }
 
-      for (int i = 0; i < ic.getControlPointCount(); i++) {
-        Point2D p = ic.getControlPoint(i);
-        ic.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
+      for (int i = 0; i < header.getControlPointCount(); i++) {
+        Point2D p = header.getControlPoint(i);
+        header.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
-      ic.setOrientation(o);
+      header.setOrientation(o);
     } else {
       double dx = 0;
-      double dy = 2 * (center.getY() - ic.getControlPoint(1).getY());
-      Orientation o = ic.getOrientation();
+      double dy = 2 * (center.getY() - header.getControlPoint(1).getY());
+      Orientation o = header.getOrientation();
       switch (o) {
         case DEFAULT:
-          dx -= ic.getControlPoint(0).getX() - ic.getControlPoint(ic.getControlPointCount() - 1).getX();
-          dy -= 2 * (ic.getControlPoint(0).getY() - ic.getControlPoint(1).getY());
+          dx -= header.getControlPoint(0).getX() - header.getControlPoint(header.getControlPointCount() - 1).getX();
+          dy -= 2 * (header.getControlPoint(0).getY() - header.getControlPoint(1).getY());
           o = Orientation._180;
           break;
         case _90:
-          dy += ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY();
+          dy += header.getControlPoint(0).getY() - header.getControlPoint(header.getControlPointCount() - 1).getY();
           break;
         case _180:
-          dx -= ic.getControlPoint(0).getX() - ic.getControlPoint(ic.getControlPointCount() - 1).getX();
-          dy -= 2 * (ic.getControlPoint(0).getY() - ic.getControlPoint(1).getY());
+          dx -= header.getControlPoint(0).getX() - header.getControlPoint(header.getControlPointCount() - 1).getX();
+          dy -= 2 * (header.getControlPoint(0).getY() - header.getControlPoint(1).getY());
           o = Orientation.DEFAULT;
           break;
         case _270:
-          dy += ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY();
+          dy += header.getControlPoint(0).getY() - header.getControlPoint(header.getControlPointCount() - 1).getY();
           break;
       }
 
-      for (int i = 0; i < ic.getControlPointCount(); i++) {
-        Point2D p = ic.getControlPoint(i);
-        ic.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
+      for (int i = 0; i < header.getControlPointCount(); i++) {
+        Point2D p = header.getControlPoint(i);
+        header.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
-      ic.setOrientation(o);
+      header.setOrientation(o);
     }
   }
 }

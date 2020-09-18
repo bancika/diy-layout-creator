@@ -21,13 +21,13 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -64,7 +64,7 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
 
   protected GateType gateType = GateType.Not;
   protected String value = "";
-  protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   protected Color bodyColor = BODY_COLOR;
   protected Color borderColor = BORDER_COLOR;
   protected Display display = Display.NONE;
@@ -124,7 +124,7 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
               : LABEL_COLOR;
     }
     g2d.setColor(finalLabelColor);
-    int x = (controlPoints[0].x + controlPoints[getControlPointCount() == 2 ? 1 : 2].x) / 2;
+    int x = (int) ((controlPoints[0].getX() + controlPoints[getControlPointCount() == 2 ? 1 : 2].getX()) / 2);
     String label = "";
     label = display == Display.VALUE ? getValue() : getName();
     if (display == Display.NONE) {
@@ -133,7 +133,7 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
     if (display == Display.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
-    StringUtils.drawCenteredText(g2d, label, x, controlPoints[0].y + (getControlPointCount() == 2 ? 0 : pinSpacing), HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, label, x, controlPoints[0].getY() + (getControlPointCount() == 2 ? 0 : pinSpacing), HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);   
   }
 
@@ -155,7 +155,7 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -167,18 +167,14 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
   private void updateControlPoints() {
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    int x = (int) controlPoints[0].getX();
+    int y = (int) controlPoints[0].getY();
 
     if (getControlPointCount() == 2) {
-      controlPoints[1].x = x + pinSpacing * 6;
-      controlPoints[1].y = y;
+      controlPoints[1].setLocation(x + pinSpacing * 6, y);
     } else {
-      controlPoints[1].x = x;
-      controlPoints[1].y = y + pinSpacing * 2;
-
-      controlPoints[2].x = x + pinSpacing * 6;
-      controlPoints[2].y = y + pinSpacing;
+      controlPoints[1].setLocation(x, y + pinSpacing * 2);
+      controlPoints[2].setLocation(x + pinSpacing * 6, y + pinSpacing);
     }   
   }
 
@@ -186,8 +182,8 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
     if (body == null) {
       body = new Shape[3];
       int pinSpacing = (int) PIN_SPACING.convertToPixels();
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      int x = (int) controlPoints[0].getX();
+      int y = (int) controlPoints[0].getY();
 
       Area main = null;
 
@@ -224,23 +220,23 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
 
       GeneralPath connections = new GeneralPath();
       if (getControlPointCount() == 2) {
-        connections.moveTo(controlPoints[0].x, controlPoints[0].y);
-        connections.lineTo(controlPoints[0].x + pinSpacing * 3 / 2, controlPoints[0].y);
-        connections.moveTo(controlPoints[1].x, controlPoints[1].y);
+        connections.moveTo(controlPoints[0].getX(), controlPoints[0].getY());
+        connections.lineTo(controlPoints[0].getX() + pinSpacing * 3 / 2, controlPoints[0].getY());
+        connections.moveTo(controlPoints[1].getX(), controlPoints[1].getY());
         if (getGateType().getNeedsCircle())
-          connections.lineTo(controlPoints[1].x - pinSpacing, controlPoints[1].y);
+          connections.lineTo(controlPoints[1].getX() - pinSpacing, controlPoints[1].getY());
         else
-          connections.lineTo(controlPoints[1].x - pinSpacing * 3 / 2, controlPoints[1].y);
+          connections.lineTo(controlPoints[1].getX() - pinSpacing * 3 / 2, controlPoints[1].getY());
       } else {
-        connections.moveTo(controlPoints[0].x, controlPoints[0].y);
-        connections.lineTo(controlPoints[0].x + pinSpacing * 3 / 2, controlPoints[0].y);
-        connections.moveTo(controlPoints[1].x, controlPoints[1].y);
-        connections.lineTo(controlPoints[1].x + pinSpacing * 3 / 2, controlPoints[1].y);
-        connections.moveTo(controlPoints[2].x, controlPoints[2].y);
+        connections.moveTo(controlPoints[0].getX(), controlPoints[0].getY());
+        connections.lineTo(controlPoints[0].getX() + pinSpacing * 3 / 2, controlPoints[0].getY());
+        connections.moveTo(controlPoints[1].getX(), controlPoints[1].getY());
+        connections.lineTo(controlPoints[1].getX() + pinSpacing * 3 / 2, controlPoints[1].getY());
+        connections.moveTo(controlPoints[2].getX(), controlPoints[2].getY());
         if (getGateType().getNeedsCircle())
-          connections.lineTo(controlPoints[2].x - pinSpacing, controlPoints[2].y);
+          connections.lineTo(controlPoints[2].getX() - pinSpacing, controlPoints[2].getY());
         else
-          connections.lineTo(controlPoints[2].x - pinSpacing * 3 / 2, controlPoints[2].y);
+          connections.lineTo(controlPoints[2].getX() - pinSpacing * 3 / 2, controlPoints[2].getY());
       }
       body[1] = connections;
       
@@ -276,7 +272,7 @@ public class LogicGateSymbol extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }

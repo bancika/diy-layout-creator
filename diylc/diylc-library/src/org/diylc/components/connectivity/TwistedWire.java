@@ -20,7 +20,6 @@ package org.diylc.components.connectivity;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.geom.CubicCurve2D;
@@ -172,7 +171,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
   }
   
   @Override
-  public void setControlPoint(Point point, int index) {   
+  public void setControlPoint(Point2D point, int index) {   
     super.setControlPoint(point, index);
     
     // invalidate cached areas
@@ -278,7 +277,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
   public void recalculate(Path2D path, float thickness, Area firstLeadArea, Area secondLeadArea, boolean stripe) {
     PathIterator iterator = path.getPathIterator(null);
     float[] coords = new float[6];
-    Point current = new Point();
+    Point2D current = new Point2D.Double();
 
     // convert all segments to cubic curves
     List<CubicCurve2D> curves = new ArrayList<CubicCurve2D>();
@@ -289,18 +288,18 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
           current.setLocation(coords[0], coords[1]);
           break;
         case PathIterator.SEG_LINETO:
-          curves.add(new CubicCurve2D.Double(current.x, current.y, (current.x + coords[0]) / 2,
-              (current.y + coords[1]) / 2, (current.x + coords[0]) / 2, (current.y + coords[1]) / 2, coords[0],
+          curves.add(new CubicCurve2D.Double(current.getX(), current.getY(), (current.getX() + coords[0]) / 2,
+              (current.getY() + coords[1]) / 2, (current.getX() + coords[0]) / 2, (current.getY() + coords[1]) / 2, coords[0],
               coords[1]));
           current.setLocation(coords[0], coords[1]);
           break;
         case PathIterator.SEG_QUADTO:
-          curves.add(new CubicCurve2D.Double(current.x, current.y, coords[0], coords[1], coords[0], coords[1],
+          curves.add(new CubicCurve2D.Double(current.getX(), current.getY(), coords[0], coords[1], coords[0], coords[1],
               coords[2], coords[3]));
           current.setLocation(coords[2], coords[3]);
           break;
         case PathIterator.SEG_CUBICTO:
-          curves.add(new CubicCurve2D.Double(current.x, current.y, coords[0], coords[1], coords[2], coords[3],
+          curves.add(new CubicCurve2D.Double(current.getX(), current.getY(), coords[0], coords[1], coords[2], coords[3],
               coords[4], coords[5]));
           current.setLocation(coords[4], coords[5]);
           break;

@@ -21,8 +21,8 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
@@ -47,11 +47,11 @@ public class TO220Transformer implements IComponentTransformer {
   }
 
   @Override
-  public void rotate(IDIYComponent<?> component, Point center, int direction) {
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x, center.y);
+  public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(), center.getY());
     for (int index = 0; index < component.getControlPointCount(); index++) {
-      Point p = new Point(component.getControlPoint(index));
-      rotate.transform(p, p);
+      Point2D p = new Point2D.Double();
+      rotate.transform(component.getControlPoint(index), p);
       component.setControlPoint(p, index);
     }
 
@@ -68,59 +68,59 @@ public class TO220Transformer implements IComponentTransformer {
   }
 
   @Override
-  public void mirror(IDIYComponent<?> component, Point center, int direction) {
+  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
     TransistorTO220 transistor = (TransistorTO220) component;
     if (direction == IComponentTransformer.HORIZONTAL) {
-      int dx = 2 * (center.x - transistor.getControlPoint(0).x);
-      int dy = 0;
+      double dx = 2 * (center.getX() - transistor.getControlPoint(0).getX());
+      double dy = 0;
       Orientation o = transistor.getOrientation();
       switch (o) {
         case DEFAULT:
           o = Orientation._180;
-          dy -= (transistor.getControlPoint(0).y - transistor.getControlPoint(2).y);
+          dy -= (transistor.getControlPoint(0).getY() - transistor.getControlPoint(2).getY());
           break;
         case _90:
-          dx += (transistor.getControlPoint(0).x - transistor.getControlPoint(2).x);
+          dx += (transistor.getControlPoint(0).getX() - transistor.getControlPoint(2).getX());
           break;
         case _180:
           o = Orientation.DEFAULT;
-          dy -= (transistor.getControlPoint(0).y - transistor.getControlPoint(2).y);
+          dy -= (transistor.getControlPoint(0).getY() - transistor.getControlPoint(2).getY());
           break;
         case _270:
-          dx += (transistor.getControlPoint(0).x - transistor.getControlPoint(2).x);
+          dx += (transistor.getControlPoint(0).getX() - transistor.getControlPoint(2).getX());
           break;
       }
 
       for (int i = 0; i < transistor.getControlPointCount(); i++) {
-        Point p = transistor.getControlPoint(i);
-        transistor.setControlPoint(new Point(p.x + dx, p.y + dy), i);
+        Point2D p = transistor.getControlPoint(i);
+        transistor.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
       transistor.setOrientation(o);
     } else {
-      int dx = 0;
-      int dy = 2 * (center.y - transistor.getControlPoint(0).y);
+      double dx = 0;
+      double dy = 2 * (center.getY() - transistor.getControlPoint(0).getY());
       Orientation o = transistor.getOrientation();
       switch (o) {
         case DEFAULT:
-          dy += (transistor.getControlPoint(0).y - transistor.getControlPoint(2).y);
+          dy += (transistor.getControlPoint(0).getY() - transistor.getControlPoint(2).getY());
           break;
         case _90:
-          dx -= (transistor.getControlPoint(0).x - transistor.getControlPoint(2).x);
+          dx -= (transistor.getControlPoint(0).getX() - transistor.getControlPoint(2).getX());
           o = Orientation._270;
           break;
         case _180:
-          dy += (transistor.getControlPoint(0).y - transistor.getControlPoint(2).y);
+          dy += (transistor.getControlPoint(0).getY() - transistor.getControlPoint(2).getY());
           break;
         case _270:
-          dx -= (transistor.getControlPoint(0).x - transistor.getControlPoint(2).x);
+          dx -= (transistor.getControlPoint(0).getX() - transistor.getControlPoint(2).getX());
           o = Orientation._90;
           break;
       }
 
       for (int i = 0; i < transistor.getControlPointCount(); i++) {
-        Point p = transistor.getControlPoint(i);
-        transistor.setControlPoint(new Point(p.x + dx, p.y + dy), i);
+        Point2D p = transistor.getControlPoint(i);
+        transistor.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
       transistor.setOrientation(o);

@@ -1,7 +1,7 @@
 package org.diylc.editor;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,8 +55,8 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       if (l == null)
         return;
       
-      Point p1 = new Point(leaded.getControlPoint(0));
-      Point p2 = new Point(leaded.getControlPoint(1));
+      Point2D p1 = leaded.getControlPoint(0);
+      Point2D p2 = leaded.getControlPoint(1);
       double d = p1.distance(p2);
       double len = l.convertToPixels() + 2;
               
@@ -66,12 +66,12 @@ public class FlexibleLeadsEditor implements IProjectEditor {
         return;
       
       // find the center and angle
-      double centerX = (p1.x + p2.x) / 2.0;
-      double centerY = (p1.y + p2.y) / 2.0;
-      double theta = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+      double centerX = (p1.getX() + p2.getX()) / 2.0;
+      double centerY = (p1.getY() + p2.getY()) / 2.0;
+      double theta = Math.atan2(p2.getY() - p1.getY(), p2.getX() - p1.getX());
       // shorten the component to match the size of the body
-      Point newP1 = new Point((int)Math.round(centerX - Math.cos(theta) * len / 2), (int)Math.round(centerY - Math.sin(theta) * len / 2));
-      Point newP2 = new Point((int)Math.round(centerX + Math.cos(theta) * len / 2), (int)Math.round(centerY + Math.sin(theta) * len / 2));
+      Point2D newP1 = new Point2D.Double((int)Math.round(centerX - Math.cos(theta) * len / 2), (int)Math.round(centerY - Math.sin(theta) * len / 2));
+      Point2D newP2 = new Point2D.Double((int)Math.round(centerX + Math.cos(theta) * len / 2), (int)Math.round(centerY + Math.sin(theta) * len / 2));
       leaded.setControlPoint(newP1, 0);
       leaded.setControlPoint(newP2, 1);
       
@@ -87,7 +87,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       w1.setControlPoint(p1, 0);
       for (int i = 1; i < w1.getControlPointCount() - 1; i++) {
         double r = (len + diff) / (w1.getControlPointCount() - 1) * (w1.getControlPointCount() - i - 1);
-        w1.setControlPoint(new Point((int)Math.round(centerX - Math.cos(theta) * r), (int)Math.round(centerY - Math.sin(theta) * r)), i);   
+        w1.setControlPoint(new Point2D.Double((int)Math.round(centerX - Math.cos(theta) * r), (int)Math.round(centerY - Math.sin(theta) * r)), i);   
       }
       w1.setControlPoint(newP1, w1.getControlPointCount() - 1);
       newSelection.add(w1);
@@ -100,7 +100,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       w2.setControlPoint(p2, 0);
       for (int i = 1; i < w2.getControlPointCount() - 1; i++) {
         double r = (len + diff) / (w2.getControlPointCount() - 1) * (w2.getControlPointCount() - i - 1);
-        w2.setControlPoint(new Point((int)Math.round(centerX + Math.cos(theta) * r), (int)Math.round(centerY + Math.sin(theta) * r)), i);   
+        w2.setControlPoint(new Point2D.Double((int)Math.round(centerX + Math.cos(theta) * r), (int)Math.round(centerY + Math.sin(theta) * r)), i);   
       }   
       w2.setControlPoint(newP2, w2.getControlPointCount() - 1);
       newSelection.add(w2);
@@ -117,16 +117,16 @@ public class FlexibleLeadsEditor implements IProjectEditor {
     
     // create leads
     for (int i = 0; i < 3; i++) {
-      Point p0 = c.getControlPoint(i);
+      Point2D p0 = c.getControlPoint(i);
       double dx = -offsetX.convertToPixels();
       double dy = offsetY.convertToPixels() * (i - 1);
       
       // calculate lead position
-      Point p1 = new Point((int)(p0.x + dx / 2), (int)(p0.y + dy / 2));
-      Point p2 = new Point((int)(p0.x + dx), (int)(p0.y + dy));
+      Point2D p1 = new Point2D.Double((int)(p0.getX() + dx / 2), (int)(p0.getY() + dy / 2));
+      Point2D p2 = new Point2D.Double((int)(p0.getX() + dx), (int)(p0.getY() + dy));
       
       if (c.getOrientation() != Orientation.DEFAULT) {
-        AffineTransform tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.x, p0.y);
+        AffineTransform tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.getX(), p0.getY());
         tx.transform(p1, p1);
         tx.transform(p2, p2);
       }
@@ -171,18 +171,18 @@ public class FlexibleLeadsEditor implements IProjectEditor {
     
     // create leads
     for (int i = 0; i < 3; i++) {
-      Point p0 = c.getControlPoint(i);
+      Point2D p0 = c.getControlPoint(i);
       double dx = 0;
       double dy = offsetY.convertToPixels();
       
       AffineTransform tx = null;
       if (c.getOrientation() != Orientation.DEFAULT)
-        tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.x, p0.y);
+        tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.getX(), p0.getY());
             
       HookupWire w = new HookupWire();
       getInstantiationManager().fillWithDefaultProperties(w, null);
       for (int j = 0; j < w.getControlPointCount(); j++) {
-        Point p = new Point((int)(p0.x + dx * j), (int)(p0.y + dy * j));
+        Point2D p = new Point2D.Double((int)(p0.getX() + dx * j), (int)(p0.getY() + dy * j));
           if (tx != null)
           tx.transform(p, p);                  
         w.setControlPoint(p, j);
@@ -197,7 +197,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
   }
   
   private void addLeads(TubeSocket c, Project project, Set<IDIYComponent<?>> newSelection) {
-    Point center = c.getControlPoint(0);
+    Point2D center = c.getControlPoint(0);
     
     // don't do it for PCB type
     if (c.getMount() == Mount.PCB)
@@ -205,15 +205,15 @@ public class FlexibleLeadsEditor implements IProjectEditor {
     
     // create leads
     for (int i = 1; i < c.getControlPointCount(); i++) {
-      Point p = c.getControlPoint(i);
-      double dx = p.x - center.x;
-      double dy = p.y - center.y;
+      Point2D p = c.getControlPoint(i);
+      double dx = p.getX() - center.getX();
+      double dy = p.getY() - center.getY();
       
       // calculate lead position    
       HookupWire w = new HookupWire();
       getInstantiationManager().fillWithDefaultProperties(w, null);
       for (int j = 0; j < w.getControlPointCount(); j++) {
-        Point pw = new Point((int)(p.x + dx * j), (int)(p.y + dy * j));
+        Point2D pw = new Point2D.Double((int)(p.getX() + dx * j), (int)(p.getY() + dy * j));
         w.setControlPoint(pw, j);
       }  
       newSelection.add(w);    
@@ -231,7 +231,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
     for (int i = 0; i < c.getControlPointCount(); i++) {
       if (!c.isControlPointSticky(i))
         continue;
-      Point p0 = c.getControlPoint(i);
+      Point2D p0 = c.getControlPoint(i);
       double dx = 0;
       double dy = 0;
       
@@ -242,13 +242,13 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       
       AffineTransform tx = null;
       if (c.getOrientation() != Orientation.DEFAULT)
-        tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.x, p0.y);
+        tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.getX(), p0.getY());
             
       HookupWire w = new HookupWire();
       w.setGauge(AWG._24);
       getInstantiationManager().fillWithDefaultProperties(w, null);
       for (int j = 0; j < w.getControlPointCount(); j++) {
-        Point p = new Point((int)(p0.x + dx * j), (int)(p0.y + dy * j));
+        Point2D p = new Point2D.Double((int)(p0.getX() + dx * j), (int)(p0.getY() + dy * j));
           if (tx != null)
           tx.transform(p, p);                  
         w.setControlPoint(p, j);

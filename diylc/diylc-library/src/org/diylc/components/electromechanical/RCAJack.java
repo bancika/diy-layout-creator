@@ -25,7 +25,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -71,7 +70,7 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
   private static Size HOLE_TO_EDGE = new Size(0.063d, SizeUnit.in);
 
   private String value = "";
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0) };
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0) };
   transient Area[] body;
   private Orientation orientation = Orientation.DEFAULT;
 
@@ -147,10 +146,10 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
     if (body == null) {
       body = new Area[4];
 
-      int x0 = controlPoints[0].x;
-      int y0 = controlPoints[0].y;
-      int x1 = controlPoints[1].x;
-      int y1 = controlPoints[1].y;      
+      double x0 = controlPoints[0].getX();
+      double y0 = controlPoints[0].getY();
+      double x1 = controlPoints[1].getX();
+      double y1 = controlPoints[1].getY();      
       int bodyDiameter = getClosestOdd(BODY_DIAMETER.convertToPixels());
       int waferDiameter = getClosestOdd(WAFER_DIAMETER.convertToPixels());      
       int springWidth = (int) SPRING_WIDTH.convertToPixels();
@@ -202,13 +201,13 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
 
   @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
 
     int springLength = (int) SPRING_LENGTH.convertToPixels();
     int holeToEdge = (int) HOLE_TO_EDGE.convertToPixels();
 
-    int centerY = y + springLength - holeToEdge;
+    double centerY = y + springLength - holeToEdge;
 
     controlPoints[1].setLocation(x,  centerY);    
 
@@ -284,12 +283,12 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoints[index].setLocation(point);
     // Invalidate the body
     body = null;

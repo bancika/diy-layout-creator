@@ -21,8 +21,8 @@
 */
 package org.diylc.components.transform;
 
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
@@ -47,11 +47,11 @@ public class PotentiometerTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void rotate(IDIYComponent<?> component, Point center, int direction) {
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x, center.y);
+  public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(), center.getY());
     for (int index = 0; index < component.getControlPointCount(); index++) {
-      Point p = new Point(component.getControlPoint(index));
-      rotate.transform(p, p);
+      Point2D p = new Point2D.Double();
+      rotate.transform(component.getControlPoint(index), p);
       component.setControlPoint(p, index);
     }
 
@@ -69,10 +69,10 @@ public class PotentiometerTransformer implements IComponentTransformer {
 
   @SuppressWarnings("incomplete-switch")
   @Override
-  public void mirror(IDIYComponent<?> component, Point center, int direction) {
+  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
     PotentiometerPanel potentiometer = (PotentiometerPanel) component;
-    int dx = center.x - potentiometer.getControlPoint(1).x;
-    int dy = center.y - potentiometer.getControlPoint(1).y;
+    double dx = center.getX() - potentiometer.getControlPoint(1).getX();
+    double dy = center.getY() - potentiometer.getControlPoint(1).getY();
     if (direction == IComponentTransformer.HORIZONTAL) {
       Orientation o = potentiometer.getOrientation();
       switch (o) {
@@ -84,10 +84,10 @@ public class PotentiometerTransformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < potentiometer.getControlPointCount(); i++) {
-        Point p = potentiometer.getControlPoint(i);
+        Point2D p = potentiometer.getControlPoint(i);
         potentiometer
             .setControlPoint(
-                new Point(p.x + 2 * dx, p.y + (potentiometer.getControlPoint(2).y - potentiometer.getControlPoint(0).y)),
+                new Point2D.Double(p.getX() + 2 * dx, p.getY() + (potentiometer.getControlPoint(2).getY() - potentiometer.getControlPoint(0).getY())),
                 i);
       }
 
@@ -103,10 +103,10 @@ public class PotentiometerTransformer implements IComponentTransformer {
       }
 
       for (int i = 0; i < potentiometer.getControlPointCount(); i++) {
-        Point p = potentiometer.getControlPoint(i);
+        Point2D p = potentiometer.getControlPoint(i);
         potentiometer
-            .setControlPoint(new Point(p.x + (potentiometer.getControlPoint(2).x - potentiometer.getControlPoint(0).x),
-                p.y + 2 * dy), i);
+            .setControlPoint(new Point2D.Double(p.getX() + (potentiometer.getControlPoint(2).getX() - potentiometer.getControlPoint(0).getX()),
+                p.getY() + 2 * dy), i);
       }
 
       potentiometer.setOrientation(o);

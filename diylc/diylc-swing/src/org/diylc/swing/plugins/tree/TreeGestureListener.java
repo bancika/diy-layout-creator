@@ -28,7 +28,6 @@ import javax.swing.tree.TreePath;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.plugins.canvas.EmptyTransferable;
-import org.diylc.swing.plugins.tree.TreePanel.Payload;
 
 /**
  * {@link DragGestureListener} for {@link TreePanel}.
@@ -47,14 +46,14 @@ class TreeGestureListener implements DragGestureListener {
   @Override
   public void dragGestureRecognized(DragGestureEvent dge) {
     ComponentType type = null;
-    Payload payload = null;
+    TreeNode payload = null;
     if (presenter.getNewComponentTypeSlot() == null) {
       JTree tree = (JTree) dge.getComponent();
       Point p = dge.getDragOrigin();
       TreePath path = tree.getClosestPathForLocation(p.x, p.y);
       if (path != null && path.getLastPathComponent() instanceof DefaultMutableTreeNode) {
         DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) path.getLastPathComponent();
-        payload = (Payload) leaf.getUserObject();
+        payload = (TreeNode) leaf.getUserObject();
         if (payload != null && (payload.getComponentType() != null || payload.getClickListener() != null))
           type = payload.getComponentType();
       }

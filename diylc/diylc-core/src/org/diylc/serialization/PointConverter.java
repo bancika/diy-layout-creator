@@ -21,7 +21,7 @@
 */
 package org.diylc.serialization;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.utils.Constants;
 
@@ -32,7 +32,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
- * Serializes {@link Point} objects by converting coordinates from pixels to inches, thus avoiding
+ * Serializes {@link Point2D} objects by converting coordinates from pixels to inches, thus avoiding
  * the resolution to affect point placement.
  * 
  * @author Branislav Stojkovic
@@ -41,21 +41,21 @@ public class PointConverter implements Converter {
 
   @Override
   public void marshal(Object object, HierarchicalStreamWriter writer, MarshallingContext context) {
-    Point point = (Point) object;
-    writer.addAttribute("x", Double.toString(1d * point.x / Constants.PIXELS_PER_INCH));
-    writer.addAttribute("y", Double.toString(1d * point.y / Constants.PIXELS_PER_INCH));
+    Point2D point = (Point2D) object;
+    writer.addAttribute("x", Double.toString(1d * point.getX() / Constants.PIXELS_PER_INCH));
+    writer.addAttribute("y", Double.toString(1d * point.getY() / Constants.PIXELS_PER_INCH));
   }
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     double x = Double.parseDouble(reader.getAttribute("x"));
     double y = Double.parseDouble(reader.getAttribute("y"));
-    return new Point((int) Math.round(x * Constants.PIXELS_PER_INCH), (int) Math.round(y * Constants.PIXELS_PER_INCH));
+    return new Point2D.Double(x * Constants.PIXELS_PER_INCH, y * Constants.PIXELS_PER_INCH);
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public boolean canConvert(Class clazz) {
-    return Point.class.isAssignableFrom(clazz);
+    return Point2D.class.isAssignableFrom(clazz);
   }
 }

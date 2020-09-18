@@ -25,11 +25,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -97,7 +97,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   private Mount mount = Mount.CHASSIS;
   private Color labelColor = LABEL_COLOR;
 
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
 
   transient private Shape body;
 
@@ -167,7 +167,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   // }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     int pinCount;
     int pinSpacing;
     boolean hasEmptySpace;
@@ -198,13 +198,13 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     double angleIncrement = Math.PI * 2 / (hasEmptySpace ? (pinCount + 1) : pinCount);
     double initialAngleOffset = hasEmptySpace ? angleIncrement : (angleIncrement / 2);
 
-    controlPoints = new Point[pinCount + 1];
+    controlPoints = new Point2D[pinCount + 1];
     double theta = initialAngleOffset + Math.toRadians(getAngle());
     controlPoints[0] = firstPoint;
     for (int i = 0; i < pinCount; i++) {
       controlPoints[i + 1] =
-          new Point((int) (firstPoint.getX() + Math.cos(theta) * pinSpacing / 2),
-              (int) (firstPoint.getY() + Math.sin(theta) * pinSpacing / 2));
+          new Point2D.Double(firstPoint.getX() + Math.cos(theta) * pinSpacing / 2,
+              firstPoint.getY() + Math.sin(theta) * pinSpacing / 2);
       theta += angleIncrement;
     }
   }
@@ -230,32 +230,32 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
       }
       
       body =
-          new Ellipse2D.Double(controlPoints[0].x - bodyDiameter / 2, controlPoints[0].y - bodyDiameter / 2,
+          new Ellipse2D.Double(controlPoints[0].getX() - bodyDiameter / 2, controlPoints[0].getY() - bodyDiameter / 2,
               bodyDiameter, bodyDiameter);
       Area bodyArea = new Area(body);
       int holeSize = getClosestOdd(base == Base.B12C ? B12C_HOLE_SIZE.convertToPixels() : HOLE_SIZE.convertToPixels());
-      bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - holeSize / 2, controlPoints[0].y - holeSize
+      bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - holeSize / 2, controlPoints[0].getY() - holeSize
           / 2, holeSize, holeSize)));
       
       if (base == Base.OCTAL) {
         int tickSize = getClosestOdd(OCTAL_TICK_SIZE.convertToPixels());
         double theta = Math.toRadians(getAngle());
-        int centerX = (int) (controlPoints[0].x + Math.cos(theta) * holeSize / 2);
-        int centerY = (int) (controlPoints[0].y + Math.sin(theta) * holeSize / 2);
+        int centerX = (int) (controlPoints[0].getX() + Math.cos(theta) * holeSize / 2);
+        int centerY = (int) (controlPoints[0].getY() + Math.sin(theta) * holeSize / 2);
         bodyArea.subtract(new Area(new Ellipse2D.Double(centerX - tickSize / 2, centerY - tickSize / 2, tickSize,
             tickSize)));        
       } else if (base == Base.B9A && getMount() == Mount.CHASSIS) {
         double cutoutDiameter = getClosestOdd(B9A_CUTOUT_DIAMETER.convertToPixels());
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
       } else if (base == Base.B7G && getMount() == Mount.CHASSIS) {
         double cutoutDiameter = getClosestOdd(B7G_CUTOUT_DIAMETER.convertToPixels());
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
       } else if (base == Base.B12C && getMount() == Mount.CHASSIS) {
         double cutoutDiameter = getClosestOdd(B12C_CUTOUT_DIAMETER.convertToPixels());
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].x - cutoutDiameter / 2, controlPoints[0].y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
       }    
       
       body = bodyArea;
@@ -303,14 +303,14 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
         Shape pinShape;
         if (getMount() == Mount.PCB) {
           int pinSize = getClosestOdd(PIN_DIAMETER.convertToPixels());
-          pinShape = new Ellipse2D.Double(controlPoints[i].x - pinSize / 2, controlPoints[i].y - pinSize / 2, pinSize, pinSize);
+          pinShape = new Ellipse2D.Double(controlPoints[i].getX() - pinSize / 2, controlPoints[i].getY() - pinSize / 2, pinSize, pinSize);
         } else {
           int pinWidth = getClosestOdd(PIN_WIDTH.convertToPixels());
           int pinThickness = getClosestOdd(PIN_THICKNESS.convertToPixels());
-          pinShape = new Rectangle2D.Double(controlPoints[i].x - pinWidth / 2, controlPoints[i].y - pinThickness / 2, pinWidth, pinThickness);
-          double theta = Math.atan2(controlPoints[i].y - controlPoints[0].y, controlPoints[i].x - controlPoints[0].x) + Math.PI / 2;
+          pinShape = new Rectangle2D.Double(controlPoints[i].getX() - pinWidth / 2, controlPoints[i].getY() - pinThickness / 2, pinWidth, pinThickness);
+          double theta = Math.atan2(controlPoints[i].getY() - controlPoints[0].getY(), controlPoints[i].getX() - controlPoints[0].getX()) + Math.PI / 2;
           Area rotatedPin = new Area(pinShape);
-          rotatedPin.transform(AffineTransform.getRotateInstance(theta, controlPoints[i].x, controlPoints[i].y));
+          rotatedPin.transform(AffineTransform.getRotateInstance(theta, controlPoints[i].getX(), controlPoints[i].getY()));
           pinShape = rotatedPin;
         }
         g2d.setColor(PIN_COLOR);
@@ -329,9 +329,9 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
       for (int i = 0; i < labels.length; i++) {
         if (i < controlPoints.length - 1) {
           String label = labels[i];
-          double theta = Math.atan2(controlPoints[i + 1].y - controlPoints[0].y, controlPoints[i + 1].x - controlPoints[0].x);
-          double x = controlPoints[i + 1].x - Math.cos(theta) * electrodeLabelOffset;
-          double y = controlPoints[i + 1].y - Math.sin(theta) * electrodeLabelOffset;
+          double theta = Math.atan2(controlPoints[i + 1].getY() - controlPoints[0].getY(), controlPoints[i + 1].getX() - controlPoints[0].getX());
+          double x = controlPoints[i + 1].getX() - Math.cos(theta) * electrodeLabelOffset;
+          double y = controlPoints[i + 1].getY() - Math.sin(theta) * electrodeLabelOffset;
           StringUtils.drawCenteredText(g2d, label, (int)x, (int)y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         }
       }
@@ -360,7 +360,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -391,7 +391,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     
     body = null;

@@ -26,9 +26,9 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -85,7 +85,7 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
 
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   protected Display display = Display.NAME;
   private RelayType type = RelayType.DPDT;
   private RelaySize size = RelaySize.Miniature;
@@ -136,7 +136,7 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -151,13 +151,13 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     int pinCount = 0;
     switch (type) {
       case DPDT:
@@ -169,7 +169,7 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
       default:
         throw new RuntimeException("Unexpected type: " + type);
     }
-    controlPoints = new Point[pinCount];
+    controlPoints = new Point2D[pinCount];
     controlPoints[0] = firstPoint;
     int pinSpacing =
         size == RelaySize.Miniature ? (int) MINI_PIN_SPACING.convertToPixels() : (int) ULTRA_PIN_SPACING
@@ -218,18 +218,18 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point(firstPoint.x + dx1, firstPoint.y + dy1);
-      controlPoints[i + pinCount / 2] = new Point(firstPoint.x + dx2, firstPoint.y + dy2);
+      controlPoints[i] = new Point2D.Double(firstPoint.getX() + dx1, firstPoint.getY() + dy1);
+      controlPoints[i + pinCount / 2] = new Point2D.Double(firstPoint.getX() + dx2, firstPoint.getY() + dy2);
     }
   }
 
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
-      int centerX = (controlPoints[0].x + controlPoints[controlPoints.length - 1].x) / 2;
-      int centerY = (controlPoints[0].y + controlPoints[controlPoints.length - 1].y) / 2;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
+      double centerX = (controlPoints[0].getX() + controlPoints[controlPoints.length - 1].getX()) / 2;
+      double centerY = (controlPoints[0].getY() + controlPoints[controlPoints.length - 1].getY()) / 2;
       int bodyMargin = getClosestOdd(BODY_MARGIN.convertToPixels());
       int width = 0;
       int height = 0;
@@ -308,13 +308,13 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
 
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-    for (Point point : controlPoints) {
+    for (Point2D point : controlPoints) {
       if (!outlineMode) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
       }
       g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-      g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+      g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
     }
 
     Color finalBorderColor;
@@ -367,9 +367,9 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
     int textWidth = (int) (rect.getWidth());
     // Center text horizontally and vertically
     Rectangle bounds = mainArea.getBounds();
-    int x = bounds.x + (bounds.width - textWidth) / 2;
-    int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
-    g2d.drawString(label, x, y);
+    double x = bounds.getX() + (bounds.width - textWidth) / 2;
+    double y = bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+    g2d.drawString(label, (int)x, (int)y);
   }
 
   @Override
@@ -434,21 +434,21 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
   
   @Override
   public Rectangle2D getCachingBounds() {
-    int minX = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxY = Integer.MIN_VALUE;
-    int margin = 50;
+    double minX = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxY = Integer.MIN_VALUE;
+    double margin = 50;
     for (int i = 0; i < getControlPointCount(); i++) {
-      Point p = getControlPoint(i);
-      if (p.x < minX)
-        minX = p.x;
-      if (p.x > maxX)
-        maxX = p.x;
-      if (p.y < minY)
-        minY = p.y;
-      if (p.y > maxY)
-        maxY = p.y;
+      Point2D p = getControlPoint(i);
+      if (p.getX() < minX)
+        minX = p.getX();
+      if (p.getX() > maxX)
+        maxX = p.getX();
+      if (p.getY() < minY)
+        minY = p.getY();
+      if (p.getY() > maxY)
+        maxY = p.getY();
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);

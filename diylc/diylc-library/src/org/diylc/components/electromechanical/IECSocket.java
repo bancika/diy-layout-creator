@@ -29,6 +29,7 @@ import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -79,7 +80,7 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
   private static Color BODY_COLOR = Color.decode("#555555");
   private static Color BORDER_COLOR = BODY_COLOR.darker();
 
-  protected Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient protected Area[] body;
   protected String name;
   protected String value;
@@ -95,12 +96,12 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
 
   @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     int hSpacing = (int) HORIZONTAL_SPACING.convertToPixels();
     int vSpacing = (int) VERTICAL_SPACING.convertToPixels();
    
-    controlPoints[1].setLocation(firstPoint.x - hSpacing, firstPoint.y + vSpacing);
-    controlPoints[2].setLocation(firstPoint.x + hSpacing, firstPoint.y + vSpacing);
+    controlPoints[1].setLocation(firstPoint.getX() - hSpacing, firstPoint.getY() + vSpacing);
+    controlPoints[2].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY() + vSpacing);
     
     if (orientation != Orientation.DEFAULT) {
       double theta = 0;
@@ -115,7 +116,7 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
           theta = Math.PI * 3 / 2;
           break;
       }
-      AffineTransform rotation = AffineTransform.getRotateInstance(theta, firstPoint.x, firstPoint.y);
+      AffineTransform rotation = AffineTransform.getRotateInstance(theta, firstPoint.getX(), firstPoint.getY());
 
       for (int i = 1; i < controlPoints.length; i++) {
         rotation.transform(controlPoints[i], controlPoints[i]);
@@ -124,7 +125,7 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -144,7 +145,7 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     // Reset body shape.
     body = null;
@@ -235,13 +236,13 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
       lugWidth = p;
     }
     
-    for (Point p : controlPoints) {
+    for (Point2D p : controlPoints) {
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+        g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       } else {
         g2d.setColor(METAL_COLOR);
-        g2d.fillRect(p.x - lugWidth / 2, p.y - lugHeight / 2, lugWidth, lugHeight);
+        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       }
     }
     
@@ -251,7 +252,7 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
   @SuppressWarnings("incomplete-switch")
   public Area[] getBody() {
     if (body == null) {
-      Point firstPoint = controlPoints[0];
+      Point2D firstPoint = controlPoints[0];
       int vSpacing = (int) VERTICAL_SPACING.convertToPixels();
       
       double cutoutRadius;
@@ -278,13 +279,13 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
       outerRadius = SIMPLE_OUTER_RADIUS.convertToPixels();
       
       Point[] outerPoints = new Point[] {
-          new Point((int) Math.round(firstPoint.x), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
-          new Point((int) Math.round(firstPoint.x + baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
-          new Point((int) Math.round(firstPoint.x + length / 2), (int) Math.round(firstPoint.y + vSpacing / 2)),
-          new Point((int) Math.round(firstPoint.x + baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 + baseWidth / 2)),
-          new Point((int) Math.round(firstPoint.x - baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 + baseWidth / 2)),
-          new Point((int) Math.round(firstPoint.x - length / 2), (int) Math.round(firstPoint.y + vSpacing / 2)),
-          new Point((int) Math.round(firstPoint.x - baseLength / 2), (int) Math.round(firstPoint.y + vSpacing / 2 - baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY() + vSpacing / 2 - baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.getX() + baseLength / 2), (int) Math.round(firstPoint.getY() + vSpacing / 2 - baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.getX() + length / 2), (int) Math.round(firstPoint.getY() + vSpacing / 2)),
+          new Point((int) Math.round(firstPoint.getX() + baseLength / 2), (int) Math.round(firstPoint.getY() + vSpacing / 2 + baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.getX() - baseLength / 2), (int) Math.round(firstPoint.getY() + vSpacing / 2 + baseWidth / 2)),
+          new Point((int) Math.round(firstPoint.getX() - length / 2), (int) Math.round(firstPoint.getY() + vSpacing / 2)),
+          new Point((int) Math.round(firstPoint.getX() - baseLength / 2), (int) Math.round(firstPoint.getY() + vSpacing / 2 - baseWidth / 2)),
       };
       
       double[] outerRadiuses = new double[] {
@@ -297,19 +298,19 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
       };
       
       body[0] = new Area(new RoundedPolygon(outerPoints, outerRadiuses));
-      body[0].subtract(new Area(new Ellipse2D.Double(firstPoint.x - holeSpacing / 2 - holeDiameter / 2, firstPoint.y + vSpacing / 2 - holeDiameter / 2, holeDiameter, holeDiameter)));
-      body[0].subtract(new Area(new Ellipse2D.Double(firstPoint.x + holeSpacing / 2 - holeDiameter / 2, firstPoint.y + vSpacing / 2 - holeDiameter / 2, holeDiameter, holeDiameter)));
+      body[0].subtract(new Area(new Ellipse2D.Double(firstPoint.getX() - holeSpacing / 2 - holeDiameter / 2, firstPoint.getY() + vSpacing / 2 - holeDiameter / 2, holeDiameter, holeDiameter)));
+      body[0].subtract(new Area(new Ellipse2D.Double(firstPoint.getX() + holeSpacing / 2 - holeDiameter / 2, firstPoint.getY() + vSpacing / 2 - holeDiameter / 2, holeDiameter, holeDiameter)));
       
-      body[1] = new Area(new RoundRectangle2D.Double(firstPoint.x - baseLength / 2, firstPoint.y + vSpacing / 2 - baseWidth / 2, baseLength, baseWidth, baseRadius, baseRadius));
+      body[1] = new Area(new RoundRectangle2D.Double(firstPoint.getX() - baseLength / 2, firstPoint.getY() + vSpacing / 2 - baseWidth / 2, baseLength, baseWidth, baseRadius, baseRadius));
       
-      Point[] cutoutPoints = new Point[] {
-          new Point(firstPoint.x, (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
-          new Point((int) (firstPoint.x + cutoutLength / 2 - cutoutSlant), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
-          new Point((int) (firstPoint.x + cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant)),
-          new Point((int) (firstPoint.x + cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 + cutoutWidth / 2)),
-          new Point((int) (firstPoint.x - cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 + cutoutWidth / 2)),
-          new Point((int) (firstPoint.x - cutoutLength / 2), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant)),
-          new Point((int) (firstPoint.x - cutoutLength / 2 + cutoutSlant), (int) (firstPoint.y + vSpacing / 2 - cutoutWidth / 2)),
+      Point2D[] cutoutPoints = new Point2D[] {
+          new Point2D.Double(firstPoint.getX(), firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2),
+          new Point2D.Double(firstPoint.getX() + cutoutLength / 2 - cutoutSlant, (int) (firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2)),
+          new Point2D.Double(firstPoint.getX() + cutoutLength / 2, firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant),
+          new Point2D.Double(firstPoint.getX() + cutoutLength / 2, firstPoint.getY() + vSpacing / 2 + cutoutWidth / 2),
+          new Point2D.Double(firstPoint.getX() - cutoutLength / 2, firstPoint.getY() + vSpacing / 2 + cutoutWidth / 2),
+          new Point2D.Double(firstPoint.getX() - cutoutLength / 2, firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant),
+          new Point2D.Double(firstPoint.getX() - cutoutLength / 2 + cutoutSlant, firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2),
       };
       
       double[] cutoutRadiuses = new double[] {
@@ -331,7 +332,7 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
             theta = Math.PI * 3 / 2;
             break;
         }
-        AffineTransform rotation = AffineTransform.getRotateInstance(theta, firstPoint.x, firstPoint.y);
+        AffineTransform rotation = AffineTransform.getRotateInstance(theta, firstPoint.getX(), firstPoint.getY());
         for (Area a : body)
           if (a != null)
             a.transform(rotation);

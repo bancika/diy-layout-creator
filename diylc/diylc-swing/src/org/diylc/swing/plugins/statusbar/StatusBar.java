@@ -50,9 +50,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.EdgedBalloonStyle;
-
 import org.apache.log4j.Logger;
 import org.diylc.announcements.AnnouncementProvider;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -76,6 +73,9 @@ import org.diylc.swingframework.MemoryBar;
 import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
 import org.diylc.swingframework.update.UpdateDialog;
 import org.diylc.swingframework.update.UpdateLabel;
+
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.EdgedBalloonStyle;
 
 public class StatusBar extends JPanel implements IPlugIn {
 
@@ -122,7 +122,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   // State variables
   private ComponentType componentSlot;
-  private Point controlPointSlot;
+  private Point2D controlPointSlot;
   private Boolean forceInstatiate;
   private List<String> componentNamesUnderCursor;
   private List<String> selectedComponentNames;
@@ -214,7 +214,9 @@ public class StatusBar extends JPanel implements IPlugIn {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          plugInPort.setZoomLevel((Double) zoomBox.getSelectedItem());
+          Double newZoom = (Double) zoomBox.getSelectedItem();
+          if (!newZoom.equals(plugInPort.getZoomLevel()))
+            plugInPort.setZoomLevel((Double) zoomBox.getSelectedItem());
         }
       });
     }
@@ -481,7 +483,7 @@ public class StatusBar extends JPanel implements IPlugIn {
         break;
       case SLOT_CHANGED:
         componentSlot = (ComponentType) params[0];
-        controlPointSlot = (Point) params[1];
+        controlPointSlot = (Point2D) params[1];
         forceInstatiate = params.length > 2 ? (Boolean)params[2] : null;
         refreshStatusText();
         break;

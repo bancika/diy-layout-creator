@@ -53,7 +53,7 @@ public class EllipticalCutout extends AbstractShape {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
       g2d.setColor(color);
-      g2d.fillOval(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+      g2d.fillOval((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(secondPoint.getX() - firstPoint.getX()), (int)(secondPoint.getY() - firstPoint.getY()));
       g2d.setComposite(oldComposite);
     }
     // Do not track any changes that follow because the whole oval has been
@@ -61,7 +61,7 @@ public class EllipticalCutout extends AbstractShape {
     drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : borderColor);
-    g2d.drawOval(firstPoint.x, firstPoint.y, secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y);
+    g2d.drawOval((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(secondPoint.getX() - firstPoint.getX()), (int)(secondPoint.getY() - firstPoint.getY()));
   }
 
   @Override

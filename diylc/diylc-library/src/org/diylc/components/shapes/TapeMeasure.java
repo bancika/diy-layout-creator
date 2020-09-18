@@ -26,12 +26,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 
@@ -111,13 +111,15 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     g2d.setStroke(stroke);
     g2d.setColor(componentState == ComponentState.SELECTED ? SELECTION_COLOR : color);
     
-    Point startPoint = new Point(getControlPoint(0));
-    Point endPoint = new Point(getControlPoint(1));
+    Point2D first = getControlPoint(0);
+    Point2D second = getControlPoint(1);
+    Point2D startPoint = new Point2D.Double(first.getX(), first.getY());
+    Point2D endPoint = new Point2D.Double(second.getX(), second.getY());
     
     if (arrowStart) {
       arrowTx.setToIdentity();
-      double angle = Math.atan2(getControlPoint(1).y - getControlPoint(0).y, getControlPoint(1).x - getControlPoint(0).x);
-      arrowTx.translate(getControlPoint(0).x, getControlPoint(0).y);
+      double angle = Math.atan2(getControlPoint(1).getY() - getControlPoint(0).getY(), getControlPoint(1).getX() - getControlPoint(0).getX());
+      arrowTx.translate(getControlPoint(0).getX(), getControlPoint(0).getY());
       arrowTx.rotate((angle + Math.PI / 2d));
       AffineTransform oldTx = g2d.getTransform();
       g2d.transform(arrowTx);         
@@ -125,13 +127,13 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
       g2d.setTransform(oldTx);
       
       // make the line slightly shorter so line end doesn't overlap with the arrow
-      double distance = distance(startPoint, endPoint);
+      double distance = startPoint.distance(endPoint);
       interpolate(startPoint, endPoint, getArrowSize().convertToPixels() * 0.9 / distance, startPoint);
     }
     if (arrowEnd) {
       arrowTx.setToIdentity();
-      double angle = Math.atan2(getControlPoint(1).y - getControlPoint(0).y, getControlPoint(1).x - getControlPoint(0).x);
-      arrowTx.translate(getControlPoint(1).x, getControlPoint(1).y);
+      double angle = Math.atan2(getControlPoint(1).getY() - getControlPoint(0).getY(), getControlPoint(1).getX() - getControlPoint(0).getX());
+      arrowTx.translate(getControlPoint(1).getX(), getControlPoint(1).getY());
       arrowTx.rotate((angle - Math.PI / 2d));
       AffineTransform oldTx = g2d.getTransform();
       g2d.transform(arrowTx);   
@@ -139,11 +141,11 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
       g2d.setTransform(oldTx);
       
       // make the line slightly shorter so line end doesn't overlap with the arrow
-      double distance = distance(startPoint, endPoint);
+      double distance = startPoint.distance(endPoint);
       interpolate(endPoint, startPoint, getArrowSize().convertToPixels() * 0.9 / distance, endPoint);
     }
     
-    double theta = Math.atan2(getPoints()[1].y - getPoints()[0].y, getPoints()[1].x - getPoints()[0].x);
+    double theta = Math.atan2(getPoints()[1].getY() - getPoints()[0].getY(), getPoints()[1].getX() - getPoints()[0].getX());
     
     String text = getValue();
     Font font = Project.DEFAULT_FONT;
@@ -157,33 +159,30 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     System.out.println(strWidth + " " + legLength);
         
     // draw legs around the enter text
-    g2d.drawLine(startPoint.x, startPoint.y, 
-    		(int)Math.round(startPoint.x + Math.cos(theta) * legLength), 
-    		(int)Math.round(startPoint.y + Math.sin(theta) * legLength));
+    g2d.drawLine((int)startPoint.getX(), (int)startPoint.getY(), 
+    		(int)Math.round(startPoint.getX() + Math.cos(theta) * legLength), 
+    		(int)Math.round(startPoint.getY() + Math.sin(theta) * legLength));
     
-    g2d.drawLine(endPoint.x, endPoint.y, 
-    		(int)Math.round(endPoint.x - Math.cos(theta) * legLength), 
-    		(int)Math.round(endPoint.y - Math.sin(theta) * legLength));
+    g2d.drawLine((int)endPoint.getX(), (int)endPoint.getY(), 
+    		(int)Math.round(endPoint.getX() - Math.cos(theta) * legLength), 
+    		(int)Math.round(endPoint.getY() - Math.sin(theta) * legLength));
     
     // Adjust label angle if needed to make sure that it's readable.
     if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {      
       theta += Math.PI;
     }
     
-    g2d.translate((getPoints()[0].x + getPoints()[1].x) / 2, (getPoints()[0].y + getPoints()[1].y) / 2);
+    g2d.translate((getPoints()[0].getX() + getPoints()[1].getX()) / 2, (getPoints()[0].getY() + getPoints()[1].getY()) / 2);
     g2d.rotate(theta);
     
     g2d.setFont(font);
     g2d.drawString(text, x, y);
   }
   
-  private void interpolate(Point p1, Point p2, double t, Point p) {
-    p.setLocation((int)Math.round(p1.x * (1-t) + p2.x * t), (int)Math.round(p1.y * (1-t) + p2.y * t));
+  private void interpolate(Point2D p1, Point2D p2, double t, Point2D p) {
+    p.setLocation((int)Math.round(p1.getX() * (1-t) + p2.getX() * t), (int)Math.round(p1.getY() * (1-t) + p2.getY() * t));
   }
-  
-  private double distance(Point p1, Point p2) {
-    return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
-  }
+ 
 
   @Override
   public Color getLeadColorForPainting(ComponentState componentState) {
@@ -294,8 +293,8 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
 
   @Override
   public String getValue() {
-	Point a = getControlPoint(0);
-	Point b = getControlPoint(1);
+	Point2D a = getControlPoint(0);
+	Point2D b = getControlPoint(1);
 	double d = a.distance(b);
 	double convertedD = SizeUnit.px.getFactor() / getUnit().getFactor() * d;
 	String format = "#";

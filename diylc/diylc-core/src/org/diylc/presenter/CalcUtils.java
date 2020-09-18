@@ -21,7 +21,7 @@
 */
 package org.diylc.presenter;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,18 +37,18 @@ public class CalcUtils {
    * @param x
    * @return
    */
-  public static int roundToGrid(double x, Size gridSpacing) {
+  public static double roundToGrid(double x, Size gridSpacing) {
     double grid = gridSpacing.convertToPixels();
-    return (int) Math.round((Math.round(1f * x / grid) * grid));
+    return (Math.round(1f * x / grid) * grid);
   }
 
-  public static void snapPointToGrid(Point point, Size gridSpacing) {
-    int x = roundToGrid(point.x, gridSpacing);
-    int y = roundToGrid(point.y, gridSpacing);
+  public static void snapPointToGrid(Point2D point, Size gridSpacing) {
+    double x = roundToGrid(point.getX(), gridSpacing);
+    double y = roundToGrid(point.getY(), gridSpacing);
     point.setLocation(x, y);
   }
   
-  public static void snapPointToObjects(Point point, Size gridSpacing, IDIYComponent<?> component, List<IDIYComponent<?>> components) {
+  public static void snapPointToObjects(Point2D point, Size gridSpacing, IDIYComponent<?> component, List<IDIYComponent<?>> components) {
     for (IDIYComponent<?> c : components) {
       if (c == component)
         continue;

@@ -25,11 +25,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -66,7 +66,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
   private static Size TERMINAL_SPACING = new Size(0.2d, SizeUnit.in);
 
   private String value = "";
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
 
@@ -135,8 +135,8 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
     if (body == null) {
       body = new Shape[3];
 
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int baseLength = (int) BASE_LENGTH.convertToPixels();
       int length = (int) LENGTH.convertToPixels();
       int waferThickness = getClosestOdd(WAFER_THICKNESS.convertToPixels());
@@ -145,7 +145,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
           new Rectangle2D.Double(x - waferThickness / 2, y, waferThickness - 1, baseLength + (length - baseLength) / 2);
       body[0] = new Area(ground);
 
-      int bodyY = y + (length - baseLength) / 2;
+      double bodyY = y + (length - baseLength) / 2;
 
       Area waferArea = new Area();//new Area(new Rectangle2D.Double(x - waferThickness * 3 / 2, bodyY, waferThickness, baseLength));
       waferArea.add(new Area(new Rectangle2D.Double(x + waferThickness / 2, bodyY, waferThickness  *3, baseLength)));
@@ -215,8 +215,8 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
 
   @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     int terminalSpacing = (int) TERMINAL_SPACING.convertToPixels();
     int length = (int) LENGTH.convertToPixels();
 
@@ -239,7 +239,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
           break;
       }
       AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
         rotation.transform(point, point);
       }
     }
@@ -290,12 +290,12 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoints[index].setLocation(point);
     // Invalidate the body
     body = null;

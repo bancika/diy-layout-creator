@@ -25,7 +25,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -54,10 +54,10 @@ public class WrapLabel extends AbstractComponent<String> {
   public static Size DEFAULT_WIDTH = new Size(1.5d, SizeUnit.in);
   public static Size DEFAULT_HEIGHT = new Size(0.5d, SizeUnit.in);
   
-  protected Point[] controlPoints = new Point[] {new Point(0, 0),
-      new Point((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels())};
-  protected Point firstPoint = new Point();
-  protected Point secondPoint = new Point();
+  protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0),
+      new Point2D.Double((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels())};
+  protected Point2D firstPoint = new Point2D.Double();
+  protected Point2D secondPoint = new Point2D.Double();
   
   private Font font = LABEL_FONT;
   private Color color = LABEL_COLOR;
@@ -86,17 +86,17 @@ public class WrapLabel extends AbstractComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
-    firstPoint.setLocation(Math.min(controlPoints[0].x, controlPoints[1].x),
-        Math.min(controlPoints[0].y, controlPoints[1].y));
-    secondPoint.setLocation(Math.max(controlPoints[0].x, controlPoints[1].x),
-        Math.max(controlPoints[0].y, controlPoints[1].y));
+    firstPoint.setLocation(Math.min(controlPoints[0].getX(), controlPoints[1].getX()),
+        Math.min(controlPoints[0].getY(), controlPoints[1].getY()));
+    secondPoint.setLocation(Math.max(controlPoints[0].getX(), controlPoints[1].getX()),
+        Math.max(controlPoints[0].getY(), controlPoints[1].getY()));
   }
 
   @Override
@@ -178,11 +178,11 @@ public class WrapLabel extends AbstractComponent<String> {
     g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : color);
     g2d.setFont(font);
 
-    int x = firstPoint.x;
-    int y = firstPoint.y;
-    int maxWidth = secondPoint.x - firstPoint.x;
+    double x = firstPoint.getX();
+    double y = firstPoint.getY();
+    double maxWidth = secondPoint.getX() - firstPoint.getX();
     
-    StringUtils.drawWrappedText(value, g2d, x, y, maxWidth, horizontalAlignment);
+    StringUtils.drawWrappedText(value, g2d, (int)x, (int)y, (int)maxWidth, horizontalAlignment);
   }
 
   @Override

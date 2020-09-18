@@ -25,12 +25,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -74,7 +73,7 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
   private static Size BODY_LENGTH = new Size(0.9d, SizeUnit.in);
   private static Size TAIL_LENGTH = new Size(0.1d, SizeUnit.in);
 
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private JackType type = JackType.MONO;
   private Orientation orientation = Orientation.DEFAULT;
   transient private Area[] body;
@@ -88,18 +87,18 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
   private void updateControlPoints() {
     // invalidate body shape
     body = null;
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     int spacing = (int) SPACING.convertToPixels();
-    controlPoints = new Point[type == JackType.STEREO ? 6 : 4];
+    controlPoints = new Point2D[type == JackType.STEREO ? 6 : 4];
 
-    controlPoints[0] = new Point(x, y);
-    controlPoints[1] = new Point(x, y + 2 * spacing);
-    controlPoints[2] = new Point(x + 2 * spacing, y);
-    controlPoints[3] = new Point(x + 2 * spacing, y + 2 * spacing);
+    controlPoints[0] = new Point2D.Double(x, y);
+    controlPoints[1] = new Point2D.Double(x, y + 2 * spacing);
+    controlPoints[2] = new Point2D.Double(x + 2 * spacing, y);
+    controlPoints[3] = new Point2D.Double(x + 2 * spacing, y + 2 * spacing);
     if (type == JackType.STEREO) {
-      controlPoints[4] = new Point(x + spacing, y);
-      controlPoints[5] = new Point(x + spacing, y + 2 * spacing);
+      controlPoints[4] = new Point2D.Double(x + spacing, y);
+      controlPoints[5] = new Point2D.Double(x + spacing, y + 2 * spacing);
     }
 
     // Apply rotation if necessary
@@ -139,9 +138,9 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
       // Create body.
       int bodyLength = (int) BODY_LENGTH.convertToPixels();
       int bodyWidth = (int) BODY_WIDTH.convertToPixels();
-      int centerX = (controlPoints[0].x + controlPoints[3].x) / 2;
-      int centerY = (controlPoints[0].y + controlPoints[3].y) / 2;
-      body[0] = new Area(new Rectangle(centerX - bodyLength / 2, centerY - bodyWidth / 2, bodyLength, bodyWidth));
+      double centerX = (controlPoints[0].getX() + controlPoints[3].getX()) / 2;
+      double centerY = (controlPoints[0].getY() + controlPoints[3].getY()) / 2;
+      body[0] = new Area(new Rectangle2D.Double(centerX - bodyLength / 2, centerY - bodyWidth / 2, bodyLength, bodyWidth));
 
       int tailLength = (int) TAIL_LENGTH.convertToPixels();
       body[1] = new Area(new RoundRectangle2D.Double(centerX - bodyLength / 2 - tailLength, centerY - bodyWidth / 4, tailLength * 2,
@@ -150,9 +149,9 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
       tailArea.subtract(new Area(body[0]));
       body[1] = tailArea;
 
-      body[2] = new Area(new Rectangle(centerX + bodyLength / 2, centerY - bodyWidth / 4, tailLength, bodyWidth / 2));
+      body[2] = new Area(new Rectangle2D.Double(centerX + bodyLength / 2, centerY - bodyWidth / 4, tailLength, bodyWidth / 2));
 
-      body[3] = new Area(new Rectangle(centerX + bodyLength / 2 + tailLength, centerY - bodyWidth / 4, tailLength, bodyWidth / 2));
+      body[3] = new Area(new Rectangle2D.Double(centerX + bodyLength / 2 + tailLength, centerY - bodyWidth / 4, tailLength, bodyWidth / 2));
       tailArea = new Area(body[3]);
       int radius = bodyLength / 2 + tailLength * 2;
       tailArea.intersect(new Area(new Ellipse2D.Double(centerX - radius, centerY - radius, radius * 2, radius * 2)));
@@ -177,12 +176,12 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
       int pinWidth = (int) PIN_WIDTH.convertToPixels();
       int pinThickness = (int) PIN_THICKNESS.convertToPixels();
       for (int i = 0; i < getControlPointCount(); i++) {
-        Point point = getControlPoint(i);
-        Rectangle pin;
+        Point2D point = getControlPoint(i);
+        Rectangle2D pin;
         if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
-          pin = new Rectangle(point.x - pinWidth / 2, point.y - pinThickness / 2, pinWidth, pinThickness);
+          pin = new Rectangle2D.Double(point.getX() - pinWidth / 2, point.getY() - pinThickness / 2, pinWidth, pinThickness);
         } else {
-          pin = new Rectangle(point.x - pinThickness / 2, point.y - pinWidth / 2, pinThickness, pinWidth);
+          pin = new Rectangle2D.Double(point.getX() - pinThickness / 2, point.getY() - pinWidth / 2, pinThickness, pinWidth);
         }
         pins.add(new Area(pin));
       }
@@ -249,8 +248,8 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
     }
     g2d.setColor(finalLabelColor);
     g2d.setFont(project.getFont());
-    int centerX = (controlPoints[0].x + controlPoints[3].x) / 2;
-    int centerY = (controlPoints[0].y + controlPoints[3].y) / 2;
+    double centerX = (controlPoints[0].getX() + controlPoints[3].getX()) / 2;
+    double centerY = (controlPoints[0].getY() + controlPoints[3].getY()) / 2;
     StringUtils.drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     
     drawSelectionOutline(g2d, componentState, outlineMode, project, drawingObserver);
@@ -293,12 +292,12 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }

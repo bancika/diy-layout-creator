@@ -25,9 +25,9 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -71,7 +71,7 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
   private Size boardWidth = new Size(0.35d, SizeUnit.in);
   private Size terminalSpacing = new Size(0.25d, SizeUnit.in);
   private Size holeSpacing = new Size(0.5d, SizeUnit.in);
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private Color boardColor = BOARD_COLOR;
   @SuppressWarnings("unused")
   @Deprecated
@@ -171,7 +171,7 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -186,14 +186,14 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
-    controlPoints = new Point[getTerminalCount() * (getCenterHole() ? 3 : 2)];
+    Point2D firstPoint = controlPoints[0];
+    controlPoints = new Point2D[getTerminalCount() * (getCenterHole() ? 3 : 2)];
     controlPoints[0] = firstPoint;
     int pinSpacing = (int) this.terminalSpacing.convertToPixels();
     int rowSpacing = (int) this.holeSpacing.convertToPixels();
@@ -241,18 +241,18 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point(firstPoint.x + dx1, firstPoint.y + dy1);
-      controlPoints[i + getTerminalCount()] = new Point(firstPoint.x + dx2, firstPoint.y + dy2);
+      controlPoints[i] = new Point2D.Double(firstPoint.getX() + dx1, firstPoint.getY() + dy1);
+      controlPoints[i + getTerminalCount()] = new Point2D.Double(firstPoint.getX() + dx2, firstPoint.getY() + dy2);
       if (centerHole)
-        controlPoints[i + 2 * getTerminalCount()] = new Point(firstPoint.x + cx, firstPoint.y + cy);
+        controlPoints[i + 2 * getTerminalCount()] = new Point2D.Double(firstPoint.getX() + cx, firstPoint.getY() + cy);
     }
   }
 
   public Area[] getBody() {
     if (body == null) {
       body = new Area[1 + getTerminalCount()];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int width;
       int height;
       int holeSize = (int) HOLE_SIZE.convertToPixels();
@@ -317,24 +317,24 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
 
 
       for (int i = 0; i < getTerminalCount(); i++) {
-        Point p1 = getControlPoint(i);
-        Point p2 = getControlPoint(i + getTerminalCount());
-        if (p2.x < p1.x || p2.y < p1.y) {
-          Point p = p1;
+        Point2D p1 = getControlPoint(i);
+        Point2D p2 = getControlPoint(i + getTerminalCount());
+        if (p2.getX() < p1.getX() || p2.getY() < p1.getY()) {
+          Point2D p = p1;
           p1 = p2;
           p2 = p;
         }
 
         Area terminal =
-            new Area(new RoundRectangle2D.Double(p1.x - holeSize, p1.y - holeSize, p2.x - p1.x + holeSize * 2, p2.y
-                - p1.y + holeSize * 2, holeSize, holeSize));
+            new Area(new RoundRectangle2D.Double(p1.getX() - holeSize, p1.getY() - holeSize, p2.getX() - p1.getX() + holeSize * 2, p2.getY()
+                - p1.getY() + holeSize * 2, holeSize, holeSize));
 
-        terminal.subtract(new Area(new Ellipse2D.Double(p1.x - holeSize / 2, p1.y - holeSize / 2, holeSize, holeSize)));
-        terminal.subtract(new Area(new Ellipse2D.Double(p2.x - holeSize / 2, p2.y - holeSize / 2, holeSize, holeSize)));
+        terminal.subtract(new Area(new Ellipse2D.Double(p1.getX() - holeSize / 2, p1.getY() - holeSize / 2, holeSize, holeSize)));
+        terminal.subtract(new Area(new Ellipse2D.Double(p2.getX() - holeSize / 2, p2.getY() - holeSize / 2, holeSize, holeSize)));
         if (centerHole) {
-          Point p3 = getControlPoint(i + 2 * getTerminalCount());
+          Point2D p3 = getControlPoint(i + 2 * getTerminalCount());
           Area centerHole =
-              new Area(new Ellipse2D.Double(p3.x - holeSize / 2, p3.y - holeSize / 2, holeSize, holeSize));
+              new Area(new Ellipse2D.Double(p3.getX() - holeSize / 2, p3.getY() - holeSize / 2, holeSize, holeSize));
           terminal.subtract(centerHole);
           bodyArea.subtract(centerHole);
         }

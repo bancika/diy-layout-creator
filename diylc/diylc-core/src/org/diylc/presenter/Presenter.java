@@ -202,10 +202,10 @@ public class Presenter implements IPlugInPort {
   // D&D
   private boolean dragInProgress = false;
   // Previous mouse location, not scaled for zoom factor.
-  private Point previousDragPoint = null;
+  private Point2D previousDragPoint = null;
   private Project preDragProject = null;
   private int dragAction;
-  private Point previousScaledPoint;
+  private Point2D previousScaledPoint;
   
   private DIYTest test = null;
 
@@ -246,8 +246,8 @@ public class Presenter implements IPlugInPort {
   // IPlugInPort
 
   @Override
-  public Double[] getAvailableZoomLevels() {
-    return new Double[] {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
+  public java.lang.Double[] getAvailableZoomLevels() {
+    return new java.lang.Double[] {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
   }
 
   @Override
@@ -257,10 +257,10 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public void setZoomLevel(double zoomLevel) {
-    LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
     if (drawingManager.getZoomLevel() == zoomLevel) {
       return;
     }
+    LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
     drawingManager.setZoomLevel(zoomLevel);
   }
 
@@ -279,7 +279,7 @@ public class Presenter implements IPlugInPort {
         if (!isComponentLocked(component) && isComponentVisible(component)
             && !configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
           ComponentArea area = drawingManager.getComponentArea(component);
-          if (area != null && area.getOutlineArea() != null && area.getOutlineArea().contains(scaledPoint)) {
+          if (area != null && area.getOutlineArea() != null && scaledPoint != null && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
           }
         }
@@ -502,7 +502,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFilter filter, Double externalZoom, Rectangle2D visibleRect) {
+  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFilter filter, java.lang.Double externalZoom, Rectangle2D visibleRect) {
     if (currentProject == null) {
       return;
     }
@@ -566,7 +566,7 @@ public class Presenter implements IPlugInPort {
    * 
    * @return
    */
-  public List<IDIYComponent<?>> findComponentsAtScaled(Point point, boolean includeLocked) {
+  public List<IDIYComponent<?>> findComponentsAtScaled(Point2D point, boolean includeLocked) {
     List<IDIYComponent<?>> components = drawingManager.findComponentsAt(point, currentProject);
     Iterator<IDIYComponent<?>> iterator = components.iterator();
     while (iterator.hasNext()) {
@@ -579,8 +579,8 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public List<IDIYComponent<?>> findComponentsAt(Point point, boolean includeLocked) {
-    Point scaledPoint = scalePoint(point);
+  public List<IDIYComponent<?>> findComponentsAt(Point2D point, boolean includeLocked) {
+    Point2D scaledPoint = scalePoint(point);
     List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint, includeLocked);
     return components;
   }
@@ -601,7 +601,7 @@ public class Presenter implements IPlugInPort {
       test.addStep(DIYTest.MOUSE_CLICKED, params);
     }    
       
-    Point scaledPoint = scalePoint(point);
+    Point2D scaledPoint = scalePoint(point);
     if (clickCount >= 2) {
       editSelection();
     } else {
@@ -728,9 +728,9 @@ public class Presenter implements IPlugInPort {
     }
   }
 
-  private void addPendingComponentsToProject(Point scaledPoint, ComponentType componentTypeSlot, Template template) {
+  private void addPendingComponentsToProject(Point2D scaledPoint, ComponentType componentTypeSlot, Template template) {
     List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
-    Point firstPoint = componentSlot.get(0).getControlPoint(0);
+    Point2D firstPoint = componentSlot.get(0).getControlPoint(0);
     // don't allow to create component with the same points
     if (scaledPoint == null || scaledPoint.equals(firstPoint))
       return;
@@ -924,7 +924,7 @@ public class Presenter implements IPlugInPort {
       for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
         IDIYComponent<?> component = currentProject.getComponents().get(i);
         for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
-          Point controlPoint = component.getControlPoint(pointIndex);
+          Point2D controlPoint = component.getControlPoint(pointIndex);
           // Only consider selected components that are not grouped.
           if (selectedComponents.contains(component) && component.canPointMoveFreely(pointIndex)
               && findAllGroupedComponents(component).size() == 1) {
@@ -945,7 +945,7 @@ public class Presenter implements IPlugInPort {
     }
 
     Point2D inPoint =
-        new Point2D.Double(1.0d * previousScaledPoint.x / Constants.PIXELS_PER_INCH, 1.0d * previousScaledPoint.y
+        new Point2D.Double(1.0d * previousScaledPoint.getX() / Constants.PIXELS_PER_INCH, 1.0d * previousScaledPoint.getY()
             / Constants.PIXELS_PER_INCH);
     Point2D mmPoint =
         new Point2D.Double(inPoint.getX() * SizeUnit.in.getFactor() / SizeUnit.cm.getFactor() * 10d, inPoint.getY()
@@ -1123,7 +1123,7 @@ public class Presenter implements IPlugInPort {
     this.dragInProgress = true;
     this.dragAction = dragAction;
     this.preDragProject = currentProject.clone();
-    Point scaledPoint = scalePoint(point);
+    Point2D scaledPoint = scalePoint(point);
     this.previousDragPoint = scaledPoint;
     List<IDIYComponent<?>> components = forceSelectionRect ? null : findComponentsAtScaled(scaledPoint, false);
     if (controlPointMap != null && !this.controlPointMap.isEmpty()) {
@@ -1207,9 +1207,9 @@ public class Presenter implements IPlugInPort {
                 break;
               }
               for (Integer j : entry.getValue()) {
-                Point firstPoint = component.getControlPoint(i);
+                Point2D firstPoint = component.getControlPoint(i);
                 if (entry.getKey().isControlPointSticky(j)) {
-                  Point secondPoint = entry.getKey().getControlPoint(j);
+                  Point2D secondPoint = entry.getKey().getControlPoint(j);
                   // If they are close enough we can consider
                   // them matched.
                   if (firstPoint.distance(secondPoint) < DrawingManager.CONTROL_POINT_SIZE) {
@@ -1278,23 +1278,24 @@ public class Presenter implements IPlugInPort {
     if (point == null || configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
       return false;
     }
-    Point scaledPoint = scalePoint(point);
+    Point2D scaledPoint = scalePoint(point);
     if (controlPointMap != null && !controlPointMap.isEmpty()) {
       // We're dragging control point(s).
-      int dx = (scaledPoint.x - previousDragPoint.x);
-      int dy = (scaledPoint.y - previousDragPoint.y);
+      int dx = (int) (scaledPoint.getX() - previousDragPoint.getX());
+      int dy = (int) (scaledPoint.getY() - previousDragPoint.getY());
 
-      Point actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects());
+      Point2D actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects());
       if (actualD == null)
         return true;
 
-      previousDragPoint.translate(actualD.x, actualD.y);
+      previousDragPoint.setLocation(previousDragPoint.getX() + actualD.getX(), previousDragPoint.getY() + actualD.getY());
     } else if (selectedComponents.isEmpty() && instantiationManager.getComponentTypeSlot() == null
         && previousDragPoint != null) {
       // If there's no selection, the only thing to do is update the
       // selection rectangle and refresh.
       Rectangle oldSelectionRect = selectionRect == null ? null : new Rectangle(selectionRect);
-      this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
+      this.selectionRect = Utils.createRectangle(new Point((int)scaledPoint.getX(), (int)scaledPoint.getY()), 
+          new Point((int)previousDragPoint.getX(), (int)previousDragPoint.getY()));
       if (selectionRect.equals(oldSelectionRect)) {
         return true;
       }
@@ -1308,32 +1309,41 @@ public class Presenter implements IPlugInPort {
     return true;
   }
 
-  private Point moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid, boolean snapToObjects) {
+  private Point2D moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid, boolean snapToObjects) {
     // After we make the transfer and snap to grid, calculate actual dx
     // and dy. We'll use them to translate the previous drag point.
-    int actualDx = 0;
-    int actualDy = 0;
+    double actualDx = 0;
+    double actualDy = 0;
     // For each component, do a simulation of the move to see if any of
     // them will overlap or go out of bounds.
 
     boolean useExtraSpace = configManager.readBoolean(EXTRA_SPACE_KEY, true);
     Dimension d = drawingManager.getCanvasDimensions(currentProject, 1d, useExtraSpace);
     double extraSpace = useExtraSpace ? drawingManager.getExtraSpace(currentProject) : 0;
+    
+    List<Point2D> points = new ArrayList<Point2D>();    
+    for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+      for (Integer i : entry.getValue())
+      {
+        Point2D p = entry.getKey().getControlPoint(i);
+        points.add(p);
+      }
+    }
 
-    if (controlPointMap.size() == 1) {
-      Map.Entry<IDIYComponent<?>, Set<Integer>> entry = controlPointMap.entrySet().iterator().next();
-
-      Point firstPoint = entry.getKey().getControlPoint(entry.getValue().toArray(new Integer[] {})[0]);
-      Point testPoint = new Point(firstPoint);
-      testPoint.translate(dx, dy);
+    Point2D firstPoint = points.iterator().next();
+    if (points.size() == 1 || points.stream().allMatch((x) -> x.equals(firstPoint))) {    
+      double avgX = points.stream().mapToDouble((x) -> x.getX()).average().getAsDouble();
+      double avgY = points.stream().mapToDouble((x) -> x.getY()).average().getAsDouble();      
+      
+      Point2D testPoint = new Point2D.Double(avgX + dx, avgY + dy);      
       if (snapToGrid) {
         CalcUtils.snapPointToGrid(testPoint, currentProject.getGridSpacing());
-      } else if (snapToObjects) {
-        CalcUtils.snapPointToObjects(testPoint, currentProject.getGridSpacing(), entry.getKey(), currentProject.getComponents());
+      } else if (snapToObjects && controlPointMap.size() == 1) {
+        CalcUtils.snapPointToObjects(testPoint, currentProject.getGridSpacing(), controlPointMap.entrySet().iterator().next().getKey(), currentProject.getComponents());
       }
 
-      actualDx = testPoint.x - firstPoint.x;
-      actualDy = testPoint.y - firstPoint.y;
+      actualDx = testPoint.getX() - avgX;
+      actualDy = testPoint.getY() - avgY;
     } else if (snapToGrid) {
       actualDx = CalcUtils.roundToGrid(dx, currentProject.getGridSpacing());
       actualDy = CalcUtils.roundToGrid(dy, currentProject.getGridSpacing());
@@ -1350,16 +1360,16 @@ public class Presenter implements IPlugInPort {
     // Validate if moving can be done.
     for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
       IDIYComponent<?> component = entry.getKey();
-      Point[] controlPoints = new Point[component.getControlPointCount()];
+      Point2D[] controlPoints = new Point2D[component.getControlPointCount()];
       for (int index = 0; index < component.getControlPointCount(); index++) {
-        controlPoints[index] = new Point(component.getControlPoint(index));
+        Point2D p = component.getControlPoint(index);
+        controlPoints[index] = new Point2D.Double(p.getX(), p.getY());
         // When the first point is moved, calculate how much it
         // actually moved after snapping.
         if (entry.getValue().contains(index)) {
-          controlPoints[index].translate(actualDx, actualDy);
-          controlPoints[index].translate((int) extraSpace, (int) extraSpace);
-          if (controlPoints[index].x < 0 || controlPoints[index].y < 0 || controlPoints[index].x > d.width
-              || controlPoints[index].y > d.height) {
+          controlPoints[index].setLocation(controlPoints[index].getX() + actualDx + extraSpace, controlPoints[index].getY() + actualDy + extraSpace);          
+          if (controlPoints[index].getX() < 0 || controlPoints[index].getY() < 0 || controlPoints[index].getX() > d.width
+              || controlPoints[index].getY() > d.height) {
             // At least one control point went out of bounds.
             return null;
           }
@@ -1386,8 +1396,8 @@ public class Presenter implements IPlugInPort {
     for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
       IDIYComponent<?> c = entry.getKey();      
       for (Integer index : entry.getValue()) {
-        Point p = new Point(c.getControlPoint(index));
-        p.translate(actualDx, actualDy);
+        Point2D oldP = c.getControlPoint(index);
+        Point2D p = new Point2D.Double(oldP.getX() + actualDx, oldP.getY() + actualDy);        
         c.setControlPoint(p, index);
       }
     }
@@ -1396,7 +1406,7 @@ public class Presenter implements IPlugInPort {
     drawingManager.clearComponentAreaMap();
     drawingManager.clearContinuityArea();
     
-    return new Point(actualDx, actualDy);
+    return new Point2D.Double(actualDx, actualDy);
   }
 
   @Override
@@ -1418,7 +1428,7 @@ public class Presenter implements IPlugInPort {
    */
   @SuppressWarnings("unchecked")
   private void rotateComponents(Collection<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
-    Point center = getCenterOf(components, snapToGrid);
+    Point2D center = getCenterOf(components, snapToGrid);
 
     boolean canRotate = true;
     for (IDIYComponent<?> component : selectedComponents) {
@@ -1527,7 +1537,7 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   private void mirrorComponents(Collection<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
-    Point center = getCenterOf(components, snapToGrid);
+    Point2D center = getCenterOf(components, snapToGrid);
 
     boolean canMirror = true;
     boolean changesCircuit = false;
@@ -1567,38 +1577,38 @@ public class Presenter implements IPlugInPort {
     drawingManager.clearContinuityArea();
   }
 
-  private Point getCenterOf(Collection<IDIYComponent<?>> components, boolean snapToGrid) {
+  private Point2D getCenterOf(Collection<IDIYComponent<?>> components, boolean snapToGrid) {
     // Determine center of rotation
-    int minX = Integer.MAX_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int maxY = Integer.MIN_VALUE;
+    double minX = Integer.MAX_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double maxY = Integer.MIN_VALUE;
     for (IDIYComponent<?> component : components) {
       for (int i = 0; i < component.getControlPointCount(); i++) {
-        Point p = component.getControlPoint(i);
-        if (minX > p.x) {
-          minX = p.x;
+        Point2D p = component.getControlPoint(i);
+        if (minX > p.getX()) {
+          minX = p.getX();
         }
-        if (maxX < p.x) {
-          maxX = p.x;
+        if (maxX < p.getX()) {
+          maxX = p.getX();
         }
-        if (minY > p.y) {
-          minY = p.y;
+        if (minY > p.getY()) {
+          minY = p.getY();
         }
-        if (maxY < p.y) {
-          maxY = p.y;
+        if (maxY < p.getY()) {
+          maxY = p.getY();
         }
       }
     }
-    int centerX = (maxX + minX) / 2;
-    int centerY = (maxY + minY) / 2;
+    double centerX = (maxX + minX) / 2;
+    double centerY = (maxY + minY) / 2;
 
     if (snapToGrid) {
       CalcUtils.roundToGrid(centerX, this.currentProject.getGridSpacing());
       CalcUtils.roundToGrid(centerY, this.currentProject.getGridSpacing());
     }
 
-    return new Point(centerX, centerY);
+    return new Point2D.Double(centerX, centerY);
   }
 
   @Override
@@ -1613,7 +1623,7 @@ public class Presenter implements IPlugInPort {
       test.addStep(DIYTest.DRAG_END, params);
     }
 
-    Point scaledPoint = scalePoint(point);
+    Point2D scaledPoint = scalePoint(point);
 
     if (!dragInProgress && instantiationManager.getComponentSlot() == null) {
       return;
@@ -1623,7 +1633,8 @@ public class Presenter implements IPlugInPort {
       // If there's no selection finalize selectionRect and see which
       // components intersect with it.
       if (scaledPoint != null) {
-        this.selectionRect = Utils.createRectangle(scaledPoint, previousDragPoint);
+        this.selectionRect = Utils.createRectangle(new Point((int)scaledPoint.getX(), (int)scaledPoint.getY()), 
+            new Point((int)previousDragPoint.getX(), (int)previousDragPoint.getY()));;
       }
       List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
       if (!configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
@@ -1691,8 +1702,8 @@ public class Presenter implements IPlugInPort {
         cloned.setName(instantiationManager.createUniqueName(componentType, currentProject.getComponents()));
         newSelection.add(cloned);
         for (int i = 0; i < component.getControlPointCount(); i++) {
-          Point p = component.getControlPoint(i);
-          Point newPoint = new Point(p.x + grid, p.y + grid);
+          Point2D p = component.getControlPoint(i);
+          Point2D newPoint = new Point2D.Double(p.getX() + grid, p.getY() + grid);
           cloned.setControlPoint(newPoint, i);
         }
         currentProject.getComponents().add(cloned);
@@ -2500,16 +2511,17 @@ public class Presenter implements IPlugInPort {
       } catch (Exception e) {
       }
     }
-    List<Point> points = new ArrayList<Point>();
+    List<Point2D> points = new ArrayList<Point2D>();
 
     for (int i = 0; i < component.getControlPointCount(); i++) {
-      Point p = new Point(component.getControlPoint(i));
+      Point2D oldP = component.getControlPoint(i);
+      Point2D p = new Point2D.Double(oldP.getX(), oldP.getY());
       points.add(p);
     }
-    int x = points.iterator().next().x;
-    int y = points.iterator().next().y;
-    for (Point point : points) {
-      point.translate(-x, -y);
+    double x = points.get(0).getX();
+    double y = points.get(0).getY();
+    for (Point2D point : points) {
+      point.setLocation(point.getX() - x, point.getY() - y);
     }
 
     Template template = new Template(variantName, values, points);
@@ -2853,14 +2865,14 @@ public class Presenter implements IPlugInPort {
    * @param point
    * @return
    */
-  private Point scalePoint(Point point) {
-    Point p =
-        point == null ? null : new Point((int) (point.x / drawingManager.getZoomLevel()),
-            (int) (point.y / drawingManager.getZoomLevel()));
+  private Point2D scalePoint(Point2D point) {
+    Point2D p =
+        point == null ? null : new Point2D.Double(point.getX() / drawingManager.getZoomLevel(),
+            point.getY() / drawingManager.getZoomLevel());
 
     if (p != null && configManager.readBoolean(EXTRA_SPACE_KEY, true)) {
       double extraSpace = drawingManager.getExtraSpace(currentProject);
-      p.translate((int) (-extraSpace), (int) (-extraSpace));
+      p.setLocation(p.getX() - extraSpace, p.getY() - extraSpace);      
     }
     return p;
   }

@@ -26,11 +26,12 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -103,7 +104,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
-  private Point[] controlPoints = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0) };
+  private Point2D[] controlPoints = new Point2D[] { new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0) };
   private String[] pointLabels = new String[] { "+", "~", "~", "-" };
   protected Display display = Display.BOTH;
   private Color bodyColor = BODY_COLOR;
@@ -160,7 +161,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -175,14 +176,14 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
 
   @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     
     int hSpacing;
     int vSpacing;
@@ -191,40 +192,40 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
       case MiniDIP1:
         hSpacing = (int) MINI_HORIZONTAL_SPACING.convertToPixels();
         vSpacing = (int) MINI_VERTICAL_SPACING.convertToPixels();
-        controlPoints[1].setLocation(firstPoint.x + hSpacing, firstPoint.y);
-        controlPoints[2].setLocation(firstPoint.x + hSpacing, firstPoint.y + vSpacing);        
-        controlPoints[3].setLocation(firstPoint.x, firstPoint.y + vSpacing);
+        controlPoints[1].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY());
+        controlPoints[2].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY() + vSpacing);        
+        controlPoints[3].setLocation(firstPoint.getX(), firstPoint.getY() + vSpacing);
         break;
       case MiniDIP2:
         hSpacing = (int) MINI_HORIZONTAL_SPACING.convertToPixels();
         vSpacing = (int) MINI_VERTICAL_SPACING.convertToPixels();
-        controlPoints[1].setLocation(firstPoint.x + hSpacing, firstPoint.y);
-        controlPoints[2].setLocation(firstPoint.x, firstPoint.y + vSpacing);
-        controlPoints[3].setLocation(firstPoint.x + hSpacing, firstPoint.y + vSpacing);                
+        controlPoints[1].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY());
+        controlPoints[2].setLocation(firstPoint.getX(), firstPoint.getY() + vSpacing);
+        controlPoints[3].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY() + vSpacing);                
         break;
       case MiniRound1:
         hSpacing = vSpacing = (int) MINI_ROUND_SPACING.convertToPixels();
-        controlPoints[1].setLocation(firstPoint.x + hSpacing, firstPoint.y);
-        controlPoints[2].setLocation(firstPoint.x + hSpacing, firstPoint.y + vSpacing);        
-        controlPoints[3].setLocation(firstPoint.x, firstPoint.y + vSpacing);
+        controlPoints[1].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY());
+        controlPoints[2].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY() + vSpacing);        
+        controlPoints[3].setLocation(firstPoint.getX(), firstPoint.getY() + vSpacing);
         break;
       case MiniRound2:
         hSpacing = vSpacing = (int) MINI_ROUND_SPACING.convertToPixels();
-        controlPoints[1].setLocation(firstPoint.x + hSpacing, firstPoint.y);
-        controlPoints[2].setLocation(firstPoint.x, firstPoint.y + vSpacing);
-        controlPoints[3].setLocation(firstPoint.x + hSpacing, firstPoint.y + vSpacing); 
+        controlPoints[1].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY());
+        controlPoints[2].setLocation(firstPoint.getX(), firstPoint.getY() + vSpacing);
+        controlPoints[3].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY() + vSpacing); 
         break;
       case InLine:
         vSpacing = (int) INLINE_SPACING.convertToPixels();
-        controlPoints[1].setLocation(firstPoint.x, firstPoint.y + vSpacing);
-        controlPoints[2].setLocation(firstPoint.x, firstPoint.y + 2 * vSpacing);
-        controlPoints[3].setLocation(firstPoint.x, firstPoint.y + 3 * vSpacing);
+        controlPoints[1].setLocation(firstPoint.getX(), firstPoint.getY() + vSpacing);
+        controlPoints[2].setLocation(firstPoint.getX(), firstPoint.getY() + 2 * vSpacing);
+        controlPoints[3].setLocation(firstPoint.getX(), firstPoint.getY() + 3 * vSpacing);
         break;
       case SquareBR3:
         hSpacing = vSpacing = (int) BR3_SPACING.convertToPixels();        
-        controlPoints[1].setLocation(firstPoint.x + hSpacing, firstPoint.y);
-        controlPoints[2].setLocation(firstPoint.x, firstPoint.y + vSpacing);
-        controlPoints[3].setLocation(firstPoint.x + hSpacing, firstPoint.y + vSpacing);
+        controlPoints[1].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY());
+        controlPoints[2].setLocation(firstPoint.getX(), firstPoint.getY() + vSpacing);
+        controlPoints[3].setLocation(firstPoint.getX() + hSpacing, firstPoint.getY() + vSpacing);
         break;
     }
 
@@ -241,7 +242,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
           theta = Math.PI * 3 / 2;
           break;
       }
-      AffineTransform rotation = AffineTransform.getRotateInstance(theta, firstPoint.x, firstPoint.y);
+      AffineTransform rotation = AffineTransform.getRotateInstance(theta, firstPoint.getX(), firstPoint.getY());
 
       for (int i = 1; i < controlPoints.length; i++) {
         rotation.transform(controlPoints[i], controlPoints[i]);
@@ -254,8 +255,8 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
     if (body == null) {
       body = new Area[2];
       
-      int centerX = (controlPoints[0].x + controlPoints[1].x + controlPoints[2].x + controlPoints[3].x) / 4;
-      int centerY = (controlPoints[0].y + controlPoints[1].y + controlPoints[2].y + controlPoints[3].y) / 4;
+      double centerX = (controlPoints[0].getX() + controlPoints[1].getX() + controlPoints[2].getX() + controlPoints[3].getX()) / 4;
+      double centerY = (controlPoints[0].getY() + controlPoints[1].getY() + controlPoints[2].getY() + controlPoints[3].getY()) / 4;
       
       int width = 0;
       int length = 0;
@@ -307,13 +308,13 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
 //          path.lineTo(centerX - width / 2, centerY - width / 2 + margin);
 //          path.closePath();
           
-          RoundedPolygon poly = new RoundedPolygon(new Point[] {
-              new Point(centerX, centerY - width / 2),
-              new Point(centerX + width / 2, centerY - width / 2),
-              new Point(centerX + width / 2, centerY + width / 2),
-              new Point(centerX - width / 2, centerY + width / 2),
-              new Point(centerX - width / 2, (int) (centerY - width / 2 + margin)),
-              new Point((int) (centerX - width / 2 + margin), centerY - width / 2),
+          RoundedPolygon poly = new RoundedPolygon(new Point2D[] {
+              new Point2D.Double(centerX, centerY - width / 2),
+              new Point2D.Double(centerX + width / 2, centerY - width / 2),
+              new Point2D.Double(centerX + width / 2, centerY + width / 2),
+              new Point2D.Double(centerX - width / 2, centerY + width / 2),
+              new Point2D.Double(centerX - width / 2, (int) (centerY - width / 2 + margin)),
+              new Point2D.Double((int) (centerX - width / 2 + margin), centerY - width / 2),
               
           }, new double[] { EDGE_RADIUS, EDGE_RADIUS, EDGE_RADIUS, EDGE_RADIUS / 2 , EDGE_RADIUS / 2});
           
@@ -358,17 +359,16 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
     
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     if (!outlineMode) {      
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
         g2d.setColor(PIN_COLOR);
+        Shape shape;
         if (pinShape == PinShape.Round)
-          g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+          shape = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
         else
-          g2d.fillRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+          shape = new Rectangle2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
+        g2d.fill(shape);
         g2d.setColor(PIN_BORDER_COLOR);
-        if (pinShape == PinShape.Round)
-          g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
-        else 
-          g2d.drawRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.draw(shape);
       }
     }
     
@@ -443,14 +443,14 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
         int textWidth = (int) (rect.getWidth());
         // Center text horizontally and vertically
         Rectangle bounds = mainArea.getBounds();
-        int x = bounds.x + (bounds.width - textWidth) / 2;
-        int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+        double x = bounds.getX() + (bounds.width - textWidth) / 2;
+        double y = bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
 
         AffineTransform oldTransform = g2d.getTransform();
 
         if (getLabelOriantation() == LabelOriantation.Directional && (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180)) {
-          int centerX = bounds.x + bounds.width / 2;
-          int centerY = bounds.y + bounds.height / 2;
+          double centerX = bounds.getX() + bounds.width / 2;
+          double centerY = bounds.getY() + bounds.height / 2;
           g2d.rotate(-Math.PI / 2, centerX, centerY);
         }
 
@@ -464,7 +464,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
         if (rectifierType == RectifierType.SquareBR3)
           y -= BR3_HOLE_SIZE.convertToPixels();
 
-        g2d.drawString(l, x, y);
+        g2d.drawString(l, (int)x, (int)y);
 
         g2d.setTransform(oldTransform);
       }
@@ -474,7 +474,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
     g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.8)));
     g2d.setColor(finalLabelColor);
     for (int i = 0; i <controlPoints.length; i++) {
-      Point point = controlPoints[i];            
+      Point2D point = controlPoints[i];            
       
       int dx = 0;
       int dy = 0;
@@ -563,7 +563,7 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
           break;
       }         
       
-      StringUtils.drawCenteredText(g2d, pointLabels[i], point.x + dx, point.y + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, pointLabels[i], point.getX() + dx, point.getY() + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
   }
 

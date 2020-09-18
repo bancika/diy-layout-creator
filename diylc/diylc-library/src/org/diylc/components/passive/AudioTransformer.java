@@ -26,10 +26,10 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -82,7 +82,7 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
   private Size coreWidth = new Size(0.6, SizeUnit.in);
   private Size coilWidth = new Size(0.5, SizeUnit.in);
   private Size coilLength = new Size(0.6, SizeUnit.in);
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   protected Display display = Display.BOTH;
   private Color coreColor = CORE_COLOR;
   private Color coreBorderColor = CORE_BORDER_COLOR;
@@ -163,7 +163,7 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -178,24 +178,24 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
+    Point2D firstPoint = controlPoints[0];
     int pinCount = 4 + (primaryCT ? 1 : 0) + (secondaryCT ? 1 : 0);
-    controlPoints = new Point[pinCount];
+    controlPoints = new Point2D[pinCount];
     controlPoints[0] = firstPoint;
     double leadSpacing = this.leadSpacing.convertToPixels();
     double windingSpacing = this.windingSpacing.convertToPixels();
     
     // Update control points.
     for (int i = 1; i < 2 + (primaryCT ? 1 : 0); i++)
-      controlPoints[i] = new Point(firstPoint.x, (int) (firstPoint.y + i * leadSpacing * (primaryCT ? 1 : 2)));    
+      controlPoints[i] = new Point2D.Double(firstPoint.getX(), firstPoint.getY() + i * leadSpacing * (primaryCT ? 1 : 2));    
     for (int i = 0; i < 2 + (secondaryCT ? 1 : 0); i++)
-      controlPoints[2 + (primaryCT ? 1 : 0) + i] = new Point((int) (firstPoint.x + windingSpacing), (int) (firstPoint.y + i * leadSpacing * (secondaryCT ? 1 : 2)));    
+      controlPoints[2 + (primaryCT ? 1 : 0) + i] = new Point2D.Double(firstPoint.getX() + windingSpacing, firstPoint.getY() + i * leadSpacing * (secondaryCT ? 1 : 2));    
         
     AffineTransform tx = getTx();
 
@@ -212,8 +212,8 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
       body = new Area[2];
       double leadSpacing = this.leadSpacing.convertToPixels();
       double windingSpacing = this.windingSpacing.convertToPixels();
-      int centerX = (int) (controlPoints[0].x + windingSpacing / 2);
-      int centerY = (int) (controlPoints[0].y + leadSpacing);
+      double centerX = (int) (controlPoints[0].getX() + windingSpacing / 2);
+      double centerY = (int) (controlPoints[0].getY() + leadSpacing);
       int coreWidth = getClosestOdd(this.coreWidth.convertToPixels());
       int coreThickness = getClosestOdd(this.coreThickness.convertToPixels());
       int coilWidth = getClosestOdd(this.coilWidth.convertToPixels());
@@ -235,8 +235,8 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
   
   @SuppressWarnings("incomplete-switch")
   private AffineTransform getTx() {
-    double x = controlPoints[0].x;
-    double y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     if (orientation == Orientation.DEFAULT)
       return null;
     
@@ -269,11 +269,11 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
         
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
         g2d.setColor(PIN_BORDER_COLOR);
-        g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
       }
     }
     Composite oldComposite = g2d.getComposite();
@@ -312,15 +312,15 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
     g2d.setFont(project.getFont());
     
     // Draw winding designations
-    Point wPoint = new Point((int) (controlPoints[0].x + project.getFontSize()), (int) (controlPoints[0].y + leadSpacing.convertToPixels()));
+    Point2D wPoint = new Point2D.Double((int) (controlPoints[0].getX() + project.getFontSize()), (int) (controlPoints[0].getY() + leadSpacing.convertToPixels()));
     AffineTransform tx = getTx();
     if (tx != null)
       tx.transform(wPoint, wPoint);
-    StringUtils.drawCenteredText(g2d, "P", wPoint.x, wPoint.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    wPoint = new Point((int) (controlPoints[0].x + windingSpacing.convertToPixels() - project.getFontSize()), (int) (controlPoints[0].y + leadSpacing.convertToPixels()));
+    StringUtils.drawCenteredText(g2d, "P", wPoint.getX(), wPoint.getY(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    wPoint = new Point2D.Double((int) (controlPoints[0].getX() + windingSpacing.convertToPixels() - project.getFontSize()), (int) (controlPoints[0].getY() + leadSpacing.convertToPixels()));
     if (tx != null)
       tx.transform(wPoint, wPoint);
-    StringUtils.drawCenteredText(g2d, "S", wPoint.x, wPoint.y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "S", wPoint.getX(), wPoint.getY(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
     // Draw label.
     Color finalLabelColor;
@@ -356,14 +356,14 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
         int textWidth = (int) (rect.getWidth());
         // Center text horizontally and vertically
         Rectangle bounds = coreArea.getBounds();
-        int x = bounds.x + (bounds.width - textWidth) / 2;
-        int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+        double x = bounds.getX() + (bounds.width - textWidth) / 2;
+        double y = bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
 
         AffineTransform oldTransform = g2d.getTransform();
 
         if (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180) {
-          int centerX = bounds.x + bounds.width / 2;
-          int centerY = bounds.y + bounds.height / 2;
+          double centerX = bounds.getX() + bounds.width / 2;
+          double centerY = bounds.getY() + bounds.height / 2;
           g2d.rotate(-Math.PI / 2, centerX, centerY);
         }
 
@@ -374,7 +374,7 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
             g2d.translate(0, textHeight / 2);
         }
 
-        g2d.drawString(l, x, y);
+        g2d.drawString(l, (int)x, (int)y);
 
         g2d.setTransform(oldTransform);
       }

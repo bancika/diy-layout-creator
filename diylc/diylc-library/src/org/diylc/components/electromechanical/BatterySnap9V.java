@@ -25,12 +25,12 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -66,7 +66,7 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
   private static Size TERMINAL_BORDER = new Size(0.7d, SizeUnit.mm);
 
   private String value = "";
-  private Point controlPoint = new Point(0, 0);
+  private Point2D controlPoint = new Point2D.Double(0, 0);
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private Color color = BODY_COLOR;
@@ -116,8 +116,8 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
     if (body == null) {
       body = new Shape[3];
 
-      int x = controlPoint.x;
-      int y = controlPoint.y;
+      double x = controlPoint.getX();
+      double y = controlPoint.getY();
       int width = (int) WIDTH.convertToPixels();
       int length = (int) LENGTH.convertToPixels();
       int totalLength = length + width / 2;
@@ -134,7 +134,7 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
           new Area(new Ellipse2D.Double(x + (totalLength - terminalSpacing) / 2 - terminalDiameter / 2, y
               - terminalDiameter / 2, terminalDiameter, terminalDiameter));
 
-      int centerX = x + (totalLength + terminalSpacing) / 2;
+      double centerX = x + (totalLength + terminalSpacing) / 2;
       int[] terminalX = new int[6];
       int[] terminalY = new int[6];
 
@@ -230,12 +230,12 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoint;
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoint.setLocation(point);
     // Invalidate the body
     body = null;

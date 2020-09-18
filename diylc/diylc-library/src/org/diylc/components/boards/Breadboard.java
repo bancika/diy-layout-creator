@@ -25,9 +25,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -71,7 +73,7 @@ public class Breadboard extends AbstractComponent<Void> {
   public static Size HOLE_SIZE = new Size(1.5, SizeUnit.mm);
   public static Size HOLE_ARC = new Size(1d, SizeUnit.mm);
 
-  protected Point point = new Point(0, 0);
+  protected Point2D point = new Point2D.Double(0, 0);
 
   protected BreadboardSize breadboardSize;
   protected PowerStripPosition powerStripPosition;
@@ -99,7 +101,7 @@ public class Breadboard extends AbstractComponent<Void> {
         break;
     }
     if (theta != 0) {
-      g2d.rotate(theta, point.x, point.y);
+      g2d.rotate(theta, point.getX(), point.getY());
     }
 
     int bodyArc = (int) BODY_ARC.convertToPixels();
@@ -108,27 +110,28 @@ public class Breadboard extends AbstractComponent<Void> {
 
     // draw body
     g2d.setColor(FILL_COLOR);
-    int width = (int) (23 * project.getGridSpacing().convertToPixels());
-    int height = (int) ((holeCount + 1) * project.getGridSpacing().convertToPixels());
-    g2d.fillRoundRect(point.x, point.y, width, height, bodyArc, bodyArc);
+    int width = (int) (23 * SPACING.convertToPixels());
+    int height = (int) ((holeCount + 1) * SPACING.convertToPixels());
+    Shape rect = new RoundRectangle2D.Double(point.getX(), point.getY(), width, height, bodyArc, bodyArc);
+    g2d.fill(rect);
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : BORDER_COLOR);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    g2d.drawRoundRect(point.x, point.y, width, height, bodyArc, bodyArc);
+    g2d.draw(rect);
 
     drawingObserver.stopTracking();
 
     // draw lines
     g2d.setColor(PLUS_COLOR);
-    g2d.drawLine((int) (point.x + spacing), (int) (point.y + spacing), (int) (point.x + spacing),
-        (int) (point.y + holeCount * spacing));
-    g2d.drawLine((int) (point.x + 19 * spacing), (int) (point.y + spacing), (int) (point.x + 19 * spacing),
-        (int) (point.y + holeCount * spacing));
+    g2d.drawLine((int) (point.getX() + spacing), (int) (point.getY() + spacing), (int) (point.getX() + spacing),
+        (int) (point.getY() + holeCount * spacing));
+    g2d.drawLine((int) (point.getX() + 19 * spacing), (int) (point.getY() + spacing), (int) (point.getX() + 19 * spacing),
+        (int) (point.getY() + holeCount * spacing));
     g2d.setColor(MINUS_COLOR);
-    g2d.drawLine((int) (point.x + 4 * spacing), (int) (point.y + spacing), (int) (point.x + 4 * spacing),
-        (int) (point.y + holeCount * spacing));
-    g2d.drawLine((int) (point.x + 22 * spacing), (int) (point.y + spacing), (int) (point.x + 22 * spacing),
-        (int) (point.y + holeCount * spacing));
+    g2d.drawLine((int) (point.getX() + 4 * spacing), (int) (point.getY() + spacing), (int) (point.getX() + 4 * spacing),
+        (int) (point.getY() + holeCount * spacing));
+    g2d.drawLine((int) (point.getX() + 22 * spacing), (int) (point.getY() + spacing), (int) (point.getX() + 22 * spacing),
+        (int) (point.getY() + holeCount * spacing));
 
     int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
     int holeArc = (int) HOLE_ARC.convertToPixels();
@@ -144,15 +147,15 @@ public class Breadboard extends AbstractComponent<Void> {
         g2d.setColor(COORDINATE_COLOR);
         int coordinateX;
         if (section == 0) {
-          coordinateX = (int) (point.x + offset + 5.5 * spacing);
+          coordinateX = (int) (point.getX() + offset + 5.5 * spacing);
         } else {
-          coordinateX = (int) (point.x + offset + 10.5 * spacing);
+          coordinateX = (int) (point.getX() + offset + 10.5 * spacing);
         }
-        StringUtils.drawCenteredText(g2d, String.valueOf(y + 1), coordinateX, (int) (point.y + (y + 1) * spacing),
+        StringUtils.drawCenteredText(g2d, String.valueOf(y + 1), coordinateX, (int) (point.getY() + (y + 1) * spacing),
             section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
         for (int x = 0; x < 5; x++) {
-          int holeX = (int) (point.x + offset + (x + 6) * spacing);
-          int holeY = (int) (point.y + (y + 1) * spacing);
+          int holeX = (int) (point.getX() + offset + (x + 6) * spacing);
+          int holeY = (int) (point.getY() + (y + 1) * spacing);
           g2d.setColor(HOLE_COLOR);
           g2d.fillRoundRect(holeX - holeSize / 2, holeY - holeSize / 2, holeSize, holeSize, holeArc, holeArc);
           g2d.setColor(BORDER_COLOR);
@@ -161,9 +164,9 @@ public class Breadboard extends AbstractComponent<Void> {
           // Draw horizontal labels
           if (y == 0) {
             g2d.setColor(COORDINATE_COLOR);
-            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y + COORDINATE_FONT_SIZE),
+            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.getY() + COORDINATE_FONT_SIZE),
                 HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.y
+            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.getY()
                 + spacing * 31 - COORDINATE_FONT_SIZE / 2), HorizontalAlignment.CENTER, VerticalAlignment.TOP);
           }
         }
@@ -183,8 +186,8 @@ public class Breadboard extends AbstractComponent<Void> {
         for (int x = 0; x < 2; x++) {
           if ((y + 1) % 6 == 0)
             continue;
-          int holeX = (int) (point.x + offset + (x + 2) * spacing);
-          int holeY = (int) (point.y + (y + 1 + powerOffset) * spacing);
+          int holeX = (int) (point.getX() + offset + (x + 2) * spacing);
+          int holeY = (int) (point.getY() + (y + 1 + powerOffset) * spacing);
           g2d.setColor(HOLE_COLOR);
           g2d.fillRoundRect(holeX - holeSize / 2, holeY - holeSize / 2, holeSize, holeSize, holeArc, holeArc);
           g2d.setColor(BORDER_COLOR);
@@ -201,9 +204,9 @@ public class Breadboard extends AbstractComponent<Void> {
     for (int section = 0; section <= 1; section++) {
       double offset = section * 18 * spacing;
         for (int x = 0; x < 2; x++) {
-          int holeX = (int) (point.x + offset + (x + 2) * spacing);
-          int holeY1 = (int) (point.y + (1 + powerOffset) * spacing);
-          int holeY2 = (int) (point.y + (psHoleCount -1 + powerOffset) * spacing);
+          int holeX = (int) (point.getX() + offset + (x + 2) * spacing);
+          int holeY1 = (int) (point.getY() + (1 + powerOffset) * spacing);
+          int holeY2 = (int) (point.getY() + (psHoleCount -1 + powerOffset) * spacing);
           g2d.setColor(HOLE_COLOR);
           g2d.fillRoundRect(holeX - holeSize / 2, holeY1 - holeSize / 2, holeSize, holeSize + holeY2 - holeY1, holeArc, holeArc);
       }
@@ -216,16 +219,16 @@ public class Breadboard extends AbstractComponent<Void> {
         g2d.setColor(COORDINATE_COLOR);
         int coordinateX;
         if (section == 0) {
-          coordinateX = (int) (point.x + offset + 5.5 * spacing);
+          coordinateX = (int) (point.getX() + offset + 5.5 * spacing);
         } else {
-          coordinateX = (int) (point.x + offset + 10.5 * spacing);
+          coordinateX = (int) (point.getX() + offset + 10.5 * spacing);
         }
-        StringUtils.drawCenteredText(g2d, String.valueOf(y + 1), coordinateX, (int) (point.y + (y + 1) * spacing),
+        StringUtils.drawCenteredText(g2d, String.valueOf(y + 1), coordinateX, (int) (point.getY() + (y + 1) * spacing),
             section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 //        for (int x = 0; x < 5; x++) {
-          int holeX1 = (int) (point.x + offset + 6 * spacing);
-          int holeX2 = (int) (point.x + offset + 10 * spacing);
-          int holeY = (int) (point.y + (y + 1) * spacing);
+          int holeX1 = (int) (point.getX() + offset + 6 * spacing);
+          int holeX2 = (int) (point.getX() + offset + 10 * spacing);
+          int holeY = (int) (point.getY() + (y + 1) * spacing);
           g2d.setColor(HOLE_COLOR);
           g2d.fillRoundRect(holeX1 - holeSize / 2, holeY - holeSize / 2, holeSize + holeX2 - holeX1, holeSize, holeArc, holeArc);
 //          }
@@ -323,7 +326,7 @@ public class Breadboard extends AbstractComponent<Void> {
 
   @SuppressWarnings("incomplete-switch")
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     if (index == 0)
       return point;
     // create a synthetic second control point for clipping check and to make sure that we cannot drag the right side of the board off the screen
@@ -342,9 +345,9 @@ public class Breadboard extends AbstractComponent<Void> {
         theta = Math.PI * 3 / 2;
         break;
     }
-    Point secondPoint = new Point((int) (point.x + 23 * spacing), (int) (point.y + (holeCount + 1) * spacing));
+    Point2D secondPoint = new Point2D.Double(point.getX() + 23 * spacing, point.getY() + (holeCount + 1) * spacing);
     if (theta != 0) {
-      AffineTransform tx = AffineTransform.getRotateInstance(theta, point.x, point.y);
+      AffineTransform tx = AffineTransform.getRotateInstance(theta, point.getX(), point.getY());
       tx.transform(secondPoint, secondPoint);
     }
     return secondPoint;
@@ -361,7 +364,7 @@ public class Breadboard extends AbstractComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     if (index == 0)
       this.point.setLocation(point);
   }
@@ -381,9 +384,9 @@ public class Breadboard extends AbstractComponent<Void> {
   
   @Override
   public Rectangle2D getCachingBounds() {
-    Point finalSecondPoint = getControlPoint(1); 
-    return new Rectangle2D.Double(Math.min(point.x, finalSecondPoint.x), Math.min(point.y, finalSecondPoint.y), 
-        Math.abs(finalSecondPoint.x - point.x) + 2, Math.abs(finalSecondPoint.y - point.y) + 2);
+    Point2D finalSecondPoint = getControlPoint(1); 
+    return new Rectangle2D.Double(Math.min(point.getX(), finalSecondPoint.getX()) - 2, Math.min(point.getY(), finalSecondPoint.getY()) - 2, 
+        Math.abs(finalSecondPoint.getX() - point.getX()) + 4, Math.abs(finalSecondPoint.getY() - point.getY()) + 4);
   }
 
   public enum BreadboardSize {

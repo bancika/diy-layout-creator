@@ -23,7 +23,7 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
@@ -70,7 +70,7 @@ public class TraceCut extends AbstractComponent<Void> {
   private OrientationHV orientation = OrientationHV.VERTICAL;
   private Size holeSpacing = VeroBoard.SPACING;
 
-  protected Point point = new Point(0, 0);
+  protected Point2D point = new Point2D.Double(0, 0);
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -87,22 +87,22 @@ public class TraceCut extends AbstractComponent<Void> {
           : getBoardColor());
       drawingObserver.startTrackingContinuityArea(false);
       if (getOrientation() == OrientationHV.VERTICAL)
-        g2d.fillRect(point.x - holeSpacing / 2 - cutWidth / 2, point.y - size / 2 - 1, cutWidth, size + 2);
+        g2d.fillRect((int)(point.getX() - holeSpacing / 2 - cutWidth / 2), (int)(point.getY() - size / 2 - 1), cutWidth, size + 2);
       else
-        g2d.fillRect(point.x - size / 2 - 1, point.y - holeSpacing / 2 - cutWidth / 2, size + 2, cutWidth);
+        g2d.fillRect((int)(point.getX() - size / 2 - 1), (int)(point.getY() - holeSpacing / 2 - cutWidth / 2), size + 2, cutWidth);
       drawingObserver.stopTrackingContinuityArea();
     } else {
       g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
           : getBoardColor());
       drawingObserver.startTrackingContinuityArea(false);
-      g2d.fillRoundRect(point.x - size / 2, point.y - size / 2, size, size, size, size);
+      g2d.fillRoundRect((int)(point.getX() - size / 2), (int)(point.getY() - size / 2), size, size, size, size);
       drawingObserver.stopTrackingContinuityArea();
 
       g2d.setColor(Constants.CANVAS_COLOR);
       int holeSize = getClosestOdd((int) HOLE_SIZE.convertToPixels());      
-      g2d.fillOval(point.x - holeSize / 2, point.y - holeSize / 2, holeSize, holeSize);      
+      g2d.fillOval((int)(point.getX() - holeSize / 2), (int)(point.getY() - holeSize / 2), holeSize, holeSize);      
       g2d.setColor(getBoardColor().darker());
-      g2d.drawOval(point.x - holeSize / 2, point.y - holeSize / 2, holeSize, holeSize);
+      g2d.drawOval((int)(point.getX() - holeSize / 2), (int)(point.getY() - holeSize / 2), holeSize, holeSize);
     }
   }
 
@@ -145,7 +145,7 @@ public class TraceCut extends AbstractComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return point;
   }
 
@@ -160,7 +160,7 @@ public class TraceCut extends AbstractComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.point.setLocation(point);
   }
 

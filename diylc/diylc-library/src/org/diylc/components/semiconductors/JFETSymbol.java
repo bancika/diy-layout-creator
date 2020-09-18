@@ -22,10 +22,10 @@
 package org.diylc.components.semiconductors;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.components.Abstract3LegSymbol;
@@ -46,9 +46,9 @@ public class JFETSymbol extends Abstract3LegSymbol {
 
   public Shape[] getBody() {    
     Shape[] body = new Shape[3];
-    Point[] controlPoints = getControlPoints();
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    Point2D[] controlPoints = getControlPoints();
+    int x = (int) controlPoints[0].getX();
+    int y = (int) controlPoints[0].getY();
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
 
     GeneralPath polyline = new GeneralPath();

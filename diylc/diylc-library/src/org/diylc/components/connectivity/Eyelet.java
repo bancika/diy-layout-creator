@@ -23,7 +23,7 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
@@ -60,7 +60,7 @@ public class Eyelet extends AbstractComponent<String> {
   private Size size = SIZE;
   private Size holeSize = HOLE_SIZE;
   private Color color = COLOR;
-  private Point point = new Point(0, 0);
+  private Point2D point = new Point2D.Double(0, 0);
   private String value = "";
 
   @Override
@@ -74,16 +74,16 @@ public class Eyelet extends AbstractComponent<String> {
     g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1f));
     g2d.setColor(color);
     drawingObserver.startTrackingContinuityArea(true);
-    g2d.fillOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+    g2d.fillOval((int)(point.getX() - diameter / 2), (int)(point.getY() - diameter / 2), diameter, diameter);
     drawingObserver.stopTrackingContinuityArea();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color.darker());
-    g2d.drawOval(point.x - diameter / 2, point.y - diameter / 2, diameter, diameter);
+    g2d.drawOval((int)(point.getX() - diameter / 2), (int)(point.getY() - diameter / 2), diameter, diameter);
     g2d.setColor(Constants.CANVAS_COLOR);
-    g2d.fillOval(point.x - holeDiameter / 2, point.y - holeDiameter / 2, holeDiameter, holeDiameter);
+    g2d.fillOval((int)(point.getX() - holeDiameter / 2), (int)(point.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color.darker());
-    g2d.drawOval(point.x - holeDiameter / 2, point.y - holeDiameter / 2, holeDiameter, holeDiameter);
+    g2d.drawOval((int)(point.getX() - holeDiameter / 2), (int)(point.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
   }
 
   @Override
@@ -139,12 +139,12 @@ public class Eyelet extends AbstractComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return point;
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.point.setLocation(point);
   }
 

@@ -25,8 +25,8 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.SimpleComponentTransformer;
@@ -59,11 +59,11 @@ public class BlankBoard extends AbstractBoard {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {    
-    Point finalSecondPoint = getFinalSecondPoint();    
+    Point2D finalSecondPoint = getFinalSecondPoint();    
     
     Shape clip = g2d.getClip();
-    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, finalSecondPoint.y)
-        && !clip.contains(finalSecondPoint.x, firstPoint.y)) {
+    if (checkPointsClipped(clip) && !clip.contains(firstPoint.getX(), finalSecondPoint.getY())
+        && !clip.contains(finalSecondPoint.getX(), firstPoint.getY())) {
       return;
     }        
 
@@ -75,9 +75,9 @@ public class BlankBoard extends AbstractBoard {
       }
       g2d.setColor(boardColor);
       if (getType() == Type.SQUARE)
-        g2d.fillRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
+        g2d.fillRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
       else
-        g2d.fillOval(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
+        g2d.fillOval((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
       g2d.setComposite(oldComposite);
     }
     // Do not track any changes that follow because the whole board has been
@@ -86,9 +86,9 @@ public class BlankBoard extends AbstractBoard {
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : borderColor);
     if (getType() == Type.SQUARE)
-      g2d.drawRect(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
+      g2d.drawRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
     else
-      g2d.drawOval(firstPoint.x, firstPoint.y, finalSecondPoint.x - firstPoint.x, finalSecondPoint.y - firstPoint.y);
+      g2d.drawOval((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
   }
   
   @Override

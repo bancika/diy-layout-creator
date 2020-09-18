@@ -97,7 +97,7 @@ public class ProjectFileManager {
       }
     };
     xStream.autodetectAnnotations(true);
-    xStream.alias("point", java.awt.Point.class);
+    xStream.alias("point", java.awt.geom.Point2D.class);
     xStream.alias("font", java.awt.Font.class);
     xStream.alias("project", Project.class);
     xStream.aliasPackage("diylc", "org.diylc.components");
@@ -107,7 +107,7 @@ public class ProjectFileManager {
     xStream.registerConverter(new MeasureConverter());
     xStream.registerConverter(new AreaConverter());
     xStream.addImmutableType(Color.class);
-    xStream.addImmutableType(java.awt.Point.class);
+    xStream.addImmutableType(java.awt.geom.Point2D.class);
     xStream.addImmutableType(org.diylc.core.measures.Voltage.class);
     xStream.addImmutableType(org.diylc.core.measures.Resistance.class);
     xStream.addImmutableType(org.diylc.core.measures.Capacitance.class);

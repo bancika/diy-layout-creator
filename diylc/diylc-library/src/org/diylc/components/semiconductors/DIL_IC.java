@@ -26,11 +26,11 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -79,7 +79,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
   private PinCount pinCount = PinCount._8;
   private Size pinSpacing = new Size(0.1d, SizeUnit.in);
   private Size rowSpacing = new Size(0.3d, SizeUnit.in);
-  private Point[] controlPoints = new Point[] {new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   protected Display display = Display.BOTH;
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
@@ -178,7 +178,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -193,14 +193,14 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
 
   private void updateControlPoints() {
-    Point firstPoint = controlPoints[0];
-    controlPoints = new Point[pinCount.getValue()];
+    Point2D firstPoint = controlPoints[0];
+    controlPoints = new Point2D[pinCount.getValue()];
     controlPoints[0] = firstPoint;
     double pinSpacing = this.pinSpacing.convertToPixels();
     double rowSpacing = this.rowSpacing.convertToPixels();
@@ -238,16 +238,16 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point((int) (firstPoint.x + dx1), (int) (firstPoint.y + dy1));
-      controlPoints[i + pinCount.getValue() / 2] = new Point((int) (firstPoint.x + dx2), (int) (firstPoint.y + dy2));
+      controlPoints[i] = new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
+      controlPoints[i + pinCount.getValue() / 2] = new Point2D.Double((int) (firstPoint.getX() + dx2), (int) (firstPoint.getY() + dy2));
     }
   }
 
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      double x = controlPoints[0].x;
-      double y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       double width;
       double height;
       double pinSize = PIN_SIZE.convertToPixels();
@@ -314,11 +314,12 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
+        Rectangle2D rect = new Rectangle2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize); 
         g2d.setColor(PIN_COLOR);
-        g2d.fillRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fill(rect);
         g2d.setColor(PIN_BORDER_COLOR);        
-        g2d.drawRect(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.draw(rect);
       }
     }
     Composite oldComposite = g2d.getComposite();
@@ -392,14 +393,14 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
         int textWidth = (int) (rect.getWidth());
         // Center text horizontally and vertically
         Rectangle bounds = mainArea.getBounds();
-        int x = bounds.x + (bounds.width - textWidth) / 2;
-        int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+        double x = bounds.getX() + (bounds.width - textWidth) / 2;
+        double y = bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
 
         AffineTransform oldTransform = g2d.getTransform();
 
         if (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180) {
-          int centerX = bounds.x + bounds.width / 2;
-          int centerY = bounds.y + bounds.height / 2;
+          double centerX = bounds.getX() + bounds.width / 2;
+          double centerY = bounds.getY() + bounds.height / 2;
           g2d.rotate(-Math.PI / 2, centerX, centerY);
         }
 
@@ -410,7 +411,7 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
             g2d.translate(0, textHeight / 2);
         }
 
-        g2d.drawString(l, x, y);
+        g2d.drawString(l, (int)x, (int)y);
 
         g2d.setTransform(oldTransform);
       }
@@ -421,14 +422,14 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
     int j = 0;
     int k = 0;
     int pinSize = (int) PIN_SIZE.convertToPixels();
-    for (Point point : controlPoints) {
+    for (Point2D point : controlPoints) {
       pinNo++;
 
       // determine points relative to rotation
-      int textX1 = point.x - 2 * pinSize;
-      int textY1 = point.y + pinSize / 2;
-      int textX2 = point.x + pinSize;
-      int textY2 = point.y + pinSize / 2;
+      int textX1 = (int) (point.getX() - 2 * pinSize);
+      int textY1 = (int) (point.getY() + pinSize / 2);
+      int textX2 = (int) (point.getX() + pinSize);
+      int textY2 = (int) (point.getY() + pinSize / 2);
       if (orientation == Orientation._90) {
         textX2 = textX2 - pinSize - pinSize / 2;
         textY2 = textY2 + pinSize;
@@ -560,21 +561,21 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
   
   @Override
   public Rectangle2D getCachingBounds() {
-    int minX = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxY = Integer.MIN_VALUE;
+    double minX = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxY = Integer.MIN_VALUE;
     int margin = 50;
     for (int i = 0; i < getControlPointCount(); i++) {
-      Point p = getControlPoint(i);
-      if (p.x < minX)
-        minX = p.x;
-      if (p.x > maxX)
-        maxX = p.x;
-      if (p.y < minY)
-        minY = p.y;
-      if (p.y > maxY)
-        maxY = p.y;
+      Point2D p = getControlPoint(i);
+      if (p.getX() < minX)
+        minX = p.getX();
+      if (p.getX() > maxX)
+        maxX = p.getX();
+      if (p.getY() < minY)
+        minY = p.getY();
+      if (p.getY() > maxY)
+        maxY = p.getY();
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);

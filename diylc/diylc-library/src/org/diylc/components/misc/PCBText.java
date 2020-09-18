@@ -25,8 +25,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.HorizontalAlignment;
@@ -55,7 +55,7 @@ public class PCBText extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;
 
-  private Point point = new Point(0, 0);
+  private Point2D point = new Point2D.Double(0, 0);
   private String text = DEFAULT_TEXT;
   private Font font = DEFAULT_FONT;
   private Color color = LABEL_COLOR;
@@ -77,30 +77,30 @@ public class PCBText extends AbstractComponent<Void> {
     int textHeight = (int) rect.getHeight();
     int textWidth = (int) rect.getWidth();
 
-    int x = point.x;
-    int y = point.y;
+    double x = point.getX();
+    double y = point.getY();
     switch (getVerticalAlignment()) {
       case CENTER:
-        y = point.y - textHeight / 2 + fontMetrics.getAscent();
+        y = point.getY() - textHeight / 2 + fontMetrics.getAscent();
         break;
       case TOP:
-        y = point.y - textHeight + fontMetrics.getAscent();
+        y = point.getY() - textHeight + fontMetrics.getAscent();
         break;
       case BOTTOM:
-        y = point.y + fontMetrics.getAscent();
+        y = point.getY() + fontMetrics.getAscent();
         break;
       default:
         throw new RuntimeException("Unexpected alignment: " + getVerticalAlignment());
     }
     switch (getHorizontalAlignment()) {
       case CENTER:
-        x = point.x - textWidth / 2;
+        x = point.getX() - textWidth / 2;
         break;
       case LEFT:
-        x = point.x;
+        x = point.getX();
         break;
       case RIGHT:
-        x = point.x - textWidth;
+        x = point.getX() - textWidth;
         break;
       default:
         throw new RuntimeException("Unexpected alignment: " + getHorizontalAlignment());
@@ -108,13 +108,13 @@ public class PCBText extends AbstractComponent<Void> {
 
     switch (getOrientation()) {
       case _90:
-        g2d.rotate(Math.PI / 2, point.x, point.y);
+        g2d.rotate(Math.PI / 2, point.getX(), point.getY());
         break;
       case _180:
-        g2d.rotate(Math.PI, point.x, point.y);
+        g2d.rotate(Math.PI, point.getX(), point.getY());
         break;
       case _270:
-        g2d.rotate(Math.PI * 3 / 2, point.x, point.y);
+        g2d.rotate(Math.PI * 3 / 2, point.getX(), point.getY());
         break;
     }
     
@@ -125,7 +125,7 @@ public class PCBText extends AbstractComponent<Void> {
     tx.translate(-2 * x - textWidth, 0);
     g2d.transform(tx);
 
-    g2d.drawString(text, x, y);
+    g2d.drawString(text, (int)x, (int)y);
     
     g2d.setTransform(oldTx);
   }
@@ -231,7 +231,7 @@ public class PCBText extends AbstractComponent<Void> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return point;
   }
 
@@ -246,7 +246,7 @@ public class PCBText extends AbstractComponent<Void> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.point.setLocation(point);
   }
 

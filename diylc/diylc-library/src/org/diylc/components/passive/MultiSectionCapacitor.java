@@ -25,10 +25,10 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -79,7 +79,7 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
   private org.diylc.core.measures.Voltage voltage = null;
 
   private Orientation orientation = Orientation.DEFAULT;
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient private Area[] body;
   private Color bodyColor = BODY_COLOR;
   private Color baseColor = BASE_COLOR;
@@ -169,7 +169,7 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -184,7 +184,7 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
@@ -195,17 +195,17 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
     int newCount = value.length + 1;
     if (newCount != controlPoints.length) {
       // need new control points
-      Point[] newPoints = new Point[newCount];
+      Point2D[] newPoints = new Point2D[newCount];
       newPoints[0] = controlPoints[0];
       for (int i = 1; i < newCount; i++) {
-        newPoints[i] = new Point(0, 0);
+        newPoints[i] = new Point2D.Double(0, 0);
       }
       controlPoints = newPoints;
     }
     
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     
     if (newCount == 2) {      
       switch (orientation) {
@@ -286,8 +286,8 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
     if (body == null) {
       double centerX;
       double centerY;
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int pinSpacing = (int) (getDiameter().convertToPixels() * RELATIVE_DIAMETERS[value == null || value.length == 1 ? 0 : 1]);
       if (controlPoints.length == 2 || controlPoints.length == 3) {       
         switch (orientation) {
@@ -380,13 +380,13 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
       g2d.draw(area[1]);
     }
 
-    for (Point point : controlPoints) {
+    for (Point2D point : controlPoints) {
       if (!outlineMode) {
         g2d.setColor(pinColor);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
       }
       g2d.setColor(outlineMode ? theme.getOutlineColor() : pinColor.darker());
-      g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+      g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
     }
 
     // Draw label.
@@ -416,18 +416,18 @@ public class MultiSectionCapacitor extends AbstractTransparentComponent<Capacita
     
     Rectangle bounds = area[0].getBounds();
 
-    StringUtils.drawCenteredText(g2d, label, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, label, bounds.getX() + bounds.width / 2, bounds.getY() + bounds.height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     
     // draw polarity markers
     g2d.setColor(pinColor.darker());
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2f));
     double markerSize = pinSize * 0.7;
     for (int i = 0; i < controlPoints.length; i++) {
-      int x = controlPoints[i].x;
-      int y = controlPoints[i].y;
-      g2d.drawLine((int)(x - markerSize / 2), y, (int)(x + markerSize / 2), y);
+      double x = controlPoints[i].getX();
+      double y = controlPoints[i].getY();
+      g2d.drawLine((int)(x - markerSize / 2), (int)y, (int)(x + markerSize / 2), (int)y);
       if (i > 0)
-        g2d.drawLine(x, (int)(y - markerSize / 2), x, (int)(y + markerSize / 2));
+        g2d.drawLine((int)x, (int)(y - markerSize / 2), (int)x, (int)(y + markerSize / 2));
     }
   }
 

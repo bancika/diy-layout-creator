@@ -23,11 +23,11 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -76,7 +76,7 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient private Area[] body;
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
@@ -123,7 +123,7 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
@@ -138,7 +138,7 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
   }
@@ -146,15 +146,15 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
   private void updateControlPoints() {
     int leadSpacing = (int) getLeadSpacing().convertToPixels();
     // Update control points.
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
     int newPointCount = getPinCount().getValue()
         + ((getPinArrangement() == PinArrangement.Circular && !folded) || getTopLead() ? 1 : 0);
     // Need a new array
     if (newPointCount != controlPoints.length) {
-      controlPoints = new Point[newPointCount];
+      controlPoints = new Point2D[newPointCount];
       for (int i = 0; i < controlPoints.length; i++) {
-        controlPoints[i] = new Point(x, y);
+        controlPoints[i] = new Point2D.Double(x, y);
       }
     }
     double length = getLength().convertToPixels(); 
@@ -184,11 +184,11 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
       for (int i = 1; i < controlPoints.length; i++) {
-        controlPoints[i].setLocation(controlPoints[0].x + i * dx, controlPoints[0].y + i * dy);
+        controlPoints[i].setLocation(controlPoints[0].getX() + i * dx, controlPoints[0].getY() + i * dy);
       }
       if (getTopLead()) {
-        int centerX = (controlPoints[controlPoints.length - 2].x + x) / 2;
-        int centerY = (controlPoints[controlPoints.length - 2].y + y) / 2;
+        double centerX = (controlPoints[controlPoints.length - 2].getX() + x) / 2;
+        double centerY = (controlPoints[controlPoints.length - 2].getY() + y) / 2;
         switch (orientation) {
           case DEFAULT:
             if (folded)
@@ -223,18 +223,18 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
       }
     } else {
       int pinCount = getPinCount().getValue();
-      Point firstPoint = controlPoints[0];
+      Point2D firstPoint = controlPoints[0];
 
       double angleIncrement = Math.PI * 2 / (pinCount + 1);
       double initialAngleOffset = angleIncrement;
 
       double r = (pinCount + 1) * leadSpacing / (2 * Math.PI);
 
-      controlPoints = new Point[pinCount + 1];
+      controlPoints = new Point2D[pinCount + 1];
       double theta = initialAngleOffset + getOrientation().toRadians();
       controlPoints[0] = firstPoint;
       for (int i = 0; i < pinCount; i++) {
-        controlPoints[i + 1] = new Point((int) (firstPoint.getX() + Math.cos(theta) * r),
+        controlPoints[i + 1] = new Point2D.Double((int) (firstPoint.getX() + Math.cos(theta) * r),
             (int) (firstPoint.getY() + Math.sin(theta) * r));
         theta += angleIncrement;
       }
@@ -244,21 +244,21 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       double length = getLength().convertToPixels();      
       double leadLength = getLeadLength().convertToPixels();
       double diameter = getDiameter().convertToPixels();
       double edgeRadius = EDGE_RADIUS.convertToPixels();
       
-      int centerX;
-      int centerY;
+      double centerX;
+      double centerY;
       if (getPinArrangement() == PinArrangement.Circular && !folded) {
         centerX = x;
         centerY = y;
       } else {
-        centerX = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].x + x) / 2;
-        centerY = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].y + y) / 2;
+        centerX = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].getX() + x) / 2;
+        centerY = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].getY() + y) / 2;
       }
 
       if (folded) {        
@@ -354,8 +354,8 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
         finalPinBorderColor = METAL_COLOR.darker();
       }
       
-      int centerX = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].x + controlPoints[0].x) / 2;
-      int centerY = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].y + controlPoints[0].y) / 2;      
+      double centerX = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].getX() + controlPoints[0].getX()) / 2;
+      double centerY = (controlPoints[controlPoints.length - (getTopLead() ? 2 : 1)].getY() + controlPoints[0].getY()) / 2;      
       double increment = getDiameter().convertToPixels() / getPinCount().getValue();
       if (orientation == Orientation.DEFAULT || orientation == Orientation._270)
         increment = -increment;
@@ -363,58 +363,58 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
       double startY = centerY - increment * (getPinCount().getValue() - 1) / 2;
       
       for (int i = 0; i < controlPoints.length - (getTopLead() ? 1 : 0); i++) {
-        Point point = controlPoints[i];
+        Point2D point = controlPoints[i];
         switch (orientation) {
           case DEFAULT:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, (int)(startY + increment * i));
+            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(point.getX() - leadLength - leadThickness / 2), (int)(startY + increment * i));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, point.x - leadLength - leadThickness / 2, (int)(startY + increment * i));
+            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(point.getX() - leadLength - leadThickness / 2), (int)(startY + increment * i));
             break;
           case _90:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y - leadLength);
+            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(startX + increment * i), (int)(point.getY() - leadLength));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y - leadLength);
+            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(startX + increment * i), (int)(point.getY() - leadLength));
             break;
           case _180:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, (int)(startY + increment * i));
+            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(point.getX() + leadLength - leadThickness / 2), (int)(startY + increment * i));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, point.x + leadLength - leadThickness / 2, (int)(startY + increment * i));
+            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(point.getX() + leadLength - leadThickness / 2), (int)(startY + increment * i));
             break;
           case _270:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y + leadLength - leadThickness / 2);
+            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(startX + increment * i), (int)(point.getY() + leadLength - leadThickness / 2));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine(point.x, point.y, (int)(startX + increment * i), point.y + leadLength - leadThickness / 2);
+            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(startX + increment * i), (int)(point.getY() + leadLength - leadThickness / 2));
             break;
         }
       }
       if (getTopLead()) {
-        Point point = controlPoints[controlPoints.length - 1];
+        Point2D point = controlPoints[controlPoints.length - 1];
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
         g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-        g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+        g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
       }
     } else {
       if (!outlineMode) {
         for (int i = getPinArrangement() == PinArrangement.Circular && !topLead ? 1
             : 0; i < controlPoints.length; i++) {
-          Point point = controlPoints[i];
+          Point2D point = controlPoints[i];
           g2d.setColor(PIN_COLOR);
-          g2d.fillOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+          g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
           g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-          g2d.drawOval(point.x - pinSize / 2, point.y - pinSize / 2, pinSize, pinSize);
+          g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
         }
       }
     }
@@ -448,8 +448,8 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
     int textWidth = (int) (rect.getWidth());
     // Center text horizontally and vertically
     Rectangle bounds = mainArea.getBounds();
-    int x = bounds.x + (bounds.width - textWidth) / 2;
-    int y = bounds.y + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
+    double x = bounds.getX() + (bounds.width - textWidth) / 2;
+    double y = bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent();
 
     int dx = 0;
     int dy = 0;
@@ -470,7 +470,7 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
       }
     }
 
-    g2d.drawString(label, x + dx, y + dy);
+    g2d.drawString(label, (int)(x + dx), (int)(y + dy));
   }
 
   @Override

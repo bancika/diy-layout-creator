@@ -24,8 +24,8 @@ package org.diylc.components.boards;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
@@ -67,11 +67,11 @@ public class MarshallPerfBoard extends AbstractBoard {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    Point finalSecondPoint = getFinalSecondPoint();
+    Point2D finalSecondPoint = getFinalSecondPoint();
     
     Shape clip = g2d.getClip();
-    if (checkPointsClipped(clip) && !clip.contains(firstPoint.x, finalSecondPoint.y)
-        && !clip.contains(finalSecondPoint.x, firstPoint.y)) {
+    if (checkPointsClipped(clip) && !clip.contains(firstPoint.getX(), finalSecondPoint.getY())
+        && !clip.contains(finalSecondPoint.getX(), firstPoint.getY())) {
       return;
     }
     super.draw(g2d, componentState, outlineMode, project, drawingObserver);
@@ -79,19 +79,20 @@ public class MarshallPerfBoard extends AbstractBoard {
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
-      Point p = new Point(firstPoint);
+      double x = firstPoint.getX();
+      double y = firstPoint.getY();
       int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
-      int spacing = (int) this.spacing.convertToPixels();
+      double spacing = this.spacing.convertToPixels();
 
-      while (p.y < finalSecondPoint.y - spacing) {
-        p.x = firstPoint.x;
-        p.y += spacing;
-        while (p.x < finalSecondPoint.x - spacing - holeDiameter) {
-          p.x += spacing;
+      while (y < finalSecondPoint.getY() - spacing) {
+        x = firstPoint.getX();
+        y += spacing;
+        while (x < finalSecondPoint.getX() - spacing - holeDiameter) {
+          x += spacing;
           g2d.setColor(Constants.CANVAS_COLOR);
-          g2d.fillOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter, holeDiameter);
+          g2d.fillOval((int)(x - holeDiameter / 2), (int)(y - holeDiameter / 2), holeDiameter, holeDiameter);
           g2d.setColor(borderColor);
-          g2d.drawOval(p.x - holeDiameter / 2, p.y - holeDiameter / 2, holeDiameter, holeDiameter);
+          g2d.drawOval((int)(x - holeDiameter / 2), (int)(y - holeDiameter / 2), holeDiameter, holeDiameter);
         }
       }
       super.drawCoordinates(g2d, spacing, project);

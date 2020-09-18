@@ -21,7 +21,7 @@
 */
 package org.diylc.components.passive;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
@@ -34,7 +34,7 @@ public abstract class AbstractPotentiometer extends AbstractTransparentComponent
 
   private static final long serialVersionUID = 1L;
 
-  protected Point[] controlPoints;
+  protected Point2D[] controlPoints;
 
   protected Resistance resistance = null;
   protected Orientation orientation = Orientation.DEFAULT;
@@ -46,12 +46,12 @@ public abstract class AbstractPotentiometer extends AbstractTransparentComponent
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D    point, int index) {
     controlPoints[index].setLocation(point);
   }
 

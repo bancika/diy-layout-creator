@@ -22,11 +22,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -73,8 +73,8 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
   private static Size HOLE_DIAMETER = new Size(2.5d, SizeUnit.mm);
 
   private String value = "";
-  private Point[] controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0),
-      new Point(0, 0), new Point(0, 0)};
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0),
+      new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient Area[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private boolean showLabels = true;
@@ -154,8 +154,8 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
       g2d.setFont(project.getFont().deriveFont(project.getFont().getSize2D() * 0.8f));
       for (int i = 2; i < body.length; i++) {
         Rectangle2D bounds = body[i].getBounds2D();
-        int x = (int) ((bounds.getCenterX() + controlPoints[i - 2].x) / 2);
-        int y = (int) ((bounds.getCenterY() + controlPoints[i - 2].y) / 2);
+        double x = (int) ((bounds.getCenterX() + controlPoints[i - 2].getX()) / 2);
+        double y = (int) ((bounds.getCenterY() + controlPoints[i - 2].getY()) / 2);
         StringUtils.drawCenteredText(g2d, i == 2 ? "C" : String.valueOf(i - 2), x, y,
             HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       }
@@ -168,8 +168,8 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
     if (body == null) {
       body = new Area[3 + getPositionCount().getCount()];
 
-      int x = controlPoints[0].x;
-      int y = controlPoints[0].y;
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
       int outerDiameter = getClosestOdd(OUTER_DIAMETER.convertToPixels());
       int innerDiameter = getClosestOdd(INNER_DIAMETER.convertToPixels());
       int springLength = (int) TERMINAL_LENGTH.convertToPixels();
@@ -177,7 +177,7 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
       int holeDiameter = getClosestOdd(HOLE_DIAMETER.convertToPixels());
       int holeDistance = (int) HOLE_DISTANCE.convertToPixels();
 
-      int centerY = y - holeDistance;
+      double centerY = y - holeDistance;
 
       Area main = new Area(new Ellipse2D.Double(x - outerDiameter / 2, centerY - outerDiameter / 2,
           outerDiameter, outerDiameter));
@@ -218,12 +218,12 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
   }
 
   private void updateControlPoints() {
-    int x = controlPoints[0].x;
-    int y = controlPoints[0].y;
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
 
     int holeDistance = (int) HOLE_DISTANCE.convertToPixels();
 
-    int centerY = y - holeDistance;
+    double centerY = y - holeDistance;
 
     for (int i = 1; i < controlPoints.length; i++) {
       double theta = -i * Math.PI / 4;
@@ -236,7 +236,7 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
     // Rotate if needed
     if (theta != 0) {
       AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
-      for (Point point : controlPoints) {
+      for (Point2D point : controlPoints) {
         rotation.transform(point, point);
       }
     }
@@ -292,12 +292,12 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return controlPoints[index];
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     this.controlPoints[index].setLocation(point);
     // Invalidate the body
     body = null;

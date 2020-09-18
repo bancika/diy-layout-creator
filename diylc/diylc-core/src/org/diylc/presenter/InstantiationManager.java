@@ -21,7 +21,7 @@
 */
 package org.diylc.presenter;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +60,8 @@ public class InstantiationManager {
   private ComponentType componentTypeSlot;
   private Template template;
   private List<IDIYComponent<?>> componentSlot;
-  private Point firstControlPoint;
-  private Point potentialControlPoint;
+  private Point2D firstControlPoint;
+  private Point2D potentialControlPoint;
 
   public static final ComponentType clipboardType = new ComponentType("Clipboard contents",
       "Components from the clipboard", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
@@ -84,15 +84,15 @@ public class InstantiationManager {
     return componentSlot;
   }
 
-  public Point getFirstControlPoint() {
+  public Point2D getFirstControlPoint() {
     return firstControlPoint;
   }
 
-  public Point getPotentialControlPoint() {
+  public Point2D getPotentialControlPoint() {
     return potentialControlPoint;
   }
   
-  public void setPotentialControlPoint(Point potentialControlPoint) {
+  public void setPotentialControlPoint(Point2D potentialControlPoint) {
 	this.potentialControlPoint = potentialControlPoint;
 }
 
@@ -105,10 +105,10 @@ public class InstantiationManager {
     } else {
       switch (componentTypeSlot.getCreationMethod()) {
         case POINT_BY_POINT:
-          this.componentSlot = forceInstatiate ? instantiateComponent(componentTypeSlot, template, new Point(0, 0), currentProject) : null;
+          this.componentSlot = forceInstatiate ? instantiateComponent(componentTypeSlot, template, new Point2D.Double(0, 0), currentProject) : null;
           break;
         case SINGLE_CLICK:
-          this.componentSlot = instantiateComponent(componentTypeSlot, template, new Point(0, 0), currentProject);
+          this.componentSlot = instantiateComponent(componentTypeSlot, template, new Point2D.Double(0, 0), currentProject);
           break;
       }
     }
@@ -116,7 +116,7 @@ public class InstantiationManager {
     this.potentialControlPoint = null;
   }
 
-  public void instatiatePointByPoint(Point scaledPoint, Project currentProject) throws Exception {
+  public void instatiatePointByPoint(Point2D scaledPoint, Project currentProject) throws Exception {
     firstControlPoint = scaledPoint;
     componentSlot = instantiateComponent(componentTypeSlot, template, firstControlPoint, currentProject);
 
@@ -132,7 +132,7 @@ public class InstantiationManager {
    * @param scaledPoint
    * @return true, if any change is made
    */
-  public boolean updatePointByPoint(Point scaledPoint) {
+  public boolean updatePointByPoint(Point2D scaledPoint) {
     boolean changeMade = !scaledPoint.equals(potentialControlPoint);
     potentialControlPoint = scaledPoint;
     if (componentSlot != null && !componentSlot.isEmpty()) {
@@ -142,14 +142,14 @@ public class InstantiationManager {
   }
 
   @SuppressWarnings("unchecked")
-  public void pasteComponents(Collection<IDIYComponent<?>> components, Point scaledPoint, boolean snapToGrid,
+  public void pasteComponents(Collection<IDIYComponent<?>> components, Point2D scaledPoint, boolean snapToGrid,
       Size gridSpacing, boolean autoGroup, Project currentProject, boolean assignNewNames) {	  
     // Adjust location of components so they are centered under the mouse
     // cursor
-    int minX = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxY = Integer.MIN_VALUE;
+    double minX = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxY = Integer.MIN_VALUE;
     
     Set<String> existingNames = new HashSet<String>();
     for (IDIYComponent<?> c : currentProject.getComponents())
@@ -169,32 +169,32 @@ public class InstantiationManager {
       }
       
       for (int i = 0; i < component.getControlPointCount(); i++) {        
-        Point p = component.getControlPoint(i);
-        if (p.x > maxX) {
-          maxX = p.x;
+        Point2D p = component.getControlPoint(i);
+        if (p.getX() > maxX) {
+          maxX = p.getX();
         }
-        if (p.x < minX) {
-          minX = p.x;
+        if (p.getX() < minX) {
+          minX = p.getX();
         }
-        if (p.y > maxY) {
-          maxY = p.y;
+        if (p.getY() > maxY) {
+          maxY = p.getY();
         }
-        if (p.y < minY) {
-          minY = p.y;
+        if (p.getY() < minY) {
+          minY = p.getY();
         }
       }
     }
-    int x = minX;
-    int y = minY;
+    double x = minX;
+    double y = minY;
     if (snapToGrid) {
       x = CalcUtils.roundToGrid(x, gridSpacing);
       x = CalcUtils.roundToGrid(x, gridSpacing);
     }
     for (IDIYComponent<?> component : components) {
       for (int i = 0; i < component.getControlPointCount(); i++) {
-        Point p = component.getControlPoint(i);
-        p.translate(-x, -y);
-        component.setControlPoint(p, i);
+        Point2D p = component.getControlPoint(i);
+        Point2D newP = new Point2D.Double(p.getX() - x, p.getY() - y);        
+        component.setControlPoint(newP, i);
       }
     }
 
@@ -206,7 +206,7 @@ public class InstantiationManager {
     this.componentTypeSlot = autoGroup ? blockType : clipboardType;
 
     if (snapToGrid) {
-      scaledPoint = new Point(scaledPoint);
+      scaledPoint = new Point2D.Double(scaledPoint.getX(), scaledPoint.getY());
       CalcUtils.snapPointToGrid(scaledPoint, gridSpacing);
     }
     // Update the location according to mouse location
@@ -221,15 +221,15 @@ public class InstantiationManager {
    * @param gridSpacing
    * @return true if we need to refresh the canvas
    */
-  public boolean updateSingleClick(Point scaledPoint, boolean snapToGrid, Size gridSpacing) {
+  public boolean updateSingleClick(Point2D scaledPoint, boolean snapToGrid, Size gridSpacing) {
     if (potentialControlPoint == null) {
-      potentialControlPoint = new Point(0, 0);
+      potentialControlPoint = new Point2D.Double(0, 0);
     }
     if (scaledPoint == null) {
-      scaledPoint = new Point(0, 0);
+      scaledPoint = new Point2D.Double(0, 0);
     }
-    int dx = scaledPoint.x - potentialControlPoint.x;
-    int dy = scaledPoint.y - potentialControlPoint.y;
+    double dx = scaledPoint.getX() - potentialControlPoint.getX();
+    double dy = scaledPoint.getY() - potentialControlPoint.getY();
     if (snapToGrid) {
       dx = CalcUtils.roundToGrid(dx, gridSpacing);
       dy = CalcUtils.roundToGrid(dy, gridSpacing);
@@ -238,15 +238,15 @@ public class InstantiationManager {
     if (dx == 0 && dy == 0) {
       return false;
     }
-    potentialControlPoint.translate(dx, dy);
+    potentialControlPoint.setLocation(potentialControlPoint.getX() + dx, potentialControlPoint.getY() + dy);
     if (componentSlot == null) {
       LOG.error("Component slot should not be null!");
     } else {
-      Point p = new Point();
+      Point2D p = new Point2D.Double();
       for (IDIYComponent<?> component : componentSlot) {
         for (int i = 0; i < component.getControlPointCount(); i++) {
-          p.setLocation(component.getControlPoint(i));
-          p.translate(dx, dy);
+          Point2D oldP = component.getControlPoint(i);
+          p.setLocation(oldP.getX() + dx, oldP.getY() + dy);          
           component.setControlPoint(p, i);
         }
       }
@@ -255,7 +255,7 @@ public class InstantiationManager {
   }
 
   @SuppressWarnings("unchecked")
-  public List<IDIYComponent<?>> instantiateComponent(ComponentType componentType, Template template, Point point,
+  public List<IDIYComponent<?>> instantiateComponent(ComponentType componentType, Template template, Point2D point,
       Project currentProject) throws InstantiationException, IllegalAccessException {
     LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
 
@@ -267,8 +267,8 @@ public class InstantiationManager {
     // Translate them to the desired location.
     if (point != null) {
       for (int j = 0; j < component.getControlPointCount(); j++) {
-        Point controlPoint = new Point(component.getControlPoint(j));
-        controlPoint.translate(point.x, point.y);
+        Point2D p = component.getControlPoint(j);
+        Point2D controlPoint = new Point2D.Double(p.getX() + point.getX(), p.getY() + point.getY());        
         // snapPointToGrid(controlPoint);
         component.setControlPoint(controlPoint, j);
       }
@@ -388,8 +388,8 @@ public class InstantiationManager {
     if (template != null && template.getPoints() != null
         && template.getPoints().size() >= component.getControlPointCount()) {
       for (int i = 0; i < component.getControlPointCount(); i++) {
-        Point p = new Point(component.getControlPoint(0));
-        p.translate(template.getPoints().get(i).x, template.getPoints().get(i).y);
+        Point2D oldP = component.getControlPoint(0);
+        Point2D p = new Point2D.Double(oldP.getX() + template.getPoints().get(i).getX(), oldP.getY() + template.getPoints().get(i).getY());        
         component.setControlPoint(p, i);
       }
     }

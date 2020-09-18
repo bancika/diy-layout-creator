@@ -23,6 +23,7 @@ package org.diylc.serialization;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,7 +72,6 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.CalcUtils;
 import org.diylc.presenter.ComparatorFactory;
-import org.diylc.serialization.IOldFileParser;
 import org.diylc.utils.Constants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -126,11 +126,11 @@ public class V1FileParser implements IOldFileParser {
       throw new IllegalArgumentException("Unrecognized board type: " + type);
     }
     board.setName("Main board");
-    Point referencePoint =
-        new Point(CalcUtils.roundToGrid(x, V1_GRID_SPACING), CalcUtils.roundToGrid(y, V1_GRID_SPACING));
+    Point2D referencePoint =
+        new Point2D.Double(CalcUtils.roundToGrid(x, V1_GRID_SPACING), CalcUtils.roundToGrid(y, V1_GRID_SPACING));
     board.setControlPoint(referencePoint, 0);
     board.setControlPoint(
-        new Point(CalcUtils.roundToGrid(x + boardWidth, V1_GRID_SPACING), CalcUtils.roundToGrid(y + boardHeight,
+        new Point2D.Double(CalcUtils.roundToGrid(x + boardWidth, V1_GRID_SPACING), CalcUtils.roundToGrid(y + boardHeight,
             V1_GRID_SPACING)), 1);
     project.getComponents().add(board);
 
@@ -144,8 +144,8 @@ public class V1FileParser implements IOldFileParser {
         String valueAttr = valueNode == null ? null : valueNode.getNodeValue();
         int x1Attr = Integer.parseInt(node.getAttributes().getNamedItem("X1").getNodeValue());
         int y1Attr = Integer.parseInt(node.getAttributes().getNamedItem("Y1").getNodeValue());
-        Point point1 = convertV1CoordinatesToV3Point(referencePoint, x1Attr, y1Attr);
-        Point point2 = null;
+        Point2D point1 = convertV1CoordinatesToV3Point(referencePoint, x1Attr, y1Attr);
+        Point2D point2 = null;
         Integer x2Attr = null;
         Integer y2Attr = null;
         Color color = null;
@@ -210,11 +210,11 @@ public class V1FileParser implements IOldFileParser {
           long seed = Long.parseLong(node.getAttributes().getNamedItem("Seed").getNodeValue());
           Random r = new Random(seed);
           randSeed = seed;
-          int d = (int) Math.round(Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2)) / 2);
-          int x2 = (int) (point1.x + Math.round((point2.x - point1.x) * 0.40) + myRandom(d, r));
-          int y2 = (int) (point1.y + Math.round((point2.y - point1.y) * 0.40) + myRandom(d, r));
-          int x3 = (int) (point1.x + Math.round((point2.x - point1.x) * 0.60) + myRandom(d, r));
-          int y3 = (int) (point1.y + Math.round((point2.y - point1.y) * 0.60) + myRandom(d, r));
+          int d = (int) Math.round(Math.sqrt(Math.pow(point1.getX() - point2.getX(), 2) + Math.pow(point1.getY() - point2.getY(), 2)) / 2);
+          int x2 = (int) (point1.getX() + Math.round((point2.getX() - point1.getX()) * 0.40) + myRandom(d, r));
+          int y2 = (int) (point1.getY() + Math.round((point2.getY() - point1.getY()) * 0.40) + myRandom(d, r));
+          int x3 = (int) (point1.getX() + Math.round((point2.getX() - point1.getX()) * 0.60) + myRandom(d, r));
+          int y3 = (int) (point1.getY() + Math.round((point2.getY() - point1.getY()) * 0.60) + myRandom(d, r));
 
           wire.setName(nameAttr);
           String colorAttr = node.getAttributes().getNamedItem("Color").getNodeValue();
@@ -314,13 +314,13 @@ public class V1FileParser implements IOldFileParser {
             LOG.debug("Could not set value of " + nameAttr);
           }
           transistor.setControlPoint(point1, 0);
-          if (point1.y > point2.y) {
+          if (point1.getY() > point2.getY()) {
             transistor.setOrientation(Orientation._180);
-          } else if (point1.y < point2.y) {
+          } else if (point1.getY() < point2.getY()) {
             transistor.setOrientation(Orientation.DEFAULT);
-          } else if (point1.x < point2.x) {
+          } else if (point1.getX() < point2.getX()) {
             transistor.setOrientation(Orientation._270);
-          } else if (point1.x > point2.x) {
+          } else if (point1.getX() > point2.getX()) {
             transistor.setOrientation(Orientation._90);
           }
           // capacitor.setControlPoint(point2, 1);
@@ -352,8 +352,8 @@ public class V1FileParser implements IOldFileParser {
           ic.setName(nameAttr);
           // Translate control points.
           for (int j = 0; j < ic.getControlPointCount(); j++) {
-            Point p = new Point(ic.getControlPoint(j));
-            p.translate(point1.x, point1.y);
+            Point2D oldP = ic.getControlPoint(j);
+            Point2D p = new Point2D.Double(oldP.getX() + point1.getX(), oldP.getY() + point1.getY());            
             ic.setControlPoint(p, j);
           }
           ic.setValue(valueAttr);
@@ -403,19 +403,19 @@ public class V1FileParser implements IOldFileParser {
             sw.setSpacing(new Size(0.1, SizeUnit.in));
             // compensate for potential negative coordinates after the type and orientation have
             // been set. Make sure that the top left corner is at (0, 0)
-            int dx = 0;
-            int dy = 0;
+            double dx = 0;
+            double dy = 0;
             for (int j = 0; j < sw.getControlPointCount(); j++) {
-              Point p = new Point(sw.getControlPoint(j));
-              if (p.x < 0 && p.x < dx)
-                dx = p.x;
-              if (p.y < 0 && p.y < dy)
-                dy = p.y;
+              Point2D oldP = sw.getControlPoint(j);
+              if (oldP.getX() < 0 && oldP.getX() < dx)
+                dx = oldP.getX();
+              if (oldP.getY() < 0 && oldP.getY() < dy)
+                dy = oldP.getY();
             }
             // Translate control points.
             for (int j = 0; j < sw.getControlPointCount(); j++) {
-              Point p = new Point(sw.getControlPoint(j));
-              p.translate(Math.min(point1.x, point2.x) - dx, Math.min(point1.y, point2.y) - dy);
+              Point2D oldP = sw.getControlPoint(j);
+              Point2D p = new Point2D.Double(oldP.getX() + Math.min(point1.getX(), point2.getX()) - dx, oldP.getY() + Math.min(point1.getY(), point2.getY()) - dy);              
               sw.setControlPoint(p, j);
             }
             component = sw;
@@ -441,8 +441,8 @@ public class V1FileParser implements IOldFileParser {
           ic.setName(nameAttr);
           // Translate control points.
           for (int j = 0; j < ic.getControlPointCount(); j++) {
-            Point p = new Point(ic.getControlPoint(j));
-            p.translate(point1.x, point1.y);
+            Point2D oldP = ic.getControlPoint(j);
+            Point2D p = new Point2D.Double(oldP.getX() + point1.getX(), oldP.getY() + point1.getY());            
             ic.setControlPoint(p, j);
           }
           ic.setValue(valueAttr);
@@ -471,29 +471,29 @@ public class V1FileParser implements IOldFileParser {
           if (x1Attr < x2Attr) {
             pot.setOrientation(Orientation.DEFAULT);
             for (int j = 0; j < pot.getControlPointCount(); j++) {
-              Point p = new Point(pot.getControlPoint(j));
-              p.translate(point1.x - delta, point1.y);
+              Point2D oldP = pot.getControlPoint(j);
+              Point2D p = new Point2D.Double(oldP.getX() + point1.getX() - delta, oldP.getY() + point1.getY());              
               pot.setControlPoint(p, j);
             }
           } else if (x1Attr > x2Attr) {
             pot.setOrientation(Orientation._180);
             for (int j = 0; j < pot.getControlPointCount(); j++) {
-              Point p = new Point(pot.getControlPoint(j));
-              p.translate(point1.x + delta, point1.y);
+              Point2D oldP = pot.getControlPoint(j);
+              Point2D p = new Point2D.Double(oldP.getX() + point1.getX() + delta, oldP.getY() + point1.getY());              
               pot.setControlPoint(p, j);
             }
           } else if (y1Attr < y2Attr) {
             pot.setOrientation(Orientation._90);
             for (int j = 0; j < pot.getControlPointCount(); j++) {
-              Point p = new Point(pot.getControlPoint(j));
-              p.translate(point1.x, point1.y - delta);
+              Point2D oldP = pot.getControlPoint(j);
+              Point2D p = new Point2D.Double(oldP.getX() + point1.getX(), oldP.getY() + point1.getY() - delta);              
               pot.setControlPoint(p, j);
             }
           } else if (y1Attr > y2Attr) {
             pot.setOrientation(Orientation._270);
             for (int j = 0; j < pot.getControlPointCount(); j++) {
-              Point p = new Point(pot.getControlPoint(j));
-              p.translate(point1.x, point1.y + delta);
+              Point2D oldP = pot.getControlPoint(j);
+              Point2D p = new Point2D.Double(oldP.getX() + point1.getX(), oldP.getY() + point1.getY() + delta);
               pot.setControlPoint(p, j);
             };
           }
@@ -654,8 +654,8 @@ public class V1FileParser implements IOldFileParser {
             dy *= V1_GRID_SPACING.convertToPixels();
             // Translate control points.
             for (int j = 0; j < trimmer.getControlPointCount(); j++) {
-              Point p = new Point(trimmer.getControlPoint(j));
-              p.translate(point1.x + dx, point1.y + dy);
+              Point2D oldP = trimmer.getControlPoint(j);
+              Point2D p = new Point2D.Double(oldP.getX() + point1.getX() + dx, oldP.getY() + point1.getY() + dy);              
               trimmer.setControlPoint(p, j);
             }
             component = trimmer;
@@ -679,12 +679,12 @@ public class V1FileParser implements IOldFileParser {
       }
     }
 
-    int minY = y;
+    double minY = y;
     for (IDIYComponent<?> c : project.getComponents()) {
       for (int i = 0; i < c.getControlPointCount(); i++) {
-        Point p = c.getControlPoint(i);
-        if (p.y < minY)
-          minY = p.y;
+        Point2D p = c.getControlPoint(i);
+        if (p.getY() < minY)
+          minY = p.getY();
       }
     }
 
@@ -695,7 +695,7 @@ public class V1FileParser implements IOldFileParser {
     titleLabel.setValue(project.getTitle());
     titleLabel.setHorizontalAlignment(HorizontalAlignment.CENTER);
     titleLabel.setControlPoint(
-        new Point(CalcUtils.roundToGrid(x + boardWidth / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
+        new Point2D.Double(CalcUtils.roundToGrid(x + boardWidth / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
             (int) (minY - Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue() * 5), V1_GRID_SPACING)), 0);
     project.getComponents().add(titleLabel);
 
@@ -704,7 +704,7 @@ public class V1FileParser implements IOldFileParser {
     creditsLabel.setValue(project.getAuthor());
     creditsLabel.setHorizontalAlignment(HorizontalAlignment.CENTER);
     creditsLabel.setControlPoint(
-        new Point(CalcUtils.roundToGrid(x + boardWidth / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
+        new Point2D.Double(CalcUtils.roundToGrid(x + boardWidth / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
             (int) (minY - Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue() * 4), V1_GRID_SPACING)), 0);
     project.getComponents().add(creditsLabel);
 
@@ -712,7 +712,7 @@ public class V1FileParser implements IOldFileParser {
     BOM bom = new BOM();
     int bomSize = (int) bom.getSize().convertToPixels();
     bom.setControlPoint(
-        new Point(CalcUtils.roundToGrid(x + (boardWidth - bomSize) / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
+        new Point2D.Double(CalcUtils.roundToGrid(x + (boardWidth - bomSize) / 2, V1_GRID_SPACING), CalcUtils.roundToGrid(
             (int) (y + boardHeight + 2 * V1_GRID_SPACING.convertToPixels()), V1_GRID_SPACING)), 0);
     project.getComponents().add(bom);
 
@@ -721,10 +721,9 @@ public class V1FileParser implements IOldFileParser {
     return project;
   }
 
-  private Point convertV1CoordinatesToV3Point(Point reference, int x, int y) {
-    Point point = new Point(reference);
-    point.translate((int) (x * Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue()), (int) (y
-        * Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue()));
+  private Point2D convertV1CoordinatesToV3Point(Point2D reference, int x, int y) {
+    Point2D point = new Point2D.Double(reference.getX() + x * Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue(), reference.getY() + y
+        * Constants.PIXELS_PER_INCH * V1_GRID_SPACING.getValue());    
     return point;
   }
 

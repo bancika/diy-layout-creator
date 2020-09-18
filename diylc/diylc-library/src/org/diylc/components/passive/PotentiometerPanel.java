@@ -26,10 +26,10 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -85,7 +85,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
   transient protected Area[] body = null;
 
   public PotentiometerPanel() {
-    controlPoints = new Point[] {new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+    controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
     updateControlPoints();
   }
 
@@ -93,20 +93,20 @@ public class PotentiometerPanel extends AbstractPotentiometer {
     int spacing = (int) this.spacing.convertToPixels();
     switch (orientation) {
       case DEFAULT:
-        controlPoints[1].setLocation(controlPoints[0].x + spacing, controlPoints[0].y);
-        controlPoints[2].setLocation(controlPoints[0].x + 2 * spacing, controlPoints[0].y);
+        controlPoints[1].setLocation(controlPoints[0].getX() + spacing, controlPoints[0].getY());
+        controlPoints[2].setLocation(controlPoints[0].getX() + 2 * spacing, controlPoints[0].getY());
         break;
       case _90:
-        controlPoints[1].setLocation(controlPoints[0].x, controlPoints[0].y + spacing);
-        controlPoints[2].setLocation(controlPoints[0].x, controlPoints[0].y + 2 * spacing);
+        controlPoints[1].setLocation(controlPoints[0].getX(), controlPoints[0].getY() + spacing);
+        controlPoints[2].setLocation(controlPoints[0].getX(), controlPoints[0].getY() + 2 * spacing);
         break;
       case _180:
-        controlPoints[1].setLocation(controlPoints[0].x - spacing, controlPoints[0].y);
-        controlPoints[2].setLocation(controlPoints[0].x - 2 * spacing, controlPoints[0].y);
+        controlPoints[1].setLocation(controlPoints[0].getX() - spacing, controlPoints[0].getY());
+        controlPoints[2].setLocation(controlPoints[0].getX() - 2 * spacing, controlPoints[0].getY());
         break;
       case _270:
-        controlPoints[1].setLocation(controlPoints[0].x, controlPoints[0].y - spacing);
-        controlPoints[2].setLocation(controlPoints[0].x, controlPoints[0].y - 2 * spacing);
+        controlPoints[1].setLocation(controlPoints[0].getX(), controlPoints[0].getY() - spacing);
+        controlPoints[2].setLocation(controlPoints[0].getX(), controlPoints[0].getY() - 2 * spacing);
         break;
       default:
         break;
@@ -124,66 +124,66 @@ public class PotentiometerPanel extends AbstractPotentiometer {
       // Add lugs.
       int pinWidth = (int) PIN_SIZE.convertToPixels();
 
-      int centerX = 0;
-      int centerY = 0;
+      double centerX = 0;
+      double centerY = 0;
 
       double waferWidth = 2.5 * spacing;
       double waferHeight = spacing;
 
       switch (orientation) {
         case DEFAULT:
-          centerX = controlPoints[0].x + spacing;
-          centerY = controlPoints[0].y - spacing / 2 - diameter / 2;
+          centerX = controlPoints[0].getX() + spacing;
+          centerY = controlPoints[0].getY() - spacing / 2 - diameter / 2;
 
           body[9] =
-              new Area(new RoundRectangle2D.Double(centerX - waferWidth / 2, controlPoints[0].y - waferHeight - spacing
+              new Area(new RoundRectangle2D.Double(centerX - waferWidth / 2, controlPoints[0].getY() - waferHeight - spacing
                   / 2, waferWidth, waferHeight, spacing / 4, spacing / 4));
 
           for (int i = 0; i < 3; i++) {
             body[i] =
-                new Area(new Rectangle2D.Double(controlPoints[i].x - pinWidth / 2, controlPoints[i].y
+                new Area(new Rectangle2D.Double(controlPoints[i].getX() - pinWidth / 2, controlPoints[i].getY()
                     - (spacing + diameter) / 2, pinWidth, (spacing + diameter) / 2));
           }
           break;
         case _90:
-          centerX = controlPoints[0].x + spacing / 2 + diameter / 2;
-          centerY = controlPoints[0].y + spacing;
+          centerX = controlPoints[0].getX() + spacing / 2 + diameter / 2;
+          centerY = controlPoints[0].getY() + spacing;
 
           body[9] =
-              new Area(new RoundRectangle2D.Double(controlPoints[0].x + spacing / 2, centerY - waferWidth / 2,
+              new Area(new RoundRectangle2D.Double(controlPoints[0].getX() + spacing / 2, centerY - waferWidth / 2,
                   waferHeight, waferWidth, spacing / 4, spacing / 4));
 
           for (int i = 0; i < 3; i++) {
             body[i] =
-                new Area(new Rectangle2D.Double(controlPoints[i].x, controlPoints[i].y - pinWidth / 2,
+                new Area(new Rectangle2D.Double(controlPoints[i].getX(), controlPoints[i].getY() - pinWidth / 2,
                     (spacing + diameter) / 2, pinWidth));
           }
           break;
         case _180:
-          centerX = controlPoints[0].x - spacing;
-          centerY = controlPoints[0].y + spacing / 2 + diameter / 2;
+          centerX = controlPoints[0].getX() - spacing;
+          centerY = controlPoints[0].getY() + spacing / 2 + diameter / 2;
 
           body[9] =
-              new Area(new RoundRectangle2D.Double(centerX - waferWidth / 2, controlPoints[0].y + spacing / 2,
+              new Area(new RoundRectangle2D.Double(centerX - waferWidth / 2, controlPoints[0].getY() + spacing / 2,
                   waferWidth, waferHeight, spacing / 4, spacing / 4));
 
           for (int i = 0; i < 3; i++) {
             body[i] =
-                new Area(new Rectangle2D.Double(controlPoints[i].x - pinWidth / 2, controlPoints[i].y, pinWidth,
+                new Area(new Rectangle2D.Double(controlPoints[i].getX() - pinWidth / 2, controlPoints[i].getY(), pinWidth,
                     (spacing + diameter) / 2));
           }
           break;
         case _270:
-          centerX = controlPoints[0].x - spacing / 2 - diameter / 2;
-          centerY = controlPoints[0].y - spacing;
+          centerX = controlPoints[0].getX() - spacing / 2 - diameter / 2;
+          centerY = controlPoints[0].getY() - spacing;
 
           body[9] =
-              new Area(new RoundRectangle2D.Double(controlPoints[0].x - waferHeight - spacing / 2, centerY - waferWidth
+              new Area(new RoundRectangle2D.Double(controlPoints[0].getX() - waferHeight - spacing / 2, centerY - waferWidth
                   / 2, waferHeight, waferWidth, spacing / 4, spacing / 4));
 
           for (int i = 0; i < 3; i++) {
             body[i] =
-                new Area(new Rectangle2D.Double(controlPoints[i].x - (spacing + diameter) / 2, controlPoints[i].y
+                new Area(new Rectangle2D.Double(controlPoints[i].getX() - (spacing + diameter) / 2, controlPoints[i].getY()
                     - pinWidth / 2, (spacing + diameter) / 2, pinWidth));
           }
           break;
@@ -205,7 +205,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
 
         for (int i = 0; i < 3; i++) {
           Area area =
-              new Area(new Ellipse2D.Double(controlPoints[i].x - lugDiameter / 2, controlPoints[i].y - lugDiameter / 2,
+              new Area(new Ellipse2D.Double(controlPoints[i].getX() - lugDiameter / 2, controlPoints[i].getY() - lugDiameter / 2,
                   lugDiameter, lugDiameter));
           body[4 + i] = area;
         }
@@ -217,7 +217,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
         }
         // Make holes in the lugs.
         for (int i = 0; i < 3; i++) {
-          body[4 + i].subtract(new Area(new Ellipse2D.Double(controlPoints[i].x - holeDiameter / 2, controlPoints[i].y
+          body[4 + i].subtract(new Area(new Ellipse2D.Double(controlPoints[i].getX() - holeDiameter / 2, controlPoints[i].getY()
               - holeDiameter / 2, holeDiameter, holeDiameter)));
         }
       }
@@ -241,7 +241,7 @@ public class PotentiometerPanel extends AbstractPotentiometer {
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     super.setControlPoint(point, index);
     body = null;
   }

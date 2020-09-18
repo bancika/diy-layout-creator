@@ -24,6 +24,7 @@ package org.diylc.testcomponents;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
@@ -51,7 +52,7 @@ public class MockDIYComponent extends AbstractComponent<Capacitance> {
   private Resistance r = new Resistance(123d, ResistanceUnit.K);
   private Size s = new Size(1d, SizeUnit.cm);
   private Color color = Color.green;
-  private Point leftTopCorner = new Point(0, 0);
+  private Point2D leftTopCorner = new Point(0, 0);
   private String name = "something";
 
   public MockDIYComponent(String testField, Capacitance c, Resistance r, Size s, Color color, Point leftTopCorner) {
@@ -98,12 +99,12 @@ public class MockDIYComponent extends AbstractComponent<Capacitance> {
   }
 
   @Override
-  public Point getControlPoint(int index) {
+  public Point2D getControlPoint(int index) {
     return leftTopCorner;
   }
 
   @Override
-  public void setControlPoint(Point point, int index) {
+  public void setControlPoint(Point2D point, int index) {
     leftTopCorner.setLocation(point);
   }
 
@@ -157,7 +158,7 @@ public class MockDIYComponent extends AbstractComponent<Capacitance> {
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
     g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color : color.darker());
-    g2d.fillRect(leftTopCorner.x, leftTopCorner.y, 200, 50);
+    g2d.fillRect((int)leftTopCorner.getX(), (int)leftTopCorner.getY(), 200, 50);
   }
 
   @Override
