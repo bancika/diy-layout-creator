@@ -88,6 +88,8 @@ public class MeasureConverter implements Converter {
   @SuppressWarnings("rawtypes")
   @Override
   public boolean canConvert(Class clazz) {
+    if (clazz == null)
+      return false;
     return AbstractMeasure.class.isAssignableFrom(clazz);
   }
 }

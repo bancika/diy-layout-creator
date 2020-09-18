@@ -42,6 +42,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
+import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swingframework.FontChooserComboBox;
@@ -49,6 +50,7 @@ import org.diylc.utils.ResourceLoader;
 
 import com.apple.eawt.AppEvent;
 import com.apple.eawt.Application;
+import com.thoughtworks.xstream.XStream;
 
 /**
  * Main class that runs DIYLC.
@@ -88,8 +90,12 @@ public class DIYLCStarter {
     } catch (Exception e) {
       LOG.error("Could not initialize log4j configuration", e);
     }
-
-    ConfigurationManager.initialize("diylc");
+    
+    // initialize configuration
+    ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+    XStream xStream = configurationManager.getSerializer();
+    ProjectFileManager.configure(xStream);
+    configurationManager.initialize("diylc");
 
     // disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
     ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);

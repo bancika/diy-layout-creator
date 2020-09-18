@@ -86,9 +86,9 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
   private HashMap<String, ComponentType> componentTypeCache;
 
-  private IConfigurationManager configManager;
+  private IConfigurationManager<?> configManager;
 
-  public CanvasPanel(IPlugInPort plugInPort, IConfigurationManager configManager) {
+  public CanvasPanel(IPlugInPort plugInPort, IConfigurationManager<?> configManager) {
     this.plugInPort = plugInPort;
     this.configManager = configManager;
     

@@ -3209,5 +3209,25 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>10</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-09-18 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>						
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Store configuration using the same XML format used for serializing DIY files</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Favorites on building blocks show up as "null"</description>
+				</org.diylc.appframework.update.Change>												
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

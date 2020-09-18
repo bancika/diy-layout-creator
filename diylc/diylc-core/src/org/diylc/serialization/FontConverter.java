@@ -54,6 +54,8 @@ public class FontConverter extends com.thoughtworks.xstream.converters.extended.
   @SuppressWarnings("rawtypes")
   @Override
   public boolean canConvert(Class clazz) {
+    if (clazz == null)
+      return false;
     return Font.class.isAssignableFrom(clazz);
   }
 }

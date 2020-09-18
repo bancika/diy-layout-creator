@@ -17,7 +17,7 @@ public class TestBase {
   protected IView view;
   
   public TestBase() {
-    ConfigurationManager.initialize("diylc-test");
+    ConfigurationManager.getInstance().initialize("diylc-test");
     view = new MockView();
     presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());
   }
