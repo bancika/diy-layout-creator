@@ -55,7 +55,7 @@ public class PCBText extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;
 
-  private Point2D point = new Point2D.Double(0, 0);
+  private Point2D.Double point = new Point2D.Double(0, 0);
   private String text = DEFAULT_TEXT;
   private Font font = DEFAULT_FONT;
   private Color color = LABEL_COLOR;

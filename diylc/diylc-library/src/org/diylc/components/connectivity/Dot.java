@@ -52,7 +52,7 @@ public class Dot extends AbstractComponent<Void> {
 
   private Size size = SIZE;
   private Color color = COLOR;
-  private Point2D point = new Point2D.Double(0, 0);
+  private Point2D.Double point = new Point2D.Double(0, 0);
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,

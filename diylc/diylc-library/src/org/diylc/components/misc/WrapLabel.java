@@ -56,8 +56,8 @@ public class WrapLabel extends AbstractComponent<String> {
   
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0),
       new Point2D.Double((int) DEFAULT_WIDTH.convertToPixels(), (int) DEFAULT_HEIGHT.convertToPixels())};
-  protected Point2D firstPoint = new Point2D.Double();
-  protected Point2D secondPoint = new Point2D.Double();
+  protected Point2D.Double firstPoint = new Point2D.Double();
+  protected Point2D.Double secondPoint = new Point2D.Double();
   
   private Font font = LABEL_FONT;
   private Color color = LABEL_COLOR;

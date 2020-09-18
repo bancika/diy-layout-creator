@@ -59,8 +59,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0),
       new Point2D.Double(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels())};
   // top-left and bottom-right points
-  protected Point2D firstPoint = new Point2D.Double();
-  protected Point2D secondPoint = new Point2D.Double();
+  protected Point2D.Double firstPoint = new Point2D.Double();
+  protected Point2D.Double secondPoint = new Point2D.Double();
 
   protected Color boardColor = BOARD_COLOR;
   protected Color borderColor = BORDER_COLOR;

@@ -57,7 +57,7 @@ public class BOM extends AbstractComponent<Void> {
   private static final long serialVersionUID = 1L;
   private Size size = DEFAULT_SIZE;
 
-  private Point2D point = new Point2D.Double(0, 0);
+  private Point2D.Double point = new Point2D.Double(0, 0);
   private Color color = COLOR;
   
   @Override

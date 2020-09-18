@@ -43,8 +43,8 @@ public abstract class AbstractShape extends AbstractTransparentComponent<Void> {
   protected String value = "";
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0),
       new Point2D.Double(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels())};
-  protected Point2D firstPoint = new Point2D.Double();
-  protected Point2D secondPoint = new Point2D.Double();
+  protected Point2D.Double firstPoint = new Point2D.Double();
+  protected Point2D.Double secondPoint = new Point2D.Double();
 
   protected Color color = COLOR;
   protected Color borderColor = BORDER_COLOR;
