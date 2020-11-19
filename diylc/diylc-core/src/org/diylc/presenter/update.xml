@@ -3232,6 +3232,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>macOS Sierra: the app starts and immediately stops on some older mac systems</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Favorites on building blocks show up as "null"</description>
 				</org.diylc.appframework.update.Change>												
 			</changes>

@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.diylc.images.IconLoader;
+import org.diylc.swing.images.IconLoader;
 
 public class SearchHeaderPanel extends JPanel {
 
