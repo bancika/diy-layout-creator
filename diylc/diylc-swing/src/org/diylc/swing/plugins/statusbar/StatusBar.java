@@ -65,7 +65,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
-import org.diylc.images.IconLoader;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;

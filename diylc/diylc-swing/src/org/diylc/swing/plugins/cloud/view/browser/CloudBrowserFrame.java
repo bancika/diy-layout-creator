@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
-import org.diylc.images.IconLoader;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.SearchSession;

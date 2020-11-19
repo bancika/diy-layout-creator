@@ -75,7 +75,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Template;
-import org.diylc.images.IconLoader;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;

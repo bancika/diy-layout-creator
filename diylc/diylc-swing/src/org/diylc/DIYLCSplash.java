@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
-import org.diylc.images.IconLoader;
+import org.diylc.swing.images.IconLoader;
 
 /**
  * Custom splash screen with animated components. Does not use standard SplashScreen because of issues with OS X and Java 8.

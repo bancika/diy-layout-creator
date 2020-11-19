@@ -42,7 +42,7 @@ import java.awt.image.VolatileImage;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import org.diylc.images.IconLoader;
+import org.diylc.swing.images.IconLoader;
 
 /**
  * JPanel that shows cloud animation while visible.

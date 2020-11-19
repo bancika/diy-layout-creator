@@ -60,7 +60,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
-import org.diylc.images.IconLoader;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;

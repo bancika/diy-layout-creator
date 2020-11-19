@@ -46,7 +46,7 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
-import org.diylc.images.IconLoader;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swingframework.openide.DropDownButtonFactory;
 
 /**
