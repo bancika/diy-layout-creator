@@ -110,9 +110,9 @@ public class DrawingManager {
   private long statReportFrequencyMs = 1000 * 60;
   private Counter totalStats = new Counter();
 
-  private IConfigurationManager configManager;
+  private IConfigurationManager<?> configManager;
 
-  public DrawingManager(MessageDispatcher<EventType> messageDispatcher, IConfigurationManager configManager) {
+  public DrawingManager(MessageDispatcher<EventType> messageDispatcher, IConfigurationManager<?> configManager) {
     super();
     this.messageDispatcher = messageDispatcher;
     this.configManager = configManager;

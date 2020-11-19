@@ -40,6 +40,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
+import org.diylc.common.Favorite.FavoriteType;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
@@ -60,7 +61,7 @@ public class CustomTreeModel implements TreeModel {
   private List<Favorite> favorites;
   private List<String> recentComponents;
   private List<String> blocks;
-  
+
   private TreeNode favoritesNode;
   private TreeNode recentNode;
   private TreeNode blocksNode;
@@ -108,7 +109,7 @@ public class CustomTreeModel implements TreeModel {
 
     this.visibleLeaves.clear();
 
-    fireTreeStructureChanged(new Object[] { root });
+    fireTreeStructureChanged(new Object[] {root});
   }
 
   private List<TreeNode> getLeavesFor(String category) {
@@ -118,15 +119,38 @@ public class CustomTreeModel implements TreeModel {
 
     if (FAVORITES.equals(category)) {
       for (Favorite fav : this.favorites) {
-        ComponentType type = this.typesByClass.get(fav.getName());
-        if (this.searchText == null || type.getName().toLowerCase().contains(this.searchText)) {
-          visibleTypes.add(new TreeNode(type, new MouseAdapter() {
+        if (fav.getType() == FavoriteType.Component) {
+          ComponentType type = this.typesByClass.get(fav.getName());
+          if (this.searchText == null || type.getName().toLowerCase().contains(this.searchText)) {
+            visibleTypes.add(new TreeNode(type, new MouseAdapter() {
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-              plugInPort.setNewComponentTypeSlot(type, null, false);
-            }
-          }));
+              @Override
+              public void mouseClicked(MouseEvent e) {
+                plugInPort.setNewComponentTypeSlot(type, null, false);
+              }
+            }));
+          }
+        } else {
+          // block
+          if (this.searchText == null || fav.getName().toLowerCase().contains(this.searchText)) {
+            visibleTypes.add(new TreeNode(fav.getName(), new MouseAdapter() {
+
+              long previousActionTime = 0;
+
+              @Override
+              public void mouseClicked(MouseEvent e) {
+                if (e == null || SwingUtilities.isLeftMouseButton(e)
+                    && System.currentTimeMillis() - previousActionTime > 100) {
+                  previousActionTime = System.currentTimeMillis();
+                  try {
+                    plugInPort.loadBlock(fav.getName());
+                  } catch (InvalidBlockException e1) {
+                    e1.printStackTrace();
+                  }
+                }
+              }
+            }, true));
+          }
         }
       }
     }
@@ -145,18 +169,19 @@ public class CustomTreeModel implements TreeModel {
         }
       }
     }
-    
+
     if (BUILDING_BLOCKS.equals(category)) {
       for (String block : this.blocks) {
         if (this.searchText == null || block.toLowerCase().contains(this.searchText)) {
           visibleTypes.add(new TreeNode(block, new MouseAdapter() {
-          
-          long previousActionTime = 0;
-    
+
+            long previousActionTime = 0;
+
             @Override
             public void mouseClicked(MouseEvent e) {
-              if (e == null || SwingUtilities.isLeftMouseButton(e) && System.currentTimeMillis() - previousActionTime > 100) {
-              previousActionTime = System.currentTimeMillis();
+              if (e == null || SwingUtilities.isLeftMouseButton(e)
+                  && System.currentTimeMillis() - previousActionTime > 100) {
+                previousActionTime = System.currentTimeMillis();
                 try {
                   plugInPort.loadBlock(block);
                 } catch (InvalidBlockException e1) {
@@ -215,7 +240,7 @@ public class CustomTreeModel implements TreeModel {
           return true;
       }
     }
-    
+
     if (BUILDING_BLOCKS.equals(category)) {
       for (String block : this.blocks) {
         if (block.toLowerCase().contains(searchText))
@@ -240,7 +265,7 @@ public class CustomTreeModel implements TreeModel {
     if (parent == root) {
       TreeNode node = visibleCategories.get(index);
       if (RECENTLY_USED.equals(node.getCategory()))
-          recentNode = node;
+        recentNode = node;
       if (FAVORITES.equals(node.getCategory()))
         favoritesNode = node;
       if (BUILDING_BLOCKS.equals(node.getCategory()))
@@ -295,7 +320,7 @@ public class CustomTreeModel implements TreeModel {
   public void removeTreeModelListener(TreeModelListener l) {
     listenerList.remove(TreeModelListener.class, l);
   }
-  
+
   protected void fireTreeStructureChanged(Object[] path) {
     TreeModelEvent event = new TreeModelEvent(this, path);
     EventListener[] listeners = listenerList.getListeners(TreeModelListener.class);
@@ -315,7 +340,7 @@ public class CustomTreeModel implements TreeModel {
               LOG.info("Detected favorites change");
               CustomTreeModel.this.favorites = new ArrayList<Favorite>(newFavorites);
               CustomTreeModel.this.visibleLeaves.remove(FAVORITES);
-              fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.favoritesNode });
+              fireTreeStructureChanged(new Object[] {root, CustomTreeModel.this.favoritesNode});
             } else
               LOG.info("Detected no favorites change");
           }
@@ -334,7 +359,7 @@ public class CustomTreeModel implements TreeModel {
               LOG.info("Detected recent component change");
               CustomTreeModel.this.recentComponents = new ArrayList<String>(newComponents);
               CustomTreeModel.this.visibleLeaves.remove(RECENTLY_USED);
-              fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.recentNode });
+              fireTreeStructureChanged(new Object[] {root, CustomTreeModel.this.recentNode});
             } else
               LOG.info("Detected no recent component change");
           }
@@ -356,7 +381,7 @@ public class CustomTreeModel implements TreeModel {
                 LOG.info("Detected block change");
                 CustomTreeModel.this.blocks = blockNames;
                 CustomTreeModel.this.visibleLeaves.remove(BUILDING_BLOCKS);
-                fireTreeStructureChanged(new Object[] { root, CustomTreeModel.this.blocksNode});
+                fireTreeStructureChanged(new Object[] {root, CustomTreeModel.this.blocksNode});
               } else
                 LOG.info("Detected no block change");
             } else

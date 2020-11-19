@@ -126,6 +126,8 @@ public class AreaConverter implements Converter {
   @SuppressWarnings("rawtypes")
   @Override
   public boolean canConvert(Class clazz) {
+    if (clazz == null)
+      return false;
     return Area.class.isAssignableFrom(clazz);
   }
 }

@@ -48,14 +48,28 @@ public class PointConverter implements Converter {
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    double x = Double.parseDouble(reader.getAttribute("x"));
-    double y = Double.parseDouble(reader.getAttribute("y"));
-    return new Point2D.Double(x * Constants.PIXELS_PER_INCH, y * Constants.PIXELS_PER_INCH);
+    double x;
+    double y;
+    if (reader.hasMoreChildren()) {
+      reader.moveDown();
+      x = Double.parseDouble(reader.getValue());
+      reader.moveUp();
+      reader.moveDown();
+      y = Double.parseDouble(reader.getValue());
+      reader.moveUp();
+      return new Point2D.Double(x, y);
+    } else {        
+      x = Double.parseDouble(reader.getAttribute("x"));
+      y = Double.parseDouble(reader.getAttribute("y"));
+      return new Point2D.Double(x * Constants.PIXELS_PER_INCH, y * Constants.PIXELS_PER_INCH);
+    }       
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public boolean canConvert(Class clazz) {
+    if (clazz == null)
+      return false;
     return Point2D.class.isAssignableFrom(clazz);
   }
 }

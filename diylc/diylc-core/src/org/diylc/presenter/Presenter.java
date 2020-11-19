@@ -191,7 +191,7 @@ public class Presenter implements IPlugInPort {
   private Rectangle selectionRect;
 
   private final IView view;
-  private IConfigurationManager configManager;
+  private IConfigurationManager<?> configManager;
 
   private MessageDispatcher<EventType> messageDispatcher;
 
@@ -209,7 +209,7 @@ public class Presenter implements IPlugInPort {
   
   private DIYTest test = null;
 
-  public Presenter(IView view, IConfigurationManager configManager) {
+  public Presenter(IView view, IConfigurationManager<?> configManager) {
     super();
     this.view = view;
     this.configManager = configManager;

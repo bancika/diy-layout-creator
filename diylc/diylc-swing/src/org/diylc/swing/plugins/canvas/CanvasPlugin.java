@@ -117,9 +117,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
   private double zoomLevel = 1;
 
-  private IConfigurationManager configManager;
+  private IConfigurationManager<?> configManager;
 
-  public CanvasPlugin(ISwingUI swingUI, IConfigurationManager configManager) {
+  public CanvasPlugin(ISwingUI swingUI, IConfigurationManager<?> configManager) {
     this.swingUI = swingUI;
     this.configManager = configManager;
     clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

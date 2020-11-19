@@ -86,12 +86,12 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
   private HashMap<String, ComponentType> componentTypeCache;
 
-  private IConfigurationManager configManager;
+  private IConfigurationManager<?> configManager;
 
-  public CanvasPanel(IPlugInPort plugInPort, IConfigurationManager configManager) {
+  public CanvasPanel(IPlugInPort plugInPort, IConfigurationManager<?> configManager) {
     this.plugInPort = plugInPort;
     this.configManager = configManager;
-    
+
     this.useHardwareAcceleration =
         configManager.readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
     setFocusable(true);
@@ -136,15 +136,23 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearSlot");
-    
+
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, KeyEvent.CTRL_DOWN_MASK), "zoomIn");
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.CTRL_DOWN_MASK), "zoomOut");
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, KeyEvent.META_DOWN_MASK), "zoomIn");
+getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+    .put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.META_DOWN_MASK), "zoomOut");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.CTRL_DOWN_MASK), "resetZoom");
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-    .put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, KeyEvent.CTRL_DOWN_MASK), "resetZoom");
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, KeyEvent.CTRL_DOWN_MASK), "resetZoom");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.META_DOWN_MASK), "resetZoom");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, KeyEvent.META_DOWN_MASK), "resetZoom");
 
     for (int i = 1; i <= 12; i++) {
       final int x = i;
@@ -160,14 +168,14 @@ public class CanvasPanel extends JComponent implements Autoscroll {
         }
       });
     }
-    
+
     getActionMap().put("zoomIn", new AbstractAction() {
 
       private static final long serialVersionUID = 1L;
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        LOG.debug("Keyboard zoom-in triggered");   
+        LOG.debug("Keyboard zoom-in triggered");
         double oldZoom = CanvasPanel.this.plugInPort.getZoomLevel();
         Double[] availableZoomLevels = CanvasPanel.this.plugInPort.getAvailableZoomLevels();
         int index = Arrays.binarySearch(availableZoomLevels, oldZoom);
@@ -175,14 +183,14 @@ public class CanvasPanel extends JComponent implements Autoscroll {
           CanvasPanel.this.plugInPort.setZoomLevel(availableZoomLevels[index + 1]);
       }
     });
-    
+
     getActionMap().put("zoomOut", new AbstractAction() {
 
       private static final long serialVersionUID = 1L;
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        LOG.debug("Keyboard zoom-out triggered");   
+        LOG.debug("Keyboard zoom-out triggered");
         double oldZoom = CanvasPanel.this.plugInPort.getZoomLevel();
         Double[] availableZoomLevels = CanvasPanel.this.plugInPort.getAvailableZoomLevels();
         int index = Arrays.binarySearch(availableZoomLevels, oldZoom);
@@ -190,14 +198,14 @@ public class CanvasPanel extends JComponent implements Autoscroll {
           CanvasPanel.this.plugInPort.setZoomLevel(availableZoomLevels[index - 1]);
       }
     });
-    
+
     getActionMap().put("resetZoom", new AbstractAction() {
 
       private static final long serialVersionUID = 1L;
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        LOG.debug("Keyboard reset zoom triggered");   
+        LOG.debug("Keyboard reset zoom triggered");
         CanvasPanel.this.plugInPort.setZoomLevel(1d);
       }
     });
@@ -219,8 +227,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       @SuppressWarnings("unchecked")
       @Override
       public void actionPerformed(ActionEvent e) {
-        List<String> recent = (List<String>) configManager
-            .readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
+        List<String> recent =
+            (List<String>) configManager.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
         if (recent != null && !recent.isEmpty()) {
           String clazz = recent.get(0);
           Map<String, List<ComponentType>> componentTypes =
@@ -242,7 +250,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 
   @SuppressWarnings("unchecked")
   protected void functionKeyPressed(int i) {
-    HashMap<String, String> shortcutMap = (HashMap<String, String>) configManager.readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
+    HashMap<String, String> shortcutMap =
+        (HashMap<String, String>) configManager.readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
     if (shortcutMap == null)
       return;
     String typeName = shortcutMap.get("F" + i);
@@ -313,8 +322,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     }
 
 
-    Set<DrawOption> drawOptions = EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM,
-        DrawOption.CONTROL_POINTS);
+    Set<DrawOption> drawOptions =
+        EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
 
     if (configManager.readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
       drawOptions.add(DrawOption.ANTIALIASING);
