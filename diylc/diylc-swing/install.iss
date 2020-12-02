@@ -13,7 +13,6 @@ AlwaysShowDirOnReadyPage=yes
 
 [Files]
 Source: "diylc.exe"; DestDir: "{app}"
-Source: "diylc.l4j.ini"; DestDir: "{app}"
 Source: "icons\diylc_file.ico"; DestDir: "{app}"
 Source: "build\jar\diylc.jar"; DestDir: "{app}"
 Source: "build\jar\lib\*"; DestDir: "{app}\lib"
@@ -21,6 +20,7 @@ Source: "build\jar\library\*"; DestDir: "{app}\library"
 Source: "themes\*"; DestDir: "{app}\themes"
 Source: "lang\*"; DestDir: "{app}\lang"
 Source: "fonts\*"; DestDir: "{app}\fonts"
+Source: "jre\win\jre1.8.0_211\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs
 Source: "innosetup\donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
 
 [Registry]

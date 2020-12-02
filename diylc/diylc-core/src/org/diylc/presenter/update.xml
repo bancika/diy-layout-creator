@@ -3252,6 +3252,10 @@
 			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Windows: bundle Java JRE with the installation to avoid Java version issues</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>macOS: added quick action toolbar that was already available for other platforms</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>
