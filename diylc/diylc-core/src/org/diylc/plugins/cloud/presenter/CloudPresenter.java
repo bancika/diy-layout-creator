@@ -168,11 +168,33 @@ public class CloudPresenter {
     if (username == null || token == null)
       throw new CloudException("Login failed. Please try to login again.");
 
-    LOG.info("Uploading a new project: " + projectName);
+    if (projectId == null)
+      LOG.info("Uploading a new project: " + projectName);
+    else
+      LOG.info("Updating project: " + projectId);
+    
     try {
       String res =
           getService().uploadProject(username, token, getMachineId(), projectName, category, description, diylcVersion,
               keywords, thumbnail, project, projectId);
+      if (!res.equals(SUCCESS))
+        throw new CloudException(res);
+    } catch (Exception e) {
+      throw new CloudException(e);
+    }
+  }
+  
+  public void replaceProjectFile(String diylcVersion, File thumbnail, File project, Integer projectId) throws IOException, CloudException {
+    String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
+    String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
+
+    if (username == null || token == null)
+      throw new CloudException("Login failed. Please try to login again.");
+
+    LOG.info("Replacing project files for: " + projectId);
+    try {
+      String res =
+          getService().replaceProjectFiles(username, token, getMachineId(), diylcVersion, thumbnail, project, projectId);
       if (!res.equals(SUCCESS))
         throw new CloudException(res);
     } catch (Exception e) {

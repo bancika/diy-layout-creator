@@ -1,24 +1,21 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.swing.plugins.cloud.view.browser;
 
 import java.awt.Color;
@@ -76,6 +73,7 @@ import org.diylc.swing.plugins.cloud.view.CommentDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
+import org.diylc.utils.Pair;
 
 /**
  * Component that is capable of showing a list of {@link ProjectEntity} objects. Can work in paging
@@ -116,8 +114,8 @@ public class ResultsScrollPanel extends JScrollPane {
 
   private boolean showEditControls;
 
-  public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort, SearchSession searchSession,
-      boolean showEditControls) {
+  public ResultsScrollPanel(ISwingUI mainUI, ISimpleView cloudUI, IPlugInPort plugInPort,
+      SearchSession searchSession, boolean showEditControls) {
     super();
     this.mainUI = mainUI;
     this.cloudUI = cloudUI;
@@ -159,8 +157,8 @@ public class ResultsScrollPanel extends JScrollPane {
   }
 
   public void showNoMatches() {
-    JLabel label =
-        new JLabel("<html><font size='4' color='#999999'>No projects match the search criteria.</font></html>");
+    JLabel label = new JLabel(
+        "<html><font size='4' color='#999999'>No projects match the search criteria.</font></html>");
     label.setHorizontalAlignment(SwingConstants.CENTER);
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(2, 2, 2, 2);
@@ -398,75 +396,66 @@ public class ResultsScrollPanel extends JScrollPane {
     replaceButton.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        if (cloudUI.showConfirmDialog(
-            "Are you sure you want to replace the project \""
-                + project.getName()
-                + "\" with a new file?\nThis opperation is irreversible. Once replaced, the old version of the project cannot be restored.",
+        if (cloudUI.showConfirmDialog("Are you sure you want to replace the project \""
+            + project.getName()
+            + "\" with a new file?\nThis opperation is irreversible. Once replaced, the old version of the project cannot be restored.",
             "Replace Project", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION) {
-          final Presenter thumbnailPresenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
+          final Presenter thumbnailPresenter =
+              new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
           final File file =
               DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
                   FileFilterEnum.DIY.getExtensions()[0], null, cloudUI.getOwnerFrame());
           if (file != null) {
-            LOG.info("Preparing replacement for project " + project.getName() + "(" + project.getId() + ")");
-            cloudUI.executeBackgroundTask(new ITask<String[]>() {
+            LOG.info("Preparing replacement for project " + project.getName() + "("
+                + project.getId() + ")");
+            cloudUI.executeBackgroundTask(new ITask<Pair<BufferedImage, ProjectEntity>>() {
 
               @Override
-              public String[] doInBackground() throws Exception {
+              public Pair<BufferedImage, ProjectEntity> doInBackground() throws Exception {
                 LOG.debug("Uploading from " + file.getAbsolutePath());
                 thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
-                return CloudPresenter.Instance.getCategories();
-              }
-
-              @Override
-              public void complete(final String[] result) {
-                final UploadDialog dialog =
-                    DialogFactory.getInstance().createUploadDialog(cloudUI.getOwnerFrame(), thumbnailPresenter, result,
-                        true);
-                dialog.setVisible(true);
-                if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
-                  try {
-                    final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
-                    if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
-                      cloudUI.executeBackgroundTask(new ITask<ProjectEntity>() {
-
-                        @Override
-                        public ProjectEntity doInBackground() throws Exception {
-                          CloudPresenter.Instance.uploadProject(dialog.getName(), dialog.getCategory(), dialog
-                              .getDescription(), dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(),
-                              thumbnailFile, file, project.getId());
-                          return CloudPresenter.Instance.fetchUserUploads(project.getId()).get(0);
-                        }
-
-                        @Override
-                        public void failed(Exception e) {
-                          cloudUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
-                        }
-
-                        @Override
-                        public void complete(ProjectEntity result) {
-                          nameLabel.setText("<html><b>" + project.getName() + "</b></html>");
-                          descriptionArea.setText(result.getDescription());
-                          categoryLabel.setText("<html>Category: <b>" + result.getCategory() + "</b></html>");
-                          updatedLabel.setText("<html>Last updated: <b>" + result.getUpdated() + "</b></html>");
-                          thumbnailLabel.setIcon(new ImageIcon(dialog.getThumbnail()));
-                          cloudUI.showMessage("The project has been replaced successfully.", "Upload Success",
-                              IView.INFORMATION_MESSAGE);
-                        }
-                      });
-                    } else {
-                      cloudUI.showMessage("Could not prepare temporary files to be uploaded to the cloud.",
-                          "Upload Error", IView.ERROR_MESSAGE);
-                    }
-                  } catch (Exception e) {
-                    cloudUI.showMessage(e.getMessage(), "Upload Error", IView.ERROR_MESSAGE);
-                  }
+                final UploadDialog dialog = DialogFactory.getInstance().createUploadDialog(
+                    cloudUI.getOwnerFrame(), thumbnailPresenter, new String[0], true);
+                final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
+                if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
+                  CloudPresenter.Instance.replaceProjectFile(
+                      plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file,
+                      project.getId());
+                  return new Pair<BufferedImage, ProjectEntity>(dialog.getThumbnail(),
+                      CloudPresenter.Instance.fetchUserUploads(project.getId()).get(0));
+                } else {
+                  cloudUI.showMessage(
+                      "Could not prepare temporary files to be uploaded to the cloud.",
+                      "Upload Error", IView.ERROR_MESSAGE);
+                  return null;
                 }
               }
 
               @Override
+              public void complete(final Pair<BufferedImage, ProjectEntity> result) {
+                if (result != null) {
+                  BufferedImage thumbnail = result.getFirst();
+                  ProjectEntity project = result.getSecond();
+                  nameLabel.setText("<html><b>" + project.getName() + "</b></html>");
+                  descriptionArea.setText(project.getDescription());
+                  categoryLabel
+                      .setText("<html>Category: <b>" + project.getCategory() + "</b></html>");
+                  updatedLabel
+                      .setText("<html>Last updated: <b>" + project.getUpdated() + "</b></html>");
+                  thumbnailLabel.setIcon(new ImageIcon(thumbnail));
+                  cloudUI.showMessage("The project has been replaced successfully.",
+                      "Upload Success", IView.INFORMATION_MESSAGE);
+                } else {
+                  cloudUI.showMessage("Unexpected error occurred while replacing the project.",
+                      "Upload Error", IView.ERROR_MESSAGE);
+                }
+              }
+
               public void failed(Exception e) {
-                cloudUI.showMessage("Could not open file. " + e.getMessage(), "Error", ISwingUI.ERROR_MESSAGE);
+                cloudUI.showMessage(
+                    "Could not update the project. Detailed message is in the logs.", "Error",
+                    ISwingUI.ERROR_MESSAGE);
+                LOG.error("Error replacing project files", e);
               }
             });
           }
@@ -631,24 +620,25 @@ public class ResultsScrollPanel extends JScrollPane {
             // disarm immediately so we don't trigger successive requests to the provider
             LOG.info("Paging mechanism is disarmed");
             armed = false;
-            SwingWorker<List<ProjectEntity>, Void> worker = new SwingWorker<List<ProjectEntity>, Void>() {
+            SwingWorker<List<ProjectEntity>, Void> worker =
+                new SwingWorker<List<ProjectEntity>, Void>() {
 
-              @Override
-              protected List<ProjectEntity> doInBackground() throws Exception {
-                return searchSession.requestMoreData();
-              }
+                  @Override
+                  protected List<ProjectEntity> doInBackground() throws Exception {
+                    return searchSession.requestMoreData();
+                  }
 
-              @Override
-              protected void done() {
-                try {
-                  List<ProjectEntity> newResults = get();
-                  addData(newResults);
-                } catch (Exception e) {
-                  cloudUI.showMessage("Search failed! Detailed message is in the logs.", "Search Failed",
-                      IView.ERROR_MESSAGE);
-                }
-              }
-            };
+                  @Override
+                  protected void done() {
+                    try {
+                      List<ProjectEntity> newResults = get();
+                      addData(newResults);
+                    } catch (Exception e) {
+                      cloudUI.showMessage("Search failed! Detailed message is in the logs.",
+                          "Search Failed", IView.ERROR_MESSAGE);
+                    }
+                  }
+                };
             worker.execute();
           }
         }
