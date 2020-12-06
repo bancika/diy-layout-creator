@@ -71,6 +71,16 @@ public class DIYLCStarter {
    * @throws InvalidActivityException
    */
   public static void main(String[] args) {
+    try {
+      runDIYLC(args);
+    } catch (Throwable t) {
+      LOG.error("Major error while starting DIYLC", t);
+      System.out.println("Major error while starting DIYLC");
+      t.printStackTrace(System.out);
+    }
+  }
+  
+  public static void runDIYLC(String[] args) {
     // Initialize splash screen
     DIYLCSplash splash = null;
     Exception splashException = null;
@@ -106,6 +116,7 @@ public class DIYLCStarter {
 
     LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
         + System.getProperty("java.vm.vendor"));
+    LOG.debug("Java home: " + System.getProperty("java.home"));
     LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 
     LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
@@ -170,7 +181,8 @@ public class DIYLCStarter {
 
     String val = System.getProperty(SCRIPT_RUN);
     if (!"true".equals(val)) {
-      int response = JOptionPane.showConfirmDialog(null,
+      LOG.info("Detected no scriptRun setting!");
+      int response = JOptionPane.showConfirmDialog(splash,
           "It is not recommended to run DIYLC by clicking on the diylc.jar file.\n"
               + "Please use diylc.exe on Windows or run.sh on OSX/Linux to ensure the best\n"
               + "performance and reliability. Do you want to continue?",

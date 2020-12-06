@@ -21,16 +21,11 @@
 */
 package org.diylc.swing.plugins.cloud.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.util.EnumSet;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -47,10 +42,10 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.components.HTMLTextArea;
+import org.diylc.swing.plugins.cloud.ThumbnailGenerator;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.utils.KeywordExtractor;
 
@@ -81,9 +76,12 @@ public class UploadDialog extends ButtonDialog {
   private IPlugInPort plugInPort;
   private String[] categories;
 
+  private ThumbnailGenerator thumbnailGenerator;
+
   public UploadDialog(JFrame owner, IPlugInPort plugInPort, String[] categories, boolean isUpdate) {
     super(owner, isUpdate ? "Re-Upload A Project" : "Upload A Project", new String[] {OK, CANCEL});
     this.plugInPort = plugInPort;
+    this.thumbnailGenerator = new ThumbnailGenerator(plugInPort);
     this.categories = categories;
     layoutGui();
     getButton(OK).setEnabled(false);
@@ -205,22 +203,14 @@ public class UploadDialog extends ButtonDialog {
         public void paint(Graphics g) {
           super.paint(g);
 
-          paintThumbnail(g, getBounds());
+          UploadDialog.this.thumbnailGenerator.paintThumbnail(g, getBounds());
         }
       }, gbc);
 
-      thumbnailPanel.setPreferredSize(getThumbnailSize());
+      thumbnailPanel.setPreferredSize(this.thumbnailGenerator.getThumbnailSize());
       thumbnailPanel.setBorder(BorderFactory.createEtchedBorder());
     }
     return thumbnailPanel;
-  }
-
-  private Dimension getThumbnailSize() {
-    Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false, false);
-    if (d.height > d.width)
-      return new Dimension(192 * d.width / d.height, 192);
-    else
-      return new Dimension(192, 192 * d.height / d.width);
   }
 
   private JTextField getNameField() {
@@ -291,35 +281,6 @@ public class UploadDialog extends ButtonDialog {
 
   public String getCategory() {
     return getCategoryBox().getSelectedItem().toString();
-  }
-
-  public BufferedImage getThumbnail() {
-    Dimension d = getThumbnailSize();
-    BufferedImage thumbnailImage = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
-    Graphics2D cg = thumbnailImage.createGraphics();
-
-    paintThumbnail(cg, new Rectangle(thumbnailImage.getWidth(), thumbnailImage.getHeight()));
-    return thumbnailImage;
-  }
-
-  private void paintThumbnail(Graphics g, Rectangle rect) {
-    Graphics2D g2d = (Graphics2D) g;
-    Dimension d = UploadDialog.this.plugInPort.getCanvasDimensions(false, false);
-
-    g2d.setColor(Color.white);
-    g2d.fill(rect);
-
-    double projectRatio = d.getWidth() / d.getHeight();
-    double actualRatio = rect.getWidth() / rect.getHeight();
-    double zoomRatio;
-    if (projectRatio > actualRatio) {
-      zoomRatio = rect.getWidth() / d.getWidth();
-    } else {
-      zoomRatio = rect.getHeight() / d.getHeight();
-    }
-
-//    g2d.scale(zoomRatio, zoomRatio);
-    UploadDialog.this.plugInPort.draw(g2d, EnumSet.of(DrawOption.ANTIALIASING), null, zoomRatio, null);
   }
 
   public String getKeywords() {

@@ -43,9 +43,6 @@
 			<file src="diylc.exe" targetdir="${INSTALL_PATH}"
 				override="true">
 			</file>
-			<file src="diylc.l4j.ini" targetdir="${INSTALL_PATH}"
-				override="true">
-			</file>
 			<file src="icons/diylc_file.ico" targetdir="${INSTALL_PATH}"
 				override="true">
 			</file>

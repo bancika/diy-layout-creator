@@ -39,11 +39,11 @@ if (!$diylcVersion) {
 	echo "{\"string\":DIYLC version not provided.}";
 	exit;
 }
-if (!$thumbnailFile && !projectId) {
+if (!$thumbnailFile && !$projectId) {
 	echo "{\"string\":Thumbnail file not uploaded.}";
 	exit;
 }
-if (!$projectFile && !projectId) {
+if (!$projectFile && !$projectId) {
 	echo "{\"string\":Project file not uploaded.}";
 	exit;
 }
@@ -55,7 +55,7 @@ if ($projectFile['size'] > 10000000) {
         echo "{\"string\":Project file is too big.}";
 	exit;
 }
-if (!projectId && getimagesize($thumbnailFile['tmp_name']) == false) {
+if (!$projectId && getimagesize($thumbnailFile['tmp_name']) == false) {
         echo "{\"string\":Thumbnail image is not valid.}";
 	exit;
 }

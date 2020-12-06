@@ -63,6 +63,7 @@ public class CloudPlugIn implements IPlugIn {
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;
   private IPlugInPort thumbnailPresenter;
+  private ThumbnailGenerator thumbnailGenerator;
 
   private LibraryAction libraryAction;
 
@@ -82,6 +83,7 @@ public class CloudPlugIn implements IPlugIn {
 
     this.swingUI = swingUI;
     this.thumbnailPresenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
+    this.thumbnailGenerator = new ThumbnailGenerator(thumbnailPresenter);
 
     swingUI.injectMenuAction(getLibraryAction(), ONLINE_TITLE);
     swingUI.injectMenuAction(null, ONLINE_TITLE);
@@ -441,7 +443,7 @@ public class CloudPlugIn implements IPlugIn {
               if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
                 try {
                   final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
-                  if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
+                  if (ImageIO.write(CloudPlugIn.this.thumbnailGenerator.getThumbnail(), "png", thumbnailFile)) {
                     swingUI.executeBackgroundTask(new ITask<Void>() {
 
                       @Override

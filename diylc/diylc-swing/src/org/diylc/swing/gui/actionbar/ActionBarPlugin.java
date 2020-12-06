@@ -32,9 +32,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
+import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
@@ -43,6 +46,7 @@ import org.diylc.swing.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.plugins.canvas.CanvasPlugin;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
 
 /**
@@ -51,6 +55,8 @@ import org.diylc.swing.plugins.help.HelpMenuPlugin;
  * @author Branislav Stojkovic
  */
 public class ActionBarPlugin implements IPlugIn {
+  
+  private static final Logger LOG = Logger.getLogger(ActionBarPlugin.class);
 
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
@@ -176,7 +182,15 @@ public class ActionBarPlugin implements IPlugIn {
   @Override
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
-    swingUI.injectMenuComponent(getActionPanel());
+    if (Utils.isMac()) {
+      try {
+        swingUI.injectGUIComponent(getActionPanel(), SwingConstants.CENTER, false);
+      } catch (BadPositionException e) {
+        LOG.error("Could not inject action bar plugin", e);
+      }
+    }
+    else
+      swingUI.injectMenuComponent(getActionPanel());
   }
 
   @Override

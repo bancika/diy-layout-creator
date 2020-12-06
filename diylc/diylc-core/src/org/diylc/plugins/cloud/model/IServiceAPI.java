@@ -150,6 +150,23 @@ public interface IServiceAPI {
       @ParamName("diylcVersion") String diylcVersion, @ParamName("keywords") String keywords,
       @ParamName("thumbnail") File thumbnail, @ParamName("project") File project,
       @ParamName("projectId") Integer projectId);
+  
+  /**
+   * Replaces project files using token to authenticate. The project must belong to the user.
+   * 
+   * @param username
+   * @param token
+   * @param machineId
+   * @param diylcVersion
+   * @param thumbnail
+   * @param project
+   * @param projectId
+   * @return "Success" if the upload was successful or error message if it failed.
+   */
+  String replaceProjectFiles(@ParamName("username") String username, @ParamName("token") String token,
+      @ParamName("machineId") String machineId, @ParamName("diylcVersion") String diylcVersion,
+      @ParamName("thumbnail") File thumbnail, @ParamName("project") File project,
+      @ParamName("projectId") Integer projectId);
 
   /**
    * Deletes an existing project. The project must belong to the user

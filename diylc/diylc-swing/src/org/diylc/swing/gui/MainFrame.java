@@ -249,24 +249,25 @@ public class MainFrame extends JFrame implements ISwingUI {
     Container c = new Container();
     c.setLayout(new BorderLayout());
 
-    centerPanel = new JPanel(new BorderLayout());
+    centerPanel = new JPanel();
+    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
     c.add(centerPanel, BorderLayout.CENTER);
-
-    topPanel = new JPanel();
-    topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-    c.add(topPanel, BorderLayout.NORTH);
 
     leftPanel = new JPanel();
     leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.X_AXIS));
     c.add(leftPanel, BorderLayout.WEST);
+    
+    rightPanel = new JPanel();
+    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.X_AXIS));
+    c.add(rightPanel, BorderLayout.EAST);
+    
+    topPanel = new JPanel();
+    topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+    c.add(topPanel, BorderLayout.NORTH);
 
     bottomPanel = new JPanel();
     bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
     c.add(bottomPanel, BorderLayout.SOUTH);
-
-    rightPanel = new JPanel();
-    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.X_AXIS));
-    c.add(rightPanel, BorderLayout.EAST);
 
     setContentPane(c);
   }

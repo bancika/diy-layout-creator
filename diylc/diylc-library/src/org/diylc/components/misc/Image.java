@@ -34,7 +34,9 @@ import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IconImageConverter;
 import org.diylc.awt.ImageUtils;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.ImageTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -49,7 +51,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @ComponentDescriptor(name = "Image", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined image", instanceNamePrefix = "Img", zOrder = IDIYComponent.COMPONENT,
-    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW)
+    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, transformer = ImageTransformer.class)
 public class Image extends AbstractTransparentComponent<Void> {
 
   private static final long serialVersionUID = 1L;
@@ -59,6 +61,8 @@ public class Image extends AbstractTransparentComponent<Void> {
   
   private Point2D.Double point = new Point2D.Double(0, 0);
   private Point2D.Double secondPoint = null;
+  
+  private Orientation orientation;
 
   static {
     String name = "image.png";
@@ -124,8 +128,14 @@ public class Image extends AbstractTransparentComponent<Void> {
       x = Math.min(point.getX(), secondPoint.getX());
       y = Math.min(point.getY(), secondPoint.getY());
     }
+    
+    if (getOrientation() != Orientation.DEFAULT) {
+      double theta = getOrientation().toRadians();
+      g2d.rotate(theta, x, y);
+    }
 
     g2d.scale(scaleX, scaleY);
+    
     g2d.drawImage(imageIcon.getImage(), (int) (x / scaleX), (int) (y / scaleY), null);
     if (componentState == ComponentState.SELECTED) {
       g2d.setComposite(oldComposite);
@@ -248,6 +258,17 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   @Override
   public void setValue(Void value) {}
+  
+  @EditableProperty
+  public Orientation getOrientation() {
+    if (orientation == null)
+      orientation = Orientation.DEFAULT;
+    return orientation;
+  }
+  
+  public void setOrientation(Orientation orientation) {
+    this.orientation = orientation;
+  }
   
   public static enum ImageSizingMode {
     TwoPoints("Opposing Points"), Scale("Scale");
