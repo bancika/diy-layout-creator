@@ -57,7 +57,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
@@ -69,8 +68,9 @@ import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
 import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
+import org.diylc.swing.images.IconLoader;
+import org.diylc.swing.plugins.cloud.ThumbnailGenerator;
 import org.diylc.swing.plugins.cloud.view.CommentDialog;
-import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.utils.Pair;
@@ -400,8 +400,11 @@ public class ResultsScrollPanel extends JScrollPane {
             + project.getName()
             + "\" with a new file?\nThis opperation is irreversible. Once replaced, the old version of the project cannot be restored.",
             "Replace Project", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION) {
+          
           final Presenter thumbnailPresenter =
               new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
+          final ThumbnailGenerator thumbnailGenerator = new ThumbnailGenerator(thumbnailPresenter);
+          
           final File file =
               DialogFactory.getInstance().showOpenDialog(FileFilterEnum.DIY.getFilter(), null,
                   FileFilterEnum.DIY.getExtensions()[0], null, cloudUI.getOwnerFrame());
@@ -413,15 +416,13 @@ public class ResultsScrollPanel extends JScrollPane {
               @Override
               public Pair<BufferedImage, ProjectEntity> doInBackground() throws Exception {
                 LOG.debug("Uploading from " + file.getAbsolutePath());
-                thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
-                final UploadDialog dialog = DialogFactory.getInstance().createUploadDialog(
-                    cloudUI.getOwnerFrame(), thumbnailPresenter, new String[0], true);
+                thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());               
                 final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
-                if (ImageIO.write(dialog.getThumbnail(), "png", thumbnailFile)) {
+                if (ImageIO.write(thumbnailGenerator.getThumbnail(), "png", thumbnailFile)) {
                   CloudPresenter.Instance.replaceProjectFile(
                       plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file,
                       project.getId());
-                  return new Pair<BufferedImage, ProjectEntity>(dialog.getThumbnail(),
+                  return new Pair<BufferedImage, ProjectEntity>(thumbnailGenerator.getThumbnail(),
                       CloudPresenter.Instance.fetchUserUploads(project.getId()).get(0));
                 } else {
                   cloudUI.showMessage(

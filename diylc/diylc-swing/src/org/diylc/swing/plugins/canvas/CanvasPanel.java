@@ -142,9 +142,9 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.CTRL_DOWN_MASK), "zoomOut");
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, KeyEvent.META_DOWN_MASK), "zoomIn");
-getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-    .put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.META_DOWN_MASK), "zoomOut");
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, KeyEvent.META_DOWN_MASK), "zoomIn");
+    getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.META_DOWN_MASK), "zoomOut");
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.CTRL_DOWN_MASK), "resetZoom");
     getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
