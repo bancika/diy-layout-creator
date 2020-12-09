@@ -133,7 +133,7 @@ Electrode Labels|Elektrodenetiketten
 Electro-Mechanical|Elektromechanisch
 Enable Cache Boost|Cache-Boost aktivieren
 End Arrow|Endpfeil
-Enjoying DIYLC? Click here to buy me a coffee :)|Gefällt Ihnen DIYLC? Klicken Sie hier, um mir einen Kaffee zu kaufen
+Enjoying DIYLC? Click here to buy me a coffee :)|Gefällt Ihnen DIYLC? Klicken Sie hier für Kaffee ...
 Error|Fehler
 Error occurred while editing selection. Check the log for details.|Beim Bearbeiten der Auswahl ist ein Fehler aufgetreten. Überprüfen Sie die Protokolldatei für Details.
 Exit|Beenden
