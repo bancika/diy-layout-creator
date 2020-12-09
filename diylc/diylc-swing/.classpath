@@ -15,6 +15,7 @@
 	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
 	<classpathentry kind="lib" path="lib/AppleJavaExtensions.jar"/>
 	<classpathentry kind="lib" path="lib/orsonpdf-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/gestures-wrapper-0.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.3.jar"/>
 	<classpathentry kind="lib" path="lib/java-http-proxy.jar"/>

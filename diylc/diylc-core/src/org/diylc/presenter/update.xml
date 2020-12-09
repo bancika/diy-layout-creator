@@ -3269,5 +3269,25 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>12</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-11-19 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>macOS: added pinch zooming functionality</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>macOS: added meta +/- (minus and equal keys) keyboard shortcuts for zooming</description>
+				</org.diylc.appframework.update.Change>					
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

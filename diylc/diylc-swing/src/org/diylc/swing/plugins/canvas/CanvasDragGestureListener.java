@@ -29,15 +29,15 @@ import java.awt.event.MouseEvent;
 import org.diylc.common.IPlugInPort;
 
 /**
- * {@link DragGestureListener} for {@link CanvasPanel}.
+ * {@link DragGestureListener} implementation for {@link CanvasPanel}.
  * 
  * @author Branislav Stojkovic
  */
-class CanvasGestureListener implements DragGestureListener {
+class CanvasDragGestureListener implements DragGestureListener {
 
   private IPlugInPort presenter;
 
-  public CanvasGestureListener(IPlugInPort presenter) {
+  public CanvasDragGestureListener(IPlugInPort presenter) {
     super();
     this.presenter = presenter;
   }
