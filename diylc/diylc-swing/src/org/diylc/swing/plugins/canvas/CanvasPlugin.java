@@ -258,9 +258,12 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         public void mouseClicked(MouseEvent e) {
           if (scrollPane.isMouseScrollMode() || e.getButton() == MouseEvent.BUTTON2)
             return;
+          
+          // do not pass isMetaDown on mac when button3 (two finger click) is pressed
+          boolean ctrlDown = Utils.isMac() ? (e.getButton() == MouseEvent.BUTTON3 ? false : e.isMetaDown()): e.isControlDown();
+          
           plugInPort.mouseClicked(e.getPoint(), e.getButton(),
-              Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown(),
-              e.getClickCount());
+              ctrlDown, e.isShiftDown(), e.isAltDown(), e.getClickCount());
         }
 
         @Override
@@ -466,7 +469,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   }
   
   public void zoom(int direction) {    
-    Point mousePos = canvasPanel.getMousePosition(true);
+    Point mousePos = canvasPanel.getMousePosition(true);    
 
     // change zoom level
     double oldZoom = plugInPort.getZoomLevel();
@@ -491,6 +494,9 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
     JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
     JScrollBar vertical = scrollPane.getVerticalScrollBar();
+    
+    if (mousePos == null)
+      mousePos = new Point((int)visibleRect.getCenterX(), (int)visibleRect.getCenterY());
 
     if (selectionBounds == null) {
       // center to cursor

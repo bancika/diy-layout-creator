@@ -3280,11 +3280,23 @@
 			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>macOS: added pinch zooming functionality</description>
+					<description>Added pinch zooming functionality for compatible devices (tested on Mac and Win laptops)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>macOS: added meta +/- (minus and equal keys) keyboard shortcuts for zooming</description>
+					<description>macOS: added meta +/- keyboard shortcuts for zooming</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>macOS: two finger click shows the popup menu without deselecting a selected component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply context menu rotation and mirroring to Trimmer potentiometers</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply context menu rotation and mirroring to SMD components</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
