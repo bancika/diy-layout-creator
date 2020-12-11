@@ -1373,6 +1373,9 @@ public class Presenter implements IPlugInPort {
             // At least one control point went out of bounds.
             return null;
           }
+        } else {
+          // for non-affected points just add extra space so we are comparing apples with apples later
+          controlPoints[index].setLocation(controlPoints[index].getX() + extraSpace, controlPoints[index].getY() + extraSpace);    
         }
         // For control points that may overlap, just write null,
         // we'll ignore them later.
