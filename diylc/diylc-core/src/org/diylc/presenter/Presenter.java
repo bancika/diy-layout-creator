@@ -1359,7 +1359,17 @@ public class Presenter implements IPlugInPort {
 
     // Validate if moving can be done.
     for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+      // check if a component already has overlapping points because of a previous error, in that case skip it
+      boolean skip = false;
       IDIYComponent<?> component = entry.getKey();
+      for (int i = 0; i < component.getControlPointCount() - 1 && !skip; i++)
+        for (int j = i + 1; j < component.getControlPointCount() && !skip; j++)
+          if (component.getControlPoint(i).equals(component.getControlPoint(j)))
+            skip = true;
+      
+      if (skip)
+        continue;
+            
       Point2D[] controlPoints = new Point2D[component.getControlPointCount()];
       for (int index = 0; index < component.getControlPointCount(); index++) {
         Point2D p = component.getControlPoint(index);

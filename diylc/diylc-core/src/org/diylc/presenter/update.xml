@@ -3301,6 +3301,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Do not allow for components like traces, jumpers and wires to be reduced to nothing by dragging connected components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>In cases when there's already a component in the selection that is reduced to nothing, allow moving the selection</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
