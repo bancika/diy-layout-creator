@@ -27,7 +27,6 @@ import java.awt.geom.Point2D;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
 import org.diylc.components.passive.TrimmerPotentiometer;
-import org.diylc.components.semiconductors.DIL_IC;
 import org.diylc.core.IDIYComponent;
 
 public class TrimmerTransformer implements IComponentTransformer {
