@@ -35,6 +35,7 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.components.transform.TrimmerTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -49,7 +50,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Trimmer Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
-    description = "Various types of board mounted trimmer potentiometers", zOrder = IDIYComponent.COMPONENT)
+    description = "Various types of board mounted trimmer potentiometers", zOrder = IDIYComponent.COMPONENT,
+    transformer = TrimmerTransformer.class)
 public class TrimmerPotentiometer extends AbstractPotentiometer {
 
   private static final long serialVersionUID = 1L;
