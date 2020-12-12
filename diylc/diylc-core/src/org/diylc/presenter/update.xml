@@ -3292,6 +3292,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Fixed issues when creating leaded components using drag and drop with 'Snap to Grid' option switched on using a metric grid spacing (e.g. 1mm)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Do not allow for components like traces, jumpers and wires to be reduced to nothing by dragging connected components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
@@ -3300,7 +3304,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Moving a rigid component (e.g. tube/transistor symbol) which is not snapped to grid makes it snap back to the grid when 'Snap to Grid' is switched on</description>
+					<description>Moving a rigid component (e.g. tube/transistor symbol) which is not snapped to grid makes it snap back to the grid when 'Snap to Grid' option is switched on</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

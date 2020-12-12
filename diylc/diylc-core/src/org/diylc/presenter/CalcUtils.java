@@ -48,6 +48,13 @@ public class CalcUtils {
     point.setLocation(x, y);
   }
   
+  public static Size findClosestMultiplierOf(Size factor, Size target, int step) {
+    Size ret = new Size(0d, factor.getUnit());
+    while (ret.convertToPixels() < target.convertToPixels())
+      ret = new Size(ret.getValue() + factor.getValue() * step, factor.getUnit());
+    return ret;
+  }
+  
   public static void snapPointToObjects(Point2D point, Size gridSpacing, IDIYComponent<?> component, List<IDIYComponent<?>> components) {
     for (IDIYComponent<?> c : components) {
       if (c == component)
