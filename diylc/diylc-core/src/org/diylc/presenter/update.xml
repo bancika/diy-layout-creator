@@ -3297,6 +3297,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>In cases when there's already a component in the selection that is reduced to nothing, allow moving the selection to avoid getting stuck</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Moving a rigid component (e.g. tube/transistor symbol) which is not snapped to grid makes it snap back to the grid when 'Snap to Grid' is switched on</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

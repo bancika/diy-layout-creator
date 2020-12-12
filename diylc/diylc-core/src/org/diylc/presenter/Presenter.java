@@ -1321,19 +1321,23 @@ public class Presenter implements IPlugInPort {
     Dimension d = drawingManager.getCanvasDimensions(currentProject, 1d, useExtraSpace);
     double extraSpace = useExtraSpace ? drawingManager.getExtraSpace(currentProject) : 0;
     
+    boolean isRigid = true;
+    
     List<Point2D> points = new ArrayList<Point2D>();    
     for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
       for (Integer i : entry.getValue())
       {
         Point2D p = entry.getKey().getControlPoint(i);
+        if (entry.getKey().canPointMoveFreely(i))
+          isRigid = false;
         points.add(p);
       }
     }
 
     Point2D firstPoint = points.iterator().next();
-    if (points.size() == 1 || points.stream().allMatch((x) -> x.equals(firstPoint))) {    
-      double avgX = points.stream().mapToDouble((x) -> x.getX()).average().getAsDouble();
-      double avgY = points.stream().mapToDouble((x) -> x.getY()).average().getAsDouble();      
+    if (points.size() == 1 || points.stream().allMatch((x) -> x.equals(firstPoint)) || (controlPointMap.size() == 1 && isRigid)) {    
+      double avgX = firstPoint.getX();//points.stream().mapToDouble((x) -> x.getX()).average().getAsDouble();
+      double avgY = firstPoint.getY();//points.stream().mapToDouble((x) -> x.getY()).average().getAsDouble();      
       
       Point2D testPoint = new Point2D.Double(avgX + dx, avgY + dy);      
       if (snapToGrid) {
