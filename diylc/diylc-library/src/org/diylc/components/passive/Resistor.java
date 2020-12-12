@@ -32,8 +32,8 @@ import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.ResistorColorCode;
-import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;

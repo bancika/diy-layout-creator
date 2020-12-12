@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.transform.BreadboardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -52,7 +53,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Breadboard", category = "Boards", author = "Branislav Stojkovic",
     description = "Prototyping solderless breadboard", instanceNamePrefix = "BB",
     zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true)
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true, transformer = BreadboardTransformer.class)
 public class Breadboard extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;

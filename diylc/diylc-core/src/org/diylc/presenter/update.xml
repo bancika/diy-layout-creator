@@ -3296,15 +3296,23 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>In cases when there's already a component in the selection that is reduced to nothing, allow moving the selection</description>
+					<description>In cases when there's already a component in the selection that is reduced to nothing, allow moving the selection to avoid getting stuck</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Apply context menu rotation and mirroring to Trimmer potentiometers</description>
+					<description>Apply context menu rotation and mirroring to Trimmer Potentiometer components</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Apply context menu rotation and mirroring to SMD components</description>
+					<description>Apply context menu rotation and mirroring to SMD Capacitor and Resistor components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply context menu rotation and mirroring to Tag Strip components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply context menu rotation to Breadboard components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

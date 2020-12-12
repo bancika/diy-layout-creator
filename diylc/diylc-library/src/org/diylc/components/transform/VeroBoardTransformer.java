@@ -24,7 +24,6 @@ package org.diylc.components.transform;
 import java.awt.geom.Point2D;
 
 import org.diylc.common.OrientationHV;
-import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.boards.AbstractVeroBoard;
 import org.diylc.core.IDIYComponent;
 
