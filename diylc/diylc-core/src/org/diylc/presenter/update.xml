@@ -3312,7 +3312,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Apply context menu rotation to Breadboard components</description>
+					<description>Apply context menu rotation to Breadboard and P-0+o (Proto) Board components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

@@ -26,14 +26,14 @@ import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
-import org.diylc.components.boards.Breadboard;
+import org.diylc.components.boards.AbstractProtoBoard;
 import org.diylc.core.IDIYComponent;
 
-public class BreadboardTransformer implements IComponentTransformer {
+public class ProtoBoardTransformer implements IComponentTransformer {
 
   @Override
   public boolean canRotate(IDIYComponent<?> component) {
-    return component.getClass().equals(Breadboard.class);
+    return AbstractProtoBoard.class.isAssignableFrom(component.getClass());
   }
 
   @Override
@@ -55,7 +55,7 @@ public class BreadboardTransformer implements IComponentTransformer {
       component.setControlPoint(p, index);
     }
 
-    Breadboard board = (Breadboard) component;
+    AbstractProtoBoard board = (AbstractProtoBoard) component;
     Orientation o = board.getOrientation();
     int oValue = o.ordinal();
     oValue += direction;
