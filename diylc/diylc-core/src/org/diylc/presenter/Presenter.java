@@ -1649,7 +1649,7 @@ public class Presenter implements IPlugInPort {
     if (selectedComponents.isEmpty()) {
       // If there's no selection finalize selectionRect and see which
       // components intersect with it.
-      if (scaledPoint != null) {
+      if (scaledPoint != null && previousDragPoint != null) {
         this.selectionRect = Utils.createRectangle(new Point((int)scaledPoint.getX(), (int)scaledPoint.getY()), 
             new Point((int)previousDragPoint.getX(), (int)previousDragPoint.getY()));;
       }
