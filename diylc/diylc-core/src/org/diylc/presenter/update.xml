@@ -3277,7 +3277,11 @@
 			</versionNumber>
 			<releaseDate>2020-11-19 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>	
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added a button in the action toolbar to toggle between snap modes (none, grid, component)</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added pinch zooming functionality for compatible devices (tested on Mac and Win laptops)</description>

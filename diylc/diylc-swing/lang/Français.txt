@@ -58,6 +58,7 @@ Click on the canvas to set the %s control point of a new %s or press %s to cance
 Click the lightbulb icon in the bottom-right corner of the window for more info.|Cliquez sur l'icône de l'ampoule dans le coin inférieur droit de la fenêtre pour plus d'informations.
 Click to fetch the most recent public announcement|Cliquez pour récupérer l'annonce publique la plus récente
 Click to show recent changes and updates|Cliquez pour afficher les modifications et mises à jour récentes
+Click to toggle to the next option|Cliquez pour passer à l'option suivante
 Coil|Bobine
 Coil Border|Bordure de la bobine
 Coil Length|Longueur de la bobine
@@ -352,7 +353,7 @@ Size|Taille
 Sizing Mode|Mode de redimensionnement
 Small-button B7G|Petit bouton B7G
 Smooth|Lisse
-Snap To...|Aimanter à ...
+Snap To|Aimanter à
 Soap Bar|Soap Bar
 Solid|Solide
 South|Sud

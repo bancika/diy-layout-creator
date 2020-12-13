@@ -25,6 +25,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -73,6 +74,11 @@ public class ConfigToolbar extends JPanel {
         label.setText(checked ? CHECK : UNCHECK);
       }
     });
+  }
+  
+  public void addToggleLabel(String text, String configKey, String defaultValue, List<ToggleItem> items) {
+    ToggleConfigLabel label = new ToggleConfigLabel(text, configKey, defaultValue, items);
+    add(label);
   }
   
   @Override

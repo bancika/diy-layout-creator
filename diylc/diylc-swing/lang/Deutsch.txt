@@ -61,6 +61,7 @@ Click on the canvas to set the %s control point of a new %s or press %s to cance
 Click the lightbulb icon in the bottom-right corner of the window for more info.|Klicken Sie auf das Glühbirnen-Symbol in der unteren rechten Ecke des Fensters, um weitere Informationen zu erhalten
 Click to fetch the most recent public announcement|Klicken Sie hier, um das neuste Update zu erhalten
 Click to show recent changes and updates|Klicken Sie hier, um die letzten Änderungen und Aktualisierungen anzuzeigen
+Click to toggle to the next option|Klicken Sie, um zur nächsten Option zu wechseln
 Coil|Spule
 Coil Border|Spulenrand
 Coil Length|Spulenlänge
@@ -367,7 +368,7 @@ Size|Größe
 Sizing Mode|Größenmodus 
 Small-button B7G|Miniatur 7-pol 
 Smooth|Glätten
-Snap To...|Einrasten zu...
+Snap To|Einrasten zu
 Soap Bar|
 Solid|Ununterbrochen
 South|Süden 

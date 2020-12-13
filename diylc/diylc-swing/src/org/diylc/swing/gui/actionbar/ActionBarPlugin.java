@@ -26,7 +26,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -42,11 +44,10 @@ import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.plugins.canvas.CanvasPlugin;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
 
 /**
@@ -152,6 +153,13 @@ public class ActionBarPlugin implements IPlugIn {
   public ConfigToolbar getConfigToolbar() {
     if (configToolbar == null) {
       configToolbar = new ConfigToolbar();
+
+      List<ToggleItem> toggleItems = new ArrayList<ToggleItem>();
+      toggleItems.add(new ToggleItem(IPlugInPort.SNAP_TO_NONE, IPlugInPort.SNAP_TO_NONE, IconLoader.SnapToNone.getIcon()));
+      toggleItems.add(new ToggleItem(IPlugInPort.SNAP_TO_GRID, IPlugInPort.SNAP_TO_GRID, IconLoader.SnapToGrid.getIcon()));
+      toggleItems.add(new ToggleItem(IPlugInPort.SNAP_TO_COMPONENTS, IPlugInPort.SNAP_TO_COMPONENTS, IconLoader.SnapToComponents.getIcon()));
+      configToolbar.addToggleLabel(LangUtil.translate("Snap To"), IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT, toggleItems);
+      
       configToolbar.add(LangUtil.translate("Continuous Creation"), IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
       configToolbar.add(LangUtil.translate("Highlight Connected Areas"), IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
       configToolbar.add(LangUtil.translate("Sticky Points"), IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);

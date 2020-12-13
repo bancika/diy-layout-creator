@@ -56,7 +56,7 @@ public class ConfigPlugin implements IPlugIn {
   private static final String CONFIG_MENU = "Config";
   private static final String THEME_MENU = "Theme";
   private static final String RULER_MENU = "Ruler Inch Subdivision...";
-  private static final String SNAP_MENU = "Snap To...";
+  private static final String SNAP_MENU = "Snap To";
   private static final String COMPONENT_BROWSER_MENU = "Toolbox";
   public static final String COMPONENT_BROWSER = "componentBrowser";
   public static final String SEARCHABLE_TREE = "Searchable Tree";
