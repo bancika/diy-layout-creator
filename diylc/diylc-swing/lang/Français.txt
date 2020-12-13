@@ -158,7 +158,7 @@ Font|Police
 Font Bold|Gras
 Font Italic|Italic
 Font Size|Taille de police
-Font Size Override|Taille de police (re)
+Font Size Override|Taille de police (re.)
 Four|Quatre
 Full|Complet
 Fuse|Fusible

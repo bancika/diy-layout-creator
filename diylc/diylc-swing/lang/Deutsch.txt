@@ -161,7 +161,7 @@ Font|Schriftart
 Font Bold|Fettschrift
 Font Italic|Kursivschrift
 Font Size|Schriftgröße
-Font Size Override|Überschreiben der Schriftgröße
+Font Size Override|Schriftgröße (Üb.)
 Four|Vier
 Full|Voll 
 Fuse|Sicherung 
