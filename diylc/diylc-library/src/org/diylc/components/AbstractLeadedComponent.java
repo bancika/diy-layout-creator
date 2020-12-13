@@ -52,6 +52,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.presenter.CalcUtils;
 import org.diylc.utils.Constants;
 
 /**
@@ -101,6 +102,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
       // This will happen if components do not have any shape.
     }    
     points[2] = calculateLabelPosition(points[0], points[1]);
+  }
+  
+  @Override
+  public void createdIn(Project project) {
+    double targetSize = CalcUtils.findClosestMultiplierOf(project.getGridSpacing(), DEFAULT_SIZE, 2).convertToPixels();
+    points[0]= new Point2D.Double(-targetSize / 2, 0);
+    points[1] = new Point2D.Double(targetSize / 2, 0);
   }
 
   protected boolean IsCopperArea() {

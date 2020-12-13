@@ -26,7 +26,7 @@ import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 
 import org.diylc.common.ObjectCache;
-import org.diylc.common.SimpleComponentTransformer;
+import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;

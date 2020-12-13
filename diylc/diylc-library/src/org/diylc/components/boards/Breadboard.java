@@ -34,9 +34,8 @@ import java.awt.geom.RoundRectangle2D;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractComponent;
+import org.diylc.components.transform.ProtoBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -52,8 +51,8 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Breadboard", category = "Boards", author = "Branislav Stojkovic",
     description = "Prototyping solderless breadboard", instanceNamePrefix = "BB",
     zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true)
-public class Breadboard extends AbstractComponent<Void> {
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true, transformer = ProtoBoardTransformer.class)
+public class Breadboard extends AbstractProtoBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -77,7 +76,7 @@ public class Breadboard extends AbstractComponent<Void> {
 
   protected BreadboardSize breadboardSize;
   protected PowerStripPosition powerStripPosition;
-  protected Orientation orientation;
+  
 
   @SuppressWarnings("incomplete-switch")
   @Override
@@ -279,17 +278,6 @@ public class Breadboard extends AbstractComponent<Void> {
 
     g2d.setColor(MINUS_COLOR);
     g2d.drawLine(width / 2, 2 / factor, width / 2, height - 4 / factor);
-  }
-
-  @EditableProperty
-  public Orientation getOrientation() {
-    if (orientation == null)
-      orientation = Orientation.DEFAULT;
-    return orientation;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
   }
 
   @EditableProperty(name = "Size")

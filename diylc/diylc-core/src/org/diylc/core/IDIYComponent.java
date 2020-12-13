@@ -197,4 +197,11 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
    * @return
    */
   Rectangle2D getCachingBounds();
+  
+  /**
+   * Notifies the component that it's being created in the context of the specified project  
+   * 
+   * @param project
+   */
+  void createdIn(Project project);
 }

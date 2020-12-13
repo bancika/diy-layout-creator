@@ -25,8 +25,8 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 
 import org.diylc.common.ObjectCache;
-import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractCurvedComponent;
+import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;

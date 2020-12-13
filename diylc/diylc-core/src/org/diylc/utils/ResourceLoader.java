@@ -30,7 +30,7 @@ public class ResourceLoader {
     String bundlePath;
     try {
       bundlePath = com.apple.eio.FileManager.getPathToApplicationBundle();
-      LOG.debug("Detected OSX bundle path: " + bundlePath);
+      //LOG.debug("Detected OSX bundle path: " + bundlePath);
     } catch (Exception e) {
       bundlePath = null; // on non-OSX platforms
     }
@@ -45,6 +45,28 @@ public class ResourceLoader {
       return absoluteFile.listFiles();
     } catch (Exception e) {
       LOG.error("Error while looking for files in: " + relativePath, e);
+      return null;
+    }
+  }
+  
+  public static File getFile(String relativePath) {
+    String bundlePath;
+    try {
+      bundlePath = com.apple.eio.FileManager.getPathToApplicationBundle();
+      //LOG.debug("Detected OSX bundle path: " + bundlePath);
+    } catch (Exception e) {
+      bundlePath = null; // on non-OSX platforms
+    }
+    try {
+      String absolutePath;
+      if (bundlePath == null)
+        absolutePath = relativePath;
+      else
+        absolutePath = bundlePath + File.separator + "Contents" + File.separator + "Resources" + File.separator + relativePath;
+      File absoluteFile = new File(absolutePath);
+      return absoluteFile;
+    } catch (Exception e) {
+      LOG.error("Error while finding file: " + relativePath, e);
       return null;
     }
   }

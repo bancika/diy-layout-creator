@@ -3247,7 +3247,7 @@
 				<minor>11</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2020-11-19 00:00:00.000 CET</releaseDate>
+			<releaseDate>2020-12-06 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>	
 				<org.diylc.appframework.update.Change>
@@ -3266,6 +3266,82 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Project cloud -> replace project had no effect</description>
 				</org.diylc.appframework.update.Change>					
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>12</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-12-13 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added a button in the action toolbar to toggle between snap modes (none, grid, component)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added pinch zooming functionality for compatible devices (tested on Mac and Win laptops)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>macOS: added meta +/- keyboard shortcuts for zooming</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>macOS: two finger click shows the popup menu without deselecting a selected component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Fixed issues when creating leaded components using drag and drop with 'Snap to Grid' option switched on using a metric grid spacing (e.g. 1mm)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Do not allow for components like traces, jumpers and wires to be reduced to nothing by dragging connected components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>In cases when there's already a component in the selection that is reduced to nothing, allow moving the selection to avoid getting stuck</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Moving a rigid component (e.g. tube/transistor symbol) which is not snapped to grid makes it snap back to the grid when 'Snap to Grid' option is switched on</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply context menu rotation and mirroring to Trimmer Potentiometer components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply context menu rotation and mirroring to SMD Capacitor and Resistor components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply context menu rotation and mirroring to Tag Strip components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Apply context menu rotation to Breadboard and P-0+o (Proto) Board components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When rotating Vero and Tri-Pad boards, change the orientation of strips to match the rotation angle</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Rotating and mirroring boards that display coordinates also changes coordinate origin</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Dragging components from the component tree to the canvas stops working once the component type is selected in the tree</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>macOS: fixed language selection that does not work</description>
+				</org.diylc.appframework.update.Change>			
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

@@ -58,6 +58,7 @@ Click on the canvas to set the %s control point of a new %s or press %s to cance
 Click the lightbulb icon in the bottom-right corner of the window for more info.
 Click to fetch the most recent public announcement
 Click to show recent changes and updates
+Click to toggle to the next option
 Coil
 Coil Border
 Coil Length
@@ -350,7 +351,7 @@ Size
 Sizing Mode
 Small-button B7G
 Smooth
-Snap To...
+Snap To
 Soap Bar
 Solid
 South

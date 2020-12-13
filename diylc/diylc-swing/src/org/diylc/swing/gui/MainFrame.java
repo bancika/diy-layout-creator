@@ -340,7 +340,7 @@ public class MainFrame extends JFrame implements ISwingUI {
         rightPanel.add(component);
         break;
       case SwingConstants.CENTER:
-        centerPanel.add(component, BorderLayout.CENTER);
+        centerPanel.add(component);
         break;
       default:
         throw new BadPositionException();

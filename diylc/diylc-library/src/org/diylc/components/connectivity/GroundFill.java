@@ -28,8 +28,8 @@ import java.util.Arrays;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
-import org.diylc.common.SimpleComponentTransformer;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;

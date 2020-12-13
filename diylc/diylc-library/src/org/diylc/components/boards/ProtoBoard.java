@@ -31,9 +31,8 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractComponent;
+import org.diylc.components.transform.ProtoBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -49,8 +48,8 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "P-0+o (Proto) Board", category = "Boards", author = "Branislav Stojkovic",
     description = "A prototyping board for modular synths, central bus with V+ GND and V-", instanceNamePrefix = "BB",
     zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true)
-public class ProtoBoard extends AbstractComponent<Void> {
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true, transformer = ProtoBoardTransformer.class)
+public class ProtoBoard extends AbstractProtoBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -81,8 +80,6 @@ public class ProtoBoard extends AbstractComponent<Void> {
   private static int[] SEGMENTS_STARTS = new int[] { 0, 3, 6, 11, 14, 17 };  
 
   protected Point2D point = new Point2D.Double(0, 0);
-
-  protected Orientation orientation;
   
   protected Color boardColor = FILL_COLOR;
   protected Color padColor = PAD_COLOR;
@@ -563,17 +560,6 @@ public class ProtoBoard extends AbstractComponent<Void> {
     g2d.fillOval(width / 3 - 2 / factor + size / 2 - 1, 2 * width / 3 - 2 / factor + size / 2 - 1, 3, 3);
     g2d.fillOval(2 * width / 3 - 2 / factor + size / 2 - 1, 6 / factor + size / 2 - 1, 3, 3);
     g2d.fillOval(2 * width / 3 - 2 / factor + size / 2 - 1, 2 * width / 3 - 2 / factor + size / 2 - 1, 3, 3);
-  }
-
-  @EditableProperty
-  public Orientation getOrientation() {
-    if (orientation == null)
-      orientation = Orientation.DEFAULT;
-    return orientation;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
   }
   
   @EditableProperty(name = "Board Color")

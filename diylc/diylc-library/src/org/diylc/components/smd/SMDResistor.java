@@ -23,6 +23,7 @@ package org.diylc.components.smd;
 
 import java.awt.Color;
 
+import org.diylc.components.transform.PassiveSMDTransformer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -32,7 +33,7 @@ import org.diylc.core.measures.Resistance;
 
 @ComponentDescriptor(name = "SMD Resistor", author = "Branislav Stojkovic", category = "SMD", instanceNamePrefix = "C",
     description = "Surface mount resistor", zOrder = IDIYComponent.COMPONENT,
-    keywordPolicy = KeywordPolicy.SHOW_VALUE)
+    keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = PassiveSMDTransformer.class)
 public class SMDResistor extends PassiveSMDComponent<Resistance> {
 
   public static Color BODY_COLOR = Color.gray;

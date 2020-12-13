@@ -32,7 +32,7 @@ import java.text.Format;
  *
  * @param <T>
  */
-public class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializable, Cloneable {
+public abstract class AbstractMeasure<T extends Enum<? extends Unit>> implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 

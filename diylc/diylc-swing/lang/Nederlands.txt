@@ -60,7 +60,8 @@ Click on the canvas to create a new %s or press %s to cancel|Klik op het werkbla
 Click on the canvas to set the %s control point of a new %s or press %s to cancel|Klik op het werkblad om het %s-controlepunt van een nieuwe %s in te stellen of druk op %s om te annuleren 
 Click the lightbulb icon in the bottom-right corner of the window for more info.|Klik op het gloeilampicoon in de rechteronderhoek van het venster voor meer informatie.
 Click to fetch the most recent public announcement|Klik om de meest recente openbare aankondiging op te halen 
-Click to show recent changes and updates|Klik om recente wijzigingen en updates weer te geven 
+Click to show recent changes and updates|Klik om recente wijzigingen en updates weer te geven
+Click to toggle to the next option|Klik om naar de volgende optie te gaan 
 Coil|Spoel
 Coil Border|Spoelrand
 Coil Length|Spoellengte
@@ -367,7 +368,7 @@ Size|Maat
 Sizing Mode|Dimensioneringsmethode
 Small-button B7G|B7G met Kleine Knop
 Smooth|Egaliseren
-Snap To...|Uitlijnen op...
+Snap To|Uitlijnen op
 Soap Bar|Soap Bar
 Solid|Ononderbroken
 South|Zuid

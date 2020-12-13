@@ -29,7 +29,7 @@ import java.awt.geom.Point2D;
 import java.util.Arrays;
 
 import org.diylc.common.ObjectCache;
-import org.diylc.common.SimpleComponentTransformer;
+import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;

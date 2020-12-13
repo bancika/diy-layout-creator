@@ -19,12 +19,13 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.common;
+package org.diylc.components.transform;
 
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
+import org.diylc.common.IComponentTransformer;
 import org.diylc.core.IDIYComponent;
 
 public class SimpleComponentTransformer implements IComponentTransformer {

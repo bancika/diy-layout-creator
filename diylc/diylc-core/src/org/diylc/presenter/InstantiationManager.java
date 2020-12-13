@@ -261,6 +261,7 @@ public class InstantiationManager {
 
     // Instantiate the component.
     IDIYComponent<?> component = componentType.getInstanceClass().newInstance();
+    component.createdIn(currentProject);
 
     component.setName(createUniqueName(componentType, currentProject.getComponents()));
 

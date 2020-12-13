@@ -22,14 +22,13 @@
 package org.diylc.components.boards;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 
 import org.diylc.common.OrientationHV;
-import org.diylc.common.SimpleComponentTransformer;
+import org.diylc.components.transform.VeroBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -37,30 +36,17 @@ import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
-import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
-import org.diylc.core.measures.Size;
-import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "TriPad Board", category = "Boards", author = "Hauke Juhls", zOrder = IDIYComponent.BOARD,
     instanceNamePrefix = "Board",
     description = "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",
-    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class, enableCache = true)
-public class TriPadBoard extends AbstractBoard {
+    keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = VeroBoardTransformer.class, enableCache = true)
+public class TriPadBoard extends AbstractVeroBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color BORDER_COLOR = BOARD_COLOR.darker();
-
-  public static Size SPACING = new Size(0.1d, SizeUnit.in);
-  public static Size STRIP_SIZE = new Size(0.07d, SizeUnit.in);
-  public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
-
   protected int stripSpan = 3; // determines how many holes are covered by a
-  // strip
-  protected Size spacing = SPACING;
-  protected Color stripColor = COPPER_COLOR;
-  protected OrientationHV orientation = OrientationHV.HORIZONTAL;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -164,33 +150,6 @@ public class TriPadBoard extends AbstractBoard {
 
       super.drawCoordinates(g2d, spacing, project);
     }
-  }
-
-  @EditableProperty(name = "Strip Color")
-  public Color getStripColor() {
-    return stripColor;
-  }
-
-  public void setStripColor(Color padColor) {
-    this.stripColor = padColor;
-  }
-
-  @EditableProperty(validatorClass = PositiveNonZeroMeasureValidator.class)
-  public Size getSpacing() {
-    return spacing;
-  }
-
-  public void setSpacing(Size spacing) {
-    this.spacing = spacing;
-  }
-
-  @EditableProperty
-  public OrientationHV getOrientation() {
-    return orientation;
-  }
-
-  public void setOrientation(OrientationHV orientation) {
-    this.orientation = orientation;
   }
 
   @Override

@@ -61,18 +61,23 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.TranslatedMenu;
 import org.diylc.swing.gui.TranslatedPopupMenu;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 import org.diylc.swingframework.ruler.IRulerListener;
 import org.diylc.swingframework.ruler.Ruler.InchSubdivision;
 import org.diylc.swingframework.ruler.RulerScrollPane;
+
+import com.guigarage.gestures.GestureMagnificationEvent;
+import com.guigarage.gestures.GestureMagnificationListener;
+import com.guigarage.gestures.GestureUtilities;
+import com.guigarage.gestures.GesturesNotSupportedException;
 
 public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
@@ -253,9 +258,12 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
         public void mouseClicked(MouseEvent e) {
           if (scrollPane.isMouseScrollMode() || e.getButton() == MouseEvent.BUTTON2)
             return;
+          
+          // do not pass isMetaDown on mac when button3 (two finger click) is pressed
+          boolean ctrlDown = Utils.isMac() ? (e.getButton() == MouseEvent.BUTTON3 ? false : e.isMetaDown()): e.isControlDown();
+          
           plugInPort.mouseClicked(e.getPoint(), e.getButton(),
-              Utils.isMac() ? e.isMetaDown() : e.isControlDown(), e.isShiftDown(), e.isAltDown(),
-              e.getClickCount());
+              ctrlDown, e.isShiftDown(), e.isAltDown(), e.getClickCount());
         }
 
         @Override
@@ -343,6 +351,55 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
               e.isShiftDown(), e.isAltDown());
         }
       });
+      
+      canvasPanel.getActionMap().put("zoomIn", new AbstractAction() {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          LOG.debug("Keyboard zoom-in triggered");
+          zoom(-1);
+        }
+      });
+
+      canvasPanel.getActionMap().put("zoomOut", new AbstractAction() {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          LOG.debug("Keyboard zoom-out triggered");
+          zoom(1);
+        }
+      });
+      
+      if (!GestureUtilities.isSupported()) {
+        LOG.info("Gestures are not supported, skipping initialization");
+      }    
+      try {
+        GestureUtilities.registerListener(canvasPanel, new GestureMagnificationListener() {
+          
+          private long prevEventTime = 0;
+          private static final int DELAY = 100;
+          
+          @Override
+          public void magnify(GestureMagnificationEvent e) {
+            if (System.currentTimeMillis() - this.prevEventTime < DELAY)
+              return;
+            
+            if (e.getMagnification() > 0)
+              CanvasPlugin.this.zoom(-1);
+            else if (e.getMagnification() < 0)
+              CanvasPlugin.this.zoom(1);
+              
+            prevEventTime = System.currentTimeMillis();
+          }
+        });
+        LOG.info("Magnification gesture listener initialized.");
+      } catch (GesturesNotSupportedException e) {
+        LOG.error("Error registering gesture listener", e);
+      }
     }
     return canvasPanel;
   }
@@ -390,48 +447,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
               configManager.readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
           if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
-
-            Point mousePos = getCanvasPanel().getMousePosition(true);
-
-            // change zoom level
-            double oldZoom = plugInPort.getZoomLevel();
-            double newZoom;
-            Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
-            if (e.getWheelRotation() > 0) {
-              int i = availableZoomLevels.length - 1;
-              while (i > 0 && availableZoomLevels[i] >= oldZoom) {
-                i--;
-              }
-              plugInPort.setZoomLevel(newZoom = availableZoomLevels[i]);
-            } else {
-              int i = 0;
-              while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= oldZoom) {
-                i++;
-              }
-              plugInPort.setZoomLevel(newZoom = availableZoomLevels[i]);
-            }
-
-            Rectangle2D selectionBounds = plugInPort.getSelectionBounds(true);
-            Rectangle visibleRect = scrollPane.getVisibleRect();
-
-            JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
-            JScrollBar vertical = scrollPane.getVerticalScrollBar();
-
-            if (selectionBounds == null) {
-              // center to cursor
-              Point desiredPos = new Point((int) (1d * mousePos.x / oldZoom * newZoom),
-                  (int) (1d * mousePos.y / oldZoom * newZoom));
-              int dx = desiredPos.x - mousePos.x;
-              int dy = desiredPos.y - mousePos.y;
-              horizontal.setValue(horizontal.getValue() + dx);
-              vertical.setValue(vertical.getValue() + dy);
-            } else {
-              // center to selection
-              horizontal.setValue((int) (selectionBounds.getX() + selectionBounds.getWidth() / 2
-                  - visibleRect.getWidth() / 2));
-              vertical.setValue((int) (selectionBounds.getY() + selectionBounds.getHeight() / 2
-                  - visibleRect.getHeight() / 2));
-            }
+            CanvasPlugin.this.zoom(e.getWheelRotation());            
           }
           if (e.isShiftDown()) {
             int iScrollAmount = e.getScrollAmount();
@@ -450,6 +466,53 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       });
     }
     return scrollPane;
+  }
+  
+  public void zoom(int direction) {    
+    Point mousePos = canvasPanel.getMousePosition(true);    
+
+    // change zoom level
+    double oldZoom = plugInPort.getZoomLevel();
+    double newZoom;
+    Double[] availableZoomLevels = plugInPort.getAvailableZoomLevels();
+    if (direction > 0) {
+      int i = availableZoomLevels.length - 1;
+      while (i > 0 && availableZoomLevels[i] >= oldZoom) {
+        i--;
+      }
+      plugInPort.setZoomLevel(newZoom = availableZoomLevels[i]);
+    } else {
+      int i = 0;
+      while (i < availableZoomLevels.length - 1 && availableZoomLevels[i] <= oldZoom) {
+        i++;
+      }
+      plugInPort.setZoomLevel(newZoom = availableZoomLevels[i]);
+    }
+
+    Rectangle2D selectionBounds = plugInPort.getSelectionBounds(true);
+    Rectangle visibleRect = scrollPane.getVisibleRect();
+
+    JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
+    JScrollBar vertical = scrollPane.getVerticalScrollBar();
+    
+    if (mousePos == null)
+      mousePos = new Point((int)visibleRect.getCenterX(), (int)visibleRect.getCenterY());
+
+    if (selectionBounds == null) {
+      // center to cursor
+      Point desiredPos = new Point((int) (1d * mousePos.x / oldZoom * newZoom),
+          (int) (1d * mousePos.y / oldZoom * newZoom));
+      int dx = desiredPos.x - mousePos.x;
+      int dy = desiredPos.y - mousePos.y;
+      horizontal.setValue(horizontal.getValue() + dx);
+      vertical.setValue(vertical.getValue() + dy);
+    } else {
+      // center to selection
+      horizontal.setValue((int) (selectionBounds.getX() + selectionBounds.getWidth() / 2
+          - visibleRect.getWidth() / 2));
+      vertical.setValue((int) (selectionBounds.getY() + selectionBounds.getHeight() / 2
+          - visibleRect.getHeight() / 2));
+    }
   }
 
   private void showPopupAt(int x, int y) {

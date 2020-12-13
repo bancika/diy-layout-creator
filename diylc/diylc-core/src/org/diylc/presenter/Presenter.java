@@ -431,13 +431,17 @@ public class Presenter implements IPlugInPort {
       Set<Class<?>> componentTypeClasses = null;
       try {
         componentTypeClasses = Utils.getClasses("org.diylc.components");
-        try {
-          List<Class<?>> additionalComponentTypeClasses =
-              JarScanner.getInstance().scanFolder("library", IDIYComponent.class);
-          if (additionalComponentTypeClasses != null)
-            componentTypeClasses.addAll(additionalComponentTypeClasses);
-        } catch (Exception e) {
-          LOG.warn("Could not find additional type classes", e);
+        File libraryFile = new File("library");
+        if (libraryFile.exists() && libraryFile.isDirectory()) {
+          LOG.info("Loading additional library JARs");
+          try {
+            List<Class<?>> additionalComponentTypeClasses =
+                JarScanner.getInstance().scanFolder("library", IDIYComponent.class);
+            if (additionalComponentTypeClasses != null)
+              componentTypeClasses.addAll(additionalComponentTypeClasses);
+          } catch (Exception e) {
+            LOG.warn("Could not find additional type classes", e);
+          }
         }
 
         for (Class<?> clazz : componentTypeClasses) {
@@ -1321,19 +1325,23 @@ public class Presenter implements IPlugInPort {
     Dimension d = drawingManager.getCanvasDimensions(currentProject, 1d, useExtraSpace);
     double extraSpace = useExtraSpace ? drawingManager.getExtraSpace(currentProject) : 0;
     
+    boolean isRigid = true;
+    
     List<Point2D> points = new ArrayList<Point2D>();    
     for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
       for (Integer i : entry.getValue())
       {
         Point2D p = entry.getKey().getControlPoint(i);
+        if (entry.getKey().canPointMoveFreely(i))
+          isRigid = false;
         points.add(p);
       }
     }
 
     Point2D firstPoint = points.iterator().next();
-    if (points.size() == 1 || points.stream().allMatch((x) -> x.equals(firstPoint))) {    
-      double avgX = points.stream().mapToDouble((x) -> x.getX()).average().getAsDouble();
-      double avgY = points.stream().mapToDouble((x) -> x.getY()).average().getAsDouble();      
+    if (points.size() == 1 || points.stream().allMatch((x) -> x.equals(firstPoint)) || (controlPointMap.size() == 1 && isRigid)) {    
+      double avgX = firstPoint.getX();//points.stream().mapToDouble((x) -> x.getX()).average().getAsDouble();
+      double avgY = firstPoint.getY();//points.stream().mapToDouble((x) -> x.getY()).average().getAsDouble();      
       
       Point2D testPoint = new Point2D.Double(avgX + dx, avgY + dy);      
       if (snapToGrid) {
@@ -1359,7 +1367,17 @@ public class Presenter implements IPlugInPort {
 
     // Validate if moving can be done.
     for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+      // check if a component already has overlapping points because of a previous error, in that case skip it
+      boolean skip = false;
       IDIYComponent<?> component = entry.getKey();
+      for (int i = 0; i < component.getControlPointCount() - 1 && !skip; i++)
+        for (int j = i + 1; j < component.getControlPointCount() && !skip; j++)
+          if (component.getControlPoint(i).equals(component.getControlPoint(j)))
+            skip = true;
+      
+      if (skip)
+        continue;
+            
       Point2D[] controlPoints = new Point2D[component.getControlPointCount()];
       for (int index = 0; index < component.getControlPointCount(); index++) {
         Point2D p = component.getControlPoint(index);
@@ -1373,6 +1391,9 @@ public class Presenter implements IPlugInPort {
             // At least one control point went out of bounds.
             return null;
           }
+        } else {
+          // for non-affected points just add extra space so we are comparing apples with apples later
+          controlPoints[index].setLocation(controlPoints[index].getX() + extraSpace, controlPoints[index].getY() + extraSpace);    
         }
         // For control points that may overlap, just write null,
         // we'll ignore them later.
@@ -1632,7 +1653,7 @@ public class Presenter implements IPlugInPort {
     if (selectedComponents.isEmpty()) {
       // If there's no selection finalize selectionRect and see which
       // components intersect with it.
-      if (scaledPoint != null) {
+      if (scaledPoint != null && previousDragPoint != null) {
         this.selectionRect = Utils.createRectangle(new Point((int)scaledPoint.getX(), (int)scaledPoint.getY()), 
             new Point((int)previousDragPoint.getX(), (int)previousDragPoint.getY()));;
       }

@@ -58,6 +58,7 @@ Click on the canvas to set the %s control point of a new %s or press %s to cance
 Click the lightbulb icon in the bottom-right corner of the window for more info.|Klikni na ikonicu sa sijalicom u donjem-desnom uglu prozora za više informacija.
 Click to fetch the most recent public announcement|Klikni za preuzimanje najnovijih objava
 Click to show recent changes and updates|Klikni za prikaz skorih unapređenja
+Click to toggle to the next option|Klikni za prelaz za narednu opciju
 Coil|Kalem
 Coil Border|Ivica Kalema
 Coil Length|Dužina Kalema
@@ -130,7 +131,7 @@ Electrode Labels|Oznake Elektroda
 Electro-Mechanical|Elektro-Mehaničke
 Enable Cache Boost|Uključi Keš-Ubrzanje
 End Arrow|Krajnja Strelica
-Enjoying DIYLC? Click here to buy me a coffee :)|Uživate koristeći DIYLC? Kupite mi kafu :)
+Enjoying DIYLC? Click here to buy me a coffee :)|Uživate koristeći DIYLC? Častite me kafom :)
 Error|Greška
 Error occurred while editing selection. Check the log for details.|Nastala je greška prilikom izmene. Proverite log za više informacija.
 Exit|Izlaz
@@ -348,7 +349,7 @@ Size|Veličina
 Sizing Mode|Zadavanje Veličine
 Small-button B7G
 Smooth|Glatko
-Snap To...|Zalepi Uz...
+Snap To|Zalepi Uz
 Soap Bar
 Solid|Puna Linija
 South|Jug

@@ -20,9 +20,9 @@ package org.diylc.swing.plugins.tree;
 import java.awt.Point;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.diylc.common.ComponentType;
@@ -46,16 +46,15 @@ class TreeGestureListener implements DragGestureListener {
   @Override
   public void dragGestureRecognized(DragGestureEvent dge) {
     ComponentType type = null;
-    TreeNode payload = null;
+    MouseListener clickListener = null;
     if (presenter.getNewComponentTypeSlot() == null) {
       JTree tree = (JTree) dge.getComponent();
       Point p = dge.getDragOrigin();
       TreePath path = tree.getClosestPathForLocation(p.x, p.y);
-      if (path != null && path.getLastPathComponent() instanceof DefaultMutableTreeNode) {
-        DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) path.getLastPathComponent();
-        payload = (TreeNode) leaf.getUserObject();
-        if (payload != null && (payload.getComponentType() != null || payload.getClickListener() != null))
-          type = payload.getComponentType();
+      if (path != null && path.getLastPathComponent() instanceof TreeNode) {
+        TreeNode leaf = (TreeNode) path.getLastPathComponent();
+        clickListener = leaf.getClickListener();
+        type = leaf.getComponentType();        
       }
     } else {
       type = presenter.getNewComponentTypeSlot();
@@ -64,8 +63,8 @@ class TreeGestureListener implements DragGestureListener {
     boolean start = false;
     if (type == null)
     {
-      if (payload != null && payload.getClickListener() != null) {
-        payload.getClickListener().mouseClicked(null);
+      if (clickListener != null) {
+        clickListener.mouseClicked(null);
         start = true;
       }
     }

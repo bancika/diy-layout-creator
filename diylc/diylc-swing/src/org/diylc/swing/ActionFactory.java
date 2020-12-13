@@ -1705,7 +1705,7 @@ public class ActionFactory {
     }
   }
 
-  public static class ToggleAction extends AbstractAction {
+  public static class ToggleAction extends AbstractAction implements IConfigListener {
 
     private static final long serialVersionUID = 1L;
 
@@ -1720,12 +1720,19 @@ public class ActionFactory {
           .readString(configKey, defaultValue).equalsIgnoreCase(title));
       if (icon != null)
         putValue(AbstractAction.SMALL_ICON, icon);
+      // keep track of config changes and update the state accordingly
+      ConfigurationManager.getInstance().addConfigListener(configKey, this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info(getValue(AbstractAction.NAME) + " toggle triggered");
       ConfigurationManager.getInstance().writeValue(configKey, getValue(AbstractAction.NAME));
+    }
+
+    @Override
+    public void valueChanged(String key, Object value) {
+      putValue(AbstractAction.SELECTED_KEY, getValue(AbstractAction.NAME).toString().equalsIgnoreCase(value.toString()));
     }
   }
 

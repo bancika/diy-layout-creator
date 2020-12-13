@@ -32,6 +32,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
 
 /**
@@ -258,5 +259,10 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   @Override
   public Rectangle2D getCachingBounds() {
     return null;
+  }
+  
+  @Override
+  public void createdIn(Project project) {
+    // TODO Auto-generated method stub
   }
 }
