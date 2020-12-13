@@ -160,6 +160,8 @@ public class ActionBarPlugin implements IPlugIn {
       toggleItems.add(new ToggleItem(IPlugInPort.SNAP_TO_COMPONENTS, IPlugInPort.SNAP_TO_COMPONENTS, IconLoader.SnapToComponents.getIcon()));
       configToolbar.addToggleLabel(LangUtil.translate("Snap To"), IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT, toggleItems);
       
+      configToolbar.add(new JLabel(" "));
+      
       configToolbar.add(LangUtil.translate("Continuous Creation"), IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
       configToolbar.add(LangUtil.translate("Highlight Connected Areas"), IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
       configToolbar.add(LangUtil.translate("Sticky Points"), IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);

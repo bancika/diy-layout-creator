@@ -431,13 +431,17 @@ public class Presenter implements IPlugInPort {
       Set<Class<?>> componentTypeClasses = null;
       try {
         componentTypeClasses = Utils.getClasses("org.diylc.components");
-        try {
-          List<Class<?>> additionalComponentTypeClasses =
-              JarScanner.getInstance().scanFolder("library", IDIYComponent.class);
-          if (additionalComponentTypeClasses != null)
-            componentTypeClasses.addAll(additionalComponentTypeClasses);
-        } catch (Exception e) {
-          LOG.warn("Could not find additional type classes", e);
+        File libraryFile = new File("library");
+        if (libraryFile.exists() && libraryFile.isDirectory()) {
+          LOG.info("Loading additional library JARs");
+          try {
+            List<Class<?>> additionalComponentTypeClasses =
+                JarScanner.getInstance().scanFolder("library", IDIYComponent.class);
+            if (additionalComponentTypeClasses != null)
+              componentTypeClasses.addAll(additionalComponentTypeClasses);
+          } catch (Exception e) {
+            LOG.warn("Could not find additional type classes", e);
+          }
         }
 
         for (Class<?> clazz : componentTypeClasses) {

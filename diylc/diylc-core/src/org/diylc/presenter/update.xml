@@ -3333,6 +3333,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Dragging components from the component tree to the canvas stops working once the component type is selected in the tree</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>macOS: fixed language selection that does not work</description>
 				</org.diylc.appframework.update.Change>			
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

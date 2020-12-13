@@ -89,8 +89,10 @@ public class LangUtil {
     LOG.info("Loading translation for " + language);
     dict = new HashMap<String, String>();
     try {
+      String path = ResourceLoader.getFile(LANG_DIR + File.separator + language + ".txt").getAbsolutePath();
+      LOG.debug("Loading language file: " + path);
       try (Stream<String> stream = Files.lines(
-          Paths.get(LANG_DIR + File.separator + language + ".txt"), StandardCharsets.UTF_8)) {
+          Paths.get(path), StandardCharsets.UTF_8)) {
         stream.forEach(s -> {
           if (s.contains("|")) {
             String[] parts = s.split("\\|");

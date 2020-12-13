@@ -131,7 +131,7 @@ Electrode Labels|Oznake Elektroda
 Electro-Mechanical|Elektro-Mehaničke
 Enable Cache Boost|Uključi Keš-Ubrzanje
 End Arrow|Krajnja Strelica
-Enjoying DIYLC? Click here to buy me a coffee :)|Uživate koristeći DIYLC? Kupite mi kafu :)
+Enjoying DIYLC? Click here to buy me a coffee :)|Uživate koristeći DIYLC? Častite me kafom :)
 Error|Greška
 Error occurred while editing selection. Check the log for details.|Nastala je greška prilikom izmene. Proverite log za više informacija.
 Exit|Izlaz
