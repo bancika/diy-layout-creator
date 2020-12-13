@@ -27,7 +27,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 
-import org.diylc.components.transform.SimpleComponentTransformer;
+import org.diylc.components.transform.AbstractBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -45,7 +45,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board",
     description = "Perforated board as found on some Marshall and Trainwreck amps",
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG,
-    keywordTag = "Perf Board", transformer = SimpleComponentTransformer.class)
+    keywordTag = "Perf Board", transformer = AbstractBoardTransformer.class)
 public class MarshallPerfBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

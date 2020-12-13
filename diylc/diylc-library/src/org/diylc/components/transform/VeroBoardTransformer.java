@@ -27,7 +27,7 @@ import org.diylc.common.OrientationHV;
 import org.diylc.components.boards.AbstractVeroBoard;
 import org.diylc.core.IDIYComponent;
 
-public class VeroBoardTransformer extends SimpleComponentTransformer {
+public class VeroBoardTransformer extends AbstractBoardTransformer {
 
   @Override
   public void rotate(IDIYComponent<?> component, Point2D center, int direction) {

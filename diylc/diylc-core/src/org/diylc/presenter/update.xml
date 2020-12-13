@@ -3331,6 +3331,10 @@
 					<description>When rotating Vero and Tri-Pad boards, change the orientation of strips to match the rotation angle</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Rotating and mirroring boards that display coordinates also changes coordinate origin</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Dragging components from the component tree to the canvas stops working once the component type is selected in the tree</description>
 				</org.diylc.appframework.update.Change>	
