@@ -10,7 +10,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 
 
-public abstract class AbstractMultiPartComponent<T> extends AbstractTransparentComponent<T> {
+public abstract class AbstractMultiPartComponent<T> extends AbstractLabeledComponent<T> {
 
   private static final long serialVersionUID = 1L;
 

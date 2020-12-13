@@ -158,6 +158,7 @@ Font|Fuente
 Font Bold|Negrita
 Font Italic|Itálica
 Font Size|Tamaño de fuente
+Font Size Override|Anulación del tamaño de fuente
 Four|Cuatro
 Full|Lleno
 Fuse|Fusible

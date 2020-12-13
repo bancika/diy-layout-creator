@@ -248,6 +248,11 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
     }
     g2d.setColor(finalLabelColor);
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     double centerX = (controlPoints[0].getX() + controlPoints[3].getX()) / 2;
     double centerY = (controlPoints[0].getY() + controlPoints[3].getY()) / 2;
     StringUtils.drawCenteredText(g2d, name, centerX, centerY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);

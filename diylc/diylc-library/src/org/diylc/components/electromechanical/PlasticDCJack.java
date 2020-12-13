@@ -182,7 +182,7 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
     if (!outlineMode && getPolarity() != DCPolarity.NONE) {
       int spacing = (int) SPACING.convertToPixels();
       g2d.setColor(MARKING_COLOR);
-      g2d.setFont(project.getFont().deriveFont(12f));
+      g2d.setFont(project.getFont().deriveFont(12f));     
       StringUtils.drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "+" : "-", controlPoints[0].getX(),
           controlPoints[0].getY() - spacing * 7 / 16, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, getPolarity() == DCPolarity.CENTER_NEGATIVE ? "_" : "+", controlPoints[2].getX(),
@@ -274,5 +274,11 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
     int margin = 20;    
     Rectangle2D bounds = getBody()[0].getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+  
+  @Deprecated
+  @Override
+  public Integer getFontSizeOverride() {
+    return super.getFontSizeOverride();
   }
 }

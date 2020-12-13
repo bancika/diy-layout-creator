@@ -328,6 +328,11 @@ public class TransistorTO220 extends AbstractTransistorPackage {
 
     // Draw label.
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     Color finalLabelColor;
     if (outlineMode) {
       finalLabelColor =

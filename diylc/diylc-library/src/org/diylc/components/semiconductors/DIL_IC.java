@@ -39,7 +39,7 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -59,7 +59,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "IC", description = "Dual-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class,
     enableCache = true)
-public class DIL_IC extends AbstractTransparentComponent<String> {
+public class DIL_IC extends AbstractLabeledComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -360,6 +360,11 @@ public class DIL_IC extends AbstractTransparentComponent<String> {
 
     // Draw label.
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     Color finalLabelColor;
     if (outlineMode) {
       Theme theme =

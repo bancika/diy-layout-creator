@@ -152,6 +152,11 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
     if (showLabels) {
       g2d.setColor(TERMINAL_COLOR.darker());
       g2d.setFont(project.getFont().deriveFont(project.getFont().getSize2D() * 0.8f));
+      
+      // Override font size
+      if (getFontSizeOverride() != null)
+        g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+      
       for (int i = 2; i < body.length; i++) {
         Rectangle2D bounds = body[i].getBounds2D();
         double x = (int) ((bounds.getCenterX() + controlPoints[i - 2].getX()) / 2);

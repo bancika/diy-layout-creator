@@ -161,6 +161,7 @@ Font|Carattere
 Font Bold|Carattere grassetto
 Font Italic|Carattere corsivo
 Font Size|Dimensione carattere
+Font Size Override|Sostituzione dimensione carattere
 Four|Quattro
 Full|Pieno
 Fuse|Fusibile

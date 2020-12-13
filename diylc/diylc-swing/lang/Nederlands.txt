@@ -161,6 +161,7 @@ Font|Lettertype
 Font Bold|Vet lettertype 
 Font Italic|Cursief lettertype 
 Font Size|Tekengrootte
+Font Size Override|Tekengrootte overschrijven
 Four|Vier
 Full|Vol
 Fuse|Zekering

@@ -62,7 +62,7 @@ import org.diylc.utils.Constants;
  * 
  * @author Branislav Stojkovic
  */
-public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComponent<T> {
+public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponent<T> {
 
   private static final long serialVersionUID = 1L;
 
@@ -324,6 +324,11 @@ public abstract class AbstractLeadedComponent<T> extends AbstractTransparentComp
 
     // Draw label.
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+      
     if (useShapeRectAsPosition()) {
       g2d.translate(shapeRect.getX(), shapeRect.getY());
     }

@@ -36,7 +36,7 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.components.transform.TO220Transformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -55,7 +55,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "V", description = "Sub-miniature (pencil) vacuum tube",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,
     transformer = TO220Transformer.class)
-public class SubminiTube extends AbstractTransparentComponent<String> {
+public class SubminiTube extends AbstractLabeledComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -421,6 +421,11 @@ public class SubminiTube extends AbstractTransparentComponent<String> {
 
     // Draw label.
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     Color finalLabelColor;
     if (outlineMode) {
       finalLabelColor =

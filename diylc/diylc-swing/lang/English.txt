@@ -157,6 +157,7 @@ Font
 Font Bold
 Font Italic
 Font Size
+Font Size Override
 Four
 Full
 Fuse

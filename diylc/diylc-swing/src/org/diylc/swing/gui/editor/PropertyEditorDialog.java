@@ -142,45 +142,49 @@ public class PropertyEditorDialog extends ButtonDialog {
       gbc.weightx = 1;
       gbc.insets = new Insets(2, 2, 2, 2);
 
-      Component editor = FieldEditorFactory.createFieldEditor(property);
-      editor.addKeyListener(new KeyAdapter() {
+      try {
+        Component editor = FieldEditorFactory.createFieldEditor(property);
+        editor.addKeyListener(new KeyAdapter() {
+  
+          @Override
+          public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+              getButton(OK).doClick();
+            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+              getButton(CANCEL).doClick();
+            }
+          }
+        });
+        editorPanel.add(editor, gbc);
 
-        @Override
-        public void keyPressed(KeyEvent e) {
-          if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            getButton(OK).doClick();
-          } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            getButton(CANCEL).doClick();
+        if (property.isDefaultable()) {
+          gbc.gridx = 2;
+          gbc.fill = GridBagConstraints.NONE;
+          gbc.weightx = 0;
+  
+          if (saveDefaults && !property.isReadOnly()) {
+            editorPanel.add(createDefaultCheckBox(property), gbc);
           }
         }
-      });
-      editorPanel.add(editor, gbc);
-
-      if (property.isDefaultable()) {
-        gbc.gridx = 2;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.weightx = 0;
-
-        if (saveDefaults && !property.isReadOnly()) {
-          editorPanel.add(createDefaultCheckBox(property), gbc);
-        }
-      }
-
-      if (property.getName().equalsIgnoreCase("value")) {
-        componentToFocus = editor;
-      }
-
-      // Make value field focused
-      try {
-        if (componentToFocus == null
-            && property.getGetter().getName().equalsIgnoreCase("getValue")) {
+  
+        if (property.getName().equalsIgnoreCase("value")) {
           componentToFocus = editor;
         }
-      } catch (Exception e1) {
-        LOG.warn("Could not determine editor component to focus", e1);
+  
+        // Make value field focused
+        try {
+          if (componentToFocus == null
+              && property.getGetter().getName().equalsIgnoreCase("getValue")) {
+            componentToFocus = editor;
+          }
+        } catch (Exception e1) {
+          LOG.warn("Could not determine editor component to focus", e1);
+        }
+  
+        gbc.gridy++;
+      } catch (Exception e) {
+        LOG.error("Error creating editor for " + property.getName(), e);
       }
-
-      gbc.gridy++;
     }
 
     return editorPanel;

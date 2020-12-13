@@ -40,7 +40,8 @@ public class IntEditor extends DoubleTextField {
     setLayout(new BorderLayout());
     if (property.isReadOnly())
       setEnabled(false);
-    setValue((double) (Integer) property.getValue());
+    if (property.getValue() != null)
+      setValue((double) (Integer) property.getValue());
     addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY, new PropertyChangeListener() {
 
       @Override

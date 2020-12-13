@@ -34,7 +34,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
@@ -44,7 +44,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<String> {
+public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<String> {
 
   private static final long serialVersionUID = 1L;
   
@@ -112,6 +112,11 @@ public abstract class AbstractGuitarPickup extends AbstractTransparentComponent<
     }
     g2d.setColor(finalLabelColor);
     g2d.setFont(project.getFont().deriveFont(Font.BOLD));
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     Rectangle bounds = getBody()[0].getBounds();
     
     AffineTransform originalTx = g2d.getTransform();
