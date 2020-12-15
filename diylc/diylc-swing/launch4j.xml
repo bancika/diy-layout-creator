@@ -30,5 +30,6 @@
     <maxHeapSize>1024</maxHeapSize>
     <opt>-Dorg.diylc.scriptRun=true</opt>
     <opt>-Dfile.encoding=UTF-8</opt>
+    <opt>-javaagent:lib/jar-loader.jar</opt>
   </jre>
 </launch4jConfig>

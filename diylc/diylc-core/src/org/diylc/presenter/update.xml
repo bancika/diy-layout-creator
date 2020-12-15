@@ -3361,6 +3361,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Font Size Override' property to most components that display text to allow control over font size</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Technical change: replace mechanism for dynamic JAR loading to ensure compatibility with Java 11 and newer</description>
 				</org.diylc.appframework.update.Change>								
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
