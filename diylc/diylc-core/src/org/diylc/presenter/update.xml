@@ -3364,6 +3364,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved performance of the application when using dashed and dotted style for 'Hookup Wire' component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Technical change: replace mechanism for dynamic JAR loading to ensure compatibility with Java 11 and newer</description>
 				</org.diylc.appframework.update.Change>								
 			</changes>
