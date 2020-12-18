@@ -3363,6 +3363,10 @@
 					<description>Added 'Font Size Override' property to most components that display text to allow control over font size</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Neutrik Jack' component based on Neutrik NMJx series. Mono/Stereo and PCB/Panel mount options are available</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved performance of the application when using dashed and dotted style for 'Hookup Wire' component</description>
 				</org.diylc.appframework.update.Change>
