@@ -17,11 +17,7 @@
  */
 package org.diylc;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.List;
@@ -29,7 +25,6 @@ import java.util.Properties;
 
 import javax.activity.InvalidActivityException;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -45,8 +40,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
-import org.diylc.swingframework.FontChooserComboBox;
-import org.diylc.utils.ResourceLoader;
+import org.diylc.swingframework.fonts.FontOptimizer;
 
 import com.apple.eawt.AppEvent;
 import com.apple.eawt.Application;
@@ -149,34 +143,10 @@ public class DIYLCStarter {
 
       @Override
       public void run() {
-        LOG.debug("Starting font pre-loading");
-
-        File[] fonts = ResourceLoader.getFiles("fonts");
-
-        if (fonts != null)
-          for (int i = 0; i < fonts.length; i++) {
-            try {
-              LOG.info("Dynamically loading font: " + fonts[i].getName());
-              Font customFont =
-                  Font.createFont(Font.TRUETYPE_FONT, new File(fonts[i].getAbsolutePath()))
-                      .deriveFont(12f);
-              GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-              // register the font
-              ge.registerFont(customFont);
-            } catch (IOException e) {
-              LOG.error("Could not load font", e);
-            } catch (FontFormatException e) {
-              LOG.error("Font format error", e);
-            }
-          }
-
-        FontChooserComboBox box = new FontChooserComboBox();
-        box.getPreferredSize();
-        JPanel p = new JPanel();
-        box.paint(p.getGraphics());
-        LOG.debug("Finished font pre-loading");
+        FontOptimizer.run(ConfigurationManager.getInstance());
       }
     });
+    fontThread.setPriority(Thread.MIN_PRIORITY);
     fontThread.start();
 
     String val = System.getProperty(SCRIPT_RUN);
