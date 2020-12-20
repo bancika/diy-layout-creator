@@ -60,7 +60,7 @@ public class AreaUtils {
         if (intersection != null && !intersection.isEmpty()) {
           a1.add(a2);
           consumed.set(j, true);
-        } else { // maybe there's a connection between them
+        } else if (connections != null) { // maybe there's a connection between them
           for (Connection p : connections) { // use getBounds to optimize the computation, don't get into complex math if not needed
             if ((a1.getBounds().contains(p.getP1()) && a2.getBounds().contains(p.getP2()) && a1.contains(p.getP1()) && a2.contains(p.getP2())) || 
                 (a1.getBounds().contains(p.getP2()) && a2.getBounds().contains(p.getP1())) && a1.contains(p.getP2()) && a2.contains(p.getP1())) {

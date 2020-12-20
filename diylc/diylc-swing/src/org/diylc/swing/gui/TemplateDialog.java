@@ -110,7 +110,7 @@ public class TemplateDialog extends JDialog {
       }
 
       @Override
-      public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+      public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties, String title) {
         return false;
       }
     }, InMemoryConfigurationManager.getInstance());

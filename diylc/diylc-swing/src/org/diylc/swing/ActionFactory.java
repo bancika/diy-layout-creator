@@ -23,6 +23,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Area;
 import java.awt.print.PrinterException;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -34,6 +35,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,17 +65,19 @@ import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Nudge;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.editor.FlexibleLeadsEditor;
+import org.diylc.lang.LangUtil;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Summary;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.edit.FindDialog;
@@ -292,6 +296,10 @@ public class ActionFactory {
       ISwingUI swingUI, INetlistAnalyzer summarizer) {
     return new SummarizeNetlistAction(plugInPort, swingUI, summarizer);
   }
+  
+  public CheckProximityAction createCheckProximityAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+    return new CheckProximityAction(plugInPort, swingUI);
+  }
 
   // File menu actions.
 
@@ -419,7 +427,7 @@ public class ActionFactory {
 
         @Override
         public boolean editProperties(List<PropertyWrapper> properties,
-            Set<PropertyWrapper> defaultedProperties) {
+            Set<PropertyWrapper> defaultedProperties, String title) {
           return false;
         }
       }, InMemoryConfigurationManager.getInstance());
@@ -1929,6 +1937,78 @@ public class ActionFactory {
               new Dimension(800, 600)).setVisible(true);
         }
       }, true);
+    }
+  }
+  
+  public static class CheckProximityAction extends AbstractAction implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+    private ISwingUI swingUI;
+    private Size threshold;
+
+    public CheckProximityAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+      super();
+      this.plugInPort = plugInPort;
+      this.swingUI = swingUI;  
+      putValue(AbstractAction.NAME, "Check Trace Proximity");
+      putValue(AbstractAction.SMALL_ICON, IconLoader.TraceProximity.getIcon());
+      this.threshold = new Size(0.5d, SizeUnit.mm);
+    }
+    
+    public Size getThreshold() {
+      return threshold;
+    }
+    
+    public void setThreshold(Size threshold) {
+      this.threshold = threshold;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {   
+      PropertyWrapper wrapper = new PropertyWrapper("Threshold", Size.class, "getThreshold", "setThreshold", false, new PositiveNonZeroMeasureValidator(), 0);
+      try {
+        wrapper.readFrom(CheckProximityAction.this);      
+      } catch (Exception e1) {
+        LOG.error("Error reading proximity threshold", e1);
+      }
+      
+      if (swingUI.editProperties(Arrays.asList(wrapper), new HashSet<PropertyWrapper>(), (String)CheckProximityAction.this.getValue(NAME))) {
+        try {
+          wrapper.writeTo(CheckProximityAction.this);
+        } catch (Exception e1) {
+          LOG.error("Error writing proximity threshold", e1);
+        }
+        
+        swingUI.executeBackgroundTask(new ITask<List<Area>>() {
+  
+          @Override
+          public List<Area> doInBackground() throws Exception {
+            return plugInPort.checkContinuityAreaProximity(threshold);
+          }
+  
+          @Override
+          public void failed(Exception e) {
+            swingUI.showMessage(e.getMessage(), (String)CheckProximityAction.this.getValue(NAME), ISwingUI.INFORMATION_MESSAGE);
+          }
+  
+          @Override
+          public void complete(List<Area> res) {
+            if (res == null || res.size() == 0)
+              swingUI.showMessage(LangUtil.translate("No proximity issues detected."),
+                  (String)CheckProximityAction.this.getValue(NAME), ISwingUI.INFORMATION_MESSAGE);
+            else
+              swingUI.showMessage(String.format("%s potential proximity issue(s) detected and marked red.", res.size()),
+                  (String)CheckProximityAction.this.getValue(NAME), ISwingUI.WARNING_MESSAGE);                
+          }
+        }, true);
+      }
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+      return new CheckProximityAction(plugInPort, swingUI);
     }
   }
 }

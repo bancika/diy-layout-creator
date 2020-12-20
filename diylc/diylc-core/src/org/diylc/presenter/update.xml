@@ -3356,6 +3356,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Check Trace Proximity' functionality under File -> Analyze menu that checks if there are any traces or pads that are too close to each other</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>'Tactile Micro-Switch' component added</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>

@@ -23,7 +23,7 @@ public class MockView implements IView {
 
   @Override
   public boolean editProperties(List<PropertyWrapper> properties,
-      Set<PropertyWrapper> defaultedProperties) {
+      Set<PropertyWrapper> defaultedProperties, String title) {
     // TODO Auto-generated method stub
     return false;
   }

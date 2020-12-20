@@ -298,9 +298,9 @@ public class MainFrame extends JFrame implements ISwingUI {
   }
 
   @Override
-  public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+  public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties, String title) {
     PropertyEditorDialog editor =
-        DialogFactory.getInstance().createPropertyEditorDialog(properties, LangUtil.translate("Edit Selection"), true);
+        DialogFactory.getInstance().createPropertyEditorDialog(properties, title, true);
     editor.setVisible(true);
     defaultedProperties.addAll(editor.getDefaultedProperties());
     return ButtonDialog.OK.equals(editor.getSelectedButtonCaption());

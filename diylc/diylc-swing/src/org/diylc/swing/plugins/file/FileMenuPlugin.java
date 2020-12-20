@@ -91,6 +91,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Scientist.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), ANALYZE_TITLE);
     swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI), ANALYZE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createCheckProximityAction(plugInPort, swingUI), ANALYZE_TITLE);
     
     List<INetlistAnalyzer> summarizers = plugInPort.getNetlistAnalyzers();
     if (summarizers != null) {

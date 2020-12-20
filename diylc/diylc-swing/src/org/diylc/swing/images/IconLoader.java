@@ -67,7 +67,7 @@ public enum IconLoader {
       JarBeanInto("jar_bean_into.png"), GraphEdgeDirected("graph_edge_directed.png"), LaserPointer("laserpointer.png"), TapeMeasure("tape_measure1.png"),
       Elements("elements1.png"), GraphNodes("graph_nodes.png"), User("user1.png"), FlexibleLeads("flexible_leads.png"), Pads("pads.png"), Lock("lock.png"),
       Unlock("lock_open.png"), Earth("earth.png"), Loadline("loadline.png"), LoadlineAdd("loadline_add.png"), SnapToGrid("snap_to_grid.png"),
-      SnapToComponents("snap_to_components.png"), SnapToNone("snap_to_none.png");
+      SnapToComponents("snap_to_components.png"), SnapToNone("snap_to_none.png"), TraceProximity("trace_proximity.png");
 
   protected String name;
 

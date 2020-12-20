@@ -44,7 +44,7 @@ public class DummyView implements IView {
   }
 
   @Override
-  public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties) {
+  public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties, String title) {
     return false;
   }
 
