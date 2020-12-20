@@ -1993,17 +1993,17 @@ public class ActionFactory {
   
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage(e.getMessage(), (String)CheckProximityAction.this.getValue(NAME), ISwingUI.INFORMATION_MESSAGE);
+            swingUI.showMessage(e.getMessage(), LangUtil.translate((String)CheckProximityAction.this.getValue(NAME)), ISwingUI.INFORMATION_MESSAGE);
           }
   
           @Override
           public void complete(List<Area> res) {
             if (res == null || res.size() == 0)
               swingUI.showMessage(LangUtil.translate("No proximity issues detected."),
-                  (String)CheckProximityAction.this.getValue(NAME), ISwingUI.INFORMATION_MESSAGE);
+                  LangUtil.translate((String)CheckProximityAction.this.getValue(NAME)), ISwingUI.INFORMATION_MESSAGE);
             else
-              swingUI.showMessage(String.format("%s potential proximity issue(s) detected and marked red.", res.size()),
-                  (String)CheckProximityAction.this.getValue(NAME), ISwingUI.WARNING_MESSAGE);                
+              swingUI.showMessage(String.format(LangUtil.translate("%s potential proximity issue(s) detected and marked red."), res.size()),
+                  LangUtil.translate((String)CheckProximityAction.this.getValue(NAME)), ISwingUI.WARNING_MESSAGE);                
           }
         }, true);
       }

@@ -3351,12 +3351,12 @@
 				<minor>13</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2020-12-06 00:00:00.000 CET</releaseDate>
+			<releaseDate>2020-12-20 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'Check Trace Proximity' functionality under File -> Analyze menu that checks if there are any traces or pads that are too close to each other</description>
+					<description>Added 'Check Trace Proximity' functionality under File -> Analyze menu that checks if there are any conductive surfaces (e.g. traces or pads) that are too close to each other</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -3372,7 +3372,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Analyze fonts in the background to identify ones that are causing slowness when editing 'Label' components and skip font preview for them to optimize performance</description>
+					<description>Fix for 'Label' editor dialog slowness and freezing on some machines. Analyze fonts in the background to identify ones that are causing slowness when editing 'Label' components and skip font preview for them to optimize performance</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
