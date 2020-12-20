@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1974,7 +1973,11 @@ public class ActionFactory {
         LOG.error("Error reading proximity threshold", e1);
       }
       
-      if (swingUI.editProperties(Arrays.asList(wrapper), new HashSet<PropertyWrapper>(), (String)CheckProximityAction.this.getValue(NAME))) {
+      List<PropertyWrapper> properties = Arrays.asList(wrapper);
+      PropertyEditorDialog editor =
+          DialogFactory.getInstance().createPropertyEditorDialog(properties, (String)CheckProximityAction.this.getValue(NAME), true);
+      editor.setVisible(true);
+      if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {       
         try {
           wrapper.writeTo(CheckProximityAction.this);
         } catch (Exception e1) {
