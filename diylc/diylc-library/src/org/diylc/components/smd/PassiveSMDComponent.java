@@ -37,7 +37,7 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -48,7 +48,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponent<T> {
+public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T> {
 
   private static final long serialVersionUID = 1L;
 
@@ -291,6 +291,11 @@ public abstract class PassiveSMDComponent<T> extends AbstractTransparentComponen
 
     // Draw label.
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     Color finalLabelColor;
     if (outlineMode) {
       Theme theme =

@@ -43,8 +43,8 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.components.AbstractLeadedComponent.LabelOriantation;
-import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.RoundedPolygon;
 import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
@@ -66,7 +66,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "BR", description = "Few variations of bridge rectifier chips",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class,
     enableCache = true)
-public class BridgeRectifier extends AbstractTransparentComponent<String> {
+public class BridgeRectifier extends AbstractLabeledComponent<String> {
 
   private static final long serialVersionUID = 1L;
   
@@ -410,6 +410,11 @@ public class BridgeRectifier extends AbstractTransparentComponent<String> {
 
     // Draw label.
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     Color finalLabelColor;
     if (outlineMode) {
       Theme theme =

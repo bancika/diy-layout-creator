@@ -3345,5 +3345,45 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>13</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2020-12-20 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Check Trace Proximity' functionality under File -> Analyze menu that checks if there are any conductive surfaces (e.g. traces or pads) that are too close to each other</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Tactile Micro-Switch' component added</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Font Size Override' property to most components that display text to allow control over font size</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Neutrik Jack' component based on Neutrik NMJx series. Mono/Stereo and PCB/Panel mount options are available</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Fix for 'Label' editor dialog slowness and freezing on some machines. Analyze fonts in the background to identify ones that are causing slowness when editing 'Label' components and skip font preview for them to optimize performance</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved performance of the application when using dashed and dotted style for 'Hookup Wire' component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Technical change: replace mechanism for dynamic JAR loading to ensure compatibility with Java 11 and newer</description>
+				</org.diylc.appframework.update.Change>								
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

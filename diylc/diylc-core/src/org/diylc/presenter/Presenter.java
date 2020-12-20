@@ -863,7 +863,7 @@ public class Presenter implements IPlugInPort {
     List<PropertyWrapper> properties = getMutualSelectionProperties();
     if (properties != null && !properties.isEmpty()) {
       Set<PropertyWrapper> defaultedProperties = new HashSet<PropertyWrapper>();
-      boolean edited = view.editProperties(properties, defaultedProperties);
+      boolean edited = view.editProperties(properties, defaultedProperties, LangUtil.translate("Edit Selection"));
       if (edited) {
         try {
           applyPropertiesToSelection(properties);
@@ -3411,5 +3411,10 @@ public class Presenter implements IPlugInPort {
       areas.put(c, componentArea);
     }
     return new Snapshot(currentProject.clone(), new HashSet<IDIYComponent<?>>(selectedComponents), areas, new HashSet<Area>(drawingManager.getContinuityAreas(currentProject)));
+  }
+  
+  @Override
+  public List<Area> checkContinuityAreaProximity(Size threshold) {
+    return drawingManager.getContinuityAreaProximity(this.currentProject, (float)threshold.convertToPixels());    
   }
 }

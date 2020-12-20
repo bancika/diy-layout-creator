@@ -24,13 +24,13 @@ package org.diylc.components.passive;
 import java.awt.geom.Point2D;
 
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Resistance;
 
-public abstract class AbstractPotentiometer extends AbstractTransparentComponent<Resistance> {
+public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Resistance> {
 
   private static final long serialVersionUID = 1L;
 

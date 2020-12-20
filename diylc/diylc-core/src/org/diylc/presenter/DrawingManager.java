@@ -26,8 +26,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -55,6 +58,8 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 /**
@@ -111,6 +116,8 @@ public class DrawingManager {
   private Counter totalStats = new Counter();
 
   private IConfigurationManager<?> configManager;
+
+  private List<Area> proximityMarkers = null;
 
   public DrawingManager(MessageDispatcher<EventType> messageDispatcher, IConfigurationManager<?> configManager) {
     super();
@@ -470,6 +477,14 @@ public class DrawingManager {
           g2d.draw(a);
       }
     }
+    
+    if (this.proximityMarkers != null)
+    {
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+      g2d.setColor(Color.red);
+      for (Shape s : this.proximityMarkers)
+        g2d.draw(s);
+    }
 
     if (currentContinuityArea != null) {
       Composite oldComposite = g2d.getComposite();
@@ -524,6 +539,7 @@ public class DrawingManager {
   public void invalidateComponent(IDIYComponent<?> component) {
     componentAreaMap.remove(component);
     lastDrawnStateMap.remove(component);
+    proximityMarkers = null;
   }
 
   public ComponentArea getComponentArea(IDIYComponent<?> component) {
@@ -533,11 +549,13 @@ public class DrawingManager {
   public void clearComponentAreaMap() {
     componentAreaMap.clear();
     lastDrawnStateMap.clear();
+    proximityMarkers = null;
   }
 
   public void clearContinuityArea() {
     currentContinuityArea = null;
     continuityAreaCache = null;
+    proximityMarkers = null;
   }
 
   public List<IDIYComponent<?>> findComponentsAt(Point2D point, Project project) {
@@ -654,5 +672,41 @@ public class DrawingManager {
     AreaUtils.crunchAreas(areas, connections);
     
     return areas;
-  }   
+  }
+  
+  public List<Area> getContinuityAreaProximity(Project project, float threshold) {
+    List<Area> continuityAreas = getContinuityAreas(project);    
+    Stroke s = ObjectCache.getInstance().fetchBasicStroke(threshold - 1); // value eyeballed for approx good results
+    List<Area> expanded = continuityAreas.parallelStream().map((a) -> new Area(s.createStrokedShape(a))).collect(Collectors.toList());
+    List<Area> intersections = new ArrayList<Area>();
+    for (int i = 0; i < expanded.size() - 1; i++) {
+      for (int j = i + 1; j < expanded.size(); j++) {
+        Area first = new Area(expanded.get(i));
+        Area second = expanded.get(j);
+        first.intersect(second);
+        if (!first.isEmpty())
+          intersections.add(first);
+      }
+    }
+    
+    AreaUtils.crunchAreas(intersections, null);
+    double minSize = new Size(1d, SizeUnit.cm).convertToPixels();
+    
+    List<Area> shapes = new ArrayList<Area>();
+    for (Area a : intersections) {
+      Rectangle2D bounds2d = a.getBounds2D();
+      if (bounds2d.getWidth() < minSize)
+        bounds2d = new Rectangle2D.Double(bounds2d.getCenterX() - minSize / 2, bounds2d.getY(), minSize, bounds2d.getHeight());
+      if (bounds2d.getHeight() < minSize)
+        bounds2d = new Rectangle2D.Double(bounds2d.getX(), bounds2d.getCenterY() - minSize / 2, bounds2d.getWidth(), minSize);
+      
+      shapes.add(new Area(new Ellipse2D.Double(bounds2d.getX(), bounds2d.getY(), bounds2d.getWidth(), bounds2d.getHeight())));
+    }
+    
+    //AreaUtils.crunchAreas(shapes, null);
+    
+    this.proximityMarkers = shapes;    
+    
+    return shapes;
+  }
 }

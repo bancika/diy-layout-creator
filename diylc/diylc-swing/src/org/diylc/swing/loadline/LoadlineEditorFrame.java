@@ -54,16 +54,15 @@ import org.diylc.components.misc.LoadlineEntity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.Voltage;
 import org.diylc.core.measures.VoltageUnit;
-import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.TranslatedPanel;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.canvas.CanvasPanel;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
@@ -520,9 +519,9 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
   @Override
   public boolean editProperties(List<PropertyWrapper> properties,
-      Set<PropertyWrapper> defaultedProperties) {
+      Set<PropertyWrapper> defaultedProperties, String title) {
     PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(LoadlineEditorFrame.this, properties,
-        LangUtil.translate("Edit Selection"), true);
+        title, true);
     editor.setVisible(true);
     defaultedProperties.addAll(editor.getDefaultedProperties());
     return ButtonDialog.OK.equals(editor.getSelectedButtonCaption());

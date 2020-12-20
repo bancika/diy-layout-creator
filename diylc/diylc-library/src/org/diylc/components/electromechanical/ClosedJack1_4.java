@@ -268,6 +268,11 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
     }
     g2d.setColor(finalLabelColor);
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     Rectangle bounds = body[0].getBounds();
     double centerX = bounds.getX() + bounds.width / 2;
     double centerY = bounds.getY() + bounds.height / 2;

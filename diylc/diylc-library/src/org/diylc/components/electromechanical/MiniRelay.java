@@ -37,7 +37,7 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -55,7 +55,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1 or G5V-2",
     zOrder = IDIYComponent.COMPONENT, enableCache = true)
-public class MiniRelay extends AbstractTransparentComponent<String> {
+public class MiniRelay extends AbstractLabeledComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -342,6 +342,11 @@ public class MiniRelay extends AbstractTransparentComponent<String> {
     }
     // Draw label.
     g2d.setFont(project.getFont());
+    
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     Color finalLabelColor;
     if (outlineMode) {
       finalLabelColor =

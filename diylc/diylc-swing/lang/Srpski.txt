@@ -157,6 +157,7 @@ Font
 Font Bold
 Font Italic
 Font Size|Veličina Fonta
+Font Size Override|Veličina Fonta
 Four|Četiri
 Full|Puno
 Fuse|Osigurač

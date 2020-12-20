@@ -1,6 +1,6 @@
 /*
 
-    DIY Layout Creator (DIYLC).
+O    DIY Layout Creator (DIYLC).
     Copyright (c) 2009-2018 held jointly by the individual authors.
 
     This file is part of DIYLC.
@@ -30,7 +30,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
 import org.diylc.common.PropertyWrapper;
-import org.diylc.swingframework.FontChooserComboBox;
+import org.diylc.swingframework.fonts.FontChooserComboBox;
 import org.diylc.utils.Constants;
 
 public class FontEditor extends FontChooserComboBox {

@@ -32,12 +32,12 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.netlist.ISpiceMapper;
 
-public abstract class AbstractTransistorPackage extends AbstractTransparentComponent<String> implements ISpiceMapper {
+public abstract class AbstractTransistorPackage extends AbstractLabeledComponent<String> implements ISpiceMapper {
   
   private static final long serialVersionUID = 1L;
   

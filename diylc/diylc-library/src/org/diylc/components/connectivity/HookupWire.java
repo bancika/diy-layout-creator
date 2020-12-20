@@ -17,8 +17,10 @@
  */
 package org.diylc.components.connectivity;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -66,31 +68,47 @@ public class HookupWire extends AbstractCurvedComponent<Void> implements IContin
             : color;
     g2d.setColor(curveColor);
     Stroke stroke = null;
+    Stroke tracingStroke = null;
     switch (getStyle()) {
       case SOLID:
         stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
+        tracingStroke = stroke;
         break;
       case DASHED:
         stroke =
             ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2, thickness * 3}, thickness * 4, BasicStroke.CAP_SQUARE);
+        tracingStroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
         break;
       case DOTTED:
         stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 3}, 0, BasicStroke.CAP_ROUND);
+        tracingStroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
         break;
     }
-    Shape s = stroke.createStrokedShape(curve);
-    drawingObserver.startTracking();
-    g2d.fill(s);
-    drawingObserver.stopTracking();
+    Shape s = stroke.createStrokedShape(curve);    
+        
+    if (stroke == tracingStroke) {
+      g2d.fill(s);
+      drawingObserver.stopTracking();
+    } else {
+      // draw without tracking
+      drawingObserver.stopTracking();
+      g2d.fill(s);
+      // track with a simplified stroke without the dashes and dots to improve performance;
+      Shape traceShape = tracingStroke.createStrokedShape(curve);
+      drawingObserver.startTracking();
+      Composite oldComposite = g2d.getComposite();
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.DST, 0f));
+      g2d.fill(traceShape);
+      g2d.setComposite(oldComposite);
+      drawingObserver.stopTracking();
+    }
     
     if (getStriped()) {
       stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] { thickness / 2, thickness * 2 }, thickness * 10, BasicStroke.CAP_BUTT);
       Shape stripe = stroke.createStrokedShape(curve);
       g2d.setColor(getStripeColor());      
       g2d.fill(stripe);      
-    }
-    
-    drawingObserver.stopTracking();
+    }    
     
     if (componentState == ComponentState.NORMAL) {
       g2d.setColor(color.darker());

@@ -160,7 +160,8 @@ Folded|Gefaltet
 Font|Schriftart
 Font Bold|Fettschrift
 Font Italic|Kursivschrift
-Font Size|Schriftgröße 
+Font Size|Schriftgröße
+Font Size Override|Schriftgröße (Üb.)
 Four|Vier
 Full|Voll 
 Fuse|Sicherung 

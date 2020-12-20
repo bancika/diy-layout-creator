@@ -311,6 +311,10 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> {
 
     g2d.setFont(project.getFont());
     
+    // Override font size
+    if (getFontSizeOverride() != null)
+      g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
+    
     // Draw winding designations
     Point2D wPoint = new Point2D.Double((int) (controlPoints[0].getX() + project.getFontSize()), (int) (controlPoints[0].getY() + leadSpacing.convertToPixels()));
     AffineTransform tx = getTx();

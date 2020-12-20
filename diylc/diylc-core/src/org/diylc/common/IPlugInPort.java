@@ -25,6 +25,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
@@ -40,6 +41,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
+import org.diylc.core.measures.Size;
 import org.diylc.test.ITestProcessor;
 
 /**
@@ -397,4 +399,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * Locks or unlocks a single component.
    */
   void lockComponent(IDIYComponent<?> c, boolean locked);
+  
+  /**
+   * Checks for proximity between continuity areas and creates additional components around any problematic areas to visually identify them.
+   * 
+   * @param threshold
+   */
+  List<Area> checkContinuityAreaProximity(Size threshold);
 }

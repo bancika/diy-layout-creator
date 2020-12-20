@@ -54,32 +54,37 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Cliff-style closed panel mount 1/4\" phono jack",
+@ComponentDescriptor(name = "Neutrik 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
+    description = "1/4\" mono/stereo phono jack based on Neutrik NMJx series, PCB or Panel-mount",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = CliffJackTransformer.class,
     enableCache = true)
-public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
+public class NeutrikJack1_4 extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
-  private static Size SPACING = new Size(0.3d, SizeUnit.in);
+  private static Size X_SPACING = new Size(0.25d, SizeUnit.in);
+  private static Size Y_SPACING = new Size(16.23d, SizeUnit.mm);
   private static Size PIN_WIDTH = new Size(0.1d, SizeUnit.in);
   private static Size PIN_THICKNESS = new Size(0.02d, SizeUnit.in);
+  private static Size PIN_DIAMETER = new Size(1.4d, SizeUnit.mm);
+  private static Size PIN_OFFSET_MONO = new Size(-6.27d, SizeUnit.mm);
+  private static Size PIN_OFFSET_STEREO = new Size(-7.72d, SizeUnit.mm);
   private static Color BODY_COLOR = Color.decode("#666666");
   private static Color NUT_COLOR = Color.decode("#999999");
   private static Color BORDER_COLOR = Color.black;
   private static Color LABEL_COLOR = Color.white;
-  private static Size BODY_WIDTH = new Size(3 / 4d, SizeUnit.in);
-  private static Size BODY_LENGTH = new Size(0.9d, SizeUnit.in);
+  private static Size BODY_WIDTH = new Size(18.2, SizeUnit.mm);
+  private static Size BODY_LENGTH = new Size(20.6d, SizeUnit.mm);
   private static Size TAIL_LENGTH = new Size(0.1d, SizeUnit.in);
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private JackType type = JackType.MONO;
+  private Mount mount = Mount.Panel;
   private Orientation orientation = Orientation.DEFAULT;
   transient private Area[] body;
   private String value = "";
 
-  public CliffJack1_4() {
+  public NeutrikJack1_4() {
     super();
     updateControlPoints();
   }
@@ -89,16 +94,17 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
     body = null;
     double x = controlPoints[0].getX();
     double y = controlPoints[0].getY();
-    int spacing = (int) SPACING.convertToPixels();
+    int xSpacing = (int) X_SPACING.convertToPixels();
+    int ySpacing = (int) Y_SPACING.convertToPixels();
     controlPoints = new Point2D[type == JackType.STEREO ? 6 : 4];
 
     controlPoints[0] = new Point2D.Double(x, y);
-    controlPoints[1] = new Point2D.Double(x, y + 2 * spacing);
-    controlPoints[2] = new Point2D.Double(x + 2 * spacing, y);
-    controlPoints[3] = new Point2D.Double(x + 2 * spacing, y + 2 * spacing);
+    controlPoints[1] = new Point2D.Double(x, y + ySpacing);
+    controlPoints[2] = new Point2D.Double(x + 2 * xSpacing, y);
+    controlPoints[3] = new Point2D.Double(x + 2 * xSpacing, y + ySpacing);
     if (type == JackType.STEREO) {
-      controlPoints[4] = new Point2D.Double(x + spacing, y);
-      controlPoints[5] = new Point2D.Double(x + spacing, y + 2 * spacing);
+      controlPoints[4] = new Point2D.Double(x + xSpacing, y);
+      controlPoints[5] = new Point2D.Double(x + xSpacing, y + ySpacing);
     }
 
     // Apply rotation if necessary
@@ -138,7 +144,8 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
       // Create body.
       int bodyLength = (int) BODY_LENGTH.convertToPixels();
       int bodyWidth = (int) BODY_WIDTH.convertToPixels();
-      double centerX = (controlPoints[0].getX() + controlPoints[3].getX()) / 2;
+      int offset = (int)(type == JackType.MONO ? PIN_OFFSET_MONO : PIN_OFFSET_STEREO).convertToPixels();
+      double centerX = controlPoints[3].getX() + offset;
       double centerY = (controlPoints[0].getY() + controlPoints[3].getY()) / 2;
       body[0] = new Area(new Rectangle2D.Double(centerX - bodyLength / 2, centerY - bodyWidth / 2, bodyLength, bodyWidth));
 
@@ -175,13 +182,18 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
 
       int pinWidth = (int) PIN_WIDTH.convertToPixels();
       int pinThickness = (int) PIN_THICKNESS.convertToPixels();
+      int pinDiameter = (int) PIN_DIAMETER.convertToPixels();
       for (int i = 0; i < getControlPointCount(); i++) {
         Point2D point = getControlPoint(i);
-        Rectangle2D pin;
-        if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
-          pin = new Rectangle2D.Double(point.getX() - pinWidth / 2, point.getY() - pinThickness / 2, pinWidth, pinThickness);
+        Shape pin;
+        if (mount == Mount.PCB) {
+          pin = new Ellipse2D.Double(point.getX() - pinDiameter / 2, point.getY() - pinDiameter / 2, pinDiameter, pinDiameter);
         } else {
-          pin = new Rectangle2D.Double(point.getX() - pinThickness / 2, point.getY() - pinWidth / 2, pinThickness, pinWidth);
+          if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
+            pin = new Rectangle2D.Double(point.getX() - pinWidth / 2, point.getY() - pinThickness / 2, pinWidth, pinThickness);
+          } else {
+            pin = new Rectangle2D.Double(point.getX() - pinThickness / 2, point.getY() - pinWidth / 2, pinThickness, pinWidth);
+          }
         }
         pins.add(new Area(pin));
       }
@@ -348,6 +360,16 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
     updateControlPoints();
   }
   
+  @EditableProperty
+  public Mount getMount() {
+    return mount;
+  }
+  
+  public void setMount(Mount mount) {
+    this.mount = mount;
+    body = null;
+  }
+  
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
@@ -363,5 +385,9 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
         area.add(a);
     Rectangle2D bounds = area.getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+  
+  enum Mount {
+    PCB, Panel
   }
 }

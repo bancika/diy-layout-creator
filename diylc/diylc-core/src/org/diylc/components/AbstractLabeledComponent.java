@@ -19,37 +19,22 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.swing.gui;
+package org.diylc.components;
 
-import java.io.File;
-import java.util.List;
-import java.util.Set;
+import org.diylc.core.annotations.EditableProperty;
 
-import org.diylc.common.PropertyWrapper;
-import org.diylc.core.IView;
+public abstract class AbstractLabeledComponent<T> extends AbstractTransparentComponent<T> {
 
-public class DummyView implements IView {
+  private static final long serialVersionUID = 1L;
 
-  @Override
-  public int showConfirmDialog(String message, String title, int optionType, int messageType) {
-    return 0;
+  protected Integer fontSizeOverride;
+  
+  @EditableProperty(name = "Font Size Override")
+  public Integer getFontSizeOverride() {
+    return fontSizeOverride;
   }
-
-  @Override
-  public void showMessage(String message, String title, int messageType) {}
-
-  @Override
-  public File promptFileSave() {
-    return null;
-  }
-
-  @Override
-  public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties, String title) {
-    return false;
-  }
-
-  @Override
-  public String showInputDialog(String message, String title) {
-    return null;
+  
+  public void setFontSizeOverride(Integer fontSizeOverride) {
+    this.fontSizeOverride = fontSizeOverride;
   }
 }
