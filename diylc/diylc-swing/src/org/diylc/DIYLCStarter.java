@@ -46,6 +46,8 @@ import com.apple.eawt.AppEvent;
 import com.apple.eawt.Application;
 import com.thoughtworks.xstream.XStream;
 
+import ca.cgjennings.jvm.JarLoader;
+
 /**
  * Main class that runs DIYLC.
  * 
@@ -103,6 +105,8 @@ public class DIYLCStarter {
 
     // disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
     ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
+    
+    LOG.info("JarLoader strategy: " + JarLoader.getStrategy());
 
     LOG.info("Loading languages...");
 
@@ -143,7 +147,11 @@ public class DIYLCStarter {
 
       @Override
       public void run() {
-        FontOptimizer.run(ConfigurationManager.getInstance());
+        try {
+          FontOptimizer.run(ConfigurationManager.getInstance());
+        } catch (Exception e) {
+          LOG.error("Could not ", e);
+        }
       }
     });
     fontThread.setPriority(Thread.MIN_PRIORITY);
