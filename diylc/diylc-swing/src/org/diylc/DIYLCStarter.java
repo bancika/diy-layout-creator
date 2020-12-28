@@ -18,8 +18,13 @@
 package org.diylc;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Properties;
 
@@ -97,11 +102,7 @@ public class DIYLCStarter {
       LOG.error("Could not initialize log4j configuration", e);
     }
     
-    // initialize configuration
-    ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-    XStream xStream = configurationManager.getSerializer();
-    ProjectFileManager.configure(xStream);
-    configurationManager.initialize("diylc");
+    initializeConfiguration();
 
     // disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
     ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
@@ -238,5 +239,25 @@ public class DIYLCStarter {
           + "This can happen when running two versions of DIYLC on the same machine at the same time.<br>"
           + "Replace the main 'config.xml' file with the backup when running the latest version of DIYLC."
           + "</html>", "Warning", IView.WARNING_MESSAGE);
+  }
+
+  private static void initializeConfiguration() {
+    // migrate config file from old folder path to the new one
+    Path oldPath = Paths.get(Utils.getUserDataDirectory(".diylc") + "config.xml");
+    Path newPath = Paths.get(Utils.getUserDataDirectory("diylc") + "config.xml");
+    try {
+      if (oldPath.toFile().exists() && !newPath.toFile().exists()) {
+        LOG.info("Copying config file to the new directory");
+        Files.copy(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+      }
+    } catch (IOException e) {
+      LOG.error("Failed to copy config file to the new directory", e);
+    }
+    
+    // initialize
+    ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+    XStream xStream = configurationManager.getSerializer();
+    ProjectFileManager.configure(xStream);
+    configurationManager.initialize("diylc");
   }
 }

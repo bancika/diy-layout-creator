@@ -77,7 +77,7 @@ public class HelpMenuPlugin implements IPlugIn {
         HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Plugin API", IconLoader.ApplicationEdit.getIcon(), PLUGIN_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Submit a Bug", IconLoader.Bug.getIcon(), BUG_URL), HELP_TITLE);
-    swingUI.injectMenuAction(new NavigateFolderAction("Access User Files", IconLoader.User.getIcon(), System.getProperty("user.home") + "/.diylc"), HELP_TITLE);
+    swingUI.injectMenuAction(new NavigateFolderAction("Access User Files", IconLoader.User.getIcon(), Utils.getUserDataDirectory("diylc")), HELP_TITLE);
     swingUI.injectMenuAction(null, HELP_TITLE);
     swingUI.injectMenuAction(new RecentUpdatesAction(), HELP_TITLE);
     swingUI.injectMenuAction(null, HELP_TITLE);

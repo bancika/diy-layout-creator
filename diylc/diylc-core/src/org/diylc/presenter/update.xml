@@ -3395,6 +3395,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Migrate application data (config, logs, backups) directory from '$USER_HOME/.diylc' to '$USER_HOME/diylc' to avoid it being hidden on some OSs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>macOS: splash screen hangs for several minutes on some machines</description>
 				</org.diylc.appframework.update.Change>
