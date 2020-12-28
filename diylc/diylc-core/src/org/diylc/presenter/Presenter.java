@@ -432,7 +432,7 @@ public class Presenter implements IPlugInPort {
       try {
         componentTypeClasses = Utils.getClasses("org.diylc.components");
         File libraryFile = new File("library");
-        if (libraryFile.exists() && libraryFile.isDirectory()) {
+        if (libraryFile.exists() && libraryFile.isDirectory() && !Utils.isMac()) {
           LOG.info("Loading additional library JARs");
           try {
             List<Class<?>> additionalComponentTypeClasses =
