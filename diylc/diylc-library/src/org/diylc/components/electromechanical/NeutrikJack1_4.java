@@ -41,7 +41,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMultiPartComponent;
-import org.diylc.components.transform.CliffJackTransformer;
+import org.diylc.components.transform.NeutrikJack1_4Transformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -56,7 +56,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Neutrik 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "1/4\" mono/stereo phono jack based on Neutrik NMJx series, PCB or Panel-mount",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = CliffJackTransformer.class,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = NeutrikJack1_4Transformer.class,
     enableCache = true)
 public class NeutrikJack1_4 extends AbstractMultiPartComponent<String> {
 
@@ -145,8 +145,10 @@ public class NeutrikJack1_4 extends AbstractMultiPartComponent<String> {
       int bodyLength = (int) BODY_LENGTH.convertToPixels();
       int bodyWidth = (int) BODY_WIDTH.convertToPixels();
       int offset = (int)(type == JackType.MONO ? PIN_OFFSET_MONO : PIN_OFFSET_STEREO).convertToPixels();
-      double centerX = controlPoints[3].getX() + offset;
-      double centerY = (controlPoints[0].getY() + controlPoints[3].getY()) / 2;
+      int xSpacing = (int) X_SPACING.convertToPixels();
+      int ySpacing = (int) Y_SPACING.convertToPixels();
+      double centerX = controlPoints[0].getX() + 2 * xSpacing + offset;
+      double centerY = controlPoints[0].getY() + ySpacing / 2;
       body[0] = new Area(new Rectangle2D.Double(centerX - bodyLength / 2, centerY - bodyWidth / 2, bodyLength, bodyWidth));
 
       int tailLength = (int) TAIL_LENGTH.convertToPixels();
@@ -167,7 +169,7 @@ public class NeutrikJack1_4 extends AbstractMultiPartComponent<String> {
       // Apply rotation if necessary
       double angle = getAngle();
       if (angle != 0) {
-        AffineTransform rotation = AffineTransform.getRotateInstance(angle, centerX, centerY);
+        AffineTransform rotation = AffineTransform.getRotateInstance(angle, controlPoints[0].getX(), controlPoints[0].getY());
         for (int i = 0; i < body.length; i++) {
           if (body[i] != null) {
             Area area = new Area(body[i]);
