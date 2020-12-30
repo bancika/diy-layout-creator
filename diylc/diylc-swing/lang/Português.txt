@@ -58,7 +58,7 @@ Click on the canvas to set the %s control point of a new %s or press %s to cance
 Click the lightbulb icon in the bottom-right corner of the window for more info.|Clique no ícone da lâmpada no canto inferior direito da tela para obter mais informação.
 Click to fetch the most recent public announcement|Clique para obter o anúncio público mais recente.
 Click to show recent changes and updates|Clique para ver as mudanças e atualizações recentes
-Click to toggle to the next option|
+Click to toggle to the next option|Clique para a próxima opção
 Coil|Bobina
 Coil Border|Canto da bobina
 Coil Length|Comprimento da bobina
@@ -157,8 +157,8 @@ Folded|Dobrado
 Font|Fonte
 Font Bold|Negrito
 Font Italic|Itálico
-Font Size|Tamanho da fonte
-Font Size Override|
+Font Size|Tamanho da Fonte
+Font Size Override|Substituir Tamanho da Fonte
 Four|Quatro
 Full|Cheio
 Fuse|Fusível
