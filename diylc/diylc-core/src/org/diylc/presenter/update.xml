@@ -3419,6 +3419,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When editing component properties, group Length and Width properties together</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Português translation added (thanks Pedro Rizzi!)</description>
 				</org.diylc.appframework.update.Change>	

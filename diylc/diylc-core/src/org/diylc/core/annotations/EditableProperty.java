@@ -83,5 +83,5 @@ public @interface EditableProperty {
    * 
    * @return
    */
-  int sortOrder() default Integer.MAX_VALUE;
+  int sortOrder() default 100;
 }
