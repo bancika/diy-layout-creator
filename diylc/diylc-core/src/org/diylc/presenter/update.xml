@@ -3419,16 +3419,20 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>When editing component properties, group Length and Width properties together</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Português translation added (thanks Pedro Rizzi!)</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When editing component properties, group Length and Width properties together</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Rotating 'Neutrik Jack' produces rendering issues</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed some issues with exporting and importing building blocks and variants. If you still have issues, your variant/building block files might need to be manually updated to keep working</description>
 				</org.diylc.appframework.update.Change>			
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

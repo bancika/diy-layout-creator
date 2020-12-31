@@ -74,6 +74,7 @@ import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Summary;
 import org.diylc.presenter.Presenter;
+import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.images.IconLoader;
@@ -856,6 +857,7 @@ public class ActionFactory {
             try {
               BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
               XStream xStream = new XStream(new DomDriver());
+              ProjectFileManager.configure(xStream);
               xStream.toXML(variantPkg, out);
               out.close();
               LOG.info("Exported variants succesfully");
@@ -1012,6 +1014,7 @@ public class ActionFactory {
             try {
               BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
               XStream xStream = new XStream(new DomDriver());
+              ProjectFileManager.configure(xStream);
               xStream.toXML(variantPkg, out);
               out.close();
               LOG.info("Exported building blocks succesfully");

@@ -3009,7 +3009,17 @@ public class Presenter implements IPlugInPort {
     BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
     XStream xStream = new XStream(new DomDriver());
 
-    VariantPackage pkg = (VariantPackage) xStream.fromXML(in);
+    VariantPackage pkg;
+    
+    try {
+      // old way
+      pkg = (VariantPackage) xStream.fromXML(in);
+    } catch (Exception e) {
+      // new way
+      in = new BufferedInputStream(new FileInputStream(fileName));
+      ProjectFileManager.configure(xStream);
+      pkg = (VariantPackage) xStream.fromXML(in);
+    }
 
     in.close();
 
@@ -3048,7 +3058,17 @@ public class Presenter implements IPlugInPort {
     BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
     XStream xStream = new XStream(new DomDriver());
 
-    BuildingBlockPackage pkg = (BuildingBlockPackage) xStream.fromXML(in);
+    BuildingBlockPackage pkg;
+    
+    try {
+      // old way
+      pkg = (BuildingBlockPackage) xStream.fromXML(in);
+    } catch (Exception e) {
+      // new way
+      in = new BufferedInputStream(new FileInputStream(fileName));
+      ProjectFileManager.configure(xStream);
+      pkg = (BuildingBlockPackage) xStream.fromXML(in);
+    }
 
     in.close();
 

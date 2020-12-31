@@ -30,6 +30,9 @@ public class BuildingBlockPackage {
 
   private Map<String, List<IDIYComponent<?>>> block;
   private String owner;
+  
+  public BuildingBlockPackage() {   
+  }
 
   public BuildingBlockPackage(Map<String, List<IDIYComponent<?>>> blocks, String owner) {
     super();
