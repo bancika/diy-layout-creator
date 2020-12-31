@@ -37,12 +37,15 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.ComponentType;
+import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
@@ -56,6 +59,8 @@ import org.diylc.swingframework.openide.DropDownButtonFactory;
  * @author Branislav Stojkovic
  */
 public class ComponentButtonFactory {
+  
+  private static final Logger LOG = Logger.getLogger(ComponentButtonFactory.class);
 
   public static int MARGIN = 3;
 
@@ -190,5 +195,36 @@ public class ComponentButtonFactory {
     item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
     item.add(label);
     return item;
+  }
+  
+  public static JButton createBuildingBlockButton(final IPlugInPort plugInPort, final String blockName) {
+    JButton button = new JButton(blockName, IconLoader.Component.getIcon());
+    
+    button.setVerticalTextPosition(SwingConstants.BOTTOM);
+    button.setHorizontalTextPosition(SwingConstants.CENTER);
+
+    button.setBorder(BorderFactory.createEmptyBorder(MARGIN + 1, MARGIN + 1, MARGIN, MARGIN));
+    button.setToolTipText("<html><b>" + blockName + "</b><br> building block</html>");
+
+    button.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        try {
+          plugInPort.loadBlock(blockName);
+        } catch (InvalidBlockException e1) {
+          LOG.error("Error loading building block", e1);
+        }
+      }
+    });   
+
+    button.addKeyListener(new KeyAdapter() {
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+        plugInPort.keyPressed(e.getKeyCode(), Utils.isMac() ? e.isControlDown() : e.isMetaDown(), e.isShiftDown(), e.isAltDown());
+      }
+    });
+    return button;
   }
 }

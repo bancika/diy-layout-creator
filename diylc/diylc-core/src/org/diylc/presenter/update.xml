@@ -3421,7 +3421,19 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Português translation added (thanks Pedro Rizzi!)</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Building blocks and Favorites added to the component toolbar</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Scroll buttons added to the component toolbar that appear when needed</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Save last selected tab in the component toolbar and restore it in the next session</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>When editing component properties, group Length and Width properties together</description>
@@ -3432,7 +3444,7 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Fixed some issues with exporting and importing building blocks and variants. If you still have issues, your variant/building block files might need to be manually updated to keep working</description>
+					<description>Fixed some issues with exporting/importing building blocks and variants. If you still have issues, your variant/building block files might need to be manually updated to keep working</description>
 				</org.diylc.appframework.update.Change>			
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

@@ -26,6 +26,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,12 +44,14 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.ComponentType;
+import org.diylc.common.Favorite;
+import org.diylc.common.Favorite.FavoriteType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
-import org.diylc.presenter.Presenter;
 
 /**
  * Tabbed pane that shows all available components categorized into tabs.
@@ -60,19 +63,30 @@ class ComponentTabbedPane extends JTabbedPane {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(ComponentTabbedPane.class);
-
-  public static int SCROLL_STEP = Presenter.ICON_SIZE + ComponentButtonFactory.MARGIN * 2 + 2;
+  
+  public static String LAST_SELECTED_TAB = "lastSelectedTab";
 
   private final IPlugInPort plugInPort;
   private Container recentToolbar;
   private Container buildingBlocksToolbar;
+  private Container favoritesToolbar;
+  
+  private Map<String, ComponentType> typesByClass;
+    
+  private List<Favorite> favorites;
   private List<String> pendingRecentComponents = null;
+  private List<String> blocks;
 
   public ComponentTabbedPane(IPlugInPort plugInPort) {
     super();
     this.plugInPort = plugInPort;
-    addTab("Recently Used", createRecentComponentsPanel());
-//    addTab("Building Blocks", createBuildingBlocksPanel());
+    
+    initialize();
+    
+    // layout UI
+    addTab(LangUtil.translate("(Favorites)"), createFavoritesPanel());
+    addTab(LangUtil.translate("(Recently Used)"), createRecentComponentsPanel());
+    addTab(LangUtil.translate("(Building Blocks)"), createBuildingBlocksPanel());
     Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
     List<String> categories = new ArrayList<String>(componentTypes.keySet());
     Collections.sort(categories);
@@ -80,73 +94,95 @@ class ComponentTabbedPane extends JTabbedPane {
       JPanel panel = createTab((componentTypes.get(category)));
       addTab(category, panel);
     }
+    
+    // restore last selected tab
+    int lastSelectedTab = ConfigurationManager.getInstance().readInt(LAST_SELECTED_TAB, -1);
+    if (lastSelectedTab >= 0)
+      setSelectedIndex(lastSelectedTab);
+    
     addChangeListener(new ChangeListener() {
 
       @Override
       public void stateChanged(ChangeEvent e) {
+        ConfigurationManager.getInstance().writeValue(LAST_SELECTED_TAB, getSelectedIndex());
         ComponentTabbedPane.this.plugInPort.setNewComponentTypeSlot(null, null, false);
         // Refresh recent components if needed
         if (pendingRecentComponents != null) {
-          refreshRecentComponentsToolbar(getRecentToolbar(), pendingRecentComponents);
+          refreshRecentComponentsToolbar(pendingRecentComponents);
           getRecentToolbar().invalidate();
           pendingRecentComponents = null;
         }
       }
     });
+    
+      
+  }
+
+  @SuppressWarnings("unchecked")
+  private void initialize() {
+    Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
+    this.typesByClass = new HashMap<String, ComponentType>();
+    for (Map.Entry<String, List<ComponentType>> e : componentTypes.entrySet())
+      for (ComponentType c : e.getValue())
+        typesByClass.put(c.getInstanceClass().getCanonicalName(), c);
+    
+    // load building blocks
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.BLOCKS_KEY,
+        new IConfigListener() {
+
+          @Override
+          public void valueChanged(String key, Object value) {
+            Map<String, List<IDIYComponent<?>>> newBlocks =
+                (Map<String, List<IDIYComponent<?>>>) value;
+            if (newBlocks != null) {
+              List<String> blockNames = new ArrayList<String>(newBlocks.keySet());
+              Collections.sort(blockNames);
+              if (!blockNames.equals(ComponentTabbedPane.this.blocks)) {
+                LOG.info("Detected block change");
+                ComponentTabbedPane.this.blocks = blockNames;  
+                refreshBuildingBlocksToolbar();
+              } else
+                LOG.info("Detected no block change");
+            } else
+              LOG.info("Detected no block change");
+          }
+        });  
+    Map<String, List<IDIYComponent<?>>> newBlocks =
+        (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance()
+            .readObject(IPlugInPort.BLOCKS_KEY, null);
+    if (newBlocks == null)
+      this.blocks = new ArrayList<String>();
+    else {
+      this.blocks = new ArrayList<String>(newBlocks.keySet());
+      Collections.sort(this.blocks);
+    }
+    
+    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.FAVORITES_KEY,
+        new IConfigListener() {
+
+          @Override
+          public void valueChanged(String key, Object value) {
+            List<Favorite> newFavorites = (List<Favorite>) value;
+            if (newFavorites != null && !newFavorites.equals(ComponentTabbedPane.this.favorites)) {
+              LOG.info("Detected favorites change");
+              ComponentTabbedPane.this.favorites = new ArrayList<Favorite>(newFavorites);
+              refreshFavoritesToolbar();
+            } else
+              LOG.info("Detected no favorites change");
+          }
+        });
+    this.favorites = new ArrayList<Favorite>((List<Favorite>) ConfigurationManager.getInstance()
+        .readObject(IPlugInPort.FAVORITES_KEY, new ArrayList<Favorite>()));
   }
 
   private JPanel createTab(List<ComponentType> componentTypes) {
     JPanel panel = new JPanel(new BorderLayout());
-    // final JScrollPane scrollPane =
-    // createComponentScrollBar(componentTypes);
+
     panel.setOpaque(false);
     panel.add(createComponentPanel(componentTypes), BorderLayout.CENTER);
-    // JButton leftButton = new JButton("<");
-    // leftButton.addActionListener(new ActionListener() {
-    //
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    // Rectangle rect = scrollPane.getVisibleRect();
-    // if (rect.x > SCROLL_STEP) {
-    // rect.translate(-SCROLL_STEP, 0);
-    // } else {
-    // rect.translate(-rect.x, 0);
-    // }
-    // }
-    // });
-    // leftButton.setMargin(new Insets(0, 2, 0, 2));
-    // JButton rightButton = new JButton(">");
-    // rightButton.addActionListener(new ActionListener() {
-    //
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    // Rectangle rect = scrollPane.getVisibleRect();
-    // if (rect.x + rect.width < scrollPane.getViewport().getSize().width -
-    // SCROLL_STEP) {
-    // rect.translate(SCROLL_STEP, 0);
-    // } else {
-    // rect.translate(scrollPane.getViewport().getSize().width - rect.x -
-    // rect.width,
-    // 0);
-    // }
-    // }
-    // });
-    // rightButton.setMargin(new Insets(0, 2, 0, 2));
-    // panel.add(leftButton, BorderLayout.WEST);
-    // panel.add(scrollPane);
-    // panel.add(rightButton, BorderLayout.EAST);
+ 
     return panel;
   }
-
-  // private JScrollPane createComponentScrollBar(List<ComponentType>
-  // componentTypes) {
-  // JScrollPane scrollPane = new
-  // JScrollPane(createComponentPanel(componentTypes));
-  // scrollPane.setOpaque(false);
-  // scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-  // scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-  // return scrollPane;
-  // }
 
   public Container getRecentToolbar() {
     if (recentToolbar == null) {
@@ -163,6 +199,14 @@ class ComponentTabbedPane extends JTabbedPane {
     }
     return buildingBlocksToolbar;
   }
+  
+  public Container getFavoritesToolbar() {
+    if (favoritesToolbar == null) {
+      favoritesToolbar = new Container();
+      favoritesToolbar.setLayout(new BoxLayout(favoritesToolbar, BoxLayout.X_AXIS));
+    }
+    return favoritesToolbar;
+  }
 
   private Component createComponentPanel(List<ComponentType> componentTypes) {
     Container toolbar = new Container();
@@ -177,18 +221,13 @@ class ComponentTabbedPane extends JTabbedPane {
       }
     }
 
-    return toolbar;
+    return new ToolbarScrollPane(toolbar);
   }
 
   @SuppressWarnings("unchecked")
   private Component createRecentComponentsPanel() {
-    JPanel panel = new JPanel(new BorderLayout());
-    panel.setOpaque(false);
-
     final Container toolbar = getRecentToolbar();
-    refreshRecentComponentsToolbar(
-        toolbar,
-        (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY,
+    refreshRecentComponentsToolbar((List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY,
             new ArrayList<String>()));
     ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RECENT_COMPONENTS_KEY, new IConfigListener() {
 
@@ -200,40 +239,39 @@ class ComponentTabbedPane extends JTabbedPane {
       }
     });
 
-    panel.add(toolbar, BorderLayout.CENTER);
+    JPanel panel = new ToolbarScrollPane(toolbar);
 
     return panel;
   }
   
   
-  @SuppressWarnings("unused")
   private Component createBuildingBlocksPanel() {
+    final Container toolbar = getBuildingBlocksToolbar();
+
+    JPanel panel = new ToolbarScrollPane(toolbar);
+    
+    refreshBuildingBlocksToolbar();
+
+    return panel;
+  }
+  
+  private Component createFavoritesPanel() {
     JPanel panel = new JPanel(new BorderLayout());
     panel.setOpaque(false);
 
-    final Container toolbar = getBuildingBlocksToolbar();
-//    refreshRecentComponentsToolbar(
-//        toolbar,
-//        (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY,
-//            new ArrayList<String>()));
-//    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.RECENT_COMPONENTS_KEY, new IConfigListener() {
-//
-//      @Override
-//      public void valueChanged(String key, Object value) {
-//        // Cache the new list, we'll refresh when there's a
-//        // chance
-//        pendingRecentComponents = (List<String>) value;
-//      }
-//    });
+    final Container toolbar = getFavoritesToolbar();
 
     panel.add(toolbar, BorderLayout.CENTER);
+    
+    refreshFavoritesToolbar();
 
     return panel;
   }
 
 
   @SuppressWarnings("unchecked")
-  private void refreshRecentComponentsToolbar(Container toolbar, List<String> recentComponentClassList) {
+  private void refreshRecentComponentsToolbar(List<String> recentComponentClassList) {
+    Container toolbar = getRecentToolbar();
     toolbar.removeAll();
     for (String componentClassName : recentComponentClassList) {
       ComponentType componentType;
@@ -246,6 +284,30 @@ class ComponentTabbedPane extends JTabbedPane {
       } catch (Exception e) {
         LOG.error("Could not create recent component button for " + componentClassName, e);
       }
+    }
+  }
+  
+  private void refreshBuildingBlocksToolbar() {
+    Container toolbar = getBuildingBlocksToolbar();
+    toolbar.removeAll();
+    for (String block : this.blocks) {
+      Component button = ComponentButtonFactory.createBuildingBlockButton(plugInPort, block);
+      toolbar.add(button);
+    }
+  }
+  
+  private void refreshFavoritesToolbar() {
+    Container toolbar = getFavoritesToolbar();
+    toolbar.removeAll();
+    for (Favorite fav : this.favorites) {
+      Component button;
+      if (fav.getType() == FavoriteType.Block) {
+        button = ComponentButtonFactory.createBuildingBlockButton(plugInPort, fav.getName());
+      } else {
+        ComponentType componentType = this.typesByClass.get(fav.getName());
+        button = ComponentButtonFactory.create(plugInPort, componentType, createVariantPopup(componentType));
+      }
+      toolbar.add(button);
     }
   }
 
