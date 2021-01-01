@@ -3431,6 +3431,10 @@
 					<description>Scroll buttons added to the component toolbar that appear when needed</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Toolbar drop down menu now contains options for managing favorites, keyboard shortcuts and selecting all components of type</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Save last selected tab in the component toolbar and restore it in the next session</description>
 				</org.diylc.appframework.update.Change>		
