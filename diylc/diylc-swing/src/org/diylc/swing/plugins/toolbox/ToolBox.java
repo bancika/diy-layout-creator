@@ -74,7 +74,7 @@ public class ToolBox implements IPlugIn {
 
   public ComponentTabbedPane getComponentTabbedPane() {
     if (componentTabbedPane == null) {
-      componentTabbedPane = new ComponentTabbedPane(plugInPort);
+      componentTabbedPane = new ComponentTabbedPane(plugInPort, swingUI);
     }
     return componentTabbedPane;
   }

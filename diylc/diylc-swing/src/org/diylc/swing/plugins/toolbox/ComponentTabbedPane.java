@@ -37,6 +37,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -55,8 +56,10 @@ import org.diylc.core.Template;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.swing.ISwingUI;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.tree.TreePanel;
+import org.diylc.swing.plugins.tree.TreePanel.DeleteBlockAction;
 import org.diylc.swing.plugins.tree.TreePanel.SelectAllAction;
 
 /**
@@ -73,6 +76,8 @@ class ComponentTabbedPane extends JTabbedPane {
   public static String LAST_SELECTED_TAB = "lastSelectedTab";
 
   private final IPlugInPort plugInPort;
+  private ISwingUI swingUI;
+  
   private Container recentToolbar;
   private Container buildingBlocksToolbar;
   private Container favoritesToolbar;
@@ -81,11 +86,12 @@ class ComponentTabbedPane extends JTabbedPane {
 
   private List<Favorite> favorites;
   private List<String> pendingRecentComponents = null;
-  private List<String> blocks;
+  private List<String> blocks;  
 
-  public ComponentTabbedPane(IPlugInPort plugInPort) {
+  public ComponentTabbedPane(IPlugInPort plugInPort, ISwingUI swingUI) {
     super();
     this.plugInPort = plugInPort;
+    this.swingUI = swingUI;
 
     initialize();
 
@@ -221,7 +227,7 @@ class ComponentTabbedPane extends JTabbedPane {
     for (ComponentType componentType : componentTypes) {
       try {
         Component button = ComponentButtonFactory.create(plugInPort, componentType,
-            createVariantPopup(componentType));
+            createVariantPopup(componentType, null));
         toolbar.add(button);
       } catch (Exception e) {
         LOG.error("Could not create recent component button for " + componentType.getName(), e);
@@ -287,7 +293,7 @@ class ComponentTabbedPane extends JTabbedPane {
         componentType = ComponentProcessor.getInstance().extractComponentTypeFrom(
             (Class<? extends IDIYComponent<?>>) Class.forName(componentClassName));
         Component button = ComponentButtonFactory.create(plugInPort, componentType,
-            createVariantPopup(componentType));
+            createVariantPopup(componentType, null));
         toolbar.add(button);
       } catch (Exception e) {
         LOG.error("Could not create recent component button for " + componentClassName, e);
@@ -299,7 +305,7 @@ class ComponentTabbedPane extends JTabbedPane {
     Container toolbar = getBuildingBlocksToolbar();
     toolbar.removeAll();
     for (String block : this.blocks) {
-      Component button = ComponentButtonFactory.createBuildingBlockButton(plugInPort, block);
+      Component button = ComponentButtonFactory.createBuildingBlockButton(plugInPort, block, createVariantPopup(null, block));
       toolbar.add(button);
     }
   }
@@ -310,17 +316,17 @@ class ComponentTabbedPane extends JTabbedPane {
     for (Favorite fav : this.favorites) {
       Component button;
       if (fav.getType() == FavoriteType.Block) {
-        button = ComponentButtonFactory.createBuildingBlockButton(plugInPort, fav.getName());
+        button = ComponentButtonFactory.createBuildingBlockButton(plugInPort, fav.getName(), createVariantPopup(null, fav.getName()));
       } else {
         ComponentType componentType = this.typesByClass.get(fav.getName());
         button = ComponentButtonFactory.create(plugInPort, componentType,
-            createVariantPopup(componentType));
+            createVariantPopup(componentType, null));
       }
       toolbar.add(button);
     }
   }
 
-  private JPopupMenu createVariantPopup(final ComponentType componentType) {
+  private JPopupMenu createVariantPopup(final ComponentType componentType, final String blockName) {
     final JPopupMenu variantPopup = new JPopupMenu();
     variantPopup.add("Loading...");
     variantPopup.addPopupMenuListener(new PopupMenuListener() {
@@ -330,7 +336,8 @@ class ComponentTabbedPane extends JTabbedPane {
       public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         variantPopup.removeAll();
 
-        final String identifier = componentType.getInstanceClass().getCanonicalName();
+        final String identifier = componentType == null ? "block:" + blockName
+            : componentType.getInstanceClass().getCanonicalName();
 
         JMenu shortcutSubmenu = new JMenu("Assign Shortcut");
         final JRadioButtonMenuItem  noneItem = new JRadioButtonMenuItem ("None");
@@ -398,7 +405,9 @@ class ComponentTabbedPane extends JTabbedPane {
         }
 
         final Favorite fav =
-            new Favorite(FavoriteType.Component, componentType.getInstanceClass().getCanonicalName());
+            new Favorite(componentType == null ? FavoriteType.Block : FavoriteType.Component,
+                componentType == null ? blockName
+                    : componentType.getInstanceClass().getCanonicalName());
         final boolean isFavorite = favorites != null && favorites.indexOf(fav) >= 0;
         final JMenuItem favoritesItem =
             new JMenuItem(isFavorite ? "Remove From Favorites" : "Add To Favorites",
@@ -419,20 +428,26 @@ class ComponentTabbedPane extends JTabbedPane {
         });
         variantPopup.add(favoritesItem);
 
-        variantPopup.add(new SelectAllAction(plugInPort, componentType));
-        variantPopup.add(shortcutSubmenu);
+        if (componentType != null) {
+          variantPopup.add(new SelectAllAction(plugInPort, componentType));
+          variantPopup.add(shortcutSubmenu);
+          variantPopup.add(new JSeparator());
 
-        List<Template> variants = plugInPort.getVariantsFor(componentType);
-        if (variants == null || variants.isEmpty()) {
-          JMenuItem item = new JMenuItem("<no variants>");
-          item.setEnabled(false);
-          variantPopup.add(item);
-        } else {
-          for (Template variant : variants) {
-            JMenuItem item =
-                ComponentButtonFactory.createVariantItem(plugInPort, variant, componentType);
+          List<Template> templates = plugInPort.getVariantsFor(componentType);
+          if (templates == null || templates.isEmpty()) {
+            JMenuItem item = new JMenuItem("<no variants>");
+            item.setEnabled(false);
             variantPopup.add(item);
+          } else {
+            for (Template template : templates) {
+              JMenuItem item =
+                  ComponentButtonFactory.createVariantItem(plugInPort, template, componentType);
+              variantPopup.add(item);
+            }
           }
+        } else {
+          variantPopup.add(shortcutSubmenu);
+          variantPopup.add(new DeleteBlockAction(plugInPort, swingUI, blockName));
         }
       }
 

@@ -197,11 +197,11 @@ public class ComponentButtonFactory {
     return item;
   }
   
-  public static JButton createBuildingBlockButton(final IPlugInPort plugInPort, final String blockName) {
-    JButton button = new JButton(blockName, IconLoader.Component.getIcon());
+  public static JButton createBuildingBlockButton(final IPlugInPort plugInPort, final String blockName, final JPopupMenu menu) {
+    JButton button = DropDownButtonFactory.createDropDownButton(blockName, IconLoader.ComponentLarge.getIcon(), menu);
     
-    button.setVerticalTextPosition(SwingConstants.BOTTOM);
-    button.setHorizontalTextPosition(SwingConstants.CENTER);
+    button.setVerticalTextPosition(SwingConstants.CENTER);
+    button.setHorizontalTextPosition(SwingConstants.LEFT);
 
     button.setBorder(BorderFactory.createEmptyBorder(MARGIN + 1, MARGIN + 1, MARGIN, MARGIN));
     button.setToolTipText("<html><b>" + blockName + "</b><br> building block</html>");
