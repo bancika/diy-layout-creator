@@ -18,6 +18,7 @@
  */
 package org.diylc.swing.plugins.file;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -27,15 +28,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
+import javax.swing.UIManager;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -53,6 +57,10 @@ public class NetlistImportDialog extends ButtonDialog {
   private static final long serialVersionUID = 1L;
 
   public static String NETLIST_DEFAULT_TYPES = "netlistDefaultTypes";
+  public static String INFO_HTML =
+      "<html>Detected component types are listed above, along with possible matches within the DIYLC inventory.<br>"
+          + "Make adjustments where needed directly in the table by picking a different type from the drop down box.<br>"
+          + "Use 'Default' boxes to save your selections as defaults for the next time.</html>";
 
   private List<Class<?>> selectedTypes;
   private List<Boolean> setDefault;
@@ -63,13 +71,16 @@ public class NetlistImportDialog extends ButtonDialog {
   private Map<String, List<Class<?>>> availableTypes;
 
   private JTable table;
+  private JLabel infoLabel;
+  private JPanel mainPanel;
 
   @SuppressWarnings("unchecked")
   public NetlistImportDialog(JFrame owner, IPlugInPort plugInPort,
       List<ParsedNetlistEntry> entries) {
     super(owner, LangUtil.translate("Import Netlist"),
         new String[] {ButtonDialog.OK, ButtonDialog.CANCEL});
-    this.rawTypes = entries.stream().map(x -> x.getRawType()).distinct().sorted().collect(Collectors.toList());
+    this.rawTypes =
+        entries.stream().map(x -> x.getRawType()).distinct().sorted().collect(Collectors.toList());
     this.availableTypes = new HashMap<String, List<Class<?>>>();
     for (ParsedNetlistEntry entry : entries) {
       this.availableTypes.put(entry.getRawType(), entry.getTypeCandidates());
@@ -77,8 +88,8 @@ public class NetlistImportDialog extends ButtonDialog {
 
     this.netlistDefaultTypes = (Map<String, String>) ConfigurationManager.getInstance()
         .readObject(NETLIST_DEFAULT_TYPES, null);
-    this.setDefault = rawTypes.stream().map(
-        type -> netlistDefaultTypes != null && netlistDefaultTypes.containsKey(type))
+    this.setDefault = rawTypes.stream()
+        .map(type -> netlistDefaultTypes != null && netlistDefaultTypes.containsKey(type))
         .collect(Collectors.toList());
 
     Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
@@ -94,7 +105,7 @@ public class NetlistImportDialog extends ButtonDialog {
         .sorted((t1, t2) -> (t1.getCategory() + " = " + t1.getName())
             .compareToIgnoreCase((t2.getCategory() + " = " + t2.getName())))
         .map(x -> x.getInstanceClass()).collect(Collectors.toList());
-    
+
     this.selectedTypes =
         rawTypes.stream().map(type -> getDefaultType(type)).collect(Collectors.toList());
 
@@ -103,17 +114,15 @@ public class NetlistImportDialog extends ButtonDialog {
   }
 
   private Class<?> getDefaultType(String rawType) {
-    if (this.netlistDefaultTypes != null
-        && this.netlistDefaultTypes.containsKey(rawType)) {
+    if (this.netlistDefaultTypes != null && this.netlistDefaultTypes.containsKey(rawType)) {
 
       Optional<Class<?>> first = this.allTypes.stream()
-          .filter(
-              e -> e.getCanonicalName().equals(this.netlistDefaultTypes.get(rawType)))
+          .filter(e -> e.getCanonicalName().equals(this.netlistDefaultTypes.get(rawType)))
           .findFirst();
       if (first.isPresent())
         return first.get();
     }
-    
+
     List<Class<?>> list = this.availableTypes.get(rawType);
     return list == null || list.isEmpty() ? null : list.get(0);
   }
@@ -127,17 +136,36 @@ public class NetlistImportDialog extends ButtonDialog {
 
   @Override
   protected JComponent getMainComponent() {
-    JScrollPane scrollPane = new JScrollPane(getTable());
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    return scrollPane;
+    if (mainPanel == null) {
+      JScrollPane scrollPane = new JScrollPane(getTable());
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+      this.mainPanel = new JPanel(new BorderLayout());
+      this.mainPanel.add(scrollPane, BorderLayout.CENTER);
+      this.mainPanel.add(getInfoLabel(), BorderLayout.SOUTH);
+      this.mainPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    }
+    return this.mainPanel;
+  }
+
+  private JLabel getInfoLabel() {
+    if (infoLabel == null) {
+      infoLabel = new JLabel();
+      infoLabel.setOpaque(true);
+      infoLabel.setBackground(UIManager.getColor("ToolTip.background"));
+      infoLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
+          BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+      infoLabel.setText(INFO_HTML);
+    }
+    return infoLabel;
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public void setVisible(boolean b) {
     super.setVisible(b);
-    
+
     // hiding, store changes in config
     if (!b && OK.equals(getSelectedButtonCaption())) {
       netlistDefaultTypes = (Map<String, String>) ConfigurationManager.getInstance()
@@ -146,11 +174,10 @@ public class NetlistImportDialog extends ButtonDialog {
         netlistDefaultTypes = new HashMap<String, String>();
       for (int i = 0; i < rawTypes.size(); i++)
         if (setDefault.get(i))
-          netlistDefaultTypes.put(rawTypes.get(i),
-              selectedTypes.get(i).getCanonicalName());
+          netlistDefaultTypes.put(rawTypes.get(i), selectedTypes.get(i).getCanonicalName());
         else
           netlistDefaultTypes.remove(rawTypes.get(i));
-      
+
       ConfigurationManager.getInstance().writeValue(NETLIST_DEFAULT_TYPES, netlistDefaultTypes);
     }
   }
@@ -199,7 +226,7 @@ public class NetlistImportDialog extends ButtonDialog {
 
     @Override
     public String getColumnName(int column) {
-      switch (column) {        
+      switch (column) {
         case 0:
           return "Imported Type";
         case 1:
@@ -212,7 +239,7 @@ public class NetlistImportDialog extends ButtonDialog {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-      switch (columnIndex) {    
+      switch (columnIndex) {
         case 0:
           return String.class;
         case 1:
@@ -300,7 +327,7 @@ public class NetlistImportDialog extends ButtonDialog {
         int row, int column) {
       JComboBox<Class<?>> comboBox = (JComboBox<Class<?>>) super.getTableCellEditorComponent(table,
           value, isSelected, row, column);
-      comboBox.removeAllItems();      
+      comboBox.removeAllItems();
       List<Class<?>> showTypes = availableTypes.get(rawTypes.get(row));
       if (showTypes == null || showTypes.isEmpty())
         showTypes = allTypes;
