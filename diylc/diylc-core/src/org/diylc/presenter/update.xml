@@ -3420,6 +3420,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'File' -> 'Import Netlist' option that can import components from a Tango PCB file</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Português translation added (thanks Pedro Rizzi!)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

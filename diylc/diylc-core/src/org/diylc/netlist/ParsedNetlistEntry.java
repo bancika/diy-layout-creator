@@ -19,40 +19,37 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.common;
+package org.diylc.netlist;
 
 import java.util.List;
+import java.util.Map;
 
-import org.diylc.netlist.INetlistParser;
-import org.diylc.netlist.Netlist;
+public class ParsedNetlistEntry {
 
-/**
- * Interface for {@link Netlist} related operations.
- * 
- * @author Branislav Stojkovic
- */
-public interface INetlistProcessor {
+  private List<Class<?>> typeCandidates;
+  private Map<String, Object> values;
+  private String rawType;
+  
+  public ParsedNetlistEntry() {   
+  }
+  
+  public ParsedNetlistEntry(List<Class<?>> typeCandidates, String rawType,
+      Map<String, Object> values) {
+    super();
+    this.typeCandidates = typeCandidates;
+    this.rawType = rawType;
+    this.values = values;
+  }
 
-  /**
-   * Finds all {@link Netlist}s for each switch position combination. 
-   * 
-   * @param includeSwitches
-   * @return
-   */
-  List<Netlist> extractNetlists(boolean includeSwitches);
+  public List<Class<?>> getTypeCandidates() {
+    return typeCandidates;
+  }
   
-  /**
-   * Finds all available {@link INetlistAnalyzer} implementations.
-   * 
-   * @return
-   */
-  List<INetlistAnalyzer> getNetlistAnalyzers();
-  
-  /**
-   * Finds all available {@link INetlistParser} implementations.
-   * 
-   * @return
-   */
-  List<INetlistParser> getNetlistParserDefinitions();
-  
+  public String getRawType() {
+    return rawType;
+  }
+
+  public Map<String, Object> getValues() {
+    return values;
+  }
 }

@@ -39,12 +39,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -71,7 +73,10 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.editor.FlexibleLeadsEditor;
 import org.diylc.lang.LangUtil;
 import org.diylc.netlist.Group;
+import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
+import org.diylc.netlist.ParsedNetlistComponent;
+import org.diylc.netlist.ParsedNetlistEntry;
 import org.diylc.netlist.Summary;
 import org.diylc.presenter.Presenter;
 import org.diylc.serialization.ProjectFileManager;
@@ -83,6 +88,7 @@ import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.edit.FindDialog;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
+import org.diylc.swing.plugins.file.NetlistImportDialog;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.CheckBoxListDialog;
 import org.diylc.swingframework.IDrawingProvider;
@@ -120,6 +126,10 @@ public class ActionFactory {
 
   public ImportAction createImportAction(IPlugInPort plugInPort, ISwingUI swingUI) {
     return new ImportAction(plugInPort, swingUI);
+  }
+  
+  public ImportNetlistAction createImportNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+    return new ImportNetlistAction(plugInPort, swingUI);
   }
 
   public SaveAction createSaveAction(IPlugInPort plugInPort, ISwingUI swingUI) {
@@ -467,6 +477,101 @@ public class ActionFactory {
           @Override
           public void failed(Exception e) {
             swingUI.showMessage("Could not open file. " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
+          }
+        }, true);
+      }
+    }
+  }
+  
+  public static class ImportNetlistAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+    private ISwingUI swingUI;
+
+    private List<INetlistParser> parserDefinitions;
+    private List<String> extensions;
+    private FileFilter filter;
+
+    public ImportNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+      super();
+      this.plugInPort = plugInPort;
+      this.swingUI = swingUI;     
+      putValue(AbstractAction.NAME, "Import Netlist");
+      putValue(AbstractAction.SMALL_ICON, IconLoader.ImportNetlist.getIcon());
+      
+      this.parserDefinitions = plugInPort.getNetlistParserDefinitions();      
+      this.extensions = parserDefinitions.stream().map(x -> x.getFileExt()).collect(Collectors.toList());
+      
+      this.filter = new FileFilter() {
+
+        @Override
+        public boolean accept(File f) {
+          if (f.isDirectory()) {
+            return true;
+          }
+          String fileExt = f.getName();
+          fileExt = fileExt.substring(fileExt.lastIndexOf('.') + 1).toLowerCase();
+          for (String ext : extensions) {
+            if (ext.equals(fileExt)) {
+              return true;
+            }
+          }
+          return false;
+        }
+
+        @Override
+        public String getDescription() {
+          return LangUtil.translate("Netlist files");
+        }
+      };
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("ImportNetlistAction triggered");
+      
+      final File file = DialogFactory.getInstance().showOpenDialog(this.filter,
+          null, this.extensions.get(0), null);
+      // TODO: identity by extension
+      final INetlistParser parser = parserDefinitions.get(0);
+      
+      if (file != null) {
+        swingUI.executeBackgroundTask(new ITask<List<ParsedNetlistEntry>>() {
+
+          @Override
+          public List<ParsedNetlistEntry> doInBackground() throws Exception {
+            LOG.debug("Importing netlist from " + file.getAbsolutePath());
+            List<String> outputWarnings = new ArrayList<String>();
+            List<ParsedNetlistEntry> entries = parser.parseFile(file.getAbsolutePath(), outputWarnings);
+            return entries;
+          }
+
+          @Override
+          public void complete(List<ParsedNetlistEntry> entries) {
+            try {
+              NetlistImportDialog dialog = DialogFactory.getInstance().createNetlistImportDialog(plugInPort,entries);
+              dialog.setVisible(true);
+              if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
+                List<String> outputWarnings = new ArrayList<String>();
+                Map<String, Class<?>> results = dialog.getResults();
+                List<ParsedNetlistComponent> parsedComponents = entries.stream().map(entry -> 
+                  new ParsedNetlistComponent(results.get(entry.getRawType()), entry.getValues())).collect(Collectors.toList());
+                List<IDIYComponent<?>> components = parser.generateComponents(parsedComponents, outputWarnings);
+                plugInPort.pasteComponents(components, false, false); 
+              }
+            } catch (Exception e) {
+              swingUI.showMessage("Could not import netlist file: " + e.getMessage(), "Error",
+                  ISwingUI.ERROR_MESSAGE);
+              e.printStackTrace();
+            }
+          }
+
+          @Override
+          public void failed(Exception e) {
+            swingUI.showMessage("Could not import netlist file: " + e.getMessage(), "Error",
                 ISwingUI.ERROR_MESSAGE);
           }
         }, true);

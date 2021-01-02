@@ -29,6 +29,7 @@ import javax.swing.filechooser.FileFilter;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.netlist.ParsedNetlistEntry;
 import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.swing.gui.components.OverwritePromptFileChooser;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -38,6 +39,7 @@ import org.diylc.swing.plugins.cloud.view.UploadDialog;
 import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.edit.FindDialog;
 import org.diylc.swing.plugins.file.BomDialog;
+import org.diylc.swing.plugins.file.NetlistImportDialog;
 import org.diylc.swingframework.AboutDialog;
 import org.diylc.swingframework.IFileChooserAccessory;
 import org.diylc.swingframework.ProgressDialog;
@@ -227,6 +229,11 @@ public class DialogFactory {
   public ProgressDialog createProgressDialog(String title, String[] buttonCaptions, String description,
       boolean useProgress) {
     ProgressDialog dialog = new ProgressDialog(mainFrame, title, buttonCaptions, description, useProgress);
+    return dialog;
+  }
+  
+  public NetlistImportDialog createNetlistImportDialog(IPlugInPort plugInPort, List<ParsedNetlistEntry> entries) {
+    NetlistImportDialog dialog = new NetlistImportDialog(mainFrame, plugInPort, entries);
     return dialog;
   }
 }

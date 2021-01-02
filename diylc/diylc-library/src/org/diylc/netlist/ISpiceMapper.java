@@ -28,7 +28,7 @@ package org.diylc.netlist;
  */
 public interface ISpiceMapper {
 
-  int mapToSpiceNode(int pontIndex); 
+  int mapToSpiceNode(int pointIndex); 
   
   String getComment();
   

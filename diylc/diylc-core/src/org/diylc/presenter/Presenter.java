@@ -83,6 +83,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
 import org.diylc.netlist.Group;
+import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
 import org.diylc.netlist.Node;
@@ -3399,6 +3400,34 @@ public class Presenter implements IPlugInPort {
       return result;
     } catch (Exception e) {
       LOG.error("Could not load INetlistSummarizer implementations", e);
+      return null;
+    }
+  }
+  
+  @Override
+  public List<INetlistParser> getNetlistParserDefinitions() {
+    Set<Class<?>> classes;
+    try {
+      classes = Utils.getClasses("org.diylc.netlist");
+      List<INetlistParser> result = new ArrayList<INetlistParser>();
+
+      for (Class<?> clazz : classes) {
+        if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistParser.class.isAssignableFrom(clazz)) {
+          result.add((INetlistParser) clazz.newInstance());
+        }
+      }
+
+      Collections.sort(result, new Comparator<INetlistParser>() {
+
+        @Override
+        public int compare(INetlistParser o1, INetlistParser o2) {
+          return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+      });
+
+      return result;
+    } catch (Exception e) {
+      LOG.error("Could not load INetlistParserDefinition implementations", e);
       return null;
     }
   }
