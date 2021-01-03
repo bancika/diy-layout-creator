@@ -3448,6 +3448,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue that prevented old DIYLC v1 and v2 files to be opened</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Rotating 'Neutrik Jack' produces rendering issues</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
