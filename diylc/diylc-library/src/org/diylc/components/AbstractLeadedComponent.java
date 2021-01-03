@@ -623,7 +623,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     this.borderColor = borderColor;
   }
 
-  @EditableProperty(name = "Length", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class)
+  @EditableProperty(name = "Length", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class, sortOrder = 101)
   public Size getLength() {
     return length;
   }
@@ -632,7 +632,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     this.length = length;
   }
 
-  @EditableProperty(name = "Width", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class)
+  @EditableProperty(name = "Width", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class, sortOrder = 102)
   public Size getWidth() {
     return width;
   }

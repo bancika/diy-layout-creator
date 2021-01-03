@@ -23,6 +23,7 @@ package org.diylc.common;
 
 import java.util.List;
 
+import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
 
 /**
@@ -47,5 +48,11 @@ public interface INetlistProcessor {
    */
   List<INetlistAnalyzer> getNetlistAnalyzers();
   
+  /**
+   * Finds all available {@link INetlistParser} implementations.
+   * 
+   * @return
+   */
+  List<INetlistParser> getNetlistParserDefinitions();
   
 }

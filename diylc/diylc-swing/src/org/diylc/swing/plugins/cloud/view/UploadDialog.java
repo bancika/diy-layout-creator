@@ -68,7 +68,7 @@ public class UploadDialog extends ButtonDialog {
   private JCheckBox agreeBox;
   private JPanel thumbnailPanel;
   private JTextField nameField;
-  private JComboBox categoryBox;
+  private JComboBox<String> categoryBox;
   private JScrollPane descriptionPane;
   private JTextArea descriptionArea;
   private JTextField keywordsField;
@@ -227,9 +227,9 @@ public class UploadDialog extends ButtonDialog {
     return nameField;
   }
 
-  private JComboBox getCategoryBox() {
+  private JComboBox<String> getCategoryBox() {
     if (categoryBox == null) {
-      categoryBox = new JComboBox(categories);
+      categoryBox = new JComboBox<String>(categories);
     }
     return categoryBox;
   }

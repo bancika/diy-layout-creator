@@ -19,32 +19,37 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.common;
+package org.diylc.netlist;
 
 import java.util.List;
 import java.util.Map;
 
-import org.diylc.core.IDIYComponent;
+public class ParsedNetlistEntry {
 
-public class BuildingBlockPackage {
-
-  private Map<String, List<IDIYComponent<?>>> block;
-  private String owner;
+  private List<Class<?>> typeCandidates;
+  private Map<String, Object> values;
+  private String rawType;
   
-  public BuildingBlockPackage() {   
+  public ParsedNetlistEntry() {   
   }
-
-  public BuildingBlockPackage(Map<String, List<IDIYComponent<?>>> blocks, String owner) {
+  
+  public ParsedNetlistEntry(List<Class<?>> typeCandidates, String rawType,
+      Map<String, Object> values) {
     super();
-    this.block = blocks;
-    this.owner = owner;
+    this.typeCandidates = typeCandidates;
+    this.rawType = rawType;
+    this.values = values;
   }
 
-  public Map<String, List<IDIYComponent<?>>> getBlocks() {
-    return block;
+  public List<Class<?>> getTypeCandidates() {
+    return typeCandidates;
+  }
+  
+  public String getRawType() {
+    return rawType;
   }
 
-  public String getOwner() {
-    return owner;
+  public Map<String, Object> getValues() {
+    return values;
   }
 }

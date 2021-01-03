@@ -30,6 +30,9 @@ public class VariantPackage {
 
   private Map<String, List<Template>> variants;
   private String owner;
+  
+  public VariantPackage() {    
+  }
 
   public VariantPackage(Map<String, List<Template>> variants, String owner) {
     super();
