@@ -44,7 +44,7 @@ public class TangoNetlistParser extends AbstractNetlistParser {
 
   @Override
   public String getFileExt() {
-    return "pcb";
+    return "net";
   }
 
   @Override
