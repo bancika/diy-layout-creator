@@ -40,7 +40,7 @@ public class Voltage extends AbstractMeasure<VoltageUnit> {
     return new Voltage(value, unit);
   }
 
-  public static Voltage parseCapacitance(String value) {
+  public static Voltage parseVoltage(String value) {
     value = value.replace("*", "");
     for (VoltageUnit unit : VoltageUnit.values()) {
       if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {

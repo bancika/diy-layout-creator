@@ -524,7 +524,8 @@ public class ActionFactory {
 
         @Override
         public String getDescription() {
-          return LangUtil.translate("Netlist files");
+          List<String> ext = extensions.stream().map(ex -> "*." + ex).collect(Collectors.toList());
+          return LangUtil.translate("Netlist files") + " (" + String.join(",", ext) + ")";
         }
       };
     }
@@ -546,6 +547,8 @@ public class ActionFactory {
             LOG.debug("Importing netlist from " + file.getAbsolutePath());
             List<String> outputWarnings = new ArrayList<String>();
             List<ParsedNetlistEntry> entries = parser.parseFile(file.getAbsolutePath(), outputWarnings);
+            if (!outputWarnings.isEmpty())
+              LOG.warn("Parsing produced warnings:\n" + String.join("\n", outputWarnings));
             return entries;
           }
 
@@ -560,6 +563,8 @@ public class ActionFactory {
                 List<ParsedNetlistComponent> parsedComponents = entries.stream().map(entry -> 
                   new ParsedNetlistComponent(results.get(entry.getRawType()), entry.getValues())).collect(Collectors.toList());
                 List<IDIYComponent<?>> components = parser.generateComponents(parsedComponents, outputWarnings);
+                if (!outputWarnings.isEmpty())
+                  LOG.warn("Component creation produced warnings:\n" + String.join("\n", outputWarnings));
                 plugInPort.pasteComponents(components, false, false); 
               }
             } catch (Exception e) {
