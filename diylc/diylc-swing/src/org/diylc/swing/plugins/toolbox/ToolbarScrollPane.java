@@ -72,7 +72,7 @@ public class ToolbarScrollPane extends JPanel {
         }
       });
       
-      LOG.info("Creating scrollable toolbar");
+     // LOG.info("Creating scrollable toolbar");
       add(scrollPane);
     } catch (Exception e) {
       LOG.info("Creating non-scrollable toolbar, since scroll bar initialization failed");
