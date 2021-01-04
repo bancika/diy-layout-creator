@@ -29,9 +29,13 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+import org.apache.log4j.Logger;
+
 public class ToolbarScrollPane extends JPanel {
 
   private static final long serialVersionUID = 1L;
+  
+  private static final Logger LOG = Logger.getLogger(ToolbarScrollPane.class);
 
   private Component view;
   private BasicArrowButton west;
@@ -43,30 +47,37 @@ public class ToolbarScrollPane extends JPanel {
     setLayout(new BorderLayout());
     setBorder(BorderFactory.createEmptyBorder());
 
-    JScrollPane scrollPane = new JScrollPane(view);
-    scrollPane.setBorder(BorderFactory.createEmptyBorder());
-    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-    add(scrollPane);
-
-    JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
-
-    west = new BasicArrowButton(BasicArrowButton.WEST);
-    west.setAction(new ActionMapAction("", horizontal, "negativeUnitIncrement", 120));
-    west.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Button.shadow")));
-    add(west, BorderLayout.WEST);
-
-    east = new BasicArrowButton(BasicArrowButton.EAST);
-    east.setAction(new ActionMapAction("", horizontal, "positiveUnitIncrement", 120));
-    east.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Button.shadow")));
-    add(east, BorderLayout.EAST);
-
-    addComponentListener(new ComponentAdapter() {
-      @Override
-      public void componentResized(ComponentEvent e) {
-        refreshScrollButtonVisibility();
-      }
-    });
+    try {
+      JScrollPane scrollPane = new JScrollPane(view);
+      scrollPane.setBorder(BorderFactory.createEmptyBorder());
+      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);    
+  
+      JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
+  
+      west = new BasicArrowButton(BasicArrowButton.WEST);
+      west.setAction(new ActionMapAction("", horizontal, "negativeUnitIncrement", 120));
+      west.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Button.shadow")));
+      add(west, BorderLayout.WEST);
+  
+      east = new BasicArrowButton(BasicArrowButton.EAST);
+      east.setAction(new ActionMapAction("", horizontal, "positiveUnitIncrement", 120));
+      east.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Button.shadow")));
+      add(east, BorderLayout.EAST);
+  
+      addComponentListener(new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent e) {
+          refreshScrollButtonVisibility();
+        }
+      });
+      
+      LOG.info("Creating scrollable toolbar");
+      add(scrollPane);
+    } catch (Exception e) {
+      LOG.info("Creating non-scrollable toolbar, since scroll bar initialization failed");
+      add(view);
+    }
   }
 
   private void refreshScrollButtonVisibility() {
