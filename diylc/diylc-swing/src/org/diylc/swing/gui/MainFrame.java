@@ -122,29 +122,28 @@ public class MainFrame extends JFrame implements ISwingUI {
     
     IConfigurationManager configManager = ConfigurationManager.getInstance();
 
-    this.presenter = new Presenter(this, configManager);
+    this.presenter = new Presenter(this, configManager);    
 
-    canvasPlugin = new CanvasPlugin(this, configManager);
-
-    presenter.installPlugin(new ToolBox(this));
-    presenter.installPlugin(new FileMenuPlugin(this));
-    presenter.installPlugin(new EditMenuPlugin(this));
-    presenter.installPlugin(new ConfigPlugin(this));
-    presenter.installPlugin(new LayersMenuPlugin(this));
-    presenter.installPlugin(new CloudPlugIn(this));
+    presenter.installPlugin(() -> new ToolBox(this));
+    presenter.installPlugin(() -> new FileMenuPlugin(this));
+    presenter.installPlugin(() -> new EditMenuPlugin(this));
+    presenter.installPlugin(() -> new ConfigPlugin(this));
+    presenter.installPlugin(() -> new LayersMenuPlugin(this));
+    presenter.installPlugin(() -> new CloudPlugIn(this));
     if ("true".equalsIgnoreCase(System.getProperty("org.diylc.enableTests")))
-        presenter.installPlugin(new TestMenuPlugin(this));
-    presenter.installPlugin(new HelpMenuPlugin(this));
-    presenter.installPlugin(new ActionBarPlugin(this));
+        presenter.installPlugin(() -> new TestMenuPlugin(this));
+    presenter.installPlugin(() -> new HelpMenuPlugin(this));
+    presenter.installPlugin(() -> new ActionBarPlugin(this));
 
-    presenter.installPlugin(new StatusBar(this));
+    presenter.installPlugin(() -> new StatusBar(this));
+    
+    canvasPlugin = new CanvasPlugin(this, configManager);
+    presenter.installPlugin(() -> canvasPlugin);
+    presenter.installPlugin(() -> new ComponentTree(this, canvasPlugin.getCanvasPanel()));
+    
+    presenter.installPlugin(() -> new FramePlugin());
 
-    presenter.installPlugin(canvasPlugin);
-
-    presenter.installPlugin(new ComponentTree(this, canvasPlugin.getCanvasPanel()));
-    presenter.installPlugin(new FramePlugin());
-
-    presenter.installPlugin(new AutoSavePlugin(this));
+    presenter.installPlugin(() -> new AutoSavePlugin(this));
 
     presenter.createNewProject();
 

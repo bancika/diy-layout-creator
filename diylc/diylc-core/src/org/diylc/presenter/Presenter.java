@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Supplier;
 
 import javax.swing.JOptionPane;
 
@@ -231,11 +232,16 @@ public class Presenter implements IPlugInPort {
     importDefaultBlocks();
   }
 
-  public void installPlugin(IPlugIn plugIn) {
-    LOG.info(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
-    plugIns.add(plugIn);
-    plugIn.connect(this);
-    messageDispatcher.registerListener(plugIn);
+  public void installPlugin(Supplier<IPlugIn> plugInSupplier) {
+    try {
+      IPlugIn plugIn = plugInSupplier.get();
+      LOG.info(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
+      plugIns.add(plugIn);
+      plugIn.connect(this);
+      messageDispatcher.registerListener(plugIn);
+    } catch (Exception e) {
+      LOG.error("Error while installing plugin", e);
+    }
   }
 
   public void dispose() {
