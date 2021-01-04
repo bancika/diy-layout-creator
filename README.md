@@ -38,7 +38,6 @@
    <li>Help with adding the information to the <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/Manual.md">user manual</a>. </li>
    <li>Extend the component base, read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md" rel="nofollow">this wiki</a> to learn how to create new components. </li>
    <li>Add a new functionality though plug-ins, read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/PluginAPI.md" rel="nofollow">this wiki</a> to learn how to create new plug-ins. </li>
-   <li>If you are good with design, DIYLC could use a fancy splash screen and/or a new application icon in 16x16, 32x32 and 48x48 formats. </li>
 </ul>
 <p align="justify"><strong>DIYLC is provided free of charge and can be used and redistributed freely. Please note that it takes a lot of time and effort to build, test and maintain it and to interact with the growing community of users. If you find DIYLC useful and want to support further development, please consider making a small PayPal donation. Every little bit counts! If you have some extra parts, transistors, tubes, ICs, caps...anything useful for a fellow DIYer, I'll gladly accept a donation in parts.</strong></p>
 <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>
