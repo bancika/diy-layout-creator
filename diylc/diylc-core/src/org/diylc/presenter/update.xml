@@ -3489,6 +3489,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved code robustness</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Auto-Wrap Label crashes the application if it's shrunken into zero-length</description>
 				</org.diylc.appframework.update.Change>			
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
