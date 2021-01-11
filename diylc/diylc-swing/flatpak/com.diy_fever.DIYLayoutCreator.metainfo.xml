@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.diy_fever.DIYLayoutCreator</id>
+  <launchable type="desktop-id">com.diy_fever.DIYLayoutCreator.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <developer_name>Branislav Stojkovic (bancika)</developer_name>
+  <name>DIY Layout Creator</name>
+  <summary>Multi platform circuit layout and schematic drawing tool</summary>
+  <description>
+    <p>
+    	DIY Layout Creator (DIYLC in short) is a freeware drawing tool developed with help of the large online community of DIY electronics enthusiasts. The goal is to provide a simple interface and enough power to let the user draw schematics, board/chassis layouts and guitar wiring diagrams quickly and without a steep learning curve. Also, it is built around a flexible open source framework that may be used to draw pretty much anything.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+    <image type="source">http://diy-fever.com/wordpress/wp-content/gallery/diylc/diylc_3_36_rangemaster.png</image>
+    <caption>First look</caption>
+    </screenshot>
+    <screenshot>
+    <image type="source">https://scfxguide.files.wordpress.com/2016/01/diylc1-e1453557339678.png</image>
+    <caption>Second look</caption>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/bancika/diy-layout-creator</url>
+  <update_contact>nbenitezl_AT_gmail.com</update_contact>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="4.15.1" date="2021-01-04">
+    <description>
+      <ul>
+        <li>[Bug Fix] macOS: issues with scrollable toolbar that prevent it from starting on mac machines.</li>
+      </ul>
+    </description>
+    <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.15.1</url>
+    </release>
+  </releases>
+</component>
