@@ -3485,7 +3485,11 @@
 			</versionNumber>
 			<releaseDate>2021-01-04 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>				
+			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Flatpak integration for easier deployments to Linux systems</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved code robustness</description>
