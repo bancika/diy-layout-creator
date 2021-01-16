@@ -99,7 +99,7 @@ public class ColorEditor extends JPanel {
       colorLabel.setOpaque(true);
       colorLabel.setHorizontalAlignment(SwingConstants.CENTER);
       colorLabel.setBorder(BorderFactory.createEtchedBorder());
-      colorLabel.setBackground((Color) property.getValue());
+      colorLabel.setBackground(new Color(((Color) property.getValue()).getRGB()));
       colorLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
       colorLabel.addMouseListener(new MouseAdapter() {
 
@@ -108,9 +108,14 @@ public class ColorEditor extends JPanel {
           Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color", getBackground());
           if (newColor != null) {
             property.setChanged(true);
-            property.setValue(newColor);
-            getColorLabel().setBackground(newColor);
-            getColorField().setText(Integer.toHexString(newColor.getRGB()).substring(2).toUpperCase());
+            property.setValue(new Color(newColor.getRGB()));            
+            if (newColor.getAlpha() == 255) {
+              getColorField().setText(Integer.toHexString(newColor.getRGB()).substring(2).toUpperCase());
+              getColorLabel().setBackground(newColor);
+            } else { // has alpha, convert to RGBA
+              getColorField().setText(Integer.toHexString(newColor.getRGB()).toUpperCase());
+              getColorLabel().setBackground(new Color(newColor.getRGB()));
+            }
           }
         }
       });
@@ -120,10 +125,19 @@ public class ColorEditor extends JPanel {
 
   public JTextField getColorField() {
     if (colorField == null) {
-      Color color = (Color) property.getValue();
-      colorField =
-          new JTextField(property.isUnique() ? Integer.toHexString(color.getRGB()).substring(2).toUpperCase() : "");
-      colorField.setColumns(6);
+      Color color = (Color) property.getValue();      
+      
+      colorField = new JTextField();
+      
+      if (property.isUnique()) {
+        if (color.getAlpha() == 255) {
+          colorField.setText(Integer.toHexString(color.getRGB()).substring(2).toUpperCase());
+        } else { // has alpha, convert to RGBA
+          colorField.setText(Integer.toHexString((color.getRGB())).toUpperCase());
+        }
+      }
+      
+      colorField.setColumns(8);
       colorField.getDocument().addDocumentListener(new DocumentListener() {
 
         @Override
@@ -150,6 +164,15 @@ public class ColorEditor extends JPanel {
       Color newColor = Color.decode("#" + getColorField().getText());
       if (newColor != null && getColorLabel().getBackground() != newColor) {
         getColorLabel().setBackground(newColor);
+        getColorLabel().setText(title);
+        property.setChanged(true);
+        property.setValue(newColor);
+      }
+    } else if (getColorField().getText().length() == 8) {
+      int rgba = (int)Long.parseLong(getColorField().getText(), 16);
+      Color newColor = new Color(rgba, true);
+      if (newColor != null && getColorLabel().getBackground() != newColor) {
+        getColorLabel().setBackground(new Color(newColor.getRGB()));
         getColorLabel().setText(title);
         property.setChanged(true);
         property.setValue(newColor);

@@ -38,13 +38,25 @@ public class ColorConverter extends com.thoughtworks.xstream.converters.extended
   @Override
   public void marshal(Object object, HierarchicalStreamWriter writer, MarshallingContext context) {
     Color c = (Color) object;
-    writer.addAttribute("hex", String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()));
+    if (c.getAlpha() == 255) {
+      writer.addAttribute("hex", String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()));
+    } else {
+      writer.addAttribute("hex", String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()));
+      writer.addAttribute("alpha", String.format("%02x", c.getAlpha()));
+    }
   }
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    if (reader.getAttribute("hex") != null)
-      return Color.decode("#" + reader.getAttribute("hex"));
+    if (reader.getAttribute("hex") != null) {
+      String hex = reader.getAttribute("hex");
+      String alpha = reader.getAttribute("alpha");
+      Color color =  Color.decode("#" + hex);
+      if (alpha == null)
+        return color;
+      else
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int)Long.parseLong(alpha, 16));      
+    }
     return super.unmarshal(reader, context);
   }
 

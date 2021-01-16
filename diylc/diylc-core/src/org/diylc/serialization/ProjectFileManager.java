@@ -107,7 +107,7 @@ public class ProjectFileManager {
     xStream.alias("point", java.awt.geom.Point2D.class);
     xStream.alias("point", java.awt.geom.Point2D.Double.class);
     xStream.alias("font", java.awt.Font.class);
-//    xStream.alias("color", java.awt.Color.class);
+    xStream.alias("color", java.awt.Color.class);
     xStream.alias("project", Project.class);
     xStream.aliasPackage("diylc", "org.diylc.components");
     xStream.registerConverter(new PointConverter());
