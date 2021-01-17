@@ -3493,7 +3493,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>When editing component colors, honor the specified 'alpha' value specified on each color individually in addition to the component-level alpha property</description>
-				</org.diylc.appframework.update.Change>			
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Single click to expand and collapse categories in the component tree</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved code robustness</description>
