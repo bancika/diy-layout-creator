@@ -196,6 +196,7 @@ public class TreePanel extends JPanel {
       tree.setCellRenderer(new ComponentCellRenderer());
       tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
       tree.setRowHeight(0);
+      tree.setToggleClickCount(1);
       ToolTipManager.sharedInstance().registerComponent(tree);
 
       tree.addTreeSelectionListener(new TreeSelectionListener() {

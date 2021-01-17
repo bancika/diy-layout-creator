@@ -121,7 +121,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
 
     this.plugInPort = new Presenter(this, configManager);
-    this.plugInPort.installPlugin(new IPlugIn() {
+    this.plugInPort.installPlugin(() -> new IPlugIn() {
 
       @SuppressWarnings("incomplete-switch")
       @Override

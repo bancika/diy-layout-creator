@@ -152,7 +152,7 @@ public class LangUtil {
       Collections.sort(res);
       return res;
     } catch (Exception e) {
-      LOG.error("Error fetching available languages");
+      LOG.error("Error fetching available languages", e);
       return null;
     }
   }

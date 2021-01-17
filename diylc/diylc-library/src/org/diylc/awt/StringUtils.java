@@ -112,6 +112,12 @@ public class StringUtils {
       }
       if (pos == -1)
         pos = guess; // Split in the middle of the word
+      
+      // if we couldn't find a match, expand maxWidth
+      if (pos <= 0) {
+        maxWidth++;
+        continue;
+      }
 
       list.add(line.substring(0, pos).trim());
       line = line.substring(pos).trim();
