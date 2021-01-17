@@ -105,7 +105,7 @@ public class ColorEditor extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-          Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color", getBackground());
+          Color newColor = JColorChooser.showDialog(ColorEditor.this, "Choose Color", colorLabel.getBackground());
           if (newColor != null) {
             property.setChanged(true);
             property.setValue(new Color(newColor.getRGB()));            
