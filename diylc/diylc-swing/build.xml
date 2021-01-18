@@ -160,6 +160,8 @@
 			<zipfileset dir="." includes="diylc.l4j.ini" />
 			<zipfileset dir="." includes="diylc.exe" />
 			<zipfileset dir="icons" includes="*.png" prefix="icons" />
+			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.desktop" />
+			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.metainfo.xml" />
 		</zip>
 	</target>
 
