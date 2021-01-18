@@ -6,10 +6,16 @@
   <project_license>GPL-3.0-only</project_license>
   <developer_name>Branislav Stojkovic (bancika)</developer_name>
   <name>DIY Layout Creator</name>
-  <summary>Multi platform circuit layout and schematic drawing tool</summary>
+  <summary>Circuit layout design tool supporting PCB, vero-board, point-to-point, perf-board and guitar wiring diagrams</summary>
   <description>
     <p>
-    	DIY Layout Creator (DIYLC in short) is a freeware drawing tool developed with help of the large online community of DIY electronics enthusiasts. The goal is to provide a simple interface and enough power to let the user draw schematics, board/chassis layouts and guitar wiring diagrams quickly and without a steep learning curve. Also, it is built around a flexible open source framework that may be used to draw pretty much anything.
+      DIY Layout Creator (DIYLC in short) is a powerful, but simple to use and intuitive tool for visualizing electronic circuit schematic and layout diagrams. It provides a simple WYSIWYG interface and supports designing PCB, vero-board, point-to-point, perf-board and guitar wiring diagrams as well as circuit schematics quickly and without the steep learning curve.
+    </p>
+    <p>
+      In addition to drawing, the projects can be shared with other users through the integrated 'Cloud' feature. Guitar wiring diagrams can be analyzed and debugged.
+    </p>
+    <p>
+      DIYLC is geared towards DIY hobby enthusiasts and is developed by an enthusiast with the help of the large community of DIY builders.
     </p>
   </description>
   <screenshots>
@@ -23,6 +29,11 @@
     </screenshot>
   </screenshots>
   <url type="homepage">https://github.com/bancika/diy-layout-creator</url>
+  <url type="bugtracker">https://github.com/bancika/diy-layout-creator/issues</url>
+  <url type="donation">http://diy-fever.com/donate</url>
+  <url type="help">https://github.com/bancika/diy-layout-creator/tree/wiki</url>
+  <url type="faq">https://github.com/bancika/diy-layout-creator/blob/wiki/FAQ.md</url>
+  <url type="contact">bancika_AT_gmail.com</url>
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
