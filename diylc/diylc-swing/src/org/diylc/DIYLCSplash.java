@@ -1,10 +1,6 @@
 package org.diylc;
 
-import java.awt.AlphaComposite;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.ImageIcon;
@@ -60,7 +56,7 @@ public class DIYLCSplash extends JDialog {
 						}
 					});
 					try {
-						Thread.sleep(10);
+						Thread.sleep(14);
 					} catch (InterruptedException e) {
 					}
 				}
@@ -72,9 +68,10 @@ public class DIYLCSplash extends JDialog {
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
+
 		g2d.setComposite(AlphaComposite.SrcOver);
 		getSplash().paintIcon(null, g, 0, 0);
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f - frameNumber * 0.007f));
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 		getResistor().paintIcon(null, g, resistorTarget.x - pxPerFrame * frameNumber, resistorTarget.y);
 		getFilm().paintIcon(null, g, filmTarget.x, filmTarget.y + pxPerFrame * frameNumber);
 		getElectrolytic().paintIcon(null, g, electrolyticTarget.x, electrolyticTarget.y - pxPerFrame * frameNumber);
