@@ -79,7 +79,7 @@ public interface IServiceAPI {
    * Retrieves current user's details.
    * 
    * @param username
-   * @param password
+   * @param token
    * @param machineId
    * @return string with an error message if it fails, or an instance of {@link UserEntity} if it
    *         succeeds.
