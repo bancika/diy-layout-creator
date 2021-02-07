@@ -3530,6 +3530,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Slightly fancier splash screen :)</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed a major memory leak when using Undo functionality</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
