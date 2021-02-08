@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
@@ -41,6 +42,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.MultiLineText;
 
 @ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined label", instanceNamePrefix = "L", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
@@ -68,40 +70,9 @@ public class Label extends AbstractComponent<String> {
       IDrawingObserver drawingObserver) {
     g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : color);
     g2d.setFont(font);
-    FontMetrics fontMetrics = g2d.getFontMetrics();
-    Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);
-
-    int textHeight = (int) rect.getHeight();
-    int textWidth = (int) rect.getWidth();
-
+   
     double x = point.getX();
     double y = point.getY();
-    switch (getVerticalAlignment()) {
-      case CENTER:
-        y = point.getY() - textHeight / 2 + fontMetrics.getAscent();
-        break;
-      case TOP:
-        y = point.getY() - textHeight + fontMetrics.getAscent();
-        break;
-      case BOTTOM:
-        y = point.getY() + fontMetrics.getAscent();
-        break;
-      default:
-        throw new RuntimeException("Unexpected alignment: " + getVerticalAlignment());
-    }
-    switch (getHorizontalAlignment()) {
-      case CENTER:
-        x = point.getX() - textWidth / 2;
-        break;
-      case LEFT:
-        x = point.getX();
-        break;
-      case RIGHT:
-        x = point.getX() - textWidth;
-        break;
-      default:
-        throw new RuntimeException("Unexpected alignment: " + getHorizontalAlignment());
-    }
 
     switch (getOrientation()) {
       case _90:
@@ -114,7 +85,8 @@ public class Label extends AbstractComponent<String> {
         g2d.rotate(Math.PI * 3 / 2, point.getX(), point.getY());
         break;
     }
-    g2d.drawString(text, (int)x, (int)y);
+    
+    StringUtils.drawCenteredText(g2d, text, x, y, getHorizontalAlignment(), getVerticalAlignment());    
   }
 
   @Override
@@ -274,6 +246,7 @@ public class Label extends AbstractComponent<String> {
   }
 
   @EditableProperty(name="Text", defaultable = false)
+  @MultiLineText
   @Override
   public String getValue() {
     return text;
