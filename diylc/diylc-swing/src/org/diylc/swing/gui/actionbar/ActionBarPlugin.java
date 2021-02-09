@@ -163,8 +163,8 @@ public class ActionBarPlugin implements IPlugIn {
       configToolbar.add(new JLabel(" "));
       
       configToolbar.add(LangUtil.translate("Continuous Creation"), IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
-      configToolbar.add(LangUtil.translate("Highlight Connected Areas"), IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
-      configToolbar.add(LangUtil.translate("Sticky Points"), IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);
+      configToolbar.add(LangUtil.translate("Highlight Connected Areas") + " (Alt)", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
+      configToolbar.add(LangUtil.translate("Sticky Points") + " (Ctrl)", IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);
     }
     return configToolbar;
   }
