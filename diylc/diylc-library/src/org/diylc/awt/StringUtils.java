@@ -28,8 +28,10 @@ import java.awt.Rectangle;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.VerticalAlignment;
@@ -70,7 +72,8 @@ public class StringUtils {
    * @return a non-empty list of strings
    */
   public static List<String> wrap(String str, FontMetrics fm, int maxWidth) {
-    List<String> lines = splitIntoLines(str);
+    String[] split = str.split("\\<br\\>");
+    List<String> lines = Arrays.stream(split).flatMap(s -> splitIntoLines(s).stream()).collect(Collectors.toList());
     if (lines.size() == 0)
       return lines;
 
@@ -203,7 +206,7 @@ public class StringUtils {
 
   public static void drawCenteredText(Graphics2D g2d, String text, double x, double y, HorizontalAlignment horizontalAlignment,
       VerticalAlignment verticalAlignment) {
-    String[] parts = text.split("\n");
+    String[] parts = text.split("\\<br\\>");
     if (parts.length > 1) {
       FontMetrics fontMetrics = g2d.getFontMetrics();
       Rectangle stringBounds = fontMetrics.getStringBounds(parts[0], g2d).getBounds();
@@ -244,7 +247,7 @@ public class StringUtils {
       case BOTTOM:
         textY = y - visualBounds.y;
         break;
-    }
+    }   
 
     g2d.drawString(text, (int)Math.round(textX), (int)Math.round(textY));
   }

@@ -312,6 +312,7 @@ public class Presenter implements IPlugInPort {
     this.currentProject = project;
     drawingManager.clearComponentAreaMap();
     drawingManager.clearContinuityArea();
+    DrawingCache.Instance.clear();
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart, filename);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -326,8 +327,7 @@ public class Presenter implements IPlugInPort {
       Project project = new Project();
       instantiationManager.fillWithDefaultProperties(project, null);
       loadProject(project, true, null);
-      projectFileManager.startNewFile();
-      DrawingCache.Instance.clear();
+      projectFileManager.startNewFile();      
     } catch (Exception e) {
       LOG.error("Could not create new file", e);
       view.showMessage(ERROR_NEW, ERROR, IView.ERROR_MESSAGE);
@@ -353,7 +353,6 @@ public class Presenter implements IPlugInPort {
         view.showMessage(builder.toString(), WARNING, IView.WARNING_MESSAGE);
       }
       addToRecentFiles(fileName);
-      DrawingCache.Instance.clear();
     } catch (Exception ex) {
       LOG.error("Could not load file", ex);
       String errorMessage = "Could not open file " + fileName + ". Check the log for details.";

@@ -79,7 +79,7 @@ public interface IServiceAPI {
    * Retrieves current user's details.
    * 
    * @param username
-   * @param password
+   * @param token
    * @param machineId
    * @return string with an error message if it fails, or an instance of {@link UserEntity} if it
    *         succeeds.
@@ -91,7 +91,7 @@ public interface IServiceAPI {
    * Tries to authenticate with the token that was previously created by calling login() function.
    * 
    * @param username
-   * @param password
+   * @param token
    * @param machineId
    * @return "Success" if the login is successful or error message if it failed.
    */
@@ -102,9 +102,8 @@ public interface IServiceAPI {
    * Updates password of the current user using token to authenticate.
    * 
    * @param username
-   * @param token
-   * @param machineId
-   * @param password
+   * @param oldPassword
+   * @param newPassword
    * @return "Success" if the login is successful or error message if it failed.
    */
   String updatePassword(@ParamName("username") String username, @ParamName("oldPassword") String oldPassword,
