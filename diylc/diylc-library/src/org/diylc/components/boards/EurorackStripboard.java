@@ -107,7 +107,7 @@ public class EurorackStripboard extends AbstractProtoBoard {
         segments.add(new Segment(6, 2 + i, 4, 1, "CenterLeft" + (2 + i)));
         segments.add(new Segment(10, 2 + i, 5, 1, "CenterRight" + (2 + i)));
       }
-      segments.add(new Segment(6, 2 + 29, 4, 1, "CenterRight29"));
+      segments.add(new Segment(6, 2 + 29, 4, 1, "CenterLeft31"));
 
       segments.add(new Segment(15, 3, 1, 30, "-"));
       segments.add(new Segment(16, 3, 1, 30, "GND"));
