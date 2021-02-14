@@ -163,6 +163,7 @@
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.desktop" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.metainfo.xml" />
 		</zip>
+		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
 
 	<target name="full" depends="win,universal,mac" />
