@@ -33,7 +33,7 @@
   <url type="donation">http://diy-fever.com/donate</url>
   <url type="help">https://github.com/bancika/diy-layout-creator/tree/wiki</url>
   <url type="faq">https://github.com/bancika/diy-layout-creator/blob/wiki/FAQ.md</url>
-  <url type="contact">bancika_AT_gmail.com</url>
+  <url type="contact">mailto:bancika_AT_gmail.com</url>
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
