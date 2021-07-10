@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.components.misc.LoadlineEntity;
+import org.diylc.core.annotations.ByteArrayProperty;
 import org.diylc.core.annotations.DynamicList;
 import org.diylc.core.annotations.MultiLineText;
 import org.diylc.core.measures.AbstractMeasure;
@@ -78,7 +79,16 @@ public class FieldEditorFactory {
         return editor;
       }
     if (byte[].class.isAssignableFrom(property.getType())) {
-      ImageEditor editor = new ImageEditor(property);
+      ByteArrayProperty annotation = null;
+      try {
+        property.getGetter().isAnnotationPresent(ByteArrayProperty.class);
+        annotation = property.getGetter().getAnnotation(ByteArrayProperty.class);   
+      } catch (SecurityException e) {
+        LOG.error("Error while reading ByteArrayProperty annotation", e);
+      } catch (NoSuchMethodException e) {
+        LOG.error("Error while reading ByteArrayProperty annotation", e);
+      }         
+      ImageEditor editor = new ImageEditor(property, annotation == null ? null : annotation.binaryType());
       return editor;
     }
     if (property.getType().isEnum()) {

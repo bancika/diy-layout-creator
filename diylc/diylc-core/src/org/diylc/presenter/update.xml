@@ -3553,7 +3553,11 @@
 			</versionNumber>
 			<releaseDate>2021-02-14 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>			
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'SVG Image' component, to allow importing vector graphics into projects</description>
+				</org.diylc.appframework.update.Change>			
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Mini Toggle Switch - lugs do not get rotated when changing orientation; rotate from the context menu doesn't work</description>

@@ -18,21 +18,19 @@
 package org.diylc.components.misc;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.util.Random;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
+import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
-import org.diylc.appframework.miscutils.IconImageConverter;
-import org.diylc.awt.ImageUtils;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
@@ -49,80 +47,73 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PercentEditor;
 
-import com.thoughtworks.xstream.annotations.XStreamConverter;
+import com.kitfox.svg.SVGDiagram;
+import com.kitfox.svg.SVGException;
+import com.kitfox.svg.SVGUniverse;
 
-@ComponentDescriptor(name = "Image", author = "Branislav Stojkovic", category = "Misc",
-    description = "User defined image", instanceNamePrefix = "Img", zOrder = IDIYComponent.COMPONENT,
-    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, transformer = ImageTransformer.class)
-public class Image extends AbstractTransparentComponent<Void> {
+@ComponentDescriptor(name = "SVG Image", author = "Branislav Stojkovic", category = "Misc",
+    description = "Scalable Vector Graphics", instanceNamePrefix = "Svg",
+    zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
+    transformer = ImageTransformer.class)
+public class SVGImage extends AbstractTransparentComponent<Void> {
+
+  private static final Logger LOG = Logger.getLogger(SVGImage.class);
 
   private static final long serialVersionUID = 1L;
   public static String DEFAULT_TEXT = "Double click to edit text";
-  private static ImageIcon ICON;
   private static byte DEFAULT_SCALE = 25;
-  
+
   private Point2D.Double point = new Point2D.Double(0, 0);
   private Point2D.Double secondPoint = null;
-  
+
   private Orientation orientation;
-
-  static {
-    String name = "image.png";
-    java.net.URL imgURL = Image.class.getResource(name);
-    if (imgURL != null) {
-      ICON = new ImageIcon(imgURL, name);
-    }
-  }
-
+  
   @Override
   public String getControlPointNodeName(int index) {
     return null;
-  }  
+  }
 
-  @XStreamConverter(IconImageConverter.class)
-  @Deprecated
-  private ImageIcon image;
   private byte[] data;
   private Byte scale;
   private byte newScale = DEFAULT_SCALE;
   private ImageSizingMode sizingMode = ImageSizingMode.Scale;
+  private transient SVGDiagram svgDiagram;
 
-  public Image() {
+  public SVGImage() {
     try {
-      data = IOUtils.toByteArray(Image.class.getResourceAsStream("image.png"));
+      data = IOUtils.toByteArray(SVGImage.class.getResourceAsStream("diylc.svg"));
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   @Override
-  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver) {
     double scaleX;
     double scaleY;
-    ImageIcon imageIcon = getImage();
+    SVGDiagram svgDiagram = getSvgDiagram();
     if (getSizingMode() == ImageSizingMode.Scale) {
       scaleX = scaleY = 1d * getScale() / DEFAULT_SCALE;
     } else {
       Point2D secondPoint = getControlPoint(1);
-      scaleX = 1d * Math.abs(point.getX() - secondPoint.getX()) / imageIcon.getIconWidth();
-      scaleY = 1d * Math.abs(point.getY() - secondPoint.getY()) / imageIcon.getIconHeight();
+      scaleX = 1d * Math.abs(point.getX() - secondPoint.getX()) / svgDiagram.getWidth();
+      scaleY = 1d * Math.abs(point.getY() - secondPoint.getY()) / svgDiagram.getHeight();
     }
-    
+
     Shape clip = g2d.getClip().getBounds();
-    if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(), imageIcon.getIconWidth() * scaleX, imageIcon
-        .getIconHeight() * scaleY))) {
+    if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(),
+        svgDiagram.getWidth() * scaleX, svgDiagram.getHeight() * scaleY))) {
       return;
     }
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
-    
+
     double x;
     double y;
-    if (getSizingMode() == ImageSizingMode.Scale)
-    {
+    if (getSizingMode() == ImageSizingMode.Scale) {
       x = point.getX();
       y = point.getY();
     } else {
@@ -130,27 +121,45 @@ public class Image extends AbstractTransparentComponent<Void> {
       x = Math.min(point.getX(), secondPoint.getX());
       y = Math.min(point.getY(), secondPoint.getY());
     }
-    
+
     if (getOrientation() != Orientation.DEFAULT) {
       double theta = getOrientation().toRadians();
       g2d.rotate(theta, x, y);
     }
 
     g2d.scale(scaleX, scaleY);
-    
-    g2d.drawImage(imageIcon.getImage(), (int) (x / scaleX), (int) (y / scaleY), null);
+
+    g2d.translate(x / scaleX, y / scaleY);
+
+    try {
+      svgDiagram.render(g2d);
+    } catch (SVGException e) {
+      LOG.error("Error rendering SVG", e);
+    }
+
     if (componentState == ComponentState.SELECTED) {
+      g2d.translate(-x / scaleX, -y / scaleY);
       g2d.setComposite(oldComposite);
       g2d.scale(1 / scaleX, 1 / scaleY);
       g2d.setColor(SELECTION_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-      g2d.drawRect((int)x, (int)y, (int) (imageIcon.getIconWidth() * scaleX), (int) (imageIcon.getIconHeight() * scaleY));
+      g2d.drawRect((int) x, (int) y, (int) (svgDiagram.getWidth() * scaleX),
+          (int) (svgDiagram.getHeight() * scaleY));
     }
   }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    g2d.drawImage(ICON.getImage(), (int)point.getX(), (int)point.getY(), null);
+    int factor = 32 / width;
+    g2d.setColor(Color.decode("#91D4FF"));
+    g2d.fillOval(2 / factor, 2 / factor, width / 2 + 2 / factor, height / 2 + 2 / factor);
+    g2d.setColor(Color.decode("#91D4FF").darker());
+    g2d.drawOval(2 / factor, 2 / factor, width / 2 + 2 / factor, height / 2 + 2 / factor);
+    
+    g2d.setColor(Color.decode("#A2D383"));
+    g2d.fillRect(width / 2 - 2 / factor, height / 2 - 2 / factor, width / 2, height / 2);
+    g2d.setColor(Color.decode("#A2D383").darker());
+    g2d.drawRect(width / 2 - 2 / factor, height / 2 - 2 / factor, width / 2, height / 2);
   }
 
   @Override
@@ -163,10 +172,26 @@ public class Image extends AbstractTransparentComponent<Void> {
     if (index == 0)
       return point;
     if (secondPoint == null) {
-      ImageIcon imageIcon = getImage();
-      secondPoint = new Point2D.Double(point.getX() + imageIcon.getIconWidth(), point.getY() + imageIcon.getIconHeight());
+      SVGDiagram svgDiagram = getSvgDiagram();
+      secondPoint = new Point2D.Double(point.getX() + svgDiagram.getWidth(),
+          point.getY() + svgDiagram.getHeight());
     }
     return secondPoint;
+  }
+
+  private SVGDiagram getSvgDiagram() {
+    if (svgDiagram == null) {
+      ByteArrayInputStream bis = new ByteArrayInputStream(data);
+      SVGUniverse universe = new SVGUniverse();
+      try {
+        URI url = universe.loadSVG(bis, "SVG-" + Integer.toHexString(new Random(System.currentTimeMillis()).nextInt()));
+        svgDiagram = universe.getDiagram(url);  
+        svgDiagram.setIgnoringClipHeuristic(true);
+      } catch (IOException e) {
+        LOG.error("Error loading SVG", e);
+      }
+    }
+    return svgDiagram;
   }
 
   @Override
@@ -176,7 +201,8 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return getSizingMode() == ImageSizingMode.Scale ? VisibilityPolicy.NEVER : VisibilityPolicy.WHEN_SELECTED;
+    return getSizingMode() == ImageSizingMode.Scale ? VisibilityPolicy.NEVER
+        : VisibilityPolicy.WHEN_SELECTED;
   }
 
   @Override
@@ -191,25 +217,7 @@ public class Image extends AbstractTransparentComponent<Void> {
     }
   }
 
-  public ImageIcon getImage() {
-    if (image != null) {
-      // when loading old files, convert the stored image to byte array and then then discard it, we won't be needing it anymore
-      BufferedImage bi = ImageUtils.ToBufferedImage(image.getImage());
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      try {
-        ImageIO.write(bi, "png", baos);
-        // make it official
-        data = baos.toByteArray();
-      } catch (IOException e) {
-      }      
-      // don't save back to the file
-      image = null;
-    }
-
-    return new ImageIcon(data);
-  }
-
-  @ByteArrayProperty(binaryType = BinaryType.IMAGE)
+  @ByteArrayProperty(binaryType = BinaryType.SVG)
   @EditableProperty(name = "Image")
   public byte[] getData() {
     return data;
@@ -217,11 +225,7 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   public void setData(byte[] data) {
     this.data = data;
-    this.image = null;
-    if (getSizingMode() == ImageSizingMode.TwoPoints) {
-      ImageIcon imageIcon = getImage();
-      setControlPoint(new Point2D.Double(point.getX() + imageIcon.getIconWidth(), point.getY() + imageIcon.getIconHeight()), 1);
-    }
+    this.svgDiagram = null;
   }
 
   @PercentEditor(_100PercentValue = 25)
@@ -247,41 +251,41 @@ public class Image extends AbstractTransparentComponent<Void> {
   public Void getValue() {
     return null;
   }
-  
+
   @EditableProperty(name = "Sizing Mode")
   public ImageSizingMode getSizingMode() {
     if (sizingMode == null)
       sizingMode = ImageSizingMode.Scale;
     return sizingMode;
   }
-  
+
   public void setSizingMode(ImageSizingMode sizingMode) {
     this.sizingMode = sizingMode;
   }
 
   @Override
   public void setValue(Void value) {}
-  
+
   @EditableProperty
   public Orientation getOrientation() {
     if (orientation == null)
       orientation = Orientation.DEFAULT;
     return orientation;
   }
-  
+
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
   }
-  
+
   public static enum ImageSizingMode {
     TwoPoints("Opposing Points"), Scale("Scale");
-    
+
     private String label;
 
     private ImageSizingMode(String label) {
       this.label = label;
     }
-    
+
     @Override
     public String toString() {
       return label;
