@@ -37,6 +37,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.MiniToggleSwitchTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -53,7 +54,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "SW", autoEdit = false, enableCache = true)
+    instanceNamePrefix = "SW", autoEdit = false, enableCache = true, transformer = MiniToggleSwitchTransformer.class)
 public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
@@ -287,8 +288,18 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     drawingObserver.stopTracking();
     // Draw lugs.
     int circleDiameter = getClosestOdd((int) CIRCLE_SIZE.convertToPixels());
-    int lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
-    int lugHeight = getClosestOdd((int) LUG_THICKNESS.convertToPixels());
+    
+    int lugWidth;
+    int lugHeight;
+    
+    if (getOrientation() == OrientationHV.HORIZONTAL) {
+      lugHeight = getClosestOdd((int) LUG_WIDTH.convertToPixels());
+      lugWidth = getClosestOdd((int) LUG_THICKNESS.convertToPixels());
+    } else {
+      lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
+      lugHeight = getClosestOdd((int) LUG_THICKNESS.convertToPixels());  
+    }
+    
     for (Point2D p : controlPoints) {
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
