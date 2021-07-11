@@ -70,7 +70,7 @@ public class VeroBoard extends AbstractVeroBoard {
       int spacing = (int) this.spacing.convertToPixels();
 
       if (orientation == OrientationHV.HORIZONTAL) {
-        while (y < finalSecondPoint.getY() - spacing) {
+        while (y < finalSecondPoint.getY() - spacing - stripSize / 2) {
           x = firstPoint.getX();
           y += spacing;
           g2d.setColor(stripColor);

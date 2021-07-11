@@ -80,7 +80,7 @@ public class PerfBoard extends AbstractBoard {
       int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());
       double spacing = this.spacing.convertToPixels();
 
-      while (y < finalSecondPoint.getY() - spacing) {
+      while (y < finalSecondPoint.getY() - spacing - diameter / 2) {
         x = firstPoint.getX();
         y += spacing;
         while (x < finalSecondPoint.getX() - spacing - diameter) {

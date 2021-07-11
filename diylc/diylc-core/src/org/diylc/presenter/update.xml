@@ -3562,6 +3562,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Mini Toggle Switch - lugs do not get rotated when changing orientation; rotate from the context menu doesn't work</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue with Perf Board, Vero Board and TriPad Board sometimes rendering an extra row with pads when there's no space for them</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
