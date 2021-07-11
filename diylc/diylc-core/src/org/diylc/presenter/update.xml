@@ -3545,5 +3545,29 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>18</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2021-07-11 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'SVG Image' component, to allow importing vector graphics into projects</description>
+				</org.diylc.appframework.update.Change>			
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Mini Toggle Switch - lugs do not get rotated when changing orientation; rotate from the context menu doesn't work</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue with Perf Board, Vero Board and TriPad Board sometimes rendering an extra row with pads when there's no space for them</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

@@ -71,7 +71,7 @@ public class TriPadBoard extends AbstractVeroBoard {
       double spacing = this.spacing.convertToPixels();
 
       if (orientation == OrientationHV.HORIZONTAL) {
-        while (y < finalSecondPoint.getY() - spacing) {
+        while (y < finalSecondPoint.getY() - spacing - stripSize / 2) {
           x = firstPoint.getX();
           y += spacing;
 

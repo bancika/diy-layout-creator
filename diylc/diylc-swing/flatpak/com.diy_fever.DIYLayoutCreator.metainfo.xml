@@ -33,10 +33,31 @@
   <url type="donation">http://diy-fever.com/donate</url>
   <url type="help">https://github.com/bancika/diy-layout-creator/tree/wiki</url>
   <url type="faq">https://github.com/bancika/diy-layout-creator/blob/wiki/FAQ.md</url>
-  <url type="contact">bancika_AT_gmail.com</url>
+  <!--<url type="contact">mailto:bancika_AT_gmail.com</url>-->
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+	<release version="4.18.0" date="2021-07-11">
+	  <description>
+	    <ul>
+	      <li>[New Feature] Added 'SVG Image' component, to allow importing vector graphics into projects</li>
+	      <li>[Bug Fix] Mini Toggle Switch - lugs do not get rotated when changing orientation; rotate from the context menu doesn't work</li>
+	      <li>[Bug Fix] Fixed the issue with Perf Board, Vero Board and TriPad Board sometimes rendering an extra row with pads when there's no space for them</li>
+	    </ul>
+	  </description>
+	  <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.18.0</url>
+	</release>
+	<release version="4.17.0" date="2021-02-14">
+	  <description>
+	    <ul>
+	      <li>[New Feature] Added 'Eurorack Stripboard' component, designed by David Haillant</li>
+	      <li>[New Feature] Allow multi-line text in label components</li>
+	      <li>[Improvement] Slightly fancier splash screen :)</li>
+	      <li>[Bug Fix] Fixed a major memory leak when using Undo functionality</li>
+	    </ul>
+	  </description>
+	  <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.17.0</url>
+	</release>
     <release version="4.16.0" date="2021-01-17">
       <description>
         <ul>

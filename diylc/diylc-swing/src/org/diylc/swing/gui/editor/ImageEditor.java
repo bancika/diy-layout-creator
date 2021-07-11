@@ -27,6 +27,7 @@ import javax.swing.JButton;
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.annotations.BinaryType;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 
@@ -38,16 +39,19 @@ public class ImageEditor extends JButton {
 
   private static final String title = "Click to load image file";
 
-  public ImageEditor(final PropertyWrapper property) {
+  private BinaryType binaryType;
+
+  public ImageEditor(final PropertyWrapper property, BinaryType binaryType) {
     super(property.isUnique() ? title : ("(multi value) " + title));
+    this.binaryType = binaryType;
     if (property.isReadOnly())
       setEnabled(false);
     addActionListener(new ActionListener() {
 
       @Override
       public void actionPerformed(java.awt.event.ActionEvent e) {
-        File file = DialogFactory.getInstance().showOpenDialog(FileFilterEnum.IMAGES.getFilter(),
-            null, FileFilterEnum.IMAGES.getExtensions()[0], null);
+        File file = DialogFactory.getInstance().showOpenDialog(getFileFilterEnum().getFilter(),
+            null, getFileFilterEnum().getExtensions()[0], null);
         if (file != null) {
           property.setChanged(true);
           FileInputStream fis;
@@ -62,6 +66,13 @@ public class ImageEditor extends JButton {
         }
       }
     });
+  }
+  
+  private FileFilterEnum getFileFilterEnum() {
+    if (binaryType == BinaryType.SVG) {
+      return FileFilterEnum.SVG;
+    }
+    return FileFilterEnum.IMAGES;
   }
 
   // @Override
