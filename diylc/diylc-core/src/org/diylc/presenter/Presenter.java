@@ -57,6 +57,7 @@ import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
+import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
@@ -1699,9 +1700,9 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup, boolean assignNewNames) {
-    LOG.info(String.format("pasteComponents(%s, %s, %s)", components, autoGroup, assignNewNames));
-    instantiationManager.pasteComponents(components, this.previousScaledPoint, isSnapToGrid(),
+  public void pasteComponents(ComponentTransferable componentTransferable, boolean autoGroup, boolean assignNewNames) {
+    LOG.info(String.format("pasteComponents(%s, %s, %s)", componentTransferable, autoGroup, assignNewNames));
+    instantiationManager.pasteComponents(componentTransferable, this.previousScaledPoint, isSnapToGrid(),
         currentProject.getGridSpacing(), autoGroup, this.currentProject, assignNewNames);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, instantiationManager.getComponentTypeSlot(),
@@ -2975,7 +2976,7 @@ public class Presenter implements IPlugInPort {
           LOG.error("Could not clone component: " + c);
         }
       // paste them to the project
-      pasteComponents(clones, true, true);
+      pasteComponents(new ComponentTransferable(clones), true, true);
     } else
       throw new InvalidBlockException();
   }

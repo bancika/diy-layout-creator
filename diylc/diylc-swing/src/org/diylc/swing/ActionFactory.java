@@ -31,7 +31,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -52,6 +51,8 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.clipboard.ComponentTransferable;
+import org.diylc.clipboard.ComponentTransferableFactory;
 import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
@@ -84,7 +85,6 @@ import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.config.ConfigPlugin;
-import org.diylc.swing.plugins.edit.ComponentTransferable;
 import org.diylc.swing.plugins.edit.FindDialog;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
@@ -463,7 +463,8 @@ public class ActionFactory {
             presenter.loadProjectFromFile(file.getAbsolutePath());
             // Grab all components and paste them into the main
             // presenter
-            plugInPort.pasteComponents(presenter.getCurrentProject().getComponents(), false, false);
+            plugInPort.pasteComponents(ComponentTransferableFactory.getInstance()
+                .build(presenter.getCurrentProject().getComponents(), presenter.getCurrentProject().getGroups()), false, false);
             // Cleanup components in the temp presenter, don't need
             // them anymore
             presenter.selectAll(0);
@@ -565,7 +566,7 @@ public class ActionFactory {
                 List<IDIYComponent<?>> components = parser.generateComponents(parsedComponents, outputWarnings);
                 if (!outputWarnings.isEmpty())
                   LOG.warn("Component creation produced warnings:\n" + String.join("\n", outputWarnings));
-                plugInPort.pasteComponents(components, false, false); 
+                plugInPort.pasteComponents(new ComponentTransferable(components), false, false); 
               }
             } catch (Exception e) {
               swingUI.showMessage("Could not import netlist file: " + e.getMessage(), "Error",
@@ -1245,7 +1246,7 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("Cut triggered");
       clipboard.setContents(
-          new ComponentTransferable(cloneComponents(plugInPort.getSelectedComponents())),
+          ComponentTransferableFactory.getInstance().build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroups()),          
           clipboardOwner);
       plugInPort.deleteSelectedComponents();
     }
@@ -1268,14 +1269,13 @@ public class ActionFactory {
       putValue(AbstractAction.SMALL_ICON, IconLoader.Paste.getIcon());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("Paste triggered");
       try {
-        List<IDIYComponent<?>> components =
-            (List<IDIYComponent<?>>) clipboard.getData(ComponentTransferable.listFlavor);
-        plugInPort.pasteComponents(cloneComponents(components), false,
+        ComponentTransferable componentTransferable =
+            (ComponentTransferable) clipboard.getData(ComponentTransferable.listFlavor);
+        plugInPort.pasteComponents(componentTransferable, false,
             ConfigurationManager.getInstance().readBoolean(Presenter.RENUMBER_ON_PASTE_KEY, true));
       } catch (Exception ex) {
         LOG.error("Coule not paste.", ex);
@@ -1306,7 +1306,7 @@ public class ActionFactory {
     public void actionPerformed(ActionEvent e) {
       LOG.info("Copy triggered");
       clipboard.setContents(
-          new ComponentTransferable(cloneComponents(plugInPort.getSelectedComponents())),
+          ComponentTransferableFactory.getInstance().build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroups()),          
           clipboardOwner);
     }
   }
@@ -1336,18 +1336,6 @@ public class ActionFactory {
         LOG.error("Coule not duplicate.", ex);
       }
     }
-  }
-
-  private static List<IDIYComponent<?>> cloneComponents(Collection<IDIYComponent<?>> components) {
-    List<IDIYComponent<?>> result = new ArrayList<IDIYComponent<?>>(components.size());
-    for (IDIYComponent<?> component : components) {
-      try {
-        result.add(component.clone());
-      } catch (CloneNotSupportedException e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return result;
   }
 
   public static class SelectAllAction extends AbstractAction {

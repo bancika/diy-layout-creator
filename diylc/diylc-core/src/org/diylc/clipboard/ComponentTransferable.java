@@ -19,15 +19,15 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.swing.plugins.edit;
+package org.diylc.clipboard;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import org.diylc.core.IDIYComponent;
 
@@ -37,18 +37,29 @@ import org.diylc.core.IDIYComponent;
  * 
  * @author Branislav Stojkovic
  */
-public class ComponentTransferable extends ArrayList<IDIYComponent<?>> implements Transferable {
+public class ComponentTransferable implements Transferable, Serializable {
 
   private static final long serialVersionUID = 1L;
 
   public static final DataFlavor listFlavor = new DataFlavor(ComponentTransferable.class, "application/diylc");
+  
+  private List<IDIYComponent<?>> components;
+  private Set<Set<IDIYComponent<?>>> groups;
 
   public ComponentTransferable() {
     super();
   }
+  
+  public ComponentTransferable(List<IDIYComponent<?>> components) {
+    super();
+    this.components = components;
+    this.groups = null;
+  }
 
-  public ComponentTransferable(Collection<IDIYComponent<?>> selectedComponents) {
-    super(selectedComponents);
+  public ComponentTransferable(List<IDIYComponent<?>> components, Set<Set<IDIYComponent<?>>> groups) {
+    super();
+    this.components = components;
+    this.groups = groups;
   }
 
   @Override
@@ -67,5 +78,13 @@ public class ComponentTransferable extends ArrayList<IDIYComponent<?>> implement
   @Override
   public boolean isDataFlavorSupported(DataFlavor flavor) {
     return flavor.equals(listFlavor);
+  }
+  
+  public List<IDIYComponent<?>> getComponents() {
+    return components;
+  }
+  
+  public Set<Set<IDIYComponent<?>>> getGroups() {
+    return groups;
   }
 }

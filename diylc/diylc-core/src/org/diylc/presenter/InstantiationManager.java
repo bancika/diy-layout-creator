@@ -25,7 +25,6 @@ import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +33,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
@@ -142,7 +142,7 @@ public class InstantiationManager {
   }
 
   @SuppressWarnings("unchecked")
-  public void pasteComponents(Collection<IDIYComponent<?>> components, Point2D scaledPoint, boolean snapToGrid,
+  public void pasteComponents(ComponentTransferable componentTransferable, Point2D scaledPoint, boolean snapToGrid,
       Size gridSpacing, boolean autoGroup, Project currentProject, boolean assignNewNames) {	  
     // Adjust location of components so they are centered under the mouse
     // cursor
@@ -156,6 +156,8 @@ public class InstantiationManager {
       existingNames.add(c.getName());
     
     List<IDIYComponent<?>> allComponents = new ArrayList<IDIYComponent<?>>(currentProject.getComponents());
+    
+    List<IDIYComponent<?>> components = componentTransferable.getComponents();
     
     for (IDIYComponent<?> component : components) {
       // assign a new name if it already exists in the project
@@ -211,6 +213,11 @@ public class InstantiationManager {
     }
     // Update the location according to mouse location
     updateSingleClick(scaledPoint, snapToGrid, gridSpacing);
+    
+    // copy group information if available
+    if (componentTransferable.getGroups() != null) {
+      currentProject.getGroups().addAll(componentTransferable.getGroups());
+    }
   }
   
   /**
