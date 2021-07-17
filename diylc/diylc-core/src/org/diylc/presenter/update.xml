@@ -3580,6 +3580,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Dial Scale' component for designing device face-plates</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Keep grouped components together when pasting</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>
