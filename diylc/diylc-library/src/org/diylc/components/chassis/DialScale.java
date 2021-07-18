@@ -79,8 +79,8 @@ public class DialScale extends AbstractComponent<String> {
     
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     
-    g2d.drawLine((int)(x0 - marker / 2), (int)y0, (int)(x0 + marker / 2), (int)y0);
-    g2d.drawLine((int)x0, (int)(y0 - marker / 2), (int)x0, (int)(y0 + marker / 2));
+    g2d.drawLine((int)(x0 - r / 6), (int)y0, (int)(x0 + r / 6), (int)y0);
+    g2d.drawLine((int)x0, (int)(y0 - r / 6), (int)x0, (int)(y0 + r / 6));
     
     
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR : color);
@@ -90,9 +90,21 @@ public class DialScale extends AbstractComponent<String> {
     
     double x1;
     double y1;
+    
+    int segments;    
+    if (type == DialScaleType.Numeric_1_10) {
+      segments = 10;      
+    } else if (type == DialScaleType.Numeric_1_12) {
+      segments = 12;      
+    } else {
+      segments = 11;
+    }
+    
+    double shift = (5 * Math.PI / 3) / (segments - 1);
 
     double alpha = 4 * Math.PI / 6;
-    for (int i = 0; i < 11; i++) {
+    
+    for (int i = 0; i < segments; i++) {
       double x = x0 + Math.cos(alpha) * r;
       double y = y0 + Math.sin(alpha) * r;
       
@@ -100,8 +112,13 @@ public class DialScale extends AbstractComponent<String> {
         case Dots:
           g2d.fillOval((int)(x - marker / 2), (int)(y - marker / 2), (int)marker, (int)marker);
           break;
-        case Numeric:
+        case Numeric_0_10:
           StringUtils.drawCenteredText(g2d, Integer.toString(i), x, y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          break;
+        case Numeric_1_12:
+        case Numeric_1_11:
+        case Numeric_1_10:
+          StringUtils.drawCenteredText(g2d, Integer.toString(i + 1), x, y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
           break;
         case Ticks:
           x1 = x0 + Math.cos(alpha) * (r - marker);
@@ -130,7 +147,7 @@ public class DialScale extends AbstractComponent<String> {
         }
       }
       
-      alpha += Math.PI / 6;
+      alpha += shift;
     }
   }
 
@@ -257,7 +274,8 @@ public class DialScale extends AbstractComponent<String> {
   }
   
   public enum DialScaleType {
-    Ticks("Ticks"), Dots("Dots (Uniform)"), Dots_Gradual("Dots (Gradual)"), Numeric("Numeric"), Numeric_Even("Even Numeric (No Ticks)"), Numeric_Even_Ticks("Even Numeric (With Ticks)");
+    Ticks("Ticks"), Dots("Dots (Uniform)"), Dots_Gradual("Dots (Gradual)"), Numeric_0_10("Numeric (0-10)"), Numeric_1_11("Numeric (1-11)"), 
+    Numeric_1_10("Numeric (1-10)"), Numeric_1_12("Numeric (1-12)"), Numeric_Even("Even Numeric (No Ticks)"), Numeric_Even_Ticks("Even Numeric (With Ticks)");
     
     private String label;
 
