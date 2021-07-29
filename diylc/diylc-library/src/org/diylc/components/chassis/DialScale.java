@@ -172,7 +172,7 @@ public class DialScale extends AbstractComponent<String> {
     return diameter;
   }
 
-  public void setSize(Size diameter) {
+  public void setDiameter(Size diameter) {
     this.diameter = diameter;
   }
   
@@ -275,7 +275,7 @@ public class DialScale extends AbstractComponent<String> {
   
   public enum DialScaleType {
     Ticks("Ticks"), Dots("Dots (Uniform)"), Dots_Gradual("Dots (Gradual)"), Numeric_0_10("Numeric (0-10)"), Numeric_1_11("Numeric (1-11)"), 
-    Numeric_1_10("Numeric (1-10)"), Numeric_1_12("Numeric (1-12)"), Numeric_Even("Even Numeric (No Ticks)"), Numeric_Even_Ticks("Even Numeric (With Ticks)");
+    Numeric_1_10("Numeric (1-10)"), Numeric_1_12("Numeric (1-12)"), Numeric_Even("Numeric (Even, No Ticks)"), Numeric_Even_Ticks("Numeric (Even, With Ticks)");
     
     private String label;
 
