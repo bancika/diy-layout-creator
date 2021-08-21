@@ -65,11 +65,21 @@ public class ObjectCache {
   }
 
   public Stroke fetchStroke(float width, float[] dash, float phase, int cap) {
-    String key = width + "|" + Arrays.toString(dash) + "|" + phase + "|" + phase;
+    String key = width + "|" + Arrays.toString(dash) + "|" + phase + "|" + cap;
     if (dashStrokeMap.containsKey(key)) {
       return dashStrokeMap.get(key);
     }
     Stroke stroke = new BasicStroke(width, cap, BasicStroke.JOIN_ROUND, 0, dash, phase);
+    dashStrokeMap.put(key, stroke);
+    return stroke;
+  }
+  
+  public Stroke fetchStroke(float width, int cap) {
+    String key = width + "|" + cap;
+    if (dashStrokeMap.containsKey(key)) {
+      return dashStrokeMap.get(key);
+    }
+    Stroke stroke = new BasicStroke(width, cap, BasicStroke.JOIN_ROUND);
     dashStrokeMap.put(key, stroke);
     return stroke;
   }

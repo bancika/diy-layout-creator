@@ -28,7 +28,6 @@ import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +36,7 @@ import org.diylc.appframework.simplemq.IMessageListener;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
+import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
@@ -242,11 +242,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   /**
    * Adds a list of components to the project.
    * 
-   * @param components
+   * @param componentTransferable
    * @param autoGroup
    * @param assignNewNames
    */
-  void pasteComponents(Collection<IDIYComponent<?>> components, boolean autoGroup, boolean assignNewNames);
+  void pasteComponents(ComponentTransferable componentTransferable, boolean autoGroup, boolean assignNewNames);
 
   /**
    * Duplicates selected components and places them nearby.
