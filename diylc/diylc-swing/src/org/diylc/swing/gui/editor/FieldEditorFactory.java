@@ -30,10 +30,7 @@ import javax.swing.JLabel;
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.components.misc.LoadlineEntity;
-<<<<<<< HEAD
 import org.diylc.core.annotations.ByteArrayProperty;
-=======
->>>>>>> refs/heads/master
 import org.diylc.core.annotations.DynamicList;
 import org.diylc.core.annotations.MultiLineText;
 import org.diylc.core.measures.AbstractMeasure;

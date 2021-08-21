@@ -31,10 +31,7 @@ import java.util.EnumSet;
 
 import org.diylc.appframework.undo.IUndoListener;
 import org.diylc.appframework.undo.UndoHandler;
-<<<<<<< HEAD
 import org.diylc.clipboard.ComponentTransferable;
-=======
->>>>>>> refs/heads/master
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;

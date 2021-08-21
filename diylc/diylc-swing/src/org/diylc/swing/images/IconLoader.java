@@ -68,11 +68,7 @@ public enum IconLoader {
       Elements("elements1.png"), GraphNodes("graph_nodes.png"), User("user1.png"), FlexibleLeads("flexible_leads.png"), Pads("pads.png"), Lock("lock.png"),
       Unlock("lock_open.png"), Earth("earth.png"), Loadline("loadline.png"), LoadlineAdd("loadline_add.png"), SnapToGrid("snap_to_grid.png"),
       SnapToComponents("snap_to_components.png"), SnapToNone("snap_to_none.png"), TraceProximity("trace_proximity.png"),
-<<<<<<< HEAD
       ComponentLarge("component_large.png"), ImportNetlist("import_netlist.png"), SplashIC("splash_ic.png");
-=======
-      ComponentLarge("component_large.png"), ImportNetlist("import_netlist.png");
->>>>>>> refs/heads/master
 
   protected String name;
 

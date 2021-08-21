@@ -37,10 +37,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.AbstractTransparentComponent;
-<<<<<<< HEAD
 import org.diylc.components.transform.MiniToggleSwitchTransformer;
-=======
->>>>>>> refs/heads/master
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
