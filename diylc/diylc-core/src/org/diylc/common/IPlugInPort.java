@@ -28,6 +28,7 @@ import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,17 @@ import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
 import org.diylc.clipboard.ComponentTransferable;
+=======
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.diylc.appframework.simplemq.IMessageListener;
+import org.diylc.appframework.simplemq.MessageDispatcher;
+import org.diylc.appframework.update.Version;
+import org.diylc.appframework.update.VersionNumber;
+>>>>>>> refs/heads/master
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
@@ -242,7 +254,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   /**
    * Adds a list of components to the project.
    * 
+<<<<<<< HEAD
    * @param componentTransferable
+=======
+   * @param components
+>>>>>>> refs/heads/master
    * @param autoGroup
    * @param assignNewNames
    */

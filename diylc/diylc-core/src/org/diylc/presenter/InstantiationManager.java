@@ -25,6 +25,7 @@ import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,17 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.clipboard.ComponentTransferable;
+=======
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+>>>>>>> refs/heads/master
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
@@ -142,7 +154,11 @@ public class InstantiationManager {
   }
 
   @SuppressWarnings("unchecked")
+<<<<<<< HEAD
   public void pasteComponents(ComponentTransferable componentTransferable, Point2D scaledPoint, boolean snapToGrid,
+=======
+  public void pasteComponents(Collection<IDIYComponent<?>> components, Point2D scaledPoint, boolean snapToGrid,
+>>>>>>> refs/heads/master
       Size gridSpacing, boolean autoGroup, Project currentProject, boolean assignNewNames) {	  
     // Adjust location of components so they are centered under the mouse
     // cursor
@@ -157,8 +173,11 @@ public class InstantiationManager {
     
     List<IDIYComponent<?>> allComponents = new ArrayList<IDIYComponent<?>>(currentProject.getComponents());
     
+<<<<<<< HEAD
     List<IDIYComponent<?>> components = componentTransferable.getComponents();
     
+=======
+>>>>>>> refs/heads/master
     for (IDIYComponent<?> component : components) {
       // assign a new name if it already exists in the project
       if (assignNewNames && existingNames.contains(component.getName())) {

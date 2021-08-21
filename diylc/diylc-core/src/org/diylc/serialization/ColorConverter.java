@@ -48,6 +48,7 @@ public class ColorConverter extends com.thoughtworks.xstream.converters.extended
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
+<<<<<<< HEAD
     if (reader.getAttribute("hex") != null) {
       String hex = reader.getAttribute("hex");
       String alpha = reader.getAttribute("alpha");
@@ -57,6 +58,10 @@ public class ColorConverter extends com.thoughtworks.xstream.converters.extended
       else
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int)Long.parseLong(alpha, 16));      
     }
+=======
+    if (reader.getAttribute("hex") != null)
+      return Color.decode("#" + reader.getAttribute("hex"));
+>>>>>>> refs/heads/master
     return super.unmarshal(reader, context);
   }
 
