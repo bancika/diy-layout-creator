@@ -37,6 +37,15 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+	<release version="4.19.0" date="2021-08-21">
+		<description>
+			<ul>
+				<li>[New Feature] Added 'Dial Scale' component for designing device face-plates</li>
+				<li>[New Feature] Keep grouped components together when pasting</li>
+			</ul>
+		</description>
+		<url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.19.0</url>
+	</release>
 	<release version="4.18.0" date="2021-07-11">
 	  <description>
 	    <ul>
