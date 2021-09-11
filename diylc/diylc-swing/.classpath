@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/app-framework.jar" sourcepath="/app-framework"/>
 	<classpathentry kind="lib" path="lib/swing-framework.jar" sourcepath="/swing-framework"/>
-	<classpathentry kind="lib" path="library/main.jar" sourcepath="/diylc-library"/>
 	<classpathentry kind="lib" path="lib/balloontip-1.2.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/jep-2.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
@@ -18,6 +17,7 @@
 	<classpathentry kind="lib" path="lib/gestures-wrapper-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/jar-loader.jar"/>
 	<classpathentry kind="lib" path="lib/svgSalamander-1.1.2.4.jar"/>
+	<classpathentry kind="lib" path="library/main.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.3.jar"/>
 	<classpathentry kind="lib" path="lib/java-http-proxy.jar"/>
