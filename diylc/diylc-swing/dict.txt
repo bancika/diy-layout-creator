@@ -25,6 +25,7 @@
 AWG
 And
 C-B-E     BJT
+Check Trace Proximity
 D-G-S     JFET
 D-G-S     MOSFET
 D-S-G     JFET
@@ -39,6 +40,8 @@ DPDT  (Center OFF)
 Deutsch
 Dimension Mode
 Donate
+Dots (Gradual)
+Dots (Uniform)
 E-B-C     BJT
 English
 Español
@@ -47,18 +50,28 @@ G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
+Import Netlist
 Italiano
 Lin
 Log
+Marker Size
 NPN
 Nand
 Nederlands
 Nor
 Not
+Numeric (0-10)
+Numeric (1-10)
+Numeric (1-11)
+Numeric (1-12)
+Numeric (Even, No Ticks)
+Numeric (Even, With Ticks)
 Or
 PAF
 PCB
 PNP
+Panel
+Português
 Rev log
 S-G-D     JFET
 S-G-D     MOSFET
@@ -67,6 +80,8 @@ SPDT
 SPDT  (Center OFF)
 SPST
 Srpski
+Tick Width
+Ticks
 Xnor
 Xor
 cm

@@ -25,6 +25,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -58,6 +59,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", enableCache = true)
 public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
 
+  private static final float FONT_SCALE = 0.8f;
   private static final double RING_THETA = Math.PI * 0.795;
   private static final double SLEEVE_THETA = Math.PI * 0.29444444444;
   private static final double SLEEVE_SWITCHED_THETA = Math.PI * 4 / 3;
@@ -158,7 +160,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     // draw labels
     if (showLabels) {
       g2d.setColor(BASE_COLOR.darker());
-      g2d.setFont(project.getFont().deriveFont(project.getFont().getSize2D() * 0.8f));
+      g2d.setFont(project.getFont().deriveFont(project.getFont().getSize2D() * FONT_SCALE));
       int springLength = (int) SPRING_LENGTH.convertToPixels();
       int holeToEdge = (int) HOLE_TO_EDGE.convertToPixels();
       double centerY = controlPoints[0].getY() + springLength - holeToEdge;
@@ -288,6 +290,8 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int waferDiameter = 15 * width / 32;
     int sleeveDiameter = 9 * width / 32;
+    
+    AffineTransform tx = g2d.getTransform();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(6f * width / 32));
     g2d.setColor(BASE_COLOR);
@@ -310,6 +314,17 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<String> {
     g2d.rotate(-Math.PI / 2, width / 2, height / 2);
 
     g2d.drawLine(width / 2, 4 * width / 32, width / 2, width / 3);
+    
+    g2d.setTransform(tx);
+    g2d.setColor(LABEL_COLOR);
+    g2d.setFont(LABEL_FONT.deriveFont(width / 3.5f));
+    
+    RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    g2d.setRenderingHints(rh);
+    
+    StringUtils.drawCenteredText(g2d, "1/4\"", width / 2, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   @Override
