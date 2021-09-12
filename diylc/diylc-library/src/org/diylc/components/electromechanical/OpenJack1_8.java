@@ -317,14 +317,14 @@ public class OpenJack1_8 extends AbstractMultiPartComponent<String> {
         
     g2d.setTransform(tx);
     g2d.setColor(LABEL_COLOR);
-    g2d.setFont(g2d.getFont().deriveFont(width / 3f));
+    g2d.setFont(LABEL_FONT.deriveFont(width / 3.5f));
     
     RenderingHints rh = new RenderingHints(
             RenderingHints.KEY_TEXT_ANTIALIASING,
             RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     g2d.setRenderingHints(rh);
     
-    StringUtils.drawCenteredText(g2d, "8", width / 2, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "1/8\"", width / 2 - 1, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   @Override
