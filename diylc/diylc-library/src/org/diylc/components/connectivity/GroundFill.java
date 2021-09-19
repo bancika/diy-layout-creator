@@ -42,7 +42,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Ground Fill", author = "Branislav Stojkovic", category = "Connectivity",
-    instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.TRACE,
+    instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.WIRING,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class GroundFill extends AbstractComponent<Void> {
 

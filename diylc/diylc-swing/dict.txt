@@ -82,6 +82,7 @@ SPST
 Srpski
 Tick Width
 Ticks
+Wiring
 Xnor
 Xor
 cm
