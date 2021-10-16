@@ -1,0 +1,27 @@
+<org.diylc.core.Theme>
+  <name>Gray</name>
+  <bgColor>
+    <red>170</red>
+    <green>170</green>
+    <blue>170</blue>
+    <alpha>255</alpha>
+  </bgColor>
+  <gridColor>
+    <red>150</red>
+    <green>150</green>
+    <blue>150</blue>
+    <alpha>255</alpha>
+  </gridColor>
+  <dotColor>
+    <red>100</red>
+    <green>100</green>
+    <blue>100</blue>
+    <alpha>255</alpha>
+  </dotColor>
+  <outlineColor>
+    <red>0</red>
+    <green>0</green>
+    <blue>0</blue>
+    <alpha>255</alpha>
+  </outlineColor>
+</org.diylc.core.Theme>
