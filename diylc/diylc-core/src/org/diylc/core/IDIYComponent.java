@@ -50,7 +50,7 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
 
   public static final int CHASSIS = 1;
   public static final int BOARD = 2;
-  public static final int TRACE = 3;
+  public static final int WIRING = 3;
   public static final int COMPONENT = 4;
   public static final int TEXT = 5;
 

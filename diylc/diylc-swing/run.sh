@@ -1,1 +1,2 @@
-java -Xms512m -Xmx2048m -javaagent:lib/jar-loader.jar -Dorg.diylc.scriptRun=true -Dfile.encoding=UTF-8 -cp diylc.jar:lib org.diylc.DIYLCStarter
+#!/bin/bash
+exec java -Xms512m -Xmx2048m -javaagent:lib/jar-loader.jar -Dorg.diylc.scriptRun=true -Dfile.encoding=UTF-8 -cp diylc.jar:lib  --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt=ALL-UNNAMED org.diylc.DIYLCStarter "$@"

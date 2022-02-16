@@ -46,6 +46,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
+import org.diylc.appframework.miscutils.Utils;
 
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -1512,7 +1513,11 @@ public class ActionFactory {
       super();
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Delete Selection");
-      putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+      if (Utils.isMac()) {
+    	  putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+      } else {
+    	  putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+      }
       putValue(AbstractAction.SMALL_ICON, IconLoader.Delete.getIcon());
     }
 

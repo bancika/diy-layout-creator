@@ -50,6 +50,7 @@ G-D-S     JFET
 G-D-S     MOSFET
 G-S-D     JFET
 G-S-D     MOSFET
+Gray
 Import Netlist
 Italiano
 Lin
@@ -82,6 +83,7 @@ SPST
 Srpski
 Tick Width
 Ticks
+Wiring
 Xnor
 Xor
 cm

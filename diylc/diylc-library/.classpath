@@ -7,8 +7,8 @@
 	<classpathentry kind="lib" path="lib/jep-2.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
 	<classpathentry kind="lib" path="lib/svgSalamander-1.1.2.4.jar"/>
+	<classpathentry kind="lib" path="lib/xstream-1.4.19.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
-	<classpathentry kind="lib" path="lib/xstream-1.4.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>

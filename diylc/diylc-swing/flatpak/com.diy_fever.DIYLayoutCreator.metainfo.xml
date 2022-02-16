@@ -37,6 +37,18 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	 <release version="4.21.0" date="2022-02-16">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed compatibility issues with Java version 16 and above</li>
+             <li>[New Feature] Added 'Gray' theme</li>
+             <li>[Improvement] Add shabang to run.sh for *nix systems</li>
+             <li>[Improvement] Prevent the donation label from wrapping into several lines</li>
+             <li>[Improvement] Use Backspace key to delete selection in Mac OS</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.0</url>
+     </release>
   	 <release version="4.20.0" date="2021-09-12">
          <description>
            <ul>

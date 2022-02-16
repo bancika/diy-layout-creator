@@ -43,6 +43,7 @@ import org.diylc.utils.ResourceLoader;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 /**
  * Controls configuration menu.
@@ -168,6 +169,7 @@ public class ConfigPlugin implements IPlugIn {
     File[] themeFiles = ResourceLoader.getFiles("themes");
     if (themeFiles != null && themeFiles.length > 0) {
       XStream xStream = new XStream(new DomDriver());
+      xStream.addPermission(AnyTypePermission.ANY);
       swingUI.injectSubmenu(THEME_MENU, IconLoader.Pens.getIcon(), CONFIG_MENU);
       for (File file : themeFiles) {
         if (file.getName().toLowerCase().endsWith(".xml")) {

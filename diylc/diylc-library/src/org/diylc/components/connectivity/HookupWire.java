@@ -39,7 +39,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
-    instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.COMPONENT,
+    instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     transformer = SimpleComponentTransformer.class, enableCache = true)
 public class HookupWire extends AbstractCurvedComponent<Void> implements IContinuity {

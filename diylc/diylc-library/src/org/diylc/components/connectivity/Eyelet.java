@@ -46,7 +46,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Eyelet", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Eyelet or turret terminal", instanceNamePrefix = "Eyelet",
-    zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
+    zOrder = IDIYComponent.WIRING + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class,
     enableCache = true)
 public class Eyelet extends AbstractComponent<String> {

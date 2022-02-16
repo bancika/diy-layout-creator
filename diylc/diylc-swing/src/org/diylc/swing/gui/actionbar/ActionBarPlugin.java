@@ -26,9 +26,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -67,8 +70,8 @@ public class ActionBarPlugin implements IPlugIn {
   private ConfigToolbar configToolbar;
   private JLabel donateLabel;
   
-  private static final String DONATE_HTML = "<html><u>" + LangUtil.translate("Enjoying DIYLC? Click here to buy me a coffee :)") + "</u></html>";
-  private static final String DONATE_HTML_SHORT = "<html><u>" + LangUtil.translate("Donate") + "</u></html>";
+  private static final String DONATE_HTML = LangUtil.translate("Enjoying DIYLC? Click here to buy me a coffee :)");
+  private static final String DONATE_HTML_SHORT = LangUtil.translate("Donate");
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
@@ -114,6 +117,9 @@ public class ActionBarPlugin implements IPlugIn {
   public JLabel getDonateLabel() {
     if (donateLabel == null) {
       donateLabel = new JLabel(DONATE_HTML);
+//      Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
+//      fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+//      donateLabel.setFont(donateLabel.getFont().deriveFont(fontAttributes));
       donateLabel.setForeground(Color.blue);
       donateLabel.setIcon(IconLoader.Donate.getIcon());
       donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -125,7 +131,7 @@ public class ActionBarPlugin implements IPlugIn {
           rootPane.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-              if (rootPane.getWidth() < 920) {
+              if (rootPane.getWidth() < 940) {
                 if (!DONATE_HTML_SHORT.equals(donateLabel.getText()))
                     donateLabel.setText(DONATE_HTML_SHORT);
               } else {
