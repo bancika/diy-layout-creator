@@ -3611,9 +3611,13 @@
 				<minor>21</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2021-09-12 00:00:00.000 CET</releaseDate>
+			<releaseDate>2022-02-16 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed compatibility issues with Java version 16 and above</description>
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Gray' theme</description>

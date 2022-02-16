@@ -18,13 +18,8 @@
 package org.diylc;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Properties;
 
@@ -63,201 +58,190 @@ import ca.cgjennings.jvm.JarLoader;
  */
 public class DIYLCStarter {
 
-  private static final Logger LOG = Logger.getLogger(DIYLCStarter.class);
+	private static final Logger LOG = Logger.getLogger(DIYLCStarter.class);
 
-  private static final String SCRIPT_RUN = "org.diylc.scriptRun";
+	private static final String SCRIPT_RUN = "org.diylc.scriptRun";
 
-  /**
-   * @param args
-   * @throws InvalidActivityException
-   */
-  public static void main(String[] args) {
-    try {
-      runDIYLC(args);
-    } catch (Throwable t) {
-      LOG.error("Major error while starting DIYLC", t);
-      System.out.println("Major error while starting DIYLC");
-      t.printStackTrace(System.out);
-    }
-  }
-  
-  public static void runDIYLC(String[] args) {
-    // Initialize splash screen
-    DIYLCSplash splash = null;
-    Exception splashException = null;
+	/**
+	 * @param args
+	 * @throws InvalidActivityException
+	 */
+	public static void main(String[] args) {
+		try {
+			runDIYLC(args);
+		} catch (Throwable t) {
+			LOG.error("Major error while starting DIYLC", t);
+			System.out.println("Major error while starting DIYLC");
+			t.printStackTrace(System.out);
+		}
+	}
 
-    try {
-      splash = new DIYLCSplash();
-    } catch (Exception e) {
-      System.out.println("Splash screen could not be initialized: " + e.getMessage());
-      splashException = e;
-    }
+	public static void runDIYLC(String[] args) {
+		// Initialize splash screen
+		DIYLCSplash splash = null;
+		Exception splashException = null;
 
-    URL url = DIYLCStarter.class.getResource("log4j.properties");
-    Properties properties = new Properties();
-    try {
-      properties.load(url.openStream());
-      PropertyConfigurator.configure(properties);
-    } catch (Exception e) {
-      LOG.error("Could not initialize log4j configuration", e);
-    }
-    
-    initializeConfiguration();
+		try {
+			splash = new DIYLCSplash();
+		} catch (Exception e) {
+			System.out.println("Splash screen could not be initialized: " + e.getMessage());
+			splashException = e;
+		}
 
-    // disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
-    ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
-    
-    LOG.info("JarLoader strategy: " + JarLoader.getStrategy());
+		URL url = DIYLCStarter.class.getResource("log4j.properties");
+		Properties properties = new Properties();
+		try {
+			properties.load(url.openStream());
+			PropertyConfigurator.configure(properties);
+		} catch (Exception e) {
+			LOG.error("Could not initialize log4j configuration", e);
+		}
 
-    LOG.info("Loading languages...");
+		initializeConfiguration();
 
-    LangUtil.configure();
+		// disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
+		ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
 
-    LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
-        + System.getProperty("java.vm.vendor"));
-    LOG.debug("Java home: " + System.getProperty("java.home"));
-    LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
+		LOG.info("JarLoader strategy: " + JarLoader.getStrategy());
 
-    LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
-    
-    LOG.info("Configuration dump start.");
-    // log configuration
-    Field[] fields = IPlugInPort.class.getFields();
-    for (Field f : fields) {
-      if (f.getType() != String.class || !f.getName().toUpperCase().equals(f.getName()))
-        continue;
-      try {
-          String key = (String) f.get(null);
-          Object configValue = ConfigurationManager.getInstance().readObject(key, null);
-          if (configValue != null && (configValue.getClass() == Boolean.class || configValue.getClass() == String.class)) {
-              LOG.info(key + " = " + configValue);
-          }
-      } catch (Exception e) {      
-        LOG.info("Error logging for field: " + f.getName());
-      }
-    }
-    LOG.info("Configuration dump end.");
+		LOG.info("Loading languages...");
 
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (Exception e) {
-      LOG.error("Could not set Look&Feel", e);
-    }
+		LangUtil.configure();
 
-    Thread fontThread = new Thread(new Runnable() {
+		LOG.debug("Java version: " + System.getProperty("java.runtime.version") + " by "
+				+ System.getProperty("java.vm.vendor"));
+		LOG.debug("Java home: " + System.getProperty("java.home"));
+		LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 
-      @Override
-      public void run() {
-        try {
-          FontOptimizer.run(ConfigurationManager.getInstance());
-        } catch (Exception e) {
-          LOG.error("Could not ", e);
-        }
-      }
-    });
-    fontThread.setPriority(Thread.MIN_PRIORITY);
-    fontThread.start();
+		LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
 
-    String val = System.getProperty(SCRIPT_RUN);
-    if (!"true".equals(val)) {
-      LOG.info("Detected no scriptRun setting!");
-      int response = JOptionPane.showConfirmDialog(splash,
-          "It is not recommended to run DIYLC by clicking on the diylc.jar file.\n"
-              + "Please use diylc.exe on Windows or run.sh on OSX/Linux to ensure the best\n"
-              + "performance and reliability. Do you want to continue?",
-          "DIYLC", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-      if (response != JOptionPane.YES_OPTION) {
-        System.exit(0);
-      }
-    }
-    
-    LOG.info("Creating the main frame...");
+		LOG.info("Configuration dump start.");
+		// log configuration
+		Field[] fields = IPlugInPort.class.getFields();
+		for (Field f : fields) {
+			if (f.getType() != String.class || !f.getName().toUpperCase().equals(f.getName()))
+				continue;
+			try {
+				String key = (String) f.get(null);
+				Object configValue = ConfigurationManager.getInstance().readObject(key, null);
+				if (configValue != null
+						&& (configValue.getClass() == Boolean.class || configValue.getClass() == String.class)) {
+					LOG.info(key + " = " + configValue);
+				}
+			} catch (Exception e) {
+				LOG.info("Error logging for field: " + f.getName());
+			}
+		}
+		LOG.info("Configuration dump end.");
 
-    MainFrame mainFrame = new MainFrame();
-    Presenter presenter = mainFrame.getPresenter();
-    
-    LOG.info("Main frame created.");
-    // mainFrame.setLocationRelativeTo(null);
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			LOG.error("Could not set Look&Feel", e);
+		}
 
-    if (splash == null) {
-      LOG.warn("Splash screen could not be initialized", splashException);
-    } else {
-      LOG.info("Hiding splash screen...");
-      splash.setVisible(false);
-      splash.dispose();
-      LOG.info("Done hiding splash screen.");
-    }
+		Thread fontThread = new Thread(new Runnable() {
 
-    mainFrame.setVisible(true);
+			@Override
+			public void run() {
+				try {
+					FontOptimizer.run(ConfigurationManager.getInstance());
+				} catch (Exception e) {
+					LOG.error("Could not ", e);
+				}
+			}
+		});
+		fontThread.setPriority(Thread.MIN_PRIORITY);
+		fontThread.start();
 
-    // assign open file handler for Mac
-    if (Utils.isMac()) {
-      LOG.info("Setting up open file handler for Mac...");      
-      SwingUtilities.invokeLater(() -> {
-        Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
-          List<File> files = ofe.getFiles();
-          if (files != null && files.size() > 0) {
-            String filePath = files.get(0).getAbsolutePath();
-            if (presenter.allowFileAction()) {
-              presenter.loadProjectFromFile(filePath);
-            }
-          }
-          LOG.info("Finished setting up open file handler for Mac.");
-        });
-      });
-    }
+		String val = System.getProperty(SCRIPT_RUN);
+		if (!"true".equals(val)) {
+			LOG.info("Detected no scriptRun setting!");
+			int response = JOptionPane.showConfirmDialog(splash,
+					"It is not recommended to run DIYLC by clicking on the diylc.jar file.\n"
+							+ "Please use diylc.exe on Windows or run.sh on OSX/Linux to ensure the best\n"
+							+ "performance and reliability. Do you want to continue?",
+					"DIYLC", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (response != JOptionPane.YES_OPTION) {
+				System.exit(0);
+			}
+		}
 
-    if (args.length > 0) {
-      presenter.loadProjectFromFile(args[0]);
-    } else {
-      boolean showTemplates =
-          ConfigurationManager.getInstance().readBoolean(TemplateDialog.SHOW_TEMPLATES_KEY, false);
-      if (showTemplates) {
-        TemplateDialog templateDialog = new TemplateDialog(mainFrame, mainFrame.getPresenter());
-        if (!templateDialog.getFiles().isEmpty()) {
-          templateDialog.setVisible(true);
-        }
-      }
-    }
+		LOG.info("Creating the main frame...");
 
-    properties = new Properties();
-    try {
-      LOG.info("Injecting default properties.");
-      URL resource = Presenter.class.getResource("config.properties");
-      if (resource != null) {
-        properties.load(resource.openStream());
-        PropertyInjector.injectProperties(properties);
-      }
-    } catch (Exception e) {
-      LOG.error("Could not read config.properties file", e);
-    }
+		MainFrame mainFrame = new MainFrame();
+		Presenter presenter = mainFrame.getPresenter();
 
-    if (ConfigurationManager.getInstance().isFileWithErrors())
-      mainFrame.showMessage("<html>"
-          + "There was an error reading the configuration file and it was replaced by a default configuration.<br>"
-          + "The backup file is created and placed in user directory under '.diylc' sub-directory with '~' at the end.<br>"
-          + "This can happen when running two versions of DIYLC on the same machine at the same time.<br>"
-          + "Replace the main 'config.xml' file with the backup when running the latest version of DIYLC."
-          + "</html>", "Warning", IView.WARNING_MESSAGE);
-  }
+		LOG.info("Main frame created.");
+		// mainFrame.setLocationRelativeTo(null);
 
-  private static void initializeConfiguration() {
-    // migrate config file from old folder path to the new one
-    Path oldPath = Paths.get(Utils.getUserDataDirectory(".diylc") + "config.xml");
-    Path newPath = Paths.get(Utils.getUserDataDirectory("diylc") + "config.xml");
-    try {
-      if (oldPath.toFile().exists() && !newPath.toFile().exists()) {
-        LOG.info("Copying config file to the new directory");
-        Files.copy(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
-      }
-    } catch (IOException e) {
-      LOG.error("Failed to copy config file to the new directory", e);
-    }
-    
-    // initialize
-    ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-    XStream xStream = configurationManager.getSerializer();
-    ProjectFileManager.configure(xStream);
-    configurationManager.initialize("diylc");
-  }
+		if (splash == null) {
+			LOG.warn("Splash screen could not be initialized", splashException);
+		} else {
+			LOG.info("Hiding splash screen...");
+			splash.setVisible(false);
+			splash.dispose();
+			LOG.info("Done hiding splash screen.");
+		}
+
+		mainFrame.setVisible(true);
+
+		// assign open file handler for Mac
+		if (Utils.isMac()) {
+			LOG.info("Setting up open file handler for Mac...");
+			SwingUtilities.invokeLater(() -> {
+				Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
+					List<File> files = ofe.getFiles();
+					if (files != null && files.size() > 0) {
+						String filePath = files.get(0).getAbsolutePath();
+						if (presenter.allowFileAction()) {
+							presenter.loadProjectFromFile(filePath);
+						}
+					}
+					LOG.info("Finished setting up open file handler for Mac.");
+				});
+			});
+		}
+
+		if (args.length > 0) {
+			presenter.loadProjectFromFile(args[0]);
+		} else {
+			boolean showTemplates = ConfigurationManager.getInstance().readBoolean(TemplateDialog.SHOW_TEMPLATES_KEY,
+					false);
+			if (showTemplates) {
+				TemplateDialog templateDialog = new TemplateDialog(mainFrame, mainFrame.getPresenter());
+				if (!templateDialog.getFiles().isEmpty()) {
+					templateDialog.setVisible(true);
+				}
+			}
+		}
+
+		properties = new Properties();
+		try {
+			LOG.info("Injecting default properties.");
+			URL resource = Presenter.class.getResource("config.properties");
+			if (resource != null) {
+				properties.load(resource.openStream());
+				PropertyInjector.injectProperties(properties);
+			}
+		} catch (Exception e) {
+			LOG.error("Could not read config.properties file", e);
+		}
+
+		if (ConfigurationManager.getInstance().isFileWithErrors())
+			mainFrame.showMessage("<html>"
+					+ "There was an error reading the configuration file and it was replaced by a default configuration.<br>"
+					+ "The backup file is created and placed in user directory under '.diylc' sub-directory with '~' at the end.<br>"
+					+ "This can happen when running two versions of DIYLC on the same machine at the same time.<br>"
+					+ "Replace the main 'config.xml' file with the backup when running the latest version of DIYLC."
+					+ "</html>", "Warning", IView.WARNING_MESSAGE);
+	}
+
+	private static void initializeConfiguration() {
+		// initialize
+		ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+		XStream xStream = configurationManager.getSerializer();
+		ProjectFileManager.configure(xStream);
+		configurationManager.initialize(".diylc");
+	}
 }

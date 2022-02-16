@@ -16,7 +16,7 @@
     <libelement value="jar://$MODULE_DIR$/lib/orsonpdf-1.8.jar!/" />
     <libelement value="jar://$MODULE_DIR$/lib/gestures-wrapper-0.2.jar!/" />
     <libelement value="jar://$MODULE_DIR$/lib/jar-loader.jar!/" />
-    <libelement value="jar://$MODULE_DIR$/lib/xstream-1.4.3.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/xstream-1.4.19.jar!/" />
     <libelement value="jar://$MODULE_DIR$/lib/java-http-proxy.jar!/" />
     <src_description expected_position="0">
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />

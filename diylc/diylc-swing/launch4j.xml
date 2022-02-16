@@ -31,5 +31,9 @@
     <opt>-Dorg.diylc.scriptRun=true</opt>
     <opt>-Dfile.encoding=UTF-8</opt>
     <opt>-javaagent:lib/jar-loader.jar</opt>
+    <opt>--add-opens java.base/java.util=ALL-UNNAMED</opt>
+    <opt>--add-opens java.base/java.lang=ALL-UNNAMED</opt>
+    <opt>--add-opens java.base/java.text=ALL-UNNAMED</opt>
+    <opt>--add-opens java.desktop/java.awt=ALL-UNNAMED</opt>
   </jre>
 </launch4jConfig>

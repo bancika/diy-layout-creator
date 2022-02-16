@@ -12,6 +12,7 @@ import org.diylc.presenter.Presenter;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 public class VersionReader {
   public static void main(String[] args) {
@@ -20,6 +21,7 @@ public class VersionReader {
       if (resource != null) {
         BufferedInputStream in = new BufferedInputStream(resource.openStream());
         XStream xStream = new XStream(new DomDriver());
+        xStream.addPermission(AnyTypePermission.ANY);
         @SuppressWarnings("unchecked")
         List<Version> allVersions = (List<Version>) xStream.fromXML(in);
         Version latest = allVersions.get(allVersions.size() - 1);

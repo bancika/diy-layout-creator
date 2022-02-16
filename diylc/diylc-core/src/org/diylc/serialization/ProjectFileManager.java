@@ -58,6 +58,7 @@ import org.xml.sax.SAXException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.mapper.MapperWrapper;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 public class ProjectFileManager {
 
@@ -98,6 +99,7 @@ public class ProjectFileManager {
     };
     configure(xStream);
     this.xStreamOld = new XStream(new DomDriver());
+    this.xStreamOld.addPermission(AnyTypePermission.ANY);
     xStreamOld.autodetectAnnotations(true);
     this.messageDispatcher = messageDispatcher;
   }
@@ -126,6 +128,7 @@ public class ProjectFileManager {
     xStream.addImmutableType(org.diylc.core.measures.Power.class);
     xStream.addImmutableType(org.diylc.core.measures.Inductance.class);
     xStream.addImmutableType(org.diylc.core.measures.Size.class);
+    xStream.addPermission(AnyTypePermission.ANY);
   }
 
   public void startNewFile() {

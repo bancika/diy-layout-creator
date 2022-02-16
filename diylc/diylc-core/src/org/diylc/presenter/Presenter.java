@@ -98,6 +98,7 @@ import org.diylc.utils.Constants;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 /**
  * The main presenter class, contains core app logic and drawing routines.
@@ -143,6 +144,7 @@ public class Presenter implements IPlugInPort {
 			if (resource != null) {
 				BufferedInputStream in = new BufferedInputStream(resource.openStream());
 				XStream xStream = new XStream(new DomDriver());
+				xStream.addPermission(AnyTypePermission.ANY);
 				@SuppressWarnings("unchecked")
 				List<Version> allVersions = (List<Version>) xStream.fromXML(in);
 				CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
@@ -2593,6 +2595,7 @@ public class Presenter implements IPlugInPort {
       try {
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("variants.xml"));
         XStream xStream = new XStream(new DomDriver());
+        xStream.addPermission(AnyTypePermission.ANY);
         xStream.toXML(defaultVariantMap, out);
         out.close();
         // no more user variants
@@ -2615,6 +2618,7 @@ public class Presenter implements IPlugInPort {
         if (resource != null) {
           BufferedInputStream in = new BufferedInputStream(resource.openStream());
           XStream xStream = new XStream(new DomDriver());
+          xStream.addPermission(AnyTypePermission.ANY);
           Map<String, List<Template>> defaults = (Map<String, List<Template>>) xStream.fromXML(in);
           in.close();
                     
@@ -2654,6 +2658,7 @@ public class Presenter implements IPlugInPort {
         if (resource != null) {
           BufferedInputStream in = new BufferedInputStream(resource.openStream());
           XStream xStream = new XStream(new DomDriver());
+          xStream.addPermission(AnyTypePermission.ANY);
           Map<String, List<IDIYComponent<?>>> defaults = (Map<String, List<IDIYComponent<?>>>) xStream.fromXML(in);
           in.close();
                     
@@ -2937,6 +2942,7 @@ public class Presenter implements IPlugInPort {
       try {
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("blocks.xml"));
         XStream xStream = new XStream(new DomDriver());
+        xStream.addPermission(AnyTypePermission.ANY);
         xStream.toXML(defaultBlockMap, out);
         out.close();
         // no more user variants
@@ -3015,6 +3021,7 @@ public class Presenter implements IPlugInPort {
     LOG.debug(String.format("importVariants(%s)", fileName));
     BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
     XStream xStream = new XStream(new DomDriver());
+    xStream.addPermission(AnyTypePermission.ANY);
 
     VariantPackage pkg;
     
@@ -3064,6 +3071,7 @@ public class Presenter implements IPlugInPort {
     LOG.debug(String.format("importBlocks(%s)", fileName));
     BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
     XStream xStream = new XStream(new DomDriver());
+    xStream.addPermission(AnyTypePermission.ANY);
 
     BuildingBlockPackage pkg;
     
