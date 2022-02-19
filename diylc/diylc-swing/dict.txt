@@ -48,9 +48,11 @@ Español
 Français
 G-D-S     JFET
 G-D-S     MOSFET
+G-O-I     REGULATOR
 G-S-D     JFET
 G-S-D     MOSFET
 Gray
+I-G-O     REGULATOR
 Import Netlist
 Italiano
 Lin
@@ -67,6 +69,7 @@ Numeric (1-11)
 Numeric (1-12)
 Numeric (Even, No Ticks)
 Numeric (Even, With Ticks)
+O-G-I     REGULATOR
 Or
 PAF
 PCB
