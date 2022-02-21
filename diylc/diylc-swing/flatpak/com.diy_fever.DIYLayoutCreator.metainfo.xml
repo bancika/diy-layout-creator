@@ -37,6 +37,23 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.21.2" date="2022-02-21">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed broken Linux app package</li>             
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.1</url>
+     </release>
+  	 <release version="4.21.1" date="2022-02-19">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed broken OSX app package</li>
+             <li>[New Feature] Added regulator pinouts to transistor body components</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.1</url>
+     </release>
   	 <release version="4.21.0" date="2022-02-16">
          <description>
            <ul>
