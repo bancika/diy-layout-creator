@@ -46,4 +46,4 @@ echo SNAP_USER_DATA
 echo $SNAP_USER_DATA
 echo =============================================
 
-java -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true -Duser.dir=$SNAP_USER_DATA -Dfile.encoding=UTF-8 -cp $SNAP/diylc.jar:lib --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt=ALL-UNNAMED org.diylc.DIYLCStarter
+java -Xms512m -Xmx2048m -Dorg.diylc.scriptRun=true -Duser.dir=$SNAP_USER_DATA -Dfile.encoding=UTF-8 -cp $SNAP/diylc.jar:lib --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED --add-opens java.desktop/java.awt.geom=ALL-UNNAMED org.diylc.DIYLCStarter

@@ -35,5 +35,7 @@
     <opt>--add-opens java.base/java.lang=ALL-UNNAMED</opt>
     <opt>--add-opens java.base/java.text=ALL-UNNAMED</opt>
     <opt>--add-opens java.desktop/java.awt=ALL-UNNAMED</opt>
+    <opt>--add-opens java.desktop/java.awt.font=ALL-UNNAMED</opt>
+    <opt>--add-opens java.desktop/java.awt.geom=ALL-UNNAMED</opt>
   </jre>
 </launch4jConfig>
