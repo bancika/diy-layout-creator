@@ -14,12 +14,6 @@ then
 	mkdir $SNAP_USER_DATA/themes
 fi
 
-#copy a mising update.xml file
-if [ ! -f $SNAP_USER_DATA/update.xml ]
-then
-	cp $SNAP/update.xml $SNAP_USER_DATA/update.xml
-fi
-
 #copy themes
 if [ ! -f $SNAP_USER_DATA/themes/'Blueprint.xml' ]
 then
@@ -34,6 +28,11 @@ fi
 if [ ! -f $SNAP_USER_DATA/themes/'Light.xml' ]
 then
 	cp $SNAP/themes/'Light.xml' $SNAP_USER_DATA/themes/'Light.xml'
+fi
+
+if [ ! -f $SNAP_USER_DATA/themes/'Gray.xml' ]
+then
+	cp $SNAP/themes/'Gray.xml' $SNAP_USER_DATA/themes/'Gray.xml'
 fi
 
 cd $SNAP

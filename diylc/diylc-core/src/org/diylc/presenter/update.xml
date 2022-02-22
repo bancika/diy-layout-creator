@@ -3672,6 +3672,22 @@
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>		
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>21</minor>
+				<build>3</build>
+			</versionNumber>
+			<releaseDate>2022-02-22 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue with the app going back to .diylc user directory for configuration storage. Only diylc directory is used going forward, please copy config.xml from .diylc to diylc if you are missing any configuration</description>
+				</org.diylc.appframework.update.Change>	
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

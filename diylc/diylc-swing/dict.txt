@@ -22,7 +22,6 @@
 5 band
 5PDT
 5PDT  (Center OFF)
-9 Pin Socket 1
 A-O-I     REGULATOR
 AWG
 And

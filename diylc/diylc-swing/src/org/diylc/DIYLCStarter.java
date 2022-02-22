@@ -242,6 +242,6 @@ public class DIYLCStarter {
 		ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 		XStream xStream = configurationManager.getSerializer();
 		ProjectFileManager.configure(xStream);
-		configurationManager.initialize(".diylc");
+		configurationManager.initialize("diylc");
 	}
 }
