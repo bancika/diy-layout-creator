@@ -72,8 +72,6 @@ public class PhonoJackSymbol extends Abstract3LegSymbol {
     
     if (getType() == PhonoJackType.STEREO) {
       y -= pinSpacing;
-      x = controlPoints[2].getX();
-      y = controlPoints[2].getY();
       polyline.moveTo(x, y);
       polyline.lineTo(x - pinSpacing, y);
       polyline.lineTo(x - pinSpacing * 1.25, y - pinSpacing * 0.25);
