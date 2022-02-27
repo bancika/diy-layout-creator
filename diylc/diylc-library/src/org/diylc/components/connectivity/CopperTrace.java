@@ -168,6 +168,27 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
     return null;
   }
   
+  @Deprecated
+  @Override
+  public Integer getFontSizeOverride() {
+    // TODO Auto-generated method stub
+    return super.getFontSizeOverride();
+  }
+
+  @Deprecated
+  @Override
+  public LabelOriantation getLabelOriantation() {
+    // TODO Auto-generated method stub
+    return super.getLabelOriantation();
+  }
+  
+  @Deprecated
+  @Override
+	public Color getLabelColor() {
+		// TODO Auto-generated method stub
+		return super.getLabelColor();
+	}
+  
   public boolean getMoveLabel() {
     // override to disable edit
     return false;
