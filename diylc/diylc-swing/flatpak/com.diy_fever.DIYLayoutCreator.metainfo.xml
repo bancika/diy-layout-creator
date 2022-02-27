@@ -37,13 +37,21 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+     <release version="4.21.3" date="2022-02-22">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed the issue with the app going back to .diylc user directory for configuration storage. Only diylc directory is used going forward, please copy config.xml from .diylc to diylc if you are missing any configuration</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.3</url>
+     </release>  
   	<release version="4.21.2" date="2022-02-21">
          <description>
            <ul>
              <li>[Bug Fix] Fixed broken Linux app package</li>             
            </ul>
          </description>
-         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.1</url>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.2</url>
      </release>
   	 <release version="4.21.1" date="2022-02-19">
          <description>

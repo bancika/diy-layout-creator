@@ -469,7 +469,10 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   }
   
   public void zoom(int direction) {    
-    Point mousePos = canvasPanel.getMousePosition(true);    
+    Point mousePosBefore = canvasPanel.getMousePosition(true);   
+    Point locationBefore = canvasPanel.getLocation();
+    int relativeX = (int) (mousePosBefore.getX() + locationBefore.getX());
+    int relativeY = (int) (mousePosBefore.getY() + locationBefore.getY());
 
     // change zoom level
     double oldZoom = plugInPort.getZoomLevel();
@@ -495,24 +498,25 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
     JScrollBar vertical = scrollPane.getVerticalScrollBar();
     
-    if (mousePos == null)
-      mousePos = new Point((int)visibleRect.getCenterX(), (int)visibleRect.getCenterY());
-
-    if (selectionBounds == null) {
-      // center to cursor
-      Point desiredPos = new Point((int) (1d * mousePos.x / oldZoom * newZoom),
-          (int) (1d * mousePos.y / oldZoom * newZoom));
-      int dx = desiredPos.x - mousePos.x;
-      int dy = desiredPos.y - mousePos.y;
-      horizontal.setValue(horizontal.getValue() + dx);
-      vertical.setValue(vertical.getValue() + dy);
-    } else {
-      // center to selection
-      horizontal.setValue((int) (selectionBounds.getX() + selectionBounds.getWidth() / 2
-          - visibleRect.getWidth() / 2));
-      vertical.setValue((int) (selectionBounds.getY() + selectionBounds.getHeight() / 2
-          - visibleRect.getHeight() / 2));
+    if (mousePosBefore == null) {
+      mousePosBefore = new Point((int)visibleRect.getCenterX(), (int)visibleRect.getCenterY());
     }
+
+	if (selectionBounds == null) {
+		// center to cursor
+		Point desiredPos = new Point((int) (1d * mousePosBefore.getX() / oldZoom * newZoom),
+				(int) (1d * mousePosBefore.getY() / oldZoom * newZoom));
+		int newHorizontalPos = (int) (desiredPos.getX() - relativeX);
+		int newVerticalPos = (int) (desiredPos.getY() - relativeY);
+		horizontal.setValue(newHorizontalPos < 0 ? 0 : newHorizontalPos);
+		vertical.setValue(newVerticalPos < 0 ? 0 : newVerticalPos);
+	} else {
+		// center to selection
+		horizontal
+				.setValue((int) (selectionBounds.getX() + selectionBounds.getWidth() / 2 - visibleRect.getWidth() / 2));
+		vertical.setValue(
+				(int) (selectionBounds.getY() + selectionBounds.getHeight() / 2 - visibleRect.getHeight() / 2));
+	}
   }
 
   private void showPopupAt(int x, int y) {
