@@ -85,8 +85,10 @@ SPDT
 SPDT  (Center OFF)
 SPST
 Srpski
+TR1
 Tick Width
 Ticks
+W2
 Wiring
 Xnor
 Xor

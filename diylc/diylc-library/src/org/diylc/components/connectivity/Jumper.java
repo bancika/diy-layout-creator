@@ -40,7 +40,7 @@ import org.diylc.core.measures.Size;
 
 @ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "J", description = "",
-    zOrder = IDIYComponent.WIRING, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
+    zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     transformer = SimpleComponentTransformer.class)
 public class Jumper extends AbstractLeadedComponent<Void> implements IContinuity {
 

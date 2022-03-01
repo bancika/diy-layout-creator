@@ -43,7 +43,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Copper solder pad, round or square", instanceNamePrefix = "Pad",
-    zOrder = IDIYComponent.WIRING + 0.1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
+    zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, enableCache = true)
 public class SolderPad extends AbstractComponent<Void> {
 

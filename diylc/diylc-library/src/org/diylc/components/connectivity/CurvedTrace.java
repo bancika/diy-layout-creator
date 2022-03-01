@@ -38,7 +38,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "Trace", description = "Curved copper trace with two control points",
-    zOrder = IDIYComponent.WIRING, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
+    zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, 
     enableCache = true)
 public class CurvedTrace extends AbstractCurvedComponent<Void> {
