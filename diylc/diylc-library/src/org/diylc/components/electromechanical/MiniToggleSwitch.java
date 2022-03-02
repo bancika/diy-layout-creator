@@ -70,6 +70,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   private static Color CIRCLE_COLOR = Color.decode("#FFFFAA");
 
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
+  @Deprecated
+  protected String name;
   transient protected Shape body;
   protected ToggleSwitchType switchType = ToggleSwitchType.DPDT;
   private OrientationHV orientation = OrientationHV.VERTICAL;
@@ -197,15 +199,19 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     body = null;
   }
 
-  @EditableProperty
+  @EditableProperty(defaultable = false)
   @Override
   public String getName() {
+    if (super.name != null) {
+      return super.name;
+    }
     return name;
   }
 
   @Override
   public void setName(String name) {
-    this.name = name;
+    super.name = name;
+    this.name = null;
   }
 
   @EditableProperty(name = "Type")

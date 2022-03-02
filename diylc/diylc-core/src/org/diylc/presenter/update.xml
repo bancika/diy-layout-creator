@@ -3735,12 +3735,16 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed backwards compatibility issue with older files failing to open because of an issue with 'Mini Toggle Switch' component serialization</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Separate WIRING layer (containing Hookup Wire and Twisted Wire at the moment) from TRACE layer and render it above the COMPONENT layer by default</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Upgrade OSX application package built-in Java JRE to version 1.8.0_321-b07</description>
+					<description>Upgrade OSX application package built-in Java to JRE 1.8.0_321-b07</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
