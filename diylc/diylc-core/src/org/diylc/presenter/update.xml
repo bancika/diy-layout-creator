@@ -3731,7 +3731,7 @@
 				<minor>22</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2022-02-27 00:00:00.000 CET</releaseDate>
+			<releaseDate>2022-03-02 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>			
 				<org.diylc.appframework.update.Change>
@@ -3744,12 +3744,16 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Separate WIRING layer (containing Hookup Wire and Twisted Wire at the moment) from TRACE layer and render it above the COMPONENT layer by default</description>
+					<description>Separate WIRING layer (containing 'Hookup Wire' and 'Twisted Wire' at the moment) from TRACE layer and render it above the COMPONENT layer by default</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgrade OSX application package built-in Java to JRE 1.8.0_321-b07</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added regression test suite that validates each release candidate version against a barrage of different DIY files</description>
+				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
