@@ -1,0 +1,141 @@
+#!/bin/bash
+#
+# Copyright (c) 2012, 2017, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Shell Script to run the Java Plug-in control panel on Mac OS X.
+#
+
+USAGE='usage: jcontrol [ -j jrepath ]'
+XLERROR='jcontrol: Error: Invalid link or copy: '
+
+#
+# Get the absolute path to a symbolic link's reference.
+#
+# Parameters:
+#     $* : path - the path to the file (link) to dereference (can have spaces in
+#                 the path).
+#
+# Output:
+#     This function writes the path to the link reference to stdout.
+#
+# Note: This function is not capable of detecting that one or more directories
+#       in the path is also a link and unravelling that.
+#
+dereference() {
+    path="$*"
+    result=
+
+    #
+    # Make sure the path is absolute
+    #
+    parent="`cd \"\`"dirname" \"${path}\"\`\"; pwd`"
+    child="`basename \"${path}\"`"
+
+    #
+    # if parent == child, then path == /, and is already absolute
+    #
+    if [ "${parent}" != "${child}" ]; then
+        path="${parent}/${child}"
+    fi
+
+    if [ -h "${path}" ]; then
+        path=`ls -l "${path}" | sed -e "s#^.*${path} -> ##"`
+
+        # make sure the path is still absolute (starts with '/')
+        if expr "${path}" : '[^/]' > /dev/null; then
+            path="${parent}/${path}"
+        fi
+    fi
+
+    echo ${path}
+}
+
+#
+# Check for all the parts required to launch the control panel relative to the
+# given path.
+#
+#
+# Parameters:
+#     $* : path - the path to examine, presumably the resolved path to this
+#                 script (can have spaces in the path).
+#
+# Output:
+#     If successful, this function outputs the absolute path to a directory
+#     containing the Java binary, and ../lib/deploy.jar; otherwise it outputs
+#     an empty string.  (Output is to stdout.)
+#
+# Note: the assumption is that this function returns either:
+#
+#            <jdk-root>/jre/bin, or
+#            <jre-root>/bin
+#
+#       However, as long as the directory pointed by the path returned by this
+#       function contains:
+#
+#            ./java
+#            ../lib/deploy.jar
+#
+#       it should be possible to successfully launch the JCP from the given
+#       information.
+#
+check_parts() {
+    result="`cd \"\`dirname \"$*\"\`\"; pwd`"
+
+    # if this is a JDK, we need the JRE subdir
+    if [ -d "${result}/../jre/bin" ]; then
+        result="`cd \`dirname \"$*\"\`/../jre/bin; pwd`"
+    fi
+
+    if [ ! -x "${result}/java" ] || [ ! -f "${result}/../lib/deploy.jar" ]; then
+        result=
+    fi
+
+    echo "${result}"
+}
+
+#
+# Launch the Java Control Panel.
+#
+# Parameters:
+#     $* : path - the path of this script (can have spaces in the path).
+#
+launch_jcp() {
+    path="$*"
+    while [ -h "${path}" ]; do
+        path="`dereference ${path}`"
+    done
+
+	# If no other options specified, give a default application name.
+	# When invoked from System Preferences a localized name for the application should be
+	# found and passed in via _JAVA_VM_OPTIONS.
+    if [ -z "${_JAVA_VM_OPTIONS}" ]; then
+        _JAVA_VM_OPTIONS=""
+    fi
+
+    if [ -z "${_JCP_DOCK_NAME}" ]; then
+        _JCP_DOCK_NAME=-Xdock:name="Java Control Panel"
+    fi
+
+    if [ -z "${_JCP_DOCK_ICON}" ]; then
+        _JCP_DOCK_ICON=-Xdock:icon="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Resources/Java7VM.icns"
+    fi
+
+    java_home="`check_parts ${path}`"
+    if [ -n "${java_home}" ]; then
+	# launch the JCP using paths relative to
+	# 8034819: Add java.locale.providers so we get properly formatted date/time strings
+	"${java_home}"/java -Xbootclasspath/a:"${java_home}"/../lib/deploy.jar \
+                    -Djava.locale.providers=HOST,JRE,SPI \
+                    -Djdk.disableLastUsageTracking \
+                    "${_JCP_DOCK_NAME}" \
+                    "${_JCP_DOCK_ICON}" \
+                    ${_JAVA_VM_OPTIONS} \
+					com.sun.deploy.panel.ControlPanel
+    else
+        echo "${XLERROR}${java_home}"
+        exit 1
+    fi
+}
+
+launch_jcp $0

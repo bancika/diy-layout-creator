@@ -1,0 +1,18 @@
+﻿/*
+ * Copyright (c) 2012, 2017, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
+/* Strings used in the UI of the Java Control Panel. */
+
+/* Passed in as argument via "-Xdock:name=" */
+"ApplicationName" = "Kontrollpanelen för Java";
+
+/* In case of error, put something in the panel so user knows it failed. */
+"JCPNotFound" = "Hittade inte kontrollpanelen för Java.";
+
+/* Caption below the Java icon. */
+"JCPCaption" = "Kontrollpanelen för Java öppnas i ett separat fönster.";
+
+/* Label for button after control panel is closed. */
+"JCPRelaunchButton" = "Öppna kontrollpanelen för Java igen";

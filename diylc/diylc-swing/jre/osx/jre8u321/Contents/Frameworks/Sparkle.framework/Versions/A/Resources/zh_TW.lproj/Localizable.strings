@@ -1,0 +1,25 @@
+﻿/* 
+ Localizable.strings
+ Sparkle
+ 
+ Created by Pranav Bhat on 10/21/13.
+ Copyright (c) 2013 Oracle Corporation. All rights reserved.
+ */
+
+/* Web Java View strings */
+"webJavaWindowTitle" = "瀏覽器 Plug-in 已停用";
+"webJavaViewHeading" = "Web 瀏覽器中的 Java 內容已停用";
+"webJavaViewDesc" = "若要啟用，請由「Java 控制面板」的「安全」頁籤選取「在瀏覽器中啟用 Java 內容」";
+
+/* Restore Windows Strings */
+"restoreWindowTitle" = "回復安全提示";
+"restoreWindowDesc" = "如果選取「不要再顯示此訊息」選項，會隱藏一部分的 Java 安全提示。您可以每 30 天回復一次這些提示，提昇您個人資訊的安全。";
+"moreInformation" = "更多資訊";
+"restoreCheckbox" = "回復 Java 安全提示";
+
+/* Common strings*/
+"continueButton" = "繼續";
+"closeButton" = "關閉";
+
+/* Security level warning message as per UE team's recommendation*/
+"securityHightenedWarning" = "安全層次將設為「高」的最小值。";

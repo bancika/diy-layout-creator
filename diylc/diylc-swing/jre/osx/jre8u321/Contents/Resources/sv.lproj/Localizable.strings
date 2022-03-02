@@ -1,0 +1,21 @@
+﻿/*
+ * Copyright (c) 2012, 2014, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
+/* Strings used in the UI of the JRE Expired and JRE Security Information Dialogs. */
+
+/* JRE Expired Dialog */
+
+"JreExpiredDialogUpdateButtonCaption" = "Uppdatera";
+"JreExpiredDialogBlockButtonCaption" = "Spärra";
+"JreExpiredDialogLaterButtonCaption" = "Senare";
+"JreExpiredDialogCheckBoxText" = "Fråga inte igen förrän nästa uppdatering är tillgänglig";
+"JreExpiredDialogTitleText" = "Java-uppdatering krävs";
+"JreExpiredDialogMessageText" = "Din version av Java har gått ut.";
+"JreExpiredDialogInformationText" = "Klicka på Uppdatera om du vill installera den rekommenderade senaste versionen. Klicka på Blockera om du vill stoppa Java-innehåll i webbläsaren eller på Senare om du vill fortsätta och bli påmind senare.";
+
+/* JRE Security Information Dialog */
+
+"JreSecurityInformationDialogMessageText" = "Säkerhetsinformation för Java";
+"JreSecurityInformationDialogInformationText" = "Den här applikationen kan inte laddas ned eftersom Java har avaktiverats via webben. Du kan aktivera Java på det här systemet med hjälp av kontrollpanelen för Java.";

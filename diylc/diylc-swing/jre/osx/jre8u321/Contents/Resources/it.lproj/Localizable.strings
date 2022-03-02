@@ -1,0 +1,21 @@
+﻿/*
+ * Copyright (c) 2012, 2014, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
+/* Strings used in the UI of the JRE Expired and JRE Security Information Dialogs. */
+
+/* JRE Expired Dialog */
+
+"JreExpiredDialogUpdateButtonCaption" = "Aggiorna";
+"JreExpiredDialogBlockButtonCaption" = "Blocca";
+"JreExpiredDialogLaterButtonCaption" = "In seguito";
+"JreExpiredDialogCheckBoxText" = "Non chiedere più finché non è disponibile l'aggiornamento successivo";
+"JreExpiredDialogTitleText" = "Aggiornamento Java necessario";
+"JreExpiredDialogMessageText" = "La versione corrente di Java è obsoleta.";
+"JreExpiredDialogInformationText" = "Fare clic su Aggiorna per installare la versione più recente consigliata. Fare clic su Blocca per non visualizzare più il contenuto Java nel browser oppure fare clic su In seguito per continuare e visualizzare di nuovo il promemoria in seguito.";
+
+/* JRE Security Information Dialog */
+
+"JreSecurityInformationDialogMessageText" = "Informazioni sulla sicurezza Java";
+"JreSecurityInformationDialogInformationText" = "Impossibile eseguire il download di questa applicazione poiché Java è stato disabilitato sul Web. È possibile abilitare Java su questo sistema utilizzando il Pannello di controllo Java.";

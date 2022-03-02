@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleName</key>
+	<string>Java Update</string>
+	<key>CFBundleDisplayName</key>
+	<string>Java Update</string>
+	<key>CFBundleExecutable</key>
+	<string>Java 8 Update 321</string>
+	<key>CFBundleIconFile</key>
+	<string>Sparkle</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.andymatuschak.sparkle.Java-8-Update-321</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSBackgroundOnly</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.4</string>
+	<key>LSUIElement</key>
+	<string>1</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>com.oracle.java.JavaUpdateHelper</key>
+		<string>identifier &quot;com.oracle.java.JavaUpdateHelper&quot; and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = VB5E2TV963</string>
+	</dict>
+</dict>
+</plist>

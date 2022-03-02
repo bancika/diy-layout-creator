@@ -1,0 +1,21 @@
+﻿/*
+ * Copyright (c) 2012, 2014, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
+/* Strings used in the UI of the JRE Expired and JRE Security Information Dialogs. */
+
+/* JRE Expired Dialog */
+
+"JreExpiredDialogUpdateButtonCaption" = "更新";
+"JreExpiredDialogBlockButtonCaption" = "阻止";
+"JreExpiredDialogLaterButtonCaption" = "稍后";
+"JreExpiredDialogCheckBoxText" = "下次更新可用前不再询问";
+"JreExpiredDialogTitleText" = "需要 Java Update";
+"JreExpiredDialogMessageText" = "您的 Java 版本已过期。";
+"JreExpiredDialogInformationText" = "单击“更新”可安装推荐的最新版本。单击“阻止”可停止浏览器中的 Java 内容, 或单击“稍后”以继续, 并由系统稍后再次提醒。";
+
+/* JRE Security Information Dialog */
+
+"JreSecurityInformationDialogMessageText" = "Java 安全信息";
+"JreSecurityInformationDialogInformationText" = "由于 Java 已在 Web 中禁用, 因此无法下载此应用程序。您可以使用 Java 控制面板在此系统中启用 Java。";
