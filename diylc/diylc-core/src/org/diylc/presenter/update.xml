@@ -3733,10 +3733,14 @@
 			</versionNumber>
 			<releaseDate>2022-02-27 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>
+			<changes>			
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed backwards compatibility issue with older files failing to open because of an issue with 'Mini Toggle Switch' component serialization</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fix component prefix for SMD Resistor</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
