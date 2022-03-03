@@ -21,6 +21,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry kind="lib" path="lib/java-http-proxy.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="library/main.jar"/>
+	<classpathentry kind="lib" path="library/main.jar" sourcepath="/diylc-library"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

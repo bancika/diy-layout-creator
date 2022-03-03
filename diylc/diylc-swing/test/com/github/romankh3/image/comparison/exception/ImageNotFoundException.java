@@ -5,6 +5,8 @@ package com.github.romankh3.image.comparison.exception;
  */
 public class ImageNotFoundException extends RuntimeException {
 
+  private static final long serialVersionUID = 1L;
+
     /**
      * Constructs a new {@link ImageNotFoundException} with the specified detail message.
      * The cause is not initialized, and may subsequently be initialized by a call to

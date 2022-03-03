@@ -108,11 +108,6 @@ public class ImageComparison {
     private boolean drawExcludedRectangles = false;
 
     /**
-     * The difference in percent between two images.
-     */
-    private float differencePercent;
-
-    /**
      * Flag for filling comparison difference rectangles.
      */
     private boolean fillDifferenceRectangles = false;
