@@ -1,0 +1,51 @@
+<Layout Width="10" Height="10" Type="Perfboard" Project="Flexi Clip" Credits="Layout by Bancika">
+	<Switch Value="DIP 10 pole" X1="3" Y1="1" X2="4" Y2="10" Name="S1"/>
+	<Text Value="www.diy-fever.com" X1="2" Y1="-1" Name="A1"/>
+	<Jumper X1="3" Y1="10" X2="3" Y2="1" Name="J2"/>
+	<Jumper X1="3" Y1="10" X2="3" Y2="9" Name="J3"/>
+	<Jumper X1="3" Y1="9" X2="3" Y2="8" Name="J4"/>
+	<Jumper X1="3" Y1="8" X2="3" Y2="7" Name="J5"/>
+	<Jumper X1="3" Y1="7" X2="3" Y2="6" Name="J6"/>
+	<Jumper X1="3" Y1="6" X2="3" Y2="5" Name="J7"/>
+	<Jumper X1="3" Y1="5" X2="3" Y2="4" Name="J8"/>
+	<Jumper X1="3" Y1="4" X2="3" Y2="3" Name="J9"/>
+	<Jumper X1="3" Y1="3" X2="3" Y2="2" Name="J10"/>
+	<Text Value="Input" X1="-2" Y1="10" Name="A2"/>
+	<Jumper X1="3" Y1="10" X2="0" Y2="10" Name="J1"/>
+	<Diode Value="GE or 1N5819 Shotkey" X1="5" Y1="10" X2="8" Y2="10" Name="Ge3"/>
+	<Diode Value="1N34A or 1N60" X1="5" Y1="7" X2="8" Y2="7" Name="Ge1"/>
+	<Led Value="3mm red" X1="5" Y1="9" X2="8" Y2="9" Name="D2"/>
+	<Diode Value="1N400x" X1="5" Y1="8" X2="8" Y2="8" Name="Re1"/>
+	<Diode Value="1N914" X1="8" Y1="5" X2="5" Y2="5" Name="Si2"/>
+	<Diode Value="1N34A or 1N60" X1="8" Y1="4" X2="5" Y2="4" Name="Ge2"/>
+	<Diode Value="1N400x" X1="8" Y1="3" X2="5" Y2="3" Name="Re2"/>
+	<Led Value="3mm red" X1="8" Y1="2" X2="5" Y2="2" Name="D9"/>
+	<Text Value="Output" X1="12" Y1="5" Name="A4"/>
+	<Diode Value="GE or 1N5819 Shotkey" X1="8" Y1="1" X2="5" Y2="1" Name="Ge4"/>
+	<Diode Value="1N914" X1="5" Y1="6" X2="8" Y2="6" Name="Si1"/>
+	<Jumper X1="5" Y1="2" X2="4" Y2="2" Name="J13"/>
+	<Jumper X1="4" Y1="3" X2="5" Y2="3" Name="J14"/>
+	<Jumper X1="5" Y1="4" X2="4" Y2="4" Name="J15"/>
+	<Jumper X1="4" Y1="5" X2="5" Y2="5" Name="J16"/>
+	<Jumper X1="5" Y1="6" X2="4" Y2="6" Name="J17"/>
+	<Jumper X1="4" Y1="7" X2="5" Y2="7" Name="J18"/>
+	<Jumper X1="5" Y1="8" X2="4" Y2="8" Name="J19"/>
+	<Jumper X1="4" Y1="9" X2="5" Y2="9" Name="J20"/>
+	<Jumper X1="5" Y1="10" X2="4" Y2="10" Name="J21"/>
+	<Transistor Value="IRF520" X1="8" Y1="1" X2="10" Y2="1" Name="Q1"/>
+	<Transistor Value="IRF520" X1="10" Y1="10" X2="8" Y2="10" Name="Q2"/>
+	<Text Value="Note jumpers under transistors" X1="1" Y1="11" Name="A3"/>
+	<Jumper X1="9" Y1="10" X2="10" Y2="10" Name="J22"/>
+	<Jumper X1="8" Y1="5" X2="8" Y2="6" Name="J26"/>
+	<Jumper X1="10" Y1="1" X2="10" Y2="2" Name="J27"/>
+	<Jumper X1="10" Y1="2" X2="8" Y2="2" Name="J28"/>
+	<Jumper X1="8" Y1="2" X2="8" Y2="5" Name="J29"/>
+	<Jumper X1="8" Y1="5" X2="11" Y2="5" Name="J30"/>
+	<Jumper X1="8" Y1="6" X2="8" Y2="7" Name="J11"/>
+	<Jumper X1="8" Y1="7" X2="8" Y2="8" Name="J33"/>
+	<Jumper X1="8" Y1="8" X2="8" Y2="9" Name="J34"/>
+	<Jumper X1="8" Y1="9" X2="10" Y2="9" Name="J23"/>
+	<Jumper X1="10" Y1="9" X2="10" Y2="10" Name="J24"/>
+	<Jumper X1="5" Y1="1" X2="4" Y2="1" Name="J12"/>
+	<Jumper X1="8" Y1="1" X2="9" Y2="1" Name="J25"/>
+</Layout>

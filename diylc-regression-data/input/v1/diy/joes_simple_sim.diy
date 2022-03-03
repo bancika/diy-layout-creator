@@ -1,0 +1,41 @@
+<Layout Width="13" Height="8" Type="Stripboard" Project="Joe Davisson's Simple Sim" Credits="Designed By Joe Davisson - layout by pyrop" HideList="False">
+  <Jumper X1="1" Y1="2" X2="1" Y2="6" Name="J1"/>
+  <Jumper X1="7" Y1="5" X2="7" Y2="7" Name="J2"/>
+  <Cut X1="1" Y1="4" Name="X1"/>
+  <Cut X1="3" Y1="3" Name="X2"/>
+  <Cut X1="4" Y1="5" Name="X3"/>
+  <Cut X1="4" Y1="7" Name="X4"/>
+  <Cut X1="6" Y1="6" Name="X5"/>
+  <Cut X1="8" Y1="5" Name="X6"/>
+  <Cut X1="6" Y1="4" Name="X7"/>
+  <Cut X1="7" Y1="3" Name="X8"/>
+  <Cut X1="9" Y1="2" Name="X9"/>
+  <Cut X1="9" Y1="1" Name="X10"/>
+  <Cut X1="12" Y1="3" Name="X11"/>
+  <Cut X1="9" Y1="7" Name="X12"/>
+  <Resistor Value="1M" X1="3" Y1="7" X2="3" Y2="8" Name="R1"/>
+  <Resistor Value="330K" X1="4" Y1="4" X2="4" Y2="8" Name="R2"/>
+  <Resistor Value="10K" X1="4" Y1="3" X2="4" Y2="1" Name="R3"/>
+  <Resistor Value="220K" X1="3" Y1="2" X2="3" Y2="4" Name="R4"/>
+  <Resistor Value="220K" X1="6" Y1="3" X2="6" Y2="2" Name="R5"/>
+  <Resistor Value="2.2K" X1="6" Y1="5" X2="6" Y2="8" Name="R6"/>
+  <Resistor Value="10K" X1="10" Y1="3" X2="10" Y2="8" Name="R7"/>
+  <Cut X1="10" Y1="6" Name="X13"/>
+  <Capacitor Value="0.1uF" X1="2" Y1="4" X2="2" Y2="7" Name="C1"/>
+  <Capacitor Value="0.001uF" X1="5" Y1="6" X2="5" Y2="8" Name="C2"/>
+  <Electrolyte Value="22uF" Size="Medium" X1="8" Y1="7" X2="8" Y2="8" Name="C3"/>
+  <Capacitor Value="0.1uF" X1="11" Y1="3" X2="11" Y2="6" Name="C4"/>
+  <Transistor Value="2N5089" X1="5" Y1="5" X2="5" Y2="3" Name="Q1"/>
+  <Transistor Value="2N5089" X1="8" Y1="3" X2="8" Y2="1" Name="Q2"/>
+  <Text Value="ground" X1="-3" Y1="8" Name="A1"/>
+  <Text Value="input" X1="-3" Y1="7" Name="A2"/>
+  <Text Value="9v +" X1="-3" Y1="1" Name="A3"/>
+  
+  <Pot Value="100K" Taper="Audio" X1="16" Y1="6" X2="16" Y2="8" Name="P1"/>
+  <Wire Color="Black" Seed="149563816" X1="16" Y1="8" X2="13" Y2="8" Name="W1"/>
+  <Wire Color="Green" Seed="473906296" X1="13" Y1="6" X2="16" Y2="4" Name="W2"/>
+  
+  
+  <Wire Color="Blue" Seed="1610470269" X1="16" Y1="6" X2="15" Y2="11" Name="W3"/>
+  <Text Value="  output" X1="15" Y1="11" Name="A4"/>
+</Layout>

@@ -1,0 +1,22 @@
+<Layout Width="8" Height="6" Type="Stripboard" Project="Voltage Doubler" Credits="Haroldo Gamal" HideList="False">
+	<IC Value="7660S" X1="3" Y1="1" X2="6" Y2="4" Name="IC1"/>
+	<Cut X1="5" Y1="2" Name="X1"/>
+	<Cut X1="5" Y1="3" Name="X2"/>
+	<Cut X1="4" Y1="4" Name="X3"/>
+	<Electrolyte Value="10uF" Size="Small" X1="1" Y1="2" X2="1" Y2="5" Name="C1"/>
+	<Jumper X1="4" Y1="3" X2="4" Y2="6" Name="J1"/>
+	<Diode Value="1n1007" X1="2" Y1="1" X2="2" Y2="5" Name="D2"/>
+	<Electrolyte Value="10uF" Size="Small" X1="7" Y1="5" X2="7" Y2="6" Name="C2"/>
+	<Text Value="+" X1="1" Y1="4" Name="A1"/>
+	<Text Value="+" X1="7" Y1="5" Name="A2"/>
+	<Wire Color="Black" Seed="398451803" X1="1" Y1="1" X2="-3" Y2="0" Name="V+"/>
+	<Text Value="V+" X1="-4" Y1="0" Name="A3"/>
+	<Wire Color="Black" Seed="85221092" X1="1" Y1="6" X2="-3" Y2="6" Name="GND"/>
+	<Text Value="GND" X1="-4" Y1="6" Name="A4"/>
+	<Wire Color="Black" Seed="238042622" X1="8" Y1="5" X2="12" Y2="4" Name="Vout"/>
+	<Text Value="Vout" X1="12" Y1="4" Name="A5"/>
+	<Cut X1="4" Y1="5" Name="X4"/>  
+  <Jumper X1="5" Y1="4" X2="5" Y2="6" Name="J2"/>
+  <Diode Value="1n4007" X1="7" Y1="4" X2="7" Y2="1" Name="DP"/>
+  <Diode Value="1n4007" X1="3" Y1="5" X2="6" Y2="5" Name="D1"/>
+</Layout>

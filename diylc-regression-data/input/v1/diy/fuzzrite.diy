@@ -1,0 +1,40 @@
+<Layout Type="Stripboard" Width="17" Height="6" Project="Fuzzrite" Credits="Layout by Fixr1984">
+	<Transistor Value="2n3904" X1="7" Y1="6" X2="7" Y2="4" Name="Q1"/>
+	<Transistor Value="2n3904" X1="11" Y1="6" X2="11" Y2="4" Name="Q2"/>
+	<Resistor Value="10k" X1="5" Y1="4" X2="5" Y2="1" Name="R1"/>
+	<Resistor Value="10k" X1="13" Y1="4" X2="13" Y2="1" Name="R2"/>
+	<Resistor Value="470K" X1="4" Y1="5" X2="4" Y2="4" Name="R3"/>
+	<Cut X1="5" Y1="6" Name="X1"/>
+	<Capacitor Value=".05uF" X1="3" Y1="6" X2="3" Y2="5" Name="C1"/>
+	<Resistor Value="470K" X1="14" Y1="5" X2="14" Y2="4" Name="R4"/>
+	<Jumper X1="8" Y1="4" X2="8" Y2="3" Name="J1"/>
+	<Cut X1="9" Y1="4" Name="X2"/>
+	<Cut X1="9" Y1="3" Name="X3"/>
+	<Capacitor Value=".002uF" X1="2" Y1="3" X2="4" Y2="3" Name="C2"/>
+	<Cut X1="3" Y1="3" Name="X4"/>
+	<Jumper X1="10" Y1="4" X2="10" Y2="3" Name="J2"/>
+	<Capacitor Value=".002uF" X1="14" Y1="3" X2="16" Y2="3" Name="C3"/>
+	<Cut X1="15" Y1="3" Name="X5"/>
+	<Jumper X1="6" Y1="4" X2="6" Y2="2" Name="J3"/>
+	<Cut X1="9" Y1="2" Name="X6"/>
+	<Capacitor Value=".05uF" X1="8" Y1="2" X2="10" Y2="2" Name="C4"/>
+	<Jumper X1="12" Y1="2" X2="12" Y2="5" Name="J4"/>
+	<Jumper X1="1" Y1="6" X2="-2" Y2="6" Name="J5"/>
+	<Jumper X1="17" Y1="6" X2="21" Y2="6" Name="J6"/>
+	<Jumper X1="17" Y1="3" X2="21" Y2="3" Name="J7"/>
+	<Jumper X1="1" Y1="3" X2="-2" Y2="3" Name="J8"/>
+	<Jumper X1="17" Y1="1" X2="21" Y2="1" Name="J9"/>
+	<Text Value="Input" X1="-5" Y1="6" Name="A1"/>
+	<Text Value="Gain 1" X1="-5" Y1="3" Name="A2"/>
+	<Text Value="Gain 3" X1="22" Y1="3" Name="A3"/>
+	<Text Value="Ground" X1="22" Y1="6" Name="A4"/>
+	<Text Value="Power" X1="22" Y1="1" Name="A5"/>
+	<Resistor Value="1M" X1="4" Y1="6" X2="6" Y2="6" Name="R5"/>
+	<Cut X1="9" Y1="5" Name="X7"/>
+	<Text Value="vol pot=100k" X1="1" Y1="12" Name="A6"/>
+	<Text Value="gain pot =100k" X1="1" Y1="13" Name="A7"/>
+	<Text Value="vol 2- output" X1="1" Y1="14" Name="A8"/>
+	<Text Value="vol 1- ground" X1="1" Y1="15" Name="A9"/>
+	<Text Value="gain 2- vol 3" X1="1" Y1="16" Name="A10"/>  
+  <Text Value="This layout is verified" X1="-3" Y1="20" Name="A11"/>
+</Layout>

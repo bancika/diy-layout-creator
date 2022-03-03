@@ -1,0 +1,100 @@
+<Layout Width="11" Height="10" Type="PCB" Project=" Solar Powered Garden Lamp" Credits="Richard Boop">
+	<Pad X1="1" Y1="7" Value="15" Name="P1" Parent="D1" Square="True"/>
+	<Pad X1="1" Y1="4" Value="15" Name="P2" Parent="D1" Square="False"/>
+	<Diode Value="1N5819" X1="1" Y1="7" X2="1" Y2="4" Name="D1"/>
+	<Pad Value="18" X1="1" Y1="8" Name="P3"/>
+	<Pad Value="18" X1="1" Y1="3" Name="P4"/>
+	<Trace Value="5" X1="1" Y1="3" X2="1" Y2="4" Name="T1"/>
+	<Trace Value="5" X1="1" Y1="7" X2="1" Y2="8" Name="T2"/>
+	<Text Value="Solar Cell +" X1="-3" Y1="8" Name="A1"/>
+	<Text Value="Battery +" X1="-3" Y1="3" Name="A2"/>
+	<Pad Value="18" X1="1" Y1="10" Name="P5"/>
+	<Pad X1="2" Y1="1" Value="15" Name="P6" Parent="R1" Square="False"/>
+	<Pad X1="2" Y1="4" Value="15" Name="P7" Parent="R1" Square="False"/>
+	<Resistor Value="100K" X1="2" Y1="1" X2="2" Y2="4" Name="R1"/>
+	<Trace Value="5" X1="1" Y1="3" X2="1" Y2="2" Name="T3"/>
+	<Trace Value="5" X1="1" Y1="2" X2="2" Y2="1" Name="T4"/>
+	<Pad X1="3" Y1="10" Value="15" Name="P8" Parent="Q1" Square="False"/>
+	<Pad X1="3" Y1="9" Value="15" Name="P9" Parent="Q1" Square="False"/>
+	<Pad X1="3" Y1="8" Value="15" Name="P10" Parent="Q1" Square="False"/>
+	<Transistor Value="S9014 (NPN GP)" X1="3" Y1="10" X2="3" Y2="8" Name="Q1"/>
+	<Pad X1="2" Y1="5" Value="15" Name="P11" Parent="R2" Square="False"/>
+	<Pad X1="2" Y1="8" Value="15" Name="P12" Parent="R2" Square="False"/>
+	<Resistor Value="100K" X1="2" Y1="5" X2="2" Y2="8" Name="R2"/>
+	<Trace Value="5" X1="2" Y1="4" X2="2" Y2="5" Name="T5"/>
+	<Trace Value="5" X1="2" Y1="8" X2="3" Y2="8" Name="T6"/>
+	<Pad X1="4" Y1="1" Value="15" Name="P13" Parent="R3" Square="False"/>
+	<Pad X1="4" Y1="7" Value="15" Name="P14" Parent="R3" Square="False"/>
+	<Resistor Value="390R" X1="4" Y1="1" X2="4" Y2="7" Name="R3"/>
+	<Pad X1="3" Y1="1" Value="15" Name="P15" Parent="C1" Square="False"/>
+	<Pad X1="3" Y1="4" Value="15" Name="P16" Parent="C1" Square="False"/>
+	<Capacitor Value="2.2nF" X1="3" Y1="1" X2="3" Y2="4" Name="C1"/>
+	<Trace Value="5" X1="2" Y1="4" X2="3" Y2="4" Name="T9"/>
+	<Pad X1="5" Y1="3" Value="15" Name="P17" Parent="Q2" Square="False"/>
+	<Pad X1="5" Y1="4" Value="15" Name="P18" Parent="Q2" Square="False"/>
+	<Pad X1="5" Y1="5" Value="15" Name="P19" Parent="Q2" Square="False"/>
+	<Transistor Value="S9015 (PNP GP)" X1="5" Y1="3" X2="5" Y2="5" Name="Q2"/>
+	<Trace Value="5" X1="5" Y1="3" X2="5" Y2="1" Name="T10"/>
+	<Trace Value="5" X1="3" Y1="4" X2="5" Y2="4" Name="T11"/>
+	<Pad X1="6" Y1="5" Value="15" Name="P20" Parent="R4" Square="False"/>
+	<Pad X1="6" Y1="8" Value="15" Name="P21" Parent="R4" Square="False"/>
+	<Resistor Value="100K" X1="6" Y1="5" X2="6" Y2="8" Name="R4"/>
+	<Trace Value="5" X1="5" Y1="5" X2="6" Y2="5" Name="T12"/>
+	<Trace Value="5" X1="7" Y1="9" X2="7" Y2="10" Name="T14"/>
+	<Pad X1="7" Y1="4" Value="15" Name="P24" Parent="C2" Square="False"/>
+	<Pad X1="7" Y1="7" Value="15" Name="P25" Parent="C2" Square="False"/>
+	<Capacitor Value="1nF" X1="7" Y1="4" X2="7" Y2="7" Name="C2"/>
+	<Trace Value="5" X1="5" Y1="4" X2="7" Y2="4" Name="T15"/>
+	<Pad X1="9" Y1="9" Value="15" Name="P26" Parent="Q3" Square="False"/>
+	<Pad X1="9" Y1="8" Value="15" Name="P27" Parent="Q3" Square="False"/>
+	<Pad X1="9" Y1="7" Value="15" Name="P28" Parent="Q3" Square="False"/>
+	<Transistor Value="S9013 (NPN GP Switching)" X1="9" Y1="9" X2="9" Y2="7" Name="Q3"/>
+	<Trace Value="5" X1="9" Y1="9" X2="9" Y2="10" Name="T16"/>
+	<Trace Value="5" X1="7" Y1="7" X2="9" Y2="7" Name="T17"/>
+	<Pad X1="8" Y1="5" Value="15" Name="P29" Parent="R5" Square="False"/>
+	<Pad X1="8" Y1="8" Value="15" Name="P30" Parent="R5" Square="False"/>
+	<Resistor Value="1.5K" X1="8" Y1="5" X2="8" Y2="8" Name="R5"/>
+	<Trace Value="5" X1="6" Y1="5" X2="8" Y2="5" Name="T19"/>
+	<Trace Value="5" X1="8" Y1="8" X2="9" Y2="8" Name="T20"/>
+	<Pad X1="9" Y1="5" Value="15" Name="P31" Parent="I1" Square="False"/>
+	<Pad X1="9" Y1="1" Value="15" Name="P32" Parent="I1" Square="False"/>
+	<Resistor Value="100uH" X1="9" Y1="5" X2="9" Y2="1" Name="I 1"/>
+	<Trace Value="5" X1="2" Y1="1" X2="9" Y2="1" Name="T21"/>
+	<Trace Value="5" X1="1" Y1="10" X2="9" Y2="10" Name="T22"/>
+	<Trace Value="5" X1="9" Y1="5" X2="9" Y2="7" Name="T23"/>
+	<Trace Value="5" X1="11" Y1="7" X2="10" Y2="7" Name="T24"/>
+	<Trace Value="5" X1="11" Y1="7" X2="11" Y2="10" Name="T25"/>
+	<Trace Value="5" X1="11" Y1="10" X2="9" Y2="10" Name="T26"/>
+	<Trace Value="5" X1="9" Y1="5" X2="11" Y2="5" Name="T27"/>
+	<Pad Value="18" X1="1" Y1="9" Name="P37"/>
+	<Trace Value="5" X1="1" Y1="9" X2="1" Y2="10" Name="T28"/>
+	<Pad X1="5" Y1="9" Value="18" Name="P22" Parent="LDR" Square="False"/>
+	<Pad X1="7" Y1="9" Value="18" Name="P23" Parent="LDR" Square="False"/>
+	<Resistor Value="150K" X1="5" Y1="9" X2="7" Y2="9" Name="LDR"/>
+	<Pad X1="10" Y1="5" Value="18" Name="P33" Parent="D2" Square="False"/>
+	<Pad X1="10" Y1="7" Value="18" Name="P34" Parent="D2" Square="False"/>
+	<Led Value="LED" X1="10" Y1="5" X2="10" Y2="7" Name="D2"/>
+	<Text Value="Solar Cell -" X1="-3" Y1="9" Name="A3"/>
+	<Text Value="Battery -" X1="-3" Y1="10" Name="A4"/>
+	<Text Value="E" X1="6" Y1="3" Name="A5"/>
+	<Text Value="E" X1="3" Y1="11" Name="A6"/>
+	<Text Value="E" X1="10" Y1="9" Name="A7"/>
+	<Trace Value="5" X1="5" Y1="9" X2="3" Y2="9" Name="T7"/>
+	<Trace Value="5" X1="4" Y1="7" X2="4" Y2="9" Name="T13"/>
+	<Trace Value="5" X1="6" Y1="8" X2="4" Y2="8" Name="T8"/>
+	<Text Value="K" X1="12" Y1="7" Name="A8"/>
+	<Text Value="A" X1="12" Y1="5" Name="A9"/>
+	<Pad X1="11" Y1="5" Value="20" Name="P35" Parent="D3" Square="False"/>
+	<Pad X1="11" Y1="7" Value="20" Name="P36" Parent="D3" Square="False"/>
+	<Led Value="LED" X1="11" Y1="5" X2="11" Y2="7" Name="D3"/>
+	<Text Value="http://members.shaw.ca/novotill/SolarGardenLight/index.htm" X1="-3" Y1="-1" Name="A10"/>  <Text Value="Battery: 1 - AA NiCd" X1="3" Y1="17" Name="A11"/>
+  <Text Value="Untested" X1="-10" Y1="-4" Name="A12"/>
+  <Text Value="Untested" X1="19" Y1="-4" Name="A13"/>
+  <Text Value="My wife wanted me to repair a yard light. When I took it apart it was all corroded and nasty. " X1="-8" Y1="19" Name="A14"/>
+  <Text Value="Anyway this is close to what was in there so I’m going to build a new one instead." X1="-7" Y1="20" Name="A15"/>
+  <Text Value="My guess is that for Q1 a 2N3904 or 2N5088 will work. Q2 a 2N3906 or 2N5087 " X1="-7" Y1="21" Name="A16"/>
+  <Text Value="And for Q3 I’m going to try a 2N2222." X1="0" Y1="22" Name="A17"/>
+  <Text Value="Check the link above for further info. The layout is for the 3rd schematic down." X1="-6" Y1="24" Name="A18"/>
+  <Text Value="Not sure how soon I will build it, probably this winter. If you try it and it works please mark it as verified and resubmit. " X1="-11" Y1="25" Name="A19"/>
+  <Text Value="Thanks, Richard" X1="3" Y1="26" Name="A20"/>
+</Layout>

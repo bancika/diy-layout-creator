@@ -1,0 +1,45 @@
+<Layout Type="Stripboard" Width="19" Height="10" Project="UNIVOX SQUAREWAVE FUZZ" Credits="Layout by Andrew Carrell">
+	<Resistor Value="470K" X1="2" Y1="6" X2="2" Y2="10" Name="R1"/>
+	<Resistor Value="100K" X1="3" Y1="6" X2="3" Y2="5" Name="R2"/>
+	<Capacitor Value=".1uF" X1="4" Y1="5" X2="4" Y2="8" Name="C1"/>
+	<Cut X1="5" Y1="6" Name="X2"/>
+	<Cut X1="5" Y1="5" Name="X3"/>
+	<Transistor Value="2N5088" X1="3" Y1="9" X2="3" Y2="7" Name="Q1"/>
+	<Resistor Value="680R" X1="4" Y1="9" X2="4" Y2="10" Name="R3"/>
+	<Transistor Value="2N5458 JFET" X1="6" Y1="4" X2="6" Y2="6" Name="Q2"/>
+	<Resistor Value="2M" X1="7" Y1="4" X2="7" Y2="9" Name="R4"/>
+	<Resistor Value="560K" X1="5" Y1="7" X2="5" Y2="1" Name="R5"/>
+	<Resistor Value="10K" X1="4" Y1="4" X2="4" Y2="1" Name="R6"/>  <Cut X1="8" Y1="9" Name="X5"/>
+  <Resistor Value="100K" X1="9" Y1="8" X2="9" Y2="9" Name="R7"/>
+  <Resistor Value="270K" X1="10" Y1="9" X2="10" Y2="10" Name="R8"/>
+  <Resistor Value="560K" X1="11" Y1="9" X2="11" Y2="5" Name="R9"/>
+  <Jumper X1="8" Y1="7" X2="8" Y2="6" Name="J1"/>
+  <Cut X1="9" Y1="7" Name="X4"/>
+  <Resistor Value="3.9K" X1="12" Y1="5" X2="12" Y2="10" Name="R10"/>
+  <Electrolyte Value="33uF" X1="13" Y1="5" X2="13" Y2="10" Name="C2"/>
+  <Electrolyte Value="4.7uF" X1="8" Y1="4" X2="8" Y2="3" Name="C3"/>
+  <Diode Value="1N34A GERM." X1="14" Y1="3" X2="14" Y2="10" Name="D1"/>
+  <Diode Value="1N34A GERM." X1="15" Y1="10" X2="15" Y2="3" Name="D2"/>
+  <Cut X1="10" Y1="4" Name="X6"/>
+  <Capacitor Value=".001uF" X1="16" Y1="3" X2="16" Y2="8" Name="C4"/>
+  <Cut X1="15" Y1="8" Name="X7"/>
+  <Resistor Value="27K" X1="17" Y1="2" X2="17" Y2="8" Name="R11"/>
+  <Text Value="+9v" X1="-2" Y1="1" Name="T1"/>
+  
+  <Jumper X1="18" Y1="4" X2="18" Y2="10" Name="J2"/>
+  <Text Value="INPUT" Y1="6" Name="T2" X1="-2"/>
+  <Text Value="GROUND" X1="-3" Y1="10" Name="T3"/>
+  <Text Value="BALANCE-1" X1="20" Y1="10" Name="T4"/>
+  <Text Value="BALANCE-3" X1="20" Y1="8" Name="T5"/>
+  <Text Value="FUZZ-3,2" X1="20" Y1="3" Name="T6"/>
+  <Text Value="FUZZ-1" X1="20" Y1="2" Name="T7"/>
+  <Electrolyte Value="47uF" X1="11" Y1="1" X2="11" Y2="4" Name="C5"/>
+  <Text Value="* &quot;FUZZ&quot; CONTROL IS A 250K AUDIO POT." X1="7" Y1="16" Name="T8"/>
+  <Text Value="* &quot;BALANCE&quot; IS A 50K AUDIO POT." X1="7" Y1="17" Name="T9"/>
+  <Text Value="* &quot;BALANCE&quot; LUG-2 GOES TO EFFECT OUTPUT." X1="7" Y1="18" Name="T10"/>
+  <Text Value="* WATCH ORIENTATION OF Q1 AND Q2 !" X1="7" Y1="19" Name="T11"/>
+  <Text Value="C" X1="3" Y1="7" Name="T12"/>
+  <Text Value="E" X1="3" Y1="9" Name="T13"/>
+  <Text Value="D" X1="6" Y1="4" Name="T14"/>
+  <Text Value="G" X1="6" Y1="6" Name="T15"/>
+</Layout>

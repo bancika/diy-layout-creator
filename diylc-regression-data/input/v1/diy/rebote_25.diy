@@ -1,0 +1,224 @@
+<Layout Type="Perfboard" Width="18" Height="23" Project="Rebote 2.5 Delay" Credits="Fransisco Pena :: Layout by Matt Rabe">
+	<Jumper X1="1" Y1="4" X2="4" Y2="4" Name="J8"/>
+	<Jumper X1="4" Y1="4" X2="4" Y2="1" Name="J9"/>
+	<Jumper X1="15" Y1="4" X2="18" Y2="4" Name="J10"/>
+	<Capacitor Value=".1uF" X1="4" Y1="23" X2="6" Y2="23" Name="C1"/>
+	<Jumper X1="6" Y1="23" X2="7" Y2="23" Name="J11"/>
+	<Jumper X1="7" Y1="19" X2="7" Y2="18" Name="J15"/>
+	<Text Value="GND" X1="3" Y1="0" Name="A2"/>
+	<Jumper X1="10" Y1="23" X2="11" Y2="23" Name="J18"/>
+	<Jumper X1="11" Y1="22" X2="10" Y2="22" Name="J20"/>
+	<Jumper X1="10" Y1="16" X2="11" Y2="16" Name="J24"/>
+	<Jumper X1="10" Y1="17" X2="11" Y2="17" Name="J25"/>
+	<Jumper X1="10" Y1="18" X2="11" Y2="18" Name="J27"/>
+	<Jumper X1="10" Y1="19" X2="11" Y2="19" Name="J28"/>
+	<Jumper X1="10" Y1="21" X2="11" Y2="21" Name="J21"/>
+	<Jumper X1="10" Y1="20" X2="11" Y2="20" Name="J23"/>
+	<Capacitor Value=".01uF" X1="14" Y1="21" X2="14" Y2="23" Name="C7"/>
+	<Jumper X1="14" Y1="23" X2="14" Y2="24" Name="J30"/>
+	<Jumper X1="14" Y1="21" X2="15" Y2="20" Name="J31"/>
+	<Jumper X1="15" Y1="20" X2="17" Y2="20" Name="J32"/>
+	<Jumper X1="13" Y1="20" X2="14" Y2="20" Name="J33"/>
+	<Resistor Value="12K" X1="14" Y1="19" X2="17" Y2="19" Name="R3"/>
+	<Capacitor Value=".01uF" X1="15" Y1="18" X2="17" Y2="18" Name="C8"/>
+	<Resistor Value="12K" X1="14" Y1="17" X2="17" Y2="17" Name="R4"/>
+	<Resistor Value="12K" X1="14" Y1="20" X2="17" Y2="20" Name="R2"/>
+	<Jumper X1="17" Y1="20" X2="17" Y2="19" Name="J34"/>
+	<Jumper X1="14" Y1="18" X2="15" Y2="18" Name="J36"/>
+	<Jumper X1="17" Y1="18" X2="18" Y2="18" Name="J37"/>
+	<Jumper X1="13" Y1="17" X2="14" Y2="16" Name="J42"/>
+	<Jumper X1="15" Y1="16" X2="14" Y2="16" Name="J46"/>
+	<Capacitor Value=".082uF" X1="11" Y1="21" X2="13" Y2="21" Name="C3"/>
+	<Jumper X1="13" Y1="21" X2="11" Y2="20" Name="J22"/>
+	<Jumper X1="11" Y1="20" X2="13" Y2="20" Name="J43"/>
+	<Capacitor Value=".001uF" X1="12" Y1="17" X2="12" Y2="19" Name="C6"/>
+	<Jumper X1="11" Y1="18" X2="12" Y2="17" Name="J29"/>
+	<Jumper X1="11" Y1="15" X2="11" Y2="16" Name="J26"/>
+	<Jumper X1="17" Y1="16" X2="17" Y2="17" Name="J47"/>
+	<Jumper X1="15" Y1="16" X2="17" Y2="16" Name="J44"/>
+	<Jumper X1="14" Y1="17" X2="14" Y2="19" Name="J35"/>
+	<Jumper X1="12" Y1="17" X2="13" Y2="16" Name="J40"/>
+	<Resistor Value="47K" X1="13" Y1="15" X2="16" Y2="15" Name="R6"/>
+	<Jumper X1="11" Y1="17" X2="13" Y2="15" Name="J45"/>
+	<Resistor Value="12K" X1="13" Y1="14" X2="16" Y2="14" Name="R7"/>
+	<Jumper X1="16" Y1="14" X2="16" Y2="15" Name="J49"/>
+	<Jumper X1="11" Y1="15" X2="13" Y2="14" Name="J50"/>
+	<Capacitor Value=".01uF" X1="15" Y1="13" X2="17" Y2="13" Name="C10"/>
+	<Jumper X1="17" Y1="13" X2="18" Y2="13" Name="J51"/>
+	<Jumper X1="15" Y1="13" X2="16" Y2="14" Name="J52"/>
+	<Resistor Value="12K" X1="14" Y1="12" X2="17" Y2="12" Name="R8"/>
+	<Jumper X1="15" Y1="13" X2="17" Y2="12" Name="J53"/>
+	<Jumper X1="14" Y1="12" X2="15" Y2="11" Name="J54"/>
+	<Jumper X1="17" Y1="11" X2="18" Y2="11" Name="J55"/>
+	<Text Value="IN" X1="1" Y1="5" Name="A3"/>
+	<Jumper X1="14" Y1="12" X2="14" Y2="13" Name="J57"/>
+	<Text Value="REPEAT" X1="13" Y1="-2" Name="A4"/>
+	<Text Value="25k LIN" X1="13" Y1="-1" Name="A5"/>
+	<Text Value="2" X1="14" Y1="0" Name="A7"/>
+	<Capacitor Value=".1uF" X1="15" Y1="10" X2="17" Y2="10" Name="C12"/>
+	<IC Value="PT2399" X1="7" Y1="16" X2="10" Y2="23" Name="IC1"/>
+	<Jumper X1="7" Y1="19" X2="8" Y2="19" Name="J16"/>
+	<Jumper X1="8" Y1="19" X2="8" Y2="24" Name="J17"/>
+	<Jumper X1="10" Y1="18" X2="9" Y2="18" Name="J63"/>
+	<Jumper X1="9" Y1="18" X2="9" Y2="15" Name="J64"/>
+	<Jumper X1="6" Y1="17" X2="7" Y2="17" Name="J69"/>
+	<Jumper X1="6" Y1="15" X2="7" Y2="16" Name="J70"/>
+	<Jumper X1="6" Y1="13" X2="6" Y2="15" Name="J73"/>
+	<Electrolyte Value="47uF" X1="6" Y1="14" X2="8" Y2="14" Name="C16"/>
+	<Jumper X1="8" Y1="14" X2="8" Y2="19" Name="J74"/>
+	<Jumper X1="6" Y1="12" X2="6" Y2="13" Name="J75"/>
+	<Jumper X1="7" Y1="12" X2="8" Y2="14" Name="J76"/>
+	<Jumper X1="8" Y1="12" X2="8" Y2="11" Name="J77"/>
+	<Jumper X1="8" Y1="11" X2="6" Y2="11" Name="J78"/>
+	<Text Value="DELAY" X1="4" Y1="-2" Name="A9"/>
+	<Text Value="50k LIN" X1="4" Y1="-1" Name="A10"/>
+	<Text Value="9v" X1="6" Y1="0" Name="A1"/>
+	<Resistor Value="12K" X1="7" Y1="8" X2="7" Y2="11" Name="R12"/>
+	<Jumper X1="7" Y1="6" X2="7" Y2="8" Name="J83"/>
+	<Transistor Value="78L05" X1="6" Y1="12" X2="8" Y2="12" Name="Q1"/>
+	<Jumper X1="11" Y1="7" X2="11" Y2="11" Name="J93"/>
+	<Capacitor Value="560pF" X1="11" Y1="16" X2="11" Y2="17" Name="C5"/>
+	<Jumper X1="6" Y1="19" X2="6" Y2="17" Name="J95"/>
+	<Jumper X1="6" Y1="16" X2="7" Y2="16" Name="J96"/>
+	<Jumper X1="8" Y1="1" X2="8" Y2="2" Name="J102"/>
+	<Jumper X1="13" Y1="1" X2="13" Y2="2" Name="J105"/>
+	<Capacitor Value=".082uF" X1="3" Y1="5" X2="3" Y2="7" Name="C22"/>
+	<Jumper X1="2" Y1="5" X2="3" Y2="5" Name="J106"/>
+	<Jumper X1="3" Y1="7" X2="4" Y2="7" Name="J107"/>
+	<Jumper X1="11" Y1="7" X2="11" Y2="6" Name="J108"/>
+	<Jumper X1="17" Y1="5" X2="17" Y2="6" Name="J111"/>
+	<Text Value="OUT" X1="16" Y1="4" Name="A15"/>
+	<Resistor Value="1M" X1="2" Y1="6" X2="2" Y2="9" Name="R9"/>
+	<Jumper X1="2" Y1="5" X2="2" Y2="6" Name="J113"/>
+	<Jumper X1="1" Y1="9" X2="2" Y2="9" Name="J114"/>
+	<Text Value="LEVEL" X1="8" Y1="-2" Name="A16"/>
+	<Text Value="100k LIN" X1="8" Y1="-1" Name="A17"/>
+	<Text Value="2" X1="9" Y1="0" Name="A22"/>
+	<Jumper X1="8" Y1="3" X2="9" Y2="3" Name="J104"/>
+	<Jumper X1="10" Y1="2" X2="9" Y2="3" Name="J120"/>
+	<Jumper X1="10" Y1="2" X2="13" Y2="2" Name="J121"/>
+	<Electrolyte Value="1uF" X1="10" Y1="3" X2="9" Y2="2" Name="C25"/>
+	<Jumper X1="9" Y1="2" X2="9" Y2="1" Name="J122"/>
+	<Resistor Value="33K" X1="16" Y1="5" X2="13" Y2="3" Name="R19"/>
+	<Jumper X1="10" Y1="3" X2="13" Y2="3" Name="J123"/>
+	<Jumper X1="8" Y1="12" X2="9" Y2="13" Name="J82"/>
+	<Jumper X1="9" Y1="13" X2="10" Y2="13" Name="J130"/>
+	<Jumper X1="10" Y1="13" X2="10" Y2="11" Name="J131"/>
+	<Resistor Value="2.7K" X1="9" Y1="12" X2="9" Y2="15" Name="R16"/>
+	<Resistor Value="12K" X1="10" Y1="15" X2="14" Y2="13" Name="R10"/>
+	<Electrolyte Value="1uF" X1="11" Y1="12" X2="12" Y2="12" Name="C19"/>
+	<Jumper X1="11" Y1="11" X2="11" Y2="12" Name="J85"/>
+	<Jumper X1="12" Y1="12" X2="10" Y2="15" Name="J94"/>
+	<Resistor Value="1K" X1="8" Y1="10" X2="12" Y2="10" Name="R15"/>
+	<Jumper X1="12" Y1="9" X2="12" Y2="10" Name="J97"/>
+	<Jumper X1="13" Y1="9" X2="15" Y2="9" Name="J61"/>
+	<Jumper X1="15" Y1="9" X2="17" Y2="9" Name="J62"/>
+	<Jumper X1="15" Y1="11" X2="16" Y2="11" Name="J134"/>
+	<Jumper X1="16" Y1="11" X2="17" Y2="10" Name="J135"/>
+	<Jumper X1="9" Y1="7" X2="10" Y2="7" Name="J103"/>
+	<Jumper X1="10" Y1="8" X2="11" Y2="8" Name="J92"/>
+	<Jumper X1="10" Y1="9" X2="10" Y2="11" Name="J86"/>
+	<Jumper X1="12" Y1="9" X2="12" Y2="7" Name="J91"/>
+	<Jumper X1="12" Y1="9" X2="12" Y2="7" Name="J115"/>
+	<Jumper X1="13" Y1="7" X2="12" Y2="7" Name="J89"/>
+	<Jumper X1="13" Y1="6" X2="18" Y2="6" Name="J109"/>
+	<Text Value="TL072 4 to GND = Insul. Wire" X1="-8" Y1="4" Name="A32"/>
+	<IC Value="TL072" X1="13" Y1="9" X2="10" Y2="6" Name="IC2"/>
+	<Electrolyte Value="1uF" X1="7" Y1="3" X2="8" Y2="2" Name="C21"/>
+	<Jumper X1="9" Y1="12" X2="7" Y2="3" Name="J84"/>
+	<Text Value="C21 to R16 = Insul. Wire" X1="-7" Y1="5" Name="A33"/>
+	<Jumper X1="8" Y1="7" X2="9" Y2="7" Name="J88"/>
+	<Jumper X1="8" Y1="10" X2="7" Y2="9" Name="J90"/>
+	<Jumper X1="7" Y1="9" X2="7" Y2="8" Name="J100"/>
+	<Resistor Value="510K" X1="8" Y1="6" X2="8" Y2="9" Name="R21"/>
+	<Capacitor Value="5pF" X1="9" Y1="7" X2="9" Y2="8" Name="C26"/>
+	<Jumper X1="8" Y1="9" X2="9" Y2="8" Name="J101"/>
+	<Jumper X1="9" Y1="8" X2="10" Y2="8" Name="J126"/>
+	<Jumper X1="8" Y1="6" X2="9" Y2="7" Name="J127"/>
+	<Jumper X1="7" Y1="5" X2="7" Y2="6" Name="J87"/>
+	<Jumper X1="10" Y1="5" X2="10" Y2="6" Name="J128"/>
+	<Resistor Value="24K" X1="12" Y1="4" X2="15" Y2="6" Name="R20"/>
+	<Jumper X1="12" Y1="4" X2="12" Y2="6" Name="J60"/>
+	<Jumper X1="12" Y1="6" X2="11" Y2="6" Name="J125"/>
+	<Text Value="C20 to R16 = Insul. Wire" X1="-7" Y1="6" Name="A30"/>
+	<Electrolyte Value="1uF" X1="17" Y1="9" X2="17" Y2="8" Name="C23"/>
+	<Jumper X1="17" Y1="8" X2="17" Y2="7" Name="J99"/>
+	<Jumper X1="17" Y1="7" X2="17" Y2="6" Name="J112"/>
+	<Resistor Value="100K" X1="17" Y1="7" X2="18" Y2="4" Name="R22"/>
+	<Jumper X1="12" Y1="19" X2="11" Y2="19" Name="J129"/>
+	<Jumper X1="12" Y1="18" X2="12" Y2="19" Name="J41"/>
+	<Jumper X1="12" Y1="18" X2="13" Y2="17" Name="J48"/>
+	<Resistor Value="24K" X1="13" Y1="16" X2="13" Y2="19" Name="R5"/>
+	<Jumper X1="13" Y1="19" X2="14" Y2="19" Name="J38"/>
+	<Capacitor Value=".027uF" X1="15" Y1="11" X2="17" Y2="11" Name="C9"/>
+	<Text Value="3" X1="5" Y1="0" Name="A11"/>
+	<Text Value="1" X1="7" Y1="0" Name="A12"/>
+	<Text Value="3" X1="8" Y1="0" Name="A13"/>
+	<Text Value="1" X1="10" Y1="0" Name="A14"/>
+	<Text Value="3" X1="13" Y1="0" Name="A18"/>
+	<Text Value="1" X1="15" Y1="0" Name="A21"/>
+	<Jumper X1="1" Y1="4" X2="1" Y2="20" Name="J3"/>
+	<Jumper X1="18" Y1="4" X2="18" Y2="20" Name="J4"/>
+	<Jumper X1="15" Y1="21" X2="18" Y2="20" Name="J7"/>
+	<Capacitor Value=".082uF" X1="11" Y1="23" X2="13" Y2="23" Name="C4"/>
+	<Jumper X1="13" Y1="23" X2="11" Y2="22" Name="J19"/>
+	<Text Value="C2 to GND = Insul. Wire" X1="-7" Y1="2" Name="A20"/>
+	<Jumper X1="4" Y1="24" X2="14" Y2="24" Name="J1"/>
+	<Jumper X1="14" Y1="23" X2="15" Y2="21" Name="J2"/>
+	<Text Value="C7 to GND = Insul. Wire" X1="-7" Y1="1" Name="A23"/>  <Jumper X1="7" Y1="18" X2="8" Y2="19" Name="J117"/>
+  <Resistor Value="24K" X1="16" Y1="6" X2="16" Y2="9" Name="R18"/>
+  <Capacitor Value="51pF" X1="15" Y1="7" X2="15" Y2="9" Name="C11"/>
+  <Jumper X1="13" Y1="8" X2="15" Y2="7" Name="J39"/>
+  <Jumper X1="15" Y1="7" X2="16" Y2="6" Name="J110"/>
+  <Jumper X1="16" Y1="5" X2="15" Y2="6" Name="J116"/>
+  <Jumper X1="15" Y1="6" X2="15" Y2="7" Name="J118"/>
+  <Capacitor Value=".1uF" X1="4" Y1="22" X2="6" Y2="22" Name="C2"/>
+  <Jumper X1="6" Y1="22" X2="7" Y2="22" Name="J12"/>
+  <Resistor Value="1K" X1="4" Y1="21" X2="6" Y2="21" Name="R1"/>
+  <Electrolyte Value="47uF" X1="6" Y1="20" X2="4" Y2="19" Name="C13"/>
+  <Jumper X1="6" Y1="20" X2="6" Y2="19" Name="J5"/>
+  <Jumper X1="4" Y1="19" X2="1" Y2="19" Name="J6"/>
+  <Jumper X1="5" Y1="19" X2="5" Y2="20" Name="J13"/>
+  <Jumper X1="5" Y1="20" X2="4" Y2="21" Name="J14"/>
+  <Jumper X1="4" Y1="24" X2="4" Y2="22" Name="J66"/>
+  <Jumper X1="4" Y1="22" X2="1" Y2="20" Name="J68"/>
+  <Jumper X1="6" Y1="21" X2="7" Y2="21" Name="J119"/>
+  <Electrolyte Value="47uF" X1="5" Y1="16" X2="3" Y2="16" Name="C14"/>
+  <Jumper X1="6" Y1="16" X2="5" Y2="16" Name="J67"/>
+  <Jumper X1="3" Y1="16" X2="1" Y2="16" Name="J71"/>
+  <Jumper X1="5" Y1="19" X2="5" Y2="18" Name="J124"/>
+  <Jumper X1="5" Y1="18" X2="4" Y2="18" Name="J132"/>
+  <Jumper X1="4" Y1="18" X2="4" Y2="14" Name="J137"/>
+  <Capacitor Value=".1uF" X1="3" Y1="13" X2="5" Y2="13" Name="C15"/>
+  <Capacitor Value=".01uF" X1="3" Y1="12" X2="5" Y2="12" Name="C20"/>
+  <Jumper X1="3" Y1="12" X2="1" Y2="12" Name="J65"/>
+  <Jumper X1="5" Y1="12" X2="9" Y2="12" Name="J72"/>
+  <Jumper X1="5" Y1="13" X2="6" Y2="13" Name="J98"/>
+  <Jumper X1="3" Y1="13" X2="1" Y2="13" Name="J138"/>
+  <Electrolyte Value="47uF" X1="5" Y1="10" X2="3" Y2="10" Name="C17"/>
+  
+  <Jumper X1="3" Y1="10" X2="1" Y2="10" Name="J139"/>
+  <Resistor Value="12K" X1="3" Y1="8" X2="6" Y2="8" Name="R13"/>
+  <Jumper X1="3" Y1="8" X2="2" Y2="9" Name="J56"/>
+  <Jumper X1="6" Y1="8" X2="7" Y2="8" Name="J140"/>
+  <Resistor Value="510K" X1="4" Y1="7" X2="8" Y2="7" Name="R17"/>
+  <Resistor Value="240K" X1="8" Y1="5" X2="10" Y2="5" Name="R14"/>
+  <Jumper X1="8" Y1="5" X2="7" Y2="5" Name="J81"/>
+  <Electrolyte Value="47uF" X1="7" Y1="5" X2="4" Y2="5" Name="C18"/>
+  <Jumper X1="4" Y1="5" X2="4" Y2="4" Name="J141"/>
+  <Resistor Value="10/11/15K" X1="14" Y1="7" X2="14" Y2="10" Name="R11"/>
+  <Jumper X1="14" Y1="1" X2="14" Y2="7" Name="J58"/>
+  <Jumper X1="14" Y1="10" X2="15" Y2="10" Name="J59"/>
+  <Jumper X1="4" Y1="14" X2="4" Y2="9" Name="J133"/>
+  
+  
+  <Text Value="Ground Lug 1 of" X1="-8" Y1="9" Name="A6"/>
+  <Text Value="every pot" X1="-8" Y1="10" Name="A8"/>
+  <Text Value="Tie 50k Delay pot" X1="-8" Y1="12" Name="A19"/>
+  <Text Value="lug 2 to lug 3" X1="-8" Y1="13" Name="A24"/>
+  <Jumper X1="6" Y1="11" X2="5" Y2="10" Name="J79"/>
+  <Jumper X1="4" Y1="9" X2="5" Y2="6" Name="J80"/>
+  <Jumper X1="5" Y1="10" X2="6" Y2="6" Name="J136"/>
+  <Jumper X1="6" Y1="6" X2="6" Y2="1" Name="J142"/>
+  <Jumper X1="5" Y1="6" X2="5" Y2="1" Name="J143"/>
+</Layout>

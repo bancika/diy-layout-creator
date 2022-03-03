@@ -1,0 +1,25 @@
+<Layout Width="20" Height="9" Type="Stripboard" Project="Antiquity Fuzz" Credits="Circuit by Joe Davisson - Layout by Sergio Majluf">
+	<Resistor Value="1M" X1="2" Y1="8" X2="2" Y2="5" Name="R1"/>
+	<Resistor Value="100k" X1="6" Y1="8" X2="6" Y2="5" Name="R2"/>
+	<Capacitor Value=".1uF" X1="5" Y1="5" X2="3" Y2="5" Name="C1"/>
+	<Diode Value="1N914" X1="9" Y1="5" X2="7" Y2="5" Name="D1"/>
+	<Transistor Value="2N5089" X1="10" Y1="6" X2="10" Y2="4" Name="Q1"/>
+	<Transistor Value="2N5089" X1="14" Y1="5" X2="14" Y2="3" Name="Q2"/>  <Cut X1="4" Y1="5" Name="X1"/>
+  <Cut X1="12" Y1="5" Name="X2"/>
+  <Resistor Value="100K" X1="11" Y1="5" X2="13" Y2="5" Name="R3"/>
+  <Jumper X1="9" Y1="6" X2="9" Y2="8" Name="J1"/>
+  <Trimmer Value="R" X1="17" Y1="6" X2="15" Y2="7" Name="VR1"/>
+  <Cut X1="12" Y1="6" Name="X3"/>
+  <Jumper X1="14" Y1="7" X2="14" Y2="8" Name="J2"/>
+  <Electrolyte Value="22uF" X1="18" Y1="6" X2="18" Y2="8" Name="C2"/>
+  <Resistor Value="5.6K" X1="3" Y1="4" X2="3" Y2="1" Name="R4"/>
+  <Resistor Value="470R" X1="4" Y1="1" X2="7" Y2="1" Name="R5"/>
+  <Resistor Value="8.2K" X1="8" Y1="3" X2="8" Y2="1" Name="R6"/>
+  <Capacitor Value=".01uF" X1="14" Y1="1" X2="16" Y2="2" Name="C3"/>
+  <Cut X1="15" Y1="3" Name="X4"/>
+  <Trimmer Value="100K Log" X1="19" Y1="3" X2="17" Y2="2" Name="VR2"/>
+  <Cut X1="15" Y1="4" Name="X5"/>
+  
+  <Jumper X1="19" Y1="4" X2="19" Y2="8" Name="J3"/>
+  <Text Value="not verified" X1="8" Y1="-1" Name="A1"/>
+</Layout>

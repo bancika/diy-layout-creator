@@ -1,0 +1,111 @@
+<Layout Type="PCB" Width="8" Height="8" Project="SparkleBoost" Credits="Layout by Deric">
+	<Pad X1="1" Y1="2" Value="15" Name="P1" Parent="R1"/>
+	<Pad X1="3" Y1="2" Value="15" Name="P2" Parent="R1"/>
+	<Resistor Value="2.2M" X1="1" Y1="2" X2="3" Y2="2" Name="R1"/>
+	<Pad X1="1" Y1="4" Value="15" Name="P3" Parent="R2"/>
+	<Pad X1="3" Y1="4" Value="15" Name="P4" Parent="R2"/>
+	<Resistor Value="1M" X1="1" Y1="4" X2="3" Y2="4" Name="R2"/>
+	<Capacitor Value=".022uF" X1="3" Y1="2" X2="3" Y2="4" Name="C1"/>
+	<Trace Value="4" X1="1" Y1="7" X2="1" Y2="1" Name="T1"/>
+	<Pad Value="15" X1="1" Y1="1" Name="P5"/>
+	<Pad Value="15" X1="3" Y1="1" Name="P6"/>
+	<Trace Value="4" X1="3" Y1="1" X2="3" Y2="2" Name="T2"/>
+	<Pad X1="4" Value="15" Name="P7" Parent="Q1" Y1="6"/>
+	<Pad X1="3" Value="15" Name="P8" Parent="Q1" Y1="6"/>
+	<Pad X1="2" Value="15" Name="P9" Parent="Q1" Y1="6"/>
+	<Transistor Value="NTE458" X1="4" X2="2" Name="Q1" Y1="6" Y2="6"/>
+	<Trimmer Value="100K" Y1="3" Y2="4" Name="VR1" X1="7" X2="5"/>
+	<Pad Value="15" Y1="4" Name="P15" X1="5"/>
+	<Pad Value="15" Y1="2" Name="P16" X1="5"/>
+	<Trace Value="4" X1="5" Y1="1" X2="6" Y2="1" Name="T13"/>
+	<Pad Value="15" X1="5" Y1="1" Name="P17"/>  <Trace Value="4" X1="6" Y1="1" X2="6" Y2="2" Name="T15"/>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <Pad Value="15" Y1="3" Name="P14" X1="6"/>
+  <Trace Value="4" Y1="4" Y2="3" Name="T8" X1="5" X2="6"/>
+  
+  <Trace Value="4" X1="5" Y1="2" X2="6" Y2="2" Name="T19"/>
+  
+  
+  
+  
+  <Trace Value="4" X1="2" Y1="6" X2="2" Y2="7" Name="T5"/>
+  <Pad X1="2" Value="15" Name="P12" Parent="C2" Y1="7"/>
+  <Pad X1="3" Value="15" Name="P13" Parent="C2" Y1="7"/>
+  <Electrolyte Value="10uF" X1="2" X2="3" Name="C2" Y1="7" Y2="7"/>
+  
+  
+  
+  
+  <Pad X1="5" Y1="6" Value="15" Name="P18" Parent="C3"/>
+  <Pad X1="6" Y1="6" Value="15" Name="P19" Parent="C3"/>
+  <Electrolyte Value="1uF" X1="5" Y1="6" X2="6" Y2="6" Name="C3"/>
+  
+  
+  
+  
+  
+  
+  <Pad Value="15" X1="8" Y1="8" Name="P22"/>
+  <Pad Value="15" X1="8" Y1="6" Name="P23"/>
+  
+  
+  
+  
+  
+  <Pad X1="6" Y1="1" Value="15" Name="P26" Parent="R5"/>
+  <Pad X1="8" Y1="1" Value="15" Name="P27" Parent="R5"/>
+  <Resistor Value="10K" X1="6" Y1="1" X2="8" Y2="1" Name="R5"/>
+  <Pad Value="15" X1="8" Y1="2" Name="P32"/>
+  <Trace Value="4" X1="8" Y1="1" X2="8" Y2="2" Name="T25"/>
+  
+  <Trace Value="4" X1="6" Y1="6" X2="8" Y2="6" Name="T7"/>
+  <Trace Value="4" X1="7" Y1="6" X2="7" Y2="5" Name="T9"/>
+  <Pad X1="7" Y1="5" Value="15" Name="P20" Parent="R4"/>
+  <Pad X1="7" Y1="8" Value="15" Name="P21" Parent="R4"/>
+  <Resistor Value="100K" X1="7" Y1="5" X2="7" Y2="8" Name="R4"/>
+  <Trace Value="4" X1="1" Y1="7" X2="2" Y2="8" Name="T10"/>
+  <Trace Value="4" X1="2" Y1="8" X2="8" Y2="8" Name="T12"/>
+  <Trace Value="4" X1="3" Y1="7" X2="4" Y2="7" Name="T14"/>
+  <Pad Value="15" X1="4" Y1="7" Name="P24"/>
+  <Pad Value="15" X1="4" Y1="8" Name="P25"/>
+  <Pad Value="15" X1="5" Y1="8" Name="P28"/>
+  <Pad Value="15" X1="6" Y1="8" Name="P29"/>
+  <Pad X1="1" Y1="5" Value="15" Name="P10" Parent="R3"/>
+  <Pad X1="3" Y1="5" Value="15" Name="P11" Parent="R3"/>
+  <Resistor Value="2.7K" X1="1" Y1="5" X2="3" Y2="5" Name="R3"/>
+  <Trace Value="4" X1="3" Y1="5" X2="2" Y2="5" Name="T3"/>
+  <Trace Value="4" X1="2" Y1="5" X2="2" Y2="6" Name="T4"/>
+  <Trace Value="4" X1="5" Y1="4" X2="4" Y2="6" Name="T6"/>
+  <Trace Value="4" X1="3" Y1="4" X2="4" Y2="5" Name="T11"/>
+  <Trace Value="4" X1="4" Y1="5" X2="3" Y2="6" Name="T16"/>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <Trace Value="4" X1="4" Y1="6" X2="5" Y2="6" Name="T17"/>
+  <Text Value="1" Name="T18" X1="0" Y1="0"/>
+  <Text Value="2" Y1="0" Name="T20" X1="2"/>
+  <Text Value="3" Y1="0" Name="T21" X1="4"/>
+  <Text Value="4" X1="9" Y1="2" Name="T22"/>
+  <Text Value="5" X1="9" Y1="6" Name="T23"/>
+  <Text Value="1=Ground 2=In 3=+9vdc 4=LED+" Y1="15" Name="T24" X1="-1"/>
+  <Text Value="5=Out   (-) of C2=Gain" Y1="16" Name="T26" X1="0"/>
+  <Text Value="Adjust drain of Q1 to~4.5v" Y1="17" Name="T27" X1="-1"/>
+</Layout>

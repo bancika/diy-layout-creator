@@ -1,0 +1,66 @@
+<Layout Type="PCB" Width="7" Height="7" Project="Signal Tracer" Credits="Richard Boop 06-23-2006">
+	<Capacitor Value=" 0.1uF " X1="2" Y1="6" X2="2" Y2="2" Name="C1"/>
+	<Pad Value="15" X1="2" Y1="1" Name="P3"/>
+	<Trace Value="4" X1="2" Y1="1" X2="2" Y2="2" Name="T1"/>
+	<Pad X1="5" Y1="5" Value="15" Name="P4" Parent="Q1"/>
+	<Pad X1="5" Y1="6" Value="15" Name="P5" Parent="Q1"/>
+	<Pad X1="5" Y1="7" Value="15" Name="P6" Parent="Q1"/>
+	<Transistor Value="See Notes" X1="5" Y1="5" X2="5" Y2="7" Name="Q1"/>
+	<Trace Value="4" X1="2" Y1="6" X2="3" Y2="6" Name="T2"/>
+	<Pad X1="2" Y1="6" Value="15" Name="P1" Parent="C1"/>
+	<Pad X1="2" Y1="2" Value="15" Name="P2" Parent="C1"/>
+	<Transistor Value="See Notes" X1="5" Y1="4" X2="5" Y2="2" Name="Q2"/>
+	<Pad X1="5" Y1="4" Value="15" Name="P9" Parent="Q2"/>
+	<Pad X1="5" Y1="3" Value="15" Name="P10" Parent="Q2"/>
+	<Pad X1="5" Y1="2" Value="15" Name="P11" Parent="Q2"/>
+	<Trace Value="4" X1="3" Y1="1" X2="4" Y2="1" Name="T4"/>
+	<Diode Value="1N60" X1="1" Y1="2" X2="1" Y2="6" Name="D1"/>
+	<Pad X1="1" Y1="2" Value="15" Name="P12" Parent="D1"/>
+	<Pad X1="1" Y1="6" Value="15" Name="P13" Parent="D1"/>
+	<Pad Value="15" X1="1" Y1="1" Name="P14"/>
+	<Trace Value="4" X1="1" Y1="1" X2="1" Y2="2" Name="T7"/>
+	<Trace Value="4" X1="1" Y1="6" X2="2" Y2="6" Name="T8"/>
+	<Electrolyte Value="100uF" X1="4" Y1="1" X2="4" Y2="7" Name="C2"/>
+	<Pad X1="4" Y1="1" Value="15" Name="P15" Parent="C2"/>
+	<Pad X1="4" Y1="7" Value="15" Name="P16" Parent="C2"/>
+	<Resistor Value="2.2M" X1="3" Y1="1" X2="3" Y2="6" Name="R1"/>
+	<Text Value="1" X1="1" Y1="0" Name="A1"/>
+	<Text Value="2" X1="2" Y1="0" Name="A2"/>
+	<Text Value="3" X1="5" Y1="0" Name="A3"/>
+	<Text Value="4" X1="6" Y1="0" Name="A4"/>
+	<Text Value="5" X1="7" Y1="0" Name="A5"/>
+	<Text Value="C1 should be rated 1kv " X1="-4" Y1="11" Name="A6"/>
+	<Text Value="Pad 1 = RF Input" X1="-4" Y1="13" Name="A7"/>
+	<Text Value="Pad 2 = Audio input" X1="-4" Y1="14" Name="A8"/>
+	<Text Value="Pad 3 = V+" X1="-4" Y1="15" Name="A9"/>
+	<Text Value="Pad 4 = Speaker +" X1="4" Y1="13" Name="A10"/>
+	<Text Value="Pad 5 &amp; 6 = Ground" X1="4" Y1="14" Name="A11"/>
+	<Pad X1="3" Y1="1" Value="15" Name="P7" Parent="R1"/>
+	<Pad X1="3" Y1="6" Value="15" Name="P8" Parent="R1"/>
+	<Trace Value="4" X1="1" Y1="7" X2="7" Y2="7" Name="T10"/>
+	<Trace Value="4" X1="5" Y1="5" X2="4" Y2="5" Name="T3"/>
+	<Trace Value="4" X1="4" Y1="3" X2="4" Y2="5" Name="T5"/>
+	<Trace Value="4" X1="4" Y1="3" X2="5" Y2="3" Name="T6"/>
+	<Trace Value="4" X1="5" Y1="2" X2="5" Y2="1" Name="T9"/>
+	<Pad Value="15" X1="5" Y1="1" Name="P17"/>
+	<Pad Value="15" X1="7" Y1="1" Name="P18"/>
+	<Pad Value="15" X1="6" Y1="1" Name="P19"/>
+	<Trace Value="4" X1="7" Y1="7" X2="7" Y2="1" Name="T11"/>
+	<Trace Value="4" X1="3" Y1="6" X2="5" Y2="6" Name="T12"/>
+	<Trace Value="4" X1="4" Y1="1" X2="5" Y2="1" Name="T13"/>
+	<Trace Value="4" X1="5" Y1="4" X2="6" Y2="4" Name="T14"/>
+	<Trace Value="4" X1="6" Y1="4" X2="6" Y2="1" Name="T15"/>
+	<Pad Value="15" X1="1" Y1="7" Name="P20"/>
+	<Text Value="6" X1="0" Y1="7" Name="A12"/>
+	<Text Value="Q1 = NPN original BC548 also tested 2N3904 and 2N5088" X1="-4" Y1="17" Name="A13"/>
+	<Text Value="Q2 = PNP original BC558 also tested 2N3906 and 2N5087" X1="-4" Y1="18" Name="A14"/>
+	<Text Value="C" X1="6" Y1="5" Name="A15"/>
+	<Text Value="B" X1="6" Y1="6" Name="A16"/>
+	<Text Value="E" X1="6" Y1="7" Name="A17"/>
+	<Text Value="E" X1="6" Y1="2" Name="A18"/>
+	<Text Value="B" X1="6" Y1="3" Name="A19"/>
+	<Text Value="C" X1="6" Y1="4" Name="A20"/>
+	<Pad Value="15" X1="7" Y1="2" Name="P21"/>
+	<Text Value="Runs well on 6v. I built mine in a small speaker cab, for" X1="-4" Y1="20" Name="A21"/>
+	<Text Value="a walkman, etc. it had a 4AA battery holder built in." X1="-4" Y1="21" Name="A22"/>
+</Layout>

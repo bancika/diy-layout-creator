@@ -1,0 +1,33 @@
+<Layout Type="Stripboard" Width="10" Height="8" Project="TONEBENDER MKII REISSUE" Credits="Layout by Andrew Carrell">
+	<Capacitor Value=".1uF" X1="2" Y1="2" X2="2" Y2="4" Name="C1"/>
+	<Electrolyte Value="4.7uF" X1="2" Y1="6" X2="2" Y2="7" Name="C2"/>
+	<Cut X1="3" Y1="6" Name="X1"/>
+	<Capacitor Value="220pF" X1="4" Y1="6" X2="4" Y2="7" Name="C3"/>
+	<Resistor Value="8.2K" X1="4" Y1="2" X2="4" Y2="3" Name="R1"/>
+	<Cut X1="4" Y1="4" Name="X2"/>
+	<Capacitor Value="10pF" X1="5" Y1="3" X2="5" Y2="4" Name="C4"/>
+	<Resistor Value="470R" X1="5" Y1="1" X2="5" Y2="2" Name="R2"/>
+	<Resistor Value="100K" X1="5" Y1="5" X2="5" Y2="7" Name="R3"/>
+	<Resistor Value="47K" X1="6" Y1="1" X2="6" Y2="6" Name="R4"/>
+	<Transistor Value="AC128" X1="7" Y1="5" X2="7" Y2="3" Name="Q1"/>
+	<Transistor Value="AC128" X1="7" Y1="8" X2="7" Y2="6" Name="Q2"/>
+	<Cut X1="8" Y1="7" Name="X3"/>
+	<Electrolyte Value="22uF" X1="9" Y1="8" X2="9" Y2="7" Name="C5"/>
+	<Jumper X1="8" Y1="6" X2="8" Y2="4" Name="J1"/>
+	<Text Value="C" Y1="3" Name="T1" X1="7"/>
+	<Text Value="E" X1="7" Y1="5" Name="T2"/>
+	<Text Value="E" X1="7" Y1="8" Name="T3"/>
+	<Text Value="C" X1="7" Y1="6" Name="T4"/>
+	<Text Value="B" X1="6" Y1="7" Name="T5"/>
+	<Text Value="INPUT" Y1="6" Name="T7" X1="-2"/>
+	<Text Value="VOLUME-3" Y1="4" Name="T11" X1="-4"/>
+	<Text Value="FUZZ-1" X1="11" Y1="8" Name="T8"/>
+	<Text Value="FUZZ-2" X1="11" Y1="7" Name="T9"/>
+	<Text Value="FUZZ-3" X1="11" Y1="5" Name="T10"/>  <Text Value="- 9V" Y1="1" Name="T12" X1="-2"/>
+  <Text Value="VOL-1, GROUND" Y1="8" Name="T6" X1="-5"/>
+  <Text Value="* &quot;VOLUME&quot; CONTROL IS A 100K ADUIO TAPER POT." X1="-2" Y1="14" Name="T13"/>
+  <Text Value="* &quot;FUZZ&quot; CONTROL IS A 1K LINEAR TAPER POT." X1="-2" Y1="15" Name="T14"/>
+  <Text Value="* &quot;VOLUME&quot; LUG 2 GOES TO EFFECT OUTPUT." X1="-2" Y1="16" Name="T15"/>
+  <Text Value="* Q1 HFE SHOULD BE 80-100." X1="-2" Y1="17" Name="T16"/>
+  <Text Value="* Q2 HFE SHOULD BE 100-140. " X1="-2" Y1="18" Name="T17"/>
+</Layout>

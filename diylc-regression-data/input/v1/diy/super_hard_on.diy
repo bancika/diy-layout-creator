@@ -1,0 +1,42 @@
+<Layout Width="20" Height="5" Type="Stripboard" Project="Super Hard On" Credits="Layout by UP-G" HideList="False">
+  
+  <Electrolyte Value="100uF" Size="Small" X1="3" Y1="1" X2="3" Y2="2" Name="C1"/>
+  
+  <Cut X1="6" Y1="1" Name="X1"/>
+  
+  
+  
+  
+  <Transistor Value="BS170P" X1="12" Y1="5" X2="12" Y2="3" Name="Q1"/>
+  
+  
+  
+  
+  
+  
+  <Resistor Value="100R" X1="5" Y1="1" X2="7" Y2="1" Name="R1"/>
+  <Resistor Value="5,1K" X1="9" Y1="1" X2="9" Y2="3" Name="R2"/>
+  <Resistor Value="10MR" X1="8" Y1="2" X2="8" Y2="4" Name="R3"/>
+  <Resistor Value="10M" X1="10" Y1="3" X2="10" Y2="4" Name="R4"/>
+  <Cut X1="5" Y1="4" Name="X2"/>
+  <Capacitor Value="0,1uF" X1="3" Y1="4" X2="6" Y2="4" Name="C2"/>
+  <Cut X1="15" Y1="3" Name="X3"/>
+  
+  <Diode Value="Zener 1N757 9.1V 0.5W" X1="9" Y1="5" X2="9" Y2="4" Name="D1"/>
+  <Resistor Value="47K" X1="18" Y1="2" X2="18" Y2="3" Name="R5"/>
+  
+  
+  
+  <Text Value="+9V" X1="-2" Y1="1" Name="A1"/>
+  <Text Value="Ground" X1="-2" Y1="2" Name="A2"/>
+  <Text Value="In" X1="-2" Y1="4" Name="A3"/>
+  <Text Value="Level (5K LIN) - 1 &amp; 2" X1="21" Y1="2" Name="A4"/>
+  <Text Value="Out" X1="21" Y1="3" Name="A5"/>
+  <Text Value="Level (5K LIN) - 3" X1="21" Y1="5" Name="A6"/>
+  <Text Value="Note: Cut Tracks: A6, C15 &amp; D5" X1="2" Y1="13" Name="A7"/>
+  <Text Value="Mod: For master volume =&gt; Replace R5 with a 100K LOG pot" X1="2" Y1="14" Name="A8"/>
+  
+  
+  
+  <Electrolyte Value="10uF" Size="Small" X1="14" Y1="3" X2="16" Y2="3" Name="C3"/>
+</Layout>

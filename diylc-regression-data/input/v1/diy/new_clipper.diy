@@ -1,0 +1,38 @@
+<Layout Type="Stripboard" Width="30" Height="14" Project="New Clipper" Credits="Layout by Olivier Laval">
+	<Capacitor Value="3.3nF" X1="6" Y1="14" X2="6" Y2="12" Name="C1"/>
+	<Resistor Value="10K" X1="8" Y1="14" X2="12" Y2="14" Name="R1"/>
+	<Diode Value="1N914" X1="14" Y1="14" X2="17" Y2="12" Name="D1"/>
+	<Diode Value="1N914" X1="20" Y1="12" X2="17" Y2="14" Name="D2"/>
+	<Resistor Value="8.2K" X1="20" Y1="14" X2="24" Y2="14" Name="R2"/>
+	<Electrolyte Value="4.7uF" X1="28" Y1="14" X2="26" Y2="14" Name="C2"/>
+	<Jumper X1="26" Y1="12" X2="26" Y2="9" Name="J1"/>
+	<Resistor Value="150K" X1="25" Y1="11" X2="21" Y2="11" Name="R3"/>
+	<Resistor Value="150R" X1="17" Y1="11" X2="13" Y2="11" Name="R4"/>
+	<Electrolyte Value="4.7uF" X1="11" Y1="11" X2="11" Y2="9" Name="C3"/>
+	<Resistor Value="2.2M" X1="3" Y1="9" X2="3" Y2="5" Name="R5"/>
+	<Capacitor Value="47nF" X1="5" Y1="5" X2="7" Y2="5" Name="C4"/>
+	<Electrolyte Value="100uF" X1="7" Y1="1" X2="7" Y2="3" Name="C5"/>
+	<Jumper X1="9" Y1="3" X2="9" Y2="9" Name="J2"/>
+	<Jumper X1="28" Y1="11" X2="28" Y2="5" Name="J3"/>
+	<IC Value="TL-071" X1="21" Y1="3" X2="24" Y2="6" Name="IC1"/>
+	<Jumper X1="19" Y1="4" X2="19" Y2="11" Name="J4"/>
+	<Jumper X1="17" Y1="6" X2="17" Y2="9" Name="J5"/>
+	<Resistor Value="22K" X1="14" Y1="9" X2="14" Y2="5" Name="R6"/>
+	<Resistor Value="22K" X1="12" Y1="5" X2="12" Y2="1" Name="R7"/>
+	<Cut X1="16" Y1="3" Name="X1"/>
+	<Cut X1="16" Y1="4" Name="X2"/>
+	<Jumper X1="1" Y1="1" X2="1" Y2="-1" Name="J6"/>
+	<Text Value="9V +" X1="2" Y1="-1" Name="A1"/>
+	<Jumper X1="1" Y1="9" X2="-1" Y2="9" Name="J7"/>
+	<Text Value="gnd" X1="-3" Y1="9" Name="A2"/>
+	<Jumper X1="1" Y1="14" X2="-1" Y2="14" Name="J8"/>
+	<Jumper X1="1" Y1="13" X2="-1" Y2="13" Name="J9"/>
+	<Jumper X1="1" Y1="12" X2="-1" Y2="12" Name="J10"/>
+	<Text Value="vol. 1" X1="-3" Y1="14" Name="A3"/>
+	<Text Value="vol. 2" X1="-3" Y1="13" Name="A4"/>
+	<Text Value="vol. 3" X1="-3" Y1="12" Name="A5"/>
+	<Jumper X1="1" Y1="5" X2="-1" Y2="5" Name="J11"/>
+	<Text Value="input" X1="-3" Y1="5" Name="A6"/>
+	<Jumper X1="30" Y1="13" X2="32" Y2="13" Name="J12"/>
+	<Text Value="output" X1="33" Y1="13" Name="A7"/>
+</Layout>

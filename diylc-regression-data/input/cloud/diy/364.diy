@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>4</major>
+    <minor>9</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>D*A*M Tone Bender TB-00</title>
+  <author>vero-p2p.blogspot.com</author>
+  <width value="13.0" unit="cm"/>
+  <height value="6.0" unit="cm"/>
+  <gridSpacing value="0.15" unit="in"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.connectivity.Dot>
+      <name>Dot12</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="ffff00"/>
+      <point x="2.85" y="1.65"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot7</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="999999"/>
+      <point x="4.65" y="1.65"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot11</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="0033ff"/>
+      <point x="4.35" y="1.65"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot10</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="ffff00"/>
+      <point x="4.05" y="1.65"/>
+    </diylc.connectivity.Dot>
+    <diylc.boards.VeroBoard>
+      <name>Board1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.45" y="0.45"/>
+        <point x="2.4" y="1.8"/>
+      </controlPoints>
+      <firstPoint x="0.45" y="0.45"/>
+      <secondPoint x="2.4" y="1.8"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Numbers</yType>
+      <length value="76.2" unit="mm"/>
+      <width value="30.48" unit="mm"/>
+      <mode>TwoPoints</mode>
+      <spacing value="0.15" unit="in"/>
+      <stripColor hex="da8a67"/>
+      <orientation>HORIZONTAL</orientation>
+    </diylc.boards.VeroBoard>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="0.45" y="0.3"/>
+      <text>D*A*M TB-00</text>
+      <font name="Dialog" size="16" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L14</name>
+      <point x="0.45" y="2.25"/>
+      <text>vero-p2p.blogspot.com  |  2020-11</text>
+      <font name="Dialog" size="10" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.Dot>
+      <name>Dot6</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="0033ff"/>
+      <point x="3.15" y="1.65"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L16</name>
+      <point x="3.15" y="1.65"/>
+      <text>A</text>
+      <font name="Square721 BT Roman" size="14" style="1"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.passive.Resistor>
+      <name>R2</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.35" y="0.75"/>
+        <point x="1.35" y="1.35"/>
+        <point x="1.35" y="1.05"/>
+      </points>
+      <bodyColor hex="8a5e20"/>
+      <borderColor hex="735832"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="68.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_4_BAND</colorCode>
+      <shape>Tubular</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C7</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="1.95" y="0.9"/>
+        <point x="1.95" y="1.35"/>
+        <point x="1.95" y="1.125"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.connectivity.Dot>
+      <name>Dot1</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="ffffff"/>
+      <point x="0.6" y="0.75"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot2</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="999999"/>
+      <point x="0.6" y="1.5"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot3</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="ff0033"/>
+      <point x="0.6" y="0.6"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot4</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="0033ff"/>
+      <point x="2.1" y="0.6"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot18</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="ffff00"/>
+      <point x="2.1" y="0.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot19</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="3399ff"/>
+      <point x="0.9" y="1.2"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot20</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="33cc00"/>
+      <point x="0.9" y="1.35"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot21</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="ffff00"/>
+      <point x="0.9" y="1.5"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L32</name>
+      <point x="0.9" y="1.2"/>
+      <text>C</text>
+      <font name="Dialog" size="12" style="1"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L33</name>
+      <point x="0.9" y="1.35"/>
+      <text>B</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L34</name>
+      <point x="0.9" y="1.5"/>
+      <text>E</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.Dot>
+      <name>Dot22</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="3399ff"/>
+      <point x="1.2" y="0.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot23</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="66cc00"/>
+      <point x="1.2" y="1.2"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot24</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="ffff00"/>
+      <point x="1.2" y="0.75"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L35</name>
+      <point x="1.2" y="0.9"/>
+      <text>C</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L36</name>
+      <point x="1.2" y="1.2"/>
+      <text>B</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L37</name>
+      <point x="1.2" y="0.75"/>
+      <text>E</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L41</name>
+      <point x="0.3" y="0.75"/>
+      <text>IN</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L42</name>
+      <point x="0.6" y="1.49"/>
+      <text>+</text>
+      <font name="Dialog" size="16" style="1"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L43</name>
+      <point x="0.595" y="0.59"/>
+      <text>-</text>
+      <font name="Dialog" size="18" style="1"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L44</name>
+      <point x="2.1" y="0.6"/>
+      <text>A</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L46</name>
+      <point x="2.1" y="0.9"/>
+      <text>L</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L3</name>
+      <point x="4.05" y="1.65"/>
+      <text>L</text>
+      <font reference="../../diylc.misc.Label[3]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="4.35" y="1.8"/>
+      <text>OUT</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L7</name>
+      <point x="0.9" y="2.04"/>
+      <text>AC128</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L8</name>
+      <point x="1.35" y="2.04"/>
+      <text>AC128</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C1</name>
+      <alpha>127</alpha>
+      <length value="0.4" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="2.25" y="1.5"/>
+        <point x="2.25" y="0.6"/>
+        <point x="2.25" y="1.05"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="22.0" unit="uF"/>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.passive.Resistor>
+      <name>R9</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.05" y="0.6"/>
+        <point x="1.05" y="1.2"/>
+        <point x="1.05" y="0.9"/>
+      </points>
+      <bodyColor hex="8a5e20"/>
+      <borderColor hex="735832"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_4_BAND</colorCode>
+      <shape>Tubular</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.TraceCut>
+      <name>Cut1</name>
+      <size value="0.15" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.15" unit="in"/>
+      <point x="1.5" y="1.35"/>
+    </diylc.connectivity.TraceCut>
+    <diylc.connectivity.Dot>
+      <name>Dot5</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="999999"/>
+      <point x="3.4499999999999993" y="1.65"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L4</name>
+      <point x="4.65" y="1.64"/>
+      <text>+</text>
+      <font reference="../../diylc.misc.Label[11]/font"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.passive.Resistor>
+      <name>R10</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.65" y="0.9"/>
+        <point x="1.65" y="1.35"/>
+        <point x="1.65" y="1.125"/>
+      </points>
+      <bodyColor hex="8a5e20"/>
+      <borderColor hex="735832"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="8.2" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_4_BAND</colorCode>
+      <shape>Tubular</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.TraceCut>
+      <name>Cut2</name>
+      <size value="0.15" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.15" unit="in"/>
+      <point x="1.5" y="1.2"/>
+    </diylc.connectivity.TraceCut>
+    <diylc.passive.Resistor>
+      <name>R7</name>
+      <alpha>123</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.5" y="1.05"/>
+        <point x="1.5" y="1.5"/>
+        <point x="1.5" y="1.275"/>
+      </points>
+      <bodyColor hex="8a5e20"/>
+      <borderColor hex="735832"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="560.0" unit="R"/>
+      <power>HALF</power>
+      <colorCode>_4_BAND</colorCode>
+      <shape>Tubular</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.Dot>
+      <name>Dot8</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="999999"/>
+      <point x="2.1" y="1.05"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L9</name>
+      <point x="2.1" y="1.05"/>
+      <text>A</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.Dot>
+      <name>Dot9</name>
+      <size value="2.0" unit="mm"/>
+      <color hex="ffff00"/>
+      <point x="2.1" y="0.75"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L10</name>
+      <point x="2.1" y="0.75"/>
+      <text>A</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C2</name>
+      <alpha>127</alpha>
+      <length value="0.4" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="0.75" y="0.75"/>
+        <point x="0.75" y="1.35"/>
+        <point x="0.75" y="1.05"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="150.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.misc.Label>
+      <name>L5</name>
+      <point x="1.8" y="2.04"/>
+      <text>NOTE:  INPUT CAP NOT VISIBLE - VALUE ASSUMED BASED ON VOX TB, MAY BE 220N</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L6</name>
+      <point x="3.45" y="1.65"/>
+      <text>A</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L11</name>
+      <point x="2.85" y="1.65"/>
+      <text>A</text>
+      <font reference="../../diylc.misc.Label[4]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.passive.PotentiometerPanel>
+      <name>ATTACK</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="2.85" y="1.65"/>
+        <point x="3.15" y="1.65"/>
+        <point x="3.4499999999999993" y="1.65"/>
+      </controlPoints>
+      <resistance value="1.0" unit="K"/>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter value="1.0" unit="in"/>
+      <spacing value="0.3" unit="in"/>
+      <lugDiameter value="0.15" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+      <view>ShaftDown</view>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.passive.PotentiometerPanel>
+      <name>LEVEL</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="4.05" y="1.65"/>
+        <point x="4.35" y="1.65"/>
+        <point x="4.65" y="1.65"/>
+      </controlPoints>
+      <resistance value="50.0" unit="K"/>
+      <orientation>DEFAULT</orientation>
+      <taper>LOG</taper>
+      <bodyDiameter value="1.0" unit="in"/>
+      <spacing value="0.3" unit="in"/>
+      <lugDiameter value="0.15" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+      <view>ShaftDown</view>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.connectivity.TraceCut>
+      <name>Cut3</name>
+      <size value="0.15" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.15" unit="in"/>
+      <point x="0.9" y="0.75"/>
+    </diylc.connectivity.TraceCut>
+    <diylc.connectivity.TraceCut>
+      <name>Cut4</name>
+      <size value="0.15" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.15" unit="in"/>
+      <point x="1.8" y="0.9"/>
+    </diylc.connectivity.TraceCut>
+    <diylc.passive.Resistor>
+      <name>R1</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.8" y="0.6"/>
+        <point x="1.8" y="1.35"/>
+        <point x="1.8" y="0.975"/>
+      </points>
+      <bodyColor hex="8a5e20"/>
+      <borderColor hex="735832"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="560.0" unit="R"/>
+      <power>HALF</power>
+      <powerNew value="0.25" unit="W"/>
+      <colorCode>_4_BAND</colorCode>
+      <shape>Tubular</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.TraceCut>
+      <name>Cut5</name>
+      <size value="0.15" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.15" unit="in"/>
+      <point x="1.95" y="0.6"/>
+    </diylc.connectivity.TraceCut>
+  </components>
+  <groups/>
+  <lockedLayers/>
+  <lockedComponents/>
+  <hiddenLayers/>
+  <font name="Dialog" size="14" style="0"/>
+</project>

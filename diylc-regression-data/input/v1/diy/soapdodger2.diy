@@ -1,0 +1,81 @@
+<Layout Type="Stripboard" Width="30" Height="20" Project="The Soapdodger II - Boss Tone Stomp Box with tone control" Credits="Pot Pourri Pedals 07 (based on Aron Nelson's Jordan Bosstone)" HideList="False">
+	<Resistor Value="18K" X1="22" Y1="4" X2="18" Y2="4" Name="R6"/>
+	<Cut X1="21" Y1="4" Name="X1"/>
+	<Jumper X1="16" Y1="4" X2="16" Y2="5" Name="J1"/>
+	<Resistor Value="18K" X1="12" Y1="4" X2="12" Y2="8" Name="R5"/>
+	<Resistor Value="560K" X1="10" Y1="4" X2="10" Y2="8" Name="R4"/>
+	<Cut X1="11" Y1="8" Name="X2"/>
+	<Resistor Value="560K" X1="9" Y1="8" X2="9" Y2="12" Name="R3"/>
+	<Resistor Value="150K" X1="11" Y1="12" X2="11" Y2="16" Name="R2"/>
+	<Capacitor Value=".022uF" X1="6" Y1="12" X2="8" Y2="12" Name="C1"/>
+	<Capacitor Value=".022uF" X1="6" Y1="8" X2="6" Y2="10" Name="C2"/>
+	<Wire Color="Blue" Seed="1984298839" X1="7" Y1="10" X2="9" Y2="16" Name="W1"/>
+	<Pot Value="100K" Taper="Linear" X1="-6" Y1="11" X2="-4" Y2="11" Name="Attack"/>
+	<Wire Color="Black" Seed="249726556" X1="-4" Y1="11" X2="8" Y2="16" Name="W3"/>
+	<Switch Value="" X1="-7" Y1="19" X2="-6" Y2="21" Name="S1"/>
+	<Wire Color="Gray" Seed="22946267" X1="-7" Y1="19" X2="-8" Y2="11" Name="W4"/>
+	<Jack Type="Stereo" X1="-7" Y1="24" Name="Input"/>
+	<Wire Color="Blue" Seed="1624741792" X1="-7" Y1="24" X2="-7" Y2="20" Name="W5"/>
+	<Wire Color="Brown" Seed="2081014488" X1="-7" Y1="21" X2="-6" Y2="21" Name="W6"/>
+	<Wire Color="Black" Seed="73205989" X1="-6" Y1="24" X2="7" Y2="16" Name="W7"/>
+	<Transistor Value="2N2222 NPN" X1="13" Y1="11" X2="13" Y2="13" Name="Q1"/>
+	<Jumper X1="11" Y1="11" X2="13" Y2="8" Name="J2"/>
+	<Capacitor Value="47pF" X1="14" Y1="4" X2="14" Y2="6" Name="C3"/>
+	<Jumper X1="13" Y1="6" X2="14" Y2="8" Name="J3"/>
+	<Transistor Value="2N3906 PNP" X1="15" Y1="5" X2="15" Y2="7" Name="Q2"/>
+	<Wire Color="Blue" Seed="862936189" X1="17" Y1="7" X2="17" Y2="16" Name="W8"/>
+	<Wire Color="Blue" Seed="1270952961" X1="12" Y1="13" X2="12" Y2="16" Name="W9"/>
+	<Cut X1="18" Y1="7" Name="X3"/>
+	<Diode Value="1N914" X1="20" Y1="12" X2="20" Y2="16" Name="D1"/>
+	<Diode Value="1N914" X1="22" Y1="16" X2="22" Y2="12" Name="D2"/>
+	<Cut X1="14" Y1="12" Name="X4"/>
+	<Pot Value="10K" Taper="Audio" X1="35" Y1="17" X2="37" Y2="17" Name="Volume"/>
+	<Wire Color="Black" Seed="1755513472" X1="25" Y1="16" X2="37" Y2="17" Name="W12"/>
+	<Jack Type="Mono" X1="35" Y1="26" Name="Output"/>
+	<Wire Color="Black" Seed="221659661" X1="24" Y1="16" X2="34" Y2="26" Name="W15"/>
+	<Wire Color="Gray" Seed="1661983197" X1="5" Y1="12" X2="-6" Y2="11" Name="W2"/>
+	<Wire Color="Black" Seed="1279245973" X1="-6" Y1="28" X2="-3" Y2="33" Name="W16"/>
+	<Text Value="- Batt Snap" X1="-7" Y1="33" Name="A2"/>
+	<Text Value="" X1="-4" Y1="33" Name="A4"/>
+	<Wire Color="Red" Seed="233835542" X1="25" Y1="4" X2="34" Y2="-1" Name="+9v batt snap"/>
+	<Text Value="+9v Batt Snap" X1="34" Y1="0" Name="A1"/>
+	<Wire Color="Green" Seed="951901592" X1="35" Y1="17" X2="-6" Y2="19" Name="W18"/>
+	<Pot Value="100K" Taper="Linear" X1="35" Y1="8" X2="37" Y2="8" Name="Tone"/>
+	<Resistor Value="39K" X1="20" Y1="5" X2="19" Y2="9" Name="R7"/>
+	<Wire Color="Brown" Seed="1424608169" X1="37" Y1="8" X2="18" Y2="9" Name="W10"/>
+	<Text Value="S1: Footswitch Arrow Style DPDT" X1="14" Y1="31" Name="A3"/>
+	<Capacitor Value=".0039uF" X1="21" Y1="5" X2="21" Y2="7" Name="C4"/>
+	<Cut X1="20" Y1="9" Name="X5"/>
+	<Wire Color="Brown" Seed="1950585240" X1="33" Y1="8" X2="22" Y2="7" Name="W11"/>
+	<Cut X1="22" Y1="5" Name="X6"/>
+	<Resistor Value="100K" X1="23" Y1="5" X2="23" Y2="9" Name="R8"/>
+	<Wire Color="Brown" Seed="1119400513" X1="33" Y1="8" X2="24" Y2="5" Name="W13"/>
+	<Wire Color="Black" Seed="915993259" X1="22" Y1="9" X2="23" Y2="16" Name="W17"/>
+	<Cut X1="25" Y1="5" Name="X7"/>
+	<Capacitor Value=".01uF" X1="26" Y1="7" X2="26" Y2="5" Name="C5"/>
+	<Wire Color="Brown" Seed="1251208661" X1="37" Y1="8" X2="26" Y2="7" Name="W19"/>
+	<Wire Color="Black" Seed="735117111" X1="27" Y1="5" X2="21" Y2="9" Name="W20"/>
+	<Wire Color="Green" Seed="1142975846" X1="35" Y1="8" X2="14" Y2="14" Name="W21"/>
+	<Cut X1="25" Y1="9" Name="X8"/>
+	<Wire Color="Blue" Seed="543295857" X1="19" Y1="12" X2="33" Y2="17" Name="W22"/>
+	<Capacitor Value=".1uF" X1="15" Y1="14" X2="15" Y2="12" Name="C6"/>
+	<Wire Color="Blue" Seed="164544276" X1="-6" Y1="20" X2="35" Y2="26" Name="W14"/>
+	<Text Value="All caps non-electrolytic" X1="14" Y1="32" Name="A5"/>
+	<Cut X1="17" Y1="12" Name="X9"/>
+	<Switch Value="" X1="12" Y1="-5" X2="13" Y2="-3" Name="S2"/>
+	<Wire Color="Blue" Seed="63314220" X1="18" Y1="12" X2="13" Y2="-4" Name="W23"/>
+	<Wire Color="Black" Seed="63314220" X1="17" Y1="5" X2="12" Y2="-4" Name="W24"/>
+	<Capacitor Value=".022uF" X1="12" Y1="-3" X2="13" Y2="-3" Name="C7"/>
+	<Wire Color="Black" Seed="1700511975" X1="16" Y1="12" X2="13" Y2="-5" Name="W25"/>
+	<Cut X1="11" Y1="8" Name="X10"/>
+	<Cut X1="18" Y1="5" Name="X11"/>
+	<Wire Color="Black" Seed="549756676" X1="12" Y1="-5" X2="19" Y2="5" Name="W26"/>
+	<Text Value="Tone on" X1="5" Y1="-5" Name="A6"/>
+	<Text Value="" X1="5" Y1="-3" Name="A7"/>
+	<Text Value="Tone bypass" X1="5" Y1="-3" Name="A8"/>
+	<Text Value="S2: DPDT toggle" X1="14" Y1="30" Name="A9"/>
+	<Cut X1="7" Y1="12" Name="X12"/>
+	<Text Value="*** TRACK CUT @ L7 ***" X1="1" Y1="30" Name="A10"/>
+	<Text Value="********************" X1="1" Y1="29" Name="A11"/>
+	<Text Value="********************" X1="1" Y1="31" Name="A12"/>  <Text Value="layout valid - built 30/10/07" X1="7" Y1="35" Name="A13"/>
+</Layout>

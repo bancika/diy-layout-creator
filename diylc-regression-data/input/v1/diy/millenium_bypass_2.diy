@@ -1,0 +1,25 @@
+<Layout Type="Perfboard" Width="7" Height="5" Project="Millenium Bypass DPDT" Credits="" HideList="False">
+	<Led Value="LED (Orange Standard 5mm)" X1="-2" Y1="1" X2="-2" Y2="2" Name="D2"/>
+	<Resistor Value="CALCULATEDR" X1="2" Y1="1" X2="4" Y2="1" Name="R1"/>
+	<Diode Value="1N4148" X1="5" Y1="1" X2="5" Y2="3" Name="D1"/>
+	<Transistor Value="2N7000" X1="3" Y1="4" X2="3" Y2="2" Name="Q1"/>
+	<Transistor Value="2N3904" X1="2" Y1="5" X2="2" Y2="3" Name="Q2"/>
+	<Resistor Value="1-10K (3,3K works great)" X1="4" Y1="3" X2="4" Y2="5" Name="R2"/>
+	<Jumper X1="3" Y1="2" X2="-2" Y2="2" Name="J3"/>
+	<Jumper X1="2" Y1="4" X2="7" Y2="4" Name="J4"/>
+	<Jumper X1="4" Y1="5" X2="7" Y2="5" Name="J5"/>
+	<Jumper X1="4" Y1="1" X2="7" Y2="1" Name="J1"/>
+	<Jumper X1="2" Y1="1" X2="-2" Y2="1" Name="J6"/>
+	<Text Value="+9V" X1="8" Y1="1" Name="A1"/>
+	<Text Value="Ground" X1="8" Y1="4" Name="A2"/>
+	<Text Value="Control" X1="8" Y1="5" Name="A3"/>
+	<Switch Value="DPDT" X1="17" Y1="2" X2="18" Y2="4" Name="S1"/>
+	<Jumper X1="17" Y1="4" X2="18" Y2="2" Name="J7"/>
+	<Text Value="Output" X1="19" Y1="2" Name="A4"/>
+	<Text Value="FX Output" X1="19" Y1="3" Name="A5"/>
+	<Text Value="Control" X1="19" Y1="4" Name="A6"/>
+	<Text Value="FX Input" X1="14" Y1="2" Name="A7"/>
+	<Text Value="Input" X1="15" Y1="3" Name="A8"/>  <Jumper X1="5" Y1="3" X2="3" Y2="3" Name="J2"/>
+  <Jumper X1="3" Y1="3" X2="2" Y2="3" Name="J8"/>
+  <Jumper X1="5" Y1="3" X2="4" Y2="3" Name="J9"/>
+</Layout>

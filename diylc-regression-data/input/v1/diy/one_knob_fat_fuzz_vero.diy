@@ -1,0 +1,16 @@
+<Layout Type="Stripboard" Width="8" Height="8" Project="ONE KNOB FAT FUZZ" Credits="By MartyMart, Andrew Carrell, and Tim Escobedo.">
+	<Capacitor Value="1uF" X1="2" Y1="1" X2="2" Y2="4" Name="C1"/>
+	<Transistor Value="2N3904, 2N5088 OR SIMILAR" X1="2" Y1="7" X2="2" Y2="5" Name="Q1"/>  <Resistor Value="100K" X1="3" Y1="4" X2="3" Y2="5" Name="R1"/>
+  <Resistor Value="100K" X1="4" Y1="4" X2="4" Y2="6" Name="R2"/>
+  <Capacitor Value=".1uF" X1="5" Y1="3" X2="5" Y2="6" Name="C2"/>
+  <Resistor Value="1M" X1="3" Y1="7" X2="3" Y2="8" Name="R3"/>
+  <Resistor Value="100K" X1="6" Y1="1" X2="6" Y2="5" Name="R4"/>
+  <Capacitor Value="1uF" X1="7" Y1="2" X2="7" Y2="5" Name="C3"/>
+  <Text Value="+9V" X1="-2" Y1="1" Name="T1"/>
+  <Text Value="IN" X1="-2" Y1="3" Name="T2"/>
+  <Text Value="VOL-3" X1="9" Y1="2" Name="T3"/>
+  <Text Value="VOL-1" X1="9" Y1="8" Name="T4"/>
+  <Text Value="GND" X1="-2" Y1="8" Name="T5"/>
+  <Text Value="VOL: 100K AUDIO TAPER POT" Y1="13" Name="T6" X1="0"/>
+  <Text Value="VOL-2 GOES TO EFFECT OUTPUT" Y1="14" Name="T7" X1="0"/>
+</Layout>

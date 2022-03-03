@@ -1,0 +1,17 @@
+<Layout Type="Stripboard" Width="9" Height="6" Project="LPB BOOSTER" Credits="Layout and mods by Andrew Carrell">
+	<Transistor Value="2N5088" Name="Q1" Y1="5" Y2="3" X1="7" X2="7"/>
+	<Resistor Name="R1" Y1="5" Y2="6" X1="6" X2="6" Value="390R"/>
+	<Resistor Value="10K" Name="R2" Y1="3" Y2="2" X1="6" X2="6"/>
+	<Resistor Value="470K" Name="R3" Y1="4" Y2="2" X1="5" X2="5"/>
+	<Resistor Value="47K" Name="R4" Y1="4" Y2="6" X1="4" X2="4"/>
+	<Capacitor Value=".15uF" Name="C1" Y1="4" Y2="1" X1="3" X2="3"/>
+	<Capacitor Value=".15uF" Name="C2" Y1="3" Y2="1" X1="8" X2="8"/>
+	<Cut Name="X1" Y1="1" X1="5"/>
+	<Resistor Value="1M" Name="R5" Y1="1" Y2="6" X1="2" X2="2"/>  <Text Value="+9V" X1="-2" Y1="2" Name="T1"/>
+  <Text Value="IN" Y1="1" Name="T2" X1="-2"/>
+  <Text Value="GROUND" X1="-3" Y1="6" Name="T3"/>
+  <Text Value="VOL-3" X1="10" Y1="1" Name="T4"/>
+  <Text Value="VOL-1" X1="10" Y1="6" Name="T5"/>
+  <Text Value="VOL: 100K AUDIO TAPER POT" Y1="12" Name="T6" X1="1"/>
+  <Text Value="VOL-2 GOES TO EFFECT OUTPUT" Y1="13" Name="T7" X1="1"/>
+</Layout>

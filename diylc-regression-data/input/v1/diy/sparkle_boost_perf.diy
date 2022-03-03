@@ -1,0 +1,48 @@
+<Layout Type="Perfboard" Width="8" Height="8" Project="SparkleBoost" Credits="thanks Dragonfly">
+	<Resistor Value="2.2M" X1="3" Y1="2" X2="1" Y2="2" Name="R1"/>
+	<Resistor Value="1M" X1="3" Y1="4" X2="1" Y2="4" Name="R2"/>
+	<Capacitor Value=".022uF" X1="3" Y1="2" X2="3" Y2="4" Name="C1"/>
+	<Jumper X1="1" Y1="1" X2="1" Y2="2" Name="J1"/>
+	<Jumper X1="1" Y1="2" X2="1" Y2="4" Name="J2"/>
+	<Jumper X1="1" Y1="4" X2="1" Y2="7" Name="J3"/>
+	<Jumper X1="1" Y1="7" X2="2" Y2="8" Name="J4"/>
+	<Jumper X1="3" Y1="2" X2="3" Y2="1" Name="J6"/>
+	<Transistor Value="NTE458" X1="4" Y1="5" X2="2" Y2="5" Name="Q1"/>
+	<Jumper X1="3" Y1="4" X2="3" Y2="5" Name="J7"/>
+	<Resistor Value="2.7K" X1="1" Y1="6" X2="2" Y2="6" Name="R3"/>
+	<Jumper X1="2" Y1="5" X2="2" Y2="6" Name="J8"/>
+	<Electrolyte Value="10uF" X1="3" Y1="6" X2="3" Y2="7" Name="C2"/>
+	<Trimmer Value="100K" X1="6" Y1="3" X2="4" Y2="4" Name="VR1"/>
+	<Jumper X1="4" Y1="4" X2="4" Y2="5" Name="J9"/>
+	<Jumper X1="4" Y1="2" X2="4" Y2="1" Name="J10"/>
+	<Jumper X1="5" Y1="4" X2="6" Y2="3" Name="J11"/>
+	<Jumper X1="5" Y1="4" X2="4" Y2="4" Name="J12"/>
+	<Jumper X1="4" Y1="2" X2="5" Y2="2" Name="J13"/>
+	<Electrolyte Value="1uF" X1="5" Y1="5" X2="6" Y2="5" Name="C3"/>
+	<Jumper X1="4" Y1="5" X2="5" Y2="5" Name="J14"/>
+	<Resistor Value="100K" X1="7" Y1="5" X2="7" Y2="8" Name="R4"/>
+	<Jumper X1="6" Y1="5" X2="7" Y2="5" Name="J15"/>
+	<Trimmer Value="5K Lin" X1="5" Y1="8" X2="6" Y2="6" Name="VR2"/>
+	<Jumper X1="3" Y1="7" X2="4" Y2="7" Name="J17"/>
+	<Jumper X1="4" Y1="7" X2="4" Y2="6" Name="J18"/>
+	<Jumper X1="5" Y1="8" X2="6" Y2="7" Name="J19"/>
+	<Jumper X1="6" Y1="7" X2="6" Y2="6" Name="J20"/>
+	<Jumper X1="2" Y1="8" X2="8" Y2="8" Name="J5"/>
+	<Resistor Value="10K" X1="6" Y1="1" X2="8" Y2="1" Name="R5"/>
+	<Jumper X1="1" Y1="1" X2="-1" Y2="1" Name="J16"/>
+	<Jumper X1="3" Y1="1" X2="3" Y2="-1" Name="J21"/>
+	<Jumper X1="5" Y1="1" X2="5" Y2="-1" Name="J22"/>
+	<Jumper X1="4" Y1="1" X2="5" Y2="1" Name="J23"/>
+	<Jumper X1="5" Y1="1" X2="6" Y2="1" Name="J24"/>
+	<Jumper X1="8" Y1="1" X2="8" Y2="2" Name="J25"/>
+	<Jumper X1="8" Y1="2" X2="10" Y2="2" Name="J26"/>
+	<Trimmer Value="100K Log" X1="10" Y1="6" X2="8" Y2="5" Name="VR3"/>
+	<Jumper X1="7" Y1="5" X2="8" Y2="5" Name="J27"/>
+	<Jumper X1="8" Y1="7" X2="8" Y2="8" Name="J28"/>
+	<Jumper X1="10" Y1="6" X2="11" Y2="6" Name="J29"/>
+	<Text Value="OUT" Name="T1" Y1="7" X1="10"/>
+	<Text Value="LED+" Name="T2" X1="10" Y1="1"/>
+	<Text Value="GROUND" X1="-3" Name="T3" Y1="2"/>
+	<Text Value="IN" X1="2" Y1="-1" Name="T4"/>
+	<Text Value="+9vdc" X1="6" Y1="-1" Name="T5"/>
+</Layout>

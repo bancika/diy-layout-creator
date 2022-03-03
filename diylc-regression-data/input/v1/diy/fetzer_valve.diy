@@ -1,0 +1,19 @@
+<Layout Width="6" Height="8" Type="Stripboard" Project="Fetzer Valve" Credits="Schematic: RunoffGroove.com">
+  <Text Value="A compact version of Torchy's layout" X1="-2" Y1="14" Name="A1"/>
+  
+  <Trimmer Value="100K" X1="1" Y1="2" X2="5" Y2="1" Name="VR1"/>
+  <Transistor Value="J201or MPF102" X1="6" Y1="3" X2="6" Y2="5" Name="Q1"/>
+  <Resistor Value="68K" X1="5" Y1="8" X2="5" Y2="5" Name="R1"/>
+  <Resistor Value="1M" X1="4" Y1="4" X2="4" Y2="5" Name="R2"/>
+  <Resistor Value="1,3K" X1="3" Y1="4" X2="3" Y2="6" Name="R3"/>
+  <Electrolyte Value="22uF" X1="2" Y1="4" X2="2" Y2="6" Name="C1"/>
+  <Capacitor Value="22nF" X1="1" Y1="3" X2="1" Y2="7" Name="C2"/>
+  <Text Value="9V" X1="7" Y1="1" Name="A2"/>
+  
+  <Text Value="GND" X1="7" Y1="6" Name="A3"/>
+  <Text Value="R4-3" X1="7" Y1="7" Name="A4"/>
+  <Text Value="Input" X1="7" Y1="8" Name="A5"/>
+  <Text Value="R4-1" X1="-2" Y1="6" Name="A6"/>
+  <Text Value="R4 100K Log - Middle lug is output" X1="0" Y1="12" Name="A7"/>
+  <Text Value="Layout: Carsten Bøcker" X1="1" Y1="-1" Name="A8"/>
+</Layout>

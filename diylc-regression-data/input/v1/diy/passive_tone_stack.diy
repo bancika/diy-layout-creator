@@ -1,0 +1,65 @@
+<Layout Type="Stripboard" Width="6" Height="12" Project="TMB Passive Tone Stack" Credits="lovekraft" HideList="False">
+  
+  <Capacitor Value="470pF" X1="4" Y1="1" X2="4" Y2="3" Name="C1"/>
+  <Cut X1="3" Y1="3" Name="X1"/>
+  <Resistor Value="27K" X1="5" Y1="3" X2="5" Y2="5" Name="R1"/>
+  <Capacitor Value="220nF" X1="6" Y1="5" X2="6" Y2="7" Name="C2"/>
+  
+  
+  
+  
+  
+  <Jumper X1="1" Y1="4" X2="-1" Y2="4" Name="J4"/>
+  
+  
+  
+  
+  
+  
+  <Jumper X1="6" Y1="3" X2="7" Y2="3" Name="J11"/>
+  <Capacitor Value="220nF" X1="5" Y1="9" X2="5" Y2="11" Name="C3"/>
+  
+  <Jumper X1="3" Y1="2" X2="3" Y2="4" Name="J13"/>
+  <Jumper X1="3" Y1="5" X2="3" Y2="9" Name="J14"/>
+  <Jumper X1="3" Y1="10" X2="3" Y2="11" Name="J15"/>
+  <Jumper X1="4" Y1="12" X2="4" Y2="6" Name="J16"/>
+  
+  <Text Value="OUT" X1="-3" Y1="4" Name="A1"/>
+  <Text Value="IN" X1="8" Y1="3" Name="A2"/>
+  <Text Value="GND" X1="8" Y1="8" Name="A3"/>
+  
+  
+  
+  
+  
+  
+  
+  
+  <Jumper X1="6" Y1="8" X2="7" Y2="8" Name="J12"/>
+  <Jumper X1="2" Y1="3" X2="2" Y2="11" Name="J17"/>
+  <Pot Value="250K" Taper="Linear" X1="-5" Y1="1" X2="-5" Y2="-1" Name="P1"/>
+  <Pot Value="25K" Taper="Linear" X1="-5" Y1="7" X2="-5" Y2="5" Name="P2"/>
+  <Pot Value="1M" Taper="Audio" X1="-5" Y1="13" X2="-5" Y2="11" Name="P3"/>
+  <Text Value="Treble" X1="-10" Y1="0" Name="A4"/>
+  <Text Value="Mid" X1="-10" Y1="6" Name="A5"/>
+  <Text Value="Bass" X1="-10" Y1="12" Name="A6"/>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <Wire Color="Black" Seed="1849400395" X1="-5" Y1="-1" X2="1" Y2="1" Name="W1"/>
+  <Wire Color="Red" Seed="1849400395" X1="-5" Y1="1" X2="1" Y2="2" Name="W2"/>
+  <Wire Color="Green" Seed="2064940988" X1="-5" Y1="3" X2="1" Y2="3" Name="W3"/>
+  <Wire Color="Black" Seed="1483397724" X1="-5" Y1="5" X2="1" Y2="6" Name="W4"/>
+  <Wire Color="Red" Seed="174247209" X1="-5" Y1="7" X2="1" Y2="7" Name="W5"/>
+  <Wire Color="Green" Seed="950575489" X1="-5" Y1="9" X2="1" Y2="8" Name="W6"/>
+  <Wire Color="Black" Seed="2057223437" X1="1" Y1="10" X2="-5" Y2="11" Name="W7"/>
+  <Wire Color="Red" Seed="2015590167" X1="1" Y1="11" X2="-5" Y2="13" Name="W8"/>
+  <Wire Color="Green" Seed="434091194" X1="1" Y1="12" X2="-5" Y2="15" Name="W9"/>
+  <Text Value="JCM800-style tone stack - use Tone Stack Calculator to tweak." X1="-7" Y1="18" Name="A7"/>
+</Layout>

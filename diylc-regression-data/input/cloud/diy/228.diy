@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.diylc.core.Project>
+  <fileVersion>
+    <major>3</major>
+    <minor>39</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>mikeStrickland</author>
+  <width>
+    <value>29.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">cm</unit>
+  </width>
+  <height>
+    <value>21.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">cm</unit>
+  </height>
+  <gridSpacing>
+    <value>0.1</value>
+    <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+  </gridSpacing>
+  <components>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="3.3" y="2.5"/>
+        <java.awt.Point x="3.4" y="4.0"/>
+      </controlPoints>
+      <firstPoint x="3.3" y="2.5"/>
+      <secondPoint x="3.4" y="4.0"/>
+      <color>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </color>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+      <edgeRadius>
+        <value>0.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </edgeRadius>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="3.2" y="2.7"/>
+        <java.awt.Point x="3.3" y="3.0"/>
+      </controlPoints>
+      <firstPoint x="3.2" y="2.7"/>
+      <secondPoint x="3.3" y="3.0"/>
+      <color>
+        <red>153</red>
+        <green>153</green>
+        <blue>153</blue>
+        <alpha>255</alpha>
+      </color>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+      <edgeRadius>
+        <value>0.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </edgeRadius>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.connectivity.Dot>
+      <name>Dot1</name>
+      <size>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </size>
+      <color reference="../../org.diylc.components.shapes.Rectangle[2]/borderColor"/>
+      <point x="3.1" y="4.1"/>
+    </org.diylc.components.connectivity.Dot>
+    <org.diylc.components.connectivity.Dot>
+      <name>Dot2</name>
+      <size reference="../../org.diylc.components.connectivity.Dot/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle[2]/borderColor"/>
+      <point x="3.4" y="4.1"/>
+    </org.diylc.components.connectivity.Dot>
+    <org.diylc.components.connectivity.Dot>
+      <name>Dot3</name>
+      <size reference="../../org.diylc.components.connectivity.Dot/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle[2]/borderColor"/>
+      <point x="3.1" y="2.4"/>
+    </org.diylc.components.connectivity.Dot>
+    <org.diylc.components.connectivity.Dot>
+      <name>Dot4</name>
+      <size reference="../../org.diylc.components.connectivity.Dot/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle[2]/borderColor"/>
+      <point x="3.2" y="4.1"/>
+    </org.diylc.components.connectivity.Dot>
+    <org.diylc.components.connectivity.Dot>
+      <name>Dot5</name>
+      <size reference="../../org.diylc.components.connectivity.Dot/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle[2]/borderColor"/>
+      <point x="3.3" y="2.4"/>
+    </org.diylc.components.connectivity.Dot>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT3</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="3.2" y="2.5"/>
+        <java.awt.Point x="3.3" y="2.7"/>
+      </controlPoints>
+      <firstPoint x="3.2" y="2.5"/>
+      <secondPoint x="3.3" y="2.7"/>
+      <color>
+        <red>51</red>
+        <green>51</green>
+        <blue>51</blue>
+        <alpha>255</alpha>
+      </color>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+      <edgeRadius>
+        <value>0.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </edgeRadius>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT4</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="3.1" y="2.4"/>
+        <java.awt.Point x="3.4" y="2.5"/>
+      </controlPoints>
+      <firstPoint x="3.1" y="2.4"/>
+      <secondPoint x="3.4" y="2.5"/>
+      <color>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </color>
+      <borderColor reference="../../org.diylc.components.shapes.Rectangle[2]/borderColor"/>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+      <edgeRadius>
+        <value>0.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </edgeRadius>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT5</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="3.1" y="4.0"/>
+        <java.awt.Point x="3.4" y="4.1"/>
+      </controlPoints>
+      <firstPoint x="3.1" y="4.0"/>
+      <secondPoint x="3.4" y="4.1"/>
+      <color>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </color>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+      <edgeRadius>
+        <value>0.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </edgeRadius>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT6</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="3.2" y="3.0"/>
+        <java.awt.Point x="3.3" y="4.0"/>
+      </controlPoints>
+      <firstPoint x="3.2" y="3.0"/>
+      <secondPoint x="3.3" y="4.0"/>
+      <color>
+        <red>51</red>
+        <green>51</green>
+        <blue>51</blue>
+        <alpha>255</alpha>
+      </color>
+      <borderColor reference="../../org.diylc.components.shapes.Rectangle[2]/borderColor"/>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+      <edgeRadius>
+        <value>0.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </edgeRadius>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT7</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="3.1" y="2.5"/>
+        <java.awt.Point x="3.2" y="4.0"/>
+      </controlPoints>
+      <firstPoint x="3.1" y="2.5"/>
+      <secondPoint x="3.2" y="4.0"/>
+      <color>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </color>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+      <edgeRadius>
+        <value>0.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </edgeRadius>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.connectivity.Dot>
+      <name>Dot6</name>
+      <size reference="../../org.diylc.components.connectivity.Dot/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle[2]/borderColor"/>
+      <point x="3.3" y="4.1"/>
+    </org.diylc.components.connectivity.Dot>
+    <org.diylc.components.misc.Label>
+      <name>L1</name>
+      <point x="4.3" y="4.4"/>
+      <text>http://avpg2.business.t-online.de/alps/img/Pinnbelegung_RS4511_692x519.jpg</text>
+      <font>
+        <attributes>
+          <entry>
+            <awt-text-attribute>transform</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>posture</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>superscript</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>weight</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>size</awt-text-attribute>
+            <float>14.0</float>
+          </entry>
+          <entry>
+            <awt-text-attribute>width</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>tracking</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>family</awt-text-attribute>
+            <string>Tahoma</string>
+          </entry>
+        </attributes>
+      </font>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L1</name>
+      <point x="3.2" y="4.3"/>
+      <text>one of these:</text>
+      <font>
+        <attributes>
+          <entry>
+            <awt-text-attribute>transform</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>posture</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>superscript</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>weight</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>size</awt-text-attribute>
+            <float>14.0</float>
+          </entry>
+          <entry>
+            <awt-text-attribute>width</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>tracking</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>family</awt-text-attribute>
+            <string>Tahoma</string>
+          </entry>
+        </attributes>
+      </font>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+  </components>
+  <groups>
+    <set>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle"/>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle[4]"/>
+      <org.diylc.components.connectivity.Dot reference="../../../components/org.diylc.components.connectivity.Dot[5]"/>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle[6]"/>
+      <org.diylc.components.connectivity.Dot reference="../../../components/org.diylc.components.connectivity.Dot"/>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle[5]"/>
+      <org.diylc.components.connectivity.Dot reference="../../../components/org.diylc.components.connectivity.Dot[6]"/>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle[7]"/>
+      <org.diylc.components.connectivity.Dot reference="../../../components/org.diylc.components.connectivity.Dot[4]"/>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle[3]"/>
+      <org.diylc.components.connectivity.Dot reference="../../../components/org.diylc.components.connectivity.Dot[3]"/>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle[2]"/>
+      <org.diylc.components.connectivity.Dot reference="../../../components/org.diylc.components.connectivity.Dot[2]"/>
+    </set>
+  </groups>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font>
+    <attributes>
+      <entry>
+        <awt-text-attribute>transform</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>posture</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>superscript</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>weight</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>size</awt-text-attribute>
+        <float>14.0</float>
+      </entry>
+      <entry>
+        <awt-text-attribute>width</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>tracking</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>family</awt-text-attribute>
+        <string>Lucida Console</string>
+      </entry>
+    </attributes>
+  </font>
+</org.diylc.core.Project>

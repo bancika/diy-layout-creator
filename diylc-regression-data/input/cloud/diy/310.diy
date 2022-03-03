@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>3</major>
+    <minor>57</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>jhancock</author>
+  <width value="29.0" unit="cm"/>
+  <height value="21.0" unit="cm"/>
+  <gridSpacing value="0.1" unit="in"/>
+  <components>
+    <diylc.electromechanical.MiniToggleSwitch>
+      <name defined-in="diylc.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="7.8" y="2.4"/>
+        <point x="7.8" y="2.6"/>
+        <point x="7.8" y="2.8"/>
+        <point x="8.0" y="2.4"/>
+        <point x="8.0" y="2.6"/>
+        <point x="8.0" y="2.8"/>
+      </controlPoints>
+      <name>SW3</name>
+      <switchType>DPDT</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing value="0.2" unit="in"/>
+      <bodyColor hex="3299cc"/>
+      <borderColor hex="236b8e"/>
+    </diylc.electromechanical.MiniToggleSwitch>
+    <diylc.electromechanical.MiniToggleSwitch>
+      <name defined-in="diylc.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="4.2" y="2.3"/>
+        <point x="4.2" y="2.5"/>
+        <point x="4.2" y="2.7"/>
+        <point x="4.4" y="2.3"/>
+        <point x="4.4" y="2.5"/>
+        <point x="4.4" y="2.7"/>
+      </controlPoints>
+      <name>SW1</name>
+      <switchType>DPDT</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing value="0.2" unit="in"/>
+      <bodyColor hex="3299cc"/>
+      <borderColor hex="236b8e"/>
+    </diylc.electromechanical.MiniToggleSwitch>
+    <diylc.electromechanical.MiniToggleSwitch>
+      <name defined-in="diylc.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="4.9" y="2.3"/>
+        <point x="4.9" y="2.5"/>
+        <point x="4.9" y="2.7"/>
+        <point x="5.1" y="2.3"/>
+        <point x="5.1" y="2.5"/>
+        <point x="5.1" y="2.7"/>
+      </controlPoints>
+      <name>SW2</name>
+      <switchType>DPDT</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing value="0.2" unit="in"/>
+      <bodyColor hex="3299cc"/>
+      <borderColor hex="236b8e"/>
+    </diylc.electromechanical.MiniToggleSwitch>
+    <diylc.electromechanical.MiniToggleSwitch>
+      <name defined-in="diylc.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="5.5" y="2.3"/>
+        <point x="5.5" y="2.5"/>
+        <point x="5.5" y="2.7"/>
+        <point x="5.7" y="2.3"/>
+        <point x="5.7" y="2.5"/>
+        <point x="5.7" y="2.7"/>
+      </controlPoints>
+      <name>SW3</name>
+      <switchType>DPDT</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing value="0.2" unit="in"/>
+      <bodyColor hex="3299cc"/>
+      <borderColor hex="236b8e"/>
+    </diylc.electromechanical.MiniToggleSwitch>
+    <diylc.connectivity.HookupWire>
+      <name>W1</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.2" y="2.5"/>
+        <point x="3.5" y="2.6"/>
+        <point x="2.8" y="2.2"/>
+        <point x="2.1" y="3.4"/>
+      </controlPoints2>
+      <color hex="ff6600"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.misc.GroundSymbol>
+      <name>GND1</name>
+      <point x="7.0" y="0.8"/>
+      <color hex="000000"/>
+      <size value="0.15" unit="in"/>
+      <type>DEFAULT</type>
+    </diylc.misc.GroundSymbol>
+    <diylc.electromechanical.OpenJack1__4>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="8.7" y="2.7"/>
+        <point x="9.1" y="2.9"/>
+        <point x="9.0" y="3.6"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <angle>0</angle>
+      <type>STEREO</type>
+      <showLabels>true</showLabels>
+    </diylc.electromechanical.OpenJack1__4>
+    <diylc.passive.PotentiometerPanel>
+      <name>Volume</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="6.3" y="2.2"/>
+        <point x="6.6" y="2.2"/>
+        <point x="6.9" y="2.2"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter value="1.0" unit="in"/>
+      <spacing value="0.3" unit="in"/>
+      <lugDiameter value="0.15" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+      <view>ShaftDown</view>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="6.3" y="2.2"/>
+        <point x="6.2" y="3.0"/>
+        <point x="5.8" y="1.7"/>
+        <point x="5.5" y="2.3"/>
+      </controlPoints2>
+      <color hex="ff0055"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W10</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.9" y="2.3"/>
+        <point x="5.6" y="1.2"/>
+        <point x="6.1" y="3.0"/>
+        <point x="6.9" y="2.2"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W12</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="2.1" y="3.4"/>
+        <point x="3.8" y="2.6"/>
+        <point x="3.7" y="2.8"/>
+        <point x="4.4" y="2.5"/>
+      </controlPoints2>
+      <color hex="2222bb"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="6.6" y="2.2"/>
+        <point x="7.1" y="2.5"/>
+        <point x="7.7" y="2.6"/>
+        <point x="7.8" y="2.6"/>
+      </controlPoints2>
+      <color hex="ff0055"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.guitar.SingleCoilPickup>
+      <name>Bridge</name>
+      <alpha>127</alpha>
+      <value>Bridge</value>
+      <orientation>DEFAULT</orientation>
+      <controlPoint x="2.1" y="3.4"/>
+      <controlPoints>
+        <point x="2.1" y="3.4"/>
+        <point x="2.2" y="3.4"/>
+        <point x="2.3" y="3.4"/>
+        <point x="2.4" y="3.4"/>
+      </controlPoints>
+      <polarity>North</polarity>
+      <labelColor hex="000000"/>
+      <color hex="ffffff"/>
+      <poleColor hex="759daf"/>
+      <baseColor hex="ff0000"/>
+      <type>Stratocaster</type>
+      <polePieceType>None</polePieceType>
+      <lugColor hex="e0c04c"/>
+    </diylc.guitar.SingleCoilPickup>
+    <diylc.connectivity.HookupWire>
+      <name>W9</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="6.9" y="1.3"/>
+        <point x="7.6" y="1.6"/>
+        <point x="7.6" y="2.0"/>
+        <point x="6.9" y="2.2"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W10</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="7.0" y="0.8"/>
+        <point x="9.0" y="0.9"/>
+        <point x="9.7" y="1.6"/>
+        <point x="9.1" y="2.9"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.4" y="2.3"/>
+        <point x="4.2" y="2.7"/>
+      </controlPoints2>
+      <color hex="ffffff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.4" y="2.7"/>
+        <point x="4.2" y="2.3"/>
+      </controlPoints2>
+      <color hex="ffffff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W12</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="2.1" y="1.8"/>
+        <point x="3.0" y="2.5"/>
+        <point x="4.7" y="1.6"/>
+        <point x="4.9" y="2.3"/>
+      </controlPoints2>
+      <color hex="004400"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W3</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.5" y="2.5"/>
+        <point x="5.0" y="1.2"/>
+        <point x="2.5" y="1.7"/>
+        <point x="2.1" y="1.8"/>
+      </controlPoints2>
+      <color hex="ff0000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.guitar.SingleCoilPickup>
+      <name>Neck</name>
+      <alpha>127</alpha>
+      <value>Neck</value>
+      <orientation>DEFAULT</orientation>
+      <controlPoint x="2.1" y="1.8"/>
+      <controlPoints>
+        <point x="2.1" y="1.8"/>
+        <point x="2.2" y="1.8"/>
+        <point x="2.3" y="1.8"/>
+        <point x="2.4" y="1.8"/>
+      </controlPoints>
+      <polarity>North</polarity>
+      <labelColor hex="000000"/>
+      <color hex="ffffff"/>
+      <poleColor hex="759daf"/>
+      <baseColor hex="ff0000"/>
+      <type>Stratocaster</type>
+      <polePieceType>None</polePieceType>
+      <lugColor hex="e0c04c"/>
+    </diylc.guitar.SingleCoilPickup>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="8.0" y="2.6"/>
+        <point x="8.5" y="2.9"/>
+        <point x="8.5" y="2.6"/>
+        <point x="8.7" y="2.7"/>
+      </controlPoints2>
+      <color hex="ff0055"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="8.0" y="2.8"/>
+        <point x="7.8" y="2.8"/>
+      </controlPoints2>
+      <color hex="ffffff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.electromechanical.BatterySnap9V>
+      <name>BTR1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoint x="7.0" y="3.6"/>
+      <orientation>_90</orientation>
+      <color hex="404040"/>
+    </diylc.electromechanical.BatterySnap9V>
+    <diylc.connectivity.HookupWire>
+      <name>W3</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="7.2" y="3.1"/>
+        <point x="6.8" y="3.7"/>
+      </controlPoints2>
+      <color hex="ff0000"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W9</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="9.0" y="3.6"/>
+        <point x="8.7" y="4.3"/>
+        <point x="8.7" y="4.7"/>
+        <point x="7.0" y="4.2"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.1" y="2.3"/>
+        <point x="5.5" y="2.3"/>
+      </controlPoints2>
+      <color hex="ff0055"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.7" y="2.7"/>
+        <point x="5.6" y="3.0"/>
+        <point x="5.3" y="3.0"/>
+        <point x="5.1" y="2.7"/>
+      </controlPoints2>
+      <color hex="ffffff"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.5" y="2.3"/>
+        <point x="5.7" y="2.5"/>
+      </controlPoints2>
+      <color hex="ff0055"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W1</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.2" y="2.7"/>
+        <point x="4.3" y="3.0"/>
+        <point x="4.7" y="2.7"/>
+        <point x="5.1" y="2.5"/>
+      </controlPoints2>
+      <color hex="ff6600"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W12</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.9" y="2.5"/>
+        <point x="4.7" y="2.7"/>
+        <point x="4.7" y="2.5"/>
+        <point x="4.4" y="2.7"/>
+      </controlPoints2>
+      <color hex="2222bb"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.5" y="2.7"/>
+        <point x="5.4" y="3.0"/>
+        <point x="5.1" y="3.0"/>
+        <point x="4.9" y="2.7"/>
+      </controlPoints2>
+      <color hex="ffffff"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="4.3" y="2.9"/>
+      <text>DOWN: IN PHASE; UP: OOP</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="5.3" y="4.0"/>
+      <text>SW:▝▝ PARALL</text>
+      <font reference="../../diylc.misc.Label/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="5.3" y="3.8"/>
+      <text>SW:▗▗ SERIES</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="5.3" y="4.2"/>
+      <text>SW: ▚ BRIDGE</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="5.3" y="4.4"/>
+      <text>SW: ▞ NECK</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="7.6" y="2.2"/>
+      <text>PREAMP IN</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="8.2" y="2.2"/>
+      <text>PREAMP OUT</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="5.5" y="3.1"/>
+      <text>SW1A</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="5.8" y="3.1"/>
+      <text>SW1B</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="5.1" y="3.1"/>
+      <text>SW2B</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="4.8" y="3.1"/>
+      <text>SW2A</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="5.3" y="3.3"/>
+      <text>6 5</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="5.3" y="3.5"/>
+      <text>2 1</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="5.3" y="3.4"/>
+      <text>4 3</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="3.8" y="1.5"/>
+      <text>+</text>
+      <font name="Square721 BT Roman" size="20" style="1"/>
+      <color hex="ff0000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="6.2" y="2.1"/>
+      <text>+</text>
+      <font name="Square721 BT Roman" size="20" style="1"/>
+      <color hex="ff0000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="2.7" y="2.6"/>
+      <text>+</text>
+      <font name="Square721 BT Roman" size="20" style="1"/>
+      <color hex="ff0000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="1.6" y="3.9"/>
+      <text>Based on the UnklMickey&apos;s diagram</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="2.4" y="4.0"/>
+      <text>http://guitarnuts2.proboards.com/thread/3769/modules?page=1&amp;scrollTo=27667</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.electromechanical.MiniToggleSwitch>
+      <name defined-in="diylc.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="4.6" y="5.9"/>
+        <point x="4.6" y="6.1"/>
+        <point x="4.6" y="6.3"/>
+        <point x="4.6" y="6.5"/>
+        <point x="4.8" y="5.9"/>
+        <point x="4.8" y="6.1"/>
+        <point x="4.8" y="6.3"/>
+        <point x="4.8" y="6.5"/>
+      </controlPoints>
+      <name>SW5</name>
+      <switchType>_DP3T_mustang</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing value="0.2" unit="in"/>
+      <bodyColor hex="3299cc"/>
+      <borderColor hex="236b8e"/>
+    </diylc.electromechanical.MiniToggleSwitch>
+    <diylc.connectivity.HookupWire>
+      <name>W2</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.6" y="6.5"/>
+        <point x="4.1" y="6.3"/>
+        <point x="4.3" y="5.9"/>
+        <point x="2.3" y="6.3"/>
+      </controlPoints2>
+      <color hex="ff6600"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W4</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="2.3" y="6.3"/>
+        <point x="3.0" y="6.4"/>
+        <point x="4.1" y="5.8"/>
+        <point x="4.6" y="6.1"/>
+      </controlPoints2>
+      <color hex="2222bb"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W5</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.6" y="6.3"/>
+        <point x="4.0" y="7.0"/>
+        <point x="2.9" y="6.2"/>
+        <point x="2.3" y="7.3"/>
+      </controlPoints2>
+      <color hex="ff0000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.guitar.SingleCoilPickup>
+      <name>Bridge: North</name>
+      <alpha>127</alpha>
+      <value>Bridge: North</value>
+      <orientation>DEFAULT</orientation>
+      <controlPoint x="2.4" y="1.7"/>
+      <controlPoints>
+        <point x="2.2" y="6.3"/>
+        <point x="2.3" y="6.3"/>
+        <point x="2.4" y="6.3"/>
+        <point x="2.5" y="6.3"/>
+      </controlPoints>
+      <polarity>North</polarity>
+      <labelColor hex="000000"/>
+      <color hex="ffffff"/>
+      <poleColor hex="759daf"/>
+      <baseColor hex="ff0000"/>
+      <type>Stratocaster</type>
+      <polePieceType>None</polePieceType>
+      <lugColor hex="e0c04c"/>
+    </diylc.guitar.SingleCoilPickup>
+    <diylc.connectivity.HookupWire>
+      <name>W13</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.6" y="6.1"/>
+        <point x="4.6" y="6.3"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.electromechanical.MiniToggleSwitch>
+      <name defined-in="diylc.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="5.3" y="5.9"/>
+        <point x="5.3" y="6.1"/>
+        <point x="5.3" y="6.3"/>
+        <point x="5.3" y="6.5"/>
+        <point x="5.5" y="5.9"/>
+        <point x="5.5" y="6.1"/>
+        <point x="5.5" y="6.3"/>
+        <point x="5.5" y="6.5"/>
+      </controlPoints>
+      <name>SW4</name>
+      <switchType>_DP3T_mustang</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing value="0.2" unit="in"/>
+      <bodyColor hex="3299cc"/>
+      <borderColor hex="236b8e"/>
+    </diylc.electromechanical.MiniToggleSwitch>
+    <diylc.connectivity.HookupWire>
+      <name>W6</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="2.4" y="7.3"/>
+        <point x="4.5" y="6.8"/>
+        <point x="2.8" y="5.5"/>
+        <point x="4.6" y="5.9"/>
+      </controlPoints2>
+      <color hex="004400"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.guitar.SingleCoilPickup>
+      <name>Bridge: South</name>
+      <alpha>127</alpha>
+      <value>Bridge: South</value>
+      <orientation>DEFAULT</orientation>
+      <controlPoint x="2.4" y="3.2"/>
+      <controlPoints>
+        <point x="2.2" y="7.3"/>
+        <point x="2.3" y="7.3"/>
+        <point x="2.4" y="7.3"/>
+        <point x="2.5" y="7.3"/>
+      </controlPoints>
+      <polarity>South</polarity>
+      <labelColor hex="000000"/>
+      <color hex="ffffff"/>
+      <poleColor hex="759daf"/>
+      <baseColor hex="ff0000"/>
+      <type>Stratocaster</type>
+      <polePieceType>None</polePieceType>
+      <lugColor hex="e0c04c"/>
+    </diylc.guitar.SingleCoilPickup>
+    <diylc.connectivity.HookupWire>
+      <name>W14</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.5" y="6.5"/>
+        <point x="5.3" y="6.1"/>
+      </controlPoints2>
+      <color hex="ffffff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W15</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.3" y="6.5"/>
+        <point x="5.5" y="6.1"/>
+      </controlPoints2>
+      <color hex="ffffff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W7</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.3" y="6.3"/>
+        <point x="4.3" y="6.0"/>
+        <point x="5.6" y="7.2"/>
+        <point x="4.6" y="6.5"/>
+      </controlPoints2>
+      <color hex="ff0055"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W8</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.6" y="5.9"/>
+        <point x="4.8" y="5.6"/>
+        <point x="6.2" y="5.4"/>
+        <point x="5.5" y="6.3"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W16</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="6.9" y="6.1"/>
+        <point x="6.5" y="6.4"/>
+        <point x="5.0" y="7.2"/>
+        <point x="5.3" y="6.5"/>
+      </controlPoints2>
+      <color hex="ff0000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W17</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.5" y="6.5"/>
+        <point x="5.7" y="6.4"/>
+        <point x="6.0" y="6.1"/>
+        <point x="6.3" y="6.0"/>
+      </controlPoints2>
+      <color hex="004400"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+  </components>
+  <groups/>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font name="Square721 BT Roman" size="14" style="0"/>
+</project>

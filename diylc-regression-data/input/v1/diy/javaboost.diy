@@ -1,0 +1,63 @@
+<Layout Type="Perfboard" Width="15" Height="15" Project="Java Boost (Keeley)" Credits="Layout by ezanker">
+	<Resistor Value="1M" X1="1" Y1="11" X2="3" Y2="15" Name="R1"/>
+	<Capacitor Value=".0068uF" X1="1" Y1="10" X2="5" Y2="10" Name="C1"/>
+	<Jumper X1="1" Y1="11" X2="1" Y2="10" Name="J1"/>
+	<Capacitor Value=".01uF" X1="1" Y1="8" X2="5" Y2="8" Name="C2"/>
+	<Capacitor Value=".047uF" X1="1" Y1="5" X2="5" Y2="5" Name="C3"/>
+	<Jumper X1="1" Y1="5" Name="J2" X2="-2" Y2="5"/>
+	<Jumper X1="1" Y1="7" Name="J3" X2="-2" Y2="7"/>
+	<Jumper X1="1" Y1="12" Name="J4" X2="-2" Y2="12"/>
+	<Jumper X1="1" Y1="11" X2="1" Y2="12" Name="J5"/>
+	<Jumper X1="1" Y1="8" X2="1" Y2="7" Name="J6"/>
+	<Resistor Value="470K" X1="5" Y1="11" X2="5" Y2="15" Name="R2"/>
+	<Jumper X1="5" Y1="11" X2="5" Y2="5" Name="J8"/>
+	<Resistor Value="100K" X1="5" Y1="2" X2="5" Y2="5" Name="Rb"/>
+	<Transistor Value="OC44" X1="7" Y1="7" X2="7" Y2="9" Name="Q1"/>
+	<Jumper X1="7" Y1="8" X2="5" Y2="8" Name="J10"/>
+	<Resistor Value="3.9K" X1="6" Y1="1" X2="7" Y2="5" Name="Re"/>
+	<Electrolyte Value="47uF" X1="8" Y1="1" X2="8" Y2="5" Name="C5"/>
+	<Jumper X1="7" Y1="7" X2="7" Y2="5" Name="J11"/>
+	<Jumper X1="7" Y1="9" X2="7" Y2="12" Name="J12"/>
+	<Jumper X1="7" Y1="11" X2="7" Y2="10" Name="J13"/>
+	<Capacitor Value="0.01uF" X1="10" Y1="7" X2="14" Y2="7" Name="C7"/>
+	<Resistor Value="1M" X1="10" Y1="11" X2="10" Y2="15" Name="R3"/>
+	<Jumper X1="15" Y1="9" X2="10" Y2="9" Name="J14"/>
+	<Capacitor Value="0.1uF" X1="13" Y1="11" X2="13" Y2="15" Name="C6"/>
+	<Jumper X1="15" Y1="11" X2="13" Y2="11" Name="J15"/>
+	<Jumper X1="15" Y1="11" Name="J16" X2="18" Y2="11"/>
+	<Diode Value="" X1="10" Y1="5" X2="10" Y2="1" Name="D1"/>
+	<Electrolyte Value="47uF" X1="12" Y1="1" X2="12" Y2="5" Name="C4"/>
+	<Jumper X1="13" Y1="5" X2="9" Y2="5" Name="J17"/>
+	<Jumper X1="13" Y1="15" X2="3" Y2="15" Name="J19"/>
+	<Resistor Value="100R" X1="13" Y1="1" X2="15" Y2="3" Name="Rv"/>
+	<Jumper X1="13" Y1="1" X2="5" Y2="1" Name="J20"/>
+	<Jumper X1="15" Y1="3" Name="J22" X2="18" Y2="3"/>
+	<Text Value="Level-2" X1="18" Y1="7" Name="L2"/>
+	<Text Value="Level-3" X1="6" Y1="12" Name="L3"/>
+	<Text Value="Tone-2" X1="6" Y1="10" Name="T2"/>
+	<Text Value="Tone-1" X1="18" Y1="11" Name="T1"/>
+	<Text Value="Out" X1="18" Y1="9" Name="OUT"/>
+	<Text Value="IN" X1="-4" Y1="13" Name="IN"/>
+	<Text Value="+9v" X1="18" Y1="3" Name="9V"/>
+	<Text Value="SW1-Mid" X1="-5" Y1="7" Name="SWM"/>
+	<Text Value="SW1-Bass" X1="-5" Y1="5" Name="SWB"/>
+	<Jumper X1="1" Y1="12" X2="1" Y2="13" Name="J23"/>
+	<Jumper X1="1" Y1="13" Name="J24" X2="-2" Y2="13"/>
+	<Text Value="SW1-Treb" X1="-5" Y1="12" Name="SWT"/>
+	<Text Value="Rb and Re are tuned" X1="-9" Y1="1" Name="Rb1"/>
+	<Text Value="according to RG's article" X1="-9" Y1="2" Name="Rb2"/>
+	<Jumper X1="10" Y1="11" X2="10" Y2="7" Name="J25"/>
+	<Jumper X1="9" Y1="15" X2="9" Y2="5" Name="J26"/>
+	<Jumper X1="14" Y1="7" X2="15" Y2="7" Name="J27"/>
+	<Jumper X1="15" Y1="7" Name="J28" X2="18" Y2="7"/>
+	<Text Value="SW1 adds caps in parallel with" X1="-9" Y1="9" Name="SWText1"/>
+	<Text Value="input cap" X1="-9" Y1="10" Name="SWText2"/>
+	<Text Value="E" X1="6" Y1="7" Name="E"/>
+	<Text Value="C" X1="6" Y1="9" Name="C"/>
+	<Text Value="B" X1="8" Y1="8" Name="B"/>
+	<Jumper X1="13" Y1="5" X2="18" Y2="5" Name="J29"/>
+	<Text Value="Level-1" X1="18" Y1="5" Name="L1"/>
+	<Jumper X1="7" Y1="5" X2="8" Y2="5" Name="J18"/>
+	<Jumper X1="5" Y1="1" X2="5" Y2="2" Name="J9"/>
+	<Jumper X1="15" Y1="9" X2="18" Y2="9" Name="J21"/>
+</Layout>

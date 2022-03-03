@@ -1,0 +1,26 @@
+<Layout Type="Stripboard" Width="11" Height="5" Project="Bazz Fuzz v1" Credits="From homewrecker.com - Layout by pyrop">
+	<Resistor Value="100K" X1="2" Y1="1" X2="4" Y2="1" Name="R1"/>
+	<Cut X1="3" Y1="1" Name="X1"/>
+	<Resistor Value="1M" X1="2" Y1="3" X2="2" Y2="5" Name="R2"/>
+	<Electrolyte Value="4.7uF" X1="4" Y1="4" X2="4" Y2="3" Name="C1"/>
+	<Diode Value="914" X1="5" Y1="1" X2="5" Y2="4" Name="D1"/>
+	<Cut X1="5" Y1="3" Name="X2"/>
+	<Transistor Value="2n5088" X1="6" Y1="5" X2="6" Y2="3" Name="Q1"/>
+	<Jumper X1="7" Y1="3" X2="7" Y2="1" Name="J1"/>
+	<Capacitor Value=".1uF" X1="6" Y1="1" X2="9" Y2="1" Name="C2"/>
+	<Cut X1="8" Y1="1" Name="X3"/>
+	<Text Value="9v+" X1="-3" Y1="1" Name="A1"/>
+	<Text Value="input" X1="-3" Y1="3" Name="A2"/>
+	<Text Value="ground" X1="-3" Y1="5" Name="A3"/>
+	<Cut X1="8" Y1="3" Name="X4"/>
+	<Cut X1="7" Y1="4" Name="X5"/>
+	<Cut X1="3" Y1="4" Name="X6"/>
+	<Text Value=" R3: 100k log - note: 16mm pot with pcb lugs can be soldered directly to board" X1="-2" Y1="9" Name="A4"/>
+	<Text Value=" Cut Track a:3, a:8, c:5, c:8, d:3, d:7" X1="-2" Y1="12" Name="A5"/>
+	<Text Value="R3: lug 3" X1="12" Y1="1" Name="A6"/>
+	<Text Value="R3: lug 2" X1="12" Y1="3" Name="A7"/>
+	<Text Value="R3: lug 1" X1="12" Y1="5" Name="A8"/>
+	<Text Value="c:9 output" X1="16" Y1="3" Name="A9"/>
+	<Text Value=" http://home-wrecker.com/bazz.html" X1="-2" Y1="15" Name="A10"/>
+	<Text Value=" Can be modded to v2 or v3 specs" X1="-2" Y1="14" Name="A11"/>  <Text Value=" else take lug 2 directly to output" X1="4" Y1="10" Name="A12"/>
+</Layout>

@@ -1,0 +1,168 @@
+<Layout Type="PCB" Width="17" Height="16" Project="Radio Shack &quot;Bug&quot; Template" Credits="J Sauer - based on Radio Shack item 276-159" HideList="False">
+	<Pad Value="15px" Color="Black" X1="5" Y1="7" Name="P2"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="7" Name="P5"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="7" Name="P6"/>
+	<Pad Value="15px" Color="Black" X1="7" Y1="7" Name="P7"/>
+	<Pad Value="15px" Color="Black" X1="5" Y1="10" Name="P1"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="10" Name="P3"/>
+	<Pad Value="15px" Color="Black" X1="7" Y1="10" Name="P4"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="10" Name="P8"/>
+	<Pad Value="15px" Color="Black" X1="9" Y1="7" Name="P9"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="7" Name="P10"/>
+	<Pad Value="15px" Color="Black" X1="11" Y1="7" Name="P11"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="7" Name="P12"/>
+	<Pad Value="15px" Color="Black" X1="9" Y1="10" Name="P13"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="10" Name="P14"/>
+	<Pad Value="15px" Color="Black" X1="11" Y1="10" Name="P15"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="10" Name="P16"/>
+	<Pad Value="15px" Color="Black" X1="3" Y1="2" Name="P18"/>
+	<Pad Value="15px" Color="Black" X1="5" Y1="6" Name="P19"/>
+	<Pad Value="15px" Color="Black" X1="5" Y1="5" Name="P20"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="6" Name="P22"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="5" Name="P23"/>
+	<Pad Value="15px" Color="Black" X1="7" Y1="6" Name="P25"/>
+	<Pad Value="15px" Color="Black" X1="7" Y1="5" Name="P26"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="6" Name="P28"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="5" Name="P29"/>
+	<Pad Value="15px" Color="Black" X1="9" Y1="6" Name="P31"/>
+	<Pad Value="15px" Color="Black" X1="9" Y1="5" Name="P32"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="6" Name="P34"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="5" Name="P35"/>
+	<Pad Value="15px" Color="Black" X1="11" Y1="6" Name="P37"/>
+	<Pad Value="15px" Color="Black" X1="11" Y1="5" Name="P38"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="6" Name="P40"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="5" Name="P41"/>
+	<Pad Value="15px" Color="Black" X1="5" Y1="11" Name="P43"/>
+	<Pad Value="15px" Color="Black" X1="5" Y1="12" Name="P44"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="11" Name="P46"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="12" Name="P47"/>
+	<Pad Value="15px" Color="Black" X1="7" Y1="11" Name="P49"/>
+	<Pad Value="15px" Color="Black" X1="7" Y1="12" Name="P50"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="11" Name="P52"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="12" Name="P53"/>
+	<Pad Value="15px" Color="Black" X1="9" Y1="11" Name="P55"/>
+	<Pad Value="15px" Color="Black" X1="9" Y1="12" Name="P56"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="11" Name="P58"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="12" Name="P59"/>
+	<Pad Value="15px" Color="Black" X1="11" Y1="11" Name="P61"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="11" Name="P62"/>
+	<Pad Value="15px" Color="Black" X1="11" Y1="12" Name="P63"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="12" Name="P64"/>
+	<Trace Value="15px" Color="Black" X1="5" Y1="5" X2="5" Y2="7" Name="T1"/>
+	<Trace Value="15px" Color="Black" X1="6" Y1="5" X2="6" Y2="7" Name="T2"/>
+	<Trace Value="15px" Color="Black" X1="7" Y1="5" X2="7" Y2="7" Name="T3"/>
+	<Trace Value="15px" Color="Black" X1="8" Y1="5" X2="8" Y2="7" Name="T4"/>
+	<Trace Value="15px" Color="Black" X1="9" Y1="5" X2="9" Y2="7" Name="T5"/>
+	<Trace Value="15px" Color="Black" X1="10" Y1="5" X2="10" Y2="7" Name="T6"/>
+	<Trace Value="15px" Color="Black" X1="11" Y1="5" X2="11" Y2="7" Name="T7"/>
+	<Trace Value="15px" Color="Black" X1="12" Y1="5" X2="12" Y2="7" Name="T8"/>
+	<Trace Value="15px" Color="Black" X1="5" Y1="10" X2="5" Y2="12" Name="T9"/>
+	<Trace Value="15px" Color="Black" X1="6" Y1="10" X2="6" Y2="12" Name="T10"/>
+	<Trace Value="15px" Color="Black" X1="7" Y1="10" X2="7" Y2="12" Name="T11"/>
+	<Trace Value="15px" Color="Black" X1="8" Y1="10" X2="8" Y2="12" Name="T12"/>
+	<Trace Value="15px" Color="Black" X1="9" Y1="10" X2="9" Y2="12" Name="T13"/>
+	<Trace Value="15px" Color="Black" X1="10" Y1="10" X2="10" Y2="12" Name="T14"/>
+	<Trace Value="15px" Color="Black" X1="11" Y1="10" X2="11" Y2="12" Name="T15"/>
+	<Trace Value="15px" Color="Black" X1="12" Y1="10" X2="12" Y2="12" Name="T16"/>
+	<Pad Value="15px" Color="Black" X1="4" Y1="6" Name="P21"/>
+	<Pad Value="15px" Color="Black" X1="4" Y1="11" Name="P39"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="3" Name="P45"/>
+	<Pad Value="15px" Color="Black" X1="14" Y1="2" Name="P60"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="2" Name="P66"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="3" Name="P67"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="2" Name="P68"/>
+	<Pad Value="15px" Color="Black" X1="14" Y1="3" Name="P51"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="3" Name="P69"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="2" Name="P70"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="3" Name="P71"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="2" Name="P72"/>
+	<Pad Value="15px" Color="Black" X1="4" Y1="2" Name="P74"/>
+	<Pad Value="15px" Color="Black" X1="4" Y1="7" Name="P75"/>
+	<Pad Value="15px" Color="Black" X1="4" Y1="5" Name="P76"/>
+	<Pad Value="15px" Color="Black" X1="2" Y1="6" Name="P77"/>
+	<Pad Value="15px" Color="Black" X1="4" Y1="10" Name="P80"/>
+	<Pad Value="15px" Color="Black" X1="4" Y1="12" Name="P82"/>
+	<Pad Value="15px" Color="Black" X1="3" Y1="11" Name="P83"/>
+	<Pad Value="15px" Color="Black" X1="2" Y1="11" Name="P84"/>
+	<Pad Value="15px" Color="Black" X1="3" Y1="6" Name="P27"/>
+	<Trace Value="5px" Color="Black" X1="3" Y1="2" X2="6" Y2="5" Name="T17"/>
+	<Pad Value="15px" Color="Black" X1="4" Y1="15" Name="P90"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="14" Name="P91"/>
+	<Pad Value="15px" Color="Black" X1="6" Y1="15" Name="P92"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="14" Name="P93"/>
+	<Pad Value="15px" Color="Black" X1="8" Y1="15" Name="P94"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="14" Name="P95"/>
+	<Pad Value="15px" Color="Black" X1="10" Y1="15" Name="P96"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="14" Name="P97"/>
+	<Pad Value="15px" Color="Black" X1="12" Y1="15" Name="P98"/>
+	<Pad Value="15px" Color="Black" X1="14" Y1="14" Name="P99"/>
+	<Pad Value="15px" Color="Black" X1="14" Y1="15" Name="P100"/>
+	<Pad Value="15px" Color="Black" X1="3" Y1="15" Name="P106"/>
+	<Pad Value="15px" Color="Black" X1="15" Y1="13" Name="P88"/>
+	<Pad Value="15px" Color="Black" X1="14" Y1="13" Name="P87"/>
+	<Pad Value="15px" Color="Black" X1="14" Y1="11" Name="P103"/>
+	<Pad Value="15px" Color="Black" X1="14" Y1="6" Name="P30"/>
+	<Pad Value="15px" Color="Black" X1="15" Y1="4" Name="P36"/>
+	<Pad Value="15px" Color="Black" X1="14" Y1="4" Name="P104"/>
+	<Pad Value="15px" Color="Black" X1="13" Y1="7" Name="P109"/>
+	<Pad Value="15px" Color="Black" X1="13" Y1="6" Name="P110"/>
+	<Pad Value="15px" Color="Black" X1="13" Y1="5" Name="P111"/>
+	<Pad Value="15px" Color="Black" X1="13" Y1="10" Name="P112"/>
+	<Pad Value="15px" Color="Black" X1="13" Y1="11" Name="P113"/>
+	<Pad Value="15px" Color="Black" X1="13" Y1="12" Name="P114"/>
+	<Trace Value="5px" Color="Black" X1="13" Y1="5" X2="13" Y2="7" Name="T18"/>
+	<Trace Value="5px" Color="Black" X1="13" Y1="10" X2="13" Y2="12" Name="T19"/>
+	<Trace Value="5px" Color="Black" X1="10" Y1="3" X2="9" Y2="5" Name="T20"/>
+	<Trace Value="5px" Color="Black" X1="12" Y1="3" X2="10" Y2="5" Name="T21"/>
+	<Trace Value="5px" Color="Black" X1="12" Y1="5" X2="13" Y2="4" Name="T24"/>
+	<Trace Value="5px" Color="Black" X1="13" Y1="13" X2="14" Y2="13" Name="T26"/>
+	<Trace Value="5px" Color="Black" X1="12" Y1="12" X2="13" Y2="13" Name="T27"/>
+	<Trace Value="5px" Color="Black" X1="11" Y1="12" X2="14" Y2="15" Name="T28"/>
+	<Trace Value="5px" Color="Black" X1="10" Y1="12" X2="12" Y2="14" Name="T29"/>
+	<Trace Value="5px" Color="Black" X1="8" Y1="3" X2="8" Y2="5" Name="T30"/>
+	<Trace Value="5px" Color="Black" X1="6" Y1="3" X2="7" Y2="5" Name="T31"/>
+	<Trace Value="5px" Color="Black" X1="5" Y1="12" X2="4" Y2="13" Name="T32"/>
+	<Trace Value="5px" Color="Black" X1="6" Y1="12" X2="3" Y2="15" Name="T33"/>
+	<Trace Value="5px" Color="Black" X1="7" Y1="12" X2="6" Y2="14" Name="T34"/>
+	<Trace Value="5px" Color="Black" X1="8" Y1="12" X2="8" Y2="14" Name="T35"/>
+	<Trace Value="5px" Color="Black" X1="9" Y1="12" X2="10" Y2="14" Name="T36"/>
+	<Pad Value="15px" Color="Black" X1="3" Y1="13" Name="P119"/>
+	<Pad Value="15px" Color="Black" X1="3" Y1="4" Name="P122"/>
+	<Pad Value="15px" Color="Black" X1="2" Y1="4" Name="P123"/>
+	<Pad Value="15px" Color="Black" X1="2" Y1="13" Name="P124"/>
+	<Pad Value="15px" Color="Black" X1="15" Y1="6" Name="P78"/>
+	<Pad Value="15px" Color="Black" X1="15" Y1="11" Name="P81"/>
+	<Trace Value="15px" Color="Black" X1="14" Y1="2" X2="14" Y2="3" Name="T40"/>
+	<Trace Value="15px" Color="Black" X1="12" Y1="2" X2="12" Y2="3" Name="T41"/>
+	<Trace Value="15px" Color="Black" X1="10" Y1="2" X2="10" Y2="3" Name="T42"/>
+	<Trace Value="15px" Color="Black" X1="8" Y1="2" X2="8" Y2="3" Name="T44"/>
+	<Trace Value="15px" Color="Black" X1="13" Y1="7" X2="13" Y2="5" Name="T45"/>
+	<Trace Value="15px" Color="Black" X1="13" Y1="12" X2="13" Y2="10" Name="T46"/>
+	<Trace Value="15px" Color="Black" X1="14" Y1="4" X2="15" Y2="4" Name="T47"/>
+	<Trace Value="15px" Color="Black" X1="14" Y1="13" X2="15" Y2="13" Name="T48"/>
+	<Trace Value="15px" Color="Black" X1="6" Y1="3" X2="6" Y2="2" Name="T49"/>
+	<Trace Value="15px" Color="Black" X1="14" Y1="14" X2="14" Y2="15" Name="T56"/>
+	<Trace Value="15px" Color="Black" X1="12" Y1="14" X2="12" Y2="15" Name="T57"/>
+	<Trace Value="15px" Color="Black" X1="10" Y1="14" X2="10" Y2="15" Name="T58"/>
+	<Trace Value="15px" Color="Black" X1="8" Y1="14" X2="8" Y2="15" Name="T59"/>
+	<Trace Value="15px" Color="Black" X1="6" Y1="14" X2="6" Y2="15" Name="T60"/>
+	<Trace Value="15px" Color="Black" X1="4" Y1="15" X2="3" Y2="15" Name="T63"/>
+	<Trace Value="15px" Color="Black" X1="3" Y1="13" X2="2" Y2="13" Name="T64"/>
+	<Trace Value="15px" Color="Black" X1="3" Y1="11" X2="2" Y2="11" Name="T65"/>
+	<Trace Value="15px" Color="Black" X1="4" Y1="10" X2="4" Y2="12" Name="T66"/>
+	<Trace Value="15px" Color="Black" X1="4" Y1="5" X2="4" Y2="7" Name="T68"/>
+	<Trace Value="15px" Color="Black" X1="3" Y1="4" X2="2" Y2="4" Name="T70"/>
+	<Trace Value="15px" Color="Black" X1="3" Y1="6" X2="2" Y2="6" Name="T71"/>
+	<Trace Value="5px" Color="Black" X1="4" Y1="6" X2="3" Y2="6" Name="T73"/>
+	<Trace Value="5px" Color="Black" X1="4" Y1="11" X2="3" Y2="11" Name="T74"/>
+	<Trace Value="5px" Color="Black" X1="13" Y1="6" X2="14" Y2="6" Name="T52"/>
+	<Trace Value="5px" Color="Black" X1="13" Y1="11" X2="14" Y2="11" Name="T55"/>
+	<Trace Value="15px" Color="Black" X1="14" Y1="6" X2="15" Y2="6" Name="T75"/>
+	<Trace Value="15px" Color="Black" X1="14" Y1="11" X2="15" Y2="11" Name="T76"/>
+	<Trace Value="5px" Color="Black" X1="5" Y1="5" X2="4" Y2="4" Name="T22"/>
+	<Trace Value="15px" Color="Black" X1="3" Y1="2" X2="4" Y2="2" Name="T23"/>
+	<Trace Value="5px" Color="Black" X1="4" Y1="4" X2="3" Y2="4" Name="T37"/>
+	<Trace Value="5px" Color="Black" X1="13" Y1="4" X2="14" Y2="4" Name="T25"/>
+	<Trace Value="5px" Color="Black" X1="14" Y1="2" X2="11" Y2="5" Name="T38"/>
+	<Trace Value="5px" Color="Black" X1="4" Y1="13" X2="3" Y2="13" Name="T39"/>
+</Layout>

@@ -1,0 +1,43 @@
+<Layout Width="10" Height="10" Type="Perfboard" Project="New Project" Credits="Open &quot;Properties&quot; to modify layout" HideList="False">
+  <Transistor Value="BC108C" X1="6" Y1="5" X2="6" Y2="7" Name="Q1"/>
+  <Resistor Value="430kR" X1="5" Y1="6" X2="5" Y2="3" Name="R1"/>
+  <Resistor Value="43kR" X1="4" Y1="6" X2="4" Y2="9" Name="R2"/>
+  <Capacitor Value="0,002uF" X1="4" Y1="5" X2="2" Y2="5" Name="C1"/>
+  <Jumper X1="4" Y1="5" X2="4" Y2="6" Name="J1"/>
+  <Jumper X1="4" Y1="6" X2="5" Y2="6" Name="J2"/>
+  <Resistor Value="10kR" X1="7" Y1="5" X2="7" Y2="3" Name="R3"/>
+  <Jumper X1="6" Y1="5" X2="7" Y2="5" Name="J3"/>
+  <Resistor Value="390R" X1="7" Y1="7" X2="7" Y2="9" Name="R4"/>
+  <Jumper X1="6" Y1="7" X2="7" Y2="7" Name="J4"/>
+  
+  <Capacitor Value="0,002uF" X1="8" Y1="5" X2="10" Y2="5" Name="C2"/>
+  <Jumper X1="7" Y1="5" X2="8" Y2="5" Name="J5"/>
+  
+  <Jumper X1="4" Y1="9" X2="7" Y2="9" Name="J6"/>
+  <Jumper X1="5" Y1="3" X2="7" Y2="3" Name="J7"/>
+  <Jack Type="Mono" X1="-6" Y1="8" Name="J8"/>
+  <Jack Type="Mono" X1="15" Y1="7" Name="J9"/>
+  <Pot Value="100" Taper="Linear" X1="-3" Y1="-1" X2="-1" Y2="-1" Name="P1"/>
+  
+  <Jumper X1="5" Y1="6" X2="6" Y2="6" Name="J10"/>
+  <Wire Color="Black" Seed="637035705" X1="-5" Y1="8" X2="3" Y2="9" Name="W1"/>
+  <Wire Color="Black" Seed="402002154" X1="14" Y1="7" X2="8" Y2="9" Name="W2"/>
+  <Jumper X1="3" Y1="9" X2="4" Y2="9" Name="J11"/>
+  <Jumper X1="8" Y1="9" X2="7" Y2="9" Name="J12"/>
+  <Wire Color="Blue" Seed="786773758" X1="-6" Y1="8" X2="1" Y2="5" Name="W3"/>
+  <Jumper X1="1" Y1="5" X2="2" Y2="5" Name="J13"/>
+  
+  
+  <Jumper X1="3" Y1="9" X2="2" Y2="9" Name="J14"/>
+  <Wire Color="Black" Seed="2012684170" X1="-5" Y1="-1" X2="2" Y2="9" Name="W4"/>
+  <Wire Color="Orange" Seed="1502676489" X1="-1" Y1="-1" X2="10" Y2="4" Name="W5"/>
+  <Jumper X1="10" Y1="4" X2="10" Y2="5" Name="J15"/>
+  <Wire Color="Gray" Seed="16306979" X1="-3" Y1="-1" X2="15" Y2="7" Name="W6"/>
+  <Jumper X1="5" Y1="9" X2="5" Y2="10" Name="J16"/>
+  <Jumper X1="5" Y1="3" X2="4" Y2="3" Name="J17"/>
+  
+  
+  <Text Value="+9V" X1="2" Y1="3" Name="A1"/>
+  <Text Value="GND" X1="6" Y1="10" Name="A2"/>
+  <Text Value="screaming bird" X1="4" Y1="-4" Name="A3"/>
+</Layout>

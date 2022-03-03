@@ -1,0 +1,38 @@
+<Layout Width="15" Height="9" Type="Stripboard" Project="Colorsound Inductorless Wah" Credits="Schematic by CD">
+	<Resistor Value="1M" X1="2" Y1="8" X2="2" Y2="5" Name="R1"/>
+	<Resistor Value="330K" X1="4" Y1="3" X2="4" Y2="4" Name="R2"/>
+	<Resistor Value="5.7M" X1="7" Y1="3" X2="7" Y2="4" Name="R3"/>
+	<Resistor Value="10K" X1="8" Y1="3" X2="8" Y2="2" Name="R4"/>
+	<Resistor Value="180K" X1="8" Y1="4" X2="8" Y2="6" Name="R5"/>
+	<Resistor Value="33K" X1="7" Y1="9" X2="7" Y2="8" Name="R6"/>
+	<Resistor Value="180K" X1="10" Y1="6" X2="10" Y2="5" Name="R7"/>
+	<Resistor Value="470R" X1="12" Y1="7" X2="12" Y2="9" Name="R8"/>
+	<Resistor Value="100KR" X1="12" Y1="1" X2="12" Y2="3" Name="R9"/>
+	<Resistor Value="47K" X1="14" Y1="3" X2="14" Y2="8" Name="R10"/>
+	<Capacitor Value="0,01uF" X1="3" Y1="5" X2="3" Y2="3" Name="C1"/>
+	<Capacitor Value="0,1uF" X1="9" Y1="3" X2="9" Y2="5" Name="C2"/>
+	<Capacitor Value="0,015uF" X1="9" Y1="6" X2="9" Y2="9" Name="C3"/>
+	<Capacitor Value="0,0022uF" X1="11" Y1="4" X2="11" Y2="7" Name="C4"/>
+	<Capacitor Value="0,0068uF" X1="13" Y1="7" X2="13" Y2="5" Name="C5"/>
+	<Capacitor Value="0,01uF" X1="10" Y1="3" X2="10" Y2="1" Name="C6"/>
+	<Capacitor Value="0,0022pF" X1="13" Y1="1" X2="13" Y2="3" Name="C7"/>
+	<Cut X1="4" Y1="5" Name="X1"/>
+	<Cut X1="5" Y1="3" Name="X2"/>
+	<Cut X1="7" Y1="5" Name="X3"/>
+	<Cut X1="9" Y1="2" Name="X4"/>
+	<Cut X1="11" Y1="3" Name="X5"/>
+	<Cut X1="10" Y1="9" Name="X6"/>
+	<Jumper X1="5" Y1="5" X2="5" Y2="8" Name="J1"/>
+	<Transistor Value="2N5089, BC549 or any high gain NPN " X1="6" Y1="3" X2="6" Y2="5" Name="Q1"/>
+	<Text Value="9v" X1="-1" Y1="2" Name="A1"/>
+	<Text Value="In" X1="-1" Y1="5" Name="A2"/>
+	<Text Value="Gnd" X1="-2" Y1="8" Name="A3"/>
+	<Text Value="Sweep 1/2" X1="16" Y1="9" Name="A4"/>
+	<Text Value="Sweep 3" X1="16" Y1="8" Name="A5"/>
+	<Text Value="Out" X1="16" Y1="3" Name="A6"/>
+	<Text Value="Sweep pot 100K" X1="10" Y1="12" Name="A7"/>
+	<Text Value="Layout: Carsten Bøcker" X1="4" Y1="-1" Name="A8"/>
+	<Text Value="Suggestions by Paul Marrosy:" X1="0" Y1="19" Name="A9"/>
+	<Text Value="Replace jumper with 500R to 1K pot for Q intensity control" X1="0" Y1="20" Name="A10"/>
+	<Text Value="Replace R10 with 100K or 150K if volume drops when engaged" X1="0" Y1="21" Name="A11"/>  <Text Value="Not verified but nodes checked" X1="10" Y1="13" Name="A12"/>
+</Layout>

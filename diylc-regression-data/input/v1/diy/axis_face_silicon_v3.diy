@@ -1,0 +1,54 @@
+<Layout Type="Stripboard" Width="15" Height="8" Project="Axis Face Silicon V3" Credits="">
+	<Jumper Y1="8" Y2="8" Name="J1" X1="1" X2="-3"/>
+	<Text Value="Ground" Y1="8" Name="A1" X1="-6"/>
+	<Resistor Value="1M" Y1="4" Y2="8" Name="R1" X1="2" X2="2"/>
+	<Jumper Name="J2" Y1="4" Y2="4" X1="1" X2="-3"/>
+	<Text Name="A2" Value="Smooth - 1 (and input)" Y1="4" X1="-10"/>
+	<Jumper Y1="6" Y2="6" Name="J3" X1="1" X2="-3"/>
+	<Text Y1="6" Name="A3" Value="Smooth - 2" X1="-7"/>
+	<Capacitor Value="220nF" Y1="6" Y2="7" Name="C1" X1="3" X2="3"/>
+	<Cut Y1="6" Name="X1" X1="4"/>
+	<Jumper Y1="1" Y2="1" Name="J4" X1="1" X2="-3"/>
+	<Electrolyte Value="100uF" Size="Large" Y1="1" Y2="3" Name="C2" X1="2" X2="2"/>
+	<Diode Y1="3" Y2="1" Name="D1" Value="1N4001 or similar" X1="5" X2="5"/>
+	<Jumper Y1="3" Y2="8" Name="J5" X1="8" X2="8"/>
+	<Text Value="+9V" Y1="1" Name="A4" X1="-5"/>
+	<Resistor Value="100K" Name="R2" Y1="7" Y2="7" X1="8" X2="10"/>
+	<Resistor Value="33K" Y1="1" Y2="6" Name="R3" X1="7" X2="7"/>
+	<Transistor Value="PN2369A" Name="Q1" Y1="8" Y2="6" X1="6" X2="6"/>
+	<Transistor Value="BD139" Name="Q2" Y1="5" Y2="7" X1="11" X2="11"/>
+	<Capacitor Value="100pF" Y1="6" Y2="6" Name="C3" X1="10" X2="8"/>
+	<Trimmer Value="10K" Y1="3" Y2="4" Name="VR1" X1="10" X2="12"/>
+	<Resistor Value="1.2K" Y1="1" Y2="2" Name="R4" X1="8" X2="8"/>
+	<Capacitor Value="47nF" Y1="2" Y2="1" Name="C4" X1="9" X2="9"/>
+	<Jumper Y1="3" Y2="5" Name="J7" X1="13" X2="13"/>
+	<Cut Y1="3" Name="X4" X1="9"/>
+	<Cut Y1="1" Name="X5" X1="13"/>
+	<Capacitor Value="10nF" Y1="2" Y2="1" Name="C5" X1="14" X2="14"/>
+	<Jumper Y1="1" Y2="1" Name="J9" X1="15" X2="17"/>
+	<Text Value="Level - 3" Y1="1" Name="A5" X1="18"/>
+	<Jumper Y1="7" Y2="7" Name="J10" X1="15" X2="17"/>
+	<Text Value="Attack - 3" Y1="7" Name="A6" X1="18"/>
+	<Jumper Y1="8" Y2="8" Name="J11" X1="15" X2="17"/>
+	<Text Value="Attack - 1" Y1="8" Name="A7" X1="18"/>
+	<Electrolyte Value="15uF" Size="Medium" Y1="5" Y2="8" Name="C6" X1="14" X2="14"/>
+	<Jumper Name="J12" Y1="5" Y2="5" X1="15" X2="17"/>
+	<Text Value="Attack - 2" Name="A8" Y1="5" X1="18"/>
+	<Cut Y1="7" Name="X7" X1="9"/>  <Text Value="E" Y1="7" Name="A9" X1="12"/>
+  <Text Value="C" Y1="6" Name="A10" X1="12"/>
+  <Text Value="B" Y1="5" Name="A11" X1="12"/>
+  <Text Value="E" Y1="8" Name="A12" X1="7"/>
+  <Text Value="B" Y1="7" Name="A13" X1="7"/>
+  <Text Value="C" Y1="6" Name="A14" X1="6"/>
+  <Cut Y1="6" Name="X9" X1="9"/>
+  <Jumper Y1="6" Y2="5" Name="J13" X1="5" X2="5"/>
+  <Jumper Y1="3" Y2="6" Name="J14" X1="13" X2="13"/>
+  <Cut Y1="5" Name="X6" X1="13"/>
+  <Text Name="A15" Value="Note cut traces at f10 &amp; g10" Y1="17" X1="0"/>
+  <Text Name="A16" Value="Design by Philip Bryant, Brett Robinson &amp; others" Y1="18" X1="0"/>
+  <Text Name="A17" Value="Schematic at http://fuzzcentral.tripod.com/axisfacesi.html" Y1="19" X1="0"/>
+  <Text Value="Level Pot: 100KA" Y1="13" Name="A18" X1="10"/>
+  <Text Value="Attack Pot: 1KB" Y1="14" Name="A19" X1="10"/>
+  <Text Value="Smooth Pot: 100KB" Y1="15" Name="A20" X1="10"/>
+  <Cut X1="9" Y1="4" Name="X2"/>
+</Layout>

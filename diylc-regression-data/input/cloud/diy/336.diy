@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>4</major>
+    <minor>3</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>Frank</author>
+  <width value="3.0" unit="cm"/>
+  <height value="3.0" unit="cm"/>
+  <gridSpacing value="0.1" unit="mm"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.misc.Image>
+      <name>Img1</name>
+      <alpha>127</alpha>
+      <point x="0.15" y="0.395"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAAI4AAABKCAYAAABthGyqAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI
+WXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5AQPERY5spuxOgAAD2hJREFUeNrtXV9MG9ea/9lDZ2LG
+2FtjMHabNIDLJbFD8LItdKmSVimbNqsAKrlI6UYrkYf+CQ+NFFH1rRIvlaJtxVMfIm3RSisRVUE3
+7UpcV61aHIUWQlliBA0Xk5AQxcQ1TGNjM/bgsfeBnbm2sUkxA7YHPskKmTP4zO/Md77z/fmdgyIW
+i0GO8suIIxZ0jyRc+6d/6VTQNL2HSQIpyHcFiUQiCIfDAACKohAOh0FRFLzTf0Hwp58T7v2PCTZ2
+4MAByfpeWVmB2WzGyZMnFbsNkyLfLc7ly5djJSUlCIfDGBsbQ11d3drgP7yGssXlhHvVf76MF8uf
+l7R/lmXx6NEjSZUnHzDlvcXRaDTwer2oqKhAU1MTlEolACCqexcFyjC4KAUAIJVh7CtYmyQ8z0vW
+v0qlwvLy8q7DlPeKw/M8Dh48CJvN9tR7GYaRdIAFiUajuw6TEnuyJ7vROQaAYDAInufR09MDi8UC
+APB5XPhT0S8J98XKL8Jms0k+Q4WlZDdhkoXihMNhcBwHg8GA2tpaAMCtb39GbHY10fy+EN2W/qVe
+qvIBkyyXqu14kTttcXId056PsyeZKdbeEOSfNcgFTLJQnGAwCJZlszf7tsk5zmVMea84BEGApmnc
+unULKpVKFrM/HzDJwuIcOXIENTU14kzZCWdVeMEAJM8c5wMmWYTj0WhUzGPMzMxgcnIShaHH2J/C
+/Es1uCzLwuFwwO12IxQK4dKlSzGNRoPjx4/jtddeU8gdkywsjlKpBEEQIAgCXq8XJpMp5X1f9f8P
+xsbGxFmV6QC73W709vYiGAxCp9PBZDLBYDBArVbD4XDg8uXLsUgkImtMeW1xIpEIXC4XeJ5HKBQC
+sFbZVavVKe8vP1CGwcFBlJaWIlMOSzAYxHfffQeDwQCPxwODwQCWZWGz2TA9PQ2O46BSqfD555/H
+Ojs7FRRFoaBgc8OcD5jymlaxsLAQs9vtqKqqQiAQgNPpBMuy0Ov1ePzrX3A0krhO/+ej5/CPRw+J
+LyRTMRgMIAgCJ0+eRHFxMYaGhnDmzBkAgM/nQ09PD1QqFe7fv4+amhq8//77m1q6ent7Y7mOSRY+
+DgDMzs5Co9Hg/v378Pv94H2LAE0lDo7RBJPJtOVBZhgG58+fB8/zWFlZSWjTarW4ePEiuru7UVlZ
+CYqiZIlJNglAgiDA8zza29tRX1+PIq0+5X1bHWAA0Ol0G7ZrtVpoNBpZY5KF4kSjUVAUBYIg8NVX
+X8HpdMLj/lvKe/ft27fl/hiGWdd/vPh8Pvj9flljks1SFb9W6/V6BB8Ur2vzLLhxT0Nt6fv37dsH
+rVaL/v5+nDp1CsXFxQk5loWFBVy5cgUGgwFutxtSEMlzEVNWFGdhYSFmNBoVkUgEwWAQWq1WvObz
++dYerKAAPp8vbdvCwkKssLAwreku0uqBJEey/EAZWJZFe3s79Hr9plP6KpUKv//+O+x2O3Q6HXp7
+e6HRaOD3+7G8vAyv1ys+M0EQ6O7uVmzFx8llTFlRnCtXrsBms8WMRiOuX7+Ojz76SNHV1YWPP/44
+Njo6CgBobGxET08PPv30U7Ht119/BcMwaGlpQVdXFz788MOUA5FO3G433nnnHezfvx88z4MkyU0/
+u8lkQmtrK65evSpGImq1GgzDgCAIkCQJgiBw+vRpPHr0SJKQNVcwXbp0SYwOdzwcDwaD6OrqirW0
+tMDpdKKkpAQAMD8/j4aGBty4cQP19fVwuVygaRo6nQ5OpxPHjh3D8PAwLBYLHjx4AJqmxYjFbDZj
+dnZW3FLicrlQGHKuC12jJy6hrq5uy2w5Ict68+ZNuFwusCwLlUolDvrp06e39P1DQ0M5hen111/H
+Sy+9lJBSyIrFefbZZxEOh/Hyyy9jamoKtbW1YBgGarUaNpsNHMehoaEBt2/fxnPPPQev1wu1Wo2G
+hga43W6xrbi4GEtLS+L38jyP2tpaHDlyBLe+9QCe5W15fmFmNzU1oaWlBUNDQ2JdaTv6yhamM2fO
+pM0/7XhURdM0wh6lqOXxDlo0GgVJkimrwaura5RJYQamC0Gj0eiOVZNT5Ty2K2rMNUyixZmZmdnR
+NYvjOCiVygQFEMytULgT2giCEBVmO7aCSPFi5SZPw1Twy4gjpnnWmLUHExRBUA5hy2t8m3BNiqTa
+nkgjymwoTbxVESSVwsQvbxzHSZYllXwQlfJj4Ob89phkOkB83kNoUyqViEajIAhCzJKmy5buxpeY
+DcmK4hTrdaJ1EaSoqAgcx6V0mIuKiuB2uxMGkCAI0QrFSyAQwNzcHJil9aQnqRWeZVmMjo5icnIS
+0WgU5eXlGBgYwNmzZyXtK4uYYuXl5etC8axEVckSH00tLy+vc5gFDz85mqIoah29kSAIzM7Opq0T
+PXz4ULIBttvt+OKLL8AwDEwmEx4+fIiBgQF4PB709fWhr69Psr6yjenChQux0dHRWE4sVfF+THL4
+F+8wJ1+L/z3BmY6XUCiUlg03Pj4Oq9UKs9m8pWfv7+8HAFRWVsLtdosvVaPRoLKyEgzDgCRJ9PX1
+SWJ9cgHT9evXEQwGYwKFNGuKEx9qJzvHyQ5zqmiqqKgoZb4hEAikZcstPVnBtWvXUF1dnXFYL2RU
+fT6fcAAR7t27h+rqagBrWV+h0iwUBdPRPjezVGUDU3NzMxYWFmC328EwDBwOB6anp2PV1dXZd47j
+T5xKtjQ0TSMUCiUojtBGkiRCoRDSFTpTicFoQm3toQ1n8NNEqOG0traKHJZ4X6uxsRFVVVX4/vvv
+4ff7MT09vWXFySYmo9GIjo4ODA0NJWDKmo8jREVCqJ2qiizc88wzz6zzieIVLV4OHTr0hyzdVkSr
+1UKn06Wd4SUlJaKjL0V1PBcwNTY2JmDKmuIkh9rJyrG6ugqKolJmkVdWVkBRVEoKgdfrRSAQwLJv
+cduenWXZBEuXKssqZb4pFzFlNapaXV0FSZIblhjSZZGTlwhBFhcXoVar09IspWDLAcDExESC8ie3
+GQwG8Dy/zm/LRHIB07Vr1xIwZdXHSR7UZOVItxwl53v+qHgW3PiZfYJXX301Y0dSUPIbN25gcnIS
+VqsVi4t/twTXr18Hy7LgOE7ksWynbCcmn8+HmZkZ/PjjjyKmo0eP4vDhw9lTHGHtTxVNJd8Tv7QV
+FRUhGo2mzaamiz4AgCqI4oMPPkBZWVnGz11YWIivv/4aHo8HADA8PAy/3w+XywWNRgO1Wg2/3w+T
+yYRAILBlbk42MXV3dydgeu+991BVVaXI6lJF0/RTo6lUszV+aUv3vcnEa0FONZ9BWVkZeJ7P+LO8
+vIympiYcOnQIbrcbHMeJux79fj8CgYCoNFJlkHMB04ULF0SlyWoeR7AYySUG4d9QKJRgVeId5nQW
+iud5WCwWUBSFJ3MP1pGe/kFNSvLsPM+jrq4OtbW1mJubw/DwMN544w0MDw9LYmFyCVNFRQWMRmPu
+lByEPExyiUEgbGXKySEIAlVVVTuW+TabzbBYLCgpKZFcabKNqbGxUZFKabIeVQnKsRlOzh/Ji+xG
+YtWOrxhVVVUKg+mgYqc73qjEkMqqpOLkZMLo3w0vdScwFQCAVk1CW1Wl8AW4bX+gleWlWFkZmTJi
+EkLtVCUGwe+J5+RstG0kG/6anGRTRC6tevtncIFCo4C2MJbKqgihdipODkVRWFpaWsfJ2XuRWXqe
+ne5QOJwnVf1JCLXjHWZh4318wlBoS5cxFRzs7RRBaWdnZzE1NQW3272tyb5sYBocHIzdvXs39lSL
+s1P5G2CNKuB2u1FYWAiCIPDDDz/AYrFgdHQUxcXFCAQCuH37NgiCgMPhgM1mw8TEBPR6PXiex/Dw
+8DrFIQgCU1NT/795bT1b7olESzFBEBgbG8PIyAg0Gg1UKhUcDoeYLQYgWQ4nRzDFzp07h8rKSkXW
+LE5BQQE6OjoUOp0Ov/32Gzo6OhQulwvvvvsu9Ho9ampqcPz4cYXL5UJnZ6fC7/fj7NmzKC4uxsGD
+B/HWW28pJiYmxO2oyQ62kLVNJTd+sGN8fFw8Ii3Tj91ux507d2AymcBxHDweD/x+P0iShFqtBsdx
+W2IA5iKmL7/8EpOTk6L1yeqJXMFgEDRNIxKJiMedCT8LbamuCf8XTuSK3y7r8XigVqvx5N5f122X
+/W+PEWq1GidOnMio+EhRFBiGQSAQELOrFosFc3NzaG9vx9zcHBwOBxYXF0Xr09bWBqvVqojHuxEm
+YO1ErlzFVF9fj4qKiuwWOYVBjD8jT/g5/niQ5GubPVNPzLKWPI8j1eXwer1bMukcx+HYsWMiXXNx
+cRE0TcNqtcJqteKbb77B+Pg4VCoVbt68CavVKhtM09PTaxsHIENhGGZD7spWTDqwRnoym81pM9jN
+zc2SErlyEZMsDlZSKpWimbbZbFhaWsK9J+vPksmnBGCuY5KNxRFmisPhwPz8fNrZKQXpyefz4fHj
+x2lJT4ODgyBJcstErlzGlPcWJxwOY3V1FWazGU6nU+SPRFKcXiWQnl544QVotdqM+mNZFlqtFgMD
+AzCbzbBarYhGo4hEIvB6vbDb7Zifnxf9F+Gv28kNU14rTklJicLlcsXii6QblSEO/6kcAHD+/Pkt
+9dvf3w+tVguv14urV6+CZVmMjIyIZ+kJEVVnZ+ema4Dxh37nGqZTp06hsbExu0QuqXJCL774Impr
+a1FTUwOe5zc8rPHu3bt4++23xWUg009bWxtomhZPIa+srITBYABJkvB4PCBJEp988olCTphaW1tF
+pclK5ni7HDlhhhoMBkxNTaW879y5cyJbbqv+1JtvvgmGYTA3Nwen04n6+nqMj4/js88+U8gJk9Fo
+TLl3XDZRlSBGoxFGoxG3vnWtY8tJGf3wPA+tVou6ujoolUo0NzcrmpubZYcprWWUg+LE163kwo3J
+dUx5H44LPkBTUxNYlpUFpSIfMMkmj5Nqc95O+li7DdPeXwGW2B/ZLZj2FCeHLU4uY1LuWYD86C/X
+MMkiqqIoCiRJQqVSYWZmBgAQoypA/7Mey6G/86gzTclnw+LkOiZZKA5N0yAIAm1tbXFXj627j2GY
+bTlgezusQa5j2vNx9iQjyXuLQxAE7ty5g2AwCIZhxKPIfnfP4Xl94uFG2oMnNjx1KleWqnzAlPeK
+4/F4oNfrsbKygvHxcbzyyisAAHLlJyj/NzE9H6v8V/HFSCUMw6C0tHTXYcrrPx+9kfz1vy7Ggj/9
+nPhCav4d+/dLd8R0KBRCaWkphCNcdxOmAshU9If/DWG6LuHae61nFZmSwvcwJcr/AeHtpngJjgTY
+AAAAAElFTkSuQmCC</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="0.56" y="0.21"/>
+      <text>Pot. 1 - 100 K lin Stereo</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+  </components>
+  <groups/>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font name="Square721 BT Roman" size="14" style="0"/>
+</project>

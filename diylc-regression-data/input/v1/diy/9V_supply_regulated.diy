@@ -1,0 +1,57 @@
+<Layout Type="Perfboard" Width="32" Height="21" Project="+9V power supply, regulated" Credits="schematic: www.jimkim.de   layout: cAMPus, Ulrich Scherer" HideList="False">
+	<Diode Value="1N4001" X1="26" Y1="2" X2="26" Y2="5" Name="D1"/>
+	<Diode Value="1N4001" X1="24" Y1="5" X2="24" Y2="2" Name="D2"/>
+	<Diode Value="1N4001" X1="25" Y1="3" X2="25" Y2="6" Name="D3"/>
+	<Diode Value="1N4001" X1="23" Y1="6" X2="23" Y2="3" Name="D4"/>
+	<Electrolyte Value="1000uF" Size="Large" X1="25" Y1="8" X2="23" Y2="8" Name="C1"/>
+	<Capacitor Value="100nF" X1="27" Y1="12" X2="27" Y2="10" Name="C2"/>
+	<Transistor Value="7809" X1="27" Y1="6" X2="29" Y2="6" Name="Q1"/>
+	<Diode Value="1N4001" X1="29" Y1="5" X2="27" Y2="5" Name="D5"/>
+	<Capacitor Value="100nF" X1="29" Y1="12" X2="29" Y2="10" Name="C3"/>
+	<Electrolyte Value="100uF" Size="Large" X1="31" Y1="14" X2="29" Y2="14" Name="C4"/>
+	<Trace Value="5px" Color="Gray" X1="18" Y1="8" X2="18" Y2="2" Name="T2"/>
+	<Trace Value="5px" Color="Gray" X1="21" Y1="3" X2="21" Y2="14" Name="T4"/>
+	<Wire Color="Blue" Seed="317581699" X1="2" Y1="13" X2="-3" Y2="12" Name="W1"/>
+	<Wire Color="Black" Seed="485064979" X1="2" Y1="16" X2="-3" Y2="15" Name="W2"/>
+	<Text Value="230V~" X1="-4" Y1="14" Name="A1"/>
+	<Text Value="+9V" X1="35" Y1="17" Name="A2"/>
+	<Text Value="GND" X1="35" Y1="20" Name="A3"/>
+	<Trace Value="5px" Color="Orange" X1="27" Y1="10" X2="27" Y2="5" Name="T12"/>
+	<Trace Value="5px" Color="Orange" X1="29" Y1="5" X2="29" Y2="10" Name="T13"/>
+	<Trace Value="5px" Color="Black" X1="23" Y1="12" X2="29" Y2="12" Name="T14"/>
+	<Wire Color="Red" Seed="1796574562" X1="25" Y1="21" X2="34" Y2="17" Name="W3"/>
+	<Wire Color="Black" Seed="912870377" X1="23" Y1="21" X2="34" Y2="20" Name="W4"/>
+	<Text Value="there is some space left in the" X1="-1" Y1="24" Name="A4"/>
+	<Text Value="corners of the board to fix it in the case" X1="-1" Y1="25" Name="A5"/>
+	<LineIC Value="" X1="2" Y1="6" X2="2" Y2="12" Name="fuse carrier"/>
+	<Trace Value="5px" Color="Blue" X1="8" Y1="6" X2="2" Y2="6" Name="T10"/>
+	<Trace Value="5px" Color="Black" X1="8" Y1="16" X2="2" Y2="16" Name="T16"/>
+	<Trace Value="5px" Color="Gray" X1="18" Y1="2" X2="26" Y2="2" Name="T1"/>
+	<Trace Value="5px" Color="Gray" X1="18" Y1="14" X2="21" Y2="14" Name="T3"/>
+	<Transformer Value="era ei-48 230V/12V 0.83A" X1="5" Y1="2" X2="21" Y2="20" Name="TR1"/>
+	<Trace Value="5px" Color="Blue" X1="2" Y1="13" X2="2" Y2="12" Name="T17"/>
+	<Trace Value="5px" Color="Black" X1="23" Y1="5" X2="24" Y2="5" Name="T8"/>
+	<Trace Value="5px" Color="Gray" X1="21" Y1="3" X2="25" Y2="3" Name="T9"/>
+	<Trace Value="5px" Color="Orange" X1="26" Y1="5" X2="25" Y2="5" Name="T7"/>
+	<Trace Value="5px" Color="Orange" X1="31" Y1="10" X2="31" Y2="16" Name="T11"/>
+	<Trace Value="5px" Color="Black" X1="23" Y1="5" X2="23" Y2="12" Name="T5"/>
+	<Transistor Value="MPSA13 NPN, 0.5A" X1="26" Y1="18" X2="26" Y2="16" Name="Q2"/>
+	<Resistor Value="2k2" X1="28" Y1="15" X2="28" Y2="18" Name="R1"/>
+	<Electrolyte Value="24uF" Size="Large" X1="24" Y1="16" X2="24" Y2="14" Name="C5"/>
+	<Trace Value="5px" Color="Brown" X1="28" Y1="17" X2="25" Y2="17" Name="T19"/>
+	<Trace Value="5px" Color="Orange" X1="28" Y1="15" X2="28" Y2="16" Name="T20"/>
+	<Trace Value="5px" Color="Black" X1="29" Y1="12" X2="29" Y2="14" Name="T18"/>
+	<Electrolyte Value="100uF" Size="Large" X1="25" Y1="19" X2="23" Y2="19" Name="C6"/>
+	<Trace Value="5px" Color="Orange" X1="31" Y1="16" X2="26" Y2="16" Name="T21"/>
+	<Trace Value="5px" Color="Red" X1="26" Y1="18" X2="25" Y2="18" Name="T22"/>
+	<Trace Value="5px" Color="Black" X1="29" Y1="14" X2="23" Y2="14" Name="T23"/>
+	<Trace Value="5px" Color="Orange" X1="25" Y1="5" X2="25" Y2="10" Name="T6"/>
+	<Trace Value="5px" Color="Orange" X1="25" Y1="10" X2="27" Y2="10" Name="T24"/>
+	<Trace Value="5px" Color="Black" X1="28" Y1="12" X2="28" Y2="6" Name="T25"/>
+	<Trace Value="5px" Color="Orange" X1="29" Y1="10" X2="31" Y2="10" Name="T26"/>
+	<Trace Value="5px" Color="Black" X1="23" Y1="14" X2="23" Y2="21" Name="T15"/>
+	<Trace Value="5px" Color="Red" X1="25" Y1="21" X2="25" Y2="18" Name="T27"/>
+	<Trace Value="5px" Color="Brown" X1="28" Y1="18" X2="28" Y2="17" Name="T28"/>
+	<Trace Value="5px" Color="Brown" X1="25" Y1="17" X2="25" Y2="16" Name="T29"/>
+	<Trace Value="5px" Color="Brown" X1="25" Y1="16" X2="24" Y2="16" Name="T30"/>
+</Layout>

@@ -1,0 +1,32 @@
+<Layout Type="Stripboard" Width="11" Height="13" Project="Ruby Mini Amp" Credits="Origional creator unknown. Errors fixed">
+	<Resistor Value="1.5M" X1="4" X2="4" Name="R1" Y1="7" Y2="3"/>
+	<Resistor Value="3.9K" X1="6" X2="6" Name="R2" Y1="7" Y2="2"/>
+	<Transistor Value="MPF102" X1="5" X2="5" Name="Q1" Y1="3" Y2="1"/>
+	<Capacitor Value="47nF" X1="7" X2="7" Name="C1" Y1="2" Y2="4"/>
+	<Electrolyte Value="100uF" Name="C2" X1="3" X2="3" Y1="1" Y2="2"/>
+	<IC Value="LM386" Name="IC1" X1="4" X2="7" Y1="8" Y2="11"/>
+	<Cut X1="4" Name="X1" Y1="2"/>
+	<Jumper X1="2" X2="2" Name="J1" Y1="11" Y2="10"/>
+	<Jumper X1="3" X2="3" Name="J3" Y1="10" Y2="7"/>
+	<Jumper X1="2" X2="2" Name="J2" Y1="2" Y2="7"/>
+	<Cut X1="5" Name="X2" Y1="8"/>
+	<Cut X1="5" Name="X3" Y1="9"/>
+	<Cut X1="5" Name="X4" Y1="10"/>
+	<Cut X1="5" Name="X5" Y1="11"/>
+	<Jumper Name="J4" X1="10" X2="10" Y1="10" Y2="1"/>
+	<Capacitor Value="100nF" X1="9" X2="9" Name="C3" Y1="9" Y2="7"/>
+	<Resistor Value="10R" X1="8" X2="8" Name="R3" Y1="5" Y2="11"/>
+	<Capacitor Value="47nF" X1="7" X2="7" Name="C4" Y1="5" Y2="7"/>
+	<Electrolyte Value="220uF" X1="9" X2="9" Name="C5" Y1="11" Y2="13"/>
+	<Jumper X1="3" Y1="11" X2="3" Y2="12" Name="J5"/>
+	<Text Value="GAIN 1 &amp; 2" X1="-4" Y1="8" Name="GAIN 1 &amp; 2"/>
+	<Text Value="GAIN 3" X1="12" Y1="8" Name="GAIN 3"/>
+	<Text Value="9V" X1="-2" Y1="1" Name="9V"/>
+	<Text Value="0V" X1="-2" Y1="7" Name="0V"/>
+	<Text Value="VOLUME 2" X1="-4" Y1="9" Name="VOLUME 2"/>
+	<Text Value="VOLUME 1" X1="12" Y1="4" Name="VOLUME 1"/>
+	<Text Value="VOLUME 3" X1="12" Y1="7" Name="VOLUME 3"/>
+	<Text Value="INPUT" X1="-3" Y1="3" Name="INPUT"/>
+	<Text Value="SPEAKER +" X1="12" Y1="13" Name="SPEAKER +"/>
+	<Text Value="SPEAKER -" X1="12" Y1="12" Name="SPEAKER -"/>
+</Layout>

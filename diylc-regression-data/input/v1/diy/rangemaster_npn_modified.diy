@@ -1,0 +1,25 @@
+<Layout Type="Stripboard" Width="10" Height="7" Project="RANGEMASTER NPN" Credits="Mods and layout by Andrew Carrell 2006">
+	<Resistor Value="33K" Name="R1" Y1="6" Y2="7" X1="6" X2="6"/>
+	<Resistor Value="470K" Name="R2" Y1="4" Y2="1" X1="5" X2="5"/>
+	<Resistor Value="1M" Name="R3" Y1="2" Y2="7" X1="4" X2="4"/>
+	<Capacitor Value=".0068uF" Name="C1" Y1="2" Y2="4" X1="3" X2="3"/>
+	<Transistor Name="Q1" Y1="5" Y2="3" X1="6" X2="6" Value="Mullard OC140, AC187, etc."/>
+	<Text Value="E" Name="T1" Y1="5" X1="6"/>
+	<Resistor Value="4.7K" Name="R4" Y1="5" Y2="7" X1="5" X2="5"/>
+	<Electrolyte Value="22uF" Name="C2" Y1="5" Y2="7" X1="3" X2="3"/>  <Electrolyte Value="47uF" Name="C3" Y1="1" Y2="7" X1="2" X2="2"/>
+  <Cut Name="X2" Y1="6" X1="7"/>
+  <Cut Name="X3" Y1="4" X1="7"/>
+  
+  <Capacitor Value=".01uF" Name="C4" Y1="4" Y2="6" X1="8" X2="8"/>
+  <Resistor Value="1M" Name="R5" Y1="6" Y2="7" X1="9" X2="9"/>
+  <Text Value="IN" X1="-2" Y1="2" Name="T2"/>
+  <Text Value="BIAS-3,2" X1="-3" Y1="4" Name="T3"/>
+  <Text Value="BIAS-1" X1="-3" Y1="6" Name="T4"/>
+  <Text Value="GROUND" X1="-3" Y1="7" Name="T5"/>
+  <Text Value="VOLUME-1" X1="11" Y1="1" Name="T6"/>
+  <Text Value="VOLUME-3" X1="11" Y1="3" Name="T7"/>
+  <Text Value="VOLUME-2" X1="11" Y1="4" Name="T8"/>
+  <Text Value="OUT" X1="11" Y1="6" Name="T9"/>
+  <Text Value="VOLUME: 20K AUDIO TAPER POT" X1="-2" Y1="13" Name="T10"/>
+  <Text Value="BIAS: 50K LINEAR TAPER POT" X1="-2" Y1="14" Name="T11"/>
+</Layout>

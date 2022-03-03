@@ -1,0 +1,76 @@
+<Layout Width="25" Height="5" Type="PCB" Project="3 Wire Marshall Tone Stack" Credits="layout by pyrop" HideList="False">
+	<Pot Value="1M" Taper="Audio" X1="3" Y1="-1" X2="5" Y2="-1" Name="bass"/>
+	<Pot Value="25K" Taper="Linear" X1="13" Y1="-1" X2="15" Y2="-1" Name="Mid"/>
+	<Pot Value="250K" Taper="Linear" X1="23" Y1="-1" X2="25" Y2="-1" Name="Treb"/>
+	<Pad Value="18px" Color="Black" X1="5" Y1="1" Name="P1"/>
+	<Pad Value="18px" Color="Black" X1="3" Y1="1" Name="P2"/>
+	<Pad Value="18px" Color="Black" X1="1" Y1="1" Name="P3"/>
+	<Pad Value="18px" Color="Black" X1="11" Y1="1" Name="P4"/>
+	<Pad Value="18px" Color="Black" X1="13" Y1="1" Name="P5"/>
+	<Pad Value="18px" Color="Black" X1="15" Y1="1" Name="P6"/>
+	<Pad Value="18px" Color="Black" X1="21" Y1="1" Name="P7"/>
+	<Pad Value="18px" Color="Black" X1="23" Y1="1" Name="P8"/>
+	<Pad Value="18px" Color="Black" X1="25" Y1="1" Name="P9"/>
+	<Trace Value="8px" Color="Black" X1="5" Y1="1" X2="11" Y2="1" Name="T1"/>
+	<Trace Value="8px" Color="Black" X1="1" Y1="1" X2="3" Y2="1" Name="T2"/>
+	<Pad X1="6" Y1="2" Value="15" Name="P10" Parent="C1" Square="False"/>
+	<Pad X1="6" Y1="4" Value="15" Name="P11" Parent="C1" Square="False"/>
+	<Capacitor Value="0.022uF" X1="6" Y1="2" X2="6" Y2="4" Name="C1"/>
+	<Pad X1="20" Y1="2" Value="15" Name="P12" Parent="C2" Square="False"/>
+	<Pad X1="20" Y1="4" Value="15" Name="P13" Parent="C2" Square="False"/>
+	<Capacitor Value="470pF" X1="20" Y1="2" X2="20" Y2="4" Name="C2"/>
+	<Pad X1="12" Y1="3" Value="15" Name="P14" Parent="C3" Square="False"/>
+	<Pad X1="10" Y1="3" Value="15" Name="P15" Parent="C3" Square="False"/>
+	<Capacitor Value="0.022uF" X1="12" Y1="3" X2="10" Y2="3" Name="C3"/>
+	<Pad X1="7" Y1="4" Value="15" Name="P16" Parent="R1" Square="False"/>
+	<Pad X1="10" Y1="4" Value="15" Name="P17" Parent="R1" Square="False"/>
+	<Resistor Value="33K" X1="7" Y1="4" X2="10" Y2="4" Name="R1"/>
+	<Trace Value="8px" Color="Black" X1="21" Y1="1" X2="20" Y2="2" Name="T5"/>
+	<Trace Value="8px" Color="Black" X1="3" Y1="1" X2="4" Y2="2" Name="T3"/>
+	<Trace Value="8px" Color="Black" X1="4" Y1="2" X2="6" Y2="2" Name="T4"/>
+	<Trace Value="8px" Color="Black" X1="6" Y1="4" X2="7" Y2="4" Name="T6"/>
+	<Trace Value="8px" Color="Black" X1="7" Y1="4" X2="8" Y2="3" Name="T7"/>
+	<Trace Value="8px" Color="Black" X1="8" Y1="3" X2="10" Y2="3" Name="T8"/>
+	<Trace Value="8px" Color="Black" X1="12" Y1="3" X2="13" Y2="2" Name="T9"/>
+	<Trace Value="8px" Color="Black" X1="13" Y1="1" X2="13" Y2="2" Name="T10"/>
+	<Trace Value="8px" Color="Black" X1="10" Y1="4" X2="20" Y2="4" Name="T11"/>
+	<Trace Value="8px" Color="Black" X1="25" Y1="1" X2="23" Y2="3" Name="T13"/>
+	<Trace Value="8px" Color="Black" X1="5" Y1="5" X2="4" Y2="4" Name="T15"/>
+	<Trace Value="8px" Color="Black" X1="4" Y1="4" X2="4" Y2="2" Name="T16"/>
+	<Trace Value="8px" Color="Black" X1="23" Y1="1" X2="21" Y2="3" Name="T17"/>
+	<Trace Value="8px" Color="Black" X1="21" Y1="3" X2="19" Y2="3" Name="T18"/>
+	<Trace Value="8px" Color="Black" X1="19" Y1="3" X2="18" Y2="3" Name="T19"/>
+	<Trace Value="8px" Color="Black" X1="15" Y1="1" X2="15" Y2="2" Name="T20"/>
+	<Trace Value="8px" Color="Black" X1="15" Y1="2" X2="16" Y2="3" Name="T21"/>
+	<Pad Value="18px" Color="Black" X1="16" Y1="3" Name="P18"/>
+	<Pad Value="18px" Color="Black" X1="18" Y1="3" Name="P19"/>
+	<Pad Value="18px" Color="Black" X1="17" Y1="4" Name="P20"/>
+	<Trace Value="8px" Color="Black" X1="23" Y1="3" X2="21" Y2="5" Name="T12"/>
+	<Trace Value="8px" Color="Black" X1="21" Y1="5" X2="5" Y2="5" Name="T14"/>
+	<Wire Color="Black" Seed="579772192" X1="16" Y1="3" X2="10" Y2="6" Name="W1"/>
+	<Text Value="  Ground" X1="10" Y1="6" Name="A1"/>
+	<Wire Color="Green" Seed="1389180790" X1="17" Y1="4" X2="15" Y2="6" Name="W2"/>
+	<Text Value="  Input" X1="15" Y1="6" Name="A2"/>
+	<Wire Color="Blue" Seed="312503104" X1="18" Y1="3" X2="20" Y2="6" Name="W3"/>
+	<Text Value="  Output" X1="20" Y1="6" Name="A3"/>
+	<Pad X1="1" Y1="1" Value="18" Name="P21" Parent="J1" Square="False"/>
+	<Jumper X1="1" Y1="-1" X2="1" Y2="1" Name="J1"/>
+	<Pad X1="3" Y1="1" Value="18" Name="P22" Parent="J2" Square="False"/>
+	<Jumper X1="3" Y1="-1" X2="3" Y2="1" Name="J2"/>
+	<Pad X1="5" Y1="1" Value="18" Name="P23" Parent="J3" Square="False"/>
+	<Jumper X1="5" Y1="-1" X2="5" Y2="1" Name="J3"/>
+	<Pad X1="11" Y1="1" Value="18" Name="P24" Parent="J4" Square="False"/>
+	<Jumper X1="11" Y1="-1" X2="11" Y2="1" Name="J4"/>
+	<Pad X1="13" Y1="1" Value="18" Name="P25" Parent="J5" Square="False"/>
+	<Jumper X1="13" Y1="-1" X2="13" Y2="1" Name="J5"/>
+	<Pad X1="15" Y1="1" Value="18" Name="P26" Parent="J6" Square="False"/>
+	<Jumper X1="15" Y1="-1" X2="15" Y2="1" Name="J6"/>
+	<Pad X1="21" Y1="1" Value="18" Name="P27" Parent="J7" Square="False"/>
+	<Jumper X1="21" Y1="-1" X2="21" Y2="1" Name="J7"/>
+	<Pad X1="23" Y1="1" Value="18" Name="P28" Parent="J8" Square="False"/>
+	<Jumper X1="23" Y1="-1" X2="23" Y2="1" Name="J8"/>
+	<Pad X1="25" Y1="1" Value="18" Name="P29" Parent="J9" Square="False"/>
+	<Jumper X1="25" Y1="-1" X2="25" Y2="1" Name="J9"/>
+	<Text Value="Based on schematics in the Duncan Amps tone stack calculator" X1="4" Y1="11" Name="A4"/>
+	<Text Value="http://www.duncanamps.com/tsc/index.html" X1="4" Y1="13" Name="A5"/>  <Text Value="Designed to mount directly to 16mm board mounted pots" X1="4" Y1="15" Name="A6"/>
+</Layout>

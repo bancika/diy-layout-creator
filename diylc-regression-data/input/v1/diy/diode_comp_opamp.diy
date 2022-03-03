@@ -1,0 +1,81 @@
+<Layout Width="9" Height="10" Type="PCB" Project="Joe Davisson's Diode-Compression OpAmp Plugin Board PCB" Credits="Schematic by Joe Davisson - Layout by pyrop - Replaces single OpAmps - LM741/LM308 etc">
+	<Pad X1="3" Y1="2" Value="15" Name="P1" Parent="Q1"/>
+	<Pad X1="2" Y1="2" Value="15" Name="P2" Parent="Q1"/>
+	<Pad X1="1" Y1="2" Value="15" Name="P3" Parent="Q1"/>
+	<Transistor Value="2n5087" X1="3" Y1="2" X2="1" Y2="2" Name="Q1"/>
+	<Pad Value="15" X1="3" Y1="4" Name="P4"/>
+	<Pad Value="15" X1="3" Y1="5" Name="P5"/>
+	<Pad Value="15" X1="3" Y1="6" Name="P6"/>
+	<Pad Value="15" X1="3" Y1="7" Name="P7"/>
+	<Pad Value="15" X1="6" Y1="4" Name="P8"/>
+	<Pad Value="15" X1="6" Y1="5" Name="P9"/>
+	<Pad Value="15" X1="6" Y1="6" Name="P10"/>
+	<Pad Value="15" X1="6" Y1="7" Name="P11"/>
+	<Pad X1="1" Y1="7" Value="15" Name="P12" Parent="Q2"/>
+	<Pad X1="1" Y1="6" Value="15" Name="P13" Parent="Q2"/>
+	<Pad X1="1" Y1="5" Value="15" Name="P14" Parent="Q2"/>
+	<Transistor Value="2n5087" X1="1" Y1="7" X2="1" Y2="5" Name="Q2"/>
+	<Trace Value="6" X1="3" Y1="6" X2="1" Y2="6" Name="T1"/>
+	<Pad X1="8" Y1="8" Value="15" Name="P15" Parent="Q3"/>
+	<Pad X1="8" Y1="7" Value="15" Name="P16" Parent="Q3"/>
+	<Pad X1="8" Y1="6" Value="15" Name="P17" Parent="Q3"/>
+	<Transistor Value="2n5089" X1="8" Y1="8" X2="8" Y2="6" Name="Q3"/>
+	<Pad X1="7" Y1="5" Value="15" Name="P18" Parent="R1"/>
+	<Pad X1="7" Y1="6" Value="15" Name="P19" Parent="R1"/>
+	<Resistor Value="4.7K" X1="7" Y1="5" X2="7" Y2="6" Name="R1"/>
+	<Trace Value="6" X1="6" Y1="6" X2="8" Y2="6" Name="T2"/>
+	<Pad X1="7" Y1="8" Value="15" Name="P20" Parent="R2"/>
+	<Pad X1="4" Y1="8" Value="15" Name="P21" Parent="R2"/>
+	<Resistor Value="1K" X1="7" Y1="8" X2="4" Y2="8" Name="R2"/>
+	<Pad X1="4" Y1="9" Value="15" Name="P22" Parent="C1"/>
+	<Pad X1="3" Y1="9" Value="15" Name="P23" Parent="C1"/>
+	<Electrolyte Value="22uF" X1="4" Y1="9" X2="3" Y2="9" Name="C1"/>
+	<Trace Value="6" X1="4" Y1="9" X2="7" Y2="8" Name="T3"/>
+	<Trace Value="6" X1="7" Y1="8" X2="8" Y2="8" Name="T4"/>
+	<Pad X1="1" Y1="8" Value="15" Name="P24" Parent="R3"/>
+	<Pad X1="2" Y1="8" Value="15" Name="P25" Parent="R3"/>
+	<Resistor Value="6.8K" X1="1" Y1="8" X2="2" Y2="8" Name="R3"/>
+	<Trace Value="6" X1="1" Y1="7" X2="1" Y2="8" Name="T8"/>
+	<Trace Value="6" X1="8" Y1="9" X2="9" Y2="8" Name="T12"/>
+	<Pad X1="8" Y1="9" Value="15" Name="P26" Parent="D1"/>
+	<Pad X1="5" Y1="10" Value="15" Name="P27" Parent="D1"/>
+	<Diode Value="1N914 / 1N4148" X1="8" Y1="9" X2="5" Y2="10" Name="D1"/>
+	<Trace Value="6" X1="7" Y1="5" X2="6" Y2="5" Name="T13"/>
+	<Trace Value="6" X1="6" Y1="5" X2="5" Y2="4" Name="T14"/>
+	<Pad X1="5" Y1="3" Value="15" Name="P28" Parent="R4"/>
+	<Pad X1="1" Y1="3" Value="15" Name="P29" Parent="R4"/>
+	<Resistor Value="10K" X1="5" Y1="3" X2="1" Y2="3" Name="R4"/>
+	<Trace Value="6" X1="1" Y1="2" X2="1" Y2="5" Name="T15"/>
+	<Trace Value="6" X1="3" Y1="2" X2="4" Y2="3" Name="T16"/>
+	<Trace Value="6" X1="4" Y1="3" X2="4" Y2="6" Name="T17"/>
+	<Trace Value="6" X1="4" Y1="6" X2="5" Y2="6" Name="T18"/>
+	<Trace Value="6" X1="5" Y1="7" X2="3" Y2="7" Name="T19"/>
+	<Pad X1="4" Y1="6" Value="15" Name="P30" Parent="R5"/>
+	<Pad X1="4" Y1="7" Value="15" Name="P31" Parent="R5"/>
+	<Resistor Value="10K" X1="4" Y1="6" X2="4" Y2="7" Name="R5"/>
+	<Pad X1="5" Y1="6" Value="15" Name="P32" Parent="C2"/>
+	<Pad X1="5" Y1="7" Value="15" Name="P33" Parent="C2"/>
+	<Electrolyte Value="#" X1="5" Y1="6" X2="5" Y2="7" Name="C2"/>
+	<Trace Value="6" X1="8" Y1="7" X2="9" Y2="7" Name="T20"/>
+	<Trace Value="6" X1="9" Y1="8" X2="9" Y2="7" Name="T21"/>
+	<Trace Value="6" X1="1" Y1="2" X2="2" Y2="1" Name="T22"/>
+	<Trace Value="6" X1="2" Y1="1" X2="3" Y2="1" Name="T23"/>
+	<Trace Value="6" X1="5" Y1="3" X2="5" Y2="4" Name="T26"/>
+	<Trace Value="6" X1="2" Y1="2" X2="2" Y2="4" Name="T27"/>
+	<Trace Value="6" X1="2" Y1="4" X2="3" Y2="5" Name="T28"/>
+	<Trace Value="6" X1="9" Y1="7" X2="9" Y2="6" Name="T25"/>
+	<Trace Value="6" X1="5" Y1="2" X2="3" Y2="1" Name="T24"/>
+	<Trace Value="6" X1="9" Y1="6" X2="8" Y2="4" Name="T30"/>
+	<Pad X1="5" Y1="2" Value="15" Name="P34" Parent="R6"/>
+	<Pad X1="8" Y1="4" Value="15" Name="P35" Parent="R6"/>
+	<Resistor Value="100K" X1="5" Y1="2" X2="8" Y2="4" Name="R6"/>
+	<Text Value=" # - See notes on the link below on Joe's web site" X1="0" Y1="18" Name="A1"/>
+	<Text Value=" http://www.diystompboxes.com/analogalchemy/misc/diodeopamp.html" X1="0" Y1="19" Name="A2"/>
+	<Text Value=" Pad D3 is pin 1" X1="7" Y1="15" Name="A3"/>
+	<Text Value=" Solder pins pointing down sticking out of copper side of board &amp; plug into dip socket" X1="0" Y1="17" Name="A4"/>
+	<Text Value=" Note when using this board, be aware there may be clearance problems with some components on the board below" X1="-12" Y1="21" Name="A5"/>
+	<Trace Value="6" X1="2" Y1="8" X2="4" Y2="8" Name="T5"/>
+	<Trace Value="6" X1="3" Y1="7" X2="3" Y2="9" Name="T6"/>
+	<Trace Value="6" Color="Black" X1="1" Y1="8" X2="3" Y2="10" Name="T7"/>
+	<Trace Value="6" Color="Black" X1="3" Y1="10" X2="5" Y2="10" Name="T9"/>
+</Layout>

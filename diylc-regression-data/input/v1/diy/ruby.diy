@@ -1,0 +1,22 @@
+<Layout Type="Stripboard" Width="9" Height="12" Project="Ruby" Credits="">
+	<Resistor Value="1.5M" X1="3" X2="3" Name="R1" Y1="7" Y2="3"/>
+	<Resistor Value="3.9K" X1="5" X2="5" Name="R2" Y1="7" Y2="2"/>
+	<Transistor Value="BF245B" X1="4" X2="4" Name="Q1" Y1="3" Y2="1"/>
+	<Capacitor Value="47nF" X1="6" X2="6" Name="C1" Y1="2" Y2="4"/>
+	<Electrolyte Value="100uF" Name="C2" X1="2" X2="2" Y1="1" Y2="2"/>
+	<IC Value="LM386" Name="IC1" X1="3" X2="6" Y1="8" Y2="11"/>
+	<Cut X1="3" Name="X1" Y1="2"/>
+	<Jumper X1="1" X2="1" Name="J1" Y1="11" Y2="10"/>
+	<Jumper X1="2" X2="2" Name="J3" Y1="10" Y2="7"/>
+	<Jumper X1="1" X2="1" Name="J2" Y1="2" Y2="7"/>
+	<Cut X1="4" Name="X2" Y1="8"/>
+	<Cut X1="4" Name="X3" Y1="9"/>
+	<Cut X1="4" Name="X4" Y1="10"/>
+	<Cut X1="4" Name="X5" Y1="11"/>
+	<Jumper Name="J4" X1="9" X2="9" Y1="10" Y2="1"/>
+	<Capacitor Value="100nF" X1="8" X2="8" Name="C3" Y1="9" Y2="7"/>
+	<Resistor Value="10R" X1="7" X2="7" Name="R3" Y1="10" Y2="5"/>
+	<Capacitor Value="47nF" X1="6" X2="6" Name="C4" Y1="5" Y2="7"/>
+	<Electrolyte Value="220uF" X1="8" X2="8" Name="C5" Y1="10" Y2="12"/>
+	<Jumper X1="2" Y1="11" X2="2" Y2="12" Name="J5"/>
+</Layout>

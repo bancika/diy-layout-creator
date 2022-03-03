@@ -1,0 +1,62 @@
+<Layout Width="47" Height="7" Type="Stripboard" Project="Electronic Dazer" Credits="Layout by MDC - http://www.uoguelph.ca/~antoon/circ/hv/dazer/dazer.htm">
+	<Transformer Value="Audio Output 1K:8 OHM" X1="6" Y1="2" X2="12" Y2="6" Name="TR1"/>
+	<Text Value="9V" X1="-7" Y1="1" Name="A1"/>
+	<Text Value="0V" X1="-4" Y1="7" Name="A2"/>
+	<Resistor Value="3.3K" X1="3" Y1="1" X2="3" Y2="5" Name="R1"/>
+	<Capacitor Value="0.1uF" X1="4" Y1="2" X2="4" Y2="5" Name="C1"/>
+	<Jumper X1="1" Y1="6" X2="1" Y2="4" Name="J2"/>
+	<Cut X1="4" Y1="6" Name="X1"/>
+	<Jumper X1="5" Y1="7" X2="5" Y2="6" Name="J3"/>
+	<Jumper X1="2" Y1="3" X2="2" Y2="1" Name="J1"/>
+	<Cut X1="9" Y1="1" Name="X2"/>
+	<Cut X1="10" Y1="2" Name="X3"/>
+	<Cut X1="9" Y1="3" Name="X4"/>
+	<Cut X1="10" Y1="4" Name="X5"/>
+	<Cut X1="9" Y1="5" Name="X6"/>
+	<Cut X1="10" Y1="6" Name="X7"/>
+	<Cut X1="9" Y1="7" Name="X8"/>
+	<Cut X1="13" Y1="4" Name="X9"/>
+	<Capacitor Value="0.01uF" X1="13" Y1="2" X2="17" Y2="2" Name="C2"/>
+	<Cut X1="15" Y1="2" Name="X10"/>
+	<Diode Value="1N4007" X1="13" Y1="6" X2="18" Y2="2" Name="D1"/>
+	<Capacitor Value="0.01uF" X1="14" Y1="6" X2="18" Y2="6" Name="C3"/>
+	<Cut X1="16" Y1="6" Name="X11"/>
+	<Diode Value="1N4007" X1="19" Y1="2" X2="19" Y2="6" Name="D2"/>
+	<Capacitor Value="0.01uF" X1="20" Y1="2" X2="24" Y2="2" Name="C4"/>
+	<Capacitor Value="0.01uF" X1="21" Y1="6" X2="25" Y2="6" Name="C5"/>
+	<Cut X1="22" Y1="2" Name="X12"/>
+	<Cut X1="23" Y1="6" Name="X13"/>
+	<Diode Value="1N4007" X1="20" Y1="6" X2="25" Y2="2" Name="D3"/>
+	<Diode Value="1N4007" X1="26" Y1="2" X2="26" Y2="6" Name="D4"/>
+	<Capacitor Value="0.01uF" X1="27" Y1="2" X2="31" Y2="2" Name="C6"/>
+	<Capacitor Value="0.01uF" X1="28" Y1="6" X2="32" Y2="6" Name="C7"/>
+	<Cut X1="29" Y1="2" Name="X14"/>
+	<Cut X1="30" Y1="6" Name="X15"/>
+	<Diode Value="1N4007" X1="27" Y1="6" X2="32" Y2="2" Name="D5"/>
+	<Diode Value="1N4007" X1="33" Y1="2" X2="33" Y2="6" Name="D6"/>
+	<Capacitor Value="0.01uF" X1="34" Y1="2" X2="38" Y2="2" Name="C8"/>
+	<Capacitor Value="0.01uF" X1="35" Y1="6" X2="39" Y2="6" Name="C9"/>
+	<Cut X1="36" Y1="2" Name="X16"/>
+	<Cut X1="37" Y1="6" Name="X17"/>
+	<Diode Value="1N4007" X1="34" Y1="6" X2="39" Y2="2" Name="D7"/>
+	<Diode Value="1N4007" X1="40" Y1="2" X2="40" Y2="6" Name="D8"/>
+	<Transistor Value="TIP31" X1="2" Y1="5" X2="2" Y2="7" Name="Q1"/>
+	<Transistor Value="TIP32" X1="5" Y1="4" X2="5" Y2="2" Name="Q2"/>
+	<Capacitor Value="0.01uF" X1="41" Y1="2" X2="45" Y2="2" Name="C10"/>
+	<Capacitor Value="0.01uF" X1="42" Y1="6" X2="46" Y2="6" Name="C11"/>
+	<Diode Value="1N4007" X1="41" Y1="6" X2="46" Y2="2" Name="D9"/>
+	<Diode Value="1N4007" X1="47" Y1="2" X2="47" Y2="6" Name="D10"/>
+	<Cut X1="43" Y1="2" Name="X18"/>
+	<Cut X1="44" Y1="6" Name="X19"/>
+	<Cut X1="44" Y1="1" Name="X20"/>
+	<Cut X1="44" Y1="7" Name="X21"/>
+	<Cut X1="16" Y1="7" Name="X22"/>
+	<Switch Value="Pushbutton NO momentary contact" X1="-4" Y1="1" X2="-2" Y2="1" Name="S1"/>
+	<Wire Color="Red" Seed="590343558" X1="-6" Y1="1" X2="-3" Y2="1" Name="W1"/>
+	<Wire Color="Red" Seed="1556121395" X1="-2" Y1="1" X2="1" Y2="1" Name="W2"/>
+	<Wire Color="Black" Seed="1062419095" X1="-3" Y1="7" X2="1" Y2="7" Name="W3"/>
+	<Text Value="ELECTRODE" X1="48" Y1="10" Name="A3"/>
+	<Text Value="ELECTRODE" X1="48" Y1="12" Name="A4"/>
+	<Wire Color="Red" Seed="1708027348" X1="47" Y1="6" X2="48" Y2="10" Name="W4"/>
+	<Wire Color="Green" Seed="582695914" X1="13" Y1="6" X2="48" Y2="12" Name="W5"/>
+</Layout>

@@ -1,0 +1,38 @@
+<Layout Width="24" Height="7" Type="Stripboard" Project="Power Supply MK3" Credits="+12V and +9V DC outputs. Drawn by Bancika">
+	<Diode Value="1N4001" X1="4" Y1="2" X2="5" Y2="1" Name="D1"/>
+	<Diode Value="1N4001" X1="3" Y1="2" X2="4" Y2="4" Name="D2"/>
+	<Diode Value="1N4001" X1="5" Y1="4" X2="6" Y2="3" Name="D3"/>
+	<Diode Value="1N4001" X1="6" Y1="1" X2="7" Y2="3" Name="D4"/>
+	<Jumper X1="1" Y1="1" Name="J1" X2="-2" Y2="1"/>
+	<Jumper X1="1" Y1="4" Name="J2" X2="-2" Y2="4"/>
+	<Electrolyte Value="220uF" X1="9" Y1="3" X2="9" Y2="2" Name="C1"/>
+	<Transistor Value="9812" X1="12" Y1="3" X2="12" Y2="1" Name="Q1"/>
+	<Electrolyte Value="100uF" X1="14" Y1="1" X2="14" Y2="2" Name="C2"/>
+	<Cut X1="16" Y1="3" Name="X1"/>
+	<Transistor Value="9809" X1="18" Y1="1" X2="18" Y2="3" Name="Q2"/>
+	<Electrolyte Value="100uF" X1="20" Y1="3" X2="20" Y2="2" Name="C3"/>
+	<Jumper X1="13" Y1="2" X2="13" Y2="5" Name="J3"/>
+	<Jumper X1="17" Y1="1" X2="17" Y2="6" Name="J4"/>
+	<Jumper X1="23" Y1="3" X2="23" Y2="7" Name="J5"/>
+	<Text Value="AC" X1="-1" Y1="2" Name="T1"/>
+	<Text Value="AC &amp; Bipolar GND" X1="-5" Y1="3" Name="T2"/>
+	<Text Value="GND" X1="25" Y1="5" Name="T5"/>
+	<Text Value="+12V" X1="25" Y1="6" Name="T6"/>
+	<Text Value="+9V" X1="25" Y1="7" Name="T7"/>
+	<Text Value="USE 12VAC TRANSFORMER OR MORE" X1="8" Y1="17" Name="T8"/>
+	<Capacitor Value="100nF" X1="16" Y1="1" X2="16" Y2="2" Name="C4"/>
+	<Capacitor Value="100nF" X1="22" Y1="2" X2="22" Y2="3" Name="C5"/>
+	<Text Value="PUT HEATSINK ON REGULATORS" X1="8" Y1="16" Name="T9"/>
+	<Jumper X1="2" Y1="1" X2="2" Y2="6" Name="J6"/>
+	<Diode Value="1N4001" X1="3" Y1="6" X2="3" Y2="5" Name="D6"/>
+	<Diode Value="" X1="4" Y1="7" X2="4" Y2="6" Name="D7"/>
+	<Electrolyte Value="470uF" X1="7" Y1="4" X2="7" Y2="7" Name="C6"/>
+	<Electrolyte Value="470uF" X1="9" Y1="6" X2="9" Y2="4" Name="C7"/>
+	<Cut X1="11" Y1="5" Name="X3"/>
+	<Cut X1="11" Y1="6" Name="X4"/>
+	<Cut X1="11" Y1="7" Name="X5"/>
+	<Text Value="Bi-polar +" X1="-4" Y1="5" Name="A1"/>
+	<Text Value="Bi-polar -" X1="-4" Y1="7" Name="A2"/>
+	<Capacitor Value="100nF" X1="6" Y1="7" X2="6" Y2="4" Name="C8"/>
+	<Capacitor Value="100nF" X1="10" Y1="7" X2="10" Y2="4" Name="C9"/>
+</Layout>

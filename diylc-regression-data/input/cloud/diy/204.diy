@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.diylc.core.Project>
+  <fileVersion>
+    <major>3</major>
+    <minor>34</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>bancika</author>
+  <width>
+    <value>15.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">cm</unit>
+  </width>
+  <height>
+    <value>21.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">cm</unit>
+  </height>
+  <gridSpacing>
+    <value>0.1</value>
+    <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+  </gridSpacing>
+  <components>
+    <org.diylc.components.guitar.HumbuckerPickup>
+      <name>PKP1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoint x="3.2" y="0.9"/>
+      <orientation>DEFAULT</orientation>
+      <color>
+        <red>192</red>
+        <green>192</green>
+        <blue>192</blue>
+        <alpha>255</alpha>
+      </color>
+      <type>PAF</type>
+      <cover>false</cover>
+      <bobinColor1>
+        <red>234</red>
+        <green>227</green>
+        <blue>198</blue>
+        <alpha>255</alpha>
+      </bobinColor1>
+      <bobinColor2>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </bobinColor2>
+    </org.diylc.components.guitar.HumbuckerPickup>
+    <org.diylc.components.guitar.P90Pickup>
+      <name>PKP2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoint x="4.1" y="2.7"/>
+      <orientation>DEFAULT</orientation>
+      <color>
+        <red>216</red>
+        <green>201</green>
+        <blue>137</blue>
+        <alpha>255</alpha>
+      </color>
+      <type>DOG_EAR</type>
+    </org.diylc.components.guitar.P90Pickup>
+    <org.diylc.components.guitar.SingleCoilPickup>
+      <name>PKP3</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoint x="4.0" y="5.1"/>
+      <orientation>DEFAULT</orientation>
+      <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </color>
+      <baseColor>
+        <red>128</red>
+        <green>128</green>
+        <blue>128</blue>
+        <alpha>255</alpha>
+      </baseColor>
+      <type>Stratocaster</type>
+    </org.diylc.components.guitar.SingleCoilPickup>
+    <org.diylc.components.guitar.LeverSwitch>
+      <name>SW1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="5.3" y="1.5"/>
+        <java.awt.Point x="5.2" y="1.6"/>
+        <java.awt.Point x="5.3" y="1.7"/>
+        <java.awt.Point x="5.2" y="1.8"/>
+        <java.awt.Point x="5.3" y="1.9"/>
+        <java.awt.Point x="5.2" y="2.0"/>
+        <java.awt.Point x="5.3" y="2.1"/>
+        <java.awt.Point x="5.2" y="2.2"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <type>DP3T</type>
+    </org.diylc.components.guitar.LeverSwitch>
+    <org.diylc.components.electromechanical.OpenJack1__4>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="0.9" y="4.6"/>
+        <java.awt.Point x="1.3" y="4.8"/>
+        <java.awt.Point x="1.2" y="5.5"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <type>MONO</type>
+    </org.diylc.components.electromechanical.OpenJack1__4>
+  </components>
+  <groups/>
+  <lockedLayers/>
+</org.diylc.core.Project>

@@ -1,0 +1,45 @@
+<Layout Type="Stripboard" Width="16" Height="10" Project="DOD OVERDRIVE 250" Credits="Layout by Andrew Carrell">
+	<IC Value="LM741" X1="9" X2="12" Name="IC1" Y1="5" Y2="8"/>
+	<Cut X1="10" Name="X1" Y1="5"/>
+	<Cut X1="10" Name="X2" Y1="6"/>
+	<Cut X1="10" Name="X3" Y1="7"/>
+	<Cut X1="10" Name="X4" Y1="8"/>
+	<Capacitor Value="25pF" X1="8" X2="8" Name="C1" Y1="6" Y2="9"/>
+	<Resistor Value="1M" X1="7" X2="7" Name="R1" Y1="6" Y2="9"/>
+	<Jumper X1="13" X2="13" Name="J1" Y1="7" Y2="9"/>
+	<Capacitor Value=".047uF" X1="6" X2="6" Name="C2" Y1="6" Y2="10"/>
+	<Cut X1="6" Name="X5" Y1="9"/>
+	<Resistor Value="4.7K" X1="5" X2="5" Name="R2" Y1="9" Y2="10"/>
+	<Cut X1="8" Name="X6" Y1="4"/>
+	<Jumper X1="5" X2="5" Name="J2" Y1="7" Y2="5"/>
+	<Resistor Value="10K" X1="6" X2="6" Name="R3" Y1="5" Y2="4"/>
+	<Cut X1="5" Name="X7" Y1="6"/>
+	<Capacitor Value=".01uF" X1="4" X2="4" Name="C3" Y1="4" Y2="6"/>
+	<Text Value="GAIN-3" X1="-3" Name="T2" Y1="9"/>
+	<Resistor Value="470K" X1="7" X2="7" Name="R4" Y1="5" Y2="3"/>
+	<Jumper X1="3" X2="3" Name="J3" Y1="8" Y2="2"/>
+	<Resistor Value="22K" X1="6" X2="6" Name="R5" Y1="3" Y2="2"/>
+	<Electrolyte Value="10uF" X1="4" X2="4" Name="C4" Y1="3" Y2="2"/>
+	<Resistor Value="22K" X1="7" X2="7" Name="R6" Y1="2" Y2="1"/>
+	<Resistor Value="100R" X1="2" X2="6" Name="R7" Y1="1" Y2="1"/>
+	<Cut X1="5" Name="X8" Y1="1"/>
+	<Text Value="+9V" X1="-2" Name="T3" Y1="1"/>
+	<Text Value="GROUND" X1="-3" Name="T4" Y1="2"/>
+	<Text Value="GAIN-2,1" X1="-3" Name="T1" Y1="8"/>
+	<Text Value="INPUT" X1="-3" Name="T5" Y1="6"/>
+	<Resistor Value="2.2M" X1="2" X2="2" Name="R8" Y1="6" Y2="2"/>
+	<Cut X1="13" Name="X9" Y1="8"/>
+	<Electrolyte Value="4.7uF" X1="14" X2="14" Name="C5" Y1="7" Y2="8"/>
+	<Resistor Value="10K" X1="15" X2="15" Name="R9" Y1="8" Y2="4"/>
+	<Cut X1="8" Name="X10" Y1="5"/>
+	<Cut X1="8" Name="X11" Y1="3"/>
+	<Diode Value="1N4148" X1="14" X2="14" Name="D1" Y1="4" Y2="2"/>
+	<Diode Value="1N4148" Name="D2" X1="12" X2="12" Y1="2" Y2="3"/>
+	<Diode Value="IN4148" X1="13" X2="13" Name="D3" Y1="3" Y2="4"/>
+	<Capacitor Value=".001uF" X1="9" X2="9" Name="C6" Y1="4" Y2="2"/>
+	<Text Value="LEVEL-3" Name="T6" X1="17" Y1="4"/>
+	<Text Value="LEVEL-1" Name="T7" X1="17" Y1="2"/>
+	<Text Value="* &quot;GAIN&quot; CONTROL IS A 500K REVERSE LOG POT." X1="1" Y1="19" Name="T8"/>
+	<Text Value="* &quot;LEVEL&quot; CONTROL IS A 100K AUDIO TAPER POT." X1="1" Y1="20" Name="T9"/>
+	<Text Value="* &quot;LEVEL&quot; LUG-2 GOES TO EFFECT OUTPUT." Y1="21" Name="T10" X1="1"/>
+</Layout>

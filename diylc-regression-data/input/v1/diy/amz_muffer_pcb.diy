@@ -1,0 +1,91 @@
+<Layout Type="PCB" Width="7" Height="11" Project="AMZ MUFFER" Credits="Layout by Andrew Carrell 2006">
+	<Pad Value="15" X1="1" Y1="1" Name="P1"/>
+	<Pad X1="2" Y1="1" Value="15" Name="P2" Parent="R1"/>
+	<Pad X1="5" Y1="1" Value="15" Name="P3" Parent="R1"/>
+	<Resistor Value="10K" X1="2" Y1="1" X2="5" Y2="1" Name="R1"/>
+	<Trace Value="4" X1="1" Y1="1" X2="2" Y2="1" Name="T1"/>  <Pad X1="4" Y1="2" Value="15" Name="P4" Parent="C1"/>
+  <Pad X1="3" Y1="3" Value="15" Name="P5" Parent="C1"/>
+  <Electrolyte Value="10uF" X1="4" Y1="2" X2="3" Y2="3" Name="C1"/>
+  <Pad X1="2" Y1="4" Value="15" Name="P6" Parent="D1"/>
+  <Pad X1="5" Y1="4" Value="15" Name="P7" Parent="D1"/>
+  <Diode Value="1N914" X1="2" Y1="4" X2="5" Y2="4" Name="D1"/>
+  <Pad X1="5" Y1="5" Value="15" Name="P8" Parent="D2"/>
+  <Pad X1="2" Y1="5" Value="15" Name="P9" Parent="D2"/>
+  <Diode Value="1N914" X1="5" Y1="5" X2="2" Y2="5" Name="D2"/>
+  <Pad X1="2" Y1="6" Value="15" Name="P10" Parent="R2"/>
+  <Pad X1="5" Y1="6" Value="15" Name="P11" Parent="R2"/>
+  <Resistor Value="470K" X1="2" Y1="6" X2="5" Y2="6" Name="R2"/>
+  <Pad X1="4" Y1="7" Value="15" Name="P12" Parent="C2"/>
+  <Pad X1="3" Y1="8" Value="15" Name="P13" Parent="C2"/>
+  <Electrolyte Value="1uF" X1="4" Y1="7" X2="3" Y2="8" Name="C2"/>
+  <Pad X1="2" Y1="9" Value="15" Name="P14" Parent="R3"/>
+  <Pad X1="5" Y1="9" Value="15" Name="P15" Parent="R3"/>
+  <Resistor Value="100K" X1="2" Y1="9" X2="5" Y2="9" Name="R3"/>
+  <Pad X1="2" Y1="10" Value="15" Name="P16" Parent="R4"/>
+  <Pad X1="5" Y1="10" Value="15" Name="P17" Parent="R4"/>
+  <Resistor Value="150R" X1="2" Y1="10" X2="5" Y2="10" Name="R4"/>
+  <Pad X1="2" Y1="11" Value="15" Name="P18" Parent="R5"/>
+  <Pad X1="5" Y1="11" Value="15" Name="P19" Parent="R5"/>
+  <Resistor Value="1M" X1="2" Y1="11" X2="5" Y2="11" Name="R5"/>
+  <Pad X1="6" Y1="8" Value="15" Name="P20" Parent="Q1"/>
+  <Pad X1="6" Y1="7" Value="15" Name="P21" Parent="Q1"/>
+  <Pad X1="6" Y1="6" Value="15" Name="P22" Parent="Q1"/>
+  <Transistor Value="2N5088" X1="6" Y1="8" X2="6" Y2="6" Name="Q1"/>
+  <Pad X1="6" Y1="3" Value="15" Name="P23" Parent="C3"/>
+  <Pad X1="6" Y1="2" Value="15" Name="P24" Parent="C3"/>
+  <Electrolyte Value="1uF" X1="6" Y1="3" X2="6" Y2="2" Name="C3"/>
+  
+  <Trace Value="4" X1="3" Y1="3" X2="5" Y2="4" Name="T3"/>
+  <Trace Value="4" X1="5" Y1="4" X2="5" Y2="5" Name="T4"/>
+  <Trace Value="4" X1="2" Y1="4" X2="2" Y2="5" Name="T5"/>
+  <Trace Value="4" X1="4" Y1="2" X2="5" Y2="2" Name="T6"/>
+  <Trace Value="4" X1="5" Y1="2" X2="5" Y2="3" Name="T7"/>
+  <Trace Value="4" X1="5" Y1="3" X2="6" Y2="3" Name="T8"/>
+  <Trace Value="4" X1="6" Y1="3" X2="6" Y2="6" Name="T9"/>
+  <Trace Value="4" X1="6" Y1="2" X2="6" Y2="1" Name="T10"/>
+  <Trace Value="4" X1="6" Y1="1" X2="7" Y2="1" Name="T11"/>
+  <Trace Value="4" X1="6" Y1="6" X2="5" Y2="6" Name="T12"/>
+  <Trace Value="4" X1="6" Y1="7" X2="4" Y2="7" Name="T13"/>
+  
+  
+  <Trace Value="4" X1="2" Y1="6" X2="2" Y2="5" Name="T16"/>
+  <Trace Value="4" X1="3" Y1="8" X2="1" Y2="8" Name="T17"/>
+  <Trace Value="4" X1="5" Y1="7" X2="5" Y2="8" Name="T18"/>
+  <Trace Value="4" X1="5" Y1="8" X2="4" Y2="9" Name="T19"/>
+  <Trace Value="4" X1="4" Y1="9" X2="2" Y2="9" Name="T20"/>
+  <Trace Value="4" X1="1" Y1="8" X2="1" Y2="10" Name="T21"/>
+  <Trace Value="4" X1="1" Y1="10" X2="2" Y2="11" Name="T22"/>
+  <Trace Value="4" X1="5" Y1="11" X2="7" Y2="11" Name="T23"/>
+  <Trace Value="4" X1="6" Y1="8" X2="6" Y2="9" Name="T24"/>
+  <Trace Value="4" X1="6" Y1="9" X2="5" Y2="10" Name="T25"/>
+  
+  <Trace Value="4" X1="5" Y1="9" X2="4" Y2="10" Name="T27"/>
+  <Trace Value="4" X1="4" Y1="10" X2="4" Y2="11" Name="T28"/>
+  <Trace Value="4" X1="5" Y1="11" X2="4" Y2="11" Name="T26"/>
+  <Trace Value="4" X1="2" Y1="10" X2="4" Y2="10" Name="T29"/>
+  <Trace Value="4" X1="7" Y1="7" X2="7" Y2="11" Name="T30"/>
+  <Trace Value="4" X1="7" Y1="5" X2="7" Y2="7" Name="T31"/>
+  <Pad Value="15" X1="1" Y1="8" Name="P25"/>
+  <Pad Value="15" X1="7" Y1="5" Name="P26"/>
+  <Pad Value="15" X1="7" Y1="1" Name="P27"/>
+  <Pad Value="15" X1="7" Y1="6" Name="P28"/>
+  <Pad Value="15" X1="7" Y1="7" Name="P29"/>
+  <Pad Value="15" X1="7" Y1="8" Name="P30"/>
+  <Pad Value="15" X1="7" Y1="9" Name="P31"/>
+  <Pad Value="15" X1="7" Y1="10" Name="P32"/>
+  <Pad Value="15" X1="7" Y1="11" Name="P33"/>
+  <Text Value="+9 VOLTS" X1="-3" Y1="1" Name="A1"/>
+  <Text Value="INPUT" X1="-3" Y1="8" Name="A2"/>
+  <Text Value="VOL-3" X1="8" Y1="1" Name="A3"/>
+  <Text Value="VOL-1" X1="8" Y1="5" Name="A4"/>
+  <Text Value="GROUND" X1="8" Y1="6" Name="A5"/>
+  <Text Value="GROUND" X1="8" Y1="7" Name="A6"/>
+  <Text Value="GROUND" X1="8" Y1="8" Name="A7"/>
+  <Text Value="GROUND" X1="8" Y1="9" Name="A8"/>
+  <Text Value="GROUND" X1="8" Y1="10" Name="A9"/>
+  <Text Value="GROUND" X1="8" Y1="11" Name="A10"/>
+  <Trace Value="4" X1="4" Y1="7" X2="2" Y2="7" Name="T14"/>
+  <Trace Value="4" X1="2" Y1="7" X2="2" Y2="6" Name="T15"/>
+  <Text Value="VOL: 100K-A POT, LUG-2 TO OUTPUT" Y1="16" Name="A11" X1="0"/>
+  <Trace Value="4" X1="5" Y1="1" X2="5" Y2="2" Name="T2"/>
+</Layout>

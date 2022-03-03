@@ -1,0 +1,84 @@
+<Layout Type="PCB" Width="12" Height="7" Project="SILICON 70'S FUZZ" Credits="Design &amp; drawing by Andrew Carrell. Based on the Fuzz Face.">
+	<Resistor Value="6.8K" X1="2" Y1="1" X2="5" Y2="1" Name="R1"/>
+	<Capacitor Value=".001uF" X1="2" Y1="2" X2="5" Y2="2" Name="C1"/>
+	<Resistor Value="1K" X1="2" Y1="3" X2="5" Y2="3" Name="R2"/>
+	<Resistor Value="27K" X1="2" Y1="4" X2="5" Y2="4" Name="R3"/>
+	<Capacitor Value=".68uF" X1="2" Y1="5" X2="5" Y2="5" Name="C2"/>
+	<Resistor Value="1M" X1="2" Y1="6" X2="5" Y2="6" Name="R4"/>
+	<Resistor Value="100K" X1="6" Y1="6" X2="9" Y2="6" Name="R5"/>
+	<Capacitor Value="100pF" X1="6" Y1="2" X2="9" Y2="2" Name="C3"/>
+	<Transistor X1="7" Y1="5" X2="7" Y2="3" Name="Q1" Value="BC108 OR 2N5088"/>
+	<Transistor X1="9" Y1="5" X2="9" Y2="3" Name="Q2" Value="BC108 OR 2N5088"/>
+	<Capacitor Value=".15uF" X1="11" Y1="1" X2="11" Y2="4" Name="C4"/>
+	<Electrolyte Value="22uF" X1="11" Y1="6" X2="11" Y2="7" Name="C5"/>
+	<Text Value="+9V" X1="-2" Y1="4" Name="T1"/>
+	<Text Value="IN" X1="-2" Y1="5" Name="T2"/>
+	<Text Value="GND" X1="-2" Y1="7" Name="T3"/>
+	<Text Value="VOL-3" X1="13" Y1="4" Name="T4"/>
+	<Text Value="E" X1="9" Y1="5" Name="e"/>
+	<Text Value="FUZZ-3" X1="13" Y1="5" Name="T5"/>
+	<Text Value="FUZZ-2" X1="13" Y1="6" Name="T6"/>
+	<Text Value="FUZZ-1, VOL-1" X1="13" Y1="7" Name="T7"/>
+	<Text Value="E" X1="7" Y1="5" Name="T8"/>
+	<Text Value="VOL: 100K AUDIO TAPER POT" Y1="13" Name="T9" X1="-3"/>
+	<Text Value="FUZZ: 1K LINEAR TAPER POT" Name="T10" Y1="13" X1="8"/>  <Pad Value="15" X1="1" Y1="4" Name="P1"/>
+  <Pad Value="15" X1="1" Y1="5" Name="P2"/>
+  <Pad Value="15" X1="1" Y1="7" Name="P3"/>
+  <Pad Value="15" X1="12" Y1="7" Name="P4"/>
+  <Pad Value="15" X1="12" Y1="6" Name="P5"/>
+  <Pad Value="15" X1="12" Y1="5" Name="P6"/>
+  <Pad Value="15" X1="12" Y1="4" Name="P7"/>
+  <Trace Value="4" X1="1" Y1="7" X2="12" Y2="7" Name="T11"/>
+  <Trace Value="4" X1="12" Y1="6" X2="11" Y2="6" Name="T12"/>
+  <Pad Value="15" X1="11" Y1="6" Name="P8"/>
+  <Pad Value="15" X1="11" Y1="7" Name="P9"/>
+  <Pad Value="15" X1="9" Y1="6" Name="P10"/>
+  <Pad Value="15" X1="6" Y1="6" Name="P11"/>
+  <Pad Value="15" X1="5" Y1="6" Name="P12"/>
+  <Pad Value="15" X1="2" Y1="6" Name="P13"/>
+  <Pad Value="15" X1="2" Y1="5" Name="P14"/>
+  <Pad Value="15" X1="5" Y1="5" Name="P15"/>
+  <Pad Value="15" X1="2" Y1="4" Name="P16"/>
+  <Pad Value="15" X1="5" Y1="4" Name="P17"/>
+  <Pad Value="15" X1="7" Y1="4" Name="P18"/>
+  <Pad Value="15" X1="7" Y1="5" Name="P19"/>
+  <Pad Value="15" X1="7" Y1="3" Name="P20"/>
+  <Pad Value="15" X1="9" Y1="3" Name="P21"/>
+  <Pad Value="15" X1="9" Y1="4" Name="P22"/>
+  <Pad Value="15" X1="9" Y1="5" Name="P23"/>
+  <Pad Value="15" X1="11" Y1="4" Name="P24"/>
+  <Pad Value="15" X1="11" Y1="1" Name="P25"/>
+  <Pad Value="15" X1="9" Y1="2" Name="P26"/>
+  <Pad Value="15" X1="6" Y1="2" Name="P27"/>
+  <Pad Value="15" X1="5" Y1="1" Name="P28"/>
+  <Pad Value="15" X1="2" Y1="1" Name="P29"/>
+  <Pad Value="15" X1="2" Y1="2" Name="P30"/>
+  <Pad Value="15" X1="5" Y1="2" Name="P31"/>
+  <Pad Value="15" X1="5" Y1="3" Name="P32"/>
+  <Pad Value="15" X1="2" Y1="3" Name="P33"/>
+  <Trace Value="4" X1="1" Y1="4" X2="2" Y2="4" Name="T13"/>
+  <Trace Value="4" X1="1" Y1="5" X2="2" Y2="5" Name="T14"/>
+  <Trace Value="4" X1="2" Y1="5" X2="2" Y2="6" Name="T15"/>
+  <Trace Value="4" X1="5" Y1="6" X2="5" Y2="7" Name="T16"/>
+  <Trace Value="4" X1="5" Y1="5" X2="6" Y2="5" Name="T17"/>
+  <Trace Value="4" X1="6" Y1="6" X2="6" Y2="4" Name="T18"/>
+  <Trace Value="4" X1="6" Y1="4" X2="7" Y2="4" Name="T19"/>
+  <Trace Value="4" X1="7" Y1="5" X2="7" Y2="7" Name="T20"/>
+  <Trace Value="4" X1="9" Y1="6" X2="9" Y2="5" Name="T21"/>
+  <Trace Value="4" X1="9" Y1="5" X2="12" Y2="5" Name="T22"/>
+  <Trace Value="4" X1="9" Y1="3" X2="9" Y2="1" Name="T23"/>
+  <Trace Value="4" X1="11" Y1="1" X2="5" Y2="1" Name="T24"/>
+  <Trace Value="4" X1="6" Y1="2" X2="6" Y2="3" Name="T25"/>
+  <Trace Value="4" X1="6" Y1="3" X2="7" Y2="3" Name="T26"/>
+  <Trace Value="4" X1="7" Y1="3" X2="9" Y2="4" Name="T27"/>
+  <Trace Value="4" X1="6" Y1="3" X2="5" Y2="4" Name="T28"/>
+  <Trace Value="4" X1="2" Y1="4" X2="2" Y2="3" Name="T29"/>
+  <Trace Value="4" X1="2" Y1="3" X2="2" Y2="2" Name="T30"/>
+  <Trace Value="4" X1="5" Y1="3" X2="5" Y2="2" Name="T31"/>
+  <Trace Value="4" X1="5" Y1="2" X2="2" Y2="1" Name="T32"/>
+  <Pad Value="15" X1="2" Y1="7" Name="P34"/>
+  <Pad Value="15" X1="3" Y1="7" Name="P35"/>
+  <Pad Value="15" X1="4" Y1="7" Name="P36"/>
+  <Pad Value="15" X1="5" Y1="7" Name="P37"/>
+  <Trace Value="4" X1="11" Y1="4" X2="12" Y2="4" Name="T33"/>
+</Layout>

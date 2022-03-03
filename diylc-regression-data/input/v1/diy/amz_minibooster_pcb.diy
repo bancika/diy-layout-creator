@@ -1,0 +1,77 @@
+<Layout Type="PCB" Width="7" Height="11" Project="AMZ MINIBOOSTER" Credits="Layout by Andrew Carrell 2006">
+	<Pad X1="2" Y1="2" Value="15" Name="P1" Parent="R1"/>
+	<Pad X1="5" Y1="2" Value="15" Name="P2" Parent="R1"/>
+	<Resistor Value="1M" X1="2" Y1="2" X2="5" Y2="2" Name="R1"/>
+	<Pad Y1="3" Value="15" Name="P3" Parent="R2" X1="2"/>
+	<Pad Y1="3" Value="15" Name="P4" Parent="R2" X1="5"/>
+	<Resistor Value="1M" Y1="3" Y2="3" Name="R2" X1="2" X2="5"/>
+	<Pad Value="15" X1="1" Y1="1" Name="P5"/>
+	<Trace Value="4" X1="2" Y1="2" X2="2" Y2="1" Name="T2"/>
+	<Trace Value="4" X1="5" Y1="2" X2="5" Y2="3" Name="T3"/>
+	<Pad Value="15" Name="P6" Parent="Q1" X1="5" Y1="4"/>
+	<Pad Value="15" Name="P7" Parent="Q1" X1="4" Y1="4"/>
+	<Pad Value="15" Name="P8" Parent="Q1" X1="3" Y1="4"/>
+	<Transistor Value="J201" Name="Q1" X1="5" Y1="4" X2="3" Y2="4"/>
+	<Trace Value="4" X1="5" Y1="4" X2="6" Y2="4" Name="T6"/>
+	<Trace Value="4" X1="6" Y1="4" X2="6" Y2="1" Name="T7"/>
+	<Pad X1="3" Y1="6" Value="15" Name="P9" Parent="C1"/>
+	<Pad X1="3" Y1="5" Value="15" Name="P10" Parent="C1"/>
+	<Electrolyte X1="3" Y1="6" X2="3" Y2="5" Name="C1" Value="3.3uF NP*"/>
+	<Trace Value="4" X1="3" Y1="5" X2="3" Y2="4" Name="T8"/>
+	<Trace Value="4" X1="3" Y1="6" X2="4" Y2="6" Name="T9"/>
+	<Trace Value="4" X1="4" Y1="6" X2="4" Y2="4" Name="T10"/>
+	<Pad Y1="5" Value="15" Name="P11" Parent="Q2" X1="6"/>
+	<Pad Y1="6" Value="15" Name="P12" Parent="Q2" X1="6"/>
+	<Pad Y1="7" Value="15" Name="P13" Parent="Q2" X1="6"/>
+	<Transistor Value="J201" Y1="5" Y2="7" Name="Q2" X1="6" X2="6"/>
+	<Trace Value="4" X1="4" Y1="5" X2="6" Y2="5" Name="T11"/>
+	<Pad X1="5" Y1="7" Value="15" Name="P14" Parent="R3"/>
+	<Pad X1="2" Y1="7" Value="15" Name="P15" Parent="R3"/>
+	<Resistor Value="1K" X1="5" Y1="7" X2="2" Y2="7" Name="R3"/>
+	<Trace Value="4" X1="5" Y1="7" X2="6" Y2="7" Name="T12"/>
+	<Pad X1="1" Y1="5" Value="15" Name="P16" Parent="D1"/>
+	<Pad X1="1" Y1="2" Value="15" Name="P17" Parent="D1"/>
+	<Diode Value="1N4005" X1="1" Y1="5" X2="1" Y2="2" Name="D1"/>
+	<Trace Value="4" X1="1" Y1="2" X2="2" Y2="2" Name="T14"/>
+	<Trace Value="4" X1="1" Y1="5" X2="2" Y2="5" Name="T15"/>
+	<Pad X1="2" Y1="8" Value="15" Name="P18" Parent="R4"/>
+	<Pad X1="5" Y1="8" Value="15" Name="P19" Parent="R4"/>
+	<Resistor Value="1M" X1="2" Y1="8" X2="5" Y2="8" Name="R4"/>
+	<Pad Y1="9" Value="15" Name="P20" Parent="C2" X1="2"/>
+	<Pad Y1="9" Value="15" Name="P21" Parent="C2" X1="5"/>
+	<Capacitor Y1="9" Y2="9" Name="C2" Value="10pF" X1="2" X2="5"/>
+	<Trace Value="4" X1="5" Y1="9" X2="5" Y2="8" Name="T17"/>
+	<Pad Value="15" X1="1" Y1="8" Name="P23"/>
+	<Trace Value="4" X1="1" Y1="8" X2="2" Y2="8" Name="T23"/>
+	<Trace Value="4" X1="6" Y1="6" X2="5" Y2="6" Name="T18"/>
+	<Trace Value="4" X1="5" Y1="6" X2="4" Y2="7" Name="T19"/>
+	<Trace Value="4" X1="4" Y1="7" X2="4" Y2="8" Name="T20"/>
+	<Trace Value="4" X1="4" Y1="8" X2="5" Y2="8" Name="T24"/>
+	<Trace Value="4" X1="1" Y1="1" X2="6" Y2="1" Name="T1"/>
+	<Trace Value="4" X1="2" Y1="3" X2="2" Y2="9" Name="T13"/>
+	<Pad Value="15" X1="1" Name="P24" Y1="10"/>
+	<Pad X1="6" Y1="8" Value="15" Name="P22" Parent="C3"/>
+	<Pad X1="6" Y1="11" Value="15" Name="P25" Parent="C3"/>
+	<Capacitor Value=".22uF" X1="6" Y1="8" X2="6" Y2="11" Name="C3"/>
+	<Pad Value="15" X1="1" Name="P26" Y1="11"/>
+	<Pad Value="15" X1="1" Y1="7" Name="P27"/>
+	<Pad Value="15" X1="1" Y1="6" Name="P28"/>
+	<Trace Value="4" X1="1" Y1="6" X2="2" Y2="6" Name="T29"/>
+	<Trace Value="4" X1="1" Y1="7" X2="2" Y2="7" Name="T30"/>
+	<Trace Value="4" X1="3" Y1="4" X2="4" Y2="3" Name="T4"/>
+	<Trace Value="4" X1="4" Y1="3" X2="5" Y2="3" Name="T5"/>
+	<Trace Value="4" X1="6" Y1="5" X2="7" Y2="6" Name="T16"/>
+	<Trace Value="4" X1="7" Y1="6" X2="7" Y2="7" Name="T25"/>
+	<Trace Value="4" X1="7" Y1="7" X2="6" Y2="8" Name="T26"/>
+	<Trace Value="4" X1="1" Y1="10" X2="5" Y2="10" Name="T27"/>
+	<Trace Value="4" X1="5" Y1="10" X2="5" Y2="9" Name="T32"/>
+	<Trace Value="4" X1="1" Y1="11" X2="6" Y2="11" Name="T21"/>
+	<Text Value="+9 VOLTS" Y1="1" Name="A1" X1="-4"/>
+	<Text X1="-3" Y1="11" Name="A2" Value="VOL-3"/>
+	<Text Value="GAIN-2" Y1="10" Name="A3" X1="-3"/>
+	<Text Value="GAIN-1" X1="-3" Y1="8" Name="A4"/>
+	<Text Value="VOL-1" X1="-3" Y1="7" Name="A5"/>
+	<Text Value="GROUND" Y1="6" Name="A6" X1="-3"/>
+	<Text Value="VOL: 100K AUDIO POT, LUG-2 IS EFFECT OUTPUT" Y1="16" Name="A7" X1="-4"/>
+	<Text Value="GAIN: 500K LIN POT, LUG-3 FROM EFFECT INPUT" X1="-4" Y1="17" Name="A8"/>  <Text Value="* NON-POLARIZED" Y1="18" Name="A9" X1="0"/>
+</Layout>

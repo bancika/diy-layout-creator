@@ -1,0 +1,43 @@
+<Layout Type="Perfboard" Width="4" Height="10" Project="EasyDrive" Credits="Joe Davisson">
+  <Electrolyte Value="22uF" X1="1" Y1="8" X2="1" Y2="10" Name="C4"/>
+  <Resistor Value="2.2K" X1="2" Y1="7" X2="2" Y2="10" Name="R4"/>
+  <Capacitor Value=".01uF" X1="3" Y1="8" X2="3" Y2="10" Name="C2"/>
+  <Resistor Value="220K" X1="4" Y1="5" X2="4" Y2="8" Name="R2"/>
+  <Resistor Value="220K" X1="3" Y1="4" X2="3" Y2="7" Name="R1"/>
+  <Transistor Value="2N5089" X1="2" Y1="4" X2="2" Y2="6" Name="Q1"/>
+  <Capacitor Value=".1uF" X1="1" Y1="5" X2="1" Y2="6" Name="C1"/>
+  <Diode Value="1N4148" X1="1" Y1="4" X2="1" Y2="2" Name="D1"/>
+  <Diode Value="1N4148" X1="1" Y1="2" X2="1" Y2="4" Name="D2"/>
+  <Capacitor Value=".1uF" X1="2" Y1="2" X2="2" Y2="3" Name="C3"/>
+  <Resistor Value="220K" X1="3" Y1="1" X2="3" Y2="4" Name="R3"/>
+  <Capacitor Value=".1uF" X1="4" Y1="3" X2="4" Y2="4" Name="C5"/>
+  <Jumper X1="1" Y1="7" X2="1" Y2="6" Name="J1"/>
+  <Jumper X1="1" Y1="5" X2="2" Y2="5" Name="J2"/>
+  <Jumper X1="2" Y1="5" X2="4" Y2="5" Name="J3"/>
+  <Jumper X1="4" Y1="8" X2="3" Y2="8" Name="J4"/>
+  <Jumper X1="3" Y1="8" X2="3" Y2="7" Name="J5"/>
+  <Jumper X1="1" Y1="10" X2="2" Y2="10" Name="J6"/>
+  <Jumper X1="2" Y1="10" X2="3" Y2="10" Name="J7"/>
+  <Jumper X1="1" Y1="8" X2="2" Y2="8" Name="J8"/>
+  <Jumper X1="2" Y1="8" X2="2" Y2="7" Name="J9"/>
+  <Jumper X1="2" Y1="7" X2="2" Y2="6" Name="J10"/>
+  <Jumper X1="3" Y1="10" X2="4" Y2="10" Name="J11"/>
+  <Jumper X1="4" Y1="10" X2="6" Y2="10" Name="J12"/>
+  <Jumper X1="1" Y1="7" X2="-1" Y2="7" Name="J13"/>
+  
+  <Jumper X1="1" Y1="2" X2="2" Y2="2" Name="J15"/>
+  <Jumper X1="1" Y1="5" X2="1" Y2="4" Name="J14"/>
+  <Jumper X1="2" Y1="3" X2="2" Y2="4" Name="J16"/>
+  <Jumper X1="2" Y1="4" X2="3" Y2="4" Name="J17"/>
+  <Jumper X1="3" Y1="4" X2="4" Y2="4" Name="J18"/>
+  <Jumper X1="4" Y1="3" X2="4" Y2="2" Name="J19"/>
+  <Jumper X1="4" Y1="2" X2="6" Y2="2" Name="J20"/>
+  
+  
+  <Text Value="In" X1="-2" Y1="7" Name="A1"/>
+  <Text Value="Out" X1="7" Y1="2" Name="A2"/>
+  <Text Value="Gnd" X1="7" Y1="10" Name="A3"/>
+  <Jumper X1="3" Y1="1" X2="1" Y2="1" Name="J21"/>
+  <Jumper X1="1" Y1="1" X2="-1" Y2="1" Name="J22"/>
+  <Text Value="Pwr" X1="-2" Y1="1" Name="A4"/>
+</Layout>

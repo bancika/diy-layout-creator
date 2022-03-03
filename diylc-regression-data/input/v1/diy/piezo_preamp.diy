@@ -1,0 +1,29 @@
+<Layout Width="14" Height="8" Type="Stripboard" Project="High Impedance Piezo Buffer" Credits="Layout by Gilles Caron">
+	<Resistor Value="10M" X1="2" Y1="8" X2="2" Y2="5" Name="R1"/>
+	<Resistor Value="1K" X1="3" Y1="8" X2="3" Y2="4" Name="R2"/>
+	<Resistor Value="3.1K" X1="2" Y1="4" X2="2" Y2="1" Name="R3"/>
+	<Transistor Value="PN4393" X1="4" Y1="3" X2="4" Y2="5" Name="Q1"/>
+	<Capacitor Value="100pF" X1="3" Y1="3" X2="3" Y2="1" Name="C1"/>
+	<Cut X1="5" Y1="4" Name="X1"/>
+	<Transistor Value="2N4403" X1="6" Y1="4" X2="6" Y2="2" Name="Q2"/>
+	<Electrolyte Value="220uF" X1="6" Y1="5" X2="6" Y2="8" Name="C4"/>
+	<Jumper X1="5" Y1="1" X2="5" Y2="2" Name="J1"/>
+	<Resistor Value="100R" X1="7" Y1="1" X2="10" Y2="2" Name="R5"/>
+	<Capacitor Value="100nF" X1="11" Y1="4" X2="11" Y2="2" Name="C2"/>
+	<Electrolyte Value="100uF" X1="13" Y1="2" X2="13" Y2="4" Name="C3"/>
+	<Cut X1="8" Y1="2" Name="X4"/>
+	<Cut X1="10" Y1="4" Name="X2"/>
+	<Jumper X1="1" Y1="8" Name="J2" X2="-2" Y2="8"/>
+	<Text Value="Ground" X1="-117" Y1="144" Name="T1"/>
+	<Text Value="+9V" X1="-113" Y1="126" Name="T2"/>
+	<Text Value="Input" X1="-113" Y1="86" Name="T3"/>
+	<Jumper X1="1" Y1="7" Name="J3" X2="-2" Y2="7"/>
+	<Jumper X1="1" Y1="5" Name="J4" X2="-2" Y2="5"/>
+	<Jumper X1="14" Y1="4" Name="J5" X2="17" Y2="4"/>
+	<Text Value="Output" X1="342" Y1="65" Name="T4"/>
+	<Jumper X1="7" Y1="5" X2="7" Y2="4" Name="J6"/>
+	<Text Value="http://www.jensen-transformers.com/as/as098.pdf" X1="-19" Y1="348" Name="T6"/>
+	<Text Value="for Jensen Application Schematic AS098 at" X1="-19" Y1="328" Name="T5"/>
+	<Resistor Value="100R" X1="8" Y1="7" X2="8" Y2="5" Name="R6"/>
+	<Resistor Value="10K" X1="12" Y1="8" X2="12" Y2="4" Name="R7"/>  <Trimmer Value="2K" X1="8" Y1="4" X2="10" Y2="5" Name="R4"/>
+</Layout>

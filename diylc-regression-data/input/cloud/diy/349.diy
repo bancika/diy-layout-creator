@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>4</major>
+    <minor>7</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>HARMONIC PERCOLATOR LAYOUT</title>
+  <author>CIT</author>
+  <width value="29.0" unit="cm"/>
+  <height value="21.0" unit="cm"/>
+  <gridSpacing value="0.1" unit="in"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.boards.TerminalStrip>
+      <name>TS1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <orientation>DEFAULT</orientation>
+      <terminalCount>10</terminalCount>
+      <boardWidth value="0.35" unit="in"/>
+      <terminalSpacing value="0.25" unit="in"/>
+      <holeSpacing value="0.5" unit="in"/>
+      <controlPoints>
+        <point x="5.1" y="3.6"/>
+        <point x="5.1" y="3.85"/>
+        <point x="5.1" y="4.1"/>
+        <point x="5.1" y="4.35"/>
+        <point x="5.1" y="4.6"/>
+        <point x="5.1" y="4.85"/>
+        <point x="5.1" y="5.1"/>
+        <point x="5.1" y="5.35"/>
+        <point x="5.1" y="5.6"/>
+        <point x="5.1" y="5.85"/>
+        <point x="5.6" y="3.6"/>
+        <point x="5.6" y="3.85"/>
+        <point x="5.6" y="4.1"/>
+        <point x="5.6" y="4.35"/>
+        <point x="5.6" y="4.6"/>
+        <point x="5.6" y="4.85"/>
+        <point x="5.6" y="5.1"/>
+        <point x="5.6" y="5.35"/>
+        <point x="5.6" y="5.6"/>
+        <point x="5.6" y="5.85"/>
+      </controlPoints>
+      <boardColor hex="cd8500"/>
+      <centerHole>false</centerHole>
+    </diylc.boards.TerminalStrip>
+    <diylc.boards.TerminalStrip>
+      <name>TS2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <orientation>DEFAULT</orientation>
+      <terminalCount>10</terminalCount>
+      <boardWidth value="0.35" unit="in"/>
+      <terminalSpacing value="0.25" unit="in"/>
+      <holeSpacing value="0.5" unit="in"/>
+      <controlPoints>
+        <point x="6.4" y="3.6"/>
+        <point x="6.4" y="3.85"/>
+        <point x="6.4" y="4.1"/>
+        <point x="6.4" y="4.35"/>
+        <point x="6.4" y="4.6"/>
+        <point x="6.4" y="4.85"/>
+        <point x="6.4" y="5.1"/>
+        <point x="6.4" y="5.35"/>
+        <point x="6.4" y="5.6"/>
+        <point x="6.4" y="5.85"/>
+        <point x="6.9" y="3.6"/>
+        <point x="6.9" y="3.85"/>
+        <point x="6.9" y="4.1"/>
+        <point x="6.9" y="4.35"/>
+        <point x="6.9" y="4.6"/>
+        <point x="6.9" y="4.85"/>
+        <point x="6.9" y="5.1"/>
+        <point x="6.9" y="5.35"/>
+        <point x="6.9" y="5.6"/>
+        <point x="6.9" y="5.85"/>
+      </controlPoints>
+      <boardColor hex="cd8500"/>
+      <centerHole>false</centerHole>
+    </diylc.boards.TerminalStrip>
+    <diylc.passive.PotentiometerPanel>
+      <name>VR1</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="4.1" y="2.0"/>
+        <point x="4.4" y="2.0"/>
+        <point x="4.7" y="2.0"/>
+      </controlPoints>
+      <resistance value="100.0" unit="K"/>
+      <orientation>DEFAULT</orientation>
+      <taper>LOG</taper>
+      <bodyDiameter value="1.0" unit="in"/>
+      <spacing value="0.3" unit="in"/>
+      <lugDiameter value="0.15" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+      <view>ShaftUp</view>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.electromechanical.OpenJack1__4>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="9.9" y="4.1"/>
+        <point x="10.3" y="4.3"/>
+        <point x="10.2" y="5.0"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <angle>0</angle>
+      <type>MONO</type>
+      <showLabels>true</showLabels>
+    </diylc.electromechanical.OpenJack1__4>
+    <diylc.electromechanical.MiniToggleSwitch>
+      <name>SW1</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="5.8" y="7.4"/>
+        <point x="5.8" y="7.6"/>
+        <point x="5.8" y="7.8"/>
+        <point x="6.0" y="7.4"/>
+        <point x="6.0" y="7.6"/>
+        <point x="6.0" y="7.8"/>
+        <point x="6.2" y="7.4"/>
+        <point x="6.2" y="7.6"/>
+        <point x="6.2" y="7.8"/>
+      </controlPoints>
+      <switchType>_3PDT</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing value="0.2" unit="in"/>
+      <bodyColor hex="3299cc"/>
+      <borderColor hex="236b8e"/>
+    </diylc.electromechanical.MiniToggleSwitch>
+    <diylc.electromechanical.OpenJack1__4>
+      <name>J2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.0" y="0.0"/>
+        <point x="0.4" y="0.2"/>
+        <point x="0.3" y="0.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <angle>0</angle>
+      <type>MONO</type>
+      <showLabels>true</showLabels>
+    </diylc.electromechanical.OpenJack1__4>
+    <diylc.electromechanical.OpenJack1__4>
+      <name>J3</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.0" y="0.0"/>
+        <point x="0.4" y="0.2"/>
+        <point x="0.3" y="0.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <angle>0</angle>
+      <type>MONO</type>
+      <showLabels>true</showLabels>
+    </diylc.electromechanical.OpenJack1__4>
+    <diylc.electromechanical.OpenJack1__4>
+      <name>J4</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.0" y="0.0"/>
+        <point x="0.4" y="0.2"/>
+        <point x="0.3" y="0.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <angle>0</angle>
+      <type>MONO</type>
+      <showLabels>true</showLabels>
+    </diylc.electromechanical.OpenJack1__4>
+    <diylc.electromechanical.OpenJack1__4>
+      <name>J5</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="1.1" y="4.1"/>
+        <point x="1.5" y="4.3"/>
+        <point x="1.4" y="5.0"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <angle>0</angle>
+      <type>STEREO</type>
+      <showLabels>true</showLabels>
+    </diylc.electromechanical.OpenJack1__4>
+    <diylc.passive.PotentiometerPanel>
+      <name>VR2</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="8.3" y="2.1"/>
+        <point x="8.6" y="2.1"/>
+        <point x="8.9" y="2.1"/>
+      </controlPoints>
+      <resistance value="50.0" unit="K"/>
+      <orientation>DEFAULT</orientation>
+      <taper>LOG</taper>
+      <bodyDiameter value="1.0" unit="in"/>
+      <spacing value="0.3" unit="in"/>
+      <lugDiameter value="0.15" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+      <view>ShaftUp</view>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.electromechanical.BatterySnap9V>
+      <name>BTR1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoint x="1.0" y="1.6"/>
+      <orientation>DEFAULT</orientation>
+      <color hex="404040"/>
+    </diylc.electromechanical.BatterySnap9V>
+    <diylc.electromechanical.PlasticDCJack>
+      <name>J6</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="1.2" y="6.9"/>
+        <point x="1.3" y="7.0"/>
+        <point x="1.1" y="7.1"/>
+      </controlPoints>
+      <value></value>
+      <polarity>CENTER_NEGATIVE</polarity>
+    </diylc.electromechanical.PlasticDCJack>
+    <diylc.connectivity.HookupWire>
+      <name>W1</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.1" y="4.1"/>
+        <point x="1.6" y="4.1"/>
+        <point x="1.7" y="3.3"/>
+        <point x="5.8" y="7.4"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>true</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+  </components>
+  <groups/>
+  <lockedLayers/>
+  <lockedComponents/>
+  <hiddenLayers/>
+  <font name="Square721 BT Roman" size="14" style="0"/>
+</project>

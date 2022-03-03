@@ -1,0 +1,3990 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.diylc.core.Project>
+  <fileVersion>
+    <major>3</major>
+    <minor>46</minor>
+    <build>1</build>
+  </fileVersion>
+  <title>JJ45</title>
+  <author>sap17</author>
+  <width>
+    <value>16.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+  </width>
+  <height>
+    <value>16.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+  </height>
+  <gridSpacing>
+    <value>0.1</value>
+    <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+  </gridSpacing>
+  <components>
+    <org.diylc.components.boards.MarshallPerfBoard>
+      <name>Board1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="1.1" y="2.6"/>
+        <java.awt.Point x="13.3" y="5.8"/>
+      </controlPoints>
+      <firstPoint x="1.1" y="2.6"/>
+      <secondPoint x="13.3" y="5.8"/>
+      <boardColor>
+        <red>205</red>
+        <green>133</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </boardColor>
+      <borderColor>
+        <red>143</red>
+        <green>93</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <coordinateColor>
+        <red>182</red>
+        <green>182</green>
+        <blue>182</blue>
+        <alpha>255</alpha>
+      </coordinateColor>
+      <drawCoordinates>true</drawCoordinates>
+      <spacing>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </spacing>
+    </org.diylc.components.boards.MarshallPerfBoard>
+    <org.diylc.components.boards.TerminalStrip>
+      <name>TS1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <orientation>_90</orientation>
+      <terminalCount>0</terminalCount>
+      <boardWidth>
+        <value>0.35</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </boardWidth>
+      <terminalSpacing>
+        <value>0.25</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </terminalSpacing>
+      <holeSpacing>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </holeSpacing>
+      <controlPoints/>
+      <boardColor>
+        <red>205</red>
+        <green>133</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </boardColor>
+      <borderColor>
+        <red>143</red>
+        <green>93</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <centerHole>false</centerHole>
+    </org.diylc.components.boards.TerminalStrip>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size>
+        <value>0.09</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </size>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <point x="1.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize>
+        <value>0.8</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </holeSize>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="1.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="1.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="2.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="2.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="2.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="2.6" y="4.0"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="2.4" y="4.0"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="2.8" y="4.0"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret3</name>
+      <size>
+        <value>0.16</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </size>
+      <holeSize>
+        <value>0.0625</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </holeSize>
+      <color>
+        <red>224</red>
+        <green>192</green>
+        <blue>76</blue>
+        <alpha>255</alpha>
+      </color>
+      <point x="1.6" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="1.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret4</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="2.1" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="2.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret5</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="1.6" y="4.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="1.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret8</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="3.1" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret9</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="2.1" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="2.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.6" y="4.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret10</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="3.6" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret11</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="3.6" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret12</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="4.1" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret13</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="4.1" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret14</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="4.6" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret15</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="4.6" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret16</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="5.1" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret17</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="6.1" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret18</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="5.6" y="4.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.6" y="4.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret19</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="5.6" y="4.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret20</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="5.1" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret21</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="6.1" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.6" y="4.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="4.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.6" y="6.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret2</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="5.1" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret22</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="6.1" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret23</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="5.1" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret24</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="6.1" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret25</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="6.6" y="4.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret26</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="6.6" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret27</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="7.1" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret28</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="7.1" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret29</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="7.1" y="4.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret30</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="6.6" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret31</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="7.1" y="4.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret32</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="7.6" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.6" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret33</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="7.6" y="4.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret34</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="8.1" y="5.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="8.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret35</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="8.1" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="8.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret36</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="7.6" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="5.6" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="6.6" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="8.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="8.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="8.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret37</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="8.6" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="8.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret38</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="9.1" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret39</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="8.6" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="8.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret40</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="9.6" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.1" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret41</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="9.1" y="4.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.1" y="4.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret1</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="13.1" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="13.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret42</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="13.1" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="13.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="12.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret43</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="7.1" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="7.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret44</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="10.1" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="10.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret45</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="9.6" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret46</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="10.1" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="10.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret47</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="10.6" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="10.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret48</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="11.1" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="11.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="10.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="11.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret49</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="10.6" y="4.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="10.6" y="4.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="10.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret50</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="10.6" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="10.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret51</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="11.1" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="11.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret52</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="11.6" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="11.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret53</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="11.6" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="11.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret54</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="12.1" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="12.1" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret55</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="12.1" y="3.6"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="12.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret56</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="12.6" y="5.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="12.6" y="5.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="8.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.1" y="6.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="12.6" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="13.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="12.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret57</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="11.1" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="11.1" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret58</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="12.6" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="12.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.Turret>
+      <name>Turret59</name>
+      <size reference="../../org.diylc.components.connectivity.Turret/size"/>
+      <holeSize reference="../../org.diylc.components.connectivity.Turret/holeSize"/>
+      <color reference="../../org.diylc.components.connectivity.Turret/color"/>
+      <point x="9.6" y="3.1"/>
+      <value></value>
+    </org.diylc.components.connectivity.Turret>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="9.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="12.6" y="3.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="13.1" y="3.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name></name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <point x="3.1" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.tube.TubeSocket>
+      <name>V1</name>
+      <alpha>127</alpha>
+      <base>B9A</base>
+      <type></type>
+      <angle>0</angle>
+      <color>
+        <red>247</red>
+        <green>247</green>
+        <blue>239</blue>
+        <alpha>255</alpha>
+      </color>
+      <controlPoints>
+        <java.awt.Point x="13.2" y="6.9"/>
+        <java.awt.Point x="13.53" y="7.14"/>
+        <java.awt.Point x="13.325" y="7.29"/>
+        <java.awt.Point x="13.075" y="7.29"/>
+        <java.awt.Point x="12.87" y="7.14"/>
+        <java.awt.Point x="12.79" y="6.9"/>
+        <java.awt.Point x="12.87" y="6.66"/>
+        <java.awt.Point x="13.075" y="6.51"/>
+        <java.awt.Point x="13.325" y="6.51"/>
+        <java.awt.Point x="13.53" y="6.66"/>
+      </controlPoints>
+    </org.diylc.components.tube.TubeSocket>
+    <org.diylc.components.tube.TubeSocket>
+      <name>V2</name>
+      <alpha>127</alpha>
+      <base>B9A</base>
+      <type></type>
+      <angle>0</angle>
+      <color reference="../../org.diylc.components.tube.TubeSocket/color"/>
+      <controlPoints>
+        <java.awt.Point x="11.6" y="6.9"/>
+        <java.awt.Point x="11.93" y="7.14"/>
+        <java.awt.Point x="11.725" y="7.29"/>
+        <java.awt.Point x="11.475" y="7.29"/>
+        <java.awt.Point x="11.27" y="7.14"/>
+        <java.awt.Point x="11.19" y="6.9"/>
+        <java.awt.Point x="11.27" y="6.66"/>
+        <java.awt.Point x="11.475" y="6.51"/>
+        <java.awt.Point x="11.725" y="6.51"/>
+        <java.awt.Point x="11.93" y="6.66"/>
+      </controlPoints>
+    </org.diylc.components.tube.TubeSocket>
+    <org.diylc.components.tube.TubeSocket>
+      <name>V3</name>
+      <alpha>127</alpha>
+      <base>B9A</base>
+      <type></type>
+      <angle>0</angle>
+      <color reference="../../org.diylc.components.tube.TubeSocket/color"/>
+      <controlPoints>
+        <java.awt.Point x="9.9" y="6.9"/>
+        <java.awt.Point x="10.23" y="7.14"/>
+        <java.awt.Point x="10.025" y="7.29"/>
+        <java.awt.Point x="9.775" y="7.29"/>
+        <java.awt.Point x="9.57" y="7.14"/>
+        <java.awt.Point x="9.49" y="6.9"/>
+        <java.awt.Point x="9.57" y="6.66"/>
+        <java.awt.Point x="9.775" y="6.51"/>
+        <java.awt.Point x="10.025" y="6.51"/>
+        <java.awt.Point x="10.23" y="6.66"/>
+      </controlPoints>
+    </org.diylc.components.tube.TubeSocket>
+    <org.diylc.components.tube.TubeSocket>
+      <name>V4</name>
+      <alpha>127</alpha>
+      <base>OCTAL</base>
+      <type>GZ34</type>
+      <angle>0</angle>
+      <color reference="../../org.diylc.components.tube.TubeSocket/color"/>
+      <controlPoints>
+        <java.awt.Point x="1.6" y="7.0"/>
+        <java.awt.Point x="1.915" y="7.13"/>
+        <java.awt.Point x="1.73" y="7.315"/>
+        <java.awt.Point x="1.465" y="7.315"/>
+        <java.awt.Point x="1.28" y="7.13"/>
+        <java.awt.Point x="1.28" y="6.865"/>
+        <java.awt.Point x="1.465" y="6.68"/>
+        <java.awt.Point x="1.73" y="6.68"/>
+        <java.awt.Point x="1.915" y="6.865"/>
+      </controlPoints>
+    </org.diylc.components.tube.TubeSocket>
+    <org.diylc.components.tube.TubeSocket>
+      <name>V5</name>
+      <alpha>127</alpha>
+      <base>OCTAL</base>
+      <type>6L6GC</type>
+      <angle>0</angle>
+      <color reference="../../org.diylc.components.tube.TubeSocket/color"/>
+      <controlPoints>
+        <java.awt.Point x="5.6" y="7.0"/>
+        <java.awt.Point x="5.915" y="7.13"/>
+        <java.awt.Point x="5.73" y="7.315"/>
+        <java.awt.Point x="5.465" y="7.315"/>
+        <java.awt.Point x="5.28" y="7.13"/>
+        <java.awt.Point x="5.28" y="6.865"/>
+        <java.awt.Point x="5.465" y="6.68"/>
+        <java.awt.Point x="5.73" y="6.68"/>
+        <java.awt.Point x="5.915" y="6.865"/>
+      </controlPoints>
+    </org.diylc.components.tube.TubeSocket>
+    <org.diylc.components.tube.TubeSocket>
+      <name>V6</name>
+      <alpha>127</alpha>
+      <base>OCTAL</base>
+      <type>6L6GC</type>
+      <angle>0</angle>
+      <color reference="../../org.diylc.components.tube.TubeSocket/color"/>
+      <controlPoints>
+        <java.awt.Point x="7.9" y="7.0"/>
+        <java.awt.Point x="8.215" y="7.13"/>
+        <java.awt.Point x="8.03" y="7.315"/>
+        <java.awt.Point x="7.765" y="7.315"/>
+        <java.awt.Point x="7.58" y="7.13"/>
+        <java.awt.Point x="7.58" y="6.865"/>
+        <java.awt.Point x="7.765" y="6.68"/>
+        <java.awt.Point x="8.03" y="6.68"/>
+        <java.awt.Point x="8.215" y="6.865"/>
+      </controlPoints>
+    </org.diylc.components.tube.TubeSocket>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>Gain 1</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="11.0" y="1.9"/>
+        <java.awt.Point x="11.3" y="1.9"/>
+        <java.awt.Point x="11.6" y="1.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </bodyDiameter>
+      <spacing>
+        <value>0.3</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </spacing>
+      <lugDiameter>
+        <value>0.15</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </lugDiameter>
+      <bodyColor>
+        <red>192</red>
+        <green>192</green>
+        <blue>192</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>128</red>
+        <green>128</green>
+        <blue>128</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <nutColor>
+        <red>203</red>
+        <green>213</green>
+        <blue>219</blue>
+        <alpha>255</alpha>
+      </nutColor>
+      <waferColor>
+        <red>205</red>
+        <green>133</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </waferColor>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>Gain 2</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="9.7" y="1.9"/>
+        <java.awt.Point x="10.0" y="1.9"/>
+        <java.awt.Point x="10.3" y="1.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/bodyDiameter"/>
+      <spacing reference="../../org.diylc.components.passive.PotentiometerPanel/spacing"/>
+      <lugDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/lugDiameter"/>
+      <bodyColor reference="../../org.diylc.components.passive.PotentiometerPanel/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.PotentiometerPanel/borderColor"/>
+      <nutColor reference="../../org.diylc.components.passive.PotentiometerPanel/nutColor"/>
+      <waferColor reference="../../org.diylc.components.passive.PotentiometerPanel/waferColor"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>High</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="7.8" y="1.9"/>
+        <java.awt.Point x="8.1" y="1.9"/>
+        <java.awt.Point x="8.4" y="1.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/bodyDiameter"/>
+      <spacing reference="../../org.diylc.components.passive.PotentiometerPanel/spacing"/>
+      <lugDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/lugDiameter"/>
+      <bodyColor reference="../../org.diylc.components.passive.PotentiometerPanel/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.PotentiometerPanel/borderColor"/>
+      <nutColor reference="../../org.diylc.components.passive.PotentiometerPanel/nutColor"/>
+      <waferColor reference="../../org.diylc.components.passive.PotentiometerPanel/waferColor"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>Mid</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="6.5" y="1.9"/>
+        <java.awt.Point x="6.8" y="1.9"/>
+        <java.awt.Point x="7.1" y="1.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/bodyDiameter"/>
+      <spacing reference="../../org.diylc.components.passive.PotentiometerPanel/spacing"/>
+      <lugDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/lugDiameter"/>
+      <bodyColor reference="../../org.diylc.components.passive.PotentiometerPanel/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.PotentiometerPanel/borderColor"/>
+      <nutColor reference="../../org.diylc.components.passive.PotentiometerPanel/nutColor"/>
+      <waferColor reference="../../org.diylc.components.passive.PotentiometerPanel/waferColor"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>Low</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="5.2" y="1.9"/>
+        <java.awt.Point x="5.5" y="1.9"/>
+        <java.awt.Point x="5.8" y="1.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/bodyDiameter"/>
+      <spacing reference="../../org.diylc.components.passive.PotentiometerPanel/spacing"/>
+      <lugDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/lugDiameter"/>
+      <bodyColor reference="../../org.diylc.components.passive.PotentiometerPanel/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.PotentiometerPanel/borderColor"/>
+      <nutColor reference="../../org.diylc.components.passive.PotentiometerPanel/nutColor"/>
+      <waferColor reference="../../org.diylc.components.passive.PotentiometerPanel/waferColor"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>Presence</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="3.0" y="1.9"/>
+        <java.awt.Point x="3.3" y="1.9"/>
+        <java.awt.Point x="3.6" y="1.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/bodyDiameter"/>
+      <spacing reference="../../org.diylc.components.passive.PotentiometerPanel/spacing"/>
+      <lugDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/lugDiameter"/>
+      <bodyColor reference="../../org.diylc.components.passive.PotentiometerPanel/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.PotentiometerPanel/borderColor"/>
+      <nutColor reference="../../org.diylc.components.passive.PotentiometerPanel/nutColor"/>
+      <waferColor reference="../../org.diylc.components.passive.PotentiometerPanel/waferColor"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>Master</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="1.3" y="1.9"/>
+        <java.awt.Point x="1.6" y="1.9"/>
+        <java.awt.Point x="1.9" y="1.9"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/bodyDiameter"/>
+      <spacing reference="../../org.diylc.components.passive.PotentiometerPanel/spacing"/>
+      <lugDiameter reference="../../org.diylc.components.passive.PotentiometerPanel/lugDiameter"/>
+      <bodyColor reference="../../org.diylc.components.passive.PotentiometerPanel/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.PotentiometerPanel/borderColor"/>
+      <nutColor reference="../../org.diylc.components.passive.PotentiometerPanel/nutColor"/>
+      <waferColor reference="../../org.diylc.components.passive.PotentiometerPanel/waferColor"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.electromechanical.CliffJack1__4>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="12.6" y="1.7"/>
+        <java.awt.Point x="13.2" y="1.7"/>
+        <java.awt.Point x="12.6" y="1.1"/>
+        <java.awt.Point x="13.2" y="1.1"/>
+      </controlPoints>
+      <type>MONO</type>
+      <orientation>_270</orientation>
+      <value></value>
+    </org.diylc.components.electromechanical.CliffJack1__4>
+    <org.diylc.components.passive.Resistor>
+      <name>R1</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="1.6" y="3.6"/>
+        <java.awt.Point x="1.6" y="4.6"/>
+      </points>
+      <bodyColor>
+        <red>130</red>
+        <green>207</green>
+        <blue>253</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>91</red>
+        <green>144</green>
+        <blue>177</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>220.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.semiconductors.DiodePlastic>
+      <name>D1</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.25</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="2.1" y="5.6"/>
+        <java.awt.Point x="1.6" y="4.6"/>
+      </points>
+      <bodyColor>
+        <red>64</red>
+        <green>64</green>
+        <blue>64</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>44</red>
+        <green>44</green>
+        <blue>44</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <labelColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </labelColor>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>1N4007</value>
+      <markerColor>
+        <red>221</red>
+        <green>221</green>
+        <blue>221</blue>
+        <alpha>255</alpha>
+      </markerColor>
+    </org.diylc.components.semiconductors.DiodePlastic>
+    <org.diylc.components.passive.AxialElectrolyticCapacitor>
+      <name>C1</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="2.6" y="4.0"/>
+        <java.awt.Point x="2.1" y="5.6"/>
+      </points>
+      <bodyColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>74</red>
+        <green>76</green>
+        <blue>144</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <labelColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>10.0</value>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>200.0</value>
+      </voltageNew>
+      <markerColor>
+        <red>102</red>
+        <green>102</green>
+        <blue>102</blue>
+        <alpha>255</alpha>
+      </markerColor>
+      <tickColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <polarized>true</polarized>
+    </org.diylc.components.passive.AxialElectrolyticCapacitor>
+    <org.diylc.components.passive.AxialElectrolyticCapacitor>
+      <name>C2</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.AxialElectrolyticCapacitor/length"/>
+      <width>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="2.6" y="4.0"/>
+        <java.awt.Point x="3.1" y="5.6"/>
+      </points>
+      <bodyColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor reference="../../org.diylc.components.passive.AxialElectrolyticCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.AxialElectrolyticCapacitor/value"/>
+      <voltage>_63V</voltage>
+      <voltageNew reference="../../org.diylc.components.passive.AxialElectrolyticCapacitor/voltageNew"/>
+      <markerColor>
+        <red>102</red>
+        <green>102</green>
+        <blue>102</blue>
+        <alpha>255</alpha>
+      </markerColor>
+      <tickColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <polarized>true</polarized>
+    </org.diylc.components.passive.AxialElectrolyticCapacitor>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>VR1</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="2.4" y="4.0"/>
+        <java.awt.Point x="2.6" y="4.0"/>
+        <java.awt.Point x="2.8" y="4.0"/>
+      </controlPoints>
+      <resistance>
+        <value>50.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </resistance>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </bodyDiameter>
+      <spacing>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </spacing>
+      <lugDiameter>
+        <value>0.1</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </lugDiameter>
+      <bodyColor>
+        <red>192</red>
+        <green>192</green>
+        <blue>192</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>128</red>
+        <green>128</green>
+        <blue>128</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <nutColor>
+        <red>203</red>
+        <green>213</green>
+        <blue>219</blue>
+        <alpha>255</alpha>
+      </nutColor>
+      <waferColor>
+        <red>205</red>
+        <green>133</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </waferColor>
+      <type>ThroughHole</type>
+      <showShaft>true</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.passive.Resistor>
+      <name>R3</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="2.1" y="5.6"/>
+        <java.awt.Point x="3.1" y="5.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>15.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R4</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="3.1" y="5.6"/>
+        <java.awt.Point x="2.8" y="4.0"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>47.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R7</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="3.6" y="3.4"/>
+        <java.awt.Point x="4.6" y="3.4"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>true</flipStanding>
+      <value>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>3.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J2</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="3.6" y="3.4"/>
+        <java.awt.Point x="3.6" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J3</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="4.6" y="3.4"/>
+        <java.awt.Point x="4.6" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.connectivity.Jumper/leadColor"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.passive.Resistor>
+      <name>R8</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="5.6" y="4.6"/>
+        <java.awt.Point x="5.1" y="5.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>true</flipStanding>
+      <value>
+        <value>100.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R9</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.Resistor[5]/length"/>
+      <width reference="../../org.diylc.components.passive.Resistor[5]/width"/>
+      <points>
+        <java.awt.Point x="5.6" y="4.6"/>
+        <java.awt.Point x="6.1" y="5.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>true</flipStanding>
+      <value reference="../../org.diylc.components.passive.Resistor[5]/value"/>
+      <power>HALF</power>
+      <powerNew reference="../../org.diylc.components.passive.Resistor[5]/powerNew"/>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C3</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="5.1" y="5.6"/>
+        <java.awt.Point x="6.1" y="5.6"/>
+      </points>
+      <bodyColor>
+        <red>255</red>
+        <green>227</green>
+        <blue>3</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>178</red>
+        <green>158</green>
+        <blue>2</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>47.0</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">pF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>500.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J4</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="3.6" y="3.6"/>
+        <java.awt.Point x="4.1" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.passive.Resistor>
+      <name>R10</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="5.1" y="3.1"/>
+        <java.awt.Point x="5.6" y="4.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>true</flipStanding>
+      <value>
+        <value>220.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R11</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.Resistor[7]/length"/>
+      <width reference="../../org.diylc.components.passive.Resistor[7]/width"/>
+      <points>
+        <java.awt.Point x="6.1" y="3.1"/>
+        <java.awt.Point x="5.6" y="4.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>true</flipStanding>
+      <value reference="../../org.diylc.components.passive.Resistor[7]/value"/>
+      <power>HALF</power>
+      <powerNew reference="../../org.diylc.components.passive.Resistor[7]/powerNew"/>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C5</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="6.1" y="3.6"/>
+        <java.awt.Point x="6.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>0.022</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">uF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>500.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J5</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="5.1" y="3.1"/>
+        <java.awt.Point x="5.1" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J6</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="6.1" y="3.1"/>
+        <java.awt.Point x="6.1" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J7</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="5.1" y="5.1"/>
+        <java.awt.Point x="5.1" y="5.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.connectivity.Jumper[5]/leadColor"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J8</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="6.1" y="5.1"/>
+        <java.awt.Point x="6.1" y="5.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.connectivity.Jumper[5]/leadColor"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W3</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="4.6" y="5.1"/>
+        <java.awt.Point x="5.1" y="5.6"/>
+        <java.awt.Point x="4.6" y="4.8"/>
+        <java.awt.Point x="5.6" y="4.6"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>DASHED</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W4</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.1" y="5.6"/>
+        <java.awt.Point x="3.6" y="5.1"/>
+        <java.awt.Point x="3.6" y="6.1"/>
+        <java.awt.Point x="5.6" y="4.1"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>DASHED</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.passive.Resistor>
+      <name>R6</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="4.6" y="3.6"/>
+        <java.awt.Point x="4.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>22.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>3.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R5</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="4.1" y="3.6"/>
+        <java.awt.Point x="4.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>470.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">R</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>3.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R2</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.Resistor[10]/length"/>
+      <width reference="../../org.diylc.components.passive.Resistor[10]/width"/>
+      <points>
+        <java.awt.Point x="3.6" y="3.6"/>
+        <java.awt.Point x="3.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.Resistor[10]/value"/>
+      <power>HALF</power>
+      <powerNew reference="../../org.diylc.components.passive.Resistor[10]/powerNew"/>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C4</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.AxialFilmCapacitor[2]/length"/>
+      <width reference="../../org.diylc.components.passive.AxialFilmCapacitor[2]/width"/>
+      <points>
+        <java.awt.Point x="5.1" y="3.6"/>
+        <java.awt.Point x="5.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.AxialFilmCapacitor[2]/value"/>
+      <voltage>_63V</voltage>
+      <voltageNew reference="../../org.diylc.components.passive.AxialFilmCapacitor[2]/voltageNew"/>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R13</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="6.6" y="4.6"/>
+        <java.awt.Point x="6.6" y="3.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>10.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W5</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="5.6" y="4.6"/>
+        <java.awt.Point x="6.1" y="4.6"/>
+        <java.awt.Point x="6.1" y="5.6"/>
+        <java.awt.Point x="7.6" y="5.6"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>DASHED</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.passive.Resistor>
+      <name>R12</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="6.6" y="5.6"/>
+        <java.awt.Point x="6.6" y="4.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>27.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C6</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="6.6" y="4.6"/>
+        <java.awt.Point x="7.1" y="5.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>0.1</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">uF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>500.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R14</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="7.1" y="5.6"/>
+        <java.awt.Point x="6.6" y="3.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">M</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R16</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="6.6" y="3.1"/>
+        <java.awt.Point x="7.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>470.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">R</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R15</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.Resistor[14]/length"/>
+      <width reference="../../org.diylc.components.passive.Resistor[14]/width"/>
+      <points>
+        <java.awt.Point x="7.1" y="4.6"/>
+        <java.awt.Point x="6.6" y="3.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.Resistor[14]/value"/>
+      <power>HALF</power>
+      <powerNew reference="../../org.diylc.components.passive.Resistor[14]/powerNew"/>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C7</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="7.1" y="3.1"/>
+        <java.awt.Point x="7.1" y="4.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>0.022</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">uF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>350.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R18</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="7.6" y="4.6"/>
+        <java.awt.Point x="7.6" y="5.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>10.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R17</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.Resistor[17]/length"/>
+      <width reference="../../org.diylc.components.passive.Resistor[17]/width"/>
+      <points>
+        <java.awt.Point x="8.1" y="5.6"/>
+        <java.awt.Point x="7.6" y="4.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.Resistor[17]/value"/>
+      <power>HALF</power>
+      <powerNew reference="../../org.diylc.components.passive.Resistor[17]/powerNew"/>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.AxialElectrolyticCapacitor>
+      <name>C8</name>
+      <alpha>127</alpha>
+      <length>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="7.6" y="4.6"/>
+        <java.awt.Point x="7.6" y="3.1"/>
+      </points>
+      <bodyColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor reference="../../org.diylc.components.passive.AxialElectrolyticCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>47.0</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">uF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>500.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+      <markerColor>
+        <red>51</red>
+        <green>51</green>
+        <blue>51</blue>
+        <alpha>255</alpha>
+      </markerColor>
+      <tickColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <polarized>true</polarized>
+    </org.diylc.components.passive.AxialElectrolyticCapacitor>
+    <org.diylc.components.passive.AxialElectrolyticCapacitor>
+      <name>C9</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.AxialElectrolyticCapacitor[3]/length"/>
+      <width>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="8.1" y="5.6"/>
+        <java.awt.Point x="8.1" y="3.1"/>
+      </points>
+      <bodyColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <labelColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>16.0</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">uF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew reference="../../org.diylc.components.passive.AxialElectrolyticCapacitor[3]/voltageNew"/>
+      <markerColor>
+        <red>51</red>
+        <green>51</green>
+        <blue>51</blue>
+        <alpha>255</alpha>
+      </markerColor>
+      <tickColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <polarized>true</polarized>
+    </org.diylc.components.passive.AxialElectrolyticCapacitor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C10</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="8.6" y="3.6"/>
+        <java.awt.Point x="8.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>0.022</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">uF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>250.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C11</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/length"/>
+      <width reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/width"/>
+      <points>
+        <java.awt.Point x="9.1" y="3.6"/>
+        <java.awt.Point x="8.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/value"/>
+      <voltage>_63V</voltage>
+      <voltageNew reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/voltageNew"/>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R19</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="8.6" y="5.1"/>
+        <java.awt.Point x="9.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>33.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.RadialCeramicDiskCapacitor>
+      <name>C12</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.25</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="9.1" y="4.6"/>
+        <java.awt.Point x="9.6" y="5.1"/>
+      </points>
+      <bodyColor>
+        <red>240</red>
+        <green>230</green>
+        <blue>140</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>168</red>
+        <green>161</green>
+        <blue>98</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <pinSpacing>
+        <value>0.1</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </pinSpacing>
+      <value>
+        <value>250.0</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">pF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>1000.0</value>
+      </voltageNew>
+    </org.diylc.components.passive.RadialCeramicDiskCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R20</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="9.6" y="5.1"/>
+        <java.awt.Point x="9.6" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>100.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R21</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="9.6" y="3.6"/>
+        <java.awt.Point x="10.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>820.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">R</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C13</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="10.1" y="5.1"/>
+        <java.awt.Point x="10.1" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>0.68</value>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>150.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R22</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="12.9" y="3.8"/>
+        <java.awt.Point x="12.9" y="4.9"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>820.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">R</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.AxialElectrolyticCapacitor>
+      <name>C14</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="13.1" y="5.1"/>
+        <java.awt.Point x="13.1" y="3.6"/>
+      </points>
+      <bodyColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <labelColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>330.0</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">uF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>25.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+      <markerColor>
+        <red>102</red>
+        <green>102</green>
+        <blue>102</blue>
+        <alpha>255</alpha>
+      </markerColor>
+      <tickColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <polarized>true</polarized>
+    </org.diylc.components.passive.AxialElectrolyticCapacitor>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J11</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="13.1" y="3.6"/>
+        <java.awt.Point x="12.9" y="3.8"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J12</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="12.9" y="4.9"/>
+        <java.awt.Point x="13.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.connectivity.Jumper[8]/leadColor"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C15</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.AxialFilmCapacitor[8]/length"/>
+      <width reference="../../org.diylc.components.passive.AxialFilmCapacitor[8]/width"/>
+      <points>
+        <java.awt.Point x="12.6" y="3.6"/>
+        <java.awt.Point x="12.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.AxialFilmCapacitor[8]/value"/>
+      <voltage>_63V</voltage>
+      <voltageNew reference="../../org.diylc.components.passive.AxialFilmCapacitor[8]/voltageNew"/>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R23</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="12.5" y="3.7"/>
+        <java.awt.Point x="12.5" y="5.0"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>2.7</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J13</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="12.6" y="3.6"/>
+        <java.awt.Point x="12.5" y="3.7"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.connectivity.Jumper[8]/leadColor"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J14</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="12.5" y="5.0"/>
+        <java.awt.Point x="12.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.connectivity.Jumper[8]/leadColor"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J9</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="9.6" y="3.6"/>
+        <java.awt.Point x="10.1" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C18</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/length"/>
+      <width reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/width"/>
+      <points>
+        <java.awt.Point x="12.1" y="3.6"/>
+        <java.awt.Point x="12.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/value"/>
+      <voltage>_63V</voltage>
+      <voltageNew reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/voltageNew"/>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R26</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.Resistor[20]/length"/>
+      <width reference="../../org.diylc.components.passive.Resistor[20]/width"/>
+      <points>
+        <java.awt.Point x="11.6" y="5.1"/>
+        <java.awt.Point x="11.6" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.Resistor[20]/value"/>
+      <power>HALF</power>
+      <powerNew reference="../../org.diylc.components.passive.Resistor[20]/powerNew"/>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.Resistor>
+      <name>R27</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.Resistor[20]/length"/>
+      <width reference="../../org.diylc.components.passive.Resistor[20]/width"/>
+      <points>
+        <java.awt.Point x="12.1" y="5.1"/>
+        <java.awt.Point x="11.6" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.Resistor[20]/value"/>
+      <power>HALF</power>
+      <powerNew reference="../../org.diylc.components.passive.Resistor[20]/powerNew"/>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W6</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="8.1" y="5.6"/>
+        <java.awt.Point x="8.6" y="5.6"/>
+        <java.awt.Point x="10.1" y="6.2"/>
+        <java.awt.Point x="11.6" y="3.6"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>DASHED</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.passive.Resistor>
+      <name>R25</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="10.6" y="4.1"/>
+        <java.awt.Point x="11.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>100.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew>
+        <value>0.5</value>
+        <unit class="org.diylc.core.measures.PowerUnit">W</unit>
+      </powerNew>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.passive.RadialCeramicDiskCapacitor>
+      <name>C16</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.25</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.125</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="10.6" y="4.1"/>
+        <java.awt.Point x="10.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.RadialCeramicDiskCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.RadialCeramicDiskCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <pinSpacing reference="../../org.diylc.components.passive.RadialCeramicDiskCapacitor/pinSpacing"/>
+      <value>
+        <value>500.0</value>
+        <unit class="org.diylc.core.measures.CapacitanceUnit">pF</unit>
+      </value>
+      <voltage>_63V</voltage>
+      <voltageNew>
+        <value>200.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+    </org.diylc.components.passive.RadialCeramicDiskCapacitor>
+    <org.diylc.components.passive.AxialFilmCapacitor>
+      <name>C17</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/length"/>
+      <width reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/width"/>
+      <points>
+        <java.awt.Point x="11.1" y="3.6"/>
+        <java.awt.Point x="11.6" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.AxialFilmCapacitor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/value"/>
+      <voltage>_63V</voltage>
+      <voltageNew reference="../../org.diylc.components.passive.AxialFilmCapacitor[6]/voltageNew"/>
+    </org.diylc.components.passive.AxialFilmCapacitor>
+    <org.diylc.components.passive.Resistor>
+      <name>R24</name>
+      <alpha>127</alpha>
+      <length reference="../../org.diylc.components.passive.Resistor[26]/length"/>
+      <width reference="../../org.diylc.components.passive.Resistor[26]/width"/>
+      <points>
+        <java.awt.Point x="10.6" y="3.6"/>
+        <java.awt.Point x="11.1" y="5.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.passive.Resistor/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.passive.Resistor/borderColor"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.passive.Resistor/leadColor"/>
+      <display>BOTH</display>
+      <flipStanding>false</flipStanding>
+      <value>
+        <value>100.0</value>
+        <unit class="org.diylc.core.measures.ResistanceUnit">K</unit>
+      </value>
+      <power>HALF</power>
+      <powerNew reference="../../org.diylc.components.passive.Resistor[26]/powerNew"/>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </org.diylc.components.passive.Resistor>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J10</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="12.6" y="3.6"/>
+        <java.awt.Point x="13.1" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J15</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="7.6" y="3.1"/>
+        <java.awt.Point x="12.6" y="3.1"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J16</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="12.6" y="3.1"/>
+        <java.awt.Point x="13.1" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor>
+        <red>204</red>
+        <green>204</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </leadColor>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+    <org.diylc.components.connectivity.Jumper>
+      <name>J17</name>
+      <alpha>127</alpha>
+      <points>
+        <java.awt.Point x="9.6" y="3.1"/>
+        <java.awt.Point x="9.6" y="3.6"/>
+      </points>
+      <bodyColor reference="../../org.diylc.components.semiconductors.DiodePlastic/labelColor"/>
+      <borderColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <labelColor reference="../../org.diylc.components.connectivity.SolderPad/color"/>
+      <leadColor reference="../../org.diylc.components.connectivity.Jumper[15]/leadColor"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <style>SOLID</style>
+    </org.diylc.components.connectivity.Jumper>
+  </components>
+  <groups/>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font>
+    <attributes>
+      <entry>
+        <awt-text-attribute>family</awt-text-attribute>
+        <string>Tahoma</string>
+      </entry>
+      <entry>
+        <awt-text-attribute>superscript</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>tracking</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>width</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>transform</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>posture</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>weight</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>size</awt-text-attribute>
+        <float>14.0</float>
+      </entry>
+    </attributes>
+  </font>
+</org.diylc.core.Project>

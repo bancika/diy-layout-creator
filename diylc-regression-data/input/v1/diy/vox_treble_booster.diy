@@ -1,0 +1,20 @@
+<Layout Type="Stripboard" Width="7" Height="7" Project="VOX TREBLE BOOSTER" Credits="Layout and mods by Andrew Carrell">
+	<Resistor Value="100K" X1="2" Y1="1" X2="2" Y2="4" Name="R1"/>
+	<Resistor Value="2.2K" X1="3" Y1="1" X2="3" Y2="2" Name="R2"/>
+	<Resistor Value="2.2K" X1="4" Y1="2" X2="4" Y2="3" Name="R3"/>
+	<Transistor X1="3" Y1="5" X2="3" Y2="3" Name="Q1" Value="2N2924 (2N3904 WORKS FINE)"/>
+	<Capacitor Value="500pF" X1="4" Y1="4" X2="4" Y2="7" Name="C1"/>
+	<Resistor Value="1M" X1="3" Y1="7" X2="3" Y2="6" Name="R4"/>
+	<Resistor X1="2" Y1="5" X2="2" Y2="6" Name="R5" Value="1K"/>
+	<Resistor Value="22K" X1="5" Y1="4" X2="5" Y2="6" Name="R6"/>
+	<Capacitor Value=".1uF" X1="5" Y1="3" X2="5" Y2="1" Name="C3"/>
+	<Cut X1="4" Y1="1" Name="X1"/>  <Electrolyte Value="10uF" X1="6" Y1="5" X2="6" Y2="6" Name="C2"/>
+  <Text Value="+9V" X1="-2" Y1="1" Name="T1"/>
+  <Text Value="VOL-3" X1="8" Y1="1" Name="T2"/>
+  <Text Value="VOL-1" X1="8" Y1="6" Name="T3"/>
+  <Text Value="IN" X1="-2" Y1="7" Name="T4"/>
+  <Text Value="GROUND" X1="-3" Y1="6" Name="T5"/>
+  <Text Value="VOL: 100K AUDIO TAPER POT" X1="-1" Y1="14" Name="T6"/>
+  <Text Value="VOL-2 GOES TO EFFECT OUTPUT" X1="-1" Y1="15" Name="T7"/>
+  <Text Value="E" X1="3" Y1="5" Name="T8"/>
+</Layout>

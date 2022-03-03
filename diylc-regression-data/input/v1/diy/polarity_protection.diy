@@ -1,0 +1,15 @@
+<Layout Type="Stripboard" Width="5" Height="6" Project="GEOFEX Cheap Polarity Protection" Credits="lovekraft" HideList="False">
+	<Transistor Value="2N3906" X1="1" Y1="3" X2="1" Y2="1" Name="Q1"/>
+	<Transistor Value="2N3904" X1="1" Y1="6" X2="1" Y2="4" Name="Q2"/>
+	<Diode Value="1N4148" X1="2" Y1="6" X2="2" Y2="5" Name="D1"/>
+	<Resistor Value="100K" X1="4" Y1="5" X2="4" Y2="6" Name="R1"/>
+	<Resistor Value="4.7M" X1="2" Y1="2" X2="2" Y2="3" Name="R2"/>
+	<Resistor Value="10K" X1="3" Y1="3" X2="3" Y2="5" Name="R3"/>
+	<Resistor Value="3.3K" X1="4" Y1="2" X2="4" Y2="4" Name="R4"/>
+	<Jumper X1="5" Y1="1" X2="6" Y2="1" Name="J1"/>
+	<Jumper X1="5" Y1="3" X2="6" Y2="3" Name="J2"/>
+	<Jumper X1="5" Y1="6" X2="6" Y2="6" Name="J3"/>
+	<Text Value="B+ battery/power supply" X1="7" Y1="3" Name="A1"/>
+	<Text Value="V+ to circuit" X1="7" Y1="1" Name="A2"/>
+	<Text Value="B-/ circuit gnd" X1="7" Y1="6" Name="A3"/>
+</Layout>

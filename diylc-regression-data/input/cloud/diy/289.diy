@@ -1,0 +1,1178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.diylc.core.Project>
+  <fileVersion>
+    <major>3</major>
+    <minor>52</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>jhancock</author>
+  <width>
+    <value>29.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">cm</unit>
+  </width>
+  <height>
+    <value>21.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">cm</unit>
+  </height>
+  <gridSpacing>
+    <value>0.1</value>
+    <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+  </gridSpacing>
+  <components>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="7.1" y="5.5"/>
+        <java.awt.Point x="8.5" y="6.4"/>
+      </controlPoints>
+      <firstPoint x="7.1" y="5.5"/>
+      <secondPoint x="8.5" y="6.4"/>
+      <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </color>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+      <edgeRadius>
+        <value>0.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </edgeRadius>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.electromechanical.MiniToggleSwitch>
+      <name defined-in="org.diylc.components.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="2.8" y="2.8"/>
+        <java.awt.Point x="2.8" y="3.0"/>
+      </controlPoints>
+      <name>SW2</name>
+      <switchType>SPST</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </spacing>
+      <bodyColor>
+        <red>50</red>
+        <green>153</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>35</red>
+        <green>107</green>
+        <blue>142</blue>
+        <alpha>255</alpha>
+      </borderColor>
+    </org.diylc.components.electromechanical.MiniToggleSwitch>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W1</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="2.8" y="2.8"/>
+        <java.awt.Point x="2.9" y="2.2"/>
+        <java.awt.Point x="4.0" y="1.5"/>
+        <java.awt.Point x="5.7" y="1.0"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>153</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </stripeColor>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.misc.GroundSymbol>
+      <name>GND1</name>
+      <point x="3.9" y="6.6"/>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <size>
+        <value>0.15</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </size>
+      <type>DEFAULT</type>
+    </org.diylc.components.misc.GroundSymbol>
+    <org.diylc.components.electromechanical.MiniToggleSwitch>
+      <name defined-in="org.diylc.components.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="3.1" y="3.4"/>
+        <java.awt.Point x="3.1" y="3.6"/>
+      </controlPoints>
+      <name>SW1</name>
+      <switchType>SPST</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing reference="../../org.diylc.components.electromechanical.MiniToggleSwitch/spacing"/>
+      <bodyColor reference="../../org.diylc.components.electromechanical.MiniToggleSwitch/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.electromechanical.MiniToggleSwitch/borderColor"/>
+    </org.diylc.components.electromechanical.MiniToggleSwitch>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W2</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.1" y="3.4"/>
+        <java.awt.Point x="3.6" y="2.7"/>
+        <java.awt.Point x="4.4" y="2.4"/>
+        <java.awt.Point x="6.0" y="2.2"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>153</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W3</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.5" y="3.9"/>
+        <java.awt.Point x="4.1" y="3.6"/>
+        <java.awt.Point x="4.6" y="3.7"/>
+        <java.awt.Point x="6.4" y="3.4"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>153</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.electromechanical.MiniToggleSwitch>
+      <name defined-in="org.diylc.components.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="3.5" y="3.9"/>
+        <java.awt.Point x="3.5" y="4.1"/>
+      </controlPoints>
+      <name>SW3</name>
+      <switchType>SPST</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing reference="../../org.diylc.components.electromechanical.MiniToggleSwitch/spacing"/>
+      <bodyColor reference="../../org.diylc.components.electromechanical.MiniToggleSwitch/bodyColor"/>
+      <borderColor reference="../../org.diylc.components.electromechanical.MiniToggleSwitch/borderColor"/>
+    </org.diylc.components.electromechanical.MiniToggleSwitch>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W4</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="2.8" y="3.0"/>
+        <java.awt.Point x="2.2" y="3.3"/>
+        <java.awt.Point x="2.2" y="4.3"/>
+        <java.awt.Point x="3.1" y="3.6"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W5</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.1" y="3.6"/>
+        <java.awt.Point x="2.4" y="4.1"/>
+        <java.awt.Point x="2.9" y="4.5"/>
+        <java.awt.Point x="3.5" y="4.1"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.electromechanical.OpenJack1__4>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="9.4" y="5.2"/>
+        <java.awt.Point x="9.8" y="5.4"/>
+        <java.awt.Point x="9.7" y="6.1"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <type>STEREO</type>
+      <showLabels>true</showLabels>
+    </org.diylc.components.electromechanical.OpenJack1__4>
+    <org.diylc.components.passive.PotentiometerPanel>
+      <name>Volume</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="8.0" y="4.8"/>
+        <java.awt.Point x="8.3" y="4.8"/>
+        <java.awt.Point x="8.6" y="4.8"/>
+      </controlPoints>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter>
+        <value>1.0</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </bodyDiameter>
+      <spacing>
+        <value>0.3</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </spacing>
+      <lugDiameter>
+        <value>0.15</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </lugDiameter>
+      <bodyColor>
+        <red>192</red>
+        <green>192</green>
+        <blue>192</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>128</red>
+        <green>128</green>
+        <blue>128</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <nutColor>
+        <red>203</red>
+        <green>213</green>
+        <blue>219</blue>
+        <alpha>255</alpha>
+      </nutColor>
+      <waferColor>
+        <red>205</red>
+        <green>133</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </waferColor>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+    </org.diylc.components.passive.PotentiometerPanel>
+    <org.diylc.components.shapes.Rectangle>
+      <name>RECT1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="6.7" y="7.0"/>
+        <java.awt.Point x="8.1" y="7.9"/>
+      </controlPoints>
+      <firstPoint x="6.7" y="7.0"/>
+      <secondPoint x="8.1" y="7.9"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/color"/>
+      <borderColor reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <borderThickness reference="../../org.diylc.components.shapes.Rectangle/borderThickness"/>
+      <edgeRadius reference="../../org.diylc.components.shapes.Rectangle/edgeRadius"/>
+    </org.diylc.components.shapes.Rectangle>
+    <org.diylc.components.connectivity.SolderPad>
+      <name>Pad1</name>
+      <size>
+        <value>0.09</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </size>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <point x="6.9" y="7.1"/>
+      <type>ROUND</type>
+      <holeSize>
+        <value>0.8</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </holeSize>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name>Pad2</name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <point x="7.2" y="7.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name>Pad3</name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <point x="7.6" y="7.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name>Pad4</name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <point x="7.9" y="7.1"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name>Pad5</name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <point x="8.0" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name>Pad6</name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <point x="7.3" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name>Pad7</name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <point x="8.3" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.connectivity.SolderPad>
+      <name>Pad8</name>
+      <size reference="../../org.diylc.components.connectivity.SolderPad/size"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <point x="7.6" y="5.6"/>
+      <type>ROUND</type>
+      <holeSize reference="../../org.diylc.components.connectivity.SolderPad/holeSize"/>
+      <layer>_1</layer>
+    </org.diylc.components.connectivity.SolderPad>
+    <org.diylc.components.shapes.Ellipse>
+      <name>ELL1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="7.3" y="7.4"/>
+        <java.awt.Point x="8.0" y="8.1"/>
+      </controlPoints>
+      <firstPoint x="7.3" y="7.4"/>
+      <secondPoint x="8.0" y="8.1"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/color"/>
+      <borderColor reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <borderThickness>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+      </borderThickness>
+    </org.diylc.components.shapes.Ellipse>
+    <org.diylc.components.shapes.Ellipse>
+      <name>ELL2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <java.awt.Point x="7.7" y="5.9"/>
+        <java.awt.Point x="8.4" y="6.6"/>
+      </controlPoints>
+      <firstPoint x="7.7" y="5.9"/>
+      <secondPoint x="8.4" y="6.6"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/color"/>
+      <borderColor reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <borderThickness reference="../../org.diylc.components.shapes.Ellipse/borderThickness"/>
+    </org.diylc.components.shapes.Ellipse>
+    <org.diylc.components.electromechanical.MiniToggleSwitch>
+      <name defined-in="org.diylc.components.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="8.1" y="3.7"/>
+        <java.awt.Point x="8.3" y="3.7"/>
+        <java.awt.Point x="8.5" y="3.7"/>
+        <java.awt.Point x="8.1" y="3.5"/>
+        <java.awt.Point x="8.3" y="3.5"/>
+        <java.awt.Point x="8.5" y="3.5"/>
+      </controlPoints>
+      <name>CTS Push/Pull</name>
+      <switchType>DPDT</switchType>
+      <orientation>HORIZONTAL</orientation>
+      <spacing>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </spacing>
+      <bodyColor>
+        <red>50</red>
+        <green>153</green>
+        <blue>204</blue>
+        <alpha>255</alpha>
+      </bodyColor>
+      <borderColor>
+        <red>35</red>
+        <green>107</green>
+        <blue>142</blue>
+        <alpha>255</alpha>
+      </borderColor>
+    </org.diylc.components.electromechanical.MiniToggleSwitch>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W6</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.9" y="6.6"/>
+        <java.awt.Point x="3.7" y="4.8"/>
+        <java.awt.Point x="5.0" y="4.1"/>
+        <java.awt.Point x="7.6" y="7.1"/>
+      </controlPoints2>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </stripeColor>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.misc.Label>
+      <name>L1</name>
+      <point x="6.9" y="7.2"/>
+      <text>B+</text>
+      <font>
+        <attributes>
+          <entry>
+            <awt-text-attribute>width</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>weight</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>size</awt-text-attribute>
+            <float>14.0</float>
+          </entry>
+          <entry>
+            <awt-text-attribute>superscript</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>tracking</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>family</awt-text-attribute>
+            <string>Square721 BT</string>
+          </entry>
+          <entry>
+            <awt-text-attribute>transform</awt-text-attribute>
+            <null/>
+          </entry>
+          <entry>
+            <awt-text-attribute>posture</awt-text-attribute>
+            <null/>
+          </entry>
+        </attributes>
+      </font>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L2</name>
+      <point x="7.2" y="7.2"/>
+      <text>In</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L3</name>
+      <point x="7.9" y="7.2"/>
+      <text>Out</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L4</name>
+      <point x="7.6" y="7.2"/>
+      <text>Gnd</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L5</name>
+      <point x="7.3" y="5.7"/>
+      <text>B+</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L6</name>
+      <point x="8.3" y="5.7"/>
+      <text>Out</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L7</name>
+      <point x="8.0" y="5.7"/>
+      <text>Gnd</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L8</name>
+      <point x="7.6" y="5.7"/>
+      <text>In</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L9</name>
+      <point x="7.0" y="7.5"/>
+      <text>BCU</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.misc.Label>
+      <name>L10</name>
+      <point x="7.4" y="6.0"/>
+      <text>QDD2</text>
+      <font reference="../../org.diylc.components.misc.Label/font"/>
+      <color reference="../../org.diylc.components.shapes.Rectangle/borderColor"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </org.diylc.components.misc.Label>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W7</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.9" y="6.6"/>
+        <java.awt.Point x="4.9" y="4.4"/>
+        <java.awt.Point x="6.2" y="3.7"/>
+        <java.awt.Point x="8.0" y="5.6"/>
+      </controlPoints2>
+      <color reference="../../org.diylc.components.connectivity.HookupWire[6]/color"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[6]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.electromechanical.BatterySnap9V>
+      <name>BTR1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoint x="1.3" y="6.4"/>
+      <orientation>DEFAULT</orientation>
+      <color>
+        <red>64</red>
+        <green>64</green>
+        <blue>64</blue>
+        <alpha>255</alpha>
+      </color>
+    </org.diylc.components.electromechanical.BatterySnap9V>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W10</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.9" y="6.6"/>
+        <java.awt.Point x="1.2" y="4.1"/>
+        <java.awt.Point x="1.2" y="5.1"/>
+        <java.awt.Point x="1.5" y="6.4"/>
+      </controlPoints2>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </stripeColor>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.misc.BatterySymbol>
+      <name>B1</name>
+      <alpha>127</alpha>
+      <length>
+        <value>0.05</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </length>
+      <width>
+        <value>0.15</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </width>
+      <points>
+        <java.awt.Point x="2.1" y="6.4"/>
+        <java.awt.Point x="1.5" y="6.4"/>
+      </points>
+      <borderColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </borderColor>
+      <labelColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </labelColor>
+      <leadColor reference="../labelColor"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <labelPosition>ABOVE</labelPosition>
+      <value>Battery</value>
+      <voltageNew>
+        <value>9.0</value>
+        <unit class="org.diylc.core.measures.VoltageUnit">V</unit>
+      </voltageNew>
+    </org.diylc.components.misc.BatterySymbol>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="8.0" y="4.8"/>
+        <java.awt.Point x="6.7" y="5.5"/>
+        <java.awt.Point x="9.1" y="5.0"/>
+        <java.awt.Point x="8.3" y="5.6"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[8]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W10</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.9" y="6.6"/>
+        <java.awt.Point x="6.1" y="4.1"/>
+        <java.awt.Point x="6.8" y="3.3"/>
+        <java.awt.Point x="8.6" y="4.8"/>
+      </controlPoints2>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </stripeColor>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W12</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="6.8" y="1.0"/>
+        <java.awt.Point x="8.3" y="1.7"/>
+        <java.awt.Point x="9.1" y="2.7"/>
+        <java.awt.Point x="3.9" y="6.6"/>
+      </controlPoints2>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[8]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W12</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="6.9" y="2.2"/>
+        <java.awt.Point x="7.7" y="2.5"/>
+        <java.awt.Point x="8.4" y="3.4"/>
+        <java.awt.Point x="3.9" y="6.6"/>
+      </controlPoints2>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </stripeColor>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W12</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="6.8" y="3.4"/>
+        <java.awt.Point x="6.5" y="3.4"/>
+        <java.awt.Point x="7.7" y="3.9"/>
+        <java.awt.Point x="3.9" y="6.6"/>
+      </controlPoints2>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </stripeColor>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="8.3" y="4.8"/>
+        <java.awt.Point x="8.4" y="5.4"/>
+        <java.awt.Point x="9.4" y="5.1"/>
+        <java.awt.Point x="9.4" y="5.2"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </stripeColor>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W10</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="9.8" y="5.4"/>
+        <java.awt.Point x="11.4" y="7.1"/>
+        <java.awt.Point x="4.9" y="6.5"/>
+        <java.awt.Point x="3.9" y="6.6"/>
+      </controlPoints2>
+      <color>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </stripeColor>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W13</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="2.1" y="6.4"/>
+        <java.awt.Point x="3.3" y="6.7"/>
+        <java.awt.Point x="3.3" y="7.7"/>
+        <java.awt.Point x="6.9" y="7.1"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[8]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W14</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="8.3" y="3.7"/>
+        <java.awt.Point x="10.2" y="3.7"/>
+        <java.awt.Point x="10.7" y="4.5"/>
+        <java.awt.Point x="9.7" y="6.1"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[8]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W15</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="6.9" y="7.1"/>
+        <java.awt.Point x="6.8" y="4.6"/>
+        <java.awt.Point x="6.8" y="5.6"/>
+        <java.awt.Point x="7.3" y="5.6"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[8]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W16</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="8.1" y="3.7"/>
+        <java.awt.Point x="7.5" y="4.4"/>
+        <java.awt.Point x="6.8" y="4.8"/>
+        <java.awt.Point x="7.3" y="5.6"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[8]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.guitar.SingleCoilPickup>
+      <name>Neck</name>
+      <alpha>127</alpha>
+      <value>Lace Sensor Gold</value>
+      <controlPoint x="6.4" y="1.0"/>
+      <orientation>DEFAULT</orientation>
+      <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </color>
+      <poleColor>
+        <red>117</red>
+        <green>157</green>
+        <blue>175</blue>
+        <alpha>255</alpha>
+      </poleColor>
+      <baseColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </baseColor>
+      <type>Stratocaster</type>
+      <polePieceType>None</polePieceType>
+    </org.diylc.components.guitar.SingleCoilPickup>
+    <org.diylc.components.guitar.SingleCoilPickup>
+      <name>Middle</name>
+      <alpha>127</alpha>
+      <value>Lace Sensor Gold</value>
+      <controlPoint x="6.5" y="2.2"/>
+      <orientation>DEFAULT</orientation>
+      <color reference="../../org.diylc.components.guitar.SingleCoilPickup/color"/>
+      <poleColor reference="../../org.diylc.components.guitar.SingleCoilPickup/poleColor"/>
+      <baseColor reference="../../org.diylc.components.guitar.SingleCoilPickup/baseColor"/>
+      <type>Stratocaster</type>
+      <polePieceType>None</polePieceType>
+    </org.diylc.components.guitar.SingleCoilPickup>
+    <org.diylc.components.guitar.SingleCoilPickup>
+      <name>Bridge</name>
+      <alpha>127</alpha>
+      <value>Lace Sensor Red</value>
+      <controlPoint x="6.4" y="3.4"/>
+      <orientation>DEFAULT</orientation>
+      <color reference="../../org.diylc.components.guitar.SingleCoilPickup/color"/>
+      <poleColor reference="../../org.diylc.components.guitar.SingleCoilPickup/poleColor"/>
+      <baseColor>
+        <red>255</red>
+        <green>0</green>
+        <blue>51</blue>
+        <alpha>255</alpha>
+      </baseColor>
+      <type>Stratocaster</type>
+      <polePieceType>None</polePieceType>
+    </org.diylc.components.guitar.SingleCoilPickup>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W8</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="3.5" y="4.1"/>
+        <java.awt.Point x="2.3" y="5.2"/>
+        <java.awt.Point x="4.1" y="5.7"/>
+        <java.awt.Point x="7.2" y="7.1"/>
+      </controlPoints2>
+      <color reference="../../org.diylc.components.connectivity.HookupWire[9]/color"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[8]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+    <org.diylc.components.connectivity.HookupWire>
+      <name>W9</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <java.awt.Point x="7.6" y="5.6"/>
+        <java.awt.Point x="8.1" y="5.6"/>
+        <java.awt.Point x="9.3" y="7.1"/>
+        <java.awt.Point x="7.9" y="7.1"/>
+      </controlPoints2>
+      <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </color>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor reference="../../org.diylc.components.connectivity.HookupWire[8]/stripeColor"/>
+    </org.diylc.components.connectivity.HookupWire>
+  </components>
+  <groups>
+    <set/>
+    <set>
+      <org.diylc.components.misc.BatterySymbol reference="../../../components/org.diylc.components.misc.BatterySymbol"/>
+      <org.diylc.components.electromechanical.BatterySnap9V reference="../../../components/org.diylc.components.electromechanical.BatterySnap9V"/>
+    </set>
+    <set>
+      <org.diylc.components.connectivity.SolderPad reference="../../../components/org.diylc.components.connectivity.SolderPad[7]"/>
+      <org.diylc.components.connectivity.SolderPad reference="../../../components/org.diylc.components.connectivity.SolderPad[6]"/>
+      <org.diylc.components.shapes.Ellipse reference="../../../components/org.diylc.components.shapes.Ellipse[2]"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[5]"/>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[7]"/>
+      <org.diylc.components.connectivity.SolderPad reference="../../../components/org.diylc.components.connectivity.SolderPad[8]"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[8]"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[10]"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[6]"/>
+      <org.diylc.components.connectivity.SolderPad reference="../../../components/org.diylc.components.connectivity.SolderPad[5]"/>
+    </set>
+    <set>
+      <org.diylc.components.connectivity.SolderPad reference="../../../components/org.diylc.components.connectivity.SolderPad[2]"/>
+      <org.diylc.components.connectivity.SolderPad reference="../../../components/org.diylc.components.connectivity.SolderPad"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[4]"/>
+      <org.diylc.components.shapes.Ellipse reference="../../../components/org.diylc.components.shapes.Ellipse"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[2]"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[9]"/>
+      <org.diylc.components.shapes.Rectangle reference="../../../components/org.diylc.components.shapes.Rectangle[2]"/>
+      <org.diylc.components.connectivity.SolderPad reference="../../../components/org.diylc.components.connectivity.SolderPad[3]"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label"/>
+      <org.diylc.components.misc.Label reference="../../../components/org.diylc.components.misc.Label[3]"/>
+      <org.diylc.components.connectivity.SolderPad reference="../../../components/org.diylc.components.connectivity.SolderPad[4]"/>
+    </set>
+  </groups>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font>
+    <attributes>
+      <entry>
+        <awt-text-attribute>width</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>weight</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>size</awt-text-attribute>
+        <float>14.0</float>
+      </entry>
+      <entry>
+        <awt-text-attribute>superscript</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>tracking</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>family</awt-text-attribute>
+        <string>Square721 BT</string>
+      </entry>
+      <entry>
+        <awt-text-attribute>transform</awt-text-attribute>
+        <null/>
+      </entry>
+      <entry>
+        <awt-text-attribute>posture</awt-text-attribute>
+        <null/>
+      </entry>
+    </attributes>
+  </font>
+</org.diylc.core.Project>

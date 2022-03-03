@@ -1,0 +1,26 @@
+<Layout Width="10" Height="8" Type="Stripboard" Project="Orange Treble and Bass Booster" Credits="Layout by Robin Aggleton 2006">
+	<Transistor Value="" X1="7" Y1="3" X2="7" Y2="5" Name="Q1"/>
+	<Resistor Value="2K" X1="8" Y1="5" X2="8" Y2="8" Name="R1"/>
+	<Resistor Value="80K" X1="6" Y1="4" X2="6" Y2="8" Name="R2"/>
+	<Cut X1="6" Y1="5" Name="X2"/>
+	<Cut X1="6" Y1="3" Name="X3"/>
+	<Resistor Value="10K" X1="3" Y1="2" X2="3" Y2="3" Name="R3"/>
+	<Resistor Value="470K" X1="5" Y1="3" X2="5" Y2="4" Name="R4"/>
+	<Text Value="OUT" X1="-2" Y1="1" Name="A1"/>
+	<Text Value="-9v" X1="-2" Y1="3" Name="A2"/>
+	<Text Value="BLEND 3" X1="-3" Y1="4" Name="A3"/>
+	<Text Value="BLEND 2" X1="-3" Y1="5" Name="A4"/>
+	<Text Value="BLEND 1" X1="-3" Y1="6" Name="A5"/>
+	<Text Value="IN" X1="-2" Y1="7" Name="A6"/>
+	<Text Value="GROUND" X1="-3" Y1="8" Name="A7"/>
+	<Jumper X1="2" Y1="7" X2="2" Y2="5" Name="J3"/>
+	<Capacitor Value="0.047uF" X1="3" Y1="6" X2="3" Y2="8" Name="C1"/>
+	<Capacitor Value="0.0022uF" X1="2" Y1="4" X2="4" Y2="4" Name="C2"/>
+	<Cut X1="3" Y1="4" Name="X4"/>  <Capacitor Value="0.1uF" X1="9" Y1="1" X2="9" Y2="3" Name="C3"/>
+  <Electrolyte Value="30uF" X1="10" Y1="8" X2="10" Y2="5" Name="C4"/>
+  <Jumper X1="8" Y1="2" X2="8" Y2="3" Name="J1"/>
+  <Text Value="Make sure to cut the track under C2" X1="9" Y1="10" Name="A8"/>
+  
+  
+  <Text Value="Q1 is oriented from top to bottom: C B E." X1="9" Y1="11" Name="A9"/>
+</Layout>

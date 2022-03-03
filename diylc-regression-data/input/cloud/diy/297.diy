@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>3</major>
+    <minor>57</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>Frank</author>
+  <width value="29.0" unit="cm"/>
+  <height value="21.0" unit="cm"/>
+  <gridSpacing value="0.4" unit="mm"/>
+  <components>
+    <diylc.connectivity.CopperTrace>
+      <name>Trace3</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="4.175" y="4.075"/>
+        <point x="4.045" y="4.075"/>
+        <point x="4.125" y="4.07"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <thickness value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CopperTrace>
+    <diylc.connectivity.CopperTrace>
+      <name>Trace4</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="4.74" y="4.075"/>
+        <point x="4.87" y="4.075"/>
+        <point x="4.795" y="4.07"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <thickness value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CopperTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad1</name>
+      <size value="0.09" unit="in"/>
+      <color hex="000000"/>
+      <point x="4.045" y="4.075"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad2</name>
+      <size value="0.09" unit="in"/>
+      <color hex="000000"/>
+      <point x="4.87" y="4.075"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.misc.Image>
+      <name>Img2</name>
+      <alpha>127</alpha>
+      <point x="4.18" y="3.96"/>
+      <data>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
+Bxd6WG5w+Q900KP13SYgWQAAAABJRU5ErkJggg==</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="4.45" y="4.07"/>
+      <text>0,022 uF / 1000V</text>
+      <font name="Square721 BT Roman" size="8" style="0"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+  </components>
+  <groups>
+    <set/>
+    <set>
+      <diylc.connectivity.CopperTrace reference="../../../components/diylc.connectivity.CopperTrace[2]"/>
+      <diylc.connectivity.CopperTrace reference="../../../components/diylc.connectivity.CopperTrace"/>
+      <diylc.misc.Image reference="../../../components/diylc.misc.Image"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[2]"/>
+    </set>
+  </groups>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font name="Lucida Console" size="14" style="0"/>
+</project>

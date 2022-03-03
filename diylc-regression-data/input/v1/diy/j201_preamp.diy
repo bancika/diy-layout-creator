@@ -1,0 +1,46 @@
+<Layout Type="Perfboard" Width="20" Height="10" Project="preamp of j201" Credits="">
+  <Transistor Value="j201 2n5457 BF245" X1="3" Y1="5" X2="3" Y2="3" Name="Q1"/>
+  <Jumper X1="3" Y1="4" X2="1" Y2="4" Name="J1"/>
+  <Resistor Value="3M" X1="2" Y1="4" X2="2" Y2="6" Name="R1"/>
+  <Resistor Value="2.2K" X1="3" Y1="5" X2="3" Y2="7" Name="R2"/>
+  <Jumper X1="2" Y1="6" X2="2" Y2="7" Name="J2"/>
+  <Jumper X1="3" Y1="7" X2="2" Y2="7" Name="J3"/>
+  <Jumper X1="2" Y1="7" X2="1" Y2="7" Name="J4"/>
+  <Jack Type="Mono" X1="-5" Y1="2" Name="J5"/>
+  
+  <Wire Color="Black" Seed="1229516050" X1="-4" Y1="2" X2="1" Y2="7" Name="W2"/>
+  <Wire Color="Red" Seed="304231213" X1="-5" Y1="2" X2="1" Y2="4" Name="W1"/>
+  <Jumper X1="3" Y1="7" X2="17" Y2="7" Name="J6"/>
+  <Jumper X1="4" Y1="7" X2="5" Y2="7" Name="J7"/>
+  <Jumper X1="5" Y1="7" X2="6" Y2="7" Name="J8"/>
+  <Jumper X1="6" Y1="7" X2="7" Y2="7" Name="J9"/>
+  <Jumper X1="8" Y1="7" X2="9" Y2="7" Name="J10"/>
+  <Jumper X1="9" Y1="7" X2="10" Y2="7" Name="J11"/>
+  <Jumper X1="11" Y1="7" X2="12" Y2="7" Name="J12"/>
+  <Jumper X1="13" Y1="7" X2="14" Y2="7" Name="J13"/>
+  <Jumper X1="15" Y1="7" X2="16" Y2="7" Name="J14"/>
+  
+  
+  
+  <Jumper X1="3" Y1="3" X2="3" Y2="1" Name="J15"/>
+  
+  
+  <Electrolyte Value="4.7uF" Size="Small" X1="3" Y1="2" X2="5" Y2="2" Name="C1"/>
+  <Resistor Value="6.6K" X1="3" Y1="1" X2="7" Y2="1" Name="R3"/>
+  <Jumper X1="7" Y1="1" X2="17" Y2="1" Name="J16"/>
+  <Jumper X1="5" Y1="2" X2="6" Y2="2" Name="J17"/>
+  <Resistor Value="51K" X1="6" Y1="2" X2="6" Y2="7" Name="R4"/>
+  <Jumper X1="6" Y1="2" X2="8" Y2="3" Name="J18"/>
+  <Jumper X1="8" Y1="3" X2="17" Y2="3" Name="J19"/>
+  <Jumper X1="14" Y1="1" X2="14" Y2="3" Name="J20"/>
+  <Electrolyte Value="10uF" Size="Medium" X1="14" Y1="3" X2="14" Y2="7" Name="C2"/>
+  <Text Value="+9 Volt" X1="18" Y1="1" Name="A1"/>
+  <Jack Type="Mono" X1="24" Y1="5" Name="J21"/>
+  <Wire Color="Black" Seed="948309292" X1="23" Y1="5" X2="17" Y2="7" Name="W3"/>
+  
+  
+  <Pot Value="100K" Taper="Linear" X1="24" Y1="1" X2="26" Y2="1" Name="P1"/>
+  <Wire Color="Blue" Seed="1580941797" X1="17" Y1="3" X2="22" Y2="1" Name="W4"/>
+  <Wire Color="Red" Seed="947075869" X1="24" Y1="1" X2="24" Y2="5" Name="W5"/>
+  <Wire Color="Black" Seed="2125169042" X1="26" Y1="1" X2="16" Y2="7" Name="W6"/>
+</Layout>

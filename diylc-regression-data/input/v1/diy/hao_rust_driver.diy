@@ -1,0 +1,43 @@
+<Layout Type="Stripboard" Width="15" Height="9" Project="HAO Rust Driver" Credits="Mitchoumtronix">
+	<Resistor Y1="2" Y2="5" Name="R7" Value="22k" X1="1" X2="1"/>
+	<Resistor Value="470K" Y1="1" Y2="3" Name="R6" X1="3" X2="3"/>
+	<Jumper Y1="3" Y2="4" Name="J1" X1="2" X2="2"/>
+	<Jumper Y1="1" Y2="5" Name="J2" X1="4" X2="4"/>
+	<Capacitor Value="100nF" Y1="2" Y2="4" Name="C4" X1="5" X2="5"/>
+	<Diode Y1="1" Y2="3" Name="D1" Value="Silicon" X1="7" X2="7"/>
+	<Diode Y1="3" Y2="1" Name="D2" Value="Silicon" X1="8" X2="8"/>
+	<Capacitor Value="1200pF" Y1="1" Y2="3" Name="C3" X1="9" X2="9"/>
+	<Cut Y1="4" Name="X2" X1="7"/>
+	<Cut Y1="5" Name="X3" X1="7"/>
+	<Cut Y1="6" Name="X4" X1="7"/>
+	<Cut Y1="7" Name="X5" X1="7"/>
+	<IC Y1="4" Y2="7" Name="IC1" Value="LF353" X1="6" X2="9"/>
+	<Cut Y1="5" Name="X6" X1="3"/>
+	<Resistor Value="47K" Y1="5" Y2="9" Name="R8" X1="2" X2="2"/>
+	<Resistor Value="100K" Y1="6" Y2="9" Name="R2" X1="3" X2="3"/>
+	<Jumper Y1="7" Y2="9" Name="J3" X1="4" X2="4"/>
+	<Jumper Y1="6" Y2="8" Name="J4" X1="5" X2="5"/>
+	<Capacitor Value="100nF" Y1="1" Y2="3" Name="C2" X1="11" X2="11"/>
+	<Resistor Value="100K" Y1="4" Y2="7" Name="R1" X1="11" X2="11"/>
+	<Jumper Y1="7" Y2="8" Name="J5" X1="10" X2="10"/>
+	<Resistor Value="1K" Y1="3" Y2="5" Name="R5" X1="12" X2="12"/>
+	<Resistor Value="100K" Y1="6" Y2="8" Name="R3" X1="12" X2="12"/>
+	<Cut Y1="6" Name="X8" X1="13"/>
+	<Capacitor Value="56nF" Y1="6" Y2="8" Name="C1" X1="14" X2="14"/>
+	<Cut Y1="8" Name="X9" X1="11"/>
+	<Cut Y1="3" Name="X10" X1="10"/>
+	<Resistor Value="330K" X1="10" Y1="5" X2="10" Y2="6" Name="R4"/>
+	<Text Value="+9v" Y1="4" Name="A1" X1="17"/>
+	<Text Y1="6" Name="A2" X1="17" Value="in"/>
+	<Text Value="Gnd" Y1="9" Name="A3" X1="17"/>
+	<Text Value="Vol3" Y1="9" Name="A4" X1="-3"/>
+	<Text Y1="7" Name="A5" X1="-3" Value="Vol1"/>
+	<Jumper X1="1" Y1="7" X2="-1" Y2="7" Name="J6"/>
+	<Jumper X1="1" Y1="9" X2="-1" Y2="9" Name="J7"/>
+	<Jumper X1="15" Y1="6" X2="16" Y2="6" Name="J9"/>
+	<Jumper X1="15" Y1="9" X2="16" Y2="9" Name="J10"/>
+	<Text Value="Vol2 to output" X1="10" Y1="14" Name="A6"/>
+	<Jumper X1="15" Y1="4" X2="16" Y2="4" Name="J8"/>
+	<Text X1="1" Name="A7" Y1="-1" Value="From Matsumin schematic"/>
+	<Text X1="10" Y1="-1" Name="A8" Value="Unverified"/>
+</Layout>

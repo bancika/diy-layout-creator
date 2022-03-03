@@ -1,0 +1,97 @@
+<Layout Type="PCB" Width="14" Height="6" Project="JORDAN BOSSTONE" Credits="Layout by Andrew Carrell 2006">
+  <Pad Value="15" X1="1" Y1="1" Name="P1"/>
+  
+  <Pad X1="2" Y1="1" Value="15" Name="P2" Parent="R1"/>
+  <Pad X1="5" Y1="1" Value="15" Name="P3" Parent="R1"/>
+  <Resistor Value="18K" X1="2" Y1="1" X2="5" Y2="1" Name="R1"/>
+  <Trace Value="4" X1="1" Y1="1" X2="2" Y2="1" Name="T1"/>
+  
+  <Pad X1="2" Y1="2" Value="15" Name="P4" Parent="R2"/>
+  <Pad X1="5" Y1="2" Value="15" Name="P5" Parent="R2"/>
+  <Resistor Value="560K" X1="2" Y1="2" X2="5" Y2="2" Name="R2"/>
+  <Pad X1="2" Y1="3" Value="15" Name="P6" Parent="R3"/>
+  <Pad X1="5" Y1="3" Value="15" Name="P7" Parent="R3"/>
+  <Resistor Value="560K" X1="2" Y1="3" X2="5" Y2="3" Name="R3"/>
+  <Pad X1="2" Value="15" Name="P8" Parent="R4" Y1="5"/>
+  <Pad X1="5" Value="15" Name="P9" Parent="R4" Y1="5"/>
+  <Resistor Value="150K" X1="2" X2="5" Name="R4" Y1="5" Y2="5"/>
+  <Pad X1="2" Y1="4" Value="15" Name="P10" Parent="C1"/>
+  <Pad X1="5" Y1="4" Value="15" Name="P11" Parent="C1"/>
+  <Capacitor Value=".022uF" X1="2" Y1="4" X2="5" Y2="4" Name="C1"/>
+  <Pad X1="6" Y1="2" Value="15" Name="P12" Parent="C2"/>
+  <Pad X1="6" Y1="5" Value="15" Name="P13" Parent="C2"/>
+  <Capacitor Value=".022uF" X1="6" Y1="2" X2="6" Y2="5" Name="C2"/>
+  <Pad Value="15" X1="1" Y1="4" Name="P14"/>
+  <Trace Value="4" X1="1" Y1="4" X2="2" Y2="4" Name="T3"/>
+  <Trace Value="4" X1="5" Y1="4" X2="5" Y2="5" Name="T4"/>
+  <Trace Value="4" X1="5" Y1="4" X2="5" Y2="3" Name="T5"/>
+  <Trace Value="4" X1="2" Y1="3" X2="5" Y2="2" Name="T6"/>
+  <Trace Value="4" X1="5" Y1="2" X2="6" Y2="2" Name="T7"/>
+  <Trace Value="4" X1="2" Y1="2" X2="5" Y2="1" Name="T8"/>
+  <Pad X1="7" Y1="5" Value="15" Name="P15" Parent="Q1"/>
+  <Pad X1="7" Y1="4" Value="15" Name="P16" Parent="Q1"/>
+  <Pad X1="7" Y1="3" Value="15" Name="P17" Parent="Q1"/>
+  <Transistor Value="2N2222 NPN" X1="7" Y1="5" X2="7" Y2="3" Name="Q1"/>
+  <Trace Value="4" X1="5" Y1="4" X2="7" Y2="4" Name="T9"/>
+  <Pad X1="7" Y1="2" Value="15" Name="P18" Parent="R5"/>
+  <Pad X1="10" Y1="2" Value="15" Name="P19" Parent="R5"/>
+  <Resistor Value="18K" X1="7" Y1="2" X2="10" Y2="2" Name="R5"/>
+  <Pad X1="8" Y1="3" Value="15" Name="P20" Parent="C3"/>
+  <Pad X1="10" Y1="3" Value="15" Name="P21" Parent="C3"/>
+  <Capacitor Value="50pF" X1="8" Y1="3" X2="10" Y2="3" Name="C3"/>
+  <Trace Value="4" X1="7" Y1="2" X2="7" Y2="3" Name="T10"/>
+  <Trace Value="4" X1="10" Y1="1" X2="10" Y2="3" Name="T11"/>
+  <Trace Value="4" X1="8" Y1="3" X2="7" Y2="3" Name="T12"/>
+  <Pad Value="15" Name="P22" Parent="Q2" X1="10" Y1="4"/>
+  <Pad Value="15" Name="P23" Parent="Q2" X1="9" Y1="4"/>
+  <Pad Value="15" Name="P24" Parent="Q2" X1="8" Y1="4"/>
+  <Transistor Value="2N3906 PNP" Name="Q2" X1="10" Y1="4" X2="8" Y2="4"/>
+  <Trace Value="4" X1="10" Y1="4" X2="10" Y2="3" Name="T13"/>
+  <Trace Value="4" X1="9" Y1="4" X2="8" Y2="3" Name="T14"/>
+  <Trace Value="4" X1="8" Y1="4" X2="8" Y2="5" Name="T15"/>
+  <Pad X1="11" Value="15" Name="P25" Parent="C4" Y1="4"/>
+  <Pad X1="11" Value="15" Name="P26" Parent="C4" Y1="1"/>
+  <Capacitor Value=".022uF" X1="11" X2="11" Name="C4" Y1="4" Y2="1"/>
+  <Pad X1="12" Value="15" Name="P27" Parent="D1" Y1="1"/>
+  <Pad X1="12" Value="15" Name="P28" Parent="D1" Y1="4"/>
+  <Diode Value="1N34A" X1="12" X2="12" Name="D1" Y1="1" Y2="4"/>
+  <Pad X1="13" Value="15" Name="P29" Parent="D2" Y1="4"/>
+  <Pad X1="13" Value="15" Name="P30" Parent="D2" Y1="1"/>
+  <Diode Value="1N34A" X1="13" X2="13" Name="D2" Y1="4" Y2="1"/>
+  
+  
+  <Trace Value="4" X1="11" X2="13" Name="T18" Y1="1" Y2="1"/>
+  <Trace Value="4" X1="5" Y1="1" X2="10" Y2="1" Name="T2"/>
+  <Trace Value="4" X1="10" Y1="4" X2="11" Y2="4" Name="T16"/>
+  <Trace Value="4" X1="13" Y1="5" X2="7" Y2="5" Name="T17"/>
+  <Trace Value="4" X1="7" Y1="5" X2="6" Y2="5" Name="T19"/>
+  <Trace Value="4" X1="6" Y1="5" X2="5" Y2="6" Name="T20"/>
+  <Trace Value="4" X1="5" Y1="6" X2="1" Y2="6" Name="T21"/>
+  <Trace Value="4" X1="2" Y1="5" X2="2" Y2="6" Name="T22"/>
+  <Pad Value="15" X1="1" Y1="6" Name="P31"/>
+  <Pad Value="15" X1="14" Y1="5" Name="P32"/>
+  <Trace Value="4" X1="13" Y1="5" X2="14" Y2="5" Name="T23"/>
+  <Trace Value="4" X1="13" Y1="4" X2="13" Y2="5" Name="T24"/>
+  <Trace Value="4" X1="12" Y1="4" X2="12" Y2="5" Name="T25"/>
+  <Pad Value="15" X1="14" Y1="1" Name="P33"/>
+  <Trace Value="4" X1="14" Y1="1" X2="13" Y2="1" Name="T26"/>
+  <Trace Value="4" X1="14" Y1="6" X2="14" Y2="2" Name="T27"/>
+  <Pad Value="15" X1="14" Y1="6" Name="P34"/>
+  <Pad Value="15" X1="14" Y1="4" Name="P35"/>
+  <Pad Value="15" X1="14" Y1="3" Name="P36"/>
+  <Pad X1="14" Y1="2" Name="P37" Value="15"/>
+  <Text Value="+9 VOLTS" Y1="1" Name="A1" X1="-4"/>
+  
+  <Text Value="ATTACK-2" Y1="4" Name="A2" X1="-4"/>
+  <Text Value="ATTACK-1" X1="-4" Y1="6" Name="A3"/>
+  <Text Value="GROUND" X1="15" Y1="6" Name="A4"/>
+  <Text Value="VOL-3" X1="15" Y1="1" Name="A5"/>
+  <Text Value="VOL-1" X1="15" Y1="2" Name="A6"/>
+  <Text Value="GROUND" X1="15" Y1="3" Name="A7"/>
+  <Text Value="GROUND" X1="15" Y1="4" Name="A8"/>
+  <Text Value="GROUND" X1="15" Y1="5" Name="A9"/>
+  <Text Value="ATTACK: 100K LINEAR TAPER POT, LUG-3 FROM EFFECT INPUT" Y1="12" Name="A10" X1="-2"/>
+  <Text X1="-2" Y1="13" Name="A11" Value="VOL: 100K AUDIO TAPER POT, LUG-2 GOES TO EFFECT OUTPUT"/>
+  <Text X1="-2" Y1="14" Name="A12" Value="NOTE: D1 AND D2 CAN BE SUBSTITUTED WITH 1N914, 1N4148, "/>
+  <Text Value="OR EVEN LEFT OFF THE BOARD (FOR LESS &quot;FUZZ&quot;)" X1="1" Y1="15" Name="A13"/>
+</Layout>

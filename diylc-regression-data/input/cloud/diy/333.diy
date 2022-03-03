@@ -1,0 +1,3011 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>4</major>
+    <minor>3</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>Frank</author>
+  <width value="230.0" unit="mm"/>
+  <height value="100.0" unit="mm"/>
+  <gridSpacing value="0.1" unit="mm"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.boards.BlankBoard>
+      <name>Board1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.53" y="0.39"/>
+        <point x="4.42" y="3.495"/>
+      </controlPoints>
+      <firstPoint x="0.53" y="0.39"/>
+      <secondPoint x="4.42" y="3.495"/>
+      <boardColor hex="8f4e35"/>
+      <borderColor hex="cc9900"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <length value="80.0" unit="mm"/>
+      <width value="100.0" unit="mm"/>
+      <mode>TwoPoints</mode>
+      <type>SQUARE</type>
+    </diylc.boards.BlankBoard>
+    <diylc.boards.BlankBoard>
+      <name>Board2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="1.835" y="0.63"/>
+        <point x="0.995" y="0.815"/>
+      </controlPoints>
+      <firstPoint x="0.995" y="0.63"/>
+      <secondPoint x="1.835" y="0.815"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <mode>TwoPoints</mode>
+      <type>SQUARE</type>
+    </diylc.boards.BlankBoard>
+    <diylc.boards.BlankBoard>
+      <name>Board3</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.89" y="3.12"/>
+        <point x="2.42" y="3.325"/>
+      </controlPoints>
+      <firstPoint x="0.89" y="3.12"/>
+      <secondPoint x="2.42" y="3.325"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <mode>TwoPoints</mode>
+      <type>SQUARE</type>
+    </diylc.boards.BlankBoard>
+    <diylc.boards.BlankBoard>
+      <name>Board4</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="2.505" y="1.29"/>
+        <point x="2.695" y="1.96"/>
+      </controlPoints>
+      <firstPoint x="2.505" y="1.29"/>
+      <secondPoint x="2.695" y="1.96"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <mode>TwoPoints</mode>
+      <type>SQUARE</type>
+    </diylc.boards.BlankBoard>
+    <diylc.boards.BlankBoard>
+      <name>Board5</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="4.04" y="3.155"/>
+        <point x="3.2" y="3.34"/>
+      </controlPoints>
+      <firstPoint x="3.2" y="3.155"/>
+      <secondPoint x="4.04" y="3.34"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <mode>TwoPoints</mode>
+      <type>SQUARE</type>
+    </diylc.boards.BlankBoard>
+    <diylc.boards.BlankBoard>
+      <name>Board6</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="4.315" y="0.615"/>
+        <point x="3.475" y="0.8"/>
+      </controlPoints>
+      <firstPoint x="3.475" y="0.615"/>
+      <secondPoint x="4.315" y="0.8"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <mode>TwoPoints</mode>
+      <type>SQUARE</type>
+    </diylc.boards.BlankBoard>
+    <diylc.connectivity.SolderPad>
+      <name>Pad1</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="1.04" y="2.315"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad2</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="0.88" y="2.105"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad3</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="0.88" y="1.825"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad4</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="1.035" y="1.625"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad5</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="1.275" y="1.565"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad6</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="1.515" y="1.645"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad7</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="1.665" y="1.835"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad8</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="1.675" y="2.095"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad9</name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="1.53" y="2.315"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad10</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.645" y="1.065"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.shapes.Ellipse>
+      <name>ELL1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.89" y="1.605"/>
+        <point x="1.645" y="2.35"/>
+      </controlPoints>
+      <firstPoint x="0.89" y="1.605"/>
+      <secondPoint x="1.645" y="2.35"/>
+      <color hex="cccccc"/>
+      <borderColor hex="666666"/>
+      <borderThickness value="0.2" unit="mm"/>
+    </diylc.shapes.Ellipse>
+    <diylc.shapes.Ellipse>
+      <name>ELL2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="1.2" y="1.9"/>
+        <point x="1.345" y="2.045"/>
+      </controlPoints>
+      <firstPoint x="1.2" y="1.9"/>
+      <secondPoint x="1.345" y="2.045"/>
+      <color hex="666666"/>
+      <borderColor hex="000000"/>
+      <borderThickness value="0.2" unit="mm"/>
+    </diylc.shapes.Ellipse>
+    <diylc.misc.Image>
+      <name>Img1</name>
+      <alpha>127</alpha>
+      <point x="-1.11" y="1.775"/>
+      <data>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
+DDQO/fru0gAAAABJRU5ErkJggg==</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.shapes.Rectangle>
+      <name>RECT1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.085" y="0.05"/>
+        <point x="0.14" y="3.865"/>
+      </controlPoints>
+      <firstPoint x="0.085" y="0.05"/>
+      <secondPoint x="0.14" y="3.865"/>
+      <color hex="848789"/>
+      <borderColor hex="848789"/>
+      <borderThickness value="0.2" unit="mm"/>
+      <edgeRadius value="0.0" unit="mm"/>
+    </diylc.shapes.Rectangle>
+    <diylc.misc.Image>
+      <name>Img2</name>
+      <alpha>127</alpha>
+      <point x="-0.16" y="1.035"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAAHEAAABGCAYAAAD7AXvFAAAACXBIWXMAAAsSAAALEgHS3X78AAAB
+0klEQVR42u2cS27CMBBAPYh7dN9lLxAfLUdzLtBl9z3JdEOR0wIOyHE84/ckFqAIAS/zC44lOCGl
+pKVjYowSHHL2+KVijLnc4J2TZ4G3niPRiMCU0vUxgshTAGpiZ81NiDH+izzvddFdJP4VNkJj47I7
+HUFcjjiVqN5nQy+RqBWOEyQezDzPVV+jsQEkAhKRCDQ2lil1uIJEox2ute6VdEo6rTKMW063XaTe
+815ffO/rly3+I/x8f9t03MfXt6tI1NEuPnuriQg0LhGBdKdwdE28G4XTNFX9sMuyYKz1sM+PTjqF
+HiLRAh7+HB5e4r16bmnB8fASa87Jld9PkNhJRL9KjFG3ykRiQ7ak6N+TIbuPREsikdhQnGo544rI
+Sujl1oSHIhkxdhaoqtfHpsKaHZ/f5fWo5iKRYR8YMQboWPMa90pNRGJno0cu6JlR5VIbBYlGZ8mS
+QCTaGE0Y9nsa5J+Ey24H4GrJ4ugRhMTWsIwfkAhIhIoSZYRN8IhEMCGRaHQSiYh0kk7l1i6HYG/Y
+lxBWq7XMcvTNo0dKXMnckRYnCbtnWIBl/PZxscsicyISAYmARLBf2O+OGPmqssKFB7aP7vgEVG+i
+SKcAAAAAAACwlR8wZ56eEXYsZAAAAABJRU5ErkJggg==</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="1.05" y="2.215"/>
+      <text>1</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="0.95" y="2.07"/>
+      <text>2</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L3</name>
+      <point x="0.95" y="1.86"/>
+      <text>3</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L4</name>
+      <point x="1.065" y="1.71"/>
+      <text>4</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L5</name>
+      <point x="1.27" y="1.645"/>
+      <text>5</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L6</name>
+      <point x="1.475" y="1.72"/>
+      <text>6</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L7</name>
+      <point x="1.595" y="1.875"/>
+      <text>7</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L8</name>
+      <point x="1.585" y="2.065"/>
+      <text>8</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L9</name>
+      <point x="1.46" y="2.235"/>
+      <text>9</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L10</name>
+      <point x="1.27" y="1.795"/>
+      <text></text>
+      <font name="Arial Black Standard" size="18" style="0"/>
+      <color hex="330033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.SolderPad>
+      <name>Pad11</name>
+      <size value="0.06" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.115" y="1.055"/>
+      <type>OVAL_HORIZONTAL</type>
+      <holeSize value="0.4" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CopperTrace>
+      <name>Trace1</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.11" y="1.055"/>
+        <point x="0.645" y="1.065"/>
+        <point x="0.6" y="0.015"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="0000ff"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <thickness value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CopperTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad12</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.32" y="1.21"/>
+      <type>OVAL_HORIZONTAL</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad13</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.295" y="1.975"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CurvedTrace>
+      <name>Trace2</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="0.315" y="1.2"/>
+        <point x="0.44" y="1.215"/>
+        <point x="0.475" y="1.96"/>
+        <point x="0.29" y="1.965"/>
+      </controlPoints2>
+      <color hex="00ffff"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <size value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CurvedTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad14</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.29" y="2.115"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad15</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.87" y="2.11"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad16</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.88" y="2.855"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad17</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.64" y="2.245"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad18</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.295" y="2.245"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>100 nF </name>
+      <alpha>127</alpha>
+      <length value="0.5" unit="in"/>
+      <width value="0.125" unit="in"/>
+      <points>
+        <point x="0.29" y="2.11"/>
+        <point x="0.88" y="2.105"/>
+        <point x="0.28" y="0.0"/>
+      </points>
+      <bodyColor hex="ff0000"/>
+      <borderColor hex="ff0000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="100.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="250.0" unit="V"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.passive.Resistor>
+      <name>680 K</name>
+      <alpha>127</alpha>
+      <length value="9.0" unit="mm"/>
+      <width value="3.2" unit="mm"/>
+      <points>
+        <point x="0.88" y="2.11"/>
+        <point x="0.875" y="2.84"/>
+        <point x="2.975" y="1.6"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="680.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.CopperTrace>
+      <name>Trace3</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.295" y="2.245"/>
+        <point x="0.64" y="2.245"/>
+        <point x="0.19" y="-0.005"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="0000ff"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <thickness value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CopperTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad19</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.87" y="1.075"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad20</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="0.88" y="1.825"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad21</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.035" y="1.63"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad22</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.275" y="1.565"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.passive.Resistor>
+      <name>470</name>
+      <alpha>127</alpha>
+      <length value="9.0" unit="mm"/>
+      <width value="3.2" unit="mm"/>
+      <points>
+        <point x="0.88" y="1.825"/>
+        <point x="0.87" y="1.07"/>
+        <point x="-0.945" y="2.34"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="470.0" unit="R"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.CurvedTrace>
+      <name>Trace4</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.03" y="1.615"/>
+        <point x="1.02" y="1.535"/>
+        <point x="1.145" y="1.365"/>
+        <point x="1.275" y="1.57"/>
+      </controlPoints2>
+      <color hex="ff9900"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <size value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CurvedTrace>
+    <diylc.connectivity.Turret>
+      <name>Turret2</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="1.515" y="0.72"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret3</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="1.285" y="0.72"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.misc.Image>
+      <name>Img3</name>
+      <alpha>127</alpha>
+      <point x="1.0" y="0.605"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAAC8AAAA2CAYAAABX/sD/AAAABmJLR0QA/wD/AP+gvaeTAAAACXBI
+WXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH4wUPFDIm6NWGigAAAQxJREFUaN7t2EEOgjAQBdBf42bO
+w65CQsBjuCEeBDgYrvRYZlxoEzeALVSq+ZM0YQHN62SmbTCqil+NHX44iCeeeOKJJ5544olPJPZL
+Pu77fvQ+3batiY03ofd5By/LEvv7ffS9Q1WZpMrGwY9FMQrPrEVe17hdLpoM/h0+Fpm1EBE0TQMA
+0RYQlPlP4efTKZ3dZqpB5+Axsr9bK+tzGc/rOs19fg6eWZvmIfXNGl8VvyXcG/9e71vDvfHutPSF
+iwhU1SRRNj7wWM0ahD9UlbkOg1dPxMh68K3yVT46lWURAYBocDf5ovFahHZdp+75Oa0i9jD8xU08
+8cQTTzzxxBNPPPHEE0888cT/L/4BxyDcKbJYPVEAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img4</name>
+      <alpha>127</alpha>
+      <point x="1.69" y="0.685"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.connectivity.SolderPad>
+      <name>Pad23</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.295" y="0.725"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CopperTrace>
+      <name>Trace5</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.29" y="1.57"/>
+        <point x="1.29" y="0.725"/>
+        <point x="-0.28" y="2.45"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="ff9900"/>
+      <leadColor hex="ff9900"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <thickness value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CopperTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad24</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.52" y="0.735"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad25</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.525" y="2.31"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CurvedTrace>
+      <name>Trace6</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.52" y="0.725"/>
+        <point x="1.42" y="1.055"/>
+        <point x="1.395" y="1.14"/>
+        <point x="1.4" y="1.54"/>
+        <point x="1.405" y="1.94"/>
+        <point x="1.425" y="2.26"/>
+        <point x="1.53" y="2.315"/>
+      </controlPoints2>
+      <color hex="ff9900"/>
+      <pointCount>SEVEN</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <size value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CurvedTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad26</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.68" y="2.105"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad27</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.68" y="2.87"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.Turret>
+      <name>Turret1</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="1.18" y="3.22"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret4</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="1.48" y="3.22"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret5</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="1.79" y="3.22"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret6</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="2.1" y="3.22"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.passive.Resistor>
+      <name>470</name>
+      <alpha>127</alpha>
+      <length value="9.0" unit="mm"/>
+      <width value="3.2" unit="mm"/>
+      <points>
+        <point x="1.68" y="2.095"/>
+        <point x="1.68" y="2.85"/>
+        <point x="3.775" y="0.79"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="470.0" unit="R"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.misc.Image>
+      <name>Img5</name>
+      <alpha>127</alpha>
+      <point x="0.625" y="0.465"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img6</name>
+      <alpha>127</alpha>
+      <point x="0.59" y="3.33"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+tUlEQVQ4y52TMQ7DIAxFH6gL58mGiBTJPUaWqBfhYmy5VkSXQCEJbeiXWCw9+9vYioO895GGvPfq
+GFNX8DRNPLatlQcnkjl9hJ/j2IQHa3EirCHEKkEJtzRYizGGZVkAcpLs4C78mud6Br+qf4Ozg39h
+J/JpoRcerK1/oQc+tfAvDKDL/nthAJ22qhc2xgAoXQbuwmmAeQZORK0h3LKcnKY7qo6p3PGrajt4
+4q4UgbhvaflOegPd805Yw86X6gAAAABJRU5ErkJggg==</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Label>
+      <name>L11</name>
+      <point x="1.09" y="1.995"/>
+      <text>ECC 83</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L12</name>
+      <point x="1.4" y="0.5"/>
+      <text>6,3 V ~ Heater</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.SolderPad>
+      <name>Pad28</name>
+      <size value="0.1" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.19" y="3.23"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad29</name>
+      <size value="0.1" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.485" y="3.23"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad30</name>
+      <size value="0.1" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.795" y="3.23"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad31</name>
+      <size value="0.1" unit="in"/>
+      <color hex="999999"/>
+      <point x="2.105" y="3.23"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CopperTrace>
+      <name>Trace9</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.815" y="3.22"/>
+        <point x="2.1" y="3.22"/>
+        <point x="0.33" y="0.01"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="cccccc"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <thickness value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CopperTrace>
+    <diylc.connectivity.CopperTrace>
+      <name>Trace8</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.5" y="3.22"/>
+        <point x="1.79" y="3.22"/>
+        <point x="0.06" y="-0.015"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="cccccc"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <thickness value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CopperTrace>
+    <diylc.connectivity.CopperTrace>
+      <name>Trace7</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.205" y="3.22"/>
+        <point x="1.475" y="3.22"/>
+        <point x="0.16" y="0.015"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="cccccc"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <thickness value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CopperTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad32</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.03" y="2.325"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad33</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.66" y="1.835"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad34</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="2.245" y="1.835"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad35</name>
+      <size value="0.3" unit="in"/>
+      <color hex="999999"/>
+      <point x="2.805" y="3.215"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.Turret>
+      <name>Turret7</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="2.805" y="3.22"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret8</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="2.595" y="1.625"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="3.46" y="2.385"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="3.315" y="2.18"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="3.325" y="1.885"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="3.47" y="1.695"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="3.71" y="1.635"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="3.95" y="1.715"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="4.1" y="1.905"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="4.11" y="2.165"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name></name>
+      <size value="0.09" unit="in"/>
+      <color hex="cccccc"/>
+      <point x="3.95" y="2.38"/>
+      <type>ROUND</type>
+      <holeSize value="0.8" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad36</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="2.605" y="1.63"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad37</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.31" y="2.195"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad38</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="1.94" y="1.115"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad39</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.955" y="2.385"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.misc.Image>
+      <name>Img7</name>
+      <alpha>127</alpha>
+      <point x="0.94" y="3.195"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img8</name>
+      <alpha>127</alpha>
+      <point x="2.275" y="3.195"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.passive.Resistor>
+      <name>330 K</name>
+      <alpha>127</alpha>
+      <length value="9.0" unit="mm"/>
+      <width value="3.2" unit="mm"/>
+      <points>
+        <point x="1.185" y="3.22"/>
+        <point x="1.03" y="2.33"/>
+        <point x="-1.865" y="4.485"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="330.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>680 K</name>
+      <alpha>127</alpha>
+      <length value="9.0" unit="mm"/>
+      <width value="3.2" unit="mm"/>
+      <points>
+        <point x="1.68" y="1.835"/>
+        <point x="2.235" y="1.83"/>
+        <point x="0.25" y="0.03"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="680.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>330 K</name>
+      <alpha>127</alpha>
+      <length value="9.0" unit="mm"/>
+      <width value="3.2" unit="mm"/>
+      <points>
+        <point x="1.485" y="3.215"/>
+        <point x="1.52" y="1.645"/>
+        <point x="1.555" y="-1.4"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="00cc00"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="330.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.misc.Image>
+      <name>Img9</name>
+      <alpha>127</alpha>
+      <point x="2.56" y="1.37"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img10</name>
+      <alpha>127</alpha>
+      <point x="2.56" y="1.81"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+tUlEQVQ4y52TMQ7DIAxFH6gL58mGiBTJPUaWqBfhYmy5VkSXQCEJbeiXWCw9+9vYioO895GGvPfq
+GFNX8DRNPLatlQcnkjl9hJ/j2IQHa3EirCHEKkEJtzRYizGGZVkAcpLs4C78mud6Br+qf4Ozg39h
+J/JpoRcerK1/oQc+tfAvDKDL/nthAJ22qhc2xgAoXQbuwmmAeQZORK0h3LKcnKY7qo6p3PGrajt4
+4q4UgbhvaflOegPd805Yw86X6gAAAABJRU5ErkJggg==</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.shapes.Ellipse>
+      <name>ELL1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="3.325" y="1.675"/>
+        <point x="4.08" y="2.42"/>
+      </controlPoints>
+      <firstPoint x="3.325" y="1.675"/>
+      <secondPoint x="4.08" y="2.42"/>
+      <color hex="cccccc"/>
+      <borderColor hex="666666"/>
+      <borderThickness value="0.2" unit="mm"/>
+    </diylc.shapes.Ellipse>
+    <diylc.shapes.Ellipse>
+      <name>ELL2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="3.635" y="1.97"/>
+        <point x="3.78" y="2.115"/>
+      </controlPoints>
+      <firstPoint x="3.635" y="1.97"/>
+      <secondPoint x="3.78" y="2.115"/>
+      <color hex="666666"/>
+      <borderColor hex="000000"/>
+      <borderThickness value="0.2" unit="mm"/>
+    </diylc.shapes.Ellipse>
+    <diylc.misc.Label>
+      <name>L13</name>
+      <point x="1.64" y="3.405"/>
+      <text>Ub 250 V  +</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="ff0000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L14</name>
+      <point x="2.795" y="3.42"/>
+      <text>Ub -</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="0000ff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="3.485" y="2.285"/>
+      <text>1</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="3.385" y="2.14"/>
+      <text>2</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="3.385" y="1.93"/>
+      <text>3</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="3.5" y="1.78"/>
+      <text>4</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="3.705" y="1.715"/>
+      <text>5</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="3.91" y="1.79"/>
+      <text>6</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="4.03" y="1.945"/>
+      <text>7</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="4.02" y="2.135"/>
+      <text>8</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="3.895" y="2.305"/>
+      <text>9</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>33 nF 400 V</name>
+      <alpha>127</alpha>
+      <length value="0.5" unit="in"/>
+      <width value="0.125" unit="in"/>
+      <points>
+        <point x="1.035" y="2.31"/>
+        <point x="1.665" y="1.83"/>
+        <point x="-0.865" y="0.845"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="33.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="400.0" unit="V"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>100 nF 400 V</name>
+      <alpha>127</alpha>
+      <length value="0.5" unit="in"/>
+      <width value="0.125" unit="in"/>
+      <points>
+        <point x="2.595" y="1.625"/>
+        <point x="1.515" y="1.64"/>
+        <point x="4.655" y="3.245"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="100.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="400.0" unit="V"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.passive.Resistor>
+      <name>10 K</name>
+      <alpha>127</alpha>
+      <length value="9.0" unit="mm"/>
+      <width value="3.2" unit="mm"/>
+      <points>
+        <point x="2.605" y="1.63"/>
+        <point x="3.31" y="2.185"/>
+        <point x="1.955" y="-1.0"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>680 K</name>
+      <alpha>127</alpha>
+      <length value="9.0" unit="mm"/>
+      <width value="3.2" unit="mm"/>
+      <points>
+        <point x="2.605" y="1.625"/>
+        <point x="1.94" y="1.11"/>
+        <point x="3.34" y="4.245"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="680.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.CurvedTrace>
+      <name>Trace10</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.795" y="3.225"/>
+        <point x="1.795" y="2.755"/>
+        <point x="2.875" y="2.805"/>
+        <point x="3.955" y="2.855"/>
+        <point x="3.955" y="2.385"/>
+      </controlPoints2>
+      <color hex="ff0000"/>
+      <pointCount>FIVE</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <size value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CurvedTrace>
+    <diylc.connectivity.Turret>
+      <name>Turret9</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="3.72" y="3.245"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret10</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="3.49" y="3.245"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.misc.Image>
+      <name>Img11</name>
+      <alpha>127</alpha>
+      <point x="3.205" y="3.13"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAAC8AAAA2CAYAAABX/sD/AAAABmJLR0QA/wD/AP+gvaeTAAAACXBI
+WXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH4wUPFDIm6NWGigAAAQxJREFUaN7t2EEOgjAQBdBf42bO
+w65CQsBjuCEeBDgYrvRYZlxoEzeALVSq+ZM0YQHN62SmbTCqil+NHX44iCeeeOKJJ5544olPJPZL
+Pu77fvQ+3batiY03ofd5By/LEvv7ffS9Q1WZpMrGwY9FMQrPrEVe17hdLpoM/h0+Fpm1EBE0TQMA
+0RYQlPlP4efTKZ3dZqpB5+Axsr9bK+tzGc/rOs19fg6eWZvmIfXNGl8VvyXcG/9e71vDvfHutPSF
+iwhU1SRRNj7wWM0ahD9UlbkOg1dPxMh68K3yVT46lWURAYBocDf5ovFahHZdp+75Oa0i9jD8xU08
+8cQTTzzxxBNPPPHEE0888cT/L/4BxyDcKbJYPVEAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img12</name>
+      <alpha>127</alpha>
+      <point x="3.895" y="3.21"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.connectivity.SolderPad>
+      <name>Pad40</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.495" y="3.26"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CurvedTrace>
+      <name>Trace11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.8" y="3.225"/>
+        <point x="1.965" y="2.91"/>
+        <point x="2.645" y="2.925"/>
+        <point x="3.325" y="2.94"/>
+        <point x="3.495" y="3.255"/>
+      </controlPoints2>
+      <color hex="ff0000"/>
+      <pointCount>FIVE</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <size value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CurvedTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad41</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.725" y="3.255"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad42</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="4.105" y="1.91"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CurvedTrace>
+      <name>Trace12</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.105" y="1.905"/>
+        <point x="4.325" y="2.235"/>
+        <point x="4.24" y="2.81"/>
+        <point x="3.725" y="3.245"/>
+      </controlPoints2>
+      <color hex="cc00cc"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <size value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CurvedTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad43</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.315" y="0.725"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad44</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.32" y="1.88"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad45</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="2.925" y="0.7"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.Turret>
+      <name>Turret11</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="3.995" y="0.705"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret12</name>
+      <size value="0.16" unit="in"/>
+      <holeSize value="0.0625" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="3.765" y="0.705"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.passive.Resistor>
+      <name>120   5 W</name>
+      <alpha>127</alpha>
+      <length value="16.0" unit="mm"/>
+      <width value="6.0" unit="mm"/>
+      <points>
+        <point x="2.925" y="1.63"/>
+        <point x="2.925" y="0.7"/>
+        <point x="1.015" y="4.46"/>
+      </points>
+      <bodyColor hex="669900"/>
+      <borderColor hex="669900"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <value value="120.0" unit="R"/>
+      <power>HALF</power>
+      <powerNew value="5.0" unit="W"/>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.RadialElectrolytic>
+      <name>47uF30 V</name>
+      <alpha>127</alpha>
+      <length value="0.45" unit="in"/>
+      <points>
+        <point x="3.31" y="1.88"/>
+        <point x="3.31" y="0.725"/>
+        <point x="1.415" y="4.625"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Horizontal</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <pinSpacing value="0.1" unit="in"/>
+      <value value="47.0" unit="uF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="30.0" unit="V"/>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+      <folded>false</folded>
+      <height value="0.4" unit="in"/>
+      <invert>false</invert>
+    </diylc.passive.RadialElectrolytic>
+    <diylc.connectivity.Jumper>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.925" y="1.645"/>
+        <point x="3.31" y="1.88"/>
+        <point x="1.505" y="-1.17"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.misc.Image>
+      <name>Img13</name>
+      <alpha>127</alpha>
+      <point x="3.48" y="0.59"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAAC8AAAA2CAYAAABX/sD/AAAABmJLR0QA/wD/AP+gvaeTAAAACXBI
+WXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH4wUPFDIm6NWGigAAAQxJREFUaN7t2EEOgjAQBdBf42bO
+w65CQsBjuCEeBDgYrvRYZlxoEzeALVSq+ZM0YQHN62SmbTCqil+NHX44iCeeeOKJJ5544olPJPZL
+Pu77fvQ+3batiY03ofd5By/LEvv7ffS9Q1WZpMrGwY9FMQrPrEVe17hdLpoM/h0+Fpm1EBE0TQMA
+0RYQlPlP4efTKZ3dZqpB5+Axsr9bK+tzGc/rOs19fg6eWZvmIfXNGl8VvyXcG/9e71vDvfHutPSF
+iwhU1SRRNj7wWM0ahD9UlbkOg1dPxMh68K3yVT46lWURAYBocDf5ovFahHZdp+75Oa0i9jD8xU08
+8cQTTzzxxBNPPPHEE0888cT/L/4BxyDcKbJYPVEAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img14</name>
+      <alpha>127</alpha>
+      <point x="4.17" y="0.67"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Label>
+      <name>L15</name>
+      <point x="3.85" y="0.48"/>
+      <text>6,3 V ~ Heater</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.SolderPad>
+      <name>Pad46</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.77" y="0.715"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad47</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.465" y="1.695"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CurvedTrace>
+      <name>Trace13</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="3.465" y="1.69"/>
+        <point x="3.795" y="1.35"/>
+        <point x="3.775" y="1.185"/>
+        <point x="3.77" y="0.705"/>
+      </controlPoints2>
+      <color hex="ff9900"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <size value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CurvedTrace>
+    <diylc.connectivity.SolderPad>
+      <name>Pad48</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="4.0" y="0.705"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.SolderPad>
+      <name>Pad49</name>
+      <size value="0.09" unit="in"/>
+      <color hex="999999"/>
+      <point x="3.705" y="1.63"/>
+      <type>ROUND</type>
+      <holeSize value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.SolderPad>
+    <diylc.connectivity.CurvedTrace>
+      <name>Trace14</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="3.715" y="1.63"/>
+        <point x="4.05" y="1.46"/>
+        <point x="4.0" y="1.035"/>
+        <point x="4.0" y="0.705"/>
+      </controlPoints2>
+      <color hex="ff9900"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <size value="0.6" unit="mm"/>
+      <layer>_1</layer>
+    </diylc.connectivity.CurvedTrace>
+    <diylc.misc.Image>
+      <name>Img15</name>
+      <alpha>127</alpha>
+      <point x="5.02" y="0.77"/>
+      <data>/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcU
+FhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgo
+KCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAHnAuIDASIA
+AhEBAxEB/8QAHQABAAMBAQEBAQEAAAAAAAAAAAYHCAUEAwkCAf/EAGsQAAEDAwIDAwQJDQoHDAgF
+BQEAAgMEBREGEgcTIQgUMRUWIjcYMkFVVnWUs9MXI1FhcXSElaSytNHSJDhCRlJUdpKlxDNXZnKW
+seMmNDU2R0hTYnOBwsMnY4WTpsHU8CVDRZGhZ4Oio+L/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQID
+BP/EACgRAQACAgIAAwkBAQAAAAAAAAABAgMRITEEEkETMlFhcYGRsfChwf/aAAwDAQACEQMRAD8A
+1SiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgI
+iICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiA
+iIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiI
+CIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiI
+gIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICI
+iAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgI
+iICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiA
+iIgIiICIiAiIgIiICIufeL5arK2N14uVFQNkyGGpnbHux443EZQdBFHPPvSXwnsvy6P9aefekvhP
+Zfl0f60EjRRzz70l8J7L8uj/AFp596S+E9l+XR/rQSNFlbih2mrnZ9aV1t0ZS2WttNIRF3uoZLIZ
+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
+DmPZteXD3T0bjqpDwp0edFaDslk3OdLTgy1G5+4CR4JeGnHhuccfaU0RAREQEREBERAREQEREBER
+AREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBc/UN1gsNgud3rGSvpr
+fSy1crYgC9zI2FxDQSBnAOMkLoKK8WPVZrL4lrfmHoKq9lXof3q1J8ng+mUJ1j2jbPWa40letPW6
+vFPb3TRV7K6Bm50MpjDuUGS437WvxuIGdvj1X+9l/hbo7W+gbhctT2fv1bFc5KdkneposRiKJwGG
+PA8XO64z1Vv+x84YfBn8vqvpEEV9lXof3q1J8ng+mVgcKOKtj4m+VPINLcqfydyub32NjN3M37du
+17s+0Oc49xV/rPg9wsi0Dq65aetVNLW2qirBzILlPL3epiic7a4c0gOacZa4fdCinYY/jt+A/wB4
+QaqREQQbir/E/wDpHR/+NTlQbir/ABP/AKR0f/jU5QEREBERAUE4Jer+D78rP0mRTtQTgl6v4Pvy
+s/SZEE7REQEREBERBBOM/wDxQpvjSh/SGKdqCcZ+ukaYDx8q0P6QxTtAREQEREBERAREQEREBERA
+REQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQERE
+BERAREQEREBERAREQEUA19xUs+jdSW6wTW293e9V0LqiOjtNIJ5BGCepBc3Odj+jckBhJwMZ6vDz
+X+neIFqfXaaredydgqKeRpZNTuc3Ia9p/wC8bhlpLXYJwUEqUV4seqzWXxLW/MPX1tOutN3fV1w0
+xbLrFVXu3sdJU08bHkRhpa13p42EgvaCASQcgjIOPlxY9VmsviWt+YegqrsU+qy6/HUvzECr/iZr
+HiXfdVT3XRmj9b6f51E62Tnukj+8wB73Rv2cr61KOY/0mucW7sNcOpdYHYp9Vl1+OpfmIF6tKXDi
+TxMmu92tuqabR9opq2WhpaAWqGpqfrb3ZNSx7iYpQCwFueuM7QMFwNJ2qltXZl1VHSaXuWmHS2yv
+fNSXGYyzSyCnLDMSQCNwY3psYMg4btIc6Fdhj+O34D/eFYsGoL3fOBnEOl1UKF97stLcbVVVFFK1
+8VS+Om3c0Y6NJDwC3phwOQw+g2uuwx/Hb8B/vCDVSIqA9lXof3q1J8ng+mQWNxV/if8A0jo//Gpy
+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
+kT2PnDD4M/l9V9Igivsq9D+9WpPk8H0yeyr0P71ak+TwfTKVex84YfBn8vqvpE9j5ww+DP5fVfSI
+Ir7KvQ/vVqT5PB9Mnsq9D+9WpPk8H0ylXsfOGHwZ/L6r6RPY+cMPgz+X1X0iCFXbtV6V8lVvki1X
+vylyX9171Txcnm7Ts37Zs7d2M464zhY7q6mesqpqqsmlnqZ3ukllleXPke45LnE9SSSSSVvn2PnD
+D4M/l9V9IswcV+BOptI6kdDp+23K/WWoy+lqKSmdNIxoPVkwYPRcMjrgBw6jB3NaFVWm4VVoutHc
+rfLya2jmZUQSbQ7ZIxwc04IIOCB0Iwti0nat0c6lhdWWbUEVSWNMscUUMjGvx1DXGRpcAc4JaM/Y
+HgqU4VcAtUasvMLtQ2+usNijee8z1UfKnfjB2Rxv9LJ3dHlu0Yd4kbTpr2PnDD4M/l9V9Igivsq9
+D+9WpPk8H0yyBqu/V2qNSXG93WTfW10zppMFxa3J6MbuJIa0Ya0ZOAAPcW6fY+cMPgz+X1X0iz3x
+y4BXXTN5Fdoi3111sVW87aamjfPPRv6nYQMudH47X+57V3XDnhQi2BpTtUafi03botTW29y3qOFr
+KuWmihdHLIBgvHpsxuxuxtABJAyBk0foPgdrbVV5jpaizV1loWvaKmtuNO6ERMOTlrH7XSH0SMN9
+0t3FoOVqqk7O/DOClhilsEtTJGxrHTS11QHyEDBc4NeG5PicAD7ACCNeyr0P71ak+TwfTJ7KvQ/v
+VqT5PB9MpV7Hzhh8Gfy+q+kT2PnDD4M/l9V9Igivsq9D+9WpPk8H0yeyr0P71ak+TwfTKVex84Yf
+Bn8vqvpE9j5ww+DP5fVfSIIr7KvQ/vVqT5PB9Mnsq9D+9WpPk8H0ylXsfOGHwZ/L6r6RPY+cMPgz
++X1X0iCK+yr0P71ak+TwfTJ7KvQ/vVqT5PB9MpV7Hzhh8Gfy+q+kT2PnDD4M/l9V9Igivsq9D+9W
+pPk8H0ygnGntE2rVmgquxaTprvR1Nc9sdTLVRsj/AHP1L2tMcpOXENaQQQWl4Pirl9j5ww+DP5fV
+fSLn3/s4cPa+zVdLa7ZLaq6RmIa2OqmlML/EHY95a4e4R7oJwQcEBhBTvgtr1/DnXtJenRSz0LmO
+pq2GLbvkhdgnaXDxDmseBkZ24yASl/4Sa6st5q7dJpe71jqd+zvFDRyzwSjxDmPa3BBBB9wjwIBB
+At/gb2c56+Q3fiVRS09DsHdrWZSySbc0HfKWHdGBn2mQ7cDu2gYcE79lXof3q1J8ng+mT2Veh/er
+UnyeD6ZSr2PnDD4M/l9V9InsfOGHwZ/L6r6RBQHaE46UPEHTdDZNMQXKjojMZq7vbGxul2gctg2S
+ODm5LnEOHi1hHgs/rb+uuzXo656bqIdJ0fka9N9OnqHVM0sbnAH0JA9zsNP2WjIOD1ALTlCr4Y66
+paqanl0dqB0kL3RuMVvlkYSDg7XtaWuH2CCQfEFBJez3xSj4ZakrpblBU1NluEIZURUwYZGyMJMb
+xuxnGXtxuaMPJ6loC0B7KvQ/vVqT5PB9Mo/wY7NdLHQT1/E6j51XLlkFsjqSGwNB9u98TvSccdAH
+YAPXJOGWV7Hzhh8Gfy+q+kQRX2Veh/erUnyeD6ZQTjT2ibVqzQVXYtJ013o6mue2Oplqo2R/ufqX
+taY5ScuIa0gggtLwfFXL7Hzhh8Gfy+q+kXPv/Zw4e19mq6W12yW1V0jMQ1sdVNKYX+IOx7y1w9wj
+3QTgg4IDCCnfBbXr+HOvaS9OilnoXMdTVsMW3fJC7BO0uHiHNY8DIztxkAlL/wAJNdWW81duk0vd
+6x1O/Z3iho5Z4JR4hzHtbgggg+4R4EAggW/wN7Oc9fIbvxKopaeh2Du1rMpZJNuaDvlLDujAz7TI
+duB3bQMOCd+yr0P71ak+TwfTJ7KvQ/vVqT5PB9MpV7Hzhh8Gfy+q+kT2PnDD4M/l9V9Igivsq9D+
+9WpPk8H0yeyr0P71ak+TwfTKVex84YfBn8vqvpE9j5ww+DP5fVfSIIr7KvQ/vVqT5PB9Mnsq9D+9
+WpPk8H0ylXsfOGHwZ/L6r6RPY+cMPgz+X1X0iCK+yr0P71ak+TwfTJ7KvQ/vVqT5PB9MpV7Hzhh8
+Gfy+q+kT2PnDD4M/l9V9Igivsq9D+9WpPk8H0yeyr0P71ak+TwfTKVex84YfBn8vqvpE9j5ww+DP
+5fVfSIIr7KvQ/vVqT5PB9Mnsq9D+9WpPk8H0ylXsfOGHwZ/L6r6RPY+cMPgz+X1X0iCK+yr0P71a
+k+TwfTJ7KvQ/vVqT5PB9MpV7Hzhh8Gfy+q+kT2PnDD4M/l9V9Igivsq9D+9WpPk8H0yeyr0P71ak
++TwfTKVex84YfBn8vqvpE9j5ww+DP5fVfSIIr7KvQ/vVqT5PB9Mnsq9D+9WpPk8H0ylXsfOGHwZ/
+L6r6RPY+cMPgz+X1X0iDMvaK4vQcS6q1UtjjrqWyUTDI6KqaGPkqHEgucGvc0hrQA09CN8nuFU0t
+lcV+zXYq3TbpuHlH5OvVNl7ad9TJJHWNx7QmRx2O6eicgZJDuhDm5lpOGOuqqqhp4tHagbJM9sbT
+Lb5Y2Ak4G57mhrR9kkgDxJQWB2deNFJw2pbra7/S11Vaap4qYBRtjc+KbAa7IcW5DmhvXd02DA9I
+kXL7KvQ/vVqT5PB9MvJwo7NdiotNtm4h0flG9VOHup2VMkcdG3HtAY3De7r6RyRkAN6AudNfY+cM
+Pgz+X1X0iCK+yr0P71ak+TwfTKEcaOP+ltb8Nrtp600F7hrKsw7H1MMTYxsmY85LZCfBp9zxwrh9
+j5ww+DP5fVfSJ7Hzhh8Gfy+q+kQWqiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIC
+IiAqq7LnqJ0z+FfpUqtVVV2XPUTpn8K/SpUFqoiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiI
+gIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICI
+iAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg8t2uFLaLVW3K4S8mio4X1E8m0u2RsaXOOACTgA9AM
+qtPZB8MPhN+QVX0alfFj1Way+Ja35h6/NVBv/wBkHww+E35BVfRqAcBOMWhNK8J7FZr9fe6XKm5/
+Nh7nPJt3TyPb6TWEH0XA9D7qx+iDf/sg+GHwm/IKr6NWBpbUNr1VYqW82Gq73bandypuW6PdtcWO
+9FwBHpNI6j3F+YC3/wBlz1E6Z/Cv0qVBaqIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIi
+AiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIi
+ICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAi
+IgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIC
+IiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg
+IiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIi
+AiIgIiICIiAiIgIiIP/Z</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img16</name>
+      <alpha>127</alpha>
+      <point x="4.28" y="0.46"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+tUlEQVQ4y52TMQ7DIAxFH6gL58mGiBTJPUaWqBfhYmy5VkSXQCEJbeiXWCw9+9vYioO895GGvPfq
+GFNX8DRNPLatlQcnkjl9hJ/j2IQHa3EirCHEKkEJtzRYizGGZVkAcpLs4C78mud6Br+qf4Ozg39h
+J/JpoRcerK1/oQc+tfAvDKDL/nthAJ22qhc2xgAoXQbuwmmAeQZORK0h3LKcnKY7qo6p3PGrajt4
+4q4UgbhvaflOegPd805Yw86X6gAAAABJRU5ErkJggg==</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img17</name>
+      <alpha>127</alpha>
+      <point x="4.29" y="3.355"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.shapes.Rectangle>
+      <name>RECT2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.145" y="3.645"/>
+        <point x="0.395" y="3.855"/>
+      </controlPoints>
+      <firstPoint x="0.145" y="3.645"/>
+      <secondPoint x="0.395" y="3.855"/>
+      <color hex="848789"/>
+      <borderColor hex="848789"/>
+      <borderThickness value="0.2" unit="mm"/>
+      <edgeRadius value="0.0" unit="mm"/>
+    </diylc.shapes.Rectangle>
+    <diylc.shapes.Rectangle>
+      <name>RECT3</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.145" y="0.055"/>
+        <point x="0.395" y="0.265"/>
+      </controlPoints>
+      <firstPoint x="0.145" y="0.055"/>
+      <secondPoint x="0.395" y="0.265"/>
+      <color hex="848789"/>
+      <borderColor hex="848789"/>
+      <borderThickness value="0.2" unit="mm"/>
+      <edgeRadius value="0.0" unit="mm"/>
+    </diylc.shapes.Rectangle>
+    <diylc.misc.Image>
+      <name>Img18</name>
+      <alpha>127</alpha>
+      <point x="0.24" y="0.125"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+tUlEQVQ4y52TMQ7DIAxFH6gL58mGiBTJPUaWqBfhYmy5VkSXQCEJbeiXWCw9+9vYioO895GGvPfq
+GFNX8DRNPLatlQcnkjl9hJ/j2IQHa3EirCHEKkEJtzRYizGGZVkAcpLs4C78mud6Br+qf4Ozg39h
+J/JpoRcerK1/oQc+tfAvDKDL/nthAJ22qhc2xgAoXQbuwmmAeQZORK0h3LKcnKY7qo6p3PGrajt4
+4q4UgbhvaflOegPd805Yw86X6gAAAABJRU5ErkJggg==</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Image>
+      <name>Img19</name>
+      <alpha>127</alpha>
+      <point x="0.24" y="3.715"/>
+      <data>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA
+wklEQVQ4y53TMQ6EIBAF0D8rjeexI1ixx7AxexEusp3XILEwdJ6HZg3bOAQDKvEnVvJfZogChSzW
+BgClJwsVijGdlIfDbdtmPTorn6WTkiECgBeXldb4TtMtsDoH7z14JcEvvPdxxM8w3CIcYYwJqVyL
+7GeDKI1XixxWeIqIq4u6QlbnYIwpA7VIBH5NA7FtjxABAPM84933TyYh2kcJAE6R9AscxzFCSmui
+ZJ9qZLEWSmvKfiZG7iAuZ0AJSsG0yPkDmg93+LzFNykAAAAASUVORK5CYII=</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Label>
+      <name>L16</name>
+      <point x="3.515" y="2.035"/>
+      <text>EL 84</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L17</name>
+      <point x="3.555" y="3.405"/>
+      <text>Aü   Ra = 5 K</text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ffffff"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L18</name>
+      <point x="0.205" y="0.81"/>
+      <text>Audio in</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L19</name>
+      <point x="0.205" y="2.81"/>
+      <text>Pot. linear 100 K</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+  </components>
+  <groups>
+    <set>
+      <diylc.connectivity.Turret reference="../../../components/diylc.connectivity.Turret[8]"/>
+      <diylc.misc.Image reference="../../../components/diylc.misc.Image[9]"/>
+      <diylc.boards.BlankBoard reference="../../../components/diylc.boards.BlankBoard[4]"/>
+      <diylc.misc.Image reference="../../../components/diylc.misc.Image[10]"/>
+    </set>
+    <set>
+      <diylc.connectivity.Turret reference="../../../components/diylc.connectivity.Turret[2]"/>
+      <diylc.connectivity.Turret reference="../../../components/diylc.connectivity.Turret"/>
+      <diylc.boards.BlankBoard reference="../../../components/diylc.boards.BlankBoard[2]"/>
+      <diylc.misc.Image reference="../../../components/diylc.misc.Image[4]"/>
+      <diylc.misc.Image reference="../../../components/diylc.misc.Image[3]"/>
+    </set>
+    <set>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[28]"/>
+      <diylc.connectivity.CopperTrace reference="../../../components/diylc.connectivity.CopperTrace[5]"/>
+      <diylc.connectivity.Turret reference="../../../components/diylc.connectivity.Turret[6]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[31]"/>
+      <diylc.connectivity.Turret reference="../../../components/diylc.connectivity.Turret[4]"/>
+      <diylc.connectivity.Turret reference="../../../components/diylc.connectivity.Turret[5]"/>
+      <diylc.misc.Image reference="../../../components/diylc.misc.Image[8]"/>
+      <diylc.connectivity.CopperTrace reference="../../../components/diylc.connectivity.CopperTrace[6]"/>
+      <diylc.misc.Image reference="../../../components/diylc.misc.Image[7]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[29]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[30]"/>
+      <diylc.connectivity.CopperTrace reference="../../../components/diylc.connectivity.CopperTrace[4]"/>
+      <diylc.boards.BlankBoard reference="../../../components/diylc.boards.BlankBoard[3]"/>
+      <diylc.connectivity.Turret reference="../../../components/diylc.connectivity.Turret[3]"/>
+    </set>
+    <set>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[41]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[39]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[18]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[38]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[44]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[22]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[37]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[36]"/>
+      <diylc.shapes.Ellipse reference="../../../components/diylc.shapes.Ellipse[3]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[15]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[42]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[21]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[40]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[17]"/>
+      <diylc.shapes.Ellipse reference="../../../components/diylc.shapes.Ellipse[4]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[23]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[20]"/>
+      <diylc.connectivity.SolderPad reference="../../../components/diylc.connectivity.SolderPad[43]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[16]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[19]"/>
+    </set>
+  </groups>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font name="Square721 BT Roman" size="14" style="0"/>
+</project>

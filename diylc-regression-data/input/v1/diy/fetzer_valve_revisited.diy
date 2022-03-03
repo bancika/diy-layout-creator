@@ -1,0 +1,29 @@
+<Layout Width="6" Height="10" Type="Perfboard" Project="Fetzer Valve Revisited" Credits="Design: runoffgroove.com, Layout: cAMPus, Ulrich Scherer" HideList="True">
+	<Trimmer Value="50K" X1="3" Y1="3" X2="3" Y2="4" Name="Rd"/>
+	<Pad Value="13px" Color="Black" X1="3" Y1="1" Name="V+"/>
+	<Trace Value="3px" Color="Black" X1="3" Y1="2" X2="3" Y2="1" Name="T1"/>
+	<Trace Value="3px" Color="Black" X1="3" Y1="3" X2="3" Y2="5" Name="T2"/>
+	<Transistor Value="JFET" X1="3" Y1="5" X2="3" Y2="7" Name="JFET"/>
+	<Trimmer Value="2K" X1="5" Y1="7" X2="5" Y2="8" Name="Rs"/>
+	<Trace Value="3px" Color="Black" X1="5" Y1="7" X2="5" Y2="9" Name="T3"/>
+	<Trace Value="3px" Color="Black" X1="3" Y1="6" X2="5" Y2="6" Name="T4"/>
+	<Capacitor Value="47nF" X1="5" Y1="4" X2="5" Y2="2" Name="47n"/>
+	<Trace Value="3px" Color="Black" X1="3" Y1="4" X2="5" Y2="4" Name="T5"/>
+	<Trace Value="3px" Color="Black" X1="5" Y1="2" X2="5" Y2="1" Name="T6"/>
+	<Pad Value="13px" Color="Black" X1="5" Y1="1" Name="Vol 3"/>
+	<Trace Value="3px" Color="Black" X1="2" Y1="8" X2="3" Y2="8" Name="T7"/>
+	<Trace Value="3px" Color="Black" X1="1" Y1="5" X2="2" Y2="5" Name="T8"/>
+	<Trace Value="3px" Color="Black" X1="1" Y1="4" X2="1" Y2="5" Name="T9"/>
+	<Pad Value="13px" Color="Black" X1="1" Y1="4" Name="In"/>
+	<Resistor Value="33K" X1="2" Y1="8" X2="2" Y2="5" Name="33k"/>
+	<Resistor Value="1M" X1="1" Y1="8" X2="1" Y2="5" Name="1M"/>
+	<Capacitor Value="220pF" X1="3" Y1="9" X2="3" Y2="8" Name="220p"/>
+	<Trace Value="3px" Color="Black" X1="3" Y1="8" X2="3" Y2="7" Name="T10"/>
+	<Trace Value="3px" Color="Black" X1="1" Y1="9" X2="5" Y2="9" Name="T11"/>
+	<Trace Value="3px" Color="Black" X1="1" Y1="9" X2="1" Y2="8" Name="T12"/>
+	<Pad Value="13px" Color="Black" X1="1" Y1="9" Name="Gnd"/>
+	<Text Value="Vcc" X1="3" Y1="-1" Name="A1"/>
+	<Text Value="Vol 3" X1="5" Y1="-1" Name="A2"/>
+	<Text Value="In" X1="-2" Y1="4" Name="A3"/>
+	<Text Value="Gnd" X1="-2" Y1="9" Name="A4"/>  <Text Value="http://www.runoffgroove.com/fetzervalve.html#9" X1="-4" Y1="-3" Name="A5"/>
+</Layout>

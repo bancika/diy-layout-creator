@@ -1,0 +1,28 @@
+<Layout Width="10" Height="8" Type="Stripboard" Project="AMZ Minibooster" Credits="Schematic by Jack Orman, Layout by Robin Aggleton 2006 - UNVERIFIED">
+	<Text Value="9V+" X1="-2" Y1="1" Name="A1"/>
+	<Text Value="OUT" X1="-2" Y1="4" Name="A2"/>
+	<Text Value="IN" X1="-2" Y1="6" Name="A3"/>
+	<Text Value="GROUND" X1="-3" Y1="8" Name="A4"/>
+	<Cut X1="3" Y1="6" Name="X1"/>
+	<Capacitor Value="0.05uF" X1="2" Y1="6" X2="4" Y2="6" Name="C1"/>
+	<Resistor Value="1M" X1="4" Y1="6" X2="4" Y2="8" Name="R1"/>
+	<Transistor Value="J201" X1="6" Y1="5" X2="6" Y2="7" Name="Q1"/>
+	<Transistor Value="J201" X1="5" Y1="2" X2="5" Y2="4" Name="Q2"/>
+	<Jumper X1="4" Y1="4" X2="4" Y2="5" Name="J1"/>
+	<Cut X1="3" Y1="4" Name="X2"/>
+	<Resistor Value="1M" X1="7" Y1="2" X2="7" Y2="3" Name="R2"/>
+	<Resistor Value="1M" X1="8" Y1="3" X2="8" Y2="8" Name="R3"/>
+	<Capacitor Value="3.3uF" X1="6" Y1="3" X2="6" Y2="4" Name="C2"/>
+	<Cut X1="9" Y1="3" Name="X3"/>
+	<Jumper X1="10" Y1="3" X2="10" Y2="8" Name="J2"/>
+	<Resistor Value="100R" X1="2" Y1="1" X2="2" Y2="2" Name="R4"/>
+	<Resistor Value="1K" X1="7" Y1="7" X2="7" Y2="8" Name="R5"/>
+	<Capacitor Value="0.22uF" X1="4" Y1="4" X2="2" Y2="4" Name="C3"/>
+	<Electrolyte Value="100uF" X1="10" Y1="1" X2="10" Y2="3" Name="C4"/>
+	<Capacitor Value="10pF" X1="5" Y1="6" X2="5" Y2="8" Name="C5"/>
+	<Text Value="Q1 and Q2 have the following pin out (top to bottom): D G S." X1="-2" Y1="14" Name="A5"/>
+	<Text Value="Make sure the traces are cut underneath C1 and C3." X1="-2" Y1="15" Name="A6"/>
+	<Text Value="OUT goes to 100K Log Pot, pin 3. Pin1 of the pot goes to Ground." X1="-2" Y1="16" Name="A7"/>  <Text Value="C2 is a 3.3uF Non-polarised Electrolytic." X1="-2" Y1="17" Name="A8"/>
+  <Text Value="This can be hard to find, so replace with a 2.2uF Polarised, " X1="-1" Y1="18" Name="A9"/>
+  <Text Value="with the + at junction between the two FETs." X1="-1" Y1="19" Name="A10"/>
+</Layout>

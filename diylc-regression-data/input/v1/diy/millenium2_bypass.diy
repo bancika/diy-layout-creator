@@ -1,0 +1,35 @@
+<Layout Type="Stripboard" Width="6" Height="5" Project="Millenium 2 Bypass" Credits="">
+	<Resistor Value="calculated" X1="2" Y1="1" X2="4" Y2="1" Name="R1"/>
+	<Cut X1="3" Y1="1" Name="X2"/>
+	<Led Value="LED" X1="-2" Y1="1" X2="-2" Y2="2" Name="D2"/>
+	<Text Value="9v" X1="7" Y1="1" Name="T1"/>
+	<Cut X1="3" Y1="5" Name="X3"/>
+	<Text Value="control" X1="7" Y1="5" Name="T2"/>
+	<Text Value="gnd" X1="7" Y1="4" Name="T3"/>
+	<Diode Value="1N4148 or 1N914" X1="5" Y1="3" X2="5" Y2="1" Name="D1"/>
+	<Resistor Value="1-10K" X1="4" Y1="3" X2="4" Y2="5" Name="R2"/>
+	<Text Value="d" X1="3" Y1="2" Name="T4"/>
+	<Text Value="s" X1="3" Y1="4" Name="T5"/>
+	<Text Value="Q2 emitter is left open" X1="-2" Y1="13" Name="T6"/>
+	<Text Value="E" X1="0" Y1="5" Name="T7"/>
+	<Text Value="B" X1="0" Y1="4" Name="T8"/>
+	<Text Value="C" X1="0" Y1="3" Name="T9"/>
+	<Text Value="1" X1="-1" Y1="5" Name="T10"/>
+	<Text Value="2" X1="-1" Y1="4" Name="T11"/>
+	<Text Value="3" X1="-1" Y1="3" Name="T12"/>
+	<Transistor Value="2N3904 or equiv" X1="2" Y1="5" X2="2" Y2="3" Name="Q2"/>
+	<Transistor Value="BS170 or 2N7000 mosfet" X1="3" Y1="4" X2="3" Y2="2" Name="Q1"/>
+	<Text Value="tested and works" X1="-2" Y1="12" Name="T13"/>
+	<Text Value="R1 = calc to give less than 20 ma to LED" X1="-2" Y1="15" Name="T14"/>
+	<Text Value="calc here : http://www.bcae1.com/led.htm" X1="-2" Y1="16" Name="T15"/>  <Text Value="don't forget strip cut under R1 !" X1="-2" Y1="14" Name="T16"/>
+  <Text Value="http://geofex.com/Article_Folders/Millenium/The Next Millenium.pdf" X1="-6" Y1="-1" Name="T17"/>
+  <Text Value="This is schem 5 from" X1="-6" Y1="-2" Name="T18"/>
+  <Text Value="fly leads out and heatshrink the lot!" X1="-2" Y1="19" Name="T19"/>
+  
+  
+  <Text Value="Q2 Pins" X1="-4" Y1="4" Name="T20"/>
+  
+  <Jumper X1="1" Y1="1" X2="-2" Y2="1" Name="J1"/>
+  <Jumper X1="1" Y1="2" X2="-2" Y2="2" Name="J2"/>
+  <Text Value="380R gave about 17 ma to LED with vF about 2v" X1="-2" Y1="17" Name="T21"/>
+</Layout>

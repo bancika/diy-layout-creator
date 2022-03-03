@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>3</major>
+    <minor>57</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>attiny85烧写器兼调试板</title>
+  <author>Administrator</author>
+  <description>使用arduinoNano作为烧写器&lt;br&gt;attiny85小板作为目标板</description>
+  <width value="50.0" unit="mm"/>
+  <height value="50.0" unit="mm"/>
+  <gridSpacing value="2.54" unit="mm"/>
+  <components>
+    <diylc.boards.PerfBoard>
+      <name>Board1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.0" y="0.0"/>
+        <point x="2.0" y="1.9"/>
+      </controlPoints>
+      <firstPoint x="0.0" y="0.0"/>
+      <secondPoint x="2.0" y="1.9"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <spacing value="0.1" unit="in"/>
+      <padColor hex="da8a67"/>
+    </diylc.boards.PerfBoard>
+    <diylc.boards.TriPadBoard>
+      <name>Board2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="4.4" y="2.4"/>
+        <point x="5.895" y="3.6"/>
+      </controlPoints>
+      <firstPoint x="4.4" y="2.4"/>
+      <secondPoint x="5.895" y="3.6"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <stripSpan>3</stripSpan>
+      <spacing value="0.1" unit="in"/>
+      <stripColor hex="da8a67"/>
+      <orientation>VERTICAL</orientation>
+    </diylc.boards.TriPadBoard>
+    <diylc.semiconductors.DIL__IC>
+      <name>Arduino Nano</name>
+      <alpha>100</alpha>
+      <value>USB on below</value>
+      <orientation>_180</orientation>
+      <pinCount>_30</pinCount>
+      <pinSpacing value="0.1" unit="in"/>
+      <rowSpacing value="15.0" unit="mm"/>
+      <controlPoints>
+        <point x="0.8" y="1.7"/>
+        <point x="0.8" y="1.6"/>
+        <point x="0.8" y="1.5"/>
+        <point x="0.8" y="1.4"/>
+        <point x="0.8" y="1.3"/>
+        <point x="0.8" y="1.2"/>
+        <point x="0.8" y="1.1"/>
+        <point x="0.8" y="1.0"/>
+        <point x="0.8" y="0.9"/>
+        <point x="0.8" y="0.8"/>
+        <point x="0.8" y="0.7"/>
+        <point x="0.8" y="0.6"/>
+        <point x="0.8" y="0.5"/>
+        <point x="0.8" y="0.4"/>
+        <point x="0.8" y="0.3"/>
+        <point x="0.21" y="1.7"/>
+        <point x="0.21" y="1.6"/>
+        <point x="0.21" y="1.5"/>
+        <point x="0.21" y="1.4"/>
+        <point x="0.21" y="1.3"/>
+        <point x="0.21" y="1.2"/>
+        <point x="0.21" y="1.1"/>
+        <point x="0.21" y="1.0"/>
+        <point x="0.21" y="0.9"/>
+        <point x="0.21" y="0.8"/>
+        <point x="0.21" y="0.7"/>
+        <point x="0.21" y="0.6"/>
+        <point x="0.21" y="0.5"/>
+        <point x="0.21" y="0.4"/>
+        <point x="0.21" y="0.3"/>
+      </controlPoints>
+      <display>BOTH</display>
+      <bodyColor hex="808080"/>
+      <borderColor hex="595959"/>
+      <labelColor hex="ffffff"/>
+      <indentColor hex="595959"/>
+      <displayNumbers>NO</displayNumbers>
+    </diylc.semiconductors.DIL__IC>
+    <diylc.shapes.Rectangle>
+      <name>ATTiny85 digispark</name>
+      <alpha>95</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="1.3" y="0.1"/>
+        <point x="1.9" y="0.9"/>
+      </controlPoints>
+      <firstPoint x="1.3" y="0.1"/>
+      <secondPoint x="1.9" y="0.9"/>
+      <color hex="ffffff"/>
+      <borderColor hex="0000ff"/>
+      <borderThickness value="0.1" unit="mm"/>
+      <edgeRadius value="0.0" unit="mm"/>
+    </diylc.shapes.Rectangle>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="1.1" y="1.6"/>
+      <text>G</text>
+      <font name="Square721 BT Roman" size="12" style="1"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>RIGHT</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.Dot>
+      <name>Dot1</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.1" y="1.6"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot2</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="cc0000"/>
+      <point x="1.3" y="1.6"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot3</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.2" y="1.6"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="1.2" y="1.6"/>
+      <text>5V</text>
+      <font name="Square721 BT Roman" size="12" style="1"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L3</name>
+      <point x="1.3" y="1.6"/>
+      <text>SIG</text>
+      <font name="Square721 BT Roman" size="12" style="1"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L4</name>
+      <point x="0.8" y="0.3"/>
+      <text>VIN</text>
+      <font name="Square721 BT Roman" size="9" style="1"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L5</name>
+      <point x="0.8" y="0.4"/>
+      <text>GND</text>
+      <font name="Square721 BT Roman" size="9" style="1"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L6</name>
+      <point x="0.8" y="0.5"/>
+      <text>RST</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L7</name>
+      <point x="0.8" y="0.6"/>
+      <text>5V</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L8</name>
+      <point x="0.8" y="0.7"/>
+      <text>A7</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.Dot>
+      <name>Dot4</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.9" y="0.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L9</name>
+      <point x="1.9" y="0.9"/>
+      <text>RST</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>TOP</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.connectivity.Dot>
+      <name>Dot5</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.8" y="0.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot6</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.7" y="0.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot7</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.6" y="0.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot8</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.5" y="0.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot9</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.4" y="0.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot10</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.3" y="0.4"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot11</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.3" y="0.5"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot12</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="ff0000"/>
+      <point x="1.3" y="0.6"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Label>
+      <name>L10</name>
+      <point x="1.8" y="0.9"/>
+      <text>P4</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L11</name>
+      <point x="1.7" y="0.9"/>
+      <text>P3</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L12</name>
+      <point x="1.6" y="0.9"/>
+      <text>SCK</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L13</name>
+      <point x="1.5" y="0.9"/>
+      <text>MISO</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>TOP</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L14</name>
+      <point x="1.4" y="0.9"/>
+      <text>MOSI</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L15</name>
+      <point x="1.3" y="0.4"/>
+      <text>5V</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L16</name>
+      <point x="1.3" y="0.5"/>
+      <text>GND</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L17</name>
+      <point x="1.3" y="0.6"/>
+      <text>VIN</text>
+      <font reference="../../diylc.misc.Label[5]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L18</name>
+      <point x="1.5" y="0.4"/>
+      <text>ATTiny85</text>
+      <font name="Square721 BT Roman" size="12" style="0"/>
+      <color hex="cc0000"/>
+      <center>false</center>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <verticalAlignment>BOTTOM</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+  </components>
+  <groups/>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font name="Courier New" size="14" style="0"/>
+</project>

@@ -1,0 +1,105 @@
+<Layout Type="Perfboard" Width="13" Height="7" Project="ORANGE SUNSHINE FUZZ" Credits="Drawing and layout by Andrew Carrell 2006">
+  <Resistor X1="2" Y1="1" X2="5" Y2="1" Name="R1" Value="4.7K"/>
+  <Resistor Value="470R" X1="2" Y1="2" X2="5" Y2="2" Name="R2"/>
+  <Resistor Value="10K" X1="2" Y1="3" X2="5" Y2="3" Name="R3"/>
+  <Capacitor Value=".1uF" X1="2" Y1="4" X2="5" Y2="4" Name="C1"/>
+  <Resistor Value="1M" X1="2" Y1="5" X2="5" Y2="5" Name="R4"/>
+  
+  
+  
+  
+  
+  <Resistor Value="22K" X1="6" Y1="6" X2="9" Y2="6" Name="R5"/>
+  <Transistor Value="2N2222, BC108, ETC." X1="7" Y1="5" X2="7" Y2="3" Name="Q1"/>
+  <Transistor Value="2N2222, BC108, ETC." X1="10" Y1="5" X2="10" Y2="3" Name="Q2"/>
+  
+  
+  
+  
+  
+  
+  <Resistor Value="1K" Y1="6" Y2="7" Name="R6" X1="10" X2="10"/>
+  <Electrolyte Value="10uF" Y1="6" Y2="7" Name="C2" X1="12" X2="12"/>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <Capacitor Value=".1uF" Y1="1" Y2="1" Name="C3" X1="9" X2="12"/>
+  
+  
+  <Text Value="+9V" X1="-2" Name="T1" Y1="2"/>
+  <Text Value="IN" X1="-2" Y1="4" Name="T2"/>
+  <Text Value="GND" X1="-2" Y1="7" Name="T3"/>
+  
+  
+  <Text Value="VOL-1" Name="T4" Y1="7" X1="14"/>
+  <Text Value="VOL-3" Name="T5" Y1="1" X1="14"/>
+  <Text Value="VOL: 500K AUDIO TAPER POT" X1="4" Y1="12" Name="T6"/>
+  <Text Value="VOL-2 GOES TO EFFECT OUT" Y1="13" Name="T7" X1="4"/>
+  <Pad Value="15" X1="1" Y1="4" Name="P1"/>
+  <Pad Value="15" X1="1" Y1="7" Name="P2"/>
+  <Pad Value="15" X1="1" Name="P3" Y1="2"/>
+  <Pad Value="15" X1="2" Y1="3" Name="P4"/>
+  <Pad Value="15" X1="2" Y1="2" Name="P5"/>
+  <Pad Value="15" X1="2" Y1="1" Name="P6"/>
+  <Pad Value="15" X1="5" Y1="2" Name="P7"/>
+  <Pad Value="15" X1="7" Y1="3" Name="P8"/>
+  <Pad Value="15" X1="7" Y1="4" Name="P9"/>
+  <Pad Value="15" X1="7" Y1="5" Name="P10"/>
+  <Pad Value="15" X1="5" Y1="4" Name="P11"/>
+  <Pad Value="15" X1="2" Y1="4" Name="P12"/>
+  <Pad Value="15" X1="2" Y1="5" Name="P13"/>
+  <Pad Value="15" X1="5" Y1="5" Name="P14"/>
+  <Pad Value="15" X1="6" Y1="6" Name="P15"/>
+  <Pad Value="15" X1="10" Y1="4" Name="P16"/>
+  <Pad Value="15" X1="10" Y1="3" Name="P17"/>
+  <Pad Value="15" X1="10" Y1="5" Name="P18"/>
+  <Pad Value="15" Y1="1" Name="P19" X1="9"/>
+  <Pad Value="15" X1="5" Y1="1" Name="P20"/>
+  <Pad Value="15" Y1="1" Name="P21" X1="13"/>
+  <Pad Value="15" X1="9" Y1="6" Name="P22"/>
+  <Pad Value="15" X1="10" Y1="6" Name="P23"/>
+  <Pad Value="15" X1="12" Y1="6" Name="P24"/>
+  <Pad Value="15" X1="12" Y1="7" Name="P25"/>
+  <Pad Value="15" X1="10" Y1="7" Name="P26"/>
+  <Pad Value="15" X1="13" Y1="7" Name="P27"/>
+  <Pad Value="15" Y1="3" Name="P28" X1="5"/>
+  <Pad Value="15" Y1="1" Name="P29" X1="12"/>
+  <Trace Value="4" X1="1" Y1="4" X2="2" Y2="4" Name="T8"/>
+  <Trace Value="4" X1="2" Y1="5" X2="2" Y2="4" Name="T9"/>
+  <Trace Value="4" X1="5" Y1="5" X2="5" Y2="7" Name="T10"/>
+  <Trace Value="4" X1="6" Y1="6" X2="6" Y2="4" Name="T11"/>
+  <Trace Value="4" X1="7" Y1="5" X2="7" Y2="7" Name="T12"/>
+  <Trace Value="4" X1="9" Y1="6" X2="10" Y2="6" Name="T13"/>
+  <Trace Value="4" X1="10" Y1="6" X2="10" Y2="5" Name="T14"/>
+  <Trace Value="4" X1="10" Y1="6" X2="12" Y2="6" Name="T15"/>
+  <Trace Value="4" X1="13" Y1="7" X2="1" Y2="7" Name="T16"/>
+  <Trace Value="4" X1="1" X2="2" Name="T17" Y1="2" Y2="2"/>
+  <Trace Value="4" X1="5" Y1="3" X2="7" Y2="3" Name="T18"/>
+  <Trace Value="4" X1="5" Y1="4" X2="7" Y2="4" Name="T19"/>
+  
+  
+  
+  
+  
+  
+  <Trace Value="4" X1="5" Y1="2" X2="2" Y2="1" Name="T26"/>
+  
+  <Trace Value="4" X1="7" Y1="3" X2="8" Y2="3" Name="T20"/>
+  <Trace Value="4" X1="8" Y1="3" X2="9" Y2="4" Name="T28"/>
+  <Trace Value="4" X1="9" Y1="4" X2="10" Y2="4" Name="T29"/>
+  
+  <Trace Value="4" X1="5" Y1="2" X2="9" Y2="2" Name="T21"/>
+  <Trace Value="4" X1="9" Y1="2" X2="9" Y2="1" Name="T22"/>
+  <Trace Value="4" X1="10" Y1="3" X2="9" Y2="3" Name="T23"/>
+  <Pad Value="15" X1="9" Y1="3" Name="P30"/>
+  <Pad Value="15" X1="7" Y1="1" Name="P31"/>
+  <Trace Value="4" X1="5" Y1="1" X2="7" Y2="1" Name="T24"/>
+  <Jumper X1="7" Y1="1" X2="9" Y2="3" Name="JUMPER"/>
+  <Trace Value="4" X1="12" Y1="1" X2="13" Y2="1" Name="T25"/>
+</Layout>

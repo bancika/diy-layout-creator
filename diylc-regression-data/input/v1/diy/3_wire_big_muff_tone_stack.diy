@@ -1,0 +1,43 @@
+<Layout Width="8" Height="5" Type="PCB" Project="3 Wire Big Muff Tone Stack" Credits="layout by pyrop" HideList="False">
+  <Pot Value="100K" Taper="Linear" X1="4" Y1="-1" X2="6" Y2="-1" Name="Tone"/>
+  <Pad Value="18px" Color="Black" X1="2" Y1="1" Name="P2"/>
+  <Pad Value="18px" Color="Black" X1="4" Y1="1" Name="P3"/>
+  <Pad Value="18px" Color="Black" X1="6" Y1="1" Name="P4"/>
+  
+  <Pad X1="7" Y1="2" Value="15" Name="P5" Parent="R1" Square="False"/>
+  <Pad X1="7" Y1="5" Value="15" Name="P6" Parent="R1" Square="False"/>
+  <Resistor Value="39K" X1="7" Y1="2" X2="7" Y2="5" Name="R1"/>
+  <Pad X1="2" Y1="3" Value="15" Name="P7" Parent="C1" Square="False"/>
+  <Pad X1="2" Y1="5" Value="15" Name="P8" Parent="C1" Square="False"/>
+  <Capacitor Value="0.004uF" X1="2" Y1="3" X2="2" Y2="5" Name="C1"/>
+  <Trace Value="8px" Color="Black" X1="2" Y1="5" X2="7" Y2="5" Name="T1"/>
+  <Trace Value="8px" Color="Black" X1="2" Y1="1" X2="2" Y2="3" Name="T2"/>
+  <Trace Value="8px" Color="Black" X1="6" Y1="1" X2="7" Y2="2" Name="T3"/>
+  <Pad X1="8" Y1="2" Value="15" Name="P9" Parent="C2" Square="False"/>
+  <Pad X1="8" Y1="4" Value="15" Name="P10" Parent="C2" Square="False"/>
+  <Capacitor Value="0.01uF" X1="8" Y1="2" X2="8" Y2="4" Name="C2"/>
+  <Trace Value="8px" Color="Black" X1="8" Y1="4" X2="1" Y2="4" Name="T4"/>
+  <Trace Value="8px" Color="Black" X1="7" Y1="2" X2="8" Y2="2" Name="T5"/>
+  <Trace Value="8px" Color="Black" X1="1" Y1="4" X2="1" Y2="5" Name="T6"/>
+  <Trace Value="8px" Color="Black" X1="2" Y1="1" X2="1" Y2="2" Name="T7"/>
+  <Pad X1="1" Y1="2" Value="15" Name="P11" Parent="R2" Square="False"/>
+  <Pad X1="1" Y1="5" Value="15" Name="P12" Parent="R2" Square="False"/>
+  <Resistor Value="100K" X1="1" Y1="2" X2="1" Y2="5" Name="R2"/>
+  <Trace Value="8px" Color="Black" X1="4" Y1="1" X2="6" Y2="3" Name="T8"/>
+  <Pad Value="18px" Color="Black" X1="6" Y1="3" Name="P13"/>
+  <Pad Value="18px" Color="Black" X1="6" Y1="5" Name="P14"/>
+  <Pad Value="18px" Color="Black" X1="5" Y1="4" Name="P15"/>
+  <Pad X1="2" Y1="1" Value="18" Name="P1" Parent="J1" Square="False"/>
+  <Jumper X1="2" Y1="-1" X2="2" Y2="1" Name="J1"/>
+  <Pad X1="4" Y1="1" Value="18" Name="P16" Parent="J2" Square="False"/>
+  <Jumper X1="4" Y1="-1" X2="4" Y2="1" Name="J2"/>
+  <Pad X1="6" Y1="1" Value="18" Name="P17" Parent="J3" Square="False"/>
+  <Jumper X1="6" Y1="-1" X2="6" Y2="1" Name="J3"/>
+  <Wire Color="Blue" Seed="40043148" X1="6" Y1="3" X2="10" Y2="3" Name="W1"/>
+  <Wire Color="Green" Seed="1271417599" X1="6" Y1="5" X2="9" Y2="6" Name="W2"/>
+  <Wire Color="Black" Seed="268981025" X1="5" Y1="4" X2="2" Y2="6" Name="W3"/>
+  <Text Value="  output" X1="10" Y1="3" Name="A1"/>
+  <Text Value="  input" X1="9" Y1="6" Name="A2"/>
+  <Text Value="   ground" X1="2" Y1="6" Name="A3"/>
+  <Text Value="Designed to mount directly to 16mm board mounted pots" X1="-4" Y1="10" Name="A4"/>
+</Layout>

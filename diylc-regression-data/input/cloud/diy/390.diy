@@ -1,0 +1,2622 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>4</major>
+    <minor>20</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>aloisio.spadeto</author>
+  <width value="350.0" unit="mm"/>
+  <height value="210.0" unit="mm"/>
+  <gridSpacing value="1.0" unit="mm"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.boards.BlankBoard>
+      <name>Board1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.23622047244094488" y="3.3858267716535466"/>
+        <point x="12.362204724409448" y="6.377952755905512"/>
+      </controlPoints>
+      <firstPoint x="0.23622047244094488" y="3.3858267716535466"/>
+      <secondPoint x="12.362204724409448" y="6.377952755905512"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <length value="307.99999999999994" unit="mm"/>
+      <width value="75.99999999999993" unit="mm"/>
+      <mode>TwoPoints</mode>
+      <type>SQUARE</type>
+    </diylc.boards.BlankBoard>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet8</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.8897637795275597" y="3.622047244094489"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet6</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="2.440944881889763" y="3.622047244094489"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet9</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="2.9921259842519685" y="3.622047244094489"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet10</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="3.543307086614171" y="3.622047244094489"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet11</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="3.543307086614171" y="3.622047244094489"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet22</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.4960629921259843" y="4.881889763779528"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet23</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.8897637795275586" y="6.141732283464568"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet1</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.8897637795275586" y="4.803149606299213"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet2</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="2.9921259842519707" y="4.803149606299213"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet3</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="2.440944881889763" y="6.141732283464568"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet4</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="2.9921259842519707" y="6.1417322834645685"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet24</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="2.99212598425197" y="6.141732283464568"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet25</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="2.9921259842519676" y="6.141732283464568"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet26</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="3.543307086614173" y="6.141732283464567"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet27</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="4.330708661417321" y="5.354330708661415"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet12</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="4.330708661417321" y="3.6220472440944866"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet13</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="5.039370078740157" y="5.354330708661415"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet28</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="5.039370078740157" y="3.6220472440944866"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet29</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="4.094488188976376" y="6.141732283464568"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet37</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="5.590551181102365" y="5.354330708661417"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet38</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="5.590551181102362" y="3.6220472440944866"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet14</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="5.984251968503936" y="4.251968503937008"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet5</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="5.984251968503936" y="4.251968503937007"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet15</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="6.771653543307084" y="3.6220472440944875"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet16</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="6.37795275590551" y="4.251968503937007"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet18</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="6.771653543307086" y="5.354330708661417"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet19</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="6.141732283464564" y="4.645669291338582"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet17</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="7.165354330708663" y="4.488188976377952"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet20</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="7.480314960629919" y="3.6220472440944866"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet21</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="7.480314960629921" y="5.354330708661417"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet30</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="5.039370078740155" y="6.141732283464568"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet32</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="5.590551181102362" y="5.8267716535433065"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet33</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="6.771653543307086" y="5.826771653543307"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet34</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="7.480314960629919" y="5.826771653543307"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet35</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="7.165354330708658" y="4.9606299212598435"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet39</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="6.141732283464564" y="3.7795275590551203"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet36</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="7.95275590551181" y="4.5669291338582685"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet40</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="7.952755905511813" y="5.354330708661418"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet41</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="8.425196850393704" y="5.354330708661418"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet42</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="8.425196850393704" y="4.1732283464566935"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet43</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="8.976377952755909" y="3.6220472440944844"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet44</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="8.425196850393704" y="3.622047244094489"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet45</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="8.976377952755904" y="5.354330708661418"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet46</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="8.976377952755909" y="4.173228346456694"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet47</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="9.37007874015748" y="4.566929133858268"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet48</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="9.842519685039372" y="4.566929133858268"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet49</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="9.606299212598426" y="3.622047244094489"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet50</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="9.606299212598424" y="4.881889763779527"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet52</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="10.393700787401576" y="3.622047244094489"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet53</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="10.393700787401576" y="5.354330708661418"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet54</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="9.606299212598424" y="5.354330708661417"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet55</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="11.023622047244098" y="5.354330708661418"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet56</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="11.023622047244098" y="4.645669291338582"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet57</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="11.023622047244094" y="4.1732283464566935"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet58</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="7.95275590551181" y="5.826771653543307"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet59</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="8.4251968503937" y="5.8267716535433065"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet60</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="8.976377952755904" y="5.826771653543307"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet51</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="11.023622047244094" y="5.826771653543307"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet61</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="11.811023622047248" y="5.354330708661417"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet62</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="11.417322834645672" y="3.6220472440944853"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet63</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="11.811023622047244" y="3.6220472440944884"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet64</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.4960629921259843" y="5.748031496062992"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet65</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.4960629921259843" y="3.779527559055117"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet66</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.0236220472440944" y="6.141732283464571"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet67</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="0.6299212598425197" y="4.566929133858268"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet68</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="0.6299212598425197" y="3.779527559055118"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet69</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="7.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="0.7874015748031497" y="4.1732283464566935"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet70</name>
+      <size value="8.0" unit="mm"/>
+      <holeSize value="5.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="0.6299212598425202" y="5.039370078740156"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet71</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="0.6299212598425202" y="5.66929133858268"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet73</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.0236220472440944" y="4.881889763779528"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet7</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="1.0236220472440944" y="5.669291338582678"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet74</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="0.3937007874015754" y="6.2204724409448815"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet75</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="0.3937007874015754" y="3.5433070866141723"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet72</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="12.20472440944882" y="6.220472440944889"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet76</name>
+      <size value="5.0" unit="mm"/>
+      <holeSize value="3.0" unit="mm"/>
+      <color hex="c3e4ed"/>
+      <point x="12.20472440944882" y="3.543307086614176"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.passive.Resistor>
+      <name>R1</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="2.0078740157480333" y="2.2834645669291356"/>
+        <point x="3.1496062992125986" y="2.2834645669291347"/>
+        <point x="2.5787401574803157" y="2.283464566929135"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C2</name>
+      <alpha>127</alpha>
+      <length value="50.0" unit="mm"/>
+      <width value="18.0" unit="mm"/>
+      <points>
+        <point x="2.440944881889763" y="3.622047244094489"/>
+        <point x="2.440944881889763" y="6.141732283464568"/>
+        <point x="2.440944881889763" y="4.881889763779529"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.passive.Resistor>
+      <name>R2</name>
+      <alpha>127</alpha>
+      <length value="14.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="2.9921259842519685" y="4.803149606299213"/>
+        <point x="2.9921259842519685" y="3.622047244094489"/>
+        <point x="2.9921259842519685" y="4.212598425196851"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C3</name>
+      <alpha>127</alpha>
+      <length value="50.0" unit="mm"/>
+      <width value="18.0" unit="mm"/>
+      <points>
+        <point x="3.543307086614171" y="3.622047244094489"/>
+        <point x="3.543307086614172" y="6.141732283464568"/>
+        <point x="3.5433070866141714" y="4.881889763779529"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.passive.Resistor>
+      <name>R3</name>
+      <alpha>127</alpha>
+      <length value="14.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="1.8897637795275586" y="4.803149606299213"/>
+        <point x="1.8897637795275575" y="3.6220472440944875"/>
+        <point x="1.889763779527558" y="4.21259842519685"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.Jumper>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.8897637795275586" y="4.803149606299213"/>
+        <point x="1.8897637795275586" y="6.141732283464568"/>
+        <point x="1.8897637795275586" y="5.472440944881891"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J2</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.8897637795275586" y="6.141732283464568"/>
+        <point x="2.440944881889763" y="6.141732283464568"/>
+        <point x="2.1653543307086607" y="6.141732283464568"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J3</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.9921259842519685" y="4.803149606299213"/>
+        <point x="2.9921259842519685" y="6.1417322834645685"/>
+        <point x="2.9921259842519685" y="5.472440944881892"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J4</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.9921259842519685" y="6.1417322834645685"/>
+        <point x="3.543307086614172" y="6.141732283464568"/>
+        <point x="3.2677165354330704" y="6.1417322834645685"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J5</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.440944881889763" y="3.622047244094489"/>
+        <point x="2.9921259842519676" y="3.622047244094489"/>
+        <point x="2.7165354330708653" y="3.622047244094489"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C1</name>
+      <alpha>127</alpha>
+      <length value="32.0" unit="mm"/>
+      <width value="16.0" unit="mm"/>
+      <points>
+        <point x="4.330708661417321" y="3.6220472440944866"/>
+        <point x="4.330708661417321" y="5.354330708661415"/>
+        <point x="4.330708661417321" y="4.488188976377951"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.connectivity.Jumper>
+      <name>J6</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.8897637795275575" y="3.622047244094489"/>
+        <point x="2.440944881889763" y="3.622047244094489"/>
+        <point x="2.1653543307086602" y="3.622047244094489"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J7</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.992125984251965" y="3.622047244094489"/>
+        <point x="3.5433070866141687" y="3.622047244094489"/>
+        <point x="3.267716535433067" y="3.622047244094489"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C4</name>
+      <alpha>127</alpha>
+      <length value="32.0" unit="mm"/>
+      <width value="16.0" unit="mm"/>
+      <points>
+        <point x="5.039370078740157" y="3.6220472440944866"/>
+        <point x="5.039370078740157" y="5.354330708661415"/>
+        <point x="5.039370078740157" y="4.488188976377951"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.passive.Resistor>
+      <name>R4</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="4.330708661417321" y="5.354330708661415"/>
+        <point x="5.039370078740155" y="5.354330708661415"/>
+        <point x="4.685039370078738" y="5.354330708661415"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R5</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="5.590551181102359" y="3.6220472440944875"/>
+        <point x="5.9842519685039335" y="4.251968503937007"/>
+        <point x="5.787401574803146" y="3.9370078740157477"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R6</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="6.771653543307086" y="3.6220472440944866"/>
+        <point x="6.37795275590551" y="4.251968503937007"/>
+        <point x="6.574803149606298" y="3.937007874015747"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C6</name>
+      <alpha>127</alpha>
+      <length value="26.0" unit="mm"/>
+      <width value="8.0" unit="mm"/>
+      <points>
+        <point x="6.771653543307086" y="3.6220472440944853"/>
+        <point x="6.771653543307086" y="5.354330708661414"/>
+        <point x="6.771653543307086" y="4.48818897637795"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.passive.Resistor>
+      <name>R7</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="5.590551181102359" y="5.354330708661417"/>
+        <point x="6.141732283464564" y="4.645669291338582"/>
+        <point x="5.866141732283462" y="4.999999999999999"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R8</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="6.141732283464564" y="4.645669291338582"/>
+        <point x="6.771653543307084" y="5.354330708661417"/>
+        <point x="6.456692913385824" y="4.999999999999999"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.HookupWire>
+      <name>W1</name>
+      <alpha>84</alpha>
+      <controlPoints2>
+        <point x="5.039370078740157" y="5.3543307086614185"/>
+        <point x="5.3543307086614185" y="5.354330708661418"/>
+        <point x="5.3543307086614185" y="4.566929133858268"/>
+        <point x="6.141732283464564" y="4.645669291338582"/>
+      </controlPoints2>
+      <color hex="999999"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C5</name>
+      <alpha>127</alpha>
+      <length value="26.0" unit="mm"/>
+      <width value="8.0" unit="mm"/>
+      <points>
+        <point x="5.590551181102359" y="3.6220472440944866"/>
+        <point x="5.590551181102362" y="5.354330708661414"/>
+        <point x="5.590551181102361" y="4.48818897637795"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C7</name>
+      <alpha>127</alpha>
+      <length value="26.0" unit="mm"/>
+      <width value="8.0" unit="mm"/>
+      <points>
+        <point x="7.480314960629921" y="3.6220472440944853"/>
+        <point x="7.480314960629921" y="5.354330708661414"/>
+        <point x="7.480314960629921" y="4.48818897637795"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.connectivity.Jumper>
+      <name>J8</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="10.393700787401576" y="6.141732283464567"/>
+        <point x="5.039370078740155" y="6.141732283464568"/>
+        <point x="7.716535433070866" y="6.141732283464567"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.passive.Resistor>
+      <name>R9</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="5.039370078740155" y="6.141732283464568"/>
+        <point x="5.039370078740155" y="5.354330708661418"/>
+        <point x="5.039370078740155" y="5.748031496062993"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.Jumper>
+      <name>J9</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.4251968503937" y="3.1496062992125986"/>
+        <point x="5.039370078740155" y="3.1496062992125986"/>
+        <point x="6.732283464566928" y="3.1496062992125986"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J10</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.039370078740155" y="3.1496062992125986"/>
+        <point x="5.039370078740155" y="3.622047244094489"/>
+        <point x="5.039370078740155" y="3.3858267716535435"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.passive.Resistor>
+      <name>R10</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="7.480314960629919" y="3.622047244094489"/>
+        <point x="7.165354330708658" y="4.488188976377953"/>
+        <point x="7.322834645669288" y="4.055118110236221"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.HookupWire>
+      <name>W2</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="7.16535433070866" y="4.488188976377952"/>
+        <point x="7.16535433070866" y="4.645669291338582"/>
+        <point x="7.00787401574803" y="4.724409448818898"/>
+        <point x="7.165354330708658" y="4.960629921259843"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W3</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="5.590551181102362" y="5.354330708661418"/>
+        <point x="5.590551181102359" y="5.590551181102363"/>
+        <point x="5.511811023622045" y="5.905511811023623"/>
+        <point x="5.590551181102359" y="5.826771653543307"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W4</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="6.771653543307086" y="5.354330708661417"/>
+        <point x="6.850393700787399" y="5.590551181102362"/>
+        <point x="6.771653543307084" y="5.905511811023622"/>
+        <point x="6.771653543307084" y="5.826771653543307"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W6</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="6.141732283464567" y="3.7795275590551194"/>
+        <point x="6.2992125984251945" y="3.8582677165354333"/>
+        <point x="6.37795275590551" y="4.094488188976378"/>
+        <point x="6.37795275590551" y="4.251968503937008"/>
+      </controlPoints2>
+      <color hex="ffff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W5</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="6.062992125984249" y="3.779527559055118"/>
+        <point x="6.141732283464562" y="3.8582677165354324"/>
+        <point x="6.220472440944877" y="4.094488188976377"/>
+        <point x="5.9842519685039335" y="4.251968503937008"/>
+      </controlPoints2>
+      <color hex="ffff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.passive.Resistor>
+      <name>R11</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="8.4251968503937" y="4.1732283464566935"/>
+        <point x="8.976377952755904" y="3.6220472440944844"/>
+        <point x="8.700787401574802" y="3.897637795275589"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R12</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="7.95275590551181" y="5.354330708661418"/>
+        <point x="7.95275590551181" y="4.5669291338582685"/>
+        <point x="7.95275590551181" y="4.960629921259843"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R13</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="7.480314960629919" y="5.354330708661418"/>
+        <point x="7.95275590551181" y="4.5669291338582685"/>
+        <point x="7.716535433070865" y="4.960629921259843"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R14</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="7.480314960629919" y="3.622047244094489"/>
+        <point x="7.95275590551181" y="4.5669291338582685"/>
+        <point x="7.716535433070865" y="4.094488188976379"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R15</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="8.4251968503937" y="5.354330708661418"/>
+        <point x="7.95275590551181" y="4.5669291338582685"/>
+        <point x="8.188976377952756" y="4.960629921259843"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R16</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="8.4251968503937" y="3.622047244094489"/>
+        <point x="8.4251968503937" y="4.1732283464566935"/>
+        <point x="8.4251968503937" y="3.897637795275591"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R17</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="7.480314960629919" y="3.622047244094489"/>
+        <point x="8.4251968503937" y="3.622047244094489"/>
+        <point x="7.952755905511809" y="3.622047244094489"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C8</name>
+      <alpha>127</alpha>
+      <length value="16.0" unit="mm"/>
+      <width value="5.0" unit="mm"/>
+      <points>
+        <point x="8.4251968503937" y="4.1732283464566935"/>
+        <point x="8.4251968503937" y="5.354330708661418"/>
+        <point x="8.4251968503937" y="4.7637795275590555"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C9</name>
+      <alpha>127</alpha>
+      <length value="18.0" unit="mm"/>
+      <width value="7.0" unit="mm"/>
+      <points>
+        <point x="8.976377952755904" y="4.173228346456693"/>
+        <point x="8.976377952755904" y="5.354330708661417"/>
+        <point x="8.976377952755904" y="4.763779527559055"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.connectivity.Jumper>
+      <name>J11</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.976377952755904" y="3.622047244094489"/>
+        <point x="8.976377952755904" y="4.1732283464566935"/>
+        <point x="8.976377952755904" y="3.897637795275591"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J12</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.425196850393702" y="3.1496062992125986"/>
+        <point x="8.425196850393702" y="3.622047244094489"/>
+        <point x="8.425196850393702" y="3.3858267716535435"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J13</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="9.606299212598426" y="3.1496062992125986"/>
+        <point x="8.4251968503937" y="3.1496062992125986"/>
+        <point x="9.015748031496063" y="3.1496062992125986"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C10</name>
+      <alpha>127</alpha>
+      <length value="32.0" unit="mm"/>
+      <width value="16.0" unit="mm"/>
+      <points>
+        <point x="10.393700787401574" y="3.6220472440944875"/>
+        <point x="10.393700787401578" y="5.354330708661418"/>
+        <point x="10.393700787401576" y="4.488188976377953"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C11</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="9.606299212598422" y="3.62204724409449"/>
+        <point x="9.37007874015748" y="4.566929133858268"/>
+        <point x="9.48818897637795" y="4.094488188976379"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C12</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="9.606299212598426" y="3.622047244094489"/>
+        <point x="9.842519685039372" y="4.566929133858268"/>
+        <point x="9.724409448818898" y="4.094488188976378"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.passive.Resistor>
+      <name>R18</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="9.370078740157483" y="3.700787401574803"/>
+        <point x="9.37007874015748" y="4.566929133858268"/>
+        <point x="9.370078740157481" y="4.133858267716535"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.HookupWire>
+      <name></name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="9.842519685039372" y="3.700787401574803"/>
+        <point x="9.843661417322837" y="3.6162598425196846"/>
+        <point x="9.843661417322837" y="3.856259842519685"/>
+        <point x="9.606299212598428" y="3.6220472440944875"/>
+      </controlPoints2>
+      <color hex="cccccc"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_26</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.passive.Resistor>
+      <name>R19</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="9.842519685039372" y="4.566929133858268"/>
+        <point x="9.842519685039372" y="3.700787401574803"/>
+        <point x="9.842519685039372" y="4.133858267716535"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>true</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.Jumper>
+      <name>J16</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="9.606299212598426" y="3.1496062992125973"/>
+        <point x="9.606299212598426" y="3.6220472440944875"/>
+        <point x="9.606299212598426" y="3.3858267716535426"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J17</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="10.393700787401576" y="3.1496062992125986"/>
+        <point x="10.393700787401576" y="3.622047244094489"/>
+        <point x="10.393700787401576" y="3.3858267716535435"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J18</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="10.393700787401576" y="3.1496062992125986"/>
+        <point x="9.606299212598426" y="3.1496062992125986"/>
+        <point x="10.000000000000002" y="3.1496062992125986"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.HookupWire>
+      <name>W7</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="9.37007874015748" y="4.566929133858268"/>
+        <point x="9.448818897637793" y="4.803149606299213"/>
+        <point x="9.370078740157483" y="4.881889763779527"/>
+        <point x="9.606299212598424" y="4.881889763779529"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W8</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="9.842519685039372" y="4.566929133858268"/>
+        <point x="9.921259842519685" y="4.803149606299213"/>
+        <point x="9.842519685039372" y="4.881889763779527"/>
+        <point x="9.606299212598428" y="4.960629921259843"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.Jumper>
+      <name>J19</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="10.393700787401576" y="5.3543307086614185"/>
+        <point x="10.393700787401576" y="6.141732283464567"/>
+        <point x="10.393700787401576" y="5.748031496062993"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J20</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.976377952755904" y="5.354330708661415"/>
+        <point x="9.606299212598426" y="5.354330708661417"/>
+        <point x="9.291338582677165" y="5.354330708661417"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.passive.Resistor>
+      <name>R20</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="10.393700787401576" y="5.354330708661418"/>
+        <point x="9.606299212598426" y="5.354330708661417"/>
+        <point x="10.000000000000002" y="5.354330708661417"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R21</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="11.023622047244098" y="5.354330708661418"/>
+        <point x="10.393700787401576" y="5.354330708661418"/>
+        <point x="10.708661417322837" y="5.354330708661418"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.RadialCeramicDiskCapacitor>
+      <name>C13</name>
+      <alpha>127</alpha>
+      <length value="0.25" unit="in"/>
+      <width value="0.125" unit="in"/>
+      <points>
+        <point x="11.023622047244098" y="4.645669291338582"/>
+        <point x="11.023622047244098" y="5.354330708661418"/>
+        <point x="11.023622047244098" y="5.0"/>
+      </points>
+      <bodyColor hex="f0e68c"/>
+      <borderColor hex="a8a162"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <pinSpacing value="0.1" unit="in"/>
+      <voltage>_63V</voltage>
+    </diylc.passive.RadialCeramicDiskCapacitor>
+    <diylc.connectivity.HookupWire>
+      <name>W9</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="7.480314960629923" y="5.354330708661417"/>
+        <point x="7.559055118110236" y="5.590551181102362"/>
+        <point x="7.480314960629921" y="5.905511811023622"/>
+        <point x="7.480314960629921" y="5.826771653543307"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W10</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="7.952755905511813" y="5.354330708661417"/>
+        <point x="8.031496062992126" y="5.590551181102362"/>
+        <point x="7.95275590551181" y="5.905511811023622"/>
+        <point x="7.95275590551181" y="5.826771653543307"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W11</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="8.425196850393704" y="5.354330708661418"/>
+        <point x="8.503937007874017" y="5.590551181102363"/>
+        <point x="8.425196850393702" y="5.905511811023623"/>
+        <point x="8.425196850393702" y="5.826771653543309"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W12</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="8.976377952755909" y="5.354330708661417"/>
+        <point x="9.055118110236222" y="5.590551181102362"/>
+        <point x="8.976377952755906" y="5.905511811023622"/>
+        <point x="8.976377952755906" y="5.826771653543307"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name></name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="11.811023622047244" y="5.354330708661418"/>
+        <point x="11.495" y="5.11"/>
+        <point x="11.495" y="4.74"/>
+        <point x="11.495" y="4.73"/>
+      </controlPoints2>
+      <color hex="cccccc"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_26</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name></name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="11.41732283464567" y="3.6220472440944884"/>
+        <point x="11.496062992125985" y="3.6220472440944884"/>
+        <point x="11.495" y="4.0"/>
+        <point x="11.495" y="4.01"/>
+      </controlPoints2>
+      <color hex="cccccc"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_26</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C14</name>
+      <alpha>127</alpha>
+      <length value="18.0" unit="mm"/>
+      <width value="7.0" unit="mm"/>
+      <points>
+        <point x="11.496062992125985" y="4.015748031496063"/>
+        <point x="11.495" y="4.73"/>
+        <point x="11.495531496062993" y="4.372874015748032"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>true</hideShortLeads>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.connectivity.HookupWire>
+      <name>W13</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="11.023622047244098" y="5.354330708661417"/>
+        <point x="11.181102362204726" y="5.590551181102362"/>
+        <point x="11.102362204724411" y="5.905511811023622"/>
+        <point x="11.023622047244096" y="5.826771653543307"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.passive.AxialFilmCapacitor>
+      <name>C15</name>
+      <alpha>127</alpha>
+      <length value="26.0" unit="mm"/>
+      <width value="8.0" unit="mm"/>
+      <points>
+        <point x="11.811023622047244" y="3.6220472440944884"/>
+        <point x="11.811023622047244" y="5.354330708661418"/>
+        <point x="11.811023622047244" y="4.488188976377953"/>
+      </points>
+      <bodyColor hex="ffe303"/>
+      <borderColor hex="b29e02"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>true</hideShortLeads>
+      <voltage>_63V</voltage>
+      <showOuterFoil>false</showOuterFoil>
+      <outerFoilColor hex="ffffff"/>
+    </diylc.passive.AxialFilmCapacitor>
+    <diylc.connectivity.HookupWire>
+      <name>W14</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="9.606299212598426" y="3.6278346456692905"/>
+        <point x="9.607440944881889" y="3.5433070866141723"/>
+        <point x="9.607440944881889" y="3.7833070866141725"/>
+        <point x="9.370078740157483" y="3.700787401574803"/>
+      </controlPoints2>
+      <color hex="cccccc"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_26</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W15</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="11.023622047244096" y="4.1732283464566935"/>
+        <point x="11.181102362204724" y="4.409448818897639"/>
+        <point x="11.10236220472441" y="4.724409448818899"/>
+        <point x="11.023622047244094" y="4.645669291338585"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.passive.Resistor>
+      <name>R22</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="1.4960629921259843" y="5.748031496062992"/>
+        <point x="1.4960629921259843" y="4.881889763779528"/>
+        <point x="1.4960629921259843" y="5.31496062992126"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.HookupWire>
+      <name>W16</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.4960629921259843" y="5.748031496062989"/>
+        <point x="1.4960629921259843" y="6.535433070866142"/>
+      </controlPoints2>
+      <color hex="3333ff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.passive.AxialElectrolyticCapacitor>
+      <name>C16</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="1.0236220472440944" y="4.881889763779528"/>
+        <point x="1.4960629921259843" y="3.779527559055116"/>
+        <point x="1.2598425196850394" y="4.330708661417321"/>
+      </points>
+      <bodyColor hex="6b6dce"/>
+      <borderColor hex="4a4c90"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <voltage>_63V</voltage>
+      <markerColor hex="8cacea"/>
+      <tickColor hex="ffffff"/>
+      <polarized>true</polarized>
+    </diylc.passive.AxialElectrolyticCapacitor>
+    <diylc.semiconductors.DiodePlastic>
+      <name>D1</name>
+      <alpha>127</alpha>
+      <length value="0.25" unit="in"/>
+      <width value="0.125" unit="in"/>
+      <points>
+        <point x="1.4960629921259843" y="3.779527559055116"/>
+        <point x="1.4960629921259843" y="4.881889763779528"/>
+        <point x="1.4960629921259843" y="4.330708661417321"/>
+      </points>
+      <bodyColor hex="404040"/>
+      <borderColor hex="2c2c2c"/>
+      <labelColor hex="ffffff"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value></value>
+      <markerColor hex="dddddd"/>
+    </diylc.semiconductors.DiodePlastic>
+    <diylc.passive.PotentiometerPanel>
+      <name>VR1</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="-0.23622047244094488" y="4.881889763779534"/>
+        <point x="-0.23622047244094488" y="4.646889763779534"/>
+        <point x="-0.23622047244094488" y="4.411889763779534"/>
+      </controlPoints>
+      <orientation>_270</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter value="18.0" unit="mm"/>
+      <spacing value="6.0" unit="mm"/>
+      <lugDiameter value="2.0" unit="mm"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>PCB</type>
+      <showShaft>false</showShaft>
+      <view>ShaftDown</view>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.passive.Resistor>
+      <name>R23</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="1.4960629921259843" y="3.779527559055116"/>
+        <point x="0.6299212598425197" y="4.566929133858268"/>
+        <point x="1.062992125984252" y="4.173228346456693"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R24</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="1.4960629921259843" y="3.779527559055118"/>
+        <point x="0.6299212598425197" y="3.779527559055118"/>
+        <point x="1.062992125984252" y="3.779527559055118"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R25</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="11.811023622047244" y="5.354330708661418"/>
+        <point x="11.023622047244094" y="5.354330708661418"/>
+        <point x="11.41732283464567" y="5.354330708661418"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.connectivity.Jumper>
+      <name>J14</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.039370078740157" y="3.6220472440944884"/>
+        <point x="4.330708661417322" y="3.6220472440944884"/>
+        <point x="4.68503937007874" y="3.6220472440944884"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.HookupWire>
+      <name>W18</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="-0.23622047244094488" y="4.881889763779535"/>
+        <point x="0.15748031496062992" y="4.566929133858268"/>
+        <point x="0.6299212598425197" y="4.566929133858268"/>
+      </controlPoints2>
+      <color hex="3333ff"/>
+      <pointCount>THREE</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W19</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="-0.23622047244094488" y="4.645669291338583"/>
+        <point x="0.6299212598425197" y="5.039370078740156"/>
+      </controlPoints2>
+      <color hex="3333ff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W20</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="-0.23622047244094488" y="4.409448818897638"/>
+        <point x="0.6299212598425197" y="3.779527559055118"/>
+      </controlPoints2>
+      <color hex="3333ff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W21</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="0.6299212598425197" y="4.566929133858268"/>
+        <point x="0.7874015748031497" y="4.1732283464566935"/>
+      </controlPoints2>
+      <color hex="ffff00"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W22</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="0.7874015748031497" y="4.1732283464566935"/>
+        <point x="0.6299212598425197" y="3.779527559055118"/>
+      </controlPoints2>
+      <color hex="ffff00"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.passive.Resistor>
+      <name>R26</name>
+      <alpha>127</alpha>
+      <length value="12.0" unit="mm"/>
+      <width value="4.0" unit="mm"/>
+      <points>
+        <point x="0.6299212598425197" y="5.66929133858268"/>
+        <point x="0.6299212598425197" y="5.039370078740156"/>
+        <point x="0.6299212598425197" y="5.3543307086614185"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>_5_BAND</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.TrimmerPotentiometer>
+      <name>VR2</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="0.6299212598425197" y="5.905511811023626"/>
+        <point x="0.7299212598425197" y="5.905511811023626"/>
+        <point x="0.8299212598425197" y="5.905511811023626"/>
+      </controlPoints>
+      <orientation>_270</orientation>
+      <taper>LIN</taper>
+      <bodyColor hex="ffffe0"/>
+      <borderColor hex="8e8e38"/>
+      <display>NAME</display>
+      <type>VERTICAL_INLINE</type>
+    </diylc.passive.TrimmerPotentiometer>
+    <diylc.connectivity.Jumper>
+      <name>J15</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.6299212598425197" y="5.669291338582682"/>
+        <point x="0.6299212598425197" y="5.905511811023626"/>
+        <point x="0.6299212598425197" y="5.7874015748031535"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J21</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.0236220472440944" y="4.881889763779528"/>
+        <point x="1.0236220472440944" y="5.669291338582678"/>
+        <point x="1.0236220472440944" y="5.275590551181102"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.HookupWire>
+      <name>W17</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.0236220472440944" y="6.141732283464567"/>
+        <point x="1.0236220472440944" y="6.535433070866143"/>
+      </controlPoints2>
+      <color hex="666666"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.Jumper>
+      <name>J22</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.0236220472440944" y="5.669291338582678"/>
+        <point x="1.0236220472440944" y="6.141732283464567"/>
+        <point x="1.0236220472440944" y="5.905511811023622"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J23</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.0236220472440944" y="5.669291338582678"/>
+        <point x="0.8267716535433071" y="5.905511811023622"/>
+        <point x="0.9251968503937007" y="5.78740157480315"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.HookupWire>
+      <name>W23</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="2.4409448818897657" y="6.141732283464566"/>
+        <point x="2.4409448818897657" y="6.9291338582677175"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W24</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.889763779527559" y="6.141732283464567"/>
+        <point x="1.889763779527559" y="6.929133858267719"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W25</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="1.889763779527559" y="6.141732283464567"/>
+        <point x="1.6535433070866157" y="6.9291338582677175"/>
+      </controlPoints2>
+      <color hex="3333ff"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+  </components>
+  <groups/>
+  <lockedLayers/>
+  <lockedComponents/>
+  <hiddenLayers/>
+  <font name="Dialog.plain" size="14" style="0"/>
+</project>

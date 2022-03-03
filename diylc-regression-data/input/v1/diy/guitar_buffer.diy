@@ -1,0 +1,34 @@
+<Layout Width="13" Height="10" Type="Stripboard" Project="Guitar Buffer With Balanced Output" Credits="by Gilles Caron">
+	<Resistor Value="2M" X1="4" Y1="10" X2="4" Y2="8" Name="R1"/>
+	<Resistor Value="3.6M" X1="6" Y1="8" X2="6" Y2="7" Name="R2"/>
+	<Resistor Value="4.7M" X1="2" Y1="7" X2="2" Y2="4" Name="R3"/>
+	<Capacitor Value="1000pF" X1="2" Y1="10" X2="2" Y2="8" Name="C1"/>
+	<Capacitor Value="100nF" X1="5" Y1="10" X2="5" Y2="7" Name="C2"/>
+	<Transistor Value="2N4393" X1="8" Y1="5" X2="8" Y2="7" Name="Q1"/>
+	<Jumper X1="1" Y1="8" X2="-1" Y2="8" Name="J1"/>
+	<Text Value="Input" X1="-4" Y1="10" Name="T1"/>
+	<Text Value="Ground" X1="-4" Y1="8" Name="T2"/>
+	<Jumper X1="1" Y1="10" X2="-1" Y2="10" Name="J2"/>
+	<Resistor Value="100R" X1="3" Y1="8" X2="3" Y2="5" Name="R4"/>
+	<Transistor Value="2N4126" X1="9" Y1="4" X2="9" Y2="6" Name="Q2"/>
+	<Resistor Value="100R" X1="1" Y1="6" X2="1" Y2="3" Name="R5"/>
+	<Resistor Value="6.81K" X1="6" Y1="4" X2="6" Y2="2" Name="R6"/>
+	<Resistor Value="6.81K" X1="8" Y1="4" X2="8" Y2="1" Name="R7"/>
+	<Resistor Value="680R" X1="7" Y1="5" X2="7" Y2="4" Name="R8"/>
+	<Resistor Value="1.2K" X1="7" Y1="8" X2="7" Y2="6" Name="R9"/>
+	<Diode Value="12V zener" X1="10" Y1="8" X2="10" Y2="4" Name="D1"/>
+	<Diode Value="1N914" X1="5" Y1="6" X2="5" Y2="4" Name="D2"/>
+	<Text Value="+12V" X1="14" Y1="4" Name="T3"/>
+	<Text Value="BufferOut" X1="14" Y1="6" Name="T4"/>
+	<Electrolyte Value="100uF" X1="3" Y1="2" X2="4" Y2="5" Name="C3"/>
+	<Cut X1="6" Y1="5" Name="X1"/>
+	<Electrolyte Value="100uF" X1="10" Y1="1" X2="10" Y2="3" Name="C4"/>
+	<Text Value="Out Hi" X1="-4" Y1="1" Name="T5"/>
+	<Text Value="Out Lo" X1="-4" Y1="2" Name="T6"/>
+	<Jumper X1="1" Y1="1" X2="-1" Y2="1" Name="J3"/>
+	<Jumper X1="1" Y1="2" X2="-1" Y2="2" Name="J4"/>
+	<Electrolyte Value="100uF" X1="12" Y1="4" X2="12" Y2="8" Name="C5"/>  <Text Value="for Jensen Application Schematic AS004 at" X1="-1" Y1="20" Name="T7"/>
+  <Text Value="http://www.jensen-transformers.com/as/as004.pdf" X1="-1" Y1="21" Name="T8"/>
+  <Text Value="Please note that you will have to install C3-C4 and C5 last" X1="-1" Y1="23" Name="T9"/>
+  <Text Value="to be able to place them correctly." X1="-1" Y1="24" Name="T10"/>
+</Layout>

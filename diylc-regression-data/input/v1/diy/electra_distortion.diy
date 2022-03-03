@@ -1,0 +1,17 @@
+<Layout Type="Stripboard" Width="7" Height="8" Project="ELECTRA DISTORTION" Credits="Layout and mods by Andrew Carrell">
+	<Resistor Value="47K" X1="2" Y1="1" X2="2" Y2="4" Name="R1"/>
+	<Resistor Value="2.2M" X1="3" Y1="4" X2="3" Y2="5" Name="R2"/>
+	<Resistor Value="680R" X1="3" Y1="6" X2="3" Y2="7" Name="R3"/>
+	<Capacitor Value=".1uF" X1="2" Y1="5" X2="2" Y2="8" Name="C1"/>  <Transistor Value="2N3904" X1="4" Y1="6" X2="4" Y2="4" Name="Q1"/>
+  <Capacitor Value=".1uF" X1="1" Y1="4" X2="1" Y2="2" Name="C2"/>
+  <Diode Value="1N34A GERMANIUM" X1="5" Y1="2" X2="5" Y2="7" Name="D1"/>
+  <Diode Value="1N914 SILICON" X1="6" Y1="7" X2="6" Y2="2" Name="D2"/>
+  <Resistor Value="1M" X1="4" Y1="8" X2="4" Y2="7" Name="R4"/>
+  <Text Value="+9V" X1="-2" Y1="1" Name="T1"/>
+  <Text Value="IN" X1="-2" Y1="8" Name="T2"/>
+  <Text Value="GROUND" X1="-3" Y1="7" Name="T3"/>
+  <Text Value="VOL-3" X1="8" Y1="2" Name="T4"/>
+  <Text Value="VOL-1" X1="8" Y1="7" Name="T5"/>
+  <Text Value="VOL: 250K AUDIO TAPER POT" X1="-1" Y1="14" Name="T6"/>
+  <Text Value="VOL-2 GOES TO EFFECT OUTPUT" X1="-1" Y1="15" Name="T7"/>
+</Layout>

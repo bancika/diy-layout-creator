@@ -1,0 +1,23 @@
+<Layout Type="Stripboard" Width="7" Height="8" Project="Rangemaster" Credits="PNP negative ground.  Layout by Andy Harrison">
+	<Electrolyte Value="47uF" X1="2" Y1="1" X2="2" Y2="6" Name="C2"/>
+	<Capacitor Value=".005uF" X1="3" Y1="2" X2="3" Y2="4" Name="C3"/>
+	<Capacitor Value=".01uF" X1="2" Y1="7" X2="2" Y2="8" Name="C4"/>
+	<Transistor Value="OC44" X1="4" Y1="3" X2="4" Y2="5" Name="Q1"/>
+	<Jumper X1="1" Y1="2" Name="input" X2="-2" Y2="2"/>
+	<Jumper X1="1" Y1="8" Name="output" X2="-2" Y2="8"/>
+	<Jumper X1="1" Y1="6" Name="Ground" X2="-2" Y2="6"/>
+	<Text Value="output" X1="-120" Y1="141" Name="T3"/>
+	<Text Value="ground" X1="-120" Y1="101" Name="T2"/>
+	<Text Value="input" X1="-119" Y1="21" Name="T1"/>
+	<Jumper X1="1" Y1="1" Name="9v+" X2="-2" Y2="1"/>  <Text Value="9v+" X1="-115" Y1="4" Name="T7"/>
+  <Resistor Value="3.9K" X1="6" Y1="1" X2="6" Y2="3" Name="R1"/>
+  <Resistor Value="470K" X1="6" Y1="4" X2="6" Y2="6" Name="R2"/>
+  <Resistor Value="68K" X1="5" Y1="1" X2="5" Y2="4" Name="R3"/>
+  <Electrolyte Value="47uF" X1="7" Y1="1" X2="7" Y2="3" Name="C1"/>
+  <Jumper X1="7" Y1="5" Name="10k pot 1" X2="10" Y2="5"/>
+  <Jumper X1="7" Y1="6" Name="10k pot 3" X2="10" Y2="6"/>
+  <Jumper X1="7" Y1="7" Name="10k pot 2" X2="10" Y2="7"/>
+  <Text Value="10k pot 1" X1="210" Y1="82" Name="T4"/>
+  <Text Value="10k pot 3" X1="215" Y1="107" Name="T5"/>
+  <Text Value="10k pot 2" X1="215" Y1="129" Name="T6"/>
+</Layout>

@@ -1,0 +1,2277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>4</major>
+    <minor>3</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>Frank</author>
+  <width value="160.0" unit="mm"/>
+  <height value="100.0" unit="mm"/>
+  <gridSpacing value="0.1" unit="mm"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.shapes.Rectangle>
+      <name>RECT1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.33" y="1.815"/>
+        <point x="0.57" y="2.095"/>
+      </controlPoints>
+      <firstPoint x="0.33" y="1.815"/>
+      <secondPoint x="0.57" y="2.095"/>
+      <color hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <borderThickness value="0.2" unit="mm"/>
+      <edgeRadius value="0.0" unit="mm"/>
+    </diylc.shapes.Rectangle>
+    <diylc.passive.FuseSymbol>
+      <name>F1</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.12" unit="in"/>
+      <points>
+        <point x="0.275" y="2.795"/>
+        <point x="0.275" y="2.36"/>
+        <point x="0.0" y="-0.195"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="150.0" unit="mA"/>
+    </diylc.passive.FuseSymbol>
+    <diylc.connectivity.Line>
+      <name>LN3</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.275" y="2.36"/>
+        <point x="0.275" y="2.005"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN4</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.275" y="2.005"/>
+        <point x="0.31" y="2.005"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>-0.14486336940766043</gamma>
+      <r>405.2446791754335</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN5</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.075" y="2.795"/>
+        <point x="0.075" y="1.885"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>1.539027357889175</gamma>
+      <r>472.23828730843076</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN6</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.075" y="1.885"/>
+        <point x="0.31" y="1.885"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.semiconductors.DiodeSymbol>
+      <name>D1</name>
+      <alpha>127</alpha>
+      <length value="0.1" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.1" y="1.9"/>
+        <point x="1.1" y="1.1"/>
+        <point x="-1.185" y="2.4"/>
+      </points>
+      <bodyColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value>1N 4007</value>
+    </diylc.semiconductors.DiodeSymbol>
+    <diylc.semiconductors.DiodeSymbol>
+      <name>D2</name>
+      <alpha>127</alpha>
+      <length value="0.1" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.1" y="2.8"/>
+        <point x="1.1" y="1.9"/>
+        <point x="-1.785" y="3.7"/>
+      </points>
+      <bodyColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value>1N 4007</value>
+    </diylc.semiconductors.DiodeSymbol>
+    <diylc.passive.CapacitorSymbol>
+      <name>C2</name>
+      <alpha>127</alpha>
+      <length value="0.05" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="1.4" y="2.8"/>
+        <point x="1.4" y="1.9"/>
+        <point x="0.0" y="-0.26"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="1.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="500.0" unit="V"/>
+      <polarized>false</polarized>
+    </diylc.passive.CapacitorSymbol>
+    <diylc.passive.CapacitorSymbol>
+      <name>C1</name>
+      <alpha>127</alpha>
+      <length value="0.05" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="1.4" y="1.9"/>
+        <point x="1.4" y="1.1"/>
+        <point x="-0.61" y="3.15"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="1.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="500.0" unit="V"/>
+      <polarized>false</polarized>
+    </diylc.passive.CapacitorSymbol>
+    <diylc.semiconductors.DiodeSymbol>
+      <name>D3</name>
+      <alpha>127</alpha>
+      <length value="0.1" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.9" y="1.9"/>
+        <point x="1.9" y="1.1"/>
+        <point x="-1.185" y="2.4"/>
+      </points>
+      <bodyColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value>1N 4007</value>
+    </diylc.semiconductors.DiodeSymbol>
+    <diylc.passive.CapacitorSymbol>
+      <name>C3</name>
+      <alpha>127</alpha>
+      <length value="0.05" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="2.2" y="1.9"/>
+        <point x="2.2" y="1.1"/>
+        <point x="-0.61" y="3.15"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="1.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="500.0" unit="V"/>
+      <polarized>false</polarized>
+    </diylc.passive.CapacitorSymbol>
+    <diylc.semiconductors.DiodeSymbol>
+      <name>D4</name>
+      <alpha>127</alpha>
+      <length value="0.1" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="1.9" y="2.8"/>
+        <point x="1.9" y="1.9"/>
+        <point x="-1.785" y="3.7"/>
+      </points>
+      <bodyColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value>1N 4007</value>
+    </diylc.semiconductors.DiodeSymbol>
+    <diylc.passive.CapacitorSymbol>
+      <name>C4</name>
+      <alpha>127</alpha>
+      <length value="0.05" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="2.2" y="2.8"/>
+        <point x="2.2" y="1.9"/>
+        <point x="0.0" y="-0.26"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="1.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="500.0" unit="V"/>
+      <polarized>false</polarized>
+    </diylc.passive.CapacitorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN7</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.1" y="1.1"/>
+        <point x="2.2" y="1.1"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN8</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="1.1" y="2.8"/>
+        <point x="2.2" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN9</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.575" y="1.905"/>
+        <point x="1.4" y="1.9"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN1</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.575" y="2.0"/>
+        <point x="2.2" y="2.0"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>-0.6107259643892089</gamma>
+      <r>488.2622246293481</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot1</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="1.1" y="1.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot2</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="1.4" y="1.9"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot3</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="1.9" y="2.0"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot4</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="2.2" y="2.0"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot5</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="1.4" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot6</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="1.9" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot7</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="1.4" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot8</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="1.9" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.passive.CapacitorSymbol>
+      <name>C5 </name>
+      <alpha>127</alpha>
+      <length value="0.05" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="2.6" y="1.1"/>
+        <point x="2.6" y="2.8"/>
+        <point x="0.0" y="0.19"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="100.0" unit="nF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="630.0" unit="V"/>
+      <polarized>false</polarized>
+    </diylc.passive.CapacitorSymbol>
+    <diylc.passive.CapacitorSymbol>
+      <name>C6</name>
+      <alpha>127</alpha>
+      <length value="0.05" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="3.0" y="1.1"/>
+        <point x="3.0" y="2.8"/>
+        <point x="0.655" y="5.65"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="470.0" unit="uF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="450.0" unit="V"/>
+      <polarized>true</polarized>
+    </diylc.passive.CapacitorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN2</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.2" y="1.1"/>
+        <point x="3.0" y="1.1"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN10</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.2" y="2.8"/>
+        <point x="3.0" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot9</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="2.2" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot10</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="2.6" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot11</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="2.2" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot12</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="2.6" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.passive.ResistorSymbol>
+      <name>R1</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="3.3" y="2.8"/>
+        <point x="3.3" y="1.1"/>
+        <point x="0.0" y="-0.525"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="470.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="1.0" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN11</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.0" y="1.1"/>
+        <point x="3.3" y="1.1"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>-1.2348287208687658</gamma>
+      <r>667.3080248281149</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN12</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.0" y="2.8"/>
+        <point x="3.3" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot13</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="3.0" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot14</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="3.0" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.Image>
+      <name>Img1</name>
+      <alpha>127</alpha>
+      <point x="4.815" y="0.38"/>
+      <data>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
+APz2Sv7KAAAAAElFTkSuQmCC</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.passive.ResistorSymbol>
+      <name>R2</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="3.0" y="0.6"/>
+        <point x="3.7" y="0.6"/>
+        <point x="0.2" y="-0.075"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="47.0" unit="R"/>
+      <power>HALF</power>
+      <powerNew value="7.0" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN13</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.0" y="1.1"/>
+        <point x="3.0" y="0.6"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.passive.ResistorSymbol>
+      <name>R3</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="3.3" y="1.1"/>
+        <point x="3.9" y="1.1"/>
+        <point x="0.2" y="-0.075"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="8.2" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="2.0" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.semiconductors.ZenerDiodeSymbol>
+      <name>D5</name>
+      <alpha>127</alpha>
+      <length value="0.1" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="3.9" y="2.6"/>
+        <point x="3.9" y="2.2"/>
+        <point x="0.0" y="-0.135"/>
+      </points>
+      <bodyColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value>50 V</value>
+    </diylc.semiconductors.ZenerDiodeSymbol>
+    <diylc.semiconductors.ZenerDiodeSymbol>
+      <name>D6</name>
+      <alpha>127</alpha>
+      <length value="0.1" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="3.9" y="2.2"/>
+        <point x="3.9" y="1.8"/>
+        <point x="1.415" y="6.15"/>
+      </points>
+      <bodyColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value>100 V</value>
+    </diylc.semiconductors.ZenerDiodeSymbol>
+    <diylc.semiconductors.ZenerDiodeSymbol>
+      <name>D7</name>
+      <alpha>127</alpha>
+      <length value="0.1" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="3.9" y="1.8"/>
+        <point x="3.9" y="1.4"/>
+        <point x="0.0" y="-0.135"/>
+      </points>
+      <bodyColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value>100 V</value>
+    </diylc.semiconductors.ZenerDiodeSymbol>
+    <diylc.connectivity.Line>
+      <name>LN14</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.9" y="2.6"/>
+        <point x="3.9" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN15</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.3" y="2.8"/>
+        <point x="3.9" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN16</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.9" y="1.4"/>
+        <point x="3.9" y="1.1"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.passive.CapacitorSymbol>
+      <name>C7</name>
+      <alpha>127</alpha>
+      <length value="0.05" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="4.2" y="1.1"/>
+        <point x="4.2" y="2.8"/>
+        <point x="0.21" y="-0.235"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="47.0" unit="uF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="450.0" unit="V"/>
+      <polarized>true</polarized>
+    </diylc.passive.CapacitorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN17</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.9" y="2.8"/>
+        <point x="4.2" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN18</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.9" y="1.1"/>
+        <point x="4.2" y="1.1"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>-1.305589209343072</gamma>
+      <r>839.3449827097318</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot15</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="3.3" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot16</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="3.9" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot17</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="3.9" y="1.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot18</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="3.9" y="2.2"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot19</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="3.3" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Line>
+      <name>LN19</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.7" y="0.6"/>
+        <point x="4.9" y="0.6"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.passive.ResistorSymbol>
+      <name>R4</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="4.2" y="1.1"/>
+        <point x="5.2" y="1.1"/>
+        <point x="0.25" y="-0.075"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="2.2" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN20</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.2" y="1.1"/>
+        <point x="5.2" y="0.9"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.semiconductors.ZenerDiodeSymbol>
+      <name>D8</name>
+      <alpha>127</alpha>
+      <length value="0.1" unit="in"/>
+      <width value="0.1" unit="in"/>
+      <points>
+        <point x="5.2" y="1.8"/>
+        <point x="5.2" y="1.4"/>
+        <point x="0.0" y="-0.135"/>
+      </points>
+      <bodyColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value>13 V</value>
+    </diylc.semiconductors.ZenerDiodeSymbol>
+    <diylc.connectivity.Line>
+      <name>LN21</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.2" y="1.4"/>
+        <point x="5.2" y="1.1"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot20</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="4.2" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot21</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="5.2" y="1.1"/>
+    </diylc.connectivity.Dot>
+    <diylc.passive.CapacitorSymbol>
+      <name>C8</name>
+      <alpha>127</alpha>
+      <length value="0.05" unit="in"/>
+      <width value="0.15" unit="in"/>
+      <points>
+        <point x="5.2" y="1.8"/>
+        <point x="5.2" y="2.8"/>
+        <point x="0.21" y="-0.585"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="47.0" unit="uF"/>
+      <voltage>_63V</voltage>
+      <voltageNew value="450.0" unit="V"/>
+      <polarized>true</polarized>
+    </diylc.passive.CapacitorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN22</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="4.2" y="2.8"/>
+        <point x="5.2" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>-1.033511612494125</gamma>
+      <r>1094.1663493271944</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot22</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="3.9" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot23</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="4.2" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot24</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="5.2" y="2.0"/>
+    </diylc.connectivity.Dot>
+    <diylc.passive.ResistorSymbol>
+      <name>R5</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="5.6" y="2.8"/>
+        <point x="5.6" y="2.0"/>
+        <point x="0.0" y="-0.075"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <labelPosition>ABOVE</labelPosition>
+      <value value="470.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="1.0" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN23</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.2" y="2.0"/>
+        <point x="5.6" y="2.0"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN24</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.2" y="2.8"/>
+        <point x="5.6" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>-1.0924438954162392</gamma>
+      <r>1216.552506059644</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot25</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="5.2" y="2.8"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Line>
+      <name>LN25</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.6" y="2.0"/>
+        <point x="5.6" y="0.6"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>0.22810262827994254</gamma>
+      <r>1149.7825881443848</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN26</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.6" y="0.6"/>
+        <point x="5.4" y="0.6"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot26</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="5.6" y="2.0"/>
+    </diylc.connectivity.Dot>
+    <diylc.shapes.Rectangle>
+      <name>RECT2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="5.905" y="1.755"/>
+        <point x="6.145" y="2.035"/>
+      </controlPoints>
+      <firstPoint x="5.905" y="1.755"/>
+      <secondPoint x="6.145" y="2.035"/>
+      <color hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <borderThickness value="0.2" unit="mm"/>
+      <edgeRadius value="0.0" unit="mm"/>
+    </diylc.shapes.Rectangle>
+    <diylc.connectivity.Line>
+      <name>LN30</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.9" y="1.9"/>
+        <point x="5.7" y="1.9"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>-4.395819726772286</gamma>
+      <r>1220.6555615733703</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN31</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.7" y="1.9"/>
+        <point x="5.7" y="2.0"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN32</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.7" y="2.0"/>
+        <point x="5.6" y="2.0"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <gamma>-4.372170868740007</gamma>
+      <r>1198.70763741623</r>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN33</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.3" y="2.9"/>
+        <point x="3.3" y="2.8"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="1.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowTx serialization="custom">
+        <java.awt.geom.AffineTransform>
+          <default>
+            <m00>1.0</m00>
+            <m01>0.0</m01>
+            <m02>0.0</m02>
+            <m10>0.0</m10>
+            <m11>1.0</m11>
+            <m12>0.0</m12>
+          </default>
+        </java.awt.geom.AffineTransform>
+      </arrowTx>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.shapes.Rectangle>
+      <name>RECT3</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="3.44" y="2.905"/>
+        <point x="3.16" y="3.145"/>
+      </controlPoints>
+      <firstPoint x="3.16" y="2.905"/>
+      <secondPoint x="3.44" y="3.145"/>
+      <color hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <borderThickness value="0.2" unit="mm"/>
+      <edgeRadius value="0.0" unit="mm"/>
+    </diylc.shapes.Rectangle>
+    <diylc.misc.Image>
+      <name>Img2</name>
+      <alpha>127</alpha>
+      <point x="0.275" y="0.145"/>
+      <data>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
+4rj/B6gA6XpQBduXAAAAAElFTkSuQmCC</data>
+      <newScale>25</newScale>
+    </diylc.misc.Image>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="0.415" y="1.935"/>
+      <text>K1 </text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="0.49" y="1.975"/>
+      <text>2-pol</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L3</name>
+      <point x="0.155" y="3.225"/>
+      <text>HV in ~ /  max 300 V     </text>
+      <font name="Square721 BT Roman" size="14" style="0"/>
+      <color hex="ff0000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L4</name>
+      <point x="0.43" y="2.595"/>
+      <text>Housing fuse</text>
+      <font reference="../../diylc.misc.Label[3]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L5</name>
+      <point x="2.4" y="2.0"/>
+      <text>MKP 10 -  RM 22,5</text>
+      <font reference="../../diylc.misc.Label[3]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L6</name>
+      <point x="2.8" y="2.0"/>
+      <text>Snap - in / RM 10</text>
+      <font reference="../../diylc.misc.Label[3]/font"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L7</name>
+      <point x="5.96" y="1.905"/>
+      <text>K2</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L8</name>
+      <point x="6.04" y="1.91"/>
+      <text>1-pol</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L9</name>
+      <point x="6.185" y="2.145"/>
+      <text>HV out        +</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="ff0033"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>_270</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L11</name>
+      <point x="5.2" y="0.3"/>
+      <text>IRF 840............</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L12</name>
+      <point x="3.29" y="2.96"/>
+      <text>K3</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L13</name>
+      <point x="3.285" y="3.04"/>
+      <text>1-pol</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L14</name>
+      <point x="3.125" y="3.225"/>
+      <text>Central   -</text>
+      <font name="Arial Black Standard" size="14" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+  </components>
+  <groups>
+    <set/>
+    <set>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[11]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[12]"/>
+      <diylc.shapes.Rectangle reference="../../../components/diylc.shapes.Rectangle[3]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[13]"/>
+    </set>
+    <set>
+      <diylc.shapes.Rectangle reference="../../../components/diylc.shapes.Rectangle[2]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[9]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[7]"/>
+      <diylc.misc.Label reference="../../../components/diylc.misc.Label[8]"/>
+    </set>
+  </groups>
+  <lockedLayers/>
+  <hiddenLayers/>
+  <font name="Square721 BT Roman" size="14" style="0"/>
+</project>

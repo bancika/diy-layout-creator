@@ -1,0 +1,42 @@
+<Layout Width="8" Height="8" Type="Perfboard" Project="Alternately Flashing LEDs" Credits="AKA Flashing (Blinking) Eyes  Layout by Richard Boop">
+	<Transistor Value="Silicon NPN" X1="1" Y1="6" X2="3" Y2="6" Name="Q1"/>
+	<Resistor Value="4.7K" X1="2" Y1="2" X2="2" Y2="5" Name="R1"/>
+	<Resistor Value="470R" X1="3" Y1="2" X2="3" Y2="5" Name="R2"/>
+	<Transistor Value="Silicon NPN" X1="6" Y1="6" X2="8" Y2="6" Name="Q2"/>
+	<Electrolyte Value="10uF" X1="8" Y1="7" X2="2" Y2="7" Name="C1"/>
+	<Resistor Value="4.7K" X1="7" Y1="2" X2="7" Y2="5" Name="R3"/>
+	<Resistor Value="470R" X1="8" Y1="2" X2="8" Y2="5" Name="R4"/>
+	<Electrolyte Value="10uF" X1="4" Y1="5" X2="6" Y2="5" Name="C2"/>
+	<Jumper X1="2" Y1="5" X2="2" Y2="7" Name="J1"/>
+	<Jumper X1="3" Y1="5" X2="3" Y2="6" Name="J2"/>
+	<Jumper X1="4" Y1="5" X2="3" Y2="5" Name="J3"/>
+	<Jumper X1="6" Y1="5" X2="7" Y2="5" Name="J4"/>
+	<Jumper X1="7" Y1="5" X2="7" Y2="6" Name="J5"/>
+	<Jumper X1="8" Y1="5" X2="8" Y2="7" Name="J6"/>
+	<Jumper X1="6" Y1="6" X2="6" Y2="8" Name="J7"/>
+	<Jumper X1="1" Y1="6" X2="1" Y2="8" Name="J8"/>
+	<Jumper X1="6" Y1="8" X2="1" Y2="8" Name="J9"/>
+	<Jumper X1="2" Y1="2" X2="2" Y2="4" Name="J10"/>
+	<Jumper X1="7" Y1="2" X2="7" Y2="4" Name="J11"/>
+	<Jumper X1="7" Y1="4" X2="1" Y2="4" Name="J12"/>
+	<Led Value="Red" X1="8" Y1="1" X2="8" Y2="-1" Name="D1"/>
+	<Led Value="Red" X1="3" Y1="1" X2="3" Y2="-1" Name="D2"/>
+	<Jumper X1="8" Y1="1" X2="8" Y2="2" Name="J13"/>
+	<Jumper X1="3" Y1="1" X2="3" Y2="2" Name="J14"/>
+	<Jumper X1="1" Y1="4" X2="-1" Y2="4" Name="J15"/>
+	<Jumper X1="1" Y1="8" X2="-1" Y2="8" Name="J16"/>
+	<Jumper X1="8" Y1="-1" X2="3" Y2="-1" Name="J17"/>
+	<Jumper X1="3" Y1="-1" X2="-1" Y2="-1" Name="J18"/>
+	<Text Value="Ground" X1="-4" Y1="8" Name="A1"/>
+	<Text Value="P1: Lug 2" X1="-4" Y1="4" Name="A2"/>
+	<Text Value="P1: Lug 3 " X1="-4" Y1="-1" Name="A3"/>
+	<Text Value="+ 9v" X1="11" Y1="-1" Name="A4"/>
+	<Text Value="E   B   C" X1="-2" Y1="6" Name="A5"/>
+	<Text Value="E   B   C" X1="9" Y1="6" Name="A6"/>
+	<Text Value="P1: 50K" X1="2" Y1="12" Name="A7"/>
+	<Text Value="P1: 50K pot. adjusts flashing speed.  Lug 1 N.C." X1="-3" Y1="15" Name="A8"/>
+	<Text Value="Q1 - Q2 : NPN - 2N2222, 2N3904, 2N4401, etc." X1="-3" Y1="16" Name="A9"/>
+	<Text Value="For Green or Yellow LEDs change R2 and R4 to 330 ohm." X1="-3" Y1="17" Name="A10"/>
+	<Jumper X1="8" Y1="-1" X2="10" Y2="-1" Name="J19"/>
+	<Text Value="LEDs mounted off board." X1="-3" Y1="14" Name="A11"/>
+</Layout>

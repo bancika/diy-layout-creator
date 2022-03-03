@@ -1,0 +1,165 @@
+<Layout Width="17" Height="12" Type="PCB" Project="Bonerender Fuzz" Credits="TBMKII derivative.  Layout by Andy Harrison">
+	<Electrolyte Value="10uF" X1="4" Y1="8" X2="4" Y2="10" Name="C1"/>
+	<Electrolyte Value="47uF" X1="3" Y1="12" X2="3" Y2="9" Name="C2"/>
+	<Electrolyte Value="10uF" X1="2" Y1="9" X2="2" Y2="7" Name="C3"/>
+	<Capacitor Value=".01uF" X1="2" Y1="12" X2="2" Y2="10" Name="C4"/>
+	<Capacitor Value=".01uF" X1="2" Y1="2" X2="2" Y2="6" Name="C5"/>
+	<Capacitor Value=".1uF" X1="10" Y1="5" X2="10" Y2="7" Name="C6"/>
+	<Capacitor Value=".01uF" X1="13" Y1="8" X2="13" Y2="6" Name="C7"/>
+	<Capacitor Value=".027uF" X1="13" Y1="5" X2="13" Y2="3" Name="C8"/>
+	<Jumper X1="16" Y1="5" X2="16" Y2="1" Name="J2"/>
+	<Jumper X1="12" Y1="12" X2="12" Y2="8" Name="J3"/>
+	<Jumper X1="4" Y1="2" X2="4" Y2="5" Name="J4"/>
+	<Transistor Value="Germanium PNP" X1="5" Y1="3" X2="5" Y2="5" Name="Q1"/>
+	<Transistor Value="Germanium PNP" X1="7" Y1="4" X2="7" Y2="6" Name="Q2"/>
+	<Transistor Value="Germanium PNP" X1="7" Y1="7" X2="7" Y2="9" Name="Q3"/>
+	<Resistor Value="100K" X1="10" Y1="8" X2="10" Y2="9" Name="R1"/>
+	<Resistor Value="10K" X1="8" Y1="7" X2="8" Y2="12" Name="R2"/>
+	<Resistor Value="100K" X1="6" Y1="4" X2="6" Y2="12" Name="R3"/>
+	<Resistor Value="100K" X1="8" Y1="5" X2="8" Y2="2" Name="R4"/>
+	<Resistor Value="10K" X1="3" Y1="6" X2="3" Y2="3" Name="R5"/>
+	<Resistor Value="33K" X1="14" Y1="5" X2="14" Y2="6" Name="R6"/>
+	<Resistor Value="8.2K" X1="15" Y1="3" X2="15" Y2="10" Name="R7"/>
+	<Resistor Value="20K" X1="14" Y1="10" X2="14" Y2="11" Name="R8"/>
+	<Jumper X1="9" Y1="6" X2="9" Y2="9" Name="J5"/>
+	<Jumper X1="17" Y1="1" Name="J6" X2="20" Y2="1"/>
+	<Text Value="SW1-1" X1="413" Y1="3" Name="T1"/>
+	<Jumper X1="17" Y1="2" Name="J7" X2="20" Y2="2"/>
+	<Jumper X1="17" Y1="3" Name="J8" X2="20" Y2="3"/>
+	<Text Value="FUZZ 1" X1="415" Y1="27" Name="T2"/>
+	<Text Value="TONE 3" X1="416" Y1="47" Name="T3"/>
+	<Jumper X1="17" Y1="6" Name="J9" X2="20" Y2="6"/>
+	<Jumper X1="17" Y1="8" Name="J10" X2="20" Y2="8"/>
+	<Jumper X1="17" Y1="9" Name="J11" X2="20" Y2="9"/>
+	<Jumper X1="17" Y1="10" Name="J12" X2="20" Y2="10"/>
+	<Jumper X1="17" Y1="11" Name="J13" X2="20" Y2="11"/>
+	<Text Value="TONE 1" X1="415" Y1="106" Name="T4"/>
+	<Text Value="SW2-2" X1="418" Y1="143" Name="T5"/>
+	<Text Value="FUZZ 3" X1="419" Y1="166" Name="T6"/>
+	<Text Value="SW2-1" X1="418" Y1="188" Name="T7"/>
+	<Text Value="SW2-3" X1="418" Y1="206" Name="T8"/>
+	<Jumper X1="1" Y1="6" Name="J14" X2="-2" Y2="6"/>
+	<Jumper X1="1" Y1="7" Name="J15" X2="-2" Y2="7"/>
+	<Jumper X1="1" Y1="9" Name="J16" X2="-2" Y2="9"/>
+	<Jumper X1="1" Y1="10" Name="J17" X2="-2" Y2="10"/>
+	<Jumper X1="1" Y1="12" Name="J18" X2="-2" Y2="12"/>
+	<Jumper X1="17" Y1="12" Name="J19" X2="20" Y2="12"/>
+	<Text Value="GND" X1="416" Y1="226" Name="T9"/>
+	<Text Value="CHAR 3" X1="-121" Y1="106" Name="T10"/>
+	<Text Value="FUZZ 2" X1="-121" Y1="127" Name="T11"/>
+	<Text Value="9V+" X1="-122" Y1="162" Name="T12"/>
+	<Text Value="INPUT" X1="-122" Y1="184" Name="T13"/>
+	<Text Value="CHAR 1&amp;2" X1="-124" Y1="220" Name="T14"/>
+	<Text Value="FUZZ: C1K" X1="219" Y1="315" Name="T15"/>
+	<Text Value="VOL: A100K" X1="218" Y1="344" Name="T16"/>
+	<Text Value="TONE: B100K" X1="218" Y1="365" Name="T17"/>
+	<Text Value="CHARACTER: A10K" X1="219" Y1="384" Name="T18"/>
+	<Text Value="SW1: SPDT (TONE DEFEAT)" X1="358" Y1="262" Name="T19"/>
+	<Text Value="SW2: SPDT (MID LIFT)" X1="359" Y1="285" Name="T20"/>
+	<Text Value="SW1-2=VOL 1" X1="359" Y1="320" Name="T21"/>
+	<Text Value="SW1-3=TONE 2" X1="357" Y1="345" Name="T22"/>
+	<Text Value="VOL 2=OUTPUT" X1="358" Y1="364" Name="T23"/>
+	<Text Value="C" X1="94" Y1="46" Name="T24"/>
+	<Text Value="B" X1="98" Y1="66" Name="T25"/>
+	<Text Value="E" X1="98" Y1="86" Name="T26"/>
+	<Text Value="C" X1="134" Y1="69" Name="T27"/>
+	<Text Value="B" X1="137" Y1="85" Name="T28"/>
+	<Text Value="E" X1="136" Y1="105" Name="T29"/>
+	<Text Value="C" X1="135" Y1="128" Name="T30"/>
+	<Text Value="B" X1="135" Y1="146" Name="T31"/>
+	<Text Value="E" X1="135" Y1="168" Name="T32"/>  <Trace Value="5" X1="1" Y1="12" X2="17" Y2="12" Name="T33"/>
+  <Trace Value="5" X1="17" Y1="12" X2="1" Y2="12" Name="T34"/>
+  <Pad Value="15" X1="1" Y1="12" Name="P1"/>
+  <Pad Value="15" X1="3" Y1="12" Name="P2"/>
+  <Pad Value="15" X1="6" Y1="12" Name="P3"/>
+  <Pad Value="15" X1="8" Y1="12" Name="P4"/>
+  <Pad Value="15" X1="12" Y1="12" Name="P5"/>
+  <Pad Value="15" X1="17" Y1="11" Name="P6"/>
+  <Pad Value="15" X1="17" Y1="10" Name="P7"/>
+  <Pad Value="15" X1="17" Y1="9" Name="P8"/>
+  <Pad Value="15" X1="17" Y1="8" Name="P9"/>
+  <Pad Value="15" X1="17" Y1="6" Name="P10"/>
+  <Pad Value="15" X1="17" Y1="3" Name="P11"/>
+  <Pad Value="15" X1="17" Y1="2" Name="P12"/>
+  <Pad Value="15" X1="17" Y1="1" Name="P13"/>
+  <Pad Value="15" X1="16" Y1="1" Name="P14"/>
+  <Pad Value="15" X1="16" Y1="5" Name="P15"/>
+  <Pad Value="15" X1="15" Y1="3" Name="P16"/>
+  <Pad Value="15" X1="15" Y1="10" Name="P17"/>
+  
+  <Pad Value="15" X1="4" Y1="5" Name="P18"/>
+  <Pad Value="15" X1="4" Y1="2" Name="P19"/>
+  <Pad Value="15" X1="8" Y1="2" Name="P20"/>
+  <Pad Value="15" X1="8" Y1="5" Name="P21"/>
+  <Pad Value="15" X1="6" Y1="4" Name="P22"/>
+  <Pad Value="15" X1="4" Y1="8" Name="P23"/>
+  <Pad Value="15" X1="4" Y1="10" Name="P24"/>
+  <Pad Value="15" X1="3" Y1="9" Name="P25"/>
+  <Pad Value="15" X1="2" Y1="10" Name="P26"/>
+  <Pad Value="15" X1="2" Y1="9" Name="P27"/>
+  <Pad Value="15" X1="2" Y1="7" Name="P28"/>
+  <Pad Value="15" X1="2" Y1="6" Name="P29"/>
+  <Pad Value="15" X1="3" Y1="6" Name="P30"/>
+  <Pad Value="15" X1="3" Y1="3" Name="P31"/>
+  <Pad Value="15" X1="2" Y1="2" Name="P32"/>
+  <Pad Value="15" X1="1" Y1="1" Name="P33"/>
+  <Pad Value="15" X1="1" Y1="2" Name="P34"/>
+  <Pad Value="15" X1="10" Y1="5" Name="P35"/>
+  <Pad Value="15" X1="10" Y1="7" Name="P36"/>
+  <Pad Value="15" X1="13" Y1="3" Name="P37"/>
+  <Pad Value="15" X1="13" Y1="5" Name="P38"/>
+  <Pad Value="15" X1="12" Y1="8" Name="P39"/>
+  <Pad Value="15" X1="9" Y1="9" Name="P40"/>
+  <Pad Value="15" X1="10" Y1="9" Name="P41"/>
+  <Pad Value="15" X1="10" Y1="8" Name="P42"/>
+  <Pad Value="15" X1="8" Y1="7" Name="P43"/>
+  <Pad Value="15" X1="9" Y1="6" Name="P44"/>
+  <Pad Value="15" X1="14" Y1="10" Name="P45"/>
+  <Pad Value="15" X1="14" Y1="11" Name="P46"/>
+  <Pad Value="15" X1="2" Y1="12" Name="P47"/>
+  <Trace Value="5" X1="9" Y1="9" X2="10" Y2="9" Name="T35"/>
+  <Trace Value="5" X1="17" Y1="9" X2="10" Y2="9" Name="T36"/>
+  <Trace Value="5" X1="1" Y1="9" X2="9" Y2="9" Name="T37"/>
+  <Trace Value="5" X1="2" Y1="10" X2="4" Y2="10" Name="T38"/>
+  <Trace Value="5" X1="4" Y1="10" X2="2" Y2="10" Name="T39"/>
+  <Trace Value="5" X1="14" Y1="11" X2="17" Y2="11" Name="T40"/>
+  <Trace Value="5" X1="14" Y1="10" X2="17" Y2="10" Name="T41"/>
+  <Trace Value="5" X1="13" Y1="5" X2="16" Y2="5" Name="T42"/>
+  <Trace Value="5" X1="13" Y1="3" X2="17" Y2="3" Name="T43"/>
+  <Trace Value="5" X1="13" Y1="8" X2="17" Y2="8" Name="T44"/>
+  <Trace Value="5" X1="13" Y1="6" X2="17" Y2="6" Name="T45"/>
+  <Pad Value="15" X1="13" Y1="6" Name="P48"/>
+  <Pad Value="15" X1="13" Y1="8" Name="P49"/>
+  <Trace Value="5" X1="17" Y1="6" X2="13" Y2="6" Name="T46"/>
+  <Trace Value="5" X1="8" Y1="2" X2="17" Y2="2" Name="T47"/>
+  <Trace Value="5" X1="4" Y1="2" X2="8" Y2="2" Name="T48"/>
+  <Trace Value="5" X1="2" Y1="2" X2="1" Y2="2" Name="T49"/>
+  <Trace Value="5" X1="3" Y1="3" X2="5" Y2="3" Name="T50"/>
+  <Trace Value="5" X1="5" Y1="5" X2="4" Y2="5" Name="T51"/>
+  <Trace Value="5" X1="5" Y1="4" X2="6" Y2="4" Name="T52"/>
+  <Trace Value="5" X1="8" Y1="5" X2="7" Y2="5" Name="T53"/>
+  <Trace Value="5" X1="10" Y1="5" X2="8" Y2="5" Name="T54"/>
+  <Trace Value="5" X1="7" Y1="7" X2="8" Y2="7" Name="T55"/>
+  <Trace Value="5" X1="7" Y1="8" X2="4" Y2="8" Name="T56"/>
+  <Trace Value="5" X1="10" Y1="8" X2="7" Y2="8" Name="T57"/>
+  <Trace Value="5" X1="1" Y1="10" X2="2" Y2="10" Name="T58"/>
+  <Pad Value="15" X1="5" Y1="4" Name="P50"/>
+  <Pad Value="15" X1="5" Y1="3" Name="P51"/>
+  <Pad Value="15" X1="5" Y1="5" Name="P52"/>
+  <Pad Value="15" X1="7" Y1="5" Name="P53"/>
+  <Pad Value="15" X1="7" Y1="7" Name="P54"/>
+  <Pad Value="15" X1="7" Y1="9" Name="P55"/>
+  <Pad Value="15" X1="7" Y1="8" Name="P56"/>
+  <Pad Value="15" X1="1" Y1="9" Name="P57"/>
+  <Pad Value="15" X1="1" Y1="10" Name="P58"/>
+  <Pad Value="15" X1="1" Y1="7" Name="P59"/>
+  <Pad Value="15" X1="1" Y1="6" Name="P60"/>
+  <Pad Value="15" X1="17" Y1="12" Name="P61"/>
+  <Trace Value="5" X1="2" Y1="7" X2="1" Y2="7" Name="T59"/>
+  <Trace Value="5" X1="3" Y1="6" X2="1" Y2="6" Name="T60"/>
+  <Pad Value="15" X1="14" Y1="6" Name="P62"/>
+  <Pad Value="15" X1="14" Y1="5" Name="P63"/>
+  <Trace Value="5" X1="1" Y1="2" X2="1" Y2="1" Name="T61"/>
+  <Trace Value="5" X1="1" Y1="2" X2="1" Y2="1" Name="T62"/>
+  <Trace Value="5" X1="12" Y1="8" X2="13" Y2="8" Name="T63"/>
+</Layout>

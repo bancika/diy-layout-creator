@@ -1,0 +1,26 @@
+<Layout Type="Stripboard" Width="8" Height="5" Project="Discrete FET Guitar Preamp" Credits="Layout by Syndromet, schematic by J.Donald Tillman (http://www.till.com)" HideList="False">
+	<Resistor Value="3.9M" X1="2" Y1="4" X2="2" Y2="5" Name="R1"/>
+	<Transistor Value="J201" X1="3" Y1="4" X2="3" Y2="2" Name="Q1"/>
+	<Resistor Value="2.2K" X1="4" Y1="3" X2="4" Y2="5" Name="R2"/>
+	<Resistor Value="6.8K" X1="4" Y1="1" X2="4" Y2="2" Name="R3"/>
+	<Resistor Value="51K" X1="6" Y1="4" X2="6" Y2="5" Name="R4"/>
+	<Electrolyte Value="4.7uF" Size="Medium" X1="5" Y1="2" X2="5" Y2="4" Name="C1"/>
+	<Electrolyte Value="10uF" Size="Medium" X1="7" Y1="1" X2="7" Y2="5" Name="C2"/>
+	<Text Value="D" X1="2" Y1="2" Name="A1"/>
+	<Text Value="S" X1="2" Y1="3" Name="A2"/>
+	<Text Value="G" X1="2" Y1="4" Name="A3"/>
+	<Jumper X1="1" Y1="1" X2="-3" Y2="1" Name="9v"/>
+	<Jumper X1="1" Y1="5" X2="-3" Y2="5" Name="J1"/>
+	<Jumper X1="1" Y1="4" X2="-3" Y2="4" Name="J2"/>
+	<Cut X1="4" Y1="4" Name="X1"/>
+	<Text Value="GROUND" X1="-6" Y1="5" Name="A4"/>
+	<Text Value="IN" X1="-5" Y1="4" Name="A6"/>
+	<Text Value="OUT" X1="17" Y1="5" Name="A7"/>
+	<Text Value="+9v" X1="-5" Y1="1" Name="A8"/>
+	<Pot Value="100K" Taper="Audio" X1="14" Y1="0" X2="16" Y2="0" Name="Vol"/>
+	<Wire Color="Blue" Seed="1927656575" X1="8" Y1="4" X2="12" Y2="0" Name="W1"/>
+	<Wire Color="Green" Seed="634153620" X1="14" Y1="0" X2="17" Y2="4" Name="W3"/>
+	<Wire Color="Black" Seed="1637702895" X1="8" Y1="5" X2="16" Y2="0" Name="W2"/>
+	<Text Value="Q1 legs are DSG top-down" X1="2" Y1="10" Name="A5"/>
+	<Text Value="Beware, there's a cut track under R2!" X1="2" Y1="11" Name="A9"/>  <Text Value="(created for DIY Layout by PotulFx)" X1="-6" Y1="-5" Name="A10"/>
+</Layout>

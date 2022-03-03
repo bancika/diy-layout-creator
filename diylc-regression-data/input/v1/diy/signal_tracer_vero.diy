@@ -1,0 +1,28 @@
+<Layout Type="Stripboard" Width="9" Height="6" Project="Signal Tracer" Credits="Richard Boop 06-23-2006">
+	<Capacitor Value="0.1uF" X1="3" Y1="2" X2="3" Y2="5" Name="C1"/>
+	<Transistor Value="NPN" X1="5" Y1="4" X2="5" Y2="6" Name="Q1"/>
+	<Resistor Value="2.2M" X1="4" Y1="5" X2="4" Y2="3" Name="R1"/>
+	<Transistor Value="PNP" X1="7" Y1="5" X2="7" Y2="3" Name="Q2"/>
+	<Cut X1="6" Y1="5" Name="X1"/>
+	<Electrolyte Value="100uF" X1="8" Y1="3" X2="8" Y2="6" Name="C2"/>
+	<Text Value="1" X1="-1" Y1="1" Name="A1"/>
+	<Diode Value="1N60" X1="2" Y1="1" X2="2" Y2="5" Name="D1"/>
+	<Text Value="2" X1="-1" Y1="2" Name="A2"/>
+	<Text Value="3" X1="-1" Y1="3" Name="A3"/>
+	<Text Value="4" X1="10" Y1="5" Name="A4"/>
+	<Text Value="5" X1="10" Y1="6" Name="A5"/>
+	<Text Value="6" X1="-1" Y1="6" Name="A6"/>
+	<Text Value="C1 should be rated 1kv" X1="-3" Y1="10" Name="A7"/>
+	<Text Value="1 = RF Input" X1="-3" Y1="12" Name="A8"/>
+	<Text Value="2 = Audio Input" X1="-3" Y1="13" Name="A9"/>
+	<Text Value="3 = V+" X1="-3" Y1="14" Name="A10"/>
+	<Text Value="4 = Speaker +" X1="4" Y1="12" Name="A11"/>
+	<Text Value="5 &amp; 6 = Ground" X1="4" Y1="13" Name="A12"/>
+	<Text Value="Q1 = NPN original BC548 also tested 2N3904 and 2N5088" X1="-4" Y1="16" Name="A13"/>
+	<Text Value="Q2 = PNP original BC558 also tested 2N3906 and 2N5087" X1="-4" Y1="17" Name="A14"/>
+	<Text Value="Runs well on 6v. I built mine in a small speaker cab for a" X1="-4" Y1="19" Name="A15"/>
+	<Text Value="walkman, etc. It had a 4 AA battery holder built in." X1="-4" Y1="20" Name="A16"/>  <Text Value="C" X1="5" Y1="4" Name="A17"/>
+  <Text Value="E" X1="5" Y1="6" Name="A18"/>
+  <Text Value="E" X1="7" Y1="3" Name="A19"/>
+  <Text Value="C" X1="7" Y1="5" Name="A20"/>
+</Layout>

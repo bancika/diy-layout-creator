@@ -1,0 +1,96 @@
+<Layout Type="Stripboard" Width="30" Height="11" Project="Phuncgnosis" Credits="Layout by Tatems, Schematic Tim Escobedo - Verified">
+	<Resistor Value="100K" X1="3" Y1="4" X2="3" Y2="3" Name="R1"/>
+	<Jumper X1="1" Y1="1" X2="-2" Y2="1" Name="J1"/>
+	<Text Value="+9V" X1="-2" Y1="0" Name="A1"/>
+	<Resistor Value="100K" X1="4" Y1="4" X2="4" Y2="5" Name="R2"/>
+	<Electrolyte Value="10uF" X1="2" Y1="4" X2="2" Y2="5" Name="C1"/>
+	<Text Value="In" X1="-2" Y1="7" Name="A2"/>
+	<Jumper X1="1" Y1="5" X2="-1" Y2="5" Name="J4"/>
+	<Jumper X1="1" Y1="8" X2="-1" Y2="8" Name="J5"/>
+	<Jumper X1="1" Y1="7" X2="-1" Y2="7" Name="J2"/>
+	<Text Value="1M - 1" X1="-3" Y1="5" Name="A3"/>
+	<Text Value="1M - 3" X1="-3" Y1="6" Name="A4"/>
+	<Text Value="1M - 2" X1="-3" Y1="8" Name="A5"/>
+	<Capacitor Value=".01uF" X1="2" Y1="8" X2="4" Y2="8" Name="C2"/>
+	<Cut X1="3" Y1="8" Name="X1"/>
+	<Resistor Value="1M" X1="5" Y1="8" X2="5" Y2="4" Name="R3"/>
+	<IC Value="TL072" X1="13" Y1="4" X2="16" Y2="7" Name="IC1"/>
+	<Jumper X1="6" Y1="6" X2="6" Y2="8" Name="J7"/>
+	<Cut X1="7" Y1="8" Name="X2"/>
+	<Jumper X1="17" Y1="4" X2="17" Y2="3" Name="J8"/>
+	<Jumper X1="12" Y1="7" X2="12" Y2="11" Name="J9"/>
+	<Cut X1="14" Y1="4" Name="X3"/>
+	<Cut X1="14" Y1="5" Name="X4"/>
+	<Cut X1="14" Y1="6" Name="X5"/>
+	<Cut X1="14" Y1="7" Name="X6"/>
+	<Jumper X1="8" Y1="7" X2="8" Y2="8" Name="J10"/>
+	<Cut X1="9" Y1="7" Name="X7"/>
+	<Jumper X1="3" Y1="5" X2="3" Y2="11" Name="J11"/>
+	<Resistor Value="33K" X1="12" Y1="4" X2="12" Y2="5" Name="R4"/>
+	<Cut X1="10" Y1="4" Name="X9"/>
+	<Resistor Value="1K" X1="9" Y1="5" X2="9" Y2="4" Name="R5"/>
+	<Cut X1="6" Y1="5" Name="X8"/>
+	<Jumper X1="11" Y1="4" X2="11" Y2="9" Name="J12"/>
+	<Cut X1="14" Y1="9" Name="X10"/>
+	<Electrolyte Value="1uF" X1="13" Y1="9" X2="15" Y2="9" Name="C3"/>
+	<Diode Value="1N4148" X1="16" Y1="11" X2="16" Y2="9" Name="D1"/>
+	<Cut X1="18" Y1="9" Name="X11"/>
+	<Diode Value="1N4148" X1="17" Y1="9" X2="19" Y2="9" Name="D2"/>
+	<Capacitor Value=".1uF" X1="20" Y1="9" X2="20" Y2="11" Name="C4"/>
+	<Jumper X1="6" Y1="4" X2="6" Y2="2" Name="J13"/>
+	<Cut X1="22" Y1="9" Name="X12"/>
+	<Cut X1="25" Y1="9" Name="X13"/>
+	<Diode Value="1N4148" X1="21" Y1="9" X2="23" Y2="9" Name="D3"/>
+	<Resistor Value="50K" X1="24" Y1="9" X2="26" Y2="9" Name="R6"/>
+	<Electrolyte Value="1uF" X1="27" Y1="9" X2="27" Y2="11" Name="C5"/>
+	<Jumper X1="15" Y1="7" X2="15" Y2="2" Name="J14"/>
+	<Cut X1="17" Y1="7" Name="X14"/>
+	<Capacitor Value=".002uF" X1="19" Y1="8" X2="17" Y2="8" Name="C6"/>
+	<Cut X1="18" Y1="8" Name="X15"/>
+	<Resistor Value="330K" X1="29" Y1="9" X2="29" Y2="11" Name="R7"/>
+	<Resistor Value="100K" X1="28" Y1="9" X2="28" Y2="7" Name="R8"/>
+	<Jumper X1="20" Y1="7" X2="20" Y2="8" Name="J15"/>
+	<Resistor Value="22K" X1="22" Y1="8" X2="22" Y2="6" Name="R9"/>
+	<Jumper X1="23" Y1="6" X2="23" Y2="5" Name="J16"/>
+	<Cut X1="24" Y1="6" Name="X16"/>
+	<Jumper X1="1" Y1="11" X2="-2" Y2="11" Name="J17"/>
+	<Text Value="Gnd" X1="-2" Y1="12" Name="A6"/>
+	<Jumper X1="30" Y1="11" X2="33" Y2="11" Name="J18"/>
+	<Text Value="Gnd" X1="32" Y1="12" Name="A7"/>
+	<Cut X1="20" Y1="6" Name="X17"/>
+	<Capacitor Value="680pF" X1="21" Y1="6" X2="19" Y2="6" Name="C7"/>
+	<Resistor Value="5M" X1="18" Y1="6" X2="18" Y2="5" Name="R10"/>
+	<Cut X1="20" Y1="5" Name="X18"/>
+	<Capacitor Value="680pF" X1="19" Y1="5" X2="21" Y2="5" Name="C8"/>
+	<Cut X1="18" Y1="3" Name="X19"/>
+	<Jumper X1="17" Y1="5" X2="19" Y2="3" Name="J19"/>
+	<Capacitor Value=".1uF" X1="20" Y1="3" X2="22" Y2="3" Name="C9"/>
+	<Cut X1="21" Y1="3" Name="X20"/>
+	<Jumper X1="30" Y1="5" X2="33" Y2="5" Name="J20"/>
+	<Cut X1="16" Y1="2" Name="X21"/>
+	<Cut X1="24" Y1="3" Name="X22"/>
+	<Jumper X1="23" Y1="3" X2="23" Y2="4" Name="J21"/>
+	<Cut X1="19" Y1="4" Name="X23"/>
+	<Jumper X1="2" Y1="3" X2="2" Y2="1" Name="J22"/>
+	<Jumper X1="30" Y1="4" X2="33" Y2="4" Name="J23"/>
+	<Text Value="Out" X1="34" Y1="4" Name="A8"/>
+	<Led Value="Red LED" X1="17" Y1="1" X2="17" Y2="2" Name="D4"/>
+	<Jumper X1="25" Y1="11" X2="25" Y2="3" Name="J24"/>
+	<Led Value="Red LED" X1="26" Y1="1" X2="26" Y2="3" Name="D5"/>
+	<Cut X1="19" Y1="2" Name="X24"/>
+	<Cut X1="22" Y1="2" Name="X25"/>
+	<Led Value="Red LED" X1="18" Y1="2" X2="20" Y2="2" Name="D6"/>
+	<Led Value="Red LED" X1="21" Y1="2" X2="23" Y2="2" Name="D7"/>
+	<Jumper X1="30" Y1="2" X2="33" Y2="2" Name="J25"/>
+	<Jumper X1="30" Y1="1" X2="33" Y2="1" Name="J26"/>
+	<Text Value="S1 - Down" X1="34" Y1="2" Name="A9"/>
+	<Text Value="S1 - Up" X1="34" Y1="1" Name="A10"/>
+	<Text Value="S1 - Mdle Pole" X1="34" Y1="5" Name="A11"/>
+	<Cut X1="24" Y1="1" Name="X26"/>
+	<Cut X1="4" Y1="6" Name="X27"/>
+	<Jumper X1="1" Y1="6" X2="-1" Y2="6" Name="J3"/>
+	<Jumper X1="2" Y1="6" X2="2" Y2="7" Name="J6"/>
+	<Resistor Value="100K" X1="28" Y1="3" X2="28" Y2="4" Name="R11"/>
+	<Text Value="Gnd" X1="34" Y1="3" Name="A12"/>
+	<Jumper X1="30" Y1="3" X2="33" Y2="3" Name="J27"/>
+</Layout>

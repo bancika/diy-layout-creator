@@ -1,0 +1,44 @@
+<Layout Width="50" Height="20" Type="Perfboard" Project="Voeding 12V=" Credits="Open &quot;Properties&quot; to modify layout" HideList="False">
+	<Diode Value="1N4007" X1="12" Y1="10" X2="15" Y2="13" Name="D1"/>
+	<Diode Value="1N4007" X1="12" Y1="10" X2="15" Y2="7" Name="D2"/>
+	<Diode Value="1N4007" X1="15" Y1="13" X2="18" Y2="10" Name="D3"/>
+	<Diode Value="1N4007" X1="15" Y1="7" X2="18" Y2="10" Name="D4"/>
+	<Electrolyte Value="25 V 2500uF" Size="Large" X1="22" Y1="4" X2="22" Y2="15" Name="C1"/>
+	<Electrolyte Value="24 V 100uF" Size="Medium" X1="36" Y1="4" X2="36" Y2="15" Name="C2"/>
+	<Diode Value="1N4007" X1="29" Y1="4" X2="29" Y2="15" Name="D5"/>
+	<LineIC Value="78S12" X1="28" Y1="3" X2="30" Y2="3" Name="IC1"/>  <Wire Color="Black" Seed="1867030445" X1="15" Y1="13" X2="11" Y2="10" Name="W1"/>
+  <Wire Color="Black" Seed="627217054" X1="12" Y1="10" X2="22" Y2="15" Name="W2"/>
+  <Wire Color="Black" Seed="1121339367" X1="22" Y1="15" X2="29" Y2="15" Name="W3"/>
+  <Wire Color="Black" Seed="1161660343" X1="29" Y1="15" X2="36" Y2="15" Name="W4"/>
+  <Wire Color="Black" Seed="1640452362" X1="18" Y1="10" X2="22" Y2="4" Name="W5"/>
+  <Wire Color="Black" Seed="607453254" X1="22" Y1="4" X2="28" Y2="3" Name="W6"/>
+  
+  <Wire Color="Black" Seed="443657367" X1="15" Y1="7" X2="11" Y2="3" Name="W8"/>
+  <Text Value="15V AC" X1="10" Y1="2" Name="A1"/>
+  <Text Value="0 V AC" X1="9" Y1="12" Name="A2"/>
+  <Text Value="O V DC" X1="38" Y1="15" Name="A3"/>
+  <Text Value="12 V DC" X1="38" Y1="4" Name="A4"/>
+  <Pad Value="15px" Color="Black" X1="37" Y1="4" Name="P1"/>
+  <Pad Value="15px" Color="Black" X1="37" Y1="15" Name="P2"/>
+  <Pad Value="15px" Color="Black" X1="10" Y1="3" Name="P3"/>
+  <Pad Value="15px" Color="Black" X1="10" Y1="10" Name="P4"/>
+  <Pad Value="15px" Color="Black" X1="12" Y1="10" Name="P5"/>
+  <Pad Value="15px" Color="Black" X1="15" Y1="13" Name="P6"/>
+  <Pad Value="15px" Color="Black" X1="15" Y1="7" Name="P7"/>
+  <Pad Value="15px" Color="Black" X1="18" Y1="10" Name="P8"/>
+  <Pad Value="15px" Color="Black" X1="22" Y1="15" Name="P9"/>
+  <Pad Value="15px" Color="Black" X1="22" Y1="4" Name="P10"/>
+  <Pad Value="15px" Color="Black" X1="28" Y1="3" Name="P11"/>
+  <Pad Value="15px" Color="Black" X1="29" Y1="3" Name="P12"/>
+  <Pad Value="15px" Color="Black" X1="30" Y1="3" Name="P13"/>
+  <Pad Value="15px" Color="Black" X1="36" Y1="4" Name="P14"/>
+  <Pad Value="15px" Color="Black" X1="29" Y1="4" Name="P15"/>
+  <Pad Value="15px" Color="Black" X1="29" Y1="15" Name="P16"/>
+  <Pad Value="15px" Color="Black" X1="36" Y1="15" Name="P17"/>
+  <Wire Color="Black" Seed="355224982" X1="29" Y1="4" X2="29" Y2="3" Name="W9"/>
+  <Wire Color="Black" Seed="648064721" X1="36" Y1="4" X2="37" Y2="4" Name="W10"/>
+  <Wire Color="Black" Seed="2031394307" X1="36" Y1="15" X2="37" Y2="15" Name="W11"/>
+  <Diode Value="1N4007" X1="31" Y1="3" X2="36" Y2="3" Name="D6"/>
+  <Wire Color="Black" Seed="1659374537" X1="30" Y1="3" X2="31" Y2="3" Name="W7"/>
+  <Wire Color="Black" Seed="1870741106" X1="36" Y1="3" X2="36" Y2="4" Name="W12"/>
+</Layout>

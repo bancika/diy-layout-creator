@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.diylc.core.Project>
+  <fileVersion>
+    <major>3</major>
+    <minor>36</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>bancika</author>
+  <width>
+    <value>29.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">cm</unit>
+  </width>
+  <height>
+    <value>21.0</value>
+    <unit class="org.diylc.core.measures.SizeUnit">cm</unit>
+  </height>
+  <gridSpacing>
+    <value>0.1</value>
+    <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+  </gridSpacing>
+  <components>
+    <org.diylc.components.electromechanical.MiniToggleSwitch>
+      <name defined-in="org.diylc.components.AbstractComponent"></name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="5.1" y="3.6"/>
+        <java.awt.Point x="5.1" y="3.8"/>
+        <java.awt.Point x="5.1" y="4.0"/>
+        <java.awt.Point x="5.3" y="3.6"/>
+        <java.awt.Point x="5.3" y="3.8"/>
+        <java.awt.Point x="5.3" y="4.0"/>
+      </controlPoints>
+      <name>SW1</name>
+      <switchType>DPDT</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing>
+        <value>0.2</value>
+        <unit class="org.diylc.core.measures.SizeUnit">in</unit>
+      </spacing>
+    </org.diylc.components.electromechanical.MiniToggleSwitch>
+    <org.diylc.components.electromechanical.ClosedJack1__4>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <java.awt.Point x="5.6" y="3.7"/>
+        <java.awt.Point x="6.4" y="3.7"/>
+      </controlPoints>
+      <type>MONO</type>
+      <orientation>DEFAULT</orientation>
+      <value></value>
+    </org.diylc.components.electromechanical.ClosedJack1__4>
+  </components>
+  <groups>
+    <set>
+      <org.diylc.components.electromechanical.MiniToggleSwitch reference="../../../components/org.diylc.components.electromechanical.MiniToggleSwitch"/>
+      <org.diylc.components.electromechanical.ClosedJack1__4 reference="../../../components/org.diylc.components.electromechanical.ClosedJack1__4"/>
+    </set>
+  </groups>
+  <lockedLayers/>
+</org.diylc.core.Project>
