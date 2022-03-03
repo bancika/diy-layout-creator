@@ -66,9 +66,9 @@ public class RegressionTestRunner {
     Presenter presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());
     VersionNumber currentVersionNumber = presenter.getCurrentVersionNumber();
 
-    String fileName = basePath + File.separator + "reports" + File.separator + "V"
-        + currentVersionNumber.toString().replace('.', '_') + "-"
-        + LocalDateTime.now().toString().replace(":", "_") + ".csv";
+    String fileName = basePath + File.separator + "reports" + File.separator 
+        + LocalDateTime.now().toString().replace(":", "_") + "-" 
+        + "V" + currentVersionNumber.toString().replace('.', '_') +  ".csv";
 
     BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
     
