@@ -37,6 +37,18 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	 <release version="4.22.0" date="2022-03-03">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed backwards compatibility issue with older files failing to open because of an issue with 'Mini Toggle Switch' component serialization</li>
+             <li>[Bug Fix] Fix component prefix for SMD Resistor</li>
+             <li>[Improvement] Separate WIRING layer (containing 'Hookup Wire' and 'Twisted Wire' at the moment) from TRACE layer and render it above the COMPONENT layer by default</li>
+             <li>[Improvement] Upgrade OSX application package built-in Java to JRE 1.8.0_321-b07</li>
+             <li>[New Feature] Added regression test suite that validates each release candidate version against a barrage of different DIY files</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.22.0</url>
+     </release>
   	  <release version="4.21.4" date="2022-02-27">
          <description>
            <ul>
