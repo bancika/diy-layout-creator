@@ -123,7 +123,7 @@ public class LayersMenuPlugin implements IPlugIn {
   }
 
   static enum Layer {
-    CHASSIS("Chassis", IDIYComponent.CHASSIS), BOARD("Board", IDIYComponent.BOARD), TRACE("Wiring", IDIYComponent.TRACE), COMPONENT(
+    CHASSIS("Chassis", IDIYComponent.CHASSIS), BOARD("Board", IDIYComponent.BOARD), TRACE("Trace", IDIYComponent.TRACE), COMPONENT(
         "Component", IDIYComponent.COMPONENT), WIRING("Wiring", IDIYComponent.WIRING), TEXT("Text", IDIYComponent.TEXT);
 
     String title;
