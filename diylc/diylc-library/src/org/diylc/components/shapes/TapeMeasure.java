@@ -65,8 +65,7 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
   protected LineStyle style = LineStyle.SOLID; 
   private Size thickness = new Size(1d, SizeUnit.px);
   private Size arrowSize = new Size(5d, SizeUnit.px);
-  private Polygon arrow = null;  
-  private AffineTransform arrowTx = new AffineTransform();
+  private transient Polygon arrow = null;
   private boolean arrowStart = true;
   private boolean arrowEnd = true;
   private SizeUnit unit = SizeUnit.mm;
@@ -116,6 +115,7 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     Point2D startPoint = new Point2D.Double(first.getX(), first.getY());
     Point2D endPoint = new Point2D.Double(second.getX(), second.getY());
     
+    AffineTransform arrowTx = new AffineTransform();
     if (arrowStart) {
       arrowTx.setToIdentity();
       double angle = Math.atan2(getControlPoint(1).getY() - getControlPoint(0).getY(), getControlPoint(1).getX() - getControlPoint(0).getX());
@@ -155,8 +155,6 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     int y = -metrics.getHeight() / 2 + metrics.getAscent();
     
     int legLength = (int) (getPoints()[0].distance(getPoints()[1]) - strWidth) / 2 - 6;
-    
-    System.out.println(strWidth + " " + legLength);
         
     // draw legs around the enter text
     g2d.drawLine((int)startPoint.getX(), (int)startPoint.getY(), 
