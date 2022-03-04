@@ -9,6 +9,6 @@
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_EXCLUDE_TEST_CODE" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.diylc.RegressionTestRunner"/>
 <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="diylc-swing"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc-regression-data&quot; TEST"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc-regression-data&quot; TEST user-files"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="diylc-swing"/>
 </launchConfiguration>
