@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.diylc.core.Project>
+<fileVersion>
+<major>3</major>
+<minor>46</minor>
+<build>0</build>
+</fileVersion>
+<title>Hoffman Board</title>
+<author>Doug Hoffman</author>
+<width>
+<value>12.3525</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</width>
+<height>
+<value>4.0</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</height>
+<gridSpacing>
+<value>0.06255</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</gridSpacing>
+<components>
+<org.diylc.components.boards.BlankBoard>
+<name>Board1</name>
+<alpha>127</alpha>
+<value></value>
+<controlPoints>
+<java.awt.Point x="0.0" y="0.0"/>
+<java.awt.Point x="11.3525" y="3.125"/>
+</controlPoints>
+<firstPoint x="0.0" y="0.0"/>
+<secondPoint x="11.3525" y="3.125"/>
+<boardColor>
+<red>204</red>
+<green>204</green>
+<blue>204</blue>
+<alpha>255</alpha>
+</boardColor>
+<borderColor>
+<red>173</red>
+<green>164</green>
+<blue>125</blue>
+<alpha>255</alpha>
+</borderColor>
+<coordinateColor>
+<red>182</red>
+<green>182</green>
+<blue>182</blue>
+<alpha>255</alpha>
+</coordinateColor>
+<drawCoordinates>true</drawCoordinates>
+<type>SQUARE</type>
+</org.diylc.components.boards.BlankBoard>
+<org.diylc.components.connectivity.Turret>
+<name>Turret1</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="0.3091" y="0.9204"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret2</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="0.3091" y="1.5341"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret3</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="0.6379" y="2.0491"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret4</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="0.6324" y="2.3066"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret5</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="1.1214" y="1.8196"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret6</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="1.9857" y="1.8464"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret7</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="2.4953" y="1.2327"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret8</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="2.8325" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret9</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="3.2225" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret10</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="3.7117" y="1.419"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret11</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="3.7172" y="1.83"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret12</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="4.1925" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret13</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="4.7225" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret14</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="5.1025" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret15</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="5.5325" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret16</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="6.1425" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret17</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="6.6053" y="2.4327"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret18</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="6.6156" y="1.6272"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret19</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="6.9425" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret20</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="7.8025" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret21</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="8.1825" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret22</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="9.2625" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret23</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="10.1825" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret24</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="11.0925" y="2.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret25</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="10.6434" y="1.4355"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret26</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="11.1025" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret27</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="10.7925" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret28</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="10.4925" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret29</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="10.1825" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret30</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="9.8725" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret31</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="9.5825" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret32</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="9.7065" y="1.4355"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret33</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="9.7229" y="1.8628"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret34</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="8.8886" y="1.4366"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret35</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="9.2725" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret36</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="8.9125" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret37</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="8.5525" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret38</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="8.1825" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret39</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="7.6925" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret40</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="7.3325" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret41</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="6.9525" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret42</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="6.1425" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret43</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="5.5325" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret44</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="5.1089" y="1.4245"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret45</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="4.6925" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret46</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="4.2025" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret47</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="3.2325" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret48</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="2.8625" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret49</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="2.3825" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret50</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="1.5325" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret51</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="1.1725" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.connectivity.Turret>
+<name>Turret52</name>
+<size>
+<value>0.16</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</size>
+<holeSize>
+<value>0.0625</value>
+<unit class="org.diylc.core.measures.SizeUnit">in</unit>
+</holeSize>
+<color>
+<red>224</red>
+<green>192</green>
+<blue>76</blue>
+<alpha>255</alpha>
+</color>
+<point x="0.8025" y="0.625"/>
+<value>Hoffman Lug</value>
+</org.diylc.components.connectivity.Turret>
+<org.diylc.components.misc.Label>
+<name>File Text</name>
+<point x="0.1" y="3.25"/>
+<text>Fender_Bassman_5F6_5F6A</text>
+<font>
+<attributes>
+<entry>
+<awt-text-attribute>posture</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>family</awt-text-attribute>
+<string>Tahoma</string>
+</entry>
+<entry>
+<awt-text-attribute>tracking</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>width</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>transform</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>superscript</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>size</awt-text-attribute>
+<float>24.0</float>
+</entry>
+<entry>
+<awt-text-attribute>weight</awt-text-attribute>
+<null/>
+</entry>
+</attributes>
+</font>
+<color>
+<red>0</red>
+<green>0</green>
+<blue>0</blue>
+<alpha>255</alpha>
+</color>
+<center>false</center>
+<horizontalAlignment>LEFT</horizontalAlignment>
+<verticalAlignment>CENTER</verticalAlignment>
+<orientation>DEFAULT</orientation>
+</org.diylc.components.misc.Label>
+<org.diylc.components.misc.Label>
+<name>File Text</name>
+<point x="0.1" y="3.375"/>
+<text>The .diy file analyzer program is here</text>
+<font>
+<attributes>
+<entry>
+<awt-text-attribute>posture</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>family</awt-text-attribute>
+<string>Tahoma</string>
+</entry>
+<entry>
+<awt-text-attribute>tracking</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>width</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>transform</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>superscript</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>size</awt-text-attribute>
+<float>24.0</float>
+</entry>
+<entry>
+<awt-text-attribute>weight</awt-text-attribute>
+<null/>
+</entry>
+</attributes>
+</font>
+<color>
+<red>0</red>
+<green>0</green>
+<blue>0</blue>
+<alpha>255</alpha>
+</color>
+<center>false</center>
+<horizontalAlignment>LEFT</horizontalAlignment>
+<verticalAlignment>CENTER</verticalAlignment>
+<orientation>DEFAULT</orientation>
+</org.diylc.components.misc.Label>
+<org.diylc.components.misc.Label>
+<name>File Text</name>
+<point x="0.1" y="3.5"/>
+<text>https://hoffmanamps.com/php/DIYLC/DiyFileAnalyzer.php</text>
+<font>
+<attributes>
+<entry>
+<awt-text-attribute>posture</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>family</awt-text-attribute>
+<string>Tahoma</string>
+</entry>
+<entry>
+<awt-text-attribute>tracking</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>width</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>transform</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>superscript</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>size</awt-text-attribute>
+<float>24.0</float>
+</entry>
+<entry>
+<awt-text-attribute>weight</awt-text-attribute>
+<null/>
+</entry>
+</attributes>
+</font>
+<color>
+<red>0</red>
+<green>0</green>
+<blue>0</blue>
+<alpha>255</alpha>
+</color>
+<center>false</center>
+<horizontalAlignment>LEFT</horizontalAlignment>
+<verticalAlignment>CENTER</verticalAlignment>
+<orientation>DEFAULT</orientation>
+</org.diylc.components.misc.Label>
+</components>
+<groups/>
+<lockedLayers>
+<int>2</int>
+</lockedLayers>
+<hiddenLayers/>
+<font>
+<attributes>
+<entry>
+<awt-text-attribute>transform</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>weight</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>tracking</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>posture</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>superscript</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>width</awt-text-attribute>
+<null/>
+</entry>
+<entry>
+<awt-text-attribute>family</awt-text-attribute>
+<string>Lucida Console</string>
+</entry>
+<entry>
+<awt-text-attribute>size</awt-text-attribute>
+<float>14.0</float>
+</entry>
+</attributes>
+</font>
+</org.diylc.core.Project>

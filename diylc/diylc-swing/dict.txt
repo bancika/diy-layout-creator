@@ -26,7 +26,6 @@ A-O-I     REGULATOR
 AWG
 And
 C-B-E     BJT
-CP1
 Check Trace Proximity
 D-G-S     JFET
 D-G-S     MOSFET
@@ -78,7 +77,6 @@ PCB
 PNP
 Panel
 Português
-RECTC1
 Rev log
 S-G-D     JFET
 S-G-D     MOSFET
@@ -87,7 +85,6 @@ SPDT
 SPDT  (Center OFF)
 SPST
 Srpski
-TM2
 Tick Width
 Ticks
 Wiring
