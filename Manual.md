@@ -186,7 +186,7 @@ DIYLC offers few functionalities for working with layers:
   * Lock/unlock the whole layer, keep all the components visible, but unable to select
   * Select all components beloging to a layer
 
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/layers.png' /></p>
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/layers2.png' /></p>
 
 ### Using the status bar ###
 
