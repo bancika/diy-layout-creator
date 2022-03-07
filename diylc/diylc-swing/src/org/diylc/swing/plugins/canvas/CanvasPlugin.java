@@ -471,8 +471,6 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   public void zoom(int direction) {    
     Point mousePosBefore = canvasPanel.getMousePosition(true);   
     Point locationBefore = canvasPanel.getLocation();
-    int relativeX = (int) (mousePosBefore.getX() + locationBefore.getX());
-    int relativeY = (int) (mousePosBefore.getY() + locationBefore.getY());
 
     // change zoom level
     double oldZoom = plugInPort.getZoomLevel();
@@ -504,6 +502,8 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
 	if (selectionBounds == null) {
 		// center to cursor
+	    int relativeX = (int) (mousePosBefore.getX() + locationBefore.getX());
+	    int relativeY = (int) (mousePosBefore.getY() + locationBefore.getY());
 		Point desiredPos = new Point((int) (1d * mousePosBefore.getX() / oldZoom * newZoom),
 				(int) (1d * mousePosBefore.getY() / oldZoom * newZoom));
 		int newHorizontalPos = (int) (desiredPos.getX() - relativeX);

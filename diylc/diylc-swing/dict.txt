@@ -26,6 +26,8 @@ A-O-I     REGULATOR
 AWG
 And
 C-B-E     BJT
+C1
+C2
 Check Trace Proximity
 D-G-S     JFET
 D-G-S     MOSFET

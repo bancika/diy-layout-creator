@@ -3763,12 +3763,16 @@
 				<minor>22</minor>
 				<build>1</build>
 			</versionNumber>
-			<releaseDate>2022-03-03 00:00:00.000 CET</releaseDate>
+			<releaseDate>2022-03-07 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>			
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed backwards compatibility issue with older files failing to open because of an issue with 'Tape Measure' component serialization</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue with 'Add Flexible Leads' functionality placing the flexible leads wrong on leaded components (e.g. resistors, capacitors...)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

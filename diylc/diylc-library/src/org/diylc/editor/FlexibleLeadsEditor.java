@@ -55,8 +55,8 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       if (l == null)
         return;
       
-      Point2D p1 = leaded.getControlPoint(0);
-      Point2D p2 = leaded.getControlPoint(1);
+      Point2D p1 = (Point2D) leaded.getControlPoint(0).clone();
+      Point2D p2 = (Point2D) leaded.getControlPoint(1).clone();
       double d = p1.distance(p2);
       double len = l.convertToPixels() + 2;
               
@@ -86,8 +86,8 @@ public class FlexibleLeadsEditor implements IProjectEditor {
 //      w1.setPointCount(PointCount.THREE);
       w1.setControlPoint(p1, 0);
       for (int i = 1; i < w1.getControlPointCount() - 1; i++) {
-        double r = (len + diff) / (w1.getControlPointCount() - 1) * (w1.getControlPointCount() - i - 1);
-        w1.setControlPoint(new Point2D.Double((int)Math.round(centerX - Math.cos(theta) * r), (int)Math.round(centerY - Math.sin(theta) * r)), i);   
+        double r = diff * i / (w1.getControlPointCount() - 1);
+        w1.setControlPoint(new Point2D.Double((int)Math.round(p1.getX() + Math.cos(theta) * r), (int)Math.round(p1.getY() + Math.sin(theta) * r)), i);
       }
       w1.setControlPoint(newP1, w1.getControlPointCount() - 1);
       newSelection.add(w1);
@@ -99,8 +99,8 @@ public class FlexibleLeadsEditor implements IProjectEditor {
 //      w2.setPointCount(PointCount.THREE);
       w2.setControlPoint(p2, 0);
       for (int i = 1; i < w2.getControlPointCount() - 1; i++) {
-        double r = (len + diff) / (w2.getControlPointCount() - 1) * (w2.getControlPointCount() - i - 1);
-        w2.setControlPoint(new Point2D.Double((int)Math.round(centerX + Math.cos(theta) * r), (int)Math.round(centerY + Math.sin(theta) * r)), i);   
+        double r = diff * i / (w2.getControlPointCount() - 1);
+        w2.setControlPoint(new Point2D.Double((int)Math.round(p2.getX() - Math.cos(theta) * r), (int)Math.round(p2.getY() - Math.sin(theta) * r)), i);   
       }   
       w2.setControlPoint(newP2, w2.getControlPointCount() - 1);
       newSelection.add(w2);

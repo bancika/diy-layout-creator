@@ -10,7 +10,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.22.0" />
+	<property name="diylc.version" value="4.22.1" />
 	
 	<property name="osx.jre8.path" value="jre\osx\jre8u321\Contents\Home\" />
 
