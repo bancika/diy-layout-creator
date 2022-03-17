@@ -204,4 +204,18 @@ Status bar contains the following sections (going left to right):
 Since version 3.42.0, DIYLC includes a feature that can follow traces, leads and all other conductive components with (theoretical) zero-resistance and highlight the area that is connected to the desired point on the layout. This can be useful when debugging circuits, especially with stripboard/vero layouts, PCBs, breadboard, but also point-to-point circuits. To activate this mode, use 'Config' -> 'Highlight Connected Areas' option from the main menu. Click on any component or part of a component that needs to be traced. A transparent green highlight will cover any connected areas.
 
 Please note that once in this mode, components on the layout cannot be moved or edited, we can only debug the circuit. To continue with editing, 'Highlight Connected Areas' option from the 'Config' menu must be turned back OFF.
+
+### Drawing and Analyzing Guitar Wiring Diagrams ###
  
+DIYLC can also be used to draw and analyze guitar wiring diagrams. Drawing the wiring digrams is the same as drawing anything else in DIYLC, so we won't be going into too much detail. It's worth mentioning that guitar-specific components can be found in "Guitar" component package, while some of the general-purpose components, such as jacks and toggle switches can be found under "Electro-Mechanical".
+
+We will focus on analyzing guitar wiring diagrams, as it is a relatively new and very powerful feature that can help us understand how guitars work and also help us design guitar wirings that do what we want and debug them when they do not.
+
+Guitar Wiring Analyzer tool can be found under File > Analyze menu and can be used only when the diagram is fully drawn. The diagram should contain at least one guitar pickup with its terminals wired to optional switches and potentiometers and ultimately leading to an output jack which is mandatory. Guitar Wiring Analyzer can do the following:
+
+ * identifies all the switches in the diagram and analyzes how the circuit behaves in each of the combination of switch positions. For example, if we have a 3-way Les Paul switch and one push-pull potentiometer, the diagram will show six different switch combinations and would analyze all of them in detail
+ * in each switch position, it checks which of the pickups are activated,
+ * checks whether they are in split-coil mode or full humbucking (in case of humbucking pickups),
+ * checks the phase of each coil and in case there is more than one active coil, checks if the coils are in-phase or out-of-phase,
+ * checks if the current pickup combination is noise-cancelling or not,
+ * checks if any of the potentiometers are wired as volume or tone controls
