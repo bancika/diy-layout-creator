@@ -1,3 +1,25 @@
+### Table of Contents ###
+
+- [System requirements](#system-requirements)
+- [Running the app](#running-the-app)
+- [Whitelisting DIYLC with OSX Gatekeeper](#whitelisting-diylc-with-osx-gatekeeper)
+- [Installing on OSX Sierra and El Captain](#installing-on-osx-sierra-and-el-captain)
+- [User interface](#user-interface)
+- [Configuring the application](#configuring-the-application)
+- [Adding components to the project](#adding-components-to-the-project)
+- [Moving components around](#moving-components-around)
+- [Control points](#control-points)
+- [Editing component properties](#editing-component-properties)
+- [Assigning keyboard shortcuts to components](#assigning-keyboard-shortcuts-to-components)
+- [Using component variants](#using-component-variants)
+- [Grouping components together](#grouping-components-together)
+- [Using building blocks](#using-building-blocks)
+- [Working with layers](#working-with-layers)
+- [Using the status bar](#using-the-status-bar)
+- [Using 'Highlight Connected Areas' Feature](#using--highlight-connected-areas--feature)
+- [Drawing and Analyzing Guitar Wiring Diagrams](#drawing-and-analyzing-guitar-wiring-diagrams)
+
+
 ### System requirements ###
 
   * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.8 or newer
