@@ -236,8 +236,48 @@ We will focus on analyzing guitar wiring diagrams, as it is a relatively new and
 Guitar Wiring Analyzer tool can be found under File > Analyze menu and can be used only when the diagram is fully drawn. The diagram should contain at least one guitar pickup with its terminals wired to optional switches and potentiometers and ultimately leading to an output jack which is mandatory. Guitar Wiring Analyzer can do the following:
 
  * identifies all the switches in the diagram and analyzes how the circuit behaves in each of the combination of switch positions. For example, if we have a 3-way Les Paul switch and one push-pull potentiometer, the diagram will show six different switch combinations and would analyze all of them in detail
- * in each switch position, it checks which of the pickups are activated,
+ * in each switch position, it checks which of the pickup coils are activated,
  * checks whether they are in split-coil mode or full humbucking (in case of humbucking pickups),
+ * checks if the coils are wired in series or parallel mode,
  * checks the phase of each coil and in case there is more than one active coil, checks if the coils are in-phase or out-of-phase,
  * checks if the current pickup combination is noise-cancelling or not,
  * checks if any of the potentiometers are wired as volume or tone controls
+ * checks if there is a treble bleed network installed on a volume control
+
+Below is an example of a functioning guitar diagram, consisting two rail humbucker pickups, a 3-way switch, one push-pull volume control that splits the humbuckers when engaged with treble bleed circuit. 
+
+<p align="center">
+ <a href="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/travelcaster.png" target="_blank">
+  <img src="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/travelcaster_small.png" alt="Wiring Diagram"/>
+ </a>
+</p>
+
+Right click [here](https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/files/travelcaster.diy) and click "Save link as..." to download the sample DIY file.
+
+We can run the analyzer by running the Analyze Guitar Diagrams tool from the File > Analyze menu
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/analyze_guitar.png" alt="Analyze Guitar Diagrams"/>
+</p>
+
+The output will have six sections - one for each switch configuration. One of them would be as follows
+
+>Switch configuration: [Split.ON1:SW1.Middle]
+>
+>Parallel/Series connectivity tree:
+>
+>(((Rbleed + Cbleed) || Volume.1-2) + ((Bridge.North<- + Bridge.South<-) || (Neck.South<- + Neck.North<-))) || Volume.2-3
+>
+>Notes:
+>  'Bridge' pickup wired in humbucking mode with series coils
+>  'Neck' pickup wired in humbucking mode with series coils
+>  'Bridge' and 'Neck' pickups engaged, wired in parallel
+>  This configuration is hum-cancelling
+>  All pickup coils are wired in-phase
+>  'Volume' potentiometer acts as a volume control for 'Bridge' and 'Neck'
+
+Parallel/Series connectivity tree is basically how our circuit looks like in this switch configuration, from the perspective of the output jack. It uses parethesys to achive hierarchy, + sign for series connection and || sign for parallel connection. Pickup coils are shown in the PickupName.South or PickupName.North format with an arrow next to the name, designating the polarity.
+
+Below the connectivity tree, DIYLC will list the notes that it was able to deduce by analyzing the connectivity tree. That's where all the magic happens.
+
+For the full output follow this [link](https://htmlpreview.github.io/?https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/files/travelcaster_analysis.html)
