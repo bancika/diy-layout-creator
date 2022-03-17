@@ -260,21 +260,11 @@ We can run the analyzer by running the Analyze Guitar Diagrams tool from the Fil
   <img src="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/analyze_guitar.png" alt="Analyze Guitar Diagrams"/>
 </p>
 
-The output will have six sections - one for each switch configuration. One of them would be as follows
+The output will have six sections - one for each switch configuration. Below is how analysis of one of the positions looks like. This is the middle position of the 3-way switch and coil-splitting push/pull is not engaged.
 
->Switch configuration: [Split.ON1:SW1.Middle]
->
->Parallel/Series connectivity tree:
->
->(((Rbleed + Cbleed) || Volume.1-2) + ((Bridge.North<- + Bridge.South<-) || (Neck.South<- + Neck.North<-))) || Volume.2-3
->
->Notes:
->  'Bridge' pickup wired in humbucking mode with series coils
->  'Neck' pickup wired in humbucking mode with series coils
->  'Bridge' and 'Neck' pickups engaged, wired in parallel
->  This configuration is hum-cancelling
->  All pickup coils are wired in-phase
->  'Volume' potentiometer acts as a volume control for 'Bridge' and 'Neck'
+<p align="center">
+  <img src="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/analyze_guitar_sample.png" alt="Analyze Guitar Diagrams"/>
+</p>
 
 Parallel/Series connectivity tree is basically how our circuit looks like in this switch configuration, from the perspective of the output jack. It uses parethesys to achive hierarchy, + sign for series connection and || sign for parallel connection. Pickup coils are shown in the PickupName.South or PickupName.North format with an arrow next to the name, designating the polarity.
 
