@@ -27,6 +27,7 @@ import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -477,14 +478,26 @@ public class PotentiometerPanel extends AbstractPotentiometer {
   
   @Override
   public Rectangle2D getCachingBounds() {
-    Area area = new Area();
-    Area[] body = getBody();
+    Shape[] body = getBody();
     int margin = 20;
-    for (Area a : body)
-      if (a != null)
-        area.add(a);
-    Rectangle2D bounds = area.getBounds2D();
-    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+    double minX = 0;
+    double minY = 0;
+    double maxX = 0;
+    double maxY = 0;
+    for (Shape a : body) {
+      if (a != null) {
+        Rectangle2D bounds2d = a.getBounds2D();
+        if (bounds2d.getMinX() < minX)
+          minX = bounds2d.getMinX();
+        if (bounds2d.getMinY() < minY)
+          minY = bounds2d.getMinY();
+        if (bounds2d.getMaxX() > maxX)
+          maxX = bounds2d.getMaxX();
+        if (bounds2d.getMaxY() > maxY)
+          maxY = bounds2d.getMaxY();
+      }
+    }
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
   
   @Override

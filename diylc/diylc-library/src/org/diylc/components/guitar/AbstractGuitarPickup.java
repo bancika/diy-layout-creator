@@ -23,10 +23,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -259,14 +257,26 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
   
   @Override
   public Rectangle2D getCachingBounds() {
-    Area area = new Area();
     Shape[] body = getBody();
     int margin = 20;
-    for (Shape a : body)
-      if (a != null)
-        area.add(new Area(a));
-    Rectangle2D bounds = area.getBounds2D();
-    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+    double minX = 0;
+    double minY = 0;
+    double maxX = 0;
+    double maxY = 0;
+    for (Shape a : body) {
+      if (a != null) {
+        Rectangle2D bounds2d = a.getBounds2D();
+        if (bounds2d.getMinX() < minX)
+          minX = bounds2d.getMinX();
+        if (bounds2d.getMinY() < minY)
+          minY = bounds2d.getMinY();
+        if (bounds2d.getMaxX() > maxX)
+          maxX = bounds2d.getMaxX();
+        if (bounds2d.getMaxY() > maxY)
+          maxY = bounds2d.getMaxY();
+      }
+    }
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
   
   public enum Polarity {
