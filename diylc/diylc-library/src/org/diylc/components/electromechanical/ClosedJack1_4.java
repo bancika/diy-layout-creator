@@ -376,16 +376,4 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
-  
-  @Override
-  public Rectangle2D getCachingBounds() {
-    Area area = new Area();
-    Shape[] body = getBody();
-    int margin = 20;
-    for (Shape a : body)
-      if (a != null)
-        area.add(new Area(a));
-    Rectangle2D bounds = area.getBounds2D();
-    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
-  }
 }

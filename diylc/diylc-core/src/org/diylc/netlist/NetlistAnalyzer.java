@@ -417,14 +417,6 @@ public abstract class NetlistAnalyzer {
     return res;
   }
   
-  public static Set<IDIYComponent<?>> extractComponents(Netlist netlist) {
-    Set<IDIYComponent<?>> res = new HashSet<IDIYComponent<?>>();
-    for (Group g : netlist.getGroups())
-      for (Node n : g.getNodes())
-        res.add(n.getComponent());
-    return res;
-  }
-  
   protected int find(Node node, List<Group> groups) {
     for (int i = 0; i < groups.size(); i++)
       if (groups.get(i).getNodes().contains(node))

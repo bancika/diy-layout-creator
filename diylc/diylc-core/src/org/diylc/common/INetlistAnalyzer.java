@@ -36,6 +36,11 @@ public interface INetlistAnalyzer {
   String getName();
   
   /**   
+   * @return summarizer short name
+   */
+  String getShortName();
+  
+  /**   
    * @return name of the icon to use
    */
   String getIconName();  

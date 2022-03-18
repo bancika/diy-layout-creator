@@ -22,10 +22,9 @@
 package org.diylc.presenter;
 
 import java.awt.geom.Point2D;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.TreeSet;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
 
@@ -68,7 +67,7 @@ public class CalcUtils {
   }
   
   public static void expandConnections(Set<Connection> connections) {
-    Set<Connection> toAdd = new HashSet<Connection>();
+    Set<Connection> toAdd = new TreeSet<Connection>();
     for (Connection c1 : connections)
       for (Connection c2 : connections) {
         if (c1 == c2)

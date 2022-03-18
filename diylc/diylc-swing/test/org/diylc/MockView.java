@@ -1,18 +1,27 @@
 package org.diylc;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 
 public class MockView implements IView {
+  
+  private Map<Integer, List<String>> messages = new HashMap<Integer, List<String>>();
 
   @Override
   public void showMessage(String message, String title, int messageType) {
-    // TODO Auto-generated method stub
-
+    messages.putIfAbsent(messageType, new ArrayList<String>());
+    messages.get(messageType).add(message);
+  }
+  
+  public Map<Integer, List<String>> getMessages() {
+    return messages;
   }
 
   @Override

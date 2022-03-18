@@ -352,16 +352,4 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
-  
-  @Override
-  public Rectangle2D getCachingBounds() {
-    Area area = new Area();
-    Area[] body = getBody();
-    int margin = 20;
-    for (Area a : body)
-      if (a != null)
-        area.add(a);
-    Rectangle2D bounds = area.getBounds2D();
-    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
-  }
 }

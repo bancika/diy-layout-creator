@@ -2,9 +2,11 @@ package org.diylc;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Properties;
+import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.ComponentType;
@@ -17,6 +19,15 @@ public class TestBase {
   protected IView view;
   
   public TestBase() {
+    URL url = DIYLCStarter.class.getResource("log4j.properties");
+    Properties properties = new Properties();
+    try {
+        properties.load(url.openStream());
+        PropertyConfigurator.configure(properties);
+    } catch (Exception e) {
+        System.err.println("Could not initialize log4j configuration: " + e.getMessage());
+    }
+    
     ConfigurationManager.getInstance().initialize("diylc-test");
     view = new MockView();
     presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());

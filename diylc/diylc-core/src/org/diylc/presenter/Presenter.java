@@ -1,6 +1,6 @@
 /*
  * 
- * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+l * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import javax.swing.JOptionPane;
@@ -213,8 +214,12 @@ public class Presenter implements IPlugInPort {
   private Point2D previousScaledPoint;
   
   private DIYTest test = null;
-
+  
   public Presenter(IView view, IConfigurationManager<?> configManager) {
+    this(view, configManager, false);
+  }
+
+  public Presenter(IView view, IConfigurationManager<?> configManager, boolean importVariantsAndBlocks) {
     super();
     this.view = view;
     this.configManager = configManager;
@@ -230,9 +235,11 @@ public class Presenter implements IPlugInPort {
 
     // lockedLayers = EnumSet.noneOf(ComponentLayer.class);
     // visibleLayers = EnumSet.allOf(ComponentLayer.class);
-    upgradeVariants();
-    importDefaultVariants();
-    importDefaultBlocks();
+    if (importVariantsAndBlocks) {
+      upgradeVariants();
+      importDefaultVariants();
+      importDefaultBlocks();
+    }
   }
 
   public void installPlugin(Supplier<IPlugIn> plugInSupplier) {
@@ -2596,7 +2603,7 @@ public class Presenter implements IPlugInPort {
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("variants.xml"));
         XStream xStream = new XStream(new DomDriver());
         xStream.addPermission(AnyTypePermission.ANY);
-        xStream.toXML(defaultVariantMap, out);
+        ProjectFileManager.xStreamSerializer.toXML(defaultVariantMap, out);
         out.close();
         // no more user variants
         configManager.writeValue(TEMPLATES_KEY, null);
@@ -2617,9 +2624,7 @@ public class Presenter implements IPlugInPort {
         URL resource = Presenter.class.getResource("variants.xml");
         if (resource != null) {
           BufferedInputStream in = new BufferedInputStream(resource.openStream());
-          XStream xStream = new XStream(new DomDriver());
-          xStream.addPermission(AnyTypePermission.ANY);
-          Map<String, List<Template>> defaults = (Map<String, List<Template>>) xStream.fromXML(in);
+          Map<String, List<Template>> defaults = (Map<String, List<Template>>) ProjectFileManager.xStreamSerializer.fromXML(in);
           in.close();
                     
           Map<String, List<Template>> variantMap =
@@ -2657,9 +2662,7 @@ public class Presenter implements IPlugInPort {
         URL resource = Presenter.class.getResource("blocks.xml");
         if (resource != null) {
           BufferedInputStream in = new BufferedInputStream(resource.openStream());
-          XStream xStream = new XStream(new DomDriver());
-          xStream.addPermission(AnyTypePermission.ANY);
-          Map<String, List<IDIYComponent<?>>> defaults = (Map<String, List<IDIYComponent<?>>>) xStream.fromXML(in);
+          Map<String, List<IDIYComponent<?>>> defaults = (Map<String, List<IDIYComponent<?>>>) ProjectFileManager.xStreamSerializer.fromXML(in);
           in.close();
                     
           Map<String, List<IDIYComponent<?>>> blocksMap =
@@ -3020,20 +3023,9 @@ public class Presenter implements IPlugInPort {
   public int importVariants(String fileName) throws IOException {
     LOG.debug(String.format("importVariants(%s)", fileName));
     BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
-    XStream xStream = new XStream(new DomDriver());
-    xStream.addPermission(AnyTypePermission.ANY);
-
-    VariantPackage pkg;
-    
-    try {
-      // old way
-      pkg = (VariantPackage) xStream.fromXML(in);
-    } catch (Exception e) {
-      // new way
-      in = new BufferedInputStream(new FileInputStream(fileName));
-      ProjectFileManager.configure(xStream);
-      pkg = (VariantPackage) xStream.fromXML(in);
-    }
+    XStream xStream = projectFileManager.getXStream();
+   
+    VariantPackage pkg = (VariantPackage) xStream.fromXML(in);
 
     in.close();
 
@@ -3070,21 +3062,10 @@ public class Presenter implements IPlugInPort {
   public int importBlocks(String fileName) throws IOException {
     LOG.debug(String.format("importBlocks(%s)", fileName));
     BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
-    XStream xStream = new XStream(new DomDriver());
-    xStream.addPermission(AnyTypePermission.ANY);
+    XStream xStream = projectFileManager.getXStream();
 
-    BuildingBlockPackage pkg;
+    BuildingBlockPackage pkg = (BuildingBlockPackage) xStream.fromXML(in);
     
-    try {
-      // old way
-      pkg = (BuildingBlockPackage) xStream.fromXML(in);
-    } catch (Exception e) {
-      // new way
-      in = new BufferedInputStream(new FileInputStream(fileName));
-      ProjectFileManager.configure(xStream);
-      pkg = (BuildingBlockPackage) xStream.fromXML(in);
-    }
-
     in.close();
 
     if (pkg == null || pkg.getBlocks().isEmpty())
@@ -3223,7 +3204,7 @@ public class Presenter implements IPlugInPort {
         posList.add(new Position(switches.get(j), positions[j]));
       }
       List<Connection> connections = getConnections(switchPositions);
-      Netlist graph = constructNetlist(nodes, connections, continuity);
+      Netlist graph = constructNetlist(nodes, connections, continuity, currentProject.getComponents());
 
       // merge graphs that are effectively the same
       if (result.containsKey(graph)) {
@@ -3255,8 +3236,8 @@ public class Presenter implements IPlugInPort {
     return netlists;
   }
 
-  private Netlist constructNetlist(List<Node> nodes, List<Connection> connections, List<Area> continuityAreas) {
-    Netlist netlist = new Netlist();
+  private Netlist constructNetlist(List<Node> nodes, List<Connection> connections, List<Area> continuityAreas, List<IDIYComponent<?>> components) {
+    Netlist netlist = new Netlist(components);
 
     // debugging code
     // StringBuilder sb = new StringBuilder();
@@ -3363,7 +3344,8 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings({"unchecked", "unlikely-arg-type"})
   private List<Connection> getConnections(Map<ISwitch, Integer> switchPositions) {
-    Set<Connection> connections = new HashSet<Connection>();
+    Set<Connection> connections = new TreeSet<Connection>();
+    
     for (IDIYComponent<?> c : currentProject.getComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());

@@ -43,7 +43,7 @@ public class GuitarNetlistAnalyzerTests {
     OpenJack1_4 jack = new OpenJack1_4();
     SingleCoilPickup pickup = new SingleCoilPickup();
     pickup.setName("Pickup");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup, 1);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 2);
     netlist.add(tipGroup).add(sleeveGroup);
@@ -59,7 +59,7 @@ public class GuitarNetlistAnalyzerTests {
     pickup.setName("Pickup");
     PotentiometerPanel vol = new PotentiometerPanel();
     vol.setName("Volume");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup, vol));
     Group hotGroup = new Group().connect(pickup, 1).connect(vol, 0);
     Group tipGroup = new Group().connect(jack, 0).connect(vol, 1);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 2).connect(vol, 2);
@@ -80,7 +80,7 @@ public class GuitarNetlistAnalyzerTests {
     tone.setName("Tone");
     RadialCeramicDiskCapacitor cap = new RadialCeramicDiskCapacitor();
     cap.setName("Cap");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup, vol, tone, cap));
     Group hotGroup = new Group().connect(pickup, 1).connect(vol, 0).connect(tone, 2);
     Group tipGroup = new Group().connect(jack, 0).connect(vol, 1);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 2).connect(vol, 2).connect(cap, 0);
@@ -108,7 +108,7 @@ public class GuitarNetlistAnalyzerTests {
     cap1.setName("Cap1");
     RadialCeramicDiskCapacitor cap2 = new RadialCeramicDiskCapacitor();
     cap2.setName("Cap2");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2, vol, tone1, tone2, cap1, cap2));
     Group hotGroup = new Group().connect(pickup1, 1).connect(vol, 0).connect(tone1, 2).connect(pickup2, 1).connect(tone2, 2);
     Group tipGroup = new Group().connect(jack, 0).connect(vol, 1);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 2).connect(vol, 2).connect(cap1, 0).connect(cap2, 0);
@@ -125,7 +125,7 @@ public class GuitarNetlistAnalyzerTests {
     OpenJack1_4 jack = new OpenJack1_4();
     SingleCoilPickup pickup = new SingleCoilPickup();
     pickup.setName("Pickup");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 1);
     netlist.add(tipGroup).add(sleeveGroup);
@@ -139,7 +139,7 @@ public class GuitarNetlistAnalyzerTests {
     OpenJack1_4 jack = new OpenJack1_4();
     HumbuckerPickup pickup = new HumbuckerPickup();
     pickup.setName("Pickup");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup, 0);
     Group coilTapGroup = new Group().connect(pickup, 1).connect(pickup, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 3);
@@ -154,7 +154,7 @@ public class GuitarNetlistAnalyzerTests {
     OpenJack1_4 jack = new OpenJack1_4();
     HumbuckerPickup pickup = new HumbuckerPickup();
     pickup.setName("Pickup");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup, 3);
     Group coilTapGroup = new Group().connect(pickup, 1).connect(pickup, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 0);
@@ -169,7 +169,7 @@ public class GuitarNetlistAnalyzerTests {
     OpenJack1_4 jack = new OpenJack1_4();
     HumbuckerPickup pickup = new HumbuckerPickup();
     pickup.setName("Pickup");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup, 0).connect(pickup, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 1).connect(pickup, 3);
     netlist.add(tipGroup).add(sleeveGroup);
@@ -183,7 +183,7 @@ public class GuitarNetlistAnalyzerTests {
     OpenJack1_4 jack = new OpenJack1_4();
     HumbuckerPickup pickup = new HumbuckerPickup();
     pickup.setName("Pickup");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup, 0).connect(pickup, 3);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 1).connect(pickup, 2);
     netlist.add(tipGroup).add(sleeveGroup);
@@ -199,7 +199,7 @@ public class GuitarNetlistAnalyzerTests {
     pickup1.setName("Pickup1");
     HumbuckerPickup pickup2 = new HumbuckerPickup();
     pickup2.setName("Pickup2");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 0);
     Group coilTapGroup1 = new Group().connect(pickup1, 1).connect(pickup1, 2);
     Group coilTapGroup2 = new Group().connect(pickup2, 1).connect(pickup2, 2);
@@ -218,7 +218,7 @@ public class GuitarNetlistAnalyzerTests {
     pickup1.setName("Pickup1");
     HumbuckerPickup pickup2 = new HumbuckerPickup();
     pickup2.setName("Pickup2");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 0).connect(pickup2, 0);
     Group coilTapGroup1 = new Group().connect(pickup1, 1).connect(pickup1, 2);
     Group coilTapGroup2 = new Group().connect(pickup2, 1).connect(pickup2, 2);    
@@ -236,7 +236,7 @@ public class GuitarNetlistAnalyzerTests {
     pickup1.setName("Pickup1");
     HumbuckerPickup pickup2 = new HumbuckerPickup();
     pickup2.setName("Pickup2");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 0).connect(pickup2, 3);
     Group coilTapGroup1 = new Group().connect(pickup1, 1).connect(pickup1, 2);
     Group coilTapGroup2 = new Group().connect(pickup2, 1).connect(pickup2, 2);    
@@ -264,7 +264,7 @@ public class GuitarNetlistAnalyzerTests {
     cap1.setName("Cap1");
     RadialCeramicDiskCapacitor cap2 = new RadialCeramicDiskCapacitor();
     cap2.setName("Cap2");
-    Netlist netlist = new Netlist();
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2, vol, tone1, tone2, cap1, cap2));
     Group hotGroup = new Group().connect(pickup1, 0).connect(vol, 0).connect(tone1, 2).connect(pickup2, 0).connect(tone2, 2);
     Group tipGroup = new Group().connect(jack, 0).connect(vol, 1);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 3).connect(pickup2, 3).connect(vol, 2).connect(cap1, 0).connect(cap2, 0);

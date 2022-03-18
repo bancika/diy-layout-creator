@@ -122,7 +122,7 @@ public class MainFrame extends JFrame implements ISwingUI {
     
     IConfigurationManager configManager = ConfigurationManager.getInstance();
 
-    this.presenter = new Presenter(this, configManager);    
+    this.presenter = new Presenter(this, configManager, true);    
 
     presenter.installPlugin(() -> new ToolBox(this));
     presenter.installPlugin(() -> new FileMenuPlugin(this));

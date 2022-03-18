@@ -97,9 +97,6 @@ import org.diylc.swingframework.TextDialog;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.utils.BomEntry;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 public class ActionFactory {
 
   private static final Logger LOG = Logger.getLogger(ActionFactory.class);
@@ -967,10 +964,8 @@ public class ActionFactory {
             LOG.debug("Exporting variants to " + file.getAbsolutePath());
 
             try {
-              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-              XStream xStream = new XStream(new DomDriver());
-              ProjectFileManager.configure(xStream);
-              xStream.toXML(variantPkg, out);
+              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));              
+              ProjectFileManager.xStreamSerializer.toXML(variantPkg, out);
               out.close();
               LOG.info("Exported variants succesfully");
             } catch (IOException e) {
@@ -1124,10 +1119,8 @@ public class ActionFactory {
             LOG.debug("Exporting variants to " + file.getAbsolutePath());
 
             try {
-              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-              XStream xStream = new XStream(new DomDriver());
-              ProjectFileManager.configure(xStream);
-              xStream.toXML(variantPkg, out);
+              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));              
+              ProjectFileManager.xStreamSerializer.toXML(variantPkg, out);
               out.close();
               LOG.info("Exported building blocks succesfully");
             } catch (IOException e) {

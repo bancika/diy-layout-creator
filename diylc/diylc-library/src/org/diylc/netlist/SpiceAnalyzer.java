@@ -21,11 +21,11 @@
 */
 package org.diylc.netlist;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.core.IDIYComponent;
 
@@ -37,6 +37,11 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
   @Override
   public String getName() {
     return "Generate Spice Netlist";
+  }
+  
+  @Override
+  public String getShortName() {
+    return "spice";
   }
 
   @Override
@@ -51,16 +56,7 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
   
   protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
     // grab all components that are in the netlist
-    List<IDIYComponent<?>> allComponents = new ArrayList<IDIYComponent<?>>(extractComponents(netlist));
-    Collections.sort(allComponents, new Comparator<IDIYComponent<?>>() {
-
-      @Override
-      public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-        return o1.getName().compareToIgnoreCase(o2.getName());
-      }      
-    });
-    
-    StringBuilder sb = new StringBuilder();
+    List<IDIYComponent<?>> allComponents = netlist.getComponents();
     
     List<Group> groups = netlist.getSortedGroups();
     int unconnectedIndex = groups.size();
@@ -71,7 +67,10 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
         maxLen = c.getName().length();
     }
     
-    for (IDIYComponent<?> c : allComponents) {      
+    List<String> lines = new ArrayList<String>();
+    
+    for (IDIYComponent<?> c : allComponents) {     
+      StringBuilder sb = new StringBuilder();
       // change the prefix to match spice convention if needed
       String name = c.getName();
       String prefix = null;
@@ -90,18 +89,18 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
         if (c.getControlPointNodeName(i) == null)
           continue;
         
-        int pointIndex = i;        
+        int pointIndex = i;
+        
+        // remap if needed
+        if (c instanceof ISpiceMapper)
+          pointIndex = ((ISpiceMapper)c).mapToSpiceNode(pointIndex);
         
         int nodeIndex = find(new Node(c, pointIndex), groups);
         if (nodeIndex < 0)
           nodeIndex = unconnectedIndex++;
         
         // 1-based convention
-        nodeIndex++;
-        
-        // remap if needed
-        if (c instanceof ISpiceMapper)
-          pointIndex = ((ISpiceMapper)c).mapToSpiceNode(pointIndex);
+        nodeIndex++;       
         
         nodeIndices.add(nodeIndex);
       }
@@ -120,9 +119,13 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
           sb.append(" ; ").append(comment);
       }
       sb.append("<br>");
+      lines.add(sb.toString());
     }
         
-    return new Summary(netlist, sb.toString());
+    return new Summary(netlist, lines
+        .stream()
+        .sorted()
+        .collect(Collectors.joining("\n")));
   }
   
   private static String formatSpiceNode(int i) {

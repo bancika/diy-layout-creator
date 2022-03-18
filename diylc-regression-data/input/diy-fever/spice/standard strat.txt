@@ -1,0 +1,160 @@
+<b>Switch configuration: [SW1.1]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; Bridge<br>
+Cb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 1.2nF<br>
+Ct&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N001&nbsp; 47nF<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N001&nbsp; <br>
+Middle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N015&nbsp; N001&nbsp; Middle<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N014&nbsp; N001&nbsp; Neck<br>
+Rb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N003&nbsp; 120K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N007&nbsp; N008&nbsp; N009&nbsp; N010&nbsp; N011&nbsp; N012&nbsp; N013&nbsp; <br>
+Tone Middle&nbsp;&nbsp;&nbsp;&nbsp; N018&nbsp; N019&nbsp; N004&nbsp; 250K<br>
+Tone Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N017&nbsp; N004&nbsp; 250K<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N005&nbsp; N001&nbsp; 250K<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N020&nbsp; N021&nbsp; N022&nbsp; N023&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N024&nbsp; N025&nbsp; N026&nbsp; N027&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N028&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N032&nbsp; N033&nbsp; N034&nbsp; N035&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N036&nbsp; N037&nbsp; N038&nbsp; N039&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N040&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N044&nbsp; N045&nbsp; N046&nbsp; N047&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; N074&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N048&nbsp; N049&nbsp; N050&nbsp; N051&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; N057&nbsp; N058&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; N062&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; N066&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; N070&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; N078&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N079&nbsp; N080&nbsp; N081&nbsp; N082&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N083&nbsp; N084&nbsp; N085&nbsp; N086&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N087&nbsp; N088&nbsp; N089&nbsp; N090&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N091&nbsp; N092&nbsp; N093&nbsp; N094&nbsp; null<br>
+<b>Switch configuration: [SW1.2]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; Bridge<br>
+Cb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 1.2nF<br>
+Ct&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N001&nbsp; 47nF<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N001&nbsp; <br>
+Middle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; Middle<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N014&nbsp; N001&nbsp; Neck<br>
+Rb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N003&nbsp; 120K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N007&nbsp; N008&nbsp; N009&nbsp; N010&nbsp; N011&nbsp; N012&nbsp; N013&nbsp; <br>
+Tone Middle&nbsp;&nbsp;&nbsp;&nbsp; N017&nbsp; N002&nbsp; N004&nbsp; 250K<br>
+Tone Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N015&nbsp; N016&nbsp; N004&nbsp; 250K<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N005&nbsp; N001&nbsp; 250K<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N018&nbsp; N019&nbsp; N020&nbsp; N021&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N022&nbsp; N023&nbsp; N024&nbsp; N025&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N026&nbsp; N027&nbsp; N028&nbsp; N029&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N030&nbsp; N031&nbsp; N032&nbsp; N033&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N034&nbsp; N035&nbsp; N036&nbsp; N037&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N038&nbsp; N039&nbsp; N040&nbsp; N041&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N042&nbsp; N043&nbsp; N044&nbsp; N045&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N069&nbsp; N070&nbsp; N071&nbsp; N072&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N046&nbsp; N047&nbsp; N048&nbsp; N049&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N050&nbsp; N051&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N057&nbsp; N058&nbsp; N059&nbsp; N060&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N061&nbsp; N062&nbsp; N063&nbsp; N064&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N065&nbsp; N066&nbsp; N067&nbsp; N068&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N073&nbsp; N074&nbsp; N075&nbsp; N076&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N077&nbsp; N078&nbsp; N079&nbsp; N080&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N081&nbsp; N082&nbsp; N083&nbsp; N084&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N085&nbsp; N086&nbsp; N087&nbsp; N088&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N089&nbsp; N090&nbsp; N091&nbsp; N092&nbsp; null<br>
+<b>Switch configuration: [SW1.3]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N015&nbsp; N001&nbsp; Bridge<br>
+Cb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 1.2nF<br>
+Ct&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N001&nbsp; 47nF<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N001&nbsp; <br>
+Middle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; Middle<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N014&nbsp; N001&nbsp; Neck<br>
+Rb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N003&nbsp; 120K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N007&nbsp; N008&nbsp; N009&nbsp; N010&nbsp; N011&nbsp; N012&nbsp; N013&nbsp; <br>
+Tone Middle&nbsp;&nbsp;&nbsp;&nbsp; N018&nbsp; N002&nbsp; N004&nbsp; 250K<br>
+Tone Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N017&nbsp; N004&nbsp; 250K<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N005&nbsp; N001&nbsp; 250K<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N019&nbsp; N020&nbsp; N021&nbsp; N022&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N023&nbsp; N024&nbsp; N025&nbsp; N026&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N027&nbsp; N028&nbsp; N029&nbsp; N030&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N031&nbsp; N032&nbsp; N033&nbsp; N034&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N035&nbsp; N036&nbsp; N037&nbsp; N038&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N039&nbsp; N040&nbsp; N041&nbsp; N042&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N043&nbsp; N044&nbsp; N045&nbsp; N046&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N070&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N047&nbsp; N048&nbsp; N049&nbsp; N050&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N051&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; N057&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N058&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N062&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N066&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N074&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N078&nbsp; N079&nbsp; N080&nbsp; N081&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N082&nbsp; N083&nbsp; N084&nbsp; N085&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N086&nbsp; N087&nbsp; N088&nbsp; N089&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N090&nbsp; N091&nbsp; N092&nbsp; N093&nbsp; null<br>
+<b>Switch configuration: [SW1.4]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N014&nbsp; N001&nbsp; Bridge<br>
+Cb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 1.2nF<br>
+Ct&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N001&nbsp; 47nF<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N001&nbsp; <br>
+Middle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; Middle<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; Neck<br>
+Rb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N003&nbsp; 120K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N007&nbsp; N008&nbsp; N009&nbsp; N010&nbsp; N011&nbsp; N012&nbsp; N013&nbsp; <br>
+Tone Middle&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N002&nbsp; N004&nbsp; 250K<br>
+Tone Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N015&nbsp; N002&nbsp; N004&nbsp; 250K<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N005&nbsp; N001&nbsp; 250K<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; N020&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N021&nbsp; N022&nbsp; N023&nbsp; N024&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N025&nbsp; N026&nbsp; N027&nbsp; N028&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; N032&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N033&nbsp; N034&nbsp; N035&nbsp; N036&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N037&nbsp; N038&nbsp; N039&nbsp; N040&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; N044&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N068&nbsp; N069&nbsp; N070&nbsp; N071&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N045&nbsp; N046&nbsp; N047&nbsp; N048&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N049&nbsp; N050&nbsp; N051&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N056&nbsp; N057&nbsp; N058&nbsp; N059&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N060&nbsp; N061&nbsp; N062&nbsp; N063&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N064&nbsp; N065&nbsp; N066&nbsp; N067&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N072&nbsp; N073&nbsp; N074&nbsp; N075&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N076&nbsp; N077&nbsp; N078&nbsp; N079&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N080&nbsp; N081&nbsp; N082&nbsp; N083&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N084&nbsp; N085&nbsp; N086&nbsp; N087&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N088&nbsp; N089&nbsp; N090&nbsp; N091&nbsp; null<br>
+<b>Switch configuration: [SW1.5]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N015&nbsp; N001&nbsp; Bridge<br>
+Cb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 1.2nF<br>
+Ct&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N001&nbsp; 47nF<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+ELL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N001&nbsp; <br>
+Middle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N014&nbsp; N001&nbsp; Middle<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; Neck<br>
+Rb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N003&nbsp; 120K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N007&nbsp; N008&nbsp; N009&nbsp; N010&nbsp; N011&nbsp; N012&nbsp; N013&nbsp; <br>
+Tone Middle&nbsp;&nbsp;&nbsp;&nbsp; N017&nbsp; N018&nbsp; N004&nbsp; 250K<br>
+Tone Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N002&nbsp; N004&nbsp; 250K<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N005&nbsp; N001&nbsp; 250K<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N019&nbsp; N020&nbsp; N021&nbsp; N022&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N023&nbsp; N024&nbsp; N025&nbsp; N026&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N027&nbsp; N028&nbsp; N029&nbsp; N030&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N031&nbsp; N032&nbsp; N033&nbsp; N034&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N035&nbsp; N036&nbsp; N037&nbsp; N038&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N039&nbsp; N040&nbsp; N041&nbsp; N042&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N043&nbsp; N044&nbsp; N045&nbsp; N046&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N070&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N047&nbsp; N048&nbsp; N049&nbsp; N050&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N051&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; N057&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N058&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N062&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N066&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N074&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N078&nbsp; N079&nbsp; N080&nbsp; N081&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N082&nbsp; N083&nbsp; N084&nbsp; N085&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N086&nbsp; N087&nbsp; N088&nbsp; N089&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N090&nbsp; N091&nbsp; N092&nbsp; N093&nbsp; null<br>

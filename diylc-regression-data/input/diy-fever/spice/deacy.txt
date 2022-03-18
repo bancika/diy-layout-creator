@@ -1,0 +1,182 @@
+<b>Switch configuration: [Default]</b><br><br>Board1&nbsp;&nbsp;&nbsp;&nbsp; <br>
+Board2&nbsp;&nbsp;&nbsp;&nbsp; <br>
+Board3&nbsp;&nbsp;&nbsp;&nbsp; <br>
+Board4&nbsp;&nbsp;&nbsp;&nbsp; <br>
+Board5&nbsp;&nbsp;&nbsp;&nbsp; <br>
+C1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N019&nbsp; N001&nbsp; 2.2uF<br>
+C10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 330uF<br>
+C2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N004&nbsp; 100uF<br>
+C3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N006&nbsp; 2.2uF<br>
+C4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N007&nbsp; 100uF<br>
+C5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N008&nbsp; N009&nbsp; 220nF<br>
+C6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N010&nbsp; 330uF<br>
+C7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N011&nbsp; 330uF<br>
+C8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N135&nbsp; N012&nbsp; 220nF<br>
+C9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N013&nbsp; 100uF<br>
+D1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N014&nbsp; <br>
+D2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N014&nbsp; N002&nbsp; <br>
+D3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N015&nbsp; N002&nbsp; <br>
+D4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N015&nbsp; <br>
+Eyelet1&nbsp;&nbsp;&nbsp; <br>
+Eyelet10&nbsp;&nbsp; <br>
+Eyelet11&nbsp;&nbsp; <br>
+Eyelet12&nbsp;&nbsp; <br>
+Eyelet13&nbsp;&nbsp; <br>
+Eyelet14&nbsp;&nbsp; <br>
+Eyelet15&nbsp;&nbsp; <br>
+Eyelet16&nbsp;&nbsp; <br>
+Eyelet17&nbsp;&nbsp; <br>
+Eyelet18&nbsp;&nbsp; <br>
+Eyelet19&nbsp;&nbsp; <br>
+Eyelet2&nbsp;&nbsp;&nbsp; <br>
+Eyelet20&nbsp;&nbsp; <br>
+Eyelet21&nbsp;&nbsp; <br>
+Eyelet22&nbsp;&nbsp; <br>
+Eyelet23&nbsp;&nbsp; <br>
+Eyelet24&nbsp;&nbsp; <br>
+Eyelet25&nbsp;&nbsp; <br>
+Eyelet26&nbsp;&nbsp; <br>
+Eyelet27&nbsp;&nbsp; <br>
+Eyelet28&nbsp;&nbsp; <br>
+Eyelet29&nbsp;&nbsp; <br>
+Eyelet3&nbsp;&nbsp;&nbsp; <br>
+Eyelet30&nbsp;&nbsp; <br>
+Eyelet31&nbsp;&nbsp; <br>
+Eyelet32&nbsp;&nbsp; <br>
+Eyelet33&nbsp;&nbsp; <br>
+Eyelet34&nbsp;&nbsp; <br>
+Eyelet35&nbsp;&nbsp; <br>
+Eyelet36&nbsp;&nbsp; <br>
+Eyelet37&nbsp;&nbsp; <br>
+Eyelet38&nbsp;&nbsp; <br>
+Eyelet39&nbsp;&nbsp; <br>
+Eyelet4&nbsp;&nbsp;&nbsp; <br>
+Eyelet40&nbsp;&nbsp; <br>
+Eyelet42&nbsp;&nbsp; <br>
+Eyelet43&nbsp;&nbsp; <br>
+Eyelet44&nbsp;&nbsp; <br>
+Eyelet45&nbsp;&nbsp; <br>
+Eyelet46&nbsp;&nbsp; <br>
+Eyelet47&nbsp;&nbsp; <br>
+Eyelet48&nbsp;&nbsp; <br>
+Eyelet49&nbsp;&nbsp; <br>
+Eyelet5&nbsp;&nbsp;&nbsp; <br>
+Eyelet52&nbsp;&nbsp; <br>
+Eyelet53&nbsp;&nbsp; <br>
+Eyelet54&nbsp;&nbsp; <br>
+Eyelet55&nbsp;&nbsp; <br>
+Eyelet56&nbsp;&nbsp; <br>
+Eyelet6&nbsp;&nbsp;&nbsp; <br>
+Eyelet7&nbsp;&nbsp;&nbsp; <br>
+Eyelet8&nbsp;&nbsp;&nbsp; <br>
+Eyelet9&nbsp;&nbsp;&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In<br>
+L10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; diy-fever.com<br>
+L11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 42TU011<br>
+L12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 42TU048<br>
+L13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Xicon<br>
+L14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Xicon<br>
+L15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alt In<br>
+L16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AC<br>
+L17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AC<br>
+L18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ** Omit diodes on far right if using with a battery<br>
+L19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (under)<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gnd<br>
+L20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Q1: AC125<br>
+L21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Q2: AC126<br>
+L22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Q3, Q4: AC128<br>
+L23&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Q0: Any PNP Ge or Si transistor<br>
+L24&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (under)<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Out<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -9V<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gnd<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Parts around Q0 make the input buffer. Omit everything on the greenish part of the board if the buffer is not needed<br>
+L7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (under)<br>
+L8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (under)<br>
+L9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Deacy Amp<br>
+Q0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N013&nbsp; N133&nbsp; N134&nbsp;  ; Pinout not configured, validate this line<br>
+Q1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N020&nbsp; N021&nbsp;  ; Pinout not configured, validate this line<br>
+Q2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N022&nbsp; N023&nbsp; N024&nbsp;  ; Pinout not configured, validate this line<br>
+Q3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N025&nbsp; N026&nbsp;  ; Pinout not configured, validate this line<br>
+Q4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N027&nbsp; N028&nbsp;  ; Pinout not configured, validate this line<br>
+R1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N017&nbsp; N002&nbsp; 15K<br>
+R10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N018&nbsp; N002&nbsp; 39Ω<br>
+R11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N002&nbsp; 3.3Ω<br>
+R12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N010&nbsp; N009&nbsp; 560K<br>
+R13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N008&nbsp; N065&nbsp; 120Ω<br>
+R14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N010&nbsp; N018&nbsp; 2.2K<br>
+R15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N002&nbsp; 470K<br>
+R16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N002&nbsp; 10K<br>
+R17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N013&nbsp; N012&nbsp; 470K<br>
+R18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N013&nbsp; 100Ω<br>
+R19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N010&nbsp; N003&nbsp; 100Ω<br>
+R2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N017&nbsp; 82K<br>
+R3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N005&nbsp; 5.6K<br>
+R4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N002&nbsp; 1.2K<br>
+R5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N010&nbsp; 2.2K<br>
+R6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N010&nbsp; N002&nbsp; 12K<br>
+R7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N002&nbsp; 680Ω<br>
+R8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N010&nbsp; 47K<br>
+R9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N010&nbsp; 2.2K<br>
+Trace1&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace2&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace3&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace4&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace5&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace6&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace7&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace8&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace9&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; null<br>
+W10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N056&nbsp; N057&nbsp; N058&nbsp; null<br>
+W11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; null<br>
+W12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N062&nbsp; N063&nbsp; N064&nbsp; null<br>
+W13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N066&nbsp; N067&nbsp; N068&nbsp; null<br>
+W14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N069&nbsp; N070&nbsp; N071&nbsp; null<br>
+W15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N072&nbsp; N073&nbsp; N074&nbsp; null<br>
+W16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; N078&nbsp; null<br>
+W17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N079&nbsp; N080&nbsp; N081&nbsp; N082&nbsp; null<br>
+W18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N083&nbsp; N084&nbsp; N085&nbsp; N086&nbsp; null<br>
+W19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N087&nbsp; N088&nbsp; N089&nbsp; N090&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N032&nbsp; N033&nbsp; N034&nbsp; null<br>
+W20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N091&nbsp; N092&nbsp; N093&nbsp; null<br>
+W21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N094&nbsp; N095&nbsp; N096&nbsp; N097&nbsp; null<br>
+W22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N098&nbsp; N099&nbsp; N100&nbsp; null<br>
+W23&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N101&nbsp; N102&nbsp; N103&nbsp; null<br>
+W24&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N104&nbsp; N105&nbsp; N106&nbsp; null<br>
+W25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N107&nbsp; N108&nbsp; N109&nbsp; N110&nbsp; null<br>
+W26&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N111&nbsp; N112&nbsp; N113&nbsp; N114&nbsp; null<br>
+W27&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N115&nbsp; N116&nbsp; N117&nbsp; null<br>
+W28&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N118&nbsp; N119&nbsp; N120&nbsp; null<br>
+W29&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N121&nbsp; N122&nbsp; N123&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N035&nbsp; N036&nbsp; N037&nbsp; null<br>
+W30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N124&nbsp; N125&nbsp; N126&nbsp; null<br>
+W31&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N127&nbsp; N128&nbsp; N129&nbsp; null<br>
+W32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N130&nbsp; N131&nbsp; N132&nbsp; null<br>
+W33&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N136&nbsp; N137&nbsp; N138&nbsp; null<br>
+W34&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N139&nbsp; N140&nbsp; N141&nbsp; null<br>
+W35&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N142&nbsp; N143&nbsp; N144&nbsp; null<br>
+W36&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N145&nbsp; N146&nbsp; N147&nbsp; null<br>
+W37&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N148&nbsp; N149&nbsp; N150&nbsp; null<br>
+W38&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N155&nbsp; N156&nbsp; N157&nbsp; N158&nbsp; null<br>
+W39&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N151&nbsp; N152&nbsp; N153&nbsp; N154&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N038&nbsp; N039&nbsp; N040&nbsp; null<br>
+W40&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N159&nbsp; N160&nbsp; N161&nbsp; N162&nbsp; null<br>
+W41&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N163&nbsp; N164&nbsp; N165&nbsp; N166&nbsp; null<br>
+W42&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N167&nbsp; N168&nbsp; N169&nbsp; N170&nbsp; null<br>
+W43&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N171&nbsp; N172&nbsp; N173&nbsp; N174&nbsp; null<br>
+W44&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N175&nbsp; N176&nbsp; N177&nbsp; null<br>
+W45&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N178&nbsp; N179&nbsp; N180&nbsp; N181&nbsp; null<br>
+W46&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N203&nbsp; N204&nbsp; N205&nbsp; null<br>
+W47&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N182&nbsp; N183&nbsp; N184&nbsp; N185&nbsp; null<br>
+W48&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N186&nbsp; N187&nbsp; N188&nbsp; N189&nbsp; null<br>
+W49&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N190&nbsp; N191&nbsp; N192&nbsp; N193&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; null<br>
+W50&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N194&nbsp; N195&nbsp; N196&nbsp; null<br>
+W51&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N197&nbsp; N198&nbsp; N199&nbsp; null<br>
+W52&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N200&nbsp; N201&nbsp; N202&nbsp; null<br>
+W53&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N206&nbsp; N207&nbsp; N208&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N044&nbsp; N045&nbsp; N046&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N047&nbsp; N048&nbsp; N049&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N050&nbsp; N051&nbsp; N052&nbsp; null<br>
+W9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; null<br>

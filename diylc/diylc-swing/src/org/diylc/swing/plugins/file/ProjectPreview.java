@@ -31,22 +31,18 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.EnumSet;
-
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
+import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.DummyView;
 import org.diylc.swingframework.IFileChooserAccessory;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * {@link JComponent} that shows preview of the selected project in {@link JFileChooser}. It's
@@ -60,7 +56,6 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
   private static final long serialVersionUID = 1L;
 
   private IPlugInPort presenter;
-  private XStream xStream;
   private Project emptyProject;
   private RenderComponent renderComponent;
   private JLabel nameLabel;
@@ -70,7 +65,6 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
 
     setPreferredSize(new Dimension(140, 128));
     presenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
-    xStream = new XStream(new DomDriver());
 
     emptyProject = new Project();
     emptyProject.setTitle("");
@@ -97,7 +91,7 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
       File selectedFile = (File) evt.getNewValue();
       try {
         FileInputStream in = new FileInputStream(selectedFile);
-        selectedProject = (Project) xStream.fromXML(in);
+        selectedProject = (Project) ProjectFileManager.xStreamSerializer.fromXML(in);
         in.close();
       } catch (Exception e) {
       }

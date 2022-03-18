@@ -31,9 +31,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -423,18 +421,6 @@ public class OpenJack1_8 extends AbstractMultiPartComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
-  }
-  
-  @Override
-  public Rectangle2D getCachingBounds() {
-    Area area = new Area();
-    Area[] body = getBody();
-    int margin = 20;
-    for (Area a : body)
-      if (a != null)
-        area.add(a);
-    Rectangle2D bounds = area.getBounds2D();
-    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
   
   public enum OpenJackType {

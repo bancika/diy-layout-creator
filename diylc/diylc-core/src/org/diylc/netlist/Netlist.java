@@ -26,13 +26,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.diylc.core.IDIYComponent;
 
 public class Netlist implements Comparable<Netlist> {
   
+  private List<IDIYComponent<?>> components;
   private Set<Group> groups = new HashSet<Group>();
   private List<SwitchSetup> switchSetup = new ArrayList<SwitchSetup>();
 
-  public Netlist() {
+  public Netlist(List<IDIYComponent<?>> components) {
+    this.components = components;
   }
 
   public Set<Group> getGroups() {
@@ -42,6 +45,10 @@ public class Netlist implements Comparable<Netlist> {
   public Netlist add(Group g) {
     groups.add(g);
     return this;
+  }
+  
+  public List<IDIYComponent<?>> getComponents() {
+    return components;
   }
   
   public List<Group> getSortedGroups() {

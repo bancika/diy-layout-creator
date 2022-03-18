@@ -3,7 +3,7 @@ package org.diylc.components;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Area;
-
+import java.awt.geom.Rectangle2D;
 import org.diylc.common.ObjectCache;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
@@ -32,5 +32,29 @@ public abstract class AbstractMultiPartComponent<T> extends AbstractLabeledCompo
       if (b != null && b instanceof Area)
         outline.add((Area)b);
     return outline;
+  }
+  
+  @Override
+  public Rectangle2D getCachingBounds() {
+    Shape[] body = getBody();
+    int margin = 20;
+    double minX = 0;
+    double minY = 0;
+    double maxX = 0;
+    double maxY = 0;
+    for (Shape a : body) {
+      if (a != null) {
+        Rectangle2D bounds2d = a.getBounds2D();
+        if (bounds2d.getMinX() < minX)
+          minX = bounds2d.getMinX();
+        if (bounds2d.getMinY() < minY)
+          minY = bounds2d.getMinY();
+        if (bounds2d.getMaxX() > maxX)
+          maxX = bounds2d.getMaxX();
+        if (bounds2d.getMaxY() > maxY)
+          maxY = bounds2d.getMaxY();
+      }
+    }
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
 }

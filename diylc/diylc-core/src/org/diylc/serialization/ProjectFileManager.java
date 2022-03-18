@@ -68,6 +68,12 @@ public class ProjectFileManager {
   // Legacy deserializer for 3.0.1 through 3.0.7, loads Points referenced in
   // pixels.
   private XStream xStreamOld;
+  
+  public static final XStream xStreamSerializer = new XStream(new DomDriver("UTF-8"));
+  
+  static {
+    configure(xStreamSerializer);
+  }
 
   private String currentFileName = null;
   private boolean modified = false;
@@ -100,7 +106,7 @@ public class ProjectFileManager {
     configure(xStream);
     this.xStreamOld = new XStream(new DomDriver());
     this.xStreamOld.addPermission(AnyTypePermission.ANY);
-    xStreamOld.autodetectAnnotations(true);
+    this.xStreamOld.autodetectAnnotations(true);
     this.messageDispatcher = messageDispatcher;
   }
   
@@ -109,25 +115,23 @@ public class ProjectFileManager {
     xStream.alias("point", java.awt.geom.Point2D.class);
     xStream.alias("point", java.awt.geom.Point2D.Double.class);
     xStream.alias("font", java.awt.Font.class);
-// TODO figure out why I commented this out    
-//    xStream.alias("color", java.awt.Color.class);
     xStream.alias("project", Project.class);
     xStream.aliasPackage("diylc", "org.diylc.components");
     xStream.registerConverter(new PointConverter());
     xStream.registerConverter(new ColorConverter());
     xStream.registerConverter(new FontConverter());
     xStream.registerConverter(new MeasureConverter());
-    xStream.registerConverter(new AreaConverter());
-    xStream.addImmutableType(Color.class);
-    xStream.addImmutableType(java.awt.geom.Point2D.class);
-    xStream.addImmutableType(java.awt.geom.Point2D.Double.class);
-    xStream.addImmutableType(org.diylc.core.measures.Voltage.class);
-    xStream.addImmutableType(org.diylc.core.measures.Resistance.class);
-    xStream.addImmutableType(org.diylc.core.measures.Capacitance.class);
-    xStream.addImmutableType(org.diylc.core.measures.Current.class);
-    xStream.addImmutableType(org.diylc.core.measures.Power.class);
-    xStream.addImmutableType(org.diylc.core.measures.Inductance.class);
-    xStream.addImmutableType(org.diylc.core.measures.Size.class);
+    xStream.registerConverter(new AreaConverter());    
+    xStream.addImmutableType(Color.class, true);
+    xStream.addImmutableType(java.awt.geom.Point2D.class, true);
+    xStream.addImmutableType(java.awt.geom.Point2D.Double.class, true);
+    xStream.addImmutableType(org.diylc.core.measures.Voltage.class, true);
+    xStream.addImmutableType(org.diylc.core.measures.Resistance.class, true);
+    xStream.addImmutableType(org.diylc.core.measures.Capacitance.class, true);
+    xStream.addImmutableType(org.diylc.core.measures.Current.class, true);
+    xStream.addImmutableType(org.diylc.core.measures.Power.class, true);
+    xStream.addImmutableType(org.diylc.core.measures.Inductance.class, true);
+    xStream.addImmutableType(org.diylc.core.measures.Size.class, true);
     xStream.addPermission(AnyTypePermission.ANY);
   }
 
@@ -303,6 +307,9 @@ public class ProjectFileManager {
     int build = Integer.parseInt(n.getFirstChild().getNodeValue());
     
     return new VersionNumber(major, minor, build);
-
+  }
+  
+  public XStream getXStream() {
+    return xStream;
   }
 }

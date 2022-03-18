@@ -24,7 +24,7 @@ import java.awt.geom.Point2D;
  * 
  * @author bancika
  */
-public class Connection {
+public class Connection implements Comparable<Connection> {
 
   private Point2D p1;
   private Point2D p2;
@@ -71,5 +71,23 @@ public class Connection {
     } else if (!p2.equals(other.p2))
       return false;
     return true;
+  }
+
+  @Override
+  public int compareTo(Connection o) {
+    int compare = Double.compare(p1.getX(), o.p1.getX());
+    if (compare != 0)
+      return compare;
+    compare = Double.compare(p1.getY(), o.p1.getY());
+    if (compare != 0)
+      return compare;
+    compare = Double.compare(p2.getX(), o.p2.getX());
+    if (compare != 0)
+      return compare;
+    compare = Double.compare(p2.getY(), o.p2.getY());
+    if (compare != 0)
+      return compare;
+    
+    return 0;
   }
 }

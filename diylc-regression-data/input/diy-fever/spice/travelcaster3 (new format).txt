@@ -1,0 +1,210 @@
+<b>Switch configuration: [Split.ON1:SW1.Middle]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; N001&nbsp; N003&nbsp; <br>
+Cbleed&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N004&nbsp; 1.2nF<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N003&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Output jack<br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To bridge baseplate<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Treble bleed<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Travelcaster Wiring Diagram<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.diy-fever.com<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pickup selector switch<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Push-pull<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Split mode<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * One of the pickups is rotated 180 degrees for cleaner drawing<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N003&nbsp; N002&nbsp; N006&nbsp; Chopper<br>
+Rbleed&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N004&nbsp; 130K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N012&nbsp; N013&nbsp; N014&nbsp; <br>
+Split&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N015&nbsp; N016&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; N020&nbsp; DPDT<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N005&nbsp; N003&nbsp; 250K<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N021&nbsp; N022&nbsp; N023&nbsp; N024&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N025&nbsp; N026&nbsp; N027&nbsp; N028&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; N032&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N033&nbsp; N034&nbsp; N035&nbsp; N036&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; N044&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N045&nbsp; N046&nbsp; N047&nbsp; N048&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N057&nbsp; N058&nbsp; N059&nbsp; N060&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N037&nbsp; N038&nbsp; N039&nbsp; N040&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N061&nbsp; N062&nbsp; N063&nbsp; N064&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N049&nbsp; N050&nbsp; N051&nbsp; N052&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N073&nbsp; N074&nbsp; N075&nbsp; N076&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N077&nbsp; N078&nbsp; N079&nbsp; N080&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N065&nbsp; N066&nbsp; N067&nbsp; N068&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N008&nbsp; N009&nbsp; N010&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N069&nbsp; N070&nbsp; N071&nbsp; N072&nbsp; null<br>
+<b>Switch configuration: [Split.ON1:SW1.Rhythm]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N001&nbsp; N001&nbsp; N002&nbsp; <br>
+Cbleed&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N004&nbsp; 1.2nF<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N002&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Output jack<br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To bridge baseplate<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Treble bleed<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Travelcaster Wiring Diagram<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.diy-fever.com<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pickup selector switch<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Push-pull<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Split mode<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * One of the pickups is rotated 180 degrees for cleaner drawing<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N002&nbsp; N003&nbsp; N006&nbsp; Chopper<br>
+Rbleed&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N004&nbsp; 130K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N013&nbsp; N014&nbsp; N015&nbsp; <br>
+Split&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; N020&nbsp; N021&nbsp; DPDT<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N005&nbsp; N002&nbsp; 250K<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N022&nbsp; N023&nbsp; N024&nbsp; N025&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N026&nbsp; N027&nbsp; N028&nbsp; N029&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N030&nbsp; N031&nbsp; N032&nbsp; N033&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N034&nbsp; N035&nbsp; N036&nbsp; N037&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N042&nbsp; N043&nbsp; N044&nbsp; N045&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N046&nbsp; N047&nbsp; N048&nbsp; N049&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N058&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N038&nbsp; N039&nbsp; N040&nbsp; N041&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N062&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N050&nbsp; N051&nbsp; N052&nbsp; N053&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N074&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N078&nbsp; N079&nbsp; N080&nbsp; N081&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; N057&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N066&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N008&nbsp; N009&nbsp; N010&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N070&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; null<br>
+<b>Switch configuration: [Split.ON1:SW1.Treble]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; N001&nbsp; N003&nbsp; <br>
+Cbleed&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N004&nbsp; 1.2nF<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N003&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Output jack<br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To bridge baseplate<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Treble bleed<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Travelcaster Wiring Diagram<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.diy-fever.com<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pickup selector switch<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Push-pull<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Split mode<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * One of the pickups is rotated 180 degrees for cleaner drawing<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N003&nbsp; N011&nbsp; N006&nbsp; Chopper<br>
+Rbleed&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N004&nbsp; 130K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N013&nbsp; N014&nbsp; N015&nbsp; <br>
+Split&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; N020&nbsp; N021&nbsp; DPDT<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N005&nbsp; N003&nbsp; 250K<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N022&nbsp; N023&nbsp; N024&nbsp; N025&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N026&nbsp; N027&nbsp; N028&nbsp; N029&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N030&nbsp; N031&nbsp; N032&nbsp; N033&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N034&nbsp; N035&nbsp; N036&nbsp; N037&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N042&nbsp; N043&nbsp; N044&nbsp; N045&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N046&nbsp; N047&nbsp; N048&nbsp; N049&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N058&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N038&nbsp; N039&nbsp; N040&nbsp; N041&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N062&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N050&nbsp; N051&nbsp; N052&nbsp; N053&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N074&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N078&nbsp; N079&nbsp; N080&nbsp; N081&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; N057&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N066&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N008&nbsp; N009&nbsp; N010&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N070&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; null<br>
+<b>Switch configuration: [Split.ON2:SW1.Middle]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; N001&nbsp; N001&nbsp; <br>
+Cbleed&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 1.2nF<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N001&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Output jack<br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To bridge baseplate<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Treble bleed<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Travelcaster Wiring Diagram<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.diy-fever.com<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pickup selector switch<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Push-pull<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Split mode<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * One of the pickups is rotated 180 degrees for cleaner drawing<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N001&nbsp; N002&nbsp; N001&nbsp; Chopper<br>
+Rbleed&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N003&nbsp; 130K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N010&nbsp; N011&nbsp; N012&nbsp; <br>
+Split&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N013&nbsp; N014&nbsp; N015&nbsp; N016&nbsp; N017&nbsp; N018&nbsp; DPDT<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N004&nbsp; N001&nbsp; 250K<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N019&nbsp; N020&nbsp; N021&nbsp; N022&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N023&nbsp; N024&nbsp; N025&nbsp; N026&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N027&nbsp; N028&nbsp; N029&nbsp; N030&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N031&nbsp; N032&nbsp; N033&nbsp; N034&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N039&nbsp; N040&nbsp; N041&nbsp; N042&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N043&nbsp; N044&nbsp; N045&nbsp; N046&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N055&nbsp; N056&nbsp; N057&nbsp; N058&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N035&nbsp; N036&nbsp; N037&nbsp; N038&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; N062&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N047&nbsp; N048&nbsp; N049&nbsp; N050&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; N074&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; N078&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N051&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; N066&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N006&nbsp; N007&nbsp; N008&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; N070&nbsp; null<br>
+<b>Switch configuration: [Split.ON2:SW1.Rhythm]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N001&nbsp; N001&nbsp; N001&nbsp; <br>
+Cbleed&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 1.2nF<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N001&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Output jack<br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To bridge baseplate<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Treble bleed<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Travelcaster Wiring Diagram<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.diy-fever.com<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pickup selector switch<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Push-pull<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Split mode<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * One of the pickups is rotated 180 degrees for cleaner drawing<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N001&nbsp; N002&nbsp; N001&nbsp; Chopper<br>
+Rbleed&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N003&nbsp; 130K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N010&nbsp; N011&nbsp; N012&nbsp; N013&nbsp; <br>
+Split&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N014&nbsp; N015&nbsp; N016&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; DPDT<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N004&nbsp; N001&nbsp; 250K<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N020&nbsp; N021&nbsp; N022&nbsp; N023&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N024&nbsp; N025&nbsp; N026&nbsp; N027&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N028&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N032&nbsp; N033&nbsp; N034&nbsp; N035&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N040&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N044&nbsp; N045&nbsp; N046&nbsp; N047&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N056&nbsp; N057&nbsp; N058&nbsp; N059&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N036&nbsp; N037&nbsp; N038&nbsp; N039&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N060&nbsp; N061&nbsp; N062&nbsp; N063&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N048&nbsp; N049&nbsp; N050&nbsp; N051&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N072&nbsp; N073&nbsp; N074&nbsp; N075&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N076&nbsp; N077&nbsp; N078&nbsp; N079&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N064&nbsp; N065&nbsp; N066&nbsp; N067&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N006&nbsp; N007&nbsp; N008&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N068&nbsp; N069&nbsp; N070&nbsp; N071&nbsp; null<br>
+<b>Switch configuration: [Split.ON2:SW1.Treble]</b><br><br>Bridge&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N001&nbsp; N001&nbsp; N001&nbsp; <br>
+Cbleed&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N003&nbsp; 1.2nF<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N001&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Output jack<br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To bridge baseplate<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Treble bleed<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Travelcaster Wiring Diagram<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.diy-fever.com<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pickup selector switch<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Push-pull<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Split mode<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DiMarzio<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * One of the pickups is rotated 180 degrees for cleaner drawing<br>
+Neck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N001&nbsp; N009&nbsp; N001&nbsp; Chopper<br>
+Rbleed&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N003&nbsp; 130K<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N010&nbsp; N011&nbsp; N012&nbsp; N013&nbsp; <br>
+Split&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N014&nbsp; N015&nbsp; N016&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; DPDT<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N004&nbsp; N001&nbsp; 250K<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N020&nbsp; N021&nbsp; N022&nbsp; N023&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N024&nbsp; N025&nbsp; N026&nbsp; N027&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N028&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N032&nbsp; N033&nbsp; N034&nbsp; N035&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N040&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N044&nbsp; N045&nbsp; N046&nbsp; N047&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N056&nbsp; N057&nbsp; N058&nbsp; N059&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N036&nbsp; N037&nbsp; N038&nbsp; N039&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N060&nbsp; N061&nbsp; N062&nbsp; N063&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N048&nbsp; N049&nbsp; N050&nbsp; N051&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N072&nbsp; N073&nbsp; N074&nbsp; N075&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N076&nbsp; N077&nbsp; N078&nbsp; N079&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N064&nbsp; N065&nbsp; N066&nbsp; N067&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N006&nbsp; N007&nbsp; N008&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N068&nbsp; N069&nbsp; N070&nbsp; N071&nbsp; null<br>

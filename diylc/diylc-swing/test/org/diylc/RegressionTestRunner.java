@@ -3,9 +3,16 @@ package org.diylc;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -16,7 +23,12 @@ import java.util.stream.Stream;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.update.VersionNumber;
+import org.diylc.common.INetlistAnalyzer;
+import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
+import org.diylc.netlist.Netlist;
+import org.diylc.netlist.Summary;
+import org.diylc.netlist.TreeException;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
@@ -32,6 +44,15 @@ public class RegressionTestRunner {
       System.out.println("No path and command provided");
       return;
     }
+    //
+    // URL url = DIYLCStarter.class.getResource("log4j.properties");
+    // Properties properties = new Properties();
+    // try {
+    // properties.load(url.openStream());
+    // PropertyConfigurator.configure(properties);
+    // } catch (Exception e) {
+    // System.err.println("Could not initialize log4j configuration: " + e.getMessage());
+    // }
 
     ConfigurationManager.getInstance().initialize("diylc-test");
 
@@ -66,17 +87,17 @@ public class RegressionTestRunner {
     Presenter presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());
     VersionNumber currentVersionNumber = presenter.getCurrentVersionNumber();
 
-    String fileName = basePath + File.separator + "reports" + File.separator 
-        + LocalDateTime.now().toString().replace(":", "_") + "-" 
-        + "V" + currentVersionNumber.toString().replace('.', '_') +  ".csv";
+    String fileName = basePath + File.separator + "reports" + File.separator
+        + LocalDateTime.now().toString().replace(":", "_") + "-" + "V"
+        + currentVersionNumber.toString().replace('.', '_') + ".csv";
 
     BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-    
+
     long okCount = results.stream().filter(x -> x.ok).count();
     long failCount = results.size() - okCount;
     long totalTime = results.stream().map(x -> x.duration).reduce(0l, (a, b) -> a + b);
     long avgTime = totalTime / results.size();
-    
+
     writer.write("OK,Failed,Total Time,Avg Time");
     writer.newLine();
     writer.write(Long.toString(okCount));
@@ -85,11 +106,11 @@ public class RegressionTestRunner {
     writer.write(",");
     writer.write(Long.toString(totalTime));
     writer.write(",");
-    writer.write(Long.toString(avgTime));    
+    writer.write(Long.toString(avgTime));
     writer.newLine();
     writer.newLine();
     writer.newLine();
-    
+
     writer.write("File,Status,Message,Time");
     writer.newLine();
     results.stream().sorted(Comparator.comparing(x -> x.fileName)).forEach(item -> {
@@ -108,9 +129,9 @@ public class RegressionTestRunner {
     });
 
     writer.close();
-    
-    System.out.println("OK files: " + okCount + "; Failed files: " + failCount
-        + "; totalTime: " + (totalTime / 1000) + "s" + "; avgTime: " + avgTime + "ms");
+
+    System.out.println("OK files: " + okCount + "; Failed files: " + failCount + "; totalTime: "
+        + (totalTime / 1000) + "s" + "; avgTime: " + avgTime + "ms");
 
     System.out.println("Saved test report to: " + fileName);
   }
@@ -134,8 +155,8 @@ public class RegressionTestRunner {
           }
         }
         RegressionTestResult testResult = processFile(file, command);
-        System.out
-            .println(testResult.fileName + ": " + (testResult.ok ? "OK" : testResult.message));
+        System.out.println(
+            testResult.fileName + ": " + (testResult.message == null ? "OK" : testResult.message));
         return Stream.of(testResult);
       }
     });
@@ -144,16 +165,16 @@ public class RegressionTestRunner {
   private static RegressionTestResult processFile(File file, String command) {
     String prefix = "File: " + file.getName() + " status: ";
     try {
-      IView view = new MockView();
+      MockView view = new MockView();
       Presenter presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());
       ProjectDrawingProvider drawingProvider =
           new ProjectDrawingProvider(presenter, false, true, false);
       presenter.loadProjectFromFile(file.getAbsolutePath());
       if ("PREPARE".equalsIgnoreCase(command)) {
         // generate PNG input image for comparison
-        return prepareInputs(file, drawingProvider);
+        return prepareInputs(file, drawingProvider, presenter);
       } else if ("TEST".equalsIgnoreCase(command)) {
-        return testOutputs(file, prefix, presenter, drawingProvider);
+        return testOutputs(file, prefix, presenter, drawingProvider, view);
       }
       return new RegressionTestResult(file.getName()).failed("Command not recognized");
     } catch (Exception e) {
@@ -163,7 +184,7 @@ public class RegressionTestRunner {
   }
 
   private static RegressionTestResult testOutputs(File file, String prefix, Presenter presenter,
-      ProjectDrawingProvider drawingProvider) {
+      ProjectDrawingProvider drawingProvider, MockView view) {
     RegressionTestResult res = new RegressionTestResult(file.getName());
     File baseDir = file.getParentFile().getParentFile().getParentFile().getParentFile();
     File outputDir = new File(baseDir.getAbsolutePath() + File.separator + "output" + File.separator
@@ -210,11 +231,74 @@ public class RegressionTestRunner {
     if (ImageComparisonState.MATCH != imageComparisonResult.getImageComparisonState()) {
       return res.failed("Images do not match!");
     }
-    return res.succedded();
+
+    List<INetlistAnalyzer> summarizers = presenter.getNetlistAnalyzers();
+    if (summarizers != null) {
+      List<Netlist> netlists = presenter.extractNetlists(true);
+
+      for (INetlistAnalyzer summarizer : summarizers) {
+        File summaryOutputDir =
+            new File(outputDir.getAbsolutePath() + File.separator + summarizer.getShortName());
+        File summaryOutputFile = new File(summaryOutputDir.getAbsolutePath() + File.separator
+            + file.getName().replace(".diy", ".txt"));
+        summaryOutputDir.mkdirs();
+        if (summaryOutputFile.exists()) {
+          summaryOutputFile.delete();
+        }
+
+        File summaryInputDir = new File(file.getParentFile().getParentFile().getAbsolutePath()
+            + File.separator + summarizer.getShortName());
+        File summaryInputFile = new File(summaryInputDir.getAbsolutePath() + File.separator
+            + file.getName().replace(".diy", ".txt"));
+
+        if (!summaryInputFile.exists()) {
+          return res.failed("Summary input file not found for: " + summarizer.getShortName());
+        }
+
+        try {
+          List<String> outputLines = new ArrayList<String>();
+          try {
+            writeSummariesToFile(netlists, summarizer, summaryOutputFile);
+            outputLines = Files.readAllLines(Paths.get(summaryOutputFile.getAbsolutePath()));
+          } catch (Exception e) {
+            try (BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(summaryOutputFile, true), "UTF-8"))) {
+              String line = e.getClass().getCanonicalName() + ": " + e.getMessage();
+              writer.write(line);
+              outputLines.add(line);
+            }
+          }
+
+          List<String> inputLines =
+              Files.readAllLines(Paths.get(summaryInputFile.getAbsolutePath()));
+
+          if (inputLines.size() != outputLines.size()) {
+            return res.failed(
+                "Summary input and output files do not match for: " + summarizer.getShortName());
+          }
+          for (int i = 0; i < inputLines.size(); i++) {
+            if (!inputLines.get(i).equals(outputLines.get(i))) {
+              return res.failed(
+                  "Summary input and output files do not match for: " + summarizer.getShortName());
+            }
+          }
+        } catch (Exception e) {
+          return res.failed(e.getMessage());
+        }
+      }
+    }
+
+    String message = null;
+    if (!view.getMessages().isEmpty()) {
+      message = view.getMessages().entrySet().stream().flatMap(x -> x.getValue().stream())
+          .reduce("", String::concat);
+    }
+
+    return res.succedded(message);
   }
 
   private static RegressionTestResult prepareInputs(File file,
-      ProjectDrawingProvider drawingProvider) {
+      ProjectDrawingProvider drawingProvider, IPlugInPort plugInPort) {
     RegressionTestResult res = new RegressionTestResult(file.getName());
     try {
       File pngDir =
@@ -222,13 +306,54 @@ public class RegressionTestRunner {
       File pngFile = new File(
           pngDir.getAbsolutePath() + File.separator + file.getName().replace(".diy", ".png"));
       pngFile.getParentFile().mkdirs();
-      if (!pngFile.exists()) {
-        DrawingExporter.getInstance().exportPNG(drawingProvider, pngFile);
+
+      // always export image to ensure that rendering is done and continuity areas are populated
+      DrawingExporter.getInstance().exportPNG(drawingProvider, pngFile);
+
+      List<INetlistAnalyzer> summarizers = plugInPort.getNetlistAnalyzers();
+      if (summarizers != null) {
+        List<Netlist> netlists = plugInPort.extractNetlists(true);
+
+        for (INetlistAnalyzer summarizer : summarizers) {
+          File summaryDir = new File(file.getParentFile().getParentFile().getAbsolutePath()
+              + File.separator + summarizer.getShortName());
+          File summaryFile = new File(summaryDir.getAbsolutePath() + File.separator
+              + file.getName().replace(".diy", ".txt"));
+          summaryDir.mkdirs();
+          if (!summaryFile.exists()) {
+            try {
+              writeSummariesToFile(netlists, summarizer, summaryFile);
+
+            } catch (Exception e) {
+              try (BufferedWriter writer = new BufferedWriter(
+                  new OutputStreamWriter(new FileOutputStream(summaryFile, true), "UTF-8"))) {
+                writer.write(e.getClass().getCanonicalName() + ": " + e.getMessage());
+              }
+            }
+          }
+        }
       }
     } catch (Exception e) {
       return res.failed(e.getMessage());
     }
     return res.succedded();
+  }
+
+  private static void writeSummariesToFile(List<Netlist> netlists, INetlistAnalyzer summarizer,
+      File summaryFile)
+      throws TreeException, IOException, UnsupportedEncodingException, FileNotFoundException {
+    List<Summary> summaries = summarizer.summarize(netlists, null);
+
+    try (BufferedWriter writer = new BufferedWriter(
+        new OutputStreamWriter(new FileOutputStream(summaryFile, true), "UTF-8"))) {
+      for (Summary summary : summaries) {
+        writer.write("<b>Switch configuration: ");
+        writer.write(summary.getNetlist().getSwitchSetup().toString());
+        writer.write("</b><br><br>");
+        writer.write(summary.getSummary());
+        writer.newLine();
+      }
+    }
   }
 
   static class RegressionTestResult {
@@ -244,13 +369,18 @@ public class RegressionTestRunner {
     }
 
     public RegressionTestResult succedded() {
+      return succedded(null);
+    }
+
+    public RegressionTestResult succedded(String message) {
       this.ok = true;
+      this.message = message;
       this.duration = System.currentTimeMillis() - this.startTime;
       return this;
     }
 
     public RegressionTestResult failed(String message) {
-      this.ok = true;
+      this.ok = false;
       this.message = message;
       this.duration = System.currentTimeMillis() - this.startTime;
       return this;

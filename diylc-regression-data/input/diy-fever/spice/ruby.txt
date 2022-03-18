@@ -1,0 +1,216 @@
+<b>Switch configuration: [SW1.OFF]</b><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; N078&nbsp; null<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N088&nbsp; N089&nbsp; N090&nbsp; N091&nbsp; null<br>
+Board1&nbsp;&nbsp;&nbsp;&nbsp; <br>
+C1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N002&nbsp; 47nF<br>
+C2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N004&nbsp; 100uF<br>
+C3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N004&nbsp; 100nF<br>
+C4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N004&nbsp; 47nF<br>
+C5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N008&nbsp; 220uF<br>
+Gain&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N010&nbsp; N096&nbsp; 1K<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N004&nbsp; <br>
+J13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N024&nbsp; N004&nbsp; <br>
+J14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N004&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SPDT (Center-OFF) Switch<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1/2 - 1/4 - Full Power<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ROG Ruby Amplifier<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9x9 hole perfboard w/ attenuator switch<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; layout by diy-fever.com<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *** VERIFIED ***<br>
+L7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; project page www.runoffgroove.com/ruby.html<br>
+LM386&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N058&nbsp; N004&nbsp; N004&nbsp; N010&nbsp; N005&nbsp; N003&nbsp; N007&nbsp; <br>
+Q1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N001&nbsp; N011&nbsp; MPF102 ; Pinout not configured, validate this line<br>
+R1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N011&nbsp; 1M<br>
+R2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N004&nbsp; 3.9K<br>
+R3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N006&nbsp; 10Ω<br>
+R4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N079&nbsp; 22Ω<br>
+R5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N008&nbsp; 22Ω<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N021&nbsp; N022&nbsp; N023&nbsp; SPDT  (Center OFF)<br>
+Trace1&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace10&nbsp;&nbsp;&nbsp; null<br>
+Trace11&nbsp;&nbsp;&nbsp; null<br>
+Trace12&nbsp;&nbsp;&nbsp; null<br>
+Trace13&nbsp;&nbsp;&nbsp; null<br>
+Trace14&nbsp;&nbsp;&nbsp; null<br>
+Trace15&nbsp;&nbsp;&nbsp; null<br>
+Trace16&nbsp;&nbsp;&nbsp; null<br>
+Trace17&nbsp;&nbsp;&nbsp; null<br>
+Trace18&nbsp;&nbsp;&nbsp; null<br>
+Trace19&nbsp;&nbsp;&nbsp; null<br>
+Trace2&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace20&nbsp;&nbsp;&nbsp; null<br>
+Trace21&nbsp;&nbsp;&nbsp; null<br>
+Trace22&nbsp;&nbsp;&nbsp; null<br>
+Trace23&nbsp;&nbsp;&nbsp; null<br>
+Trace24&nbsp;&nbsp;&nbsp; null<br>
+Trace25&nbsp;&nbsp;&nbsp; null<br>
+Trace26&nbsp;&nbsp;&nbsp; null<br>
+Trace27&nbsp;&nbsp;&nbsp; null<br>
+Trace3&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace4&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace5&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace6&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace7&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace8&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace9&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N057&nbsp; N004&nbsp; 10K<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N025&nbsp; N026&nbsp; N027&nbsp; N028&nbsp; null<br>
+W10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; N062&nbsp; null<br>
+W11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; N066&nbsp; null<br>
+W12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; N070&nbsp; null<br>
+W13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N092&nbsp; N093&nbsp; N094&nbsp; N095&nbsp; null<br>
+W14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N080&nbsp; N081&nbsp; N082&nbsp; N083&nbsp; null<br>
+W15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N084&nbsp; N085&nbsp; N086&nbsp; N087&nbsp; null<br>
+W16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N013&nbsp; N014&nbsp; N015&nbsp; N016&nbsp; null<br>
+W17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; N020&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; N032&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N033&nbsp; N034&nbsp; N035&nbsp; N036&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N037&nbsp; N038&nbsp; N039&nbsp; N040&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; N044&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N045&nbsp; N046&nbsp; N047&nbsp; N048&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N049&nbsp; N050&nbsp; N051&nbsp; N052&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; null<br>
+W9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; N074&nbsp; null<br>
+<b>Switch configuration: [SW1.ON1]</b><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N074&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; null<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N087&nbsp; N088&nbsp; N089&nbsp; N090&nbsp; null<br>
+Board1&nbsp;&nbsp;&nbsp;&nbsp; <br>
+C1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N002&nbsp; 47nF<br>
+C2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N004&nbsp; 100uF<br>
+C3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N004&nbsp; 100nF<br>
+C4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N004&nbsp; 47nF<br>
+C5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N008&nbsp; 220uF<br>
+Gain&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N010&nbsp; N095&nbsp; 1K<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N004&nbsp; <br>
+J13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N023&nbsp; N004&nbsp; <br>
+J14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N008&nbsp; N004&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SPDT (Center-OFF) Switch<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1/2 - 1/4 - Full Power<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ROG Ruby Amplifier<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9x9 hole perfboard w/ attenuator switch<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; layout by diy-fever.com<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *** VERIFIED ***<br>
+L7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; project page www.runoffgroove.com/ruby.html<br>
+LM386&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N057&nbsp; N004&nbsp; N004&nbsp; N010&nbsp; N005&nbsp; N003&nbsp; N007&nbsp; <br>
+Q1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N001&nbsp; N011&nbsp; MPF102 ; Pinout not configured, validate this line<br>
+R1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N011&nbsp; 1M<br>
+R2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N004&nbsp; 3.9K<br>
+R3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N006&nbsp; 10Ω<br>
+R4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N008&nbsp; N078&nbsp; 22Ω<br>
+R5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N008&nbsp; N008&nbsp; 22Ω<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N020&nbsp; N021&nbsp; N022&nbsp; SPDT  (Center OFF)<br>
+Trace1&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace10&nbsp;&nbsp;&nbsp; null<br>
+Trace11&nbsp;&nbsp;&nbsp; null<br>
+Trace12&nbsp;&nbsp;&nbsp; null<br>
+Trace13&nbsp;&nbsp;&nbsp; null<br>
+Trace14&nbsp;&nbsp;&nbsp; null<br>
+Trace15&nbsp;&nbsp;&nbsp; null<br>
+Trace16&nbsp;&nbsp;&nbsp; null<br>
+Trace17&nbsp;&nbsp;&nbsp; null<br>
+Trace18&nbsp;&nbsp;&nbsp; null<br>
+Trace19&nbsp;&nbsp;&nbsp; null<br>
+Trace2&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace20&nbsp;&nbsp;&nbsp; null<br>
+Trace21&nbsp;&nbsp;&nbsp; null<br>
+Trace22&nbsp;&nbsp;&nbsp; null<br>
+Trace23&nbsp;&nbsp;&nbsp; null<br>
+Trace24&nbsp;&nbsp;&nbsp; null<br>
+Trace25&nbsp;&nbsp;&nbsp; null<br>
+Trace26&nbsp;&nbsp;&nbsp; null<br>
+Trace27&nbsp;&nbsp;&nbsp; null<br>
+Trace3&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace4&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace5&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace6&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace7&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace8&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace9&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N056&nbsp; N004&nbsp; 10K<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N024&nbsp; N025&nbsp; N026&nbsp; N027&nbsp; null<br>
+W10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N058&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; null<br>
+W11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N062&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; null<br>
+W12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N066&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; null<br>
+W13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N091&nbsp; N092&nbsp; N093&nbsp; N094&nbsp; null<br>
+W14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N079&nbsp; N080&nbsp; N081&nbsp; N082&nbsp; null<br>
+W15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N083&nbsp; N084&nbsp; N085&nbsp; N086&nbsp; null<br>
+W16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N013&nbsp; N014&nbsp; N015&nbsp; null<br>
+W17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N016&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N028&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N032&nbsp; N033&nbsp; N034&nbsp; N035&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N036&nbsp; N037&nbsp; N038&nbsp; N039&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N040&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N044&nbsp; N045&nbsp; N046&nbsp; N047&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N048&nbsp; N049&nbsp; N050&nbsp; N051&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N052&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; null<br>
+W9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N070&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; null<br>
+<b>Switch configuration: [SW1.ON2]</b><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N075&nbsp; N076&nbsp; N077&nbsp; N078&nbsp; null<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N087&nbsp; N088&nbsp; N089&nbsp; N090&nbsp; null<br>
+Board1&nbsp;&nbsp;&nbsp;&nbsp; <br>
+C1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N002&nbsp; 47nF<br>
+C2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N004&nbsp; 100uF<br>
+C3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N005&nbsp; N004&nbsp; 100nF<br>
+C4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N006&nbsp; N004&nbsp; 47nF<br>
+C5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N008&nbsp; 220uF<br>
+Gain&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N010&nbsp; N095&nbsp; 1K<br>
+J1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N011&nbsp; N004&nbsp; <br>
+J13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N024&nbsp; N004&nbsp; <br>
+J14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N004&nbsp; <br>
+L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SPDT (Center-OFF) Switch<br>
+L2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1/2 - 1/4 - Full Power<br>
+L3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ROG Ruby Amplifier<br>
+L4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9x9 hole perfboard w/ attenuator switch<br>
+L5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; layout by diy-fever.com<br>
+L6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *** VERIFIED ***<br>
+L7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; project page www.runoffgroove.com/ruby.html<br>
+LM386&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N009&nbsp; N058&nbsp; N004&nbsp; N004&nbsp; N010&nbsp; N005&nbsp; N003&nbsp; N007&nbsp; <br>
+Q1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N003&nbsp; N001&nbsp; N011&nbsp; MPF102 ; Pinout not configured, validate this line<br>
+R1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N004&nbsp; N011&nbsp; 1M<br>
+R2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N001&nbsp; N004&nbsp; 3.9K<br>
+R3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N007&nbsp; N006&nbsp; 10Ω<br>
+R4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N008&nbsp; 22Ω<br>
+R5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N012&nbsp; N008&nbsp; 22Ω<br>
+SW1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N021&nbsp; N022&nbsp; N023&nbsp; SPDT  (Center OFF)<br>
+Trace1&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace10&nbsp;&nbsp;&nbsp; null<br>
+Trace11&nbsp;&nbsp;&nbsp; null<br>
+Trace12&nbsp;&nbsp;&nbsp; null<br>
+Trace13&nbsp;&nbsp;&nbsp; null<br>
+Trace14&nbsp;&nbsp;&nbsp; null<br>
+Trace15&nbsp;&nbsp;&nbsp; null<br>
+Trace16&nbsp;&nbsp;&nbsp; null<br>
+Trace17&nbsp;&nbsp;&nbsp; null<br>
+Trace18&nbsp;&nbsp;&nbsp; null<br>
+Trace19&nbsp;&nbsp;&nbsp; null<br>
+Trace2&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace20&nbsp;&nbsp;&nbsp; null<br>
+Trace21&nbsp;&nbsp;&nbsp; null<br>
+Trace22&nbsp;&nbsp;&nbsp; null<br>
+Trace23&nbsp;&nbsp;&nbsp; null<br>
+Trace24&nbsp;&nbsp;&nbsp; null<br>
+Trace25&nbsp;&nbsp;&nbsp; null<br>
+Trace26&nbsp;&nbsp;&nbsp; null<br>
+Trace27&nbsp;&nbsp;&nbsp; null<br>
+Trace3&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace4&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace5&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace6&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace7&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace8&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Trace9&nbsp;&nbsp;&nbsp;&nbsp; null<br>
+Volume&nbsp;&nbsp;&nbsp;&nbsp; N002&nbsp; N057&nbsp; N004&nbsp; 10K<br>
+W1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N025&nbsp; N026&nbsp; N027&nbsp; N028&nbsp; null<br>
+W10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N059&nbsp; N060&nbsp; N061&nbsp; N062&nbsp; null<br>
+W11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N063&nbsp; N064&nbsp; N065&nbsp; N066&nbsp; null<br>
+W12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N067&nbsp; N068&nbsp; N069&nbsp; N070&nbsp; null<br>
+W13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N091&nbsp; N092&nbsp; N093&nbsp; N094&nbsp; null<br>
+W14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N079&nbsp; N080&nbsp; N081&nbsp; N082&nbsp; null<br>
+W15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N083&nbsp; N084&nbsp; N085&nbsp; N086&nbsp; null<br>
+W16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N013&nbsp; N014&nbsp; N015&nbsp; N016&nbsp; null<br>
+W17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N017&nbsp; N018&nbsp; N019&nbsp; N020&nbsp; null<br>
+W2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N029&nbsp; N030&nbsp; N031&nbsp; N032&nbsp; null<br>
+W3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N033&nbsp; N034&nbsp; N035&nbsp; N036&nbsp; null<br>
+W4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N037&nbsp; N038&nbsp; N039&nbsp; N040&nbsp; null<br>
+W5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N041&nbsp; N042&nbsp; N043&nbsp; N044&nbsp; null<br>
+W6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N045&nbsp; N046&nbsp; N047&nbsp; N048&nbsp; null<br>
+W7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N049&nbsp; N050&nbsp; N051&nbsp; N052&nbsp; null<br>
+W8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N053&nbsp; N054&nbsp; N055&nbsp; N056&nbsp; null<br>
+W9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N071&nbsp; N072&nbsp; N073&nbsp; N074&nbsp; null<br>
