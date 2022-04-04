@@ -1,9 +1,7 @@
 ### Table of Contents ###
 
 - [System requirements](#system-requirements)
-- [Running the app](#running-the-app)
-- [Whitelisting DIYLC with OSX Gatekeeper](#whitelisting-diylc-with-osx-gatekeeper)
-- [Installing on OSX Sierra and El Captain](#installing-on-osx-sierra-and-el-captain)
+- [Installing the app](#installing-the-app)
 - [User interface](#user-interface)
 - [Configuring the application](#configuring-the-application)
 - [Adding components to the project](#adding-components-to-the-project)
@@ -26,17 +24,23 @@
   * 1GB free RAM memory is recommended, 2GB or more is ideal
   * **Mac OSX** users must allow 3rd party apps before installing DIYLC. [This document](https://support.apple.com/en-us/HT202491) covers how to do it.
   
-### Running the app ###
+### Installing the app ###
 
-Make sure that you have downloaded the correct version. Windows build file ends with "win", Mac OSX build ends with "osx" and multi-platform build does not have any suffix and will work pretty much anywhere where Java JRE runs.
+#### Windows ####
 
-  * On **Windows** run the installer wizard and follow the steps
-  * On **Linux/Unix** (will also work on **Mac OSX** if using multi-platform build): extract the entire *diylc-[version number].ZIP* file into a separate directory, open the terminal, change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**), set the file *run.sh* to be executable by typing **chmod +x run.sh**, then type **./run.sh** which is the same as **sh run.sh**
-  * On **OSX** just run the package to install DIYLC
-  
-### Whitelisting DIYLC with OSX Gatekeeper ###
+Download the windows installer build (ending with -win.exe) and follow the wizard to install it. Java JRE is not required as it comes bundled with the installation. The universal build will also run as a portable version if this is a preferred way of using DIYLC.
+
+#### Mac OS ####
+
+Download the OSX build (ending with -osx.zip) and unpack it into the Applications folder. Java JRE is not required as it comes bundled with the app. Run the app.
+
+##### Whitelisting DIYLC with OSX Gatekeeper #####
 
 If you are getting the error saying that the application is damaged, you need to either whitelist DIYLC with the Gatekeeper or temporarily disable Gatekeeper altogether.
+
+In sone OSX versions, it is sufficient to go to Apple -> System Preferences -> Security & Privacy and allow DIYLC to run after it as blocked by the Gatekeeper.
+
+If that is not an option, you can try some of the options below.
 
 To disable Gatekeeper run this command in the terminal
 
@@ -46,11 +50,11 @@ to enable it back, run
 
 `sudo spctl --master-enable`
 
-To whitelist DIYLC, move it to Applications folder and then run this command in the terminal
+To whitelist DIYLC, run this command in the terminal (assuming that DIYLC is unpacked into Applications directory)
 
 `sudo spctl --add /Applications/DIYLC.app`
   
-### Installing on OSX Sierra and El Captain ###
+##### Installing on OSX Sierra and El Captain #####
 
 Since version 4.0.0, DIYLC runs on Java 8 which helps with newer Mac machines, but can cause issues on older Sierra and El Captain Macs. If the OSX application bundle "diylc-4.X.Y-osx.zip" fails on Sierra and El Captain, but you can still run the multi-platform version. Just download the latest "diylc-4.X.Y.zip" (without the "osx" in the name), extract it somewhere and go to the Terminal.
 
@@ -63,6 +67,28 @@ and finally run the app using
 `./run.sh`
 
 If it stills fails to start, try double clicking on *diylc.jar* file to start the app.
+
+#### Linux ####
+
+For most Linux distributions, the easiest way to get DIYLC installed is through [Flatpak](https://flatpak.org/). To install DIYLC run the following command
+
+`flatpak install flathub com.diy_fever.DIYLayoutCreator`
+
+and to run it
+
+`flatpak run com.diy_fever.DIYLayoutCreator`
+  
+If Flatpak is not an option for any reason, running the universal build should work.
+
+#### Universal ####
+
+This should work on any Linix/Unix machine as well as MacOS, as long as there is Java JRE installed. Just follow these steps:
+
+* Extract the entire *diylc-[version number].ZIP* file into a separate directory
+* Open the terminal
+* Change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**)
+* Set the file *run.sh* to be executable by typing **chmod +x run.sh**
+* Type **./run.sh** which is the same as **sh run.sh**
   
 ### User interface ###
 
