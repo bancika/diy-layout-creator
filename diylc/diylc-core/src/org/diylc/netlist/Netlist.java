@@ -1,24 +1,21 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.netlist;
 
 import java.util.ArrayList;
@@ -29,7 +26,7 @@ import java.util.Set;
 import org.diylc.core.IDIYComponent;
 
 public class Netlist implements Comparable<Netlist> {
-  
+
   private List<IDIYComponent<?>> components;
   private Set<Group> groups = new HashSet<Group>();
   private List<SwitchSetup> switchSetup = new ArrayList<SwitchSetup>();
@@ -41,26 +38,26 @@ public class Netlist implements Comparable<Netlist> {
   public Set<Group> getGroups() {
     return groups;
   }
-  
+
   public Netlist add(Group g) {
     groups.add(g);
     return this;
   }
-  
+
   public List<IDIYComponent<?>> getComponents() {
     return components;
   }
-  
+
   public List<Group> getSortedGroups() {
     List<Group> list = new ArrayList<Group>(groups);
     Collections.sort(list);
     return list;
   }
-  
+
   public List<SwitchSetup> getSwitchSetup() {
     return switchSetup;
   }
-  
+
   public void done() {
     Collections.sort(switchSetup);
   }
@@ -93,6 +90,7 @@ public class Netlist implements Comparable<Netlist> {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
+    sb.append("Switch setup: ").append(getSwitchSetup()).append("\n\n");
     List<Group> list = getSortedGroups();
     for (Group g : list) {
       sb.append("\t").append(g).append("\n");

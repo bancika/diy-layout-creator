@@ -3804,15 +3804,27 @@
 		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>4</major>
-				<minor>22</minor>
-				<build>3</build>
+				<minor>23</minor>
+				<build>0</build>
 			</versionNumber>
-			<releaseDate>2022-03-18 00:00:00.000 CET</releaseDate>
+			<releaseDate>2022-04-23 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>			
+			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Improved rendering performance</description>
+					<description>Fixed the issue with the application not starting under Windows</description>
+				</org.diylc.appframework.update.Change>		
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Slide Switch' component</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved rendering performance significantly</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Include JRE in the universal ZIP package (the embedded JRE is only for Windows)</description>
 				</org.diylc.appframework.update.Change>	
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
