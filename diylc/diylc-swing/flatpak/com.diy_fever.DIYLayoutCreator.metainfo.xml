@@ -37,6 +37,17 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	 <release version="4.23.0" date="2022-04-23">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed the issue with the application not starting under Windows</li>
+             <li>[New Feature] Added 'Slide Switch' component</li>
+             <li>[Improvement] Improved rendering performance significantly</li>
+             <li>[Improvement] Include JRE in the universal ZIP package (the embedded JRE is only for Windows)</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.23.0</url>
+     </release>
   	 <release version="4.22.2" date="2022-03-18">
          <description>
            <ul>
