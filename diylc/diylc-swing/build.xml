@@ -10,7 +10,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.22.2" />
+	<property name="diylc.version" value="4.23.0" />
 	
 	<property name="osx.jre8.path" value="jre\osx\jre8u321\Contents\Home\" />
 
@@ -139,6 +139,9 @@
 			<arg value="/Fdiylc-${diylc.version}-win"/>
 			<arg value="install.iss"/>
 		</exec>
+	</target>
+	
+	<target name="universal_installer" depends="jar">
 		<izpack input="${basedir}/izpack.xml"
 		            output="${build.dir}/diylc-${diylc.version}-setup.jar"
 		            installerType="standard"
@@ -162,6 +165,7 @@
 			<zipfileset dir="icons" includes="*.png" prefix="icons" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.desktop" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.metainfo.xml" />
+			<zipfileset dir="jre/win/jre1.8.0_211" prefix="jre" />
 		</zip>
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>

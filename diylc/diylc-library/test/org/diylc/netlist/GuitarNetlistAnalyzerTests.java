@@ -1,36 +1,27 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.netlist;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.util.Arrays;
-
 import org.diylc.components.electromechanical.OpenJack1_4;
 import org.diylc.components.guitar.HumbuckerPickup;
-import org.diylc.components.guitar.LPSwitch;
-import org.diylc.components.guitar.LeverSwitch;
-import org.diylc.components.guitar.LeverSwitch.LeverSwitchType;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialCeramicDiskCapacitor;
@@ -51,7 +42,7 @@ public class GuitarNetlistAnalyzerTests {
     String s = tree.toString();
     assertEquals("((Pickup.North<-))", s);
   }
-  
+
   @Test
   public void testOneSinglePickupVolPot() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -68,7 +59,7 @@ public class GuitarNetlistAnalyzerTests {
     String s = tree.toString();
     assertEquals("((Volume.1-2 + Pickup.North<-) || (Volume.2-3))", s);
   }
-  
+
   @Test
   public void testOneSinglePickupVolTonePot() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -83,14 +74,15 @@ public class GuitarNetlistAnalyzerTests {
     Netlist netlist = new Netlist(Arrays.asList(jack, pickup, vol, tone, cap));
     Group hotGroup = new Group().connect(pickup, 1).connect(vol, 0).connect(tone, 2);
     Group tipGroup = new Group().connect(jack, 0).connect(vol, 1);
-    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 2).connect(vol, 2).connect(cap, 0);
+    Group sleeveGroup =
+        new Group().connect(jack, 1).connect(pickup, 2).connect(vol, 2).connect(cap, 0);
     Group toneGroup = new Group().connect(tone, 1).connect(cap, 1);
     netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(toneGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals("(((Volume.1-2) + ((Pickup.North<-) || (Tone.2-3 + Cap))) || (Volume.2-3))", s);
   }
-  
+
   @Test
   public void testTwoSinglePickupsMasterVolSeparateTone() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -108,18 +100,24 @@ public class GuitarNetlistAnalyzerTests {
     cap1.setName("Cap1");
     RadialCeramicDiskCapacitor cap2 = new RadialCeramicDiskCapacitor();
     cap2.setName("Cap2");
-    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2, vol, tone1, tone2, cap1, cap2));
-    Group hotGroup = new Group().connect(pickup1, 1).connect(vol, 0).connect(tone1, 2).connect(pickup2, 1).connect(tone2, 2);
+    Netlist netlist =
+        new Netlist(Arrays.asList(jack, pickup1, pickup2, vol, tone1, tone2, cap1, cap2));
+    Group hotGroup = new Group().connect(pickup1, 1).connect(vol, 0).connect(tone1, 2)
+        .connect(pickup2, 1).connect(tone2, 2);
     Group tipGroup = new Group().connect(jack, 0).connect(vol, 1);
-    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 2).connect(vol, 2).connect(cap1, 0).connect(cap2, 0);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 2)
+        .connect(vol, 2).connect(cap1, 0).connect(cap2, 0);
     Group tone1Group = new Group().connect(tone1, 1).connect(cap1, 1);
     Group tone2Group = new Group().connect(tone2, 1).connect(cap2, 1);
-    netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(tone1Group).add(tone2Group);
+    netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(tone1Group)
+        .add(tone2Group);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
-    assertEquals("(((Volume.1-2) + ((Pickup1.North<-) || (Pickup2.North<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || (Volume.2-3))", s);
+    assertEquals(
+        "(((Volume.1-2) + ((Pickup1.North<-) || (Pickup2.North<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || (Volume.2-3))",
+        s);
   }
-  
+
   @Test
   public void testOneSinglePickupReverse() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -133,7 +131,7 @@ public class GuitarNetlistAnalyzerTests {
     String s = tree.toString();
     assertEquals("((Pickup.North->))", s);
   }
-  
+
   @Test
   public void testOneHumbuckerSeries() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -148,7 +146,7 @@ public class GuitarNetlistAnalyzerTests {
     String s = tree.toString();
     assertEquals("((Pickup.North<- + Pickup.South<-))", s);
   }
-  
+
   @Test
   public void testOneHumbuckerSeriesReverse() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -163,7 +161,7 @@ public class GuitarNetlistAnalyzerTests {
     String s = tree.toString();
     assertEquals("((Pickup.South-> + Pickup.North->))", s);
   }
-  
+
   @Test
   public void testOneHumbuckerParallel() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -177,7 +175,7 @@ public class GuitarNetlistAnalyzerTests {
     String s = tree.toString();
     assertEquals("((Pickup.North<-) || (Pickup.South<-))", s);
   }
-  
+
   @Test
   public void testOneHumbuckerParallelOutOfPhase() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -191,7 +189,7 @@ public class GuitarNetlistAnalyzerTests {
     String s = tree.toString();
     assertEquals("((Pickup.North<-) || (Pickup.South->))", s);
   }
-  
+
   @Test
   public void testTwoHumbuckersSeries() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -210,7 +208,7 @@ public class GuitarNetlistAnalyzerTests {
     String s = tree.toString();
     assertEquals("((Pickup1.North<- + Pickup1.South<- + Pickup2.North<- + Pickup2.South<-))", s);
   }
-  
+
   @Test
   public void testTwoHumbuckersParallel() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -221,14 +219,14 @@ public class GuitarNetlistAnalyzerTests {
     Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 0).connect(pickup2, 0);
     Group coilTapGroup1 = new Group().connect(pickup1, 1).connect(pickup1, 2);
-    Group coilTapGroup2 = new Group().connect(pickup2, 1).connect(pickup2, 2);    
+    Group coilTapGroup2 = new Group().connect(pickup2, 1).connect(pickup2, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 3).connect(pickup2, 3);
     netlist.add(tipGroup).add(coilTapGroup1).add(coilTapGroup2).add(sleeveGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals("((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-))", s);
   }
-  
+
   @Test
   public void testTwoHumbuckersParallelOutOfPhase() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -239,14 +237,14 @@ public class GuitarNetlistAnalyzerTests {
     Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 0).connect(pickup2, 3);
     Group coilTapGroup1 = new Group().connect(pickup1, 1).connect(pickup1, 2);
-    Group coilTapGroup2 = new Group().connect(pickup2, 1).connect(pickup2, 2);    
+    Group coilTapGroup2 = new Group().connect(pickup2, 1).connect(pickup2, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 3).connect(pickup2, 0);
     netlist.add(tipGroup).add(coilTapGroup1).add(coilTapGroup2).add(sleeveGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals("((Pickup1.North<- + Pickup1.South<-) || (Pickup2.South-> + Pickup2.North->))", s);
   }
-  
+
   @Test
   public void testTwoHumbuckersMasterVolSeparateTone() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
@@ -264,73 +262,23 @@ public class GuitarNetlistAnalyzerTests {
     cap1.setName("Cap1");
     RadialCeramicDiskCapacitor cap2 = new RadialCeramicDiskCapacitor();
     cap2.setName("Cap2");
-    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2, vol, tone1, tone2, cap1, cap2));
-    Group hotGroup = new Group().connect(pickup1, 0).connect(vol, 0).connect(tone1, 2).connect(pickup2, 0).connect(tone2, 2);
+    Netlist netlist =
+        new Netlist(Arrays.asList(jack, pickup1, pickup2, vol, tone1, tone2, cap1, cap2));
+    Group hotGroup = new Group().connect(pickup1, 0).connect(vol, 0).connect(tone1, 2)
+        .connect(pickup2, 0).connect(tone2, 2);
     Group tipGroup = new Group().connect(jack, 0).connect(vol, 1);
-    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 3).connect(pickup2, 3).connect(vol, 2).connect(cap1, 0).connect(cap2, 0);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 3).connect(pickup2, 3)
+        .connect(vol, 2).connect(cap1, 0).connect(cap2, 0);
     Group tone1Group = new Group().connect(tone1, 1).connect(cap1, 1);
     Group tone2Group = new Group().connect(tone2, 1).connect(cap2, 1);
     Group coilTap1 = new Group().connect(pickup1, 1).connect(pickup1, 2);
     Group coilTap2 = new Group().connect(pickup2, 1).connect(pickup2, 2);
-    netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(tone1Group).add(tone2Group).add(coilTap1).add(coilTap2);
+    netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(tone1Group)
+        .add(tone2Group).add(coilTap1).add(coilTap2);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
-    assertEquals("(((Volume.1-2) + ((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || (Volume.2-3))", s);
-  }
-  
-  @Test
-  public void testLeverSwitch() {
-    LeverSwitch leverSwitch = new LeverSwitch();
-    
-    leverSwitch.setType(LeverSwitchType.DP5T);
-    String[] validCombinations = new String[]{
-        "0,0,1", "0,6,11", "0,12,13", "0,18,23",
-        "1,0,2", "1,7,11", "1,12,14", "1,19,23",
-        "2,0,3", "2,8,11", "2,12,15", "2,20,23",
-        "3,0,4", "3,9,11", "3,12,16", "3,21,23",
-        "4,0,5", "4,10,11", "4,12,17", "4,22,23"};
-    Arrays.sort(validCombinations);
-    for (int p = 0; p < leverSwitch.getPositionCount(); p++)
-      for (int i = 0; i < leverSwitch.getControlPointCount(); i++)
-        for (int j = 0; j < leverSwitch.getControlPointCount(); j++) {
-          String test = p + "," + i + "," + j;
-          boolean isConnected = leverSwitch.arePointsConnected(i, j, p);
-          boolean isOk = (isConnected && Arrays.binarySearch(validCombinations, test) >= 0) ||
-              !isConnected && Arrays.binarySearch(validCombinations, test) < 0;
-          if (!isOk)
-            fail("Bad connection for p=" + p + ", i=" + i + ",j=" + j);          
-        }
-    
-    leverSwitch.setType(LeverSwitchType._4P5T);
-    Arrays.sort(validCombinations);
-    for (int p = 0; p < leverSwitch.getPositionCount(); p++)
-      for (int i = 0; i < leverSwitch.getControlPointCount(); i++)
-        for (int j = 0; j < leverSwitch.getControlPointCount(); j++) {
-          String test = p + "," + i + "," + j;
-          boolean isConnected = leverSwitch.arePointsConnected(i, j, p);
-          boolean isOk = (isConnected && Arrays.binarySearch(validCombinations, test) >= 0) ||
-              !isConnected && Arrays.binarySearch(validCombinations, test) < 0;
-          if (!isOk)
-            fail("Bad connection for p=" + p + ", i=" + i + ",j=" + j);          
-        }
-  }
-  
-  @Test
-  public void testLPSwitch() {
-    LPSwitch lpSwitch = new LPSwitch();
-    String[] validCombinations = new String[] {
-      "0,1,2", "1,1,2", "1,2,3", "1,1,3", "2,2,3"
-    };
-    Arrays.sort(validCombinations);
-    for (int p = 0; p < lpSwitch.getPositionCount(); p++)
-      for (int i = 0; i < lpSwitch.getControlPointCount(); i++)
-        for (int j = 0; j < lpSwitch.getControlPointCount(); j++) {
-          String test = p + "," + i + "," + j;
-          boolean isConnected = lpSwitch.arePointsConnected(i, j, p);
-          boolean isOk = (isConnected && Arrays.binarySearch(validCombinations, test) >= 0) ||
-              !isConnected && Arrays.binarySearch(validCombinations, test) < 0;
-          if (!isOk)
-            fail("Bad connection for p=" + p + ", i=" + i + ",j=" + j);          
-        }
-  }
+    assertEquals(
+        "(((Volume.1-2) + ((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || (Volume.2-3))",
+        s);
+  }  
 }
