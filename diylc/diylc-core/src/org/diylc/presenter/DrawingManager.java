@@ -474,7 +474,7 @@ public class DrawingManager {
     }
 
     // shade extra space
-    if (SHADE_EXTRA_SPACE && extraSpaceRect != null) {
+    if (drawOptions.contains(DrawOption.EXTRA_SPACE) && SHADE_EXTRA_SPACE && extraSpaceRect != null) {
       Area extraSpaceArea = new Area(
           new Rectangle2D.Double(0, 0, canvasDimension.getWidth(), canvasDimension.getHeight()));
       extraSpaceArea.subtract(new Area(extraSpaceRect));
@@ -562,7 +562,9 @@ public class DrawingManager {
       return;
     }
     
-    g2dIn.drawImage(cachedGridImage, 0, 0, null);
+    if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
+      g2dIn.drawImage(cachedGridImage, 0, 0, null);
+    }
 
     // manage extra space
     if (drawOptions.contains(DrawOption.EXTRA_SPACE)) {

@@ -25,8 +25,10 @@
 A-O-I     REGULATOR
 AWG
 And
+Bracket
 C-B-E     BJT
 Check Trace Proximity
+Column Spacing
 D-G-S     JFET
 D-G-S     MOSFET
 D-S-G     JFET
@@ -34,6 +36,7 @@ D-S-G     MOSFET
 DFM A
 DFM B
 DIP
+DP3T
 DP3T 
 DP5T
 DPDT
@@ -84,6 +87,7 @@ SMD
 SPDT
 SPDT  (Center OFF)
 SPST
+Show Bracket
 Srpski
 Tick Width
 Ticks
