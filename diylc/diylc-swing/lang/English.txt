@@ -40,6 +40,7 @@ Both Sides
 Bottom
 Bottom Left
 Bottom Right
+Bracket
 Bring Forward
 Bring Selection to Front
 Buffer
@@ -51,6 +52,7 @@ Central
 Change Password
 Channel
 Chassis
+Check Trace Proximity
 Circular
 Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF
 Click on the canvas to create a new %s or press %s to cancel
@@ -67,6 +69,7 @@ Color
 Color 1
 Color 2
 Color code
+Column Spacing
 Columns
 Component
 Component API
@@ -116,6 +119,7 @@ Display
 Display Pin #s
 Dog Ear
 Dot Spacing
+Donate
 Dotted
 Drag control point(s) of
 Drag the mouse over the canvas to place a new
@@ -192,6 +196,7 @@ Image
 Immediate Only
 Import
 Import Building Blocks
+Import Netlist
 Import Variants
 In-Line D-44
 In-line
@@ -233,6 +238,7 @@ Manage Account
 Manage My Uploads
 Mark Common Lugs
 Marker
+Marker Size
 Mini
 Miniature
 Mirror Horizontally
@@ -271,6 +277,7 @@ Outside
 Oval horizontal
 Oval vertical
 Pad Color
+Panel
 Passive
 Paste
 Pin Arrangement
@@ -342,6 +349,7 @@ Shaft Down
 Shaft Up
 Shape
 Shapes
+Show Bracket
 Show Grid
 Show Rulers
 Shroud
@@ -394,6 +402,8 @@ Thickness
 Three
 Through Hole
 Tick
+Tick Width
+Ticks
 Title
 Toolbox
 Top
@@ -432,6 +442,7 @@ Wafer
 Warning
 Width
 Winding Spacing
+Wiring
 X-axis
 Y-axis
 Zoom
