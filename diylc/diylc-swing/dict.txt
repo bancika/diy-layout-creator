@@ -40,7 +40,6 @@ DPDT
 DPDT  (Center OFF)
 Deutsch
 Dimension Mode
-Donate
 Dots (Gradual)
 Dots (Uniform)
 E-B-C     BJT

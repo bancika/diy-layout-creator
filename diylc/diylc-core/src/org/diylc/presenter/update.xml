@@ -3841,6 +3841,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed a bug that causes the background of exported images and PDFs to be very light gray instead of pure white</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Automatically run Java garbage collector when available memory reaches 10%</description>
 				</org.diylc.appframework.update.Change>						
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

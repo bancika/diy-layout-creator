@@ -320,7 +320,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   private MemoryBar getMemoryPanel() {
     if (memoryPanel == null) {
-      memoryPanel = new MemoryBar(false) {
+      memoryPanel = new MemoryBar(true) {
 
         private static final long serialVersionUID = 1L;
 
