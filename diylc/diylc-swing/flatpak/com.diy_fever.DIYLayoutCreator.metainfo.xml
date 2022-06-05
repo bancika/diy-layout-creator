@@ -37,6 +37,15 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	 <release version="4.24.0" date="2022-06-05">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed a bug that causes the background of exported images and PDFs to be very light gray instead of pure white</li>
+             <li>[Improvement] Automatically run Java garbage collector when available memory reaches 10%</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.24.0</url>
+     </release>
   	 <release version="4.23.0" date="2022-04-23">
          <description>
            <ul>
