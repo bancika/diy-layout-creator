@@ -107,6 +107,7 @@ public class StatusBar extends JPanel implements IPlugIn {
 
   public static String UPDATE_URL = "http://diy-fever.com/diylc/api/v1/update.xml";  
   private static final Format sizeFormat = new DecimalFormat("0.##");
+  private static final int MAX_SELECTED_COMPONENTS = 15;
 
   private JComboBox zoomBox;
   private UpdateLabel updateLabel;
@@ -531,9 +532,9 @@ public class StatusBar extends JPanel implements IPlugIn {
       } else if (selectedComponentNames != null && !selectedComponentNames.isEmpty()) {
         StringBuilder builder = new StringBuilder();
         builder.append(Utils.toCommaString(selectedComponentNames.subList(0,
-            Math.min(20, selectedComponentNames.size()))));
-        if (selectedComponentNames.size() > 15) {
-          builder.append(" and " + (selectedComponentNames.size() - 15) + " more");
+            Math.min(MAX_SELECTED_COMPONENTS, selectedComponentNames.size()))));
+        if (selectedComponentNames.size() > MAX_SELECTED_COMPONENTS) {
+          builder.append(" and " + (selectedComponentNames.size() - MAX_SELECTED_COMPONENTS) + " more");
         }
         if (!stuckComponentNames.isEmpty()) {
           builder.append(" (" + String.format(HOLD_TO_UNSTUCK, "<b>Ctrl</b>") + " ");
