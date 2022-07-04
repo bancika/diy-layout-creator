@@ -22,10 +22,10 @@ import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.core.ComponentState;
@@ -44,7 +44,7 @@ import org.diylc.utils.Pair;
  */
 public class DrawingCache {
 
-  private Map<IDIYComponent<?>, CacheValue> imageCache = new HashMap<IDIYComponent<?>, CacheValue>();
+  private Map<IDIYComponent<?>, SoftReference<CacheValue>> imageCache = new HashMap<IDIYComponent<?>, SoftReference<CacheValue>>();
   
   private Map<String, Pair<Counter, Counter>> renderStatsByType = new HashMap<String, Pair<Counter, Counter>>();
 
@@ -139,8 +139,17 @@ public class DrawingCache {
   }
      
   public void logStats() {
-    int totalSizeMB = imageCache.values().stream().map(x -> x.image.getData().getDataBuffer().getSize()).reduce(0, Integer::sum) * 4 / 1024 / 1024; // 4 bytes per pixel
+    int totalSizeMB = imageCache.values()
+        .stream()        
+        .map(x -> x.get() == null ? 0 : x.get().image.getData().getDataBuffer().getSize())
+        .reduce(0, Integer::sum) * 4 / 1024 / 1024; // 4 bytes per pixel
     LOG.debug(String.format("Render cache contains %d elements, approx size is %d MB", imageCache.size(), totalSizeMB));
+    
+    long evictedCount = imageCache.values()
+        .stream()
+        .filter(x -> x.get() == null)
+        .count();
+    LOG.debug(String.format("Render cache contains %d evicted entries", evictedCount));
     
     String mapAsString = renderStatsByType.entrySet().stream().sorted((e1, e2) -> -Long.compare(e1.getValue().getFirst().getNanoTime() + e1.getValue().getSecond().getNanoTime(), 
         e2.getValue().getFirst().getNanoTime() + e2.getValue().getSecond().getNanoTime()))
@@ -161,8 +170,12 @@ public class DrawingCache {
 
     // cache hit!
     CacheValue value = null;
-    if (imageCache.containsKey(component))
-      value = imageCache.get(component);
+    if (imageCache.containsKey(component)) {
+      SoftReference<CacheValue> weakReference = imageCache.get(component);
+      if (weakReference != null) {
+        value = weakReference.get();
+      }
+    }
 
     // only honor the cache if the component hasn't changed in the meantime
     if (value == null || !value.getComponent().equalsTo(component)
@@ -237,7 +250,7 @@ public class DrawingCache {
       // add to the cache        
       value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
           wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, dx, dy, rect);        
-      imageCache.put(component, value);
+      imageCache.put(component, new SoftReference<DrawingCache.CacheValue>(value));
     }
     
     return value;
