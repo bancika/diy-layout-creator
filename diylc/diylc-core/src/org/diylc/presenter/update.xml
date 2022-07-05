@@ -3863,6 +3863,10 @@
 					<description>Status bar shows a wrong number of selected components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fix run.sh to Unix line breaks</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Limit memory usage to avoid out of memory errors when 'Cache Boost' feature is enabled on complex project</description>
 				</org.diylc.appframework.update.Change>
