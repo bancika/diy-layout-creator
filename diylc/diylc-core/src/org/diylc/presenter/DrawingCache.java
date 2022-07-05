@@ -23,6 +23,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.lang.ref.SoftReference;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -161,6 +162,12 @@ public class DrawingCache {
 
   public void clear() {
     imageCache.clear();
+  }
+  
+  public void invalidate(Collection<IDIYComponent<?>> components) {
+    for (IDIYComponent<?> component : components) {
+      imageCache.remove(component);
+    }
   }
   
   private CacheValue renderAndCache(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,

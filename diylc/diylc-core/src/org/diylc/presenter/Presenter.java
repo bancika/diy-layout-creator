@@ -1772,6 +1772,8 @@ public class Presenter implements IPlugInPort {
     drawingManager.clearContinuityArea();
     
     currentProject.getComponents().removeAll(selectedComponents);
+    DrawingCache.Instance.invalidate(selectedComponents);
+    
     messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject.clone(), "Delete");
     drawingManager.clearContinuityArea();
     projectFileManager.notifyFileChange();

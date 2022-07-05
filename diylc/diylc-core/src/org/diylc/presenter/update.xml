@@ -3864,7 +3864,11 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Limit memory usage to avoid out of memory errors when 'Cache Boost' feature is enabled</description>
+					<description>Limit memory usage to avoid out of memory errors when 'Cache Boost' feature is enabled on complex project</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Cleanup cache when a component is deleted from the project</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
