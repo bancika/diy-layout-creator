@@ -25,6 +25,7 @@
 A-O-I     REGULATOR
 AWG
 And
+B-C-E     BJT
 C-B-E     BJT
 D-G-S     JFET
 D-G-S     MOSFET
