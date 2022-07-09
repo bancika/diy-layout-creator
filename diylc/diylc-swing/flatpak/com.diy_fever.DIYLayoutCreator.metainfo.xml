@@ -37,6 +37,19 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+     <release version="4.25.0" date="2022-07-09">
+         <description>
+           <ul>
+             <li>[Bug Fix] Status bar shows a wrong number of selected components</li>
+             <li>[Bug Fix] Fix run.sh to Unix line breaks</li>
+             <li>[Improvement] Limit memory usage to avoid out of memory errors when 'Cache Boost' feature is enabled on complex project</li>
+             <li>[Improvement] Cleanup cache when a component is deleted from the project</li>
+             <li>[Improvement] Added BJT B-C-E pinout to transistor components</li>
+             <li>[Improvement] Changed resistor orange band color to more intense orange</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.25.0</url>
+     </release>
   	 <release version="4.24.0" date="2022-06-05">
          <description>
            <ul>
