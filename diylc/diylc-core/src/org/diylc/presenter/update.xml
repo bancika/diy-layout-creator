@@ -3885,5 +3885,21 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>26</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2022-07-09 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>The app crashes if there's a component that is reduced to 0 pixels with 'Cache Boost' enabled</description>
+				</org.diylc.appframework.update.Change>				
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

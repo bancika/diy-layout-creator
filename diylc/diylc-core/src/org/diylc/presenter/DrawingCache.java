@@ -96,7 +96,11 @@ public class DrawingCache {
       // if we need to apply caching
       Point2D firstPoint = component.getControlPoint(0);
       
-      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom);     
+      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom); 
+      
+      if (value == null) {
+        return;
+      }
       
       long componentStart = System.nanoTime();
 
@@ -194,6 +198,10 @@ public class DrawingCache {
       // calculate the position of the first point relative to the caching bounds
       int dx = (int) (firstPoint.getX() - rect.getX());
       int dy = (int) (firstPoint.getY() - rect.getY());
+      
+      if (width <= 0 || height <= 0) {
+        return null;
+      }
       
       // create image
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
