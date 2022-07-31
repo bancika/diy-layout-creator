@@ -1,24 +1,21 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.swing.plugins.file;
 
 import java.awt.Toolkit;
@@ -32,6 +29,7 @@ import org.diylc.common.EventType;
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ITask;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.IDynamicSubmenuHandler;
@@ -73,41 +71,53 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(actionFactory.createNewAction(plugInPort), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createOpenAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createImportAction(plugInPort, swingUI), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createImportNetlistAction(plugInPort, swingUI), FILE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createImportNetlistAction(plugInPort, swingUI),
+        FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createSaveAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createSaveAsAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectDynamicSubmenu("Recent Files", IconLoader.History.getIcon(), FILE_TITLE, this);
     swingUI.injectMenuAction(null, FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportPNGAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
     swingUI.injectMenuAction(
-        actionFactory.createPrintAction(drawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-        FILE_TITLE);
+        actionFactory.createExportPDFAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
+    swingUI.injectMenuAction(
+        actionFactory.createExportPNGAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createPrintAction(drawingProvider,
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), FILE_TITLE);
     swingUI.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort, traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportPNGAction(plugInPort, traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort,
+        traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportPNGAction(plugInPort,
+        traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
     swingUI.injectMenuAction(
-        actionFactory.createPrintAction(traceMaskDrawingProvider, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
-            | KeyEvent.SHIFT_DOWN_MASK), TRACE_MASK_TITLE);
-    
-    swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Scientist.getIcon(), FILE_TITLE);    
-    swingUI.injectMenuAction(actionFactory.createCheckProximityAction(plugInPort, swingUI), ANALYZE_TITLE);
+        actionFactory.createPrintAction(traceMaskDrawingProvider,
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | KeyEvent.SHIFT_DOWN_MASK),
+        TRACE_MASK_TITLE);
+
+    swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Scientist.getIcon(), FILE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createCheckProximityAction(plugInPort, swingUI),
+        ANALYZE_TITLE);
     swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), ANALYZE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI), ANALYZE_TITLE);    
-    
+    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI),
+        ANALYZE_TITLE);
+
     List<INetlistAnalyzer> summarizers = plugInPort.getNetlistAnalyzers();
     if (summarizers != null) {
-      for(INetlistAnalyzer summarizer : summarizers)
-        swingUI.injectMenuAction(actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer), ANALYZE_TITLE);
-    }    
-    
+      for (INetlistAnalyzer summarizer : summarizers)
+        swingUI.injectMenuAction(
+            actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer),
+            ANALYZE_TITLE);
+    }
+
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectSubmenu(INTEGRATION_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createImportBlocksAction(swingUI, plugInPort), INTEGRATION_TITLE);
+    swingUI.injectMenuAction(actionFactory.createImportBlocksAction(swingUI, plugInPort),
+        INTEGRATION_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportBlocksAction(swingUI), INTEGRATION_TITLE);
     swingUI.injectMenuAction(null, INTEGRATION_TITLE);
-    swingUI.injectMenuAction(actionFactory.createImportVariantsAction(swingUI, plugInPort), INTEGRATION_TITLE);
-    swingUI.injectMenuAction(actionFactory.createExportVariantsAction(swingUI, plugInPort), INTEGRATION_TITLE);    
+    swingUI.injectMenuAction(actionFactory.createImportVariantsAction(swingUI, plugInPort),
+        INTEGRATION_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportVariantsAction(swingUI, plugInPort),
+        INTEGRATION_TITLE);
     swingUI.injectMenuAction(new LoadlineEditorFrame.LoadlineEditorAction(), FILE_TITLE);
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExitAction(plugInPort), FILE_TITLE);
@@ -126,18 +136,37 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
   // Dynamic menu for recent files
 
   @Override
-  public void onActionPerformed(String name) {
-    LOG.info("Openning recent file: " + name);
+  public void onActionPerformed(String fileName) {
+    LOG.info("Openning recent file: " + fileName);
     if (!plugInPort.allowFileAction()) {
       LOG.info("Aborted openning recent file");
       return;
     }
-    this.plugInPort.loadProjectFromFile(name);
+    
+    swingUI.executeBackgroundTask(new ITask<Void>() {
+
+      @Override
+      public Void doInBackground() throws Exception {
+        LOG.debug("Opening recent file from " + fileName);
+        plugInPort.loadProjectFromFile(fileName);
+        return null;
+      }
+
+      @Override
+      public void complete(Void result) {}
+
+      @Override
+      public void failed(Exception e) {
+        swingUI.showMessage("Could not open file. " + e.getMessage(), "Error",
+            ISwingUI.ERROR_MESSAGE);
+      }
+    }, true);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public List<String> getAvailableItems() {
-    return (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_FILES_KEY, null);
+    return (List<String>) ConfigurationManager.getInstance()
+        .readObject(IPlugInPort.RECENT_FILES_KEY, null);
   }
 }
