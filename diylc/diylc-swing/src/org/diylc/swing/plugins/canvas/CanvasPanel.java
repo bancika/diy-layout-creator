@@ -73,7 +73,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   private Image bufferImage;
   private GraphicsConfiguration screenGraphicsConfiguration;
 
-  public boolean useHardwareAcceleration;
+  public boolean useHardwareAcceleration = false;
 
   // static final EnumSet<DrawOption> DRAW_OPTIONS =
   // EnumSet.of(DrawOption.GRID,
@@ -91,8 +91,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     this.plugInPort = plugInPort;
     this.configManager = configManager;
 
-    this.useHardwareAcceleration =
-        configManager.readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
+//    this.useHardwareAcceleration =
+//        configManager.readBoolean(IPlugInPort.HARDWARE_ACCELERATION, false);
     setFocusable(true);
     initializeListeners();
     initializeDnD();
@@ -423,7 +423,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   }
 
   public void setUseHardwareAcceleration(boolean useHardwareAcceleration) {
-    this.useHardwareAcceleration = useHardwareAcceleration;
-    bufferImage = null;
+//    this.useHardwareAcceleration = useHardwareAcceleration;
+//    bufferImage = null;
   }
 }

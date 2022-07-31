@@ -3897,7 +3897,15 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>The app crashes if there's a component that is reduced to 0 pixels with 'Cache Boost' enabled</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Removed 'Hardware Acceleration' feature as it causes issues with modern graphic cards</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When opening files from the 'Recent Files' menu, show busy cursor instead of blocking the main app thread</description>
+				</org.diylc.appframework.update.Change>			
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
