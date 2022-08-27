@@ -118,8 +118,8 @@ public class VoltageSourceSymbol extends AbstractSchematicLeadedSymbol<String> {
 
   @Override
   protected Shape getBodyShape() {
-	// Main body is a circle, drawn with an Ellipse
-	double width  = getWidth().convertToPixels();
+    // Main body is a circle, drawn with an Ellipse
+    double width  = getWidth().convertToPixels();
     double length = getLength().convertToPixels();  
     GeneralPath body = new GeneralPath();
     body.append(new Ellipse2D.Double(0d, 0d, width, length), true);
@@ -128,35 +128,33 @@ public class VoltageSourceSymbol extends AbstractSchematicLeadedSymbol<String> {
 
   @Override
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
-	g2d.setColor(getBorderColor());
-	double arbritaryLength = getWidth().convertToPixels();
-	switch (getSourceType()){
-	  case AC:  // AC Source, inside will be a sine wave
-		// Cubic curve format is: (x1, y1, cx1, cy1, cx2, cy2, x2, y2)
-		g2d.draw(new CubicCurve2D.Double(0.2  * arbritaryLength, arbritaryLength / 2,   // x1, y1
-										 0.5 * arbritaryLength, - arbritaryLength * 0.3, // cx1, cy1
-										 0.5 * arbritaryLength, arbritaryLength + arbritaryLength * 0.3, // cx2, cy2
-										 0.8  * arbritaryLength, arbritaryLength / 2)); // x2, y2
-		break;
-	  case DC: // DC Source, inside will have "+" & "-" signs
-		double plusSize = arbritaryLength / 6; // Plus sign is 1/6 of overall size
-        // Draw "+" sign
-		g2d.draw(new Line2D.Double(arbritaryLength*0.1, arbritaryLength/2, 
-				  				   arbritaryLength*0.1 + plusSize, arbritaryLength/2));
+    g2d.setColor(getBorderColor());
+    double arbritaryLength = getWidth().convertToPixels();
+    switch (getSourceType()){
+      case AC:  // AC Source, inside will be a sine wave
+        // Cubic curve format is: (x1, y1, cx1, cy1, cx2, cy2, x2, y2)
+	g2d.draw(new CubicCurve2D.Double(0.2  * arbritaryLength, arbritaryLength / 2,   // x1, y1
+				         0.5 * arbritaryLength, - arbritaryLength * 0.3, // cx1, cy1
+					 0.5 * arbritaryLength, arbritaryLength + arbritaryLength * 0.3, // cx2, cy2
+					 0.8  * arbritaryLength, arbritaryLength / 2)); // x2, y2
+	break;
+      case DC: // DC Source, inside will have "+" & "-" signs
+	  double plusSize = arbritaryLength / 6; // Plus sign is 1/6 of overall size
+          // Draw "+" sign
+	  g2d.draw(new Line2D.Double(arbritaryLength*0.1, arbritaryLength/2, 
+				     arbritaryLength*0.1 + plusSize, arbritaryLength/2));
 		  
-	    g2d.draw(new Line2D.Double(arbritaryLength*0.1 + plusSize/2, arbritaryLength/2 + plusSize/2,
-				  				   arbritaryLength*0.1 + plusSize/2, arbritaryLength/2 - plusSize/2));
-		// Draw "-" Sign
-		g2d.draw(new Line2D.Double(arbritaryLength*0.76 + plusSize/2, arbritaryLength/2 + plusSize/2,
-		                           arbritaryLength*0.76 + plusSize/2, arbritaryLength/2 - plusSize/2));
-		break;
-	  default:  
-	}
+	  g2d.draw(new Line2D.Double(arbritaryLength*0.1 + plusSize/2, arbritaryLength/2 + plusSize/2,
+				     arbritaryLength*0.1 + plusSize/2, arbritaryLength/2 - plusSize/2));
+	  // Draw "-" Sign
+	  g2d.draw(new Line2D.Double(arbritaryLength*0.76 + plusSize/2, arbritaryLength/2 + plusSize/2,
+		                     arbritaryLength*0.76 + plusSize/2, arbritaryLength/2 - plusSize/2));
+          break; 
+    }
   }
 
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.rotate(-Math.PI / 4, width / 2, height / 2);
-    // g2d.rotate(-Math.PI, width / 2, height / 2);
     g2d.setColor(LEAD_COLOR);
     
     // Draw Leads
@@ -176,13 +174,13 @@ public class VoltageSourceSymbol extends AbstractSchematicLeadedSymbol<String> {
     
     // Draw "+" sign
     g2d.draw(new Line2D.Double(startx + arbritaryLength*0.12, starty + arbritaryLength/2, 
-    						   startx + arbritaryLength*0.12 + plusSize, starty + arbritaryLength/2));
+    			       startx + arbritaryLength*0.12 + plusSize, starty + arbritaryLength/2));
 	  
     g2d.draw(new Line2D.Double(startx + arbritaryLength*0.12 + plusSize/2, starty + arbritaryLength/2 + plusSize/2,
-    						   startx + arbritaryLength*0.12 + plusSize/2, starty + arbritaryLength/2 -1*(plusSize/2)));
-	// Draw "-" Sign
-	g2d.draw(new Line2D.Double(startx + arbritaryLength*0.72 + plusSize/2, starty + arbritaryLength/2 + plusSize/2,
-							   startx + arbritaryLength*0.72 + plusSize/2, starty + arbritaryLength/2 -1*(plusSize/2)));
+    			       startx + arbritaryLength*0.12 + plusSize/2, starty + arbritaryLength/2 -1*(plusSize/2)));
+    // Draw "-" Sign
+    g2d.draw(new Line2D.Double(startx + arbritaryLength*0.72 + plusSize/2, starty + arbritaryLength/2 + plusSize/2,
+			       startx + arbritaryLength*0.72 + plusSize/2, starty + arbritaryLength/2 -1*(plusSize/2)));
   }
   
   @Override
@@ -191,6 +189,6 @@ public class VoltageSourceSymbol extends AbstractSchematicLeadedSymbol<String> {
   }
   
   public enum SourceType {
-		AC, DC
+    AC, DC
   }
 }
