@@ -99,6 +99,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
         break;
       case DPDT:
       case DPDT_off:
+      case DPDT_ononon_1:
+      case DPDT_ononon_2:
         controlPoints =
             new Point2D[] {firstPoint, new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing),
                 new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 2 * spacing), 
@@ -337,6 +339,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
           break;
         case DPDT:
         case DPDT_off:
+        case DPDT_ononon_1:
+        case DPDT_ononon_2:
           body =
               new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + spacing, 2
                   * margin + 2 * spacing, margin, margin);
@@ -441,13 +445,15 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       case _3PDT_off:
       case _4PDT_off:
       case _5PDT_off:
+      case DPDT_ononon_1:
+      case DPDT_ononon_2:
         return 3;      
     }
     return 2;
   }
 
   @Override
-  public String getPositionName(int position) {
+  public String getPositionName(int position) {    
     if (switchType.name().endsWith("_off") && position == 2)
       return "OFF";
     return "ON" + Integer.toString(position + 1);
@@ -463,7 +469,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       case _3PDT:
       case _4PDT:
       case _5PDT:
-        return (index2 - index1) < 3 && index1 % 3 == position && index2 % 3 == position + 1;        
+        return (index2 - index1) < 3 && index1 % 3 == position && index2 % 3 == position + 1;
       case SPDT_off:        
       case DPDT_off:
       case _3PDT_off:
@@ -471,7 +477,27 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       case _5PDT_off:
         return position != 2 && (index2 - index1) < 3 && index1 % 3 == position && index2 % 3 == position + 1; 
       case _DP3T_mustang:
-        return (index2 - index1) < 3 && index1 % 3 == 0 && index2 % 3 == position + 1;      
+        return (index2 - index1) < 3 && index1 % 3 == 0 && index2 % 3 == position + 1;
+      case DPDT_ononon_1:
+        switch (position) {
+          case 0:
+            return (index1 == 0 && index2 == 1) || (index1 == 3 && index2 == 4);
+          case 1:
+            return (index1 == 0 && index2 == 1) || (index1 == 4 && index2 == 5);
+          case 2:
+            return (index1 == 1 && index2 == 2) || (index1 == 4 && index2 == 5);
+          default: return false;
+        }
+      case DPDT_ononon_2:
+        switch (position) {
+          case 0:
+            return (index1 == 0 && index2 == 1) || (index1 == 3 && index2 == 4);
+          case 1:
+            return (index1 == 1 && index2 == 2) || (index1 == 3 && index2 == 4);
+          case 2:
+            return (index1 == 1 && index2 == 2) || (index1 == 4 && index2 == 5);
+          default: return false;
+        }
     }
     return false;
   }

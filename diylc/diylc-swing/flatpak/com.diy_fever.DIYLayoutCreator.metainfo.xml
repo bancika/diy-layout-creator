@@ -37,6 +37,18 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+     <release version="4.26.0" date="2022-08-27">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Voltage Source' symbol. Thank you, JD!</li>
+             <li>[New Feature] Added two DPDT ON/ON/ON variations to 'Mini Toggle Switch' component</li>
+             <li>[Bug Fix] The app crashes if there's a component that is reduced to 0 pixels with 'Cache Boost' enabled</li>
+             <li>[Bug Fix] Removed 'Hardware Acceleration' feature as it causes issues with modern graphic cards</li>
+             <li>[Improvement] When opening files from the 'Recent Files' menu, show busy cursor instead of blocking the main app thread</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.26.0</url>
+     </release>
      <release version="4.25.0" date="2022-07-09">
          <description>
            <ul>

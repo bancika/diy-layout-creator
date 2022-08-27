@@ -3891,9 +3891,17 @@
 				<minor>26</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2022-07-09 00:00:00.000 CET</releaseDate>
+			<releaseDate>2022-08-27 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Voltage Source' symbol. Thank you, JD!</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added two DPDT ON/ON/ON variations to 'Mini Toggle Switch' component</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>The app crashes if there's a component that is reduced to 0 pixels with 'Cache Boost' enabled</description>
