@@ -23,6 +23,7 @@
 5PDT
 5PDT  (Center OFF)
 A-O-I     REGULATOR
+AC
 AWG
 And
 B-C-E     BJT
@@ -31,6 +32,7 @@ D-G-S     JFET
 D-G-S     MOSFET
 D-S-G     JFET
 D-S-G     MOSFET
+DC
 DFM A
 DFM B
 DIP
@@ -81,6 +83,7 @@ SMD
 SPDT
 SPDT  (Center OFF)
 SPST
+SourceType
 Srpski
 Xnor
 Xor
