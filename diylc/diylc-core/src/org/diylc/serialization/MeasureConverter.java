@@ -22,7 +22,6 @@
 package org.diylc.serialization;
 
 import org.diylc.core.measures.AbstractMeasure;
-
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;

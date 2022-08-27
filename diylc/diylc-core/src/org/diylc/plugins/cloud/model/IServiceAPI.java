@@ -23,7 +23,6 @@ package org.diylc.plugins.cloud.model;
 
 import java.io.File;
 import java.util.List;
-
 import com.diyfever.httpproxy.ParamName;
 
 /***

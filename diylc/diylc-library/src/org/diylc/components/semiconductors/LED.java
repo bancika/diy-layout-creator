@@ -27,7 +27,6 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;

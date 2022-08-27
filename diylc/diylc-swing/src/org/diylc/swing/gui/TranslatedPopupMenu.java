@@ -20,7 +20,6 @@ package org.diylc.swing.gui;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-
 import org.diylc.lang.LangUtil;
 
 public class TranslatedPopupMenu extends JPopupMenu {

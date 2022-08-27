@@ -25,7 +25,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -78,7 +77,6 @@ import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.Presenter;
-import org.diylc.serialization.IOldFileParser;
 import org.diylc.utils.Constants;
 import org.nfunk.jep.JEP;
 import org.w3c.dom.Element;

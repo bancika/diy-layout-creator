@@ -20,7 +20,6 @@ package org.diylc.components.passive;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;

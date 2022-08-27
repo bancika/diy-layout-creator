@@ -22,9 +22,7 @@
 package org.diylc.serialization;
 
 import java.awt.geom.Point2D;
-
 import org.diylc.utils.Constants;
-
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;

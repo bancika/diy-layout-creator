@@ -42,11 +42,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.common.ComponentType;

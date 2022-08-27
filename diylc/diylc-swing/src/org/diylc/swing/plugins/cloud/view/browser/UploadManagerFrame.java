@@ -24,20 +24,18 @@ package org.diylc.swing.plugins.cloud.view.browser;
 import java.awt.Dimension;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-
 import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.images.IconLoader;
 
 public class UploadManagerFrame extends JFrame implements ISimpleView {
 

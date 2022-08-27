@@ -25,7 +25,6 @@ import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-
 import org.diylc.common.IPlugInPort;
 
 /**

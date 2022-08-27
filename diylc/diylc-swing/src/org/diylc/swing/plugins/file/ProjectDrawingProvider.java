@@ -25,7 +25,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.EnumSet;
-
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;

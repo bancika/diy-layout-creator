@@ -48,9 +48,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Supplier;
-
 import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.JarScanner;
@@ -96,7 +94,6 @@ import org.diylc.serialization.ProjectFileManager;
 import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;

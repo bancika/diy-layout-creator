@@ -22,7 +22,6 @@
 package org.diylc.components.passive;
 
 import java.awt.geom.Point2D;
-
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.VisibilityPolicy;

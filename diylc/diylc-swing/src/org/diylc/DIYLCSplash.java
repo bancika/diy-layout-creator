@@ -1,12 +1,14 @@
 package org.diylc;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.AffineTransform;
-
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
-
 import org.diylc.swing.images.IconLoader;
 
 /**

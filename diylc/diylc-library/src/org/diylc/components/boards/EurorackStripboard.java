@@ -18,6 +18,7 @@
  */
 package org.diylc.components.boards;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -29,7 +30,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
@@ -46,8 +46,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-
-import com.sun.prism.BasicStroke;
 
 @ComponentDescriptor(name = "Eurorack Stripboard", category = "Boards",
     author = "Branislav Stojkovic",

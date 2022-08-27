@@ -22,7 +22,6 @@
 package org.diylc.common;
 
 import java.util.Collection;
-
 import org.diylc.core.IDIYComponent;
 
 public class BuildingBlock {

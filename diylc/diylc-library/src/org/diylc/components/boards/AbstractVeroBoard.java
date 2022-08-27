@@ -1,7 +1,6 @@
 package org.diylc.components.boards;
 
 import java.awt.Color;
-
 import org.diylc.common.OrientationHV;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;

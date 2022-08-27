@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URL;
 import java.util.Properties;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.DIYLCStarter;

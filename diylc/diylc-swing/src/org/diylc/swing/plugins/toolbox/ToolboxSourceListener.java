@@ -25,10 +25,9 @@ import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
-
 import javax.swing.JComponent;
-
 import org.diylc.common.IPlugInPort;
+import org.diylc.swing.plugins.canvas.CanvasPanel;
 
 
 /**

@@ -39,7 +39,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -48,7 +47,6 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
@@ -73,7 +71,6 @@ import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 import org.diylc.swingframework.ruler.IRulerListener;
 import org.diylc.swingframework.ruler.Ruler.InchSubdivision;
 import org.diylc.swingframework.ruler.RulerScrollPane;
-
 import com.guigarage.gestures.GestureMagnificationEvent;
 import com.guigarage.gestures.GestureMagnificationListener;
 import com.guigarage.gestures.GestureUtilities;

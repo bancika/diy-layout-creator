@@ -24,9 +24,7 @@ package org.diylc.swing.gui.editor;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-
 import javax.swing.JLabel;
-
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.components.misc.LoadlineEntity;

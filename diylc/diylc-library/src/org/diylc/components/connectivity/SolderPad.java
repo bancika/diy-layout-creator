@@ -22,7 +22,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;

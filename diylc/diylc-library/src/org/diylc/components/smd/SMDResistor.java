@@ -22,7 +22,6 @@
 package org.diylc.components.smd;
 
 import java.awt.Color;
-
 import org.diylc.components.transform.PassiveSMDTransformer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;

@@ -24,7 +24,6 @@ package org.diylc.components.semiconductors;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
-
 import org.diylc.common.ObjectCache;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;

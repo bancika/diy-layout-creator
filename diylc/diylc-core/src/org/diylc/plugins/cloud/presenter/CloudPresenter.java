@@ -31,7 +31,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.PropertyWrapper;
@@ -41,7 +40,6 @@ import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
-
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
 

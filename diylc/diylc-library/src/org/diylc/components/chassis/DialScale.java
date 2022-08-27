@@ -17,13 +17,13 @@
  */
 package org.diylc.components.chassis;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
@@ -40,8 +40,6 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-
-import com.sun.prism.BasicStroke;
 
 @ComponentDescriptor(name = "Dial Scale", author = "Branislav Stojkovic", category = "Misc",
     instanceNamePrefix = "DS", description = "Control panel dial scale", zOrder = IDIYComponent.CHASSIS + 0.1,

@@ -22,7 +22,6 @@
 package org.diylc.serialization;
 
 import java.awt.Font;
-
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;

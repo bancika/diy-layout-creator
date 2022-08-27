@@ -22,9 +22,7 @@
 package org.diylc.swing.plugins.toolbox;
 
 import java.util.EnumSet;
-
 import javax.swing.SwingConstants;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;

@@ -22,12 +22,9 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
-
-import javax.activity.InvalidActivityException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -41,11 +38,9 @@ import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swingframework.fonts.FontOptimizer;
-
 import com.apple.eawt.AppEvent;
 import com.apple.eawt.Application;
 import com.thoughtworks.xstream.XStream;
-
 import ca.cgjennings.jvm.JarLoader;
 
 /**

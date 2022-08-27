@@ -26,10 +26,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.EnumSet;
 import java.util.List;
-
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.update.UpdateChecker;
@@ -38,10 +36,10 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swingframework.AboutDialog;
 import org.diylc.swingframework.LinkLabel;
 import org.diylc.swingframework.update.UpdateDialog;

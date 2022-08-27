@@ -21,9 +21,7 @@ package org.diylc.swing.gui.editor;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
-
 import javax.swing.JButton;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
 import org.diylc.common.PropertyWrapper;

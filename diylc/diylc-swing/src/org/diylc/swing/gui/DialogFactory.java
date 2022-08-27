@@ -20,12 +20,10 @@ package org.diylc.swing.gui;
 import java.awt.Window;
 import java.io.File;
 import java.util.List;
-
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
-
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;

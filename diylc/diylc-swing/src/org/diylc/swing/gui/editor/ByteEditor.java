@@ -25,13 +25,11 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.annotations.PercentEditor;
 import org.diylc.swingframework.DoubleTextField;

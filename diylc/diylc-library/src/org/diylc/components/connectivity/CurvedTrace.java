@@ -20,7 +20,6 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
-
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;

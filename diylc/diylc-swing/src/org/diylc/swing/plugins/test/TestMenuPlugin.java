@@ -28,10 +28,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
-
 import org.apache.log4j.Logger;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;

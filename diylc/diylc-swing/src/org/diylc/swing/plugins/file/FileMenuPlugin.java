@@ -22,7 +22,6 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.EnumSet;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.EventType;
@@ -30,10 +29,10 @@ import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.loadline.LoadlineEditorFrame;
 
 /**

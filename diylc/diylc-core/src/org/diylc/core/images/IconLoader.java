@@ -24,7 +24,6 @@ package org.diylc.core.images;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;

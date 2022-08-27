@@ -23,7 +23,6 @@ package org.diylc.components.transform;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
 import org.diylc.components.boards.TagStrip;

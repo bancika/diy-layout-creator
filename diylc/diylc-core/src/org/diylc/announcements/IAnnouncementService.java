@@ -22,7 +22,6 @@
 package org.diylc.announcements;
 
 import java.util.List;
-
 import com.diyfever.httpproxy.ParamName;
 
 public interface IAnnouncementService {

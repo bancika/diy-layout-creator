@@ -22,7 +22,6 @@
 package org.diylc.common;
 
 import java.util.Set;
-
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 

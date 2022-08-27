@@ -23,7 +23,6 @@ package org.diylc.common;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.diylc.core.Template;
 
 public interface IVariantProcessor {

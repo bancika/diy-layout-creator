@@ -27,10 +27,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.ListIterator;
-
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.EventType;
@@ -38,13 +36,13 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.plugins.cloud.presenter.CloudException;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;

@@ -31,7 +31,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.diylc.appframework.simplemq.IMessageListener;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;

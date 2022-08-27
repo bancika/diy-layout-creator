@@ -28,7 +28,6 @@ import java.awt.datatransfer.FlavorEvent;
 import java.awt.datatransfer.FlavorListener;
 import java.awt.datatransfer.Transferable;
 import java.util.EnumSet;
-
 import org.diylc.appframework.undo.IUndoListener;
 import org.diylc.appframework.undo.UndoHandler;
 import org.diylc.clipboard.ComponentTransferable;
@@ -38,9 +37,9 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.Project;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.images.IconLoader;
 
 public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 

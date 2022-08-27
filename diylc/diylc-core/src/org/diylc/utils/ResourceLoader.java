@@ -19,7 +19,6 @@
 package org.diylc.utils;
 
 import java.io.File;
-
 import org.apache.log4j.Logger;
 
 public class ResourceLoader {

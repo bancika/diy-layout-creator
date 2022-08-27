@@ -22,7 +22,6 @@
 package org.diylc.swing.plugins.file;
 
 import java.io.File;
-
 import javax.swing.filechooser.FileFilter;
 
 public enum FileFilterEnum {

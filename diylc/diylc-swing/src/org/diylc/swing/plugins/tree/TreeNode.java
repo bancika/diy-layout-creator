@@ -24,7 +24,6 @@ package org.diylc.swing.plugins.tree;
 import java.awt.event.MouseListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.diylc.common.ComponentType;
 
 public class TreeNode {

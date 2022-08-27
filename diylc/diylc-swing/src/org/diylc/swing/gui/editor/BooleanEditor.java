@@ -24,9 +24,7 @@ package org.diylc.swing.gui.editor;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JCheckBox;
-
 import org.diylc.common.PropertyWrapper;
 import org.diylc.utils.Constants;
 

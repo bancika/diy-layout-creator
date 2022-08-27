@@ -41,7 +41,6 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -49,7 +48,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
 import org.apache.log4j.Logger;
 import org.diylc.announcements.AnnouncementProvider;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -65,15 +63,14 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swingframework.MemoryBar;
 import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
 import org.diylc.swingframework.update.UpdateDialog;
 import org.diylc.swingframework.update.UpdateLabel;
-
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 

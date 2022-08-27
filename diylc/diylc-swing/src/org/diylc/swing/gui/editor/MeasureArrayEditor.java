@@ -34,9 +34,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-
 import javax.swing.JComboBox;
-
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.AbstractMeasure;

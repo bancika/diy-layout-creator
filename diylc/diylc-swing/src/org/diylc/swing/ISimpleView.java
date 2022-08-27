@@ -22,7 +22,6 @@
 package org.diylc.swing;
 
 import javax.swing.JFrame;
-
 import org.diylc.common.ITask;
 
 /**

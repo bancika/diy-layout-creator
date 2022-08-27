@@ -20,7 +20,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -31,7 +30,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IConfigurationManager;
@@ -67,7 +65,6 @@ import org.diylc.swing.plugins.canvas.CanvasPanel;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.DoubleTextField;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 

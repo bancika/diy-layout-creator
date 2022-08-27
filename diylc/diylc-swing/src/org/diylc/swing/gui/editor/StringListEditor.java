@@ -25,10 +25,8 @@ import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.reflect.Method;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.annotations.DynamicList;
 import org.diylc.utils.Constants;

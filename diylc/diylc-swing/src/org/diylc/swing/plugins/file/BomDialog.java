@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -35,7 +34,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import org.diylc.core.images.IconLoader;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swingframework.export.TableExporter;

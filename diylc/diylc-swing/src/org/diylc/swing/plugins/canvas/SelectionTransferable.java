@@ -27,7 +27,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.List;
-
 import org.diylc.core.IDIYComponent;
 
 

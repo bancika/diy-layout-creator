@@ -24,7 +24,6 @@ package org.diylc.components.shapes;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-
 import org.diylc.common.ObjectCache;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;

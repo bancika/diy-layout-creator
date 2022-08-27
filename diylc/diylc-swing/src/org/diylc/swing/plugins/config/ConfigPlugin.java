@@ -22,9 +22,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.List;
-
 import javax.swing.Icon;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
@@ -33,14 +31,13 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.components.autocreate.SolderPadAutoCreator;
 import org.diylc.core.Theme;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.flags.FlagLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.lang.Language;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.utils.ResourceLoader;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;

@@ -25,9 +25,8 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.SwingConstants;
 import javax.swing.JPopupMenu.Separator;
-
+import javax.swing.SwingConstants;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;

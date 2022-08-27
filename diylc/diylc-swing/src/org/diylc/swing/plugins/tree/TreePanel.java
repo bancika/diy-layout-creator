@@ -40,7 +40,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JMenu;
@@ -63,7 +62,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.lf5.viewer.categoryexplorer.TreeModelAdapter;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -75,9 +73,9 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Template;
-import org.diylc.swing.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
 
 public class TreePanel extends JPanel {

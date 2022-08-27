@@ -29,7 +29,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-
 import org.diylc.common.Display;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;

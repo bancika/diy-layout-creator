@@ -23,7 +23,6 @@ package org.diylc.components.shapes;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
-
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;

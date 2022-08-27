@@ -30,7 +30,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;

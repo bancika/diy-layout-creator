@@ -20,12 +20,10 @@ package org.diylc.swing.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Arrays;
-
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.images.IconLoader;

@@ -25,7 +25,6 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
@@ -39,7 +38,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> {

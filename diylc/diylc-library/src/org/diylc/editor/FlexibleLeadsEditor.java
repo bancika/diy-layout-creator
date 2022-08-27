@@ -4,7 +4,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.diylc.common.IProjectEditor;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractCurvedComponent.PointCount;

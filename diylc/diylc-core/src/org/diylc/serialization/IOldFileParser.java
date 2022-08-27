@@ -22,7 +22,6 @@
 package org.diylc.serialization;
 
 import java.util.List;
-
 import org.diylc.core.Project;
 import org.w3c.dom.Element;
 

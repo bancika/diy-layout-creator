@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.apache.log4j.Logger;
 import org.diylc.core.IDIYComponent;
 

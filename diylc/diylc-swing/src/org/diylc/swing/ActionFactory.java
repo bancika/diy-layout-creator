@@ -39,19 +39,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
-import org.diylc.appframework.miscutils.Utils;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.clipboard.ComponentTransferableFactory;
 import org.diylc.common.BuildingBlockPackage;

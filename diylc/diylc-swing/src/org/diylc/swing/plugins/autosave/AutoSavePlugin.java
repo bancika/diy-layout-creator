@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.EventType;

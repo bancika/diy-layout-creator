@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.swing.JLabel;
-
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.components.electromechanical.ClosedJack1_4;
 import org.diylc.components.electromechanical.OpenJack1_4;

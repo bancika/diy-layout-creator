@@ -25,12 +25,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JList;
-
 import org.diylc.common.PropertyWrapper;
 import org.diylc.lang.LangUtil;
 import org.diylc.utils.Constants;

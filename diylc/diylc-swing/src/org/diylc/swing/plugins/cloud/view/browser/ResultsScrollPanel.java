@@ -35,7 +35,6 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -50,7 +49,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.text.DefaultCaret;
-
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.IPlugInPort;

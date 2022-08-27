@@ -21,9 +21,7 @@
 */
 package org.diylc.netlist;
 
-import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.diylc.common.INetlistAnalyzer;

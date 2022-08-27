@@ -21,14 +21,12 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicArrowButton;
-
 import org.apache.log4j.Logger;
 
 public class ToolbarScrollPane extends JPanel {

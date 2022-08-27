@@ -4,7 +4,6 @@ import java.awt.geom.Area;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
-
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.presenter.ComponentArea;

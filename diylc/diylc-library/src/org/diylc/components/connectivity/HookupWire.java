@@ -25,7 +25,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Path2D;
-
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;

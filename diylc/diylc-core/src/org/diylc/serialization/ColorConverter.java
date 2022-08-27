@@ -22,7 +22,6 @@
 package org.diylc.serialization;
 
 import java.awt.Color;
-
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;

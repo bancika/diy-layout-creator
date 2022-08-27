@@ -18,9 +18,7 @@
 package org.diylc.common;
 
 import java.io.Serializable;
-
 import javax.swing.Icon;
-
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.BomPolicy;

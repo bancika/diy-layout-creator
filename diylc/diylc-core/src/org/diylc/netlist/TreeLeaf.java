@@ -22,7 +22,6 @@
 package org.diylc.netlist;
 
 import java.util.List;
-
 import org.diylc.core.IDIYComponent;
 
 public class TreeLeaf implements ITree {

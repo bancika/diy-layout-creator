@@ -22,7 +22,6 @@
 package org.diylc.plugins.cloud.model;
 
 import java.io.Serializable;
-
 import org.diylc.core.annotations.DynamicList;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.MultiLineText;

@@ -22,7 +22,6 @@
 package org.diylc.components;
 
 import java.awt.Rectangle;
-
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
