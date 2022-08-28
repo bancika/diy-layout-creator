@@ -23,10 +23,9 @@ package org.diylc.components.misc;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-
 import org.diylc.components.AbstractSchematicLeadedSymbol;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -35,7 +34,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.CurrentUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.core.measures.VoltageUnit;
 
 @ComponentDescriptor(name = "Current Source", author = "JD", category = "Schematic Symbols", creationMethod = CreationMethod.POINT_BY_POINT, 
                      instanceNamePrefix = "I", description = "Current Source schematic symbol", zOrder = IDIYComponent.COMPONENT)
@@ -81,7 +79,7 @@ public class CurrentSourceSymbol extends AbstractSchematicLeadedSymbol<String> {
     return currentNew;
   }
 
-  public void setVoltageNew(org.diylc.core.measures.Current currentNew) {
+  public void setCurrentNew(org.diylc.core.measures.Current currentNew) {
     this.currentNew = currentNew;
   }
 

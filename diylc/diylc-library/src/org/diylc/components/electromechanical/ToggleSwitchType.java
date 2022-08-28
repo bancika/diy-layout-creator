@@ -23,18 +23,19 @@ package org.diylc.components.electromechanical;
 
 public enum ToggleSwitchType {
 
-  SPST, SPDT, DPDT, _DP3T_mustang, _3PDT, _4PDT, _5PDT, SPDT_off, DPDT_off, _3PDT_off, _4PDT_off, _5PDT_off, DPDT_ononon_1, DPDT_ononon_2;
+  SPST("SPST"), SPDT("SPDT (On/On)"), SPDT_off("SPDT (On/Off/On"), DPDT("DPDT (On/On)"),DPDT_off("DPDT (On/Off/On"), 
+  DPDT_ononon_1("DPDT (On/On/On Type 1)"), DPDT_ononon_2("DPDT (On/On/On Type 2)"),
+  _DP3T_mustang("DP3T"), _3PDT("3PDT"),_3PDT_off("3PDT (On/Off/On)"), _4PDT("4PDT"), _4PDT_off("4PDT (On/Off/On)"), 
+  _5PDT("5PDT"), _5PDT_off("5PDT (On/Off/On)");
+  
+  private String label;
+  
+  private ToggleSwitchType(String label) {
+    this.label = label;
+  }
 
   @Override
   public String toString() {
-    String name = name();
-    if (name.startsWith("_"))
-      name = name.substring(1);
-    name = name.replace("_", " ");
-    name = name.replace("mustang", "");
-    name = name.replace("off", " (Center OFF)");
-    name = name.replace("ononon_1", " On/On/On (Type 1)");
-    name = name.replace("ononon_2", " On/On/On (Type 2)");
-    return name;
+    return label;
   }
 }

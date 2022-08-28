@@ -25,7 +25,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import org.diylc.components.AbstractSchematicLeadedSymbol;
 import org.diylc.core.CreationMethod;
@@ -119,9 +118,7 @@ public class VoltageSourceSymbol extends AbstractSchematicLeadedSymbol<String> {
     // Main body is a circle, drawn with an Ellipse
     double width = getWidth().convertToPixels();
     double length = getLength().convertToPixels();
-    GeneralPath body = new GeneralPath();
-    body.append(new Ellipse2D.Double(0d, 0d, width, length), true);
-    return (Shape) body;
+    return new Ellipse2D.Double(0d, 0d, width, length);
   }
 
   @Override

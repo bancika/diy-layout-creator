@@ -14,17 +14,18 @@
 #36 (0.13mm / 0.00500in)
 #8 (3.26mm / 0.12849in)
 3PDT
-3PDT  (Center OFF)
+3PDT (On/Off/On)
 4 band
 4P5T (Super/Mega)
 4PDT
-4PDT  (Center OFF)
+4PDT (On/Off/On)
 5 band
 5PDT
-5PDT  (Center OFF)
+5PDT (On/Off/On)
 A-O-I     REGULATOR
 AC
 AWG
+Alternate
 And
 B-C-E     BJT
 C-B-E     BJT
@@ -37,10 +38,12 @@ DFM A
 DFM B
 DIP
 DP3T
-DP3T 
 DP5T
 DPDT
-DPDT  (Center OFF)
+DPDT (On/Off/On
+DPDT (On/On)
+DPDT (On/On/On Type 1)
+DPDT (On/On/On Type 2)
 Deutsch
 Dimension Mode
 Dots (Gradual)
@@ -81,9 +84,11 @@ S-G-D     JFET
 S-G-D     MOSFET
 SMD
 SPDT
-SPDT  (Center OFF)
+SPDT (On/Off/On
+SPDT (On/On)
 SPST
-SourceType
+Source Style
+Source Type
 Srpski
 Xnor
 Xor
