@@ -37,6 +37,15 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	 <release version="4.27.0" date="2022-08-28">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Current Source' symbol. Thank you, JD!</li>
+             <li>[Improvement] Few minor improvements</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.27.0</url>
+     </release>
      <release version="4.26.0" date="2022-08-27">
          <description>
            <ul>
