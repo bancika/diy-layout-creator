@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.components.misc.LoadlineEntity;
+import org.diylc.core.Angle;
 import org.diylc.core.annotations.ByteArrayProperty;
 import org.diylc.core.annotations.DynamicList;
 import org.diylc.core.annotations.MultiLineText;
@@ -111,6 +112,10 @@ public class FieldEditorFactory {
     }
     if (LoadlineEntity.class.isAssignableFrom(property.getType())) {
       LoadlineEditor editor = new LoadlineEditor(property);
+      return editor;
+    }
+    if (Angle.class.isAssignableFrom(property.getType())) {
+      AngleEditor editor = new AngleEditor(property);
       return editor;
     }
     LOG.error("Unrecognized parameter type: " + property.getType().getName());

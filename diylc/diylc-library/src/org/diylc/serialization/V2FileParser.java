@@ -69,6 +69,7 @@ import org.diylc.components.tube.PentodeSymbol;
 import org.diylc.components.tube.TriodeSymbol;
 import org.diylc.components.tube.TubeSocket;
 import org.diylc.components.tube.TubeSocket.Base;
+import org.diylc.core.Angle;
 import org.diylc.core.Project;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
@@ -926,7 +927,7 @@ public class V2FileParser implements IOldFileParser {
             ts.setAlpha((byte) transparency);
             if (value_s != "")
               ts.setValue(value_s);
-            ts.setAngle((int) angle);
+            ts.setAngle(Angle.of((int) angle));
             ts.setControlPoint(tacke.get(0), 0);
             ts.setBase(Base.B9A);
             project.getComponents().add(ts);
@@ -962,7 +963,7 @@ public class V2FileParser implements IOldFileParser {
             ts.setAlpha((byte) transparency);
             if (value_s != "")
               ts.setValue(value_s);
-            ts.setAngle((int) angle);
+            ts.setAngle(Angle.of((int) angle));
             ts.setControlPoint(tacke.get(0), 0);
             ts.setBase(Base.OCTAL);
             project.getComponents().add(ts);
@@ -975,7 +976,7 @@ public class V2FileParser implements IOldFileParser {
             ts.setAlpha((byte) transparency);
             if (value_s != "")
               ts.setValue(value_s);
-            ts.setAngle((int) angle);
+            ts.setAngle(Angle.of((int)angle));
 
             ts.setControlPoint(tacke.get(0), 0);
             ts.setBase(Base.B7G);

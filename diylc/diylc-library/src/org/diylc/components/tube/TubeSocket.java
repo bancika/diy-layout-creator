@@ -39,6 +39,8 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.transform.TubeSocketTransformer;
+import org.diylc.core.Angle;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -54,7 +56,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes",
     instanceNamePrefix = "V", description = "Various types of tube/valve sockets",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
+    transformer = TubeSocketTransformer.class)
 public class TubeSocket extends AbstractTransparentComponent<String> {
 
   private static final Size B9A_PIN_SPACING_CHASSIS = new Size(12.5d, SizeUnit.mm);
@@ -119,7 +122,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 
   @EditableProperty
   @SuppressWarnings("incomplete-switch")
-  public int getAngle() {
+  public Angle getAngle() {
     if (orientation != null) {
       switch (orientation) {
         case _90:
@@ -134,11 +137,11 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
       }
       orientation = null;
     }
-    return angle;
+    return Angle.of(angle);
   }
 
-  public void setAngle(int angle) {
-    this.angle = angle;
+  public void setAngle(Angle angle) {
+    this.angle = angle.getValue();
     updateControlPoints();
     // Reset body shape
     body = null;
@@ -198,7 +201,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     double initialAngleOffset = hasEmptySpace ? angleIncrement : (angleIncrement / 2);
 
     controlPoints = new Point2D[pinCount + 1];
-    double theta = initialAngleOffset + Math.toRadians(getAngle());
+    double theta = initialAngleOffset + Math.toRadians(getAngle().getValue());
     controlPoints[0] = firstPoint;
     for (int i = 0; i < pinCount; i++) {
       controlPoints[i + 1] =
@@ -238,7 +241,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
       
       if (base == Base.OCTAL) {
         int tickSize = getClosestOdd(OCTAL_TICK_SIZE.convertToPixels());
-        double theta = Math.toRadians(getAngle());
+        double theta = Math.toRadians(getAngle().getValue());
         int centerX = (int) (controlPoints[0].getX() + Math.cos(theta) * holeSize / 2);
         int centerY = (int) (controlPoints[0].getY() + Math.sin(theta) * holeSize / 2);
         bodyArea.subtract(new Area(new Ellipse2D.Double(centerX - tickSize / 2, centerY - tickSize / 2, tickSize,
@@ -320,10 +323,10 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     }
     
     // draw electrode labels
-    if (electrodeLabels != null) {
+    if (getElectrodeLabels() != null) {
       g2d.setColor(getLabelColor());
       g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.8)));
-      String[] labels = electrodeLabels.split(",");
+      String[] labels = getElectrodeLabels().split(",");
       double electrodeLabelOffset = project.getFont().getSize2D() * (getBase() == Base.B9A && getMount() == Mount.PCB ? 1.5 : 1);
       for (int i = 0; i < labels.length; i++) {
         if (i < controlPoints.length - 1) {
@@ -374,7 +377,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   }
 
   @Override
-  @EditableProperty(name = "Type")
+  @EditableProperty(name = "Designation")
   public String getValue() {
     return type;
   }
@@ -436,6 +439,12 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     updateControlPoints();
     // Reset body shape
     body = null;
+  }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    String[] labels = getElectrodeLabels().split(",");
+    return index > 0 && index <= labels.length ? labels[index - 1] : null;
   }
   
   @Override
