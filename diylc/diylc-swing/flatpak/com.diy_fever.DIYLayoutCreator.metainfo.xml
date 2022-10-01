@@ -37,6 +37,17 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+     <release version="4.28.0" date="2022-09-25">
+         <description>
+           <ul>
+             <li>[New Feature] Added '4-pin Jumbo Tube Socket' component for 211, 805 and 845 tubes</li>
+             <li>[Improvement] More convenient way of editing angle of rotation of all tube sockets</li>
+             <li>[Improvement] Ability to rotate all tube sockets through the 'Transform Selection' feature or keyboard shortcot</li>
+             <li>[Bug Fix] Tube socket pin designations are not rendered until property editor dialog is opened and closed</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.28.0</url>
+     </release>
   	 <release version="4.27.0" date="2022-08-28">
          <description>
            <ul>
