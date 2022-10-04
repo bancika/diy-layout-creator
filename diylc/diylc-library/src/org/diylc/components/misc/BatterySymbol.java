@@ -116,7 +116,7 @@ public class BatterySymbol extends AbstractSchematicLeadedSymbol<String> {
 
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.rotate(-Math.PI / 4, width / 2, height / 2);
-    g2d.setColor(COLOR);
+    g2d.setColor(LEAD_COLOR);
     g2d.drawLine(0, height / 2, 13 * width / 32, height / 2); // draw leads
     g2d.drawLine(width - 13 * width / 32, height / 2, width, height / 2);
     g2d.setColor(COLOR);
