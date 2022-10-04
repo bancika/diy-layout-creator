@@ -32,6 +32,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Arrays;
+import java.util.List;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -168,10 +170,13 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       int terminalLength = getClosestOdd(TERMINAL_LENGTH.convertToPixels());
       int terminalWidth = getClosestOdd(TERMINAL_WIDTH.convertToPixels());
       
-      int yOffset;
-      if (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP4T || type == LeverSwitchType.DP3T_5pos) {
+      double yOffset;
+      if (type == LeverSwitchType.DP3T || type == LeverSwitchType.DP4T
+          || type == LeverSwitchType.DP3T_5pos) {
         x += terminalLength;
         yOffset = 7;
+      } else if (type == LeverSwitchType.DP3T_5pos_Import) {
+        yOffset = 10;
       } else {
         yOffset = 12;
       }      
@@ -231,6 +236,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
         if (getHighlightCommon() && 
             (((type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos) && (i == 1 || i == 6)) ||
             (type == LeverSwitchType.DP4T && (i == 1 || i == 8)) ||
+            (type == LeverSwitchType.DP3T_5pos_Import && (i == 3 || i == 4)) ||
             ((type == LeverSwitchType._4P5T || type == LeverSwitchType.DP5T) && (i == 0 || i == 11 || i == 12 || i == 23))))
           commonTerminalArea.add(terminal);
         else
@@ -269,6 +275,13 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
           controlPoints[i] = new Point2D.Double(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
         }
         break;
+      case DP3T_5pos_Import:
+        controlPoints = new Point2D[8];
+        terminalSpacing *= 1.5;
+        for (int i = 0; i < 8; i++) {
+          controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing);
+        }
+        break;        
       case DP4T:
         controlPoints = new Point2D[10];
         for (int i = 0; i < 10; i++) {
@@ -418,7 +431,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   }
  
   public enum LeverSwitchType {
-    DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), _4P5T("4P5T (Super/Mega)"), DP4T("DP4T (4-Position Tele)"), DP5T("DP5T");
+    DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), DP3T_5pos_Import("DP3T (Import 5-Position Strat)"),
+    _4P5T("4P5T (Super/Mega)"), DP4T("DP4T (4-Position Tele)"), DP5T("DP5T");
 
     private String title;
 
@@ -447,7 +461,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
         return 3;
       case DP4T:
         return 4;
-      case DP3T_5pos:        
+      case DP3T_5pos:
+      case DP3T_5pos_Import:
       case DP5T:        
       case _4P5T:
         return 5;
@@ -473,6 +488,14 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
         else
           return (index2 == 6 && (index1 == 2 || (index1 == 0 && position == 1) || (index1 == 4 && position == 3))) || 
               (index1 == 1 && (index2 == 5 || (index2 == 3 && position == 1) || (index2 == 7 && position == 3)));
+      case DP3T_5pos_Import:
+        List<int[]> positionConnections = DP3T_5pos_Import_CONNECTIONS.get(position);
+        for (int[] arr : positionConnections) {
+          if (arr[0] == index1 && arr[1] == index2) {
+            return true;
+          }
+        }
+        return false;
       case DP5T:
         return (index1 == 0 && index2 - index1 == position + 1)
             || (index2 == 11 && index2 - index1 == 5 - position);
@@ -487,4 +510,31 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
+  
+  private static final List<List<int[]>> DP3T_5pos_Import_CONNECTIONS = Arrays.asList(
+      Arrays.asList(
+          new int[] { 0, 3 },
+          new int[] { 4, 5 }          
+          ), // position 1
+      Arrays.asList(
+          new int[] { 1, 3 },
+          new int[] { 0, 3 },
+          new int[] { 4, 5 },
+          new int[] { 4, 6 }
+          ), // position 2
+      Arrays.asList(
+          new int[] { 1, 3 },
+          new int[] { 4, 6 }
+          ), // position 3
+      Arrays.asList(
+          new int[] { 2, 3 },
+          new int[] { 1, 3 },
+          new int[] { 4, 7 },
+          new int[] { 4, 6 }
+          ), // position 4
+      Arrays.asList(
+          new int[] { 2, 3 },
+          new int[] { 4, 7 }
+          ) // position 5
+      );
 }
