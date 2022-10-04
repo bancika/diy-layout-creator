@@ -3,6 +3,7 @@
 - [System requirements](#system-requirements)
 - [Installing the app](#installing-the-app)
 - [User interface](#user-interface)
+- [Mouse operation](#mouse-operation)
 - [Configuring the application](#configuring-the-application)
 - [Adding components to the project](#adding-components-to-the-project)
 - [Moving components around](#moving-components-around)
@@ -99,6 +100,26 @@ User interface can be separated into 4 major sections:
   1. **Main menu** offers file operations, such as saving, loading and exporting, clipboard operations, etc.
   1. **Status bar**: shows selection related information, zoom control, update information and memory consumption.
 
+### Mouse operation ###
+
+ Use left mouse button for:
+ 
+ * single click to select a component on the canvas
+ * **Ctrl** + single click for adding a component on the canvas to the existing selection
+ * selecting component types in the Toolbox or the Toolbar
+ * dragging a component type from the Toolbox to the canvas to add it to the project
+ * drawing a rectangle on the canvas to multi-select components
+ * double click on a component to edit its properties
+
+Use right button for:
+
+* single click on an empty space on the canvas for the project context menu
+* single click on a component for the component context menu
+
+Use middle button for
+
+* click on the canvas and drag to pan the visible area of the canvas, following the cursor
+
 ### Configuring the application ###
 
 Application configuration may be changed from **Config** menu. It contains the following items:
@@ -107,13 +128,18 @@ Application configuration may be changed from **Config** menu. It contains the f
   * **Auto-Create Pads**: when checked, application will automatically create solder pads whenever a component is added to the layout.
   * **Auto-Edit Mode**: when checked, the component edit dialog will appear after each component is created, the same way version 1.x works.
   * **Continuous Creation**: when checked, the last selected component type will remain active after you create a component, allowing you to create many components of the same type rapidly.
-  * **Show Rulers**: controls whether the rulers should be displayed
-  * **Show Grid**: controls whether the grid lines should be shown while working on the project.
+  * **Enable Cache Boost**: significantly improves the speed of rendering at the cost of memory consumption. It is recommended to keep this checked unless there are some issues with the memory or the rendering
   * **Export Grid**: controls whether the grid lines should be exported when saving the project to a file or printer.
+  * **Extra Working Area**: enables extra space around the project boundaries for auxiliary components to be placed without going into the final render.
   * **Hi-Quality Rendering**: when checked, image quality will improve slightly, but it may decrease performance.
-  * **Mouse Wheel Zoom**: when checked, mouse wheel zooms in and out instead of scrolling the visible area of the project.
+  * **Highlight Connected Areas**: in this mode the project switches to read-only mode and the cursor switches to the crosshairs indicating a different mode of operation. When clicked on a component, the application will highlight all the components that are connected to it directly through wires, traces, copper, etc.
+  * **Language**: translates the UI to a different language.
+  * **Mouse Wheel Zoom**: in this mode, mouse wheel controls the zoom instead of scroll.
   * **Outline Mode**: when checked, components are drawn only as the the outline with no fill color or decorations.
-  * **Snap to Grid**: when checked, drag & drop operations will snap control points to the grid instead of following the mouse cursor pixel by pixel. Hold **Ctrl + Shift** while dragging to temporarily disable 'Snap to Grid' functionality and move the selected components freely.
+  * **Renumber on Paste**: when checked, any pasted components will be assigned a new name instead of keeping the original one.
+  * **Show Rulers**: controls whether the rulers should be displayed.
+  * **Show Grid**: controls whether the grid lines should be shown while working on the project.
+  * **Snap to**: controls whether control points should snap to the grid, to other components or not snap at all. Hold **Ctrl + Shift** while dragging to temporarily disable 'Snap to Grid' functionality and move the selected components freely.
   * **Sticky Points**: when checked, components are allowed to stick to each other when moved. Hold **Ctrl** key while dragging to temporarily toggle the Sticky Point mode. See [Control points](#Control_points.md) for more info on control points.
   * **Theme**: allows selecting a theme. Themes are read from **themes** directory under the DIYLC root and they include background color and grid line color. You can create your own themes by adding an XML file to themes directory. It's easiest to start with a copy of one of the existing files.
 
