@@ -37,6 +37,17 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	 <release version="4.29.0" date="2022-10-04">
+         <description>
+           <ul>
+             <li>[New Feature] Added 6 variations of Schaller Megaswitch</li>
+             <li>[New Feature] Added 'DP3T (Import 5-Position Strat)' type of lever switch</li>
+             <li>[New Feature] Added 'Stingray Bass Pickup' component. Thank you JD!</li>
+             <li>[New Feature] Added 'Bulb' schematic symbol. Thank you JD!</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.29.0</url>
+     </release>
      <release version="4.28.0" date="2022-09-25">
          <description>
            <ul>
