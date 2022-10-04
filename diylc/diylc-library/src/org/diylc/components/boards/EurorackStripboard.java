@@ -58,7 +58,7 @@ public class EurorackStripboard extends AbstractProtoBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color FILL_COLOR = Color.decode("#6B9B6B");
+  public static Color FILL_COLOR = FR4_COLOR;
   public static Size SPACING = new Size(0.1d, SizeUnit.in);
   public static Size CORNER_RADIUS = new Size(0.1d, SizeUnit.in);
   public static Color SELECTION_COLOR = Color.red;

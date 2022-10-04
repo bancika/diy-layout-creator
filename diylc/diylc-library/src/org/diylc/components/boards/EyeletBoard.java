@@ -47,7 +47,7 @@ public class EyeletBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color BOARD_COLOR = Color.decode("#E3EAB4");
+  public static Color BOARD_COLOR = FR4_LIGHT_COLOR;
   public static Color BORDER_COLOR = BOARD_COLOR.darker();
   public static Color EYELET_COLOR = Color.decode("#C3E4ED");
 

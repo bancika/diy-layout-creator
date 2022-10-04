@@ -10,6 +10,8 @@ import org.diylc.components.electromechanical.ToggleSwitchType;
 import org.diylc.components.guitar.LPSwitch;
 import org.diylc.components.guitar.LeverSwitch;
 import org.diylc.components.guitar.LeverSwitch.LeverSwitchType;
+import org.diylc.components.guitar.SchallerMegaSwitch;
+import org.diylc.components.guitar.SchallerMegaSwitch.MegaSwitchType;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.junit.Test;
@@ -35,6 +37,17 @@ public class SwitchTests {
         "1,7,11", "1,12,14", "1,19,23", "2,0,3", "2,8,11", "2,12,15", "2,20,23", "3,0,4", "3,9,11",
         "3,12,16", "3,21,23", "4,0,5", "4,10,11", "4,12,17", "4,22,23"};
     leverSwitch.setType(LeverSwitchType._4P5T);
+    testSwitch(leverSwitch, validCombinations);
+  }
+  
+  @Test
+  public void testLeverSwitchImport() {
+    LeverSwitch leverSwitch = new LeverSwitch();
+
+    String[] validCombinations = new String[] {"0,0,3", "0,4,5", "1,0,3", "1,4,5", "1,1,3",
+        "1,4,6", "2,1,3", "2,4,6", "3,1,3", "3,2,3", "3,4,6", "3,4,7", "4,2,3", "4,4,7"};
+    
+    leverSwitch.setType(LeverSwitchType.DP3T_5pos_Import);
     testSwitch(leverSwitch, validCombinations);
   }
 
@@ -83,6 +96,75 @@ public class SwitchTests {
     toggleSwitch.setValue(ToggleSwitchType.DPDT_ononon_2);
     String[] validCombinations = new String[] {"0,0,1", "0,3,4", "1,1,2", "1,3,4", "2,1,2", "2,4,5"};
     testSwitch(toggleSwitch, validCombinations);
+  }
+  
+  @Test
+  public void testMegaSwitchE() {
+    SchallerMegaSwitch sw = new SchallerMegaSwitch();
+
+    sw.setType(MegaSwitchType.E);
+    String[] validCombinations = new String[] {"0,2,6", "1,3,5", "1,2,6", "1,0,2", "2,3,4",
+        "2,2,5", "2,1,2", "3,3,4", "3,0,2", "3,1,2", "4,1,2"};
+
+    testSwitch(sw, validCombinations);
+  }
+  
+  @Test
+  public void testMegaSwitchEPlus() {
+    SchallerMegaSwitch sw = new SchallerMegaSwitch();
+
+    sw.setType(MegaSwitchType.E_PLUS);
+    String[] validCombinations = new String[] {"0,2,8", "1,3,6", "1,2,8", "1,0,2", "2,3,5",
+        "2,2,7", "2,1,2", "3,3,4", "3,0,2", "3,1,2", "4,1,2"};
+
+    testSwitch(sw, validCombinations);
+  }
+  
+  @Test
+  public void testMegaSwitchP() {
+    SchallerMegaSwitch sw = new SchallerMegaSwitch();
+
+    sw.setType(MegaSwitchType.P);
+    String[] validCombinations = new String[] {"0,3,4", "0,1,6", "1,3,4", "1,1,2", "1,0,4", "1,1,5", 
+        "2,0,2", "2,1,6", "3,0,1", "3,3,4", "3,2,4", "3,1,6", "4,1,5"};
+
+    testSwitch(sw, validCombinations);
+  }
+  
+  @Test
+  public void testMegaSwitchS() {
+    SchallerMegaSwitch sw = new SchallerMegaSwitch();
+
+    sw.setType(MegaSwitchType.S);
+    String[] validCombinations = new String[] {"0,6,7", "0,2,3", "1,4,7", "1,6,7", "1,0,3", "1,2,3", 
+        "2,4,7", "2,0,3", "3,4,7", "3,5,7", "3,0,3", "3,1,3", "4,5,7", "4,1,3"};
+
+    testSwitch(sw, validCombinations);
+  }
+  
+  @Test
+  public void testMegaSwitchM() {
+    SchallerMegaSwitch sw = new SchallerMegaSwitch();
+
+    sw.setType(MegaSwitchType.M);
+    String[] validCombinations = new String[] {"0,4,5", "0,10,11", "0,16,17", "0,22,23", 
+        "1,3,5", "1,9,11", "1,15,17", "1,21,23",
+        "2,2,5", "2,8,11", "2,14,17", "2,20,23",
+        "3,1,5", "3,7,11", "3,13,17", "3,19,23",
+        "4,0,5", "4,6,11", "4,12,17", "4,18,23"};
+
+    testSwitch(sw, validCombinations);
+  }
+  
+  @Test
+  public void testMegaSwitchT() {
+    SchallerMegaSwitch sw = new SchallerMegaSwitch();
+
+    sw.setType(MegaSwitchType.T);
+    String[] validCombinations = new String[] {"0,6,7", "0,2,3", "1,4,7", "1,0,3",  
+        "2,5,7", "2,1,3"};
+
+    testSwitch(sw, validCombinations);
   }
 
   private void testSwitch(ISwitch sw, String[] validCombinations) {

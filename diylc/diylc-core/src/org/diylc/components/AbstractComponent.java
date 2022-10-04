@@ -58,7 +58,10 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public static Color METAL_COLOR = Color.decode("#759DAF");
   public static Color LIGHT_METAL_COLOR = Color.decode("#EEEEEE");
   public static Color COPPER_COLOR = Color.decode("#DA8A67");
-
+  public static Color GOLD_COLOR = Color.decode("#DAA520");
+  public static Color FR4_COLOR = Color.decode("#6B9B6B");
+  public static Color FR4_LIGHT_COLOR = Color.decode("#BABE71");
+  
   @EditableProperty(defaultable = false)
   @Override
   public String getName() {
