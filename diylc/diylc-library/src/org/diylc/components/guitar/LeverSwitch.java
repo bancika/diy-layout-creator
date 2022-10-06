@@ -177,6 +177,9 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
         yOffset = 7;
       } else if (type == LeverSwitchType.DP3T_5pos_Import) {
         yOffset = 10;
+      } else if (type == LeverSwitchType._6_WAY_OG) {
+        x += terminalLength;
+        yOffset = 8;
       } else {
         yOffset = 12;
       }      
@@ -235,6 +238,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
         terminalArea.add(terminal);
         if (getHighlightCommon() && 
             (((type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos) && (i == 1 || i == 6)) ||
+            ((type == LeverSwitchType._6_WAY_OG) && (i == 1 || i == 8)) ||
             (type == LeverSwitchType.DP4T && (i == 1 || i == 8)) ||
             (type == LeverSwitchType.DP3T_5pos_Import && (i == 3 || i == 4)) ||
             ((type == LeverSwitchType._4P5T || type == LeverSwitchType.DP5T) && (i == 0 || i == 11 || i == 12 || i == 23))))
@@ -271,32 +275,38 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       case DP3T:
       case DP3T_5pos:
         controlPoints = new Point2D[8];
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < controlPoints.length; i++) {
+          controlPoints[i] = new Point2D.Double(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
+        }
+        break;
+      case _6_WAY_OG:
+        controlPoints = new Point2D[10];
+        for (int i = 0; i < controlPoints.length; i++) {
           controlPoints[i] = new Point2D.Double(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
         }
         break;
       case DP3T_5pos_Import:
         controlPoints = new Point2D[8];
         terminalSpacing *= 1.5;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < controlPoints.length; i++) {
           controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing);
         }
         break;        
       case DP4T:
         controlPoints = new Point2D[10];
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < controlPoints.length; i++) {
           controlPoints[i] = new Point2D.Double(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
         }
         break;
       case DP5T:
         controlPoints = new Point2D[12];
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < controlPoints.length; i++) {
           controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
         }
         break;
       case _4P5T:
         controlPoints = new Point2D[24];
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < controlPoints.length / 2; i++) {
           controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
           controlPoints[i + 12] = new Point2D.Double(x + waferSpacing, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
         }
@@ -432,7 +442,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
  
   public enum LeverSwitchType {
     DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), DP3T_5pos_Import("DP3T (Import 5-Position Strat)"),
-    _4P5T("4P5T (Super/Mega)"), DP4T("DP4T (4-Position Tele)"), DP5T("DP5T");
+    _4P5T("4P5T (Super/Mega)"), DP4T("DP4T (4-Position Tele)"), _6_WAY_OG("DP4T (6-Position Oak Grigsby)"), DP5T("DP5T");
 
     private String title;
 
@@ -466,6 +476,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       case DP5T:        
       case _4P5T:
         return 5;
+      case _6_WAY_OG:
+        return 6;
     }
     return 0;
   }
@@ -477,9 +489,13 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
 
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
+    List<int[]> positionConnections = null;
     switch (type) {
       case DP3T:
         return (index1 == 1 && index2 == index1 + 2 * (position + 1)) || (index2 == 6 && index2 == index1 + 2 * (3 - position));
+      case _6_WAY_OG:
+        positionConnections = _6_WAY_CONNECTIONS.get(position);
+        break;        
       case DP4T:
         return (index1 == 1 && index2 == index1 + 2 * (position + 1)) || (index2 == 8 && index2 == index1 + 2 * (4 - position));
       case DP3T_5pos:
@@ -489,12 +505,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
           return (index2 == 6 && (index1 == 2 || (index1 == 0 && position == 1) || (index1 == 4 && position == 3))) || 
               (index1 == 1 && (index2 == 5 || (index2 == 3 && position == 1) || (index2 == 7 && position == 3)));
       case DP3T_5pos_Import:
-        List<int[]> positionConnections = DP3T_5pos_Import_CONNECTIONS.get(position);
-        for (int[] arr : positionConnections) {
-          if (arr[0] == index1 && arr[1] == index2) {
-            return true;
-          }
-        }
+        positionConnections = DP3T_5pos_Import_CONNECTIONS.get(position);
         return false;
       case DP5T:
         return (index1 == 0 && index2 - index1 == position + 1)
@@ -503,6 +514,15 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
         return ((index1 == 0 || index1 == 12) && index2 - index1 == position + 1)
             || ((index2 == 11 || index2 == 23) && index2 - index1 == 5 - position);     
     }
+    
+    if (positionConnections != null) {
+      for (int[] arr : positionConnections) {
+        if (arr[0] == index1 && arr[1] == index2) {
+          return true;
+        }
+      }     
+    }
+    
     return false;
   }
   
@@ -536,5 +556,38 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
           new int[] { 2, 3 },
           new int[] { 4, 7 }
           ) // position 5
+      );
+  
+  private static final List<List<int[]>> _6_WAY_CONNECTIONS = Arrays.asList(
+      Arrays.asList(
+          new int[] { 0, 8 },
+          new int[] { 2, 8 },
+          new int[] { 1, 3 }
+          ), // position 1
+      Arrays.asList(
+          new int[] { 2, 8 },
+          new int[] { 1, 3 },
+          new int[] { 1, 5 }
+          ), // position 2
+      Arrays.asList(
+          new int[] { 2, 8 },
+          new int[] { 4, 8 },
+          new int[] { 1, 5 }
+          ), // position 3
+      Arrays.asList(
+          new int[] { 4, 8 },
+          new int[] { 1, 5 },
+          new int[] { 1, 7 }
+          ), // position 4
+      Arrays.asList(
+          new int[] { 4, 8 },
+          new int[] { 6, 8 },
+          new int[] { 1, 7 }
+          ), // position 5
+      Arrays.asList(
+          new int[] { 6, 8 },
+          new int[] { 1, 7 },
+          new int[] { 1, 9 }
+          ) // position 6      
       );
 }
