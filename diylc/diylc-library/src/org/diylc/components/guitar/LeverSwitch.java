@@ -506,7 +506,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
               (index1 == 1 && (index2 == 5 || (index2 == 3 && position == 1) || (index2 == 7 && position == 3)));
       case DP3T_5pos_Import:
         positionConnections = DP3T_5pos_Import_CONNECTIONS.get(position);
-        return false;
+        break;
       case DP5T:
         return (index1 == 0 && index2 - index1 == position + 1)
             || (index2 == 11 && index2 - index1 == 5 - position);

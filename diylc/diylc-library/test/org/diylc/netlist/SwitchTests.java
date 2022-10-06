@@ -10,6 +10,7 @@ import org.diylc.components.electromechanical.ToggleSwitchType;
 import org.diylc.components.guitar.LPSwitch;
 import org.diylc.components.guitar.LeverSwitch;
 import org.diylc.components.guitar.LeverSwitch.LeverSwitchType;
+import org.diylc.components.guitar.S1Switch;
 import org.diylc.components.guitar.SchallerMegaSwitch;
 import org.diylc.components.guitar.SchallerMegaSwitch.MegaSwitchType;
 import org.diylc.core.IDIYComponent;
@@ -49,6 +50,26 @@ public class SwitchTests {
     
     leverSwitch.setType(LeverSwitchType.DP3T_5pos_Import);
     testSwitch(leverSwitch, validCombinations);
+  }
+  
+  @Test
+  public void testLeverSwitch6Way() {
+    LeverSwitch leverSwitch = new LeverSwitch();
+
+    String[] validCombinations = new String[] {"0,0,8", "0,2,8", "0,1,3", "1,2,8", "1,1,3", "1,1,5", "2,2,8", "2,4,8", "2,1,5",
+        "3,4,8", "3,1,5", "3,1,7", "4,4,8", "4,6,8", "4,1,7", "5,6,8", "5,1,7", "5,1,9"};
+    
+    leverSwitch.setType(LeverSwitchType._6_WAY_OG);
+    testSwitch(leverSwitch, validCombinations);
+  }
+  
+  @Test
+  public void testS1Switch() {
+    S1Switch s1Switch = new S1Switch();
+
+    String[] validCombinations = new String[] {"0,1,2", "0,4,5", "0,7,8", "0,10,11", "1,2,3", "1,5,6", "1,8,9", "1,11,12"};
+    
+    testSwitch(s1Switch, validCombinations);
   }
 
   @Test
