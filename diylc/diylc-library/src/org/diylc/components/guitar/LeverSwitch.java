@@ -557,36 +557,36 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
           new int[] { 4, 7 }
           ) // position 5
       );
-  
+
   private static final List<List<int[]>> _6_WAY_CONNECTIONS = Arrays.asList(
       Arrays.asList(
           new int[] { 0, 8 },
-          new int[] { 2, 8 },
-          new int[] { 1, 3 }
+          new int[] { 1, 3 },
+          new int[] { 1, 5 }
           ), // position 1
       Arrays.asList(
+          new int[] { 0, 8 },
           new int[] { 2, 8 },
-          new int[] { 1, 3 },
           new int[] { 1, 5 }
           ), // position 2
       Arrays.asList(
           new int[] { 2, 8 },
-          new int[] { 4, 8 },
-          new int[] { 1, 5 }
+          new int[] { 1, 5 },
+          new int[] { 1, 7 }
           ), // position 3
       Arrays.asList(
+          new int[] { 2, 8 },
           new int[] { 4, 8 },
-          new int[] { 1, 5 },
           new int[] { 1, 7 }
           ), // position 4
       Arrays.asList(
           new int[] { 4, 8 },
-          new int[] { 6, 8 },
-          new int[] { 1, 7 }
+          new int[] { 1, 7 },
+          new int[] { 1, 9 }
           ), // position 5
       Arrays.asList(
+          new int[] { 4, 8 },
           new int[] { 6, 8 },
-          new int[] { 1, 7 },
           new int[] { 1, 9 }
           ) // position 6      
       );
