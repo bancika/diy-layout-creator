@@ -34,11 +34,9 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.transform.JumboTubeSocketTransformer;
-import org.diylc.core.Angle;
+import org.diylc.components.AbstractAngledComponent;
+import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -54,8 +52,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "4-pin Jumbo Tube Socket", category = "Tubes",
     author = "Branislav Stojkovic", description = "4-pin Jumbo ceramic tube socket for 211, 805 and 845 tubes",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", enableCache = true,
-    transformer = JumboTubeSocketTransformer.class)
-public class Jumbo4PinTubeSocket extends AbstractTransparentComponent<String> {
+    transformer = AngledComponentTransformer.class)
+public class Jumbo4PinTubeSocket extends AbstractAngledComponent<String> {
 
 
   private static final Size JUMBO_PIN_SPACING = new Size(98.5d, SizeUnit.mm);
@@ -78,10 +76,7 @@ public class Jumbo4PinTubeSocket extends AbstractTransparentComponent<String> {
   private static String[] electrodeLabels = new String[] {"G", "F", "P", "F"};
 
   private String type = "";
-  @Deprecated
-  private Orientation orientation;
-  // private Mount mount = Mount.CHASSIS;
-  private int angle;
+
   private Color color = BODY_COLOR;
 
   private Color labelColor = LABEL_COLOR;
@@ -89,38 +84,9 @@ public class Jumbo4PinTubeSocket extends AbstractTransparentComponent<String> {
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
 
-  transient private Shape[] body;
-
   public Jumbo4PinTubeSocket() {
     super();
     updateControlPoints();
-  }
-
-  @EditableProperty
-  @SuppressWarnings("incomplete-switch")
-  public Angle getAngle() {
-    if (orientation != null) {
-      switch (orientation) {
-        case _90:
-          angle = 90;
-          break;
-        case _180:
-          angle = 180;
-          break;
-        case _270:
-          angle = 270;
-          break;
-      }
-      orientation = null;
-    }
-    return Angle.of(angle);
-  }
-
-  public void setAngle(Angle angle) {
-    this.angle = angle.getValue();
-    updateControlPoints();
-    // Reset body shape
-    body = null;
   }
 
   @EditableProperty
@@ -135,7 +101,7 @@ public class Jumbo4PinTubeSocket extends AbstractTransparentComponent<String> {
     this.color = color;
   }
 
-  private void updateControlPoints() {
+  protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     int pinCount = 4;
     int pinSpacing = getClosestOdd(JUMBO_PIN_SPACING.convertToPixels());

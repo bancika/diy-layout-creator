@@ -37,8 +37,8 @@ import java.util.List;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractAngledComponent;
+import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -56,8 +56,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Lever Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Strat-style lever switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,
-    keywordTag = "Guitar Wiring Diagram")
-public class LeverSwitch extends AbstractTransparentComponent<String> implements ISwitch {
+    keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
+public class LeverSwitch extends AbstractAngledComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -79,8 +79,6 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
 
   private String value = "";
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
-  transient Shape[] body;
-  private Orientation orientation = Orientation.DEFAULT;
   private LeverSwitchType type = LeverSwitchType.DP3T;
   private Boolean highlightCommon;
 
@@ -205,21 +203,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
       }
       body[1] = waferArea;
 
-      double theta = 0;
-      // Rotate if needed
-      if (orientation != Orientation.DEFAULT) {
-        switch (orientation) {
-          case _90:
-            theta = Math.PI / 2;
-            break;
-          case _180:
-            theta = Math.PI;
-            break;
-          case _270:
-            theta = Math.PI * 3 / 2;
-            break;
-        }
-      }
+      double theta = Math.toRadians(getAngle().getValue());
 
       Area terminalArea = new Area();
       Area commonTerminalArea = new Area();
@@ -264,7 +248,7 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   }
 
   @SuppressWarnings("incomplete-switch")
-  private void updateControlPoints() {
+  protected void updateControlPoints() {
     double x = controlPoints[0].getX();
     double y = controlPoints[0].getY();
     int waferSpacing = (int) WAFER_SPACING.convertToPixels();
@@ -314,19 +298,8 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     }
 
     // Rotate if needed
-    if (orientation != Orientation.DEFAULT) {
-      double theta = 0;
-      switch (orientation) {
-        case _90:
-          theta = Math.PI / 2;
-          break;
-        case _180:
-          theta = Math.PI;
-          break;
-        case _270:
-          theta = Math.PI * 3 / 2;
-          break;
-      }
+    if (getAngle().getValue() != 0) {
+      double theta = Math.toRadians(getAngle().getValue());
       AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
       for (Point2D point : controlPoints) {
         rotation.transform(point, point);
@@ -404,11 +377,6 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
   }
 
   @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
-  }
-
-  @EditableProperty
   public LeverSwitchType getType() {
     return type;
   }
@@ -418,13 +386,6 @@ public class LeverSwitch extends AbstractTransparentComponent<String> implements
     updateControlPoints();
     // Invalidate body
     this.body = null;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
-    updateControlPoints();
-    // Invalidate the body
-    body = null;
   }
   
   @EditableProperty(name = "Mark Common Lugs")

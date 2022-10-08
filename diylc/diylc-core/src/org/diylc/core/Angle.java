@@ -46,7 +46,17 @@ public class Angle {
   private static Map<Integer, Angle> valueCache = new HashMap<Integer, Angle>();
   
   public synchronized static Angle of(int angle) {
-    valueCache.computeIfAbsent(angle, (value) -> new Angle(value));
-    return valueCache.get(angle);
+    int newValue = angle;
+    while (newValue < 0)
+      newValue += 360;
+    while (newValue >= 360)
+      newValue -= 360;
+    valueCache.computeIfAbsent(newValue, (value) -> new Angle(value));
+    return valueCache.get(newValue);
+  }
+  
+  public Angle rotate(int direction) {
+    int newValue = value + direction * 90;
+    return Angle.of(newValue);
   }
 }

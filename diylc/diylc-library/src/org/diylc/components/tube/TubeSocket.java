@@ -36,11 +36,9 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.transform.TubeSocketTransformer;
-import org.diylc.core.Angle;
+import org.diylc.components.AbstractAngledComponent;
+import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -57,8 +55,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes",
     instanceNamePrefix = "V", description = "Various types of tube/valve sockets",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
-    transformer = TubeSocketTransformer.class)
-public class TubeSocket extends AbstractTransparentComponent<String> {
+    transformer = AngledComponentTransformer.class)
+public class TubeSocket extends AbstractAngledComponent<String> {
 
   private static final Size B9A_PIN_SPACING_CHASSIS = new Size(12.5d, SizeUnit.mm);
   private static final Size B9A_PIN_SPACING_PCB = new Size(21d, SizeUnit.mm);
@@ -90,18 +88,12 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
 
   private Base base = Base.B9A;
   private String type = "";
-  @Deprecated
-  private Orientation orientation;
-  // private Mount mount = Mount.CHASSIS;
-  private int angle;
   private Color color = BODY_COLOR;
   private String electrodeLabels = null; 
   private Mount mount = Mount.CHASSIS;
   private Color labelColor = LABEL_COLOR;
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
-
-  transient private Shape body;
 
   public TubeSocket() {
     super();
@@ -120,33 +112,6 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     body = null;
   }
 
-  @EditableProperty
-  @SuppressWarnings("incomplete-switch")
-  public Angle getAngle() {
-    if (orientation != null) {
-      switch (orientation) {
-        case _90:
-          angle = 90;
-          break;
-        case _180:
-          angle = 180;
-          break;
-        case _270:
-          angle = 270;
-          break;
-      }
-      orientation = null;
-    }
-    return Angle.of(angle);
-  }
-
-  public void setAngle(Angle angle) {
-    this.angle = angle.getValue();
-    updateControlPoints();
-    // Reset body shape
-    body = null;
-  }
-  
   @EditableProperty
   public Color getColor() {
     if (color == null) {
@@ -168,7 +133,8 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   // this.mount = mount;
   // }
 
-  private void updateControlPoints() {
+  @Override
+  protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     int pinCount;
     int pinSpacing;
@@ -211,7 +177,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     }
   }
 
-  public Shape getBody() {
+  public Shape[] getBody() {
     if (body == null) {
       int bodyDiameter;
       switch (base) {
@@ -231,10 +197,10 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
           throw new RuntimeException("Unexpected base: " + base);
       }
       
-      body =
+      Ellipse2D baseShape =
           new Ellipse2D.Double(controlPoints[0].getX() - bodyDiameter / 2, controlPoints[0].getY() - bodyDiameter / 2,
               bodyDiameter, bodyDiameter);
-      Area bodyArea = new Area(body);
+      Area bodyArea = new Area(baseShape);
       int holeSize = getClosestOdd(base == Base.B12C ? B12C_HOLE_SIZE.convertToPixels() : HOLE_SIZE.convertToPixels());
       bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - holeSize / 2, controlPoints[0].getY() - holeSize
           / 2, holeSize, holeSize)));
@@ -260,7 +226,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
         bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
       }    
       
-      body = bodyArea;
+      body = new Shape[] { bodyArea };
     }
     return body;
   }
@@ -272,14 +238,14 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 
     // Draw body
-    Shape body = getBody();
+    Shape[] body = getBody();
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     if (componentState != ComponentState.DRAGGING) {
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
-      g2d.fill(body);
+      g2d.fill(body[0]);
     }
     g2d.setComposite(oldComposite);
     Color finalBorderColor;
@@ -295,7 +261,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
               : getColor().darker();
     }
     g2d.setColor(finalBorderColor);
-    g2d.draw(body);
+    g2d.draw(body[0]);
     
     drawingObserver.stopTracking();
     
@@ -449,7 +415,7 @@ public class TubeSocket extends AbstractTransparentComponent<String> {
   
   @Override
   public Rectangle2D getCachingBounds() {
-    Rectangle2D rect = getBody().getBounds2D();
+    Rectangle2D rect = getBody()[0].getBounds2D();
     int margin = 40; // to catch the pins that are outside the body, if needed
     return new Rectangle2D.Double(rect.getX() - margin, rect.getY() - margin, rect.getWidth() + 2 * margin, rect.getHeight() + 2 * margin);
   }

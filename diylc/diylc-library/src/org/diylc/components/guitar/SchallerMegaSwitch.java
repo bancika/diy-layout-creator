@@ -37,9 +37,10 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.AbstractAngledComponent;
+import org.diylc.components.transform.AngledComponentTransformer;
+import org.diylc.core.Angle;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -58,8 +59,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Schaller Megaswitch", category = "Guitar",
     author = "Branislav Stojkovic", description = "Several variations of Schaller Megaswitch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram")
-public class SchallerMegaSwitch extends AbstractTransparentComponent<String> implements ISwitch {
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
+public class SchallerMegaSwitch extends AbstractAngledComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -82,8 +83,6 @@ public class SchallerMegaSwitch extends AbstractTransparentComponent<String> imp
 
   private String value = "";
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
-  transient Shape[] body;
-  private Orientation orientation = Orientation.DEFAULT;
   private MegaSwitchType type = MegaSwitchType.E;
   private Color labelColor = Color.gray;
 
@@ -189,26 +188,21 @@ public class SchallerMegaSwitch extends AbstractTransparentComponent<String> imp
     double y =
         (controlPoints[0].getY() + controlPoints[lastPointIdx].getY()) / 2 + getLabelDy() * 2.25;
 
-    double theta = 0;
-    switch (orientation) {
-      case DEFAULT:
-      case _180:
-        theta = -Math.PI / 2;
-        break;
-      case _90:
-      case _270:
-        theta = 0;
-        break;
+    double theta = Math.toRadians(getAngle().getValue()) - Math.PI / 2;
+    
+    if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {
+      theta += Math.PI;
     }
 
-    g2d.rotate(theta, x, y);
+    if (theta != 0) {
+      g2d.rotate(theta, x, y);
+    }
 
     g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 1.25)));
     StringUtils.drawCenteredText(g2d, "Schaller Megaswitch® " + type.toString(), x, y,
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
-  @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
     if (body == null) {
       body = new Shape[4];
@@ -254,21 +248,7 @@ public class SchallerMegaSwitch extends AbstractTransparentComponent<String> imp
 
       body[1] = waferArea;
 
-      double theta = 0;
-      // Rotate if needed
-      if (orientation != Orientation.DEFAULT) {
-        switch (orientation) {
-          case _90:
-            theta = Math.PI / 2;
-            break;
-          case _180:
-            theta = Math.PI;
-            break;
-          case _270:
-            theta = Math.PI * 3 / 2;
-            break;
-        }
-      }
+      double theta = Math.toRadians(getAngle().getValue());
 
       Area terminalArea = new Area();
       for (int i = 0; i < controlPoints.length; i++) {
@@ -280,6 +260,12 @@ public class SchallerMegaSwitch extends AbstractTransparentComponent<String> imp
             point.getY() - terminalSize / 4, terminalSize / 2, terminalSize / 2, terminalSize / 2,
             terminalSize / 2)));
 
+        if (theta != 0) {
+          // Skip the last two because terminals are already rotated
+          AffineTransform rotation = AffineTransform.getRotateInstance(theta, point.getX(), point.getY());
+          terminal.transform(rotation);
+        }
+        
         terminalArea.add(terminal);
       }
       body[2] = terminalArea;
@@ -299,7 +285,7 @@ public class SchallerMegaSwitch extends AbstractTransparentComponent<String> imp
   }
 
   @SuppressWarnings("incomplete-switch")
-  private void updateControlPoints() {
+  protected void updateControlPoints() {
     double x = controlPoints[0].getX();
     double y = controlPoints[0].getY();
     double terminalSpacing = TERMINAL_SPACING.convertToPixels();
@@ -340,46 +326,26 @@ public class SchallerMegaSwitch extends AbstractTransparentComponent<String> imp
     }
 
     // Rotate if needed
-    if (orientation != Orientation.DEFAULT) {
-      double theta = 0;
-      switch (orientation) {
-        case _90:
-          theta = Math.PI / 2;
-          break;
-        case _180:
-          theta = Math.PI;
-          break;
-        case _270:
-          theta = Math.PI * 3 / 2;
-          break;
-      }
+    if (getAngle().getValue() != 0) {
+      double theta = Math.toRadians(getAngle().getValue());
       AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
       for (Point2D point : controlPoints) {
         rotation.transform(point, point);
       }
     }
   }
+  
+  @Override
+  public void setAngle(Angle angle) {
+    super.setAngle(angle);
+    updateLabelPositions();
+  }
 
   private void updateLabelPositions() {
     double labelOffset = LABEL_OFFSET.convertToPixels();
-    switch (orientation) {
-      case DEFAULT:
-        labelDx = -labelOffset;
-        labelDy = 0d;
-        break;
-      case _90:
-        labelDx = 0d;
-        labelDy = -labelOffset;
-        break;
-      case _180:
-        labelDx = labelOffset;
-        labelDy = 0d;
-        break;
-      case _270:
-        labelDx = 0d;
-        labelDy = labelOffset;
-        break;
-    }
+    double theta = Math.toRadians(getAngle().getValue()) - Math.PI;
+    labelDx = Math.cos(theta) * labelOffset;
+    labelDy = Math.sin(theta) * labelOffset;
   }
 
   private double getLabelDx() {
@@ -478,11 +444,6 @@ public class SchallerMegaSwitch extends AbstractTransparentComponent<String> imp
   }
 
   @EditableProperty
-  public Orientation getOrientation() {
-    return orientation;
-  }
-
-  @EditableProperty
   public MegaSwitchType getType() {
     return type;
   }
@@ -492,14 +453,6 @@ public class SchallerMegaSwitch extends AbstractTransparentComponent<String> imp
     updateControlPoints();
     // Invalidate body
     this.body = null;
-  }
-
-  public void setOrientation(Orientation orientation) {
-    this.orientation = orientation;
-    updateControlPoints();
-    updateLabelPositions();
-    // Invalidate the body
-    body = null;
   }
 
   public enum MegaSwitchType {

@@ -24,15 +24,15 @@ package org.diylc.components.transform;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import org.diylc.common.IComponentTransformer;
-import org.diylc.components.tube.TubeSocket;
+import org.diylc.components.AbstractAngledComponent;
 import org.diylc.core.Angle;
 import org.diylc.core.IDIYComponent;
 
-public class TubeSocketTransformer implements IComponentTransformer {
+public class AngledComponentTransformer implements IComponentTransformer {
 
   @Override
   public boolean canRotate(IDIYComponent<?> component) {
-    return TubeSocket.class.isAssignableFrom(component.getClass());
+    return AbstractAngledComponent.class.isAssignableFrom(component.getClass());
   }
 
   @Override
@@ -54,10 +54,10 @@ public class TubeSocketTransformer implements IComponentTransformer {
       component.setControlPoint(p, index);
     }
 
-    TubeSocket tube = (TubeSocket) component;
-    Angle angle = tube.getAngle();
-    Angle newAngle = Angle.of(angle.getValue() + direction * 90);
-    tube.setAngle(newAngle);
+    AbstractAngledComponent<?> angledComponent = (AbstractAngledComponent<?>) component;
+    Angle angle = angledComponent.getAngle();
+    Angle newAngle = angle.rotate(direction);
+    angledComponent.setAngle(newAngle);
   }
 
   @Override

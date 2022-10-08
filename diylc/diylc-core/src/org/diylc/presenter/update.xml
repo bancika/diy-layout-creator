@@ -4011,6 +4011,10 @@
 					<description>Added 'DP4T (6-Position Oak Grigsby)' as a new type of Lever Switch component</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to rotate 'Lever Switch' and 'Schaller Megaswitch' by any angle</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ability to rotate all guitar/bass pickups through the 'Transform Selection' feature or keyboard shortcut</description>
 				</org.diylc.appframework.update.Change>

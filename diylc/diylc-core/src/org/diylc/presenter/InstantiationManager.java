@@ -38,6 +38,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.Angle;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -432,12 +433,10 @@ public class InstantiationManager {
         } else if (value instanceof OrientationHV) {
           angleProperty.setValue(OrientationHV.values()[(((OrientationHV) value).ordinal() + 1)
               % OrientationHV.values().length]);
-        } else if (angleProperty.getName().equalsIgnoreCase("angle")) {
-          int angle = (Integer) angleProperty.getValue();
-          angle += 90;
-          if (angle >= 360)
-            angle -= 360;
-          angleProperty.setValue(angle);
+        } else if (value instanceof Angle) {
+          Angle angle = (Angle) angleProperty.getValue();
+          Angle newAngle = angle.rotate(1);
+          angleProperty.setValue(newAngle);
         }
         angleProperty.writeTo(component);
       }
