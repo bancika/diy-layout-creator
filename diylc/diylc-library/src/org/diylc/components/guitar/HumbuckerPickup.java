@@ -35,6 +35,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
+import org.diylc.components.transform.GuitarPickupTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -50,7 +51,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Humbucker Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Double-coil humbucker guitar pickup (PAF, Mini Humbuckers, Filtertrons)",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true)
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true,
+    transformer = GuitarPickupTransformer.class)
 public class HumbuckerPickup extends AbstractGuitarPickup {
 
   private static final long serialVersionUID = 1L;  

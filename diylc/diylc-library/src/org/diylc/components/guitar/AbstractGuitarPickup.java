@@ -200,7 +200,7 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
     return false;
   }
   
-  @EditableProperty
+  @EditableProperty(name = "Coil(s)")
   public Polarity getPolarity() {
     if (polarity == null)
       polarity = Polarity.North;
@@ -280,6 +280,17 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
   }
   
   public enum Polarity {
-    North, South, Humbucking;
+    North("Single - North"), South("Single - South"), Humbucking("Humbucking - 4 leads");
+    
+    private String label;
+
+    private Polarity(String label) {
+      this.label = label;
+    }
+    
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.RoundedPath;
+import org.diylc.components.transform.GuitarPickupTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -53,7 +54,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Single Coil Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Single coil guitar pickup, both Strat and Tele style",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true)
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true,
+    transformer = GuitarPickupTransformer.class)
 public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
 
   private static final long serialVersionUID = 1L;  
@@ -438,7 +440,7 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
   }
 
   public enum PolePieceType {
-    Rods("Single Rods"), Rail("Single Rail"), RailHumbucker("Dual Rail Humbucker"), RodHumbucker("Dual Rods"), None("None");
+    Rods("Single Rods"), Rail("Single Rail"), RodHumbucker("Double Rods"), RailHumbucker("Double Rails"), None("None");
 
     private String label;
 

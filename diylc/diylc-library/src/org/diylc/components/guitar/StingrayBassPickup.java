@@ -36,6 +36,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
+import org.diylc.components.transform.GuitarPickupTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -51,7 +52,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Stingray Bass Pickup", category = "Guitar", author = "JD",
     description = "Humbucker Bass Pickup for Musicman Stingray and similar guitars", 
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true)
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true,
+    transformer = GuitarPickupTransformer.class)
 
 /**
  * Component type for Stingray Bass Humbucker

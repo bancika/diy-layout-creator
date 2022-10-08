@@ -36,6 +36,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
+import org.diylc.components.transform.GuitarPickupTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -51,7 +52,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "P- Bass Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Split-coil pickup for P-Bass and similar guitars", 
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true)
+    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true,
+    transformer = GuitarPickupTransformer.class)
 public class PBassPickup extends AbstractSingleOrHumbuckerPickup {
 
   private static final long serialVersionUID = 1L;
