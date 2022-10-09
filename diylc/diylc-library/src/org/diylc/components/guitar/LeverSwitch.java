@@ -57,7 +57,7 @@ import org.diylc.utils.Constants;
     description = "Strat-style lever switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
-public class LeverSwitch extends AbstractAngledComponent<String> implements ISwitch {
+public class LeverSwitch extends AbstractAngledComponent<LeverSwitchType> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -77,7 +77,9 @@ public class LeverSwitch extends AbstractAngledComponent<String> implements ISwi
   private static Size TERMINAL_LENGTH = new Size(0.1d, SizeUnit.in);
   private static Size TERMINAL_SPACING = new Size(0.1d, SizeUnit.in);
 
-  private String value = "";
+  @SuppressWarnings("unused")
+  @Deprecated
+  private transient String value = "";
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private LeverSwitchType type = LeverSwitchType.DP3T;
   private Boolean highlightCommon;
@@ -367,21 +369,13 @@ public class LeverSwitch extends AbstractAngledComponent<String> implements ISwi
   }
 
   @Override
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public LeverSwitchType getType() {
+  @EditableProperty(name = "Type")
+  public LeverSwitchType getValue() {
     return type;
   }
 
-  public void setType(LeverSwitchType type) {
+  @Override
+  public void setValue(LeverSwitchType type) {
     this.type = type;
     updateControlPoints();
     // Invalidate body
@@ -401,21 +395,7 @@ public class LeverSwitch extends AbstractAngledComponent<String> implements ISwi
     body = null;
   }
  
-  public enum LeverSwitchType {
-    DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), DP3T_5pos_Import("DP3T (Import 5-Position Strat)"),
-    _4P5T("4P5T (Super/Mega)"), DP4T("DP4T (4-Position Tele)"), _6_WAY_OG("DP4T (6-Position Oak Grigsby)"), DP5T("DP5T");
 
-    private String title;
-
-    private LeverSwitchType(String title) {
-      this.title = title;
-    }
-
-    @Override
-    public String toString() {
-      return title;
-    }
-  }
   
 //  @Override
 //  public String getControlPointNodeName(int index) {
