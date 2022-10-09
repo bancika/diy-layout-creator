@@ -37,7 +37,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.transform.MiniToggleSwitchTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -53,7 +52,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "S1 Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Fender S1 4 pole pushbutton switch", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "SW", autoEdit = false, enableCache = true, transformer = MiniToggleSwitchTransformer.class)
+    instanceNamePrefix = "SW", autoEdit = false, enableCache = true)
 public class S1Switch extends AbstractTransparentComponent<Void> implements ISwitch {
 
   private static final long serialVersionUID = 1L;

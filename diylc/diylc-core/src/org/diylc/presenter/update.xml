@@ -4004,6 +4004,10 @@
 			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Rotary Switch (Sealed)' component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'S1 Switch' component that can be combined with potentiometer component or used on its own</description>
 				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>

@@ -434,7 +434,6 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
     this.lugColor = lugColor;
   }
    
-
   public enum SingleCoilType {
     Stratocaster, Telecaster;
   }
