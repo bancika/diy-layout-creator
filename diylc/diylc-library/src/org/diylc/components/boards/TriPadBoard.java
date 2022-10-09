@@ -153,7 +153,7 @@ public class TriPadBoard extends AbstractVeroBoard {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    g2d.setColor(BOARD_COLOR);
+    g2d.setColor(PHENOLIC_COLOR);
     g2d.fillRect(0, 0, width, height);
 
     final int horizontalSpacing = width / 5;

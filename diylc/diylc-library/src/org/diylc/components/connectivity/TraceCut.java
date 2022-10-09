@@ -64,7 +64,7 @@ public class TraceCut extends AbstractComponent<Void> {
   private Color fillColor = FILL_COLOR;
   @Deprecated
   private Color borderColor = BORDER_COLOR;
-  private Color boardColor = AbstractBoard.BOARD_COLOR;
+  private Color boardColor = AbstractBoard.PHENOLIC_COLOR;
   private Boolean cutBetweenHoles = false;
   private OrientationHV orientation = OrientationHV.VERTICAL;
   private Size holeSpacing = VeroBoard.SPACING;
@@ -108,7 +108,7 @@ public class TraceCut extends AbstractComponent<Void> {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int factor = 32 / width;
-    g2d.setColor(AbstractBoard.BOARD_COLOR);
+    g2d.setColor(AbstractBoard.PHENOLIC_COLOR);
     g2d.fillRect(0, 2 / factor, width - 1, height - 4 / factor);
     g2d.setColor(AbstractBoard.BORDER_COLOR);
     g2d.drawRect(0, 2 / factor, width - 1, height - 4 / factor);
@@ -117,7 +117,7 @@ public class TraceCut extends AbstractComponent<Void> {
     g2d.setColor(COPPER_COLOR.darker());
     g2d.drawRect(1 / factor, width / 3, width - 2 / factor, getClosestOdd(width / 3) + 1);
 
-    g2d.setColor(AbstractBoard.BOARD_COLOR);
+    g2d.setColor(AbstractBoard.PHENOLIC_COLOR);
     g2d.fillRoundRect(width / 3, width / 3, getClosestOdd(width / 3) + 2, getClosestOdd(width / 3) + 2, width / 3,
         width / 3);
 
@@ -205,7 +205,7 @@ public class TraceCut extends AbstractComponent<Void> {
   @EditableProperty(name = "Board")
   public Color getBoardColor() {
     if (boardColor == null) {
-      boardColor = AbstractBoard.BOARD_COLOR;
+      boardColor = AbstractBoard.PHENOLIC_COLOR;
     }
     return boardColor;
   }

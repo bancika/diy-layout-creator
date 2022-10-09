@@ -120,7 +120,7 @@ public class VeroBoard extends AbstractVeroBoard {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int factor = 32 / width;
-    g2d.setColor(BOARD_COLOR);
+    g2d.setColor(PHENOLIC_COLOR);
     g2d.fillRect(0, 2 / factor, width - 1, height - 4 / factor);
     g2d.setColor(BORDER_COLOR);
     g2d.drawRect(0, 2 / factor, width - 1, height - 4 / factor);

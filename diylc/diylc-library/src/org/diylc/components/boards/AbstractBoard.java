@@ -46,8 +46,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   private static final long serialVersionUID = 1L;
 
-  public static Color BOARD_COLOR = Color.decode("#F8EBB3");
-  public static Color BORDER_COLOR = BOARD_COLOR.darker();
+  public static Color BORDER_COLOR = PHENOLIC_COLOR.darker();
   public static Color COORDINATE_COLOR = Color.gray.brighter();
   public static float COORDINATE_FONT_SIZE = 9f;
   public static Size DEFAULT_WIDTH = new Size(1.5d, SizeUnit.in);
@@ -61,7 +60,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Point2D.Double firstPoint = new Point2D.Double();
   protected Point2D.Double secondPoint = new Point2D.Double();
 
-  protected Color boardColor = BOARD_COLOR;
+  protected Color boardColor = PHENOLIC_COLOR;
   protected Color borderColor = BORDER_COLOR;
   protected Color coordinateColor = COORDINATE_COLOR;
   protected Boolean drawCoordinates = null;

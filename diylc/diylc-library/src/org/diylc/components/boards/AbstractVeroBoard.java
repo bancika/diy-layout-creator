@@ -9,9 +9,7 @@ import org.diylc.core.measures.SizeUnit;
 
 public abstract class AbstractVeroBoard extends AbstractBoard {
   
-  private static final long serialVersionUID = 1L;
-
-  public static Color BORDER_COLOR = BOARD_COLOR.darker();
+  private static final long serialVersionUID = 1L;  
 
   public static Size SPACING = new Size(0.1d, SizeUnit.in);
   public static Size STRIP_SIZE = new Size(0.07d, SizeUnit.in);
