@@ -544,13 +544,13 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
   @Override
   public String getInternalLinkName(int index1, int index2) {
     if (index1 == 0 && index2 == 1)
-      return Polarity.North.toString() + "->";
+      return Polarity.North.name() + "->";
     else if (index1 == 2 && index2 == 3)
-      return Polarity.South.toString() + "->";
+      return Polarity.South.name() + "->";
     else if (index1 == 1 && index2 == 0)
-      return Polarity.North.toString() + "<-";
+      return Polarity.North.name() + "<-";
     else if (index1 == 3 && index2 == 2)
-      return Polarity.South.toString() + "<-";
+      return Polarity.South.name() + "<-";
     
     return null;
   }
