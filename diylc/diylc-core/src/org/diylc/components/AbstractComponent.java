@@ -61,6 +61,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public static Color GOLD_COLOR = Color.decode("#DAA520");
   public static Color FR4_COLOR = Color.decode("#6B9B6B");
   public static Color FR4_LIGHT_COLOR = Color.decode("#BABE71");
+  public static Color PHENOLIC_COLOR = Color.decode("#F8EBB3");
   
   @EditableProperty(defaultable = false)
   @Override
@@ -228,6 +229,10 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
     if (o1.getClass().isArray()) {
       if (o1.getClass().getComponentType() == byte.class)
         return Arrays.equals((byte[]) o1, (byte[]) o2);
+      if (o1.getClass().getComponentType() == double.class)
+        return Arrays.equals((double[]) o1, (double[]) o2);
+      if (o1.getClass().getComponentType() == int.class)
+        return Arrays.equals((int[]) o1, (int[]) o2);      
       return Arrays.equals((Object[]) o1, (Object[]) o2);
     }
     return o1.equals(o2);
