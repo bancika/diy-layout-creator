@@ -79,6 +79,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchType
   private RotarySwitchType configuration = RotarySwitchType._4P3T;
   private Color color = BODY_COLOR;
   private Mount mount = Mount.CHASSIS;
+  private SwitchTiming timing = SwitchTiming.NON_SHORTING;
   private Color labelColor = LABEL_COLOR;
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -330,6 +331,15 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchType
     updateControlPoints();
     // Reset body shape
     body = null;
+  }
+  
+  @EditableProperty
+  public SwitchTiming getTiming() {
+    return timing;
+  }
+  
+  public void setTiming(SwitchTiming timing) {
+    this.timing = timing;
   }
   
   @Override

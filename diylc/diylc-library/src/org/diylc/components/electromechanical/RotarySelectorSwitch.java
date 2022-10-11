@@ -78,6 +78,7 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
   private Orientation orientation = Orientation.DEFAULT;
   private boolean showLabels = true;
   private RotaryPositionCount positionCount = RotaryPositionCount.THREE;
+  private SwitchTiming timing = SwitchTiming.SHORTING;
 
   public RotarySelectorSwitch() {
     super();
@@ -336,6 +337,15 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
     updateControlPoints();
     // Invalidate the body
     body = null;
+  }
+  
+  @EditableProperty
+  public SwitchTiming getTiming() {
+    return timing;
+  }
+  
+  public void setTiming(SwitchTiming timing) {
+    this.timing = timing;
   }
 
   @EditableProperty
