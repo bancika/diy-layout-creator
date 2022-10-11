@@ -64,7 +64,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
   private static Size LUG_THICKNESS = new Size(0.1d, SizeUnit.in);
   private static Size HOLE_DIAMETER = new Size(3d, SizeUnit.mm);
 
-  private static Color BODY_COLOR = Color.decode("#CD8500");
+  private static Color BODY_COLOR = PHENOLIC_DARK_COLOR;
   private static Color BORDER_COLOR = Color.gray;
   public static Color TERMINAL_COLOR = METAL_COLOR;
   public static Color LABEL_COLOR = Color.white;

@@ -49,7 +49,7 @@ public class MarshallPerfBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color BOARD_COLOR = Color.decode("#CD8500");
+  public static Color BOARD_COLOR = PHENOLIC_DARK_COLOR;
   public static Color BORDER_COLOR = BOARD_COLOR.darker();
   public static Size SPACING = new Size(3 / 8d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(1 / 8d, SizeUnit.in);

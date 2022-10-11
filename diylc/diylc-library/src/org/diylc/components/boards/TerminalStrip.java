@@ -57,7 +57,7 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
 
   private static final long serialVersionUID = 1L;
 
-  public static Color BOARD_COLOR = Color.decode("#CD8500");
+  public static Color BOARD_COLOR = PHENOLIC_DARK_COLOR;
   public static Color TERMINAL_COLOR = Color.lightGray;
   public static Color TERMINAL_BORDER_COLOR = TERMINAL_COLOR.darker();
   public static int EDGE_RADIUS = 2;

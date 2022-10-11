@@ -58,7 +58,7 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
   private static final long serialVersionUID = 1L;
 
   private static Color BASE_COLOR = Color.lightGray;
-  private static Color WAFER_COLOR = Color.decode("#CD8500");
+  private static Color WAFER_COLOR = PHENOLIC_DARK_COLOR;
   
   private static final double SLEEVE_THETA = Math.PI * 0.29444444444;
 

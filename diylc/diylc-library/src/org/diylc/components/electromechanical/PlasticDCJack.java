@@ -61,7 +61,6 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
   private static Size SPACING = new Size(0.1d, SizeUnit.in);
   private static Size DIAMETER = new Size(0.5d, SizeUnit.in);
   private static Color BODY_COLOR = Color.decode("#666666");
-  private static Color PHENOLIC_COLOR = Color.decode("#CD8500");
   private static Color BORDER_COLOR = Color.black;
   private static Color MARKING_COLOR = Color.lightGray;
 
@@ -142,7 +141,7 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
     g2d.fill(body[0]);
     if (!outlineMode) {
-      g2d.setColor(PHENOLIC_COLOR);
+      g2d.setColor(PHENOLIC_DARK_COLOR);
       g2d.fill(body[1]);
     }
     g2d.setComposite(oldComposite);
@@ -163,7 +162,7 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
     g2d.setColor(finalBorderColor);
     g2d.draw(body[0]);
     if (!outlineMode) {
-      g2d.setColor(PHENOLIC_COLOR.darker());
+      g2d.setColor(PHENOLIC_DARK_COLOR.darker());
       g2d.draw(body[1]);
 
       g2d.setColor(METAL_COLOR);
@@ -200,9 +199,9 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
     g2d.setColor(BORDER_COLOR);
     g2d.drawOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
     int rectWidth = getClosestOdd(((width - 2 * margin) / Math.sqrt(2)) - margin / 2);
-    g2d.setColor(PHENOLIC_COLOR);
+    g2d.setColor(PHENOLIC_DARK_COLOR);
     g2d.fillRect((width - rectWidth) / 2, (height - rectWidth) / 2, rectWidth, rectWidth);
-    g2d.setColor(PHENOLIC_COLOR.darker());
+    g2d.setColor(PHENOLIC_DARK_COLOR.darker());
     g2d.drawRect((width - rectWidth) / 2, (height - rectWidth) / 2, rectWidth, rectWidth);
     int lugWidth = 4 * 32 / width;
     g2d.setColor(METAL_COLOR);
@@ -210,7 +209,7 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> {
     g2d.drawLine(width * 2 / 3, (height - lugWidth) / 2, width * 2 / 3, (height + lugWidth) / 2);
     g2d.fillOval((width - lugWidth) / 2, height * 2 / 3 - lugWidth / 2, lugWidth, lugWidth);
     g2d.fillRect(width / 2 - lugWidth * 3 / 2, height * 2 / 3 - lugWidth / 2, lugWidth * 3 / 2, lugWidth);
-    g2d.setColor(PHENOLIC_COLOR);
+    g2d.setColor(PHENOLIC_DARK_COLOR);
     g2d.fillOval((width - margin) / 2, height * 2 / 3 - margin / 2, margin, margin);
   }
 

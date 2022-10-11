@@ -62,6 +62,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public static Color FR4_COLOR = Color.decode("#6B9B6B");
   public static Color FR4_LIGHT_COLOR = Color.decode("#BABE71");
   public static Color PHENOLIC_COLOR = Color.decode("#F8EBB3");
+  public static Color PHENOLIC_DARK_COLOR = Color.decode("#CD8500");
   
   @EditableProperty(defaultable = false)
   @Override

@@ -78,7 +78,7 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
   private Orientation orientation = Orientation.DEFAULT;
   private boolean showLabels = true;
   private RotaryPositionCount positionCount = RotaryPositionCount.THREE;
-  private SwitchTiming timing = SwitchTiming.SHORTING;
+  private SwitchTiming timing;
 
   public RotarySelectorSwitch() {
     super();

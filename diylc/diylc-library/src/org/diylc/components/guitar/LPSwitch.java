@@ -57,7 +57,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
   private static final long serialVersionUID = 1L;
 
   private static Color BASE_COLOR = Color.lightGray;
-  private static Color WAFER_COLOR = Color.decode("#CD8500");
+  private static Color WAFER_COLOR = PHENOLIC_DARK_COLOR;
 
   private static Size LENGTH = new Size(1.3d, SizeUnit.in);
   private static Size BASE_LENGTH = new Size(18d, SizeUnit.mm);

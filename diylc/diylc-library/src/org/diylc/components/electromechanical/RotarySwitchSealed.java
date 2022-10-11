@@ -57,7 +57,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "SW", description = "Sealed plastic rotary switch in several different switching configurations",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
     transformer = AngledComponentTransformer.class)
-public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchType> implements ISwitch {
+public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSealedType> implements ISwitch {
 
   private static final int OUTER_ANGLE_OFFSET = 15;
   private static final int INNER_ANGLE_OFFSET = 30;
@@ -76,10 +76,10 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchType
   private static Size PIN_WIDTH = new Size(0.08d, SizeUnit.in);
   private static Size PIN_THICKNESS = new Size(0.02d, SizeUnit.in);
 
-  private RotarySwitchType configuration = RotarySwitchType._4P3T;
+  private RotarySwitchSealedType configuration = RotarySwitchSealedType._4P3T;
   private Color color = BODY_COLOR;
   private Mount mount = Mount.CHASSIS;
-  private SwitchTiming timing = SwitchTiming.NON_SHORTING;
+  private SwitchTiming timing;
   private Color labelColor = LABEL_COLOR;
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -91,11 +91,11 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchType
   }
 
   @EditableProperty(name = "Type")
-  public RotarySwitchType getValue() {
+  public RotarySwitchSealedType getValue() {
     return configuration;
   }
 
-  public void setValue(RotarySwitchType configuration) {
+  public void setValue(RotarySwitchSealedType configuration) {
     this.configuration = configuration;
     updateControlPoints();
     // Reset body shape
