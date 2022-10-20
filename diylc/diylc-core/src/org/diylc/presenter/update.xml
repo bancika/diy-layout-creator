@@ -4004,7 +4004,11 @@
 			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'Rotary Switch (Sealed)' component</description>
+					<description>Added 'Rotary Switch (Sealed)' component in several switching configurations</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Rotary Switch (Open)' component in several switching configurations</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -4019,8 +4023,16 @@
 					<description>Ability to rotate 'Lever Switch' and 'Schaller Megaswitch' by any angle</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>DIYLC Netlists can be generated including or excluding switching configurations</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ability to rotate all guitar/bass pickups through the 'Transform Selection' feature or keyboard shortcut</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved the speed and accuracy of netlist calculation</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

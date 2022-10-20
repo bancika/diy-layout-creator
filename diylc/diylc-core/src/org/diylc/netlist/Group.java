@@ -22,6 +22,7 @@
 package org.diylc.netlist;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +40,10 @@ public class Group implements Comparable<Group> {
   
   public Group() {
     
+  }
+  
+  public Group(Collection<Node> nodes) {
+    this.nodes = new HashSet<Node>(nodes);
   }
 
   public Group(Node node1, Node node2) {

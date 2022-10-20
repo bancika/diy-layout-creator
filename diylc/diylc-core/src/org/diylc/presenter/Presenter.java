@@ -83,10 +83,10 @@ import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
-import org.diylc.netlist.Group;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
+import org.diylc.netlist.NetlistBuilder;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Position;
 import org.diylc.netlist.SwitchSetup;
@@ -3191,7 +3191,7 @@ public class Presenter implements IPlugInPort {
       positions[i] = 0;
 
     // grab continuity areas
-    List<Area> continuity = drawingManager.getContinuityAreas(currentProject);
+    List<Area> continuityAreas = drawingManager.getContinuityAreas(currentProject);
 
     int i = switches.size() - 1;
     while (i >= 0) {
@@ -3203,14 +3203,15 @@ public class Presenter implements IPlugInPort {
         posList.add(new Position(switches.get(j), positions[j]));
       }
       List<Connection> connections = getConnections(switchPositions);
-      Netlist graph = constructNetlist(nodes, connections, continuity, currentProject.getComponents());
+
+      Netlist netlist = NetlistBuilder.buildNetlist(currentProject.getComponents(), nodes, continuityAreas, connections);
 
       // merge graphs that are effectively the same
-      if (result.containsKey(graph)) {
-        result.get(graph).getSwitchSetup().add(new SwitchSetup(posList));
+      if (result.containsKey(netlist)) {
+        result.get(netlist).getSwitchSetup().add(new SwitchSetup(posList));
       } else {
-        graph.getSwitchSetup().add(new SwitchSetup(posList));
-        result.put(graph, graph);
+        netlist.getSwitchSetup().add(new SwitchSetup(posList));
+        result.put(netlist, netlist);
       }
 
       // find the next combination if possible
@@ -3233,112 +3234,6 @@ public class Presenter implements IPlugInPort {
     Collections.sort(netlists);
 
     return netlists;
-  }
-
-  private Netlist constructNetlist(List<Node> nodes, List<Connection> connections, List<Area> continuityAreas, List<IDIYComponent<?>> components) {
-    Netlist netlist = new Netlist(components);
-
-    // debugging code
-    // StringBuilder sb = new StringBuilder();
-    // sb.append("Nodes:").append("\n");
-    // for (Node n : nodes) {
-    // sb.append(n.toString()).append("\n");
-    // }
-    // sb.append("Connections:").append("\n");
-    // for (Line2D n : connections) {
-    // sb.append(n.getP1()).append(":").append(n.getP2()).append("\n");
-    // }
-    // LOG.debug(sb.toString());
-
-    double t = DrawingManager.CONTROL_POINT_SIZE;
-    for (int i = 0; i < nodes.size() - 1; i++)
-      for (int j = i + 1; j < nodes.size(); j++) {
-        Node node1 = nodes.get(i);
-        Node node2 = nodes.get(j);
-        Point2D point1 = node1.getComponent().getControlPoint(node1.getPointIndex());
-        Point2D point2 = node2.getComponent().getControlPoint(node2.getPointIndex());
-
-        String commonPoint1 = node1.getComponent().getCommonPointName(node1.getPointIndex());
-        String commonPoint2 = node2.getComponent().getCommonPointName(node2.getPointIndex());
-
-        // try both directions
-        if (point1.distance(point2) < t
-            || checkGraphConnection(point1, point2, connections, continuityAreas, new boolean[connections.size()])
-            || checkGraphConnection(point2, point1, connections, continuityAreas, new boolean[connections.size()])
-            || (commonPoint1 != null && commonPoint1.equalsIgnoreCase(commonPoint2))) {
-          boolean added = false;
-          // add to an existing vertex if possible
-          for (Group g : netlist.getGroups())
-            if (g.getNodes().contains(node1)) {
-              g.getNodes().add(node2);
-              added = true;
-            } else if (g.getNodes().contains(node2)) {
-              g.getNodes().add(node1);
-              added = true;
-            }
-          if (!added)
-            netlist.getGroups().add(new Group(node1, node2));
-        }
-      }
-
-    // merge overlapping groups if needed
-    boolean reduce = true;
-    while (reduce) {
-      reduce = false;
-      List<Group> groups = netlist.getSortedGroups();
-      Iterator<Group> i = groups.iterator();
-      while (i.hasNext()) {
-        Group g1 = i.next();
-        for (Group g2 : groups) {
-          if (g1 != g2 && !Collections.disjoint(g1.getNodes(), g2.getNodes())) {
-            i.remove();
-            g2.getNodes().addAll(g1.getNodes());
-            reduce = true;
-            break;
-          }
-        }
-      }
-      if (reduce) {
-        netlist.getGroups().clear();
-        netlist.getGroups().addAll(groups);
-      }
-    }
-
-    Collections.sort(netlist.getSwitchSetup());
-
-    return netlist;
-  }
-
-  private boolean checkGraphConnection(Point2D point1, Point2D point2, List<Connection> connections,
-      List<Area> continuityAreas, boolean[] visited) {
-    double t = DrawingManager.CONTROL_POINT_SIZE;
-
-    if (point1.distance(point2) < t)
-      return true;
-
-    for (Area a : continuityAreas) {
-      if (a.contains(point1) && a.contains(point2))
-        return true;
-    }
-
-    for (int i = 0; i < connections.size(); i++) {
-      if (visited[i])
-        continue;
-
-      Connection c = connections.get(i);
-      if (point1.distance(c.getP1()) < t) {
-        visited[i] = true;
-        if (checkGraphConnection(c.getP2(), point2, connections, continuityAreas, visited))
-          return true;
-      }
-      if (point1.distance(c.getP2()) < t) {
-        visited[i] = true;
-        if (checkGraphConnection(c.getP1(), point2, connections, continuityAreas, visited))
-          return true;
-      }
-    }
-
-    return false;
   }
 
   @SuppressWarnings({"unchecked", "unlikely-arg-type"})
@@ -3365,8 +3260,6 @@ public class Presenter implements IPlugInPort {
               connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
       }
     }
-
-    CalcUtils.expandConnections(connections);
 
     return new ArrayList<Connection>(connections);
   }

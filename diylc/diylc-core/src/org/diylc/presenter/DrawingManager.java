@@ -60,6 +60,8 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.netlist.ContinuityGraph;
+import org.diylc.netlist.NetlistBuilder;
 import org.diylc.utils.Constants;
 
 /**
@@ -94,8 +96,8 @@ public class DrawingManager {
   // determine which components are invalidated when they are not in the map.
   private Map<IDIYComponent<?>, ComponentState> lastDrawnStateMap;
 
-  private Area currentContinuityArea;
-  private List<Area> continuityAreaCache = null;
+  private List<Area> currentContinuityAreas;
+  private ContinuityGraph continuityGraphCache = null;
 
   private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
   private Composite lockedComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
@@ -464,11 +466,12 @@ public class DrawingManager {
         g2d.draw(s);
     }
 
-    if (currentContinuityArea != null) {
+    if (currentContinuityAreas != null) {
       Composite oldComposite = g2d.getComposite();
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
       g2d.setColor(Color.green);
-      g2d.fill(currentContinuityArea);
+      for (Area a : currentContinuityAreas)
+        g2d.fill(a);
       g2d.setComposite(oldComposite);
     }
 
@@ -625,8 +628,8 @@ public class DrawingManager {
   }
 
   public void clearContinuityArea() {
-    currentContinuityArea = null;
-    continuityAreaCache = null;
+    currentContinuityAreas = null;
+    continuityGraphCache = null;
     proximityMarkers = null;
   }
 
@@ -682,33 +685,19 @@ public class DrawingManager {
   }
 
   public void findContinuityAreaAtPoint(Project project, Point2D p) {
-    if (continuityAreaCache == null)
-      continuityAreaCache = getContinuityAreas(project);
+    if (continuityGraphCache == null)
+      continuityGraphCache = getContinuityGraph(project);
 
-    for (Area a : continuityAreaCache) {
-      if (a.contains(p)) {
-        currentContinuityArea = a;
-        return;
-      }
-    }
-
-    currentContinuityArea = null;
+    currentContinuityAreas = continuityGraphCache.findAreasFor(p);
   }
-
+  
   public List<Area> getContinuityAreas(Project project) {
     // Find all individual continuity areas for all components
     List<Area> preliminaryAreas = new ArrayList<Area>();
     List<Boolean> checkBreakout = new ArrayList<Boolean>();
-    Set<Connection> connections = new HashSet<Connection>();
+
     for (IDIYComponent<?> c : project.getComponents()) {
       ComponentArea a = getComponentArea(c);
-
-      if (c instanceof IContinuity) {
-        for (int i = 0; i < c.getControlPointCount() - 1; i++)
-          for (int j = i + 1; j < c.getControlPointCount(); j++)
-            if (((IContinuity) c).arePointsConnected(i, j))
-              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
-      }
 
       if (a == null || a.getOutlineArea() == null)
         continue;
@@ -741,11 +730,23 @@ public class DrawingManager {
         areas.add(a);
     }
 
-    CalcUtils.expandConnections(connections);
-
-    AreaUtils.crunchAreas(areas, connections);
-
     return areas;
+  }
+
+  public ContinuityGraph getContinuityGraph(Project project) {
+    Set<Connection> connections = new HashSet<Connection>();
+    for (IDIYComponent<?> c : project.getComponents()) {
+      if (c instanceof IContinuity) {
+        for (int i = 0; i < c.getControlPointCount() - 1; i++)
+          for (int j = i + 1; j < c.getControlPointCount(); j++)
+            if (((IContinuity) c).arePointsConnected(i, j))
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
+      }
+    }
+    
+    List<Area> areas = getContinuityAreas(project);
+
+    return NetlistBuilder.buildContinuityGraph(areas, connections);
   }
 
   public List<Area> getContinuityAreaProximity(Project project, float threshold) {

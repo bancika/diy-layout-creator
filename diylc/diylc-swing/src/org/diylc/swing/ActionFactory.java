@@ -123,7 +123,7 @@ public class ActionFactory {
   public ImportAction createImportAction(IPlugInPort plugInPort, ISwingUI swingUI) {
     return new ImportAction(plugInPort, swingUI);
   }
-  
+
   public ImportNetlistAction createImportNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
     return new ImportNetlistAction(plugInPort, swingUI);
   }
@@ -275,7 +275,7 @@ public class ActionFactory {
       String defaultValue) {
     return new ToggleAction(title, configKey, groupName, defaultValue, null);
   }
-  
+
   public ToggleAction createToggleAction(String title, String configKey, String groupName,
       String defaultValue, Icon icon) {
     return new ToggleAction(title, configKey, groupName, defaultValue, icon);
@@ -293,16 +293,16 @@ public class ActionFactory {
     return new RenumberAction(plugInPort, xAxisFirst);
   }
 
-  public GenerateNetlistAction createGenerateNetlistAction(IPlugInPort plugInPort,
-      ISwingUI swingUI) {
-    return new GenerateNetlistAction(plugInPort, swingUI);
+  public GenerateNetlistAction createGenerateNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI,
+      boolean includeSwitches) {
+    return new GenerateNetlistAction(plugInPort, swingUI, includeSwitches);
   }
 
   public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort,
       ISwingUI swingUI, INetlistAnalyzer summarizer) {
     return new SummarizeNetlistAction(plugInPort, swingUI, summarizer);
   }
-  
+
   public CheckProximityAction createCheckProximityAction(IPlugInPort plugInPort, ISwingUI swingUI) {
     return new CheckProximityAction(plugInPort, swingUI);
   }
@@ -420,7 +420,7 @@ public class ActionFactory {
         public void showMessage(String message, String title, int messageType) {
           JOptionPane.showMessageDialog(null, message, title, messageType);
         }
-        
+
         @Override
         public String showInputDialog(String message, String title) {
           return JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
@@ -459,8 +459,9 @@ public class ActionFactory {
             presenter.loadProjectFromFile(file.getAbsolutePath());
             // Grab all components and paste them into the main
             // presenter
-            plugInPort.pasteComponents(ComponentTransferableFactory.getInstance()
-                .build(presenter.getCurrentProject().getComponents(), presenter.getCurrentProject().getGroups()), false, false);
+            plugInPort.pasteComponents(ComponentTransferableFactory.getInstance().build(
+                presenter.getCurrentProject().getComponents(),
+                presenter.getCurrentProject().getGroups()), false, false);
             // Cleanup components in the temp presenter, don't need
             // them anymore
             presenter.selectAll(0);
@@ -480,7 +481,7 @@ public class ActionFactory {
       }
     }
   }
-  
+
   public static class ImportNetlistAction extends AbstractAction {
 
     private static final long serialVersionUID = 1L;
@@ -495,13 +496,14 @@ public class ActionFactory {
     public ImportNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
       super();
       this.plugInPort = plugInPort;
-      this.swingUI = swingUI;     
+      this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Import Netlist");
       putValue(AbstractAction.SMALL_ICON, IconLoader.ImportNetlist.getIcon());
-      
-      this.parserDefinitions = plugInPort.getNetlistParserDefinitions();      
-      this.extensions = parserDefinitions.stream().map(x -> x.getFileExt()).collect(Collectors.toList());
-      
+
+      this.parserDefinitions = plugInPort.getNetlistParserDefinitions();
+      this.extensions =
+          parserDefinitions.stream().map(x -> x.getFileExt()).collect(Collectors.toList());
+
       this.filter = new FileFilter() {
 
         @Override
@@ -530,12 +532,12 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("ImportNetlistAction triggered");
-      
-      final File file = DialogFactory.getInstance().showOpenDialog(this.filter,
-          null, this.extensions.get(0), null);
+
+      final File file = DialogFactory.getInstance().showOpenDialog(this.filter, null,
+          this.extensions.get(0), null);
       // TODO: identity by extension
       final INetlistParser parser = parserDefinitions.get(0);
-      
+
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<List<ParsedNetlistEntry>>() {
 
@@ -543,7 +545,8 @@ public class ActionFactory {
           public List<ParsedNetlistEntry> doInBackground() throws Exception {
             LOG.debug("Importing netlist from " + file.getAbsolutePath());
             List<String> outputWarnings = new ArrayList<String>();
-            List<ParsedNetlistEntry> entries = parser.parseFile(file.getAbsolutePath(), outputWarnings);
+            List<ParsedNetlistEntry> entries =
+                parser.parseFile(file.getAbsolutePath(), outputWarnings);
             if (!outputWarnings.isEmpty())
               LOG.warn("Parsing produced warnings:\n" + String.join("\n", outputWarnings));
             return entries;
@@ -552,17 +555,22 @@ public class ActionFactory {
           @Override
           public void complete(List<ParsedNetlistEntry> entries) {
             try {
-              NetlistImportDialog dialog = DialogFactory.getInstance().createNetlistImportDialog(plugInPort,entries);
+              NetlistImportDialog dialog =
+                  DialogFactory.getInstance().createNetlistImportDialog(plugInPort, entries);
               dialog.setVisible(true);
               if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
                 List<String> outputWarnings = new ArrayList<String>();
                 Map<String, Class<?>> results = dialog.getResults();
-                List<ParsedNetlistComponent> parsedComponents = entries.stream().map(entry -> 
-                  new ParsedNetlistComponent(results.get(entry.getRawType()), entry.getValues())).collect(Collectors.toList());
-                List<IDIYComponent<?>> components = parser.generateComponents(parsedComponents, outputWarnings);
+                List<ParsedNetlistComponent> parsedComponents = entries.stream()
+                    .map(entry -> new ParsedNetlistComponent(results.get(entry.getRawType()),
+                        entry.getValues()))
+                    .collect(Collectors.toList());
+                List<IDIYComponent<?>> components =
+                    parser.generateComponents(parsedComponents, outputWarnings);
                 if (!outputWarnings.isEmpty())
-                  LOG.warn("Component creation produced warnings:\n" + String.join("\n", outputWarnings));
-                plugInPort.pasteComponents(new ComponentTransferable(components), false, false); 
+                  LOG.warn("Component creation produced warnings:\n"
+                      + String.join("\n", outputWarnings));
+                plugInPort.pasteComponents(new ComponentTransferable(components), false, false);
               }
             } catch (Exception e) {
               swingUI.showMessage("Could not import netlist file: " + e.getMessage(), "Error",
@@ -962,7 +970,7 @@ public class ActionFactory {
             LOG.debug("Exporting variants to " + file.getAbsolutePath());
 
             try {
-              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));              
+              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
               ProjectFileManager.xStreamSerializer.toXML(variantPkg, out);
               out.close();
               LOG.info("Exported variants succesfully");
@@ -1117,7 +1125,7 @@ public class ActionFactory {
             LOG.debug("Exporting variants to " + file.getAbsolutePath());
 
             try {
-              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));              
+              BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
               ProjectFileManager.xStreamSerializer.toXML(variantPkg, out);
               out.close();
               LOG.info("Exported building blocks succesfully");
@@ -1237,8 +1245,8 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("Cut triggered");
-      clipboard.setContents(
-          ComponentTransferableFactory.getInstance().build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroups()),          
+      clipboard.setContents(ComponentTransferableFactory.getInstance()
+          .build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroups()),
           clipboardOwner);
       plugInPort.deleteSelectedComponents();
     }
@@ -1297,8 +1305,8 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("Copy triggered");
-      clipboard.setContents(
-          ComponentTransferableFactory.getInstance().build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroups()),          
+      clipboard.setContents(ComponentTransferableFactory.getInstance()
+          .build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroups()),
           clipboardOwner);
     }
   }
@@ -1505,9 +1513,9 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       putValue(AbstractAction.NAME, "Delete Selection");
       if (Utils.isMac()) {
-    	  putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+        putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
       } else {
-    	  putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+        putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
       }
       putValue(AbstractAction.SMALL_ICON, IconLoader.Delete.getIcon());
     }
@@ -1779,9 +1787,9 @@ public class ActionFactory {
       putValue(IView.CHECK_BOX_MENU_ITEM, true);
       putValue(AbstractAction.SELECTED_KEY,
           ConfigurationManager.getInstance().readBoolean(configKey, defaultValue));
-      
+
       LOG.info("Initializing " + configKey + " to " + getValue(AbstractAction.SELECTED_KEY));
-      
+
       ConfigurationManager.getInstance().addConfigListener(configKey, new IConfigListener() {
 
         @Override
@@ -1815,7 +1823,8 @@ public class ActionFactory {
 
     private String configKey;
 
-    public ToggleAction(String title, String configKey, String groupName, String defaultValue, Icon icon) {
+    public ToggleAction(String title, String configKey, String groupName, String defaultValue,
+        Icon icon) {
       super();
       this.configKey = configKey;
       putValue(AbstractAction.NAME, title);
@@ -1836,7 +1845,8 @@ public class ActionFactory {
 
     @Override
     public void valueChanged(String key, Object value) {
-      putValue(AbstractAction.SELECTED_KEY, getValue(AbstractAction.NAME).toString().equalsIgnoreCase(value.toString()));
+      putValue(AbstractAction.SELECTED_KEY,
+          getValue(AbstractAction.NAME).toString().equalsIgnoreCase(value.toString()));
     }
   }
 
@@ -1915,12 +1925,19 @@ public class ActionFactory {
 
     private IPlugInPort plugInPort;
     private ISwingUI swingUI;
+    private boolean includeSwitches;
 
-    public GenerateNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+    public GenerateNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI,
+        boolean includeSwitches) {
       super();
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
-      putValue(AbstractAction.NAME, "Generate DIYLC Netlist");
+      this.includeSwitches = includeSwitches;
+      if (includeSwitches) {
+        putValue(AbstractAction.NAME, "Generate DIYLC Netlist (incl. Switches)");
+      } else {
+        putValue(AbstractAction.NAME, "Generate DIYLC Netlist (excl. Switches)");
+      }
       putValue(AbstractAction.SMALL_ICON, IconLoader.Web.getIcon());
     }
 
@@ -1930,7 +1947,8 @@ public class ActionFactory {
 
         @Override
         public List<Netlist> doInBackground() throws Exception {
-          return plugInPort.extractNetlists(true);
+          LOG.info("Generating netlist, includeSwitches = " + includeSwitches + "...");
+          return plugInPort.extractNetlists(includeSwitches);
         }
 
         @Override
@@ -1941,6 +1959,7 @@ public class ActionFactory {
 
         @Override
         public void complete(List<Netlist> res) {
+          LOG.info("Finished fenerating netlist");
           if (res == null) {
             swingUI.showMessage("The generated netlist is empty, nothing to show.", "DIYLC Netlist",
                 ISwingUI.INFORMATION_MESSAGE);
@@ -1950,8 +1969,12 @@ public class ActionFactory {
 
           for (Netlist netlist : res) {
             sb.append("<p style=\"font-family: " + new JLabel().getFont().getName()
-                + "; font-size: 9px\"><b>Switch configuration: ").append(netlist.getSwitchSetup())
-                .append("</b><br><br>Connected node groups:<br>");
+                + "; font-size: 9px\">");
+            if (includeSwitches) {
+              sb.append("<b>Switch configuration: ").append(netlist.getSwitchSetup())
+                  .append("</b><br><br>");
+            }
+            sb.append("Connected node groups:<br><br>");
             for (Group v : netlist.getSortedGroups()) {
               sb.append("&nbsp;&nbsp;").append(v.getSortedNodes()).append("<br>");
             }
@@ -2035,7 +2058,7 @@ public class ActionFactory {
       }, true);
     }
   }
-  
+
   public static class CheckProximityAction extends AbstractAction implements Cloneable {
 
     private static final long serialVersionUID = 1L;
@@ -2047,65 +2070,75 @@ public class ActionFactory {
     public CheckProximityAction(IPlugInPort plugInPort, ISwingUI swingUI) {
       super();
       this.plugInPort = plugInPort;
-      this.swingUI = swingUI;  
+      this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Check Trace Proximity");
       putValue(AbstractAction.SMALL_ICON, IconLoader.TraceProximity.getIcon());
       this.threshold = new Size(0.5d, SizeUnit.mm);
     }
-    
+
     public Size getThreshold() {
       return threshold;
     }
-    
+
     public void setThreshold(Size threshold) {
       this.threshold = threshold;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {   
-      PropertyWrapper wrapper = new PropertyWrapper("Threshold", Size.class, "getThreshold", "setThreshold", false, new PositiveNonZeroMeasureValidator(), 0);
+    public void actionPerformed(ActionEvent e) {
+      PropertyWrapper wrapper = new PropertyWrapper("Threshold", Size.class, "getThreshold",
+          "setThreshold", false, new PositiveNonZeroMeasureValidator(), 0);
       try {
-        wrapper.readFrom(CheckProximityAction.this);      
+        wrapper.readFrom(CheckProximityAction.this);
       } catch (Exception e1) {
         LOG.error("Error reading proximity threshold", e1);
       }
-      
+
       List<PropertyWrapper> properties = Arrays.asList(wrapper);
-      PropertyEditorDialog editor =
-          DialogFactory.getInstance().createPropertyEditorDialog(properties, (String)CheckProximityAction.this.getValue(NAME), true);
+      PropertyEditorDialog editor = DialogFactory.getInstance().createPropertyEditorDialog(
+          properties, (String) CheckProximityAction.this.getValue(NAME), true);
       editor.setVisible(true);
-      if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {       
+      if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
         try {
           wrapper.writeTo(CheckProximityAction.this);
         } catch (Exception e1) {
           LOG.error("Error writing proximity threshold", e1);
         }
-        
+
         swingUI.executeBackgroundTask(new ITask<List<Area>>() {
-  
+
           @Override
           public List<Area> doInBackground() throws Exception {
             return plugInPort.checkContinuityAreaProximity(threshold);
           }
-  
+
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage(e.getMessage(), LangUtil.translate((String)CheckProximityAction.this.getValue(NAME)), ISwingUI.INFORMATION_MESSAGE);
+            swingUI.showMessage(e.getMessage(),
+                LangUtil.translate((String) CheckProximityAction.this.getValue(NAME)),
+                ISwingUI.INFORMATION_MESSAGE);
           }
-  
+
           @Override
           public void complete(List<Area> res) {
             if (res == null || res.size() == 0)
               swingUI.showMessage(LangUtil.translate("No proximity issues detected."),
-                  LangUtil.translate((String)CheckProximityAction.this.getValue(NAME)), ISwingUI.INFORMATION_MESSAGE);
+                  LangUtil.translate((String) CheckProximityAction.this.getValue(NAME)),
+                  ISwingUI.INFORMATION_MESSAGE);
             else
-              swingUI.showMessage(String.format(LangUtil.translate("%s potential proximity issue(s) detected and marked red."), res.size()),
-                  LangUtil.translate((String)CheckProximityAction.this.getValue(NAME)), ISwingUI.WARNING_MESSAGE);                
+              swingUI
+                  .showMessage(
+                      String.format(
+                          LangUtil.translate(
+                              "%s potential proximity issue(s) detected and marked red."),
+                          res.size()),
+                      LangUtil.translate((String) CheckProximityAction.this.getValue(NAME)),
+                      ISwingUI.WARNING_MESSAGE);
           }
         }, true);
       }
     }
-    
+
     @Override
     public Object clone() throws CloneNotSupportedException {
       return new CheckProximityAction(plugInPort, swingUI);

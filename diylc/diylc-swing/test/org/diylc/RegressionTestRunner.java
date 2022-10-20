@@ -227,8 +227,7 @@ public class RegressionTestRunner {
     }
 
     List<Netlist> netlists = presenter.extractNetlists(true);
-    File netlistOutputDir = new File(
-        file.getParentFile().getParentFile().getAbsolutePath() + File.separator + "netlist");
+    File netlistOutputDir = new File(outputDir.getAbsolutePath() + File.separator + "netlist");
     File netlistOutputFile = new File(netlistOutputDir.getAbsolutePath() + File.separator
         + file.getName().replace(".diy", ".txt"));
     File netlistInputFile = new File(inputDir.getAbsolutePath() + File.separator + "netlist"

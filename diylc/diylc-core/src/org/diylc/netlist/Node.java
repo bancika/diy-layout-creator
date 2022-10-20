@@ -21,6 +21,7 @@
 */
 package org.diylc.netlist;
 
+import java.awt.geom.Point2D;
 import org.diylc.core.IDIYComponent;
 
 /**
@@ -50,6 +51,10 @@ public class Node implements Comparable<Node> {
   public String getDisplayName() {
     String[] section = component.getSectionNames(pointIndex);
     return (section == null || section.length > 1 ? "" : section[0] + ".") + component.getControlPointNodeName(pointIndex);
+  }
+  
+  public Point2D getPoint2D() {
+    return component.getControlPoint(pointIndex);
   }
 
   @Override

@@ -33,6 +33,7 @@ import java.util.Arrays;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.Size;
 
 /**
  * Abstract implementation of {@link IDIYComponent} that contains component name and toString.
@@ -97,6 +98,17 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
    * @return
    */
   protected int getClosestOdd(double x) {
+    return ((int) x / 2) * 2 + 1;
+  }
+  
+  /**
+   * Returns the closest odd number, i.e. x when x is odd, or x + 1 when x is even.
+   * 
+   * @param x
+   * @return
+   */
+  protected int getClosestOdd(Size s) {
+    double x = s.convertToPixels();
     return ((int) x / 2) * 2 + 1;
   }
 
