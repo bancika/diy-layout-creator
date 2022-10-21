@@ -78,7 +78,7 @@ public class TubeSocket extends AbstractAngledComponent<String> {
 
   private static Color BODY_COLOR = Color.decode("#F7F7EF");
   private static Color LABEL_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
+  public static Color PIN_COLOR = METAL_COLOR;
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Size PIN_DIAMETER = new Size(1d, SizeUnit.mm);
   private static Size PIN_WIDTH = new Size(0.08d, SizeUnit.in);
@@ -266,25 +266,33 @@ public class TubeSocket extends AbstractAngledComponent<String> {
     drawingObserver.stopTracking();
     
     // Draw pins
-    if (!outlineMode) {      
-      for (int i = 1; i < controlPoints.length; i++) {
-        Shape pinShape;
-        if (getMount() == Mount.PCB) {
-          int pinSize = getClosestOdd(PIN_DIAMETER.convertToPixels());
-          pinShape = new Ellipse2D.Double(controlPoints[i].getX() - pinSize / 2, controlPoints[i].getY() - pinSize / 2, pinSize, pinSize);
-        } else {
-          int pinWidth = getClosestOdd(PIN_WIDTH.convertToPixels());
-          int pinThickness = getClosestOdd(PIN_THICKNESS.convertToPixels());
-          pinShape = new Rectangle2D.Double(controlPoints[i].getX() - pinWidth / 2, controlPoints[i].getY() - pinThickness / 2, pinWidth, pinThickness);
-          double theta = Math.atan2(controlPoints[i].getY() - controlPoints[0].getY(), controlPoints[i].getX() - controlPoints[0].getX()) + Math.PI / 2;
-          Area rotatedPin = new Area(pinShape);
-          rotatedPin.transform(AffineTransform.getRotateInstance(theta, controlPoints[i].getX(), controlPoints[i].getY()));
-          pinShape = rotatedPin;
-        }
-        g2d.setColor(PIN_COLOR);
-        g2d.fill(pinShape);
+
+    for (int i = 1; i < controlPoints.length; i++) {
+      Shape pinShape;
+      if (getMount() == Mount.PCB) {
+        int pinSize = getClosestOdd(PIN_DIAMETER.convertToPixels());
+        pinShape = new Ellipse2D.Double(controlPoints[i].getX() - pinSize / 2,
+            controlPoints[i].getY() - pinSize / 2, pinSize, pinSize);
+      } else {
+        int pinWidth = getClosestOdd(PIN_WIDTH.convertToPixels());
+        int pinThickness = getClosestOdd(PIN_THICKNESS.convertToPixels());
+        pinShape = new Rectangle2D.Double(controlPoints[i].getX() - pinWidth / 2,
+            controlPoints[i].getY() - pinThickness / 2, pinWidth, pinThickness);
+        double theta = Math.atan2(controlPoints[i].getY() - controlPoints[0].getY(),
+            controlPoints[i].getX() - controlPoints[0].getX()) + Math.PI / 2;
+        Area rotatedPin = new Area(pinShape);
+        rotatedPin.transform(AffineTransform.getRotateInstance(theta, controlPoints[i].getX(),
+            controlPoints[i].getY()));
+        pinShape = rotatedPin;
+      }
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : PIN_COLOR);
+      if (getMount() == Mount.CHASSIS)
+        drawingObserver.startTrackingContinuityArea(true);
+      g2d.fill(pinShape);
+      drawingObserver.stopTrackingContinuityArea();
+      if (!outlineMode) {
         g2d.setColor(PIN_BORDER_COLOR);
-        g2d.fill(pinShape);
+        g2d.draw(pinShape);
       }
     }
     
