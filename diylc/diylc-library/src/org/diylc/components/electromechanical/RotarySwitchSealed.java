@@ -70,8 +70,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
 
   private static Color BODY_COLOR = Color.decode("#F7F7EF");
   private static Color LABEL_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
+
   public static Size PIN_DIAMETER = new Size(1d, SizeUnit.mm);
   private static Size PIN_WIDTH = new Size(0.08d, SizeUnit.in);
   private static Size PIN_THICKNESS = new Size(0.02d, SizeUnit.in);
@@ -81,6 +80,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
   private Mount mount = Mount.CHASSIS;
   private SwitchTiming timing;
   private Color labelColor = LABEL_COLOR;
+  private Color pinColor = METAL_COLOR;
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private double[] pointAngles;
@@ -130,7 +130,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
     controlPoints = new Point2D[outerPinCount + innerPinCount + 1];
     pointAngles = new double[controlPoints.length];
     
-    double theta = outerAngleOffset + Math.toRadians(getAngle().getValue());
+    double theta = outerAngleOffset + getAngle().getValueRad();
     controlPoints[0] = firstPoint;
     
     for (int i = 0; i < outerPinCount; i++) {
@@ -141,7 +141,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
       theta += outerAngleIncrement;
     }
     
-    theta = innerAngleOffset + Math.toRadians(getAngle().getValue());
+    theta = innerAngleOffset + getAngle().getValueRad();
     for (int i = 0; i < innerPinCount; i++) {
       controlPoints[i + outerPinCount + 1] =
           new Point2D.Double(firstPoint.getX() + Math.cos(theta) * innerPinDiameter / 2,
@@ -214,10 +214,13 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
           rotatedPin.transform(AffineTransform.getRotateInstance(theta, controlPoints[i].getX(), controlPoints[i].getY()));
           pinShape = rotatedPin;
         }
-        g2d.setColor(PIN_COLOR);
+        g2d.setColor(pinColor);
+        if (getMount() == Mount.CHASSIS)
+          drawingObserver.startTrackingContinuityArea(true);        
         g2d.fill(pinShape);
-        g2d.setColor(PIN_BORDER_COLOR);
-        g2d.fill(pinShape);
+        drawingObserver.stopTrackingContinuityArea();
+        g2d.setColor(pinColor.darker());
+        g2d.draw(pinShape);
       }
     }
     
@@ -231,17 +234,14 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
     for (int i = 0; i < outerPinCount; i++) {
       int x = (int) (firstPoint.getX() + Math.cos(pointAngles[i + 1]) * relativeLabelLocation * outerPinDiameter / 2);
       int y = (int) (firstPoint.getY() + Math.sin(pointAngles[i + 1]) * relativeLabelLocation * outerPinDiameter / 2);
-      StringUtils.drawCenteredText(g2d, Integer.toString(i + 1), x, y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, getControlPointNodeName(i + 1), x, y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
     relativeLabelLocation = 0.65;
-    int labelStep = 1;
-    if (configuration.getPoleCount() == 2) {      
-        labelStep = 2; 
-    }
+
     for (int i = 0; i < innerPinCount; i++) {
       int x = (int) (firstPoint.getX() + Math.cos(pointAngles[i + outerPinCount + 1]) * relativeLabelLocation * innerPinDiameter / 2);
       int y = (int) (firstPoint.getY() + Math.sin(pointAngles[i + outerPinCount + 1]) * relativeLabelLocation * innerPinDiameter / 2);
-      StringUtils.drawCenteredText(g2d, Character.toString((char)('A' + labelStep * i)), x, y, 
+      StringUtils.drawCenteredText(g2d, getControlPointNodeName(i + outerPinCount + 1), x, y, 
           HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
   }
@@ -255,18 +255,18 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
     
     int commonX = (int) (width - 8 * width / 32d);
     int commonY = (int) (height - 8 * width / 32d);
-    g2d.setColor(PIN_COLOR);
+    g2d.setColor(pinColor);
     g2d.fillOval(commonX - 1, commonY - 1, 3, 3);
-    g2d.setColor(PIN_BORDER_COLOR);
+    g2d.setColor(pinColor.darker());
     g2d.drawOval(commonX - 1, commonY - 1, 3, 3);
     
     int radius = (int) (width - 6 * width / 32d);
     for (int i = 0; i < 4; i++) {
       int x = (int) (width + Math.cos(1.1 * Math.PI + i * Math.PI / 6) * radius);
       int y = (int) (height + Math.sin(1.1 * Math.PI + i * Math.PI / 6) * radius);
-      g2d.setColor(PIN_COLOR);
+      g2d.setColor(pinColor);
       g2d.fillOval(x - 1, y - 1, 3, 3);
-      g2d.setColor(PIN_BORDER_COLOR);
+      g2d.setColor(pinColor.darker());
       g2d.drawOval(x - 1, y - 1, 3, 3);
     }
     
@@ -342,6 +342,15 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
     this.timing = timing;
   }
   
+  @EditableProperty(name = "Terminals")
+  public Color getPinColor() {
+    return pinColor;
+  }
+  
+  public void setPinColor(Color pinColor) {
+    this.pinColor = pinColor;
+  }
+  
   @Override
   public Rectangle2D getCachingBounds() {
     Rectangle2D rect = getBody()[0].getBounds2D();
@@ -372,6 +381,22 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
   @Override
   public String getPositionName(int position) {
     return Integer.toString(position + 1);
+  }
+  
+  @Override
+  public String getControlPointNodeName(int index) {
+    int outerPinCount = 12;
+
+    if (index <= outerPinCount) {
+      return Integer.toString(index);
+    }
+
+    int labelStep = 1;
+    if (configuration.getPoleCount() == 2) {      
+        labelStep = 2; 
+    }
+
+    return Character.toString((char)('A' + labelStep * (index - outerPinCount - 1)));
   }
 
   @Override

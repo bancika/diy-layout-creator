@@ -205,6 +205,9 @@ public class StringUtils {
 
   public static void drawCenteredText(Graphics2D g2d, String text, double x, double y, HorizontalAlignment horizontalAlignment,
       VerticalAlignment verticalAlignment) {
+    if (text == null)
+      return;
+    
     String[] parts = text.split("\\<br\\>");
     if (parts.length > 1) {
       FontMetrics fontMetrics = g2d.getFontMetrics();

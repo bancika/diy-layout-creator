@@ -4,7 +4,7 @@ import org.diylc.components.electromechanical.RotarySwitchSealed;
 import org.diylc.components.electromechanical.RotarySwitchSealedType;
 import org.junit.Test;
 
-public abstract class RotarySwitchTests extends AbstractSwitchTests {
+public abstract class RotarySwitchSealedTests extends AbstractSwitchTests {
   
   @Test
   public void testRotarySwitchSP12T() {
@@ -25,7 +25,7 @@ public abstract class RotarySwitchTests extends AbstractSwitchTests {
         "0,1,13", "1,2,13", "2,3,13", "3,4,13", "4,5,13", "5,6,13", 
         "0,7,14", "1,8,14", "2,9,14", "3,10,14", "4,11,14", "5,12,14"};
     
-    sw.setValue(RotarySwitchSealedType.DP6T);
+    sw.setValue(RotarySwitchSealedType._2P6T);
     testSwitch(sw, validCombinations);
   }
   

@@ -205,7 +205,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitchType> implem
       }
       body[1] = waferArea;
 
-      double theta = Math.toRadians(getAngle().getValue());
+      double theta = getAngle().getValueRad();
 
       Area terminalArea = new Area();
       Area commonTerminalArea = new Area();
@@ -300,8 +300,8 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitchType> implem
     }
 
     // Rotate if needed
-    if (getAngle().getValue() != 0) {
-      double theta = Math.toRadians(getAngle().getValue());
+    double theta = getAngle().getValueRad();
+    if (theta != 0) {      
       AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
       for (Point2D point : controlPoints) {
         rotation.transform(point, point);

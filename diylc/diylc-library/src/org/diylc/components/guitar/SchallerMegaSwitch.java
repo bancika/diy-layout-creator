@@ -188,7 +188,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     double y =
         (controlPoints[0].getY() + controlPoints[lastPointIdx].getY()) / 2 + getLabelDy() * 2.25;
 
-    double theta = Math.toRadians(getAngle().getValue()) - Math.PI / 2;
+    double theta = getAngle().getValueRad() - Math.PI / 2;
     
     if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {
       theta += Math.PI;
@@ -248,7 +248,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
       body[1] = waferArea;
 
-      double theta = Math.toRadians(getAngle().getValue());
+      double theta = getAngle().getValueRad();
 
       Area terminalArea = new Area();
       for (int i = 0; i < controlPoints.length; i++) {
@@ -326,8 +326,8 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     }
 
     // Rotate if needed
-    if (getAngle().getValue() != 0) {
-      double theta = Math.toRadians(getAngle().getValue());
+    double theta = getAngle().getValueRad();
+    if (theta != 0) {      
       AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
       for (Point2D point : controlPoints) {
         rotation.transform(point, point);
@@ -343,7 +343,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   private void updateLabelPositions() {
     double labelOffset = LABEL_OFFSET.convertToPixels();
-    double theta = Math.toRadians(getAngle().getValue()) - Math.PI;
+    double theta = getAngle().getValueRad() - Math.PI;
     labelDx = Math.cos(theta) * labelOffset;
     labelDy = Math.sin(theta) * labelOffset;
   }

@@ -110,7 +110,7 @@ public class Jumbo4PinTubeSocket extends AbstractAngledComponent<String> {
     double initialAngleOffset = angleIncrement / 2;
 
     controlPoints = new Point2D[pinCount + 1];
-    double theta = initialAngleOffset + Math.toRadians(getAngle().getValue());
+    double theta = initialAngleOffset + getAngle().getValueRad();
     controlPoints[0] = firstPoint;
     for (int i = 0; i < pinCount; i++) {
       controlPoints[i + 1] =
@@ -138,7 +138,7 @@ public class Jumbo4PinTubeSocket extends AbstractAngledComponent<String> {
       double mountingHoleSize = getClosestOdd(JUMBO_MOUNT_HOLE_SIZE.convertToPixels());
       double mountingHoleSpacing = getClosestOdd(JUMBO_MOUNT_HOLE_SPACING.convertToPixels());
 
-      double theta = Math.toRadians(getAngle().getValue());
+      double theta = getAngle().getValueRad();
       int centerX = (int) (controlPoints[0].getX()
           + Math.cos(theta) * (mountingHoleSpacing / 2 - mountingHoleSize / 2));
       int centerY = (int) (controlPoints[0].getY()
@@ -159,7 +159,7 @@ public class Jumbo4PinTubeSocket extends AbstractAngledComponent<String> {
 
       Area terminalArea = new Area();
 
-      double alpha = initialAngleOffset + Math.toRadians(getAngle().getValue());
+      double alpha = initialAngleOffset + getAngle().getValueRad();
       double terminalLength = JUMBO_TERMINAL_LENGTH.convertToPixels();
       int terminalWidth = getClosestOdd(JUMBO_TERMINAL_WIDTH.convertToPixels());
       int terminalHoleDiameter = getClosestOdd(JUMBO_TERMINAL_HOLE_SIZE.convertToPixels());

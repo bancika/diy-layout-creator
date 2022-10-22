@@ -167,7 +167,7 @@ public class TubeSocket extends AbstractAngledComponent<String> {
     double initialAngleOffset = hasEmptySpace ? angleIncrement : (angleIncrement / 2);
 
     controlPoints = new Point2D[pinCount + 1];
-    double theta = initialAngleOffset + Math.toRadians(getAngle().getValue());
+    double theta = initialAngleOffset + getAngle().getValueRad();
     controlPoints[0] = firstPoint;
     for (int i = 0; i < pinCount; i++) {
       controlPoints[i + 1] =
@@ -207,7 +207,7 @@ public class TubeSocket extends AbstractAngledComponent<String> {
       
       if (base == Base.OCTAL) {
         int tickSize = getClosestOdd(OCTAL_TICK_SIZE.convertToPixels());
-        double theta = Math.toRadians(getAngle().getValue());
+        double theta = getAngle().getValueRad();
         int centerX = (int) (controlPoints[0].getX() + Math.cos(theta) * holeSize / 2);
         int centerY = (int) (controlPoints[0].getY() + Math.sin(theta) * holeSize / 2);
         bodyArea.subtract(new Area(new Ellipse2D.Double(centerX - tickSize / 2, centerY - tickSize / 2, tickSize,

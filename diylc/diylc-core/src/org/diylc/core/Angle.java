@@ -15,6 +15,10 @@ public class Angle {
   public int getValue() {
     return value;
   }
+  
+  public double getValueRad() {
+    return Math.toRadians(value);
+  }
 
   @Override
   public int hashCode() {
