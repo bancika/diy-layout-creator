@@ -3,10 +3,12 @@ package org.diylc;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ import org.diylc.appframework.update.VersionNumber;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.netlist.Netlist;
+import org.diylc.netlist.NetlistException;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
@@ -178,7 +181,7 @@ public class RegressionTestRunner {
   }
 
   private static RegressionTestResult testOutputs(File file, String prefix, Presenter presenter,
-      ProjectDrawingProvider drawingProvider, MockView view) {
+      ProjectDrawingProvider drawingProvider, MockView view) throws NetlistException {
     RegressionTestResult res = new RegressionTestResult(file.getName());
     File baseDir = file.getParentFile().getParentFile().getParentFile().getParentFile();
     File outputDir = new File(baseDir.getAbsolutePath() + File.separator + "output" + File.separator
@@ -226,47 +229,13 @@ public class RegressionTestRunner {
       return res.failed("Images do not match!");
     }
 
-    List<Netlist> netlists = presenter.extractNetlists(true);
-    File netlistOutputDir = new File(outputDir.getAbsolutePath() + File.separator + "netlist");
-    File netlistOutputFile = new File(netlistOutputDir.getAbsolutePath() + File.separator
-        + file.getName().replace(".diy", ".txt"));
-    File netlistInputFile = new File(inputDir.getAbsolutePath() + File.separator + "netlist"
-        + File.separator + (file.getName().replace(".diy", ".txt")));
-
-    netlistOutputDir.mkdirs();
-    try {
-      if (netlistOutputFile.exists()) {
-        netlistOutputFile.delete();
-      }
-      try {
-        try (BufferedWriter writer = new BufferedWriter(
-            new OutputStreamWriter(new FileOutputStream(netlistOutputFile, true), "UTF-8"))) {
-          for (Netlist netlist : netlists) {
-            writer.write(netlist.toString());
-            writer.newLine();
-          }
-        }
-      } catch (Exception e) {
-        try (BufferedWriter writer = new BufferedWriter(
-            new OutputStreamWriter(new FileOutputStream(netlistOutputFile, true), "UTF-8"))) {
-          writer.write(e.getClass().getCanonicalName() + ": " + e.getMessage());
-        }
-      }
-
-      List<String> inputLines = Files.readAllLines(Paths.get(netlistInputFile.getAbsolutePath()));
-      List<String> outputLines = Files.readAllLines(Paths.get(netlistOutputFile.getAbsolutePath()));
-
-      if (inputLines.size() != outputLines.size()) {
-        return res.failed("Netlists do not match");
-      }
-      for (int i = 0; i < inputLines.size(); i++) {
-        if (!inputLines.get(i).equals(outputLines.get(i))) {
-          return res.failed("Netlists do not match");
-        }
-      }
-    } catch (IOException e) {
-      return res.failed(e.getMessage());
-    }
+    RegressionTestResult netlistResultWithSwitches = testNetlist(file, presenter, res, outputDir, inputDir, true);
+    if (netlistResultWithSwitches != null)
+      return netlistResultWithSwitches;
+    
+    RegressionTestResult netlistResultWithoutSwitches = testNetlist(file, presenter, res, outputDir, inputDir, false);
+    if (netlistResultWithoutSwitches != null)
+      return netlistResultWithoutSwitches;
 
     // List<INetlistAnalyzer> summarizers = presenter.getNetlistAnalyzers();
     // if (summarizers != null) {
@@ -333,6 +302,52 @@ public class RegressionTestRunner {
     return res.succedded(message);
   }
 
+  private static RegressionTestResult testNetlist(File file, Presenter presenter, RegressionTestResult res,
+      File outputDir, File inputDir, boolean includeSwitches) throws NetlistException {    
+    File netlistOutputDir = new File(outputDir.getAbsolutePath() + File.separator + "netlist");
+    File netlistOutputFile = new File(netlistOutputDir.getAbsolutePath() + File.separator
+        + file.getName().replace(".diy", includeSwitches ? "_incl_switches.txt" : "_excl_switches.txt"));
+    File netlistInputFile = new File(inputDir.getAbsolutePath() + File.separator + "netlist"
+        + File.separator + (file.getName().replace(".diy", includeSwitches ? "_incl_switches.txt" : "_excl_switches.txt")));
+
+    netlistOutputDir.mkdirs();
+    try {
+      if (netlistOutputFile.exists()) {
+        netlistOutputFile.delete();
+      }
+      try {
+        List<Netlist> netlists = presenter.extractNetlists(includeSwitches);
+        try (BufferedWriter writer = new BufferedWriter(
+            new OutputStreamWriter(new FileOutputStream(netlistOutputFile, true), "UTF-8"))) {
+          for (Netlist netlist : netlists) {
+            writer.write(netlist.toString());
+            writer.newLine();
+          }
+        }
+      } catch (Exception e) {
+        try (BufferedWriter writer = new BufferedWriter(
+            new OutputStreamWriter(new FileOutputStream(netlistOutputFile, true), "UTF-8"))) {
+          writer.write(e.getClass().getCanonicalName() + ": " + e.getMessage());
+        }
+      }
+
+      List<String> inputLines = Files.readAllLines(Paths.get(netlistInputFile.getAbsolutePath()));
+      List<String> outputLines = Files.readAllLines(Paths.get(netlistOutputFile.getAbsolutePath()));
+
+      if (inputLines.size() != outputLines.size()) {
+        return res.failed("Netlists do not match");
+      }
+      for (int i = 0; i < inputLines.size(); i++) {
+        if (!inputLines.get(i).equals(outputLines.get(i))) {
+          return res.failed("Netlists do not match");
+        }
+      }
+    } catch (IOException e) {
+      return res.failed(e.getMessage());
+    }
+    return null;
+  }
+
   private static RegressionTestResult prepareInputs(File file,
       ProjectDrawingProvider drawingProvider, IPlugInPort plugInPort) {
     RegressionTestResult res = new RegressionTestResult(file.getName());
@@ -346,29 +361,8 @@ public class RegressionTestRunner {
       // always export image to ensure that rendering is done and continuity areas are populated
       DrawingExporter.getInstance().exportPNG(drawingProvider, pngFile);
 
-      List<Netlist> netlists = plugInPort.extractNetlists(true);
-      File netlistDir = new File(
-          file.getParentFile().getParentFile().getAbsolutePath() + File.separator + "netlist");
-      File netlistFile = new File(
-          netlistDir.getAbsolutePath() + File.separator + file.getName().replace(".diy", ".txt"));
-
-      netlistDir.mkdirs();
-      if (!netlistFile.exists()) {
-        try {
-          try (BufferedWriter writer = new BufferedWriter(
-              new OutputStreamWriter(new FileOutputStream(netlistFile, true), "UTF-8"))) {
-            for (Netlist netlist : netlists) {
-              writer.write(netlist.toString());
-              writer.newLine();
-            }
-          }
-        } catch (Exception e) {
-          try (BufferedWriter writer = new BufferedWriter(
-              new OutputStreamWriter(new FileOutputStream(netlistFile, true), "UTF-8"))) {
-            writer.write(e.getClass().getCanonicalName() + ": " + e.getMessage());
-          }
-        }
-      }
+      prepareNetlist(file, plugInPort, true);
+      prepareNetlist(file, plugInPort, false);
 
       // List<INetlistAnalyzer> summarizers = plugInPort.getNetlistAnalyzers();
       // if (summarizers != null) {
@@ -397,6 +391,34 @@ public class RegressionTestRunner {
       return res.failed(e.getMessage());
     }
     return res.succedded();
+  }
+
+  private static void prepareNetlist(File file, IPlugInPort plugInPort, boolean includeSwitches)
+      throws IOException, UnsupportedEncodingException, FileNotFoundException, NetlistException {
+    
+    File netlistDir = new File(
+        file.getParentFile().getParentFile().getAbsolutePath() + File.separator + "netlist");
+    File netlistFile = new File(
+        netlistDir.getAbsolutePath() + File.separator + file.getName().replace(".diy", includeSwitches ? "_incl_switches.txt" : "_excl_switches.txt"));
+
+    netlistDir.mkdirs();
+    if (!netlistFile.exists()) {
+      try {
+        List<Netlist> netlists = plugInPort.extractNetlists(includeSwitches);
+        try (BufferedWriter writer = new BufferedWriter(
+            new OutputStreamWriter(new FileOutputStream(netlistFile, true), "UTF-8"))) {
+          for (Netlist netlist : netlists) {
+            writer.write(netlist.toString());
+            writer.newLine();
+          }
+        }
+      } catch (Exception e) {
+        try (BufferedWriter writer = new BufferedWriter(
+            new OutputStreamWriter(new FileOutputStream(netlistFile, true), "UTF-8"))) {
+          writer.write(e.getClass().getCanonicalName() + ": " + e.getMessage());
+        }
+      }
+    }
   }
 
 //  private static void writeSummariesToFile(List<Netlist> netlists, INetlistAnalyzer summarizer,

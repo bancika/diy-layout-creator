@@ -10,9 +10,10 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.29.0" />
+	<property name="diylc.version" value="4.30.0" />
 	
 	<property name="osx.jre8.path" value="jre\osx\jre8u321\Contents\Home\" />
+	<property name="osx.jre8m1.path" value="jre\osx\jre8zulu\Contents\Home\" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -124,6 +125,54 @@
 			<zipfileset filemode="755" dir="${basedir}/lang" prefix="DIYLC.app/Contents/Resources/lang" />
 		</zip>
 	</target>
+	
+	<target name="mac-m1" depends="jar">
+			<bundleapp
+		        outputdirectory="${build.dir}"
+		        name="DIYLC"
+						jvmrequired="1.8"
+						copyright="2020 bancika"
+		        displayname="DIY Layout Creator"
+		        identifier="org.diylc.Desktop"
+		        shortversion="${diylc.version}"
+		        applicationCategory="public.app-category.graphics-design"
+						icon="icons/diylc.icns"
+		        mainclassname="${main.class}">
+						<bundledocument contentTypes="org.diylc.diy"
+							name="DIYLC document"
+							role="Editor"
+							handlerRank="Owner">
+						</bundledocument>
+						<typedeclaration
+							identifier="org.diylc.diy"
+							description="DIYLC file type"
+							icon="icons/diylc.icns"
+							conformsTo="public.xml,public.text"
+							extensions="diy" />
+				<runtime dir="${osx.jre8m1.path}" />
+				<arch name="arm64" />
+				<classpath file="${jar.dir}\diylc.jar" />
+				<classpath file="${jar.dir}\lib\*.jar" />
+				<classpath file="${jar.dir}\library\*.jar" />
+				<option value="-Xms512m" />
+				<option value="-Xmx2048m" />
+				<!--<option value="-javaagent:Contents/Java/jar-loader.jar" />-->
+				<option value="-Dorg.diylc.scriptRun=true" />
+				<option value="-Dfile.encoding=UTF-8" />
+				<option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
+				<option value="-Dapple.laf.useScreenMenuBar=true"/>
+				<option value="-Dapple.awt.application.name=DIY Layout Creator"/>
+				<option value="-Dcom.apple.smallTabs=true"/>
+				<option value="-Xdock:name=DIY Layout Creator"/>
+				<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
+			</bundleapp>
+			<zip destfile="${build.dir}/diylc-${diylc.version}-osx-m1.zip">
+				<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />
+				<zipfileset filemode="755" dir="${basedir}/themes" prefix="DIYLC.app/Contents/Resources/themes" />
+				<zipfileset filemode="755" dir="${basedir}/fonts" prefix="DIYLC.app/Contents/Resources/fonts" />
+				<zipfileset filemode="755" dir="${basedir}/lang" prefix="DIYLC.app/Contents/Resources/lang" />
+			</zip>
+		</target>
 
 	<property name="izpack-dist" value="e:\bane\dev\IzPack" />
 

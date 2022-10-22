@@ -37,6 +37,21 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	 <release version="4.30.0" date="2022-10-22">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Rotary Switch (Sealed)' component in several switching configurations</li>
+             <li>[New Feature] Added 'Rotary Switch (Open)' component in several switching configurations</li>
+             <li>[New Feature] Added 'S1 Switch' component that can be combined with potentiometer component or used on its own</li>
+             <li>[New Feature] Added 'DP4T (6-Position Oak Grigsby)' as a new type of Lever Switch component</li>
+             <li>[New Feature] Ability to rotate 'Lever Switch' and 'Schaller Megaswitch' by any angle</li>
+             <li>[New Feature] DIYLC Netlists can be generated including or excluding switching configurations</li>
+             <li>[Improvement] Ability to rotate all guitar/bass pickups through the 'Transform Selection' feature or keyboard shortcut</li>
+             <li>[Improvement] Improved the speed and accuracy of circuit analysis and netlist calculation</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.30.0</url>
+     </release>
   	 <release version="4.29.0" date="2022-10-04">
          <description>
            <ul>

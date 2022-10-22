@@ -3999,7 +3999,7 @@
 				<minor>30</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2022-10-04 00:00:00.000 CET</releaseDate>
+			<releaseDate>2022-10-22 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>	
 				<org.diylc.appframework.update.Change>
@@ -4032,7 +4032,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Improved the speed and accuracy of netlist calculation</description>
+					<description>Improved the speed and accuracy of circuit analysis and netlist calculation</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
