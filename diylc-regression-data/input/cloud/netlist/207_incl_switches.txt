@@ -1,0 +1,11 @@
+Switch setup: [SW1.1, SW1.3]
+
+	J1.Sleeve <-> Series/Parallel.1 <-> Series/Parallel.3 <-> Volume.3
+	J1.Tip <-> Volume.2
+	Series/Parallel.2 <-> Volume.1
+
+Switch setup: [SW1.2]
+
+	J1.Sleeve <-> Series/Parallel.1 <-> Series/Parallel.3 <-> Volume.1 <-> Volume.3
+	J1.Tip <-> Volume.2
+

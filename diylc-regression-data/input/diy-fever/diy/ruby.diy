@@ -2,7 +2,7 @@
 <project>
   <fileVersion>
     <major>4</major>
-    <minor>18</minor>
+    <minor>30</minor>
     <build>0</build>
   </fileVersion>
   <title>New Project</title>
@@ -13,7 +13,7 @@
   <dotSpacing>1</dotSpacing>
   <components>
     <diylc.connectivity.HookupWire>
-      <name>W16</name>
+      <name>W4</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.5" y="1.9"/>
@@ -31,7 +31,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name>W17</name>
+      <name>W5</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.8" y="1.9"/>
@@ -49,7 +49,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.electromechanical.MiniToggleSwitch>
-      <name>SW1</name>
+      <name defined-in="diylc.AbstractComponent">SW1</name>
       <alpha>127</alpha>
       <controlPoints>
         <point x="2.7" y="2.6"/>
@@ -86,7 +86,7 @@
       <padColor hex="da8a67"/>
     </diylc.boards.PerfBoard>
     <diylc.electromechanical.PlasticDCJack>
-      <name>J13</name>
+      <name>J3</name>
       <alpha>127</alpha>
       <controlPoints>
         <point x="1.6" y="3.0"/>
@@ -97,7 +97,7 @@
       <polarity>CENTER_NEGATIVE</polarity>
     </diylc.electromechanical.PlasticDCJack>
     <diylc.connectivity.CopperTrace>
-      <name>Trace1</name>
+      <name>Trace8</name>
       <alpha>127</alpha>
       <points>
         <point x="2.1" y="1.9"/>
@@ -137,7 +137,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace5</name>
+      <name>Trace26</name>
       <alpha>127</alpha>
       <points>
         <point x="1.7" y="2.5"/>
@@ -157,7 +157,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace6</name>
+      <name>Trace23</name>
       <alpha>127</alpha>
       <points>
         <point x="1.7" y="2.4"/>
@@ -177,7 +177,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace7</name>
+      <name>Trace27</name>
       <alpha>127</alpha>
       <points>
         <point x="2.0" y="2.5"/>
@@ -197,7 +197,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace8</name>
+      <name>Trace18</name>
       <alpha>127</alpha>
       <points>
         <point x="1.8" y="2.3"/>
@@ -217,7 +217,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace9</name>
+      <name>Trace15</name>
       <alpha>127</alpha>
       <points>
         <point x="2.1" y="2.3"/>
@@ -237,7 +237,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace3</name>
+      <name>Trace12</name>
       <alpha>127</alpha>
       <points>
         <point x="1.7" y="2.1"/>
@@ -257,7 +257,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace4</name>
+      <name>Trace7</name>
       <alpha>127</alpha>
       <points>
         <point x="1.7" y="1.9"/>
@@ -277,7 +277,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace11</name>
+      <name>Trace6</name>
       <alpha>127</alpha>
       <points>
         <point x="1.5" y="1.8"/>
@@ -297,7 +297,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace12</name>
+      <name>Trace16</name>
       <alpha>127</alpha>
       <points>
         <point x="1.6" y="1.9"/>
@@ -317,7 +317,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace13</name>
+      <name>Trace25</name>
       <alpha>127</alpha>
       <points>
         <point x="1.6" y="2.5"/>
@@ -337,7 +337,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace14</name>
+      <name>Trace17</name>
       <alpha>127</alpha>
       <points>
         <point x="1.6" y="2.2"/>
@@ -357,7 +357,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace15</name>
+      <name>Trace13</name>
       <alpha>127</alpha>
       <points>
         <point x="1.8" y="2.1"/>
@@ -377,7 +377,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace16</name>
+      <name>Trace19</name>
       <alpha>127</alpha>
       <points>
         <point x="1.3" y="2.5"/>
@@ -397,7 +397,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace17</name>
+      <name>Trace22</name>
       <alpha>127</alpha>
       <points>
         <point x="1.3" y="2.4"/>
@@ -417,7 +417,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace18</name>
+      <name>Trace21</name>
       <alpha>127</alpha>
       <points>
         <point x="1.5" y="2.2"/>
@@ -437,7 +437,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace19</name>
+      <name>Trace20</name>
       <alpha>127</alpha>
       <points>
         <point x="1.4" y="2.2"/>
@@ -457,7 +457,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace20</name>
+      <name>Trace4</name>
       <alpha>127</alpha>
       <points>
         <point x="1.3" y="1.9"/>
@@ -477,7 +477,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace21</name>
+      <name>Trace5</name>
       <alpha>127</alpha>
       <points>
         <point x="1.4" y="1.7"/>
@@ -497,7 +497,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace22</name>
+      <name>Trace3</name>
       <alpha>127</alpha>
       <points>
         <point x="1.8" y="1.8"/>
@@ -517,7 +517,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace23</name>
+      <name>Trace24</name>
       <alpha>127</alpha>
       <points>
         <point x="1.7" y="2.4"/>
@@ -537,7 +537,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace24</name>
+      <name>Trace14</name>
       <alpha>127</alpha>
       <points>
         <point x="1.9" y="2.2"/>
@@ -557,7 +557,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace10</name>
+      <name>Trace11</name>
       <alpha>127</alpha>
       <points>
         <point x="2.0" y="2.2"/>
@@ -577,7 +577,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace25</name>
+      <name>Trace1</name>
       <alpha>127</alpha>
       <points>
         <point x="1.7" y="1.7"/>
@@ -597,7 +597,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace26</name>
+      <name>Trace10</name>
       <alpha>127</alpha>
       <points>
         <point x="1.8" y="1.9"/>
@@ -617,7 +617,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.CopperTrace>
-      <name>Trace27</name>
+      <name>Trace9</name>
       <alpha>127</alpha>
       <points>
         <point x="1.5" y="1.9"/>
@@ -637,7 +637,7 @@
       <layer>_1</layer>
     </diylc.connectivity.CopperTrace>
     <diylc.connectivity.HookupWire>
-      <name>W1</name>
+      <name>W7</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.3" y="1.7"/>
@@ -655,7 +655,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.electromechanical.OpenJack1__4>
-      <name>J1</name>
+      <name>J2</name>
       <alpha>127</alpha>
       <value></value>
       <controlPoints>
@@ -734,7 +734,7 @@
       <shape>Standard</shape>
     </diylc.passive.Resistor>
     <diylc.connectivity.HookupWire>
-      <name>W2</name>
+      <name>W9</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.3" y="2.3"/>
@@ -752,7 +752,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.passive.RadialElectrolytic>
-      <name>C2</name>
+      <name>C4</name>
       <alpha>88</alpha>
       <length value="5.0" unit="mm"/>
       <points>
@@ -780,7 +780,7 @@
       <invert>false</invert>
     </diylc.passive.RadialElectrolytic>
     <diylc.connectivity.HookupWire>
-      <name>W3</name>
+      <name>W16</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.6" y="3.0"/>
@@ -798,7 +798,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.electromechanical.OpenJack1__4>
-      <name>J14</name>
+      <name>J1</name>
       <alpha>127</alpha>
       <value></value>
       <controlPoints>
@@ -812,7 +812,7 @@
       <showLabels>true</showLabels>
     </diylc.electromechanical.OpenJack1__4>
     <diylc.connectivity.HookupWire>
-      <name>W4</name>
+      <name>W13</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.7" y="2.4"/>
@@ -830,7 +830,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name>W5</name>
+      <name>W17</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.5" y="3.2"/>
@@ -848,7 +848,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name>W6</name>
+      <name>W8</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.5" y="2.1"/>
@@ -866,7 +866,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name>W7</name>
+      <name>W10</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="2.7" y="2.8"/>
@@ -933,7 +933,7 @@
       <shape>Standard</shape>
     </diylc.passive.Resistor>
     <diylc.passive.RadialFilmCapacitor>
-      <name>C4</name>
+      <name>C5</name>
       <alpha>88</alpha>
       <length value="0.3" unit="in"/>
       <width value="0.06" unit="in"/>
@@ -958,7 +958,7 @@
       <pinSpacing value="0.2" unit="in"/>
     </diylc.passive.RadialFilmCapacitor>
     <diylc.connectivity.HookupWire>
-      <name>W8</name>
+      <name>W6</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="2.7" y="1.7"/>
@@ -976,7 +976,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.passive.RadialElectrolytic>
-      <name>C5</name>
+      <name>C2</name>
       <alpha>88</alpha>
       <length value="0.4" unit="in"/>
       <points>
@@ -1004,7 +1004,7 @@
       <invert>false</invert>
     </diylc.passive.RadialElectrolytic>
     <diylc.passive.PotentiometerPanel>
-      <name>Volume</name>
+      <name>VR2</name>
       <alpha>127</alpha>
       <controlPoints>
         <point x="1.8" y="1.3"/>
@@ -1026,7 +1026,7 @@
       <view>ShaftDown</view>
     </diylc.passive.PotentiometerPanel>
     <diylc.semiconductors.DIL__IC>
-      <name>LM386</name>
+      <name>IC1</name>
       <alpha>88</alpha>
       <value></value>
       <orientation>DEFAULT</orientation>
@@ -1051,7 +1051,7 @@
       <displayNumbers>NO</displayNumbers>
     </diylc.semiconductors.DIL__IC>
     <diylc.connectivity.HookupWire>
-      <name>W10</name>
+      <name>W2</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="2.0" y="1.7"/>
@@ -1069,7 +1069,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name>W11</name>
+      <name>W3</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.8" y="1.7"/>
@@ -1087,7 +1087,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name>W12</name>
+      <name>W1</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="1.7" y="1.7"/>
@@ -1130,7 +1130,7 @@
       <pinSpacing value="0.2" unit="in"/>
     </diylc.passive.RadialFilmCapacitor>
     <diylc.connectivity.HookupWire>
-      <name>W9</name>
+      <name>W11</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="2.0" y="2.2"/>
@@ -1148,7 +1148,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name></name>
+      <name>W15</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="2.7" y="2.6"/>
@@ -1166,7 +1166,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.passive.Resistor>
-      <name>R4</name>
+      <name>R5</name>
       <alpha>88</alpha>
       <length value="7.0" unit="mm"/>
       <width value="2.5" unit="mm"/>
@@ -1208,7 +1208,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.passive.Resistor>
-      <name>R5</name>
+      <name>R4</name>
       <alpha>88</alpha>
       <length value="7.0" unit="mm"/>
       <width value="2.5" unit="mm"/>
@@ -1232,7 +1232,7 @@
       <shape>Standard</shape>
     </diylc.passive.Resistor>
     <diylc.connectivity.HookupWire>
-      <name>W15</name>
+      <name>W12</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="2.5" y="2.1"/>
@@ -1250,7 +1250,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name></name>
+      <name>W19</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="2.7" y="3.0"/>
@@ -1268,7 +1268,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.connectivity.HookupWire>
-      <name>W13</name>
+      <name>W18</name>
       <alpha>127</alpha>
       <controlPoints2>
         <point x="2.7" y="2.8"/>
@@ -1286,7 +1286,7 @@
       <stripeColor hex="ffff00"/>
     </diylc.connectivity.HookupWire>
     <diylc.passive.PotentiometerPanel>
-      <name>Gain</name>
+      <name>VR1</name>
       <alpha>127</alpha>
       <controlPoints>
         <point x="1.1" y="1.3"/>
@@ -1308,7 +1308,7 @@
       <view>ShaftDown</view>
     </diylc.passive.PotentiometerPanel>
     <diylc.misc.Label>
-      <name>L1</name>
+      <name>L5</name>
       <point x="2.7" y="3.3"/>
       <text>SPDT (Center-OFF) Switch</text>
       <font name="Square721 BT Roman" size="14" style="0"/>
@@ -1319,7 +1319,7 @@
       <orientation>DEFAULT</orientation>
     </diylc.misc.Label>
     <diylc.misc.Label>
-      <name>L2</name>
+      <name>L4</name>
       <point x="2.7" y="3.2"/>
       <text>1/2 - 1/4 - Full Power</text>
       <font reference="../../diylc.misc.Label/font"/>
@@ -1330,7 +1330,7 @@
       <orientation>DEFAULT</orientation>
     </diylc.misc.Label>
     <diylc.misc.Label>
-      <name>L3</name>
+      <name>L1</name>
       <point x="1.8" y="0.16"/>
       <text>ROG Ruby Amplifier</text>
       <font name="Square721 BT Roman" size="32" style="0"/>
@@ -1341,7 +1341,7 @@
       <orientation>DEFAULT</orientation>
     </diylc.misc.Label>
     <diylc.misc.Label>
-      <name>L4</name>
+      <name>L2</name>
       <point x="1.8" y="0.3"/>
       <text>9x9 hole perfboard w/ attenuator switch</text>
       <font reference="../../diylc.misc.Label/font"/>
@@ -1352,7 +1352,7 @@
       <orientation>DEFAULT</orientation>
     </diylc.misc.Label>
     <diylc.misc.Label>
-      <name>L5</name>
+      <name>L6</name>
       <point x="0.5" y="3.4"/>
       <text>layout by diy-fever.com</text>
       <font name="Square721 BT Roman" size="14" style="0"/>
@@ -1363,7 +1363,7 @@
       <orientation>DEFAULT</orientation>
     </diylc.misc.Label>
     <diylc.misc.Label>
-      <name>L6</name>
+      <name>L3</name>
       <point x="1.8" y="0.4"/>
       <text>*** VERIFIED ***</text>
       <font reference="../../diylc.misc.Label/font"/>

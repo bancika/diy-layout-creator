@@ -1,0 +1,8 @@
+Switch setup: [Default]
+
+	C1.1 <-> D1.2 <-> LED.1 <-> Q1.1 <-> RY1.1
+	C1.2 <-> Q1.2
+	D1.1 <-> R1.2 <-> RY1.5
+	LED.2 <-> R1.1
+	RY1.2 <-> RY1.6
+

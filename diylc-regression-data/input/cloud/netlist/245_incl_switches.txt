@@ -1,0 +1,46 @@
+Switch setup: [.ON1, .ON2]
+
+	Bass.2 <-> C5.1
+	Bass.3 <-> C1.1 <-> R2.1
+	C1.1 <-> C3.2 <-> C3.2 <-> D1.1 <-> Level.3 <-> Opamp.4 <-> R1.1 <-> R1.1
+	C1.1 <-> Opamp.3 <-> R1.2
+	C1.2 <-> C3.1 <-> C5.2 <-> R1.1 <-> R1.1 <-> R1.2 <-> R2.2
+	C1.2 <-> Opamp.8 <-> R2.1
+	C1.2 <-> R1.2
+	C2.1 <-> DIP.16 <-> DIP.8 <-> Drive.1 <-> Opamp.2 <-> R2.2
+	C2.2 <-> DIP.1 <-> DIP.9 <-> Drive.3 <-> Ge.1 <-> Ge.2 <-> Opamp.1 <-> R2.2 <-> Treble.1 <-> Treble.2
+	C3.1 <-> D1.2 <-> Opamp.5 <-> R1.2
+	C4.1 <-> Opamp.6 <-> R3.2
+	C4.2 <-> Level.1
+	DIP.1 <-> DIP.2 <-> Ge.2 <-> Rct.1
+	DIP.1 <-> Ge.2
+	DIP.10 <-> DIP.11 <-> Rct.2 <-> Sch.1
+	DIP.10 <-> DIP.9 <-> Ge.1 <-> Rct.2
+	DIP.10 <-> Rct.2
+	DIP.11 <-> DIP.12 <-> FET.2 <-> Sch.1
+	DIP.11 <-> Sch.1
+	DIP.12 <-> DIP.13 <-> FET.2 <-> Si.1
+	DIP.12 <-> FET.2
+	DIP.13 <-> DIP.14 <-> LED.2 <-> Si.1
+	DIP.13 <-> Si.1
+	DIP.14 <-> DIP.15 <-> LED.2 <-> Si.1
+	DIP.14 <-> LED.2
+	DIP.15 <-> DIP.16 <-> Si.1
+	DIP.15 <-> Si.1
+	DIP.2 <-> DIP.3 <-> Rct.1 <-> Sch.2
+	DIP.2 <-> Rct.1
+	DIP.3 <-> DIP.4 <-> FET.1 <-> Sch.2
+	DIP.3 <-> Sch.2
+	DIP.4 <-> DIP.5 <-> FET.1 <-> Si.2
+	DIP.4 <-> FET.1
+	DIP.5 <-> DIP.6 <-> LED.1 <-> Si.2
+	DIP.5 <-> Si.2
+	DIP.6 <-> DIP.7 <-> LED.1 <-> Si.2
+	DIP.6 <-> LED.1
+	DIP.7 <-> DIP.8 <-> Si.2
+	DIP.7 <-> Si.2
+	DIP.9 <-> Ge.1
+	Drive.2 <-> R2.1
+	Opamp.7 <-> R2.1 <-> R3.1
+	R2.2 <-> Treble.3
+

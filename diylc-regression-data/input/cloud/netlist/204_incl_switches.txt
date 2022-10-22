@@ -1,0 +1,3 @@
+Switch setup: [SW1.1, SW1.2, SW1.3]
+
+

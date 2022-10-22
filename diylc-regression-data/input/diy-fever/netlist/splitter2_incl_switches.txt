@@ -1,0 +1,464 @@
+Switch setup: [.ON1:.ON1:.ON1:.ON1:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.3
+	J2.Tip <-> L4.2
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [.ON1:.ON1:.ON1:.ON1:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.3
+	J2.Tip <-> L4.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [.ON1:.ON1:.ON1:.ON2:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.3 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.2
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [.ON1:.ON1:.ON1:.ON2:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.3 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [.ON1:.ON1:.ON2:.ON1:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.3
+	J2.Tip <-> L7.2
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [.ON1:.ON1:.ON2:.ON1:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.3
+	J2.Tip <-> L7.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [.ON1:.ON1:.ON2:.ON2:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.3 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L7.2
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [.ON1:.ON1:.ON2:.ON2:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.3 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L7.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [.ON1:.ON2:.ON1:.ON1:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [.ON1:.ON2:.ON1:.ON1:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [.ON1:.ON2:.ON1:.ON2:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> L4.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [.ON1:.ON2:.ON1:.ON2:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> L4.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [.ON1:.ON2:.ON2:.ON1:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L7.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [.ON1:.ON2:.ON2:.ON1:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L7.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [.ON1:.ON2:.ON2:.ON2:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> L7.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [.ON1:.ON2:.ON2:.ON2:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> L7.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [.ON2:.ON1:.ON1:.ON1:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Tip
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L4.2 <-> Level.1
+
+Switch setup: [.ON2:.ON1:.ON1:.ON1:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Tip
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L4.2 <-> Level.1
+
+Switch setup: [.ON2:.ON1:.ON1:.ON2:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.3 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Tip
+	Impedance.3 <-> Level.2
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L4.2 <-> Level.1
+
+Switch setup: [.ON2:.ON1:.ON1:.ON2:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.3 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Tip
+	Impedance.3 <-> Level.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L4.2 <-> Level.1
+
+Switch setup: [.ON2:.ON1:.ON2:.ON1:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Tip
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L7.2 <-> Level.1
+
+Switch setup: [.ON2:.ON1:.ON2:.ON1:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Tip
+	Impedance.3 <-> Level.2
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L7.2 <-> Level.1
+
+Switch setup: [.ON2:.ON1:.ON2:.ON2:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.3 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Tip
+	Impedance.3 <-> Level.2
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L7.2 <-> Level.1
+
+Switch setup: [.ON2:.ON1:.ON2:.ON2:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.3 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Tip
+	Impedance.3 <-> Level.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L7.2 <-> Level.1
+
+Switch setup: [.ON2:.ON2:.ON1:.ON1:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Sleeve
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L4.2 <-> Level.1
+
+Switch setup: [.ON2:.ON2:.ON1:.ON1:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Sleeve
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L4.2 <-> Level.1
+
+Switch setup: [.ON2:.ON2:.ON1:.ON2:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> Impedance.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L4.2 <-> Level.1
+
+Switch setup: [.ON2:.ON2:.ON1:.ON2:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> Impedance.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L4.2 <-> Level.1
+
+Switch setup: [.ON2:.ON2:.ON2:.ON1:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Sleeve
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L7.2 <-> Level.1
+
+Switch setup: [.ON2:.ON2:.ON2:.ON1:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.2 <-> J2.Sleeve
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L7.2 <-> Level.1
+
+Switch setup: [.ON2:.ON2:.ON2:.ON2:.ON1]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> Impedance.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L7.2 <-> Level.1
+
+Switch setup: [.ON2:.ON2:.ON2:.ON2:.ON2]
+
+	4001.1 <-> C2.1 <-> J6.1
+	4001.2 <-> R1.1 <-> TL072.5
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.1 <-> R1.2 <-> R1.2 <-> R1.2
+	C2.2 <-> C2.2 <-> Impedance.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.3 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.3
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L7.2 <-> Level.1
+

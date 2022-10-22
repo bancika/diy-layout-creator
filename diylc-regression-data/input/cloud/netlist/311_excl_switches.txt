@@ -1,0 +1,17 @@
+Switch setup: [Default]
+
+	.1 <-> .1 <-> .1 <-> .2 <-> .2 <-> .3 <-> .4 <-> .5 <-> .5 <-> .6 <-> C2.2 <-> GND1 <-> J1.Sleeve <-> J1.Tip <-> VOL / TONE.3
+	.1 <-> .2 <-> .4 <-> .5
+	.1 <-> .2 <-> .7
+	.1 <-> .2 <-> .8 <-> Bridge: South.South Finish
+	.1 <-> VOL / TONE.1
+	.2 <-> .3 <-> .4 <-> .6 <-> Bridge: North.North Start <-> Bridge: South.South Start <-> C1.1
+	.2 <-> .5
+	.3 <-> .3
+	.3 <-> .3
+	.3 <-> .5 <-> .5
+	.4 <-> C1.2
+	.4 <-> C2.1 <-> VOL / TONE.2
+	.6 <-> .6
+	.6 <-> .6
+

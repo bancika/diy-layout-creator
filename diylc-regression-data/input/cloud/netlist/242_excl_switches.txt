@@ -1,0 +1,12 @@
+Switch setup: [Default]
+
+	C2.1 <-> GAIN.1
+	C2.2 <-> R1.2
+	C4.1 <-> Secteur 9V.Secteur 9V.+
+	C4.2 <-> GND4
+	C5.2 <-> R4.1
+	C6.1 <-> TREBLE.3
+	C6.2 <-> GND6
+	R4.2 <-> VOLUME.2
+	TREBLE.2 <-> VOLUME.1
+

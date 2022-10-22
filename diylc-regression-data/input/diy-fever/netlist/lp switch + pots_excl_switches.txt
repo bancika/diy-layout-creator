@@ -1,0 +1,11 @@
+Switch setup: [Default]
+
+	.1 <-> Bucker.North Finish <-> Bucker.South Finish
+	.2 <-> Bucker.North Start <-> C1.2 <-> J1.Sleeve <-> Single.North Start <-> SW1.1 <-> VR1.3 <-> VR2.3
+	Bucker.South Start <-> VR1.1
+	C1.1 <-> VR3.2
+	J1.Tip <-> SW1.3 <-> VR3.3
+	Single.North Finish <-> VR2.1
+	SW1.2 <-> VR1.2
+	SW1.4 <-> VR2.2
+

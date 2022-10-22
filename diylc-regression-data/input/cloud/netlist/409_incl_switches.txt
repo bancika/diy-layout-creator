@@ -1,0 +1,4 @@
+Switch setup: [Strat 5 Way Switch.1, Strat 5 Way Switch.2, Strat 5 Way Switch.3, Strat 5 Way Switch.4, Strat 5 Way Switch.5]
+
+	CAP.2 <-> CENTER PU.South Finish <-> NECK PU.North Finish <-> VOL.3
+

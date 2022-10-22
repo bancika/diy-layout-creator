@@ -1,0 +1,8 @@
+Switch setup: [Default]
+
+	1M.1 <-> 220p.1 <-> Rs.1 <-> Rs.2
+	1M.2 <-> 33k.2
+	220p.2 <-> 33k.1
+	47n.1 <-> JFET.1 <-> Rd.1 <-> Rd.2
+	JFET.3 <-> Rs.3
+

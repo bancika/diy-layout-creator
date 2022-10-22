@@ -1,0 +1,51 @@
+Switch setup: [.ON1:SW1.Middle]
+
+	Bucker.North Finish <-> Bucker.North Start <-> Bucker.South Finish <-> C1.2 <-> J1.Sleeve <-> Single.North Start <-> VR1.3 <-> VR2.3
+	Bucker.South Start <-> VR1.1
+	C1.1 <-> VR3.2
+	J1.Tip <-> VR1.2 <-> VR2.2 <-> VR3.3
+	Single.North Finish <-> VR2.1
+
+Switch setup: [.ON1:SW1.Rhythm]
+
+	Bucker.North Finish <-> Bucker.North Start <-> Bucker.South Finish <-> C1.2 <-> J1.Sleeve <-> Single.North Start <-> VR1.3 <-> VR2.3
+	Bucker.South Start <-> VR1.1
+	C1.1 <-> VR3.2
+	J1.Tip <-> VR2.2 <-> VR3.3
+	Single.North Finish <-> VR2.1
+
+Switch setup: [.ON1:SW1.Treble]
+
+	Bucker.North Finish <-> Bucker.North Start <-> Bucker.South Finish <-> C1.2 <-> J1.Sleeve <-> Single.North Start <-> VR1.3 <-> VR2.3
+	Bucker.South Start <-> VR1.1
+	C1.1 <-> VR3.2
+	J1.Tip <-> VR1.2 <-> VR3.3
+	Single.North Finish <-> VR2.1
+
+Switch setup: [.ON2:SW1.Middle]
+
+	Bucker.North Finish <-> Bucker.South Finish
+	Bucker.North Start <-> C1.2 <-> J1.Sleeve <-> Single.North Start <-> VR1.3 <-> VR2.3
+	Bucker.South Start <-> VR1.1
+	C1.1 <-> VR3.2
+	J1.Tip <-> VR1.2 <-> VR2.2 <-> VR3.3
+	Single.North Finish <-> VR2.1
+
+Switch setup: [.ON2:SW1.Rhythm]
+
+	Bucker.North Finish <-> Bucker.South Finish
+	Bucker.North Start <-> C1.2 <-> J1.Sleeve <-> Single.North Start <-> VR1.3 <-> VR2.3
+	Bucker.South Start <-> VR1.1
+	C1.1 <-> VR3.2
+	J1.Tip <-> VR2.2 <-> VR3.3
+	Single.North Finish <-> VR2.1
+
+Switch setup: [.ON2:SW1.Treble]
+
+	Bucker.North Finish <-> Bucker.South Finish
+	Bucker.North Start <-> C1.2 <-> J1.Sleeve <-> Single.North Start <-> VR1.3 <-> VR2.3
+	Bucker.South Start <-> VR1.1
+	C1.1 <-> VR3.2
+	J1.Tip <-> VR1.2 <-> VR3.3
+	Single.North Finish <-> VR2.1
+

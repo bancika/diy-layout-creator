@@ -1,0 +1,34 @@
+Switch setup: [Default]
+
+	 Presence.1 <-> Presence.1
+	 Presence.2 <-> Middle.3 <-> Poly.1
+	Backup1.1 <-> Backup2.1 <-> Center Tap 6.3.1 <-> Center Tap 6.3.1 <-> Filter Cap B+1.2 <-> Grid Leak V4.2 <-> Grid Leak V5.2 <-> Power Tube Cathode.1 <-> Power Tube Cathode.2
+	Bass.2 <-> Tone Bass.2 <-> Treble.3
+	Bass.3 <-> Middle.1
+	Bright Volume.1 <-> Bright Volume.2 <-> Brite Mica.1 <-> Brite Mica.2 <-> Coupling V1B.2 <-> Mixing.1
+	Bright Volume.3 <-> Preamp Master Volume.3
+	Bypass V1.1 <-> Cathode V1.2 <-> V1.3
+	Bypass V1.2 <-> Cathode V1.1 <-> Cathode V2A.1 <-> Cathode V2B.1 <-> Filter Cap B+2.2 <-> Grid Stopper.1 <-> Input.1 <-> Input.2
+	Cathode PI.1 <-> Grid Leak PI.1 <-> Grid Leak PI.1 <-> Tail Load PI.2
+	Cathode PI.2 <-> V3.3
+	Cathode V2B.2 <-> Tone Slope.1 <-> Tone Treble Mica.2
+	Coupling PI.1 <-> PI Load 5% V3A.2 <-> PI Stability.1
+	Coupling PI.1 <-> PI Load 5% V3B.2 <-> PI Stability.2
+	Coupling PI.2 <-> Grid Leak V4.1 <-> Grid Stopper V4A.1 <-> PI Master Volume.2
+	Coupling PI.2 <-> Grid Leak V5.1 <-> Grid Stopper V4B.1 <-> PI Master Volume.3
+	Coupling V1B.1 <-> Load V1B.2
+	Coupling.1 <-> Grid Leak PI.2
+	Coupling.2 <-> Preamp Master Volume.2
+	Dropping B+4.1 <-> Filter B+4.1 <-> Load V1B.1 <-> Load V2A.1
+	Dropping B+4.2 <-> Filter Cap B+1.1 <-> Filter Cap B+2.1 <-> PI Load 5% V3A.1 <-> PI Load 5% V3B.1
+	Grid AC Ground V3B.1 <-> Grid Leak PI.2
+	Grid AC Ground V3B.2 <-> Negative Feedback.2 <-> Tail Load PI.1
+	Grid Stopper.2 <-> V1.2
+	Line Out.1 <-> Line Out.2 <-> Line Out.2
+	Line Out.1 <-> Negative Feedback.1
+	Middle.2 <-> Tone Middle.2
+	Poly.2 <-> Presence.2 <-> Presence.3
+	Preamp Master Volume.1 <-> Treble.2
+	Tone Bass.1 <-> Tone Middle.1 <-> Tone Slope.2
+	Tone Treble Mica.1 <-> Treble.1
+

@@ -1,0 +1,24 @@
+Switch setup: [Default]
+
+	Bypass V1.1 <-> Cathode V1.2 <-> V1.3 <-> V1.8
+	Bypass V1.2 <-> Cathode V1.1 <-> Power Tube Cathode.2
+	Cathode PI.1 <-> Grid Leak PI.1 <-> Grid Leak PI.1 <-> Tail Load PI.2
+	Cathode PI.2 <-> V3.8
+	Cathode V2A.1 <-> Cathode V2B.1
+	Cathode V2B.2 <-> Tone Slope.1 <-> Tone Treble Mica.2 <-> V2.8
+	Coupling PI.1 <-> PI Load 5% V3A.2 <-> PI Stability.1
+	Coupling PI.1 <-> PI Load 5% V3B.2 <-> PI Stability.2
+	Coupling PI.2 <-> Grid Leak V4.1 <-> Grid Stopper V4A.1
+	Coupling PI.2 <-> Grid Leak V5.1 <-> Grid Stopper V4B.1
+	Coupling V1B.1 <-> Load V1B.2
+	Coupling.1 <-> Grid Leak PI.2
+	Dropping B+4.1 <-> Filter B+4.1 <-> Load V2A.1
+	Grid AC Ground V3B.1 <-> Grid Leak PI.2
+	Grid AC Ground V3B.2 <-> Tail Load PI.1
+	Grid Leak V4.2 <-> Grid Leak V5.2
+	Line Out.1 <-> Negative Feedback.1
+	Line Out.2 <-> Line Out.2
+	PI Load 5% V3A.1 <-> PI Load 5% V3B.1
+	Power Tube Cathode.1 <-> V4.8
+	Tone Bass.1 <-> Tone Middle.1 <-> Tone Slope.2
+

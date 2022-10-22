@@ -1,0 +1,42 @@
+Switch setup: [Default]
+
+	.022uF 600V Coupling.1 <-> Grid Leak V2B.1 <-> V2.7
+	.022uF 600V Coupling.2 <-> Load V2A.2 <-> V2.1
+	.1uF  600V Coupling.1 <-> Bright Volume.2 <-> Brite Mica.2
+	.1uF  600V Coupling.1 <-> Grid Stop V3.2
+	.1uF  600V Coupling.1 <-> Normal Volume.2
+	.1uF  600V Coupling.2 <-> Load V1A.2 <-> V1.1
+	.1uF  600V Coupling.2 <-> Load V1B.2 <-> V1.6
+	.1uF  600V Coupling.2 <-> Load V2B.2 <-> V2.6
+	.1uF 600V Coupling.1 <-> Grid Stop V4.2
+	.1uF 600V Coupling.2 <-> Cathode V2B.1 <-> V2.8
+	6.3v CT.1 <-> V4.4
+	6.3v CT.1 <-> V4.5
+	6.3v CT.2 <-> 6.3v CT.2 <-> Bypass V3 & V4.1 <-> Cathode 3W.2 <-> V3.1 <-> V3.6 <-> V3.9 <-> V4.1 <-> V4.6 <-> V4.9
+	Aux Speaker.Tip <-> Speaker.Shunt <-> Speaker.Tip
+	Bright Volume.1 <-> Normal Volume.1 <-> Tone.2 <-> V2.2
+	Bright Volume.3 <-> Tone Mica.2
+	Brite Mica.1 <-> Tone.1
+	Bypass V1.1 <-> Cathode V1.2 <-> V1.3 <-> V1.8
+	Bypass V1.2 <-> Filter B+3.2 <-> Grid Leak V3.2 <-> Grid Leak V4.2 <-> Input Jack.Shunt <-> Input.1 <-> Tail Load V2B.2
+	Bypass V2A.1 <-> Cathode V2A.2 <-> V2.3
+	Bypass V2A.2 <-> Cathode V2A.1
+	Bypass V3 & V4.2 <-> Cathode 3W.1 <-> Filter B+2.2
+	Cathode V2B.2 <-> Grid Leak V2B.2 <-> Tail Load V2B.1
+	Dropping B+2.1 <-> Filter B+1.1 <-> Rectifier1.2 <-> Rectifier2.2 <-> V4.7
+	Dropping B+2.2 <-> Dropping B+3.1 <-> Filter B+2.1 <-> V3.8 <-> V4.8
+	Dropping B+3.2 <-> Filter B+3.1 <-> Load V1A.1 <-> Load V1B.1 <-> Load V2A.1 <-> Load V2B.1
+	Filter B+1.2 <-> Rectifier3.1 <-> Rectifier4.1
+	Grid Leak V3.1 <-> Grid Stop V3.1 <-> V3.2
+	Grid Leak V4.1 <-> Grid Stop V4.1 <-> V4.2
+	Grid Stopper.1 <-> Input Jack.Shunt <-> Input Jack.Tip <-> Input.2
+	Grid Stopper.1 <-> Input Jack.Shunt <-> Input Jack.Tip <-> Input.2
+	Grid Stopper.1 <-> Input Jack.Tip
+	Grid Stopper.1 <-> Input Jack.Tip
+	Grid Stopper.2 <-> Grid Stopper.2 <-> V1.2
+	Grid Stopper.2 <-> Grid Stopper.2 <-> V1.7
+	Rectifier1.1 <-> Rectifier2.1 <-> Rectifier3.2 <-> Rectifier4.2
+	Tone Mica.1 <-> Tone.3
+	V1.4 <-> V1.5
+	V2.4 <-> V2.5
+

@@ -1,0 +1,18 @@
+Switch setup: [Default]
+
+	.1 <-> .2 <-> .6
+	.1 <-> .2 <-> Volume.3
+	.1 <-> .4 <-> .5 <-> Volume.1
+	.1 <-> .7 <-> Bridge: South.South Finish
+	.2 <-> .3 <-> .3 <-> .4 <-> Bridge: North.North Start <-> Bridge: South.South Start
+	.2 <-> .5
+	.2 <-> .8
+	.2 <-> Volume.2
+	.3 <-> .3
+	.3 <-> .4 <-> .5
+	.3 <-> .6
+	.4 <-> .6
+	.5 <-> J1.Tip
+	.6 <-> .6
+	GND1 <-> J1.Sleeve
+

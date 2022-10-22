@@ -1,0 +1,35 @@
+Switch setup: [SW1.1]
+
+	C1.1 <-> VR1.3 <-> VR2.2
+	C1.2 <-> GND1 <-> GND2 <-> GND3 <-> J1.Sleeve <-> PKP1.North Finish <-> PKP2.North Finish <-> PKP3.North Finish
+	J1.Tip <-> VR3.2
+	PKP3.North Start <-> VR3.1
+
+Switch setup: [SW1.2]
+
+	C1.1 <-> VR1.3 <-> VR2.2
+	C1.2 <-> GND1 <-> GND2 <-> GND3 <-> J1.Sleeve <-> PKP1.North Finish <-> PKP2.North Finish <-> PKP3.North Finish
+	J1.Tip <-> VR3.2
+	PKP2.North Start <-> PKP3.North Start <-> VR2.3 <-> VR3.1
+
+Switch setup: [SW1.3]
+
+	C1.1 <-> VR1.3 <-> VR2.2
+	C1.2 <-> GND1 <-> GND2 <-> GND3 <-> J1.Sleeve <-> PKP1.North Finish <-> PKP2.North Finish <-> PKP3.North Finish
+	J1.Tip <-> VR3.2
+	PKP2.North Start <-> VR2.3 <-> VR3.1
+
+Switch setup: [SW1.4]
+
+	C1.1 <-> VR1.3 <-> VR2.2
+	C1.2 <-> GND1 <-> GND2 <-> GND3 <-> J1.Sleeve <-> PKP1.North Finish <-> PKP2.North Finish <-> PKP3.North Finish
+	J1.Tip <-> VR3.2
+	PKP1.North Start <-> PKP2.North Start <-> VR1.2 <-> VR2.3 <-> VR3.1
+
+Switch setup: [SW1.5]
+
+	C1.1 <-> VR1.3 <-> VR2.2
+	C1.2 <-> GND1 <-> GND2 <-> GND3 <-> J1.Sleeve <-> PKP1.North Finish <-> PKP2.North Finish <-> PKP3.North Finish
+	J1.Tip <-> VR3.2
+	PKP1.North Start <-> VR1.2 <-> VR3.1
+

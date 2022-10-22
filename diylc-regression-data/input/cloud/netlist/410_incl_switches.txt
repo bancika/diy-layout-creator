@@ -1,0 +1,5 @@
+Switch setup: [Strat 5 Way Switch.1:SW1.ON1, Strat 5 Way Switch.2:SW1.ON1, Strat 5 Way Switch.3:SW1.ON1, Strat 5 Way Switch.4:SW1.ON1, Strat 5 Way Switch.5:SW1.ON1, Strat 5 Way Switch.1:SW1.ON2, Strat 5 Way Switch.2:SW1.ON2, Strat 5 Way Switch.3:SW1.ON2, Strat 5 Way Switch.4:SW1.ON2, Strat 5 Way Switch.5:SW1.ON2]
+
+	CAP.2 <-> CENTER PU.South Finish <-> J1.Sleeve <-> NECK PU.North Finish <-> VOL.3
+	Tone1.3 <-> Tone2.2
+

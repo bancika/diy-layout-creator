@@ -1,0 +1,15 @@
+Switch setup: [Default]
+
+	C1.1 <-> JRC386D.6
+	C1.2 <-> C3.2 <-> JRC386D.4 <-> Octave.3 <-> Volume.3 <-> VR1.2
+	C2.1 <-> JRC386D.8
+	C2.2 <-> Volume.1
+	C3.1 <-> Gain.2 <-> Gain.3
+	D1.1 <-> D2.2
+	D1.2 <-> JRC386D.3 <-> VR1.1 <-> VR1.3
+	D1.2 <-> VR1.3
+	D2.1 <-> Octave.1
+	Gain.1 <-> R1.2
+	JRC386D.1 <-> JRC386D.5 <-> R1.1
+	JRC386D.2 <-> Octave.2
+

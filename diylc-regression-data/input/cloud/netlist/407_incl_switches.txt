@@ -1,0 +1,21 @@
+Switch setup: [LesPaul 3 Pos Switch.Middle:Push Pull.ON1, LesPaul 3 Pos Switch.Middle:Push Pull.ON2]
+
+	0.47 uF.1 <-> JAZZ BASS BRIDGE PU.South Finish <-> PRECISION COIL S.South Finish <-> Presa Jack.Sleeve <-> VOL1.1 <-> VOL1.3 <-> VOL2.3
+	0.47 uF.2 <-> TONE.3
+	JAZZ BASS BRIDGE PU.South Start <-> VOL2.1
+	Presa Jack.Tip <-> TONE.2 <-> VOL1.2 <-> VOL2.2
+
+Switch setup: [LesPaul 3 Pos Switch.Rhythm:Push Pull.ON1, LesPaul 3 Pos Switch.Rhythm:Push Pull.ON2]
+
+	0.47 uF.1 <-> JAZZ BASS BRIDGE PU.South Finish <-> PRECISION COIL S.South Finish <-> Presa Jack.Sleeve <-> VOL1.1 <-> VOL1.3 <-> VOL2.3
+	0.47 uF.2 <-> TONE.3
+	JAZZ BASS BRIDGE PU.South Start <-> VOL2.1
+	Presa Jack.Tip <-> TONE.2 <-> VOL1.2
+
+Switch setup: [LesPaul 3 Pos Switch.Treble:Push Pull.ON1, LesPaul 3 Pos Switch.Treble:Push Pull.ON2]
+
+	0.47 uF.1 <-> JAZZ BASS BRIDGE PU.South Finish <-> PRECISION COIL S.South Finish <-> Presa Jack.Sleeve <-> VOL1.1 <-> VOL1.3 <-> VOL2.3
+	0.47 uF.2 <-> TONE.3
+	JAZZ BASS BRIDGE PU.South Start <-> VOL2.1
+	Presa Jack.Tip <-> TONE.2 <-> VOL2.2
+

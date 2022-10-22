@@ -1,0 +1,30 @@
+Switch setup: [Default]
+
+	BC549C.BC549C.1 <-> R15.2
+	BC549C.BC549C.1 <-> R4.2
+	BC549C.BC549C.2 <-> R14.1
+	BC549C.BC549C.2 <-> R21.1
+	BC549C.BC549C.2 <-> R3.1
+	BC549C.BC549C.2 <-> R9.1
+	C1.1 <-> R1.2
+	C10.2 <-> R18.1 <-> TONE.2
+	C11.1 <-> R17.2 <-> TONE.3
+	C11.2 <-> GND9
+	C12.1 <-> TONE.1
+	C14.2 <-> GND13
+	C2.2 <-> C3.1
+	C4.1 <-> SUSTAIN.1
+	C4.2 <-> R7.1
+	C7.2 <-> R12.1
+	GND1 <-> R2.2
+	GND10 <-> R19.2
+	GND11 <-> R21.2
+	GND2 <-> R3.2
+	GND3 <-> R6.2
+	GND4 <-> R8.2
+	GND5 <-> R9.2
+	GND6 <-> R13.2
+	GND7 <-> R14.2
+	R19.1 <-> R20.1
+	R6.1 <-> SUSTAIN.3
+

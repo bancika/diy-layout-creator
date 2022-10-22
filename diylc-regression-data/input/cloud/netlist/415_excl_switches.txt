@@ -1,0 +1,5 @@
+Switch setup: [Default]
+
+	CAP 0.47 uF.1 <-> TONE.2
+	CAP 0.47 uF.2 <-> J1.Sleeve <-> PICKUP.North Finish
+

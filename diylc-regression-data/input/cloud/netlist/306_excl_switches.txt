@@ -1,0 +1,5 @@
+Switch setup: [Default]
+
+	R1.1 <-> R2.1 <-> R4.1 <-> R5.1 <-> VR1.2 <-> VR2.2 <-> VR3.2 <-> VR4.2
+	VR1.1 <-> VR2.1 <-> VR3.1 <-> VR4.1
+

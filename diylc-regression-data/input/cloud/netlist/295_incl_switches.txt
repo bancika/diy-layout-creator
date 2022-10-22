@@ -1,0 +1,3 @@
+Switch setup: [.ON1:.ON1, .ON1:.ON2, .ON1:.OFF, .ON2:.ON1, .ON2:.ON2, .ON2:.OFF]
+
+

@@ -1,0 +1,1 @@
+org.diylc.netlist.NetlistException: Maximum number of switching combinations exceeded. Allowed: 64, actual: 16777216

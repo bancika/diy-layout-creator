@@ -1,0 +1,25 @@
+Switch setup: [.ON1]
+
+	Audio In.Sleeve <-> Audio Out.Sleeve <-> J1.3 <-> LED.2 <-> R2.3
+	Audio In.Tip <-> Audio Out.Tip
+	C1.1 <-> R1.2
+	C2.1 <-> R2.2
+	J1.1 <-> R3.1 <-> R4.2
+	LED.1 <-> R5.1
+	R1.1 <-> R3.2
+	R2.1 <-> V1.8
+	R4.1 <-> V1.7
+
+Switch setup: [.ON2]
+
+	Audio In.Sleeve <-> Audio Out.Sleeve <-> J1.3 <-> LED.2 <-> R2.3
+	Audio In.Tip <-> C1.2
+	Audio Out.Tip <-> C2.2
+	C1.1 <-> R1.2
+	C2.1 <-> R2.2
+	J1.1 <-> R3.1 <-> R4.2 <-> R5.2
+	LED.1 <-> R5.1
+	R1.1 <-> R3.2
+	R2.1 <-> V1.8
+	R4.1 <-> V1.7
+

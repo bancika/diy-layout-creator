@@ -1,0 +1,75 @@
+Switch setup: [Default]
+
+	 Not Original.1 <-> J9.J9Sleeve <-> R17.1
+	 Not Original.2 <-> V4.C
+	Bass.1 <-> C8.2 <-> Treble.3
+	Bass.3 <-> Middle.1
+	C1.1 <-> V1.C <-> V1.C
+	C1.2 <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> Not Original.1 <-> Not Original.2 <-> Presence.3
+	C10.1 <-> R18.1 <-> V3.G
+	C10.2 <-> Treble.2
+	C11.1 <-> C11.2 <-> R20.1
+	C11.1 <-> C11.2 <-> R20.1 <-> V3.P
+	C11.1 <-> C4.1 <-> C6.1 <-> R19.1 <-> V3.P
+	C11.2 <-> R16.1 <-> R25.2
+	C11.2 <-> R25.2
+	C12.1 <-> Presence.2
+	C16/C17.1 <-> Not Original.1
+	C16/C17.2 <-> Not Original.2 <-> Not Original.2 <-> SW3.1 <-> SW3.4 <-> V6.H <-> V6.H&C
+	C16/C17.3 <-> R23.2 <-> R32.2
+	C18.2 <-> R29.1 <-> R30.1
+	C18.2 <-> R30.1
+	C19.2 <-> R24.1 <-> R25.1 <-> R30.2 <-> R31.1
+	C2.1 <-> R3.2 <-> V1.P
+	C2.2 <-> Volume II.1
+	C3.1 <-> R4.2 <-> V1.P
+	C3.2 <-> Volume I.1
+	C4.1 <-> Volume I.2
+	C4.2 <-> Not Original.2 <-> R24.2
+	C6.1 <-> Not Original.2
+	C6.2 <-> Presence.1 <-> R21.2 <-> R22.2
+	C6.2 <-> R16.1
+	C6.3 <-> Not Original.1 <-> R16.2 <-> R23.1
+	C7.1 <-> R14.1 <-> R15.2
+	C7.1 <-> R14.1 <-> R15.2 <-> V2.C
+	C7.2 <-> Treble.1
+	C8.1 <-> C9.1 <-> R15.1
+	C9.2 <-> Middle.2
+	D1.1 <-> R29.2
+	D2.1 <-> D3.1 <-> V6.NC <-> V6.NC
+	D2.1 <-> V6.NC
+	D2.2 <-> V6.P
+	D3.2 <-> V6.P
+	FH1.1 <-> FH1.2 <-> IEC1.2 <-> SW1.2 <-> SW1.5
+	IEC1.1 <-> J15.J15Sleeve
+	Impedance.Common <-> J17.2
+	J1.1 <-> J2.2 <-> R2.1
+	J1.2 <-> R1.1
+	J1.4 <-> J2.1 <-> J2.4 <-> R3.2
+	J10.J10Tip <-> J13.J13Tip <-> J14.J14Tip
+	J11.1 <-> J11.4 <-> J12.4
+	J11.2 <-> J12.1 <-> R5.2
+	J12.2 <-> R4.2
+	J16.3 <-> J17.4
+	Not Original.1 <-> SW3.2 <-> SW3.5
+	Not Original.1 <-> V4.G
+	Not Original.1 <-> V5.S
+	Not Original.2 <-> Not Original2.1 <-> R32.1
+	Not Original2.2 <-> V4.S
+	PL1.1 <-> SW1.1
+	PL1.2 <-> PL1.4 <-> SW1.4
+	R1.2 <-> R2.2 <-> V1.G
+	R10.1 <-> R11.1 <-> V2.G
+	R10.2 <-> Volume II.2
+	R12.1 <-> V2.G <-> V2.P
+	R12.2 <-> R3.1 <-> R4.1 <-> V2.P
+	R13.1 <-> V2.C
+	R13.2 <-> R14.2
+	R16.2 <-> V5.G
+	R17.2 <-> V5.C
+	R18.2 <-> R20.2 <-> R21.1 <-> R22.2
+	R19.2 <-> R20.2
+	R20.1 <-> V3.C <-> V3.C
+	R22.1 <-> V3.G
+	R4.1 <-> R5.1 <-> V1.G
+

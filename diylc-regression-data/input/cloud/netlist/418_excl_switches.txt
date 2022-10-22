@@ -1,0 +1,7 @@
+Switch setup: [Default]
+
+	J1.Sleeve <-> Seymour Duncan.South Start <-> SW1.3 <-> VR1.3
+	J1.Tip <-> VR1.2
+	Seymour Duncan.North Finish <-> Seymour Duncan.South Finish <-> SW1.2
+	Seymour Duncan.North Start <-> VR1.1
+

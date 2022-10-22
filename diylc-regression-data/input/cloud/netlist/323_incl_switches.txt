@@ -1,0 +1,31 @@
+Switch setup: [.ON1:.ON1, .ON1:.ON2, .ON2:.ON1, .ON2:.ON2]
+
+	Backup1.1 <-> Backup2.1 <-> Cathode Bypass V2.1 <-> Cathode Bypass V2.2 <-> Cathode V2.1 <-> Cathode V2.2 <-> Filter Cap B+1.2 <-> Filter Cap B+1.2 <-> Pilot Light.1 <-> Rectifier3.1 <-> Rectifier4.1 <-> V2.3
+	Bass.1 <-> C2.2 <-> R1.1
+	Bass.2 <-> C2.1 <-> C3.2 <-> R2.1
+	Bass.3 <-> C3.1 <-> R3.1
+	C1.1 <-> Coupling V1A.2 <-> R1.2 <-> R2.2 <-> Treble.2 <-> Volume Pot.2
+	C1.2 <-> Treble.1
+	C4.1 <-> Treble.3
+	C4.2 <-> Cathode Bypass V1A.2 <-> Cathode V1A.1 <-> Filter Cap B+2.2 <-> Input Jack.Shunt <-> Input.1 <-> Master Volume Pot.3 <-> R3.2
+	Cathode Bypass V1A.1 <-> Cathode V1A.2 <-> V1.3
+	Cathode Bypass V1B.1 <-> Cathode V1B.2 <-> V1.8
+	Cathode Bypass V1B.2 <-> Cathode V1B.1
+	Coupling V1A.1 <-> V1.1 <-> V1A Load.2
+	Coupling V1B.1 <-> V1.6 <-> V1B Load.2
+	Coupling V1B.2 <-> Grid Stopper V2.2
+	Filter Cap B+1.1 <-> Rectifier1.2 <-> Rectifier2.2 <-> Voltage Dropping.1
+	Filter Cap B+1.1 <-> V2.1 <-> V2.6 <-> Voltage Dropping.1 <-> Voltage Dropping.2
+	Filter Cap B+2.1 <-> V1A Load.1 <-> V1B Load.1 <-> Voltage Dropping.2
+	Grid Stopper V1A.1 <-> Input Jack.Tip <-> Input.2
+	Grid Stopper V1A.2 <-> V1.2
+	Grid Stopper V2.1 <-> Master Volume Pot.1
+	Headphone Resistor.1 <-> Input Jack.Shunt
+	Headphone Resistor.2 <-> Input Jack.Tip <-> Input Jack.Tip
+	Master Volume Pot.2 <-> V2.2
+	Rectifier1.1 <-> Rectifier3.2
+	Rectifier2.1 <-> Rectifier4.2
+	V1.4 <-> V1.5
+	V1.7 <-> Volume Pot.1
+	V2.4 <-> V2.5
+

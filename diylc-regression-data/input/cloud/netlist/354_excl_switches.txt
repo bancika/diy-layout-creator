@@ -1,0 +1,19 @@
+Switch setup: [Default]
+
+	1nf.1 <-> CRL Switch.2 <-> CRL Switch.7 <-> Volume.1
+	1nf.1 <-> Tone 1.2
+	1nf.1 <-> Tone 2.2
+	1nf.2 <-> Bridge.North Finish <-> Middle.North Finish <-> Neck.North Finish <-> Plug Jack.3 <-> Volume.2 <-> Volume.3
+	1nf.2 <-> CRL Switch.3 <-> Tone 2.1
+	1nf.2 <-> CRL Switch.5 <-> Tone 1.1
+	22nf.1 <-> 4.7k.1
+	22nf.2 <-> Tone 2.3
+	33nf.1 <-> 4.7k.1
+	33nf.2 <-> Tone 1.3
+	4.7k.2 <-> 4.7k.2
+	Br Plug Fem.4 <-> GND1
+	Bridge.North Start <-> CRL Switch.4
+	CRL Switch.6 <-> Middle.North Start
+	CRL Switch.8 <-> Neck.North Start
+	J1.Tip <-> Plug Jill.3
+

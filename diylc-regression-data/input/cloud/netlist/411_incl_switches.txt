@@ -1,0 +1,6 @@
+Switch setup: [Default]
+
+	BLENDER.2 <-> BRIDGE PICKUP.North Start <-> NECK PICKUP.South Finish
+	BLENDER.3 <-> NECK PICKUP.South Start <-> TONE.3 <-> VOLUME.3
+	J1.Tip <-> VOLUME.2
+

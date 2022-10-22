@@ -1,0 +1,12 @@
+Switch setup: [Default]
+
+	.1 <-> .1 <-> .6 <-> Volume.1
+	.1 <-> .2 <-> Volume.3
+	.2 <-> .3 <-> .4
+	.2 <-> .5
+	.2 <-> Volume.2
+	.3 <-> .3
+	.3 <-> .6
+	.5 <-> J1.Tip
+	GND1 <-> J1.Sleeve
+

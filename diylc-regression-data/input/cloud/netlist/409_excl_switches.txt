@@ -1,0 +1,5 @@
+Switch setup: [Default]
+
+	CAP.2 <-> CENTER PU.South Finish <-> NECK PU.North Finish <-> VOL.3
+	Strat 5 Way Switch.2 <-> Strat 5 Way Switch.7
+

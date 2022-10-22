@@ -1,0 +1,8 @@
+Switch setup: [Default]
+
+	1 mohm.2 <-> 10 kohm.2 <-> PH2.1 <-> PH4.16 <-> PH4.2 <-> PH4.5 <-> PH5.1 <-> PH7.1
+	10 kohm.1 <-> PH8.2
+	220 ohm.1 <-> 220 ohm.2 <-> PH2.4 <-> PH4.1 <-> PH5.3 <-> PH7.3 <-> PH8.1
+	220 ohm.2 <-> PH4.15
+	PH4.3 <-> PH5.2
+

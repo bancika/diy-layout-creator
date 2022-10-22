@@ -1,0 +1,4 @@
+Switch setup: [Default]
+
+	CAP 0.47 uF.2 <-> GND1 <-> Precision South Coil.South Finish <-> Presa Jack.Sleeve
+

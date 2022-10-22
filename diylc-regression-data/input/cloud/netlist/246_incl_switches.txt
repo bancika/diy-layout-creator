@@ -1,0 +1,6 @@
+Switch setup: [.ON1:SW1.Treble, .ON2:SW1.Treble, .ON1:SW1.Middle, .ON2:SW1.Middle, .ON1:SW1.Rhythm, .ON2:SW1.Rhythm]
+
+	C1.1 <-> J1.Sleeve <-> Volume.1 <-> Volume.3
+	C1.2 <-> R1.2
+	J1.Tip <-> R1.1 <-> Volume.2
+

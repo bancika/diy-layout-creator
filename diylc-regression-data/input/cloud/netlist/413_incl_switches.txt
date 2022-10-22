@@ -1,0 +1,7 @@
+Switch setup: [Default]
+
+	0.47 uF.1 <-> J1.Sleeve <-> JAZZ BASS BRG.South Finish <-> JAZZ BASS NECK.North Finish <-> VOL1.3 <-> VOL2.3
+	0.47 uF.2 <-> TONE.3
+	J1.Tip <-> TONE.2
+	VOL1.1 <-> VOL2.1
+

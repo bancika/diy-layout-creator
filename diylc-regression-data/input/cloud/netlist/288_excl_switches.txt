@@ -1,0 +1,4 @@
+Switch setup: [Default]
+
+	.2 <-> .2 <-> .2
+

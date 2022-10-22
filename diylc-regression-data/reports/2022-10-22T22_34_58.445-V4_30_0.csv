@@ -1,0 +1,17 @@
+OK,Failed,Total Time,Avg Time
+12,0,16014,1334
+
+
+File,Status,Message,Time
+IIc+.diy,OK,,3397
+deacy.diy,OK,,1114
+jfet boost.diy,OK,,163
+lp switch + pots.diy,OK,,1920
+rangemaster.diy,OK,,259
+ruby.diy,OK,,391
+slo2.diy,OK,,2371
+splitter2.diy,OK,,1486
+standard strat.diy,OK,,1811
+tda1521a-2.diy,OK,,900
+timmy7.diy,OK,,1546
+travelcaster3 (new format).diy,OK,,656

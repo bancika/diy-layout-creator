@@ -1,0 +1,6 @@
+Switch setup: [Default]
+
+	D1.2 <-> Q1.3 <-> R2.1
+	D2.1 <-> R1.1
+	S1.3 <-> S1.4
+

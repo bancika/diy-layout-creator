@@ -1,0 +1,11 @@
+Switch setup: [Default]
+
+	Bridge.North Finish <-> Bridge.South Finish <-> Split.2
+	Bridge.North Start <-> SW1.2
+	Bridge.South Start <-> J1.Sleeve <-> Neck.North Finish <-> Split.3 <-> Split.6 <-> Volume.3
+	Cbleed.1 <-> SW1.3 <-> Volume.1
+	Cbleed.2 <-> Rbleed.2
+	J1.Tip <-> Rbleed.1 <-> Volume.2
+	Neck.North Start <-> Neck.South Start <-> Split.5
+	Neck.South Finish <-> SW1.4
+

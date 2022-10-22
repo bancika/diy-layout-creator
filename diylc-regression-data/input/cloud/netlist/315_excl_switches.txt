@@ -1,0 +1,7 @@
+Switch setup: [Default]
+
+	100k.1 <-> J1.Tip
+	68k.1 <-> J2.Tip
+	Output.2 <-> TR1.6 <-> V1.2 <-> V1.8
+	TR1.5 <-> V1.4 <-> V1.6
+

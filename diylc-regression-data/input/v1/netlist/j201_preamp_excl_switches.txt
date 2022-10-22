@@ -1,0 +1,6 @@
+Switch setup: [Default]
+
+	C1.2 <-> P1.1 <-> R4.1
+	Q1.1 <-> R2.1
+	R1.2 <-> R2.2
+

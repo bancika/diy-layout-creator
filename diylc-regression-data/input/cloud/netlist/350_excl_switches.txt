@@ -1,0 +1,10 @@
+Switch setup: [Default]
+
+	C1.2 <-> GND2
+	C4.2 <-> GND5
+	C6.2 <-> D1.2
+	D1.1 <-> GND4
+	D2.2 <-> GND6
+	GND3 <-> R4.2
+	GND7 <-> VR2.3
+

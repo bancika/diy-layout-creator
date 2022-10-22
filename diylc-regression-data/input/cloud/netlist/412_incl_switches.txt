@@ -1,0 +1,21 @@
+Switch setup: [3 POS LP SWITCH.Middle]
+
+	CAP 0.47 uF.1 <-> J1.Sleeve <-> JAZZ BASS BRG.South Finish <-> JAZZ BASS NECK.South Finish <-> VOL1 250K.3 <-> VOL2 250K.3
+	CAP 0.47 uF.2 <-> TONE 250K.3
+	J1.Tip <-> TONE 250K.2 <-> VOL1 250K.2 <-> VOL2 250K.2
+	JAZZ BASS BRG.South Start <-> VOL2 250K.1
+
+Switch setup: [3 POS LP SWITCH.Rhythm]
+
+	CAP 0.47 uF.1 <-> J1.Sleeve <-> JAZZ BASS BRG.South Finish <-> JAZZ BASS NECK.South Finish <-> VOL1 250K.3 <-> VOL2 250K.3
+	CAP 0.47 uF.2 <-> TONE 250K.3
+	J1.Tip <-> TONE 250K.2 <-> VOL1 250K.2
+	JAZZ BASS BRG.South Start <-> VOL2 250K.1
+
+Switch setup: [3 POS LP SWITCH.Treble]
+
+	CAP 0.47 uF.1 <-> J1.Sleeve <-> JAZZ BASS BRG.South Finish <-> JAZZ BASS NECK.South Finish <-> VOL1 250K.3 <-> VOL2 250K.3
+	CAP 0.47 uF.2 <-> TONE 250K.3
+	J1.Tip <-> TONE 250K.2 <-> VOL2 250K.2
+	JAZZ BASS BRG.South Start <-> VOL2 250K.1
+

@@ -1,0 +1,16 @@
+Switch setup: [Default]
+
+	100K.1 <-> B1K Attack.1 <-> BCE.3
+	100K.2 <-> 100nF.1 <-> EBC.2
+	100nF.2 <-> 10K.2 <-> CBE.1
+	10k.1 <-> 10n.2 <-> 47u.2 <-> CBE.3 <-> EBC.1
+	10K.1 <-> 470R.1 <-> 47K.1 <-> 47u.1
+	10k.2 <-> 10u.2 <-> CBE.2
+	10n.1 <-> 10u.1
+	10nF.1 <-> A100K Volume.1
+	10nF.2 <-> 470R.2 <-> 8K2.2
+	10u.1 <-> B1K Attack.2
+	47K.2 <-> BCE.1
+	8K2.1 <-> BCE.2
+	A100K Volume.3 <-> B1K Attack.3
+

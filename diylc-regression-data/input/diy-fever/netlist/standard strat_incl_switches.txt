@@ -1,0 +1,40 @@
+Switch setup: [SW1.1]
+
+	Bridge.North Finish <-> Ct.2 <-> J1.Sleeve <-> Middle.South Finish <-> Neck.North Finish <-> Volume.3
+	Bridge.North Start <-> Cb.1 <-> Volume.1
+	Cb.2 <-> Rb.2
+	Ct.1 <-> Tone Middle.3 <-> Tone Neck.3
+	J1.Tip <-> Rb.1 <-> Volume.2
+
+Switch setup: [SW1.2]
+
+	Bridge.North Finish <-> Ct.2 <-> J1.Sleeve <-> Middle.South Finish <-> Neck.North Finish <-> Volume.3
+	Bridge.North Start <-> Cb.1 <-> Middle.South Start <-> Tone Middle.2 <-> Volume.1
+	Cb.2 <-> Rb.2
+	Ct.1 <-> Tone Middle.3 <-> Tone Neck.3
+	J1.Tip <-> Rb.1 <-> Volume.2
+
+Switch setup: [SW1.3]
+
+	Bridge.North Finish <-> Ct.2 <-> J1.Sleeve <-> Middle.South Finish <-> Neck.North Finish <-> Volume.3
+	Cb.1 <-> Middle.South Start <-> Tone Middle.2 <-> Volume.1
+	Cb.2 <-> Rb.2
+	Ct.1 <-> Tone Middle.3 <-> Tone Neck.3
+	J1.Tip <-> Rb.1 <-> Volume.2
+
+Switch setup: [SW1.4]
+
+	Bridge.North Finish <-> Ct.2 <-> J1.Sleeve <-> Middle.South Finish <-> Neck.North Finish <-> Volume.3
+	Cb.1 <-> Middle.South Start <-> Neck.North Start <-> Tone Middle.2 <-> Tone Neck.2 <-> Volume.1
+	Cb.2 <-> Rb.2
+	Ct.1 <-> Tone Middle.3 <-> Tone Neck.3
+	J1.Tip <-> Rb.1 <-> Volume.2
+
+Switch setup: [SW1.5]
+
+	Bridge.North Finish <-> Ct.2 <-> J1.Sleeve <-> Middle.South Finish <-> Neck.North Finish <-> Volume.3
+	Cb.1 <-> Neck.North Start <-> Tone Neck.2 <-> Volume.1
+	Cb.2 <-> Rb.2
+	Ct.1 <-> Tone Middle.3 <-> Tone Neck.3
+	J1.Tip <-> Rb.1 <-> Volume.2
+

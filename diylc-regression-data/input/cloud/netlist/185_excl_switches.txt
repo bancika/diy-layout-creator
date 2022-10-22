@@ -1,0 +1,35 @@
+Switch setup: [Default]
+
+	.1 <-> .4
+	.3 <-> R10.2 <-> R16.2
+	.6 <-> Volume.2
+	.8 <-> Led.2
+	Bass.1 <-> Bass.2 <-> Bass.3 <-> C10.2 <-> Middle.1 <-> Treble.3
+	C1.1 <-> Preamp Volume.1 <-> R13.1
+	C1.2 <-> C5.1 <-> R13.2
+	C10.1 <-> C9.1 <-> R9.1
+	C11.1 <-> C12.1 <-> C13.2 <-> Master Volume.1 <-> Master Volume.3 <-> Preamp Volume.3 <-> R12.2 <-> R15.2 <-> R16.1 <-> R2.1 <-> R3.1 <-> R4.1 <-> R6.1 <-> R7.1 <-> R8.2 <-> Treble.2 <-> Volume.3
+	C11.2 <-> R11.1 <-> R5.2 <-> R6.2
+	C12.2 <-> Q1.2 <-> Q1.3 <-> R4.2
+	C13.1 <-> Q4.1 <-> Q4.2 <-> R18.1 <-> Trimpot 1.2 <-> Trimpot 1.3 <-> Trimpot 2.2 <-> Trimpot 2.3 <-> Trimpot 3.2 <-> Trimpot 3.3 <-> Trimpot 4.2 <-> Trimpot 4.3 <-> Trimpot 5.2 <-> Trimpot 5.3
+	C2.1 <-> R14.1 <-> R15.1
+	C2.2 <-> C6.1 <-> R14.2
+	C3.1 <-> Q4.3 <-> R8.1 <-> R9.2
+	C3.2 <-> Treble.1
+	C4.1 <-> R11.2
+	C4.2 <-> Q6.1 <-> Trimpot 5.1 <-> Volume.1
+	C5.2 <-> Q1.1 <-> Trimpot 1.1
+	C6.2 <-> Q2.1 <-> Trimpot 2.1
+	C7.1 <-> R17.2
+	C7.2 <-> Master Volume.2
+	C8.1 <-> R12.1
+	C8.2 <-> Q5.1 <-> Trimpot 4.1
+	C9.2 <-> Middle.2
+	Led.1 <-> R18.2
+	Q2.2 <-> Q2.3 <-> R7.2
+	Q3.1 <-> Trimpot 3.1
+	Q3.2 <-> Q3.3 <-> R2.2
+	Q5.2 <-> Q5.3 <-> R1.2
+	Q6.2 <-> Q6.3 <-> R3.2
+	R1.1 <-> R17.1 <-> R5.1
+

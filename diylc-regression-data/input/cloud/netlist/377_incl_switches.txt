@@ -1,0 +1,8 @@
+Switch setup: [Default]
+
+	D1.1 <-> IC1.3 <-> J9.Ring
+	D1.2 <-> IC1.2 <-> R1.2
+	IC1.5 <-> R2.1
+	IC1.7 <-> R2.2
+	J9.Tip <-> R1.1
+

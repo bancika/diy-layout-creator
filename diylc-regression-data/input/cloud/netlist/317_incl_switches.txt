@@ -1,0 +1,48 @@
+Switch setup: [.ON1, .ON2]
+
+	 Presence.1 <-> .1uF  200v AC Shunt.1 <-> 10K 1W.1 <-> NFB.2 <-> Presence.1
+	 Presence.2 <-> GND2 <-> Presence-Poly.1
+	.022uF  630v Bass.1 <-> Bass.2 <-> Treble.3
+	.022uF  630v Bass.2 <-> .022uF  630v Mid.2 <-> 20uF 500V.1 <-> 4.7K 2W.2 <-> Tone Slope.2
+	.022uF  630v Coupling.1 <-> C5.2 <-> Treble Peaker.2
+	.022uF  630v Coupling.1 <-> Type-3 MV.2 <-> V4A Grid Stopper.1
+	.022uF  630v Coupling.1 <-> Type-3 MV.3 <-> V4B Grid Stopper.1
+	.022uF  630v Coupling.1 <-> V3A Grid Leak.1
+	.022uF  630v Coupling.2 <-> 100K 1W.1 <-> V1.6
+	.022uF  630v Coupling.2 <-> 100K 1W.2 <-> V1.1
+	.022uF  630v Coupling.2 <-> Treble.2
+	.022uF  630v Coupling.2 <-> V3A Plate Load.2 <-> V6.1
+	.022uF  630v Coupling.2 <-> V3B Plate Load.2 <-> V6.6
+	.022uF  630v Mid.1 <-> Mid.2
+	.1uF  200v AC Shunt.2 <-> V3B Grid Leak.1
+	1.2K 2W.1 <-> 20uF 500V.1 <-> Choke 4H 50ma.1 <-> Hammond 125B.2
+	1.2K 2W.2 <-> 20uF 500V.1 <-> 4.7K 2W.1 <-> V3A Plate Load.1 <-> V3B Plate Load.1
+	100K 1W.1 <-> 100K 1W.2 <-> 10K 2W.1 <-> 22uF 500V.1
+	100K 1W.1 <-> 10K 2W.2 <-> V7.6
+	100K 1W.2 <-> V7.1
+	10K 1W.2 <-> V3 Cathode.1 <-> V3A Grid Leak.2 <-> V3B Grid Leak.2
+	40uF  500V.1 <-> Choke 4H 50ma.2 <-> D1.2 <-> D2.2
+	40uF  500V.2 <-> Bypass.2 <-> High Input Jack.Shunt <-> Input.1 <-> Preamp Volume.3 <-> V1A Cathode.1 <-> V1B Cathode.1
+	Attenuator.1 <-> Input 2.Tip <-> Treble Peak.2
+	Attenuator.2 <-> Bright.2 <-> Preamp Volume.1 <-> Treble Peak.1
+	Bass.3 <-> Mid.1
+	Bleeder/Divider.1 <-> R1.1
+	Bleeder/Divider.2 <-> R1.2
+	Bright.1 <-> Preamp Volume.2
+	Bypass.1 <-> V1A Cathode.2
+	C5.1 <-> Treble Peaker.1 <-> V2A Grid Leak.1
+	D1.1 <-> Rectifier.2
+	D2.1 <-> D3.2
+	D3.1 <-> Rectifier.1
+	Hammond 125B.1 <-> V5.1
+	Hammond 125B.3 <-> V5.6
+	Hammond 125B.4 <-> Hammond 125B.5 <-> NFB.1
+	High Input Jack.Tip <-> Input.2 <-> V1A Grid Stopper.1
+	Mid.3 <-> V4A Grid Leak.2 <-> V4B Grid Leak.2
+	Presence-Poly.2 <-> Presence.2 <-> Presence.3
+	Tone Slope.1 <-> Treble.1 <-> V2B Cathode.2
+	Treble.1 <-> Treble.2
+	V2A Cathode.1 <-> V2A Grid Leak.2 <-> V2B Cathode.1
+	V4A Grid Leak.1 <-> V4A Grid Stopper.2
+	V4B Grid Leak.1 <-> V4B Grid Stopper.2 <-> V5.7
+

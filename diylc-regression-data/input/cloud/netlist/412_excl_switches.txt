@@ -1,0 +1,9 @@
+Switch setup: [Default]
+
+	3 POS LP SWITCH.1 <-> CAP 0.47 uF.1 <-> J1.Sleeve <-> JAZZ BASS BRG.South Finish <-> JAZZ BASS NECK.South Finish <-> VOL1 250K.3 <-> VOL2 250K.3
+	3 POS LP SWITCH.2 <-> VOL2 250K.2
+	3 POS LP SWITCH.3 <-> J1.Tip <-> TONE 250K.2
+	3 POS LP SWITCH.4 <-> VOL1 250K.2
+	CAP 0.47 uF.2 <-> TONE 250K.3
+	JAZZ BASS BRG.South Start <-> VOL2 250K.1
+

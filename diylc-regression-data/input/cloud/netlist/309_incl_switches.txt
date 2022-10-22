@@ -1,0 +1,11 @@
+Switch setup: [.ON1:.ON1:.ON1:.ON1, .ON1:.ON1:.ON1:.ON2, .ON1:.ON1:.ON2:.ON1, .ON1:.ON1:.ON2:.ON2, .ON1:.ON2:.ON1:.ON1, .ON1:.ON2:.ON1:.ON2, .ON1:.ON2:.ON2:.ON1, .ON1:.ON2:.ON2:.ON2]
+
+	GND1 <-> J1.Sleeve
+	Volume.1 <-> Volume.3
+
+Switch setup: [.ON2:.ON1:.ON1:.ON1, .ON2:.ON1:.ON1:.ON2, .ON2:.ON1:.ON2:.ON1, .ON2:.ON1:.ON2:.ON2, .ON2:.ON2:.ON1:.ON1, .ON2:.ON2:.ON1:.ON2, .ON2:.ON2:.ON2:.ON1, .ON2:.ON2:.ON2:.ON2]
+
+	GND1 <-> J1.Sleeve
+	J1.Tip <-> Volume.2
+	Volume.1 <-> Volume.3
+

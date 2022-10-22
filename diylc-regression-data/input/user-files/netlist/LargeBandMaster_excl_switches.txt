@@ -1,0 +1,303 @@
+Switch setup: [Default]
+
+	.001uF  630v.1 <-> R1.2 <-> R1.2
+	.001uF  630v.1 <-> R1.2 <-> R1.2
+	.001uF  630v.1 <-> R1.2 <-> R1.2
+	.001uF  630v.1 <-> R1.2 <-> R1.2
+	.001uF  630v.2 <-> R1.1
+	.001uF  630v.2 <-> R1.1
+	.001uF  630v.2 <-> R1.1
+	.001uF  630v.2 <-> R1.1
+	.003uF  630v.1 <-> Reverb.1
+	.003uF  630v.1 <-> Reverb.1
+	.003uF  630v.1 <-> Reverb.1
+	.003uF  630v.1 <-> Reverb.1
+	.003uF  630v.2 <-> R1.2
+	.003uF  630v.2 <-> R1.2
+	.003uF  630v.2 <-> R1.2
+	.003uF  630v.2 <-> R1.2
+	.022uF  630v Mid.1 <-> Normal Bass.3 <-> R1.1
+	.022uF  630v Mid.1 <-> Normal Bass.3 <-> R1.1
+	.022uF  630v Mid.1 <-> Normal Bass.3 <-> R1.1
+	.022uF  630v Mid.1 <-> Normal Bass.3 <-> R1.1
+	.022uF  630v Mid.1 <-> Vibrato Bass.3 <-> Vibrato Mid.2
+	.022uF  630v Mid.1 <-> Vibrato Bass.3 <-> Vibrato Mid.2
+	.022uF  630v Mid.1 <-> Vibrato Bass.3 <-> Vibrato Mid.2
+	.022uF  630v Mid.1 <-> Vibrato Bass.3 <-> Vibrato Mid.2
+	.022uF  630v Mid.2 <-> .1uF  630v Bass.2 <-> R1.2
+	.022uF  630v Mid.2 <-> .1uF  630v Bass.2 <-> R1.2
+	.022uF  630v Mid.2 <-> .1uF  630v Bass.2 <-> R1.2
+	.022uF  630v Mid.2 <-> .1uF  630v Bass.2 <-> R1.2
+	.022uF  630v Mid.2 <-> .1uF  630v Bass.2 <-> R1.2
+	.022uF  630v Mid.2 <-> .1uF  630v Bass.2 <-> R1.2
+	.022uF  630v Mid.2 <-> .1uF  630v Bass.2 <-> R1.2
+	.022uF  630v Mid.2 <-> .1uF  630v Bass.2 <-> R1.2
+	.022uF  630v.1 <-> C1.1 <-> C1.2 <-> R1.1
+	.022uF  630v.1 <-> C1.1 <-> C1.2 <-> R1.1
+	.022uF  630v.1 <-> C1.1 <-> C1.2 <-> R1.1
+	.022uF  630v.1 <-> C1.1 <-> C1.2 <-> R1.1
+	.022uF  630v.2 <-> R1.2
+	.022uF  630v.2 <-> R1.2
+	.022uF  630v.2 <-> R1.2
+	.022uF  630v.2 <-> R1.2
+	.047uF  630v Coupling.1 <-> R1.1
+	.047uF  630v Coupling.1 <-> R1.1
+	.047uF  630v Coupling.1 <-> R1.1
+	.047uF  630v Coupling.1 <-> R1.1
+	.047uF  630v Coupling.2 <-> R1.2
+	.047uF  630v Coupling.2 <-> R1.2
+	.047uF  630v Coupling.2 <-> R1.2
+	.047uF  630v Coupling.2 <-> R1.2
+	.047uF Class Y.1 <-> GND1
+	.047uF Class Y.1 <-> GND1
+	.047uF Class Y.1 <-> GND1
+	.047uF Class Y.1 <-> GND1
+	.047uF Class Y.2 <-> .2
+	.047uF Class Y.2 <-> .2
+	.047uF Class Y.2 <-> .2
+	.047uF Class Y.2 <-> .2
+	.1 <-> .1 <-> .1 <-> .2 <-> 1.8K  2W.1 <-> 470 3W.2 <-> 470 3W.2 <-> 50uF  70v.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> V3.6 <-> V4.6 <-> V5.8
+	.1 <-> .1 <-> .1 <-> .2 <-> 1.8K  2W.1 <-> 470 3W.2 <-> 470 3W.2 <-> 50uF  70v.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> V3.8 <-> V4.8
+	.1 <-> .1 <-> .1 <-> .2 <-> 1.8K  2W.1 <-> 470 3W.2 <-> 470 3W.2 <-> 50uF  70v.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> V3.8 <-> V4.8
+	.1 <-> .1 <-> .1 <-> .2 <-> 1.8K  2W.1 <-> 470 3W.2 <-> 470 3W.2 <-> 50uF  70v.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> V3.8 <-> V4.8
+	.1 <-> .2
+	.1 <-> .2
+	.1 <-> .2
+	.1 <-> .2
+	.1 <-> Normal Volume.2 <-> R1.2 <-> R1.2
+	.1 <-> Normal Volume.2 <-> R1.2 <-> R1.2 <-> V1.2
+	.1 <-> Normal Volume.2 <-> R1.2 <-> R1.2 <-> V1.2
+	.1 <-> Normal Volume.2 <-> R1.2 <-> R1.2 <-> V1.2
+	.1 <-> R1.2 <-> R1.2 <-> V1.2 <-> Vibrato Volume.2
+	.1 <-> R1.2 <-> R1.2 <-> V1.2 <-> Vibrato Volume.2
+	.1 <-> R1.2 <-> R1.2 <-> V1.2 <-> Vibrato Volume.2
+	.1 <-> R1.2 <-> R1.2 <-> Vibrato Volume.2
+	.1uF  200v AC Shunt.1 <-> R1.1 <-> R1.2 <-> R1.2
+	.1uF  200v AC Shunt.1 <-> R1.1 <-> R1.2 <-> R1.2
+	.1uF  200v AC Shunt.1 <-> R1.1 <-> R1.2 <-> R1.2
+	.1uF  200v AC Shunt.1 <-> R1.1 <-> R1.2 <-> R1.2
+	.1uF  200v AC Shunt.2 <-> R1.1
+	.1uF  200v AC Shunt.2 <-> R1.1
+	.1uF  200v AC Shunt.2 <-> R1.1
+	.1uF  200v AC Shunt.2 <-> R1.1
+	.1uF  630v Bass.1 <-> Normal Bass.2 <-> Normal Treble.3
+	.1uF  630v Bass.1 <-> Normal Bass.2 <-> Normal Treble.3
+	.1uF  630v Bass.1 <-> Normal Bass.2 <-> Normal Treble.3
+	.1uF  630v Bass.1 <-> Normal Bass.2 <-> Normal Treble.3
+	.1uF  630v Bass.1 <-> Vibrato Bass.2 <-> Vibrato Treble.3
+	.1uF  630v Bass.1 <-> Vibrato Bass.2 <-> Vibrato Treble.3
+	.1uF  630v Bass.1 <-> Vibrato Bass.2 <-> Vibrato Treble.3
+	.1uF  630v Bass.1 <-> Vibrato Bass.2 <-> Vibrato Treble.3
+	.1uF  630v Coupling.1 <-> Grid Stopper V4.2 <-> R1.1
+	.1uF  630v Coupling.1 <-> Grid Stopper V4.2 <-> R1.1
+	.1uF  630v Coupling.1 <-> Grid Stopper V4.2 <-> R1.1
+	.1uF  630v Coupling.1 <-> Grid Stopper V4.2 <-> R1.1
+	.1uF  630v Coupling.1 <-> Grid Stopper V4.2 <-> R1.2
+	.1uF  630v Coupling.1 <-> Grid Stopper V4.2 <-> R1.2
+	.1uF  630v Coupling.1 <-> Grid Stopper V4.2 <-> R1.2
+	.1uF  630v Coupling.1 <-> Grid Stopper V4.2 <-> R1.2
+	.1uF  630v Coupling.1 <-> R1.1 <-> Tremolo Intensity.1
+	.1uF  630v Coupling.1 <-> R1.1 <-> Tremolo Intensity.1
+	.1uF  630v Coupling.1 <-> R1.1 <-> Tremolo Intensity.1
+	.1uF  630v Coupling.1 <-> R1.1 <-> Tremolo Intensity.1
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.1uF  630v Coupling.2 <-> R1.2
+	.2 <-> .3
+	.2 <-> .3
+	.2 <-> .3
+	.2 <-> .3
+	.2 <-> C1.2
+	.2 <-> C1.2
+	.2 <-> C1.2
+	.2 <-> C1.2
+	.2 <-> C1.2
+	.2 <-> C1.2
+	.2 <-> C1.2
+	.2 <-> C1.2
+	1.8K  2W.2 <-> 1N4007.2
+	1.8K  2W.2 <-> 1N4007.2
+	1.8K  2W.2 <-> 1N4007.2
+	1.8K  2W.2 <-> 1N4007.2
+	1K 3W.1 <-> 1K 3W.2 <-> 20uF  525v.1 <-> 20uF  525v.1 <-> 220K 2W.1 <-> 4.7K 3W.1 <-> 70uF  350v.1
+	1K 3W.1 <-> 1K 3W.2 <-> 20uF  525v.1 <-> 20uF  525v.1 <-> 220K 2W.1 <-> 4.7K 3W.1 <-> 70uF  350v.1
+	1K 3W.1 <-> 1K 3W.2 <-> 20uF  525v.1 <-> 20uF  525v.1 <-> 220K 2W.1 <-> 4.7K 3W.1 <-> 70uF  350v.1
+	1K 3W.1 <-> 1K 3W.2 <-> 20uF  525v.1 <-> 20uF  525v.1 <-> 220K 2W.1 <-> 4.7K 3W.1 <-> 70uF  350v.1
+	1N4007.1 <-> 50uF  70v.2 <-> R1.1
+	1N4007.1 <-> 50uF  70v.2 <-> R1.1
+	1N4007.1 <-> 50uF  70v.2 <-> R1.1
+	1N4007.1 <-> 50uF  70v.2 <-> R1.1
+	20uF  525v.1 <-> 4.7K 3W.2
+	20uF  525v.1 <-> 4.7K 3W.2
+	20uF  525v.1 <-> 4.7K 3W.2
+	20uF  525v.1 <-> 4.7K 3W.2
+	20uF  525v.2 <-> 20uF  525v.2 <-> 20uF  525v.2
+	20uF  525v.2 <-> 20uF  525v.2 <-> 20uF  525v.2
+	20uF  525v.2 <-> 20uF  525v.2 <-> 20uF  525v.2
+	20uF  525v.2 <-> 20uF  525v.2 <-> 20uF  525v.2
+	220K 2W.1 <-> 70uF  350v.2
+	220K 2W.1 <-> 70uF  350v.2
+	220K 2W.1 <-> 70uF  350v.2
+	220K 2W.1 <-> 70uF  350v.2
+	220K 2W.2 <-> 220K 2W.2 <-> 70uF  350v.1 <-> 70uF  350v.2
+	220K 2W.2 <-> 220K 2W.2 <-> 70uF  350v.1 <-> 70uF  350v.2
+	220K 2W.2 <-> 220K 2W.2 <-> 70uF  350v.1 <-> 70uF  350v.2
+	220K 2W.2 <-> 220K 2W.2 <-> 70uF  350v.1 <-> 70uF  350v.2
+	25uF  25v.1 <-> R1.1
+	25uF  25v.1 <-> R1.1
+	25uF  25v.1 <-> R1.1
+	25uF  25v.1 <-> R1.1 <-> V1.8
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2
+	25uF  25v.1 <-> R1.2 <-> V1.8
+	25uF  25v.1 <-> R1.2 <-> V1.8
+	25uF  25v.1 <-> R1.2 <-> V1.8
+	25uF  25v.1 <-> R1.2 <-> V1.8 <-> V1.8
+	25uF  25v.1 <-> R1.2 <-> V1.8 <-> V1.8
+	25uF  25v.1 <-> R1.2 <-> V1.8 <-> V1.8
+	25uF  25v.2 <-> 25uF  25v.2 <-> 25uF  25v.2 <-> C1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> R1.2 <-> Reverb.3 <-> Tremolo Intensity.3 <-> Vibrato Mid.3
+	25uF  25v.2 <-> 25uF  25v.2 <-> 25uF  25v.2 <-> C1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> R1.2 <-> Reverb.3 <-> Tremolo Intensity.3 <-> Vibrato Mid.3
+	25uF  25v.2 <-> 25uF  25v.2 <-> 25uF  25v.2 <-> C1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> R1.2 <-> Reverb.3 <-> Tremolo Intensity.3 <-> Vibrato Mid.3
+	25uF  25v.2 <-> 25uF  25v.2 <-> 25uF  25v.2 <-> C1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> R1.2 <-> Reverb.3 <-> Tremolo Intensity.3 <-> Vibrato Mid.3
+	25uF  25v.2 <-> 25uF  25v.2 <-> R1.1 <-> R1.1 <-> R1.1
+	25uF  25v.2 <-> 25uF  25v.2 <-> R1.1 <-> R1.1 <-> R1.1
+	25uF  25v.2 <-> 25uF  25v.2 <-> R1.1 <-> R1.1 <-> R1.1
+	25uF  25v.2 <-> 25uF  25v.2 <-> R1.1 <-> R1.1 <-> R1.1
+	25uF  25v.2 <-> 25uF  25v.2 <-> R1.1 <-> R1.1 <-> R1.1
+	25uF  25v.2 <-> 25uF  25v.2 <-> R1.1 <-> R1.1 <-> R1.1
+	25uF  25v.2 <-> 25uF  25v.2 <-> R1.1 <-> R1.1 <-> R1.1
+	25uF  25v.2 <-> 25uF  25v.2 <-> R1.1 <-> R1.1 <-> R1.1
+	Bias Balance.1 <-> R1.1
+	Bias Balance.1 <-> R1.1
+	Bias Balance.1 <-> R1.1
+	Bias Balance.1 <-> R1.1
+	Bias Balance.2 <-> R1.2
+	Bias Balance.2 <-> R1.2
+	Bias Balance.2 <-> R1.2
+	Bias Balance.2 <-> R1.2
+	Bias Balance.3 <-> R1.2
+	Bias Balance.3 <-> R1.2
+	Bias Balance.3 <-> R1.2
+	Bias Balance.3 <-> R1.2
+	C1.1 <-> C1.1 <-> GND1
+	C1.1 <-> C1.1 <-> GND1
+	C1.1 <-> C1.1 <-> GND1
+	C1.1 <-> C1.1 <-> GND1
+	C1.1 <-> C1.2 <-> GND1 <-> R1.1 <-> R1.2
+	C1.1 <-> C1.2 <-> GND1 <-> R1.1 <-> R1.2
+	C1.1 <-> C1.2 <-> GND1 <-> R1.1 <-> R1.2
+	C1.1 <-> C1.2 <-> GND1 <-> R1.1 <-> R1.2
+	C1.1 <-> C1.2 <-> R1.1
+	C1.1 <-> C1.2 <-> R1.1
+	C1.1 <-> C1.2 <-> R1.1
+	C1.1 <-> C1.2 <-> R1.1
+	C1.1 <-> C1.2 <-> Tremolo Speed.1
+	C1.1 <-> C1.2 <-> Tremolo Speed.1
+	C1.1 <-> C1.2 <-> Tremolo Speed.1
+	C1.1 <-> C1.2 <-> Tremolo Speed.1
+	C1.1 <-> Normal Treble.1
+	C1.1 <-> Normal Treble.1
+	C1.1 <-> Normal Treble.1
+	C1.1 <-> Normal Treble.1
+	C1.1 <-> Normal Treble.2 <-> Normal Volume.1
+	C1.1 <-> Normal Treble.2 <-> Normal Volume.1
+	C1.1 <-> Normal Treble.2 <-> Normal Volume.1
+	C1.1 <-> Normal Treble.2 <-> Normal Volume.1
+	C1.1 <-> R1.1
+	C1.1 <-> R1.1
+	C1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> V1.2
+	C1.1 <-> R1.2
+	C1.1 <-> R1.2 <-> V1.2
+	C1.1 <-> R1.2 <-> V1.2
+	C1.1 <-> R1.2 <-> V1.2
+	C1.1 <-> Vibrato Treble.1
+	C1.1 <-> Vibrato Treble.1
+	C1.1 <-> Vibrato Treble.1
+	C1.1 <-> Vibrato Treble.1
+	C1.1 <-> Vibrato Treble.2 <-> Vibrato Volume.1
+	C1.1 <-> Vibrato Treble.2 <-> Vibrato Volume.1
+	C1.1 <-> Vibrato Treble.2 <-> Vibrato Volume.1
+	C1.1 <-> Vibrato Treble.2 <-> Vibrato Volume.1
+	C1.2 <-> R1.1 <-> R1.2
+	C1.2 <-> R1.1 <-> R1.2
+	C1.2 <-> R1.1 <-> R1.2
+	C1.2 <-> R1.1 <-> R1.2
+	C1.2 <-> R1.1 <-> R1.2
+	C1.2 <-> R1.1 <-> R1.2
+	C1.2 <-> R1.1 <-> R1.2
+	C1.2 <-> R1.1 <-> R1.2
+	C1.2 <-> R1.2
+	C1.2 <-> R1.2
+	C1.2 <-> R1.2
+	C1.2 <-> R1.2
+	C1.2 <-> R1.2
+	C1.2 <-> R1.2
+	C1.2 <-> R1.2
+	C1.2 <-> R1.2
+	C1.2 <-> R1.2 <-> R1.2 <-> R1.2
+	C1.2 <-> R1.2 <-> R1.2 <-> R1.2
+	C1.2 <-> R1.2 <-> R1.2 <-> R1.2
+	C1.2 <-> R1.2 <-> R1.2 <-> R1.2
+	R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1
+	R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1
+	R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1
+	R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1
+	R1.1 <-> R1.1 <-> R1.1 <-> R1.2
+	R1.1 <-> R1.1 <-> R1.1 <-> R1.2
+	R1.1 <-> R1.1 <-> R1.1 <-> R1.2
+	R1.1 <-> R1.1 <-> R1.1 <-> R1.2
+	R1.1 <-> R1.2
+	R1.1 <-> R1.2
+	R1.1 <-> R1.2
+	R1.1 <-> R1.2
+	R1.1 <-> R1.2 <-> R1.2 <-> R1.2
+	R1.1 <-> R1.2 <-> R1.2 <-> R1.2
+	R1.1 <-> R1.2 <-> R1.2 <-> R1.2
+	R1.1 <-> R1.2 <-> R1.2 <-> R1.2
+	R1.1 <-> Reverb.2
+	R1.1 <-> Reverb.2
+	R1.1 <-> Reverb.2
+	R1.1 <-> Reverb.2
+	R1.1 <-> Tremolo Speed.2 <-> Tremolo Speed.3
+	R1.1 <-> Tremolo Speed.2 <-> Tremolo Speed.3
+	R1.1 <-> Tremolo Speed.2 <-> Tremolo Speed.3
+	R1.1 <-> Tremolo Speed.2 <-> Tremolo Speed.3
+	R1.2 <-> R1.2
+	R1.2 <-> R1.2
+	R1.2 <-> R1.2
+	R1.2 <-> R1.2
+	R1.2 <-> R1.2
+	R1.2 <-> R1.2
+	R1.2 <-> R1.2
+	R1.2 <-> R1.2
+	R1.2 <-> R1.2 <-> R1.2
+	R1.2 <-> R1.2 <-> R1.2
+	R1.2 <-> R1.2 <-> R1.2
+	R1.2 <-> R1.2 <-> R1.2
+

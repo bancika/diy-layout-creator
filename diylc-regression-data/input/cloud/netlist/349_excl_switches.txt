@@ -1,0 +1,6 @@
+Switch setup: [Default]
+
+	J2.Sleeve <-> J3.Sleeve <-> J4.Sleeve
+	J2.Tip <-> J3.Tip <-> J4.Tip
+	J5.Tip <-> SW1.1
+
