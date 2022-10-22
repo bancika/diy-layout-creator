@@ -87,6 +87,7 @@ import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
 import org.diylc.netlist.NetlistBuilder;
+import org.diylc.netlist.NetlistException;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Position;
 import org.diylc.netlist.SwitchSetup;
@@ -167,7 +168,8 @@ public class Presenter implements IPlugInPort {
 
   public static final int ICON_SIZE = 32;
 
-  private static final int MAX_RECENT_FILES = 20;  
+  private static final int MAX_RECENT_FILES = 20;
+  private static final int MAX_SWITCH_COMBINATIONS = 64;  
 
   private Project currentProject;
   private Map<String, List<ComponentType>> componentTypes;
@@ -2092,7 +2094,13 @@ public class Presenter implements IPlugInPort {
     // experimental mode using netlist to expand selection. Works fine but doesn't include any connectivity components 
     // like traces and wires, so it's not ideal
     if (useNetlistForExpandSelection) {
-      List<Netlist> netlists = extractNetlists(false);
+      List<Netlist> netlists = null;
+      try {
+        netlists = extractNetlists(false);
+      } catch (NetlistException e1) {
+        // should never happen
+        LOG.warn("Unexpected netlist exception", e1);
+      }
       
       if (netlists == null)
         return;
@@ -3136,7 +3144,7 @@ public class Presenter implements IPlugInPort {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Netlist> extractNetlists(boolean includeSwitches) {
+  public List<Netlist> extractNetlists(boolean includeSwitches) throws NetlistException {
     Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
 
@@ -3194,6 +3202,15 @@ public class Presenter implements IPlugInPort {
     List<Area> continuityAreas = drawingManager.getContinuityAreas(currentProject);
 
     int i = switches.size() - 1;
+    
+    int totalSwitchCombinations = switches.stream()
+        .map(sw -> sw.getPositionCount())
+        .reduce(1, (a, b) -> a * b);
+    
+    if (totalSwitchCombinations > MAX_SWITCH_COMBINATIONS) {
+      throw new NetlistException("Maximum number of switching combinations exceeded. Allowed: " + MAX_SWITCH_COMBINATIONS + ", actual: " + totalSwitchCombinations);
+    }
+    
     while (i >= 0) {
       // process the current combination
       Map<ISwitch, Integer> switchPositions = new HashMap<ISwitch, Integer>();

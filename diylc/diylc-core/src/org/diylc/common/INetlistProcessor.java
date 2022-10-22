@@ -24,6 +24,7 @@ package org.diylc.common;
 import java.util.List;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
+import org.diylc.netlist.NetlistException;
 
 /**
  * Interface for {@link Netlist} related operations.
@@ -37,8 +38,9 @@ public interface INetlistProcessor {
    * 
    * @param includeSwitches
    * @return
+   * @throws NetlistException 
    */
-  List<Netlist> extractNetlists(boolean includeSwitches);
+  List<Netlist> extractNetlists(boolean includeSwitches) throws NetlistException;
   
   /**
    * Finds all available {@link INetlistAnalyzer} implementations.
