@@ -10,10 +10,10 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.30.0" />
+	<property name="diylc.version" value="4.30.1" />
 	
 	<property name="osx.jre8.path" value="jre\osx\jre8u321\Contents\Home\" />
-	<property name="osx.jre8m1.path" value="jre\osx\jre8zulu\Contents\Home\" />
+	<property name="osx.jre8m1.path" value="jre\osx\zulu-17.jre\Contents\Home\" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -131,7 +131,7 @@
 		        outputdirectory="${build.dir}"
 		        name="DIYLC"
 						jvmrequired="1.8"
-						copyright="2020 bancika"
+						copyright="2022 bancika"
 		        displayname="DIY Layout Creator"
 		        identifier="org.diylc.Desktop"
 		        shortversion="${diylc.version}"
@@ -151,6 +151,7 @@
 							extensions="diy" />
 				<runtime dir="${osx.jre8m1.path}" />
 				<arch name="arm64" />
+				<arch name="arm64e" />
 				<classpath file="${jar.dir}\diylc.jar" />
 				<classpath file="${jar.dir}\lib\*.jar" />
 				<classpath file="${jar.dir}\library\*.jar" />

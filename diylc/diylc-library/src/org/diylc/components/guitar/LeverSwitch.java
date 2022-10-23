@@ -57,7 +57,7 @@ import org.diylc.utils.Constants;
     description = "Strat-style lever switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
-public class LeverSwitch extends AbstractAngledComponent<LeverSwitchType> implements ISwitch {
+public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitchType> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -531,4 +531,21 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitchType> implem
           new int[] { 1, 9 }
           ) // position 6      
       );
+  
+  public static enum LeverSwitchType {
+    
+    DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), DP3T_5pos_Import("DP3T (Import 5-Position Strat)"),
+    _4P5T("4P5T (Super/Mega)"), DP4T("DP4T (4-Position Tele)"), _6_WAY_OG("DP4T (6-Position Oak Grigsby)"), DP5T("DP5T");
+
+    private String title;
+
+    private LeverSwitchType(String title) {
+      this.title = title;
+    }
+
+    @Override
+    public String toString() {
+      return title;
+    }
+  }
 }

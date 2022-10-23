@@ -18,6 +18,7 @@
 	<classpathentry kind="lib" path="lib/jar-loader.jar"/>
 	<classpathentry kind="lib" path="lib/svgSalamander-1.1.2.4.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.19.jar"/>
+	<classpathentry kind="lib" path="lib/guava-31.1-jre.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry kind="lib" path="lib/java-http-proxy.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
