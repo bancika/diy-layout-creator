@@ -37,6 +37,14 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	 <release version="4.30.1" date="2022-10-23">
+         <description>
+           <ul>
+             <li>[New Feature] Fix the build that wouldn't run due to a missing package</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.30.1</url>
+     </release>
   	 <release version="4.30.0" date="2022-10-22">
          <description>
            <ul>
