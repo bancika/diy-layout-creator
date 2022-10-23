@@ -21,14 +21,22 @@ import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
+import org.diylc.common.ComponentType;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.ISwitch;
+import org.diylc.core.Project;
+import org.diylc.lang.LangUtil;
 import org.diylc.netlist.ContinuityGraph.ContinuityNode;
+import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.Connection;
 import org.diylc.utils.RTree;
 import com.google.common.graph.GraphBuilder;
@@ -39,6 +47,121 @@ import com.google.common.graph.Traverser;
 public class NetlistBuilder {
 
   public static final float eps = 4; // consider any nodes closer than this as connected
+
+  private static final int MAX_SWITCH_COMBINATIONS = 64;
+
+  private static final String MAX_SWITCH_COMBINATIONS_ERROR = LangUtil
+      .translate("Maximum number of switching combinations exceeded. Allowed: %s, actual: %s");
+
+  @SuppressWarnings("unchecked")
+  public static List<Netlist> extractNetlists(boolean includeSwitches, Project project, List<Area> continuityAreas)
+      throws NetlistException {
+    Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
+    List<Node> nodes = new ArrayList<Node>();
+
+    List<ISwitch> switches = new ArrayList<ISwitch>();
+
+    for (IDIYComponent<?> c : project.getComponents()) {
+      ComponentType type = ComponentProcessor.getInstance()
+          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
+
+      // extract nodes
+      if (!(c instanceof IContinuity)) {
+        for (int i = 0; i < c.getControlPointCount(); i++) {
+          String nodeName = c.getControlPointNodeName(i);
+          if (nodeName != null
+              && (!includeSwitches || !ISwitch.class.isAssignableFrom(type.getInstanceClass()))) {
+            nodes.add(new Node(c, i));
+          }
+        }
+      }
+
+      // extract switches
+      if (includeSwitches && ISwitch.class.isAssignableFrom(type.getInstanceClass()))
+        switches.add((ISwitch) c);
+    }
+
+    // save us the trouble
+    if (nodes.isEmpty())
+      return null;
+
+    // if there are no switches, make one with 1 position so we get 1 result back
+    if (switches.isEmpty())
+      switches.add(new ISwitch() {
+
+        @Override
+        public String getPositionName(int position) {
+          return "Default";
+        }
+
+        @Override
+        public int getPositionCount() {
+          return 1;
+        }
+
+        @Override
+        public boolean arePointsConnected(int index1, int index2, int position) {
+          return false;
+        }
+      });
+
+    // construct all possible combinations
+    int[] positions = new int[switches.size()];
+    for (int i = 0; i < switches.size(); i++)
+      positions[i] = 0;
+
+    int i = switches.size() - 1;
+
+    int totalSwitchCombinations =
+        switches.stream().map(sw -> sw.getPositionCount()).reduce(1, (a, b) -> a * b);
+
+    if (totalSwitchCombinations > MAX_SWITCH_COMBINATIONS) {
+      throw new NetlistException(String.format(MAX_SWITCH_COMBINATIONS_ERROR,
+          MAX_SWITCH_COMBINATIONS, totalSwitchCombinations));
+    }
+
+    while (i >= 0) {
+      // process the current combination
+      Map<ISwitch, Integer> switchPositions = new HashMap<ISwitch, Integer>();
+      List<Position> posList = new ArrayList<Position>();
+      for (int j = 0; j < positions.length; j++) {
+        switchPositions.put(switches.get(j), positions[j]);
+        posList.add(new Position(switches.get(j), positions[j]));
+      }
+      List<Connection> connections = getConnections(project, switchPositions);
+
+      Netlist netlist = NetlistBuilder.buildNetlist(project.getComponents(), nodes,
+          continuityAreas, connections);
+
+      // merge graphs that are effectively the same
+      if (result.containsKey(netlist)) {
+        result.get(netlist).getSwitchSetup().add(new SwitchSetup(posList));
+      } else {
+        netlist.getSwitchSetup().add(new SwitchSetup(posList));
+        result.put(netlist, netlist);
+      }
+
+      // find the next combination if possible
+      if (positions[i] < switches.get(i).getPositionCount() - 1) {
+        positions[i]++;
+      } else {
+        while (i >= 0 && positions[i] == switches.get(i).getPositionCount() - 1)
+          i--;
+        if (i >= 0) {
+          positions[i]++;
+          for (int j = i + 1; j < positions.length; j++)
+            positions[j] = 0;
+          i = switches.size() - 1;
+        }
+      }
+    }
+
+    // sort everything alphabetically
+    List<Netlist> netlists = new ArrayList<Netlist>(result.keySet());
+    Collections.sort(netlists);
+
+    return netlists;
+  }
 
   public static Netlist buildNetlist(List<IDIYComponent<?>> components, Collection<Node> nodes,
       Collection<Area> continuityAreas, Collection<Connection> connections) {
@@ -75,17 +198,19 @@ public class NetlistBuilder {
 
     return netlist;
   }
-  
-  public static ContinuityGraph buildContinuityGraph(Collection<Area> continuityAreas, Collection<Connection> connections) {
-    ImmutableGraph<ProjectGraphNode> graph = buildGraph(new ArrayList<Node>(), continuityAreas, connections);
+
+  public static ContinuityGraph buildContinuityGraph(Collection<Area> continuityAreas,
+      Collection<Connection> connections) {
+    ImmutableGraph<ProjectGraphNode> graph =
+        buildGraph(new ArrayList<Node>(), continuityAreas, connections);
 
     Traverser<ProjectGraphNode> traverser = Traverser.forGraph(graph);
     Set<ProjectGraphNode> visited = new HashSet<ProjectGraphNode>();
 
     ProjectGraphNode[] nodeArr = graph.nodes().toArray(new ProjectGraphNode[0]);
-    
+
     int groupId = 1;
-    
+
     RTree<ContinuityNode> groupTree = new RTree<ContinuityGraph.ContinuityNode>();
     Map<Integer, List<Area>> areaGroupMap = new HashMap<Integer, List<Area>>();
 
@@ -97,7 +222,7 @@ public class NetlistBuilder {
 
       if (i == graph.nodes().size())
         break;
-      
+
       final int finalGroupId = groupId;
 
       List<Area> areaList = new ArrayList<Area>();
@@ -178,7 +303,7 @@ public class NetlistBuilder {
 
     for (Area area : continuityAreas) {
       ProjectGraphNode areaNode = new ProjectGraphNode(area);
-      builder.addNode(areaNode);      
+      builder.addNode(areaNode);
 
       ProjectGraphNode[] nodeArr = nodeTree.search(area).stream()
           .filter(graphNode -> area.contains(graphNode.getPoint())
@@ -206,11 +331,39 @@ public class NetlistBuilder {
       }).forEach(graphNode -> {
         builder.putEdge(graphNode, areaNode);
       });
-      
+
       areaTree.insert(area, areaNode);
     }
 
-    return builder.build();    
+    return builder.build();
+  }
+  
+  @SuppressWarnings({"unchecked", "unlikely-arg-type"})
+  private static List<Connection> getConnections(Project project, Map<ISwitch, Integer> switchPositions) {
+    Set<Connection> connections = new TreeSet<Connection>();
+    
+    for (IDIYComponent<?> c : project.getComponents()) {
+      ComponentType type =
+          ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
+      // handle direct connections
+      if (c instanceof IContinuity) {
+        for (int i = 0; i < c.getControlPointCount() - 1; i++)
+          for (int j = i + 1; j < c.getControlPointCount(); j++)
+            if (((IContinuity) c).arePointsConnected(i, j))
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
+      }
+      // handle switches
+      if (ISwitch.class.isAssignableFrom(type.getInstanceClass()) && switchPositions.containsKey(c)) {
+        int position = switchPositions.get(c);
+        ISwitch s = (ISwitch) c;
+        for (int i = 0; i < c.getControlPointCount() - 1; i++)
+          for (int j = i + 1; j < c.getControlPointCount(); j++)
+            if (s.arePointsConnected(i, j, position))
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
+      }
+    }
+
+    return new ArrayList<Connection>(connections);
   }
 
   private static Point2D snapToEps(Point2D point, double eps) {

@@ -314,13 +314,6 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   void setNewComponentTypeSlot(ComponentType componentType, Template template, boolean forceInstatiate);
 
   /**
-   * Changes default size notation, true for metric, false for imperial.
-   * 
-   * @param isMetric
-   */
-  void setMetric(boolean isMetric);
-
-  /**
    * Locks or unlocks the specified layer. All components within +- 0.5 range will be affected by
    * the change as well.
    * 

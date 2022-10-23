@@ -29,7 +29,6 @@ import java.awt.geom.Rectangle2D;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
@@ -45,8 +44,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.function.Supplier;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
@@ -57,7 +54,6 @@ import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
 import org.diylc.clipboard.ComponentTransferable;
-import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
@@ -69,11 +65,8 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.IProjectEditor;
 import org.diylc.common.PropertyWrapper;
-import org.diylc.common.VariantPackage;
 import org.diylc.core.ExpansionMode;
-import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.ISwitch;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
@@ -88,13 +81,11 @@ import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
 import org.diylc.netlist.NetlistBuilder;
 import org.diylc.netlist.NetlistException;
-import org.diylc.netlist.Node;
-import org.diylc.netlist.Position;
-import org.diylc.netlist.SwitchSetup;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
+import org.diylc.utils.ReflectionUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
@@ -131,7 +122,6 @@ public class Presenter implements IPlugInPort {
   private static final String ERROR_NEW = LangUtil.translate("Could not create a new file. Check the log for details.");
   private static final String ERROR = LangUtil.translate("Error");
   private static final String APPLY_ERROR = LangUtil.translate("Could not apply changes. Check the log for details.");
-  private static final String MAX_SWITCH_COMBINATIONS_ERROR = LangUtil.translate("Maximum number of switching combinations exceeded. Allowed: %s, actual: %s");
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
@@ -169,16 +159,11 @@ public class Presenter implements IPlugInPort {
 
   public static final int ICON_SIZE = 32;
 
-  private static final int MAX_RECENT_FILES = 20;
-  private static final int MAX_SWITCH_COMBINATIONS = 64;  
+  private static final int MAX_RECENT_FILES = 20;  
 
   private Project currentProject;
   private Map<String, List<ComponentType>> componentTypes;
-  /**
-   * {@link List} of {@link IAutoCreator} objects that are capable of creating more components
-   * automatically when a component is created, e.g. Solder Pads.
-   */
-  private List<IAutoCreator> autoCreators;
+
   // Maps component class names to ComponentType objects.
   private List<IPlugIn> plugIns;
 
@@ -193,6 +178,8 @@ public class Presenter implements IPlugInPort {
   private DrawingManager drawingManager;
   private ProjectFileManager projectFileManager;
   private InstantiationManager instantiationManager;
+  private VariantManager variantManager;
+  private BuildingBlockManager buildingBlockManager;
 
   private Rectangle selectionRect;
 
@@ -232,13 +219,15 @@ public class Presenter implements IPlugInPort {
     drawingManager = new DrawingManager(messageDispatcher, configManager);
     projectFileManager = new ProjectFileManager(messageDispatcher);
     instantiationManager = new InstantiationManager();
+    variantManager = new VariantManager(configManager, projectFileManager.getXStream());
+    buildingBlockManager = new BuildingBlockManager(configManager, projectFileManager.getXStream(), instantiationManager);
 
     // lockedLayers = EnumSet.noneOf(ComponentLayer.class);
     // visibleLayers = EnumSet.allOf(ComponentLayer.class);
     if (importVariantsAndBlocks) {
-      upgradeVariants();
-      importDefaultVariants();
-      importDefaultBlocks();
+      variantManager.upgradeVariants(getComponentTypes());
+      variantManager.importDefaultVariants();
+      buildingBlockManager.importDefaultBlocks();
     }
   }
 
@@ -489,25 +478,6 @@ public class Presenter implements IPlugInPort {
       }
     }
     return componentTypes;
-  }
-
-  public List<IAutoCreator> getAutoCreators() {
-    if (autoCreators == null) {
-      autoCreators = new ArrayList<IAutoCreator>();
-      Set<Class<?>> classes = null;
-      try {
-        classes = Utils.getClasses("org.diylc.components.autocreate");
-        for (Class<?> clazz : classes) {
-          if (IAutoCreator.class.isAssignableFrom(clazz)) {
-            autoCreators.add((IAutoCreator) clazz.newInstance());
-            LOG.debug("Loaded auto-creator: " + clazz.getName());
-          }
-        }
-      } catch (Exception e) {
-        LOG.error("Error loading auto-creator types", e);
-      }
-    }
-    return autoCreators;
   }
 
   @SuppressWarnings({"unchecked"})
@@ -1799,11 +1769,6 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void setMetric(boolean isMetric) {
-    configManager.writeValue(Presenter.METRIC_KEY, isMetric);
-  }
-
-  @Override
   public void groupSelectedComponents() {
     LOG.info("groupSelectedComponents()");
     Project oldProject = currentProject.clone();
@@ -2310,23 +2275,6 @@ public class Presenter implements IPlugInPort {
     return new Point2D[] {inSize, cmSize};
   }
 
-  // @Override
-  // public Rectangle2D getSelectedAreaRect() {
-  // if (selectedComponents.isEmpty()) {
-  // return null;
-  // }
-  // Area area = new Area();
-  // for (IDIYComponent<?> component : selectedComponents) {
-  // Area componentArea = drawingManager.getComponentArea(component);
-  // if (componentArea != null) {
-  // area.add(componentArea);
-  // } else {
-  // LOG.warn("No area found for: " + component.getName());
-  // }
-  // }
-  // return area.getBounds2D();
-  // }
-
   /**
    * Adds a component to the project taking z-order into account.
    * 
@@ -2351,7 +2299,7 @@ public class Presenter implements IPlugInPort {
     }
 
     // Check if we should auto-create something.
-    for (IAutoCreator creator : this.getAutoCreators()) {
+    for (IAutoCreator creator : ReflectionUtils.getAutoCreators()) {
       List<IDIYComponent<?>> newComponents = creator.createIfNeeded(component);
       if (newComponents != null) {
         for (IDIYComponent<?> c : newComponents)
@@ -2624,108 +2572,9 @@ public class Presenter implements IPlugInPort {
     }
   }
   
-  @SuppressWarnings("unchecked")
-  private void importDefaultVariants() {
-    // import default templates from variants.xml file only if we didn't do it already
-    if (!configManager.readBoolean(DEFAULT_TEMPLATES_IMPORTED_KEY, false)) {
-      try {
-        URL resource = Presenter.class.getResource("variants.xml");
-        if (resource != null) {
-          BufferedInputStream in = new BufferedInputStream(resource.openStream());
-          Map<String, List<Template>> defaults = (Map<String, List<Template>>) ProjectFileManager.xStreamSerializer.fromXML(in);
-          in.close();
-                    
-          Map<String, List<Template>> variantMap =
-              (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
-          if (variantMap == null)
-            variantMap = new HashMap<String, List<Template>>();          
-          
-          // merge default variants with user's
-          for (Map.Entry<String, List<Template>> entry : defaults.entrySet()) {
-            List<Template> templates = variantMap.getOrDefault(entry.getKey(), null);
-            if (templates == null) {
-              templates = new ArrayList<Template>();
-              variantMap.put(entry.getKey(), templates);
-            }
-            templates.addAll(entry.getValue());
-          }          
-          
-          // update templates and a flag marking that we imported them
-          configManager.writeValue(DEFAULT_TEMPLATES_IMPORTED_KEY, true);
-          configManager.writeValue(TEMPLATES_KEY, variantMap);
-          LOG.info(String.format("Imported default variants for %d components",
-              defaults == null ? 0 : defaults.size()));         
-        }
-      } catch (Exception e) {
-        LOG.error("Could not load default variants", e);
-      }
-    }
-  }
-  
-  @SuppressWarnings("unchecked")
-  private void importDefaultBlocks() {
-    // import default templates from variants.xml file only if we didn't do it already
-    if (!configManager.readBoolean(DEFAULT_BLOCKS_IMPORTED_KEY, false)) {
-      try {
-        URL resource = Presenter.class.getResource("blocks.xml");
-        if (resource != null) {
-          BufferedInputStream in = new BufferedInputStream(resource.openStream());
-          Map<String, List<IDIYComponent<?>>> defaults = (Map<String, List<IDIYComponent<?>>>) ProjectFileManager.xStreamSerializer.fromXML(in);
-          in.close();
-                    
-          Map<String, List<IDIYComponent<?>>> blocksMap =
-              (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
-          if (blocksMap == null)
-            blocksMap = new HashMap<String, List<IDIYComponent<?>>>();          
-          
-          // merge default blocks with user's
-          for (Map.Entry<String, List<IDIYComponent<?>>> entry : defaults.entrySet()) {
-            if (!blocksMap.containsKey(entry.getKey()))
-              blocksMap.put(entry.getKey(), entry.getValue());            
-          }          
-          
-          // update templates and a flag marking that we imported them
-          configManager.writeValue(DEFAULT_BLOCKS_IMPORTED_KEY, true);
-          configManager.writeValue(BLOCKS_KEY, blocksMap);
-          LOG.info(String.format("Imported %d default building blocks", defaults == null ? 0 : defaults.size()));         
-        }
-      } catch (Exception e) {
-        LOG.error("Could not load default blocks", e);
-      }
-    }
-  }
-
-  @SuppressWarnings("unchecked")
   @Override
   public List<Template> getVariantsFor(ComponentType type) {
-    Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
-
-    Map<String, List<Template>> variantMap =
-        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
-    if (variantMap != null)
-      lookupMap.putAll(variantMap);
-
-    // try by class name and then by old category.type format
-    String key1 = type.getInstanceClass().getCanonicalName();
-    String key2 = type.getCategory() + "." + type.getName();
-
-    List<Template> variants = new ArrayList<Template>();
-    if (variantMap != null) {
-      List<Template> userVariants = variantMap.get(key1);
-      if (userVariants != null && !userVariants.isEmpty())
-        variants.addAll(userVariants);
-      userVariants = variantMap.get(key2);
-      if (userVariants != null && !userVariants.isEmpty())
-        variants.addAll(userVariants);
-    }
-    Collections.sort(variants, new Comparator<Template>() {
-
-      @Override
-      public int compare(Template o1, Template o2) {
-        return o1.getName().compareTo(o2.getName());
-      }
-    });
-    return variants;
+    return variantManager.getVariantsFor(type);
   }
 
   @SuppressWarnings("unchecked")
@@ -2773,40 +2622,10 @@ public class Presenter implements IPlugInPort {
     }
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
-
-  @SuppressWarnings("unchecked")
+  
   @Override
   public void deleteVariant(ComponentType type, String templateName) {
-    LOG.debug(String.format("deleteTemplate(%s, %s)", type, templateName));
-    Map<String, List<Template>> templateMap =
-        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
-    if (templateMap != null) {
-      // try by class name and then by old category.type format
-      String key1 = type.getInstanceClass().getCanonicalName();
-      String key2 = type.getCategory() + "." + type.getName();
-
-      List<Template> templates = templateMap.get(key1);
-      if (templates != null) {
-        Iterator<Template> i = templates.iterator();
-        while (i.hasNext()) {
-          Template t = i.next();
-          if (t.getName().equalsIgnoreCase(templateName)) {
-            i.remove();
-          }
-        }
-      }
-      templates = templateMap.get(key2);
-      if (templates != null) {
-        Iterator<Template> i = templates.iterator();
-        while (i.hasNext()) {
-          Template t = i.next();
-          if (t.getName().equalsIgnoreCase(templateName)) {
-            i.remove();
-          }
-        }
-      }
-    }
-    configManager.writeValue(TEMPLATES_KEY, templateMap);
+    variantManager.deleteVariant(type, templateName);
   }
 
   @SuppressWarnings("unchecked")
@@ -2833,21 +2652,9 @@ public class Presenter implements IPlugInPort {
     configManager.writeValue(DEFAULT_TEMPLATES_KEY, defaultTemplateMap);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public String getDefaultVariant(ComponentType type) {
-    Map<String, String> defaultTemplateMap =
-        (Map<String, String>) configManager.readObject(DEFAULT_TEMPLATES_KEY, null);
-    if (defaultTemplateMap == null)
-      return null;
-
-    String key1 = type.getInstanceClass().getCanonicalName();
-    String key2 = type.getCategory() + "." + type.getName();
-
-    if (defaultTemplateMap.containsKey(key1))
-      return defaultTemplateMap.get(key1);
-
-    return defaultTemplateMap.get(key2);
+    return variantManager.getDefaultVariant(type);
   }
 
   private Set<IDIYComponent<?>> getLockedComponents() {
@@ -2920,94 +2727,21 @@ public class Presenter implements IPlugInPort {
     }
     return p;
   }
-
-  @SuppressWarnings("unchecked")
+  
   @Override
   public void saveSelectionAsBlock(String blockName) {
-    LOG.debug(String.format("saveSelectionAsBlock(%s)", blockName));
-    Map<String, List<IDIYComponent<?>>> blocks =
-        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
-    if (blocks == null)
-      blocks = new HashMap<String, List<IDIYComponent<?>>>();
-    List<IDIYComponent<?>> blockComponents = new ArrayList<IDIYComponent<?>>(this.selectedComponents);
-    Collections.sort(blockComponents, new Comparator<IDIYComponent<?>>() {
-
-      @Override
-      public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-        return new Integer(currentProject.getComponents().indexOf(o1)).compareTo(currentProject.getComponents()
-            .indexOf(o2));
-      }
-    });
-    blocks.put(blockName, blockComponents);
-    
-    if (System.getProperty("org.diylc.WriteStaticBlocks", "false").equalsIgnoreCase("true")) {
-      Map<String, List<IDIYComponent<?>>> defaultBlockMap = new HashMap<String, List<IDIYComponent<?>>>();
-      // unify default and user-variants
-      for (Map.Entry<String, List<IDIYComponent<?>>> entry : blocks.entrySet()) {
-        if (defaultBlockMap.containsKey(entry.getKey())) {
-          defaultBlockMap.get(entry.getKey()).addAll(entry.getValue());
-        } else {
-          defaultBlockMap.put(entry.getKey(), entry.getValue());
-        }
-      }
-      try {
-        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("blocks.xml"));
-        XStream xStream = new XStream(new DomDriver());
-        xStream.addPermission(AnyTypePermission.ANY);
-        xStream.toXML(defaultBlockMap, out);
-        out.close();
-        // no more user variants
-        configManager.writeValue(BLOCKS_KEY, null);
-        LOG.info("Saved default blocks");
-      } catch (IOException e) {
-        LOG.error("Could not save default blocks", e);
-      }
-    } else {
-      configManager.writeValue(BLOCKS_KEY, blocks);
-    }  
+    buildingBlockManager.saveSelectionAsBlock(blockName, this.getSelectedComponents(), this.currentProject.getComponents());
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public void loadBlock(String blockName) throws InvalidBlockException {
-    LOG.debug(String.format("loadBlock(%s)", blockName));
-    Map<String, List<IDIYComponent<?>>> blocks =
-        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
-    if (blocks != null) {
-      Collection<IDIYComponent<?>> components = blocks.get(blockName);
-      if (components == null)
-        throw new InvalidBlockException();
-      // clear potential control point every time!
-      instantiationManager.setPotentialControlPoint(null);
-      // clone components
-      List<IDIYComponent<?>> clones = new ArrayList<IDIYComponent<?>>();
-      List<IDIYComponent<?>> testComponents = new ArrayList<IDIYComponent<?>>(currentProject.getComponents());
-      for (IDIYComponent<?> c : components)
-        try {
-          IDIYComponent<?> clone = c.clone();
-          clone.setName(instantiationManager.createUniqueName(ComponentProcessor.getInstance()
-              .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clone.getClass()), testComponents));
-          testComponents.add(clone);
-          clones.add(clone);
-        } catch (CloneNotSupportedException e) {
-          LOG.error("Could not clone component: " + c);
-        }
-      // paste them to the project
-      pasteComponents(new ComponentTransferable(clones), true, true);
-    } else
-      throw new InvalidBlockException();
+  public void loadBlock(String blockName) throws InvalidBlockException { 
+    List<IDIYComponent<?>> components = buildingBlockManager.loadBlock(blockName, currentProject.getComponents());
+    pasteComponents(new ComponentTransferable(components), true, true);    
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void deleteBlock(String blockName) {
-    LOG.debug(String.format("deleteBlock(%s)", blockName));
-    Map<String, List<IDIYComponent<?>>> blocks =
-        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
-    if (blocks != null) {
-      blocks.remove(blockName);
-      configManager.writeValue(BLOCKS_KEY, blocks);
-    }
+    buildingBlockManager.deleteBlock(blockName);
   }
 
   @Override
@@ -3026,260 +2760,21 @@ public class Presenter implements IPlugInPort {
     return extraSpace;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public int importVariants(String fileName) throws IOException {
-    LOG.debug(String.format("importVariants(%s)", fileName));
-    BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
-    XStream xStream = projectFileManager.getXStream();
-   
-    VariantPackage pkg = (VariantPackage) xStream.fromXML(in);
-
-    in.close();
-
-    if (pkg == null || pkg.getVariants().isEmpty())
-      return 0;
-
-    Map<String, List<Template>> variantMap =
-        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
-    if (variantMap == null) {
-      variantMap = new HashMap<String, List<Template>>();
-    }
-
-    for (Map.Entry<String, List<Template>> entry : pkg.getVariants().entrySet()) {
-      List<Template> templates;
-      templates = variantMap.get(entry.getKey());
-      if (templates == null) {
-        templates = new ArrayList<Template>();
-        variantMap.put(entry.getKey(), templates);
-      }
-      for (Template t : entry.getValue()) {
-        templates.add(new Template(t.getName() + " [" + pkg.getOwner() + "]", t.getValues(), t.getPoints()));
-      }
-    }
-
-    configManager.writeValue(TEMPLATES_KEY, variantMap);
-
-    LOG.info(String.format("Loaded variants for %d components", pkg.getVariants().size()));
-
-    return pkg.getVariants().size();
+    return variantManager.importVariants(fileName);
   }
-
-  @SuppressWarnings("unchecked")
+  
   @Override
   public int importBlocks(String fileName) throws IOException {
-    LOG.debug(String.format("importBlocks(%s)", fileName));
-    BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
-    XStream xStream = projectFileManager.getXStream();
-
-    BuildingBlockPackage pkg = (BuildingBlockPackage) xStream.fromXML(in);
-    
-    in.close();
-
-    if (pkg == null || pkg.getBlocks().isEmpty())
-      return 0;
-
-    Map<String, List<IDIYComponent<?>>> blocks =
-        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(BLOCKS_KEY, null);
-    if (blocks == null) {
-      blocks = new HashMap<String, List<IDIYComponent<?>>>();
-    }
-
-    for (Map.Entry<String, List<IDIYComponent<?>>> entry : pkg.getBlocks().entrySet()) {
-      blocks.put(entry.getKey() + " [" + pkg.getOwner() + "]", entry.getValue());
-    }
-
-    configManager.writeValue(BLOCKS_KEY, blocks);
-
-    LOG.info(String.format("Loaded building blocks for %d components", pkg.getBlocks().size()));
-
-    return pkg.getBlocks().size();
+    return buildingBlockManager.importBlocks(fileName);
   }
 
-  private static boolean upgradedVariants = false;
-
-  @SuppressWarnings("unchecked")
-  private synchronized void upgradeVariants() {
-    if (upgradedVariants)
-      return;
-
-    upgradedVariants = true;
-
-    LOG.info("Checking if variants need to be updated");
-    Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
-    Map<String, List<Template>> variantMap =
-        (Map<String, List<Template>>) configManager.readObject(TEMPLATES_KEY, null);
-
-    if (variantMap == null)
-      return;
-
-    Map<String, ComponentType> typeMap = new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
-
-    Map<String, List<ComponentType>> componentTypes = getComponentTypes();
-    for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet())
-      for (ComponentType type : entry.getValue()) {
-        typeMap.put(type.getInstanceClass().getCanonicalName(), type);
-        typeMap.put(type.getCategory() + "." + type.getName(), type);
-        if (type.getCategory().contains("Electro-Mechanical"))
-          typeMap.put(type.getCategory().replace("Electro-Mechanical", "Electromechanical") + "." + type.getName(),
-              type);
-      }
-
-    Map<String, List<Template>> newVariantMap = new HashMap<String, List<Template>>();
-
-    lookupMap.putAll(variantMap);
-
-    for (Map.Entry<String, List<Template>> entry : variantMap.entrySet()) {
-      if (typeMap.containsKey(entry.getKey())) {
-        newVariantMap.put(typeMap.get(entry.getKey()).getInstanceClass().getCanonicalName(), entry.getValue()); // great,
-                                                                                                                // nothing
-                                                                                                                // to
-                                                                                                                // upgrade
-      } else {
-        LOG.warn("Could not upgrade variants for: " + entry.getKey());
-      }
-    }
-
-    configManager.writeValue(TEMPLATES_KEY, newVariantMap);
-  }
-
-  @SuppressWarnings("unchecked")
   @Override
   public List<Netlist> extractNetlists(boolean includeSwitches) throws NetlistException {
-    Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
-    List<Node> nodes = new ArrayList<Node>();
-
-    List<ISwitch> switches = new ArrayList<ISwitch>();
-
-    for (IDIYComponent<?> c : currentProject.getComponents()) {
-      ComponentType type =
-          ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-
-      // extract nodes
-      if (!(c instanceof IContinuity)) {
-        for (int i = 0; i < c.getControlPointCount(); i++) {
-          String nodeName = c.getControlPointNodeName(i);
-          if (nodeName != null && (!includeSwitches || !ISwitch.class.isAssignableFrom(type.getInstanceClass()))) {
-            nodes.add(new Node(c, i));
-          }
-        }
-      }
-
-      // extract switches
-      if (includeSwitches && ISwitch.class.isAssignableFrom(type.getInstanceClass()))
-        switches.add((ISwitch) c);
-    }
-
-    // save us the trouble
-    if (nodes.isEmpty())
-      return null;
-
-    // if there are no switches, make one with 1 position so we get 1 result back
-    if (switches.isEmpty())
-      switches.add(new ISwitch() {
-
-        @Override
-        public String getPositionName(int position) {
-          return "Default";
-        }
-
-        @Override
-        public int getPositionCount() {
-          return 1;
-        }
-
-        @Override
-        public boolean arePointsConnected(int index1, int index2, int position) {
-          return false;
-        }
-      });
-
-    // construct all possible combinations
-    int[] positions = new int[switches.size()];
-    for (int i = 0; i < switches.size(); i++)
-      positions[i] = 0;
-
-    // grab continuity areas
     List<Area> continuityAreas = drawingManager.getContinuityAreas(currentProject);
-
-    int i = switches.size() - 1;
     
-    int totalSwitchCombinations = switches.stream()
-        .map(sw -> sw.getPositionCount())
-        .reduce(1, (a, b) -> a * b);
-    
-    if (totalSwitchCombinations > MAX_SWITCH_COMBINATIONS) {
-      throw new NetlistException(String.format(MAX_SWITCH_COMBINATIONS_ERROR, MAX_SWITCH_COMBINATIONS, totalSwitchCombinations));
-    }
-    
-    while (i >= 0) {
-      // process the current combination
-      Map<ISwitch, Integer> switchPositions = new HashMap<ISwitch, Integer>();
-      List<Position> posList = new ArrayList<Position>();
-      for (int j = 0; j < positions.length; j++) {
-        switchPositions.put(switches.get(j), positions[j]);
-        posList.add(new Position(switches.get(j), positions[j]));
-      }
-      List<Connection> connections = getConnections(switchPositions);
-
-      Netlist netlist = NetlistBuilder.buildNetlist(currentProject.getComponents(), nodes, continuityAreas, connections);
-
-      // merge graphs that are effectively the same
-      if (result.containsKey(netlist)) {
-        result.get(netlist).getSwitchSetup().add(new SwitchSetup(posList));
-      } else {
-        netlist.getSwitchSetup().add(new SwitchSetup(posList));
-        result.put(netlist, netlist);
-      }
-
-      // find the next combination if possible
-      if (positions[i] < switches.get(i).getPositionCount() - 1) {
-        positions[i]++;
-      } else {
-        while (i >= 0 && positions[i] == switches.get(i).getPositionCount() - 1)
-          i--;
-        if (i >= 0) {
-          positions[i]++;
-          for (int j = i + 1; j < positions.length; j++)
-            positions[j] = 0;
-          i = switches.size() - 1;
-        }
-      }
-    }
-
-    // sort everything alphabetically
-    List<Netlist> netlists = new ArrayList<Netlist>(result.keySet());
-    Collections.sort(netlists);
-
-    return netlists;
-  }
-
-  @SuppressWarnings({"unchecked", "unlikely-arg-type"})
-  private List<Connection> getConnections(Map<ISwitch, Integer> switchPositions) {
-    Set<Connection> connections = new TreeSet<Connection>();
-    
-    for (IDIYComponent<?> c : currentProject.getComponents()) {
-      ComponentType type =
-          ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      // handle direct connections
-      if (c instanceof IContinuity) {
-        for (int i = 0; i < c.getControlPointCount() - 1; i++)
-          for (int j = i + 1; j < c.getControlPointCount(); j++)
-            if (((IContinuity) c).arePointsConnected(i, j))
-              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
-      }
-      // handle switches
-      if (ISwitch.class.isAssignableFrom(type.getInstanceClass()) && switchPositions.containsKey(c)) {
-        int position = switchPositions.get(c);
-        ISwitch s = (ISwitch) c;
-        for (int i = 0; i < c.getControlPointCount() - 1; i++)
-          for (int j = i + 1; j < c.getControlPointCount(); j++)
-            if (s.arePointsConnected(i, j, position))
-              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
-      }
-    }
-
-    return new ArrayList<Connection>(connections);
+    return NetlistBuilder.extractNetlists(includeSwitches, currentProject, continuityAreas);
   }
 
   @Override
@@ -3312,30 +2807,7 @@ public class Presenter implements IPlugInPort {
   
   @Override
   public List<INetlistParser> getNetlistParserDefinitions() {
-    Set<Class<?>> classes;
-    try {
-      classes = Utils.getClasses("org.diylc.netlist");
-      List<INetlistParser> result = new ArrayList<INetlistParser>();
-
-      for (Class<?> clazz : classes) {
-        if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistParser.class.isAssignableFrom(clazz)) {
-          result.add((INetlistParser) clazz.newInstance());
-        }
-      }
-
-      Collections.sort(result, new Comparator<INetlistParser>() {
-
-        @Override
-        public int compare(INetlistParser o1, INetlistParser o2) {
-          return o1.getName().compareToIgnoreCase(o2.getName());
-        }
-      });
-
-      return result;
-    } catch (Exception e) {
-      LOG.error("Could not load INetlistParserDefinition implementations", e);
-      return null;
-    }
+    return ReflectionUtils.getNetlistParserDefinitions();
   }
   
   // Test stuff
