@@ -130,7 +130,8 @@ public class Presenter implements IPlugInPort {
   private static final String ERROR_EDIT = LangUtil.translate("Error occurred while editing selection. Check the log for details.");
   private static final String ERROR_NEW = LangUtil.translate("Could not create a new file. Check the log for details.");
   private static final String ERROR = LangUtil.translate("Error");
-  private static final String APPLY_ERROR = "Could not apply changes. Check the log for details.";
+  private static final String APPLY_ERROR = LangUtil.translate("Could not apply changes. Check the log for details.");
+  private static final String MAX_SWITCH_COMBINATIONS_ERROR = LangUtil.translate("Maximum number of switching combinations exceeded. Allowed: %s, actual: %s");
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
@@ -3208,7 +3209,7 @@ public class Presenter implements IPlugInPort {
         .reduce(1, (a, b) -> a * b);
     
     if (totalSwitchCombinations > MAX_SWITCH_COMBINATIONS) {
-      throw new NetlistException("Maximum number of switching combinations exceeded. Allowed: " + MAX_SWITCH_COMBINATIONS + ", actual: " + totalSwitchCombinations);
+      throw new NetlistException(String.format(MAX_SWITCH_COMBINATIONS_ERROR, MAX_SWITCH_COMBINATIONS, totalSwitchCombinations));
     }
     
     while (i >= 0) {
