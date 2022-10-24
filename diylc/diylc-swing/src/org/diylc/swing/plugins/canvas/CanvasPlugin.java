@@ -62,6 +62,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.presenter.Presenter;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.TranslatedMenu;
@@ -423,7 +424,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void unitsChanged(boolean isMetric) {
-          plugInPort.setMetric(isMetric);
+          configManager.writeValue(Presenter.METRIC_KEY, isMetric);
         }
       });
 

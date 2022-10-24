@@ -894,6 +894,8 @@ public class Presenter implements IPlugInPort {
     if (instantiationManager.getComponentTypeSlot() != null) {
       if (isSnapToGrid()) {
         CalcUtils.snapPointToGrid(previousScaledPoint, currentProject.getGridSpacing());
+      } else if (isSnapToObjects()) {
+        CalcUtils.snapPointToObjects(previousScaledPoint, currentProject.getGridSpacing(), null, currentProject.getComponents());
       }
       boolean refresh = false;
       switch (instantiationManager.getComponentTypeSlot().getCreationMethod()) {
