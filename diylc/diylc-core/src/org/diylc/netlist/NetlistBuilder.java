@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import org.diylc.common.ComponentType;
+import org.diylc.core.ICommonNode;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
@@ -60,19 +61,30 @@ public class NetlistBuilder {
     List<Node> nodes = new ArrayList<Node>();
 
     List<ISwitch> switches = new ArrayList<ISwitch>();
+    
+    Set<String> commonNodes = new HashSet<String>();
 
     for (IDIYComponent<?> c : project.getComponents()) {
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
 
       // extract nodes
-      if (!(c instanceof IContinuity)) {
+      if (!(c instanceof IContinuity) && !(c instanceof ICommonNode)) {
         for (int i = 0; i < c.getControlPointCount(); i++) {
           String nodeName = c.getControlPointNodeName(i);
           if (nodeName != null
               && (!includeSwitches || !ISwitch.class.isAssignableFrom(type.getInstanceClass()))) {
             nodes.add(new Node(c, i));
           }
+        }
+      }
+      
+      // create only one node per common label to avoid duplications in the netlist, as they will get eventually connected anyways
+      if (c instanceof ICommonNode) {
+        String label = ((ICommonNode)c).getCommonNodeLabel();
+        if (!commonNodes.contains(label)) {
+          commonNodes.add(label);
+          nodes.add(new Node(c, 0));
         }
       }
 
@@ -342,6 +354,8 @@ public class NetlistBuilder {
   private static List<Connection> getConnections(Project project, Map<ISwitch, Integer> switchPositions) {
     Set<Connection> connections = new TreeSet<Connection>();
     
+    Map<String, List<IDIYComponent<?>>> commonNodeMap = new HashMap<String, List<IDIYComponent<?>>>();
+    
     for (IDIYComponent<?> c : project.getComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
@@ -360,6 +374,20 @@ public class NetlistBuilder {
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (s.arePointsConnected(i, j, position))
               connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
+      }
+      // handle common nodes
+      if (ICommonNode.class.isAssignableFrom(type.getInstanceClass())) {
+        ICommonNode commonNode = (ICommonNode) c;
+        String label = commonNode.getCommonNodeLabel();
+        commonNodeMap.computeIfAbsent(label, (key) -> new ArrayList<IDIYComponent<?>>()).add(c);
+      }
+    }
+    
+    // connect common nodes together by chaining them one by one
+    for (List<IDIYComponent<?>> commonPoints : commonNodeMap.values()) {
+      IDIYComponent<?>[] commonPointArr = commonPoints.toArray(new IDIYComponent<?>[0]);
+      for (int i = 0; i < commonPointArr.length - 1; i++) {
+        connections.add(new Connection(commonPointArr[i].getControlPoint(0), commonPointArr[i + 1].getControlPoint(0)));
       }
     }
 

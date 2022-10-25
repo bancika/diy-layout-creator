@@ -140,12 +140,6 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
   
   /**   
    * @param pointIndex
-   * @return name of the common point that joins all the other points with the same name together, e.g. GND
-   */
-  String getCommonPointName(int pointIndex);
-  
-  /**   
-   * @param pointIndex
    * @return true if the control point can move without affecting other points' position, false otherwise
    */
   boolean canPointMoveFreely(int pointIndex);

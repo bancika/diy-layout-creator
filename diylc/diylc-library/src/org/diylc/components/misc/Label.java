@@ -44,7 +44,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.MultiLineText;
 
 @ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc",
-    description = "User defined label", instanceNamePrefix = "L", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
+    description = "User defined label", instanceNamePrefix = "LAB", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
     bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
 public class Label extends AbstractComponent<String> {
 

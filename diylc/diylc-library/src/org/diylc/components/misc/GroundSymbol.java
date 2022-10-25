@@ -29,6 +29,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.ICommonNode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -42,7 +43,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Ground", author = "Branislav Stojkovic", category = "Schematic Symbols",
     instanceNamePrefix = "GND", description = "Ground schematic symbol",
     zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)
-public class GroundSymbol extends AbstractComponent<Void> {
+public class GroundSymbol extends AbstractComponent<Void> implements ICommonNode {
 
   private static final long serialVersionUID = 1L;
 
@@ -161,14 +162,9 @@ public class GroundSymbol extends AbstractComponent<Void> {
   public void setControlPoint(Point2D point, int index) {
     this.point.setLocation(point);
   }
-//  
-//  @Override
-//  public String getControlPointNodeName(int index) {
-//    return getName();
-//  }
   
   @Override
-  public String getCommonPointName(int pointIndex) {  
+  public String getCommonNodeLabel() {    
     return "GND";
   }
 

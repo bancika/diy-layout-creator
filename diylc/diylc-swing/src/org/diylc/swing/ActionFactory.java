@@ -1823,9 +1823,12 @@ public class ActionFactory {
 
     private String configKey;
 
+    private String title;
+
     public ToggleAction(String title, String configKey, String groupName, String defaultValue,
         Icon icon) {
       super();
+      this.title = title;
       this.configKey = configKey;
       putValue(AbstractAction.NAME, title);
       putValue(IView.RADIO_BUTTON_GROUP_KEY, groupName);
@@ -1840,13 +1843,12 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info(getValue(AbstractAction.NAME) + " toggle triggered");
-      ConfigurationManager.getInstance().writeValue(configKey, getValue(AbstractAction.NAME));
+      ConfigurationManager.getInstance().writeValue(configKey, title);
     }
 
     @Override
     public void valueChanged(String key, Object value) {
-      putValue(AbstractAction.SELECTED_KEY,
-          getValue(AbstractAction.NAME).toString().equalsIgnoreCase(value.toString()));
+      putValue(AbstractAction.SELECTED_KEY, title.equalsIgnoreCase(value.toString()));
     }
   }
 

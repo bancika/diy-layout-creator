@@ -4063,8 +4063,20 @@
 			<name></name>
 			<changes>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Common Node" component that ties all nodes with the same label together, e.g. B+, V+, GND, etc</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ground symbol ties all grounded points together for circuit analysis</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>"Snap to Components" features now works when creating new components as well as when moving existing ones</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>"Snap to" configuration menu does not work properly when using translated UI to any language other than English</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

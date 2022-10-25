@@ -22,6 +22,7 @@
 package org.diylc.netlist;
 
 import java.awt.geom.Point2D;
+import org.diylc.core.ICommonNode;
 import org.diylc.core.IDIYComponent;
 
 /**
@@ -87,6 +88,9 @@ public class Node implements Comparable<Node> {
 
   @Override
   public String toString() {
+    if (component instanceof ICommonNode) {
+      return ((ICommonNode)component).getCommonNodeLabel();
+    }
     if (component.getControlPointCount() == 1)
       return component.getName();
     return component.getName() + "." + getDisplayName() /*+ " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")"*/;
