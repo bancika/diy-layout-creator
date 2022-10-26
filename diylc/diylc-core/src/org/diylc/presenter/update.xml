@@ -4076,6 +4076,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Printed projects are sometimes missing parts of components or text</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>"Snap to" configuration menu does not work properly when using translated UI to any language other than English</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>

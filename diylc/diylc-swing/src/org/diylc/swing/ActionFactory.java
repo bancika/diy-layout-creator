@@ -24,11 +24,12 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Area;
-import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,6 +47,8 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
@@ -150,8 +153,8 @@ public class ActionFactory {
     return new ExportPNGAction(plugInPort, drawingProvider, swingUI, defaultSuffix);
   }
 
-  public PrintAction createPrintAction(IDrawingProvider drawingProvider, int keyModifiers) {
-    return new PrintAction(drawingProvider, keyModifiers);
+  public PrintAction createPrintAction(IDrawingProvider drawingProvider, ISwingUI swingUI, int keyModifiers) {
+    return new PrintAction(drawingProvider, swingUI, keyModifiers);
   }
 
   public ExportVariantsAction createExportVariantsAction(ISwingUI swingUI, IPlugInPort plugInPort) {
@@ -850,10 +853,12 @@ public class ActionFactory {
     private static final long serialVersionUID = 1L;
 
     private IDrawingProvider drawingProvider;
+    private ISwingUI swingUI;
 
-    public PrintAction(IDrawingProvider drawingProvider, int keyModifiers) {
+    public PrintAction(IDrawingProvider drawingProvider, ISwingUI swingUI, int keyModifiers) {
       super();
       this.drawingProvider = drawingProvider;
+      this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Print...");
       putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, keyModifiers));
       putValue(AbstractAction.SMALL_ICON, IconLoader.Print.getIcon());
@@ -862,11 +867,33 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("PrintAction triggered");
-      try {
-        DrawingExporter.getInstance().print(this.drawingProvider);
-      } catch (PrinterException e1) {
-        e1.printStackTrace();
-      }
+      swingUI.executeBackgroundTask(new ITask<Void>() {
+
+        @Override
+        public Void doInBackground() throws Exception {
+          File tempPdf = Files.createTempFile("diylc", ".pdf").toFile();
+          DrawingExporter.getInstance().exportPDF(PrintAction.this.drawingProvider, tempPdf);
+          
+          PDDocument document = PDDocument.load(tempPdf);
+//          PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
+          PrinterJob job = PrinterJob.getPrinterJob();
+          PDFPageable pdfPageable = new PDFPageable(document);        
+          job.setPageable(pdfPageable);
+//          job.setPrintService(printService);
+          job.print();
+          DrawingExporter.getInstance().print(PrintAction.this.drawingProvider);
+          return null;
+        }
+
+        @Override
+        public void complete(Void result) {}
+
+        @Override
+        public void failed(Exception e) {
+          swingUI.showMessage("Could not print. " + e.getMessage(), "Error",
+              ISwingUI.ERROR_MESSAGE);
+        }
+      }, true);          
     }
   }
 

@@ -28,8 +28,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.geom.Rectangle2D.Double;
-import java.util.Locale;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
@@ -57,7 +55,7 @@ public class CommonNode extends AbstractComponent<String> implements ICommonNode
   private static int BUFFER_X = 6;
   private static int BUFFER_Y = 4;
 
-  private static final int STROKE_WIDTH = 2;
+  private static final int STROKE_WIDTH = 1;
   private static final Color BG_COLOR = Color.lightGray;
 
   private static final long serialVersionUID = 1L;
