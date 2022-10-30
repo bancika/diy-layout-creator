@@ -11,7 +11,7 @@ Switch setup: [CRL Switch.1]
 	33nf.1 <-> 4.7k.1
 	33nf.2 <-> Tone 1.3
 	4.7k.2 <-> 4.7k.2
-	Br Plug Fem.4 <-> GND1
+	Br Plug Fem.4 <-> GND
 	J1.Tip <-> Plug Jill.3
 
 Switch setup: [CRL Switch.2]
@@ -26,7 +26,7 @@ Switch setup: [CRL Switch.2]
 	33nf.1 <-> 4.7k.1
 	33nf.2 <-> Tone 1.3
 	4.7k.2 <-> 4.7k.2
-	Br Plug Fem.4 <-> GND1
+	Br Plug Fem.4 <-> GND
 	J1.Tip <-> Plug Jill.3
 
 Switch setup: [CRL Switch.3]
@@ -41,7 +41,7 @@ Switch setup: [CRL Switch.3]
 	33nf.1 <-> 4.7k.1
 	33nf.2 <-> Tone 1.3
 	4.7k.2 <-> 4.7k.2
-	Br Plug Fem.4 <-> GND1
+	Br Plug Fem.4 <-> GND
 	J1.Tip <-> Plug Jill.3
 
 Switch setup: [CRL Switch.4]
@@ -55,7 +55,7 @@ Switch setup: [CRL Switch.4]
 	33nf.1 <-> 4.7k.1
 	33nf.2 <-> Tone 1.3
 	4.7k.2 <-> 4.7k.2
-	Br Plug Fem.4 <-> GND1
+	Br Plug Fem.4 <-> GND
 	J1.Tip <-> Plug Jill.3
 
 Switch setup: [CRL Switch.5]
@@ -70,6 +70,6 @@ Switch setup: [CRL Switch.5]
 	33nf.1 <-> 4.7k.1
 	33nf.2 <-> Tone 1.3
 	4.7k.2 <-> 4.7k.2
-	Br Plug Fem.4 <-> GND1
+	Br Plug Fem.4 <-> GND
 	J1.Tip <-> Plug Jill.3
 

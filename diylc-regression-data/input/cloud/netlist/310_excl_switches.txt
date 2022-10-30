@@ -14,5 +14,5 @@ Switch setup: [Default]
 	.4 <-> .6
 	.5 <-> J1.Tip
 	.6 <-> .6
-	GND1 <-> J1.Sleeve
+	GND <-> J1.Sleeve
 

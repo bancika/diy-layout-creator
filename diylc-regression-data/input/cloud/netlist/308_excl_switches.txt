@@ -8,5 +8,5 @@ Switch setup: [Default]
 	.3 <-> .3
 	.3 <-> .6
 	.5 <-> J1.Tip
-	GND1 <-> J1.Sleeve
+	GND <-> J1.Sleeve
 

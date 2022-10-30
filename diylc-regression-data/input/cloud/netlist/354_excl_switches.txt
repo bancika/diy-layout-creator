@@ -11,7 +11,7 @@ Switch setup: [Default]
 	33nf.1 <-> 4.7k.1
 	33nf.2 <-> Tone 1.3
 	4.7k.2 <-> 4.7k.2
-	Br Plug Fem.4 <-> GND1
+	Br Plug Fem.4 <-> GND
 	Bridge.North Start <-> CRL Switch.4
 	CRL Switch.6 <-> Middle.North Start
 	CRL Switch.8 <-> Neck.North Start

@@ -1,7 +1,7 @@
 Switch setup: [Default]
 
 	C1.1 <-> VR1.3 <-> VR2.2
-	C1.2 <-> GND1 <-> GND2 <-> GND3 <-> J1.Sleeve <-> PKP1.North Finish <-> PKP2.North Finish <-> PKP3.North Finish
+	C1.2 <-> GND <-> J1.Sleeve <-> PKP1.North Finish <-> PKP2.North Finish <-> PKP3.North Finish
 	J1.Tip <-> VR3.2
 	PKP1.North Start <-> SW1.5
 	PKP2.North Start <-> SW1.3

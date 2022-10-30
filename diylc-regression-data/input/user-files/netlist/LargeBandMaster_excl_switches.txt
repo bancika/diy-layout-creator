@@ -48,10 +48,7 @@ Switch setup: [Default]
 	.047uF  630v Coupling.2 <-> R1.2
 	.047uF  630v Coupling.2 <-> R1.2
 	.047uF  630v Coupling.2 <-> R1.2
-	.047uF Class Y.1 <-> GND1
-	.047uF Class Y.1 <-> GND1
-	.047uF Class Y.1 <-> GND1
-	.047uF Class Y.1 <-> GND1
+	.047uF Class Y.1 <-> .047uF Class Y.1 <-> .047uF Class Y.1 <-> .047uF Class Y.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.1 <-> C1.2 <-> C1.2 <-> C1.2 <-> C1.2 <-> GND <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.1 <-> R1.2 <-> R1.2 <-> R1.2 <-> R1.2
 	.047uF Class Y.2 <-> .2
 	.047uF Class Y.2 <-> .2
 	.047uF Class Y.2 <-> .2
@@ -204,14 +201,6 @@ Switch setup: [Default]
 	Bias Balance.3 <-> R1.2
 	Bias Balance.3 <-> R1.2
 	Bias Balance.3 <-> R1.2
-	C1.1 <-> C1.1 <-> GND1
-	C1.1 <-> C1.1 <-> GND1
-	C1.1 <-> C1.1 <-> GND1
-	C1.1 <-> C1.1 <-> GND1
-	C1.1 <-> C1.2 <-> GND1 <-> R1.1 <-> R1.2
-	C1.1 <-> C1.2 <-> GND1 <-> R1.1 <-> R1.2
-	C1.1 <-> C1.2 <-> GND1 <-> R1.1 <-> R1.2
-	C1.1 <-> C1.2 <-> GND1 <-> R1.1 <-> R1.2
 	C1.1 <-> C1.2 <-> R1.1
 	C1.1 <-> C1.2 <-> R1.1
 	C1.1 <-> C1.2 <-> R1.1

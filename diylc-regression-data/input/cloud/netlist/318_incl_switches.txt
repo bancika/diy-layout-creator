@@ -1,7 +1,7 @@
 Switch setup: [.ON1, .ON2]
 
 	 Presence.1 <-> .1uF  200v AC Shunt.1 <-> 10K 1W.1 <-> NFB.2 <-> Presence.1
-	 Presence.2 <-> GND2 <-> Presence-Poly.1
+	 Presence.2 <-> GND <-> Presence-Poly.1
 	.022uF  630v Bass.1 <-> Bass.2 <-> Treble.3
 	.022uF  630v Bass.2 <-> .022uF  630v Mid.2 <-> 20uF 500V.1 <-> 4.7K 2W.2 <-> Tone Slope.2
 	.022uF  630v Coupling.1 <-> C5.2 <-> Treble Peaker.2

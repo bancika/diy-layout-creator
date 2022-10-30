@@ -1,6 +1,6 @@
 Switch setup: [Default]
 
-	 Presence.1 <-> GND1 <-> Presence.1
+	 Presence.1 <-> GND <-> Presence.1
 	 Presence.2 <-> Middle.3 <-> Poly.1
 	Backup1.1 <-> Backup2.1 <-> Center Tap 6.3.1 <-> Center Tap 6.3.1 <-> Filter Cap B+1.2 <-> Grid Leak V4.2 <-> Grid Leak V5.2 <-> Power Tube Cathode.1 <-> Power Tube Cathode.2
 	Bass.2 <-> Tone Bass.2 <-> Treble.3

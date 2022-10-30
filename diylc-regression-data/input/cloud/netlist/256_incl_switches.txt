@@ -40,7 +40,7 @@ Switch setup: [Default]
 	220K.1 <-> 220K.2
 	220K.2 <-> 68nf.2
 	220K.2 <-> 68nf.2
-	22uF  63v.1 <-> 22uf  63v.1 <-> D1.1 <-> D1.2 <-> D2.2 <-> D3.2 <-> GND3 <-> TREBLE.1 <-> TREBLE.2
+	22uf  63v.1 <-> 22uF  63v.1 <-> D1.1 <-> D1.2 <-> D2.2 <-> D3.2 <-> GND <-> TREBLE.1 <-> TREBLE.2
 	2K4.1 <-> 2K4.1 <-> 68nF.1
 	4,7nf.1 <-> 4,7nf.2
 	4,7nf.2 <-> 68nf.1
