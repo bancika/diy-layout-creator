@@ -99,8 +99,8 @@ public class DrawingManager {
   private List<Area> currentContinuityAreas;
   private ContinuityGraph continuityGraphCache = null;
 
-  private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
-  private Composite lockedComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
+  private Composite slotComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+  private Composite lockedComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
   private List<IDIYComponent<?>> failedComponents = new ArrayList<IDIYComponent<?>>();
 
   private double zoomLevel = 1d;// configManager.readDouble(ZOOM_KEY,
