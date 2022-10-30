@@ -56,7 +56,7 @@ public class CommonNode extends AbstractComponent<String> implements ICommonNode
   private static int BUFFER_Y = 4;
 
   private static final int STROKE_WIDTH = 1;
-  private static final Color BG_COLOR = Color.lightGray;
+  private static final Color BG_COLOR = Color.decode("#EEEEEE");
 
   private static final long serialVersionUID = 1L;
 
