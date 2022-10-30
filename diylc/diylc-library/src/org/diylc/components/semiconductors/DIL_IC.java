@@ -64,7 +64,7 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
 
   public static Color BODY_COLOR = Color.gray;
   public static Color BORDER_COLOR = Color.gray.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
+  public static Color PIN_COLOR = METAL_COLOR;
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color INDENT_COLOR = Color.gray.darker();
   public static Color LABEL_COLOR = Color.white;

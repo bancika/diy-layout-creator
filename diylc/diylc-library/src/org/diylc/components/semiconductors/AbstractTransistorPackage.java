@@ -97,6 +97,15 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
       case JFET_SGD:
       case MOSFET_SGD:
         return 2 - index;
+      case BJT_BCE:
+        switch (index) {
+          case 0: return 1;
+          case 1: return 0;
+          case 2: return 2;
+        }   
+        break;
+      default:
+        break;
     }
     
     return index;
