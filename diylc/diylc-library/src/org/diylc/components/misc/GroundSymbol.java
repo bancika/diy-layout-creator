@@ -39,6 +39,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Ground", author = "Branislav Stojkovic", category = "Schematic Symbols",
     instanceNamePrefix = "GND", description = "Ground schematic symbol",
@@ -55,14 +56,15 @@ public class GroundSymbol extends AbstractComponent<Void> implements ICommonNode
   private Size size = SIZE;
   private GroundSymbolType type = GroundSymbolType.DEFAULT;
   private Orientation orientation = Orientation.DEFAULT;
+  private Integer stroke = 1;
 
   @SuppressWarnings("incomplete-switch")
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
     double sizePx = size.convertToPixels();
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    g2d.setColor(color);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((float)getStroke()));
+    
     double x = point.getX();
     double y = point.getY();
 
@@ -77,19 +79,26 @@ public class GroundSymbol extends AbstractComponent<Void> implements ICommonNode
         g2d.rotate(Math.PI * 3 / 2, point.getX(), point.getY());
         break;
     }
+    
+    Polygon poly =
+        new Polygon(new int[] {(int)(x - sizePx / 2), (int)(x + sizePx / 2), (int)x}, new int[] {(int)(y + sizePx / 6), (int)(y + sizePx / 6),
+            (int)(y + sizePx)}, 3);
+    
+    g2d.setColor(Constants.TRANSPARENT_COLOR);
+    g2d.fill(poly);
+    
+    drawingObserver.stopTracking();
 
+    g2d.setColor(color);
     g2d.drawLine((int)x, (int)y, (int)x, (int)(y + sizePx / 6));
     if (type == GroundSymbolType.DEFAULT) {
-      double delta = sizePx / 7;
+      double delta = sizePx / 7.5;
       for (int i = 0; i < 5; i++) {
         g2d.drawLine((int)(x - sizePx / 2 + delta * i), (int)(y + sizePx / 6 * (i + 1)), (int)(x + sizePx / 2 - delta * i), (int)(y + sizePx / 6
             * (i + 1)));
       }
-    } else {
-      Polygon poly =
-          new Polygon(new int[] {(int)(x - sizePx / 2), (int)(x + sizePx / 2), (int)x}, new int[] {(int)(y + sizePx / 6), (int)(y + sizePx / 6),
-              (int)(y + sizePx)}, 3);
-      g2d.draw(poly);
+    } else {      
+      g2d.draw(poly);     
     }
   }
 
@@ -112,6 +121,18 @@ public class GroundSymbol extends AbstractComponent<Void> implements ICommonNode
 
   public void setType(GroundSymbolType type) {
     this.type = type;
+  }
+  
+  @EditableProperty
+  public int getStroke() {
+    if (stroke == null) {
+      stroke = 1;
+    }
+    return stroke;
+  }
+  
+  public void setStroke(int stroke) {
+    this.stroke = stroke;
   }
   
   @EditableProperty
