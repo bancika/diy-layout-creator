@@ -1,0 +1,7 @@
+IMPLEMENTOR="Azul Systems, Inc."
+IMPLEMENTOR_VERSION="Zulu 8.66.0.15-CA-macos-aarch64"
+JAVA_VERSION="1.8.0_352"
+OS_NAME="Darwin"
+OS_VERSION="11.2"
+OS_ARCH="aarch64"
+SOURCE=".:git:e4172629d542"
