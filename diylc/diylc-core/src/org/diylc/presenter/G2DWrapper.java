@@ -561,6 +561,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
     canvasGraphics.drawArc(x, y, width, height, startAngle, arcAngle);
+    if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
+      appendShapeOutline(new Arc2D.Double(x, y, width, height, startAngle, arcAngle, Arc2D.OPEN));
+    }    
   }
 
   @Override
