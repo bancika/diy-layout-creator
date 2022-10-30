@@ -55,8 +55,7 @@ public class Angle {
       newValue += 360;
     while (newValue >= 360)
       newValue -= 360;
-    valueCache.computeIfAbsent(newValue, (value) -> new Angle(value));
-    return valueCache.get(newValue);
+    return valueCache.computeIfAbsent(newValue, (value) -> new Angle(value));    
   }
   
   public Angle rotate(int direction) {

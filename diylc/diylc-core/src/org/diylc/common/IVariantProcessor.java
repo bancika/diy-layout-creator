@@ -29,7 +29,7 @@ public interface IVariantProcessor {
 
   public static final String TEMPLATES_KEY = "templates";
   public static final String DEFAULT_TEMPLATES_KEY = "defaultTemplates";
-  public static final String DEFAULT_TEMPLATES_IMPORTED_KEY = "defaultTemplatesImported";
+  public static final String DEFAULT_TEMPLATES_IMPORT_DATE_KEY = "defaultTemplatesImportDate";
 
   void saveSelectedComponentAsVariant(String variantName);
 

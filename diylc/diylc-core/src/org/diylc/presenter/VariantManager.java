@@ -1,6 +1,6 @@
 /*
  * 
-l * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * l * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -21,6 +21,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,7 +29,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.common.ComponentType;
@@ -39,11 +42,11 @@ import org.diylc.serialization.ProjectFileManager;
 import com.thoughtworks.xstream.XStream;
 
 public class VariantManager {
-  
+
   private static final String VARIANTS_FILE_NAME = "variants.xml";
 
   private static final Logger LOG = Logger.getLogger(VariantManager.class);
-  
+
   private IConfigurationManager<?> configManager;
   private XStream xStream;
 
@@ -56,43 +59,53 @@ public class VariantManager {
   @SuppressWarnings("unchecked")
   public void importDefaultVariants() {
     // import default templates from variants.xml file only if we didn't do it already
-    if (!configManager.readBoolean(IPlugInPort.DEFAULT_TEMPLATES_IMPORTED_KEY, false)) {
-      try {
-        URL resource = Presenter.class.getResource(VARIANTS_FILE_NAME);
-        if (resource != null) {
-          BufferedInputStream in = new BufferedInputStream(resource.openStream());
-          Map<String, List<Template>> defaults = (Map<String, List<Template>>) ProjectFileManager.xStreamSerializer.fromXML(in);
-          in.close();
-                    
-          Map<String, List<Template>> variantMap =
-              (Map<String, List<Template>>) configManager.readObject(IPlugInPort.TEMPLATES_KEY, null);
-          if (variantMap == null)
-            variantMap = new HashMap<String, List<Template>>();          
+    LocalDateTime importDate = (LocalDateTime) configManager
+        .readObject(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY, LocalDateTime.MIN);
+    
+    int importCount = 0;
+
+    try {
+      URL resource = Presenter.class.getResource(VARIANTS_FILE_NAME);
+      if (resource != null) {
+        BufferedInputStream in = new BufferedInputStream(resource.openStream());
+        Map<String, List<Template>> defaults =
+            (Map<String, List<Template>>) ProjectFileManager.xStreamSerializer.fromXML(in);
+        in.close();
+
+        Map<String, List<Template>> variantMap =
+            (Map<String, List<Template>>) configManager.readObject(IPlugInPort.TEMPLATES_KEY, null);
+        if (variantMap == null)
+          variantMap = new HashMap<String, List<Template>>();
+
+        // merge default variants with user's
+        for (Map.Entry<String, List<Template>> entry : defaults.entrySet()) {
+          List<Template> existingVariants = variantMap.computeIfAbsent(entry.getKey(), key -> new ArrayList<Template>());
+          Set<String> existingNames = existingVariants.stream()
+            .map(x -> x.getName())
+            .collect(Collectors.toSet());
           
-          // merge default variants with user's
-          for (Map.Entry<String, List<Template>> entry : defaults.entrySet()) {
-            List<Template> templates = variantMap.getOrDefault(entry.getKey(), null);
-            if (templates == null) {
-              templates = new ArrayList<Template>();
-              variantMap.put(entry.getKey(), templates);
+          for (Template variant : entry.getValue()) {
+            if ((variant.getCreatedOn() == null || importDate.compareTo(variant.getCreatedOn()) < 0) 
+                && !existingNames.contains(variant.getName())) {
+              existingVariants.add(variant);
+              importCount++;
             }
-            templates.addAll(entry.getValue());
           }          
-          
-          // update templates and a flag marking that we imported them
-          configManager.writeValue(IPlugInPort.DEFAULT_TEMPLATES_IMPORTED_KEY, true);
-          configManager.writeValue(IPlugInPort.TEMPLATES_KEY, variantMap);
-          LOG.info(String.format("Imported default variants for %d components",
-              defaults == null ? 0 : defaults.size()));         
         }
-      } catch (Exception e) {
-        LOG.error("Could not load default variants", e);
+
+        // update templates and a flag marking that we imported them
+        configManager.writeValue(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY,
+            LocalDateTime.now());
+        configManager.writeValue(IPlugInPort.TEMPLATES_KEY, variantMap);
+        LOG.info(String.format("Imported default %d variants", importCount));
       }
+    } catch (Exception e) {
+      LOG.error("Could not load default variants", e);
     }
   }
-  
+
   private static boolean upgradedVariants = false;
-  
+
   @SuppressWarnings("unchecked")
   public synchronized void upgradeVariants(Map<String, List<ComponentType>> componentTypes) {
     if (upgradedVariants)
@@ -101,22 +114,24 @@ public class VariantManager {
     upgradedVariants = true;
 
     LOG.info("Checking if variants need to be updated");
-    Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
+    Map<String, List<Template>> lookupMap =
+        new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
     Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) configManager.readObject(IPlugInPort.TEMPLATES_KEY, null);
 
     if (variantMap == null)
       return;
 
-    Map<String, ComponentType> typeMap = new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
+    Map<String, ComponentType> typeMap =
+        new TreeMap<String, ComponentType>(String.CASE_INSENSITIVE_ORDER);
 
     for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet())
       for (ComponentType type : entry.getValue()) {
         typeMap.put(type.getInstanceClass().getCanonicalName(), type);
         typeMap.put(type.getCategory() + "." + type.getName(), type);
         if (type.getCategory().contains("Electro-Mechanical"))
-          typeMap.put(type.getCategory().replace("Electro-Mechanical", "Electromechanical") + "." + type.getName(),
-              type);
+          typeMap.put(type.getCategory().replace("Electro-Mechanical", "Electromechanical") + "."
+              + type.getName(), type);
       }
 
     Map<String, List<Template>> newVariantMap = new HashMap<String, List<Template>>();
@@ -125,10 +140,11 @@ public class VariantManager {
 
     for (Map.Entry<String, List<Template>> entry : variantMap.entrySet()) {
       if (typeMap.containsKey(entry.getKey())) {
-        newVariantMap.put(typeMap.get(entry.getKey()).getInstanceClass().getCanonicalName(), entry.getValue()); // great,
-                                                                                                                // nothing
-                                                                                                                // to
-                                                                                                                // upgrade
+        newVariantMap.put(typeMap.get(entry.getKey()).getInstanceClass().getCanonicalName(),
+            entry.getValue()); // great,
+                               // nothing
+                               // to
+                               // upgrade
       } else {
         LOG.warn("Could not upgrade variants for: " + entry.getKey());
       }
@@ -136,10 +152,11 @@ public class VariantManager {
 
     configManager.writeValue(IPlugInPort.TEMPLATES_KEY, newVariantMap);
   }
-  
+
   @SuppressWarnings("unchecked")
   public List<Template> getVariantsFor(ComponentType type) {
-    Map<String, List<Template>> lookupMap = new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
+    Map<String, List<Template>> lookupMap =
+        new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
 
     Map<String, List<Template>> variantMap =
         (Map<String, List<Template>>) configManager.readObject(IPlugInPort.TEMPLATES_KEY, null);
@@ -168,12 +185,12 @@ public class VariantManager {
     });
     return variants;
   }
-  
+
   @SuppressWarnings("unchecked")
   public int importVariants(String fileName) throws IOException {
     LOG.debug(String.format("importVariants(%s)", fileName));
-    BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));    
-   
+    BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName));
+
     VariantPackage pkg = (VariantPackage) xStream.fromXML(in);
 
     in.close();
@@ -195,7 +212,8 @@ public class VariantManager {
         variantMap.put(entry.getKey(), templates);
       }
       for (Template t : entry.getValue()) {
-        templates.add(new Template(t.getName() + " [" + pkg.getOwner() + "]", t.getValues(), t.getPoints()));
+        templates.add(
+            new Template(t.getName() + " [" + pkg.getOwner() + "]", t.getValues(), t.getPoints()));
       }
     }
 
@@ -205,7 +223,7 @@ public class VariantManager {
 
     return pkg.getVariants().size();
   }
-  
+
   @SuppressWarnings("unchecked")
   public String getDefaultVariant(ComponentType type) {
     Map<String, String> defaultTemplateMap =
@@ -221,7 +239,7 @@ public class VariantManager {
 
     return defaultTemplateMap.get(key2);
   }
-  
+
   @SuppressWarnings("unchecked")
   public void deleteVariant(ComponentType type, String templateName) {
     LOG.debug(String.format("deleteTemplate(%s, %s)", type, templateName));
