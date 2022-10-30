@@ -39,7 +39,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Switch (Latching)", author = "Branislav Stojkovic",
     category = "Schematic Symbols", instanceNamePrefix = "SW",
@@ -55,7 +54,7 @@ public class SwitchLatchingSymbol
   public static Size SIZE = new Size(0.15d, SizeUnit.in);
   public static Size THROW_SPACING = new Size(0.1d, SizeUnit.in);
   public static Size SPACING = new Size(0.3d, SizeUnit.in);
-  public static Size TERMINAL_SIZE = new Size(0.05d, SizeUnit.in);
+  public static Size TERMINAL_SIZE = new Size(0.04d, SizeUnit.in);
   public static int ARC_ANGLE = 24;
 
   private Orientation orientation = Orientation.DEFAULT;
@@ -77,20 +76,19 @@ public class SwitchLatchingSymbol
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((float) (terminalSize / 4)));
 
+    drawingObserver.startTrackingContinuityArea(true);
     for (int i = 0; i < controlPoints.length; i++) {
 
       Ellipse2D.Double terminal = new Ellipse2D.Double(controlPoints[i].getX() - terminalSize / 2,
           controlPoints[i].getY() - terminalSize / 2, terminalSize, terminalSize);
 
-      g2d.setColor(Constants.TRANSPARENT_COLOR);
-      g2d.fill(terminal);
-
       g2d.setColor(
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
               ? SELECTION_COLOR
               : COLOR);
-      g2d.draw(terminal);
+      g2d.fill(terminal);
     }
+    drawingObserver.stopTrackingContinuityArea();
 
     double theta = orientation.toRadians();
 
@@ -276,17 +274,27 @@ public class SwitchLatchingSymbol
 
   @Override
   public String getPositionName(int position) {
-    return Integer.toString(position);
+    return Integer.toString(position + 1);
   }
 
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
-    // TODO Auto-generated method stub
-    return false;
+    if ("OFF".equals(configuration.getInBetween())) {
+      if (position % 2 == 1)
+        return false;
+      
+      return index1 % (configuration.getThrowCount() + 1) == 0 && index2 == index1 + position / 2 + 1;  
+    } else if ("SHORT".equals(configuration.getInBetween())) {
+      if (position % 2 == 1)
+        return index1 % (configuration.getThrowCount() + 1) == 0 && (index2 == index1 + position / 2 + 1 || index2 == index1 + position / 2 + 2);
+      
+      return index1 % (configuration.getThrowCount() + 1) == 0 && index2 == index1 + position / 2 + 1;
+    }
+    return index1 % (configuration.getThrowCount() + 1) == 0 && index2 == index1 + position + 1;    
   }
 
   public static enum SwitchConfiguration {
-    _1x1, _2x2, _2x3xOFF, _3x3, _3x5xSHORT, _4x4, _5x5, _6x6, _7x7, _8x8, _9x9, _10x10, _11x11, _12x12;
+    _1x2, _2x2, _2x3xOFF, _3x3, _3x5xSHORT, _4x4, _5x5, _6x6, _7x7, _8x8, _9x9, _10x10, _11x11, _12x12;
 
     private int throwCount;
     private int positionCount;

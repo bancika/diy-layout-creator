@@ -4061,18 +4061,30 @@
 			</versionNumber>
 			<releaseDate>2022-10-23 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>	
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added "Switch (Latching)" schematic symbol with many variations</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added "Common Node" component that ties all nodes with the same label together, e.g. B+, V+, GND, etc</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Ground symbol ties all grounded points together for circuit analysis</description>
-				</org.diylc.appframework.update.Change>	
-				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>"Snap to Components" features now works when creating new components as well as when moving existing ones</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increase the opacity of locked components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved ground symbol mouse selection tracking and added stroke width as a parameter</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Ground symbol ties all grounded points together for circuit analysis</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
