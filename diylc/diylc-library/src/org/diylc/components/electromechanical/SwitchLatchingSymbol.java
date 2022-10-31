@@ -100,15 +100,13 @@ public class SwitchLatchingSymbol
     // draw latch
     int throwCount = configuration.getThrowCount();
     for (int j = 0; j < poleCount.getCount(); j++) {
-      double offset = terminalSize * 3 / 5;      
-
-      Point2D startPoint = new Point2D.Double(controlPoints[(1 + throwCount) * j].getX() + Math.cos(theta) * offset,
-          controlPoints[(1 + throwCount) * j].getY() + Math.sin(theta) * offset);
+      Point2D startPoint = new Point2D.Double(controlPoints[(1 + throwCount) * j].getX() ,
+          controlPoints[(1 + throwCount) * j].getY());
 
       double offsetX;
       double offsetY;
       if ("SHORT".equalsIgnoreCase(configuration.getInBetween())) {
-        offsetX = terminalSize * 6 / 5;
+        offsetX = terminalSize;
         offsetY = 0;
       } else {
         offsetX = terminalSize * 2 / 3;

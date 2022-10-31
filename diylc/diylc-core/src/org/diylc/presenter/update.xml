@@ -4059,7 +4059,7 @@
 				<minor>31</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2022-10-23 00:00:00.000 CET</releaseDate>
+			<releaseDate>2022-10-31 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -4073,6 +4073,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>"Snap to Components" features now works when creating new components as well as when moving existing ones</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added more variants of existing and new components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

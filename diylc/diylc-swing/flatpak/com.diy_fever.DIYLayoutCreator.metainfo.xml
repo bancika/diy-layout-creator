@@ -37,6 +37,22 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.31.0" date="2022-10-31">
+         <description>
+           <ul>
+             <li>[New Feature] Added "Switch (Latching)" schematic symbol with many variations</li>
+             <li>[New Feature] Added "Common Node" component that ties all nodes with the same label together, e.g. B+, V+, GND, etc</li>
+             <li>[Improvement] "Snap to Components" features now works when creating new components as well as when moving existing ones</li>
+             <li>[Improvement] Added more variants of existing and new components</li>
+             <li>[Improvement] Increase the opacity of locked components</li>
+             <li>[Improvement] Improved ground symbol mouse selection tracking and added stroke width as a parameter</li>
+             <li>[Bug Fix] Ground symbol ties all grounded points together for circuit analysis</li>
+             <li>[Bug Fix] Printed projects are sometimes missing parts of components or text</li>
+             <li>[Bug Fix] "Snap to" configuration menu does not work properly when using translated UI to any language other than English</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.31.0</url>
+     </release>
   	 <release version="4.30.1" date="2022-10-23">
          <description>
            <ul>
