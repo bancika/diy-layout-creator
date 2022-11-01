@@ -266,7 +266,7 @@ public class Presenter implements IPlugInPort {
     if (drawingManager.getZoomLevel() == zoomLevel) {
       return;
     }
-    LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
+//    LOG.info(String.format("setZoomLevel(%s)", zoomLevel));
     drawingManager.setZoomLevel(zoomLevel);
   }
 
