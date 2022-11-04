@@ -1,24 +1,21 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.components.passive;
 
 import java.awt.Color;
@@ -32,6 +29,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.components.passive.CapacitorDimensionService.CapacitorDimensions;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -40,14 +38,17 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Capacitance;
+import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Electrolytic Capacitor (Axial)", author = "Branislav Stojkovic", category = "Passive",
-    creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
-    description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc", zOrder = IDIYComponent.COMPONENT,
-    transformer = SimpleComponentTransformer.class, enableCache = true)
+@ComponentDescriptor(name = "Electrolytic Capacitor (Axial)", author = "Branislav Stojkovic",
+    category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
+    description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
+    zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class,
+    enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 3)
 public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> {
 
   private static final long serialVersionUID = 1L;
@@ -68,11 +69,30 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
   private Color tickColor = TICK_COLOR;
   private boolean polarized = true;
 
+  private AutoSize autoSize = AutoSize.OFF;
+
   public AxialElectrolyticCapacitor() {
     super();
     this.bodyColor = BODY_COLOR;
     this.borderColor = BORDER_COLOR;
     this.labelColor = TICK_COLOR;
+  }
+  
+  public AxialElectrolyticCapacitor(String[] parameters) {
+    this();
+    String autoSizeValue = parameters[0];
+    Double voltageValue = Double.parseDouble(parameters[1].split(" ")[0]);
+    Double capacitanceValue = Double.parseDouble(parameters[2].split(" ")[0]);
+    setValue(new Capacitance(capacitanceValue, CapacitanceUnit.uF));
+    setVoltageNew(new org.diylc.core.measures.Voltage(voltageValue, VoltageUnit.V));
+    if (parameters[1].endsWith(" NP")) {
+      setPolarized(false);
+    }
+    for (AutoSize size : AutoSize.values()) {
+      if (size.toString().equalsIgnoreCase(autoSizeValue)) {
+        setAutoSize(size);
+      }
+    }
   }
 
   @EditableProperty(validatorClass = PositiveMeasureValidator.class)
@@ -86,7 +106,8 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
   @Override
   public String getValueForDisplay() {
-    return (getValue() == null ? "" : getValue().toString()) + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
+    return (getValue() == null ? "" : getValue().toString())
+        + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
   }
 
   @Deprecated
@@ -161,56 +182,68 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
   @Override
   protected Shape getBodyShape() {
-    double length = getLength().convertToPixels();
-    double width = getWidth().convertToPixels();
-    RoundRectangle2D rect = new RoundRectangle2D.Double(0f, 0f, length, width, width / 6, width / 6);
+    double lengthFinal = getLength().convertToPixels();
+    double widthFinal = getWidth().convertToPixels();
+
+   
+
+    RoundRectangle2D rect = new RoundRectangle2D.Double(0f, 0f, lengthFinal, widthFinal,
+        widthFinal / 6, widthFinal / 6);
     Area a = new Area(rect);
-    double notchDiameter = width / 4;
-    a.subtract(new Area(new Ellipse2D.Double(notchDiameter, -notchDiameter * 3 / 4, notchDiameter, notchDiameter)));
-    a.subtract(new Area(new Ellipse2D.Double(notchDiameter, width - notchDiameter / 4, notchDiameter, notchDiameter)));
+    double notchDiameter = widthFinal / 4;
+    a.subtract(new Area(
+        new Ellipse2D.Double(notchDiameter, -notchDiameter * 3 / 4, notchDiameter, notchDiameter)));
+    a.subtract(new Area(new Ellipse2D.Double(notchDiameter, widthFinal - notchDiameter / 4,
+        notchDiameter, notchDiameter)));
 
     if (!getPolarized()) {
-      a.subtract(new Area(new Ellipse2D.Double(length - notchDiameter * 2, -notchDiameter * 3 / 4, notchDiameter,
-          notchDiameter)));
-      a.subtract(new Area(new Ellipse2D.Double(length - notchDiameter * 2, width - notchDiameter / 4, notchDiameter,
-          notchDiameter)));
+      a.subtract(new Area(new Ellipse2D.Double(lengthFinal - notchDiameter * 2,
+          -notchDiameter * 3 / 4, notchDiameter, notchDiameter)));
+      a.subtract(new Area(new Ellipse2D.Double(lengthFinal - notchDiameter * 2,
+          widthFinal - notchDiameter / 4, notchDiameter, notchDiameter)));
     }
     return a;
   }
 
   @Override
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
-    int width = (int) getWidth().convertToPixels();
-    int length = (int) getLength().convertToPixels();
+    double widthFinal = getWidth().convertToPixels();
+    double lengthFinal = getLength().convertToPixels();
+
     g2d.setColor(blend(getBorderColor(), getBodyColor()));
-    int notchDiameter = width / 4;
+    int notchDiameter = (int) widthFinal / 4;
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    g2d.drawLine(notchDiameter, 0, notchDiameter, width);
-    g2d.drawLine(notchDiameter * 2, 0, notchDiameter * 2, width);
+    g2d.drawLine(notchDiameter, 0, notchDiameter, (int) widthFinal);
+    g2d.drawLine(notchDiameter * 2, 0, notchDiameter * 2, (int) widthFinal);
     if (polarized) {
       int markerLength = (int) (getLength().convertToPixels() * 0.2);
       if (!outlineMode) {
         g2d.setColor(markerColor);
-        Rectangle2D markerRect = new Rectangle2D.Double(length - markerLength, 0, markerLength + 2, width);
+        Rectangle2D markerRect =
+            new Rectangle2D.Double(lengthFinal - markerLength, 0, markerLength + 2, widthFinal);
         Area markerArea = new Area(markerRect);
         markerArea.intersect((Area) getBodyShape());
         g2d.fill(markerArea);
       }
       Color finalTickColor;
       if (outlineMode) {
-        Theme theme =
-            (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+        Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
+            Constants.DEFAULT_THEME);
         finalTickColor = theme.getOutlineColor();
       } else {
         finalTickColor = tickColor;
       }
       g2d.setColor(finalTickColor);
       g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(2));
-      g2d.drawLine((int) getLength().convertToPixels() - markerLength / 2, (int) (width / 2 - width * 0.15),
-          (int) getLength().convertToPixels() - markerLength / 2, (int) (width / 2 + width * 0.15));
+      g2d.drawLine((int) getLength().convertToPixels() - markerLength / 2,
+          (int) (widthFinal / 2 - widthFinal * 0.15),
+          (int) getLength().convertToPixels() - markerLength / 2,
+          (int) (widthFinal / 2 + widthFinal * 0.15));
     } else {
-      g2d.drawLine(length - notchDiameter, 0, length - notchDiameter, width);
-      g2d.drawLine(length - notchDiameter * 2, 0, length - notchDiameter * 2, width);
+      g2d.drawLine((int) lengthFinal - notchDiameter, 0, (int) lengthFinal - notchDiameter,
+          (int) widthFinal);
+      g2d.drawLine((int) lengthFinal - notchDiameter * 2, 0, (int) lengthFinal - notchDiameter * 2,
+          (int) widthFinal);
     }
   }
 
@@ -225,5 +258,69 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     double a = Math.max(c0.getAlpha(), c1.getAlpha());
 
     return new Color((int) r, (int) g, (int) b, (int) a);
+  }
+
+  @EditableProperty(name = "Auto Size")
+  public AutoSize getAutoSize() {
+    if (autoSize == null) {
+      autoSize = AutoSize.OFF;
+    }
+    return autoSize;
+  }
+
+  public void setAutoSize(AutoSize autoSize) {
+    this.autoSize = autoSize;
+  }  
+  
+  @EditableProperty
+  @Override
+  public Size getLength() {    
+    AutoSize autoSize = getAutoSize();
+    if (autoSize != null && autoSize != AutoSize.OFF && getVoltageNew() != null
+        && getVoltageNew().getNormalizedValue() != null && getValue() != null
+        && getValue().getNormalizedValue() != null) {
+
+      CapacitorDimensions d = CapacitorDimensionService.getInstance().lookup(this.getClass(),
+          autoSize.toString(), getVoltageNew(), getValue(), getPolarized());
+
+      if (d != null) {
+        return d.getLength();
+      }
+    }
+
+    return super.getLength();
+  }
+  
+  @EditableProperty
+  @Override
+  public Size getWidth() { 
+    AutoSize autoSize = getAutoSize();
+    if (autoSize != null && autoSize != AutoSize.OFF && getVoltageNew() != null
+        && getVoltageNew().getNormalizedValue() != null && getValue() != null
+        && getValue().getNormalizedValue() != null) {
+
+      CapacitorDimensions d = CapacitorDimensionService.getInstance().lookup(this.getClass(),
+          autoSize.toString(), getVoltageNew(), getValue(), getPolarized());
+
+      if (d != null) {
+        return d.getDiameter();
+      }
+    }
+    return super.getWidth();
+  }
+
+  private static enum AutoSize {
+    OFF("Off"), SPRAGUE_TVA_ATOM("Sprague TVA Atom"), FT_TYP_A("F&T Typ A");
+
+    private String label;
+
+    AutoSize(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

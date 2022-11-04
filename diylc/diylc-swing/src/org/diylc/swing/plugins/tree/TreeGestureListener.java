@@ -67,7 +67,7 @@ class TreeGestureListener implements DragGestureListener {
       }
     }
     else {
-      presenter.setNewComponentTypeSlot(type, null, true);
+      presenter.setNewComponentTypeSlot(type, null, null, true);
       start = true;
     }
 

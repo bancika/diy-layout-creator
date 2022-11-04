@@ -23,7 +23,7 @@ package org.diylc.core.measures;
 
 public enum CapacitanceUnit implements Unit {
 
-  pF(1, "pF"), nF(1e3, "nF"), uF(1e6, "uF"), mF(1e9, "mF"), F(1e12, "F");
+  pF(1e-6, "pF"), nF(1e-3, "nF"), uF(1, "uF"), mF(1e3, "mF"), F(1e6, "F");
 
   double factor;
   String display;

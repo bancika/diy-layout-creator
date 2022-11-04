@@ -50,4 +50,10 @@ public class Capacitance extends AbstractMeasure<CapacitanceUnit> {
     }
     throw new IllegalArgumentException("Could not parse capacitance: " + value);
   }
+  
+  public Double getNormalizedValue() {
+    if (value == null || unit == null)
+      return null;
+    return value * unit.getFactor(); 
+  }
 }

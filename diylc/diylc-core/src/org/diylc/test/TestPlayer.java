@@ -25,7 +25,7 @@ public class TestPlayer {
       try {
         switch(step.getAction()) {
           case DIYTest.SET_COMPONENT_SLOT:
-            plugInPort.setNewComponentTypeSlot((ComponentType)step.getParams().get("componentType"), (Template)step.getParams().get("template"), (boolean)step.getParams().get("forceInstatiate"));
+            plugInPort.setNewComponentTypeSlot((ComponentType)step.getParams().get("componentType"), (Template)step.getParams().get("template"),(String[])step.getParams().get("parameters"), (boolean)step.getParams().get("forceInstatiate"));
             res.add(new StepResult(i, step.getAction(), "OK", false));
             break;
           case DIYTest.MOUSE_MOVED:

@@ -605,6 +605,7 @@ public class Presenter implements IPlugInPort {
         // Keep the reference to component type for later.
         ComponentType componentTypeSlot = instantiationManager.getComponentTypeSlot();
         Template template = instantiationManager.getTemplate();
+        String[] parameters = instantiationManager.getParameters();
         Project oldProject = currentProject.clone();
         switch (componentTypeSlot.getCreationMethod()) {
           case SINGLE_CLICK:
@@ -639,9 +640,9 @@ public class Presenter implements IPlugInPort {
               editSelection();
             }
             if (configManager.readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-              setNewComponentTypeSlot(componentTypeSlot, template, false);
+              setNewComponentTypeSlot(componentTypeSlot, template, parameters, false);
             } else {
-              setNewComponentTypeSlot(null, null, false);
+              setNewComponentTypeSlot(null, null, null, false);
             }
             break;
           case POINT_BY_POINT:
@@ -663,7 +664,7 @@ public class Presenter implements IPlugInPort {
             } else {
               // On the second click, add the component to the
               // project.
-              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template);
+              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template, parameters);
             }
             break;
           default:
@@ -718,7 +719,7 @@ public class Presenter implements IPlugInPort {
     }
   }
 
-  private void addPendingComponentsToProject(Point2D scaledPoint, ComponentType componentTypeSlot, Template template) {
+  private void addPendingComponentsToProject(Point2D scaledPoint, ComponentType componentTypeSlot, Template template, String[] parameters) {
     List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
     Point2D firstPoint = componentSlot.get(0).getControlPoint(0);
     // don't allow to create component with the same points
@@ -742,9 +743,9 @@ public class Presenter implements IPlugInPort {
       editSelection();
     }
     if (configManager.readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-      setNewComponentTypeSlot(componentTypeSlot, template, false);
+      setNewComponentTypeSlot(componentTypeSlot, template, parameters, false);
     } else {
-      setNewComponentTypeSlot(null, null, false);
+      setNewComponentTypeSlot(null, null, null, false);
     }
   }
 
@@ -1664,7 +1665,7 @@ public class Presenter implements IPlugInPort {
       // calculateSelectionDimension());
     } else if (instantiationManager.getComponentSlot() != null) {
       preDragProject = currentProject.clone();
-      addPendingComponentsToProject(scaledPoint, instantiationManager.getComponentTypeSlot(), null);
+      addPendingComponentsToProject(scaledPoint, instantiationManager.getComponentTypeSlot(), null, null);
     } else {
       updateSelection(selectedComponents);
     }
@@ -2415,7 +2416,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void setNewComponentTypeSlot(ComponentType componentType, Template template, boolean forceInstatiate) {
+  public void setNewComponentTypeSlot(ComponentType componentType, Template template, String[] parameters, boolean forceInstatiate) {
     LOG.info(String.format("setNewComponentSlot(%s)", componentType == null ? null : componentType.getName()));    
     
     // record a test step if needed
@@ -2429,7 +2430,7 @@ public class Presenter implements IPlugInPort {
     
     if (componentType != null && componentType.getInstanceClass() == null) {
       LOG.info("Cannot set new component type slot for type " + componentType.getName());
-      setNewComponentTypeSlot(null, null, false);
+      setNewComponentTypeSlot(null, null, null, false);
       return;
     }
 
@@ -2452,7 +2453,7 @@ public class Presenter implements IPlugInPort {
     }
 
     try {
-      instantiationManager.setComponentTypeSlot(componentType, template, currentProject, forceInstatiate);
+      instantiationManager.setComponentTypeSlot(componentType, template, parameters, currentProject, forceInstatiate);
 
       if (forceInstatiate)
         updateSelection(instantiationManager.getComponentSlot());

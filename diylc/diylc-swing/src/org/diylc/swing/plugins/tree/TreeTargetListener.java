@@ -56,7 +56,7 @@ class TreeTargetListener implements DropTargetListener {
 
   @Override
   public void drop(DropTargetDropEvent dtde) {
-    presenter.setNewComponentTypeSlot(null, null, false);
+    presenter.setNewComponentTypeSlot(null, null, null, false);
   }
 
   @Override

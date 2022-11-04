@@ -18,6 +18,7 @@
 package org.diylc.common;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.swing.Icon;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -52,6 +53,8 @@ public class ComponentType implements Serializable {
   private KeywordPolicy keywordPolicy;
   private String keywordTag;
   private boolean enableCache;
+  private List<String[]> datasheet;
+  private int datasheetCreationStepCount;
   
   public ComponentType() {  
   }
@@ -59,7 +62,8 @@ public class ComponentType implements Serializable {
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
       boolean flexibleZOrder, BomPolicy bomPolicy, boolean autoEdit, IComponentTransformer transformer, 
-      KeywordPolicy keywordPolicy, String keywordTag, boolean enableCache) {
+      KeywordPolicy keywordPolicy, String keywordTag, boolean enableCache, List<String[]> datasheet, 
+      int datasheetCreationStepCount) {
     super();
     this.name = name;
     this.description = description;
@@ -77,6 +81,8 @@ public class ComponentType implements Serializable {
     this.keywordPolicy = keywordPolicy;
     this.keywordTag = keywordTag;
     this.enableCache = enableCache;
+    this.datasheet = datasheet;
+    this.datasheetCreationStepCount = datasheetCreationStepCount;
   }
 
   public String getName() {
@@ -141,6 +147,14 @@ public class ComponentType implements Serializable {
   
   public boolean getEnableCache() {
     return enableCache;
+  }
+  
+  public List<String[]> getDatasheet() {
+    return datasheet;
+  }
+  
+  public int getDatasheetCreationStepCount() {
+    return datasheetCreationStepCount;
   }
 
   @Override

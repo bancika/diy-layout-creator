@@ -115,4 +115,16 @@ public @interface ComponentDescriptor {
    * @return true if the component drawing should be cached
    */
   boolean enableCache() default false;
+  
+  /**   
+   * @return true if component datasheet should be loaded from the corresponding file
+   */
+  boolean enableDatasheet() default false;
+  
+  /**
+   * If datasheet is enabled, this property determines how many columns define a component, e.g. in how many steps we can instantiate a component 
+   * 
+   * @return
+   */
+  int datasheetCreationStepCount() default 0;
 }

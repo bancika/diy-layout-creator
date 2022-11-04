@@ -308,10 +308,11 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * component.
    * 
    * @param componentType
-   * @param template
+   * @param template optional
+   * @param parameters optional
    * @param forceInstatiate
    */
-  void setNewComponentTypeSlot(ComponentType componentType, Template template, boolean forceInstatiate);
+  void setNewComponentTypeSlot(ComponentType componentType, Template template, String[] parameters, boolean forceInstatiate);
 
   /**
    * Locks or unlocks the specified layer. All components within +- 0.5 range will be affected by

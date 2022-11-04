@@ -36,14 +36,14 @@ public class TestBase {
   protected void instantiateOneClick(String category, String name, Point point1) {
     Map<String, List<ComponentType>> componentTypes = presenter.getComponentTypes();
     ComponentType resistorType = componentTypes.get(category).stream().filter(x -> x.getName().equals(name)).findFirst().get();
-    presenter.setNewComponentTypeSlot(resistorType, null, false);
+    presenter.setNewComponentTypeSlot(resistorType, null, null, false);
     presenter.mouseClicked(point1, MouseEvent.BUTTON1, false, false, false, 1);
   }
   
   protected void instantiateTwoClick(String category, String name, Point point1, Point point2) {
     Map<String, List<ComponentType>> componentTypes = presenter.getComponentTypes();
     ComponentType resistorType = componentTypes.get(category).stream().filter(x -> x.getName().equals(name)).findFirst().get();
-    presenter.setNewComponentTypeSlot(resistorType, null, false);
+    presenter.setNewComponentTypeSlot(resistorType, null, null, false);
     presenter.mouseClicked(point1, MouseEvent.BUTTON1, false, false, false, 1);
     presenter.mouseMoved(point2, false, false, false);
     presenter.mouseClicked(point2, MouseEvent.BUTTON1, false, false, false, 1);

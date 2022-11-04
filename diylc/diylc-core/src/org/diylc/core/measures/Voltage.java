@@ -50,4 +50,10 @@ public class Voltage extends AbstractMeasure<VoltageUnit> {
     }
     throw new IllegalArgumentException("Could not parse voltage: " + value);
   }
+  
+  public Double getNormalizedValue() {
+    if (value == null || unit == null)
+      return null;
+    return value * unit.getFactor(); 
+  }
 }

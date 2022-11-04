@@ -351,9 +351,18 @@ public class TreePanel extends JPanel {
           }
 
           if (componentType != null) {
-            popup.add(new SelectAllAction(plugInPort, componentType));
+            popup.add(new SelectAllAction(plugInPort, componentType));           
+            
             popup.add(shortcutSubmenu);
             popup.add(new JSeparator());
+            
+            if (componentType.getDatasheet() != null) {
+              List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>());
+              for (Component item : items) {
+                popup.add(item);
+              }
+              popup.add(new JSeparator());
+            }
 
             List<Template> templates = plugInPort.getVariantsFor(componentType);
             if (templates == null || templates.isEmpty()) {
@@ -489,13 +498,19 @@ public class TreePanel extends JPanel {
           }
         }
 
-
         if (payload.getComponentType() != null) {
           List<Template> variants = plugInPort.getVariantsFor(payload.getComponentType());
+          int count = 0;
+          if (payload.getComponentType().getDatasheet() != null) {
+            count += payload.getComponentType().getDatasheet().size();
+          }
           if (variants != null && !variants.isEmpty()) {
+            count += variants.size();
+          }
+          if (count > 0) {
             variantsHtml =
                 " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #D7FFC6; color: #666666;\">[+"
-                    + variants.size() + "]</a>";
+                    + count + "]</a>";
           }
         }
 
@@ -528,7 +543,7 @@ public class TreePanel extends JPanel {
     public void actionPerformed(ActionEvent e) {
       LOG.info(getValue(AbstractAction.NAME) + " triggered");
       if (componentType != null) {
-        plugInPort.setNewComponentTypeSlot(null, null, false);
+        plugInPort.setNewComponentTypeSlot(null, null, null, false);
         List<IDIYComponent<?>> components = plugInPort.getCurrentProject().getComponents();
         List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
         for (IDIYComponent<?> component : components) {

@@ -115,7 +115,7 @@ class ComponentTabbedPane extends JTabbedPane {
       @Override
       public void stateChanged(ChangeEvent e) {
         ConfigurationManager.getInstance().writeValue(LAST_SELECTED_TAB, getSelectedIndex());
-        ComponentTabbedPane.this.plugInPort.setNewComponentTypeSlot(null, null, false);
+        ComponentTabbedPane.this.plugInPort.setNewComponentTypeSlot(null, null, null, false);
         // Refresh recent components if needed
         if (pendingRecentComponents != null) {
           refreshRecentComponentsToolbar(pendingRecentComponents);

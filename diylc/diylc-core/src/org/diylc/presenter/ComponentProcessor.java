@@ -97,6 +97,9 @@ public class ComponentProcessor {
     IComponentTransformer transformer;
     KeywordPolicy keywordPolicy;
     String keywordTag;
+    List<String[]> datasheet = null;
+    int datasheetCreationStepCount = 0;
+    
     if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
       ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
       name = annotation.name();
@@ -113,6 +116,10 @@ public class ComponentProcessor {
       keywordPolicy = annotation.keywordPolicy();
       keywordTag = annotation.keywordTag();
       cacheDrawing = annotation.enableCache();
+      if (annotation.enableDatasheet()) {
+        datasheet = DatasheetService.getInstance().loadDatasheet(clazz);
+        datasheetCreationStepCount = annotation.datasheetCreationStepCount();
+      }
     } else { // default
     	return null;
     }
@@ -134,7 +141,8 @@ public class ComponentProcessor {
     }
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
-            flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag, cacheDrawing);
+            flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag, cacheDrawing, datasheet, 
+            datasheetCreationStepCount);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }

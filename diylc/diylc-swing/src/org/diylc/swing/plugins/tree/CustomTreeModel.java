@@ -124,7 +124,7 @@ public class CustomTreeModel implements TreeModel {
 
               @Override
               public void mouseClicked(MouseEvent e) {
-                plugInPort.setNewComponentTypeSlot(type, null, false);
+                plugInPort.setNewComponentTypeSlot(type, null, null, false);
               }
             }));
           }
@@ -161,7 +161,7 @@ public class CustomTreeModel implements TreeModel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-              plugInPort.setNewComponentTypeSlot(type, null, false);
+              plugInPort.setNewComponentTypeSlot(type, null, null, false);
             }
           }));
         }
@@ -202,7 +202,7 @@ public class CustomTreeModel implements TreeModel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-              plugInPort.setNewComponentTypeSlot(type, null, false);
+              plugInPort.setNewComponentTypeSlot(type, null, null, false);
             }
           }));
     this.visibleLeaves.put(category, visibleTypes);

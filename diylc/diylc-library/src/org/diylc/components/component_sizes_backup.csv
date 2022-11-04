@@ -1,0 +1,592 @@
+Mallory 150,63,0.15,16.5,6
+Mallory 150,63,0.18,16.5,6
+Mallory 150,63,0.22,16.5,6
+Mallory 150,63,0.27,16.5,6
+Mallory 150,63,0.33,16.5,6
+Mallory 150,63,0.39,16.5,6.5
+Mallory 150,63,0.47,16.5,7
+Mallory 150,63,0.56,16.5,7
+Mallory 150,63,0.68,20.5,7
+Mallory 150,63,0.82,20.5,8
+Mallory 150,63,1,20.5,8
+Mallory 150,63,1.5,20.5,9.5
+Mallory 150,63,2.2,28,9.5
+Mallory 150,63,3.3,28,11
+Mallory 150,63,4.7,28,12.5
+Mallory 150,63,6.8,33,14.5
+Mallory 150,63,10,33,15.5
+Mallory 150,100,0.068,16.5,6.0
+Mallory 150,100,0.082,16.5,6.0
+Mallory 150,100,0.100,16.5,6.0
+Mallory 150,100,0.120,16.5,6.0
+Mallory 150,100,0.150,16.5,6.0
+Mallory 150,100,0.180,16.5,6.5
+Mallory 150,100,0.220,16.5,6.5
+Mallory 150,100,0.270,16.5,6.5
+Mallory 150,100,0.330,16.5,8.0
+Mallory 150,100,0.390,16.5,8.0
+Mallory 150,100,0.470,20.5,7.0
+Mallory 150,100,0.560,20.5,8.0
+Mallory 150,100,0.680,20.5,8.5
+Mallory 150,100,0.820,20.5,9.5
+Mallory 150,100,1.000,20.5,10.0
+Mallory 150,250,0.012 ,16.5,6.0 
+Mallory 150,250,0.015 ,16.5,6.0 
+Mallory 150,250,0.018 ,16.5,6.0 
+Mallory 150,250,0.022 ,16.5,6.0 
+Mallory 150,250,0.027 ,16.5,6.0 
+Mallory 150,250,0.0330,16.5,6.0 
+Mallory 150,250,0.0390,16.5,6.0 
+Mallory 150,250,0.0470,16.5,6.0 
+Mallory 150,250,0.0560,16.5,6.0 
+Mallory 150,250,0.0680,16.5,6.0 
+Mallory 150,250,0.0820,16.5,6.0 
+Mallory 150,250,0.1000,16.5,6.5 
+Mallory 150,250,0.1200,16.5,7.0 
+Mallory 150,250,0.1500,16.5,8.0 
+Mallory 150,250,0.1800,16.5,8.0 
+Mallory 150,250,0.2200,16.5,8.5 
+Mallory 150,250,0.2700,20.5,8.0 
+Mallory 150,250,0.3300,20.5,8.5 
+Mallory 150,250,0.3900,20.5,9.0 
+Mallory 150,250,0.4700,20.5,9.5 
+Mallory 150,250,0.5600,20.5,10.0
+Mallory 150,250,0.6800,28.0,9.0 
+Mallory 150,250,0.8200,28.0,9.5 
+Mallory 150,250,1.0000,28.0,10.5
+Mallory 150,250,1.5000,28.0,12.5
+Mallory 150,250,2.2000,33.0,13.5
+Mallory 150,250,3.3000,33.0,15.5
+Mallory 150,250,4.7000,33.0,18.5
+Mallory 150,250,6.8000,33.0,21.5
+Mallory 150,400,0.0082,16.5,6.0 
+Mallory 150,400,0.0100,16.5,6.0 
+Mallory 150,400,0.0120,16.5,6.0 
+Mallory 150,400,0.0150,16.5,6.0 
+Mallory 150,400,0.0180,16.5,6.0 
+Mallory 150,400,0.0220,16.5,6.0 
+Mallory 150,400,0.0270,16.5,6.0 
+Mallory 150,400,0.0330,16.5,6.0 
+Mallory 150,400,0.0390,16.5,6.5 
+Mallory 150,400,0.0470,16.5,7.0 
+Mallory 150,400,0.0560,16.5,8.0 
+Mallory 150,400,0.0680,20.5,7.0 
+Mallory 150,400,0.0820,20.5,8.0 
+Mallory 150,400,0.1000,20.5,8.0 
+Mallory 150,400,0.1200,20.5,8.0 
+Mallory 150,400,0.1500,20.5,9.0 
+Mallory 150,400,0.1800,28.0,8.0 
+Mallory 150,400,0.2200,28.0,8.5 
+Mallory 150,400,0.2700,28.0,9.0 
+Mallory 150,400,0.3300,28.0,10.0
+Mallory 150,400,0.3900,28.0,10.5
+Mallory 150,400,0.4700,33.0,11.5
+Mallory 150,400,0.5600,33.0,11.5
+Mallory 150,400,0.6800,33.0,12.5
+Mallory 150,400,0.8200,33.0,13.5
+Mallory 150,400,1.0000,33.0,14.5
+Mallory 150,400,1.5000,33.0,17.5
+Mallory 150,400,2.2000,33.0,20.5
+Mallory 150,630,0.0010,16.5,6.0 
+Mallory 150,630,0.0012,16.5,6.0 
+Mallory 150,630,0.0015,16.5,6.0 
+Mallory 150,630,0.0018,16.5,6.0 
+Mallory 150,630,0.0022,16.5,6.0 
+Mallory 150,630,0.0027,16.5,6.0 
+Mallory 150,630,0.0033,16.5,6.0 
+Mallory 150,630,0.0039,16.5,6.0 
+Mallory 150,630,0.0047,16.5,6.0 
+Mallory 150,630,0.0056,16.5,6.0 
+Mallory 150,630,0.0068,16.5,6.0  
+Mallory 150,630,0.0082,16.5,6.0  
+Mallory 150,630,0.0100,16.5,6.0  
+Mallory 150,630,0.0120,16.5,6.0  
+Mallory 150,630,0.0150,16.5,6.0  
+Mallory 150,630,0.0180,16.5,6.5  
+Mallory 150,630,0.0220,16.5,7.0  
+Mallory 150,630,0.0270,20.5,6.5  
+Mallory 150,630,0.0330,20.5,8.0  
+Mallory 150,630,0.0390,20.5,8.0  
+Mallory 150,630,0.0470,20.5,8.0  
+Mallory 150,630,0.0560,20.5,8.5  
+Mallory 150,630,0.0680,20.5,9.0  
+Mallory 150,630,0.0820,20.5,9.5  
+Mallory 150,630,0.1000,28.0,8.5  
+Mallory 150,630,0.1200,28.0,9.0  
+Mallory 150,630,0.1500,28.0,10.0
+Mallory 150,630,0.1800,28.0,10.5
+Mallory 150,630,0.2200,28.0,11.5 
+Mallory 150,630,0.2700,28.0,12.5 
+Mallory 150,630,0.3300,33.0,13.0 
+Mallory 150,630,0.3900,33.0,14.5 
+Mallory 150,630,0.4700,33.0,15.0 
+Mallory 150,630,0.5600,33.0,15.5
+Mallory 150,630,0.6800,33.0,17.5
+Mallory 150,630,0.8200,33.0,18.5
+Mallory 150,630,1.0000,33.0,20.5
+Mallory 150,1000,0.0010,16.5,6.5 
+Mallory 150,1000,0.0015,16.5,6.5 
+Mallory 150,1000,0.0022,16.5,6.5 
+Mallory 150,1000,0.0033,16.5,6.5 
+Mallory 150,1000,0.0047,16.5,7.0 
+Mallory 150,1000,0.0068,16.5,8.0 
+Mallory 150,1000,0.0100,20.5,7.0 
+Mallory 150,1000,0.0150,20.5,8.5 
+Mallory 150,1000,0.0220,20.5,9.5 
+Mallory 150,1000,0.0330,28  ,8.5 
+Mallory 150,1000,0.0470,28  ,9.5 
+Mallory 150,1000,0.0680,28  ,11.0
+Mallory 150,1000,0.1000,28  ,13.0
+Mallory 150,1000,0.1500,33  ,14.0
+Mallory 150,1000,0.2200,33  ,17.5
+Mallory 150,1000,0.3300,33  ,20.5
+Mallory 150,1000,0.4700,33  ,24.0
+
+Orange Drop 715P,100,0.0056,14.5,6.4
+Orange Drop 715P,100,0.006,14.5,6.4
+Orange Drop 715P,100,0.0068,14.5,6.6
+Orange Drop 715P,100,0.0075,14.5,6.6
+Orange Drop 715P,100,0.0082,14.5,6.9
+Orange Drop 715P,100,0.009,14.5,6.6
+Orange Drop 715P,100,0.01,14.5,6.6
+Orange Drop 715P,100,0.012,14.5,7.1
+Orange Drop 715P,100,0.015,14.5,7.4
+Orange Drop 715P,100,0.018,14.5,7.9
+Orange Drop 715P,100,0.022,14.5,8.4
+Orange Drop 715P,100,0.025,14.5,8.9
+Orange Drop 715P,100,0.027,14.5,8.9
+Orange Drop 715P,100,0.033,14.5,9.7
+Orange Drop 715P,100,0.039,17.8,8.6
+Orange Drop 715P,100,0.047,17.8,9.1
+Orange Drop 715P,100,0.05,17.8,9.4
+Orange Drop 715P,100,0.056,17.8,9.7
+Orange Drop 715P,100,0.062,17.8,10.2
+Orange Drop 715P,100,0.068,17.8,10.4
+Orange Drop 715P,100,0.075,22.9,9.1
+Orange Drop 715P,100,0.082,22.9,9.4
+Orange Drop 715P,100,0.09,22.9,9.7
+Orange Drop 715P,100,0.1,22.9,10.2
+Orange Drop 715P,100,0.12,22.9,10.9
+Orange Drop 715P,100,0.15,22.9,11.7
+Orange Drop 715P,100,0.18,22.9,12.7
+Orange Drop 715P,100,0.2,22.9,13.2
+Orange Drop 715P,100,0.22,22.9,13.7
+Orange Drop 715P,100,0.25,31.8,11.9
+Orange Drop 715P,100,0.27,31.8,12.2
+Orange Drop 715P,100,0.3,31.8,12.7
+Orange Drop 715P,100,0.33,31.8,13.2
+Orange Drop 715P,200,0.01,17.8,6.4
+Orange Drop 715P,200,0.012,17.8,6.6
+Orange Drop 715P,200,0.015,17.8,7.1
+Orange Drop 715P,200,0.018,17.8,7.4
+Orange Drop 715P,200,0.022,17.8,7.9
+Orange Drop 715P,200,0.027,17.8,8.4
+Orange Drop 715P,200,0.033,17.8,9.1
+Orange Drop 715P,200,0.039,22.9,8.1
+Orange Drop 715P,200,0.047,22.9,8.6
+Orange Drop 715P,200,0.056,22.9,9.4
+Orange Drop 715P,200,0.068,22.9,9.9
+Orange Drop 715P,200,0.082,31.8,9.1
+Orange Drop 715P,200,0.1,31.8,9.7
+Orange Drop 715P,200,0.12,31.8,10.4
+Orange Drop 715P,200,0.15,31.8,11.2
+Orange Drop 715P,200,0.18,31.8,11.9
+Orange Drop 715P,200,0.22,31.8,13
+Orange Drop 715P,200,0.27,41.9,12.4
+Orange Drop 715P,200,0.33,41.9,13.5
+Orange Drop 715P,200,0.39,41.9,14.2
+Orange Drop 715P,200,0.47,41.9,15.2
+Orange Drop 715P,400,0.001,17.8,8.9
+Orange Drop 715P,400,0.0012,17.8,9.1
+Orange Drop 715P,400,0.0015,17.8,8.1
+Orange Drop 715P,400,0.0018,17.8,8.6
+Orange Drop 715P,400,0.0022,17.8,8.4
+Orange Drop 715P,400,0.0027,17.8,8.9
+Orange Drop 715P,400,0.0033,17.8,8.1
+Orange Drop 715P,400,0.0039,17.8,8.6
+Orange Drop 715P,400,0.0047,17.8,8.6
+Orange Drop 715P,400,0.0056,17.8,9.1
+Orange Drop 715P,400,0.0068,17.8,7.4
+Orange Drop 715P,400,0.0082,17.8,7.6
+Orange Drop 715P,400,0.01,17.8,7.6
+Orange Drop 715P,400,0.012,17.8,8.1
+Orange Drop 715P,400,0.015,17.8,8.6
+Orange Drop 715P,400,0.018,22.9,7.9
+Orange Drop 715P,400,0.022,22.9,8.4
+Orange Drop 715P,400,0.027,22.9,9.1
+Orange Drop 715P,400,0.033,22.9,9.7
+Orange Drop 715P,400,0.039,31.8,8.9
+Orange Drop 715P,400,0.047,31.8,9.4
+Orange Drop 715P,400,0.056,31.8,9.9
+Orange Drop 715P,400,0.068,31.8,10.7
+Orange Drop 715P,400,0.082,31.8,11.4
+Orange Drop 715P,400,0.1,31.8,12.2
+Orange Drop 715P,400,0.12,31.8,13.2
+Orange Drop 715P,400,0.15,31.8,14.2
+Orange Drop 715P,400,0.18,41.9,13.7
+Orange Drop 715P,400,0.22,41.9,14.7
+Orange Drop 715P,400,0.27,41.9,16
+Orange Drop 715P,400,0.33,41.9,17.8
+Orange Drop 715P,400,0.39,41.9,19.1
+Orange Drop 715P,400,0.47,41.9,20.8
+Orange Drop 715P,600,0.001,17.8,8.9
+Orange Drop 715P,600,0.0012,17.8,9.1
+Orange Drop 715P,600,0.0015,17.8,8.1
+Orange Drop 715P,600,0.0018,17.8,8.6
+Orange Drop 715P,600,0.0022,17.8,8.4
+Orange Drop 715P,600,0.0027,17.8,8.9
+Orange Drop 715P,600,0.0033,17.8,8.1
+Orange Drop 715P,600,0.0039,17.8,8.6
+Orange Drop 715P,600,0.0047,17.8,8.6
+Orange Drop 715P,600,0.0056,17.8,9.1
+Orange Drop 715P,600,0.0068,17.8,9.7
+Orange Drop 715P,600,0.0082,22.9,8.6
+Orange Drop 715P,600,0.01,22.9,9.1
+Orange Drop 715P,600,0.012,22.9,9.7
+Orange Drop 715P,600,0.015,22.9,10.7
+Orange Drop 715P,600,0.018,22.9,11.2
+Orange Drop 715P,600,0.022,22.9,12.2
+Orange Drop 715P,600,0.027,31.8,10.2
+Orange Drop 715P,600,0.033,31.8,11.7
+Orange Drop 715P,600,0.039,31.8,12.4
+Orange Drop 715P,600,0.047,31.8,13.2
+Orange Drop 715P,600,0.056,31.8,14.2
+Orange Drop 715P,600,0.068,31.8,15.2
+Orange Drop 715P,600,0.082,31.8,16.5
+Orange Drop 715P,600,0.1,31.8,18
+Orange Drop 715P,600,0.12,41.9,16.5
+Orange Drop 715P,600,0.15,41.9,18
+Orange Drop 715P,600,0.18,41.9,19.6
+Orange Drop 715P,600,0.22,41.9,21.1
+Orange Drop 715P,800,0.0056,31.8,7.1
+Orange Drop 715P,800,0.0068,31.8,7.4
+Orange Drop 715P,800,0.0082,31.8,7.9
+Orange Drop 715P,800,0.01,31.8,8.4
+Orange Drop 715P,800,0.012,31.8,8.9
+Orange Drop 715P,800,0.015,31.8,9.7
+Orange Drop 715P,800,0.018,31.8,10.4
+Orange Drop 715P,800,0.022,31.8,11.2
+Orange Drop 715P,800,0.027,31.8,11.9
+Orange Drop 715P,800,0.033,31.8,13
+Orange Drop 715P,800,0.039,41.9,11.9
+Orange Drop 715P,800,0.047,41.9,12.7
+Orange Drop 715P,800,0.056,41.9,13.5
+Orange Drop 715P,800,0.068,41.9,14.7
+Orange Drop 715P,800,0.082,41.9,15.7
+Orange Drop 715P,800,0.1,41.9,17
+Orange Drop 715P,1000,0.0056,31.8,7.1
+Orange Drop 715P,1000,0.0068,31.8,7.4
+Orange Drop 715P,1000,0.0082,31.8,7.9
+Orange Drop 715P,1000,0.01,31.8,8.4
+Orange Drop 715P,1000,0.012,31.8,8.9
+Orange Drop 715P,1000,0.015,31.8,9.7
+Orange Drop 715P,1000,0.018,31.8,10.4
+Orange Drop 715P,1000,0.022,31.8,11.2
+Orange Drop 715P,1000,0.027,31.8,11.9
+Orange Drop 715P,1000,0.033,31.8,13
+Orange Drop 715P,1000,0.039,41.9,11.9
+Orange Drop 715P,1000,0.047,41.9,12.7
+Orange Drop 715P,1000,0.056,41.9,13.5
+Orange Drop 715P,1000,0.068,41.9,14.7
+Orange Drop 715P,1000,0.082,41.9,15.7
+Orange Drop 715P,1000,0.1,41.9,17
+
+Orange Drop 716P,100,0.0082,14.5,5.8
+Orange Drop 716P,100,0.009,14.5,6.1
+Orange Drop 716P,100,0.01,14.5,6.1
+Orange Drop 716P,100,0.012,14.5,5.8
+Orange Drop 716P,100,0.015,14.5,6.4
+Orange Drop 716P,100,0.018,14.5,6.6
+Orange Drop 716P,100,0.022,14.5,7.1
+Orange Drop 716P,100,0.025,14.5,7.4
+Orange Drop 716P,100,0.027,14.5,6.9
+Orange Drop 716P,100,0.033,14.5,7.4
+Orange Drop 716P,100,0.039,14.5,7.9
+Orange Drop 716P,100,0.047,14.5,8.6
+Orange Drop 716P,100,0.05,17.8,7.1
+Orange Drop 716P,100,0.056,17.8,7.4
+Orange Drop 716P,100,0.062,17.8,7.9
+Orange Drop 716P,100,0.068,17.8,8.1
+Orange Drop 716P,100,0.075,17.8,8.4
+Orange Drop 716P,100,0.082,17.8,8.9
+Orange Drop 716P,100,0.09,17.8,9.1
+Orange Drop 716P,100,0.1,17.8,9.7
+Orange Drop 716P,100,0.12,22.9,8.4
+Orange Drop 716P,100,0.15,22.9,9.4
+Orange Drop 716P,100,0.18,22.9,10.2
+Orange Drop 716P,100,0.2,22.9,10.7
+Orange Drop 716P,100,0.22,22.9,11.2
+Orange Drop 716P,100,0.25,22.9,11.9
+Orange Drop 716P,100,0.27,22.9,12.4
+Orange Drop 716P,100,0.3,31.8,10.4
+Orange Drop 716P,100,0.33,31.8,10.7
+Orange Drop 716P,200,0.01,17.8,6.4
+Orange Drop 716P,200,0.012,17.8,6.9
+Orange Drop 716P,200,0.015,17.8,6.6
+Orange Drop 716P,200,0.018,17.8,6.4
+Orange Drop 716P,200,0.022,17.8,6.9
+Orange Drop 716P,200,0.027,17.8,7.4
+Orange Drop 716P,200,0.033,17.8,8.1
+Orange Drop 716P,200,0.039,17.8,8.1
+Orange Drop 716P,200,0.047,17.8,8.6
+Orange Drop 716P,200,0.056,22.9,7.6
+Orange Drop 716P,200,0.068,22.9,8.4
+Orange Drop 716P,200,0.082,22.9,9.1
+Orange Drop 716P,200,0.1,22.9,9.9
+Orange Drop 716P,200,0.12,22.9,10.2
+Orange Drop 716P,200,0.15,22.9,11.4
+Orange Drop 716P,200,0.18,31.8,9.9
+Orange Drop 716P,200,0.22,31.8,10.9
+Orange Drop 716P,200,0.27,31.8,11.9
+Orange Drop 716P,200,0.33,31.8,11.9
+Orange Drop 716P,200,0.39,31.8,13
+Orange Drop 716P,200,0.47,31.8,14.2
+Orange Drop 716P,200,0.56,31.8,15.5
+Orange Drop 716P,200,0.68,41.9,14.2
+Orange Drop 716P,200,0.82,41.9,15.5
+Orange Drop 716P,200,1,41.9,17.3
+Orange Drop 716P,400,0.001,17.8,6.4
+Orange Drop 716P,400,0.0012,17.8,5.6
+Orange Drop 716P,400,0.0015,17.8,6.1
+Orange Drop 716P,400,0.0018,17.8,6.4
+Orange Drop 716P,400,0.0022,17.8,6.6
+Orange Drop 716P,400,0.0027,17.8,6.1
+Orange Drop 716P,400,0.0033,17.8,6.1
+Orange Drop 716P,400,0.0039,17.8,6.1
+Orange Drop 716P,400,0.0047,17.8,6.4
+Orange Drop 716P,400,0.0056,17.8,6.1
+Orange Drop 716P,400,0.0068,17.8,6.1
+Orange Drop 716P,400,0.0082,17.8,6.4
+Orange Drop 716P,400,0.01,17.8,6.9
+Orange Drop 716P,400,0.012,17.8,7.4
+Orange Drop 716P,400,0.015,17.8,7.9
+Orange Drop 716P,400,0.018,22.9,7.1
+Orange Drop 716P,400,0.022,22.9,7.6
+Orange Drop 716P,400,0.027,22.9,7.9
+Orange Drop 716P,400,0.033,22.9,8.4
+Orange Drop 716P,400,0.039,22.9,9.1
+Orange Drop 716P,400,0.047,22.9,9.9
+Orange Drop 716P,400,0.056,22.9,10.2
+Orange Drop 716P,400,0.068,22.9,10.9
+Orange Drop 716P,400,0.082,31.8,9.7
+Orange Drop 716P,400,0.1,31.8,10.7
+Orange Drop 716P,400,0.12,31.8,11.4
+Orange Drop 716P,400,0.15,31.8,11.7
+Orange Drop 716P,400,0.18,31.8,12.7
+Orange Drop 716P,400,0.22,31.8,14.5
+Orange Drop 716P,400,0.27,31.8,16
+Orange Drop 716P,400,0.33,41.9,14.5
+Orange Drop 716P,400,0.39,41.9,15.7
+Orange Drop 716P,400,0.47,41.9,17.3
+Orange Drop 716P,600,0.001,17.8,6.9
+Orange Drop 716P,600,0.0012,17.8,6.1
+Orange Drop 716P,600,0.0015,17.8,6.6
+Orange Drop 716P,600,0.0018,17.8,6.9
+Orange Drop 716P,600,0.0022,17.8,7.1
+Orange Drop 716P,600,0.0027,17.8,6.4
+Orange Drop 716P,600,0.0033,17.8,6.4
+Orange Drop 716P,600,0.0039,17.8,6.6
+Orange Drop 716P,600,0.0047,17.8,7.1
+Orange Drop 716P,600,0.0056,17.8,7.6
+Orange Drop 716P,600,0.0068,17.8,8.1
+Orange Drop 716P,600,0.0082,17.8,8.1
+Orange Drop 716P,600,0.01,17.8,8.6
+Orange Drop 716P,600,0.012,22.9,7.9
+Orange Drop 716P,600,0.015,22.9,8.6
+Orange Drop 716P,600,0.018,22.9,9.1
+Orange Drop 716P,600,0.022,22.9,9.9
+Orange Drop 716P,600,0.027,22.9,10.4
+Orange Drop 716P,600,0.033,22.9,11.2
+Orange Drop 716P,600,0.039,22.9,12.2
+Orange Drop 716P,600,0.047,31.8,10.7
+Orange Drop 716P,600,0.056,31.8,11.4
+Orange Drop 716P,600,0.068,31.8,11.4
+Orange Drop 716P,600,0.082,31.8,12.4
+Orange Drop 716P,600,0.1,31.8,13.7
+Orange Drop 716P,600,0.12,31.8,15
+Orange Drop 716P,600,0.15,41.9,14
+Orange Drop 716P,600,0.18,41.9,15
+Orange Drop 716P,600,0.22,41.9,16.5
+Orange Drop 716P,800,0.0056,31.8,6.4
+Orange Drop 716P,800,0.0068,31.8,6.9
+Orange Drop 716P,800,0.0082,31.8,7.4
+Orange Drop 716P,800,0.01,31.8,7.4
+Orange Drop 716P,800,0.012,31.8,7.9
+Orange Drop 716P,800,0.015,31.8,8.6
+Orange Drop 716P,800,0.018,31.8,9.4
+Orange Drop 716P,800,0.022,31.8,9.7
+Orange Drop 716P,800,0.027,31.8,10.7
+Orange Drop 716P,800,0.033,31.8,11.7
+Orange Drop 716P,800,0.039,31.8,11.7
+Orange Drop 716P,800,0.047,31.8,12.7
+Orange Drop 716P,800,0.056,31.8,13.7
+Orange Drop 716P,800,0.068,31.8,15
+Orange Drop 716P,800,0.082,41.9,13.2
+Orange Drop 716P,800,0.1,41.9,14.5
+Orange Drop 716P,800,0.12,41.9,15.7
+Orange Drop 716P,800,0.14,41.9,17
+Orange Drop 716P,1000,0.0056,31.8,6.4
+Orange Drop 716P,1000,0.0068,31.8,6.9
+Orange Drop 716P,1000,0.0082,31.8,7.4
+Orange Drop 716P,1000,0.01,31.8,7.4
+Orange Drop 716P,1000,0.012,31.8,7.9
+Orange Drop 716P,1000,0.015,31.8,8.6
+Orange Drop 716P,1000,0.018,31.8,9.4
+Orange Drop 716P,1000,0.022,31.8,9.7
+Orange Drop 716P,1000,0.027,31.8,10.7
+Orange Drop 716P,1000,0.033,31.8,11.7
+Orange Drop 716P,1000,0.039,31.8,11.7
+Orange Drop 716P,1000,0.047,31.8,12.7
+Orange Drop 716P,1000,0.056,31.8,13.7
+Orange Drop 716P,1000,0.068,31.8,15
+Orange Drop 716P,1000,0.082,41.9,13.2
+Orange Drop 716P,1000,0.1,41.9,14.5
+Orange Drop 716P,1000,0.12,41.9,15.7
+Orange Drop 716P,1000,0.14,41.9,17
+
+Sprague TVA Atom,6,200,17.45,7.925
+Sprague TVA Atom,10,5000,38.1,12.319
+Sprague TVA Atom,16,25,12.7,6.35
+Sprague TVA Atom,16,50,17.45,6.35
+Sprague TVA Atom,16,100,17.45,7.925
+Sprague TVA Atom,16,200,20.625,7.925
+Sprague TVA Atom,16,250,20.625,9.525
+Sprague TVA Atom,16,500,23.8,9.525
+Sprague TVA Atom,16,600,31.75,9.525
+Sprague TVA Atom,16,800,31.75,9.525
+Sprague TVA Atom,16,1000,38.1,9.525
+Sprague TVA Atom,16,1200,38.1,11.125
+Sprague TVA Atom,16,1500,38.1,11.125
+Sprague TVA Atom,16,2000,38.1,12.319
+Sprague TVA Atom,16,3000,38.1,12.319
+Sprague TVA Atom,16,5000,53.975,25.4
+Sprague TVA Atom,16,10000,66.675,31.75
+Sprague TVA Atom,25,10,12.7,6.35
+Sprague TVA Atom,25,25,12.7,6.35
+Sprague TVA Atom,25,50,17.45,6.35
+Sprague TVA Atom,25,75,17.45,7.925
+Sprague TVA Atom,25,100,20.625,7.925
+Sprague TVA Atom,25,150,20.625,9.525
+Sprague TVA Atom,25,200,20.625,9.525
+Sprague TVA Atom,25,250,23.8,9.525
+Sprague TVA Atom,25,500,31.75,11.125
+Sprague TVA Atom,25,1000,38.1,12.319
+Sprague TVA Atom,25,1500,38.1,12.319
+Sprague TVA Atom,25,2000,38.1,12.319
+Sprague TVA Atom,25,2500,38.1,12.319
+Sprague TVA Atom,25,5000,66.675,28.575
+Sprague TVA Atom,35,500,38.1,11.125
+Sprague TVA Atom,35,5500,38.1,12.319
+Sprague TVA Atom,50,1,12.7,6.35
+Sprague TVA Atom,50,2,12.7,6.35
+Sprague TVA Atom,50,5,12.7,6.35
+Sprague TVA Atom,50,6,12.7,6.35
+Sprague TVA Atom,50,10,12.7,6.35
+Sprague TVA Atom,50,15,17.45,6.35
+Sprague TVA Atom,50,20,17.45,6.35
+Sprague TVA Atom,50,25,17.45,6.35
+Sprague TVA Atom,50,40,20.625,7.925
+Sprague TVA Atom,50,50,20.625,7.925
+Sprague TVA Atom,50,75,20.625,9.525
+Sprague TVA Atom,50,100,20.625,9.525
+Sprague TVA Atom,50,150,23.8,9.525
+Sprague TVA Atom,50,200,31.75,9.525
+Sprague TVA Atom,50,250,38.1,9.525
+Sprague TVA Atom,50,300,31.75,11.125
+Sprague TVA Atom,50,400,38.1,12.319
+Sprague TVA Atom,50,500,38.1,12.319
+Sprague TVA Atom,50,600,38.1,12.319
+Sprague TVA Atom,50,1000,38.1,12.319
+Sprague TVA Atom,50,1500,38.1,12.319
+Sprague TVA Atom,50,2000,53.975,28.575
+Sprague TVA Atom,50,2500,66.675,28.575
+Sprague TVA Atom,50,3000,66.675,31.75
+Sprague TVA Atom,50,5000,79.375,34.925
+Sprague TVA Atom,63,1,12.7,6.35
+Sprague TVA Atom,100,10,17.45,7.925
+Sprague TVA Atom,100,50,31.75,9.525
+Sprague TVA Atom,100,100,38.1,11.125
+Sprague TVA Atom,100,250,38.1,12.319
+Sprague TVA Atom,100,500,53.975,28.575
+Sprague TVA Atom,150,1,12.7,6.35
+Sprague TVA Atom,150,2,17.45,6.35
+Sprague TVA Atom,150,4,20.625,7.925
+Sprague TVA Atom,150,5,20.625,7.925
+Sprague TVA Atom,150,8,20.625,9.525
+Sprague TVA Atom,150,10,20.625,9.525
+Sprague TVA Atom,150,16,23.8,9.525
+Sprague TVA Atom,150,20,31.75,9.525
+Sprague TVA Atom,150,25,31.75,9.525
+Sprague TVA Atom,150,30,31.75,11.125
+Sprague TVA Atom,150,40,38.1,11.125
+Sprague TVA Atom,150,50,38.1,11.125
+Sprague TVA Atom,150,80,38.1,12.319
+Sprague TVA Atom,150,100,38.1,12.319
+Sprague TVA Atom,150,150,38.1,12.319
+Sprague TVA Atom,150,200,53.975,25.4
+Sprague TVA Atom,150,300,66.675,28.575
+Sprague TVA Atom,200,3,20.625,7.925
+Sprague TVA Atom,200,5,20.625,9.525
+Sprague TVA Atom,200,10,23.8,9.525
+Sprague TVA Atom,200,20,31.75,11.125
+Sprague TVA Atom,200,100,38.1,12.319
+Sprague TVA Atom,250,4,20.625,9.525
+Sprague TVA Atom,250,10,31.75,9.525
+Sprague TVA Atom,250,12,31.75,11.125
+Sprague TVA Atom,250,20,38.1,11.125
+Sprague TVA Atom,250,30,38.1,12.319
+Sprague TVA Atom,250,40,38.1,12.319
+Sprague TVA Atom,250,50,38.1,12.319
+Sprague TVA Atom,250,60,38.1,12.319
+Sprague TVA Atom,250,100,38.1,12.319
+Sprague TVA Atom,350,1,17.45,7.925
+Sprague TVA Atom,350,3,23.8,9.525
+Sprague TVA Atom,350,4,31.75,9.525
+Sprague TVA Atom,350,5,31.75,9.525
+Sprague TVA Atom,350,8,38.1,11.125
+Sprague TVA Atom,350,10,38.1,11.125
+Sprague TVA Atom,350,15,38.1,12.319
+Sprague TVA Atom,350,20,38.1,12.319
+Sprague TVA Atom,350,60,38.1,12.319
+Sprague TVA Atom,350,100,66.675,25.4
+Sprague TVA Atom,450,1,20.625,9.525
+Sprague TVA Atom,450,2,31.75,9.525
+Sprague TVA Atom,450,4,38.1,11.125
+Sprague TVA Atom,450,5,38.1,11.125
+Sprague TVA Atom,450,8,38.1,12.319
+Sprague TVA Atom,450,10,38.1,12.319
+Sprague TVA Atom,450,12,38.1,12.319
+Sprague TVA Atom,450,20,38.1,12.319
+Sprague TVA Atom,450,30,38.1,12.319
+Sprague TVA Atom,450,40,38.1,12.319
+Sprague TVA Atom,450,50,53.975,28.575
+Sprague TVA Atom,450,100,79.375,31.75
+Sprague TVA Atom,450,60,53.975,28.575
+Sprague TVA Atom,450,80,66.675,25.4
+Sprague TVA Atom,450,16,38.1,12.319
+Sprague TVA Atom,500,20,38.1,12.319
+Sprague TVA Atom,500,40,60.325,25.4
+Sprague TVA Atom,500,30,38.1,12.319
+Sprague TVA Atom,600,10,73.025,25.4
+Sprague TVA Atom,600,20,98.425,25.4
+Sprague TVA Atom,10 NP,50,17.45,7.925
+Sprague TVA Atom,25 NP,10,17.45,6.35
+Sprague TVA Atom,25 NP,16,17.45,6.35
+Sprague TVA Atom,25 NP,25,17.45,7.925
+Sprague TVA Atom,25 NP,50,20.625,7.925
+Sprague TVA Atom,25 NP,100,23.8,9.525
+Sprague TVA Atom,30 NP,20,17.45,7.925
+Sprague TVA Atom,50 NP,2,12.7,6.35
+Sprague TVA Atom,50 NP,3,12.7,6.35
+Sprague TVA Atom,50 NP,5,17.45,6.35
+Sprague TVA Atom,50 NP,8,17.45,6.35
+Sprague TVA Atom,50 NP,10,17.45,7.925
+Sprague TVA Atom,50 NP,25,20.625,9.525
+Sprague TVA Atom,50 NP,50,23.8,9.525
+Sprague TVA Atom,50 NP,100,38.1,9.525
+Sprague TVA Atom,100 NP,10,41.275,12.7
+Sprague TVA Atom,100 NP,20,38.1,12.319
+Sprague TVA Atom,200 NP,60,66.675,25.4
+Sprague TVA Atom,300 NP,1,34.925,12.7
+Sprague TVA Atom,350 NP,5,38.1,12.319
+Sprague TVA Atom,400 NP,20,53.975,25.4

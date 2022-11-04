@@ -22,6 +22,7 @@
 package org.diylc.presenter;
 
 import java.awt.geom.Point2D;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,16 +60,17 @@ public class InstantiationManager {
 
   private ComponentType componentTypeSlot;
   private Template template;
+  private String[] parameters;
   private List<IDIYComponent<?>> componentSlot;
   private Point2D firstControlPoint;
   private Point2D potentialControlPoint;
 
   public static final ComponentType clipboardType = new ComponentType("Clipboard contents",
       "Components from the clipboard", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
-      false, null, KeywordPolicy.NEVER_SHOW, null, false);
+      false, null, KeywordPolicy.NEVER_SHOW, null, false, null, 0);
   public static final ComponentType blockType = new ComponentType("Building block",
 	      "Components from the building block", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
-	      false, null, KeywordPolicy.NEVER_SHOW, null, false);
+	      false, null, KeywordPolicy.NEVER_SHOW, null, false, null, 0);
 
   public InstantiationManager() {}
 
@@ -78,6 +80,10 @@ public class InstantiationManager {
 
   public Template getTemplate() {
     return template;
+  }
+  
+  public String[] getParameters() {
+    return parameters;
   }
 
   public List<IDIYComponent<?>> getComponentSlot() {
@@ -96,19 +102,21 @@ public class InstantiationManager {
 	this.potentialControlPoint = potentialControlPoint;
 }
 
-  public void setComponentTypeSlot(ComponentType componentTypeSlot, Template template, Project currentProject, boolean forceInstatiate)
+  public void setComponentTypeSlot(ComponentType componentTypeSlot, Template template, String[] parameters, 
+      Project currentProject, boolean forceInstatiate)
       throws Exception {
     this.componentTypeSlot = componentTypeSlot;
     this.template = template;
+    this.parameters = parameters;
     if (componentTypeSlot == null) {
       this.componentSlot = null;
     } else {
       switch (componentTypeSlot.getCreationMethod()) {
         case POINT_BY_POINT:
-          this.componentSlot = forceInstatiate ? instantiateComponent(componentTypeSlot, template, new Point2D.Double(0, 0), currentProject) : null;
+          this.componentSlot = forceInstatiate ? instantiateComponent(componentTypeSlot, new Point2D.Double(0, 0), currentProject) : null;
           break;
         case SINGLE_CLICK:
-          this.componentSlot = instantiateComponent(componentTypeSlot, template, new Point2D.Double(0, 0), currentProject);
+          this.componentSlot = instantiateComponent(componentTypeSlot, new Point2D.Double(0, 0), currentProject);
           break;
       }
     }
@@ -118,7 +126,7 @@ public class InstantiationManager {
 
   public void instatiatePointByPoint(Point2D scaledPoint, Project currentProject) throws Exception {
     firstControlPoint = scaledPoint;
-    componentSlot = instantiateComponent(componentTypeSlot, template, firstControlPoint, currentProject);
+    componentSlot = instantiateComponent(componentTypeSlot, firstControlPoint, currentProject);
 
     // Set the other control point to the same location, we'll
     // move it later when mouse moves.
@@ -262,12 +270,19 @@ public class InstantiationManager {
   }
 
   @SuppressWarnings("unchecked")
-  public List<IDIYComponent<?>> instantiateComponent(ComponentType componentType, Template template, Point2D point,
-      Project currentProject) throws InstantiationException, IllegalAccessException {
+  private List<IDIYComponent<?>> instantiateComponent(ComponentType componentType, Point2D point,
+      Project currentProject) throws InstantiationException, IllegalAccessException, NoSuchMethodException, 
+          SecurityException, IllegalArgumentException, InvocationTargetException {
     LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
 
     // Instantiate the component.
-    IDIYComponent<?> component = componentType.getInstanceClass().newInstance();
+    IDIYComponent<?> component;
+    if (parameters == null) {
+      component = componentType.getInstanceClass().newInstance();
+    } else {
+      Constructor<? extends IDIYComponent<?>> constructor = componentType.getInstanceClass().getConstructor(String[].class);
+      component = constructor.newInstance((Object)parameters);
+    }
     component.createdIn(currentProject);
 
     component.setName(createUniqueName(componentType, currentProject.getComponents()));
