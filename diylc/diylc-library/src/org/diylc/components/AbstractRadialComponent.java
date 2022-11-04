@@ -47,7 +47,7 @@ public abstract class AbstractRadialComponent<T> extends AbstractLeadedComponent
     return (int) getPinSpacing().convertToPixels();
   }
 
-  @EditableProperty(name = "Pin Spacing")
+  @EditableProperty(name = "Lead Spacing")
   public Size getPinSpacing() {
     if (pinSpacing == null) {
       pinSpacing = PIN_SPACING;

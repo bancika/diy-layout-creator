@@ -23,7 +23,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
-import org.diylc.components.passive.CapacitorDimensionService.CapacitorDimensions;
+import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -51,8 +51,6 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor {
 
   private Size pinSpacing = PIN_SPACING;
 
-  private AutoSize autoSize = AutoSize.OFF;
-
   public RadialFilmCapacitor() {
     super();
     this.bodyColor = BODY_COLOR;
@@ -61,17 +59,26 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor {
   
   public RadialFilmCapacitor(String[] parameters) {
     this();
-    String autoSizeValue = parameters[0];
+    setType(parameters[0]);
     Double voltageValue = Double.parseDouble(parameters[1].split(" ")[0]);
     Double capacitanceValue = Double.parseDouble(parameters[2].split(" ")[0]);
     setValue(new Capacitance(capacitanceValue, CapacitanceUnit.uF));
     setVoltageNew(new org.diylc.core.measures.Voltage(voltageValue, VoltageUnit.V));
+    
+    CapacitorDatasheet d = CapacitorDatasheetService.parseCapacitorDatasheet(true, parameters);
 
-    for (AutoSize size : AutoSize.values()) {
-      if (size.toString().equalsIgnoreCase(autoSizeValue)) {
-        setAutoSize(size);
-      }
-    }
+    if (d.getBodyColor() != null)
+      setBodyColor(d.getBodyColor());
+    if (d.getBorderColor() != null)
+      setBorderColor(d.getBorderColor());
+    if (d.getLabelColor() != null)
+      setLabelColor(d.getLabelColor());
+    if (d.getLength() != null)
+      setLength(d.getLength());
+    if (d.getWidth() != null)
+      setWidth(d.getWidth());
+    if (d.getLeadSpacing() != null)
+      setPinSpacing(d.getLeadSpacing());
   }
 
   public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -99,7 +106,7 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor {
     return (int) getPinSpacing().convertToPixels();
   }
 
-  @EditableProperty(name = "Pin Spacing")
+  @EditableProperty(name = "Lead Spacing")
   public Size getPinSpacing() {
     if (pinSpacing == null) {
       pinSpacing = PIN_SPACING;
@@ -109,69 +116,5 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor {
 
   public void setPinSpacing(Size pinSpacing) {
     this.pinSpacing = pinSpacing;
-  }
-
-  @EditableProperty(name = "Auto Size")
-  public AutoSize getAutoSize() {
-    if (autoSize == null) {
-      autoSize = AutoSize.OFF;
-    }
-    return autoSize;
-  }
-
-  public void setAutoSize(AutoSize autoSize) {
-    this.autoSize = autoSize;
-  }
-  
-  @EditableProperty
-  @Override
-  public Size getLength() {    
-    AutoSize autoSize = getAutoSize();
-    if (autoSize != null && autoSize != AutoSize.OFF && getVoltageNew() != null
-        && getVoltageNew().getNormalizedValue() != null && getValue() != null
-        && getValue().getNormalizedValue() != null) {
-
-      CapacitorDimensions d = CapacitorDimensionService.getInstance().lookup(this.getClass(),
-          autoSize.toString(), getVoltageNew(), getValue());
-
-      if (d != null) {
-        return d.getLength();
-      }
-    }
-
-    return super.getLength();
-  }
-  
-  @EditableProperty
-  @Override
-  public Size getWidth() { 
-    AutoSize autoSize = getAutoSize();
-    if (autoSize != null && autoSize != AutoSize.OFF && getVoltageNew() != null
-        && getVoltageNew().getNormalizedValue() != null && getValue() != null
-        && getValue().getNormalizedValue() != null) {
-
-      CapacitorDimensions d = CapacitorDimensionService.getInstance().lookup(this.getClass(),
-          autoSize.toString(), getVoltageNew(), getValue());
-
-      if (d != null) {
-        return d.getDiameter();
-      }
-    }
-    return super.getWidth();
-  }
-
-  private static enum AutoSize {
-    OFF("Off"), ORANGE_DROP_715P("Orange Drop 715P"), ORANGE_DROP_716P("Orange Drop 716P");
-
-    private String label;
-
-    AutoSize(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
   }
 }

@@ -46,6 +46,7 @@ public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capa
   protected org.diylc.core.measures.Voltage voltageNew = null;
   protected Boolean showOuterFoil = false;
   protected Color outerFoilColor = OUTER_FOIL_COLOR;
+  protected String type;
 
   @EditableProperty(validatorClass = PositiveMeasureValidator.class)
   public Capacitance getValue() {
@@ -54,6 +55,15 @@ public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capa
 
   public void setValue(Capacitance value) {
     this.value = value;
+  }
+  
+  @EditableProperty
+  public String getType() {
+    return type;
+  }
+  
+  public void setType(String type) {
+    this.type = type;
   }
 
   @Deprecated

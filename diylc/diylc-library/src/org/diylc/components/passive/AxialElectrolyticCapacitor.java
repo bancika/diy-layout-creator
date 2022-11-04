@@ -29,7 +29,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractLeadedComponent;
-import org.diylc.components.passive.CapacitorDimensionService.CapacitorDimensions;
+import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -68,8 +68,7 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
   private Color markerColor = MARKER_COLOR;
   private Color tickColor = TICK_COLOR;
   private boolean polarized = true;
-
-  private AutoSize autoSize = AutoSize.OFF;
+  private String type;
 
   public AxialElectrolyticCapacitor() {
     super();
@@ -77,10 +76,10 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     this.borderColor = BORDER_COLOR;
     this.labelColor = TICK_COLOR;
   }
-  
+
   public AxialElectrolyticCapacitor(String[] parameters) {
     this();
-    String autoSizeValue = parameters[0];
+    setType(parameters[0]);
     Double voltageValue = Double.parseDouble(parameters[1].split(" ")[0]);
     Double capacitanceValue = Double.parseDouble(parameters[2].split(" ")[0]);
     setValue(new Capacitance(capacitanceValue, CapacitanceUnit.uF));
@@ -88,11 +87,23 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     if (parameters[1].endsWith(" NP")) {
       setPolarized(false);
     }
-    for (AutoSize size : AutoSize.values()) {
-      if (size.toString().equalsIgnoreCase(autoSizeValue)) {
-        setAutoSize(size);
-      }
-    }
+
+    CapacitorDatasheet d = CapacitorDatasheetService.parseCapacitorDatasheet(false, parameters);
+
+    if (d.getBodyColor() != null)
+      setBodyColor(d.getBodyColor());
+    if (d.getBorderColor() != null)
+      setBorderColor(d.getBorderColor());
+    if (d.getLabelColor() != null)
+      setLabelColor(d.getLabelColor());
+    if (d.getMarkerColor() != null)
+      setMarkerColor(d.getMarkerColor());
+    if (d.getTickColor() != null)
+      setTickColor(d.getTickColor());
+    if (d.getLength() != null)
+      setLength(d.getLength());
+    if (d.getWidth() != null)
+      setWidth(d.getWidth());
   }
 
   @EditableProperty(validatorClass = PositiveMeasureValidator.class)
@@ -102,6 +113,15 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
   public void setValue(Capacitance value) {
     this.value = value;
+  }
+  
+  @EditableProperty
+  public String getType() {
+    return type;
+  }
+  
+  public void setType(String type) {
+    this.type = type;
   }
 
   @Override
@@ -185,8 +205,6 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     double lengthFinal = getLength().convertToPixels();
     double widthFinal = getWidth().convertToPixels();
 
-   
-
     RoundRectangle2D rect = new RoundRectangle2D.Double(0f, 0f, lengthFinal, widthFinal,
         widthFinal / 6, widthFinal / 6);
     Area a = new Area(rect);
@@ -258,69 +276,5 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     double a = Math.max(c0.getAlpha(), c1.getAlpha());
 
     return new Color((int) r, (int) g, (int) b, (int) a);
-  }
-
-  @EditableProperty(name = "Auto Size")
-  public AutoSize getAutoSize() {
-    if (autoSize == null) {
-      autoSize = AutoSize.OFF;
-    }
-    return autoSize;
-  }
-
-  public void setAutoSize(AutoSize autoSize) {
-    this.autoSize = autoSize;
-  }  
-  
-  @EditableProperty
-  @Override
-  public Size getLength() {    
-    AutoSize autoSize = getAutoSize();
-    if (autoSize != null && autoSize != AutoSize.OFF && getVoltageNew() != null
-        && getVoltageNew().getNormalizedValue() != null && getValue() != null
-        && getValue().getNormalizedValue() != null) {
-
-      CapacitorDimensions d = CapacitorDimensionService.getInstance().lookup(this.getClass(),
-          autoSize.toString(), getVoltageNew(), getValue(), getPolarized());
-
-      if (d != null) {
-        return d.getLength();
-      }
-    }
-
-    return super.getLength();
-  }
-  
-  @EditableProperty
-  @Override
-  public Size getWidth() { 
-    AutoSize autoSize = getAutoSize();
-    if (autoSize != null && autoSize != AutoSize.OFF && getVoltageNew() != null
-        && getVoltageNew().getNormalizedValue() != null && getValue() != null
-        && getValue().getNormalizedValue() != null) {
-
-      CapacitorDimensions d = CapacitorDimensionService.getInstance().lookup(this.getClass(),
-          autoSize.toString(), getVoltageNew(), getValue(), getPolarized());
-
-      if (d != null) {
-        return d.getDiameter();
-      }
-    }
-    return super.getWidth();
-  }
-
-  private static enum AutoSize {
-    OFF("Off"), SPRAGUE_TVA_ATOM("Sprague TVA Atom"), FT_TYP_A("F&T Typ A");
-
-    private String label;
-
-    AutoSize(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
   }
 }
