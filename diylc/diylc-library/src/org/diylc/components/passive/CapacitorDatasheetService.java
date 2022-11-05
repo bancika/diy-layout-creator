@@ -78,7 +78,7 @@ public class CapacitorDatasheetService {
     
     int i = 5;
     Size leadSpacing = null;
-    if (isRadial && lookup[5].length() > 0) {
+    if (isRadial && lookup.length > i && lookup[i].length() > 0) {
       leadSpacing = new Size(Double.parseDouble(lookup[i]), SizeUnit.mm);
       i++;
     }

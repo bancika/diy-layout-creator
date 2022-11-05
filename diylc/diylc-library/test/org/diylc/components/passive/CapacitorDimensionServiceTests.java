@@ -35,8 +35,8 @@ public class CapacitorDimensionServiceTests {
     CapacitorDatasheet dim = CapacitorDatasheetService.getInstance().lookup(AxialFilmCapacitor.class,
         "Mallory 150", new Voltage(63d, VoltageUnit.V), new Capacitance(0.22d, CapacitanceUnit.uF));
     Assert.assertNotNull(dim);
-    Assert.assertEquals(new Size(16.5, SizeUnit.mm).convertToPixels(), dim.getLength(), 0.0001);
-    Assert.assertEquals(new Size(6d, SizeUnit.mm).convertToPixels(), dim.getWidth(), 0.0001);
+    Assert.assertEquals(new Size(16.5, SizeUnit.mm).convertToPixels(), dim.getLength().convertToPixels(), 0.0001);
+    Assert.assertEquals(new Size(6d, SizeUnit.mm).convertToPixels(), dim.getWidth().convertToPixels(), 0.0001);
   }
 
   @Test
@@ -44,7 +44,7 @@ public class CapacitorDimensionServiceTests {
     CapacitorDatasheet dim = CapacitorDatasheetService.getInstance().lookup(AxialFilmCapacitor.class,
         "Mallory 150", new Voltage(63d, VoltageUnit.V), new Capacitance(0.23d, CapacitanceUnit.uF));
     Assert.assertNotNull(dim);
-    Assert.assertEquals(new Size(16.5, SizeUnit.mm).convertToPixels(), dim.getLength(), 0.0001);
-    Assert.assertEquals(new Size(6d, SizeUnit.mm).convertToPixels(), dim.getWidth(), 0.0001);
+    Assert.assertEquals(new Size(16.5, SizeUnit.mm).convertToPixels(), dim.getLength().convertToPixels(), 0.0001);
+    Assert.assertEquals(new Size(6d, SizeUnit.mm).convertToPixels(), dim.getWidth().convertToPixels(), 0.0001);
   }
 }

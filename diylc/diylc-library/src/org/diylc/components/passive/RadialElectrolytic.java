@@ -31,7 +31,7 @@ import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
-import org.diylc.components.AbstractRadialComponent;
+import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -40,14 +40,16 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Capacitance;
+import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Vertically mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT,
-    transformer = SimpleComponentTransformer.class)
+    transformer = SimpleComponentTransformer.class, enableDatasheet = true, datasheetCreationStepCount = 3)
 public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
 
   private static final long serialVersionUID = 1L;
@@ -77,6 +79,34 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
     this.bodyColor = BODY_COLOR;
     this.borderColor = BORDER_COLOR;
     this.labelColor = TICK_COLOR;
+  }
+  
+  public RadialElectrolytic(String[] parameters) {
+    this();
+    setType(parameters[0]);
+    Double voltageValue = Double.parseDouble(parameters[1].split(" ")[0]);
+    Double capacitanceValue = Double.parseDouble(parameters[2].split(" ")[0]);
+    setValue(new Capacitance(capacitanceValue, CapacitanceUnit.uF));
+    setVoltageNew(new org.diylc.core.measures.Voltage(voltageValue, VoltageUnit.V));
+    
+    CapacitorDatasheet d = CapacitorDatasheetService.parseCapacitorDatasheet(true, parameters);
+
+    if (d.getBodyColor() != null)
+      setBodyColor(d.getBodyColor());
+    if (d.getBorderColor() != null)
+      setBorderColor(d.getBorderColor());
+    if (d.getLabelColor() != null)
+      setLabelColor(d.getLabelColor());
+    if (d.getMarkerColor() != null)
+      setMarkerColor(d.getMarkerColor());
+    if (d.getTickColor() != null)
+      setTickColor(d.getTickColor());
+    if (d.getLength() != null)
+      setHeight(d.getLength());
+    if (d.getWidth() != null)
+      setWidth(d.getWidth());
+    if (d.getLeadSpacing() != null)
+      setPinSpacing(d.getLeadSpacing());
   }
 
   @EditableProperty(validatorClass = PositiveMeasureValidator.class)
@@ -170,16 +200,17 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
       } else {
         finalTickColor = tickColor;
       }
-      g2d.setColor(finalTickColor);
-      g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1));
+      g2d.setColor(finalTickColor);      
       if (folded) {
         int tickLength = height / 7;
+        g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(tickLength / 6));
         for (int i = 0; i < 3; i++) {
           g2d.drawLine((int) (totalDiameter * (invert ? 0.08 : 0.92)), -height / 2 + tickLength + i * tickLength * 2,
               (int) (totalDiameter * (invert ? 0.08 : 0.92)), -height / 2 + tickLength + i * tickLength * 2
                   + tickLength);
         }
       } else {
+        g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(totalDiameter / 25));
         g2d.drawLine((int) (totalDiameter * (invert ? 0.1 : 0.9)), totalDiameter / 2 - (int) (totalDiameter * 0.06),
             (int) (totalDiameter * (invert ? 0.1 : 0.9)), totalDiameter / 2 + (int) (totalDiameter * 0.06));
       }
