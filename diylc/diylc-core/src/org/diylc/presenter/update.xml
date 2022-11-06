@@ -4128,7 +4128,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Radial Electrolytic Capacitor - added standard models from Elna Silmic II, Nichicon FG, Panasonic FC, FM and HNG datasheet</description>
+					<description>Radial Electrolytic Capacitor - added standard models from Elna Silmic II, Nichicon FG, KZ, Panasonic FC, FM and HNG datasheet</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
