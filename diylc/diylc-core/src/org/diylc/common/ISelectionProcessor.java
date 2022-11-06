@@ -38,6 +38,13 @@ public interface ISelectionProcessor {
    * @return
    */
   Collection<IDIYComponent<?>> getSelectedComponents();
+  
+  /**
+   * Returns selected component types
+   * 
+   * @return
+   */
+  Collection<ComponentType> getSelectedComponentTypes();
 
   /**
    * Updates the selection with the specified list of component. Also, updates control point map
@@ -122,4 +129,12 @@ public interface ISelectionProcessor {
    * @param criteria
    */
   void selectMatching(String criteria);
+  
+  
+  /**
+   * Attempts to apply the specified model to all selected components.
+   * 
+   * @param model
+   */
+  void applyModelToSelection(String[] model);
 }

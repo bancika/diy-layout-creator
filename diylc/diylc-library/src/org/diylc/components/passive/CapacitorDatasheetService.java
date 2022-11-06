@@ -71,42 +71,59 @@ public class CapacitorDatasheetService {
       return null;
     });
   }
+  
+  public static CapacitorDatasheet parseAxialCapacitorDatasheet(String[] model) {
+    return parseCapacitorDatasheet(false, model);
+  }
+  
+  public static CapacitorDatasheet parseRadialCapacitorDatasheet(String[] model) {
+    return parseCapacitorDatasheet(true, model);
+  }
 
-  public static CapacitorDatasheet parseCapacitorDatasheet(boolean isRadial, String[] lookup) {
-    Size length = new Size(Double.parseDouble(lookup[3]), SizeUnit.mm);
-    Size width = new Size(Double.parseDouble(lookup[4]), SizeUnit.mm);
+  private static CapacitorDatasheet parseCapacitorDatasheet(boolean isRadial, String[] model) {
+    String[] voltageParts = model[1].split(" ");
+    Voltage voltage = Voltage.parseVoltage(voltageParts[0] + voltageParts[1]);
+    String[] capacitanceParts = model[2].split(" ");
+    Capacitance capacitance = Capacitance.parseCapacitance(capacitanceParts[0] + capacitanceParts[1]);
+    boolean nonPolarized = model[1].endsWith(" NP");    
+    
+    Size length = new Size(Double.parseDouble(model[3]), SizeUnit.mm);
+    Size width = new Size(Double.parseDouble(model[4]), SizeUnit.mm);
     
     int i = 5;
     Size leadSpacing = null;
-    if (isRadial && lookup.length > i && lookup[i].length() > 0) {
-      leadSpacing = new Size(Double.parseDouble(lookup[i]), SizeUnit.mm);
+    if (isRadial && model.length > i && model[i].length() > 0) {
+      leadSpacing = new Size(Double.parseDouble(model[i]), SizeUnit.mm);
       i++;
     }
     
     Color bodyColor = null;
-    if (lookup.length > i && lookup[i].length() == 7)
-      bodyColor = Color.decode(lookup[i]);
+    if (model.length > i && model[i].length() == 7)
+      bodyColor = Color.decode(model[i]);
     i++;
     Color borderColor = null;
-    if (lookup.length > i && lookup[i].length() == 7)
-      borderColor = Color.decode(lookup[i]);
+    if (model.length > i && model[i].length() == 7)
+      borderColor = Color.decode(model[i]);
     i++;
     Color labelColor = null;
-    if (lookup.length > i && lookup[i].length() == 7)
-      labelColor = Color.decode(lookup[i]);
+    if (model.length > i && model[i].length() == 7)
+      labelColor = Color.decode(model[i]);
     i++;
     Color markerColor = null;
-    if (lookup.length > i && lookup[i].length() == 7)
-      markerColor = Color.decode(lookup[i]);
+    if (model.length > i && model[i].length() == 7)
+      markerColor = Color.decode(model[i]);
     i++;
     Color tickColor = null;
-    if (lookup.length > i && lookup[i].length() == 7)
-      tickColor = Color.decode(lookup[i]);
+    if (model.length > i && model[i].length() == 7)
+      tickColor = Color.decode(model[i]);
     
-    return new CapacitorDatasheet(length, width, leadSpacing, bodyColor, borderColor, labelColor, markerColor, tickColor);
+    return new CapacitorDatasheet(model[0], capacitance, voltage, nonPolarized, length, width, leadSpacing, bodyColor, borderColor, labelColor, 
+        markerColor, tickColor);
   }
   
   public static class CapacitorDatasheet {
+    private Capacitance capacitance;
+    private Voltage voltage;
     private Size length;
     private Size width;
     private Color bodyColor;
@@ -114,11 +131,16 @@ public class CapacitorDatasheetService {
     private Color labelColor;
     private Color markerColor;
     private Color tickColor;
-    private Size leadSpacing;     
+    private Size leadSpacing;
+    private String type;
+    private boolean nonPolarized;
     
-    public CapacitorDatasheet(Size length, Size width, Size leadSpacing, Color bodyColor,
+    public CapacitorDatasheet(String type, Capacitance capacitance, Voltage voltage, boolean nonPolarized, Size length, Size width, Size leadSpacing, Color bodyColor,
         Color borderColor, Color labelColor, Color markerColor, Color tickColor) {
       super();
+      this.type = type;
+      this.capacitance = capacitance;
+      this.voltage = voltage;
       this.length = length;
       this.width = width;
       this.leadSpacing = leadSpacing;
@@ -127,12 +149,19 @@ public class CapacitorDatasheetService {
       this.labelColor = labelColor;
       this.markerColor = markerColor;
       this.tickColor = tickColor;
+      this.nonPolarized = nonPolarized;
     }
-
-    public CapacitorDatasheet(Size length, Size diameter) {
-      super();
-      this.length = length;
-      this.width = diameter;
+    
+    public String getType() {
+      return type;
+    }
+    
+    public Capacitance getCapacitance() {
+      return capacitance;
+    }
+    
+    public Voltage getVoltage() {
+      return voltage;
     }
 
     public Size getLength() {
@@ -165,6 +194,10 @@ public class CapacitorDatasheetService {
 
     public Color getTickColor() {
       return tickColor;
-    }       
+    }   
+    
+    public boolean getNonPolarized() {
+      return nonPolarized;
+    }
   }
 }

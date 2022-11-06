@@ -26,17 +26,15 @@ import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.measures.Capacitance;
-import org.diylc.core.measures.CapacitanceUnit;
-import org.diylc.core.measures.VoltageUnit;
 
 @ComponentDescriptor(name = "Film Capacitor (Axial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Axial film capacitor, similar to Mallory 150s", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableDatasheet = true,
     datasheetCreationStepCount = 3)
-public class AxialFilmCapacitor extends AbstractFilmCapacitor {
+public class AxialFilmCapacitor extends AbstractFilmCapacitor implements IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -50,16 +48,21 @@ public class AxialFilmCapacitor extends AbstractFilmCapacitor {
     this.borderColor = BORDER_COLOR;
   }
 
-  public AxialFilmCapacitor(String[] parameters) {
+  public AxialFilmCapacitor(String[] model) {
     this();
-    setType(parameters[0]);
-    Double voltageValue = Double.parseDouble(parameters[1].split(" ")[0]);
-    Double capacitanceValue = Double.parseDouble(parameters[2].split(" ")[0]);
-    setValue(new Capacitance(capacitanceValue, CapacitanceUnit.uF));
-    setVoltageNew(new org.diylc.core.measures.Voltage(voltageValue, VoltageUnit.V));
 
-    CapacitorDatasheet d = CapacitorDatasheetService.parseCapacitorDatasheet(false, parameters);
+    applyModel(model);
+  }
+  
+  @Override
+  public void applyModel(String[] model) {
+    CapacitorDatasheet d = CapacitorDatasheetService.parseAxialCapacitorDatasheet(model);
 
+    setType(d.getType());
+    if (d.getCapacitance() != null)
+      setValue(d.getCapacitance());
+    if (d.getVoltage() != null)
+      setVoltageNew(d.getVoltage());
     if (d.getBodyColor() != null)
       setBodyColor(d.getBodyColor());
     if (d.getBorderColor() != null)

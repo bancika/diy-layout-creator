@@ -267,9 +267,10 @@ public class ComponentButtonFactory {
         @Override
         public void actionPerformed(ActionEvent e) {
           Optional<String[]> findFirst =
-              filteredDatasheet.stream().filter(line -> line[depth] == value).findFirst();          
+              filteredDatasheet.stream().filter(line -> line[depth].equals(value)).findFirst();          
           
           if (findFirst.isPresent()) {
+            LOG.info("Creating datasheet model " + String.join(", ", findFirst.get()));
             plugInPort.setNewComponentTypeSlot(componentType, null, findFirst.get(),
                 false);
           } else {

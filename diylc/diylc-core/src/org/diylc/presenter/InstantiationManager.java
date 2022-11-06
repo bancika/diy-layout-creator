@@ -60,7 +60,7 @@ public class InstantiationManager {
 
   private ComponentType componentTypeSlot;
   private Template template;
-  private String[] parameters;
+  private String[] model;
   private List<IDIYComponent<?>> componentSlot;
   private Point2D firstControlPoint;
   private Point2D potentialControlPoint;
@@ -82,8 +82,8 @@ public class InstantiationManager {
     return template;
   }
   
-  public String[] getParameters() {
-    return parameters;
+  public String[] getModel() {
+    return model;
   }
 
   public List<IDIYComponent<?>> getComponentSlot() {
@@ -102,12 +102,12 @@ public class InstantiationManager {
 	this.potentialControlPoint = potentialControlPoint;
 }
 
-  public void setComponentTypeSlot(ComponentType componentTypeSlot, Template template, String[] parameters, 
+  public void setComponentTypeSlot(ComponentType componentTypeSlot, Template template, String[] model, 
       Project currentProject, boolean forceInstatiate)
       throws Exception {
     this.componentTypeSlot = componentTypeSlot;
     this.template = template;
-    this.parameters = parameters;
+    this.model = model;
     if (componentTypeSlot == null) {
       this.componentSlot = null;
     } else {
@@ -277,11 +277,11 @@ public class InstantiationManager {
 
     // Instantiate the component.
     IDIYComponent<?> component;
-    if (parameters == null) {
+    if (model == null) {
       component = componentType.getInstanceClass().newInstance();
     } else {
       Constructor<? extends IDIYComponent<?>> constructor = componentType.getInstanceClass().getConstructor(String[].class);
-      component = constructor.newInstance((Object)parameters);
+      component = constructor.newInstance((Object)model);
     }
     component.createdIn(currentProject);
 

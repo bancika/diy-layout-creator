@@ -33,15 +33,14 @@ import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Capacitance;
-import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor (Axial)", author = "Branislav Stojkovic",
@@ -49,7 +48,7 @@ import org.diylc.utils.Constants;
     description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class,
     enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 3)
-public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> {
+public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> implements IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -77,19 +76,21 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     this.labelColor = TICK_COLOR;
   }
 
-  public AxialElectrolyticCapacitor(String[] parameters) {
+  public AxialElectrolyticCapacitor(String[] model) {
     this();
-    setType(parameters[0]);
-    Double voltageValue = Double.parseDouble(parameters[1].split(" ")[0]);
-    Double capacitanceValue = Double.parseDouble(parameters[2].split(" ")[0]);
-    setValue(new Capacitance(capacitanceValue, CapacitanceUnit.uF));
-    setVoltageNew(new org.diylc.core.measures.Voltage(voltageValue, VoltageUnit.V));
-    if (parameters[1].endsWith(" NP")) {
-      setPolarized(false);
-    }
+    applyModel(model);
+  }
 
-    CapacitorDatasheet d = CapacitorDatasheetService.parseCapacitorDatasheet(false, parameters);
+  @Override
+  public void applyModel(String[] model) {
+    CapacitorDatasheet d = CapacitorDatasheetService.parseAxialCapacitorDatasheet(model);
 
+    setType(d.getType());
+    if (d.getCapacitance() != null)
+      setValue(d.getCapacitance());
+    if (d.getVoltage() != null)
+      setVoltageNew(d.getVoltage());
+    setPolarized(!d.getNonPolarized());
     if (d.getBodyColor() != null)
       setBodyColor(d.getBodyColor());
     if (d.getBorderColor() != null)

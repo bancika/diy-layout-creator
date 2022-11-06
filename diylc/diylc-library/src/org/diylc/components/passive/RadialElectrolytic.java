@@ -35,22 +35,21 @@ import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Capacitance;
-import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Electrolytic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Vertically mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableDatasheet = true, datasheetCreationStepCount = 3)
-public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
+public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> implements IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -81,16 +80,22 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
     this.labelColor = TICK_COLOR;
   }
   
-  public RadialElectrolytic(String[] parameters) {
+  public RadialElectrolytic(String[] model) {
     this();
-    setType(parameters[0]);
-    Double voltageValue = Double.parseDouble(parameters[1].split(" ")[0]);
-    Double capacitanceValue = Double.parseDouble(parameters[2].split(" ")[0]);
-    setValue(new Capacitance(capacitanceValue, CapacitanceUnit.uF));
-    setVoltageNew(new org.diylc.core.measures.Voltage(voltageValue, VoltageUnit.V));
     
-    CapacitorDatasheet d = CapacitorDatasheetService.parseCapacitorDatasheet(true, parameters);
+    applyModel(model);
+  }
 
+  @Override
+  public void applyModel(String[] model) {
+    CapacitorDatasheet d = CapacitorDatasheetService.parseRadialCapacitorDatasheet(model);
+
+    setType(d.getType());
+    if (d.getCapacitance() != null)
+      setValue(d.getCapacitance());
+    if (d.getVoltage() != null)
+      setVoltageNew(d.getVoltage());
+    setPolarized(!d.getNonPolarized());
     if (d.getBodyColor() != null)
       setBodyColor(d.getBodyColor());
     if (d.getBorderColor() != null)
@@ -102,7 +107,7 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> {
     if (d.getTickColor() != null)
       setTickColor(d.getTickColor());
     if (d.getLength() != null)
-      setHeight(d.getLength());
+      setLength(d.getLength());
     if (d.getWidth() != null)
       setWidth(d.getWidth());
     if (d.getLeadSpacing() != null)

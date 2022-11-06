@@ -17,6 +17,7 @@
  */
 package org.diylc.swing.plugins.canvas;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -37,8 +38,12 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -47,12 +52,15 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.BadPositionException;
+import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
@@ -88,6 +96,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private JMenu expandMenu;
   private JMenu transformMenu;
   private JMenu applyTemplateMenu;
+  private JMenu applyModelMenu;
   private JMenu lockMenu;
   private JMenu unlockMenu;
 
@@ -520,6 +529,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   private void showPopupAt(int x, int y) {
     updateSelectionMenu(x, y);
     updateApplyTemplateMenu();
+    updateApplyModelMenu();
     updateLock(x, y);
     getPopupMenu().show(canvasPanel, x, y);
   }
@@ -539,6 +549,7 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
       popupMenu.add(getTransformMenu());
       popupMenu.add(getSaveAsTemplateAction());
       popupMenu.add(getApplyTemplateMenu());
+      popupMenu.add(getApplyModelMenu());
       popupMenu.add(getSaveAsBlockAction());
       popupMenu.add(getExpandMenu());
       popupMenu.addSeparator();
@@ -615,6 +626,14 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     }
     return applyTemplateMenu;
   }
+  
+  public JMenu getApplyModelMenu() {
+    if (applyModelMenu == null) {
+      applyModelMenu = new TranslatedMenu("Apply Model");
+      applyModelMenu.setIcon(IconLoader.Barcode.getIcon());      
+    }
+    return applyModelMenu;
+  }
 
   private void updateSelectionMenu(int x, int y) {
     getSelectionMenu().removeAll();
@@ -660,22 +679,23 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
   }
 
   private void updateApplyTemplateMenu() {
-    getApplyTemplateMenu().removeAll();
+    JMenu applyMenu = getApplyTemplateMenu();
+    applyMenu.removeAll();
     List<Template> templates = null;
 
     try {
       templates = plugInPort.getVariantsForSelection();
     } catch (Exception e) {
       LOG.info("Could not load variants for selection");
-      getApplyTemplateMenu().setEnabled(false);
+      applyMenu.setEnabled(false);
     }
 
     if (templates == null) {
-      getApplyTemplateMenu().setEnabled(false);
+      applyMenu.setEnabled(false);
       return;
     }
 
-    getApplyTemplateMenu().setEnabled(templates.size() > 0);
+    applyMenu.setEnabled(templates.size() > 0);
 
     for (Template template : templates) {
       JMenuItem item = new JMenuItem(template.getName());
@@ -687,8 +707,109 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
           plugInPort.applyVariantToSelection(finalTemplate);
         }
       });
-      getApplyTemplateMenu().add(item);
+      applyMenu.add(item);
     }
+  }
+  
+  private void updateApplyModelMenu() {
+    JMenu applyMenu = getApplyModelMenu();
+    applyMenu.removeAll();
+    
+    Collection<ComponentType> selectedComponentTypes = plugInPort.getSelectedComponentTypes();
+    if (selectedComponentTypes.size() != 1) {
+      applyMenu.setEnabled(false);
+      return;
+    }
+    
+    ComponentType componentType = selectedComponentTypes.stream().findFirst().get();
+    List<String[]> datasheet = componentType.getDatasheet();
+    if (datasheet == null || datasheet.isEmpty()) {
+      applyMenu.setEnabled(false);
+      return;
+    }
+    
+    applyMenu.setEnabled(true);
+    List<Component> datasheetItems = createDatasheetItems(plugInPort, componentType, new ArrayList<String>());
+    for (Component item : datasheetItems) {
+      applyMenu.add(item);
+    }
+  }
+  
+  private List<Component> createDatasheetItems(final IPlugInPort plugInPort,
+      final ComponentType componentType, List<String> path) {
+    int depth = path.size();
+    List<String[]> datasheet = componentType.getDatasheet();
+    if (datasheet == null) {
+      return null;
+    }
+    Stream<String[]> stream = datasheet.stream();
+    for (int i = 0; i < depth; i++) {
+      final int finalI = i;
+      stream = stream.filter(line -> line[finalI].equals(path.get(finalI)));
+    }
+    List<String[]> filteredDatasheet = stream.collect(Collectors.toList());
+
+    return filteredDatasheet.stream().map(x -> x[depth]).distinct().map(value -> {
+
+      if (depth < componentType.getDatasheetCreationStepCount() - 1) {
+        final JMenu submenu = new JMenu(value) {
+
+          private static final long serialVersionUID = 1L;
+
+          // Customize item size to fit the delete button
+          public java.awt.Dimension getPreferredSize() {
+            Dimension d = super.getPreferredSize();
+            return new Dimension(d.width + 32, d.height);
+          }
+        };
+
+        submenu.add(new JMenuItem("Loading..."));
+
+        submenu.addMenuListener(new MenuListener() {
+
+          @Override
+          public void menuSelected(MenuEvent e) {
+            submenu.removeAll();
+            List<String> newPath = new ArrayList<String>(path);
+            newPath.add(value);
+            List<Component> childItems = createDatasheetItems(plugInPort, componentType, newPath);
+            for (Component childItem : childItems) {
+              submenu.add(childItem);
+            }
+          }
+
+          @Override
+          public void menuDeselected(MenuEvent e) {}
+
+          @Override
+          public void menuCanceled(MenuEvent e) {}
+        });
+
+        return (Component) submenu;
+      }
+
+      JMenuItem item = new JMenuItem(value);
+
+      item.addActionListener(new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          Optional<String[]> findFirst =
+              filteredDatasheet.stream().filter(line -> line[depth].equals(value)).findFirst();          
+          
+          if (findFirst.isPresent()) {
+            String[] model = findFirst.get();
+            LOG.info("Applying datasheet model " + String.join(", ", model));
+            
+            plugInPort.applyModelToSelection(model);
+          } else {
+            LOG.error("Could not find datasheet item for: " + value);
+          }
+        }
+      });
+
+      return (Component) item;
+    }).collect(Collectors.toList());
   }
 
   public ActionFactory.CutAction getCutAction() {

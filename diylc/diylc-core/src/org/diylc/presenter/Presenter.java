@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
@@ -67,6 +68,7 @@ import org.diylc.common.IProjectEditor;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
@@ -605,7 +607,7 @@ public class Presenter implements IPlugInPort {
         // Keep the reference to component type for later.
         ComponentType componentTypeSlot = instantiationManager.getComponentTypeSlot();
         Template template = instantiationManager.getTemplate();
-        String[] parameters = instantiationManager.getParameters();
+        String[] model = instantiationManager.getModel();
         Project oldProject = currentProject.clone();
         switch (componentTypeSlot.getCreationMethod()) {
           case SINGLE_CLICK:
@@ -640,7 +642,7 @@ public class Presenter implements IPlugInPort {
               editSelection();
             }
             if (configManager.readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-              setNewComponentTypeSlot(componentTypeSlot, template, parameters, false);
+              setNewComponentTypeSlot(componentTypeSlot, template, model, false);
             } else {
               setNewComponentTypeSlot(null, null, null, false);
             }
@@ -664,7 +666,7 @@ public class Presenter implements IPlugInPort {
             } else {
               // On the second click, add the component to the
               // project.
-              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template, parameters);
+              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template, model);
             }
             break;
           default:
@@ -2409,6 +2411,28 @@ public class Presenter implements IPlugInPort {
       drawingManager.fireZoomChanged();
     }
   }
+  
+  @Override
+  public void applyModelToSelection(String[] model) {
+    Project oldProject = currentProject.clone();
+    try {
+      selectedComponents.forEach(component -> {
+        ((IDatasheetSupport) component).applyModel(model);
+      });
+    } catch (Exception e) {
+      LOG.warn("Could not apply datasheet to component", e);
+      view.showMessage(APPLY_ERROR, ERROR, IView.ERROR_MESSAGE);
+    } finally {
+      // Notify the listeners.
+      if (!oldProject.equals(currentProject)) {
+        messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject,
+            currentProject.clone(), "Edit Project");
+        drawingManager.clearContinuityArea();
+        projectFileManager.notifyFileChange();
+      }
+      drawingManager.fireZoomChanged();
+    }
+  }
 
   @Override
   public ComponentType getNewComponentTypeSlot() {
@@ -2416,7 +2440,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void setNewComponentTypeSlot(ComponentType componentType, Template template, String[] parameters, boolean forceInstatiate) {
+  public void setNewComponentTypeSlot(ComponentType componentType, Template template, String[] model, boolean forceInstatiate) {
     LOG.info(String.format("setNewComponentSlot(%s)", componentType == null ? null : componentType.getName()));    
     
     // record a test step if needed
@@ -2453,7 +2477,7 @@ public class Presenter implements IPlugInPort {
     }
 
     try {
-      instantiationManager.setComponentTypeSlot(componentType, template, parameters, currentProject, forceInstatiate);
+      instantiationManager.setComponentTypeSlot(componentType, template, model, currentProject, forceInstatiate);
 
       if (forceInstatiate)
         updateSelection(instantiationManager.getComponentSlot());
@@ -2598,6 +2622,16 @@ public class Presenter implements IPlugInPort {
         return null;
     }
     return getVariantsFor(selectedType);
+  }
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public Collection<ComponentType> getSelectedComponentTypes() {
+    return this.getSelectedComponents().stream()
+        .map(component -> ComponentProcessor.getInstance().extractComponentTypeFrom(
+              (Class<? extends IDIYComponent<?>>) component.getClass()))
+        .distinct()
+        .collect(Collectors.toList());
   }
 
   @Override
