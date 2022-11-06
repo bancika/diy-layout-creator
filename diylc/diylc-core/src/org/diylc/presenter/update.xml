@@ -4116,11 +4116,11 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Axial Film Capacitor - added standard models from Mallory 150 datasheet</description>
+					<description>Axial Film Capacitor - added standard models from Mallory 150 and Solen Fast datasheet</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Radial Film Capacitor - added standard models from Orange Drop 225P, 715P and 716P datasheet</description>
+					<description>Radial Film Capacitor - added standard models from Orange Drop 225P, 715P and 716P, WIMA FKP-02, MKP-2, MKS-02, MKS-2 datasheet</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
