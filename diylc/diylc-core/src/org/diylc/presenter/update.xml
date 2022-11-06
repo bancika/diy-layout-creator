@@ -4124,7 +4124,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Axial Electrolytic Capacitor - added standard models from F&amp;T A Typ and Sprague TVA Atom datasheet</description>
+					<description>Axial Electrolytic Capacitor - added standard models from F&amp;T A Typ, Illinois TTA and Sprague TVA Atom datasheet</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
