@@ -41,6 +41,7 @@ import org.diylc.components.passive.AxialFilmCapacitor;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialCeramicDiskCapacitor;
 import org.diylc.components.passive.RadialFilmCapacitor;
+import org.diylc.components.passive.RadialMicaCapacitor;
 import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Tree.ITreeWalker;
 
@@ -64,6 +65,7 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     PICKUP_TYPES.add(StingrayBassPickup.class.getCanonicalName());
 
     CAP_TYPES.add(RadialCeramicDiskCapacitor.class.getCanonicalName());
+    CAP_TYPES.add(RadialMicaCapacitor.class.getCanonicalName());
     CAP_TYPES.add(RadialFilmCapacitor.class.getCanonicalName());
     CAP_TYPES.add(AxialFilmCapacitor.class.getCanonicalName());
   }
