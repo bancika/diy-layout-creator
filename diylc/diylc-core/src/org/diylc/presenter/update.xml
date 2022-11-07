@@ -4112,6 +4112,10 @@
 			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Radial Mica Capacitor' component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Introduced support for standard models of components, defined in the product datasheet. Right click menu in the toolbox now contains additional options for creating components with exact values and dimension as specified in the datasheet. Right click on the existing components now has 'Apply Model' option which can apply properties of a standard component model from the datasheet to selected component(s)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
@@ -4124,11 +4128,15 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Axial Electrolytic Capacitor - added standard models from F&amp;T A Typ, Illinois TTA and Sprague TVA Atom datasheet</description>
+					<description>Axial Electrolytic Capacitor - added standard models from F&amp;T A Typ, Illinois TTA, JJ ANH and Sprague TVA Atom datasheet</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Radial Electrolytic Capacitor - added standard models from Elna Silmic II, Nichicon FG, KZ, Panasonic FC, FM and HNG datasheet</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Radial Mica Capacitor - added standard models from Cornell Dubilier CD10, CD15, CD19, CD30, CD42, CDV19, CDV30 datasheet</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
