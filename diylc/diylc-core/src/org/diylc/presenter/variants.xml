@@ -920,6 +920,156 @@
           <defaultFlag>false</defaultFlag>
           <createdOn>2022-10-30T13:25:15.3894874</createdOn>
         </org.diylc.core.Template>
+        <org.diylc.core.Template>
+        <name>Dale CCF55</name>
+        <values>
+          <entry>
+            <string>Power Rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <diylc.passive.Resistor_-ResistorShape>Tubular_Beveled</diylc.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color hex="d37d5b"/>
+          </entry>
+          <entry>
+            <string>Moveable Label</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Label Orientation</string>
+            <diylc.AbstractLeadedComponent_-LabelOriantation>Directional</diylc.AbstractLeadedComponent_-LabelOriantation>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Font Size Override</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Lead Color</string>
+            <awt-color hex="cccccc"/>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size value="6.22" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Label Color</string>
+            <awt-color hex="000000"/>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size value="2.29" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color hex="a04c2b"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+        </values>
+        <points>
+          <point x="0.0" y="0.0"/>
+          <point x="1.1" y="0.0"/>
+        </points>
+        <defaultFlag>false</defaultFlag>
+        <createdOn>2022-11-07T23:50:13.9473581</createdOn>
+      </org.diylc.core.Template>
+        <org.diylc.core.Template>
+        <name>Dale CCF60</name>
+        <values>
+          <entry>
+            <string>Power Rating</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Shape</string>
+            <diylc.passive.Resistor_-ResistorShape>Tubular_Beveled</diylc.passive.Resistor_-ResistorShape>
+          </entry>
+          <entry>
+            <string>Color</string>
+            <awt-color hex="d37d5b"/>
+          </entry>
+          <entry>
+            <string>Moveable Label</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Label Orientation</string>
+            <diylc.AbstractLeadedComponent_-LabelOriantation>Directional</diylc.AbstractLeadedComponent_-LabelOriantation>
+          </entry>
+          <entry>
+            <string>Reverse (standing)</string>
+            <boolean>false</boolean>
+          </entry>
+          <entry>
+            <string>Font Size Override</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Lead Color</string>
+            <awt-color hex="cccccc"/>
+          </entry>
+          <entry>
+            <string>Length</string>
+            <org.diylc.core.measures.Size value="8.75" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Label Color</string>
+            <awt-color hex="000000"/>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Color code</string>
+            <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+          </entry>
+          <entry>
+            <string>Width</string>
+            <org.diylc.core.measures.Size value="3.53" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color hex="a04c2b"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>NAME</org.diylc.common.Display>
+          </entry>
+        </values>
+        <points>
+          <point x="0.0" y="0.0"/>
+          <point x="1.1" y="0.0"/>
+        </points>
+        <defaultFlag>false</defaultFlag>
+        <createdOn>2022-11-07T23:48:34.7774065</createdOn>
+      </org.diylc.core.Template>
       </list>
     </entry>
     <entry>

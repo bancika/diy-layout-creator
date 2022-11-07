@@ -29,6 +29,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.ResistorColorCode;
 import org.diylc.components.AbstractLeadedComponent;
@@ -158,16 +159,19 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
 
   @Override
   protected Shape getBodyShape() {
-    if (getShape() == ResistorShape.Standard) {
-      double length = getLength().convertToPixels();
-      double width = getClosestOdd(getWidth().convertToPixels());
+    double length = getLength().convertToPixels();
+    double width = getClosestOdd(getWidth().convertToPixels());
+    ResistorShape shape = getShape();
+    if (shape == ResistorShape.Standard) {      
       Rectangle2D rect = new Rectangle2D.Double(width / 2, width / 10, length - width, width * 8 / 10);
       Area a = new Area(rect);
       a.add(new Area(new Ellipse2D.Double(0, 0, width, width)));
       a.add(new Area(new Ellipse2D.Double(length - width, 0, width, width)));
       return a;
+    } else if (shape == ResistorShape.Tubular_Beveled) {
+      return new RoundRectangle2D.Double(0f, 0f, length, width, width * 2 / 3, width * 2 / 3);
     }
-    return new Rectangle2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth().convertToPixels()));
+    return new Rectangle2D.Double(0f, 0f, length, width);
   }
 
   @Override
@@ -216,6 +220,11 @@ public class Resistor extends AbstractLeadedComponent<Resistance> {
   }
 
   public enum ResistorShape {
-    Tubular, Standard
+    Tubular, Tubular_Beveled, Standard;
+    
+    @Override
+    public String toString() {     
+      return super.toString().replace('_', ' ');
+    }
   }
 }

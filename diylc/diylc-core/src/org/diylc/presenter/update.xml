@@ -4138,6 +4138,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Radial Mica Capacitor - added standard models from Cornell Dubilier CD10, CD15, CD19, CD30, CD42, CDV19, CDV30 datasheet</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Tubular Beveled' shape option to Resistor component and added Dale CCF55 and CCF60 variants</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
