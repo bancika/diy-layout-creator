@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -56,6 +57,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swingframework.openide.DropDownButtonFactory;
+import com.google.common.collect.Lists;
 
 /**
  * Factory that creates {@link JButton}s which display component type icons and instantiates the
@@ -64,6 +66,8 @@ import org.diylc.swingframework.openide.DropDownButtonFactory;
  * @author Branislav Stojkovic
  */
 public class ComponentButtonFactory {
+
+  private static final int MAX_MENU_ITEMS = 30;
 
   private static final Logger LOG = Logger.getLogger(ComponentButtonFactory.class);
 
@@ -208,7 +212,7 @@ public class ComponentButtonFactory {
   }
 
   public static List<Component> createDatasheetItems(final IPlugInPort plugInPort,
-      final ComponentType componentType, List<String> path) {
+      final ComponentType componentType, List<String> path, Consumer<String[]> modelConsumer) {
     int depth = path.size();
     List<String[]> datasheet = componentType.getDatasheet();
     if (datasheet == null) {
@@ -224,16 +228,7 @@ public class ComponentButtonFactory {
     return filteredDatasheet.stream().map(x -> x[depth]).distinct().map(value -> {
 
       if (depth < componentType.getDatasheetCreationStepCount() - 1) {
-        final JMenu submenu = new JMenu(value) {
-
-          private static final long serialVersionUID = 1L;
-
-          // Customize item size to fit the delete button
-          public java.awt.Dimension getPreferredSize() {
-            Dimension d = super.getPreferredSize();
-            return new Dimension(d.width + 32, d.height);
-          }
-        };
+        final JMenu submenu = new JMenu(value);
 
         submenu.add(new JMenuItem("Loading..."));
 
@@ -244,9 +239,33 @@ public class ComponentButtonFactory {
             submenu.removeAll();
             List<String> newPath = new ArrayList<String>(path);
             newPath.add(value);
-            List<Component> childItems = createDatasheetItems(plugInPort, componentType, newPath);
-            for (Component childItem : childItems) {
-              submenu.add(childItem);
+            List<Component> childItems = createDatasheetItems(plugInPort, componentType, newPath, modelConsumer);
+            if (childItems.size() > MAX_MENU_ITEMS) {
+              List<List<Component>> partitions = Lists.partition(childItems, MAX_MENU_ITEMS);
+              for (List<Component> partition : partitions) {
+                String label = null;
+                Component first = partition.get(0);
+                if (first instanceof JMenu) {
+                  label = ((JMenu) first).getText();
+                  if (partition.size() > 1) {
+                    label += " - " + ((JMenu) partition.get(partition.size() - 1)).getText();
+                  }
+                } else if (first instanceof JMenuItem) {
+                  label = ((JMenuItem) first).getText();
+                  if (partition.size() > 1) {
+                    label += " - " + ((JMenuItem) partition.get(partition.size() - 1)).getText();
+                  }
+                }
+                JMenu partitionMenu = new JMenu(label);
+                for (Component childItem : partition) {
+                  partitionMenu.add(childItem);
+                }
+                submenu.add(partitionMenu);
+              }
+            } else {
+              for (Component childItem : childItems) {
+                submenu.add(childItem);
+              }
             }
           }
 
@@ -267,12 +286,10 @@ public class ComponentButtonFactory {
         @Override
         public void actionPerformed(ActionEvent e) {
           Optional<String[]> findFirst =
-              filteredDatasheet.stream().filter(line -> line[depth].equals(value)).findFirst();          
-          
+              filteredDatasheet.stream().filter(line -> line[depth].equals(value)).findFirst();
+
           if (findFirst.isPresent()) {
-            LOG.info("Creating datasheet model " + String.join(", ", findFirst.get()));
-            plugInPort.setNewComponentTypeSlot(componentType, null, findFirst.get(),
-                false);
+            modelConsumer.accept(findFirst.get());            
           } else {
             LOG.error("Could not find datasheet item for: " + value);
           }

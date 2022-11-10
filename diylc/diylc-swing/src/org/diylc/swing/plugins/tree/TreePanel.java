@@ -357,7 +357,10 @@ public class TreePanel extends JPanel {
             popup.add(new JSeparator());
             
             if (componentType.getDatasheet() != null) {
-              List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>());
+              List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>(), model -> {
+                LOG.info("Creating datasheet model " + String.join(", ", model));
+                plugInPort.setNewComponentTypeSlot(componentType, null, model, false);
+              });
               for (Component item : items) {
                 popup.add(item);
               }

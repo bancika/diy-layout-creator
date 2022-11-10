@@ -41,9 +41,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -52,8 +49,6 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
@@ -77,6 +72,7 @@ import org.diylc.swing.gui.TranslatedMenu;
 import org.diylc.swing.gui.TranslatedPopupMenu;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
+import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
 import org.diylc.swingframework.ruler.IRulerListener;
 import org.diylc.swingframework.ruler.Ruler.InchSubdivision;
 import org.diylc.swingframework.ruler.RulerScrollPane;
@@ -729,87 +725,13 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
     }
     
     applyMenu.setEnabled(true);
-    List<Component> datasheetItems = createDatasheetItems(plugInPort, componentType, new ArrayList<String>());
+    List<Component> datasheetItems = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>(), model -> {
+      LOG.info("Applying datasheet model " + String.join(", ", model));      
+      plugInPort.applyModelToSelection(model);
+    });
     for (Component item : datasheetItems) {
       applyMenu.add(item);
     }
-  }
-  
-  private List<Component> createDatasheetItems(final IPlugInPort plugInPort,
-      final ComponentType componentType, List<String> path) {
-    int depth = path.size();
-    List<String[]> datasheet = componentType.getDatasheet();
-    if (datasheet == null) {
-      return null;
-    }
-    Stream<String[]> stream = datasheet.stream();
-    for (int i = 0; i < depth; i++) {
-      final int finalI = i;
-      stream = stream.filter(line -> line[finalI].equals(path.get(finalI)));
-    }
-    List<String[]> filteredDatasheet = stream.collect(Collectors.toList());
-
-    return filteredDatasheet.stream().map(x -> x[depth]).distinct().map(value -> {
-
-      if (depth < componentType.getDatasheetCreationStepCount() - 1) {
-        final JMenu submenu = new JMenu(value) {
-
-          private static final long serialVersionUID = 1L;
-
-          // Customize item size to fit the delete button
-          public java.awt.Dimension getPreferredSize() {
-            Dimension d = super.getPreferredSize();
-            return new Dimension(d.width + 32, d.height);
-          }
-        };
-
-        submenu.add(new JMenuItem("Loading..."));
-
-        submenu.addMenuListener(new MenuListener() {
-
-          @Override
-          public void menuSelected(MenuEvent e) {
-            submenu.removeAll();
-            List<String> newPath = new ArrayList<String>(path);
-            newPath.add(value);
-            List<Component> childItems = createDatasheetItems(plugInPort, componentType, newPath);
-            for (Component childItem : childItems) {
-              submenu.add(childItem);
-            }
-          }
-
-          @Override
-          public void menuDeselected(MenuEvent e) {}
-
-          @Override
-          public void menuCanceled(MenuEvent e) {}
-        });
-
-        return (Component) submenu;
-      }
-
-      JMenuItem item = new JMenuItem(value);
-
-      item.addActionListener(new ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          Optional<String[]> findFirst =
-              filteredDatasheet.stream().filter(line -> line[depth].equals(value)).findFirst();          
-          
-          if (findFirst.isPresent()) {
-            String[] model = findFirst.get();
-            LOG.info("Applying datasheet model " + String.join(", ", model));
-            
-            plugInPort.applyModelToSelection(model);
-          } else {
-            LOG.error("Could not find datasheet item for: " + value);
-          }
-        }
-      });
-
-      return (Component) item;
-    }).collect(Collectors.toList());
   }
 
   public ActionFactory.CutAction getCutAction() {
