@@ -4124,7 +4124,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Radial Film Capacitor - added standard models from Orange Drop 225P, 715P and 716P, WIMA FKP-02, MKP-2, MKS-02, MKS-2 datasheet</description>
+					<description>Radial Film Capacitor - added standard models from Orange Drop 225P, 715P and 716P, WIMA FKP-02, FKP-2, FKS-2, MKP-2, MKP-4, MKS-02, MKS-2 datasheet</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -4140,7 +4140,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'Tubular Beveled' shape option to Resistor component and added Dale C*F55 and C*F60 variants</description>
+					<description>Added 'Tubular Beveled' shape option to Resistor component and added Dale C*F55 and C*F60 resistor variants</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
