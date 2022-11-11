@@ -37,6 +37,21 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.32.0" date="2022-11-11">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Radial Mica Capacitor' component</li>
+             <li>[New Feature] Introduced support for standard models of components, defined in the product datasheet. Right click menu in the toolbox now contains additional options for creating components with exact values and dimension as specified in the datasheet. Right click on the existing components now has 'Apply Model' option which can apply properties of a standard component model from the datasheet to selected component(s)</li>
+             <li>[New Feature] Axial Film Capacitor - added standard models from Mallory 150 and Solen Fast datasheet</li>
+             <li>[New Feature] Radial Film Capacitor - added standard models from Orange Drop 225P, 715P and 716P, WIMA FKP-02, FKP-2, FKS-2, MKP-2, MKP-4, MKS-02, MKS-2 datasheet</li>
+             <li>[New Feature] Axial Electrolytic Capacitor - added standard models from F&T A Typ, Illinois TTA, JJ ANH and Sprague TVA Atom datasheet</li>
+             <li>[New Feature] Radial Electrolytic Capacitor - added standard models from Elna Silmic II, Nichicon FG, KZ, Panasonic FC, FM and HNG datasheet</li>
+             <li>[New Feature] Radial Mica Capacitor - added standard models from Cornell Dubilier CD10, CD15, CD19, CD30, CD42, CDV19, CDV30 datasheet</li>
+             <li>[New Feature] Added 'Tubular Beveled' shape option to Resistor component and added Dale C*F55 and C*F60 resistor variants</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.32.0</url>
+     </release>
   	<release version="4.31.0" date="2022-10-31">
          <description>
            <ul>
