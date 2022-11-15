@@ -721,7 +721,7 @@ public class Presenter implements IPlugInPort {
     }
   }
 
-  private void addPendingComponentsToProject(Point2D scaledPoint, ComponentType componentTypeSlot, Template template, String[] parameters) {
+  private void addPendingComponentsToProject(Point2D scaledPoint, ComponentType componentTypeSlot, Template template, String[] model) {
     List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
     Point2D firstPoint = componentSlot.get(0).getControlPoint(0);
     // don't allow to create component with the same points
@@ -745,7 +745,7 @@ public class Presenter implements IPlugInPort {
       editSelection();
     }
     if (configManager.readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-      setNewComponentTypeSlot(componentTypeSlot, template, parameters, false);
+      setNewComponentTypeSlot(componentTypeSlot, template, model, false);
     } else {
       setNewComponentTypeSlot(null, null, null, false);
     }
