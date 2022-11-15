@@ -430,6 +430,17 @@ class ComponentTabbedPane extends JTabbedPane {
           variantPopup.add(new SelectAllAction(plugInPort, componentType));
           variantPopup.add(shortcutSubmenu);
           variantPopup.add(new JSeparator());
+          
+          if (componentType.getDatasheet() != null && !componentType.getDatasheet().isEmpty()) {
+            List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>(), model -> {
+              LOG.info("Creating datasheet model " + String.join(", ", model));
+              plugInPort.setNewComponentTypeSlot(componentType, null, model, false);
+            });
+            for (Component item : items) {
+              variantPopup.add(item);
+            }
+            variantPopup.add(new JSeparator());
+          }
 
           List<Template> templates = plugInPort.getVariantsFor(componentType);
           if (templates == null || templates.isEmpty()) {

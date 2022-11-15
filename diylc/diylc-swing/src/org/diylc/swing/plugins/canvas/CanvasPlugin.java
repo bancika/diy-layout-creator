@@ -271,7 +271,6 @@ public class CanvasPlugin implements IPlugIn, ClipboardOwner {
 
         @Override
         public void mousePressed(MouseEvent e) {
-          LOG.info("Pressed: " + e.isPopupTrigger());
           canvasPanel.requestFocus();
           pressedEvent = e;
         }
