@@ -4145,5 +4145,33 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>33</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2022-11-11 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added standard models in the drop down menu of the component toolbar</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Radial Electrolytic Capacitor - added standard models from Nichicon FW datasheet</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Radial Film Capacitor - added standard models from Epcos MKT datasheet</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Radial Film Capacitor - added ability to select package shape - drop or box style</description>
+				</org.diylc.appframework.update.Change>			
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
 import org.diylc.components.transform.SimpleComponentTransformer;
@@ -48,6 +49,7 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor implements IDatas
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
 
   private Size pinSpacing = PIN_SPACING;
+  private RadialFilmCapacitorShape shape = RadialFilmCapacitorShape.DROP;
 
   public RadialFilmCapacitor() {
     super();
@@ -82,6 +84,10 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor implements IDatas
       setWidth(d.getWidth());
     if (d.getLeadSpacing() != null)
       setPinSpacing(d.getLeadSpacing());
+    
+    if (model.length >= 10) {
+      setShape(RadialFilmCapacitorShape.valueOf(model[9]));
+    }
   }
 
   public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -98,6 +104,9 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor implements IDatas
   protected Shape getBodyShape() {
     double lengthFinal = getLength().convertToPixels();
     double widthFinal = getWidth().convertToPixels();
+    
+    if (getShape() == RadialFilmCapacitorShape.BOX)
+      return new Rectangle2D.Double(0f, 0f, lengthFinal, getClosestOdd(widthFinal));
 
     double radius = widthFinal * 0.7;
     return new RoundRectangle2D.Double(0f, 0f, lengthFinal, getClosestOdd(widthFinal), radius,
@@ -119,5 +128,26 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor implements IDatas
 
   public void setPinSpacing(Size pinSpacing) {
     this.pinSpacing = pinSpacing;
+  }
+  
+  @EditableProperty
+  public RadialFilmCapacitorShape getShape() {
+    if (shape == null) {
+      shape = RadialFilmCapacitorShape.DROP;
+    }
+    return shape;
+  }
+  
+  public void setShape(RadialFilmCapacitorShape shape) {
+    this.shape = shape;
+  }
+  
+  public static enum RadialFilmCapacitorShape {
+    DROP, BOX;
+    
+    @Override
+    public String toString() {
+      return name().substring(0, 1) + name().substring(1).toLowerCase();
+    }
   }
 }
