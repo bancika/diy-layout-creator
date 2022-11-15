@@ -101,11 +101,6 @@ public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capa
     return DEFAULT_WIDTH;
   }
 
-  @EditableProperty(name = "Reverse (standing)")
-  public boolean getFlipStanding() {
-    return super.getFlipStanding();
-  }
-
   @EditableProperty(name = "Outer Foil Mark")
   public Boolean getShowOuterFoil() {
     if (showOuterFoil == null)

@@ -28,6 +28,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "Film Capacitor (Axial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
@@ -96,5 +97,10 @@ public class AxialFilmCapacitor extends AbstractFilmCapacitor implements IDatash
   @Override
   protected boolean supportsStandingMode() {
     return true;
+  }
+  
+  @EditableProperty(name = "Reverse (standing)")
+  public boolean getFlipStanding() {
+    return super.getFlipStanding();
   }
 }
