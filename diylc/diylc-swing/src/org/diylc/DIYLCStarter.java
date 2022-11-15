@@ -107,6 +107,10 @@ public class DIYLCStarter {
 				+ System.getProperty("java.vm.vendor"));
 		LOG.debug("Java home: " + System.getProperty("java.home"));
 		LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
+		
+		// set OS name as HTTP agent, java will append java version
+		Properties props = System.getProperties();
+		props.setProperty("http.agent", System.getProperty("os.name"));
 
 		LOG.info("Starting DIYLC with working directory " + System.getProperty("user.dir"));
 
