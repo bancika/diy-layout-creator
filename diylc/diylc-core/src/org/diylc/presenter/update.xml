@@ -4155,6 +4155,10 @@
 			<name></name>
 			<changes>	
 				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed an issue that would cause capacitors to fail when creating, editing, moving or deleting</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added standard models in the drop down menu of the component toolbar</description>
 				</org.diylc.appframework.update.Change>	

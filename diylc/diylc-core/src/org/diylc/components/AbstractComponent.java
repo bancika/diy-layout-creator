@@ -161,8 +161,8 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public IDIYComponent<T> clone() throws CloneNotSupportedException {
     try {
       // Instantiate object of the same type
-      AbstractComponent<T> newInstance = (AbstractComponent<T>) this.getClass().getConstructors()[0].newInstance();
       Class<?> clazz = this.getClass();
+      AbstractComponent<T> newInstance = (AbstractComponent<T>) clazz.newInstance();      
       while (AbstractComponent.class.isAssignableFrom(clazz)) {
         Field[] fields = clazz.getDeclaredFields();
         clazz = clazz.getSuperclass();
@@ -181,7 +181,8 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
               Object newArray = Array.newInstance(value.getClass().getComponentType(), Array.getLength(value));
               for (int i = 0; i < Array.getLength(value); i++) {
                 Point2D p = (Point2D) Array.get(value, i);
-                Array.set(newArray, i, new Point2D.Double(p.getX(), p.getY()));
+                if (p != null)
+                  Array.set(newArray, i, new Point2D.Double(p.getX(), p.getY()));
               }
               value = newArray;
             }
