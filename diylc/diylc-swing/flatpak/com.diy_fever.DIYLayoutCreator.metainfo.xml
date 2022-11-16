@@ -37,6 +37,18 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.33.0" date="2022-11-16">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed an issue that would cause capacitors to fail when creating, editing, moving or deleting</li>
+             <li>[New Feature] Added standard models in the drop down menu of the component toolbar</li>
+             <li>[New Feature] Radial Electrolytic Capacitor - added standard models from Nichicon FW datasheet</li>
+             <li>[New Feature] Radial Film Capacitor - added standard models from Epcos MKT datasheet</li>
+             <li>[New Feature] Radial Film Capacitor - added ability to select package shape - drop or box style</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.33.0</url>
+     </release>
   	<release version="4.32.0" date="2022-11-11">
          <description>
            <ul>
