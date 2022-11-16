@@ -13,22 +13,50 @@
 #34 (0.16mm / 0.00631in)
 #36 (0.13mm / 0.00500in)
 #8 (3.26mm / 0.12849in)
+1 throws / 2 positions
+10 throws / 10 positions
+11 throws / 11 positions
+12 throws / 12 positions
+1P12T
+2 throws / 2 positions
+2 throws / 3 positions / OFF even positions
+2P5T
+2P6T
+3 throws / 3 positions
+3 throws / 5 positions / SHORT even positions
+3P4T
 3PDT
 3PDT (On/Off/On)
 4 band
+4 throws / 4 positions
+4P3T
+4P5T
 4P5T (Super/Mega)
+4P6T
 4PDT
 4PDT (On/Off/On)
 5 band
+5 throws / 5 positions
 5PDT
 5PDT (On/Off/On)
+6 throws / 6 positions
+7 throws / 7 positions
+8 throws / 8 positions
+9 throws / 9 positions
 A-O-I     REGULATOR
 AC
 AWG
 Alternate
 And
+Angle Offset
 B-C-E     BJT
+Background
+Box
 C-B-E     BJT
+Circle
+Coil(s)
+Configuration
+Could not apply changes. Check the log for details.
 D-G-S     JFET
 D-G-S     MOSFET
 D-S-G     JFET
@@ -38,33 +66,47 @@ DFM A
 DFM B
 DIP
 DP3T
+DP3T (Import 5-Position Strat)
+DP4T (6-Position Oak Grigsby)
 DP5T
 DPDT
-DPDT (On/Off/On
+DPDT (On/Off/On)
 DPDT (On/On)
 DPDT (On/On/On Type 1)
 DPDT (On/On/On Type 2)
+Designation
 Deutsch
 Dimension Mode
 Dots (Gradual)
 Dots (Uniform)
+Double Rails
+Double Rods
+Drop
+E+
 E-B-C     BJT
 English
 Español
+Filament Voltage
 Français
 G-D-S     JFET
 G-D-S     MOSFET
 G-O-I     REGULATOR
 G-S-D     JFET
 G-S-D     MOSFET
+Generate DIYLC Netlist (excl. Switches)
+Generate DIYLC Netlist (incl. Switches)
 Gray
+Humbucking - 4 leads
 I-G-O     REGULATOR
 Italiano
 Lin
 Log
+Markers
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s
 NPN
 Nand
 Nederlands
+Non-shorting
 Nor
 Not
 Numeric (0-10)
@@ -74,22 +116,37 @@ Numeric (1-12)
 Numeric (Even, No Ticks)
 Numeric (Even, With Ticks)
 O-G-I     REGULATOR
+One
 Or
 PAF
 PCB
 PNP
+Poles
 Português
+Primary Lead Spacing
+Primary Leads
+Rectangle
 Rev log
 S-G-D     JFET
 S-G-D     MOSFET
 SMD
 SPDT
-SPDT (On/Off/On
+SPDT (On/Off/On)
 SPDT (On/On)
 SPST
+Secondary Lead Spacing
+Secondary Leads
+Shorting
+Single - North
+Single - South
+Six
 Source Style
 Source Type
 Srpski
+Stroke
+Terminal
+Timing
+Tubular Beveled
 Xnor
 Xor
 cm
