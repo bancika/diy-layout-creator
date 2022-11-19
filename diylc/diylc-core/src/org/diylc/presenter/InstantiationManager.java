@@ -299,7 +299,10 @@ public class InstantiationManager {
 
     loadComponentShapeFromTemplate(component, template);
 
-    fillWithDefaultProperties(component, template);
+    if (model == null) {
+      // do not fill with defaults if creating by a model
+      fillWithDefaultProperties(component, template);
+    }
 
     // Write to recent components
     List<String> recentComponentTypes =

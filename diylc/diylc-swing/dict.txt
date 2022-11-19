@@ -123,8 +123,6 @@ PCB
 PNP
 Poles
 Português
-Primary Lead Spacing
-Primary Leads
 Rectangle
 Rev log
 S-G-D     JFET
@@ -134,8 +132,6 @@ SPDT
 SPDT (On/Off/On)
 SPDT (On/On)
 SPST
-Secondary Lead Spacing
-Secondary Leads
 Shorting
 Single - North
 Single - South
