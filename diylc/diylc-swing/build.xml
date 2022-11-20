@@ -3,7 +3,7 @@
 	<taskdef name="bundleapp"
 	             classname="com.oracle.appbundler.AppBundlerTask"  />
 
-	<property name="src.dir" value="src" />
+	<property name="src.dir" value="${basedir}/src" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="build.dir" value="${basedir}/build" />
@@ -12,8 +12,8 @@
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
 	<property name="diylc.version" value="4.34.0" />
 	
-	<property name="osx.jre8.path" value="jre\osx\jre8u321\Contents\Home\" />
-	<property name="osx.jre8m1.path" value="jre\osx\zulu-8.jre\Contents\Home\" />
+	<property name="osx.jre8.path" value="tools\jre\osx\jre8u321\Contents\Home\" />
+	<property name="osx.jre8m1.path" value="tools\jre\osx\zulu-8.jre\Contents\Home\" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -175,7 +175,7 @@
 			</zip>
 		</target>
 
-	<property name="izpack-dist" value="tools\IzPack" />
+	<property name="izpack-dist" value="tools/IzPack" />
 
 	<path id="lib.path">
 		<fileset dir="${izpack-dist}/lib" includes="*.jar" />
@@ -187,7 +187,7 @@
 		<exec executable="tools\innosetup\iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
 			<arg value="/Fdiylc-${diylc.version}-win"/>
-			<arg value="install.iss"/>
+			<arg value="tools/install.iss"/>
 		</exec>
 	</target>
 	
@@ -208,14 +208,14 @@
 			<zipfileset dir="themes" prefix="themes" />
 			<zipfileset dir="fonts" prefix="fonts" />
 			<zipfileset dir="lang" prefix="lang" />
-			<zipfileset dir="." includes="splash.png" />
-			<zipfileset dir="." includes="run.sh" />
-			<zipfileset dir="." includes="diylc.l4j.ini" />
-			<zipfileset dir="." includes="diylc.exe" />
+			<zipfileset dir="deploy" includes="splash.png" />
+			<zipfileset dir="deploy" includes="run.sh" />
+			<zipfileset dir="deploy" includes="diylc.l4j.ini" />
+			<zipfileset dir="deploy" includes="diylc.exe" />
 			<zipfileset dir="icons" includes="*.png" prefix="icons" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.desktop" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.metainfo.xml" />
-			<zipfileset dir="jre/win/jre1.8.0_211" prefix="jre" />
+			<zipfileset dir="tools/jre/win/jre1.8.0_211" prefix="jre" />
 		</zip>
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
