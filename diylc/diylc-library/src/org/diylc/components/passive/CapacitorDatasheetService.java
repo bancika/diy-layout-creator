@@ -54,7 +54,7 @@ public class CapacitorDatasheetService {
   public CapacitorDatasheet lookup(Class<?> clazz, String key, Voltage voltage, Capacitance value,
       Boolean polarized) {
 
-    String lookupKey = key + "|" + format.format(voltage.getNormalizedValue()) + " VDC"
+    String lookupKey = key + "|" + format.format(voltage.getNormalizedValue()) + " V"
         + (Optional.ofNullable(polarized).map(p -> p ? "" : " NP").orElse(""));
 
     String cacheKey = clazz.getName() + lookupKey + "|" + format.format(value.getNormalizedValue());
