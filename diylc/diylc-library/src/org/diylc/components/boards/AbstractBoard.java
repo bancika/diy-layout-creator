@@ -325,10 +325,11 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   }
 
   public void setLength(Size length) {
-    if (getMode() == BoardSizingMode.Explicit) {
-      setControlPoint(firstPoint, 0);
-      Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(), firstPoint.getY() + width.convertToPixels());
-      setControlPoint(second, 1);
+    if (getMode() == BoardSizingMode.Explicit && length != null && width != null) {
+      setControlPoint(firstPoint, 0);      
+      Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(),
+          firstPoint.getY() + width.convertToPixels());
+      setControlPoint(second, 1);    
     }
     this.length = length;    
   }
@@ -343,7 +344,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   }
 
   public void setWidth(Size width) {
-    if (getMode() == BoardSizingMode.Explicit) {
+    if (getMode() == BoardSizingMode.Explicit && length != null && width != null) {
       setControlPoint(firstPoint, 0);
       Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(), firstPoint.getY() + width.convertToPixels());
       setControlPoint(second, 1);
