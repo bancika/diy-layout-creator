@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+  ~ IzPack - Copyright 2001-2012 Julien Ponge, All Rights Reserved.
+  ~
+  ~ http://izpack.org/
+  ~ http://izpack.codehaus.org/
+  ~
+  ~ Copyright 2012 Tim Anderson
+  -
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:types="http://izpack.org/schema/types"
+           targetNamespace="http://izpack.org/schema/conditions"
+           xmlns="http://izpack.org/schema/conditions">
+
+    <xs:import namespace="http://izpack.org/schema/types"
+               schemaLocation="http://izpack.org/schema/5.0/izpack-types-5.0.xsd"/>
+
+    <xs:element name="conditions">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:conditionsType">
+                    <xs:attribute name="version" type="xs:string" fixed="5.0" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

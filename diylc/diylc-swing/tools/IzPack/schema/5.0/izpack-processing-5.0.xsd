@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!--
+  ~ IzPack - Copyright 2001-2012 Julien Ponge, All Rights Reserved.
+  ~
+  ~ http://izpack.org/
+  ~ http://izpack.codehaus.org/
+  ~
+  ~ Copyright 2012 Tim Anderson
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:types="http://izpack.org/schema/types"
+           targetNamespace="http://izpack.org/schema/processing"
+           xmlns="http://izpack.org/schema/processing">
+
+    <xs:import namespace="http://izpack.org/schema/types"
+               schemaLocation="http://izpack.org/schema/5.0/izpack-types-5.0.xsd"/>
+
+    <xs:element name="processing">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="logfiledir" type="xs:string" minOccurs="0"/>
+                <xs:element name="job" type="jobType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="onFail" type="onFailType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="onSuccess" type="onSuccessType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:string" fixed="5.0"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="jobType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="executeForPack" type="executeForPackType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="os" type="types:osType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="executefile" type="executeFileType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="executeclass" type="executeClassType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="condition" type="xs:string" use="optional"/>
+        <xs:attribute name="catch" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="final" type="xs:boolean" use="optional" default="false"/>
+    </xs:complexType>
+
+    <xs:complexType name="executeFileType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="arg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="env" minOccurs="0" maxOccurs="unbounded">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value=".*=.*"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="workingDir" type="xs:string" use="optional"/>
+        <xs:attribute name="onError" use="optional" default="ask">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="ask"/>
+                    <xs:enumeration value="fail"/>
+		    <xs:enumeration value="ignore"/>                    
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="executeClassType">
+        <xs:sequence>
+            <xs:element name="arg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+    
+    <xs:complexType name="executeForPackType">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="onFailType">
+        <xs:attribute name="condition" type="xs:string" use="optional"/>
+        <xs:attribute name="previous" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="next" type="xs:boolean" use="optional" default="false"/>
+    </xs:complexType>
+
+    <xs:complexType name="onSuccessType">
+        <xs:attribute name="condition" type="xs:string" use="optional"/>
+        <xs:attribute name="previous" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="next" type="xs:boolean" use="optional" default="true"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<!--
+  ~ IzPack - Copyright 2001-2012 Julien Ponge, All Rights Reserved.
+  ~
+  ~ http://izpack.org/
+  ~ http://izpack.codehaus.org/
+  -
+  ~ Copyright 2012 Tim Anderson
+  -
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:types="http://izpack.org/schema/types"
+           targetNamespace="http://izpack.org/schema/configurationactions"
+           xmlns="http://izpack.org/schema/configurationactions">
+
+    <xs:import namespace="http://izpack.org/schema/types"
+               schemaLocation="http://izpack.org/schema/5.0/izpack-types-5.0.xsd"/>
+
+    <xs:element name="configurationactions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="pack" type="packType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:string" fixed="5.0" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="packType">
+        <xs:sequence>
+            <xs:element name="configurationaction" type="configurationActionType" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="variablesType">
+        <xs:sequence>
+            <xs:element name="variable" type="types:dynamicVariableType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="configurationActionType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="variablesType" type="types:dynamicVariableType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="configurableset" type="configurableSetType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="configurable" type="configurableType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="order" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="configurableType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="xpathproperty" type="xpathPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="entry" type="entryType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="fileset" type="fileSetType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="type" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="options"/>
+                    <xs:enumeration value="ini"/>
+                    <xs:enumeration value="xml"/>
+                    <xs:enumeration value="registry"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="tofile" type="xs:string" use="required"/>
+        <xs:attribute name="patchfile" type="xs:string" use="optional"/>
+        <xs:attribute name="originalfile" type="xs:string" use="optional"/>
+        <xs:attribute name="configfile" type="xs:string" use="optional"/>
+        <xs:attribute name="create" type="xs:boolean" use="optional"/>
+        <xs:attribute name="keepOldKeys" type="xs:boolean" use="optional"/>
+        <xs:attribute name="keepOldValues" type="xs:boolean" use="optional"/>
+        <xs:attribute name="resolveExpressions" type="xs:boolean" use="optional"/>
+        <xs:attribute name="escape" type="xs:boolean" use="optional"/>
+        <xs:attribute name="escapeNewLine" type="xs:boolean" use="optional"/>
+        <xs:attribute name="headerComment" type="xs:boolean" use="optional"/>
+        <xs:attribute name="emptyLines" type="xs:boolean" use="optional"/>
+        <xs:attribute name="operator" type="xs:string" use="optional"/>
+        <xs:attribute name="condition" type="xs:string" use="optional"/>
+        <xs:attribute name="cleanup" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="configurableSetType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="fileset" type="fileSetType"/>
+            <xs:element name="mapper" type="mapperType"/>
+        </xs:choice>
+        <xs:attribute name="type" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="options"/>
+                    <xs:enumeration value="ini"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="fromfile" type="xs:string" use="optional"/>
+        <xs:attribute name="todir" type="xs:string" use="optional"/>
+        <xs:attribute name="tofile" type="xs:string" use="optional"/>
+        <xs:attribute name="keepOldKeys" type="xs:boolean" use="optional"/>
+        <xs:attribute name="keepOldValues" type="xs:boolean" use="optional"/>
+        <xs:attribute name="resolveExpressions" type="xs:boolean" use="optional"/>
+        <xs:attribute name="failonerror" type="xs:boolean" use="optional"/>
+        <xs:attribute name="includeemptydirs" type="xs:boolean" use="optional"/>
+        <xs:attribute name="overwrite" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="preservelastmodified" type="xs:boolean" use="optional"/>
+        <xs:attribute name="enablemultiplemappings" type="xs:boolean" use="optional"/>
+        <xs:attribute name="condition" type="xs:string" use="required"/>
+        <xs:attribute name="cleanup" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="fileSetType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="include" type="types:includeExcludeType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="exclude" type="types:includeExcludeType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="dir" type="xs:string" use="required"/>
+        <xs:attribute name="casesensitive" type="xs:boolean" use="optional"/>
+        <xs:attribute name="defaultexcludes" type="xs:boolean" use="optional"/>
+        <xs:attribute name="followsymlinks" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="mapperType">
+        <xs:attribute name="type">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="identity"/>
+                    <xs:enumeration value="flatten"/>
+                    <xs:enumeration value="glob"/>
+                    <xs:enumeration value="merge"/>
+                    <xs:enumeration value="regexp"/>
+                    <xs:enumeration value="package"/>
+                    <xs:enumeration value="unpackage"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="from" type="xs:string" use="required"/>
+        <xs:attribute name="to" type="xs:string" use="required"/>
+        <xs:attribute name="casesensitive" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="entryType">
+        <xs:attribute name="section" type="xs:string" use="optional"/>
+        <xs:attribute name="key" type="xs:string" use="optional"/>
+        <xs:attribute name="value" type="xs:string" use="optional"/>
+        <xs:attribute name="data" type="xs:string" use="optional"/>
+        <xs:attribute name="fromkey" type="xs:string" use="optional"/>
+        <xs:attribute name="tokey" type="xs:string" use="optional"/>
+        <xs:attribute name="dataType" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="int"/>
+                    <xs:enumeration value="date"/>
+                    <xs:enumeration value="string"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="lookupType" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="plain"/>
+                    <xs:enumeration value="regexp"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="operation" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="+"/>
+                    <xs:enumeration value="-"/>
+                    <xs:enumeration value="="/>
+                    <xs:enumeration value="remove"/>
+                    <xs:enumeration value="keep"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="unit" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="millisecond"/>
+                    <xs:enumeration value="second"/>
+                    <xs:enumeration value="minute"/>
+                    <xs:enumeration value="hour"/>
+                    <xs:enumeration value="day"/>
+                    <xs:enumeration value="week"/>
+                    <xs:enumeration value="month"/>
+                    <xs:enumeration value="year"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="default" use="optional"/>
+        <xs:attribute name="pattern" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="xpathPropertyType">
+        <xs:attribute name="key" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+  ~ IzPack - Copyright 2001-2012 Julien Ponge, All Rights Reserved.
+  ~
+  ~ http://izpack.org/
+  ~ http://izpack.codehaus.org/
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://izpack.org/schema/compilation"
+           xmlns="http://izpack.org/schema/compilation">
+
+    <xs:element name="compilation">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="global" type="globalType"/>
+                <xs:element name="jobs" type="jobsType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:string" fixed="5.0"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="globalType">
+        <xs:sequence>
+            <xs:element name="compiler">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="choice" type="choiceType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="arguments">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="choice" type="choiceType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="choiceType">
+        <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="jobsType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="classpath" type="classpathType" minOccurs="0"/>
+            <xs:element name="job" type="jobType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="classpathType">
+        <xs:attribute name="add" type="xs:string" use="optional"/>
+        <xs:attribute name="sub" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="jobType">
+        <xs:choice>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="packdependency" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="classpath" type="classpathType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="directory">
+                        <xs:complexType>
+                            <xs:attribute name="name" type="xs:string" use="required"/>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="file">
+                        <xs:complexType>
+                            <xs:attribute name="name" type="xs:string" use="required"/>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:choice>
+            </xs:choice>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+</xs:schema>

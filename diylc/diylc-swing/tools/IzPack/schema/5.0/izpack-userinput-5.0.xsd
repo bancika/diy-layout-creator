@@ -1,0 +1,664 @@
+<?xml version="1.0"?>
+<!--
+  ~ IzPack - Copyright 2001-2012 Julien Ponge, All Rights Reserved.
+  ~
+  ~ http://izpack.org/
+  ~ http://izpack.codehaus.org/
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--
+ | Schema for user input specification.
+ |
+ | Author: jochen.hinrichsen@kambrium.net
+ |         Tim Anderson
+ |______________________________________________________________________________
+-->
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:types="http://izpack.org/schema/types"
+           targetNamespace="http://izpack.org/schema/userinput"
+           xmlns="http://izpack.org/schema/userinput" xmlns:as="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import namespace="http://izpack.org/schema/types"
+               schemaLocation="http://izpack.org/schema/5.0/izpack-types-5.0.xsd"/>
+
+    <xs:element name="userinput">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="variable" type="types:variableType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="panel" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:choice maxOccurs="unbounded">
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="createForPack">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="field" type="fieldType" maxOccurs="unbounded"/>
+                        </xs:choice>
+                        <xs:attribute name="id" type="xs:string" use="required"/>
+                        <xs:attribute name="topBuffer" type="xs:integer" use="optional" default="25">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    The percentage of left over vertical space to place on top of the components.
+                                    A value of 0 is useful to avoid components moving up and down during
+                                    dynamic validation where components are shown and hidden. The topBuffer may also
+                                    represent the number of pixels to place on top of the components rather than the
+                                    percentage of left over space if the rigid attribute is set to true.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="displayHidden" type="xs:boolean" use="optional" default="false">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    When set to true, fields on this panel will be shown as disabled when the field's
+                                    conditionid evaluates to false. When set to false or not specified, fields will be
+                                    hidden if its conditionid evaluates to false.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="displayHiddenCondition" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    The condition to activate the "displayHidden" mode.
+                                    Cannot be used with displayHidden="true" at the same time.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="readonly" type="xs:boolean" use="optional" default="false">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    When set to true, all fields on this panel will be shown as disabled.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="readonlyCondition" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    The condition to activate the "readonly" mode.
+                                    Cannot be used with readonly="true" at the same time.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="rigid" type="xs:boolean" use="optional" default="false">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    When set to true, the topBuffer will represent the number of pixels to place on top
+                                    of the components rather than the percentage of left over space to place on top of
+                                    the components. This is useful the avoid components moving up and down during
+                                    dynamic validation where components are shown and hidden, and where you would still
+                                    like a gap to be placed on top of the components.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="summaryKey" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    The summary key attribute will allow your UserInputPanel to be displayed on the
+                                    SummaryPanel. The value of the summaryKey attribute within the panel tags represents
+                                    the caption/header that will be shown in the SummaryPanel. The value represents the
+                                    key of your string defined in your langpacks.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:string" fixed="5.0" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="fieldType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="description" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="id" type="xs:string" use="optional"/>
+                    <xs:attribute name="txt" type="xs:string" use="optional"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="spec">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="pwd" type="passwordSpecType" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="choice" type="choiceSpecType" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="col" type="columnFieldColSpecType" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="processor" type="fieldProcessorType" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="run" type="buttonFieldSpecRunType" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:choice>
+                    <xs:attribute name="id" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>ID of the label translation.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="txt" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Default text when no label translation can be found.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="false" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "check" fields as value when unchecked</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="true" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "check" fields as value when checked</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="successMsg" type="xs:string" use="optional" default="">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Used by "button" fields:
+                                ID of the translation or text of the success message if the action or validator
+                                executed without issue.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="filename" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "search" fields</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="checkfilename" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "search" fields</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="type" type="searchType" use="optional" default="file">
+                        <xs:annotation>
+                            <xs:documentation>Used by "search" fields</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="result" type="searchResultType" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Required by "search" fields, optional otherwise</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="fileext" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "file", "multiFile" fields</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="fileextdesc" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "file", "multiFile" fields</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="visibleRows" type="xs:unsignedInt" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "multiFile" fields</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="prefX" type="xs:unsignedInt" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "multiFile" fields. Indicates the preferred
+                                width of the field
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="prefY" type="xs:unsignedInt" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "multiFile" fields. Indicates the preferred
+                                height of the field
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="multipleVariables" type="xs:boolean" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "multiFile" fields. If true, a variable will
+                                be created to hold each file. If false, a single variable will be used;
+                                file names will be concatenated together, separated by a semicolon
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="allowEmptyValue" type="xs:boolean" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Used by "file", "multiFile" "dir", fields</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="mustExist" type="xs:boolean" use="optional" default="true">
+                        <xs:annotation>
+                            <xs:documentation>
+                              Determines if the directory must exist to continue.
+                              Used by the "dir" field.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="create" type="xs:boolean" use="optional" default="false">
+                        <xs:annotation>
+                            <xs:documentation>
+                              Determines if the directory are created if they don't exist.
+                              Used by the "dir" field.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="layout" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Used by the "rule" field.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="resultFormat" type="ruleFieldResultFormatType" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>
+                                How the result should be assembled back from the single field parts of a rule field.
+                                Used by the "rule" field.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="separator" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>
+                                This is a string used as the alternative separator string when assembling the result.
+                                Used by the "rule" field when using resultFormat="specialSeparator".
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="size" type="xs:unsignedByte" use="optional"/>
+                    <xs:attribute name="set" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The value for this field forced to be set as initial value and which overrides previous
+                                values.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="default" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The default value for this field is the assigned "variable" has not been initialized.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="omitFromAuto" type="xs:boolean" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Whether to omit the field variable's value from being written to the auto-install.xml
+                                    record initiated from the FinishPanel (if used).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="os" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="family" type="xs:string" use="optional"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="validator" type="fieldValidatorType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="type" type="typeType" use="required"/>
+        <xs:attribute name="variable" type="xs:string" use="optional"/>
+        <xs:attribute name="conditionid" type="xs:string" use="optional"/>
+        <xs:attribute name="id" type="xs:string" use="optional"/>
+        <xs:attribute name="txt" type="xs:string" use="optional"/>
+        <xs:attribute name="bold" type="xs:boolean" use="optional"/>
+        <xs:attribute name="size" type="xs:float" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Used by "title" fields to determine the font size
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="align" type="alignType" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Used by "title" and "divider" fields
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="summaryKey" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    The summary key attribute will allow your UserInputPanel field to be displayed on the
+                    SummaryPanel. The value of the summaryKey attribute within the panel tags represents
+                    the label/key that will be shown in the SummaryPanel. The value represents the
+                    key of your string defined in your langpacks. On the SummaryPanel the label/key will be followed by
+                    a space and the value of the variable you are summarizing.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="displayHidden" type="xs:boolean" use="optional" default="false">
+            <xs:annotation>
+                <xs:documentation>
+                    When set to true, this field will be shown as disabled when its
+                    conditionid evaluates to false. When set to false or not specified, this field will be
+                    hidden if its conditionid evaluates to false.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="displayHiddenCondition" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    The condition to activate the "displayHidden" mode for this field.
+                    Cannot be used with displayHidden="true" at the same time.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="readonly" type="xs:boolean" use="optional" default="false">
+            <xs:annotation>
+                <xs:documentation>
+                    When set to true, this field will be shown as disabled.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="readonlyCondition" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    The condition to activate the "readonly" mode for this field.
+                    Cannot be used with readonly="true" at the same time.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="tooltip" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    The tooltip attribute allows a UserInputPanel field to add the specified tooltip to its
+                    component children. The value of tooltip must be the id of the string in langpacks.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="minRow" type="xs:positiveInteger" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Minimal number of rows displayed in a "custom" field.
+                    Used by "custom" fields.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="maxRow" type="xs:positiveInteger" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Maximal number of rows displayed in a "custom" field, before the Add button gets deactivated.
+                    Used by "custom" fields.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <!--                                                                                                        -->
+    <!-- Choice specification                                                                                   -->
+    <!--                                                                                                       -->
+    <!-- Used by "combo", "radio" and "search" fields                                                           -->
+    <!--                                                                                                        -->
+    <xs:complexType name="choiceSpecType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="os" type="types:osType" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Used by "search" fields
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="processor" type="fieldProcessorType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="os" type="types:osFamilyAttributeType" use="optional"/>
+        <xs:attribute name="conditionid" type="xs:string" use="optional"/>
+        <xs:attribute name="processor" type="xs:string" use="optional"/>
+        <xs:attribute name="set" type="xs:string" use="optional"/>
+        <xs:attribute name="id" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Used by "radio" fields to look up the language pack to localise the radio button text
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="txt" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Used by "radio" fields for the radio button text if the "id" attribute isn't present or
+                    no localised text could be found
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="value" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <!--                                                                                                        -->
+    <!-- Password specification                                                                                 -->
+    <!--                                                                                                        -->
+    <xs:complexType name="passwordSpecType">
+        <xs:attribute name="id" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Used to look up the language pack to localise the password label text
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="txt" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Used for the password label text if the "id" attribute isn't present or no localised text could be
+                    found
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="size" type="xs:unsignedByte" use="required"/>
+        <xs:attribute name="set" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="columnFieldColSpecType">
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="field" type="fieldType" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="validator" type="fieldValidatorType" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="fieldProcessorType" >
+        <xs:complexContent>
+            <xs:extension base="types:configurationSectionType">
+                <xs:attribute name="class" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The class implementing the field processor.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="backupVariable" type="xs:string" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Optional variable name holding the original value before processing.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="toVariable" type="xs:string" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Optional variable name holding the value after processing.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="buttonFieldSpecRunType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="msg" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Indicate the key to be used to obtain the given text from the your cusom action or
+                                validator.
+                                Common names may include 'warn', 'error', 'info', this will become more apparent if
+                                default button actions are implemented.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="id" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The translation or text you want to pass to your custom button action class.
+                                Attempts to retrieve text from the appropriate CustomLangPack file.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="class" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    The class to be run when the button is clicked.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="fieldValidatorType">
+        <xs:complexContent>
+            <xs:extension base="types:configurationSectionType">
+                <xs:attribute name="id" type="xs:string" use="optional"/>
+                <xs:attribute name="txt" type="xs:string" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The default text to display on a validation error when no translation can be found for
+                            the "id".
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="class" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!--                                                                                                        -->
+    <!-- Field type                                                                                             -->
+    <!--                                                                                                        -->
+    <xs:simpleType name="typeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="button"/>
+            <xs:enumeration value="check"/>
+            <xs:enumeration value="combo"/>
+            <xs:enumeration value="custom"/>
+            <xs:enumeration value="dir"/>
+            <xs:enumeration value="divider"/>
+            <xs:enumeration value="file"/>
+            <xs:enumeration value="multiFile"/>
+            <xs:enumeration value="password"/>
+            <xs:enumeration value="radio"/>
+            <xs:enumeration value="rule"/>
+            <xs:enumeration value="search"/>
+            <xs:enumeration value="space"/>
+            <xs:enumeration value="staticText"/>
+            <xs:enumeration value="text"/>
+            <xs:enumeration value="title"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--                                                                                                        -->
+    <!-- Miscellaneous types                                                                                    -->
+    <!--                                                                                                        -->
+    <xs:simpleType name="searchType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="file"/>
+            <xs:enumeration value="directory"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="searchResultType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="file"/>
+            <xs:enumeration value="directory"/>
+            <xs:enumeration value="parentdir"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ruleFieldResultFormatType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="plainString">
+                <as:annotation>
+                    <xs:documentation>
+                        Specifies to return the contents of all fields concatenated into one long string, with
+                        separation between each component.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="displayFormat">
+                <as:annotation>
+                    <xs:documentation>
+                        Specifies to return the contents of all fields together with all separators as specified in the
+                        field format concatenated into one long string.
+                        In this case the resulting string looks just like the user saw it during data entry.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="specialSeparator">
+                <as:annotation>
+                    <xs:documentation>
+                        Specifies to return the contents of all fields concatenated into one long string, with a
+                        special separator string inserted in between the individual components.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="processed">
+                <as:annotation>
+                    <xs:documentation>
+                        Specifies to return the contents of all fields using a Processor.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="alignType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="left">
+                <as:annotation>
+                    <xs:documentation>
+                        At present only used by "title" fields. Note that "top" and "bottom" are
+                        not applicable to "title" fields.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="center">
+                <as:annotation>
+                    <xs:documentation>
+                        At present only used by "title" fields. Note that "top" and "bottom" are
+                        not applicable to "title" fields.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="right">
+                <as:annotation>
+                    <xs:documentation>
+                        At present only used by "title" fields. Note that "top" and "bottom" are
+                        not applicable to "title" fields.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="top">
+                <as:annotation>
+                    <xs:documentation>
+                        At present only used by "divider" fields. Note that "left", "center" and "right" are
+                        not applicable to "divider" fields.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bottom">
+                <as:annotation>
+                    <xs:documentation>
+                        At present only used by "divider" fields. Note that "left", "center" and "right" are
+                        not applicable to "divider" fields.
+                    </xs:documentation>
+                </as:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

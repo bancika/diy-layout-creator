@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!--
+  ~ IzPack - Copyright 2001-2013 Julien Ponge, All Rights Reserved.
+  ~
+  ~ http://izpack.org/
+  ~ http://izpack.codehaus.org/
+  ~
+  ~ Copyright 2012 Tim Anderson
+  -
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:types="http://izpack.org/schema/types"
+           targetNamespace="http://izpack.org/schema/shortcuts"
+           xmlns="http://izpack.org/schema/shortcuts">
+
+    <xs:import namespace="http://izpack.org/schema/types"
+               schemaLocation="http://izpack.org/schema/5.0/izpack-types-5.0.xsd"/>
+
+    <xs:element name="shortcuts">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="skipIfNotSupported" minOccurs="0"/>
+                <xs:element name="defaultCurrentUser" minOccurs="0"/>
+                <xs:element name="notSupported" minOccurs="0"/>
+                <xs:element name="lateShortcutInstall" minOccurs="0"/>
+                <xs:element name="programGroup" type="programGroupType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="shortcut" type="shortcutType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="previousDisabled" minOccurs="0" default="false"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:string" fixed="5.0" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="programGroupType">
+        <xs:attribute name="installGroup" type="xs:string" use="optional"/>
+        <xs:attribute name="defaultName" type="xs:string" use="optional"/>
+        <xs:attribute name="iconFile" type="xs:string" use="optional"/>
+        <xs:attribute name="comment" type="xs:string" use="optional"/>
+        <xs:attribute name="location" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="shortcutType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="os" type="types:osType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="createForPack" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="condition" type="xs:string" use="optional"/>
+        <xs:attribute name="subgroup" type="xs:string" use="optional"/>
+        <xs:attribute name="description" type="xs:string" use="optional"/>
+        <xs:attribute name="target" type="xs:string" use="optional"/>
+        <xs:attribute name="commandLine" type="xs:string" use="optional"/>
+        <xs:attribute name="iconFile" type="xs:string" use="optional"/>
+        <xs:attribute name="iconIndex" type="xs:string" use="optional"/>
+        <xs:attribute name="workingDirectory" type="xs:string" use="optional"/>
+        <xs:attribute name="initialState" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="noShow"/>
+                    <xs:enumeration value="normal"/>
+                    <xs:enumeration value="maximized"/>
+                    <xs:enumeration value="minimized"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="desktop" type="types:yesNoTrueFalseType" use="optional"/>
+        <xs:attribute name="applications" type="types:yesNoTrueFalseType" use="optional"/>
+        <xs:attribute name="startMenu" type="types:yesNoTrueFalseType" use="optional"/>
+        <xs:attribute name="startup" type="types:yesNoTrueFalseType" use="optional"/>
+        <xs:attribute name="programGroup" type="types:yesNoTrueFalseType" use="optional"/>
+        <xs:attribute name="runAsAdministrator" type="xs:boolean" use="optional"/>
+        
+        <xs:attribute name="encoding" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="mimetype" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="terminal" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="terminalOptions" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="type" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="url" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="KdeSubstUID" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="KdeUsername" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="categories" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="tryexec" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="createForAll" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Linux specific</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+</xs:schema>

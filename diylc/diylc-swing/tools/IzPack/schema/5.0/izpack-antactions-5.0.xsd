@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<!--
+  ~ IzPack - Copyright 2001-2012 Julien Ponge, All Rights Reserved.
+  ~
+  ~ http://izpack.org/
+  ~ http://izpack.codehaus.org/
+  ~
+  ~ Copyright 2012 Tim Anderson
+  -
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://izpack.org/schema/antactions"
+           xmlns="http://izpack.org/schema/antactions">
+
+    <xs:element name="antactions">
+        <xs:annotation>
+            <xs:documentation>The root element</xs:documentation>
+            <xs:documentation>Attribute order determine at what point of installation the antcalls
+                defined by ELEMENT target should be performed.
+            </xs:documentation>
+            <xs:documentation>Attribute uninstall_order determine at what point of uninstallation
+                the antcalls defined by ELEMENT uninstall_target should be performed.
+            </xs:documentation>
+            <xs:documentation>ID of the message which should be displayed in the InstallPanel. The ID
+                is related to the &amp;lt;language&amp;gt;.xml file.
+            </xs:documentation>
+            <xs:documentation>Path of the file which contains the antcall. Either buildfile or buildresource
+                must be specified, but not both
+            </xs:documentation>
+            <xs:documentation>Id of the resource which contains the antcall. Either buildresource or buildfile
+                must be specifeid, but not both
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="pack" type="packType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:string" fixed="5.0" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="packType">
+        <xs:annotation>
+            <xs:documentation>The pack sections. The names should be the same as the pack sections in
+                the install xml file. The defined action is only invoked for packs that are selected for installation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="antcall" type="antCallType" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="antCallType">
+        <xs:annotation>
+            <xs:documentation>The antcall section. It defines what antcall to perform at what time
+                of installation with what environment.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="property" type="propertyType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="propertyfile" type="propertyFileType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="target" type="targetType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="uninstall_target" type="uninstallTargetType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="order" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                    <xs:enumeration value="beforepack"/>
+                    <xs:enumeration value="afterpack"/>
+                    <xs:enumeration value="beforepacks"/>
+                    <xs:enumeration value="afterpacks"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="uninstall_order" default="beforedeletion">
+            <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                    <xs:enumeration value="beforedeletion"/>
+                    <xs:enumeration value="afterdeletion"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="quiet" default="no">
+            <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                    <xs:enumeration value="yes"/>
+                    <xs:enumeration value="no"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="verbose" default="no">
+            <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                    <xs:enumeration value="yes"/>
+                    <xs:enumeration value="no"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="loglevel" default="info">
+            <xs:annotation>
+                <xs:documentation>
+                    The Ant log priority level the action should use when logging.
+                    This will be handed out to Ant and is the threshold which must be reached before Ant logs a message.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                    <xs:enumeration value="error"/>
+                    <xs:enumeration value="warning"/>
+                    <xs:enumeration value="info"/>
+                    <xs:enumeration value="verbose"/>
+                    <xs:enumeration value="debug"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="severity" default="error">
+            <xs:annotation>
+                <xs:documentation>
+                    The severity of this action in case of errors.
+                    This tells the installer how to deal with an Ant build failure, e. g. which types of user dialogs
+                    should pop up with the given message.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:NMTOKEN">
+                    <xs:enumeration value="information"/>
+                    <xs:enumeration value="question"/>
+                    <xs:enumeration value="warning"/>
+                    <xs:enumeration value="error"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="logfile" type="xs:string" use="optional"/>
+        <xs:attribute name="logfile_append" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="messageid" type="xs:string"/>
+        <xs:attribute name="buildfile" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    The Ant buildfile that must be preinstalled before.
+                    Cannot be just together with "buildresource".
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="buildresource" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    The Ant build resource that must be declared with this name in the resources section.
+                    Cannot be just together with "buildfile".
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="dir" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    The base directory for the called Ant build.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="condition" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="propertyType">
+        <xs:annotation>
+            <xs:documentation>Properties to be used with all targets and uninstall_targets
+                which are defined for this antcall.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="propertyFileType">
+        <xs:annotation>
+            <xs:documentation>Properties to be used with all targets and uninstall_targets
+                which are defined for this antcall given by the path of a properties
+                file..
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="path" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="targetType">
+        <xs:annotation>
+            <xs:documentation>Targets to perform with this antcall at installation time.
+                The targets should be defined in the given buildfile, else an
+                ant exception will be raised.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="uninstallTargetType">
+        <xs:annotation>
+            <xs:documentation>Targets to perform with this antcall at uninstallation time.
+                The targets should be defined in the given buildfile, else an
+                ant exception will be raised.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="name" type="xs:string"/>
+    </xs:complexType>
+
+</xs:schema>

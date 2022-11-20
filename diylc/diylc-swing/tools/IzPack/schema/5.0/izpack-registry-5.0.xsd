@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<!--
+  ~ IzPack - Copyright 2001-2012 Julien Ponge, All Rights Reserved.
+  ~
+  ~ http://izpack.org/
+  ~ http://izpack.codehaus.org/
+  ~
+  ~ Copyright 2012 Tim Anderson
+  -
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://izpack.org/schema/registry"
+           xmlns="http://izpack.org/schema/registry">
+
+    <xs:element name="registry">
+        <xs:annotation>
+            <xs:documentation>The root element</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="pack" type="packType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:string" fixed="5.0" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="packType">
+        <xs:annotation>
+            <xs:documentation>The pack. The name should be the same as the pack in the install xml file. The defined
+                actions are performed only for packs which are selected for installation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="key" type="keyType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="value" type="valueType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="keyType">
+        <xs:annotation>
+            <xs:documentation>The key section. It defines what key should be created
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="keypath" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>The key path under which the value should be placed
+                    in Windows syntax without the root.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="root" type="rootType" use="required">
+            <xs:annotation>
+                <xs:documentation>Root of the key as symbol.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="rootFallback" type="rootType" use="optional">
+            <xs:annotation>
+                <xs:documentation>Fallback root in case root fails.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType name="rootType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="HKCR"/>
+            <xs:enumeration value="HKCU"/>
+            <xs:enumeration value="HKLM"/>
+            <xs:enumeration value="HKU"/>
+            <xs:enumeration value="HKPD"/>
+            <xs:enumeration value="HKCC"/>
+            <xs:enumeration value="HKDDS"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="valueType">
+        <xs:annotation>
+            <xs:documentation>The value section. It defines, what value should be created or modified
+                with what contents. The type of contents will be implicit determined
+                by the setting. Only one setting of the types are valid.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="bin" type="binType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="multi" type="multiType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Name of the value to be set or modified</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="keypath" type="xs:string" use="required"/>
+        <xs:attribute name="root" type="rootType" use="required"/>
+        <xs:attribute name="rootFallback" type="rootType" use="optional">
+            <xs:annotation>
+                <xs:documentation>Fallback root in case root fails.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="override" type="xs:boolean" default="true">
+            <xs:annotation>
+                <xs:documentation>Override any existing value or not</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="string" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>Contents for value of type STRING</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="dword" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>Contents for value of type DWORD</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="binType">
+        <xs:annotation>
+            <xs:documentation>Contents for value of type BINARY written as comma separated list of hex
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="data" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="multiType">
+        <xs:annotation>
+            <xs:documentation>Contents for value of type MULTI_STRING</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="data" type="xs:string" use="required"/>
+    </xs:complexType>
+</xs:schema>

@@ -10,7 +10,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.33.0" />
+	<property name="diylc.version" value="4.34.0" />
 	
 	<property name="osx.jre8.path" value="jre\osx\jre8u321\Contents\Home\" />
 	<property name="osx.jre8m1.path" value="jre\osx\zulu-8.jre\Contents\Home\" />
@@ -175,7 +175,7 @@
 			</zip>
 		</target>
 
-	<property name="izpack-dist" value="e:\bane\dev\IzPack" />
+	<property name="izpack-dist" value="tools\IzPack" />
 
 	<path id="lib.path">
 		<fileset dir="${izpack-dist}/lib" includes="*.jar" />
@@ -184,7 +184,7 @@
 	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask" classpathref="lib.path" />
 
 	<target name="win" depends="jar">
-		<exec executable="innosetup\iscc.exe">
+		<exec executable="tools\innosetup\iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
 			<arg value="/Fdiylc-${diylc.version}-win"/>
 			<arg value="install.iss"/>

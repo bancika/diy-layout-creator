@@ -21,7 +21,7 @@ Source: "themes\*"; DestDir: "{app}\themes"
 Source: "lang\*"; DestDir: "{app}\lang"
 Source: "fonts\*"; DestDir: "{app}\fonts"
 Source: "jre\win\jre1.8.0_211\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs
-Source: "innosetup\donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
+Source: "tools\innosetup\donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
 
 [Registry]
 Root: HKCR; Subkey: ".diy"; ValueData: "DIYLC"; Flags: uninsdeletevalue; ValueType: string; ValueName: ""
