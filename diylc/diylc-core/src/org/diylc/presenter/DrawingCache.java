@@ -134,7 +134,7 @@ public class DrawingCache {
       stats.getSecond().add(componentEnd - componentStart);
 
       // copy over tracking area from the cache, regardless if we rendered or not
-      g2d.merge(value.getCurrentArea(), value.getContinuityPositiveAreas(), value.getContinuityNegativeAreas(), value.getLayerId());      
+      g2d.merge(value.getCurrentArea(), value.getContinuityPositiveAreas(), value.getContinuityNegativeAreas());      
     } else {
       // no caching, just draw as usual
       component.draw(g2d, componentState, outlineMode, project, g2d);
@@ -264,7 +264,7 @@ public class DrawingCache {
       
       // add to the cache        
       value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
-          wrapper.getContinuityNegativeAreas(), wrapper.getLayerId(), componentState, outlineMode, zoom, dx, dy, rect);        
+          wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, dx, dy, rect);        
       imageCache.put(component, new SoftReference<DrawingCache.CacheValue>(value));
     }
     
@@ -283,13 +283,11 @@ public class DrawingCache {
     int dx;
     int dy;
     Rectangle2D cacheBounds;
-    int layerId;
 
     public CacheValue(IDIYComponent<?> component, BufferedImage image, Area currentArea,
-        Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas, int layerId,
+        Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas,
         ComponentState state, boolean outlineMode, double zoom, int dx, int dy, Rectangle2D cacheBounds) {
       super();
-      this.layerId = layerId;
       this.cacheBounds = cacheBounds;
       // take a copy of the component, so we can check if it changed in the meantime
       try {
@@ -325,10 +323,6 @@ public class DrawingCache {
     
     public Map<String, Area> getContinuityNegativeAreas() {
       return continuityNegativeAreas;
-    }
-    
-    public int getLayerId() {
-      return layerId;
     }
 
     public ComponentState getState() {

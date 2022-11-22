@@ -110,12 +110,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     points[1] = new Point2D.Double(targetSize / 2, 0);
   }
 
-  protected boolean isCopperArea() {
+  protected boolean IsCopperArea() {
     return false;
-  }
-  
-  protected int getLayerId() {
-    return 0;
   }
   
   protected Point2D[] getPoints() {
@@ -153,7 +149,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     Shape shape = getBodyShape();
     // If there's no body, just draw the line connecting the ending points.
     if (shape == null) {
-      drawLead(g2d, componentState, drawingObserver, isCopperArea());
+      drawLead(g2d, componentState, drawingObserver, IsCopperArea());
       return;
     }
     
@@ -419,7 +415,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
 
   private void drawLead(Graphics2D g2d, ComponentState componentState, IDrawingObserver observer, boolean isCopperArea) {
     if (isCopperArea)
-      observer.startTrackingContinuityArea(getLayerId(), true);
+      observer.startTrackingContinuityArea(true);
     
     float thickness = getLeadThickness();
     

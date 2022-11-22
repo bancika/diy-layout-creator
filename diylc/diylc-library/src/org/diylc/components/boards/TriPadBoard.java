@@ -84,7 +84,7 @@ public class TriPadBoard extends AbstractVeroBoard {
             }
 
             g2d.setColor(stripColor);
-            drawingObserver.startTrackingContinuityArea(1, true);  
+            drawingObserver.startTrackingContinuityArea(true);  
             g2d.fillRect((int)(x + spacing - stripSize / 2), (int)(y - stripSize / 2), (int)(spacing * (spacesToDraw - 1) + stripSize),
                 stripSize);
             drawingObserver.stopTrackingContinuityArea();
@@ -122,7 +122,7 @@ public class TriPadBoard extends AbstractVeroBoard {
             }
 
             g2d.setColor(stripColor);
-            drawingObserver.startTrackingContinuityArea(1, true);  
+            drawingObserver.startTrackingContinuityArea(true);  
             g2d.fillRect((int)(x - stripSize / 2), (int)(y + spacing - stripSize / 2), stripSize, (int)(spacing * (spacesToDraw - 1)
                 + stripSize));
             drawingObserver.stopTrackingContinuityArea();

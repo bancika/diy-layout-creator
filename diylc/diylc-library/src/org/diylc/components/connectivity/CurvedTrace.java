@@ -63,7 +63,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> {
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : color;
     g2d.setColor(curveColor);
-    drawingObserver.startTrackingContinuityArea(getLayer().getId(), true);
+    drawingObserver.startTrackingContinuityArea(true);
     g2d.draw(curve);
     drawingObserver.stopTrackingContinuityArea();
   }

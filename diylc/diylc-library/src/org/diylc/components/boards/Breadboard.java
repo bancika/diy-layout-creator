@@ -195,7 +195,7 @@ public class Breadboard extends AbstractProtoBoard {
     }
     
     // draw transparent connections just to designate connections
-    drawingObserver.startTrackingContinuityArea(1, true);
+    drawingObserver.startTrackingContinuityArea(true);
     Composite oldComposite = g2d.getComposite();
     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.0f));
         

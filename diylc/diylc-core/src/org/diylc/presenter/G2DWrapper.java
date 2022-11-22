@@ -82,7 +82,6 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   private boolean drawingComponent = false;
   private boolean trackingAllowed = true;
-  private int layerId;
   private boolean trackingContinuityAllowed = false;
   private boolean trackingContinuityPositive = true;
   
@@ -104,7 +103,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private String continuityMarker;
   private Shape lastShape;
 
-  private double zoom;   
+  private double zoom;  
 
   /**
    * Creates a wrapper around specified {@link Graphics2D} object.
@@ -134,7 +133,6 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     currentArea = new Area();
     continuityPositiveAreas = new HashMap<String, Area>();
     continuityNegativeAreas = new HashMap<String, Area>();
-    layerId = 0;
 //    trackingStacks.clear();
     continuityMarker = null;
     originalStroke = canvasGraphics.getStroke();
@@ -161,8 +159,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setComposite(originalComposite);
     canvasGraphics.setFont(originalFont);
 //    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);    
-    return new ComponentArea(currentArea, new ArrayList<Area>(continuityPositiveAreas.values()), 
-        new ArrayList<Area>(continuityNegativeAreas.values()), layerId);
+    return new ComponentArea(currentArea, new ArrayList<Area>(continuityPositiveAreas.values()), new ArrayList<Area>(continuityNegativeAreas.values()));
   }
   
   // start - used for caching
@@ -179,18 +176,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     return continuityNegativeAreas;
   }
   
-  public int getLayerId() {
-    return layerId;
-  }
-  
   // end - used for caching
   
-  public void merge(Area currentArea, Map<String, Area> continuityPositiveAreas, 
-      Map<String, Area> continuityNegativeAreas, int layerId) {
+  public void merge(Area currentArea, Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas) {
     this.currentArea = currentArea;
     this.continuityPositiveAreas = continuityPositiveAreas;
     this.continuityNegativeAreas = continuityNegativeAreas;
-    this.layerId = layerId;
   }
 
   @Override
@@ -204,8 +195,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   }
 
   @Override
-  public void startTrackingContinuityArea(int layerId, boolean positive) {
-    this.layerId = layerId;
+  public void startTrackingContinuityArea(boolean positive) {
     this.trackingContinuityAllowed = true;
     this.trackingContinuityPositive = positive;
   }

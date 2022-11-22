@@ -158,13 +158,8 @@ public class CopperTrace extends AbstractLeadedComponent<Void> {
   }
 
   @Override
-  protected boolean isCopperArea() {
+  protected boolean IsCopperArea() {
     return true;
-  }
-  
-  @Override
-  protected int getLayerId() {
-    return getLayer().getId();
   }
   
   @Override

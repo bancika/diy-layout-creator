@@ -680,7 +680,7 @@ public class Presenter implements IPlugInPort {
           projectFileManager.notifyFileChange();
         }
       } else if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false) || altDown) {
-        drawingManager.findContinuityAreaAtPoint(scaledPoint);
+        drawingManager.findContinuityAreaAtPoint(currentProject, scaledPoint);
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       } else {
         List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(selectedComponents);
@@ -2809,7 +2809,7 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public List<Netlist> extractNetlists(boolean includeSwitches) throws NetlistException {
-    List<Area> continuityAreas = drawingManager.getContinuityAreas();
+    List<Area> continuityAreas = drawingManager.getContinuityAreas(currentProject);
     
     return NetlistBuilder.extractNetlists(includeSwitches, currentProject, continuityAreas);
   }
@@ -2874,12 +2874,11 @@ public class Presenter implements IPlugInPort {
       ComponentArea componentArea = drawingManager.getComponentArea(c);
       areas.put(c, componentArea);
     }
-    return new Snapshot(currentProject.clone(), new HashSet<IDIYComponent<?>>(selectedComponents), areas, 
-        new HashSet<Area>(drawingManager.getContinuityAreas()));
+    return new Snapshot(currentProject.clone(), new HashSet<IDIYComponent<?>>(selectedComponents), areas, new HashSet<Area>(drawingManager.getContinuityAreas(currentProject)));
   }
   
   @Override
   public List<Area> checkContinuityAreaProximity(Size threshold) {
-    return drawingManager.getContinuityAreaProximity((float)threshold.convertToPixels());    
+    return drawingManager.getContinuityAreaProximity(this.currentProject, (float)threshold.convertToPixels());    
   }
 }

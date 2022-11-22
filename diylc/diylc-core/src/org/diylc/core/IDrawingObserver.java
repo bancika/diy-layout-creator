@@ -42,10 +42,9 @@ public interface IDrawingObserver {
   /**   
    * Notifies the observer that it should start tracking conductive continuity areas.
    * 
-   * @param layerId id of the layer
    * @param positive designates if the area should be additive or subtractive
    */
-  void startTrackingContinuityArea(int layerId, boolean positive);
+  void startTrackingContinuityArea(boolean positive);
   
   /**
    * Notifies the observer that it should stop tracking conductive continuity areas.

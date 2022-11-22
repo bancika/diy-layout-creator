@@ -73,7 +73,7 @@ public class VeroBoard extends AbstractVeroBoard {
           x = firstPoint.getX();
           y += spacing;
           g2d.setColor(stripColor);
-          drawingObserver.startTrackingContinuityArea(1, true);          
+          drawingObserver.startTrackingContinuityArea(true);          
           g2d.fillRect((int)(x + spacing / 2), (int)(y - stripSize / 2), (int)(finalSecondPoint.getX() - spacing - x), stripSize);
           drawingObserver.stopTrackingContinuityArea();
           g2d.setColor(stripColor.darker());
@@ -91,7 +91,7 @@ public class VeroBoard extends AbstractVeroBoard {
           x += spacing;
           y = firstPoint.getY();
           g2d.setColor(stripColor);
-          drawingObserver.startTrackingContinuityArea(1, true);
+          drawingObserver.startTrackingContinuityArea(true);
           g2d.fillRect((int)(x - stripSize / 2), (int)(y + spacing / 2), stripSize, (int)(finalSecondPoint.getY() - spacing - y));
           drawingObserver.stopTrackingContinuityArea();
           g2d.setColor(stripColor.darker());

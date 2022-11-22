@@ -76,7 +76,7 @@ public class SwitchLatchingSymbol
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((float) (terminalSize / 4)));
 
-    drawingObserver.startTrackingContinuityArea(hashCode(), true);
+    drawingObserver.startTrackingContinuityArea(true);
     for (int i = 0; i < controlPoints.length; i++) {
 
       Ellipse2D.Double terminal = new Ellipse2D.Double(controlPoints[i].getX() - terminalSize / 2,

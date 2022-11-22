@@ -127,7 +127,7 @@ public class OpenJack1_8 extends AbstractMultiPartComponent<String> {
       }
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BASE_COLOR);
       
-      drawingObserver.startTrackingContinuityArea(hashCode(), true);
+      drawingObserver.startTrackingContinuityArea(true);
       g2d.fill(body[1]);
       g2d.fill(body[2]);
       if (body[3] != null)

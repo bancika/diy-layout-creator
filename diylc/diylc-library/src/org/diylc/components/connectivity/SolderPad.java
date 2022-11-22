@@ -69,7 +69,7 @@ public class SolderPad extends AbstractComponent<Void> {
     double holeDiameter = getHoleSize().convertToPixels();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color);
-    drawingObserver.startTrackingContinuityArea(getLayer().getId(), true);
+    drawingObserver.startTrackingContinuityArea(true);
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2, diameter, diameter));
     } else if (type == Type.OVAL_HORIZONTAL) {

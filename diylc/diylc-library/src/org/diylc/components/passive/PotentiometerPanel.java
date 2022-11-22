@@ -279,11 +279,11 @@ public class PotentiometerPanel extends AbstractPotentiometer {
           g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
         }
         if (!outlineMode) {
-//          if (i == 3)
-//            drawingObserver.startTrackingContinuityArea(true);
+          if (i == 3)
+            drawingObserver.startTrackingContinuityArea(true);
           g2d.fill(shape);
-//          if (i == 3)
-//            drawingObserver.stopTrackingContinuityArea();
+          if (i == 3)
+            drawingObserver.stopTrackingContinuityArea();
         }
         g2d.setComposite(oldComposite);
         Color finalBorderColor;

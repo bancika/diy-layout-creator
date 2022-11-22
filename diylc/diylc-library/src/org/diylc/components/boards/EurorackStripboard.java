@@ -380,7 +380,7 @@ public class EurorackStripboard extends AbstractProtoBoard {
           int padX = (int) (x0 + (segment.x + i) * spacing);
           int padY = (int) (y0 + (segment.y + j) * spacing);
 
-          drawingObserver.startTrackingContinuityArea(1, true);
+          drawingObserver.startTrackingContinuityArea(true);
           drawingObserver.setContinuityMarker(segment.label);
 
           g2d.setColor(padColor);
@@ -432,7 +432,7 @@ public class EurorackStripboard extends AbstractProtoBoard {
         int padX = (int) (x0 + potPad.x * spacing);
         int padY = (int) (y0 + (potPad.y + 8 * i) * spacing);
 
-        drawingObserver.startTrackingContinuityArea(1, true);
+        drawingObserver.startTrackingContinuityArea(true);
         drawingObserver.setContinuityMarker(potPad.label + i);
 
         g2d.setColor(padColor);
@@ -483,7 +483,7 @@ public class EurorackStripboard extends AbstractProtoBoard {
       int padX = (int) (x0 + potPad.x * spacing);
       int padY = (int) (y0 + potPad.y * spacing);
 
-      drawingObserver.startTrackingContinuityArea(1, true);
+      drawingObserver.startTrackingContinuityArea(true);
       drawingObserver.setContinuityMarker(potPad.label);
 
       g2d.setColor(padColor);
@@ -513,7 +513,7 @@ public class EurorackStripboard extends AbstractProtoBoard {
         int padX = (int) (x0 + (6.5 + i) * spacing);
         int padY = (int) (y0 + (36 + j) * spacing);
 
-        drawingObserver.startTrackingContinuityArea(1, true);
+        drawingObserver.startTrackingContinuityArea(true);
         drawingObserver.setContinuityMarker(connectorLabels[i]);
 
         g2d.setColor(padColor);
@@ -543,7 +543,7 @@ public class EurorackStripboard extends AbstractProtoBoard {
     int padX = (int) (x0 + (17) * spacing);
     int padY = (int) (y0 + 35.5 * spacing);
 
-    drawingObserver.startTrackingContinuityArea(1, true);
+    drawingObserver.startTrackingContinuityArea(true);
     drawingObserver.setContinuityMarker("GND");
 
     g2d.setColor(padColor);

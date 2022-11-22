@@ -248,7 +248,7 @@ public class Jumbo4PinTubeSocket extends AbstractAngledComponent<String> {
     Shape terminalShape = body[1];
     
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getTerminalColor());
-    drawingObserver.startTrackingContinuityArea(hashCode(), true);
+    drawingObserver.startTrackingContinuityArea(true);
     g2d.fill(terminalShape);
     drawingObserver.stopTrackingContinuityArea();
     

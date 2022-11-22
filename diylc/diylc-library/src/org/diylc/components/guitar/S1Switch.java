@@ -191,7 +191,7 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
         g2d.drawOval((int)(p.getX() - padDiameter / 2), (int)(p.getY() - padDiameter / 2), padDiameter, padDiameter);
       } else {
         g2d.setColor(PAD_COLOR);
-        drawingObserver.startTrackingContinuityArea(hashCode(), true);
+        drawingObserver.startTrackingContinuityArea(true);
         g2d.fillOval((int)(p.getX() - padDiameter / 2), (int)(p.getY() - padDiameter / 2), padDiameter, padDiameter);
         drawingObserver.stopTrackingContinuityArea();
         g2d.setColor(PAD_COLOR.darker());

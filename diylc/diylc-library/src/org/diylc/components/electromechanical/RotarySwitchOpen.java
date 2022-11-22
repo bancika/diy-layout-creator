@@ -350,7 +350,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
 
     // Draw outer pins
     if (configuration.getNeedsSecondLevel()) {
-      drawingObserver.startTrackingContinuityArea(hashCode(), true);
+      drawingObserver.startTrackingContinuityArea(true);
       for (int i = secondLevelStart; i < body.length; i++) {
         g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
         g2d.fill(body[i]);
@@ -373,7 +373,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
 
     // Draw pins
     for (int i = 1; i <= secondLevelStart; i++) {
-      drawingObserver.startTrackingContinuityArea(hashCode(), true);
+      drawingObserver.startTrackingContinuityArea(true);
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
       g2d.fill(body[i]);
       drawingObserver.stopTrackingContinuityArea();
