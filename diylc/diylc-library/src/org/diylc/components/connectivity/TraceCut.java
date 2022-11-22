@@ -84,7 +84,7 @@ public class TraceCut extends AbstractComponent<Void> {
       int holeSpacing = getClosestOdd(getHoleSpacing().convertToPixels());
       g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
           : getBoardColor());
-      drawingObserver.startTrackingContinuityArea(false);
+      drawingObserver.startTrackingContinuityArea(1, false);
       if (getOrientation() == OrientationHV.VERTICAL)
         g2d.fillRect((int)(point.getX() - holeSpacing / 2 - cutWidth / 2), (int)(point.getY() - size / 2 - 1), cutWidth, size + 2);
       else
@@ -93,7 +93,7 @@ public class TraceCut extends AbstractComponent<Void> {
     } else {
       g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
           : getBoardColor());
-      drawingObserver.startTrackingContinuityArea(false);
+      drawingObserver.startTrackingContinuityArea(1, false);
       g2d.fillRoundRect((int)(point.getX() - size / 2), (int)(point.getY() - size / 2), size, size, size, size);
       drawingObserver.stopTrackingContinuityArea();
 

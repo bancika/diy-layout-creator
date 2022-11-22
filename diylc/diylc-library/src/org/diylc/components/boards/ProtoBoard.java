@@ -140,7 +140,7 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setColor(traceColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     
-    drawingObserver.startTrackingContinuityArea(true);
+    drawingObserver.startTrackingContinuityArea(1, true);
     
     // draw segment connectors
     for (int y = 0; y < ROW_COUNT; y++) {
@@ -223,7 +223,7 @@ public class ProtoBoard extends AbstractProtoBoard {
     // draw top mini pad traces
     g2d.setColor(traceColor);      
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
-    drawingObserver.startTrackingContinuityArea(true);
+    drawingObserver.startTrackingContinuityArea(1, true);
     g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) (point.getY() + 1 * spacing), 
         (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) (point.getY() + 3.5 * spacing));
     g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2), (int) (point.getY() + 1 * spacing), 
@@ -255,7 +255,7 @@ public class ProtoBoard extends AbstractProtoBoard {
           int padX = (int) (point.getX() + (xOffset + x) * spacing);
           int padY = (int) (point.getY() + (yOffset + y) * spacing);
           
-          drawingObserver.startTrackingContinuityArea(true);
+          drawingObserver.startTrackingContinuityArea(1, true);
           drawingObserver.setContinuityMarker("SEGMENT=" + segment + ";ROW=" + y);
           
           g2d.setColor(padColor);
@@ -295,7 +295,7 @@ public class ProtoBoard extends AbstractProtoBoard {
       g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3]) * spacing), (int) (point.getY() + (yOffset - 2 + y * (ROW_COUNT + 2)) * spacing), 
           (int)(3 * spacing), (int)spacing);
       
-      drawingObserver.startTrackingContinuityArea(true);
+      drawingObserver.startTrackingContinuityArea(1, true);
       
       for (int x = 0; x < 3; x++) {      
         int padX = (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5 + x) * spacing);
@@ -344,7 +344,7 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setColor(traceColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     
-    drawingObserver.startTrackingContinuityArea(true);     
+    drawingObserver.startTrackingContinuityArea(1, true);     
     
     // Draw two horizontal traces in the top-right section
     g2d.drawLine((int) (point.getX() + width - 4 * spacing), (int) (point.getY() + 0.5 * spacing), (int) (point.getX() + width - (2) * spacing), (int) (point.getY() + 0.5 * spacing));
@@ -403,7 +403,7 @@ public class ProtoBoard extends AbstractProtoBoard {
       
       for (int i = 0; i < padXs.length; i++) {          
         int padX = padXs[i];
-        drawingObserver.startTrackingContinuityArea(true);
+        drawingObserver.startTrackingContinuityArea(1, true);
         
         if (i == 0 || i == 2 || i == 5) {
           switch (y) {
@@ -473,7 +473,7 @@ public class ProtoBoard extends AbstractProtoBoard {
     for (int y = 0; y < ROW_COUNT; y++) { 
       g2d.setColor(padColor);
       
-      drawingObserver.startTrackingContinuityArea(true);
+      drawingObserver.startTrackingContinuityArea(1, true);
       
       // top row      
       g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + 1, (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
@@ -492,7 +492,7 @@ public class ProtoBoard extends AbstractProtoBoard {
       
       g2d.setColor(undersidePadColor);
       
-      drawingObserver.startTrackingContinuityArea(true);
+      drawingObserver.startTrackingContinuityArea(1, true);
       
       // bottom row      
       

@@ -28,4 +28,8 @@ public enum PCBLayer {
   public String toString() {
     return name().substring(1);
   };
+  
+  public int getId() {
+    return Integer.parseInt(toString());
+  }
 }

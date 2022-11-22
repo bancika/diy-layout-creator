@@ -121,7 +121,7 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> {
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : TERMINAL_COLOR);
 
-    drawingObserver.startTrackingContinuityArea(true);
+    drawingObserver.startTrackingContinuityArea(hashCode(), true);
     for (int i = 2; i < body.length; i++)
       g2d.fill(body[i]);
     drawingObserver.stopTrackingContinuityArea();

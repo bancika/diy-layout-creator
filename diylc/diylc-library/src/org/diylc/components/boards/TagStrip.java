@@ -302,7 +302,7 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
     g2d.draw(mainArea);
 
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : TERMINAL_COLOR);
-    drawingObserver.startTrackingContinuityArea(true);  
+    drawingObserver.startTrackingContinuityArea(1, true);  
     for (int i = 1; i < body.length; i++)
       g2d.fill(body[i]);
     drawingObserver.stopTrackingContinuityArea();

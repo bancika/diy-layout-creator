@@ -287,7 +287,7 @@ public class TubeSocket extends AbstractAngledComponent<String> {
       }
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : PIN_COLOR);
       if (getMount() == Mount.CHASSIS)
-        drawingObserver.startTrackingContinuityArea(true);
+        drawingObserver.startTrackingContinuityArea(hashCode(), true);
       g2d.fill(pinShape);
       drawingObserver.stopTrackingContinuityArea();
       if (!outlineMode) {

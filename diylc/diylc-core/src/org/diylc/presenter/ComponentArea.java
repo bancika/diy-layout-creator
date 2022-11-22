@@ -32,15 +32,17 @@ public class ComponentArea implements Serializable {
   private Area outlineArea;
   private Collection<Area> continuityPositiveAreas;
   private Collection<Area> continuityNegativeAreas;
+  private int layerId;
   
   public ComponentArea() {   
   }
 
-  public ComponentArea(Area outlineArea, Collection<Area> continuityPositiveAreas, Collection<Area> continuityNegativeAreas) {
+  public ComponentArea(Area outlineArea, Collection<Area> continuityPositiveAreas, Collection<Area> continuityNegativeAreas, int layerId) {
     super();
     this.outlineArea = outlineArea;
     this.continuityPositiveAreas = continuityPositiveAreas;
     this.continuityNegativeAreas = continuityNegativeAreas;
+    this.layerId = layerId;
   }
 
   public Area getOutlineArea() {
@@ -54,4 +56,8 @@ public class ComponentArea implements Serializable {
   public Collection<Area> getContinuityNegativeAreas() {
     return continuityNegativeAreas;
   }  
+  
+  public int getLayerId() {
+    return layerId;
+  }
 }

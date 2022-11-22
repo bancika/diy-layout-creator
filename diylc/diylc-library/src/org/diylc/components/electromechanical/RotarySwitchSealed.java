@@ -216,7 +216,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
         }
         g2d.setColor(pinColor);
         if (getMount() == Mount.CHASSIS)
-          drawingObserver.startTrackingContinuityArea(true);        
+          drawingObserver.startTrackingContinuityArea(hashCode(), true);        
         g2d.fill(pinShape);
         drawingObserver.stopTrackingContinuityArea();
         g2d.setColor(pinColor.darker());

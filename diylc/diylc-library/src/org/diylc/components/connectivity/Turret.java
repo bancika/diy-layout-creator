@@ -70,7 +70,7 @@ public class Turret extends AbstractComponent<String> {
     int holeDiameter = getClosestOdd((int) holeSize.convertToPixels());
     g2d.setColor(color);
     g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1f));
-    drawingObserver.startTrackingContinuityArea(true);
+    drawingObserver.startTrackingContinuityArea(1, true);
     g2d.fillOval((int)(point.getX() - diameter / 2), (int)(point.getY() - diameter / 2), diameter, diameter);
     drawingObserver.stopTrackingContinuityArea();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR

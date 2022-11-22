@@ -684,23 +684,22 @@ public class DrawingManager {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
-  public void findContinuityAreaAtPoint(Project project, Point2D p) {
+  public void findContinuityAreaAtPoint(Point2D p) {
     if (continuityGraphCache == null)
-      continuityGraphCache = getContinuityGraph(project);
+      continuityGraphCache = getContinuityGraph();
 
     currentContinuityAreas = continuityGraphCache.findAreasFor(p);
   }
   
-  public List<Area> getContinuityAreas(Project project) {
+  public List<Area> getContinuityAreas() {
     // Find all individual continuity areas for all components
     List<Area> preliminaryAreas = new ArrayList<Area>();
     List<Boolean> checkBreakout = new ArrayList<Boolean>();
 
-    for (IDIYComponent<?> c : project.getComponents()) {
-      ComponentArea a = getComponentArea(c);
-
+    for (ComponentArea a : this.componentAreaMap.values()) {      
       if (a == null || a.getOutlineArea() == null)
         continue;
+      
       Collection<Area> positiveAreas = a.getContinuityPositiveAreas();
       if (positiveAreas != null)
         for (Area a1 : positiveAreas) {
@@ -733,9 +732,9 @@ public class DrawingManager {
     return areas;
   }
 
-  public ContinuityGraph getContinuityGraph(Project project) {
+  public ContinuityGraph getContinuityGraph() {
     Set<Connection> connections = new HashSet<Connection>();
-    for (IDIYComponent<?> c : project.getComponents()) {
+    for (IDIYComponent<?> c : this.componentAreaMap.keySet()) {
       if (c instanceof IContinuity) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
@@ -744,13 +743,13 @@ public class DrawingManager {
       }
     }
     
-    List<Area> areas = getContinuityAreas(project);
+    List<Area> areas = getContinuityAreas();
 
     return NetlistBuilder.buildContinuityGraph(areas, connections);
   }
 
-  public List<Area> getContinuityAreaProximity(Project project, float threshold) {
-    List<Area> continuityAreas = getContinuityAreas(project);
+  public List<Area> getContinuityAreaProximity(float threshold) {
+    List<Area> continuityAreas = getContinuityAreas();
     Stroke s = ObjectCache.getInstance().fetchBasicStroke(threshold - 1); // value eyeballed for
                                                                           // approx good results
     List<Area> expanded = continuityAreas.parallelStream()

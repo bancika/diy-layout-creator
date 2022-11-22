@@ -123,7 +123,7 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
       }
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BASE_COLOR);
       
-      drawingObserver.startTrackingContinuityArea(true);
+      drawingObserver.startTrackingContinuityArea(hashCode(), true);
       
       g2d.fill(body[3]);
       g2d.fill(body[4]);

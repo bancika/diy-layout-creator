@@ -93,7 +93,7 @@ public class CommonNode extends AbstractComponent<String> implements ICommonNode
     }
 
     g2d.setColor(bgColor);
-    drawingObserver.startTrackingContinuityArea(true);
+    drawingObserver.startTrackingContinuityArea(text.hashCode(), true);
     g2d.fill(rect);
     drawingObserver.stopTrackingContinuityArea();
     drawingObserver.stopTracking();
