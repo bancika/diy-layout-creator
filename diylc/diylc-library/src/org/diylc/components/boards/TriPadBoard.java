@@ -31,6 +31,7 @@ import org.diylc.components.transform.VeroBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayer;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -41,7 +42,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "Board",
     description = "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = VeroBoardTransformer.class, enableCache = true)
-public class TriPadBoard extends AbstractVeroBoard {
+public class TriPadBoard extends AbstractVeroBoard implements ILayer {
 
   private static final long serialVersionUID = 1L;
 
@@ -202,5 +203,10 @@ public class TriPadBoard extends AbstractVeroBoard {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
+  }
+  
+  @Override
+  public int getLayerId() {   
+    return 1;
   }
 }

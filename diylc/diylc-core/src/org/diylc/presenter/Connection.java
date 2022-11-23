@@ -28,10 +28,12 @@ public class Connection implements Comparable<Connection> {
 
   private Point2D p1;
   private Point2D p2;
+  private int zIndex;
 
-  public Connection(Point2D p1, Point2D p2) {
+  public Connection(Point2D p1, Point2D p2, int zIndex) {
     this.p1 = p1.getX() < p2.getX() || p1.getX() == p2.getX() && p1.getY() < p2.getY() ? p1 : p2;
     this.p2 = p1.getX() < p2.getX() || p1.getX() == p2.getX() && p1.getY() < p2.getY() ? p2 : p1;
+    this.zIndex = zIndex;
   }
   
   public Point2D getP1() {
@@ -41,6 +43,10 @@ public class Connection implements Comparable<Connection> {
   public Point2D getP2() {
     return p2;
   }
+  
+  public int getZIndex() {
+    return zIndex;
+  }
 
   @Override
   public int hashCode() {
@@ -48,6 +54,7 @@ public class Connection implements Comparable<Connection> {
     int result = 1;
     result = prime * result + ((p1 == null) ? 0 : p1.hashCode());
     result = prime * result + ((p2 == null) ? 0 : p2.hashCode());
+    result = prime * result + zIndex;
     return result;
   }
 
@@ -69,6 +76,8 @@ public class Connection implements Comparable<Connection> {
       if (other.p2 != null)
         return false;
     } else if (!p2.equals(other.p2))
+      return false;
+    if (zIndex != other.zIndex)
       return false;
     return true;
   }

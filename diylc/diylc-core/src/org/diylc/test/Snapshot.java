@@ -1,12 +1,12 @@
 package org.diylc.test;
 
-import java.awt.geom.Area;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.presenter.ComponentArea;
+import org.diylc.presenter.ContinuityArea;
 
 public class Snapshot implements Serializable {
 
@@ -15,13 +15,13 @@ public class Snapshot implements Serializable {
   private Project project;
   private Set<IDIYComponent<?>> selection;
   private Map<IDIYComponent<?>, ComponentArea> areas;
-  private Set<Area> continuityAreas;
+  private Set<ContinuityArea> continuityAreas;
   
   public Snapshot() {   
   }
       
   public Snapshot(Project project, Set<IDIYComponent<?>> selection,
-      Map<IDIYComponent<?>, ComponentArea> areas, Set<Area> continuityAreas) {
+      Map<IDIYComponent<?>, ComponentArea> areas, Set<ContinuityArea> continuityAreas) {
     super();
     this.project = project;
     this.selection = selection;
@@ -41,7 +41,7 @@ public class Snapshot implements Serializable {
     return areas;
   }
   
-  public Set<Area> getContinuityAreas() {
+  public Set<ContinuityArea> getContinuityAreas() {
     return continuityAreas;
   }
   

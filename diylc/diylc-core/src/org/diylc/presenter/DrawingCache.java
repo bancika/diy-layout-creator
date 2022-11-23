@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
+import org.diylc.core.ComponentForRender;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -63,14 +64,14 @@ public class DrawingCache {
    * @param zoom
    */
   @SuppressWarnings("unchecked")
-  public void bulkPrepare(Map<IDIYComponent<?>, ComponentState> components, G2DWrapper g2d, boolean outlineMode, Project project, double zoom) {
+  public void bulkPrepare(Collection<ComponentForRender> components, G2DWrapper g2d, boolean outlineMode, Project project, double zoom) {
     // run all renders in parallel to utilize all CPU cores
-    components.entrySet().stream().parallel().forEach(x -> {      
+    components.stream().parallel().forEach(x -> {      
       ComponentType type = ComponentProcessor.getInstance()
-          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getKey().getClass());
+          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getComponent().getClass());
 
       if (type != null && type.getEnableCache()) {
-        renderAndCache(x.getKey(), g2d, x.getValue(), outlineMode, project, zoom);
+        renderAndCache(x.getComponent(), g2d, x.getState(), outlineMode, project, zoom, x.getZOrder());
       }
     });
   }
@@ -88,7 +89,7 @@ public class DrawingCache {
    */
   @SuppressWarnings("unchecked")
   public void draw(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom, Rectangle2D visibleRect) {
+      boolean outlineMode, Project project, double zoom, int zOrder, Rectangle2D visibleRect) {
     ComponentType type = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
 
@@ -96,7 +97,7 @@ public class DrawingCache {
       // if we need to apply caching
       Point2D firstPoint = component.getControlPoint(0);
       
-      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom); 
+      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom, zOrder); 
       
       if (value == null) {
         return;
@@ -175,7 +176,7 @@ public class DrawingCache {
   }
   
   private CacheValue renderAndCache(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom) {
+      boolean outlineMode, Project project, double zoom, int zOrder) {
     // if we need to apply caching
     Point2D firstPoint = component.getControlPoint(0);
 
@@ -225,7 +226,7 @@ public class DrawingCache {
       G2DWrapper wrapper = new G2DWrapper(cg2d, zoom);
 
       // initialize wrapper
-      wrapper.startedDrawingComponent();
+      wrapper.startedDrawingComponent(zOrder);
       
       long componentStart = System.nanoTime();
 

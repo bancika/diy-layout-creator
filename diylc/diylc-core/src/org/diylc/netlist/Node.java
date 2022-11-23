@@ -34,11 +34,13 @@ public class Node implements Comparable<Node> {
 
   private IDIYComponent<?> component;
   private int pointIndex;
+  private int zIndex;
 
-  public Node(IDIYComponent<?> component, int pointIndex) {
+  public Node(IDIYComponent<?> component, int pointIndex, int zIndex) {
     super();
     this.component = component;
     this.pointIndex = pointIndex;
+    this.zIndex = zIndex;
   }
 
   public IDIYComponent<?> getComponent() {
@@ -47,6 +49,10 @@ public class Node implements Comparable<Node> {
 
   public int getPointIndex() {
     return pointIndex;
+  }
+  
+  public int getZIndex() {
+    return zIndex;
   }
   
   public String getDisplayName() {

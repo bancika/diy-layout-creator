@@ -29,6 +29,7 @@ public class ComponentArea implements Serializable {
 
   private static final long serialVersionUID = 1L;
   
+  private int zOrder;
   private Area outlineArea;
   private Collection<Area> continuityPositiveAreas;
   private Collection<Area> continuityNegativeAreas;
@@ -36,11 +37,16 @@ public class ComponentArea implements Serializable {
   public ComponentArea() {   
   }
 
-  public ComponentArea(Area outlineArea, Collection<Area> continuityPositiveAreas, Collection<Area> continuityNegativeAreas) {
+  public ComponentArea(int zOrder, Area outlineArea, Collection<Area> continuityPositiveAreas, Collection<Area> continuityNegativeAreas) {
     super();
+    this.zOrder = zOrder;
     this.outlineArea = outlineArea;
     this.continuityPositiveAreas = continuityPositiveAreas;
     this.continuityNegativeAreas = continuityNegativeAreas;
+  }
+  
+  public int getZOrder() {
+    return zOrder;
   }
 
   public Area getOutlineArea() {

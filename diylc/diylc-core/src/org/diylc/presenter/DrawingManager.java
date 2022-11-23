@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,9 +53,11 @@ import org.diylc.common.GridType;
 import org.diylc.common.IComponentFilter;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.core.ComponentForRender;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.ILayer;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
@@ -136,7 +139,7 @@ public class DrawingManager {
       configManager.writeValue(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     }
 
-    componentAreaMap = new HashMap<IDIYComponent<?>, ComponentArea>();
+    componentAreaMap = new LinkedHashMap<IDIYComponent<?>, ComponentArea>();
     lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
     String debugComponentAreasStr = System.getProperty(DEBUG_COMPONENT_AREAS);
     debugComponentAreas =
@@ -252,9 +255,10 @@ public class DrawingManager {
     // g2dWrapper.resetTx();
 
     // put components and their states in a map
-    Map<IDIYComponent<?>, ComponentState> componentStateMap =
-        new HashMap<IDIYComponent<?>, ComponentState>();
-    for (IDIYComponent<?> component : project.getComponents()) {
+    Map<IDIYComponent<?>, ComponentState> componentStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
+    List<ComponentForRender> componentForRenderList = new ArrayList<ComponentForRender>();
+    for (int i = 0; i < project.getComponents().size(); i++) {
+      IDIYComponent<?> component = project.getComponents().get(i);      
       ComponentState state = ComponentState.NORMAL;
       if (drawOptions.contains(DrawOption.SELECTION) && selectedComponents.contains(component)) {
         if (dragInProgress) {
@@ -264,17 +268,21 @@ public class DrawingManager {
         }
       }
       componentStateMap.put(component, state);
+      componentForRenderList.add(new ComponentForRender(component, state, i));
     }
 
     boolean outlineMode = drawOptions.contains(DrawOption.OUTLINE_MODE);
 
     // give the cache a chance to prepare all the components in multiple threads
     if (drawOptions.contains(DrawOption.ENABLE_CACHING)) {
-      DrawingCache.Instance.bulkPrepare(componentStateMap, g2dWrapper, outlineMode, project, zoom);
+      DrawingCache.Instance.bulkPrepare(componentForRenderList, g2dWrapper, outlineMode, project, zoom);
     }
 
     // componentAreaMap.clear();
-    for (IDIYComponent<?> component : project.getComponents()) {
+
+    for (int i = 0; i < project.getComponents().size(); i++) {
+      IDIYComponent<?> component = project.getComponents().get(i);
+      
       // Do not draw the component if it's filtered out.
       if (filter != null && !filter.testComponent(component)) {
         continue;
@@ -285,7 +293,7 @@ public class DrawingManager {
       boolean trackArea = lastDrawnStateMap.get(component) != state;
 
       synchronized (g2d) {
-        g2dWrapper.startedDrawingComponent();
+        g2dWrapper.startedDrawingComponent(i);
         if (!trackArea) {
           g2dWrapper.stopTracking();
         }
@@ -300,7 +308,7 @@ public class DrawingManager {
 
           if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
             DrawingCache.Instance.draw(component, g2dWrapper, state,
-                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, visibleRect);
+                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, i, visibleRect);
           else // go straight to the wrapper
             component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
 
@@ -386,7 +394,7 @@ public class DrawingManager {
 
     // Draw component slot in a separate composite.
     if (componentSlot != null) {
-      g2dWrapper.startedDrawingComponent();
+      g2dWrapper.startedDrawingComponent(project.getComponents().size());
       g2dWrapper.setComposite(slotComposite);
       for (IDIYComponent<?> component : componentSlot) {
         try {
@@ -684,77 +692,100 @@ public class DrawingManager {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
-  public void findContinuityAreaAtPoint(Project project, Point2D p) {
+  public void findContinuityAreaAtPoint(Point2D p) {
     if (continuityGraphCache == null)
-      continuityGraphCache = getContinuityGraph(project);
+      continuityGraphCache = getContinuityGraph();
 
     currentContinuityAreas = continuityGraphCache.findAreasFor(p);
   }
   
-  public List<Area> getContinuityAreas(Project project) {
+  public List<ContinuityArea> getContinuityAreas() {
     // Find all individual continuity areas for all components
-    List<Area> preliminaryAreas = new ArrayList<Area>();
+    List<ContinuityArea> preliminaryAreas = new ArrayList<ContinuityArea>();
     List<Boolean> checkBreakout = new ArrayList<Boolean>();
 
-    for (IDIYComponent<?> c : project.getComponents()) {
-      ComponentArea a = getComponentArea(c);
+    for (Map.Entry<IDIYComponent<?>, ComponentArea> entry : this.componentAreaMap.entrySet()) {
+      ComponentArea a = entry.getValue();
 
       if (a == null || a.getOutlineArea() == null)
         continue;
+      
+      IDIYComponent<?> component = entry.getKey();
+      
+      int layerId;
+      
+      if (component instanceof ILayer) {
+        layerId = ((ILayer)component).getLayerId();
+      } else {
+        layerId = component.hashCode();
+      }
+      
       Collection<Area> positiveAreas = a.getContinuityPositiveAreas();
-      if (positiveAreas != null)
+      if (positiveAreas != null) {
         for (Area a1 : positiveAreas) {
-          preliminaryAreas.add(a1);
+          preliminaryAreas.add(new ContinuityArea(a.getZOrder(), layerId, a1));
           checkBreakout.add(false);
         }
+      }
+      
       Collection<Area> negativeAreas = a.getContinuityNegativeAreas();
       if (negativeAreas != null) {
-        for (Area na : negativeAreas)
+        for (Area na : negativeAreas) {
           for (int i = 0; i < preliminaryAreas.size(); i++) {
-            Area a1 = preliminaryAreas.get(i);
-            if (a1.intersects(na.getBounds2D())) {
-              a1.subtract(na);
+            ContinuityArea a1 = preliminaryAreas.get(i);
+            if (a1.getLayerId() == layerId && a1.getArea().intersects(na.getBounds2D())) {
+              a1.getArea().subtract(na);
               checkBreakout.set(i, true);
             }
           }
+        }
       }
     }
 
     // Check if we need to break some areas out in case they are interrupted
-    List<Area> areas = new ArrayList<Area>();
+    List<ContinuityArea> areas = new ArrayList<ContinuityArea>();
     for (int i = 0; i < preliminaryAreas.size(); i++) {
-      Area a = preliminaryAreas.get(i);
-      if (checkBreakout.get(i))
-        areas.addAll(AreaUtils.tryAreaBreakout(a));
-      else
+      ContinuityArea a = preliminaryAreas.get(i);
+      if (checkBreakout.get(i)) {
+        List<Area> breakoutAreas = AreaUtils.tryAreaBreakout(a.getArea());
+        if (breakoutAreas.size() == 1) {
+          areas.add(a);
+        } else {
+          areas.addAll(breakoutAreas.stream()
+              .map(area -> new ContinuityArea(a.getZIndex(), a.getLayerId(), area))
+              .collect(Collectors.toList())); 
+        }        
+      } else
         areas.add(a);
     }
 
     return areas;
   }
 
-  public ContinuityGraph getContinuityGraph(Project project) {
+  public ContinuityGraph getContinuityGraph() {
     Set<Connection> connections = new HashSet<Connection>();
-    for (IDIYComponent<?> c : project.getComponents()) {
+    int z = 0;
+    for (IDIYComponent<?> c : this.componentAreaMap.keySet()) {
       if (c instanceof IContinuity) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (((IContinuity) c).arePointsConnected(i, j))
-              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j), z));
       }
+      z++;
     }
     
-    List<Area> areas = getContinuityAreas(project);
+    List<ContinuityArea> areas = getContinuityAreas();
 
     return NetlistBuilder.buildContinuityGraph(areas, connections);
   }
 
-  public List<Area> getContinuityAreaProximity(Project project, float threshold) {
-    List<Area> continuityAreas = getContinuityAreas(project);
+  public List<Area> getContinuityAreaProximity(float threshold) {
+    List<ContinuityArea> continuityAreas = getContinuityAreas();
     Stroke s = ObjectCache.getInstance().fetchBasicStroke(threshold - 1); // value eyeballed for
                                                                           // approx good results
     List<Area> expanded = continuityAreas.parallelStream()
-        .map((a) -> new Area(s.createStrokedShape(a))).collect(Collectors.toList());
+        .map((a) -> new Area(s.createStrokedShape(a.getArea()))).collect(Collectors.toList());
     List<Area> intersections = new ArrayList<Area>();
     for (int i = 0; i < expanded.size() - 1; i++) {
       for (int j = i + 1; j < expanded.size(); j++) {

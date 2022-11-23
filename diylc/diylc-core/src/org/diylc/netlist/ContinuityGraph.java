@@ -23,6 +23,8 @@ import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import org.diylc.presenter.ContinuityArea;
 import org.diylc.utils.RTree;
 
 /***
@@ -34,9 +36,9 @@ import org.diylc.utils.RTree;
 public class ContinuityGraph {
 
   private RTree<ContinuityNode> groupTree;
-  private Map<Integer, List<Area>> areaGroupMap;
+  private Map<Integer, List<ContinuityArea>> areaGroupMap;
 
-  public ContinuityGraph(RTree<ContinuityNode> groupTree, Map<Integer, List<Area>> areaGroupMap) {
+  public ContinuityGraph(RTree<ContinuityNode> groupTree, Map<Integer, List<ContinuityArea>> areaGroupMap) {
     super();
     this.groupTree = groupTree;
     this.areaGroupMap = areaGroupMap;
@@ -44,22 +46,26 @@ public class ContinuityGraph {
 
   public List<Area> findAreasFor(Point2D point) {
     Optional<ContinuityNode> first = groupTree.search(point, NetlistBuilder.eps).stream()
-        .filter(node -> node.getArea().contains(point)).findFirst();
+        .filter(node -> node.getArea().getArea().contains(point)).findFirst();
 
-    return first.map(node -> areaGroupMap.get(node.getGroupId())).orElse(null);
+    return first.map(node -> 
+      areaGroupMap.get(node.getGroupId())
+        .stream()
+        .map(x -> x.getArea())
+        .collect(Collectors.toList())).orElse(null);
   }
   
   public static class ContinuityNode {
-    private Area area;
+    private ContinuityArea area;
     private Integer groupId;
 
-    public ContinuityNode(Area area, Integer groupId) {
+    public ContinuityNode(ContinuityArea area, Integer groupId) {
       super();
       this.area = area;
       this.groupId = groupId;
     }
 
-    public Area getArea() {
+    public ContinuityArea getArea() {
       return area;
     }
 

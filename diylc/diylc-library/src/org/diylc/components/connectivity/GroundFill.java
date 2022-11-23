@@ -32,6 +32,7 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayer;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
@@ -43,7 +44,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Ground Fill", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.TRACE,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
-public class GroundFill extends AbstractComponent<Void> {
+public class GroundFill extends AbstractComponent<Void> implements ILayer {
 
   private static final long serialVersionUID = 1L;
 
@@ -149,6 +150,10 @@ public class GroundFill extends AbstractComponent<Void> {
     this.layer = layer;
   }
 
+  @Override
+  public int getLayerId() {   
+    return getLayer().getId();
+  }
 
   @Deprecated
   @Override

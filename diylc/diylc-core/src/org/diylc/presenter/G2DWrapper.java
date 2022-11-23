@@ -103,7 +103,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private String continuityMarker;
   private Shape lastShape;
 
-  private double zoom;  
+  private double zoom;
+  private int zOrder;  
 
   /**
    * Creates a wrapper around specified {@link Graphics2D} object.
@@ -127,22 +128,25 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   /**
    * Clears out the current area and caches canvas settings.
+   * 
+   * @param zOrder
    */
-  public void startedDrawingComponent() {
-    drawingComponent = true;
-    currentArea = new Area();
-    continuityPositiveAreas = new HashMap<String, Area>();
-    continuityNegativeAreas = new HashMap<String, Area>();
+  public void startedDrawingComponent(int zOrder) {
+    this.zOrder = zOrder;
+    this.drawingComponent = true;
+    this.currentArea = new Area();
+    this.continuityPositiveAreas = new HashMap<String, Area>();
+    this.continuityNegativeAreas = new HashMap<String, Area>();
 //    trackingStacks.clear();
-    continuityMarker = null;
-    originalStroke = canvasGraphics.getStroke();
-    originalColor = canvasGraphics.getColor();
-    originalTx = canvasGraphics.getTransform();
-    originalComposite = canvasGraphics.getComposite();
-    originalFont = canvasGraphics.getFont();
-    currentTx = new AffineTransform();
-    initialTx = canvasGraphics.getTransform();
-    lastShape = null;
+    this.continuityMarker = null;
+    this.originalStroke = canvasGraphics.getStroke();
+    this.originalColor = canvasGraphics.getColor();
+    this.originalTx = canvasGraphics.getTransform();
+    this.originalComposite = canvasGraphics.getComposite();
+    this.originalFont = canvasGraphics.getFont();
+    this.currentTx = new AffineTransform();
+    this.initialTx = canvasGraphics.getTransform();
+    this.lastShape = null;
     startTracking();
   }
 
@@ -159,7 +163,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setComposite(originalComposite);
     canvasGraphics.setFont(originalFont);
 //    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);    
-    return new ComponentArea(currentArea, new ArrayList<Area>(continuityPositiveAreas.values()), new ArrayList<Area>(continuityNegativeAreas.values()));
+    return new ComponentArea(zOrder,currentArea, new ArrayList<Area>(continuityPositiveAreas.values()), 
+        new ArrayList<Area>(continuityNegativeAreas.values()));
   }
   
   // start - used for caching

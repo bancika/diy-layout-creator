@@ -93,7 +93,7 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
         if (c instanceof ISpiceMapper)
           pointIndex = ((ISpiceMapper)c).mapToSpiceNode(pointIndex);
         
-        int nodeIndex = find(new Node(c, pointIndex), groups);
+        int nodeIndex = find(new Node(c, pointIndex, 0), groups);
         if (nodeIndex < 0)
           nodeIndex = unconnectedIndex++;
         

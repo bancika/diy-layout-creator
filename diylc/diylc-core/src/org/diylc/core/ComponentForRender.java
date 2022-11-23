@@ -19,17 +19,35 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.common;
+package org.diylc.core;
 
-public enum PCBLayer {
+/**
+ * Component with all extra info for it to be rendered on the screen.
+ * 
+ * @author Branislav Stojkovic
+ */
+public class ComponentForRender {
 
-  _1, _2, _3, _4, _5, _6, _7, _8;
-
-  public String toString() {
-    return name().substring(1);
-  };
+  private IDIYComponent<?> component;
+  private ComponentState state;
+  private int zOrder;
   
-  public int getId() {
-    return Integer.parseInt(toString());
+  public ComponentForRender(IDIYComponent<?> component, ComponentState state, int zOrder) {
+    super();
+    this.component = component;
+    this.state = state;
+    this.zOrder = zOrder;
+  }
+  
+  public IDIYComponent<?> getComponent() {
+    return component;
+  }
+  
+  public ComponentState getState() {
+    return state;
+  }
+  
+  public int getZOrder() {
+    return zOrder;
   }
 }

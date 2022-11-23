@@ -28,6 +28,7 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayer;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
@@ -44,7 +45,7 @@ import org.diylc.utils.Constants;
     description = "Copper solder pad, round or square", instanceNamePrefix = "Pad",
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, enableCache = true)
-public class SolderPad extends AbstractComponent<Void> {
+public class SolderPad extends AbstractComponent<Void> implements ILayer {
 
   private static final long serialVersionUID = 1L;
 
@@ -127,6 +128,11 @@ public class SolderPad extends AbstractComponent<Void> {
 
   public void setLayer(PCBLayer layer) {
     this.layer = layer;
+  }
+  
+  @Override
+  public int getLayerId() {   
+    return getLayer().getId();
   }
 
   @Override

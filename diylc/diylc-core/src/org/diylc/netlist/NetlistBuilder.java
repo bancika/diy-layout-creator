@@ -22,6 +22,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +40,7 @@ import org.diylc.lang.LangUtil;
 import org.diylc.netlist.ContinuityGraph.ContinuityNode;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.Connection;
+import org.diylc.presenter.ContinuityArea;
 import org.diylc.utils.RTree;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
@@ -55,36 +57,39 @@ public class NetlistBuilder {
       .translate("Maximum number of switching combinations exceeded. Allowed: %s, actual: %s");
 
   @SuppressWarnings("unchecked")
-  public static List<Netlist> extractNetlists(boolean includeSwitches, Project project, List<Area> continuityAreas)
-      throws NetlistException {
+  public static List<Netlist> extractNetlists(boolean includeSwitches, Project project,
+      List<ContinuityArea> continuityAreas) throws NetlistException {
     Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
 
     List<ISwitch> switches = new ArrayList<ISwitch>();
-    
+
     Set<String> commonNodes = new HashSet<String>();
 
-    for (IDIYComponent<?> c : project.getComponents()) {
+    for (int j = 0; j < project.getComponents().size(); j++) {
+      IDIYComponent<?> c = project.getComponents().get(j);
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
 
       // extract nodes
       if (!(c instanceof IContinuity) && !(c instanceof ICommonNode)) {
+        // regular components, create a node per control point
         for (int i = 0; i < c.getControlPointCount(); i++) {
           String nodeName = c.getControlPointNodeName(i);
-          if (nodeName != null
+          if (c.isControlPointSticky(i) && nodeName != null
               && (!includeSwitches || !ISwitch.class.isAssignableFrom(type.getInstanceClass()))) {
-            nodes.add(new Node(c, i));
+            nodes.add(new Node(c, i, j));
           }
         }
       }
-      
-      // create only one node per common label to avoid duplications in the netlist, as they will get eventually connected anyways
+
+      // create only one node per common label to avoid duplications in the netlist, as they will
+      // get eventually connected anyways
       if (c instanceof ICommonNode) {
-        String label = ((ICommonNode)c).getCommonNodeLabel();
+        String label = ((ICommonNode) c).getCommonNodeLabel();
         if (!commonNodes.contains(label)) {
           commonNodes.add(label);
-          nodes.add(new Node(c, 0));
+          nodes.add(new Node(c, 0, j));
         }
       }
 
@@ -142,8 +147,8 @@ public class NetlistBuilder {
       }
       List<Connection> connections = getConnections(project, switchPositions);
 
-      Netlist netlist = NetlistBuilder.buildNetlist(project.getComponents(), nodes,
-          continuityAreas, connections);
+      Netlist netlist =
+          NetlistBuilder.buildNetlist(project.getComponents(), nodes, continuityAreas, connections);
 
       // merge graphs that are effectively the same
       if (result.containsKey(netlist)) {
@@ -176,7 +181,7 @@ public class NetlistBuilder {
   }
 
   public static Netlist buildNetlist(List<IDIYComponent<?>> components, Collection<Node> nodes,
-      Collection<Area> continuityAreas, Collection<Connection> connections) {
+      Collection<ContinuityArea> continuityAreas, Collection<Connection> connections) {
     ImmutableGraph<ProjectGraphNode> graph = buildGraph(nodes, continuityAreas, connections);
 
     Traverser<ProjectGraphNode> traverser = Traverser.forGraph(graph);
@@ -211,7 +216,7 @@ public class NetlistBuilder {
     return netlist;
   }
 
-  public static ContinuityGraph buildContinuityGraph(Collection<Area> continuityAreas,
+  public static ContinuityGraph buildContinuityGraph(Collection<ContinuityArea> continuityAreas,
       Collection<Connection> connections) {
     ImmutableGraph<ProjectGraphNode> graph =
         buildGraph(new ArrayList<Node>(), continuityAreas, connections);
@@ -224,7 +229,7 @@ public class NetlistBuilder {
     int groupId = 1;
 
     RTree<ContinuityNode> groupTree = new RTree<ContinuityGraph.ContinuityNode>();
-    Map<Integer, List<Area>> areaGroupMap = new HashMap<Integer, List<Area>>();
+    Map<Integer, List<ContinuityArea>> areaGroupMap = new HashMap<Integer, List<ContinuityArea>>();
 
     while (true) {
 
@@ -237,12 +242,13 @@ public class NetlistBuilder {
 
       final int finalGroupId = groupId;
 
-      List<Area> areaList = new ArrayList<Area>();
+      List<ContinuityArea> areaList = new ArrayList<ContinuityArea>();
       traverser.breadthFirst(nodeArr[i]).forEach(node -> {
         visited.add(node);
         if (node.getArea() != null) {
           areaList.add(node.getArea());
-          groupTree.insert(node.getArea(), new ContinuityNode(node.getArea(), finalGroupId));
+          groupTree.insert(node.getArea().getArea(),
+              new ContinuityNode(node.getArea(), finalGroupId));
         }
       });
 
@@ -257,7 +263,7 @@ public class NetlistBuilder {
 
   /****
    * Build an {@link ImmutableGraph} containing the following nodes: project nodes, both ends of
-   * each connection and one node per continuity areas. All vertices are added based on object
+   * each connection and one node per continuity area. All vertices are added based on object
    * proximity or intersection.
    * 
    * @param nodes
@@ -266,45 +272,52 @@ public class NetlistBuilder {
    * @return
    */
   private static ImmutableGraph<ProjectGraphNode> buildGraph(Collection<Node> nodes,
-      Collection<Area> continuityAreas, Collection<Connection> connections) {
-    Map<Point2D, List<ProjectGraphNode>> nodeMap = new HashMap<Point2D, List<ProjectGraphNode>>();
+      Collection<ContinuityArea> continuityAreas, Collection<Connection> connections) {
 
-    RTree<ProjectGraphNode> nodeTree = new RTree<ProjectGraphNode>();
+    Map<Point2D, List<ProjectGraphNode>> nodeMapByPoint =
+        new HashMap<Point2D, List<ProjectGraphNode>>();
+
+    // RTree<ProjectGraphNode> nodeTree = new RTree<ProjectGraphNode>();
     RTree<ProjectGraphNode> areaTree = new RTree<ProjectGraphNode>();
 
     Builder<ProjectGraphNode> builder = GraphBuilder.undirected().<ProjectGraphNode>immutable();
+
+    List<ProjectGraphNode> controlPointNodeList = new ArrayList<ProjectGraphNode>();
 
     for (Node node : nodes) {
       Point2D p = snapToEps(node.getPoint2D(), eps);
       ProjectGraphNode graphNode = new ProjectGraphNode(p, node);
       builder.addNode(graphNode);
-      nodeTree.insert(new float[] {(float) (p.getX() - eps), (float) (p.getY() - eps)},
-          new float[] {eps * 2, eps * 2}, graphNode);
-      nodeMap.computeIfAbsent(p, (point) -> new ArrayList<ProjectGraphNode>())
+      // nodeTree.insert(new float[] {(float) (p.getX() - eps), (float) (p.getY() - eps)},
+      // new float[] {eps * 2, eps * 2}, graphNode);
+      nodeMapByPoint.computeIfAbsent(p, (point) -> new ArrayList<ProjectGraphNode>())
           .add(new ProjectGraphNode(p, node));
+      controlPointNodeList.add(graphNode);
     }
 
     for (Connection conn : connections) {
       Point2D p1 = snapToEps(conn.getP1(), eps);
       Point2D p2 = snapToEps(conn.getP2(), eps);
 
-      ProjectGraphNode graphNode1 = new ProjectGraphNode(p1);
-      ProjectGraphNode graphNode2 = new ProjectGraphNode(p2);
+      ProjectGraphNode graphNode1 = new ProjectGraphNode(p1, conn.getZIndex());
+      ProjectGraphNode graphNode2 = new ProjectGraphNode(p2, conn.getZIndex());
 
-      nodeTree.insert(new float[] {(float) p1.getX() - eps, (float) p1.getY() - eps},
-          new float[] {eps * 2, eps * 2}, graphNode1);
-      nodeTree.insert(new float[] {(float) p2.getX() - eps, (float) p2.getY() - eps},
-          new float[] {eps * 2, eps * 2}, graphNode2);
+      // nodeTree.insert(new float[] {(float) p1.getX() - eps, (float) p1.getY() - eps},
+      // new float[] {eps * 2, eps * 2}, graphNode1);
+      // nodeTree.insert(new float[] {(float) p2.getX() - eps, (float) p2.getY() - eps},
+      // new float[] {eps * 2, eps * 2}, graphNode2);
 
       builder.addNode(graphNode1);
       builder.addNode(graphNode2);
       builder.putEdge(graphNode1, graphNode2);
 
-      nodeMap.computeIfAbsent(p1, (point) -> new ArrayList<ProjectGraphNode>()).add(graphNode1);
-      nodeMap.computeIfAbsent(p2, (point) -> new ArrayList<ProjectGraphNode>()).add(graphNode2);
+      nodeMapByPoint.computeIfAbsent(p1, (point) -> new ArrayList<ProjectGraphNode>())
+          .add(graphNode1);
+      nodeMapByPoint.computeIfAbsent(p2, (point) -> new ArrayList<ProjectGraphNode>())
+          .add(graphNode2);
     }
 
-    for (Map.Entry<Point2D, List<ProjectGraphNode>> entry : nodeMap.entrySet()) {
+    for (Map.Entry<Point2D, List<ProjectGraphNode>> entry : nodeMapByPoint.entrySet()) {
       ProjectGraphNode[] nodeArr = entry.getValue().toArray(new ProjectGraphNode[0]);
       for (int i = 0; i < nodeArr.length - 1; i++) {
         for (int j = i + 1; j < nodeArr.length; j++) {
@@ -313,30 +326,36 @@ public class NetlistBuilder {
       }
     }
 
-    for (Area area : continuityAreas) {
+    for (ContinuityArea area : continuityAreas) {
       ProjectGraphNode areaNode = new ProjectGraphNode(area);
       builder.addNode(areaNode);
 
-      ProjectGraphNode[] nodeArr = nodeTree.search(area).stream()
-          .filter(graphNode -> area.contains(graphNode.getPoint())
-              || area.intersects(graphNode.getPoint().getX() - eps / 2,
-                  graphNode.getPoint().getY() - eps / 2, eps, eps))
-          .collect(Collectors.toList()).toArray(new ProjectGraphNode[0]);
+      // List<ProjectGraphNode> candidateNodes = nodeTree.search(area.getArea()).stream()
+      // .filter(graphNode -> area.getArea().contains(graphNode.getPoint())
+      // || area.getArea().intersects(graphNode.getPoint().getX() - eps / 2,
+      // graphNode.getPoint().getY() - eps / 2, eps, eps))
+      // .collect(Collectors.toList());
+      //
+      // List<ProjectGraphNode> nodesAbove = candidateNodes.stream()
+      // .filter(x -> x.getNode().getZIndex() > area.getZOrder())
+      // .sorted(Comparator.comparing(x -> x.getNode().getZIndex(), Comparator.reverseOrder()))
+      // .collect(Collectors.toList());
+      //
+      // for (ProjectGraphNode node : nodeArr) {
+      // builder.putEdge(node, areaNode);
+      // }
 
-      for (ProjectGraphNode node : nodeArr) {
-        builder.putEdge(node, areaNode);
-      }
+      // for (int i = 0; i < nodeArr.length - 1; i++) {
+      // for (int j = i + 1; j < nodeArr.length; j++) {
+      // builder.putEdge(nodeArr[i], nodeArr[j]);
+      // }
+      // }
 
-      for (int i = 0; i < nodeArr.length - 1; i++) {
-        for (int j = i + 1; j < nodeArr.length; j++) {
-          builder.putEdge(nodeArr[i], nodeArr[j]);
-        }
-      }
-
-      areaTree.search(area).stream().filter(graphNode -> {
-        if (graphNode.getArea() != null && graphNode.getArea() != area) {
-          Area a = new Area(graphNode.getArea());
-          a.intersect(area);
+      areaTree.search(area.getArea()).stream().filter(graphNode -> {
+        if (graphNode.getArea() != null && graphNode.getArea() != area
+            && graphNode.getArea().getLayerId() == area.getLayerId()) {
+          Area a = new Area(graphNode.getArea().getArea());
+          a.intersect(area.getArea());
           return !a.isEmpty();
         }
         return false;
@@ -344,36 +363,68 @@ public class NetlistBuilder {
         builder.putEdge(graphNode, areaNode);
       });
 
-      areaTree.insert(area, areaNode);
+      areaTree.insert(area.getArea(), areaNode);
+    }
+
+    for (Map.Entry<Point2D, List<ProjectGraphNode>> entry : nodeMapByPoint.entrySet()) {
+      
+      final Point2D point = entry.getKey();
+      
+      List<ProjectGraphNode> candidateAreaNodes = areaTree.search(point, eps).stream()
+          .filter(graphNode -> graphNode.getArea().getArea().contains(point)
+              || graphNode.getArea().getArea().intersects(point.getX() - eps / 2,
+                  point.getY() - eps / 2, eps, eps))
+          .collect(Collectors.toList());
+      
+      if (candidateAreaNodes.isEmpty())
+        continue;
+      
+      for (ProjectGraphNode pointNode : entry.getValue()) {
+      
+        List<ProjectGraphNode> areaNodesBelowPoint = candidateAreaNodes.stream()
+          .filter(x -> x.getArea().getZIndex() < pointNode.getZIndex())
+          .sorted(Comparator.comparing(x -> x.getArea().getZIndex(), Comparator.reverseOrder()))
+          .collect(Collectors.toList());
+        
+        if (areaNodesBelowPoint.isEmpty()) {
+          builder.putEdge(pointNode, candidateAreaNodes.get(0));
+        } else {
+          builder.putEdge(pointNode, areaNodesBelowPoint.get(0));
+        }
+      }
     }
 
     return builder.build();
   }
-  
+
   @SuppressWarnings({"unchecked", "unlikely-arg-type"})
-  private static List<Connection> getConnections(Project project, Map<ISwitch, Integer> switchPositions) {
+  private static List<Connection> getConnections(Project project,
+      Map<ISwitch, Integer> switchPositions) {
     Set<Connection> connections = new TreeSet<Connection>();
-    
-    Map<String, List<IDIYComponent<?>>> commonNodeMap = new HashMap<String, List<IDIYComponent<?>>>();
-    
-    for (IDIYComponent<?> c : project.getComponents()) {
-      ComponentType type =
-          ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
+
+    Map<String, List<IDIYComponent<?>>> commonNodeMap =
+        new HashMap<String, List<IDIYComponent<?>>>();
+
+    for (int z = 0; z < project.getComponents().size(); z++) {
+      IDIYComponent<?> c = project.getComponents().get(z);
+      ComponentType type = ComponentProcessor.getInstance()
+          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
       // handle direct connections
       if (c instanceof IContinuity) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (((IContinuity) c).arePointsConnected(i, j))
-              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j), z));
       }
       // handle switches
-      if (ISwitch.class.isAssignableFrom(type.getInstanceClass()) && switchPositions.containsKey(c)) {
+      if (ISwitch.class.isAssignableFrom(type.getInstanceClass())
+          && switchPositions.containsKey(c)) {
         int position = switchPositions.get(c);
         ISwitch s = (ISwitch) c;
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (s.arePointsConnected(i, j, position))
-              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j)));
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j), z));
       }
       // handle common nodes
       if (ICommonNode.class.isAssignableFrom(type.getInstanceClass())) {
@@ -382,12 +433,13 @@ public class NetlistBuilder {
         commonNodeMap.computeIfAbsent(label, (key) -> new ArrayList<IDIYComponent<?>>()).add(c);
       }
     }
-    
+
     // connect common nodes together by chaining them one by one
     for (List<IDIYComponent<?>> commonPoints : commonNodeMap.values()) {
       IDIYComponent<?>[] commonPointArr = commonPoints.toArray(new IDIYComponent<?>[0]);
       for (int i = 0; i < commonPointArr.length - 1; i++) {
-        connections.add(new Connection(commonPointArr[i].getControlPoint(0), commonPointArr[i + 1].getControlPoint(0)));
+        connections.add(new Connection(commonPointArr[i].getControlPoint(0),
+            commonPointArr[i + 1].getControlPoint(0), 0));
       }
     }
 
@@ -399,19 +451,22 @@ public class NetlistBuilder {
         Math.round(point.getY() / eps) * eps);
   }
 
-  private static class ProjectGraphNode {
+  static class ProjectGraphNode {
     private Point2D point;
     private Node node;
-    private Area area;
+    private ContinuityArea area;
+    private int zIndex;
 
-    public ProjectGraphNode(Area area) {
+    public ProjectGraphNode(ContinuityArea area) {
       super();
       this.area = area;
+      this.zIndex = area.getZIndex();
     }
 
-    public ProjectGraphNode(Point2D point) {
+    public ProjectGraphNode(Point2D point, int zIndex) {
       super();
       this.point = point;
+      this.zIndex = zIndex;
       this.node = null;
     }
 
@@ -419,17 +474,22 @@ public class NetlistBuilder {
       super();
       this.point = point;
       this.node = node;
+      this.zIndex = node.getZIndex();
     }
 
     public Point2D getPoint() {
       return point;
+    }
+    
+    public int getZIndex() {
+      return zIndex;
     }
 
     public Node getNode() {
       return node;
     }
 
-    public Area getArea() {
+    public ContinuityArea getArea() {
       return area;
     }
   }
