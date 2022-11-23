@@ -49,7 +49,6 @@ AWG
 Alternate
 And
 Angle Offset
-Apply Model
 B-C-E     BJT
 Background
 Box
@@ -94,7 +93,6 @@ G-D-S     MOSFET
 G-O-I     REGULATOR
 G-S-D     JFET
 G-S-D     MOSFET
-GF1
 Generate DIYLC Netlist (excl. Switches)
 Generate DIYLC Netlist (incl. Switches)
 Gray

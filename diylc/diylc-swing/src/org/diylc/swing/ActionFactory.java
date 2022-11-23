@@ -1988,7 +1988,7 @@ public class ActionFactory {
 
         @Override
         public void complete(List<Netlist> res) {
-          LOG.info("Finished fenerating netlist");
+          LOG.info("Finished generating netlist");
           if (res == null) {
             swingUI.showMessage("The generated netlist is empty, nothing to show.", "DIYLC Netlist",
                 ISwingUI.INFORMATION_MESSAGE);

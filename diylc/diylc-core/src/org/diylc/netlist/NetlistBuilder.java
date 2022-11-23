@@ -382,7 +382,7 @@ public class NetlistBuilder {
       for (ProjectGraphNode pointNode : entry.getValue()) {
       
         List<ProjectGraphNode> areaNodesBelowPoint = candidateAreaNodes.stream()
-          .filter(x -> x.getArea().getZIndex() < pointNode.getZIndex())
+          .filter(x -> x.getArea().getZIndex() <= pointNode.getZIndex())
           .sorted(Comparator.comparing(x -> x.getArea().getZIndex(), Comparator.reverseOrder()))
           .collect(Collectors.toList());
         

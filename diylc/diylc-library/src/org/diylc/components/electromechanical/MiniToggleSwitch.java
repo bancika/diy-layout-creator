@@ -309,13 +309,20 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     
     for (Point2D p : controlPoints) {
       if (outlineMode) {
+        g2d.setColor(Constants.TRANSPARENT_COLOR);
+        drawingObserver.startTrackingContinuityArea(true);
+        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+        drawingObserver.stopTrackingContinuityArea();
+        
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+        g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);        
       } else {
         g2d.setColor(CIRCLE_COLOR);
         g2d.fillOval((int)(p.getX() - circleDiameter / 2), (int)(p.getY() - circleDiameter / 2), circleDiameter, circleDiameter);
         g2d.setColor(METAL_COLOR);
+        drawingObserver.startTrackingContinuityArea(true);
         g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+        drawingObserver.stopTrackingContinuityArea();
       }
     }
   }
