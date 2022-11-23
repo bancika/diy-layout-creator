@@ -20,6 +20,7 @@ package org.diylc.netlist;
 
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,14 +46,19 @@ public class ContinuityGraph {
   }
 
   public List<Area> findAreasFor(Point2D point) {
-    Optional<ContinuityNode> first = groupTree.search(point, NetlistBuilder.eps).stream()
-        .filter(node -> node.getArea().getArea().contains(point)).findFirst();
-
-    return first.map(node -> 
-      areaGroupMap.get(node.getGroupId())
+    List<ContinuityNode> matchingNodes = groupTree.search(point, NetlistBuilder.eps)
+        .stream()
+        .filter(node -> node.getArea().getArea().contains(point))
+        .sorted(Comparator.comparing(x -> x.getArea().getZIndex(), Comparator.reverseOrder()))
+        .collect(Collectors.toList());
+    
+    if (matchingNodes.isEmpty())
+      return null;
+    
+    return areaGroupMap.get(matchingNodes.get(0).getGroupId())
         .stream()
         .map(x -> x.getArea())
-        .collect(Collectors.toList())).orElse(null);
+        .collect(Collectors.toList());
   }
   
   public static class ContinuityNode {
