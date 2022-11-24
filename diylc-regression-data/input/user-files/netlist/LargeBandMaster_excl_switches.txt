@@ -261,10 +261,6 @@ Switch setup: [Default]
 	R1.1 <-> R1.1 <-> R1.1 <-> R1.2
 	R1.1 <-> R1.1 <-> R1.1 <-> R1.2
 	R1.1 <-> R1.1 <-> R1.1 <-> R1.2
-	R1.1 <-> R1.2
-	R1.1 <-> R1.2
-	R1.1 <-> R1.2
-	R1.1 <-> R1.2
 	R1.1 <-> R1.2 <-> R1.2 <-> R1.2
 	R1.1 <-> R1.2 <-> R1.2 <-> R1.2
 	R1.1 <-> R1.2 <-> R1.2 <-> R1.2
@@ -277,14 +273,6 @@ Switch setup: [Default]
 	R1.1 <-> Tremolo Speed.2 <-> Tremolo Speed.3
 	R1.1 <-> Tremolo Speed.2 <-> Tremolo Speed.3
 	R1.1 <-> Tremolo Speed.2 <-> Tremolo Speed.3
-	R1.2 <-> R1.2
-	R1.2 <-> R1.2
-	R1.2 <-> R1.2
-	R1.2 <-> R1.2
-	R1.2 <-> R1.2
-	R1.2 <-> R1.2
-	R1.2 <-> R1.2
-	R1.2 <-> R1.2
 	R1.2 <-> R1.2 <-> R1.2
 	R1.2 <-> R1.2 <-> R1.2
 	R1.2 <-> R1.2 <-> R1.2

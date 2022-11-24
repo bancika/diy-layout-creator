@@ -1,0 +1,39 @@
+OK,Failed,Total Time,Avg Time
+0,34,174365,5128
+
+
+File,Status,Message,Time
+2555X BOARD LAYOUT RESaddTSRELAYnew.diy,FAILED,Netlists do not match without switches,26557
+6Y6 Express 2.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,8051
+ALU board with interface.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,3024
+AllTube Schem.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,11946
+Blue 7.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,1420
+BrownfaceReverb Schematic 2.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,5069
+Bus decoder board (RL,Z2,Z1,Z0).diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,2879
+DR18Tagstrip.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,17709
+Deluxe_Micro_EF80_Layout.diy,FAILED,,0
+Fender_Bassman_5F6_5F6A.diy,FAILED,,0
+Ibanez Balance-Master Mod.diy,FAILED,,0
+LM386 Voltage Converter.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,3796
+LargeBandMaster.diy,FAILED,Netlists do not match without switches,42525
+Lectrolab schematic.diy,FAILED,,0
+PCF DI Cable Diagram.diy,FAILED,,0
+ProTremoVerb Schematic.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,3022
+RAM board 2.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,2951
+RR2104_Master_Volume_6V6_Schematic.diy,FAILED,,0
+Radio Amp Noval.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,2994
+Register board (LSB).diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,2825
+Rix 18 watt.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,1370
+Rix AC15 Xlite.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,1012
+Rix Baby Blue.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,1119
+Rix Bassman.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,2777
+Rix JD stout.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,923
+Rix Junior AB763.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,1281
+Rix Junior.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,1182
+Rix Plexi 6V6.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,1750
+Rix Pro Jr.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,1199
+Silvertone 1484 v6f.diy,FAILED,Images do not match!,16551
+Stack Pointer board.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,2115
+Synth Oscllator_v1.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,2831
+Thunderbolt Mk3.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,667
+dist_layout.diy,FAILED,Images do not match!,4820

@@ -23,12 +23,10 @@ Switch setup: [Default]
 	C14.1 <-> MIDDLE-LEAD.2
 	C15.2 <-> DUAL BASS-CLEAN.3
 	C16.1 <-> C19.2 <-> R26.2
-	C16.1 <-> R26.2
 	C16.2 <-> R25.2
 	C17.1 <-> C18.1 <-> DUAL BASS-CLEAN.2 <-> R26.1
 	C18.2 <-> C23.1 <-> TREBLE-CLEAN.3
 	C19.1 <-> MIDDLE--CLEAN.2
-	C2.2 <-> R4.1
 	C21.2 <-> MIDDLE-LEAD.3
 	C22.1 <-> R25.1 <-> R29.1 <-> TREBLE-CLEAN.1
 	C23.2 <-> MIDDLE--CLEAN.3
@@ -50,7 +48,6 @@ Switch setup: [Default]
 	C32.2 <-> R34.2 <-> R35.2 <-> R40.2 <-> R41.2
 	C34.2 <-> C5.2 <-> R6.1
 	C4.1 <-> C7.3 <-> R10.1 <-> R10.2 <-> R18.2 <-> R19.2 <-> R4.2 <-> R40.1 <-> R5.1 <-> R6.2 <-> R7.2 <-> V1.7
-	C6.2 <-> D2.2 <-> D3.1
 	C7.1 <-> J59.J59Sleeve
 	C9.1 <-> R18.1
 	C9.2 <-> R17.1 <-> R20.1 <-> V2.7
@@ -82,7 +79,6 @@ Switch setup: [Default]
 	R51.1 <-> V4.5
 	R52.1 <-> V6.5
 	R52.2 <-> R53.2
-	R6.2 <-> R7.2
 	V4.3 <-> V5.3
 	V6.3 <-> V7.3
 

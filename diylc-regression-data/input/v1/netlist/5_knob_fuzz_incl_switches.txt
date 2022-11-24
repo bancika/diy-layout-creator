@@ -1,6 +1,6 @@
 Switch setup: [S1.ON1]
 
-	C1.1 <-> P1.2 <-> P2.3 <-> P3.3 <-> R1.1
+	C1.1 <-> P1.1 <-> P1.2 <-> P2.3 <-> P3.3 <-> R LED Current.1 <-> R1.1
 	C1.2 <-> P2.2
 	C2.1 <-> Q1.3 <-> R2.2
 	C2.2 <-> RP.1
@@ -10,7 +10,6 @@ Switch setup: [S1.ON1]
 	C4.2 <-> P5.2
 	D1.1 <-> R LED Current.2
 	D1.2 <-> P4.1 <-> P5.3 <-> Q1.1 <-> Q1.2 <-> R5.1 <-> RP.2
-	P1.1 <-> R LED Current.1
 	P2.1 <-> P3.1
 	P4.2 <-> P4.3 <-> R4.1
 	P5.1 <-> R6.1
@@ -19,7 +18,7 @@ Switch setup: [S1.ON1]
 
 Switch setup: [S1.ON2]
 
-	C1.1 <-> P1.2 <-> P2.3 <-> P3.3 <-> R1.1
+	C1.1 <-> P1.1 <-> P1.2 <-> P2.3 <-> P3.3 <-> R LED Current.1 <-> R1.1
 	C1.2 <-> P2.2
 	C2.1 <-> Q1.3 <-> R2.2
 	C2.2 <-> RP.1
@@ -28,7 +27,6 @@ Switch setup: [S1.ON2]
 	C4.1 <-> R5.2
 	C4.2 <-> P5.2
 	D1.1 <-> R LED Current.2
-	P1.1 <-> R LED Current.1
 	P2.1 <-> P3.1
 	P4.1 <-> P5.3 <-> Q1.1 <-> Q1.2 <-> R5.1 <-> RP.2
 	P4.2 <-> P4.3 <-> R4.1

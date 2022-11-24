@@ -4,4 +4,5 @@ Switch setup: [Default]
 	C10.2 <-> C9.1 <-> PR6 (GAIN).3 <-> R10.2
 	C9.2 <-> INPUT.1 <-> R9.1
 	GND <-> PR6 (GAIN).1 <-> R10.1
+	PR10 (VOLUME).2 <-> PR10 (VOLUME).3
 

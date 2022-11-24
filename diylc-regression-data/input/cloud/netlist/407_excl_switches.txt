@@ -1,10 +1,11 @@
 Switch setup: [Default]
 
-	0.47 uF.1 <-> JAZZ BASS BRIDGE PU.South Finish <-> LesPaul 3 Pos Switch.1 <-> PRECISION COIL S.South Finish <-> Presa Jack.Sleeve <-> Push Pull.3 <-> VOL1.1 <-> VOL1.3 <-> VOL2.3
+	0.47 uF.1 <-> JAZZ BASS BRIDGE PU.South Finish <-> LesPaul 3 Pos Switch.1 <-> PRECISION COIL S.South Finish <-> Presa Jack.Sleeve <-> Push Pull.3 <-> VOL1.3 <-> VOL2.3
 	0.47 uF.2 <-> TONE.3
 	JAZZ BASS BRIDGE PU.South Start <-> VOL2.1
 	LesPaul 3 Pos Switch.2 <-> VOL2.2
 	LesPaul 3 Pos Switch.3 <-> Presa Jack.Tip <-> TONE.2
 	LesPaul 3 Pos Switch.4 <-> VOL1.2
 	Push Pull.1 <-> Push Pull.4
+	Push Pull.6 <-> VOL1.1
 

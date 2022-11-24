@@ -1,4 +1,7 @@
 Switch setup: [Default]
 
-	GND <-> J1.Sleeve <-> PKP1.North Start <-> PKP3.North Start <-> SW1.3
+	.1 <-> SW1.2
+	GND <-> J1.Sleeve <-> PKP1.North Start <-> PKP3.North Start <-> SW1.3 <-> SW2.3 <-> SW4.3
+	SW3.1 <-> SW3.6
+	SW3.3 <-> SW3.4
 

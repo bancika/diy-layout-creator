@@ -2,7 +2,7 @@ Switch setup: [Default]
 
 	100K.1 <-> 4.7uF.1 <-> Pitch.1 <-> Q1.1
 	100K.1 <-> 4.7uF.1 <-> Pitch.1 <-> Q1.1 <-> Q1.2
-	100K.2 <-> 1K.1 <-> D1.2 <-> Pitch.2 <-> Pitch.3
+	100K.2 <-> 1K.1 <-> 1K.2 <-> D1.2 <-> Pitch.2 <-> Pitch.3
 	100K.2 <-> 1K.1 <-> Pitch.2 <-> Pitch.3
 	4.7uF.2 <-> D1.1
 	4.7uF.2 <-> D1.1 <-> Q1.3
