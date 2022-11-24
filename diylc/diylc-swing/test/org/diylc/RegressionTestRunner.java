@@ -210,7 +210,7 @@ public class RegressionTestRunner {
     File pngInputFile = new File(inputDir.getAbsolutePath() + File.separator + "png"
         + File.separator + (file.getName().replace(".diy", ".png")));
     if (!pngInputFile.exists()) {
-      return res.failed("Input image does not exist!");
+      res.failed("Input image does not exist!");
     }
 
     BufferedImage expectedImage =
@@ -226,16 +226,16 @@ public class RegressionTestRunner {
         new ImageComparison(expectedImage, actualImage, pngDiffFile).compareImages();
 
     if (ImageComparisonState.MATCH != imageComparisonResult.getImageComparisonState()) {
-      return res.failed("Images do not match!");
+      res.failed("Images do not match!");
     }
 
     RegressionTestResult netlistResultWithSwitches = testNetlist(file, presenter, res, outputDir, inputDir, true);
-    if (netlistResultWithSwitches != null)
-      return netlistResultWithSwitches;
+//    if (netlistResultWithSwitches != null)
+//      res.merge(netlistResultWithSwitches);
     
     RegressionTestResult netlistResultWithoutSwitches = testNetlist(file, presenter, res, outputDir, inputDir, false);
-    if (netlistResultWithoutSwitches != null)
-      return netlistResultWithoutSwitches;
+//    if (netlistResultWithoutSwitches != null)
+//      res.merge(netlistResultWithoutSwitches);
 
     // List<INetlistAnalyzer> summarizers = presenter.getNetlistAnalyzers();
     // if (summarizers != null) {
@@ -298,6 +298,9 @@ public class RegressionTestRunner {
       message = view.getMessages().entrySet().stream().flatMap(x -> x.getValue().stream())
           .reduce("", String::concat);
     }
+    
+    if (!res.ok)
+      return res;
 
     return res.succedded(message);
   }
@@ -335,11 +338,11 @@ public class RegressionTestRunner {
       List<String> outputLines = Files.readAllLines(Paths.get(netlistOutputFile.getAbsolutePath()));
 
       if (inputLines.size() != outputLines.size()) {
-        return res.failed("Netlists do not match");
+        return res.failed("Netlists do not match " + (includeSwitches ? "with switches" : "without switches"));
       }
       for (int i = 0; i < inputLines.size(); i++) {
         if (!inputLines.get(i).equals(outputLines.get(i))) {
-          return res.failed("Netlists do not match");
+          return res.failed("Netlists do not match " + (includeSwitches ? "with switches" : "without switches"));
         }
       }
     } catch (IOException e) {
@@ -463,9 +466,21 @@ public class RegressionTestRunner {
 
     public RegressionTestResult failed(String message) {
       this.ok = false;
-      this.message = message;
+      if (this.message == null)
+        this.message = message;
+      else if (message != null)
+        this.message = this.message + ";" + message;
       this.duration = System.currentTimeMillis() - this.startTime;
       return this;
     }
+    
+//    public void merge(RegressionTestResult other) {
+//      this.ok = this.ok && other.ok;
+//      this.duration = System.currentTimeMillis() - this.startTime;
+//      if (this.message == null)
+//        this.message = other.message;
+//      else if (other.message != null)
+//        this.message = this.message + ";" + other.message;
+//    }
   }
 }
