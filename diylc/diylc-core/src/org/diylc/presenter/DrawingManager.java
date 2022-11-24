@@ -22,6 +22,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -298,6 +299,7 @@ public class DrawingManager {
           g2dWrapper.stopTracking();
         }
         Composite oldComposite = g2d.getComposite();
+        Font oldFont = g2d.getFont();
         // Draw locked components in a new composite.
         if (lockedComponents.contains(component) && drawOptions.contains(DrawOption.LOCKED_ALPHA)) {
           g2d.setComposite(lockedComposite);
@@ -325,6 +327,7 @@ public class DrawingManager {
           g2dWrapper.stopTracking();
           // revert composite
           g2d.setComposite(oldComposite);
+          g2d.setFont(oldFont);
           // record render stats
           long componentEnd = System.nanoTime();
           Counter stats = null;

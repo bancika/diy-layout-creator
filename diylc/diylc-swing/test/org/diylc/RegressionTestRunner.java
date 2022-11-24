@@ -229,11 +229,11 @@ public class RegressionTestRunner {
       res.failed("Images do not match!");
     }
 
-    RegressionTestResult netlistResultWithSwitches = testNetlist(file, presenter, res, outputDir, inputDir, true);
+    testNetlist(file, presenter, res, outputDir, inputDir, true);
 //    if (netlistResultWithSwitches != null)
 //      res.merge(netlistResultWithSwitches);
     
-    RegressionTestResult netlistResultWithoutSwitches = testNetlist(file, presenter, res, outputDir, inputDir, false);
+    testNetlist(file, presenter, res, outputDir, inputDir, false);
 //    if (netlistResultWithoutSwitches != null)
 //      res.merge(netlistResultWithoutSwitches);
 
