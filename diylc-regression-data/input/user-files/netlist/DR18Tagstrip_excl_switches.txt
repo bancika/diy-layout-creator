@@ -8,7 +8,7 @@ Switch setup: [Default]
 	C12.1 <-> R14.1
 	C12.2 <-> R16.1
 	C13.1 <-> R16.2 <-> VR1 Gain.1
-	C13.2 <-> C28.2 <-> R12.2 <-> R28.1 <-> R47.2 <-> V1.2 <-> V3.7 <-> VR1 Gain.2 <-> VR1 Gain.3 <-> VR3 BASS.1 <-> VR5 VOLUME.3 <-> VR6 DWELL.1 <-> VR6 DWELL.2 <-> VR6 PRESENCE.1 <-> VR6 PRESENCE.2 <-> VR7 LEVEL.3 <-> VR8 TONE.3
+	C13.2 <-> V3.7 <-> VR1 Gain.2
 	C14.1 <-> R18.1 <-> V3.8
 	C14.2 <-> R18.2 <-> R20.2
 	C15.1 <-> R17.1 <-> V3.6
@@ -30,6 +30,7 @@ Switch setup: [Default]
 	C27.1 <-> R38.2
 	C27.2 <-> R40.1 <-> R42.1
 	C28.1 <-> R29.1 <-> VR5 VOLUME.2
+	C28.2 <-> V1.2 <-> VR6 DWELL.1 <-> VR6 DWELL.2
 	C29.1 <-> R49.1
 	C3.1 <-> R3.1
 	C30.2 <-> R48.2 <-> V1.1
@@ -51,6 +52,7 @@ Switch setup: [Default]
 	R11.1 <-> VR10 BIAS.3
 	R11.2 <-> R43.2 <-> R44.1
 	R12.1 <-> R13.2
+	R12.2 <-> R28.1 <-> R47.2 <-> VR1 Gain.3 <-> VR3 BASS.1 <-> VR5 VOLUME.3 <-> VR6 PRESENCE.1 <-> VR6 PRESENCE.2 <-> VR7 LEVEL.3 <-> VR8 TONE.3
 	R14.2 <-> R17.2
 	R21.1 <-> V2.2
 	R21.2 <-> VR3 MID.2

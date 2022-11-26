@@ -40,6 +40,7 @@ import org.diylc.components.transform.MiniToggleSwitchTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayer;
 import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
@@ -54,7 +55,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", autoEdit = false, enableCache = true, transformer = MiniToggleSwitchTransformer.class)
-public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch {
+public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch, ILayer {
 
   private static final long serialVersionUID = 1L;
 
@@ -309,10 +310,10 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     
     for (Point2D p : controlPoints) {
       if (outlineMode) {
-        g2d.setColor(Constants.TRANSPARENT_COLOR);
-        drawingObserver.startTrackingContinuityArea(true);
-        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
-        drawingObserver.stopTrackingContinuityArea();
+//        g2d.setColor(Constants.TRANSPARENT_COLOR);
+//        drawingObserver.startTrackingContinuityArea(true);
+//        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+//        drawingObserver.stopTrackingContinuityArea();
         
         g2d.setColor(theme.getOutlineColor());
         g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);        
@@ -320,9 +321,9 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
         g2d.setColor(CIRCLE_COLOR);
         g2d.fillOval((int)(p.getX() - circleDiameter / 2), (int)(p.getY() - circleDiameter / 2), circleDiameter, circleDiameter);
         g2d.setColor(METAL_COLOR);
-        drawingObserver.startTrackingContinuityArea(true);
+//        drawingObserver.startTrackingContinuityArea(true);
         g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
-        drawingObserver.stopTrackingContinuityArea();
+//        drawingObserver.stopTrackingContinuityArea();
       }
     }
   }
@@ -514,5 +515,10 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     int margin = 20;
     Rectangle2D bounds = getBody().getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+  
+  @Override
+  public int getLayerId() {   
+    return hashCode();
   }
 }

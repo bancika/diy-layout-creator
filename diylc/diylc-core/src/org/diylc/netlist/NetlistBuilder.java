@@ -353,7 +353,7 @@ public class NetlistBuilder {
 
       areaTree.search(area.getArea()).stream().filter(graphNode -> {
         if (graphNode.getArea() != null && graphNode.getArea() != area
-            && graphNode.getArea().getLayerId() == area.getLayerId()) {
+            && (graphNode.getArea().getLayerId() == 0 || area.getLayerId() == 0 || graphNode.getArea().getLayerId() == area.getLayerId())) {
           Area a = new Area(graphNode.getArea().getArea());
           a.intersect(area.getArea());
           return !a.isEmpty();
@@ -366,8 +366,7 @@ public class NetlistBuilder {
       areaTree.insert(area.getArea(), areaNode);
     }
 
-    for (Map.Entry<Point2D, List<ProjectGraphNode>> entry : nodeMapByPoint.entrySet()) {
-      
+    for (Map.Entry<Point2D, List<ProjectGraphNode>> entry : nodeMapByPoint.entrySet()) {      
       final Point2D point = entry.getKey();
       
       List<ProjectGraphNode> candidateAreaNodes = areaTree.search(point, eps).stream()
@@ -381,16 +380,20 @@ public class NetlistBuilder {
       
       for (ProjectGraphNode pointNode : entry.getValue()) {
       
-        List<ProjectGraphNode> areaNodesBelowPoint = candidateAreaNodes.stream()
-          .filter(x -> x.getArea().getZIndex() <= pointNode.getZIndex())
-          .sorted(Comparator.comparing(x -> x.getArea().getZIndex(), Comparator.reverseOrder()))
-          .collect(Collectors.toList());
+//        List<ProjectGraphNode> areaNodes = candidateAreaNodes.stream()
+//          .filter(x -> x.getArea().getZIndex() <= pointNode.getZIndex())
+////          .sorted(Comparator.comparing(x -> x.getArea().getZIndex(), Comparator.reverseOrder()))
+//          .collect(Collectors.toList());
         
-        if (areaNodesBelowPoint.isEmpty()) {
-          builder.putEdge(pointNode, candidateAreaNodes.get(0));
-        } else {
-          builder.putEdge(pointNode, areaNodesBelowPoint.get(0));
+        for (ProjectGraphNode areaNode : candidateAreaNodes) {
+          builder.putEdge(pointNode, areaNode);
         }
+        
+//        if (areaNodesBelowPoint.isEmpty()) {
+//          builder.putEdge(pointNode, candidateAreaNodes.get(0));
+//        } else {
+//          builder.putEdge(pointNode, areaNodesBelowPoint.get(0));
+//        }
       }
     }
 

@@ -5,15 +5,17 @@ Switch setup: [Default]
 	.4 <-> C2.2
 	.7 <-> Led.2
 	.8 <-> Gate.1 <-> Q3.1 <-> R5.2 <-> Volume.3
-	C1.1 <-> Compress.1 <-> Compress.2 <-> Compress.3 <-> Drive.1 <-> Drive.3 <-> R3.2 <-> R4.1 <-> R7.1 <-> Stability.1 <-> Stability.2
+	C1.1 <-> Compress.2 <-> Compress.3 <-> Drive.3 <-> R3.2 <-> Stability.2
 	C1.2 <-> Drive.2
 	C2.1 <-> Q3.2 <-> Q3.3 <-> R6.2
 	C3.1 <-> Q2.2 <-> Q2.3 <-> R4.2
 	C3.2 <-> R3.1 <-> R6.1
 	C4.1 <-> Volume.2
+	Compress.1 <-> Drive.1 <-> R4.1
 	Gate.2 <-> Gate.3 <-> R1.2
 	Led.1 <-> R7.2
 	Q1.1 <-> Q1.2 <-> R2.2
 	Q1.3 <-> Q2.1 <-> R1.1
 	R2.1 <-> Volume.1
+	R7.1 <-> Stability.1
 

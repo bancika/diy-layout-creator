@@ -65,8 +65,6 @@ public class RegressionTestRunner {
     List<RegressionTestResult> collect =
         visit(inputsDir, basePath, command, filter).collect(Collectors.toList());
 
-
-
     try {
       if ("TEST".equalsIgnoreCase(command)) {
         createReport(collect, basePath);
@@ -451,6 +449,7 @@ public class RegressionTestRunner {
     public RegressionTestResult(String fileName) {
       this.fileName = fileName;
       startTime = System.currentTimeMillis();
+      ok = true;
     }
 
     public RegressionTestResult succedded() {

@@ -4191,6 +4191,10 @@
 					<description>Circuit analysis algorithm that supports netlist extraction, 'Highlight connected Areas' and 'Guitar Wiring Analyzer' features improved to take PCB trace layer and component z-order into account for better accuracy</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Potentiometer bodies are no longer considered as conductive surfaces to avoid unwanted shorts</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Do not apply any user-default property values when creating a standard datasheet model (e.g. a capacitor)</description>
 				</org.diylc.appframework.update.Change>

@@ -2,7 +2,7 @@ Switch setup: [Default]
 
 	.047 uF.1 <-> J1.2
 	.047 uF.2 <-> 1 M.2 <-> R1.2
-	.1 <-> .2 <-> .2 <-> .2 <-> 1 M.1 <-> 1N4007.1 <-> BASS-CLEAN.1 <-> BASS-LEAD.1 <-> BASS-LEAD.2 <-> BASS-LEAD.3 <-> C1.2 <-> C2.1 <-> C20.1 <-> C20.2 <-> C6.1 <-> C6.2 <-> C8.2 <-> CLEAN GAIN.1 <-> CLEAN GAIN.3 <-> D11.2 <-> D13.2 <-> D2.2 <-> D3.1 <-> D4.1 <-> D5.2 <-> D7.2 <-> J1.1 <-> J1.4 <-> LEAD GAIN.1 <-> LEAD GAIN.3 <-> LEAD VOL.1 <-> LEAD VOL.3 <-> MASTER VOL.1 <-> MIDDLE--CLEAN.1 <-> MIDDLE-LEAD.1 <-> R11.1 <-> R12.1 <-> R2.2 <-> R20.2 <-> R21.2 <-> R22.1 <-> R24.2 <-> R27.2 <-> R28.1 <-> R28.2 <-> R3.2 <-> R39.1 <-> R7.1 <-> R8.1 <-> R9.1 <-> RY1.6 <-> RY1.7 <-> RY1.8 <-> RY2.6 <-> RY2.8 <-> TREBLE-LEAD.1
+	.1 <-> .2 <-> .2 <-> .2 <-> 1 M.1 <-> 1N4007.1 <-> BASS-CLEAN.1 <-> BASS-LEAD.1 <-> C1.2 <-> C2.1 <-> C20.2 <-> C6.1 <-> C6.2 <-> C8.2 <-> CLEAN GAIN.1 <-> CLEAN GAIN.3 <-> D11.2 <-> D13.2 <-> D2.2 <-> D3.1 <-> D4.1 <-> D5.2 <-> D7.2 <-> J1.1 <-> J1.4 <-> LEAD GAIN.1 <-> LEAD GAIN.3 <-> LEAD VOL.1 <-> LEAD VOL.3 <-> MASTER VOL.1 <-> MIDDLE--CLEAN.1 <-> MIDDLE-LEAD.1 <-> R11.1 <-> R12.1 <-> R2.2 <-> R20.2 <-> R21.2 <-> R24.2 <-> R27.2 <-> R3.2 <-> R39.1 <-> R7.1 <-> R8.1 <-> R9.1 <-> RY1.6 <-> RY1.7 <-> RY1.8 <-> RY2.6 <-> RY2.8
 	.1 <-> C31.2 <-> R42.2
 	.1 <-> C5.1
 	.1 <-> IEC1.2
@@ -13,6 +13,7 @@ Switch setup: [Default]
 	.5 <-> AUX RELAY HEATER TXR.1
 	1N4007.2 <-> C8.1 <-> D7.1 <-> R15.2
 	BASS-CLEAN.2 <-> BASS-CLEAN.3 <-> R29.2
+	BASS-LEAD.2 <-> BASS-LEAD.3 <-> R28.2
 	C1.1 <-> C2.2 <-> R3.1 <-> R4.1 <-> V1.8
 	C10.1 <-> C12.2 <-> C15.1 <-> C17.2 <-> R19.1 <-> V2.6
 	C10.2 <-> DUAL BASS 2--LEAD.3
@@ -27,6 +28,7 @@ Switch setup: [Default]
 	C17.1 <-> C18.1 <-> DUAL BASS-CLEAN.2 <-> R26.1
 	C18.2 <-> C23.1 <-> TREBLE-CLEAN.3
 	C19.1 <-> MIDDLE--CLEAN.2
+	C20.1 <-> R22.1 <-> R28.1 <-> TREBLE-LEAD.1
 	C21.2 <-> MIDDLE-LEAD.3
 	C22.1 <-> R25.1 <-> R29.1 <-> TREBLE-CLEAN.1
 	C23.2 <-> MIDDLE--CLEAN.3

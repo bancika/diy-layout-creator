@@ -1,0 +1,17 @@
+OK,Failed,Total Time,Avg Time
+10,2,24506,2042
+
+
+File,Status,Message,Time
+IIc+.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,3858
+deacy.diy,OK,,1116
+jfet boost.diy,OK,,165
+lp switch + pots.diy,OK,,1928
+rangemaster.diy,OK,,266
+ruby.diy,OK,,397
+slo2.diy,OK,,2281
+splitter2.diy,OK,,1486
+standard strat.diy,FAILED,Images do not match!,10001
+tda1521a-2.diy,OK,,907
+timmy7.diy,OK,,1479
+travelcaster3 (new format).diy,OK,,622

@@ -1,6 +1,6 @@
 Switch setup: [SW1.Treble, SW1.Middle, SW1.Rhythm]
 
-	BRIDGE VOL.3 <-> CAP 0.22 uF.2 <-> CAP 0.22 uF.2 <-> LP NECK.South Start
+	BRIDGE VOL.3 <-> CAP 0.22 uF.2
 	CAP 0.22 uF.1 <-> NECK TONE.2
 	LP BRIDGE.North Finish <-> LP BRIDGE.South Finish
 	LP NECK.North Finish <-> LP NECK.South Finish

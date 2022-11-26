@@ -1,6 +1,11 @@
-Switch setup: [.ON1:.ON1:.ON1:.ON1, .ON1:.ON1:.ON1:.ON2, .ON1:.ON1:.ON2:.ON1, .ON1:.ON1:.ON2:.ON2, .ON1:.ON2:.ON1:.ON1, .ON1:.ON2:.ON1:.ON2, .ON1:.ON2:.ON2:.ON1, .ON1:.ON2:.ON2:.ON2, .ON2:.ON1:.ON1:.ON1, .ON2:.ON1:.ON1:.ON2, .ON2:.ON1:.ON2:.ON1, .ON2:.ON1:.ON2:.ON2, .ON2:.ON2:.ON1:.ON1, .ON2:.ON2:.ON1:.ON2, .ON2:.ON2:.ON2:.ON1, .ON2:.ON2:.ON2:.ON2]
+Switch setup: [.ON1:.ON1:.ON1:.ON1, .ON1:.ON1:.ON2:.ON1, .ON1:.ON2:.ON1:.ON1, .ON1:.ON2:.ON2:.ON1, .ON2:.ON1:.ON1:.ON1, .ON2:.ON1:.ON2:.ON1, .ON2:.ON2:.ON1:.ON1, .ON2:.ON2:.ON2:.ON1]
 
 	B1.B1.+ <-> J1.Ring
+	B1.B1.- <-> GND <-> J1.Sleeve <-> Volume.3
+	J1.Tip <-> Volume.2
+
+Switch setup: [.ON1:.ON1:.ON1:.ON2, .ON1:.ON1:.ON2:.ON2, .ON1:.ON2:.ON1:.ON2, .ON1:.ON2:.ON2:.ON2, .ON2:.ON1:.ON1:.ON2, .ON2:.ON1:.ON2:.ON2, .ON2:.ON2:.ON1:.ON2, .ON2:.ON2:.ON2:.ON2]
+
 	B1.B1.- <-> GND <-> J1.Sleeve <-> Volume.3
 	J1.Tip <-> Volume.2
 

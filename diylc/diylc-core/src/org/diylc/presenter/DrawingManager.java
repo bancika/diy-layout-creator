@@ -720,7 +720,7 @@ public class DrawingManager {
       if (component instanceof ILayer) {
         layerId = ((ILayer)component).getLayerId();
       } else {
-        layerId = component.hashCode();
+        layerId = 0;
       }
       
       Collection<Area> positiveAreas = a.getContinuityPositiveAreas();

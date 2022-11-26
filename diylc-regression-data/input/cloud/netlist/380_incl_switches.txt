@@ -16,13 +16,13 @@ Switch setup: [SW1.ON1:SW2.ON1:SW3.ON2, SW1.ON1:SW2.ON2:SW3.ON2]
 Switch setup: [SW1.ON2:SW2.ON1:SW3.ON1, SW1.ON2:SW2.ON2:SW3.ON1]
 
 	C1.1 <-> VR1.3 <-> VR2.3
-	J1.Sleeve <-> PKP2.North Finish <-> VR2.2 <-> VR3.3
+	J1.Sleeve <-> PKP2.North Finish <-> VR3.3
 	J1.Tip <-> VR3.2
 	PKP3.North Start <-> VR1.2
 
 Switch setup: [SW1.ON2:SW2.ON1:SW3.ON2, SW1.ON2:SW2.ON2:SW3.ON2]
 
 	C1.1 <-> VR1.3 <-> VR2.3
-	J1.Sleeve <-> PKP2.North Finish <-> VR2.2 <-> VR3.3
+	J1.Sleeve <-> PKP2.North Finish <-> VR3.3
 	J1.Tip <-> VR3.2
 

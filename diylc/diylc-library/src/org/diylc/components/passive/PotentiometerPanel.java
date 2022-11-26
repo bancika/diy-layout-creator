@@ -42,6 +42,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayer;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -54,7 +55,7 @@ import org.diylc.utils.Constants;
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
     description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT,
     transformer = PotentiometerTransformer.class, enableCache = true)
-public class PotentiometerPanel extends AbstractPotentiometer {
+public class PotentiometerPanel extends AbstractPotentiometer implements ILayer {
 
   private static final long serialVersionUID = 1L;
 
@@ -279,11 +280,11 @@ public class PotentiometerPanel extends AbstractPotentiometer {
           g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
         }
         if (!outlineMode) {
-          if (i >= 3 && i <= 6)
-            drawingObserver.startTrackingContinuityArea(true);
+//          if (i >= 3 && i <= 6)
+//            drawingObserver.startTrackingContinuityArea(true);
           g2d.fill(shape);
-          if (i >= 3 && i <= 6)
-            drawingObserver.stopTrackingContinuityArea();
+//          if (i >= 3 && i <= 6)
+//            drawingObserver.stopTrackingContinuityArea();
         }
         g2d.setComposite(oldComposite);
         Color finalBorderColor;
@@ -502,6 +503,11 @@ public class PotentiometerPanel extends AbstractPotentiometer {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+  
+  @Override
+  public int getLayerId() {   
+    return hashCode();
   }
 
   public enum Type {

@@ -1,0 +1,17 @@
+OK,Failed,Total Time,Avg Time
+0,12,16479,1373
+
+
+File,Status,Message,Time
+IIc+.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,5475
+deacy.diy,FAILED,Images do not match!,1728
+jfet boost.diy,FAILED,,0
+lp switch + pots.diy,FAILED,,0
+rangemaster.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,472
+ruby.diy,FAILED,Images do not match!,650
+slo2.diy,FAILED,Images do not match!,3770
+splitter2.diy,FAILED,,0
+standard strat.diy,FAILED,,0
+tda1521a-2.diy,FAILED,Images do not match!,1730
+timmy7.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,2654
+travelcaster3 (new format).diy,FAILED,,0
