@@ -40,7 +40,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
-    transformer = SimpleComponentTransformer.class, enableCache = true)
+    transformer = SimpleComponentTransformer.class, enableCache = false)
 public class HookupWire extends AbstractCurvedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
@@ -156,5 +156,5 @@ public class HookupWire extends AbstractCurvedComponent<Void> implements IContin
   @Override
   public boolean arePointsConnected(int index1, int index2) {
     return Math.abs(index1 - index2) == getControlPointCount() - 1;
-  }  
+  }
 }

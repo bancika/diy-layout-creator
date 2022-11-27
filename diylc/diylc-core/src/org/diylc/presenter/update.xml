@@ -4196,6 +4196,10 @@
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Optimized memory usage when having many Hookup Wire components</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved conductivity tracking of Terminal Strip</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
