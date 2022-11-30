@@ -21,13 +21,16 @@
 */
 package org.diylc.swing.plugins.layers;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.KeyStroke;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -74,6 +77,8 @@ public class LayersMenuPlugin implements IPlugIn {
         }
       };
       visibleAction.putValue(IView.CHECK_BOX_MENU_ITEM, true);
+      visibleAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + zOrder,
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
       visibleActionMap.put(layer, visibleAction);
 
       AbstractAction selectAllAction = new AbstractAction("Select All") {

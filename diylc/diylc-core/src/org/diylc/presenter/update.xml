@@ -4187,6 +4187,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Keyboard shortcuts for toggling layer visibility using Ctrl + 1 through Ctrl + 5</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Circuit analysis algorithm that supports netlist extraction, 'Highlight connected Areas' and 'Guitar Wiring Analyzer' features improved to take PCB trace layer and component z-order into account for better accuracy</description>
 				</org.diylc.appframework.update.Change>	
