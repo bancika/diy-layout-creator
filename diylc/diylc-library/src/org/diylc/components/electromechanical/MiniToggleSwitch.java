@@ -70,8 +70,6 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   private static Color CIRCLE_COLOR = Color.decode("#FFFFAA");
 
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
-  @Deprecated
-  protected String name;
   transient protected Shape body;
   protected ToggleSwitchType switchType = ToggleSwitchType.DPDT;
   private OrientationHV orientation = OrientationHV.VERTICAL;
