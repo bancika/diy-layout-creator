@@ -58,7 +58,7 @@ public class Label extends AbstractComponent<String> {
   private Color color = LABEL_COLOR;
   @SuppressWarnings("unused")
   @Deprecated
-  private boolean center;
+  private transient boolean center;
   private HorizontalAlignment horizontalAlignment = HorizontalAlignment.CENTER;
   private VerticalAlignment verticalAlignment = VerticalAlignment.CENTER;
   private Orientation orientation = Orientation.DEFAULT;
