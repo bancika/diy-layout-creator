@@ -77,6 +77,7 @@ import org.diylc.swing.plugins.canvas.CanvasPlugin;
 import org.diylc.swing.plugins.cloud.CloudPlugIn;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 import org.diylc.swing.plugins.edit.EditMenuPlugin;
+import org.diylc.swing.plugins.explorer.ExplorerPlugin;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swing.plugins.file.FileMenuPlugin;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
@@ -118,11 +119,11 @@ public class MainFrame extends JFrame implements ISwingUI {
         IconLoader.IconLarge.getImage()));
     DialogFactory.getInstance().initialize(this);
     
-    IConfigurationManager configManager = ConfigurationManager.getInstance();
+    IConfigurationManager<?> configManager = ConfigurationManager.getInstance();
 
     this.presenter = new Presenter(this, configManager, true);    
 
-    presenter.installPlugin(() -> new ToolBox(this));
+    presenter.installPlugin(() -> new ToolBox(this));    
     presenter.installPlugin(() -> new FileMenuPlugin(this));
     presenter.installPlugin(() -> new EditMenuPlugin(this));
     presenter.installPlugin(() -> new ConfigPlugin(this));
@@ -138,6 +139,7 @@ public class MainFrame extends JFrame implements ISwingUI {
     canvasPlugin = new CanvasPlugin(this, configManager);
     presenter.installPlugin(() -> canvasPlugin);
     presenter.installPlugin(() -> new ComponentTree(this, canvasPlugin.getCanvasPanel()));
+    presenter.installPlugin(() -> new ExplorerPlugin(this, canvasPlugin.getCanvasPanel()));
     
     presenter.installPlugin(() -> new FramePlugin());
 
@@ -316,10 +318,10 @@ public class MainFrame extends JFrame implements ISwingUI {
   }
 
   @Override
-  public void injectGUIComponent(JComponent component, int position, boolean collapsible) throws BadPositionException {
-    LOG.info(String.format("injectGUIComponent(%s, %s, %s)", component.getClass().getName(), position, collapsible));
+  public void injectGUIComponent(JComponent component, int position, boolean collapsible, String visibilityConfigKey) throws BadPositionException {
+    LOG.info(String.format("injectGUIComponent(%s, %s, %s, %s)", component.getClass().getName(), position, collapsible, visibilityConfigKey));
     if (collapsible) {
-      CollapsiblePanel panel = new CollapsiblePanel(position);
+      CollapsiblePanel panel = new CollapsiblePanel(position, visibilityConfigKey);
       panel.add(component);
       component = panel;
     }

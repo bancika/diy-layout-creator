@@ -133,9 +133,13 @@ SPDT (On/Off/On)
 SPDT (On/On)
 SPST
 Shorting
+Show Project Explorer
 Single - North
 Single - South
 Six
+Sort by Name
+Sort by Type
+Sort by Z-index
 Source Style
 Source Type
 Srpski

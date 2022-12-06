@@ -1821,7 +1821,7 @@ public class ActionFactory {
 
         @Override
         public void valueChanged(String key, Object value) {
-          putValue(AbstractAction.SELECTED_KEY, (Boolean) value);
+          putValue(AbstractAction.SELECTED_KEY, Boolean.TRUE.equals(value));
         }
       });
     }

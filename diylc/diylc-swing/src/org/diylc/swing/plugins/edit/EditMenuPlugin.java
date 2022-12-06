@@ -339,7 +339,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
         refreshActions();
         break;
       case PROJECT_MODIFIED:
-        undoHandler.stateChanged((Project) params[0], (Project) params[1], (String) params[2]);
+        undoHandler.stateChanged((Project) params[0], ((Project) params[1]).clone(), (String) params[2]);
         break;
       case PROJECT_LOADED:
         if ((Boolean) params[1])

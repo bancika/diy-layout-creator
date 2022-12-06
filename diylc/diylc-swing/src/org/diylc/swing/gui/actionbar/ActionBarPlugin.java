@@ -195,7 +195,7 @@ public class ActionBarPlugin implements IPlugIn {
     this.plugInPort = plugInPort;
     if (Utils.isMac()) {
       try {
-        swingUI.injectGUIComponent(getActionPanel(), SwingConstants.CENTER, false);
+        swingUI.injectGUIComponent(getActionPanel(), SwingConstants.CENTER, false, null);
       } catch (BadPositionException e) {
         LOG.error("Could not inject action bar plugin", e);
       }

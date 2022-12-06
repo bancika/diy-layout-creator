@@ -51,8 +51,9 @@ public interface ISelectionProcessor {
    * with all components that are stuck to the newly selected components.
    * 
    * @param newSelection
+   * @param panToSelection
    */
-  void updateSelection(Collection<IDIYComponent<?>> newSelection);
+  void setSelection(Collection<IDIYComponent<?>> newSelection, boolean panToSelection);
 
   /**
    * Finds all components at the specified location, sorted by z-index from top to bottom. Location

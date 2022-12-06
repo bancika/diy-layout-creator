@@ -32,12 +32,11 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.config.ConfigPlugin;
-import org.diylc.swing.plugins.statusbar.StatusBar;
 
 
 public class ToolBox implements IPlugIn {
 
-  private static final Logger LOG = Logger.getLogger(StatusBar.class);
+  private static final Logger LOG = Logger.getLogger(ToolBox.class);
 
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;
@@ -52,7 +51,7 @@ public class ToolBox implements IPlugIn {
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
     try {
-      swingUI.injectGUIComponent(getComponentTabbedPane(), SwingConstants.TOP, false);
+      swingUI.injectGUIComponent(getComponentTabbedPane(), SwingConstants.TOP, false, null);
     } catch (BadPositionException e) {
       LOG.error("Could not install the toolbox", e);
     }

@@ -17,12 +17,8 @@
  */
 package org.diylc.swing.plugins.tree;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.dnd.DnDConstants;
@@ -30,8 +26,6 @@ import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -41,7 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.swing.AbstractAction;
-import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -52,8 +45,6 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TreeModelEvent;
@@ -75,6 +66,7 @@ import org.diylc.core.IView;
 import org.diylc.core.Template;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.gui.SearchTextField;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
 
@@ -104,6 +96,8 @@ public class TreePanel extends JPanel {
   public TreePanel(IPlugInPort plugInPort, ISwingUI swingUI) {
     this.plugInPort = plugInPort;
     this.swingUI = swingUI;
+    
+    setName("Toolbox");
     setLayout(new GridBagLayout());
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -397,59 +391,10 @@ public class TreePanel extends JPanel {
 
   public JTextField getSearchField() {
     if (searchField == null) {
-      searchField = new JTextField() {
-
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public void paint(Graphics g) {
-          super.paint(g);
-
-          Graphics2D g2d = (Graphics2D) g;
-          g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-          Icon icon = IconLoader.SearchBox.getIcon();
-          icon.paintIcon(searchField, g2d, searchField.getWidth() - 18, 3);
-
-          if (searchField.getText().trim().length() == 0 && !searchField.hasFocus()) {
-            g2d.setColor(Color.gray);
-            g2d.setFont(searchField.getFont());
-            g2d.drawString("Search (press Q to jump here)", 4, 3 + searchField.getFont().getSize());
-          }
-        }
-      };
-
-      searchField.addFocusListener(new FocusAdapter() {
-        @Override
-        public void focusGained(FocusEvent e) {
-          searchField.repaint();
-        }
-
-        @Override
-        public void focusLost(FocusEvent e) {
-          searchField.repaint();
-        }
-      });
-
-      searchField.getDocument().addDocumentListener(new DocumentListener() {
-
-        public void changedUpdate(DocumentEvent e) {
-          process();
-        }
-
-        public void removeUpdate(DocumentEvent e) {
-          process();
-        }
-
-        public void insertUpdate(DocumentEvent e) {
-          process();
-        }
-
-        public void process() {
-          String text = searchField.getText();
-          CustomTreeModel model = getTreeModel();
-          model.setSearchText(text);
-        }
-      });
+      searchField = new SearchTextField(true, 'Q', text -> {
+        CustomTreeModel model = getTreeModel();
+        model.setSearchText(text);
+      });      
     }
     return searchField;
   }
@@ -555,8 +500,7 @@ public class TreePanel extends JPanel {
           }
         }
 
-        plugInPort.updateSelection(newSelection);
-        plugInPort.refresh();
+        plugInPort.setSelection(newSelection, true);        
       }
     }
   }

@@ -57,6 +57,7 @@ public class ConfigPlugin implements IPlugIn {
   private static final String SNAP_MENU = "Snap To";
   private static final String COMPONENT_BROWSER_MENU = "Toolbox";
   public static final String COMPONENT_BROWSER = "componentBrowser";
+  public static final String PROJECT_EXPLORER = "projectExplorer";
   public static final String SEARCHABLE_TREE = "Searchable Tree";
   public static final String TABBED_TOOLBAR = "Tabbed Toolbar";
   private static final String LANGUAGE_MENU = LangUtil.translate("Language");
@@ -139,6 +140,10 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createToggleAction(IPlugInPort.RULER_IN_SUBDIVISION_2, IPlugInPort.RULER_IN_SUBDIVISION_KEY, RULER_MENU, IPlugInPort.RULER_IN_SUBDIVISION_DEFAULT),
         RULER_MENU); 
+    
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Project Explorer",
+            ConfigPlugin.PROJECT_EXPLORER, true), CONFIG_MENU);
     
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),

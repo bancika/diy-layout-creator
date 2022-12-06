@@ -83,7 +83,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 
   @Override
   public String toString() {
-    return name;
+    return name == null ? "(null)" : name;
   }
 
   @Override

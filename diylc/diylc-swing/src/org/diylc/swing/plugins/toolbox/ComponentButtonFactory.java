@@ -106,9 +106,8 @@ public class ComponentButtonFactory {
           if (Utils.isMac() ? e.isControlDown() : e.isMetaDown()) {
             newSelection.addAll(plugInPort.getSelectedComponents());
           }
-          plugInPort.updateSelection(newSelection);
-          plugInPort.setNewComponentTypeSlot(null, null, null, false);
-          plugInPort.refresh();
+          plugInPort.setSelection(newSelection, true);
+          plugInPort.setNewComponentTypeSlot(null, null, null, false);          
         }
       }
     });

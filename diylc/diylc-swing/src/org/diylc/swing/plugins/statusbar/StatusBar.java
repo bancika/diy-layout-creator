@@ -106,7 +106,7 @@ public class StatusBar extends JPanel implements IPlugIn {
   private static final Format sizeFormat = new DecimalFormat("0.##");
   private static final int MAX_SELECTED_COMPONENTS = 15;
 
-  private JComboBox zoomBox;
+  private JComboBox<Double> zoomBox;
   private UpdateLabel updateLabel;
   private JLabel announcementLabel;
   private JLabel recentChangesLabel;
@@ -142,7 +142,7 @@ public class StatusBar extends JPanel implements IPlugIn {
     setLayout(new GridBagLayout());
 
     try {
-      swingUI.injectGUIComponent(this, SwingUtilities.BOTTOM, false);
+      swingUI.injectGUIComponent(this, SwingUtilities.BOTTOM, false, null);
     } catch (BadPositionException e) {
       LOG.error("Could not install status bar", e);
     }
@@ -202,9 +202,9 @@ public class StatusBar extends JPanel implements IPlugIn {
     });
   }
 
-  private JComboBox getZoomBox() {
+  private JComboBox<Double> getZoomBox() {
     if (zoomBox == null) {
-      zoomBox = new JComboBox(plugInPort.getAvailableZoomLevels());
+      zoomBox = new JComboBox<Double>(plugInPort.getAvailableZoomLevels());
       zoomBox.setSelectedItem(plugInPort.getZoomLevel());
       zoomBox.setFocusable(false);
       zoomBox.setRenderer(new PercentageListCellRenderer());

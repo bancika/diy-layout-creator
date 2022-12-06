@@ -54,9 +54,10 @@ public interface ISwingUI extends IView {
    * @param component
    * @param position
    * @param collapsible
+   * @param visibilityConfigKey in case of a collapsible view, this config key is used to persist the state
    * @throws BadPositionException in case invalid position is specified
    */
-  void injectGUIComponent(JComponent component, int position, boolean collapsible) throws BadPositionException;
+  void injectGUIComponent(JComponent component, int position, boolean collapsible, String visibilityConfigKey) throws BadPositionException;
 
   /**
    * Injects a custom menu action into application's main menu. If <code>action</code> is set to
