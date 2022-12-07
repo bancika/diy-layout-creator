@@ -343,16 +343,6 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   // Rectangle2D getSelectedAreaRect();
 
   /**
-   * Sends each of the selected components one step back.
-   */
-  void sendSelectionToBack();
-
-  /**
-   * Brings each of the selected components one step to front.
-   */
-  void bringSelectionToFront();
-
-  /**
    * Causes the display to refresh.
    */
   void refresh();

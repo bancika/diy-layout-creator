@@ -1946,6 +1946,42 @@ public class Presenter implements IPlugInPort {
       messageDispatcher.dispatchMessage(EventType.REPAINT);
     }
   }
+  
+  @Override
+  public void moveSelectionToZIndex(int zIndex) {
+    LOG.info(String.format("moveSelectionToZIndex(%d)", zIndex));
+    Project oldProject = currentProject.clone();
+
+    // sort the selection in Z-order
+    List<IDIYComponent<?>> selection = new ArrayList<IDIYComponent<?>>(selectedComponents);
+    Collections.sort(selection, new Comparator<IDIYComponent<?>>() {
+
+      @Override
+      public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
+        return new Integer(currentProject.getComponents().indexOf(o1))
+            .compareTo(currentProject.getComponents().indexOf(o2));
+      }
+    });
+
+    for (IDIYComponent<?> component : selection) {
+      int index = currentProject.getComponents().indexOf(component);
+      if (index < 0) {
+        LOG.warn("Component not found in the project: " + component.getName());
+      } else {
+        if (index < zIndex)
+          zIndex--;
+
+        currentProject.getComponents().remove(index);
+        currentProject.getComponents().add(zIndex, component);
+      }
+    }
+    if (!oldProject.equals(currentProject)) {
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
+          "Change Z-order");
+      projectFileManager.notifyFileChange();
+      messageDispatcher.dispatchMessage(EventType.REPAINT);
+    }
+  }
 
   @Override
   public void refresh() {

@@ -138,4 +138,20 @@ public interface ISelectionProcessor {
    * @param model
    */
   void applyModelToSelection(String[] model);
+  
+  /**
+   * Sends each of the selected components one step back.
+   */
+  void sendSelectionToBack();
+
+  /**
+   * Brings each of the selected components one step to front.
+   */
+  void bringSelectionToFront();
+  
+  /**
+   * Move selected components to z index starting from the provided value
+   * @param zIndex
+   */
+  void moveSelectionToZIndex(int zIndex);
 }

@@ -55,6 +55,7 @@ Box
 C-B-E     BJT
 Circle
 Coil(s)
+Component reordering is possible only when Project Explorer is sorted by z-index
 Configuration
 Could not apply changes. Check the log for details.
 D-G-S     JFET

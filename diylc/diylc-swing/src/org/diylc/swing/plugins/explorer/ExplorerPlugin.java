@@ -64,10 +64,10 @@ public class ExplorerPlugin implements IPlugIn {
   public void processMessage(EventType eventType, Object... params) {
     switch (eventType) {
       case PROJECT_MODIFIED:
-        getExplorerPane().setComponents(((Project)params[1]).getComponents());
+        getExplorerPane().setComponents(((Project)params[1]).getComponents(), plugInPort.getSelectedComponents());
         break;
       case PROJECT_LOADED:
-        getExplorerPane().setComponents(((Project)params[0]).getComponents());
+        getExplorerPane().setComponents(((Project)params[0]).getComponents(), plugInPort.getSelectedComponents());
         break;
       case SELECTION_CHANGED:
         getExplorerPane().setSelection((Set<IDIYComponent<?>>)params[0]);
@@ -103,7 +103,7 @@ public class ExplorerPlugin implements IPlugIn {
   
   public ExplorerPane getExplorerPane() {
     if (explorerPane == null) {
-      explorerPane = new ExplorerPane(plugInPort);
+      explorerPane = new ExplorerPane(swingUI, plugInPort);
     }
     return explorerPane;
   }

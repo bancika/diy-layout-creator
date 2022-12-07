@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -30,18 +31,26 @@ import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.lang.LangUtil;
+import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.ComponentPopupMenu;
+import org.diylc.swing.gui.DragDropList;
+import org.diylc.swing.gui.IDragDropListListener;
 import org.diylc.swing.gui.SearchTextField;
 
 public class ExplorerPane extends JPanel {
 
   private static final long serialVersionUID = 1L;
+  
+  private static final String REORDERING_NOT_POSSIBLE = LangUtil.translate(
+      "Component reordering is possible only when Project Explorer is sorted by z-index.");
 
   private static final Logger LOG = Logger.getLogger(ExplorerPane.class);
 
   public static Font DEFAULT_FONT = new Font("Square721 BT", Font.PLAIN, 12);
 
+  private ISwingUI swingUI;
   private IPlugInPort plugInPort;
+
   private JTextField searchField;
   private JScrollPane componentScrollPane;
   private ComponentListModel componentListModel;
@@ -49,8 +58,9 @@ public class ExplorerPane extends JPanel {
   private ComponentPopupMenu popupMenu;
   private JComboBox<Sort> sortBox;
 
-  public ExplorerPane(IPlugInPort plugInPort) {
+  public ExplorerPane(ISwingUI swingUI, IPlugInPort plugInPort) {
     super();
+    this.swingUI = swingUI;
     this.plugInPort = plugInPort;
     setName("Project Explorer");
 
@@ -64,14 +74,6 @@ public class ExplorerPane extends JPanel {
     gbc.gridwidth = 1;
 
     add(getSearchField(), gbc);
-    
-    gbc.gridy++;
-
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 0;
-    gbc.weighty = 0;
-
-    add(getSortBox(), gbc);
 
     gbc.gridy++;
 
@@ -80,6 +82,14 @@ public class ExplorerPane extends JPanel {
     gbc.weightx = 1;
 
     add(getComponentScrollPane(), gbc);
+
+    gbc.gridy++;
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 0;
+    gbc.weighty = 0;
+
+    add(getSortBox(), gbc);
 
     setPreferredSize(new Dimension(180, 200));
   }
@@ -117,7 +127,18 @@ public class ExplorerPane extends JPanel {
 
   public JList<IDIYComponent<?>> getComponentList() {
     if (componentList == null) {
-      componentList = new JList<IDIYComponent<?>>();
+      componentList = new DragDropList<IDIYComponent<?>>(new IDragDropListListener() {
+
+        @Override
+        public boolean dropComplete(int selectedIndex, int dropTargetIndex) {
+          if (getComponentListModel().getSort() != Sort.Z_INDEX) {
+            swingUI.showMessage(REORDERING_NOT_POSSIBLE, "Error", ISwingUI.ERROR_MESSAGE);
+            return false;
+          }
+          plugInPort.moveSelectionToZIndex(getComponentListModel().getSize() - dropTargetIndex);
+          return true;
+        }
+      });
       componentList.setModel(getComponentListModel());
       componentList.setFont(DEFAULT_FONT);
       componentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -183,8 +204,10 @@ public class ExplorerPane extends JPanel {
     return popupMenu;
   }
 
-  public void setComponents(List<IDIYComponent<?>> components) {
+  public void setComponents(List<IDIYComponent<?>> components,
+      Collection<IDIYComponent<?>> selectedComponents) {
     this.getComponentListModel().setComponents(components);
+    setSelection(new HashSet<IDIYComponent<?>>(selectedComponents));
   }
 
   public void setSelection(Set<IDIYComponent<?>> selectedComponents) {
@@ -230,7 +253,7 @@ public class ExplorerPane extends JPanel {
     private List<IDIYComponent<?>> components;
 
     private String searchText;
-    private Sort sort;
+    private Sort sort = Sort.Z_INDEX;
 
     public void setComponents(List<IDIYComponent<?>> components) {
       this.componentsRaw = components;
@@ -241,6 +264,10 @@ public class ExplorerPane extends JPanel {
 
     public List<IDIYComponent<?>> getComponents() {
       return components;
+    }
+
+    public Sort getSort() {
+      return sort;
     }
 
     public void setSort(Sort sort) {
