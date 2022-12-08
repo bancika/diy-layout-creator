@@ -33,6 +33,10 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  * @author Branislav Stojkovic
  */
 public class FontConverter extends com.thoughtworks.xstream.converters.extended.FontConverter {
+  
+  public FontConverter() {
+    super(null);
+  }
 
   @Override
   public void marshal(Object object, HierarchicalStreamWriter writer, MarshallingContext context) {
