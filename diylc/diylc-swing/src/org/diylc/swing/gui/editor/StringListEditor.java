@@ -31,7 +31,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.annotations.DynamicList;
 import org.diylc.utils.Constants;
 
-public class StringListEditor extends JComboBox {
+public class StringListEditor extends JComboBox<Object> {
 
   private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,7 @@ public class StringListEditor extends JComboBox {
     String listFunctionName = property.getGetter().getAnnotation(DynamicList.class).availableValueFunction();
     Method function = property.getOwnerObject().getClass().getMethod(listFunctionName);
     Object[] values = (Object[]) function.invoke(property.getOwnerObject());
-    setModel(new DefaultComboBoxModel(values));
+    setModel(new DefaultComboBoxModel<Object>(values));
     setSelectedItem(property.getValue());
     addItemListener(new ItemListener() {
 

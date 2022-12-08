@@ -38,8 +38,8 @@ public class SearchHeaderPanel extends JPanel {
   private static final long serialVersionUID = 1L;
 
   private JTextField searchField;
-  private JComboBox categoryBox;
-  private JComboBox sortBox;
+  private JComboBox<String> categoryBox;
+  private JComboBox<String> sortBox;
   private JButton goButton;
 
   private boolean initialized = false;
@@ -87,8 +87,8 @@ public class SearchHeaderPanel extends JPanel {
   }
 
   public void initializeLists(String[] categories, String[] sortings) {
-    getCategoryBox().setModel(new DefaultComboBoxModel(categories));
-    getSortBox().setModel(new DefaultComboBoxModel(sortings));
+    getCategoryBox().setModel(new DefaultComboBoxModel<String>(categories));
+    getSortBox().setModel(new DefaultComboBoxModel<String>(sortings));
     initialized = true;
   }
 
@@ -103,16 +103,16 @@ public class SearchHeaderPanel extends JPanel {
     return searchField;
   }
 
-  private JComboBox getCategoryBox() {
+  private JComboBox<String> getCategoryBox() {
     if (categoryBox == null) {
-      categoryBox = new JComboBox();
+      categoryBox = new JComboBox<String>();
     }
     return categoryBox;
   }
 
-  private JComboBox getSortBox() {
+  private JComboBox<String> getSortBox() {
     if (sortBox == null) {
-      sortBox = new JComboBox();
+      sortBox = new JComboBox<String>();
     }
     return sortBox;
   }

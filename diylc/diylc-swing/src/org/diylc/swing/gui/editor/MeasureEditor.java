@@ -49,7 +49,7 @@ public class MeasureEditor extends Container {
 
   private Color oldBg;
   private DoubleTextField valueField;
-  private JComboBox unitBox;
+  private JComboBox<Object> unitBox;
 
   @SuppressWarnings("unchecked")
   public MeasureEditor(final PropertyWrapper property) {
@@ -78,7 +78,7 @@ public class MeasureEditor extends Container {
     try {
       Type type = ((ParameterizedType) property.getType().getGenericSuperclass()).getActualTypeArguments()[0];
       Method method = ((Class<?>) type).getMethod("values");
-      unitBox = new JComboBox((Object[]) method.invoke(null));
+      unitBox = new JComboBox<Object>((Object[]) method.invoke(null));
       unitBox.setSelectedItem(measure == null ? null : measure.getUnit());
       unitBox.addActionListener(new ActionListener() {
 

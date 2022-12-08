@@ -50,7 +50,7 @@ public class MeasureArrayEditor extends Container {
 
 	private Color oldBg;
 	private DoubleArrayTextField valueField;
-	private JComboBox unitBox;
+	private JComboBox<Object> unitBox;
 	
 	public MeasureArrayEditor(final PropertyWrapper property) {
 		setLayout(new BorderLayout());
@@ -100,7 +100,7 @@ public class MeasureArrayEditor extends Container {
 			Type type = ((ParameterizedType) property.getType().getComponentType()
 					.getGenericSuperclass()).getActualTypeArguments()[0];
 			Method method = ((Class<?>) type).getMethod("values");
-			unitBox = new JComboBox((Object[]) method.invoke(null));
+			unitBox = new JComboBox<Object>((Object[]) method.invoke(null));
 			unitBox.setSelectedItem(measure == null || measure.length == 0 || measure[0] == null ? null
 					: measure[0].getUnit());
 			unitBox.addActionListener(new ActionListener() {

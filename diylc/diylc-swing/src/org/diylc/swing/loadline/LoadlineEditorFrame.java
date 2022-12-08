@@ -83,7 +83,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
   private JPanel controlPanel;
   private CanvasPanel canvasPanel;
   private Presenter plugInPort;
-  private IConfigurationManager configManager;
+  private IConfigurationManager<?> configManager;
 
   private JTextField nameEditor;
   private DoubleTextField vEditor;

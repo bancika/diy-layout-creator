@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.swing.AbstractAction;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -43,6 +44,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.event.PopupMenuEvent;
@@ -81,6 +83,7 @@ public class TreePanel extends JPanel {
 
   public static final String COMPONENT_SHORTCUT_KEY = "componentShortcuts";
 
+  private JLabel titleLabel;
   private CustomTreeModel treeModel;
   private JTree tree;
   private JScrollPane treeScroll;
@@ -106,6 +109,10 @@ public class TreePanel extends JPanel {
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weighty = 0;
     gbc.gridwidth = 1;
+    
+//    add(getTitleLabel(), gbc);
+//    
+//    gbc.gridy++;
 
     add(getSearchField(), gbc);
 
@@ -148,6 +155,16 @@ public class TreePanel extends JPanel {
     // Initialize drop target.
     new DropTarget(getTree(), DnDConstants.ACTION_COPY_OR_MOVE, new TreeTargetListener(plugInPort),
         true);
+  }
+  
+  public JLabel getTitleLabel() {
+    if (titleLabel == null) {
+      titleLabel = new JLabel(getName());
+      titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//      titleLabel.setBorder(BorderFactory.createEtchedBorder());
+//      titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
+    }
+    return titleLabel;
   }
 
   public JScrollPane getTreeScroll() {

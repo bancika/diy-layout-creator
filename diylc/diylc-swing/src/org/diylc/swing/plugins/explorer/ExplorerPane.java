@@ -1,6 +1,5 @@
 package org.diylc.swing.plugins.explorer;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -30,10 +29,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
@@ -51,13 +50,12 @@ public class ExplorerPane extends JPanel {
   private static final String REORDERING_NOT_POSSIBLE = LangUtil.translate(
       "Component reordering is possible only when Project Explorer is sorted by z-index.");
 
-  private static final Logger LOG = Logger.getLogger(ExplorerPane.class);
-
   public static Font DEFAULT_FONT = new Font("Square721 BT", Font.PLAIN, 12);
 
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;
 
+  private JLabel titleLabel;
   private JTextField searchField;
   private JScrollPane componentScrollPane;
   private ComponentListModel componentListModel;
@@ -76,9 +74,13 @@ public class ExplorerPane extends JPanel {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.fill = GridBagConstraints.HORIZONTAL;    
     gbc.weighty = 0;
     gbc.gridwidth = 1;
+    
+//    add(getTitleLabel(), gbc);
+//    
+//    gbc.gridy++;
 
     add(getSearchField(), gbc);
 
@@ -99,6 +101,15 @@ public class ExplorerPane extends JPanel {
     add(getSortBox(), gbc);
 
     setPreferredSize(new Dimension(180, 200));
+  }
+  
+  public JLabel getTitleLabel() {
+    if (titleLabel == null) {
+      titleLabel = new JLabel(getName());
+      titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//      titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
+    }
+    return titleLabel;
   }
 
   public JTextField getSearchField() {

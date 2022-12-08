@@ -71,7 +71,7 @@ public class TemplateDialog extends JDialog {
 
   private IPlugInPort plugInPort;
 
-  private JList fileList;
+  private JList<File> fileList;
   private JPanel canvasPanel;
   private Presenter presenter;
   private List<File> files;
@@ -213,16 +213,16 @@ public class TemplateDialog extends JDialog {
     return infoPanel;
   }
 
-  public JList getFileList() {
+  public JList<File> getFileList() {
     if (fileList == null) {
-      fileList = new JList(getFiles().toArray());
+      fileList = new JList<File>(getFiles().toArray(new File[0]));
       fileList.setPreferredSize(new Dimension(128, -1));
       fileList.setCellRenderer(new DefaultListCellRenderer() {
 
         private static final long serialVersionUID = 1L;
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
             boolean cellHasFocus) {
           JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
           if (value instanceof File) {

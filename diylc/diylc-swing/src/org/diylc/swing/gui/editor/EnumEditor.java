@@ -33,7 +33,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.lang.LangUtil;
 import org.diylc.utils.Constants;
 
-public class EnumEditor extends JComboBox {
+public class EnumEditor extends JComboBox<Object> {
 
   private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,7 @@ public class EnumEditor extends JComboBox {
     Object[] values = property.getType().getEnumConstants();
     if (property.isReadOnly())
       setEnabled(false);
-    setModel(new DefaultComboBoxModel(values));
+    setModel(new DefaultComboBoxModel<Object>(values));
     setRenderer(new DefaultListCellRenderer() {
 
       private static final long serialVersionUID = 1L;
