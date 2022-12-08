@@ -1,5 +1,7 @@
 package org.diylc.swing.plugins.explorer;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -15,19 +17,24 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
+import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.lang.LangUtil;
@@ -142,6 +149,7 @@ public class ExplorerPane extends JPanel {
       componentList.setModel(getComponentListModel());
       componentList.setFont(DEFAULT_FONT);
       componentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+      componentList.setCellRenderer(new ComponentListCellRenderer(plugInPort.getComponentTypes()));
       componentList.addListSelectionListener(new ListSelectionListener() {
 
         @Override
@@ -321,6 +329,39 @@ public class ExplorerPane extends JPanel {
     @Override
     public IDIYComponent<?> getElementAt(int index) {
       return this.components.get(index);
+    }
+  }
+  
+  private static class ComponentListCellRenderer implements ListCellRenderer<IDIYComponent<?>> {
+    
+//    private static Color[] layerColors = new Color[] { Color.gray, Color.decode("#ff6363"), Color.decode("#293462"), Color.decode("#138588"), 
+//        Color.decode("#c0ca03"), Color.decode("#990000") };
+    
+    protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+    
+    private Map<String, ComponentType> componentTypes;
+    
+    public ComponentListCellRenderer(Map<String, List<ComponentType>> componentTypeMap) {
+      this.componentTypes = componentTypeMap.values().stream()
+          .flatMap(x -> x.stream())
+          .collect(Collectors.toMap(x -> x.getInstanceClass().getCanonicalName(), x -> x));
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList<? extends IDIYComponent<?>> list,
+        IDIYComponent<?> value, int index, boolean isSelected, boolean cellHasFocus) {
+      
+      ComponentType componentType = componentTypes.get(value.getClass().getCanonicalName());
+      
+      JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
+          isSelected, cellHasFocus);
+      
+      int layerId = (int)Math.round(componentType.getZOrder());
+            
+      
+      renderer.setText(String.format("<html><font color='#c0c0c0'>[L%s]</font> %s</html>", layerId, value.getName()));
+      
+      return renderer;
     }
   }
 
