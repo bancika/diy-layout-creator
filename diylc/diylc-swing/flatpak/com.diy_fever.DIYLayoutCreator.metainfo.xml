@@ -37,6 +37,22 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.34.0" date="2022-12-09">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Project Explorer' pane in the right-hand side for quick access to components</li>
+             <li>[New Feature] Keyboard shortcuts for toggling layer visibility using Ctrl + 1 through Ctrl + 6</li>
+             <li>[Improvement] Circuit analysis algorithm that supports netlist extraction, 'Highlight connected Areas' and 'Guitar Wiring Analyzer' features improved to take PCB trace layer and component z-order into account for better accuracy</li>
+             <li>[Improvement] Potentiometer bodies are no longer considered as conductive surfaces to avoid unwanted shorts</li>
+             <li>[Improvement] Optimized memory usage when having many Hookup Wire components</li>
+             <li>[Improvement] Improved conductivity tracking of Terminal Strip</li>
+             <li>[Bug Fix] Do not apply any user-default property values when creating a standard datasheet model (e.g. a capacitor)</li>
+             <li>[Bug Fix] Variants of boards having explicit sizing mode fail when trying to add to a project</li>
+             <li>[Bug Fix] Font settings (e.g. bold) sometimes bleed into wrong component</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.34.0</url>
+     </release>
   	<release version="4.33.0" date="2022-11-16">
          <description>
            <ul>
