@@ -31,8 +31,6 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Modifier;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -263,26 +261,23 @@ public class ProjectFileManager {
     } catch (Exception e) {
       warnings.add("Could not read file version number, the file may be corrupted.");
     }
-
-    String xml = new String(Files.readAllBytes(Paths.get(fileName)));
+    FileInputStream fis = new FileInputStream(fileName);
     missingFields.clear();
     try {
-      xml = cleanupV3XML(xml);
-      project = (Project) xStream.fromXML(xml);
+      Reader reader = new InputStreamReader(fis, "UTF-8");
+      project = (Project) xStream.fromXML(reader);
     } catch (Exception e) {
       LOG.warn("Could not open with the new xStream, trying the old one", e);
-      project = (Project) xStreamOld.fromXML(xml);
+      fis.close();
+      fis = new FileInputStream(fileName);
+      project = (Project) xStreamOld.fromXML(fis);
     }
     if (!missingFields.isEmpty()) {
       LOG.warn("The opened file is missing the following properties: " + String.join(", ", missingFields));
       warnings.add("The project references unknown component properties, most likely because it was created with a newer version of DIYLC.");
     }
+    fis.close();
     return project;
-  }
-
-  private String cleanupV3XML(String xml) {
-    xml = xml.replaceAll("<name defined-in=\"diylc.AbstractComponent\"></name>", "");
-    return xml;
   }
   
   private VersionNumber readV3Version(String fileName) throws Exception {

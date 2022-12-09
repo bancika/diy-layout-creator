@@ -4188,7 +4188,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added Project Explorer pane in the right-hand side for quick access to components</description>
+					<description>Added 'Project Explorer' pane in the right-hand side for quick access to components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
