@@ -1069,15 +1069,16 @@ public class Presenter implements IPlugInPort {
   @Override
   public void selectMatching(String criteria) {
     Set<IDIYComponent<?>> matching = new HashSet<IDIYComponent<?>>();
+    String regex = ".*" + criteria.toLowerCase() + ".*";
     for (IDIYComponent<?> c : currentProject.getComponents()) {
       ComponentType type = ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      if ((c.getName() != null && c.getName().toLowerCase().matches(criteria.toLowerCase())) || 
-          (c.getValueForDisplay() != null && c.getValueForDisplay().toLowerCase().matches(criteria.toLowerCase())) ||
-          (type != null && type.getName().toLowerCase().matches(criteria.toLowerCase())))
+      if ((c.getName() != null && c.getName().toLowerCase().matches(regex)) || 
+          (c.getValueForDisplay() != null && c.getValueForDisplay().toLowerCase().matches(regex)) ||
+          (type != null && type.getName().toLowerCase().matches(regex)))
         matching.add(c);
     }
     updateSelection(matching);    
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
+    messageDispatcher.dispatchMessage(EventType.REPAINT, true);
     if (matching.size() > 0)
       messageDispatcher.dispatchMessage(EventType.SCROLL_TO, getSelectionBounds(true));
   }

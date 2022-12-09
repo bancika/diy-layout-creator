@@ -4237,6 +4237,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Escape comma in BOM CSV files to avoid component names being split into separate columns</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved find tool usability, make the screen pan to the selected components</description>
 				</org.diylc.appframework.update.Change>								
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
