@@ -77,6 +77,9 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
+  
+  @Deprecated
+  protected String name;
 
   public MiniToggleSwitch() {
     super();
@@ -202,10 +205,11 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   @EditableProperty(defaultable = false)
   @Override
   public String getName() {
-    if (super.name != null) {
-      return super.name;
-    }
-    return name;
+    if (super.name == null || super.name.trim().isEmpty()) {
+      super.name = name;
+      name = null;
+    }    
+    return super.name;
   }
 
   @Override
