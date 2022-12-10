@@ -125,7 +125,7 @@ class ComponentTabbedPane extends JTabbedPane {
       }
     });
 
-
+    setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
   }
 
   @SuppressWarnings("unchecked")

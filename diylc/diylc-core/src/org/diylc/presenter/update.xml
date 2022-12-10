@@ -4233,7 +4233,11 @@
 			</versionNumber>
 			<releaseDate>2022-12-09 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>			
+			<changes>		
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Use scroll buttons in 'Tabbed Toolbar' instead of arranging tabs into multiple lines when the screen is not large enough to show them all</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Escape comma in BOM CSV files to avoid component names being split into separate columns</description>
