@@ -49,7 +49,6 @@ AWG
 Alternate
 And
 Angle Offset
-Apply Model
 B-C-E     BJT
 Background
 Box
@@ -148,7 +147,6 @@ Source Style
 Source Type
 Srpski
 Stroke
-TB2
 Ten
 Terminal
 Timing

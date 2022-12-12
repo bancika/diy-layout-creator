@@ -30,6 +30,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.EditableProperty;
@@ -88,7 +89,14 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 
   @Override
   public String getValueForDisplay() {
-    return getValue() == null ? "" : getValue().toString();
+    if (getValue() == null)
+      return "";
+    
+    Object val = getValue();
+    if (val.getClass().isArray()) {
+      return String.join(" / ", Arrays.stream((Object[])val).map(x -> x == null ? "" : x.toString()).collect(Collectors.toList()));      
+    }
+    return val.toString();
   }
 
   /**
