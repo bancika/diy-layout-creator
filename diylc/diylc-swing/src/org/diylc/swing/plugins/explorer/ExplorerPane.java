@@ -182,7 +182,7 @@ public class ExplorerPane extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
-          ExplorerPane.this.requestFocus();
+          componentList.requestFocus();
           pressedEvent = e;
         }
 
