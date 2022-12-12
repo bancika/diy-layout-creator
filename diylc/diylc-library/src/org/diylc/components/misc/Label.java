@@ -250,6 +250,11 @@ public class Label extends AbstractComponent<String> {
   public String getValue() {
     return text;
   }
+  
+  @Override
+  public String getValueForDisplay() {  
+    return "";
+  }
 
   @Override
   public void setValue(String value) {
