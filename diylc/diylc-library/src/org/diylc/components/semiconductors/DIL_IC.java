@@ -1,24 +1,21 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.components.semiconductors;
 
 import java.awt.AlphaComposite;
@@ -56,8 +53,8 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "DIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Dual-in-line package IC",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class,
-    enableCache = true)
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,
+    transformer = DIL_ICTransformer.class, enableCache = true)
 public class DIL_IC extends AbstractLabeledComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -237,8 +234,10 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
-      controlPoints[i + pinCount.getValue() / 2] = new Point2D.Double((int) (firstPoint.getX() + dx2), (int) (firstPoint.getY() + dy2));
+      controlPoints[i] =
+          new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
+      controlPoints[i + pinCount.getValue() / 2] =
+          new Point2D.Double((int) (firstPoint.getX() + dx2), (int) (firstPoint.getY() + dy2));
     }
   }
 
@@ -260,41 +259,38 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
           height = (pinCount.getValue() / 2) * pinSpacing;
           x += pinSize / 2;
           y -= pinSpacing / 2;
-          indentation =
-              new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2, y - indentationSize / 2,
-                  indentationSize, indentationSize));
+          indentation = new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2,
+              y - indentationSize / 2, indentationSize, indentationSize));
           break;
         case _90:
           width = (pinCount.getValue() / 2) * pinSpacing;
           height = rowSpacing - pinSize;
           x -= (pinSpacing / 2) + width - pinSpacing;
           y += pinSize / 2;
-          indentation =
-              new Area(new Ellipse2D.Double(x + width - indentationSize / 2, y + height / 2 - indentationSize / 2,
-                  indentationSize, indentationSize));
+          indentation = new Area(new Ellipse2D.Double(x + width - indentationSize / 2,
+              y + height / 2 - indentationSize / 2, indentationSize, indentationSize));
           break;
         case _180:
           width = rowSpacing - pinSize;
           height = (pinCount.getValue() / 2) * pinSpacing;
           x -= rowSpacing - pinSize / 2;
           y -= (pinSpacing / 2) + height - pinSpacing;
-          indentation =
-              new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2, y + height - indentationSize / 2,
-                  indentationSize, indentationSize));
+          indentation = new Area(new Ellipse2D.Double(x + width / 2 - indentationSize / 2,
+              y + height - indentationSize / 2, indentationSize, indentationSize));
           break;
         case _270:
           width = (pinCount.getValue() / 2) * pinSpacing;
           height = rowSpacing - pinSize;
           x -= pinSpacing / 2;
           y += pinSize / 2 - rowSpacing;
-          indentation =
-              new Area(new Ellipse2D.Double(x - indentationSize / 2, y + height / 2 - indentationSize / 2,
-                  indentationSize, indentationSize));
+          indentation = new Area(new Ellipse2D.Double(x - indentationSize / 2,
+              y + height / 2 - indentationSize / 2, indentationSize, indentationSize));
           break;
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      body[0] = new Area(new RoundRectangle2D.Double(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS));
+      body[0] =
+          new Area(new RoundRectangle2D.Double(x, y, width, height, EDGE_RADIUS, EDGE_RADIUS));
       body[1] = indentation;
       if (indentation != null) {
         indentation.intersect(body[0]);
@@ -304,8 +300,8 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
   }
 
   @Override
-  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver) {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
@@ -314,10 +310,11 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point2D point : controlPoints) {
-        Rectangle2D rect = new Rectangle2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize); 
+        Rectangle2D rect = new Rectangle2D.Double(point.getX() - pinSize / 2,
+            point.getY() - pinSize / 2, pinSize, pinSize);
         g2d.setColor(PIN_COLOR);
         g2d.fill(rect);
-        g2d.setColor(PIN_BORDER_COLOR);        
+        g2d.setColor(PIN_BORDER_COLOR);
         g2d.draw(rect);
       }
     }
@@ -331,14 +328,16 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
 
     Color finalBorderColor;
     if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+      Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
+          Constants.DEFAULT_THEME);
       finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+              ? SELECTION_COLOR
               : theme.getOutlineColor();
     } else {
       finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+              ? SELECTION_COLOR
               : getBorderColor();
     }
     g2d.setColor(finalBorderColor);
@@ -359,21 +358,23 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
 
     // Draw label.
     g2d.setFont(project.getFont());
-    
+
     // Override font size
     if (getFontSizeOverride() != null)
       g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
-    
+
     Color finalLabelColor;
     if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+      Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
+          Constants.DEFAULT_THEME);
       finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+              ? LABEL_COLOR_SELECTED
               : theme.getOutlineColor();
     } else {
       finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+              ? LABEL_COLOR_SELECTED
               : getLabelColor();
     }
     g2d.setColor(finalLabelColor);
@@ -415,72 +416,46 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
             g2d.translate(0, textHeight / 2);
         }
 
-        g2d.drawString(l, (int)x, (int)y);
+        g2d.drawString(l, (int) x, (int) y);
 
         g2d.setTransform(oldTransform);
       }
     }
 
     // draw pin numbers
-    int pinNo = 0;
-    int j = 0;
-    int k = 0;
-    int pinSize = (int) PIN_SIZE.convertToPixels();
-    for (Point2D point : controlPoints) {
-      pinNo++;
+    if (getDisplayNumbers() != DisplayNumbers.NO) {
+      int pinSize = (int) PIN_SIZE.convertToPixels();
 
-      // determine points relative to rotation
-      int textX1 = (int) (point.getX() - 2 * pinSize);
-      int textY1 = (int) (point.getY() + pinSize / 2);
-      int textX2 = (int) (point.getX() + pinSize);
-      int textY2 = (int) (point.getY() + pinSize / 2);
-      if (orientation == Orientation._90) {
-        textX2 = textX2 - pinSize - pinSize / 2;
-        textY2 = textY2 + pinSize;
-        textX1 = textX1 + 2 * pinSize - pinSize / 2;
-        textY1 = textY1 - pinSize;
-      }
-      if (orientation == Orientation._180) {
-        textX1 = textX1 + 3 * pinSize;
-        textX2 = textX2 - 3 * pinSize;
-      }
-      if (orientation == Orientation._270) {
-        textX1 = textX1 + pinSize + pinSize / 2;
-        textY1 = textY1 + pinSize;
-        textX2 = textX2 - pinSize - pinSize / 2;
-        textY2 = textY2 - pinSize;
-      }
+      for (int i = 0; i < controlPoints.length; i++) {
+        Point2D point = controlPoints[i];
 
-      g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.66)));
-      if (displayNumbers == DisplayNumbers.DIP) {
-        if (pinNo > pinCount.getValue() / 2) {
-          g2d.drawString(Integer.toString(pinCount.getValue() - j), textX1, textY1);
-          j++;
-        } else {
-          g2d.drawString(Integer.toString(pinNo), textX2, textY2);
+        // determine points relative to rotation
+        int textX1 = (int) (point.getX() - 2 * pinSize);
+        int textY1 = (int) (point.getY() + pinSize / 2);
+        int textX2 = (int) (point.getX() + pinSize);
+        int textY2 = (int) (point.getY() + pinSize / 2);
+        if (orientation == Orientation._90) {
+          textX2 = textX2 - pinSize - pinSize / 2;
+          textY2 = textY2 + pinSize;
+          textX1 = textX1 + 2 * pinSize - pinSize / 2;
+          textY1 = textY1 - pinSize;
         }
-      } else if (displayNumbers == DisplayNumbers.CONNECTOR) {
-        if (pinNo > pinCount.getValue() / 2) {
-          k++;
-          g2d.drawString(Integer.toString(pinNo - (pinCount.getValue() / 2) + k), textX1, textY1);
-        } else {
-          g2d.drawString(Integer.toString(pinNo + j), textX2, textY2);
-          j++;
+        if (orientation == Orientation._180) {
+          textX1 = textX1 + 3 * pinSize;
+          textX2 = textX2 - 3 * pinSize;
         }
-      } else if (displayNumbers == DisplayNumbers.DIP_MIRROR) {
-        if (pinNo > pinCount.getValue() / 2) {
-          g2d.drawString(Integer.toString(pinCount.getValue() - pinCount.getValue() + j + 1), textX1, textY1);
-          j++;
-        } else {
-          g2d.drawString(Integer.toString(pinCount.getValue() - pinNo + 1), textX2, textY2);
+        if (orientation == Orientation._270) {
+          textX1 = textX1 + pinSize + pinSize / 2;
+          textY1 = textY1 + pinSize;
+          textX2 = textX2 - pinSize - pinSize / 2;
+          textY2 = textY2 - pinSize;
         }
-      } else if (displayNumbers == DisplayNumbers.CONNECTOR_MIRROR) {
-        if (pinNo > pinCount.getValue() / 2) {
-          k++;
-          g2d.drawString(Integer.toString(pinNo - (pinCount.getValue() / 2) + k - 1), textX1, textY1);
+
+        g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.66)));
+        if (i >= pinCount.getValue() / 2) {
+          g2d.drawString(getControlPointNodeName(i), textX1, textY1);
         } else {
-          g2d.drawString(Integer.toString(pinNo + j + 1), textX2, textY2);
-          j++;
+          g2d.drawString(getControlPointNodeName(i), textX2, textY2);
         }
       }
     }
@@ -557,12 +532,12 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
   public void setDisplayNumbers(DisplayNumbers numbers) {
     this.displayNumbers = numbers;
   }
-  
+
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
-  
+
   @Override
   public Rectangle2D getCachingBounds() {
     double minX = Integer.MAX_VALUE;
@@ -581,8 +556,41 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
       if (p.getY() > maxY)
         maxY = p.getY();
     }
+
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin,
+        maxY - minY + 2 * margin);
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    index++;
     
-    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
+    if (displayNumbers == DisplayNumbers.DIP) {
+      if (index > pinCount.getValue() / 2) {
+        return Integer.toString(pinCount.getValue() * 3 / 2 - index + 1);
+      } else {
+        return Integer.toString(index);
+      }
+    } else if (displayNumbers == DisplayNumbers.CONNECTOR) {
+      if (index > pinCount.getValue() / 2) {
+        return Integer.toString(index - pinCount.getValue() + index);
+      } else {
+        return Integer.toString(index * 2 - 1);
+      }
+    } else if (displayNumbers == DisplayNumbers.DIP_MIRROR) {
+      if (index > pinCount.getValue() / 2) {
+        return Integer.toString((index - pinCount.getValue() / 2));
+      } else {
+        return Integer.toString(pinCount.getValue() - index + 1);
+      }
+    } else if (displayNumbers == DisplayNumbers.CONNECTOR_MIRROR) {
+      if (index > pinCount.getValue() / 2) {
+        return Integer.toString(index - pinCount.getValue() + index - 1);
+      } else {
+        return Integer.toString(2 * index);
+      }
+    }
+    return null;
   }
 
   public static enum PinCount {
@@ -601,7 +609,8 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
 
   public enum DisplayNumbers {
 
-    NO("No"), DIP("DIP"), CONNECTOR("Connector"), DIP_MIRROR("DIP (Mirrored)"), CONNECTOR_MIRROR("Connector (Mirrored)");
+    NO("No"), DIP("DIP"), CONNECTOR("Connector"), DIP_MIRROR("DIP (Mirrored)"), CONNECTOR_MIRROR(
+        "Connector (Mirrored)");
 
     private String label;
 
