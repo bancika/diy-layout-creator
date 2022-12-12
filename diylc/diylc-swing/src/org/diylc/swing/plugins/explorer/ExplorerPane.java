@@ -100,7 +100,7 @@ public class ExplorerPane extends JPanel {
 
     add(getSortBox(), gbc);
 
-    setPreferredSize(new Dimension(180, 200));
+    setPreferredSize(new Dimension(240, 200));
   }
   
   public JLabel getTitleLabel() {
@@ -370,7 +370,7 @@ public class ExplorerPane extends JPanel {
       int layerId = (int)Math.round(componentType.getZOrder());
             
       
-      renderer.setText(String.format("<html><font color='#c0c0c0'>[L%s]</font> %s</html>", layerId, value.getName()));
+      renderer.setText(String.format("<html><font color='#c0c0c0'>[L%s]</font> %s (<font color='#666666'>%s</font>)</html>", layerId, value.getName(), value.getValueForDisplay()));
       
       return renderer;
     }
