@@ -4237,7 +4237,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Solder Lug' component</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'PCB Terminal Block' component</description>
+				</org.diylc.appframework.update.Change>		
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Use scroll buttons in 'Tabbed Toolbar' instead of arranging tabs into multiple lines when the screen is not large enough to show them all</description>

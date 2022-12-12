@@ -49,6 +49,7 @@ AWG
 Alternate
 And
 Angle Offset
+Apply Model
 B-C-E     BJT
 Background
 Box
@@ -85,6 +86,7 @@ Double Rods
 Drop
 E+
 E-B-C     BJT
+Eight
 English
 Español
 Filament Voltage
@@ -107,6 +109,7 @@ Maximum number of switching combinations exceeded. Allowed: %s, actual: %s
 NPN
 Nand
 Nederlands
+Nine
 Non-shorting
 Nor
 Not
@@ -145,6 +148,8 @@ Source Style
 Source Type
 Srpski
 Stroke
+TB2
+Ten
 Terminal
 Timing
 Tubular Beveled
