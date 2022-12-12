@@ -46,7 +46,7 @@ import org.diylc.swing.gui.SearchTextField;
 public class ExplorerPane extends JPanel {
 
   private static final long serialVersionUID = 1L;
-  
+
   private static final String REORDERING_NOT_POSSIBLE = LangUtil.translate(
       "Component reordering is possible only when Project Explorer is sorted by z-index.");
 
@@ -74,13 +74,13 @@ public class ExplorerPane extends JPanel {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
-    gbc.fill = GridBagConstraints.HORIZONTAL;    
+    gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weighty = 0;
     gbc.gridwidth = 1;
-    
-//    add(getTitleLabel(), gbc);
-//    
-//    gbc.gridy++;
+
+    // add(getTitleLabel(), gbc);
+    //
+    // gbc.gridy++;
 
     add(getSearchField(), gbc);
 
@@ -102,12 +102,12 @@ public class ExplorerPane extends JPanel {
 
     setPreferredSize(new Dimension(240, 200));
   }
-  
+
   public JLabel getTitleLabel() {
     if (titleLabel == null) {
       titleLabel = new JLabel(getName());
       titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//      titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
+      // titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
     }
     return titleLabel;
   }
@@ -342,36 +342,52 @@ public class ExplorerPane extends JPanel {
       return this.components.get(index);
     }
   }
-  
+
   private static class ComponentListCellRenderer implements ListCellRenderer<IDIYComponent<?>> {
-    
-//    private static Color[] layerColors = new Color[] { Color.gray, Color.decode("#ff6363"), Color.decode("#293462"), Color.decode("#138588"), 
-//        Color.decode("#c0ca03"), Color.decode("#990000") };
-    
+
+    // private static Color[] layerColors = new Color[] { Color.gray, Color.decode("#ff6363"),
+    // Color.decode("#293462"), Color.decode("#138588"),
+    // Color.decode("#c0ca03"), Color.decode("#990000") };
+
     protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
-    
+
     private Map<String, ComponentType> componentTypes;
-    
+
     public ComponentListCellRenderer(Map<String, List<ComponentType>> componentTypeMap) {
-      this.componentTypes = componentTypeMap.values().stream()
-          .flatMap(x -> x.stream())
+      this.componentTypes = componentTypeMap.values().stream().flatMap(x -> x.stream())
           .collect(Collectors.toMap(x -> x.getInstanceClass().getCanonicalName(), x -> x));
     }
 
     @Override
     public Component getListCellRendererComponent(JList<? extends IDIYComponent<?>> list,
         IDIYComponent<?> value, int index, boolean isSelected, boolean cellHasFocus) {
-      
+
       ComponentType componentType = componentTypes.get(value.getClass().getCanonicalName());
-      
+
       JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
           isSelected, cellHasFocus);
-      
-      int layerId = (int)Math.round(componentType.getZOrder());
-            
-      
-      renderer.setText(String.format("<html><font color='#c0c0c0'>[L%s]</font> %s (<font color='#666666'>%s</font>)</html>", layerId, value.getName(), value.getValueForDisplay()));
-      
+
+      int layerId = (int) Math.round(componentType.getZOrder());
+
+      String valueForDisplay = value.getValueForDisplay();
+      if (isSelected) {
+        if (valueForDisplay == null || valueForDisplay.trim().isEmpty()) {
+          renderer.setText(String.format("[L%s] %s", layerId, value.getName()));
+        } else {
+          renderer
+              .setText(String.format("[L%s] %s (%s)", layerId, value.getName(), valueForDisplay));
+        }
+      } else {
+        if (valueForDisplay == null || valueForDisplay.trim().isEmpty()) {
+          renderer.setText(String.format("<html><font color='#c0c0c0'>[L%s]</font> %s</html>",
+              layerId, value.getName()));
+        } else {
+          renderer.setText(String.format(
+              "<html><font color='#c0c0c0'>[L%s]</font> %s (<font color='#666666'>%s</font>)</html>",
+              layerId, value.getName(), valueForDisplay));
+        }
+      }
+
       return renderer;
     }
   }
