@@ -57,7 +57,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Enclosed panel mount 1/4\" phono jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false, transformer = ClosedJackTransformer.class, enableCache = true)
-public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
+public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> {
 
   private static final long serialVersionUID = 1L;
 
@@ -78,7 +78,9 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
   private JackType type = JackType.MONO;
   private Orientation orientation = Orientation.DEFAULT;
   transient private Shape[] body;
-  private String value = "";
+  @SuppressWarnings("unused")
+  @Deprecated
+  private transient String value = "";
 
   public ClosedJack1_4() {
     super();
@@ -327,23 +329,12 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<String> {
     return VisibilityPolicy.NEVER;
   }
 
-  @EditableProperty
-  @Override
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public JackType getType() {
+  @EditableProperty(name = "Type")
+  public JackType getValue() {
     return type;
   }
 
-  public void setType(JackType type) {
+  public void setValue(JackType type) {
     this.type = type;
     updateControlPoints();
   }

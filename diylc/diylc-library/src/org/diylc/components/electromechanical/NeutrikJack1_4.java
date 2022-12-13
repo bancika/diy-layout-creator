@@ -57,7 +57,7 @@ import org.diylc.utils.Constants;
     description = "1/4\" mono/stereo phono jack based on Neutrik NMJx series, PCB or Panel-mount",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = NeutrikJack1_4Transformer.class,
     enableCache = true)
-public class NeutrikJack1_4 extends AbstractMultiPartComponent<String> {
+public class NeutrikJack1_4 extends AbstractMultiPartComponent<JackType> {
 
   private static final long serialVersionUID = 1L;
 
@@ -81,7 +81,10 @@ public class NeutrikJack1_4 extends AbstractMultiPartComponent<String> {
   private Mount mount = Mount.Panel;
   private Orientation orientation = Orientation.DEFAULT;
   transient private Area[] body;
-  private String value = "";
+  @SuppressWarnings("unused")
+  @Deprecated
+  private transient String value = "";
+
 
   public NeutrikJack1_4() {
     super();
@@ -330,23 +333,12 @@ public class NeutrikJack1_4 extends AbstractMultiPartComponent<String> {
     return VisibilityPolicy.NEVER;
   }
 
-  @EditableProperty
-  @Override
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public JackType getType() {
+  @EditableProperty(name = "Type")
+  public JackType getValue() {
     return type;
   }
 
-  public void setType(JackType type) {
+  public void setValue(JackType type) {
     this.type = type;
     updateControlPoints();
   }

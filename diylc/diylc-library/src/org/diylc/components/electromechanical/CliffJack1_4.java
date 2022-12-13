@@ -57,7 +57,7 @@ import org.diylc.utils.Constants;
     description = "Cliff-style closed panel mount 1/4\" phono jack",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = CliffJackTransformer.class,
     enableCache = true)
-public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
+public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> {
 
   private static final long serialVersionUID = 1L;
 
@@ -76,7 +76,9 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
   private JackType type = JackType.MONO;
   private Orientation orientation = Orientation.DEFAULT;
   transient private Area[] body;
-  private String value = "";
+  @SuppressWarnings("unused")
+  @Deprecated
+  private transient String value = "";
 
   public CliffJack1_4() {
     super();
@@ -316,23 +318,12 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<String> {
     return VisibilityPolicy.NEVER;
   }
 
-  @EditableProperty
-  @Override
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @EditableProperty
-  public JackType getType() {
+  @EditableProperty(name = "Type")
+  public JackType getValue() {
     return type;
   }
 
-  public void setType(JackType type) {
+  public void setValue(JackType type) {
     this.type = type;
     updateControlPoints();
   }

@@ -4260,6 +4260,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Show jack type in the BOM</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved find tool usability, make the screen pan to the selected components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
