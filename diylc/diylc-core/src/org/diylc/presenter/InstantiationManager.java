@@ -285,8 +285,6 @@ public class InstantiationManager {
     }
     component.createdIn(currentProject);
 
-    component.setName(createUniqueName(componentType, currentProject.getComponents()));
-
     // Translate them to the desired location.
     if (point != null) {
       for (int j = 0; j < component.getControlPointCount(); j++) {
@@ -297,11 +295,16 @@ public class InstantiationManager {
       }
     }
 
-    loadComponentShapeFromTemplate(component, template);
+    loadComponentShapeFromTemplate(component, template);   
 
     if (model == null) {
       // do not fill with defaults if creating by a model
       fillWithDefaultProperties(component, template);
+    }
+    
+    // preserve component from the template if RENUMBER_ON_PASTE_KEY is OFF
+    if (template == null || ConfigurationManager.getInstance().readBoolean(IPlugInPort.RENUMBER_ON_PASTE_KEY, true)) {
+      component.setName(createUniqueName(componentType, currentProject.getComponents()));
     }
 
     // Write to recent components

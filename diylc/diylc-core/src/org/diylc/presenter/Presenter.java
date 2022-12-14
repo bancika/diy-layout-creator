@@ -2564,9 +2564,9 @@ public class Presenter implements IPlugInPort {
     List<PropertyWrapper> properties = ComponentProcessor.getInstance().extractProperties(component.getClass());
     Map<String, Object> values = new HashMap<String, Object>();
     for (PropertyWrapper property : properties) {
-      if (property.getName().equalsIgnoreCase("name")) {
-        continue;
-      }
+//      if (property.getName().equalsIgnoreCase("name")) {
+//        continue;
+//      }
       try {
         property.readFrom(component);
         values.put(property.getName(), property.getValue());
