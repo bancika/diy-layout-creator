@@ -178,22 +178,13 @@ public class BuildingBlockManager {
     if (System.getProperty("org.diylc.WriteStaticBlocks", "false").equalsIgnoreCase("true")) {
       Map<String, List<IDIYComponent<?>>> defaultBlockMap =
           new HashMap<String, List<IDIYComponent<?>>>();
-      // unify default and user-variants
-      for (Map.Entry<String, List<IDIYComponent<?>>> entry : blocks.entrySet()) {
-        if (defaultBlockMap.containsKey(entry.getKey())) {
-          defaultBlockMap.get(entry.getKey()).addAll(entry.getValue());
-        } else {
-          defaultBlockMap.put(entry.getKey(), entry.getValue());
-        }
-      }
+      defaultBlockMap.put(blockName, blockComponents);
       try {
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(BLOCKS_FILE_NAME));
         XStream xStream = new XStream(new DomDriver());
         xStream.addPermission(AnyTypePermission.ANY);
         xStream.toXML(defaultBlockMap, out);
         out.close();
-        // no more user variants
-        configManager.writeValue(IBlockProcessor.BLOCKS_KEY, null);
         LOG.info("Saved default blocks");
       } catch (IOException e) {
         LOG.error("Could not save default blocks", e);

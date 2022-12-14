@@ -42,15 +42,22 @@
 6 throws / 6 positions
 7 throws / 7 positions
 8 throws / 8 positions
+9 Pin Socket 1 <font color='gray'>[DLH]</font>
 9 throws / 9 positions
 A-O-I     REGULATOR
 AC
 AWG
 Alternate
+Altoid Minty Copper Perfboard <font color='gray'>[pixelwaster]</font>
+Altoid Minty Plain Perfboard <font color='gray'>[pixelwaster]</font>
+Altoid Minty Vero Board <font color='gray'>[pixelwaster]</font>
 And
 Angle Offset
 B-C-E     BJT
 Background
+Bi-Color LED 2-pin
+Bi-Color LED 3-pin
+Bias Pot 1 <font color='gray'>[DLH]</font>
 Box
 C-B-E     BJT
 Circle
@@ -90,6 +97,8 @@ English
 Español
 Filament Voltage
 Français
+Fuse Holder
+Fuse Holder 2 <font color='gray'>[DLH]</font>
 G-D-S     JFET
 G-D-S     MOSFET
 G-O-I     REGULATOR
@@ -98,9 +107,12 @@ G-S-D     MOSFET
 Generate DIYLC Netlist (excl. Switches)
 Generate DIYLC Netlist (incl. Switches)
 Gray
+Ground Verical <font color='gray'>[DLH]</font>
 Humbucking - 4 leads
 I-G-O     REGULATOR
 Italiano
+Jack 11 <font color='gray'>[DLH]</font>
+Jack 12A <font color='gray'>[DLH]</font>
 Lin
 Log
 Markers
@@ -126,7 +138,10 @@ PCB
 PNP
 Poles
 Português
+Q Pad H
+R Pad
 Rectangle
+Relay 1 - H <font color='gray'>[DLH]</font>
 Rev log
 S-G-D     JFET
 S-G-D     MOSFET
@@ -147,9 +162,14 @@ Source Style
 Source Type
 Srpski
 Stroke
+Switch DPDT <font color='gray'>[DLH]</font>
+Switch SPDT <font color='gray'>[DLH]</font>
+TO-92 w/ 2 Leads
+TO-92 w/ 3 Leads
 Ten
 Terminal
 Timing
+Title Block
 Tubular Beveled
 Xnor
 Xor

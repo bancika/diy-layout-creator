@@ -4247,6 +4247,10 @@
 					<description>Show component values in the project explorer</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Title Block added as one of factory building blocks</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Ability to use up/down arrow keys in the project explorer to select components</description>
 				</org.diylc.appframework.update.Change>	
@@ -4268,7 +4272,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>DIL IC pin labels don't match between the rendered values and values in the netlist</description>
+					<description>DIL IC pin labels incorrect in the netlist</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
