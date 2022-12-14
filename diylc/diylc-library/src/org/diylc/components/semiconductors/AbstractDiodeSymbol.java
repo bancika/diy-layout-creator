@@ -36,7 +36,7 @@ public abstract class AbstractDiodeSymbol extends AbstractSchematicLeadedSymbol<
 
   public static Size DEFAULT_SIZE = new Size(0.1, SizeUnit.in);
 
-  private String value = null;
+  private String value = "";
 
   public AbstractDiodeSymbol() {
     super();

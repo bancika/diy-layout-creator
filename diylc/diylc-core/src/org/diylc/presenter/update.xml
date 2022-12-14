@@ -4270,6 +4270,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>DIL IC pin labels don't match between the rendered values and values in the netlist</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Diode symbol doesn't appear in the BOM</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
