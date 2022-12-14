@@ -4278,6 +4278,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Diode symbol doesn't appear in the BOM</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Upon starting or opening a project, the ruler is slightly misaligned with the project boundaries</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

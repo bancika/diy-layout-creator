@@ -93,6 +93,7 @@ public class CanvasPlugin implements IPlugIn{
     scroll.getHorizontalScrollBar().setValue((totalSize.width - visibleSize.width) / 2);
     scroll.getVerticalScrollBar().setValue((totalSize.height - visibleSize.height) / 2);
     getScrollPane().getViewport().setVisible(true);
+    updateZeroLocation();
   }
 
   @Override
@@ -473,6 +474,8 @@ public class CanvasPlugin implements IPlugIn{
               
               canvasPanel.scrollRectToVisible(visibleRect);
               canvasPanel.revalidate();
+              
+              updateZeroLocation();
             }
           });
         }
