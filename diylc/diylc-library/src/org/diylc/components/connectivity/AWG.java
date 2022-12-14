@@ -27,7 +27,7 @@ public enum AWG {
 
   @Override
   public String toString() {
-    return "#" + name().replace("_", "") + " (" + String.format("%1$,.2f", diameterIn() * 25.4) + "mm / " + String.format("%1$,.5f", diameterIn()) + "in)";
+    return "#" + name().replace("_", "") + " / " + String.format("%1$,.2f", diameterIn() * 25.4) + "mm";
   }
 
   public double diameterIn() {

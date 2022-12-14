@@ -80,7 +80,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       // create leads
       HookupWire w1 = new HookupWire();
       getInstantiationManager().fillWithDefaultProperties(w1, null);      
-      w1.setGauge(AWG._26);
+      w1.setValue(AWG._26);
       w1.setLeadColor(leaded.getLeadColor());
 //      w1.setPointCount(PointCount.THREE);
       w1.setControlPoint(p1, 0);
@@ -93,7 +93,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       
       HookupWire w2 = new HookupWire();
       getInstantiationManager().fillWithDefaultProperties(w2, null);
-      w2.setGauge(AWG._26);
+      w2.setValue(AWG._26);
       w2.setLeadColor(leaded.getLeadColor());
 //      w2.setPointCount(PointCount.THREE);
       w2.setControlPoint(p2, 0);
@@ -134,9 +134,9 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       getInstantiationManager().fillWithDefaultProperties(w, null);
       // make the leads thicker for TO220 and TO126
       if (c instanceof TransistorTO220 || c instanceof TransistorTO126)
-        w.setGauge(AWG._24);
+        w.setValue(AWG._24);
       else
-        w.setGauge(AWG._26);
+        w.setValue(AWG._26);
       w.setLeadColor(AbstractTransistorPackage.METAL_COLOR);
       w.setPointCount(PointCount.THREE);
       w.setControlPoint(p0, 0);      
@@ -244,7 +244,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
         tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.getX(), p0.getY());
             
       HookupWire w = new HookupWire();
-      w.setGauge(AWG._24);
+      w.setValue(AWG._24);
       getInstantiationManager().fillWithDefaultProperties(w, null);
       for (int j = 0; j < w.getControlPointCount(); j++) {
         Point2D p = new Point2D.Double((int)(p0.getX() + dx * j), (int)(p0.getY() + dy * j));

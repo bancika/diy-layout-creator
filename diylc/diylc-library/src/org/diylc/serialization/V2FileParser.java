@@ -439,29 +439,29 @@ public class V2FileParser implements IOldFileParser {
             }
             num = num * 2 + 8;
             if (num == 8)
-              hw.setGauge(AWG._8);
+              hw.setValue(AWG._8);
             else if (num == 10)
-              hw.setGauge(AWG._10);
+              hw.setValue(AWG._10);
             else if (num == 12)
-              hw.setGauge(AWG._12);
+              hw.setValue(AWG._12);
             else if (num == 14)
-              hw.setGauge(AWG._14);
+              hw.setValue(AWG._14);
             else if (num == 16)
-              hw.setGauge(AWG._16);
+              hw.setValue(AWG._16);
             else if (num == 18)
-              hw.setGauge(AWG._18);
+              hw.setValue(AWG._18);
             else if (num == 20)
-              hw.setGauge(AWG._20);
+              hw.setValue(AWG._20);
             else if (num == 22)
-              hw.setGauge(AWG._22);
+              hw.setValue(AWG._22);
             else if (num == 24)
-              hw.setGauge(AWG._24);
+              hw.setValue(AWG._24);
             else if (num == 26)
-              hw.setGauge(AWG._26);
+              hw.setValue(AWG._26);
             else if (num == 28)
-              hw.setGauge(AWG._28);
+              hw.setValue(AWG._28);
             else if (num == 30)
-              hw.setGauge(AWG._30);
+              hw.setValue(AWG._30);
             hw.setLeadColor(cl);
             hw.setControlPoint(tacke.get(0), 0);
             hw.setControlPoint(tacke.get(1), 1);

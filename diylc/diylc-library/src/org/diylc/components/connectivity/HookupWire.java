@@ -41,7 +41,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     transformer = SimpleComponentTransformer.class, enableCache = false)
-public class HookupWire extends AbstractCurvedComponent<Void> implements IContinuity {
+public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -117,21 +117,13 @@ public class HookupWire extends AbstractCurvedComponent<Void> implements IContin
   }
 
   @EditableProperty(name = "AWG")
-  public AWG getGauge() {
+  public AWG getValue() {
     return gauge;
   }
 
-  public void setGauge(AWG gauge) {
+  public void setValue(AWG gauge) {
     this.gauge = gauge;
   }
-
-  @Override
-  public Void getValue() {
-    return null;
-  }
-
-  @Override
-  public void setValue(Void value) {}
 
   @EditableProperty(name = "Stripe")
   public boolean getStriped() {
