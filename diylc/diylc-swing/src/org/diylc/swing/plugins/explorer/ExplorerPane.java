@@ -179,6 +179,13 @@ public class ExplorerPane extends JPanel {
       componentList.addMouseListener(new MouseAdapter() {
 
         private MouseEvent pressedEvent;
+        
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          if (e.getClickCount() == 2) {
+            plugInPort.editSelection();
+          }          
+        }
 
         @Override
         public void mousePressed(MouseEvent e) {
