@@ -10,7 +10,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.34.0" />
+	<property name="diylc.version" value="4.35.0" />
 	
 	<property name="osx.jre8.path" value="tools\jre\osx\jre8u321\Contents\Home\" />
 	<property name="osx.jre8m1.path" value="tools\jre\osx\zulu-8.jre\Contents\Home\" />
@@ -99,7 +99,7 @@
 					<typedeclaration
 						identifier="org.diylc.diy"
 						description="DIYLC file type"
-						icon="icons/diylc.icns"
+						icon="icons/diylc_files.icns"
 						conformsTo="public.xml,public.text"
 						extensions="diy" />
 			<runtime dir="${osx.jre8.path}" />
