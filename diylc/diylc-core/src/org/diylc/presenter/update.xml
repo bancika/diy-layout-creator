@@ -4236,6 +4236,10 @@
 			<changes>	
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added '1/8&quot; Cliff Jack' component - stereo and mono</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Solder Lug' component</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

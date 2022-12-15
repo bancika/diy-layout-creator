@@ -146,7 +146,7 @@
 						<typedeclaration
 							identifier="org.diylc.diy"
 							description="DIYLC file type"
-							icon="icons/diylc.icns"
+							icon="icons/diylc_file.icns"
 							conformsTo="public.xml,public.text"
 							extensions="diy" />
 				<runtime dir="${osx.jre8m1.path}" />
