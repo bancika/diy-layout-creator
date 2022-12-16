@@ -25,6 +25,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -290,6 +291,16 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> {
     g2d.drawLine(pinX1, width * 5 / 8, pinX1, width * 6 / 8);
     g2d.drawLine(pinX2, width * 2 / 8, pinX2, width * 3 / 8);
     g2d.drawLine(pinX2, width * 5 / 8, pinX2, width * 6 / 8);
+    
+    g2d.setColor(LABEL_COLOR);
+    g2d.setFont(LABEL_FONT.deriveFont(width / 3.5f));
+    
+    RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    g2d.setRenderingHints(rh);
+    
+    StringUtils.drawCenteredText(g2d, "6.3", width / 2 - 1, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   @Override

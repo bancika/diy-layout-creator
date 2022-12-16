@@ -22,6 +22,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -287,18 +288,9 @@ public class CliffJack1_8 extends AbstractMultiPartComponent<JackType> {
     int tailWidth = getClosestOdd(width * 3 / 9);
 
     g2d.setColor(BODY_COLOR);
-    g2d.fillRoundRect((width - tailWidth) / 2, height / 2, tailWidth, height / 2 - 2 * 32 / height,
-        4 * 32 / width, 4 * 32 / width);
+    g2d.fillRect((width - tailWidth) / 2, 2 * 32 / height, tailWidth, height / 2);
     g2d.setColor(BORDER_COLOR);
-    g2d.drawRoundRect((width - tailWidth) / 2, height / 2, tailWidth, height / 2 - 2 * 32 / height,
-        4 * 32 / width, 4 * 32 / width);
-
-    g2d.setColor(BODY_COLOR);
-    g2d.fillRoundRect((width - tailWidth) / 2, 2 * 32 / height, tailWidth, height / 2,
-        4 * 32 / width, 4 * 32 / width);
-    g2d.setColor(BORDER_COLOR);
-    g2d.drawRoundRect((width - tailWidth) / 2, 2 * 32 / height, tailWidth, height / 2,
-        4 * 32 / width, 4 * 32 / width);
+    g2d.drawRect((width - tailWidth) / 2, 2 * 32 / height, tailWidth, height / 2);
 
     g2d.setColor(BODY_COLOR);
     g2d.fillRect((width - bodyWidth) / 2, height / 7 + 1, bodyWidth, height * 5 / 7);
@@ -308,10 +300,20 @@ public class CliffJack1_8 extends AbstractMultiPartComponent<JackType> {
     g2d.setColor(METAL_COLOR);
     int pinX1 = getClosestOdd((width - bodyWidth * 3 / 4) / 2);
     int pinX2 = getClosestOdd((width + bodyWidth * 3 / 4) / 2) - 1;
-    g2d.drawLine(pinX1, width * 2 / 8, pinX1, width * 3 / 8);
-    g2d.drawLine(pinX1, width * 5 / 8, pinX1, width * 6 / 8);
-    g2d.drawLine(pinX2, width * 2 / 8, pinX2, width * 3 / 8);
-    g2d.drawLine(pinX2, width * 5 / 8, pinX2, width * 6 / 8);
+    g2d.drawLine(pinX1, width * 4 / 16, pinX1, width * 5 / 16);
+    g2d.drawLine(pinX1, width * 11 / 16, pinX1, width * 12 / 16);
+    g2d.drawLine(pinX2, width * 4 / 16, pinX2, width * 5 / 16);
+    g2d.drawLine(pinX2, width * 11 / 16, pinX2, width * 12 / 16);
+    
+    g2d.setColor(LABEL_COLOR);
+    g2d.setFont(LABEL_FONT.deriveFont(width / 3.5f));
+    
+    RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    g2d.setRenderingHints(rh);
+    
+    StringUtils.drawCenteredText(g2d, "3.5", width / 2 - 1, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   @Override

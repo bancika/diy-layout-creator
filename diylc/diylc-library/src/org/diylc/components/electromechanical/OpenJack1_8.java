@@ -325,7 +325,7 @@ public class OpenJack1_8 extends AbstractMultiPartComponent<OpenJackType> {
             RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     g2d.setRenderingHints(rh);
     
-    StringUtils.drawCenteredText(g2d, "1/8\"", width / 2 - 1, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "3.5", width / 2 - 1, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   @Override
