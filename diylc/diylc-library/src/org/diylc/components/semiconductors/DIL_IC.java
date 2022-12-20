@@ -526,6 +526,9 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
 
   @EditableProperty(name = "Display Pin #s")
   public DisplayNumbers getDisplayNumbers() {
+    if (displayNumbers == null) {
+      displayNumbers = DisplayNumbers.NO;
+    }
     return displayNumbers;
   }
 
@@ -563,7 +566,7 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
 
   @Override
   public String getControlPointNodeName(int index) {
-    index++;
+    index++;       
     
     if (displayNumbers == DisplayNumbers.DIP) {
       if (index > pinCount.getValue() / 2) {
@@ -590,7 +593,8 @@ public class DIL_IC extends AbstractLabeledComponent<String> {
         return Integer.toString(2 * index);
       }
     }
-    return null;
+    
+    return Integer.toString(index);
   }
 
   public static enum PinCount {
