@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -301,6 +302,16 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> {
 
     g2d.fillRect(width * 7 / 16, height * 6 / 7 + 1, width / 8, height / 7 - 1);
     g2d.fillRect(width * 7 / 16, height / 7 + 2, width / 8, height / 7 - 1);
+    
+    g2d.setColor(LABEL_COLOR);
+    g2d.setFont(LABEL_FONT.deriveFont(width / 3.5f));
+    
+    RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    g2d.setRenderingHints(rh);
+    
+    StringUtils.drawCenteredText(g2d, "6.3", width / 2 - 1, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   @Override
