@@ -34,6 +34,7 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayer;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
@@ -47,7 +48,7 @@ import org.diylc.utils.Constants;
     description = "Designates the place where a trace on the vero board needs to be cut", instanceNamePrefix = "Cut",
     zOrder = IDIYComponent.BOARD + 1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     transformer = SimpleComponentTransformer.class, enableCache = true)
-public class TraceCut extends AbstractComponent<Void> {
+public class TraceCut extends AbstractComponent<Void> implements ILayer {
 
   private static final long serialVersionUID = 1L;
 
@@ -252,5 +253,10 @@ public class TraceCut extends AbstractComponent<Void> {
   public Rectangle2D getCachingBounds() {
     double size = getSize().convertToPixels();
     return new Rectangle2D.Double(point.getX() - size, point.getY() - size, size * 2, size * 2);
+  }
+
+  @Override
+  public int getLayerId() {
+    return 1;
   }
 }
