@@ -37,6 +37,31 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.35.0" date="2022-12-23">
+         <description>
+           <ul>
+             <li>[New Feature] Added '1/8" Cliff Jack' component - stereo and mono</li>
+             <li>[New Feature] Added 'Solder Lug' component</li>
+             <li>[New Feature] Added 'PCB Terminal Block' component</li>
+             <li>[New Feature] Show component values in the project explorer</li>
+             <li>[New Feature] Double click in the project explorer to edit selected component</li>
+             <li>[New Feature] Title Block added as one of factory building blocks</li>
+             <li>[New Feature] 'Renumber On Paste' feature now applies to variants as well. When set to OFF, the app honors the name saved in the variant</li>
+             <li>[New Feature] New file icons for Mac OS</li>
+             <li>[Improvement] Ability to use up/down arrow keys in the project explorer to select components</li>
+             <li>[Improvement] Use scroll buttons in 'Tabbed Toolbar' instead of arranging tabs into multiple lines when the screen is not large enough to show them all</li>
+             <li>[Improvement] Escape comma in BOM CSV files to avoid component names being split into separate columns</li>
+             <li>[Improvement] Show jack type in the BOM and project explorer</li>
+             <li>[Improvement] Show wire gauge in the BOM and project explorer</li>
+             <li>[Improvement] Improved find tool usability, make the screen pan to the selected components</li>
+             <li>[Bug Fix] Trace cut doesn't affect continuity of vero board traces</li>
+             <li>[Bug Fix] DIL IC pin labels incorrect in the netlist</li>
+             <li>[Bug Fix] Diode symbol doesn't appear in the BOM</li>
+             <li>[Bug Fix] Upon starting or opening a project, the ruler is slightly miss-aligned with the project boundaries</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.35.0</url>
+     </release>
   	<release version="4.34.0" date="2022-12-09">
          <description>
            <ul>
