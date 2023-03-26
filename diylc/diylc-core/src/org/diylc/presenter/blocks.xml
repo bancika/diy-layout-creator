@@ -133,4 +133,608 @@
         </diylc.semiconductors.TransistorTO92>
       </list>
     </entry>
+    <entry>
+    <string>Title Block</string>
+    <list>
+      <org.diylc.components.shapes.Rectangle>
+        <name>RECT1</name>
+        <alpha>127</alpha>
+        <value></value>
+        <controlPoints>
+          <java.awt.geom.Point2D_-Double>
+            <x>0.0</x>
+            <y>0.0</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>393.7007874015748</x>
+            <y>149.60629921259843</y>
+          </java.awt.geom.Point2D_-Double>
+        </controlPoints>
+        <firstPoint>
+          <x>0.0</x>
+          <y>0.0</y>
+        </firstPoint>
+        <secondPoint>
+          <x>393.7007874015748</x>
+          <y>149.60629921259843</y>
+        </secondPoint>
+        <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+        <borderColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </borderColor>
+        <borderThickness>
+          <value>0.5</value>
+          <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+        </borderThickness>
+        <edgeRadius>
+          <value>0.0</value>
+          <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+        </edgeRadius>
+      </org.diylc.components.shapes.Rectangle>
+      <org.diylc.components.connectivity.Line>
+        <name>LN1</name>
+        <alpha>127</alpha>
+        <points>
+          <java.awt.geom.Point2D_-Double>
+            <x>188.9763779527559</x>
+            <y>149.60629921259843</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>188.9763779527559</x>
+            <y>118.11023622047246</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>0.0</x>
+            <y>0.0</y>
+          </java.awt.geom.Point2D_-Double>
+        </points>
+        <bodyColor>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </bodyColor>
+        <borderColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </borderColor>
+        <labelColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </labelColor>
+        <leadColor>
+          <red>204</red>
+          <green>204</green>
+          <blue>204</blue>
+          <alpha>255</alpha>
+        </leadColor>
+        <display>NAME</display>
+        <flipStanding>false</flipStanding>
+        <labelOriantation>Directional</labelOriantation>
+        <moveLabel>false</moveLabel>
+        <hideShortLeads>false</hideShortLeads>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <style>SOLID</style>
+        <thickness>
+          <value>0.2</value>
+          <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+        </thickness>
+        <arrowSize>
+          <value>5.0</value>
+          <unit class="org.diylc.core.measures.SizeUnit">px</unit>
+        </arrowSize>
+        <arrowTx serialization="custom">
+          <java.awt.geom.AffineTransform>
+            <default>
+              <m00>1.0</m00>
+              <m01>0.0</m01>
+              <m02>0.0</m02>
+              <m10>0.0</m10>
+              <m11>1.0</m11>
+              <m12>0.0</m12>
+            </default>
+          </java.awt.geom.AffineTransform>
+        </arrowTx>
+        <arrowStart>false</arrowStart>
+        <arrowEnd>false</arrowEnd>
+      </org.diylc.components.connectivity.Line>
+      <org.diylc.components.connectivity.Line>
+        <name>LN2</name>
+        <alpha>127</alpha>
+        <points>
+          <java.awt.geom.Point2D_-Double>
+            <x>0.0</x>
+            <y>118.11023622047246</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>393.70078740157487</x>
+            <y>118.11023622047246</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>0.0</x>
+            <y>0.0</y>
+          </java.awt.geom.Point2D_-Double>
+        </points>
+        <bodyColor>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </bodyColor>
+        <borderColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </borderColor>
+        <labelColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </labelColor>
+        <leadColor>
+          <red>204</red>
+          <green>204</green>
+          <blue>204</blue>
+          <alpha>255</alpha>
+        </leadColor>
+        <display>NAME</display>
+        <flipStanding>false</flipStanding>
+        <labelOriantation>Directional</labelOriantation>
+        <moveLabel>false</moveLabel>
+        <hideShortLeads>false</hideShortLeads>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <style>SOLID</style>
+        <thickness>
+          <value>0.2</value>
+          <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+        </thickness>
+        <arrowSize>
+          <value>5.0</value>
+          <unit class="org.diylc.core.measures.SizeUnit">px</unit>
+        </arrowSize>
+        <arrowTx serialization="custom">
+          <java.awt.geom.AffineTransform>
+            <default>
+              <m00>1.0</m00>
+              <m01>0.0</m01>
+              <m02>0.0</m02>
+              <m10>0.0</m10>
+              <m11>1.0</m11>
+              <m12>0.0</m12>
+            </default>
+          </java.awt.geom.AffineTransform>
+        </arrowTx>
+        <arrowStart>false</arrowStart>
+        <arrowEnd>false</arrowEnd>
+      </org.diylc.components.connectivity.Line>
+      <org.diylc.components.connectivity.Line>
+        <name>LN3</name>
+        <alpha>127</alpha>
+        <points>
+          <java.awt.geom.Point2D_-Double>
+            <x>0.0</x>
+            <y>55.118110236220474</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>393.7007874015748</x>
+            <y>55.118110236220474</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>0.0</x>
+            <y>0.0</y>
+          </java.awt.geom.Point2D_-Double>
+        </points>
+        <bodyColor>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </bodyColor>
+        <borderColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </borderColor>
+        <labelColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </labelColor>
+        <leadColor>
+          <red>204</red>
+          <green>204</green>
+          <blue>204</blue>
+          <alpha>255</alpha>
+        </leadColor>
+        <display>NAME</display>
+        <flipStanding>false</flipStanding>
+        <labelOriantation>Directional</labelOriantation>
+        <moveLabel>false</moveLabel>
+        <hideShortLeads>false</hideShortLeads>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <style>SOLID</style>
+        <thickness>
+          <value>0.2</value>
+          <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+        </thickness>
+        <arrowSize>
+          <value>5.0</value>
+          <unit class="org.diylc.core.measures.SizeUnit">px</unit>
+        </arrowSize>
+        <arrowTx serialization="custom">
+          <java.awt.geom.AffineTransform>
+            <default>
+              <m00>1.0</m00>
+              <m01>0.0</m01>
+              <m02>0.0</m02>
+              <m10>0.0</m10>
+              <m11>1.0</m11>
+              <m12>0.0</m12>
+            </default>
+          </java.awt.geom.AffineTransform>
+        </arrowTx>
+        <arrowStart>false</arrowStart>
+        <arrowEnd>false</arrowEnd>
+      </org.diylc.components.connectivity.Line>
+      <org.diylc.components.connectivity.Line>
+        <name>LN4</name>
+        <alpha>127</alpha>
+        <points>
+          <java.awt.geom.Point2D_-Double>
+            <x>0.0</x>
+            <y>86.61417322834646</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>393.70078740157476</x>
+            <y>86.61417322834646</y>
+          </java.awt.geom.Point2D_-Double>
+          <java.awt.geom.Point2D_-Double>
+            <x>0.0</x>
+            <y>0.0</y>
+          </java.awt.geom.Point2D_-Double>
+        </points>
+        <bodyColor>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </bodyColor>
+        <borderColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </borderColor>
+        <labelColor>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </labelColor>
+        <leadColor>
+          <red>204</red>
+          <green>204</green>
+          <blue>204</blue>
+          <alpha>255</alpha>
+        </leadColor>
+        <display>NAME</display>
+        <flipStanding>false</flipStanding>
+        <labelOriantation>Directional</labelOriantation>
+        <moveLabel>false</moveLabel>
+        <hideShortLeads>false</hideShortLeads>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <style>SOLID</style>
+        <thickness>
+          <value>0.2</value>
+          <unit class="org.diylc.core.measures.SizeUnit">mm</unit>
+        </thickness>
+        <arrowSize>
+          <value>5.0</value>
+          <unit class="org.diylc.core.measures.SizeUnit">px</unit>
+        </arrowSize>
+        <arrowTx serialization="custom">
+          <java.awt.geom.AffineTransform>
+            <default>
+              <m00>1.0</m00>
+              <m01>0.0</m01>
+              <m02>0.0</m02>
+              <m10>0.0</m10>
+              <m11>1.0</m11>
+              <m12>0.0</m12>
+            </default>
+          </java.awt.geom.AffineTransform>
+        </arrowTx>
+        <arrowStart>false</arrowStart>
+        <arrowEnd>false</arrowEnd>
+      </org.diylc.components.connectivity.Line>
+      <org.diylc.components.misc.Label>
+        <name>LAB1</name>
+        <point>
+          <x>204.7244094488189</x>
+          <y>133.85826771653544</y>
+        </point>
+        <text>revision</text>
+        <font>
+          <size class="float">14.0</size>
+          <weight class="null"/>
+          <width class="null"/>
+          <superscript class="null"/>
+          <posture class="null"/>
+          <transform class="null"/>
+          <family class="string">Square721 BT Roman</family>
+          <tracking class="null"/>
+        </font>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>LEFT</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB2</name>
+        <point>
+          <x>291.3385826771654</x>
+          <y>133.85826771653544</y>
+        </point>
+        <text>1.0.0</text>
+        <font>
+          <size class="float">14.0</size>
+          <weight class="float">2.0</weight>
+          <width class="null"/>
+          <superscript class="null"/>
+          <posture class="null"/>
+          <transform class="null"/>
+          <family class="string">Square721 BT Bold</family>
+          <tracking class="null"/>
+        </font>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>LEFT</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB3</name>
+        <point>
+          <x>15.748031496062993</x>
+          <y>133.85826771653544</y>
+        </point>
+        <text>updated</text>
+        <font>
+          <size class="float">14.0</size>
+          <weight class="null"/>
+          <width class="null"/>
+          <superscript class="null"/>
+          <posture class="null"/>
+          <transform class="null"/>
+          <family class="string">Square721 BT Roman</family>
+          <tracking class="null"/>
+        </font>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>LEFT</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB4</name>
+        <point>
+          <x>86.61417322834646</x>
+          <y>133.85826771653544</y>
+        </point>
+        <text>1/1/2020</text>
+        <font>
+          <size class="float">14.0</size>
+          <weight class="float">2.0</weight>
+          <width class="null"/>
+          <superscript class="null"/>
+          <posture class="null"/>
+          <transform class="null"/>
+          <family class="string">Square721 BT Bold</family>
+          <tracking class="null"/>
+        </font>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>LEFT</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB5</name>
+        <point>
+          <x>47.24409448818898</x>
+          <y>70.86614173228347</y>
+        </point>
+        <text>drawn by</text>
+        <font reference="../../org.diylc.components.misc.Label/font"/>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>CENTER</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB6</name>
+        <point>
+          <x>31.496062992125985</x>
+          <y>15.748031496062993</y>
+        </point>
+        <text>title</text>
+        <font reference="../../org.diylc.components.misc.Label/font"/>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>CENTER</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB7</name>
+        <point>
+          <x>188.9763779527559</x>
+          <y>70.86614173228347</y>
+        </point>
+        <text>Author Name</text>
+        <font>
+          <size class="float">14.0</size>
+          <weight class="float">2.0</weight>
+          <width class="null"/>
+          <superscript class="null"/>
+          <posture class="null"/>
+          <transform class="null"/>
+          <family class="string">Square721 BT Bold</family>
+          <tracking class="null"/>
+        </font>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>CENTER</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB8</name>
+        <point>
+          <x>188.9763779527559</x>
+          <y>31.496062992125985</y>
+        </point>
+        <text>My Cool Project</text>
+        <font>
+          <size class="float">20.0</size>
+          <weight class="float">2.0</weight>
+          <width class="null"/>
+          <superscript class="null"/>
+          <posture class="null"/>
+          <transform class="null"/>
+          <family class="string">Square721 BT Bold</family>
+          <tracking class="null"/>
+        </font>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>CENTER</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB9</name>
+        <point>
+          <x>15.748031496062993</x>
+          <y>102.36220472440945</y>
+        </point>
+        <text>website</text>
+        <font>
+          <size class="float">14.0</size>
+          <weight class="null"/>
+          <width class="null"/>
+          <superscript class="null"/>
+          <posture class="null"/>
+          <transform class="null"/>
+          <family class="string">Square721 BT Roman</family>
+          <tracking class="null"/>
+        </font>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>LEFT</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+      <org.diylc.components.misc.Label>
+        <name>LAB10</name>
+        <point>
+          <x>188.9763779527559</x>
+          <y>102.36220472440945</y>
+        </point>
+        <text>www.mysite.com/myproject</text>
+        <font>
+          <size class="float">14.0</size>
+          <weight class="float">2.0</weight>
+          <width class="null"/>
+          <superscript class="null"/>
+          <posture class="null"/>
+          <transform class="null"/>
+          <family class="string">Square721 BT Bold</family>
+          <tracking class="null"/>
+        </font>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+        <horizontalAlignment>CENTER</horizontalAlignment>
+        <verticalAlignment>CENTER</verticalAlignment>
+        <orientation>DEFAULT</orientation>
+      </org.diylc.components.misc.Label>
+    </list>
+  </entry>
   </map>
