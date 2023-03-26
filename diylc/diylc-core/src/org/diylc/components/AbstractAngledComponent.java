@@ -31,7 +31,7 @@ public abstract class AbstractAngledComponent<T> extends AbstractTransparentComp
   private static final long serialVersionUID = 1L;
   
   @Deprecated
-  protected transient Orientation orientation;
+  protected Orientation orientation;
   protected int angle;
   
   transient protected Shape[] body;
