@@ -4323,6 +4323,10 @@
 					<description>Title Block added as one of factory building blocks (was missing in 4.35 by mistake)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Configurable max switch combination count for circuit analysis (using org.diylc.maxSwitchCombinations argument)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>General application slowness when Inductor component is added to the drawing</description>
 				</org.diylc.appframework.update.Change>
