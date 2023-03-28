@@ -4327,6 +4327,14 @@
 					<description>Configurable max switch combination count for circuit analysis (using org.diylc.maxSwitchCombinations argument)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added resilience to the code that saves the configuration file to avoid it getting corrupted</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When backing up the configuration file, append the current timestamp at the end instead of a '~'</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>General application slowness when Inductor component is added to the drawing</description>
 				</org.diylc.appframework.update.Change>

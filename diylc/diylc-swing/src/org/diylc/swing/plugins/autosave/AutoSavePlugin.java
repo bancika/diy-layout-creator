@@ -23,11 +23,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -129,15 +128,11 @@ public class AutoSavePlugin implements IPlugIn {
       name = name.substring(0, name.length() - 4);
 
     // append date and time
-    Date date = new Date();
-    DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-    file = new File(AUTO_SAVE_PATH + File.separator + name + "." + dateFormat.format(date) + ".diy");
-    // make sure that it doesn't already exist
-    int i = 2;
-    while (file.exists()) {
-      file = new File(AUTO_SAVE_PATH + File.separator + name + "." + dateFormat.format(date) + "-" + i + ".diy");
-      i++;
-    }
+    String timestamp = LocalDateTime.now()
+        .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        .substring(0, 19)
+        .replace(':', '-');
+    file = new File(AUTO_SAVE_PATH + File.separator + name + "." + timestamp + ".diy");
     return file.getAbsolutePath();
   }
 
