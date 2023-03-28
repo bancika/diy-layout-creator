@@ -76,7 +76,7 @@ public class RadialInductor extends AbstractRadialComponent<Inductance> {
  
   @Override
   public String getValueForDisplay() {
-    return getValue().toString();
+    return getValue() == null ? null : getValue().toString();
   }
   
   @Override

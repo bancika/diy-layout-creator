@@ -226,7 +226,7 @@ public abstract class NetlistAnalyzer {
   }
 
   protected String extractName(IDIYComponent<?> c) {
-    return c.getName() + " " + c.getValueForDisplay();
+    return c.getName() + " " + (c.getValueForDisplay() == null ? "" : c.getValueForDisplay());
   }
   
   public static List<Set<IDIYComponent<?>>> extractComponentGroups(List<Netlist> netlists) {
