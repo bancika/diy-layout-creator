@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.core.ICommonNode;
 import org.diylc.core.IContinuity;
@@ -50,10 +51,12 @@ public class NetlistBuilder {
 
   public static final float eps = 4; // consider any nodes closer than this as connected
 
-  private static final int MAX_SWITCH_COMBINATIONS = 64;
+  public static int MAX_SWITCH_COMBINATIONS = 64;
 
   private static final String MAX_SWITCH_COMBINATIONS_ERROR = LangUtil
       .translate("Maximum number of switching combinations exceeded. Allowed: %s, actual: %s");
+  
+  private static final Logger LOG = Logger.getLogger(NetlistBuilder.class);
 
   @SuppressWarnings("unchecked")
   public static List<Netlist> extractNetlists(boolean includeSwitches, Project project,
@@ -130,8 +133,18 @@ public class NetlistBuilder {
 
     int totalSwitchCombinations =
         switches.stream().map(sw -> sw.getPositionCount()).reduce(1, (a, b) -> a * b);
+    
+    int maxSwitch = MAX_SWITCH_COMBINATIONS;
+    String maxSwitchStr = System.getProperty("org.diylc.maxSwitchCombinations");
+    if (maxSwitchStr != null) {
+      try {
+        maxSwitch = Integer.parseInt(maxSwitchStr);
+      } catch (Exception e) { 
+        LOG.error("Could not apply property org.diylc.maxSwitchCombinations", e);
+      }
+    }
 
-    if (totalSwitchCombinations > MAX_SWITCH_COMBINATIONS) {
+    if (totalSwitchCombinations > maxSwitch) {
       throw new NetlistException(String.format(MAX_SWITCH_COMBINATIONS_ERROR,
           MAX_SWITCH_COMBINATIONS, totalSwitchCombinations));
     }

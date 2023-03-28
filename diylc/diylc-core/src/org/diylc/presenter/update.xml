@@ -4324,6 +4324,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>General application slowness when Inductor component is added to the drawing</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Lever switch orientation not loaded correctly from files created prior to version 4.35</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>
