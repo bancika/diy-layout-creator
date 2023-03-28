@@ -26,6 +26,7 @@ import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.mapper.Mapper;
 
 /**
  * Serializes {@link Font} objects in a more compact fashion. Backwards compatible when unmarshalling.
@@ -34,8 +35,8 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  */
 public class FontConverter extends com.thoughtworks.xstream.converters.extended.FontConverter {
   
-  public FontConverter() {
-    super(null);
+  public FontConverter(Mapper mapper) {
+    super(mapper);
   }
 
   @Override
@@ -50,7 +51,7 @@ public class FontConverter extends com.thoughtworks.xstream.converters.extended.
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     if (reader.getAttribute("name") != null) {
       return new Font(reader.getAttribute("name"), Integer.parseInt(reader.getAttribute("style")), Integer.parseInt(reader.getAttribute("size")));
-    }
+    }    
     return super.unmarshal(reader, context);
   }
 

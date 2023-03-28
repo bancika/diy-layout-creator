@@ -116,9 +116,9 @@ public class ProjectFileManager {
     xStream.aliasPackage("diylc", "org.diylc.components");
     xStream.registerConverter(new PointConverter());
     xStream.registerConverter(new ColorConverter());
-    xStream.registerConverter(new FontConverter());
+    xStream.registerConverter(new FontConverter(xStream.getMapper()));
     xStream.registerConverter(new MeasureConverter());
-    xStream.registerConverter(new AreaConverter());    
+    xStream.registerConverter(new AreaConverter());        
     xStream.addImmutableType(Color.class, true);
     xStream.addImmutableType(java.awt.geom.Point2D.class, true);
     xStream.addImmutableType(java.awt.geom.Point2D.Double.class, true);
