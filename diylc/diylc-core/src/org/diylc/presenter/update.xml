@@ -4335,8 +4335,12 @@
 					<description>When backing up the configuration file, append the current timestamp at the end instead of a '~'</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improve the format of timestamp in file backups</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>General application slowness when Inductor component is added to the drawing</description>
+					<description>General application slowness when Inductor or Fuse Symbol components are added to the drawing</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

@@ -60,7 +60,7 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
 
   @Override
   public String getValueForDisplay() {
-    return getValue().toString();// + (getPowerNew() == null ? "" : " " + getPowerNew().toString());
+    return getValue() == null ? null : getValue().toString();// + (getPowerNew() == null ? "" : " " + getPowerNew().toString());
   }
 
   public void drawIcon(Graphics2D g2d, int width, int height) {
