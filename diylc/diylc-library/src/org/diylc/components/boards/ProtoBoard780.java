@@ -136,15 +136,12 @@ public class ProtoBoard780 extends AbstractProtoBoard {
 
     g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE));
 
-    g2d.setColor(traceColor);    
-    
-
     double offsetY = spacing * 0.5;
 
     for (int i = 0; i < 15; i++) {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
       
-      g2d.setColor(padColor);
+      g2d.setColor(traceColor);
       int padX = (int)(point.getX() + width / 2 - 7 * spacing + i * spacing);
       drawingObserver.startTrackingContinuityArea(true);
       g2d.drawLine(padX, (int)(point.getY() + offsetY), padX, (int)(point.getY() + spacing + offsetY));
@@ -173,6 +170,23 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     
     offsetY = spacing * 5.5;
 
+    // draw 3-pad traces
+    drawingObserver.startTrackingContinuityArea(true);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
+    for (int i = 0; i < 5; i++) {          
+      g2d.setColor(traceColor);
+      
+      int padX = (int)(point.getX() + width / 2 - 12 * spacing + (i * 5 + 1) * spacing);
+      
+      for (int j = 1; j < 29; j++) {
+        int padY = (int)(point.getY() + spacing * j + offsetY);
+                
+        g2d.drawLine(padX, padY, (int) (padX + 2 * spacing), padY);
+      }
+    }
+    drawingObserver.stopTrackingContinuityArea();
+    
+    // draw main pads
     for (int i = 0; i < 25; i++) {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
       
