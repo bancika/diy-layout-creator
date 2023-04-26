@@ -57,35 +57,29 @@ public class ProtoBoard780 extends AbstractProtoBoard {
   public static Color SELECTION_COLOR = Color.red;
   public static Color PAD_COLOR = COPPER_COLOR;
   public static Color TRACE_COLOR = PAD_COLOR.brighter();
-  public static Color UNDERSIDE_PAD_COLOR = Color.decode("#977DC4");
-  public static Color UNDERSIDE_TRACE_COLOR = UNDERSIDE_PAD_COLOR.brighter();
+
   public static Color HOLE_COLOR = Color.white;
 
   public static float COORDINATE_FONT_SIZE = 9f;
   public static Color COORDINATE_COLOR = Color.decode("#DDDDDD");
 
-  public static Color SEPARATOR_COLOR = Color.white;
-  public static Color SCREEN_COLOR = Color.decode("#CAD4CA");
-
   public static Size PAD_SIZE = new Size(2d, SizeUnit.mm);
-  public static int ROW_COUNT = 33;
 
   public static Size WIDTH_SIZE = new Size(72d, SizeUnit.mm);
   public static Size LENGTH_SIZE = new Size(95d, SizeUnit.mm);
-
-  private static int[] SEGMENTS = new int[] {2, 3, 3, 3, 3, 2};
-  private static int[] SEGMENTS_SUM = new int[] {0, 2, 5, 8, 11, 14};
-  private static int[] GAPS = new int[] {1, 0, 2, 0, 0, 0};
-  private static int[] SEGMENTS_STARTS = new int[] {0, 3, 6, 11, 14, 17};
 
   protected Point2D point = new Point2D.Double(0, 0);
 
   protected Color boardColor = FILL_COLOR;
   protected Color padColor = PAD_COLOR;
   protected Color traceColor = TRACE_COLOR;
-  protected Color undersidePadColor = UNDERSIDE_PAD_COLOR;
-  protected Color undersideTraceColor = UNDERSIDE_TRACE_COLOR;
   protected Color textColor = COORDINATE_COLOR;
+
+  public static Size MOUNTING_HORIZONTAL_SPACING_MPJA = new Size(60d, SizeUnit.mm);
+  public static Size MOUNTING_HORIZONTAL_SPACING_RS = new Size(56d, SizeUnit.mm);
+  public static Size MOUNTING_HOLE_SIZE = new Size(3d, SizeUnit.mm);
+
+  protected ProtoBoard780Type type = ProtoBoard780Type.MPJA;
 
   @SuppressWarnings("incomplete-switch")
   @Override
@@ -119,12 +113,15 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     int width = (int) WIDTH_SIZE.convertToPixels();
     int length = (int) LENGTH_SIZE.convertToPixels();
 
+    int mountingHoleSize = (int) MOUNTING_HOLE_SIZE.convertToPixels();
+
     Shape rect = new Rectangle2D.Double(point.getX(), point.getY(), width, length);
     g2d.fill(rect);
-    g2d.setColor(
+    Color finalBorderColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
             ? SELECTION_COLOR
-            : boardColor.darker());
+            : boardColor.darker();
+    g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 
     drawingObserver.stopTracking();
@@ -138,20 +135,22 @@ public class ProtoBoard780 extends AbstractProtoBoard {
 
     double offsetY = spacing * 0.5;
 
+    // top section
     for (int i = 0; i < 15; i++) {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
-      
+
       g2d.setColor(traceColor);
-      int padX = (int)(point.getX() + width / 2 - 7 * spacing + i * spacing);
+      int padX = (int) (point.getX() + width / 2 - 7 * spacing + i * spacing);
       drawingObserver.startTrackingContinuityArea(true);
-      g2d.drawLine(padX, (int)(point.getY() + offsetY), padX, (int)(point.getY() + spacing + offsetY));
+      g2d.drawLine(padX, (int) (point.getY() + offsetY), padX,
+          (int) (point.getY() + spacing + offsetY));
       drawingObserver.stopTrackingContinuityArea();
-      
-      for (int j = 0; j < 2; j++) {        
-        int padY = (int)(point.getY() + spacing * j + offsetY);
+
+      for (int j = 0; j < 2; j++) {
+        int padY = (int) (point.getY() + spacing * j + offsetY);
 
         g2d.setColor(padColor);
-        
+
         drawingObserver.startTrackingContinuityArea(true);
 
         g2d.fillOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
@@ -167,40 +166,86 @@ public class ProtoBoard780 extends AbstractProtoBoard {
         g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);
       }
     }
-    
+    // top section labels
+    g2d.setColor(textColor);
+    for (int i = 0; i < 4; i++) {
+      int x = i == 0 ? 1 : i * 5;
+      int padX = (int) (point.getX() + width / 2 - 8 * spacing + x * spacing);
+      int padY = (int) (point.getY() + spacing * 2);
+
+      // flip the coordinates for MPJA
+      if (type == ProtoBoard780Type.MPJA) {
+        x = i == 3 ? 1 : (3 - i) * 5;
+      }
+
+      StringUtils.drawCenteredText(g2d, Integer.toString(x), padX, padY, HorizontalAlignment.CENTER,
+          VerticalAlignment.BOTTOM);
+    }
+
+
     offsetY = spacing * 5.5;
 
-    // draw 3-pad traces
+    // draw 3-pad traces and vertical traces
     drawingObserver.startTrackingContinuityArea(true);
+    g2d.setColor(traceColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
-    for (int i = 0; i < 5; i++) {          
-      g2d.setColor(traceColor);
-      
-      int padX = (int)(point.getX() + width / 2 - 12 * spacing + (i * 5 + 1) * spacing);
-      
+
+    // the outer bus
+    g2d.drawLine((int) (point.getX() + width / 2 - 13 * spacing),
+        (int) (point.getY() - 2 * spacing + offsetY),
+        (int) (point.getX() + width / 2 + 13 * spacing),
+        (int) (point.getY() - 2 * spacing + offsetY));
+    g2d.drawLine((int) (point.getX() + width / 2 - 13 * spacing),
+        (int) (point.getY() - 2 * spacing + offsetY),
+        (int) (point.getX() + width / 2 - 13 * spacing),
+        (int) (point.getY() + (29 + (type == ProtoBoard780Type.RS ? 2 : 0)) * spacing + offsetY));
+    g2d.drawLine((int) (point.getX() + width / 2 + 13 * spacing),
+        (int) (point.getY() - 2 * spacing + offsetY),
+        (int) (point.getX() + width / 2 + 13 * spacing),
+        (int) (point.getY() + (29 + (type == ProtoBoard780Type.RS ? 2 : 0)) * spacing + offsetY));
+
+    // horizontal long traces
+    g2d.drawLine((int) (point.getX() + width / 2 - 12 * spacing), (int) (point.getY() + offsetY),
+        (int) (point.getX() + width / 2 + 12 * spacing), (int) (point.getY() + offsetY));
+    g2d.drawLine((int) (point.getX() + width / 2 - 12 * spacing),
+        (int) (point.getY() + spacing * 29 + offsetY),
+        (int) (point.getX() + width / 2 + 12 * spacing),
+        (int) (point.getY() + spacing * 29 + offsetY));
+
+    for (int i = 0; i < 5; i++) {
+      int padX = (int) (point.getX() + width / 2 - 12 * spacing + (i * 5 + 1) * spacing);
+
+      // vertical traces
+      g2d.drawLine((int) (padX - spacing), (int) (point.getY() + offsetY),
+          (int) (padX - spacing), (int) (point.getY() + spacing * 28 + offsetY));
+      g2d.drawLine((int) (padX + 3 * spacing), (int) (point.getY() + spacing + offsetY),
+          (int) (padX + 3 * spacing), (int) (point.getY() + spacing * 29 + offsetY));
+
       for (int j = 1; j < 29; j++) {
-        int padY = (int)(point.getY() + spacing * j + offsetY);
-                
+        int padY = (int) (point.getY() + spacing * j + offsetY);
+
+        // 3-pad traces
         g2d.drawLine(padX, padY, (int) (padX + 2 * spacing), padY);
       }
     }
     drawingObserver.stopTrackingContinuityArea();
-    
+
     // draw main pads
     for (int i = 0; i < 25; i++) {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
-      
+
       g2d.setColor(padColor);
-      int padX = (int)(point.getX() + width / 2 - 12 * spacing + i * spacing);
-//      drawingObserver.startTrackingContinuityArea(true);
-//      g2d.drawLine(padX, (int)(point.getY() + offsetY), padX, (int)(point.getY() + spacing + offsetY));
-//      drawingObserver.stopTrackingContinuityArea();
-      
-      for (int j = 0; j < 30; j++) {        
-        int padY = (int)(point.getY() + spacing * j + offsetY);
+      int padX = (int) (point.getX() + width / 2 - 12 * spacing + i * spacing);
+      // drawingObserver.startTrackingContinuityArea(true);
+      // g2d.drawLine(padX, (int)(point.getY() + offsetY), padX, (int)(point.getY() + spacing +
+      // offsetY));
+      // drawingObserver.stopTrackingContinuityArea();
+
+      for (int j = 0; j < 30; j++) {
+        int padY = (int) (point.getY() + spacing * j + offsetY);
 
         g2d.setColor(padColor);
-        
+
         drawingObserver.startTrackingContinuityArea(true);
 
         g2d.fillOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
@@ -216,448 +261,86 @@ public class ProtoBoard780 extends AbstractProtoBoard {
         g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);
       }
     }
-        
 
-    // // draw segment connectors
-    // for (int y = 0; y < ROW_COUNT; y++) {
-    // for (int segment = 0; segment < SEGMENTS.length; segment++) {
-    // drawingObserver.setContinuityMarker("SEGMENT=" + segment + ";ROW=" + y);
-    // g2d.drawLine((int) (point.getX() + (xOffset + SEGMENTS_STARTS[segment]) * spacing),
-    // (int) (point.getY() + (yOffset + y) * spacing),
-    // (int) (point.getX() + (xOffset + SEGMENTS_STARTS[segment] + SEGMENTS[segment] - 1) *
-    // spacing),
-    // (int) (point.getY() + (yOffset + y) * spacing));
-    // }
-    // }
-    // drawingObserver.setContinuityMarker(null);
-    //
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
-    //
-    // // draw central mini pad connectors, top row
-    // for (int y = 0; y < ROW_COUNT; y++) {
-    // // top row
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3]) * spacing), (int) (point.getY() +
-    // (yOffset + y - 0.25d) * spacing + 1),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) (point.getY() + (yOffset
-    // + y - 0.25d) * spacing + 1));
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 3) * spacing), (int) (point.getY()
-    // + (yOffset + y - 0.25d) * spacing + 1),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) (point.getY() + (yOffset
-    // + y - 0.25d) * spacing + 1));
-    // }
-    //
-    // g2d.setColor(undersideTraceColor);
-    //
-    // // bottom row.
-    // for (int y = 0; y < ROW_COUNT; y++) {
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3]) * spacing), (int) (point.getY() +
-    // (yOffset + y + 0.25d) * spacing + 1),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1) * spacing), (int) (point.getY() + (yOffset +
-    // y + 0.25d) * spacing + 1));
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 3) * spacing), (int) (point.getY()
-    // + (yOffset + y + 0.25d) * spacing + 1),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2) * spacing), (int) (point.getY() + (yOffset +
-    // y + 0.25d) * spacing + 1));
-    // }
-    //
-    // // vertical ground line
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing), (int)
-    // (point.getY() + (yOffset - 1.5) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing), (int) (point.getY() + (yOffset
-    // + ROW_COUNT + 0.5) * spacing));
-    //
-    // g2d.setColor(traceColor);
-    //
-    // // traces to top and bottom 3 pads
-    // g2d.drawPolyline(new int[] {
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.2) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.2) * spacing)},
-    // new int[] {
-    // (int) (point.getY() + (yOffset - 1.5) * spacing),
-    // (int) (point.getY() + (yOffset - 1) * spacing),
-    // (int) (point.getY() + (yOffset - 0.3) * spacing)}, 3);
-    // g2d.drawPolyline(new int[] {
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.8) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.8) * spacing)},
-    // new int[] {
-    // (int) (point.getY() + (yOffset - 1.5) * spacing),
-    // (int) (point.getY() + (yOffset - 1) * spacing),
-    // (int) (point.getY() + (yOffset - 0.3) * spacing)}, 3);
-    //
-    // g2d.drawPolyline(new int[] {
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.2) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.2) * spacing)},
-    // new int[] {
-    // (int) (point.getY() + (yOffset + ROW_COUNT + 0.5) * spacing),
-    // (int) (point.getY() + (yOffset + ROW_COUNT) * spacing),
-    // (int) (point.getY() + (yOffset + ROW_COUNT - 0.35) * spacing)}, 3);
-    // g2d.drawPolyline(new int[] {
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.8) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.8) * spacing)},
-    // new int[] {
-    // (int) (point.getY() + (yOffset + ROW_COUNT + 0.5) * spacing),
-    // (int) (point.getY() + (yOffset + ROW_COUNT) * spacing),
-    // (int) (point.getY() + (yOffset + ROW_COUNT - 0.35) * spacing)}, 3);
-    //
-    // drawingObserver.stopTrackingContinuityArea();
-    //
-    // int miniPadSize = getClosestOdd((2d * spacing - 6) / 5);
-    //
-    // // draw top mini pad traces
-    // g2d.setColor(traceColor);
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
-    // drawingObserver.startTrackingContinuityArea(true);
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int)
-    // (point.getY() + 1 * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) (point.getY() + 3.5 *
-    // spacing));
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2),
-    // (int) (point.getY() + 1 * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2), (int)
-    // (point.getY() + 3.5 * spacing));
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int)
-    // (point.getY() + 1 * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) (point.getY() + 3.5 *
-    // spacing));
-    // drawingObserver.stopTrackingContinuityArea();
-    //
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    //
-    // // vertical separators
-    // g2d.setColor(SEPARATOR_COLOR);
-    //
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-    //
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_STARTS[2] - 0.5) * spacing), (int)
-    // (point.getY() + (yOffset - 1) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_STARTS[2] - 0.5) * spacing), (int) (point.getY() +
-    // (yOffset + ROW_COUNT -0.5) * spacing));
-    // g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_STARTS[4] - 0.5) * spacing), (int)
-    // (point.getY() + (yOffset - 1) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_STARTS[4] - 0.5) * spacing), (int) (point.getY() +
-    // (yOffset + ROW_COUNT -0.5) * spacing));
-    // g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_STARTS[1] - 1.25) * spacing), (int)
-    // (point.getY() + (yOffset - 1) * spacing),
-    // (int)(0.5 * spacing), (int) ((ROW_COUNT + 0.5) * spacing));
-    //
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    //
-    // // draw main pads
-    // for (int segment = 0; segment < SEGMENTS.length; segment++) {
-    // for (int y = 0; y < ROW_COUNT; y++) {
-    // for (int x = 0; x < SEGMENTS[segment]; x++) {
-    // int padX = (int) (point.getX() + (xOffset + x) * spacing);
-    // int padY = (int) (point.getY() + (yOffset + y) * spacing);
-    //
-    // drawingObserver.startTrackingContinuityArea(true);
-    // drawingObserver.setContinuityMarker("SEGMENT=" + segment + ";ROW=" + y);
-    //
-    // g2d.setColor(padColor);
-    // if ((segment == 2 && x == 2) || (segment == 3 && x == 0))
-    // g2d.fillRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    // else
-    // g2d.fillOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    //
-    // drawingObserver.setContinuityMarker(null);
-    //
-    // drawingObserver.stopTrackingContinuityArea();
-    //
-    // g2d.setColor(padColor.darker());
-    // if ((segment == 2 && x == 2) || (segment == 3 && x == 0))
-    // g2d.drawRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    // else
-    // g2d.drawOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    //
-    // g2d.setColor(HOLE_COLOR);
-    // g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);
-    //
-    // // Draw horizontal labels
-    // if (y == 0) {
-    // g2d.setColor(textColor);
-    // StringUtils.drawCenteredText(g2d, Integer.toString(SEGMENTS_SUM[segment] + x + 1), padX,
-    // (int) (point.getY() + (yOffset) * spacing) - padSize / 2 - 2,
-    // HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    // }
-    // }
-    // }
-    //
-    // xOffset += SEGMENTS[segment] + GAPS[segment];
-    // }
-    //
-    // // Draw top and bottom 3 pads
-    // for (int y = 0; y < 2; y++) {
-    // g2d.setColor(SEPARATOR_COLOR);
-    // g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3]) * spacing), (int) (point.getY() +
-    // (yOffset - 2 + y * (ROW_COUNT + 2)) * spacing),
-    // (int)(3 * spacing), (int)spacing);
-    //
-    // drawingObserver.startTrackingContinuityArea(true);
-    //
-    // for (int x = 0; x < 3; x++) {
-    // int padX = (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5 + x) * spacing);
-    // int padY = (int) (point.getY() + (yOffset - 1.5 + y * (ROW_COUNT + 2)) * spacing);
-    //
-    // g2d.setColor(padColor);
-    //
-    // if (x == 0)
-    // drawingObserver.setContinuityMarker("columnA");
-    // else if (x == 2)
-    // drawingObserver.setContinuityMarker("columnC");
-    //
-    // if (x == 2)
-    // g2d.fillRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    // else
-    // g2d.fillOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    //
-    // drawingObserver.setContinuityMarker(null);
-    //
-    // g2d.setColor(padColor.darker());
-    // if (x == 2)
-    // g2d.drawRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    // else
-    // g2d.drawOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    // g2d.setColor(HOLE_COLOR);
-    // g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);
-    // }
-    //
-    // drawingObserver.stopTrackingContinuityArea();
-    // }
-    //
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
-    //
-    // g2d.setColor(SCREEN_COLOR);
-    // g2d.fill(new Rectangle2D.Double(point.getX() + width - 1.5 * spacing, point.getY() + 2,
-    // spacing, 2 * spacing));
-    // g2d.setColor(SEPARATOR_COLOR);
-    // g2d.draw(new Rectangle2D.Double(point.getX() + width - 5.5 * spacing, point.getY() + 2, 5 *
-    // spacing, 2 * spacing));
-    //
-    // g2d.drawLine((int) (point.getX() + width - 5.5 * spacing), (int) (point.getY() + 2 * spacing)
-    // + 8,
-    // (int) (point.getX() + width - 5.5 * spacing), (int) (point.getY() + 3.5 * spacing));
-    // g2d.drawLine((int) (point.getX() + width - 4.5 * spacing), (int) (point.getY() + 2 * spacing
-    // + 8),
-    // (int) (point.getX() + width - 4.5 * spacing), (int) (point.getY() + 3.5 * spacing));
-    // g2d.drawLine((int) (point.getX() + width - 1.5 * spacing), (int) (point.getY() + 2 * spacing
-    // + 8),
-    // (int) (point.getX() + width - 1.5 * spacing), (int) (point.getY() + 3.5 * spacing));
-    //
-    // g2d.setColor(traceColor);
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
-    //
-    // drawingObserver.startTrackingContinuityArea(true);
-    //
-    // // Draw two horizontal traces in the top-right section
-    // g2d.drawLine((int) (point.getX() + width - 4 * spacing), (int) (point.getY() + 0.5 *
-    // spacing), (int) (point.getX() + width - (2) * spacing), (int) (point.getY() + 0.5 *
-    // spacing));
-    // g2d.drawLine((int) (point.getX() + width - 4 * spacing), (int) (point.getY() + 1.5 *
-    // spacing), (int) (point.getX() + width - (2) * spacing), (int) (point.getY() + 1.5 *
-    // spacing));
-    //
-    // // Draw top-right pads
-    // for (int x = 0; x < 6; x++) {
-    // int padX = (int) (point.getX() + width - (x + 1) * spacing);
-    //
-    // g2d.setColor(traceColor);
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
-    // g2d.drawLine(padX, (int) (point.getY() + 0.5 * spacing), padX, (int) (point.getY() + 3 *
-    // spacing));
-    //
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    //
-    // for (int y = 0; y < 3; y++) {
-    //
-    // int padY = (int) (point.getY() + (y + (y == 2 ? 0.5 : 0) + 0.5) * spacing);
-    //
-    // if (x == 0)
-    // drawingObserver.setContinuityMarker("-12V");
-    // else if (x == 4)
-    // drawingObserver.setContinuityMarker("+12V");
-    // else if (x == 5)
-    // drawingObserver.setContinuityMarker("+5V");
-    // else
-    // drawingObserver.setContinuityMarker("GND");
-    //
-    // g2d.setColor(padColor);
-    // if (x >= 4)
-    // g2d.fillRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    // else
-    // g2d.fillOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    //
-    // drawingObserver.setContinuityMarker(null);
-    //
-    // g2d.setColor(padColor.darker());
-    // if (x >= 4)
-    // g2d.drawRect(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    // else
-    // g2d.drawOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
-    // g2d.setColor(HOLE_COLOR);
-    // g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);
-    // }
-    // }
-    //
-    // drawingObserver.stopTrackingContinuityArea();
-    //
-    // // draw top mini pads
-    // g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    // for (int y = 0; y < 4; y++) {
-    // int padY = (int) (point.getY() + (0.5 * y + 1) * spacing);
-    // int[] padXs = new int[] {(int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing -
-    // miniPadSize - 2), (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing),
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) - miniPadSize / 2 - 2, (int)
-    // (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize / 2 + 1,
-    // (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) (point.getX() + (1 +
-    // SEGMENTS_SUM[3] + 2.5) * spacing + miniPadSize + 2)};
-    //
-    // for (int i = 0; i < padXs.length; i++) {
-    // int padX = padXs[i];
-    // drawingObserver.startTrackingContinuityArea(true);
-    //
-    // if (i == 0 || i == 2 || i == 5) {
-    // switch (y) {
-    // case 0: drawingObserver.setContinuityMarker("+5V");
-    // break;
-    // case 1: drawingObserver.setContinuityMarker("+12V");
-    // break;
-    // case 2: drawingObserver.setContinuityMarker("GND");
-    // break;
-    // case 3: drawingObserver.setContinuityMarker("-12V");
-    // break;
-    // }
-    // }
-    //
-    // g2d.setColor(padColor);
-    // g2d.fillRect(padX - miniPadSize / 2, padY - miniPadSize / 2, miniPadSize, miniPadSize);
-    //
-    // drawingObserver.setContinuityMarker(null);
-    //
-    // drawingObserver.stopTrackingContinuityArea();
-    // g2d.setColor(padColor.darker());
-    // g2d.drawRect(padX - miniPadSize / 2, padY - miniPadSize / 2, miniPadSize, miniPadSize);
-    // }
-    // }
-    //
-    // g2d.setColor(textColor);
-    //
-    // // Draw top labels
-    // StringUtils.drawCenteredText(g2d, "+5V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) *
-    // spacing), (int) (point.getY() + 1 * spacing) + 1,
-    // HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-    // StringUtils.drawCenteredText(g2d, "+12V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) *
-    // spacing), (int) (point.getY() + 1.5 * spacing) + 1,
-    // HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-    // StringUtils.drawCenteredText(g2d, "GND", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) *
-    // spacing), (int) (point.getY() + 2 * spacing) + 1,
-    // HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-    // StringUtils.drawCenteredText(g2d, "-12V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) *
-    // spacing), (int) (point.getY() + 2.5 * spacing) + 1,
-    // HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-    //
-    // // Draw top-right labels
-    // int labelY = (int) (point.getY() + 3.8 * spacing) + 1;
-    // StringUtils.drawCenteredText(g2d, "+5V", (int) (point.getX() + width - 6 * spacing), labelY,
-    // HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    // StringUtils.drawCenteredText(g2d, "+", (int) (point.getX() + width - 5 * spacing) - 6,
-    // labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    // StringUtils.drawCenteredText(g2d, " 12V", (int) (point.getX() + width - 5 * spacing) + 2,
-    // labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    // StringUtils.drawCenteredText(g2d, "GND", (int) (point.getX() + width - 3 * spacing), labelY,
-    // HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    // StringUtils.drawCenteredText(g2d, "-12V", (int) (point.getX() + width - 1 * spacing), labelY,
-    // HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    //
-    // // Draw vertical labels
-    // byte A = "A".getBytes()[0];
-    // byte a = "a".getBytes()[0];
-    // for (int y = 0; y < ROW_COUNT; y++) {
-    // int padY = (int) (point.getY() + (yOffset + y) * spacing);
-    // String label;
-    // if (y >= 26)
-    // label = new String(new byte[] {(byte) (a + y - 26)});
-    // else
-    // label = new String(new byte[] {(byte) (A + y)});
-    // StringUtils.drawCenteredText(g2d, label, (int) (point.getX() + spacing * 0.35), padY,
-    // HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    // StringUtils.drawCenteredText(g2d, label, (int) (point.getX() + width - spacing * 0.35), padY,
-    // HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-    // }
-    //
-    // g2d.setColor(textColor);
-    // g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE + 2));
-    //
-    // StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Blåsol 2019", (int) (point.getX() +
-    // width * 0.70d), (int) (point.getY() + (yOffset + ROW_COUNT + 0.9) * spacing),
-    // HorizontalAlignment.LEFT, VerticalAlignment.TOP);
-    //
-    // // draw central mini pads
-    // for (int y = 0; y < ROW_COUNT; y++) {
-    // g2d.setColor(padColor);
-    //
-    // drawingObserver.startTrackingContinuityArea(true);
-    //
-    // // top row
-    // g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + 1, (int)
-    // (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
-    // drawingObserver.setContinuityMarker("columnA");
-    // g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + miniPadSize + 3,
-    // (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
-    // drawingObserver.setContinuityMarker("columnC");
-    // g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + 3, (int)
-    // (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
-    // drawingObserver.setContinuityMarker(null);
-    // g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize + 5,
-    // (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
-    //
-    // drawingObserver.stopTrackingContinuityArea();
-    //
-    // g2d.setColor(padColor.darker());
-    // g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + 1, (int)
-    // (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
-    // g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + miniPadSize + 3,
-    // (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
-    //
-    // g2d.setColor(undersidePadColor);
-    //
-    // drawingObserver.startTrackingContinuityArea(true);
-    //
-    // // bottom row
-    //
-    // g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) - miniPadSize / 2,
-    // (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize,
-    // miniPadSize);
-    //// drawingObserver.setContinuityMarker("columnB");
-    // g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) - miniPadSize * 3 /
-    // 2 - 2, (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize,
-    // miniPadSize);
-    //// drawingObserver.setContinuityMarker("null");
-    // g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize / 2 +
-    // 3, (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize,
-    // miniPadSize);
-    //
-    // drawingObserver.stopTrackingContinuityArea();
-    //
-    // g2d.setColor(undersidePadColor.darker());
-    //
-    // g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + 3, (int)
-    // (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
-    // g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize + 5,
-    // (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
-    //
-    // g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) - miniPadSize / 2,
-    // (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize,
-    // miniPadSize);
-    // g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) - miniPadSize * 3 /
-    // 2 - 2, (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize,
-    // miniPadSize);
-    // g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize / 2 +
-    // 3, (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize,
-    // miniPadSize);
-    // }
+    g2d.setColor(textColor);
+
+    // horizontal coordinates
+    for (int i = 0; i < 6; i++) {
+      int x = i == 0 ? 1 : i * 5;
+      int padX = (int) (point.getX() + width / 2 - 13 * spacing + x * spacing);
+      int padY = (int) (point.getY() - spacing + offsetY);
+
+      // flip the coordinates for MPJA
+      String label;
+      if (type == ProtoBoard780Type.MPJA)
+        label = String.valueOf((char) ('A' + (5 - i)));
+      else
+        label = String.valueOf((char) ('A' + i));
+
+      StringUtils.drawCenteredText(g2d, label, padX, padY, HorizontalAlignment.CENTER,
+          VerticalAlignment.BOTTOM);
+      // StringUtils.drawCenteredText(g2d, label, padX, padY + spacing * 31,
+      // HorizontalAlignment.CENTER,
+      // VerticalAlignment.TOP);
+    }
+
+    // vertical coordinates
+    for (int i = 0; i < 7; i++) {
+      int y = i == 0 ? 1 : i * 5;
+
+      int padX = (int) (point.getX() + width / 2 - 14 * spacing);
+      int padY = (int) (point.getY() + spacing * (y - 1) + offsetY);
+
+      if (type == ProtoBoard780Type.RS)
+        StringUtils.drawCenteredText(g2d, Integer.toString(y), padX, padY, HorizontalAlignment.LEFT,
+            VerticalAlignment.BOTTOM);
+      else
+        StringUtils.drawCenteredText(g2d, Integer.toString(y), padX + spacing * 28, padY,
+            HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM);
+    }
+
+    // model name
+    g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE * 1.8f));
+    int x = (int) (point.getX() + width / 2);
+    int y = (int) (point.getY() + length - spacing * 1.5);
+    StringUtils.drawCenteredText(g2d,
+        type == ProtoBoard780Type.RS ? "Radio Shack 276-168B" : "MPJA.COM 33304 PB", x, y,
+        HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+    // mounting holes
+    int dx = (int) (type == ProtoBoard780Type.RS ? 11 * spacing : 12 * spacing);
+    int holeY = (int) (point.getY() + spacing * (type == ProtoBoard780Type.RS ? 1 : 1.5));
+
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.setColor(HOLE_COLOR);
+
+    g2d.fillOval((int) (point.getX() + width / 2) - dx - mountingHoleSize / 2,
+        holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
+    g2d.fillOval((int) (point.getX() + width / 2) + dx - mountingHoleSize / 2,
+        holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
+
+    g2d.setColor(finalBorderColor);
+
+    g2d.drawOval((int) (point.getX() + width / 2) - dx - mountingHoleSize / 2,
+        holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
+    g2d.drawOval((int) (point.getX() + width / 2) + dx - mountingHoleSize / 2,
+        holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
+
+    holeY = (int) (point.getY() + length - spacing);
+
+    g2d.setColor(HOLE_COLOR);
+
+    g2d.fillOval((int) (point.getX() + width / 2) - dx - mountingHoleSize / 2,
+        holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
+    g2d.fillOval((int) (point.getX() + width / 2) + dx - mountingHoleSize / 2,
+        holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
+
+    g2d.setColor(finalBorderColor);
+
+    g2d.drawOval((int) (point.getX() + width / 2) - dx - mountingHoleSize / 2,
+        holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
+    g2d.drawOval((int) (point.getX() + width / 2) + dx - mountingHoleSize / 2,
+        holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
   }
 
   @Override
@@ -737,24 +420,6 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     this.traceColor = traceColor;
   }
 
-  @EditableProperty(name = "Underside Pad Color")
-  public Color getUndersidePadColor() {
-    return undersidePadColor;
-  }
-
-  public void setUndersidePadColor(Color undersidePadColor) {
-    this.undersidePadColor = undersidePadColor;
-  }
-
-  @EditableProperty(name = "Underside Trace Color")
-  public Color getUndersideTraceColor() {
-    return undersideTraceColor;
-  }
-
-  public void setUndersideTraceColor(Color undersideTraceColor) {
-    this.undersideTraceColor = undersideTraceColor;
-  }
-
   @EditableProperty(name = "Text Color")
   public Color getTextColor() {
     return textColor;
@@ -762,6 +427,15 @@ public class ProtoBoard780 extends AbstractProtoBoard {
 
   public void setTextColor(Color textColor) {
     this.textColor = textColor;
+  }
+
+  @EditableProperty
+  public ProtoBoard780Type getType() {
+    return type;
+  }
+
+  public void setType(ProtoBoard780Type type) {
+    this.type = type;
   }
 
   @Override
@@ -842,5 +516,9 @@ public class ProtoBoard780 extends AbstractProtoBoard {
         Math.min(point.getY(), finalSecondPoint.getY()),
         Math.abs(finalSecondPoint.getX() - point.getX()) + 2,
         Math.abs(finalSecondPoint.getY() - point.getY()) + 2);
+  }
+
+  public static enum ProtoBoard780Type {
+    RS, MPJA
   }
 }
