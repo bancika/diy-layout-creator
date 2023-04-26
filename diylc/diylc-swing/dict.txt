@@ -49,6 +49,7 @@ AWG
 Alternate
 And
 Angle Offset
+Apply Model
 B-C-E     BJT
 Background
 Box
@@ -103,6 +104,7 @@ I-G-O     REGULATOR
 Italiano
 Lin
 Log
+MPJA
 Markers
 Maximum number of switching combinations exceeded. Allowed: %s, actual: %s
 NPN
@@ -126,6 +128,8 @@ PCB
 PNP
 Poles
 Português
+RS
+RY1
 Rectangle
 Rev log
 S-G-D     JFET

@@ -4349,5 +4349,25 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>37</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2023-03-30 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Proto Board 780 Holes' added with two variations (sponsored by Pete Olivier)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Ability to rotate (almost) all components using keyboard shortcuts and 'Transform Selection' menu</description>
+				</org.diylc.appframework.update.Change>					
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

@@ -1,24 +1,21 @@
 /*
-
-    DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
-
-    This file is part of DIYLC.
-
-    DIYLC is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    DIYLC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
+ * 
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
+ * <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.components.electromechanical;
 
 import java.awt.AlphaComposite;
@@ -51,10 +48,10 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Tactile Micro-Switch", author = "Branislav Stojkovic", category = "Electro-Mechanical",
-    instanceNamePrefix = "SW", description = "4-pin tactile momentary switch",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = DIL_ICTransformer.class,
-    enableCache = true)
+@ComponentDescriptor(name = "Tactile Micro-Switch", author = "Branislav Stojkovic",
+    category = "Electro-Mechanical", instanceNamePrefix = "SW",
+    description = "4-pin tactile momentary switch", zOrder = IDIYComponent.COMPONENT,
+    keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
 public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -74,7 +71,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
-  
+
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   protected Display display = Display.BOTH;
   private Color bodyColor = BODY_COLOR;
@@ -186,8 +183,10 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
-      controlPoints[i + PIN_COUNT / 2] = new Point2D.Double((int) (firstPoint.getX() + dx2), (int) (firstPoint.getY() + dy2));
+      controlPoints[i] =
+          new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
+      controlPoints[i + PIN_COUNT / 2] =
+          new Point2D.Double((int) (firstPoint.getX() + dx2), (int) (firstPoint.getY() + dy2));
     }
   }
 
@@ -197,28 +196,28 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
       double x = controlPoints[0].getX();
       double y = controlPoints[0].getY();
       double width;
-      double height;      
+      double height;
       double caseSize = CASE_SIZE.convertToPixels();
       double indentSize = INDENT_SIZE.convertToPixels();
-            
-      width = height = caseSize;   
+
+      width = height = caseSize;
       x = (controlPoints[0].getX() + controlPoints[3].getX() - width) / 2;
       y = (controlPoints[0].getY() + controlPoints[3].getY() - height) / 2;
-      
+
       body[0] = new Area(new Rectangle2D.Double(x, y, width, height));
-      
-      width = height = indentSize;   
+
+      width = height = indentSize;
       x = (controlPoints[0].getX() + controlPoints[3].getX() - width) / 2;
       y = (controlPoints[0].getY() + controlPoints[3].getY() - height) / 2;
-      
+
       body[1] = new Area(new Ellipse2D.Double(x, y, width, height));
     }
     return body;
   }
 
   @Override
-  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver) {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
@@ -229,10 +228,11 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point2D point : controlPoints) {
-        Rectangle2D rect = new Rectangle2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize); 
+        Rectangle2D rect = new Rectangle2D.Double(point.getX() - pinSize / 2,
+            point.getY() - pinSize / 2, pinSize, pinSize);
         g2d.setColor(PIN_COLOR);
         g2d.fill(rect);
-        g2d.setColor(PIN_BORDER_COLOR);        
+        g2d.setColor(PIN_BORDER_COLOR);
         g2d.draw(rect);
       }
     }
@@ -242,50 +242,54 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
-    
+
     g2d.setColor(INDENT_COLOR);
     g2d.fill(indentArea);
     g2d.setColor(INDENT_COLOR.darker());
     g2d.draw(indentArea);
-    
+
     g2d.setComposite(oldComposite);
 
     Color finalBorderColor;
     if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+      Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
+          Constants.DEFAULT_THEME);
       finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+              ? SELECTION_COLOR
               : theme.getOutlineColor();
     } else {
       finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+              ? SELECTION_COLOR
               : getBorderColor();
     }
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 
     g2d.draw(mainArea);
-    
+
     drawingObserver.stopTracking();
 
     // Draw label.
     g2d.setFont(project.getFont());
-    
+
     // Override font size
     if (getFontSizeOverride() != null)
       g2d.setFont(g2d.getFont().deriveFont(1f * getFontSizeOverride()));
-    
+
     Color finalLabelColor;
     if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+      Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
+          Constants.DEFAULT_THEME);
       finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+              ? LABEL_COLOR_SELECTED
               : theme.getOutlineColor();
     } else {
       finalLabelColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
+          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+              ? LABEL_COLOR_SELECTED
               : getLabelColor();
     }
     g2d.setColor(finalLabelColor);
@@ -319,7 +323,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
             g2d.translate(0, textHeight / 2);
         }
 
-        g2d.drawString(l, (int)x, (int)y);
+        g2d.drawString(l, (int) x, (int) y);
       }
     }
   }
@@ -331,16 +335,16 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
 
     g2d.fillRect(width / 6 - pinSize + 1, height / 6 + 1, pinSize, pinSize);
     g2d.fillRect(5 * width / 6, height / 6 + 1, pinSize, pinSize);
-    
+
     g2d.fillRect(width / 6 - pinSize + 1, 5 * height / 6 - pinSize - 1, pinSize, pinSize);
     g2d.fillRect(5 * width / 6, 5 * height / 6 - pinSize - 1, pinSize, pinSize);
-    
+
     g2d.setColor(BODY_COLOR);
     g2d.fillRect(width / 6, width / 6, 4 * width / 6, 4 * width / 6);
     g2d.setColor(BORDER_COLOR);
     g2d.drawRect(width / 6, width / 6, 4 * width / 6, 4 * width / 6);
 
-    
+
     g2d.setColor(INDENT_COLOR);
     int indentSize = 9 * width / 32;
     g2d.fillOval(width / 2 - indentSize / 2, height / 2 - indentSize / 2, indentSize, indentSize);
@@ -381,12 +385,12 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
   public void setLabelColor(Color labelColor) {
     this.labelColor = labelColor;
   }
-  
+
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
-  
+
   @Override
   public Rectangle2D getCachingBounds() {
     double minX = Integer.MAX_VALUE;
@@ -405,7 +409,8 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
       if (p.getY() > maxY)
         maxY = p.getY();
     }
-    
-    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
+
+    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin,
+        maxY - minY + 2 * margin);
   }
 }

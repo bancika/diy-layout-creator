@@ -23,7 +23,7 @@ package org.diylc.core.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import org.diylc.common.DefaultTransformer;
+import org.diylc.common.DefaultComponentTransformer;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -94,7 +94,7 @@ public @interface ComponentDescriptor {
   /**
    * @return if the component can be rotated and/or mirrored, returns a class of the transformer that can do it
    */
-  Class<? extends IComponentTransformer> transformer() default DefaultTransformer.class;
+  Class<? extends IComponentTransformer> transformer() default DefaultComponentTransformer.class;
 
   /**
    * Defines if and how a component should appear in auto-generated project keywords. See
