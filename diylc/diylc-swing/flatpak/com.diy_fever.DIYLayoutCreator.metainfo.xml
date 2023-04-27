@@ -37,6 +37,15 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.37.0" date="2023-04-27">
+         <description>
+           <ul>
+             <li>[New Feature] 'Proto Board 780 Holes' added with two variations (sponsored by Pete Olivier)</li>
+             <li>[Improvement] Ability to rotate (almost) all components using keyboard shortcuts and 'Transform Selection' menu</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.37.0</url>
+     </release>
   	<release version="4.36.0" date="2023-03-30">
          <description>
            <ul>
