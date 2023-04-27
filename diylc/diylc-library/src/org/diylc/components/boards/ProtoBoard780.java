@@ -173,10 +173,10 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       int padX = (int) (point.getX() + width / 2 - 8 * spacing + x * spacing);
       int padY = (int) (point.getY() + spacing * 2);
 
-      // flip the coordinates for MPJA
-      if (type == ProtoBoard780Type.MPJA) {
-        x = i == 3 ? 1 : (3 - i) * 5;
-      }
+      // // flip the coordinates for MPJA
+      // if (type == ProtoBoard780Type.MPJA) {
+      // x = i == 3 ? 1 : (3 - i) * 5;
+      // }
 
       StringUtils.drawCenteredText(g2d, Integer.toString(x), padX, padY, HorizontalAlignment.CENTER,
           VerticalAlignment.BOTTOM);
@@ -216,8 +216,8 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       int padX = (int) (point.getX() + width / 2 - 12 * spacing + (i * 5 + 1) * spacing);
 
       // vertical traces
-      g2d.drawLine((int) (padX - spacing), (int) (point.getY() + offsetY),
-          (int) (padX - spacing), (int) (point.getY() + spacing * 28 + offsetY));
+      g2d.drawLine((int) (padX - spacing), (int) (point.getY() + offsetY), (int) (padX - spacing),
+          (int) (point.getY() + spacing * 28 + offsetY));
       g2d.drawLine((int) (padX + 3 * spacing), (int) (point.getY() + spacing + offsetY),
           (int) (padX + 3 * spacing), (int) (point.getY() + spacing * 29 + offsetY));
 
@@ -270,12 +270,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       int padX = (int) (point.getX() + width / 2 - 13 * spacing + x * spacing);
       int padY = (int) (point.getY() - spacing + offsetY);
 
-      // flip the coordinates for MPJA
-      String label;
-      if (type == ProtoBoard780Type.MPJA)
-        label = String.valueOf((char) ('A' + (5 - i)));
-      else
-        label = String.valueOf((char) ('A' + i));
+      String label = String.valueOf((char) ('A' + i));
 
       StringUtils.drawCenteredText(g2d, label, padX, padY, HorizontalAlignment.CENTER,
           VerticalAlignment.BOTTOM);
@@ -291,12 +286,8 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       int padX = (int) (point.getX() + width / 2 - 14 * spacing);
       int padY = (int) (point.getY() + spacing * (y - 1) + offsetY);
 
-      if (type == ProtoBoard780Type.RS)
-        StringUtils.drawCenteredText(g2d, Integer.toString(y), padX, padY, HorizontalAlignment.LEFT,
-            VerticalAlignment.BOTTOM);
-      else
-        StringUtils.drawCenteredText(g2d, Integer.toString(y), padX + spacing * 28, padY,
-            HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM);
+      StringUtils.drawCenteredText(g2d, Integer.toString(y), padX, padY, HorizontalAlignment.LEFT,
+          VerticalAlignment.BOTTOM);
     }
 
     // model name
