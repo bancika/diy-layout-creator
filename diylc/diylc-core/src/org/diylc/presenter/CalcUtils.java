@@ -62,4 +62,12 @@ public class CalcUtils {
         }
     }
   }
+  
+  public static boolean pointsMatch(Point2D point1, Point2D point2, double delta) {
+    if (Math.abs(point1.getX() - point2.getX()) > delta)
+      return false;
+    if (Math.abs(point1.getY() - point2.getY()) > delta)
+      return false;
+    return true;
+  }
 }

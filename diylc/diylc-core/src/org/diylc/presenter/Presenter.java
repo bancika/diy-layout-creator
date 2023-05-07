@@ -1364,7 +1364,7 @@ public class Presenter implements IPlugInPort {
       IDIYComponent<?> component = entry.getKey();
       for (int i = 0; i < component.getControlPointCount() - 1 && !skip; i++)
         for (int j = i + 1; j < component.getControlPointCount() && !skip; j++)
-          if (component.getControlPoint(i).equals(component.getControlPoint(j)))
+          if (CalcUtils.pointsMatch(component.getControlPoint(i), component.getControlPoint(j), DrawingManager.CONTROL_POINT_SIZE / 2.0))
             skip = true;
       
       if (skip)
@@ -1396,7 +1396,8 @@ public class Presenter implements IPlugInPort {
 
       for (int i = 0; i < controlPoints.length - 1; i++) {
         for (int j = i + 1; j < controlPoints.length; j++) {
-          if (controlPoints[i] != null && controlPoints[j] != null && controlPoints[i].equals(controlPoints[j])) {
+          if (controlPoints[i] != null && controlPoints[j] != null && 
+              CalcUtils.pointsMatch(controlPoints[i], controlPoints[j], DrawingManager.CONTROL_POINT_SIZE / 2.0)) {
             // Control points collision detected, cannot make
             // this move.
             return null;
