@@ -89,4 +89,10 @@ public class MultiLineStringEditor extends JScrollPane {
     getTextArea().setBackground(oldBg);
     property.setValue(getTextArea().getText());
   }
+  
+  @Override
+  public boolean requestFocusInWindow() {
+    getTextArea().selectAll();
+    return getTextArea().requestFocusInWindow();
+  }
 }

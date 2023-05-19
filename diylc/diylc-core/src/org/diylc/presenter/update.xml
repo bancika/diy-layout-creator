@@ -4377,7 +4377,11 @@
 			</versionNumber>
 			<releaseDate>2023-04-27 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>	
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When editing Label components, default focus to the text editor</description>
+				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Unable to move selected components if one of them is close to being reduced to a point</description>
