@@ -4380,6 +4380,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Fixed run.sh application starter for Linux and Apple OSX with M1/M2 processors when using Java 17 or newer</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>When editing Label components, default focus to the text editor</description>
 				</org.diylc.appframework.update.Change>	
 				<org.diylc.appframework.update.Change>
