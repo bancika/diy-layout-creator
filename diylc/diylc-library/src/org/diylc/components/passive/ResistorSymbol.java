@@ -21,6 +21,7 @@
 */
 package org.diylc.components.passive;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
@@ -46,6 +47,7 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 
   public static Size DEFAULT_LENGTH = new Size(0.3, SizeUnit.in);
   public static Size DEFAULT_WIDTH = new Size(0.08, SizeUnit.in);
+  private DrawStyle draw_style = DrawStyle.ANSI;
 
   private Resistance value = null;
   @Deprecated
@@ -90,6 +92,18 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
   public void setPowerNew(org.diylc.core.measures.Power powerNew) {
     this.powerNew = powerNew;
   }
+  
+  @EditableProperty(name = "Draw Standard")
+  public DrawStyle getDrawStandard() {
+	  if (draw_style == null) {
+		  draw_style = DrawStyle.ANSI;
+	  }
+	  return draw_style;
+  }
+  
+  public void setDrawStandard(DrawStyle draw_style) {
+	  this.draw_style = draw_style;
+  }
 
 
   public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -114,19 +128,38 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
 
   @Override
   protected Shape getBodyShape() {
-    GeneralPath polyline = new GeneralPath();
-    double length = getLength().convertToPixels();
-    double width = getWidth().convertToPixels();
-    polyline.moveTo(0, width / 2);
-    polyline.lineTo(length / 16, width);
-    polyline.lineTo(3 * length / 16, 0);
-    polyline.lineTo(5 * length / 16, width);
-    polyline.lineTo(7 * length / 16, 0);
-    polyline.lineTo(9 * length / 16, width);
-    polyline.lineTo(11 * length / 16, 0);
-    polyline.lineTo(13 * length / 16, width);
-    polyline.lineTo(15 * length / 16, 0);
-    polyline.lineTo(length, width / 2);
-    return polyline;
+	  double length = getLength().convertToPixels();
+	  double width = getWidth().convertToPixels();
+	  if(getDrawStandard() == DrawStyle.ANSI) {
+	    GeneralPath polyline = new GeneralPath();
+	    polyline.moveTo(0, width / 2);
+	    polyline.lineTo(length / 16, width);
+	    polyline.lineTo(3 * length / 16, 0);
+	    polyline.lineTo(5 * length / 16, width);
+	    polyline.lineTo(7 * length / 16, 0);
+	    polyline.lineTo(9 * length / 16, width);
+	    polyline.lineTo(11 * length / 16, 0);
+	    polyline.lineTo(13 * length / 16, width);
+	    polyline.lineTo(15 * length / 16, 0);
+	    polyline.lineTo(length, width / 2);
+	    return polyline;
+	  } 
+	  
+	  // (getDrawStandard() == DrawStyle.IEC) 
+	  else {
+		  GeneralPath resistorShape = new GeneralPath();
+		  resistorShape.moveTo(0f, 0f);
+		  resistorShape.lineTo(0f, width);
+		  resistorShape.lineTo(length, width);
+		  resistorShape.lineTo(length, 0f);
+		  resistorShape.lineTo(0f, 0f);
+		  return resistorShape;
+	  }
   }
+  
+  public enum DrawStyle {
+		ANSI, IEC 
+	}
 }
+
+
