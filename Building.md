@@ -12,7 +12,7 @@ DIYLC consists of three main projects:
 
 ##### Step 0: configure Ant #####
 
-Go wo "Window" -> "Preferences" -> "Ant" -> "Runtime" and add these three files to the "Ant Home Entries" library, using the "Add JARS..." button, then Apply them: 
+Go to "Window" -> "Preferences" -> "Ant" -> "Runtime" and add these three files to the "Ant Home Entries" library, using the "Add JARS..." button, then Apply them: 
 
 "diylc-swing/tools/ant-lib/appbundler-1.0.1.jar" <br>
 "diylc-swing/tools/ant-lib/jarbundler-core-3.3.0.jar" <br>
@@ -24,9 +24,7 @@ You might get a warning, you can select yes to ignore the problem.
 
 <p align='center'><img src='https://raw.githubusercontent.com/M0JXD/diy-layout-creator/wiki/images/ant_bundler_problem.png' /></p>
 
-##### Step 1: Configure Eclipse JRE #####
-
-##### Step 2: build diylc-core #####
+##### Step 1: build diylc-core #####
 
 Find build.xml file directly in the diylc-core project folder, right click and select "Run As" -> "Ant Build"
 
@@ -40,15 +38,15 @@ One common error occurrs when there are multiple Java versions installed and Ant
 
 <p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/ant_jre.png' /></p>
 
-##### Step 3: build diylc-library #####
+##### Step 2: build diylc-library #####
 
 Repeat the Step 1, but for diylc-library
 
-##### Step 4: build diylc-swing #####
+##### Step 3: build diylc-swing #####
 
 Repeat the Step 1, but for diylc-swing
 
-##### Step 5: run diylc-swing #####
+##### Step 4: run diylc-swing #####
 
 Now we can run the application. Find "DIYLCStarter.launch" file in diylc-swing project. Right click and select "Run As" -> "DIYLCStarter".
 
