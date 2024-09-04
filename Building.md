@@ -14,9 +14,9 @@ DIYLC consists of three main projects:
 
 Go wo "Window" -> "Preferences" -> "Ant" -> "Runtime" and add these three files to the "Ant Home Entries" library, using the "Add JARS..." button, then Apply them: 
 
-"diylc-swing/tools/ant-lib/appbundler-1.0.1.jar"
-"diylc-swing/tools/ant-lib/jarbundler-core-3.3.0.jar"
-"diylc-swing/tools/ant-lib/commons-net-3.6.jar"
+"diylc-swing/tools/ant-lib/appbundler-1.0.1.jar" <br>
+"diylc-swing/tools/ant-lib/jarbundler-core-3.3.0.jar" <br>
+"diylc-swing/tools/ant-lib/commons-net-3.6.jar" <br>
 
 You might get a warning, you can select yes to ignore the problem.
 
