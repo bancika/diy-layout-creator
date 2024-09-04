@@ -46,6 +46,8 @@ Repeat the Step 1, but for diylc-library
 
 Repeat the Step 1, but for diylc-swing
 
+You may need to change the default target in build.xml for your OS.
+
 ##### Step 4: run diylc-swing #####
 
 Now we can run the application. Find "DIYLCStarter.launch" file in diylc-swing project. Right click and select "Run As" -> "DIYLCStarter".
