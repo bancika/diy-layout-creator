@@ -18,11 +18,15 @@ Go wo "Window" -> "Preferences" -> "Ant" -> "Runtime" and add these three files 
 "diylc-swing/tools/ant-lib/jarbundler-core-3.3.0.jar" <br>
 "diylc-swing/tools/ant-lib/commons-net-3.6.jar" <br>
 
+<p align='center'><img src='https://raw.githubusercontent.com/M0JXD/diy-layout-creator/wiki/images/ant_bundler.png' /></p>
+
 You might get a warning, you can select yes to ignore the problem.
 
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/ant_bundler.png' /></p>
+<p align='center'><img src='https://raw.githubusercontent.com/M0JXD/diy-layout-creator/wiki/images/ant_bundler_problem.png' /></p>
 
-##### Step 1: build diylc-core #####
+##### Step 1: Configure Eclipse JRE #####
+
+##### Step 2: build diylc-core #####
 
 Find build.xml file directly in the diylc-core project folder, right click and select "Run As" -> "Ant Build"
 
@@ -36,15 +40,15 @@ One common error occurrs when there are multiple Java versions installed and Ant
 
 <p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/ant_jre.png' /></p>
 
-##### Step 2: build diylc-library #####
+##### Step 3: build diylc-library #####
 
 Repeat the Step 1, but for diylc-library
 
-##### Step 3: build diylc-swing #####
+##### Step 4: build diylc-swing #####
 
 Repeat the Step 1, but for diylc-swing
 
-##### Step 4: run diylc-swing #####
+##### Step 5: run diylc-swing #####
 
 Now we can run the application. Find "DIYLCStarter.launch" file in diylc-swing project. Right click and select "Run As" -> "DIYLCStarter".
 
