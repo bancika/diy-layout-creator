@@ -40,7 +40,6 @@ import org.diylc.core.measures.VoltageUnit;
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "BZ", description = "Buzzer schematic symbol",
     zOrder = IDIYComponent.COMPONENT)
 public class BuzzerSymbol extends AbstractSchematicLeadedSymbol<String> {
-
   private static final long serialVersionUID = 1L;
 
   private String value = "Buzzer Symbol";
@@ -54,7 +53,6 @@ public class BuzzerSymbol extends AbstractSchematicLeadedSymbol<String> {
   public String getValueForDisplay() {
     return getValue().toString() + (getVoltageNew() == null ? "" : " " + getVoltageNew().toString());
   }
-
 
   @EditableProperty
   public String getValue() {
@@ -91,10 +89,6 @@ public class BuzzerSymbol extends AbstractSchematicLeadedSymbol<String> {
 	  // see useShapeRectAsPosition to understand
 	  double length = getLength().convertToPixels();
 	  double width  = getWidth().convertToPixels() / 2;
-	  
-	  // double y = Math.sqrt(((3 * (length * length) ) / 4));
-	  // double y = Math.sqrt(((3 * (length * length) ) / 16));
-	  // double y = Math.sqrt(((15 * (length * length) ) / 16));
 	  
 	  Arc2D.Double arc = new Arc2D.Double(0, 0, length, length, 180, 180, Arc2D.CHORD);
 	  
@@ -136,7 +130,7 @@ public class BuzzerSymbol extends AbstractSchematicLeadedSymbol<String> {
 	  g2d.draw(left_leads_bottom);
 	  g2d.draw(right_leads_bottom);
 	  
-      // extensions in lead colour
+    // extensions in lead colour
 	  g2d.setColor(LEAD_COLOR);
 	  Line2D.Double left_lead_ext = new Line2D.Double(0, height * 0.8, width * 0.2, height * 0.8);
 	  Line2D.Double right_lead_ext = new Line2D.Double(width * 0.8, height * 0.8, width, height * 0.8);
@@ -151,7 +145,6 @@ public class BuzzerSymbol extends AbstractSchematicLeadedSymbol<String> {
   
   @Override
   protected boolean useShapeRectAsPosition() {
-	    return false;
-  }
-  
+	  return false;
+  } 
 }

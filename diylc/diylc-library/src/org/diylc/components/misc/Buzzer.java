@@ -24,31 +24,24 @@ package org.diylc.components.misc;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ObjectCache;
 import org.diylc.components.passive.AbstractRadialComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.measures.Voltage;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Buzzer", author = "M0JXD", category = "Misc",
+@ComponentDescriptor(name = "PCB Buzzer", author = "M0JXD", category = "Misc",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "BZ",
     description = "Vertically mounted Buzzer, active or passive", zOrder = IDIYComponent.COMPONENT,
-    transformer = SimpleComponentTransformer.class, enableDatasheet = true, datasheetCreationStepCount = 3)
+    transformer = SimpleComponentTransformer.class)
 public class Buzzer extends AbstractRadialComponent<Voltage> {
   // This component was forked from the Radial Capacitor, massive thanks to Bancika!
   private static final long serialVersionUID = 1L;
@@ -75,6 +68,7 @@ public class Buzzer extends AbstractRadialComponent<Voltage> {
     this.bodyColor = BODY_COLOR;
     this.borderColor = BORDER_COLOR;
     this.labelColor = Color.white;
+    setPinSpacing(PIN_SPACING);
   }
   
   public Buzzer(String[] model) {
@@ -221,7 +215,6 @@ public class Buzzer extends AbstractRadialComponent<Voltage> {
 
   @Override
   protected Shape getBodyShape() {
-	  setPinSpacing(PIN_SPACING);
     double height = (int) getHeight().convertToPixels();
     double diameter = (int) getLength().convertToPixels();
     if (folded) {
