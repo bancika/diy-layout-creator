@@ -12,9 +12,17 @@ DIYLC consists of three main projects:
 
 ##### Step 0: configure Ant #####
 
-Go wo "Window" -> "Preferences" -> "Ant" -> "Runtime" and add "/diylc-swing/ant-lib/jarbundler-2.2.0" to the "Ant Home Entries" library.
+Go to "Window" -> "Preferences" -> "Ant" -> "Runtime" and add these three files to the "Ant Home Entries" library, using the "Add JARS..." button, then Apply them: 
 
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/ant_bundler.png' /></p>
+"diylc-swing/tools/ant-lib/appbundler-1.0.1.jar" <br>
+"diylc-swing/tools/ant-lib/jarbundler-core-3.3.0.jar" <br>
+"diylc-swing/tools/ant-lib/commons-net-3.6.jar" <br>
+
+<p align='center'><img src='https://raw.githubusercontent.com/M0JXD/diy-layout-creator/wiki/images/ant_bundler.png' /></p>
+
+You might get a warning, you can select yes to ignore the problem.
+
+<p align='center'><img src='https://raw.githubusercontent.com/M0JXD/diy-layout-creator/wiki/images/ant_bundler_problem.png' /></p>
 
 ##### Step 1: build diylc-core #####
 
@@ -37,6 +45,8 @@ Repeat the Step 1, but for diylc-library
 ##### Step 3: build diylc-swing #####
 
 Repeat the Step 1, but for diylc-swing
+
+You may need to change the default target in build.xml for your OS.
 
 ##### Step 4: run diylc-swing #####
 
