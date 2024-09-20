@@ -4379,6 +4379,14 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Buzzer component and symbol added (thanks M0JXD)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Resistor symbol now has two draw standards - ANSI and IEC (thanks M0JXD)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Fixed run.sh application starter for Linux and Apple OSX with M1/M2 processors when using Java 17 or newer</description>
 				</org.diylc.appframework.update.Change>	
@@ -4389,6 +4397,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Unable to move selected components if one of them is close to being reduced to a point</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Toroidal Inductor hangs the application if it doesn't have inductance value set</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
