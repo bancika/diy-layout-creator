@@ -45,7 +45,7 @@ public class BuzzerSymbol extends AbstractSchematicLeadedSymbol<String> {
   private String value = "Buzzer Symbol";
 
   public static Size DEFAULT_LENGTH = new Size(48.0, SizeUnit.px);
-  public static Size DEFAULT_WIDTH = new Size(120.0, SizeUnit.px);
+  public static Size DEFAULT_WIDTH = new Size(58.0, SizeUnit.px);
 
   private org.diylc.core.measures.Voltage voltageNew = new org.diylc.core.measures.Voltage(12d, VoltageUnit.V);
 
@@ -85,26 +85,21 @@ public class BuzzerSymbol extends AbstractSchematicLeadedSymbol<String> {
 
   @Override
   protected Shape getBodyShape() {
-	  // Divide by two as the whole thing sits "above" zero
-	  // see useShapeRectAsPosition to understand
 	  double length = getLength().convertToPixels();
-	  double width  = getWidth().convertToPixels() / 2;
-	  
-	  Arc2D.Double arc = new Arc2D.Double(0, 0, length, length, 180, 180, Arc2D.CHORD);
-	  
-	  // width * 0.75 is an approx. Sqrt method seems a bit off? (maybe my maths sucks...)
-	  Line2D.Double left_leads  = new Line2D.Double(length * 0.25, width * 0.75, length * 0.25, width);
-	  Line2D.Double right_leads = new Line2D.Double(length * 0.75, width * 0.75, length * 0.75, width);
-	  
-	  Line2D.Double left_leads_bottom  = new Line2D.Double(length * 0.25, width, 0, width);
-	  Line2D.Double right_leads_bottom = new Line2D.Double(length * 0.75, width, length, width);
+	  double width  = getWidth().convertToPixels();
+	 
+	  Arc2D.Double  arc = new Arc2D.Double(0, -width * 0.45, length, length, 180, 180, Arc2D.CHORD);
+	  Line2D.Double left_leads  = new Line2D.Double(length * 0.25, width * 0.32, length * 0.25, width / 2);
+	  Line2D.Double right_leads = new Line2D.Double(length * 0.75, width * 0.32, length * 0.75,width / 2);
+	  Line2D.Double left_leads_bottom  = new Line2D.Double(length * 0.25, width / 2, 0, width / 2);
+	  Line2D.Double right_leads_bottom = new Line2D.Double(length * 0.75, width / 2, length, width / 2);
 	  
 	  GeneralPath buzzer = new GeneralPath();
 	  buzzer.append(arc, false);
 	  buzzer.append(left_leads, false);
 	  buzzer.append(right_leads, false);
-	  buzzer.append(right_leads_bottom, false);
 	  buzzer.append(left_leads_bottom, false);
+    buzzer.append(right_leads_bottom, false);
 	  return buzzer;
   }
 
@@ -146,5 +141,5 @@ public class BuzzerSymbol extends AbstractSchematicLeadedSymbol<String> {
   @Override
   protected boolean useShapeRectAsPosition() {
 	  return false;
-  } 
+  }  
 }
