@@ -1,4 +1,4 @@
-<project name="diylc-swing" basedir="." default="win">
+<project name="diylc-swing" basedir="." default="full">
 
 	<taskdef name="bundleapp"
 	             classname="com.oracle.appbundler.AppBundlerTask"  />
@@ -10,10 +10,13 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.37.0" />
+	<property name="diylc.version" value="4.38.0" />
 	
 	<property name="osx.jre8.path" value="tools\jre\osx\jre8u321\Contents\Home\" />
-	<property name="osx.jre8m1.path" value="tools\jre\osx\zulu-8.jre\Contents\Home\" />
+	<property name="osx.jre8m1.path_" value="tools\jre\osx\zulu8-arm.jre\Contents\Home\" />
+	<property name="osx.jre8m1.path_" value="tools\jre\osx\zulu17-arm.jre\Contents\Home\" />
+	<property name="osx.jre8m1.path_" value="tools\jre\osx\temurin21-arm.jre\Contents\Home\" />
+	<property name="osx.jre8m1.path" value="tools\jre\osx\temurin11-arm.jre\Contents\Home\" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -84,7 +87,7 @@
 	        outputdirectory="${build.dir}"
 	        name="DIYLC"
 					jvmrequired="1.8"
-					copyright="2020 bancika"
+					copyright="2025 bancika"
 	        displayname="DIY Layout Creator"
 	        identifier="org.diylc.Desktop"
 	        shortversion="${diylc.version}"
@@ -118,7 +121,7 @@
 			<option value="-Xdock:name=DIY Layout Creator"/>
 			<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 		</bundleapp>
-		<zip destfile="${build.dir}/diylc-${diylc.version}-osx.zip">
+		<zip destfile="${build.dir}/diylc-${diylc.version}-osx-x86.zip">
 			<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />
 			<zipfileset filemode="755" dir="${basedir}/themes" prefix="DIYLC.app/Contents/Resources/themes" />
 			<zipfileset filemode="755" dir="${basedir}/fonts" prefix="DIYLC.app/Contents/Resources/fonts" />
@@ -126,12 +129,12 @@
 		</zip>
 	</target>
 	
-	<target name="mac-m1" depends="jar">
+	<target name="mac-silicon" depends="jar">
 			<bundleapp
 		        outputdirectory="${build.dir}"
 		        name="DIYLC"
 						jvmrequired="1.8"
-						copyright="2022 bancika"
+						copyright="2025 bancika"
 		        displayname="DIY Layout Creator"
 		        identifier="org.diylc.Desktop"
 		        shortversion="${diylc.version}"
@@ -167,7 +170,7 @@
 				<option value="-Xdock:name=DIY Layout Creator"/>
 				<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 			</bundleapp>
-			<zip destfile="${build.dir}/diylc-${diylc.version}-osx-m1.zip">
+			<zip destfile="${build.dir}/diylc-${diylc.version}-osx-arm.zip">
 				<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />
 				<zipfileset filemode="755" dir="${basedir}/themes" prefix="DIYLC.app/Contents/Resources/themes" />
 				<zipfileset filemode="755" dir="${basedir}/fonts" prefix="DIYLC.app/Contents/Resources/fonts" />
@@ -220,7 +223,7 @@
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
 
-	<target name="full" depends="win,universal,mac" />
+	<target name="full" depends="win,universal,mac,mac-silicon" />
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">
