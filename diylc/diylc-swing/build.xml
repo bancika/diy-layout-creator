@@ -13,9 +13,6 @@
 	<property name="diylc.version" value="4.38.0" />
 	
 	<property name="osx.jre8.path" value="tools\jre\osx\jre8u321\Contents\Home\" />
-	<property name="osx.jre8m1.path_" value="tools\jre\osx\zulu8-arm.jre\Contents\Home\" />
-	<property name="osx.jre8m1.path_" value="tools\jre\osx\zulu17-arm.jre\Contents\Home\" />
-	<property name="osx.jre8m1.path_" value="tools\jre\osx\temurin21-arm.jre\Contents\Home\" />
 	<property name="osx.jre8m1.path" value="tools\jre\osx\temurin11-arm.jre\Contents\Home\" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
