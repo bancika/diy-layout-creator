@@ -37,6 +37,19 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.38.0" date="2023-12-23">
+         <description>
+           <ul>
+             <li>[New Feature] Buzzer component and symbol added (thanks M0JXD)</li>
+             <li>[New Feature] Resistor symbol now has two draw standards - ANSI and IEC (thanks M0JXD)</li>
+             <li>[Improvement] Fixed run.sh application starter for Linux and Apple OSX with M1/M2 processors when using Java 17 or newer</li>
+             <li>[Improvement] When editing Label components, default focus to the text editor</li>
+             <li>[Bug Fix] Unable to move selected components if one of them is close to being reduced to a point</li>
+             <li>[Bug Fix] Toroidal Inductor hangs the application if it doesn't have inductance value set</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.38.0</url>
+	</release>
   	<release version="4.37.0" date="2023-04-27">
          <description>
            <ul>
