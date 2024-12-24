@@ -12,8 +12,8 @@
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
 	<property name="diylc.version" value="4.38.0" />
 	
-	<property name="osx.jre8.path" value="tools\jre\osx\jre8u321\Contents\Home\" />
-	<property name="osx.jre8m1.path" value="tools\jre\osx\temurin11-arm.jre\Contents\Home\" />
+	<property name="osx.jre8.x64.path" value="tools\jre\osx\themurin17-x64\Contents\Home\" />
+	<property name="osx.jre8.arm.path" value="tools\jre\osx\temurin17-arm\Contents\Home\" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -102,7 +102,7 @@
 						icon="icons/diylc_file.icns"
 						conformsTo="public.xml,public.text"
 						extensions="diy" />
-			<runtime dir="${osx.jre8.path}" />
+			<runtime dir="${osx.jre8.x64.path}" />
 			<classpath file="${jar.dir}\diylc.jar" />
 			<classpath file="${jar.dir}\lib\*.jar" />
 			<classpath file="${jar.dir}\library\*.jar" />
@@ -115,6 +115,7 @@
 			<option value="-Dapple.laf.useScreenMenuBar=true"/>
 			<option value="-Dapple.awt.application.name=DIY Layout Creator"/>
 			<option value="-Dcom.apple.smallTabs=true"/>
+			<option value="-Dsun.java2d.metal=true"/>
 			<option value="-Xdock:name=DIY Layout Creator"/>
 			<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 		</bundleapp>
@@ -149,7 +150,7 @@
 							icon="icons/diylc_file.icns"
 							conformsTo="public.xml,public.text"
 							extensions="diy" />
-				<runtime dir="${osx.jre8m1.path}" />
+				<runtime dir="${osx.jre8.arm.path}" />
 				<arch name="arm64" />
 				<arch name="arm64e" />
 				<classpath file="${jar.dir}\diylc.jar" />
@@ -164,6 +165,7 @@
 				<option value="-Dapple.laf.useScreenMenuBar=true"/>
 				<option value="-Dapple.awt.application.name=DIY Layout Creator"/>
 				<option value="-Dcom.apple.smallTabs=true"/>
+				<option value="-Dsun.java2d.metal=true"/>
 				<option value="-Xdock:name=DIY Layout Creator"/>
 				<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 			</bundleapp>
