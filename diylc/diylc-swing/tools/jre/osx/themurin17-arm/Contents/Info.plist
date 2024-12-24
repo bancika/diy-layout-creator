@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>CFBundleDevelopmentRegion</key>
+        <string>English</string>
+        <key>CFBundleExecutable</key>
+        <string>libjli.dylib</string>
+        <key>CFBundleGetInfoString</key>
+        <string>OpenJDK 17.0.13+11</string>
+        <key>CFBundleIdentifier</key>
+        <string>net.java.openjdk.jre</string>
+        <key>CFBundleInfoDictionaryVersion</key>
+        <string>7.0</string>
+        <key>CFBundleName</key>
+        <string>OpenJDK 17.0.13</string>
+        <key>CFBundlePackageType</key>
+        <string>BNDL</string>
+        <key>CFBundleShortVersionString</key>
+        <string>17.0.13</string>
+        <key>CFBundleSignature</key>
+        <string>????</string>
+        <key>CFBundleVersion</key>
+        <string></string>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>The application is requesting access to the microphone.</string>
+        <key>JavaVM</key>
+        <dict>
+                <key>JVMMinimumFrameworkVersion</key>
+                <string>13.2.9</string>
+                <key>JVMMinimumSystemVersion</key>
+                <string>11.00.00</string>
+                <key>JVMPlatformVersion</key>
+                <string>17.0.13</string>
+                <key>JVMVendor</key>
+                <string>Eclipse Adoptium</string>
+                <key>JVMVersion</key>
+                <string>17.0.13</string>
+        </dict>
+</dict>
+</plist>
