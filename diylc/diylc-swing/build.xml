@@ -10,9 +10,9 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.38.0" />
+	<property name="diylc.version" value="4.39.0" />
 	
-	<property name="osx.jre8.x64.path" value="tools\jre\osx\themurin17-x64\Contents\Home\" />
+	<property name="osx.jre8.x64.path" value="tools\jre\osx\jre8u321\Contents\Home\" />
 	<property name="osx.jre8.arm.path" value="tools\jre\osx\temurin17-arm\Contents\Home\" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
@@ -115,7 +115,6 @@
 			<option value="-Dapple.laf.useScreenMenuBar=true"/>
 			<option value="-Dapple.awt.application.name=DIY Layout Creator"/>
 			<option value="-Dcom.apple.smallTabs=true"/>
-			<option value="-Dsun.java2d.metal=true"/>
 			<option value="-Xdock:name=DIY Layout Creator"/>
 			<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
 		</bundleapp>
@@ -127,7 +126,7 @@
 		</zip>
 	</target>
 	
-	<target name="mac-silicon" depends="jar">
+	<target name="mac-arm" depends="jar">
 			<bundleapp
 		        outputdirectory="${build.dir}"
 		        name="DIYLC"
@@ -222,7 +221,7 @@
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
 
-	<target name="full" depends="win,universal,mac,mac-silicon" />
+	<target name="full" depends="win,universal,mac,mac-arm" />
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">
