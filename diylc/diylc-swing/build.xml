@@ -159,6 +159,14 @@
 				<option value="-Xms512m" />
 				<option value="-Xmx2048m" />
 				<!--<option value="-javaagent:Contents/Java/jar-loader.jar" />-->
+				<option value="--add-exports java.desktop/com.apple.eawt.event=ALL-UNNAMED" />
+				<option value="--add-exports java.desktop/com.apple.eio=ALL-UNNAMED" />
+				<option value="--add-opens java.base/java.util=ALL-UNNAMED" />
+				<option value="--add-opens java.base/java.lang=ALL-UNNAMED" />
+				<option value="--add-opens java.base/java.text=ALL-UNNAMED" />
+				<option value="--add-opens java.desktop/java.awt=ALL-UNNAMED" />
+				<option value="--add-opens java.desktop/java.awt.font=ALL-UNNAMED" />
+				<option value="--add-opens java.desktop/java.awt.geom=ALL-UNNAMED" />
 				<option value="-Dorg.diylc.scriptRun=true" />
 				<option value="-Dfile.encoding=UTF-8" />
 				<option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
