@@ -135,6 +135,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
         break;
       case _4PDT:
       case _4PDT_off:
+      case _4PDT_ononon_1:
+      case _4PDT_ononon_2:
         controlPoints =
             new Point2D[] {firstPoint, new Point2D.Double(firstPoint.getX(), firstPoint.getY() + spacing),
                 new Point2D.Double(firstPoint.getX(), firstPoint.getY() + 2 * spacing), 
@@ -368,6 +370,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
           break;
         case _4PDT:
         case _4PDT_off:
+        case _4PDT_ononon_1:
+        case _4PDT_ononon_2:
           body =
               new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + 3 * spacing, 2
                   * margin + 2 * spacing, margin, margin);
@@ -454,6 +458,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       case DPDT_off:
       case _3PDT_off:
       case _4PDT_off:
+      case _4PDT_ononon_1:
+      case _4PDT_ononon_2:
       case _5PDT_off:
       case DPDT_ononon_1:
       case DPDT_ononon_2:
@@ -506,6 +512,26 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
             return (index1 == 1 && index2 == 2) || (index1 == 3 && index2 == 4);
           case 2:
             return (index1 == 1 && index2 == 2) || (index1 == 4 && index2 == 5);
+          default: return false;
+        }
+      case _4PDT_ononon_1:
+        switch (position) {
+          case 0:
+            return (index1 == 0 && index2 == 1) || (index1 == 3 && index2 == 4) || (index1 == 6 && index2 == 7) || (index1 == 9 && index2 == 10);
+          case 1:
+            return (index1 == 0 && index2 == 1) || (index1 == 4 && index2 == 5) || (index1 == 6 && index2 == 7) || (index1 == 10 && index2 == 11);
+          case 2:
+            return (index1 == 1 && index2 == 2) || (index1 == 4 && index2 == 5) || (index1 == 7 && index2 == 8) || (index1 == 10 && index2 == 11);
+          default: return false;
+        }
+      case _4PDT_ononon_2:
+        switch (position) {
+          case 0:
+            return (index1 == 0 && index2 == 1) || (index1 == 3 && index2 == 4) || (index1 == 6 && index2 == 7) || (index1 == 9 && index2 == 10);
+          case 1:
+            return (index1 == 1 && index2 == 2) || (index1 == 3 && index2 == 4) || (index1 == 7 && index2 == 8) || (index1 == 9 && index2 == 10);
+          case 2:
+            return (index1 == 1 && index2 == 2) || (index1 == 4 && index2 == 5) || (index1 == 7 && index2 == 8) || (index1 == 10 && index2 == 11);
           default: return false;
         }
     }
