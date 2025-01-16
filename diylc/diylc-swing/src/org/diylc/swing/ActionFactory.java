@@ -874,13 +874,13 @@ public class ActionFactory {
           File tempPdf = Files.createTempFile("diylc", ".pdf").toFile();
           DrawingExporter.getInstance().exportPDF(PrintAction.this.drawingProvider, tempPdf);
           
-          PDDocument document = PDDocument.load(tempPdf);
+//          PDDocument document = PDDocument.load(tempPdf);
 //          PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
-          PrinterJob job = PrinterJob.getPrinterJob();
-          PDFPageable pdfPageable = new PDFPageable(document);        
-          job.setPageable(pdfPageable);
+//          PrinterJob job = PrinterJob.getPrinterJob();
+//          PDFPageable pdfPageable = new PDFPageable(document);        
+//          job.setPageable(pdfPageable);
 //          job.setPrintService(printService);
-          job.print();
+//          job.print();
           DrawingExporter.getInstance().print(PrintAction.this.drawingProvider);
           return null;
         }

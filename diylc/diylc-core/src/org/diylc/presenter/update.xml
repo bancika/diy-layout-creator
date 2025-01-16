@@ -4419,6 +4419,10 @@
 					<description>Upgraded JRE version of Mac builds to Themurin 17 and switched OpenGL to Metal rendering engine for improved performance</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>
+			<org.diylc.appframework.update.Change>
+				<changeType>BUG_FIX</changeType>
+				<description>Choosing "Print" option from the menu starts printing immediately before choosing printing preferences</description>
+			</org.diylc.appframework.update.Change>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
 	</a>
