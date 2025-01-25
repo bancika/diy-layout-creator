@@ -12,8 +12,8 @@
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
 	<property name="diylc.version" value="4.39.0" />
 	
-	<property name="osx.jre8.x64.path" value="tools\jre\osx\jre8u321\Contents\Home\" />
-	<property name="osx.jre8.arm.path" value="tools\jre\osx\temurin17-arm\Contents\Home\" />
+	<property name="osx.jre8.x64.path" value="tools\jre\osx\x86\jre8u321\Contents\Home\" />
+	<property name="osx.jre8.arm.path" value="tools\jre\osx\arm\temurin17\Contents\Home\" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
