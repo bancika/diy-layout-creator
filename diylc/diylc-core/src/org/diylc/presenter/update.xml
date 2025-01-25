@@ -4416,7 +4416,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Upgraded JRE version of Mac builds to Themurin 17 and switched OpenGL to Metal rendering engine for improved performance</description>
+					<description>Upgraded JRE version of Mac builds to Temurin 17 and switched OpenGL to Metal rendering engine for improved performance</description>
 				</org.diylc.appframework.update.Change>				
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

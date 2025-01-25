@@ -40,7 +40,7 @@
   	<release version="4.39.0" date="2025-01-25">
          <description>
            <ul>
-             <li>[Improvement] Upgraded JRE version of Mac builds to Themurin 17 and switched OpenGL to Metal rendering engine for improved performance</li>
+             <li>[Improvement] Upgraded JRE version of Mac builds to Temurin 17 and switched OpenGL to Metal rendering engine for improved performance</li>
              <li>[Bug Fix] Choosing "Print" option from the menu starts printing immediately before choosing printing preferences</li>
            </ul>
          </description>
