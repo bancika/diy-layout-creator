@@ -7,17 +7,17 @@
         <key>CFBundleExecutable</key>
         <string>libjli.dylib</string>
         <key>CFBundleGetInfoString</key>
-        <string>OpenJDK 17.0.13+11</string>
+        <string>OpenJDK 17.0.14+7</string>
         <key>CFBundleIdentifier</key>
         <string>net.java.openjdk.jre</string>
         <key>CFBundleInfoDictionaryVersion</key>
         <string>7.0</string>
         <key>CFBundleName</key>
-        <string>OpenJDK 17.0.13</string>
+        <string>OpenJDK 17.0.14</string>
         <key>CFBundlePackageType</key>
         <string>BNDL</string>
         <key>CFBundleShortVersionString</key>
-        <string>17.0.13</string>
+        <string>17.0.14</string>
         <key>CFBundleSignature</key>
         <string>????</string>
         <key>CFBundleVersion</key>
@@ -31,11 +31,11 @@
                 <key>JVMMinimumSystemVersion</key>
                 <string>11.00.00</string>
                 <key>JVMPlatformVersion</key>
-                <string>17.0.13</string>
+                <string>17.0.14</string>
                 <key>JVMVendor</key>
                 <string>Eclipse Adoptium</string>
                 <key>JVMVersion</key>
-                <string>17.0.13</string>
+                <string>17.0.14</string>
         </dict>
 </dict>
 </plist>
