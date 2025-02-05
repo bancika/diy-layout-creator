@@ -344,7 +344,10 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
 
     StringBuilder sb = new StringBuilder();
 
-    sb.append("Parallel/Series connectivity tree:<br><br>").append(tree.toHTML(0));
+    sb.append("Parallel/Series connectivity tree:<br><br>")
+      .append("<font face=\"Courier New\">")
+      .append(tree.toAsciiString())
+      .append("</font>");
     if (!notes.isEmpty()) {
       Collections.sort(notes);
       sb.append("<br><br>Notes:<br>");
