@@ -23,44 +23,50 @@ public class TreeAsciiUtil {
             .mapToInt(Integer::intValue)
             .sum() + elementLines.size() - 1;
     int centerLine = targetLineCount / 2;
-    
+
     List<String> results = new ArrayList<String>();
     int overallLineCount = 0;
     for (int i = 0; i < elementLines.size(); i++) {
       List<String> lines = elementLines.get(i);
-      
+
       int lineLength = lineLengths.get(i);
-      
+
       String leftBuffer = "";
       String rightBuffer = "";
       if (lineLength < maxLineLength) {
         leftBuffer = generateString(" ", (maxLineLength - lineLength) / 2);
         rightBuffer = generateString(" ", (maxLineLength - lineLength) - (maxLineLength - lineLength) / 2);
       }
-  
+
       String leftBufferCentral = "";
       String rightBufferCentral = "";
       if (lineLength < maxLineLength) {
         leftBufferCentral = generateString("&boxh;", (maxLineLength - lineLength) / 2);
         rightBufferCentral = generateString("&boxh;", (maxLineLength - lineLength) - (maxLineLength - lineLength) / 2);
       }
-      
+
       int elementCenterLine = lines.size() / 2;
-      
+
       for (int j = 0; j < lines.size(); j++) {
         String line = lines.get(j);
-        
+
         StringBuilder sb = new StringBuilder();
-        if (overallLineCount == 0) {
+        if ((j < elementCenterLine && i == 0) || (j > elementCenterLine && i == elementLines.size() - 1)) {
+          sb.append("&nbsp;");
+        } else if (j == elementCenterLine && i == 0) {
           sb.append("&boxdr;");
-        } else if (i == elementLines.size() - 1 && j == lines.size() - 1) {
-          sb.append("&boxur;"); 
+        } else if (i == elementLines.size() - 1 && j == elementCenterLine) {
+          sb.append("&boxur;");
         } else if (overallLineCount == centerLine) {
-          sb.append("&boxvl;");
+          if (j == elementCenterLine && i > 0 && i < elementLines.size() - 1) {
+            sb.append("&boxvh;");
+          } else {
+            sb.append("&boxvl;");
+          }
         } else {
           sb.append("&boxv;");
         }
-        
+
         if (j == elementCenterLine) {
           sb.append(leftBufferCentral);
         } else {
@@ -72,26 +78,43 @@ public class TreeAsciiUtil {
         } else {
           sb.append(rightBuffer);
         }
-  
-        if (overallLineCount == 0) {
+
+        if ((j < elementCenterLine && i == 0) || (j > elementCenterLine && i == elementLines.size() - 1)) {
+          sb.append("&nbsp;");
+        } else if (j == elementCenterLine && i == 0) {
           sb.append("&boxdl;");
-        } else if (i == elementLines.size() - 1 && j == lines.size() - 1) {
+        } else if (i == elementLines.size() - 1 && j == elementCenterLine) {
           sb.append("&boxul;");
         } else if (overallLineCount == centerLine) {
-          sb.append("&boxvr;");
+          if (j == elementCenterLine && i > 0 && i < elementLines.size() - 1) {
+            sb.append("&boxvh;");
+          } else {
+            sb.append("&boxvr;");
+          }
         } else {
           sb.append("&boxv;");
         }
         results.add(sb.toString());
         overallLineCount++;
       }
-      
-      
-      
-//      results.add(e);
-//      overallLineCount++;
+
+
+      if (i < elementLines.size() - 1) {
+        String leftEnding;
+        String rightEnding;
+        if (overallLineCount == centerLine) {
+          leftEnding = "&boxvl;";
+          rightEnding = "&boxvr;";
+        } else {
+          leftEnding = "&boxv;";
+          rightEnding = "&boxv;";
+        }
+        String emptyLine = leftEnding + generateString("&nbsp;", maxLineLength) + rightEnding;
+        results.add(emptyLine);
+        overallLineCount++;
+      }
     }
-    
+
     return results;
   }
 
