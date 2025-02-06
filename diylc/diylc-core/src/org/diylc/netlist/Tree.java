@@ -166,7 +166,7 @@ public class Tree {
   
   private List<String> toAscii() {
     if (leaf != null) {
-      return Arrays.asList(TreeAsciiUtil.generateString("&boxh;", 1) + " " + leaf.toHTML() + " " + TreeAsciiUtil.generateString("&boxh;", 1));
+      return Arrays.asList(TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1) + " " + leaf.toHTML() + " " + TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1));
     }
 
     List<Tree> children = getOrderedChildren();
@@ -175,7 +175,7 @@ public class Tree {
         children.stream().map(c -> c.toAscii()).collect(Collectors.toList());
 
     if (TreeConnectionType.Series.equals(connectionType)) {
-      return TreeAsciiUtil.concatenateMultiLineSerial(TreeAsciiUtil.generateString("&boxh;", 1), childrenAscii);
+      return TreeAsciiUtil.concatenateMultiLineSerial(TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1), childrenAscii);
     } else {
       return TreeAsciiUtil.concatenateMultiLineParallel(childrenAscii);
     }

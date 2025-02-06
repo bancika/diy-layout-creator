@@ -41,4 +41,17 @@ public class TreeAsciiUtilTest {
 //    assertEquals("yy-yyy", result.get(1));
 //    assertEquals("&nbsp;&nbsp;&nbsp;aaa", result.get(2));
   }
+  
+  @Test
+  public void testConcatenateMultiLineParallel_4_lines() {
+    List<String> result = TreeAsciiUtil.concatenateMultiLineParallel(
+        Arrays.asList(Arrays.asList("xx"), Arrays.asList("xx"), Arrays.asList("xx"), Arrays.asList("xx")));
+    
+    System.out.println("<font face=\"Courier New\">" + String.join("<br>", result) +"</font>");
+    assertNotNull(result);
+//    assertEquals(3, result.size());
+//    assertEquals("xx&nbsp;xxx", result.get(0));
+//    assertEquals("yy-yyy", result.get(1));
+//    assertEquals("&nbsp;&nbsp;&nbsp;aaa", result.get(2));
+  }
 }
