@@ -147,6 +147,8 @@ public class TreeAsciiUtil {
         overallLineCount++;
       }
     }
+    
+    List<Integer> collect = results.stream().map(x -> htmlLength(x)).collect(Collectors.toList());
 
     return results;
   }

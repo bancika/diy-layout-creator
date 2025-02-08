@@ -107,6 +107,6 @@ public class TreeLeaf implements ITree {
   }
   
   public String toHTML() {
-    return toString().replace("<", "&lt;").replace(">", "&gt");
+    return toString().replace("<", "&lt;").replace(">", "&gt;");
   }
 }
