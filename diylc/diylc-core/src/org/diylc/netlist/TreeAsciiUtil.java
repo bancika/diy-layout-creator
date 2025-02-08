@@ -148,8 +148,6 @@ public class TreeAsciiUtil {
       }
     }
     
-    List<Integer> collect = results.stream().map(x -> htmlLength(x)).collect(Collectors.toList());
-
     return results;
   }
 

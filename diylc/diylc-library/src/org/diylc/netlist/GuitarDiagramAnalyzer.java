@@ -20,6 +20,7 @@ package org.diylc.netlist;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +43,7 @@ import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialCeramicDiskCapacitor;
 import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.RadialMicaCapacitor;
+import org.diylc.components.passive.Resistor;
 import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Tree.ITreeWalker;
 
@@ -51,6 +53,9 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
   private static Set<String> POT_TYPES = new HashSet<String>();
   private static Set<String> PICKUP_TYPES = new HashSet<String>();
   private static Set<String> CAP_TYPES = new HashSet<String>();
+  private static Set<String> RESISTOR_TYPES = new HashSet<String>();
+  private static Set<String> RC_TYPES = new HashSet<String>();
+  
   static {
     JACK_TYPES.add(OpenJack1_4.class.getCanonicalName());
     JACK_TYPES.add(ClosedJack1_4.class.getCanonicalName());
@@ -68,6 +73,11 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     CAP_TYPES.add(RadialMicaCapacitor.class.getCanonicalName());
     CAP_TYPES.add(RadialFilmCapacitor.class.getCanonicalName());
     CAP_TYPES.add(AxialFilmCapacitor.class.getCanonicalName());
+    
+    RESISTOR_TYPES.add(Resistor.class.getCanonicalName());
+    
+    RC_TYPES.addAll(CAP_TYPES);
+    RC_TYPES.addAll(RESISTOR_TYPES);
   }
 
   @Override
@@ -203,6 +213,8 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
       // locate volume and tone pots
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupMap =
           new HashMap<IDIYComponent<?>, List<IDIYComponent<?>>>();
+      Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap =
+          new HashMap<IDIYComponent<?>, Set<IDIYComponent<?>>>();
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupMap =
           new HashMap<IDIYComponent<?>, List<IDIYComponent<?>>>();
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupReverseMap =
@@ -253,20 +265,22 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
         if (tree1 == null || tree2 == null)
           continue;
         for (Map.Entry<IDIYComponent<?>, Tree> r : pickupRoots.entrySet()) {
-          Tree parent1 = tree.findCommonParent(tree1, r.getValue());
-          Tree parent2 = tree.findCommonParent(tree2, r.getValue());
-          if (parent1 != null && parent2 != null
-              && parent1.getConnectionType() == TreeConnectionType.Series
-              && parent2.getConnectionType() == TreeConnectionType.Parallel) {
+          Tree commonParent1 = tree.findCommonParent(tree1, r.getValue());
+          Tree commonParent2 = tree.findCommonParent(tree2, r.getValue());
+          locateTrebleBleed(tree, volPotTrebleBleedMap, pot, tree1);
+          
+          if (commonParent1 != null && commonParent2 != null
+              && commonParent1.getConnectionType() == TreeConnectionType.Series
+              && commonParent2.getConnectionType() == TreeConnectionType.Parallel) {
             List<IDIYComponent<?>> pickupList = volPotPickupMap.get(pot);
             if (pickupList == null) {
               pickupList = new ArrayList<IDIYComponent<?>>();
               volPotPickupMap.put(pot, pickupList);
             }
             pickupList.add(r.getKey());
-          } else if (parent1 != null && parent2 != null
-              && parent1.getConnectionType() == TreeConnectionType.Parallel
-              && parent2.getConnectionType() == TreeConnectionType.Series) {
+          } else if (commonParent1 != null && commonParent2 != null
+              && commonParent1.getConnectionType() == TreeConnectionType.Parallel
+              && commonParent2.getConnectionType() == TreeConnectionType.Series) {
             List<IDIYComponent<?>> pickupList = volPotPickupReverseMap.get(pot);
             if (pickupList == null) {
               pickupList = new ArrayList<IDIYComponent<?>>();
@@ -290,6 +304,16 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
           sb.append("'").append(pickupName).append("'");
         }
         notes.add(sb.toString());
+        
+        Set<IDIYComponent<?>> trebleBleedComponents = volPotTrebleBleedMap.get(e.getKey());
+        if (trebleBleedComponents != null && trebleBleedComponents.size() > 0) {
+
+          String trebleBleadNote = trebleBleedComponents.stream()
+            .sorted(Comparator.comparing(c -> c.getName()))
+            .map(c ->  "'" + c.getName() + "'")
+            .collect(Collectors.joining(", ")) + " form a treble bleed network on the '" + e.getKey().getName() + "' volume control";
+          notes.add(trebleBleadNote);
+        }
       }
 
       for (Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e : volPotPickupReverseMap
@@ -359,6 +383,21 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     }
 
     return new Summary(netlist, sb.toString());
+  }
+
+  private void locateTrebleBleed(Tree tree,
+      Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap, IDIYComponent<?> pot,
+      Tree tree1) {
+    Tree parent1 = tree1;
+    do { 
+      parent1 = tree.findParent(parent1);
+    } while (parent1 != null && parent1.getChildren().size() <= 1);
+    if (parent1 != null) {
+      Set<IDIYComponent<?>> trebleBleedComponents = parent1.extractComponents(RC_TYPES);
+      if (trebleBleedComponents.stream().anyMatch(c -> CAP_TYPES.contains(c.getClass().getCanonicalName()))) {
+        volPotTrebleBleedMap.computeIfAbsent(pot, k -> new HashSet<IDIYComponent<?>>()).addAll(trebleBleedComponents);
+      }
+    }
   }
 
   public Tree constructTree(Netlist netlist) throws TreeException {
