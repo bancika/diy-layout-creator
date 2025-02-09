@@ -40,7 +40,7 @@ import org.diylc.core.measures.SizeUnit;
     instanceNamePrefix = "RECT", description = "Ractangular area, with or withouth rounded edges",
     zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false,
     transformer = SimpleComponentTransformer.class)
-public class Rectangle extends AbstractShape {
+public class Rectangle extends AbstractShapeWithDimensions {
 
   private static final long serialVersionUID = 1L;
 

@@ -4441,7 +4441,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added two types of 4PDT On/On/On Switches, e.g. DiMarzio EP1111 (thank you Lukasz Tekieli)</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to set explicit dimensions of basic shapes - rectangles and ellipses</description>
+				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better rendering of the effective circuit graph in the guitar wiring analyzer, showing series and parallel connections in a more intuitive way</description>
