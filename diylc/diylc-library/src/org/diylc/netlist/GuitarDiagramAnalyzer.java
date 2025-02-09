@@ -109,6 +109,10 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     List<String> notes = new ArrayList<String>();
 
     Tree tree = constructTree(netlist);
+    
+    if (tree == null) {
+      return new Summary(netlist, "No pickups are connected to the output jack");
+    }
 
     Tree pickupTree = tree.filter(PICKUP_TYPES);
 
@@ -405,8 +409,10 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     List<Node> jackSleeveNodes = find(JACK_TYPES, "Sleeve", netlist);
 
     if (jackTipNodes.size() == 0 || jackSleeveNodes.size() == 0) {
-      throw new TreeException("Could not find anything connected to a jack tip terminal.");
-    } else if (jackTipNodes.size() > 1 || jackSleeveNodes.size() > 1) {
+//      LOG.("Could not find anything connected to a jack tip terminal.");
+      return null;
+    } else 
+    if (jackTipNodes.size() > 1 || jackSleeveNodes.size() > 1) {
       throw new TreeException("Multiple jacks found, could not proceed.");
     } else {
       Node jackTip = jackTipNodes.get(0);

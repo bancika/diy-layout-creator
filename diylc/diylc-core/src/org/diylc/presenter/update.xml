@@ -4458,6 +4458,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Added 1-pole DIP switch option</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow guitar wiring analyzer when some of the switching configuration do not produce output</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
