@@ -4442,6 +4442,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better rendering of the effective circuit graph in the guitar wiring analyzer, showing series and parallel connections in a more intuitive way</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increased max undo stack size to 128 versions</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
