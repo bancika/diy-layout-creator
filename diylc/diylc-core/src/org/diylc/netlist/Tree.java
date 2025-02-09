@@ -22,11 +22,14 @@
 package org.diylc.netlist;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.diylc.core.IDIYComponent;
 
 public class Tree {
@@ -155,6 +158,27 @@ public class Tree {
     if (depth > 0 && children.size() > 1)
       sb.append(")");
     return sb.toString();
+  }
+  
+  public String toAsciiString() {
+    return String.join("<br>", toAscii());
+  }
+  
+  private List<String> toAscii() {
+    if (leaf != null) {
+      return Arrays.asList(TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1) + " " + leaf.toHTML() + " " + TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1));
+    }
+
+    List<Tree> children = getOrderedChildren();
+
+    List<List<String>> childrenAscii =
+        children.stream().map(c -> c.toAscii()).collect(Collectors.toList());
+
+    if (TreeConnectionType.Series.equals(connectionType)) {
+      return TreeAsciiUtil.concatenateMultiLineSerial(TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1), childrenAscii);
+    } else {
+      return TreeAsciiUtil.concatenateMultiLineParallel(childrenAscii);
+    }
   }
   
   @Override
