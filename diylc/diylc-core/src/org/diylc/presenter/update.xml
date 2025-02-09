@@ -4446,6 +4446,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increased max undo stack size to 128 versions</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added 1-pole DIP switch option</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
