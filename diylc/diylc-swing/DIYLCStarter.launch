@@ -13,6 +13,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-16.0.1"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.diylc.DIYLCStarter"/>
 <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="diylc-swing"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;c:\Users\bancika\Downloads\CUB V Layout.2024-06-07T15-37-50.diy&quot; --export --force &quot;c:\Users\bancika\Downloads\CUB V Layout.2024-06-07T15-37-50.pdsf&quot;"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="diylc-swing"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx2048m -javaagent:lib/jar-loader.jar -Dorg.diylc.storeDict=true -Dorg.diylc.enableTests=true -Dorg.diylc.scriptRun=true -Ddorg.diylc.debugContinuityAreas=true -Ddorg.diylc.debugComponentAreas=true -Ddorg.diylc.WriteStaticVariants=true -Ddorg.diylc.WriteStaticBlocks=true &#13;&#10;--add-opens java.base/java.util=ALL-UNNAMED&#13;&#10;--add-opens java.base/java.lang=ALL-UNNAMED&#13;&#10;--add-opens java.base/java.text=ALL-UNNAMED&#13;&#10;--add-opens java.desktop/java.awt=ALL-UNNAMED&#13;&#10;--add-opens java.desktop/java.awt.font=ALL-UNNAMED&#13;&#10;--add-opens java.desktop/java.awt.geom=ALL-UNNAMED"/>
 </launchConfiguration>

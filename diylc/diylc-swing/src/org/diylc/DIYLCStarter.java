@@ -20,8 +20,10 @@ package org.diylc;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import javax.activity.InvalidActivityException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -37,6 +39,8 @@ import org.diylc.presenter.Presenter;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
+import org.diylc.swing.plugins.file.ProjectDrawingProvider;
+import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.swingframework.fonts.FontOptimizer;
 import com.apple.eawt.AppEvent;
 import com.apple.eawt.Application;
@@ -75,12 +79,16 @@ public class DIYLCStarter {
 		// Initialize splash screen
 		DIYLCSplash splash = null;
 		Exception splashException = null;
+		
+		boolean exportMode = Arrays.stream(args).anyMatch(a -> a.equalsIgnoreCase("--export"));
 
-		try {
-			splash = new DIYLCSplash();
-		} catch (Exception e) {
-			System.out.println("Splash screen could not be initialized: " + e.getMessage());
-			splashException = e;
+		if (!exportMode) {		  
+    		try {
+    			splash = new DIYLCSplash();
+    		} catch (Exception e) {
+    			System.out.println("Splash screen could not be initialized: " + e.getMessage());
+    			splashException = e;
+    		}
 		}
 
 		URL url = DIYLCStarter.class.getResource("log4j.properties");
@@ -93,6 +101,10 @@ public class DIYLCStarter {
 		}
 
 		initializeConfiguration();
+		
+		if (exportMode) {
+		  LOG.info("Running in export mode with params: " + String.join(", ", args));
+		}
 
 		// disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
 		ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
@@ -174,16 +186,20 @@ public class DIYLCStarter {
 		LOG.info("Main frame created.");
 		// mainFrame.setLocationRelativeTo(null);
 
-		if (splash == null) {
-			LOG.warn("Splash screen could not be initialized", splashException);
-		} else {
-			LOG.info("Hiding splash screen...");
-			splash.setVisible(false);
-			splash.dispose();
-			LOG.info("Done hiding splash screen.");
+		if (!exportMode) {
+    		if (splash == null) {
+    			LOG.warn("Splash screen could not be initialized", splashException);
+    		} else {
+    			LOG.info("Hiding splash screen...");
+    			splash.setVisible(false);
+    			splash.dispose();
+    			LOG.info("Done hiding splash screen.");
+    		}
 		}
 
-		mainFrame.setVisible(true);
+		if (!exportMode) {
+		  mainFrame.setVisible(true);
+		}
 
 		// assign open file handler for Mac
 		if (Utils.isMac()) {
@@ -227,11 +243,52 @@ public class DIYLCStarter {
 			LOG.error("Could not read config.properties file", e);
 		}
 
-		if (ConfigurationManager.getInstance().isFileWithErrors())
+		if (!exportMode && ConfigurationManager.getInstance().isFileWithErrors())
 			mainFrame.showMessage("<html>"
 					+ "There was an error reading the configuration file and it was replaced by a default configuration.<br>"
 					+ "The backup file is created and placed in user directory under 'diylc' sub-directory with the current timestamp at the end.<br>"					
 					+ "</html>", "Warning", IView.WARNING_MESSAGE);
+		
+		if (exportMode) {
+		  String exportFile = args[args.length - 1];
+		  if (exportFile == null || exportFile.startsWith("--")) {
+		    LOG.error("No output file provided");
+		    System.exit(-1);
+		  }
+		  boolean forceMode = Arrays.stream(args).anyMatch(x -> "--force".equalsIgnoreCase(x));
+		  if (new File(exportFile).exists()) {
+		    if (forceMode) {
+		      LOG.info("Replacing existing file.");
+		    } else {
+		      LOG.error("File already exists. Use --force flag to overwrite existing files or change export file name.");
+		      System.exit(-1);
+		    }
+		  }
+		  if (exportFile.toLowerCase().endsWith(".png")) {
+		    try {
+    		    ProjectDrawingProvider drawingProvider = new ProjectDrawingProvider(presenter, false, false, false);
+    		    DrawingExporter.getInstance().exportPNG(drawingProvider, new File(exportFile));
+    		    LOG.info("Done.");
+    		    System.exit(0);
+		    } catch (Exception e) {
+		      LOG.error(e.getMessage());
+		        System.exit(-1);
+		    }
+		  }
+		  if (exportFile.toLowerCase().endsWith(".pdf")) {
+            try {
+                ProjectDrawingProvider drawingProvider = new ProjectDrawingProvider(presenter, false, false, false);
+                DrawingExporter.getInstance().exportPDF(drawingProvider, new File(exportFile));
+                LOG.info("Done.");
+                System.exit(0);
+            } catch (Exception e) {
+                LOG.error(e.getMessage());
+                System.exit(-1);
+            }
+          }
+		  System.err.println("Unsupported output file type. Only PDF and PNG are currently supported");
+		  System.exit(-1);
+		}
 	}
 
 	private static void initializeConfiguration() {

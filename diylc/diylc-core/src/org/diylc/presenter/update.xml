@@ -4440,6 +4440,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added headless mode for direct render to file without the GUI - use 'inputFile --export (--force) outputFile' syntax</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added two types of 4PDT On/On/On Switches, e.g. DiMarzio EP1111 (thank you Lukasz Tekieli)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
