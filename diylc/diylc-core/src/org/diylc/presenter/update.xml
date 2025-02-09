@@ -4474,6 +4474,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>'Save As' displays the current file name by default</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed null pointer exceptions when trying to add components to the layout in some cases</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

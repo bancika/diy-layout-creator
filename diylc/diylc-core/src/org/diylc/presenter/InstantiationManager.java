@@ -25,12 +25,13 @@ import java.awt.geom.Point2D;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.clipboard.ComponentTransferable;
@@ -341,17 +342,17 @@ public class InstantiationManager {
    */
   public String createUniqueName(ComponentType componentType, List<IDIYComponent<?>> components) {
     boolean exists = true;
-    String[] takenNames = new String[components.size()];
-    for (int j = 0; j < components.size(); j++) {
-      takenNames[j] = components.get(j).getName();
-    }
-    Arrays.sort(takenNames);
+   
+    Set<String> takenNames = components.stream()
+      .map(x -> x.getName())
+      .filter(Objects::nonNull)
+      .collect(Collectors.toSet());
     int i = 0;
     while (exists) {
       i++;
       String name = componentType.getNamePrefix() + i;
       exists = false;
-      if (Arrays.binarySearch(takenNames, name) >= 0) {
+      if (takenNames.contains(name)) {
         exists = true;
       }
     }
