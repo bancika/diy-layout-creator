@@ -4449,6 +4449,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ability to set explicit dimensions of basic shapes - rectangles and ellipses</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to change pitch and appearance of PCB Terminal Block component</description>
 				</org.diylc.appframework.update.Change>					
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

@@ -54,11 +54,6 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
 
   private static final long serialVersionUID = 1L;
 
-  private static Size SPACING = new Size(5d, SizeUnit.mm);
-  private static Size WIDTH = new Size(7.7d, SizeUnit.mm);
-  private static Size CIRCLE_SIZE = new Size(3d, SizeUnit.mm);
-  private static Size OFFSET = new Size(4.5d, SizeUnit.mm);
-
   private static Color BODY_COLOR = Color.decode("#90AB66");
   private static Color BORDER_COLOR = BODY_COLOR.darker();
   private static Color CIRCLE_COLOR = LIGHT_METAL_COLOR;
@@ -70,6 +65,10 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
 
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
+  
+  private Size pitch = new Size(0.2d, SizeUnit.in);
+  private Size width = new Size(0.3d, SizeUnit.in);
+  private ScrewPosition screwPosition = ScrewPosition.Offset;
 
   public PCBTerminalBlock() {
     super();
@@ -78,7 +77,7 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
 
   private void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
-    int spacing = (int) SPACING.convertToPixels();
+    int spacing = (int) getPitch().convertToPixels();
     controlPoints = new Point2D[count.getCount()];
     controlPoints[0] = firstPoint;
 
@@ -150,6 +149,49 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
     // Reset body shape.
     body = null;
   }
+  
+  @EditableProperty
+  public Size getPitch() {
+    if (pitch == null) {
+      pitch = new Size(0.2d, SizeUnit.in);
+    }
+    return pitch;
+  }
+  
+  public void setPitch(Size pitch) {
+    this.pitch = pitch;
+    updateControlPoints();
+    // Reset body shape.
+    body = null;
+  }
+  
+  @EditableProperty
+  public Size getWidth() {
+    if (width == null) {
+      width = new Size(0.3, SizeUnit.mm);
+    }
+    return width;
+  }
+  
+  public void setWidth(Size width) {
+    this.width = width;
+    // Reset body shape.
+    body = null;
+  }
+  
+  @EditableProperty(name = "Screw Position")
+  public ScrewPosition getScrewPosition() {
+    if (screwPosition == null) {
+      screwPosition = ScrewPosition.Offset;
+    }
+    return screwPosition;
+  }
+  
+  public void setScrewPosition(ScrewPosition screwPosition) {
+    this.screwPosition = screwPosition;
+    // Reset body shape.
+    body = null;
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
@@ -192,7 +234,7 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
     // so far.
     drawingObserver.stopTracking();
     // Draw lugs.
-    int circleDiameter = getClosestOdd((int) CIRCLE_SIZE.convertToPixels());
+    int circleDiameter = getClosestOdd((int) (getPitch().convertToPixels() * 3d / 5));
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2f));
     for (Point2D p : controlPoints) {
@@ -222,10 +264,15 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
     if (body == null) {
       body = new Shape[2];
       Point2D firstPoint = controlPoints[0];
-      int spacing = (int) SPACING.convertToPixels();
+      int spacing = (int) getPitch().convertToPixels();
       int pointCount = count.getCount();
-      int width = (int) WIDTH.convertToPixels();
-      int offset = (int) OFFSET.convertToPixels();
+      int width = (int) getWidth().convertToPixels();
+      int offset;
+      if (getScrewPosition() == ScrewPosition.Central) {
+        offset = (int) (getWidth().convertToPixels() / 2);
+      } else {
+        offset = (int) ((getWidth().convertToPixels() - getPitch().convertToPixels()) + getPitch().convertToPixels() / 2);
+      }
 
       body[0] = new Rectangle2D.Double(firstPoint.getX() - offset, firstPoint.getY() - spacing / 2,
           width, pointCount * spacing);
@@ -321,5 +368,9 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
     public String toString() {
       return label;
     }
+  }
+  
+  static enum ScrewPosition {
+    Central, Offset;
   }
 }
