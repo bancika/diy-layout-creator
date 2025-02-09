@@ -4466,6 +4466,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow guitar wiring analyzer when some of the switching configuration do not produce output</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Save As' displays the current file name by default</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

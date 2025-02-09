@@ -37,6 +37,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -678,8 +679,12 @@ public class ActionFactory {
     @Override
     public void actionPerformed(ActionEvent e) {
       LOG.info("SaveAsAction triggered");
+      String currentFileName = plugInPort.getCurrentFileName();
+      
       final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
-          FileFilterEnum.DIY.getFilter(), null, FileFilterEnum.DIY.getExtensions()[0], null);
+          FileFilterEnum.DIY.getFilter(), 
+          Optional.ofNullable(currentFileName).map(File::new).orElse(null), 
+          FileFilterEnum.DIY.getExtensions()[0], null);
       if (file != null) {
         swingUI.executeBackgroundTask(new ITask<Void>() {
 
