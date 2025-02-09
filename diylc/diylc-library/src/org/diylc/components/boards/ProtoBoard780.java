@@ -64,6 +64,8 @@ public class ProtoBoard780 extends AbstractProtoBoard {
   public static Color COORDINATE_COLOR = Color.decode("#DDDDDD");
 
   public static Size PAD_SIZE = new Size(2d, SizeUnit.mm);
+  
+  public static Size X_OFFSET = new Size(0.5d, SizeUnit.mm);
 
   public static Size WIDTH_SIZE = new Size(72d, SizeUnit.mm);
   public static Size LENGTH_SIZE = new Size(95d, SizeUnit.mm);
@@ -80,6 +82,8 @@ public class ProtoBoard780 extends AbstractProtoBoard {
   public static Size MOUNTING_HOLE_SIZE = new Size(3d, SizeUnit.mm);
 
   protected ProtoBoard780Type type = ProtoBoard780Type.MPJA;
+  
+  protected Boolean translateToGrid = true;
 
   @SuppressWarnings("incomplete-switch")
   @Override
@@ -87,6 +91,13 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       Project project, IDrawingObserver drawingObserver) {
     if (checkPointsClipped(g2d.getClip())) {
       return;
+    }
+    
+    double spacing = SPACING.convertToPixels();
+    double offsetX = X_OFFSET.convertToPixels();
+    
+    if (translateToGrid) {
+      g2d.translate(-offsetX, spacing / 2);
     }
 
     // adjust the angle
@@ -105,8 +116,6 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     if (theta != 0) {
       g2d.rotate(theta, point.getX(), point.getY());
     }
-
-    double spacing = SPACING.convertToPixels();
 
     // draw body
     g2d.setColor(boardColor);
@@ -502,9 +511,15 @@ public class ProtoBoard780 extends AbstractProtoBoard {
 
   @Override
   public Rectangle2D getCachingBounds() {
+    double spacing = SPACING.convertToPixels();
+    double offsetX = X_OFFSET.convertToPixels();
+    
+    double dx = translateToGrid ? -offsetX : 0;
+    double dy = translateToGrid ? spacing / 2 : 0;
+    
     Point2D finalSecondPoint = getControlPoint(1);
-    return new Rectangle2D.Double(Math.min(point.getX(), finalSecondPoint.getX()),
-        Math.min(point.getY(), finalSecondPoint.getY()),
+    return new Rectangle2D.Double(Math.min(point.getX(), finalSecondPoint.getX()) + dx - 1,
+        Math.min(point.getY(), finalSecondPoint.getY()) + dy - 1,
         Math.abs(finalSecondPoint.getX() - point.getX()) + 2,
         Math.abs(finalSecondPoint.getY() - point.getY()) + 2);
   }
