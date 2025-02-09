@@ -26,6 +26,7 @@ public enum ToggleSwitchType {
   SPST("SPST"), SPDT("SPDT (On/On)"), SPDT_off("SPDT (On/Off/On)"), DPDT("DPDT (On/On)"),DPDT_off("DPDT (On/Off/On)"), 
   DPDT_ononon_1("DPDT (On/On/On Type 1)"), DPDT_ononon_2("DPDT (On/On/On Type 2)"),
   _DP3T_mustang("DP3T"), _3PDT("3PDT"),_3PDT_off("3PDT (On/Off/On)"), _4PDT("4PDT"), _4PDT_off("4PDT (On/Off/On)"), 
+  _4PDT_ononon_1("4PDT (On/On/On Type 1)"), _4PDT_ononon_2("4PDT (On/On/On Type 2)"),
   _5PDT("5PDT"), _5PDT_off("5PDT (On/Off/On)");
   
   private String label;
