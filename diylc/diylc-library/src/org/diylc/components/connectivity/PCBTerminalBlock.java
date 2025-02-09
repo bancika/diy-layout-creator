@@ -268,7 +268,7 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
       int pointCount = count.getCount();
       int width = (int) getWidth().convertToPixels();
       int offset;
-      if (getScrewPosition() == ScrewPosition.Central) {
+      if (getScrewPosition() == ScrewPosition.Center) {
         offset = (int) (getWidth().convertToPixels() / 2);
       } else {
         offset = (int) ((getWidth().convertToPixels() - getPitch().convertToPixels()) + getPitch().convertToPixels() / 2);
@@ -371,6 +371,6 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
   }
   
   static enum ScrewPosition {
-    Central, Offset;
+    Center, Offset;
   }
 }
