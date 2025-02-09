@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.diylc.core.IDIYComponent;
 
 public abstract class NetlistAnalyzer {
@@ -53,6 +54,17 @@ public abstract class NetlistAnalyzer {
 
     return tree;
   }
+  
+//  protected Tree removeRedundantElements(Tree tree) {
+//    List<Tree> children = tree.getChildren()
+//        .stream()
+//        .map(t -> removeRedundantElements(t))
+//        .collect(Collectors.toList());
+//    if (children.size() == 1) {
+//      Tree first = children.get(0);
+//      return first;
+//    }
+//  }
 
   protected void connectNodes(Netlist netlist, Node nodeA, Node nodeB, List<Tree> concurrentPaths, Tree currentPath,
       Set<Node> visited) {
