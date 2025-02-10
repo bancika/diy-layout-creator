@@ -1,5 +1,6 @@
 <h3><a name="News"></a>Introduction<a href="#Introduction" class="section_anchor"></a></h3>
-<p align="justify">DIY Layout Creator (DIYLC in short) is a freeware drawing tool developed with help of the large online community of DIY electronics enthusiasts. It incorporates many ideas that came from people using older versions of the application. The goal is to provide a simple interface and enough power to let the user draw schematics, board/chassis layouts and guitar wiring diagrams quickly and without a steep learning curve. Also, it is built around a flexible open source framework that may be used to draw pretty much anything. Below is a sample board layout drawn in DIYLC. </p>
+<p align="justify">
+DIY Layout Creator (DIYLC) is a specialized software tool designed for hobbyists and electronics enthusiasts to create circuit layouts on stripboard, perfboard, PCB, and point-to-point wiring. It provides an intuitive, drag-and-drop interface for placing components, arranging connections, and visualizing circuit designs before assembly. With a built-in component library and customization options, it allows users to design layouts with precision and clarity. The software is particularly useful for designing, analyzing, and debugging guitar wiring diagrams, helping musicians and builders plan and troubleshoot custom wiring configurations for pickups, switches, and tone controls. Its versatility makes it an ideal solution for DIY electronics projects, prototyping, and documentation.</p>
 <p></p>
 <p align="center"><a href="http://diy-fever.com/wordpress/wp-content/gallery/diylc/diylc_3_36_rangemaster.png" rel="nofollow"><img src="http://diy-fever.com/nextgen-image/833/480x0x90/a93c6f7598bc16fce4f4aad480631523"></a></p>
 <p></p>
@@ -38,9 +39,11 @@
    <li>Help with adding the information to the <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/Manual.md">user manual</a>. </li>
    <li>Extend the component base, read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md" rel="nofollow">this wiki</a> to learn how to create new components. </li>
    <li>Add a new functionality though plug-ins, read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/PluginAPI.md" rel="nofollow">this wiki</a> to learn how to create new plug-ins. </li>
+   <li><a href="https://www.patreon.com/c/user?u=5213116">Become a Patreon.</a></li>
+   <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88">Make a one-time donation with PayPal.</a></li>
 </ul>
-<p align="justify"><strong>DIYLC is provided free of charge and can be used and redistributed freely. Please note that it takes a lot of time and effort to build, test and maintain it and to interact with the growing community of users. If you find DIYLC useful and want to support further development, please consider making a small PayPal donation. Every little bit counts! If you have some extra parts, transistors, tubes, ICs, caps...anything useful for a fellow DIYer, I'll gladly accept a donation in parts.</strong></p>
-<p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>
+<p align="justify"><strong>DIYLC is provided free of charge and can be used and redistributed freely. Please note that it takes a lot of time and effort to build, test and maintain it and to interact with the growing community of users. If you find DIYLC useful and want to support further development, please consider making a small PayPal donation.</strong></p>
+<!--<p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>-->
 <h3><a name="License_information"></a>License information<a href="#License_information" class="section_anchor"></a></h3>
 <p>Source code is released under <a href="https://www.gnu.org/licenses/gpl-3.0.txt">GNU General Public License version 3</a>. Contact the project owner to obtain a license in case you plan to use the source code, or any part of it, in commercial purposes. </p>
 <p></p>
