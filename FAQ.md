@@ -18,3 +18,9 @@ Try turning "Hardware Acceleration" config off.
 
 Try running the command below in the terminal 
 `/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -u /Applications/DIYLC.app`
+
+### Flathub Distribution Cannot Read or Write Files ###
+
+- Install Flatseal then go to DIYLC > Filesystem and click on "All user files". Flatseal is available from Gnome Software on Fedora, it may also be available for other distributions. Otherwise you can download it from Flathub.
+- In a terminal type:
+`flatpak --user override --filesystem=home com.diy_fever.DIYLayoutCreator`
