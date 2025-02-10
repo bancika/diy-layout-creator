@@ -5,7 +5,7 @@ DIY Layout Creator (DIYLC) is a specialized software tool designed for hobbyists
 <a href="https://github.com/bancika/diy-layout-creator/releases/latest">Click here</a> to get the latest version for all platforms.</a><br>
 <a href="https://github.com/bancika/diy-layout-creator/tree/wiki">Click here</a> to read the user documentation as well as developer documentation.<br>
 <br>
-<b>Mac users</b>: in most instances, the Gatekeeper will block DIYLC and mark it as damaged because it's a 3rd party app from an independent vendor (me). <a href="[https://support.apple.com/en-us/HT202491](https://support.apple.com/kb/ph18657?locale=en_US)">This document</a> covers how to allow DIYLC.
+<b>Mac users</b>: in most instances, the Gatekeeper will block DIYLC and mark it as damaged because it's a 3rd party app from an independent vendor (me). <a href="[https://support.apple.com/en-us/HT202491](https://support.apple.com/kb/ph18657?locale=en_US)">This document</a> covers how to allow DIYLC on your Mac.
 
 <h3><a name="Samples"></a>Samples<a href="#Samples" class="section_anchor"></a></h3>
 
