@@ -1,7 +1,7 @@
 <h3><a name="News"></a>Introduction<a href="#Introduction" class="section_anchor"></a></h3>
 <p align="justify">
 DIY Layout Creator (DIYLC) is a specialized software tool designed for hobbyists and electronics enthusiasts to create circuit layouts on stripboard, perfboard, PCB, and point-to-point wiring. It provides an intuitive, drag-and-drop interface for placing components, arranging connections, and visualizing circuit designs before assembly. With a built-in component library and customization options, it allows users to design layouts with precision and clarity. The software is particularly useful for designing, analyzing, and debugging guitar wiring diagrams, helping musicians and builders plan and troubleshoot custom wiring configurations for pickups, switches, and controls. Its versatility makes it an ideal solution for DIY electronics projects, prototyping, and documentation.</p>
-<br><br>
+<br>
 <a href="https://github.com/bancika/diy-layout-creator/releases/latest">Click here</a> to get the latest version for all platforms.</a><br>
 <a href="https://github.com/bancika/diy-layout-creator/tree/wiki">Click here</a> to read the user documentation as well as developer documentation.<br>
 <b>Mac users</b>: in most instances, the Gatekeeper will block DIYLC and mark it as damaged because it's a 3rd party app from an independent vendor (me). <a href="[https://support.apple.com/en-us/HT202491](https://support.apple.com/kb/ph18657?locale=en_US)">This document</a> covers how to allow DIYLC.
