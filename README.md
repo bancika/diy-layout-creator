@@ -1,12 +1,21 @@
 <h3><a name="News"></a>Introduction<a href="#Introduction" class="section_anchor"></a></h3>
 <p align="justify">
 DIY Layout Creator (DIYLC) is a specialized software tool designed for hobbyists and electronics enthusiasts to create circuit layouts on stripboard, perfboard, PCB, and point-to-point wiring. It provides an intuitive, drag-and-drop interface for placing components, arranging connections, and visualizing circuit designs before assembly. With a built-in component library and customization options, it allows users to design layouts with precision and clarity. The software is particularly useful for designing, analyzing, and debugging guitar wiring diagrams, helping musicians and builders plan and troubleshoot custom wiring configurations for pickups, switches, and controls. Its versatility makes it an ideal solution for DIY electronics projects, prototyping, and documentation.</p>
-<p></p>
-<p align="center"><a href="http://diy-fever.com/wordpress/wp-content/gallery/diylc/diylc_3_36_rangemaster.png" rel="nofollow"><img src="http://diy-fever.com/nextgen-image/833/480x0x90/a93c6f7598bc16fce4f4aad480631523"></a></p>
-<p></p>
+<br><br>
 <a href="https://github.com/bancika/diy-layout-creator/releases/latest">Click here</a> to get the latest version for all platforms.</a><br>
 <a href="https://github.com/bancika/diy-layout-creator/tree/wiki">Click here</a> to read the user documentation as well as developer documentation.<br>
 <b>Mac users</b>: in most instances, the Gatekeeper will block DIYLC and mark it as damaged because it's a 3rd party app from an independent vendor (me). <a href="[https://support.apple.com/en-us/HT202491](https://support.apple.com/kb/ph18657?locale=en_US)">This document</a> covers how to allow DIYLC.
+
+<h3><a name="Samples"></a>Samples<a href="#Samples" class="section_anchor"></a></h3>
+
+<h4>Point-to-point tube amplifier</h4>
+<p align="center"><a href="http://diy-fever.com/wordpress/wp-content/gallery/diylc/slo.png" rel="nofollow"><img src="https://diy-fever.com/wordpress/wp-content/gallery/diylc/cache/slo.png-nggid041072-ngg0dyn-450x350-00f0w010c010r110f110r010t010.png"></a></p>
+<h4>Guitar wiring</h4>
+<p align="center"><a href="http://diy-fever.com/wordpress/wp-content/gallery/diylc/travelcaster.png" rel="nofollow"><img src="https://diy-fever.com/nextgen-image/1073/450x350/34b70d759e46422208d61e376b4633dc"></a></p>
+<h4>PCB tube amplifier</h4>
+<p align="center"><a href="http://diy-fever.com/wordpress/wp-content/gallery/diylc/iic.png" rel="nofollow"><img src="https://diy-fever.com/nextgen-image/1070/450x350/ccb592ec5828b6f5bc75e840438918f1"></a></p>
+<h4>Perfboard guitar effect</h4>
+<p align="center"><a href="http://diy-fever.com/wordpress/wp-content/gallery/diylc/split.png" rel="nofollow"><img src="https://diy-fever.com/nextgen-image/1069/450x350/358e43165de40e9c4043726c9efde4a7"></a></p>
 
 <h3><a name="Key Features"></a>Features<a href="#Features" class="section_anchor"></a></h3>
 <ul>
