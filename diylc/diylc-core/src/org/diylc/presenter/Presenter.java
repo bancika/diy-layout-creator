@@ -48,6 +48,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
@@ -78,11 +79,14 @@ import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
+import org.diylc.netlist.ConnectivityNetlistAnalyzer;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
 import org.diylc.netlist.NetlistBuilder;
 import org.diylc.netlist.NetlistException;
+import org.diylc.netlist.Summary;
+import org.diylc.netlist.TreeException;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
@@ -202,6 +206,9 @@ public class Presenter implements IPlugInPort {
   private int dragAction;
   private Point2D previousScaledPoint;
   
+  // Multimeter
+  private Point2D firstMultimeterPoint;
+  
   private DIYTest test = null;
   
   public Presenter(IView view, IConfigurationManager<?> configManager) {
@@ -212,6 +219,15 @@ public class Presenter implements IPlugInPort {
     super();
     this.view = view;
     this.configManager = configManager;
+    this.configManager.addConfigListener(MULTIMETER_MODE, new IConfigListener() {
+      
+      @Override
+      public void valueChanged(String name, Object value) {
+        if (Boolean.TRUE.equals(value)) {
+          firstMultimeterPoint = null;
+        }
+      }
+    });
     plugIns = new ArrayList<IPlugIn>();
     messageDispatcher = new MessageDispatcher<EventType>(true);
     selectedComponents = new HashSet<IDIYComponent<?>>();
@@ -680,8 +696,29 @@ public class Presenter implements IPlugInPort {
           projectFileManager.notifyFileChange();
         }
       } else if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false) || altDown) {
-        drawingManager.findContinuityAreaAtPoint(scaledPoint);
+        drawingManager.setContinuityAreaAtPoint(scaledPoint);
         messageDispatcher.dispatchMessage(EventType.REPAINT);
+      } else if (configManager.readBoolean(MULTIMETER_MODE, false)) {
+        if (firstMultimeterPoint == null) {
+          firstMultimeterPoint = scaledPoint;
+        } else {
+          ConnectivityNetlistAnalyzer connectivityNetlistAnalyzer = new ConnectivityNetlistAnalyzer(
+              firstMultimeterPoint, scaledPoint);
+          try {
+            List<Netlist> netlists = extractNetlists(false);
+            List<Summary> summarize = connectivityNetlistAnalyzer.summarize(netlists, null);
+            for (Summary s : summarize) {
+              LOG.info(s.getSummary());
+            }
+          } catch (NetlistException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          } catch (TreeException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+          firstMultimeterPoint = null;
+        }
       } else {
         List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(selectedComponents);
         List<IDIYComponent<?>> components = findComponentsAtScaled(scaledPoint, false);

@@ -695,11 +695,20 @@ public class DrawingManager {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
-  public void findContinuityAreaAtPoint(Point2D p) {
-    if (continuityGraphCache == null)
+  public void setContinuityAreaAtPoint(Point2D p) {
+    if (continuityGraphCache == null) {
       continuityGraphCache = getContinuityGraph();
+    }
 
     currentContinuityAreas = continuityGraphCache.findAreasFor(p);
+  }
+  
+  public List<Area> getContinuityAreaAtPoint(Point2D p) {
+    if (continuityGraphCache == null) {
+      continuityGraphCache = getContinuityGraph();
+    }
+
+    return continuityGraphCache.findAreasFor(p);
   }
   
   public List<ContinuityArea> getContinuityAreas() {

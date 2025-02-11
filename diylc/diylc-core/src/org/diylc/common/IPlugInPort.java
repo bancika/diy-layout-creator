@@ -77,6 +77,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String SHOW_RULERS_KEY = "showRulers";
   public static final String SHOW_GRID_KEY = "showGrid";
   public static final String HIGHLIGHT_CONTINUITY_AREA = "highlightContinuityArea";
+  public static final String MULTIMETER_MODE = "multimeterMode";
   public static final String HARDWARE_ACCELERATION = "hardwareAcceleration";
   public static final String EXTRA_SPACE_KEY = "extraSpace";
   public static final String FAVORITES_KEY = "favorites";

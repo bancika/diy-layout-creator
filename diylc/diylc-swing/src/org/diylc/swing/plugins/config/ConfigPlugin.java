@@ -103,6 +103,9 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, 
             false), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Multimeter Mode", IPlugInPort.MULTIMETER_MODE, 
+            false), CONFIG_MENU);
     
     try {
       List<Language> languages = LangUtil.getAvailableLanguages(); 
