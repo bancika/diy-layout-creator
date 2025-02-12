@@ -35,6 +35,8 @@
 4P6T
 4PDT
 4PDT (On/Off/On)
+4PDT (On/On/On Type 1)
+4PDT (On/On/On Type 2)
 5 band
 5 throws / 5 positions
 5PDT
@@ -45,11 +47,11 @@
 9 throws / 9 positions
 A-O-I     REGULATOR
 AC
+ANSI
 AWG
 Alternate
 And
 Angle Offset
-Apply Model
 B-C-E     BJT
 Background
 Box
@@ -83,6 +85,7 @@ Dots (Gradual)
 Dots (Uniform)
 Double Rails
 Double Rods
+Draw Standard
 Drop
 E+
 E-B-C     BJT
@@ -93,6 +96,7 @@ Filament Voltage
 Français
 G-D-S     JFET
 G-D-S     MOSFET
+G-I-O     REGULATOR
 G-O-I     REGULATOR
 G-S-D     JFET
 G-S-D     MOSFET
@@ -101,6 +105,7 @@ Generate DIYLC Netlist (incl. Switches)
 Gray
 Humbucking - 4 leads
 I-G-O     REGULATOR
+IEC
 Italiano
 Lin
 Log
@@ -126,10 +131,10 @@ Or
 PAF
 PCB
 PNP
+Pitch
 Poles
 Português
 RS
-RY1
 Rectangle
 Rev log
 S-G-D     JFET
@@ -139,6 +144,7 @@ SPDT
 SPDT (On/Off/On)
 SPDT (On/On)
 SPST
+Screw Position
 Shorting
 Show Project Explorer
 Single - North
