@@ -60,9 +60,12 @@ public class Line extends AbstractLeadedComponent<Void> {
   private Size thickness = new Size(1d, SizeUnit.px);
   private Size arrowSize = new Size(5d, SizeUnit.px);
   private Polygon arrow = null;  
-  private AffineTransform arrowTx = new AffineTransform();
   private boolean arrowStart = false;
   private boolean arrowEnd = false;
+  
+  @SuppressWarnings("unused")
+  @Deprecated
+  private transient AffineTransform arrowTx;
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
@@ -95,13 +98,15 @@ public class Line extends AbstractLeadedComponent<Void> {
     Point2D startPoint = new Point2D.Double(first.getX(), first.getY());
     Point2D endPoint = new Point2D.Double(second.getX(), second.getY());
     
+    AffineTransform arrowPosTx = new AffineTransform();
+    
     if (arrowStart) {
-      arrowTx.setToIdentity();
+      arrowPosTx.setToIdentity();
       double angle = Math.atan2(getControlPoint(1).getY() - getControlPoint(0).getY(), getControlPoint(1).getX() - getControlPoint(0).getX());
-      arrowTx.translate(getControlPoint(0).getX(), getControlPoint(0).getY());
-      arrowTx.rotate((angle + Math.PI / 2d));
+      arrowPosTx.translate(getControlPoint(0).getX(), getControlPoint(0).getY());
+      arrowPosTx.rotate((angle + Math.PI / 2d));
       AffineTransform oldTx = g2d.getTransform();
-      g2d.transform(arrowTx);         
+      g2d.transform(arrowPosTx);         
       g2d.fill(getArrow());
       g2d.setTransform(oldTx);
       
@@ -110,12 +115,12 @@ public class Line extends AbstractLeadedComponent<Void> {
       interpolate(startPoint, endPoint, getArrowSize().convertToPixels() * 0.9 / distance, startPoint);
     }
     if (arrowEnd) {
-      arrowTx.setToIdentity();
+      arrowPosTx.setToIdentity();
       double angle = Math.atan2(getControlPoint(1).getY() - getControlPoint(0).getY(), getControlPoint(1).getX() - getControlPoint(0).getX());
-      arrowTx.translate(getControlPoint(1).getX(), getControlPoint(1).getY());
-      arrowTx.rotate((angle - Math.PI / 2d));
+      arrowPosTx.translate(getControlPoint(1).getX(), getControlPoint(1).getY());
+      arrowPosTx.rotate((angle - Math.PI / 2d));
       AffineTransform oldTx = g2d.getTransform();
-      g2d.transform(arrowTx);   
+      g2d.transform(arrowPosTx);   
       g2d.fill(getArrow());
       g2d.setTransform(oldTx);
       
