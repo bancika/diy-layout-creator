@@ -38,7 +38,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.transform.AngledComponentTransformer;
+import org.diylc.components.transform.Freeway3x3_03Transformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -60,7 +60,7 @@ import com.kitfox.svg.ShapeElement;
 @ComponentDescriptor(name = "Freeway 3X3-03", category = "Guitar", author = "Branislav Stojkovic",
     description = "Freeway 3X3-03 Toggle Switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,
-    keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class, enableCache = true)
+    keywordTag = "Guitar Wiring Diagram", transformer = Freeway3x3_03Transformer.class, enableCache = true)
 public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements ISwitch {
 
   private static final Logger LOG = Logger.getLogger(Freeway3x3_03.class);
@@ -70,6 +70,7 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
   private static Color BASE_COLOR = FR4_COLOR;//Color.DARK_GRAY;
   private static Color PAD_COLOR = COPPER_COLOR;
   private static Color LABEL_COLOR = Color.WHITE;
+  private static Color CASE_COLOR = METAL_COLOR;
   
   private static final double[] X_OFFSETS = new double[] { 9, 15, 21, 21, 21, 21, 21, 21, 12, 3, 3, 3, 3, 3, 3 };
   private static final double[] Y_OFFSETS = new double[] { 3, 3, 5, 9.5, 14, 18.5, 23, 27.5, 30, 27.5, 23, 18.5, 14, 9.5, 5 };
@@ -87,6 +88,7 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
   private transient List<Shape> pads;
   private transient List<Shape> labels;
   private transient Shape base;
+  private transient Shape caseShape;
   private transient double[] xOffsetsPx;
   private transient double[] yOffsetsPx;
   
@@ -116,15 +118,26 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     
     double[] xOffsets = getXOffsetsPx();
     double[] yOffsets = getYOffsetsPx();
+    
+    
+    
+    Rectangle2D rect = new Rectangle2D.Double(x - xOffsets[0], y - yOffsets[0],
+        bounds2d.getWidth(), bounds2d.getHeight());
+    
+    if (getOrientation() != Orientation.DEFAULT) {
+      double theta = orientation.toRadians();
+      AffineTransform tx = AffineTransform.getRotateInstance(theta, x, y);
+      rect = tx.createTransformedShape(rect).getBounds2D();
+    }
 
     Shape clip = g2d.getClip().getBounds();
-    if (!clip.intersects(new Rectangle2D.Double(x - xOffsets[0], y - yOffsets[0],
-        bounds2d.getWidth(), bounds2d.getHeight()))) {
+    if (!clip.intersects(rect)) {
       return;
     }
     
     List<Shape> pads = getPads();
     List<Shape> labels = getLabels();
+    Shape caseShape = getCase();
     
     Composite oldComposite = g2d.getComposite();
     if (alpha < MAX_ALPHA) {
@@ -132,7 +145,7 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     }
 
     if (getOrientation() != Orientation.DEFAULT) {
-      double theta = getOrientation().toRadians();
+      double theta = orientation.toRadians();
       g2d.rotate(theta, x, y);
     }
 
@@ -176,6 +189,12 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     for (Shape l : labels) {
       g2d.fill(l);
     }
+    
+    g2d.setColor(CASE_COLOR);
+    g2d.fill(caseShape);
+    
+    g2d.setColor(CASE_COLOR.darker());
+    g2d.draw(caseShape);
     
     g2d.setComposite(oldComposite);
   }
@@ -231,32 +250,13 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     double[] xOffsetsPx = getXOffsetsPx();
     double[] yOffsetsPx = getYOffsetsPx();
     // Update control points.
-    double dx;
-    double dy;
-      switch (orientation) {
-        case DEFAULT:
-          dx = 1;
-          dy = 1;
-          break;
-        case _90:
-          dx = -1;
-          dy = 1;
-          break;
-        case _180:
-          dx = -1;
-          dy = -1;
-          break;
-        case _270:
-          dx = 1;
-          dy = -1;
-          break;
-        default:
-          throw new RuntimeException("Unexpected orientation: " + orientation);
-      }
-      for (int i = 1; i < controlPoints.length; i++) {
-        controlPoints[i] = new Point2D.Double(firstPoint.getX() + dx * (xOffsetsPx[i] - xOffsetsPx[0]),
-            firstPoint.getY() + dy * (yOffsetsPx[i] - yOffsetsPx[0]));
-      }
+    double theta = orientation.toRadians();
+    AffineTransform tx = AffineTransform.getRotateInstance(theta, firstPoint.getX(), firstPoint.getY());
+    for (int i = 1; i < controlPoints.length; i++) {
+      controlPoints[i] = new Point2D.Double(firstPoint.getX() + (xOffsetsPx[i] - xOffsetsPx[0]),
+          firstPoint.getY() + (yOffsetsPx[i] - yOffsetsPx[0]));
+      tx.transform(controlPoints[i], controlPoints[i]);
+    }
   }
   
   public SVGDiagram getSvgDiagram() {
@@ -305,6 +305,15 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
       }
     }
     return labels;
+  }
+  
+  public Shape getCase() {
+    if (caseShape == null) {
+      SVGDiagram svg = getSvgDiagram();
+      ShapeElement shapeElement = (ShapeElement)svg.getElement("case");
+      caseShape = SCALE_TX.createTransformedShape(shapeElement.getShape());
+    }
+    return caseShape;
   }
   
   public Shape getBase() {
@@ -365,11 +374,15 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     double x = point.getX();
     double y = point.getY();
     
+    double theta = orientation.toRadians();
+    AffineTransform tx = AffineTransform.getRotateInstance(theta, x, y);
+    
     double[] xOffsets = getXOffsetsPx();
     double[] yOffsets = getYOffsetsPx();
 
-    return new Rectangle2D.Double(x - xOffsets[0] - 1, y - yOffsets[0] - 1,
+    Rectangle2D rect = new Rectangle2D.Double(x - xOffsets[0] - 1, y - yOffsets[0] - 1,
         bounds2d.getWidth() + 2, bounds2d.getHeight() + 2);
+    return tx.createTransformedShape(rect).getBounds2D();
   }
 
   @Override
