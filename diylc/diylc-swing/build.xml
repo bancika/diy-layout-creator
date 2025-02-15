@@ -10,7 +10,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.39.0" />
+	<property name="diylc.version" value="4.40.0" />
 	
 	<property name="osx.jre8.x64.path" value="tools\jre\osx\x86\jre8u321\Contents\Home\" />
 	<property name="osx.jre8.arm.path" value="tools\jre\osx\arm\temurin17\Contents\Home\" />
@@ -107,7 +107,7 @@
 			<classpath file="${jar.dir}\lib\*.jar" />
 			<classpath file="${jar.dir}\library\*.jar" />
 			<option value="-Xms512m" />
-			<option value="-Xmx2048m" />
+			<option value="-Xmx4096m" />
 			<!--<option value="-javaagent:Contents/Java/jar-loader.jar" />-->
 			<option value="-Dorg.diylc.scriptRun=true" />
 			<option value="-Dfile.encoding=UTF-8" />
@@ -130,7 +130,7 @@
 			<bundleapp
 		        outputdirectory="${build.dir}"
 		        name="DIYLC"
-						jvmrequired="1.8"
+						jvmrequired="17"
 						copyright="2025 bancika"
 		        displayname="DIY Layout Creator"
 		        identifier="org.diylc.Desktop"
@@ -156,7 +156,7 @@
 				<classpath file="${jar.dir}\lib\*.jar" />
 				<classpath file="${jar.dir}\library\*.jar" />
 				<option value="-Xms512m" />
-				<option value="-Xmx2048m" />
+				<option value="-Xmx4096m" />
 				<!--<option value="-javaagent:Contents/Java/jar-loader.jar" />-->
 				<option value="--add-exports java.desktop/com.apple.eawt.event=ALL-UNNAMED" />
 				<option value="--add-exports java.desktop/com.apple.eio=ALL-UNNAMED" />
