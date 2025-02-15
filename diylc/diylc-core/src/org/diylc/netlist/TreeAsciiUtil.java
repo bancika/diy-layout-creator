@@ -19,6 +19,10 @@ public class TreeAsciiUtil {
   public static final String BOXV = "&#x2502;";
 
   public static List<String> concatenateMultiLineParallel(List<List<String>> elementLines) {
+    
+    if (elementLines.size() <= 1) {
+      return elementLines.stream().findFirst().orElse(new ArrayList<>());
+    }
 
     List<Integer> lineCounts = elementLines.stream()
             .map(lines -> lines.size())
