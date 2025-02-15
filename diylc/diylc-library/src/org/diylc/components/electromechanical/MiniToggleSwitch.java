@@ -40,7 +40,7 @@ import org.diylc.components.transform.MiniToggleSwitchTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
@@ -55,7 +55,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", autoEdit = false, enableCache = true, transformer = MiniToggleSwitchTransformer.class)
-public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch, ILayer {
+public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch, ILayeredComponent {
 
   private static final long serialVersionUID = 1L;
 

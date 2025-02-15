@@ -30,7 +30,7 @@ import org.diylc.components.transform.AbstractBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -45,7 +45,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with solder pads",
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Perf Board", transformer = AbstractBoardTransformer.class, enableCache = true)
-public class PerfBoard extends AbstractBoard implements ILayer {
+public class PerfBoard extends AbstractBoard implements ILayeredComponent {
 
   private static final long serialVersionUID = 1L;
 

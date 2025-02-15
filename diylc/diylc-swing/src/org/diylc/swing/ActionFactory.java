@@ -145,6 +145,10 @@ public class ActionFactory {
       IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
     return new ExportPDFAction(plugInPort, drawingProvider, swingUI, defaultSuffix);
   }
+  
+  public ExportGerberAction createExportGerberAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+    return new ExportGerberAction(plugInPort, swingUI);
+  }
 
   public ExportPNGAction createExportPNGAction(IPlugInPort plugInPort,
       IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
@@ -786,6 +790,59 @@ public class ActionFactory {
           @Override
           public void failed(Exception e) {
             swingUI.showMessage("Could not export to PDF. " + e.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
+          }
+        }, true);
+      }
+    }
+  }
+  
+  public static class ExportGerberAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private ISwingUI swingUI;
+    private IPlugInPort plugInPort;
+
+    public ExportGerberAction(IPlugInPort plugInPort,
+        ISwingUI swingUI) {
+      super();
+      this.plugInPort = plugInPort;
+      this.swingUI = swingUI;
+      putValue(AbstractAction.NAME, "Export to Gerber");
+//      putValue(AbstractAction.SMALL_ICON, IconLoader.PDF.getIcon());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info("ExportGerberAction triggered");
+
+      File initialFile = null;
+      String currentFile = plugInPort.getCurrentFileName();
+      if (currentFile != null) {
+        File cFile = new File(currentFile);
+        initialFile =
+            new File(cFile.getName().replaceAll("(?i)\\.diy", ""));
+      }
+
+      final File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
+          FileFilterEnum.ALL_FILES.getFilter(), initialFile, "", null);
+      if (file != null) {
+        swingUI.executeBackgroundTask(new ITask<Void>() {
+
+          @Override
+          public Void doInBackground() throws Exception {
+            LOG.debug("Exporting to " + file.getAbsolutePath());
+            plugInPort.exportToGerber(file.getAbsolutePath());
+            return null;
+          }
+
+          @Override
+          public void complete(Void result) {}
+
+          @Override
+          public void failed(Exception e) {
+            swingUI.showMessage("Could not export to Gerber file. " + e.getMessage(), "Error",
                 ISwingUI.ERROR_MESSAGE);
           }
         }, true);

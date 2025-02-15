@@ -45,6 +45,13 @@ public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> 
     // * (grids + remainder));
     return getValue() * getUnit().getFactor() / SizeUnit.in.getFactor() * Constants.PIXELS_PER_INCH;
   }
+  
+  public double convertToUnits(SizeUnit unit) {
+    if (unit == getUnit()) {
+      return this.getValue();
+    }
+    return convertToPixels() * SizeUnit.px.getFactor();
+  }
 
   @Override
   public Size clone() throws CloneNotSupportedException {

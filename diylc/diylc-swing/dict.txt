@@ -92,6 +92,7 @@ E-B-C     BJT
 Eight
 English
 Español
+Export to Gerber
 Filament Voltage
 Français
 G-D-S     JFET

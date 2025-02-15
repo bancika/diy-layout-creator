@@ -28,7 +28,7 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -41,7 +41,7 @@ import org.diylc.core.measures.SizeUnit;
     zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, 
     enableCache = true)
-public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer {
+public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayeredComponent {
 
   private static final long serialVersionUID = 1L;
 

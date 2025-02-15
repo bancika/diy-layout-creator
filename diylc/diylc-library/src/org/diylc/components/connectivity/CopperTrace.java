@@ -27,7 +27,7 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -41,7 +41,7 @@ import org.diylc.core.measures.SizeUnit;
     description = "Straight copper trace", zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW,
     autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
     transformer = SimpleComponentTransformer.class)
-public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayer {
+public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayeredComponent {
 
   private static final long serialVersionUID = 1L;
 

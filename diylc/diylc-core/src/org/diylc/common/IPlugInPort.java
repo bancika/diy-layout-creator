@@ -169,6 +169,13 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param isBackup
    */
   void saveProjectToFile(String fileName, boolean isBackup);
+  
+  /**
+   * Exports the current project into one or more files - one per layer and potentially drill layer.
+   * 
+   * @param fileNameBase
+   */
+  void exportToGerber(String fileNameBase);
 
   /**
    * @return the current file name.

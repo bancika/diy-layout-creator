@@ -80,6 +80,8 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
         actionFactory.createExportPDFAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
     swingUI.injectMenuAction(
         actionFactory.createExportPNGAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
+    swingUI.injectMenuAction(
+        actionFactory.createExportGerberAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createPrintAction(drawingProvider, swingUI,
         Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), FILE_TITLE);
     swingUI.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);

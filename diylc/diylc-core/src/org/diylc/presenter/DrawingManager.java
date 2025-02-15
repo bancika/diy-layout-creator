@@ -58,7 +58,7 @@ import org.diylc.core.ComponentForRender;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
@@ -717,8 +717,8 @@ public class DrawingManager {
       
       int layerId;
       
-      if (component instanceof ILayer) {
-        layerId = ((ILayer)component).getLayerId();
+      if (component instanceof ILayeredComponent) {
+        layerId = ((ILayeredComponent)component).getLayerId();
       } else {
         layerId = 0;
       }
