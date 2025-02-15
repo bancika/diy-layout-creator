@@ -810,7 +810,7 @@ public class ActionFactory {
       this.plugInPort = plugInPort;
       this.swingUI = swingUI;
       putValue(AbstractAction.NAME, "Export to Gerber");
-//      putValue(AbstractAction.SMALL_ICON, IconLoader.PDF.getIcon());
+      putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentGerber.getIcon());
     }
 
     @Override

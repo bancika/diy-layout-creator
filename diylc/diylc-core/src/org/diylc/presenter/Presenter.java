@@ -429,6 +429,9 @@ public class Presenter implements IPlugInPort {
     List<GerberLayer> layers = currentProject.getComponents().stream().filter(c -> c instanceof IGerberComponent)
         .map(c -> ((IGerberComponent) c).getGerberLayers()).filter(x -> x != null)
         .flatMap(x -> x.stream()).distinct().collect(Collectors.toList());
+    if (layers.isEmpty()) {
+      throw new RuntimeException("Nothing to export.");
+    }
     layers.forEach(layer -> {
       GenerationSoftware genSoftware = new GenerationSoftware("bancika", "DIY Layout Creator",
           getCurrentVersionNumber().toString());
