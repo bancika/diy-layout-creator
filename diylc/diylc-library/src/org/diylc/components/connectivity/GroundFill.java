@@ -24,14 +24,18 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.GerberLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.IGerberComponent;
 import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
@@ -40,11 +44,15 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import com.bancika.gerberwriter.DataLayer;
+import com.bancika.gerberwriter.GerberFunctions;
+import com.bancika.gerberwriter.Point;
+import com.bancika.gerberwriter.path.Path;
 
 @ComponentDescriptor(name = "Ground Fill", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.TRACE,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
-public class GroundFill extends AbstractComponent<Void> implements ILayeredComponent {
+public class GroundFill extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -185,5 +193,23 @@ public class GroundFill extends AbstractComponent<Void> implements ILayeredCompo
     public String toString() {
       return name().substring(1);
     };
+  }
+
+  @Override
+  public void drawToGerber(DataLayer dataLayer) {
+    Path p = new Path();
+    p.moveTo(new Point(controlPoints[0].getX() * SizeUnit.px.getFactor(), -controlPoints[0].getY() * SizeUnit.px.getFactor()));
+    for (int i = 1; i < controlPoints.length; i++) {
+      p.lineTo(new Point(controlPoints[i].getX() * SizeUnit.px.getFactor(), -controlPoints[i].getY() * SizeUnit.px.getFactor()));
+    }
+    p.lineTo(new Point(controlPoints[0].getX() * SizeUnit.px.getFactor(), -controlPoints[0].getY() * SizeUnit.px.getFactor()));
+    dataLayer.addRegion(p, GerberFunctions.CONDUCTOR, false);
+  }
+
+  @Override
+  public List<GerberLayer> getGerberLayers() {
+    List<GerberLayer> layers = new ArrayList<GerberLayer>();
+    layers.add(new GerberLayer("Copper,L" + getLayerId() + ",Top,Signal", "gtl"));
+    return layers;
   }
 }
