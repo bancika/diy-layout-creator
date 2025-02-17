@@ -164,7 +164,7 @@ Srpski
 Stroke
 Ten
 Terminal
-There are some components that are outside of the bounds of boards.%sThey will be ignored. Do you want to continue?
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?
 Timing
 Tubular Beveled
 Xnor

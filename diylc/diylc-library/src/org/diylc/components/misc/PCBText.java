@@ -29,12 +29,8 @@ import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.CubicCurve2D;
-import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +51,9 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.GerberExporter;
 import org.diylc.core.gerber.IGerberComponent;
-import org.diylc.core.measures.SizeUnit;
 import com.bancika.gerberwriter.DataLayer;
-import com.bancika.gerberwriter.GerberFunctions;
-import com.bancika.gerberwriter.Point;
-import com.bancika.gerberwriter.path.Path;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,
@@ -421,7 +414,7 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     Color c = getColor();
     // treat light colors as negative etched into a ground plane
     float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-    subdivide(pathIterator, dataLayer, d, hsb[2] > 0.5);
+    GerberExporter.outputConductor(pathIterator, dataLayer, d, hsb[2] > 0.5);
   }
 
   @Override
@@ -436,89 +429,5 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     return 1;
   }
   
-  protected void subdivide(PathIterator pathIterator, DataLayer dataLayer, double d, boolean isNegative) {
-    double x = 0;
-    double y = 0;
-    Path path = null;
-    Path2D lastPath = null;
-    Area lastArea = null;
-    boolean currentIsNegative = isNegative;
-    while (!pathIterator.isDone()) {
-      double[] coords = new double[6];
-      int operation = pathIterator.currentSegment(coords);
-      switch (operation) {
-        case PathIterator.SEG_MOVETO:
-          path = new Path();
-          lastPath = new Path2D.Double();
-          lastPath.moveTo(coords[0], coords[1]);
-          path.moveTo(new Point(-coords[0] * SizeUnit.px.getFactor(), -coords[1] * SizeUnit.px.getFactor()));
-          x = coords[0];
-          y = coords[1];
-          break;
-        case PathIterator.SEG_LINETO:
-          lastPath.lineTo(coords[0], coords[1]);
-          path.lineTo(new Point(-coords[0] * SizeUnit.px.getFactor(), -coords[1] * SizeUnit.px.getFactor()));
-          x = coords[0];
-          y = coords[1];
-          break;
-        case PathIterator.SEG_CLOSE:
-          lastPath.closePath();
-          if (lastArea == null) {
-            dataLayer.addRegion(path, GerberFunctions.CONDUCTOR, currentIsNegative);
-          } else {
-            lastArea.intersect(new Area(lastPath));
-            if (lastArea.isEmpty()) {
-              currentIsNegative = isNegative;
-            } else {
-              currentIsNegative = !currentIsNegative;
-            }
-            dataLayer.addRegion(path, GerberFunctions.CONDUCTOR, currentIsNegative);
-          }
-          lastArea = new Area(lastPath);
-          path = null;
-          break;
-        case PathIterator.SEG_CUBICTO:
-          lastPath.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-          CubicCurve2D curve1 = new CubicCurve2D.Double(x, y, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-          subdivide(curve1, path, d);
-          x = coords[4];
-          y = coords[5];
-          break;
-        case PathIterator.SEG_QUADTO:
-          lastPath.curveTo(coords[0], coords[1], (coords[0] + 2 * coords[2]) / 3, (coords[3] + 2 * coords[1]) / 3, coords[2], coords[3]);
-          QuadCurve2D curve2 = new QuadCurve2D.Double(x, y, coords[0], coords[1], coords[2], coords[3]);
-          subdivide(curve2, path, d);
-          x = coords[2];
-          y = coords[3];
-          break;
-      }
-      pathIterator.next();
-    }    
-  }
   
-  private void subdivide(CubicCurve2D curve, Path path, double d) {
-    if (/*curve.getFlatness() < d || */new Point2D.Double(curve.getX1(), curve.getY1()).distance(curve.getX2(), curve.getY2()) < d) {
-//      path.lineTo(new Point(curve.getX1() * SizeUnit.px.getFactor(), curve.getY1() * SizeUnit.px.getFactor()));
-      path.lineTo(new Point(-curve.getX2() * SizeUnit.px.getFactor(), -curve.getY2() * SizeUnit.px.getFactor()));
-      return;
-    }
-    CubicCurve2D left = new CubicCurve2D.Double();
-    CubicCurve2D right = new CubicCurve2D.Double();
-    curve.subdivide(left, right);
-    subdivide(left, path, d);
-    subdivide(right, path, d);
-  }
-  
-  private void subdivide(QuadCurve2D curve, Path path, double d) {
-    if (/*curve.getFlatness() < d || */new Point2D.Double(curve.getX1(), curve.getY1()).distance(curve.getX2(), curve.getY2()) < d) {
-//      path.lineTo(new Point(curve.getX1() * SizeUnit.px.getFactor(), curve.getY1() * SizeUnit.px.getFactor()));
-      path.lineTo(new Point(-curve.getX2() * SizeUnit.px.getFactor(), -curve.getY2() * SizeUnit.px.getFactor()));
-      return;
-    }
-    QuadCurve2D left = new QuadCurve2D.Double();
-    QuadCurve2D right = new  QuadCurve2D.Double();
-    curve.subdivide(left, right);
-    subdivide(left, path, d);
-    subdivide(right, path, d);
-  }
 }

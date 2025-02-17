@@ -20,6 +20,7 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
+import org.diylc.core.gerber.GerberExporter;
 import org.diylc.core.gerber.IGerberComponent;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -48,6 +50,7 @@ import com.bancika.gerberwriter.DataLayer;
 import com.bancika.gerberwriter.GerberFunctions;
 import com.bancika.gerberwriter.Point;
 import com.bancika.gerberwriter.padmasters.Circle;
+import com.bancika.gerberwriter.padmasters.Rectangle;
 
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Copper solder pad, round or square", instanceNamePrefix = "Pad",
@@ -241,11 +244,32 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
     final Point p =
         new Point(-point.getX() * SizeUnit.px.getFactor(), -point.getY() * SizeUnit.px.getFactor());
     if (dataLayer.getFunction().equals("Copper,L" + getLayerId() + ",Top,Signal")) {
-      Circle viaPad =
+      if (getType() == Type.ROUND) {
+        Circle viaPad =
           new Circle(size.convertToUnits(SizeUnit.mm), GerberFunctions.CONNECTOR_PAD, false);
+        dataLayer.addPad(viaPad, p);
+      } else if (getType() == Type.SQUARE) {
+        Rectangle viaPad =
+          new Rectangle(size.convertToUnits(SizeUnit.mm), size.convertToUnits(SizeUnit.mm), GerberFunctions.CONNECTOR_PAD, false);
+        dataLayer.addPad(viaPad, p);
+      } else {
+        Ellipse2D ellipse = null;
+        double diameter = getSize().convertToPixels();
+        if (type == Type.OVAL_HORIZONTAL) {
+          ellipse = new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter * 3 / 8,
+              diameter, diameter * 3 / 4);
+        } else if (type == Type.OVAL_VERTICAL) {
+          ellipse = new Ellipse2D.Double(point.getX() - diameter * 3 / 8, point.getY() - diameter / 2,
+              diameter * 3 / 4, diameter);
+        } else {
+          throw new RuntimeException("Unexpected solder pad type: " + getType());
+        }
+        double d = 1;
+        PathIterator pathIterator = ellipse.getPathIterator(null);
+        GerberExporter.outputConductor(pathIterator, dataLayer, d, false);
+      }
       Circle viaPadHole =
           new Circle(holeSize.convertToUnits(SizeUnit.mm), GerberFunctions.CONNECTOR_PAD, true);
-      dataLayer.addPad(viaPad, p);
       dataLayer.addPad(viaPadHole, p);
     } else {
       Circle hole =
