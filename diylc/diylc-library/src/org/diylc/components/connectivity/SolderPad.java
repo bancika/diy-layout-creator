@@ -239,7 +239,7 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
   @Override
   public void drawToGerber(DataLayer dataLayer) {
     final Point p =
-        new Point(point.getX() * SizeUnit.px.getFactor(), -point.getY() * SizeUnit.px.getFactor());
+        new Point(-point.getX() * SizeUnit.px.getFactor(), -point.getY() * SizeUnit.px.getFactor());
     if (dataLayer.getFunction().equals("Copper,L" + getLayerId() + ",Top,Signal")) {
       Circle viaPad =
           new Circle(size.convertToUnits(SizeUnit.mm), GerberFunctions.CONNECTOR_PAD, false);

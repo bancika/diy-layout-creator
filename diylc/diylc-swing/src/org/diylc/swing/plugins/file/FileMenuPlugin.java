@@ -48,6 +48,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
   private static final String TRACE_MASK_TITLE = "Trace Mask";
   private static final String INTEGRATION_TITLE = "Integration";
   private static final String ANALYZE_TITLE = "Analyze";
+  private static final String EXPORT_TITLE = "Export";
 
   private ProjectDrawingProvider drawingProvider;
   private TraceMaskDrawingProvider traceMaskDrawingProvider;
@@ -76,12 +77,13 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(actionFactory.createSaveAsAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectDynamicSubmenu("Recent Files", IconLoader.History.getIcon(), FILE_TITLE, this);
     swingUI.injectMenuAction(null, FILE_TITLE);
+    swingUI.injectSubmenu(EXPORT_TITLE, IconLoader.Export.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(
-        actionFactory.createExportPDFAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
+        actionFactory.createExportPDFAction(plugInPort, drawingProvider, swingUI, ""), EXPORT_TITLE);
     swingUI.injectMenuAction(
-        actionFactory.createExportPNGAction(plugInPort, drawingProvider, swingUI, ""), FILE_TITLE);
+        actionFactory.createExportPNGAction(plugInPort, drawingProvider, swingUI, ""), EXPORT_TITLE);
     swingUI.injectMenuAction(
-        actionFactory.createExportGerberAction(plugInPort, swingUI), FILE_TITLE);
+        actionFactory.createExportGerberAction(plugInPort, swingUI), EXPORT_TITLE);
     swingUI.injectMenuAction(actionFactory.createPrintAction(drawingProvider, swingUI,
         Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), FILE_TITLE);
     swingUI.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);

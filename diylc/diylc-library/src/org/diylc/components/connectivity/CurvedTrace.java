@@ -136,9 +136,9 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
     List<CubicCurve2D> subdivide = subdivide(d);
     subdivide.forEach(segment -> {
       dataLayer.addTraceLine(
-          new com.bancika.gerberwriter.Point(segment.getX1() * SizeUnit.px.getFactor(),
+          new com.bancika.gerberwriter.Point(-segment.getX1() * SizeUnit.px.getFactor(),
               -segment.getY1() * SizeUnit.px.getFactor()),
-          new com.bancika.gerberwriter.Point(segment.getX2() * SizeUnit.px.getFactor(),
+          new com.bancika.gerberwriter.Point(-segment.getX2() * SizeUnit.px.getFactor(),
               -segment.getY2() * SizeUnit.px.getFactor()),
           getThickness().convertToPixels() * SizeUnit.px.getFactor(), GerberFunctions.CONDUCTOR,
           false);

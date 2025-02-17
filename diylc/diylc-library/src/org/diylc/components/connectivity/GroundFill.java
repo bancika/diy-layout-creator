@@ -198,11 +198,11 @@ public class GroundFill extends AbstractComponent<Void> implements ILayeredCompo
   @Override
   public void drawToGerber(DataLayer dataLayer) {
     Path p = new Path();
-    p.moveTo(new Point(controlPoints[0].getX() * SizeUnit.px.getFactor(), -controlPoints[0].getY() * SizeUnit.px.getFactor()));
+    p.moveTo(new Point(-controlPoints[0].getX() * SizeUnit.px.getFactor(), -controlPoints[0].getY() * SizeUnit.px.getFactor()));
     for (int i = 1; i < controlPoints.length; i++) {
-      p.lineTo(new Point(controlPoints[i].getX() * SizeUnit.px.getFactor(), -controlPoints[i].getY() * SizeUnit.px.getFactor()));
+      p.lineTo(new Point(-controlPoints[i].getX() * SizeUnit.px.getFactor(), -controlPoints[i].getY() * SizeUnit.px.getFactor()));
     }
-    p.lineTo(new Point(controlPoints[0].getX() * SizeUnit.px.getFactor(), -controlPoints[0].getY() * SizeUnit.px.getFactor()));
+    p.lineTo(new Point(-controlPoints[0].getX() * SizeUnit.px.getFactor(), -controlPoints[0].getY() * SizeUnit.px.getFactor()));
     dataLayer.addRegion(p, GerberFunctions.CONDUCTOR, false);
   }
 

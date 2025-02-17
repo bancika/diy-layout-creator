@@ -208,9 +208,9 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayer
   @Override
   public void drawToGerber(DataLayer dataLayer) {
     dataLayer.addTraceLine(
-        new com.bancika.gerberwriter.Point(points[0].getX() * SizeUnit.px.getFactor(),
+        new com.bancika.gerberwriter.Point(-points[0].getX() * SizeUnit.px.getFactor(),
             -points[0].getY() * SizeUnit.px.getFactor()),
-        new com.bancika.gerberwriter.Point(points[1].getX() * SizeUnit.px.getFactor(),
+        new com.bancika.gerberwriter.Point(-points[1].getX() * SizeUnit.px.getFactor(),
             -points[1].getY() * SizeUnit.px.getFactor()),
         getThickness().convertToPixels() * SizeUnit.px.getFactor(), GerberFunctions.CONDUCTOR,
         false);
