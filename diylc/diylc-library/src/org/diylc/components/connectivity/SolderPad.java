@@ -268,10 +268,12 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
         PathIterator pathIterator = ellipse.getPathIterator(null);
         GerberExporter.outputConductor(pathIterator, dataLayer, d, false);
       }
-      Circle viaPadHole =
-          new Circle(holeSize.convertToUnits(SizeUnit.mm), GerberFunctions.CONNECTOR_PAD, true);
-      dataLayer.addPad(viaPadHole, p);
-    } else {
+      if (getHoleSize().getValue() > 0) {
+        Circle viaPadHole =
+            new Circle(holeSize.convertToUnits(SizeUnit.mm), GerberFunctions.CONNECTOR_PAD, true);
+        dataLayer.addPad(viaPadHole, p);
+      }
+    } else if (getHoleSize().getValue() > 0) {
       Circle hole =
           new Circle(holeSize.convertToUnits(SizeUnit.mm), GerberFunctions.COMPONENT_DRILL, false);
       dataLayer.addPad(hole, p);
