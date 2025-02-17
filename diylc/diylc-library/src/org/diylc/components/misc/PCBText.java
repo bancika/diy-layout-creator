@@ -406,7 +406,10 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     PathIterator pathIterator = outline.getPathIterator(null);
     
     double d = 1;
-    subdivide(pathIterator, dataLayer, d, false);
+    Color c = getColor();
+    // treat light colors as negative etched into a ground plane
+    float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
+    subdivide(pathIterator, dataLayer, d, hsb[2] > 0.5);
   }
 
   @Override
