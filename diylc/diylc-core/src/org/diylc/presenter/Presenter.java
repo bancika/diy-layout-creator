@@ -67,17 +67,15 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.IProjectEditor;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ExpansionMode;
-import org.diylc.core.GerberLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
-import org.diylc.core.IGerberComponent;
-import org.diylc.core.ILayeredComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.IAutoCreator;
+import org.diylc.core.gerber.GerberExporter;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
@@ -91,8 +89,6 @@ import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
 import org.diylc.utils.ReflectionUtils;
-import com.bancika.gerberwriter.DataLayer;
-import com.bancika.gerberwriter.GenerationSoftware;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
@@ -426,29 +422,7 @@ public class Presenter implements IPlugInPort {
   
   @Override
   public void exportToGerber(String fileNameBase) {
-    List<GerberLayer> layers = currentProject.getComponents().stream().filter(c -> c instanceof IGerberComponent)
-        .map(c -> ((IGerberComponent) c).getGerberLayers()).filter(x -> x != null)
-        .flatMap(x -> x.stream()).distinct().collect(Collectors.toList());
-    if (layers.isEmpty()) {
-      throw new RuntimeException("Nothing to export.");
-    }
-    layers.forEach(layer -> {      
-      GenerationSoftware genSoftware = new GenerationSoftware("bancika", "DIY Layout Creator",
-          getCurrentVersionNumber().toString());
-      DataLayer dataLayer = new DataLayer(layer.getFunction(), false, genSoftware);
-      String fileName = fileNameBase + (fileNameBase.endsWith(".") ? "" : ".") + layer.getExtension();
-      currentProject.getComponents().stream().filter(c -> c instanceof ILayeredComponent
-          && c instanceof IGerberComponent).forEach(c -> {
-            ((IGerberComponent)c).drawToGerber(dataLayer);
-          });
-      try {
-        LOG.info("Exporting layer: " + layer + " to file: " + fileName);
-        dataLayer.dumpGerberToFile(fileName);
-      } catch (IOException e) {
-        LOG.error("Error writing gerber file: " + e.getMessage());
-      }
-    });
-    LOG.info("Completed export to gerber");
+    GerberExporter.exportGerber(fileNameBase, currentProject, view, getCurrentVersionNumber().toString());    
   }
 
   @Override
