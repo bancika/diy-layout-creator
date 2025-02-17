@@ -25,12 +25,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.CubicCurve2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
@@ -38,6 +38,7 @@ import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.PCBLayer;
@@ -81,18 +82,28 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
   private Orientation orientation = Orientation.DEFAULT;
   
   private PCBLayer layer = PCBLayer._1;
+  
+  private transient Rectangle2D boundingRect;
 
   @SuppressWarnings("incomplete-switch")
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+
     g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : color);
     g2d.setFont(font);
+    
+//    FontRenderContext frc = new FontRenderContext(null, false, true);
+//    TextLayout layout = new TextLayout(getText(), getFont(), frc);
+//    Rectangle2D rect = layout.getBounds();
+    
     FontMetrics fontMetrics = g2d.getFontMetrics();
-    Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);
+    // hack to store bounding rect, due to inconsistencies between methods that calculate it
+    // to be used for gerber export
+    boundingRect = fontMetrics.getStringBounds(text, g2d);
 
-    int textHeight = (int) rect.getHeight();
-    int textWidth = (int) rect.getWidth();
+    int textHeight = (int) boundingRect.getHeight();
+    int textWidth = (int) boundingRect.getWidth();
 
     double x = point.getX();
     double y = point.getY();
@@ -348,7 +359,8 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     FontRenderContext frc = new FontRenderContext(null, false, true);
     TextLayout layout = new TextLayout(getText(), getFont(), frc);
     
-    Rectangle2D rect = layout.getBounds();
+    // hack to reuse bounding rect from drawing to the screen as layou.getBounds produces slightly different results
+    Rectangle2D rect = Optional.ofNullable(boundingRect).orElse(layout.getBounds());
     
     AffineTransform tx = new AffineTransform();
 
@@ -401,7 +413,7 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     tx.translate(-2 * x - textWidth, 0);
     tx.translate(x, y);
     
-    GeneralPath outline = (GeneralPath) layout.getOutline(tx);
+    Shape outline = layout.getOutline(tx);
     
     PathIterator pathIterator = outline.getPathIterator(null);
     
@@ -428,37 +440,23 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     double x = 0;
     double y = 0;
     Path path = null;
-//    double ux = Double.NaN;
-//    double uy = Double.NaN;
-//    double vx = Double.NaN;
-//    double vy = Double.NaN;
     Path2D lastPath = null;
     Area lastArea = null;
     boolean currentIsNegative = isNegative;
     while (!pathIterator.isDone()) {
       double[] coords = new double[6];
-//      int windingRule = pathIterator.getWindingRule();
       int operation = pathIterator.currentSegment(coords);
       switch (operation) {
         case PathIterator.SEG_MOVETO:
           path = new Path();
           lastPath = new Path2D.Double();
           lastPath.moveTo(coords[0], coords[1]);
-//          System.out.println("SEG_MOVETO: " + coords[0] + ": " + coords[1] + " wind: " +windingRule);
           path.moveTo(new Point(-coords[0] * SizeUnit.px.getFactor(), -coords[1] * SizeUnit.px.getFactor()));
           x = coords[0];
           y = coords[1];
           break;
         case PathIterator.SEG_LINETO:
-//          if (Double.isNaN(ux)) {
-//            ux = coords[0] - x;
-//            uy = coords[1] - y;
-//          } else if (Double.isNaN(vx)) {
-//            vx = coords[0] - x;
-//            vy = coords[1] - y;
-//          }
           lastPath.lineTo(coords[0], coords[1]);
-//          System.out.println("SEG_LINETO: " + coords[0] + ": " + coords[1]+ " wind: " +windingRule);
           path.lineTo(new Point(-coords[0] * SizeUnit.px.getFactor(), -coords[1] * SizeUnit.px.getFactor()));
           x = coords[0];
           y = coords[1];
@@ -477,42 +475,17 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
             dataLayer.addRegion(path, GerberFunctions.CONDUCTOR, currentIsNegative);
           }
           lastArea = new Area(lastPath);
-//          double uxv = ux*vy-uy*vx;
-//          if (uxv > 0) {
-//            positivePaths.add(path);
-//          } else {
-//            negativePaths.add(path);
-//          }
           path = null;
-//          System.out.println("SEG_CLOSE: " + coords[0] + ": " + coords[1]+ " wind: " +windingRule);
-          // do nothing
           break;
         case PathIterator.SEG_CUBICTO:
-//          if (Double.isNaN(ux)) {
-//            ux = coords[4] - x;
-//            uy = coords[5] - y;
-//          } else if (Double.isNaN(vx)) {
-//            vx = coords[4] - x;
-//            vy = coords[5] - y;
-//          }
           lastPath.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-//          System.out.println("SEG_CLOSE: " + coords[0] + ":" + coords[1] + ", " + coords[2] + ":" + coords[3] + ", " + 
-//              coords[4] + ":" + coords[5]+ " wind: " +windingRule);
           CubicCurve2D curve1 = new CubicCurve2D.Double(x, y, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
           subdivide(curve1, path, d);
           x = coords[4];
           y = coords[5];
           break;
         case PathIterator.SEG_QUADTO:
-//          if (Double.isNaN(ux)) {
-//            ux = coords[2] - x;
-//            uy = coords[3] - y;
-//          } else if (Double.isNaN(vx)) {
-//            vx = coords[2] - x;
-//            vy = coords[3] - y;
-//          }
           lastPath.curveTo(coords[0], coords[1], (coords[0] + 2 * coords[2]) / 3, (coords[3] + 2 * coords[1]) / 3, coords[2], coords[3]);
-//          System.out.println("SEG_QUADTO: " + coords[0] + ":" + coords[1] + ", " + coords[2] + ":" + coords[3]+ " wind: " +windingRule);
           QuadCurve2D curve2 = new QuadCurve2D.Double(x, y, coords[0], coords[1], coords[2], coords[3]);
           subdivide(curve2, path, d);
           x = coords[2];

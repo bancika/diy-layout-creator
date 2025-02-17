@@ -432,7 +432,7 @@ public class Presenter implements IPlugInPort {
     if (layers.isEmpty()) {
       throw new RuntimeException("Nothing to export.");
     }
-    layers.forEach(layer -> {
+    layers.forEach(layer -> {      
       GenerationSoftware genSoftware = new GenerationSoftware("bancika", "DIY Layout Creator",
           getCurrentVersionNumber().toString());
       DataLayer dataLayer = new DataLayer(layer.getFunction(), false, genSoftware);
@@ -442,11 +442,13 @@ public class Presenter implements IPlugInPort {
             ((IGerberComponent)c).drawToGerber(dataLayer);
           });
       try {
+        LOG.info("Exporting layer: " + layer + " to file: " + fileName);
         dataLayer.dumpGerberToFile(fileName);
       } catch (IOException e) {
         LOG.error("Error writing gerber file: " + e.getMessage());
       }
     });
+    LOG.info("Completed export to gerber");
   }
 
   @Override
