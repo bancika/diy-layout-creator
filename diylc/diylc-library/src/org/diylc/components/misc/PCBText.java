@@ -25,9 +25,19 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.PCBLayer;
@@ -35,18 +45,26 @@ import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.transform.TextTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.GerberLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.IGerberComponent;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.measures.SizeUnit;
+import com.bancika.gerberwriter.DataLayer;
+import com.bancika.gerberwriter.GerberFunctions;
+import com.bancika.gerberwriter.Point;
+import com.bancika.gerberwriter.path.Path;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,
     flexibleZOrder = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
-public class PCBText extends AbstractComponent<Void> {
+public class PCBText extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponent {
 
   public static String DEFAULT_TEXT = "Double click to edit text";
 
@@ -319,5 +337,212 @@ public class PCBText extends AbstractComponent<Void> {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
+  }
+
+  @SuppressWarnings("incomplete-switch")
+  @Override
+  public void drawToGerber(DataLayer dataLayer) {
+    if (!dataLayer.getFunction().equals("Copper,L" + getLayerId() + ",Top,Signal")) {
+      return;
+    }
+    FontRenderContext frc = new FontRenderContext(null, false, true);
+    TextLayout layout = new TextLayout(getText(), getFont(), frc);
+    
+    Rectangle2D rect = layout.getBounds();
+    
+    AffineTransform tx = new AffineTransform();
+
+    int textHeight = (int) rect.getHeight();
+    int textWidth = (int) rect.getWidth();
+
+    double x = point.getX();
+    double y = point.getY();
+    switch (getVerticalAlignment()) {
+      case CENTER:
+        y = point.getY() - textHeight / 2 + layout.getAscent();
+        break;
+      case TOP:
+        y = point.getY() - textHeight + layout.getAscent();
+        break;
+      case BOTTOM:
+        y = point.getY() + layout.getAscent();
+        break;
+      default:
+        throw new RuntimeException("Unexpected alignment: " + getVerticalAlignment());
+    }
+    switch (getHorizontalAlignment()) {
+      case CENTER:
+        x = point.getX() - textWidth / 2;
+        break;
+      case LEFT:
+        x = point.getX();
+        break;
+      case RIGHT:
+        x = point.getX() - textWidth;
+        break;
+      default:
+        throw new RuntimeException("Unexpected alignment: " + getHorizontalAlignment());
+    }
+
+    switch (getOrientation()) {
+      case _90:
+        tx.rotate(Math.PI / 2, point.getX(), point.getY());
+        break;
+      case _180:
+        tx.rotate(Math.PI, point.getX(), point.getY());
+        break;
+      case _270:
+        tx.rotate(Math.PI * 3 / 2, point.getX(), point.getY());
+        break;
+    }
+    
+    // Flip horizontally
+    tx.scale(-1, 1);
+    tx.translate(-2 * x - textWidth, 0);
+    tx.translate(x, y);
+    
+    GeneralPath outline = (GeneralPath) layout.getOutline(tx);
+    
+    PathIterator pathIterator = outline.getPathIterator(null);
+    
+    double d = 1;
+    subdivide(pathIterator, dataLayer, d, false);
+  }
+
+  @Override
+  public List<GerberLayer> getGerberLayers() {
+    List<GerberLayer> layers = new ArrayList<GerberLayer>();
+    layers.add(new GerberLayer("Copper,L" + getLayerId() + ",Top,Signal", "gtl"));
+    return layers;
+  }
+
+  @Override
+  public int getLayerId() {
+    return 1;
+  }
+  
+  protected void subdivide(PathIterator pathIterator, DataLayer dataLayer, double d, boolean isNegative) {
+    double x = 0;
+    double y = 0;
+    Path path = null;
+//    double ux = Double.NaN;
+//    double uy = Double.NaN;
+//    double vx = Double.NaN;
+//    double vy = Double.NaN;
+    Path2D lastPath = null;
+    Area lastArea = null;
+    boolean currentIsNegative = isNegative;
+    while (!pathIterator.isDone()) {
+      double[] coords = new double[6];
+//      int windingRule = pathIterator.getWindingRule();
+      int operation = pathIterator.currentSegment(coords);
+      switch (operation) {
+        case PathIterator.SEG_MOVETO:
+          path = new Path();
+          lastPath = new Path2D.Double();
+          lastPath.moveTo(coords[0], coords[1]);
+//          System.out.println("SEG_MOVETO: " + coords[0] + ": " + coords[1] + " wind: " +windingRule);
+          path.moveTo(new Point(-coords[0] * SizeUnit.px.getFactor(), -coords[1] * SizeUnit.px.getFactor()));
+          x = coords[0];
+          y = coords[1];
+          break;
+        case PathIterator.SEG_LINETO:
+//          if (Double.isNaN(ux)) {
+//            ux = coords[0] - x;
+//            uy = coords[1] - y;
+//          } else if (Double.isNaN(vx)) {
+//            vx = coords[0] - x;
+//            vy = coords[1] - y;
+//          }
+          lastPath.lineTo(coords[0], coords[1]);
+//          System.out.println("SEG_LINETO: " + coords[0] + ": " + coords[1]+ " wind: " +windingRule);
+          path.lineTo(new Point(-coords[0] * SizeUnit.px.getFactor(), -coords[1] * SizeUnit.px.getFactor()));
+          x = coords[0];
+          y = coords[1];
+          break;
+        case PathIterator.SEG_CLOSE:
+          lastPath.closePath();
+          if (lastArea == null) {
+            dataLayer.addRegion(path, GerberFunctions.CONDUCTOR, currentIsNegative);
+          } else {
+            lastArea.intersect(new Area(lastPath));
+            if (lastArea.isEmpty()) {
+              currentIsNegative = isNegative;
+            } else {
+              currentIsNegative = !currentIsNegative;
+            }
+            dataLayer.addRegion(path, GerberFunctions.CONDUCTOR, currentIsNegative);
+          }
+          lastArea = new Area(lastPath);
+//          double uxv = ux*vy-uy*vx;
+//          if (uxv > 0) {
+//            positivePaths.add(path);
+//          } else {
+//            negativePaths.add(path);
+//          }
+          path = null;
+//          System.out.println("SEG_CLOSE: " + coords[0] + ": " + coords[1]+ " wind: " +windingRule);
+          // do nothing
+          break;
+        case PathIterator.SEG_CUBICTO:
+//          if (Double.isNaN(ux)) {
+//            ux = coords[4] - x;
+//            uy = coords[5] - y;
+//          } else if (Double.isNaN(vx)) {
+//            vx = coords[4] - x;
+//            vy = coords[5] - y;
+//          }
+          lastPath.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+//          System.out.println("SEG_CLOSE: " + coords[0] + ":" + coords[1] + ", " + coords[2] + ":" + coords[3] + ", " + 
+//              coords[4] + ":" + coords[5]+ " wind: " +windingRule);
+          CubicCurve2D curve1 = new CubicCurve2D.Double(x, y, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+          subdivide(curve1, path, d);
+          x = coords[4];
+          y = coords[5];
+          break;
+        case PathIterator.SEG_QUADTO:
+//          if (Double.isNaN(ux)) {
+//            ux = coords[2] - x;
+//            uy = coords[3] - y;
+//          } else if (Double.isNaN(vx)) {
+//            vx = coords[2] - x;
+//            vy = coords[3] - y;
+//          }
+          lastPath.curveTo(coords[0], coords[1], (coords[0] + 2 * coords[2]) / 3, (coords[3] + 2 * coords[1]) / 3, coords[2], coords[3]);
+//          System.out.println("SEG_QUADTO: " + coords[0] + ":" + coords[1] + ", " + coords[2] + ":" + coords[3]+ " wind: " +windingRule);
+          QuadCurve2D curve2 = new QuadCurve2D.Double(x, y, coords[0], coords[1], coords[2], coords[3]);
+          subdivide(curve2, path, d);
+          x = coords[2];
+          y = coords[3];
+          break;
+      }
+      pathIterator.next();
+    }    
+  }
+  
+  private void subdivide(CubicCurve2D curve, Path path, double d) {
+    if (/*curve.getFlatness() < d || */new Point2D.Double(curve.getX1(), curve.getY1()).distance(curve.getX2(), curve.getY2()) < d) {
+//      path.lineTo(new Point(curve.getX1() * SizeUnit.px.getFactor(), curve.getY1() * SizeUnit.px.getFactor()));
+      path.lineTo(new Point(-curve.getX2() * SizeUnit.px.getFactor(), -curve.getY2() * SizeUnit.px.getFactor()));
+      return;
+    }
+    CubicCurve2D left = new CubicCurve2D.Double();
+    CubicCurve2D right = new CubicCurve2D.Double();
+    curve.subdivide(left, right);
+    subdivide(left, path, d);
+    subdivide(right, path, d);
+  }
+  
+  private void subdivide(QuadCurve2D curve, Path path, double d) {
+    if (/*curve.getFlatness() < d || */new Point2D.Double(curve.getX1(), curve.getY1()).distance(curve.getX2(), curve.getY2()) < d) {
+//      path.lineTo(new Point(curve.getX1() * SizeUnit.px.getFactor(), curve.getY1() * SizeUnit.px.getFactor()));
+      path.lineTo(new Point(-curve.getX2() * SizeUnit.px.getFactor(), -curve.getY2() * SizeUnit.px.getFactor()));
+      return;
+    }
+    QuadCurve2D left = new QuadCurve2D.Double();
+    QuadCurve2D right = new  QuadCurve2D.Double();
+    curve.subdivide(left, right);
+    subdivide(left, path, d);
+    subdivide(right, path, d);
   }
 }
