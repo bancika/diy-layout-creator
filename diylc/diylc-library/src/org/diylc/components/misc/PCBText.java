@@ -54,6 +54,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.GerberExporter;
 import org.diylc.core.gerber.IGerberComponent;
 import com.bancika.gerberwriter.DataLayer;
+import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,
@@ -414,7 +415,7 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     Color c = getColor();
     // treat light colors as negative etched into a ground plane
     float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-    GerberExporter.outputConductor(pathIterator, dataLayer, d, hsb[2] > 0.5);
+    GerberExporter.outputPathArea(pathIterator, dataLayer, d, hsb[2] > 0.5, GerberFunctions.CONDUCTOR);
   }
 
   @Override

@@ -4,11 +4,17 @@ public class GerberLayer {
   
   private String function;
   private String extension;
+  private boolean negative;
   
   public GerberLayer(String function, String extension) {
+    this(function, extension, false);
+  }
+  
+  public GerberLayer(String function, String extension, boolean negative) {
     super();
     this.function = function;
     this.extension = extension;
+    this.negative = negative;
   }
 
   public String getFunction() {
@@ -17,6 +23,10 @@ public class GerberLayer {
   
   public String getExtension() {
     return extension;
+  }
+  
+  public boolean isNegative() {
+    return negative;
   }
   
   @Override

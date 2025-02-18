@@ -115,7 +115,7 @@ public class GerberExporter {
       layerComponentMap.entrySet().forEach(entry -> {
         GerberLayer layer = entry.getKey();
         Set<IGerberComponent> layerComponents = entry.getValue();
-        DataLayer dataLayer = new DataLayer(layer.getFunction(), false, genSoftware);
+        DataLayer dataLayer = new DataLayer(layer.getFunction(), layer.isNegative(), genSoftware);
         String fileName = fileNameBase + (fileNameBase.endsWith(".") ? "" : ".")
             + boardComponent.getName() + "." + layer.getExtension();
         boardComponentMap.get(b)
@@ -149,7 +149,7 @@ public class GerberExporter {
     LOG.info("Completed export to gerber");
   }
   
-  public static void outputConductor(PathIterator pathIterator, DataLayer dataLayer, double d, boolean isNegative) {
+  public static void outputPathArea(PathIterator pathIterator, DataLayer dataLayer, double d, boolean isNegative, String function) {
     double x = 0;
     double y = 0;
     Path path = null;
@@ -177,7 +177,7 @@ public class GerberExporter {
         case PathIterator.SEG_CLOSE:
           lastPath.closePath();
           if (lastArea == null) {
-            dataLayer.addRegion(path, GerberFunctions.CONDUCTOR, currentIsNegative);
+            dataLayer.addRegion(path, function, currentIsNegative);
           } else {
             lastArea.intersect(new Area(lastPath));
             if (lastArea.isEmpty()) {
@@ -185,7 +185,7 @@ public class GerberExporter {
             } else {
               currentIsNegative = !currentIsNegative;
             }
-            dataLayer.addRegion(path, GerberFunctions.CONDUCTOR, currentIsNegative);
+            dataLayer.addRegion(path, function, currentIsNegative);
           }
           lastArea = new Area(lastPath);
           path = null;
