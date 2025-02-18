@@ -19,28 +19,28 @@ package org.diylc.components.connectivity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Path2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
-import org.diylc.core.GerberLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
+import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.gerber.GerberRenderMode;
 import org.diylc.core.gerber.IGerberComponent;
+import org.diylc.core.gerber.IGerberDrawingObserver;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import com.bancika.gerberwriter.DataLayer;
 import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity",
@@ -62,7 +62,17 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   protected Color getDefaultColor() {
     return COLOR;
   }
-
+  
+  @Override
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver,
+      IGerberDrawingObserver gerberDrawingObserver) {
+    gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperTop, GerberFunctions.CONDUCTOR, false);
+    gerberDrawingObserver.setApproximationToleranceOverride(SIZE.convertToPixels());
+    super.draw(g2d, componentState, outlineMode, project, drawingObserver);
+    gerberDrawingObserver.stopGerberOutput();
+  }
+  
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
     float thickness = (float) size.convertToPixels();
@@ -131,24 +141,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   }
   
   @Override
-  public void drawToGerber(DataLayer dataLayer) {
-    double d = new Size(0.2d, SizeUnit.mm).convertToPixels();
-    List<CubicCurve2D> subdivide = subdivide(d);
-    subdivide.forEach(segment -> {
-      dataLayer.addTraceLine(
-          new com.bancika.gerberwriter.Point(-segment.getX1() * SizeUnit.px.getFactor(),
-              -segment.getY1() * SizeUnit.px.getFactor()),
-          new com.bancika.gerberwriter.Point(-segment.getX2() * SizeUnit.px.getFactor(),
-              -segment.getY2() * SizeUnit.px.getFactor()),
-          getThickness().convertToPixels() * SizeUnit.px.getFactor(), GerberFunctions.CONDUCTOR,
-          false);
-    });
-  }
-
-  @Override
-  public List<GerberLayer> getGerberLayers() {
-    List<GerberLayer> layers = new ArrayList<GerberLayer>();
-    layers.add(new GerberLayer("Copper,L" + getLayerId() + ",Top,Signal", "gtl"));
-    return layers;
+  public Set<GerberRenderMode> getGerberRenderModes() {
+    return EnumSet.of(GerberRenderMode.Normal);
   }
 }

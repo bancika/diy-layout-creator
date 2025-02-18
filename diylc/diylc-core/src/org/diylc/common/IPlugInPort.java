@@ -174,8 +174,9 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * Exports the current project into one or more files - one per layer and potentially drill layer.
    * 
    * @param fileNameBase
+   * @param g2d
    */
-  void exportToGerber(String fileNameBase);
+  void exportToGerber(String fileNameBase, Graphics2D g2d);
 
   /**
    * @return the current file name.

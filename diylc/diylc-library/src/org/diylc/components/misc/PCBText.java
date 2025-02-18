@@ -25,16 +25,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.EnumSet;
+import java.util.Set;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.PCBLayer;
@@ -42,7 +37,6 @@ import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.transform.TextTransformer;
 import org.diylc.core.ComponentState;
-import org.diylc.core.GerberLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
@@ -51,9 +45,9 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.gerber.GerberExporter;
+import org.diylc.core.gerber.GerberRenderMode;
 import org.diylc.core.gerber.IGerberComponent;
-import com.bancika.gerberwriter.DataLayer;
+import org.diylc.core.gerber.IGerberDrawingObserver;
 import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
@@ -77,13 +71,11 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
   
   private PCBLayer layer = PCBLayer._1;
   
-  private transient Rectangle2D boundingRect;
-
   @SuppressWarnings("incomplete-switch")
   @Override
-  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
-
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver,
+      IGerberDrawingObserver gerberDrawingObserver) {
     g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : color);
     g2d.setFont(font);
     
@@ -94,7 +86,7 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     FontMetrics fontMetrics = g2d.getFontMetrics();
     // hack to store bounding rect, due to inconsistencies between methods that calculate it
     // to be used for gerber export
-    boundingRect = fontMetrics.getStringBounds(text, g2d);
+    Rectangle2D boundingRect = fontMetrics.getStringBounds(text, g2d);
 
     int textHeight = (int) boundingRect.getHeight();
     int textWidth = (int) boundingRect.getWidth();
@@ -146,10 +138,24 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
     tx.translate(-2 * x - textWidth, 0);
     g2d.transform(tx);
+    
+    Color c = getColor();
+    // treat light colors as negative etched into a ground plane
+    float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 
+    if (gerberDrawingObserver != null)
+      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperTop,  GerberFunctions.CONDUCTOR, hsb[2] > 0.5);
     g2d.drawString(text, (int)x, (int)y);
+    if (gerberDrawingObserver != null)
+      gerberDrawingObserver.stopGerberOutput();
     
     g2d.setTransform(oldTx);
+  }
+
+  @Override
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
+      IDrawingObserver drawingObserver) {
+    this.draw(g2d, componentState, outlineMode, project, drawingObserver, null);
   }
 
   @Override
@@ -344,91 +350,13 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     return null;
   }
 
-  @SuppressWarnings("incomplete-switch")
-  @Override
-  public void drawToGerber(DataLayer dataLayer) {
-    if (!dataLayer.getFunction().equals("Copper,L" + getLayerId() + ",Top,Signal")) {
-      return;
-    }
-    FontRenderContext frc = new FontRenderContext(null, false, true);
-    TextLayout layout = new TextLayout(getText(), getFont(), frc);
-    
-    // hack to reuse bounding rect from drawing to the screen as layou.getBounds produces slightly different results
-    Rectangle2D rect = Optional.ofNullable(boundingRect).orElse(layout.getBounds());
-    
-    AffineTransform tx = new AffineTransform();
-
-    int textHeight = (int) rect.getHeight();
-    int textWidth = (int) rect.getWidth();
-
-    double x = point.getX();
-    double y = point.getY();
-    switch (getVerticalAlignment()) {
-      case CENTER:
-        y = point.getY() - textHeight / 2 + layout.getAscent();
-        break;
-      case TOP:
-        y = point.getY() - textHeight + layout.getAscent();
-        break;
-      case BOTTOM:
-        y = point.getY() + layout.getAscent();
-        break;
-      default:
-        throw new RuntimeException("Unexpected alignment: " + getVerticalAlignment());
-    }
-    switch (getHorizontalAlignment()) {
-      case CENTER:
-        x = point.getX() - textWidth / 2;
-        break;
-      case LEFT:
-        x = point.getX();
-        break;
-      case RIGHT:
-        x = point.getX() - textWidth;
-        break;
-      default:
-        throw new RuntimeException("Unexpected alignment: " + getHorizontalAlignment());
-    }
-
-    switch (getOrientation()) {
-      case _90:
-        tx.rotate(Math.PI / 2, point.getX(), point.getY());
-        break;
-      case _180:
-        tx.rotate(Math.PI, point.getX(), point.getY());
-        break;
-      case _270:
-        tx.rotate(Math.PI * 3 / 2, point.getX(), point.getY());
-        break;
-    }
-    
-    // Flip horizontally
-    tx.scale(-1, 1);
-    tx.translate(-2 * x - textWidth, 0);
-    tx.translate(x, y);
-    
-    Shape outline = layout.getOutline(tx);
-    
-    PathIterator pathIterator = outline.getPathIterator(null);
-    
-    double d = 1;
-    Color c = getColor();
-    // treat light colors as negative etched into a ground plane
-    float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-    GerberExporter.outputPathArea(pathIterator, dataLayer, d, hsb[2] > 0.5, GerberFunctions.CONDUCTOR);
-  }
-
-  @Override
-  public List<GerberLayer> getGerberLayers() {
-    List<GerberLayer> layers = new ArrayList<GerberLayer>();
-    layers.add(new GerberLayer("Copper,L" + getLayerId() + ",Top,Signal", "gtl"));
-    return layers;
-  }
-
   @Override
   public int getLayerId() {
     return 1;
   }
   
-  
+  @Override
+  public Set<GerberRenderMode> getGerberRenderModes() {
+    return EnumSet.of(GerberRenderMode.Normal);
+  }
 }

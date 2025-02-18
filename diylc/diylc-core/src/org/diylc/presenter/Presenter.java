@@ -421,8 +421,8 @@ public class Presenter implements IPlugInPort {
   }
   
   @Override
-  public void exportToGerber(String fileNameBase) {
-    GerberExporter.exportGerber(fileNameBase, currentProject, view, getCurrentVersionNumber().toString());    
+  public void exportToGerber(String fileNameBase, Graphics2D g2d) {
+    GerberExporter.exportGerber(fileNameBase, currentProject, view, g2d, getCurrentVersionNumber().toString());    
   }
 
   @Override

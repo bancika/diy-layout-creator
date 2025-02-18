@@ -1,5 +1,6 @@
 package org.diylc.swing.actions;
 
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
@@ -47,7 +48,7 @@ public class ExportGerberAction extends AbstractAction {
         @Override
         public Void doInBackground() throws Exception {
           ActionFactory.LOG.debug("Exporting to " + file.getAbsolutePath());
-          plugInPort.exportToGerber(file.getAbsolutePath());
+          plugInPort.exportToGerber(file.getAbsolutePath(), (Graphics2D) swingUI.getOwnerFrame().getGraphics());
           return null;
         }
 

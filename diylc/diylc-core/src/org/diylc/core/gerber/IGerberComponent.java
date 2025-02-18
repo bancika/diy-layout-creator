@@ -1,13 +1,15 @@
 package org.diylc.core.gerber;
 
-import java.util.List;
-import org.diylc.core.GerberLayer;
-import org.diylc.core.ILayeredComponent;
-import com.bancika.gerberwriter.DataLayer;
+import java.awt.Graphics2D;
+import java.util.Set;
+import org.diylc.core.ComponentState;
+import org.diylc.core.IDrawingObserver;
+import org.diylc.core.Project;
 
-public interface IGerberComponent extends ILayeredComponent {
+public interface IGerberComponent {
 
-  void drawToGerber(DataLayer dataLayer);
+  Set<GerberRenderMode> getGerberRenderModes();
   
-  List<GerberLayer> getGerberLayers();
+  void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
+      IDrawingObserver drawingObserver, IGerberDrawingObserver gerberDrawingObserver);
 }

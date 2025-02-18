@@ -20,16 +20,14 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
-import org.diylc.core.GerberLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
@@ -41,16 +39,13 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
-import org.diylc.core.gerber.GerberExporter;
+import org.diylc.core.gerber.GerberRenderMode;
 import org.diylc.core.gerber.IGerberComponent;
+import org.diylc.core.gerber.IGerberDrawingObserver;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-import com.bancika.gerberwriter.DataLayer;
 import com.bancika.gerberwriter.GerberFunctions;
-import com.bancika.gerberwriter.Point;
-import com.bancika.gerberwriter.padmasters.Circle;
-import com.bancika.gerberwriter.padmasters.Rectangle;
 
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Copper solder pad, round or square", instanceNamePrefix = "Pad",
@@ -74,7 +69,8 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
-      Project project, IDrawingObserver drawingObserver) {
+      Project project, IDrawingObserver drawingObserver,
+      IGerberDrawingObserver gerberDrawingObserver) {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
@@ -85,6 +81,10 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
             ? SELECTION_COLOR
             : color);
     drawingObserver.startTrackingContinuityArea(true);
+    if (gerberDrawingObserver != null) {
+      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperTop, GerberFunctions.CONNECTOR_PAD, false);
+      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskTop, "Material", false);
+    }
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
           diameter, diameter));
@@ -99,11 +99,25 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
           diameter, diameter));
     }
     drawingObserver.stopTrackingContinuityArea();
+    if (gerberDrawingObserver != null)
+      gerberDrawingObserver.stopGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskTop);
     if (getHoleSize().getValue() > 0) {
+      if (gerberDrawingObserver != null) {
+        gerberDrawingObserver.setGerberNegative(org.diylc.core.gerber.GerberLayer.CopperTop, true);
+        gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.Drill, GerberFunctions.COMPONENT_DRILL, false);
+      }
       g2d.setColor(Constants.CANVAS_COLOR);
       g2d.fill(new Ellipse2D.Double(point.getX() - holeDiameter / 2,
           point.getY() - holeDiameter / 2, holeDiameter, holeDiameter));
     }
+    if (gerberDrawingObserver != null)
+      gerberDrawingObserver.stopGerberOutput();
+  }
+
+  @Override
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver) {
+    this.draw(g2d, componentState, outlineMode, project, drawingObserver, null);
   }
 
   @Override
@@ -230,60 +244,9 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
       return name().substring(0, 1) + name().substring(1).toLowerCase().replace('_', ' ');
     }
   }
-
+  
   @Override
-  public List<GerberLayer> getGerberLayers() {
-    List<GerberLayer> layers = new ArrayList<GerberLayer>();
-    layers.add(new GerberLayer("Copper,L" + getLayerId() + ",Top,Signal", "gtl"));
-    layers.add(new GerberLayer("Soldermask,Top", "gts", true));
-    layers.add(new GerberLayer("NonPlated,1,2,NPTH", "drl"));
-    return layers;
-  }
-
-  @Override
-  public void drawToGerber(DataLayer dataLayer) {
-    final Point p =
-        new Point(-point.getX() * SizeUnit.px.getFactor(), -point.getY() * SizeUnit.px.getFactor());
-    if (dataLayer.getFunction().equals("Copper,L" + getLayerId() + ",Top,Signal")) {
-      outputPadOutline(dataLayer, p, GerberFunctions.CONNECTOR_PAD);
-      if (getHoleSize().getValue() > 0) {
-        Circle viaPadHole =
-            new Circle(holeSize.convertToUnits(SizeUnit.mm), GerberFunctions.CONNECTOR_PAD, true);
-        dataLayer.addPad(viaPadHole, p);
-      }
-    } else if (dataLayer.getFunction().equals("Soldermask,Top")) {
-      outputPadOutline(dataLayer, p, "Material");
-    } else if (getHoleSize().getValue() > 0) {
-      Circle hole =
-          new Circle(holeSize.convertToUnits(SizeUnit.mm), GerberFunctions.COMPONENT_DRILL, false);
-      dataLayer.addPad(hole, p);
-    }
-  }
-
-  private void outputPadOutline(DataLayer dataLayer, final Point p, String function) {
-    if (getType() == Type.ROUND) {
-      Circle viaPad =
-        new Circle(size.convertToUnits(SizeUnit.mm), function, false);
-      dataLayer.addPad(viaPad, p);
-    } else if (getType() == Type.SQUARE) {
-      Rectangle viaPad =
-        new Rectangle(size.convertToUnits(SizeUnit.mm), size.convertToUnits(SizeUnit.mm), function, false);
-      dataLayer.addPad(viaPad, p);
-    } else {
-      Ellipse2D ellipse = null;
-      double diameter = getSize().convertToPixels();
-      if (type == Type.OVAL_HORIZONTAL) {
-        ellipse = new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter * 3 / 8,
-            diameter, diameter * 3 / 4);
-      } else if (type == Type.OVAL_VERTICAL) {
-        ellipse = new Ellipse2D.Double(point.getX() - diameter * 3 / 8, point.getY() - diameter / 2,
-            diameter * 3 / 4, diameter);
-      } else {
-        throw new RuntimeException("Unexpected solder pad type: " + getType());
-      }
-      double d = 1;
-      PathIterator pathIterator = ellipse.getPathIterator(null);
-      GerberExporter.outputPathArea(pathIterator, dataLayer, d, false, function);
-    }
+  public Set<GerberRenderMode> getGerberRenderModes() {
+    return EnumSet.of(GerberRenderMode.Normal);
   }
 }
