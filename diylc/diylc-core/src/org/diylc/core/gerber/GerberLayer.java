@@ -4,11 +4,15 @@ import com.bancika.gerberwriter.DataLayer;
 import com.bancika.gerberwriter.GenerationSoftware;
 
 public enum GerberLayer {
+  
   Outline("Profile,NP", "gko", false),
   Drill("NonPlated,1,2,NPTH", "drl", false),
-  CopperTop("Copper,L1,Top,Signal", "gtl", false),
-  SilkscreenTop("", "", false),
-  SolderMaskTop("Soldermask,Top", "gts", true);
+  CopperTop("Copper,L1,Top", "gtl", false),
+  CopperBot("Copper,L1,Bot", "gbl", false),
+  SilkscreenTop("Legend,Top", "gto", false),
+  SilkscreenBot("Legend,Bot", "gbo", false),
+  SolderMaskTop("Soldermask,Top", "gts", true),
+  SolderMaskBot("Soldermask,Bot", "gbs", true);
   
   private String function;
   private String extension;

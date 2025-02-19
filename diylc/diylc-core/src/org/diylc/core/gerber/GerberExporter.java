@@ -53,8 +53,7 @@ public class GerberExporter {
           if (board == null) {
             componentsWithoutBoard.add(c);
           } else {
-            boardComponentMap.computeIfAbsent(board, k -> new ArrayList<IDIYComponent<?>>())
-                .add(c);
+            boardComponentMap.computeIfAbsent(board, k -> new ArrayList<IDIYComponent<?>>()).add(c);
           }
         });
 
@@ -108,15 +107,13 @@ public class GerberExporter {
       GerberG2DWrapper g2d = new GerberG2DWrapper(graphics2d, diylcVersion);
 
       boardComponentMap.get(b).forEach(c -> {
-        IGerberComponent gerberComponent = (IGerberComponent)c;
+        IGerberComponent gerberComponent = (IGerberComponent) c;
         Set<GerberRenderMode> supportedRenderModes = gerberComponent.getGerberRenderModes();
         if (supportedRenderModes.contains(GerberRenderMode.Normal)) {
-          g2d.startedDrawingComponent();
-          gerberComponent.draw(g2d, ComponentState.NORMAL, false, currentProject, g2d, g2d);
+          drawComponent(currentProject, g2d, c, false);
         }
         if (supportedRenderModes.contains(GerberRenderMode.Outline)) {
-          g2d.startedDrawingComponent();
-          gerberComponent.draw(g2d, ComponentState.NORMAL, false, currentProject, g2d, g2d);
+          drawComponent(currentProject, g2d, c, true);
         }
       });
 
@@ -149,6 +146,22 @@ public class GerberExporter {
     LOG.info("Completed export to gerber");
   }
 
+  private static void drawComponent(Project currentProject, GerberG2DWrapper g2d,
+      IDIYComponent<?> c, boolean outlineMode) {
+    IGerberComponent gerberComponent = (IGerberComponent) c;
+    g2d.startedDrawingComponent();
+    if (gerberComponent instanceof IGerberComponentCustom) {
+      IGerberComponentCustom gerberComponentCustom = (IGerberComponentCustom) gerberComponent;
+      gerberComponentCustom.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d, g2d);
+    } else if (gerberComponent instanceof IGerberComponentSimple) {
+      IGerberComponentSimple gerberComponentSimple = (IGerberComponentSimple) gerberComponent;
+      g2d.startGerberOutput(gerberComponentSimple.getGerberLayer(),
+          gerberComponentSimple.getGerberFunction(), gerberComponentSimple.isGerberNegative());
+      c.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d);
+      g2d.stopGerberOutput();
+    }
+  }
+
   public static void outputPathArea(PathIterator pathIterator, DataLayer dataLayer, double d,
       boolean isNegative, String function) {
     outputPath(pathIterator, d, isNegative,
@@ -157,8 +170,8 @@ public class GerberExporter {
 
   public static void outputPathOutline(PathIterator pathIterator, DataLayer dataLayer, double d,
       boolean isNegative, String function, double width) {
-    outputPath(pathIterator, d, isNegative,
-        (path, negative) -> dataLayer.addTracesPath(path, width * SizeUnit.px.getFactor(), function, negative));
+    outputPath(pathIterator, d, isNegative, (path, negative) -> dataLayer.addTracesPath(path,
+        width * SizeUnit.px.getFactor(), function, negative));
   }
 
   private static void outputPath(PathIterator pathIterator, double d, boolean isNegative,
@@ -192,7 +205,7 @@ public class GerberExporter {
         case PathIterator.SEG_CLOSE:
           // safety check, do it better
           if (!path.isContour()) {
-            path.lineTo(((MoveTo)path.getOperators().get(0)).getTo());
+            path.lineTo(((MoveTo) path.getOperators().get(0)).getTo());
           }
           lastPath.closePath();
           if (lastArea == null) {

@@ -40,7 +40,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.gerber.GerberRenderMode;
-import org.diylc.core.gerber.IGerberComponent;
+import org.diylc.core.gerber.IGerberComponentCustom;
 import org.diylc.core.gerber.IGerberDrawingObserver;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -52,7 +52,7 @@ import com.bancika.gerberwriter.GerberFunctions;
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
     transformer = SimpleComponentTransformer.class, enableCache = true)
-public class SolderPad extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponent {
+public class SolderPad extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponentCustom {
 
   private static final long serialVersionUID = 1L;
 

@@ -29,6 +29,7 @@ import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.utils.Constants;
 import com.bancika.gerberwriter.DataLayer;
 
 public class GerberG2DWrapper extends Graphics2D implements IDrawingObserver, IGerberDrawingObserver {
@@ -144,14 +145,14 @@ public class GerberG2DWrapper extends Graphics2D implements IDrawingObserver, IG
 
   @Override
   public void draw(Shape s) {
-    if (trackingGerber) {
+    if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
       currentLayers.entrySet().forEach(entry -> {
         double width = 1;
         if (stroke != null && stroke instanceof BasicStroke) {
           width = ((BasicStroke) stroke).getLineWidth();
         }
         DataLayer dataLayer = layerMap.get(entry.getKey());
-        GerberExporter.outputPathOutline(s.getPathIterator(null), dataLayer,
+        GerberExporter.outputPathOutline(s.getPathIterator(tx), dataLayer,
             Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance, entry.getValue().negative, entry.getValue().function,
             width);
       });
@@ -197,10 +198,10 @@ public class GerberG2DWrapper extends Graphics2D implements IDrawingObserver, IG
 
   @Override
   public void fill(Shape s) {
-    if (trackingGerber) {
+    if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
       currentLayers.entrySet().forEach(entry -> {
         DataLayer dataLayer = layerMap.get(entry.getKey());
-        GerberExporter.outputPathArea(s.getPathIterator(null), dataLayer,
+        GerberExporter.outputPathArea(s.getPathIterator(tx), dataLayer,
             Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance, entry.getValue().negative, entry.getValue().function);
       });
     }

@@ -46,14 +46,14 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.GerberRenderMode;
-import org.diylc.core.gerber.IGerberComponent;
+import org.diylc.core.gerber.IGerberComponentCustom;
 import org.diylc.core.gerber.IGerberDrawingObserver;
 import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,
     flexibleZOrder = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
-public class PCBText extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponent {
+public class PCBText extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponentCustom {
 
   public static String DEFAULT_TEXT = "Double click to edit text";
 

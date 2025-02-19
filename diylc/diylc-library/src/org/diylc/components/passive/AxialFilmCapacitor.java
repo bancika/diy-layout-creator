@@ -22,6 +22,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.util.EnumSet;
+import java.util.Set;
 import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
@@ -29,13 +31,16 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.GerberLayer;
+import org.diylc.core.gerber.GerberRenderMode;
+import org.diylc.core.gerber.IGerberComponentSimple;
 
 @ComponentDescriptor(name = "Film Capacitor (Axial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Axial film capacitor, similar to Mallory 150s", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableDatasheet = true,
     datasheetCreationStepCount = 3)
-public class AxialFilmCapacitor extends AbstractFilmCapacitor implements IDatasheetSupport {
+public class AxialFilmCapacitor extends AbstractFilmCapacitor implements IDatasheetSupport, IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 
@@ -102,5 +107,25 @@ public class AxialFilmCapacitor extends AbstractFilmCapacitor implements IDatash
   @EditableProperty(name = "Reverse (standing)")
   public boolean getFlipStanding() {
     return super.getFlipStanding();
+  }
+
+  @Override
+  public Set<GerberRenderMode> getGerberRenderModes() {
+    return EnumSet.of(GerberRenderMode.Outline);
+  }
+
+  @Override
+  public GerberLayer getGerberLayer() {
+    return GerberLayer.SilkscreenTop;
+  }
+
+  @Override
+  public String getGerberFunction() {
+    return "ComponentOutline,Footprint";
+  }
+
+  @Override
+  public boolean isGerberNegative() {
+    return false;
   }
 }
