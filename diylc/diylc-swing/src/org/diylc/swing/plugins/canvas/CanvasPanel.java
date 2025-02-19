@@ -119,7 +119,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     return componentTypeCache;
   }
   
-  private void setClickInProgress(boolean clickInProgress) {
+  public void setClickInProgress(boolean clickInProgress) {
     this.clickInProgress = clickInProgress;
   }
 
