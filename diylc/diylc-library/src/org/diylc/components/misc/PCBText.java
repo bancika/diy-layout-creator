@@ -28,8 +28,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.EnumSet;
-import java.util.Set;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.PCBLayer;
@@ -45,7 +43,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.gerber.GerberRenderMode;
+import org.diylc.core.gerber.GerberLayer;
 import org.diylc.core.gerber.IGerberComponentCustom;
 import org.diylc.core.gerber.IGerberDrawingObserver;
 import com.bancika.gerberwriter.GerberFunctions;
@@ -143,8 +141,9 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     // treat light colors as negative etched into a ground plane
     float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 
+    GerberLayer gerberCopperLayer = this.getLayer().toGerberCopperLayer();
     if (gerberDrawingObserver != null)
-      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperBot,  GerberFunctions.CONDUCTOR, hsb[2] > 0.5);
+      gerberDrawingObserver.startGerberOutput(gerberCopperLayer,  GerberFunctions.CONDUCTOR, hsb[2] > 0.5);
     g2d.drawString(text, (int)x, (int)y);
     if (gerberDrawingObserver != null)
       gerberDrawingObserver.stopGerberOutput();
@@ -352,11 +351,6 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
 
   @Override
   public int getLayerId() {
-    return 1;
-  }
-  
-  @Override
-  public Set<GerberRenderMode> getGerberRenderModes() {
-    return EnumSet.of(GerberRenderMode.Normal);
+    return getLayer().getId();
   }
 }

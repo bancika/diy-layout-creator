@@ -39,6 +39,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
+import org.diylc.core.gerber.GerberLayer;
 import org.diylc.core.gerber.GerberRenderMode;
 import org.diylc.core.gerber.IGerberComponentCustom;
 import org.diylc.core.gerber.IGerberDrawingObserver;
@@ -81,8 +82,9 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
             ? SELECTION_COLOR
             : color);
     drawingObserver.startTrackingContinuityArea(true);
+    GerberLayer gerberCopperLayer = this.getLayer().toGerberCopperLayer();
     if (gerberDrawingObserver != null) {
-      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperBot, GerberFunctions.CONNECTOR_PAD, false);
+      gerberDrawingObserver.startGerberOutput(gerberCopperLayer, GerberFunctions.CONNECTOR_PAD, false);
       gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot, "Material", false);
     }
     if (type == Type.ROUND) {
@@ -103,7 +105,7 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
       gerberDrawingObserver.stopGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot);
     if (getHoleSize().getValue() > 0) {
       if (gerberDrawingObserver != null) {
-        gerberDrawingObserver.setGerberNegative(org.diylc.core.gerber.GerberLayer.CopperBot, true);
+        gerberDrawingObserver.setGerberNegative(gerberCopperLayer, true);
         gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.Drill, GerberFunctions.COMPONENT_DRILL, false);
       }
       g2d.setColor(Constants.CANVAS_COLOR);
@@ -236,6 +238,11 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
     return new Rectangle2D.Double(point.getX() - size, point.getY() - size, size * 2, size * 2);
   }
 
+  @Override
+  public Set<GerberRenderMode> getGerberRenderModes() {
+    return EnumSet.of(GerberRenderMode.Normal);
+  }
+  
   public static enum Type {
     ROUND, SQUARE, OVAL_HORIZONTAL, OVAL_VERTICAL;
 
@@ -243,10 +250,5 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
     public String toString() {
       return name().substring(0, 1) + name().substring(1).toLowerCase().replace('_', ' ');
     }
-  }
-  
-  @Override
-  public Set<GerberRenderMode> getGerberRenderModes() {
-    return EnumSet.of(GerberRenderMode.Normal);
   }
 }

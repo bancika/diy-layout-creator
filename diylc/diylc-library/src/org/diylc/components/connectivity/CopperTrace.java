@@ -212,7 +212,7 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayer
 
   @Override
   public GerberLayer getGerberLayer() {
-    return GerberLayer.CopperBot;
+    return this.getLayer().toGerberCopperLayer();
   }
 
   @Override
