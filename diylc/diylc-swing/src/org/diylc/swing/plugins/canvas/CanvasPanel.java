@@ -84,6 +84,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   private HashMap<String, ComponentType> componentTypeCache;
 
   private IConfigurationManager<?> configManager;
+  
+  private boolean clickInProgress = false;
 
   public CanvasPanel(IPlugInPort plugInPort, IConfigurationManager<?> configManager) {
     this.plugInPort = plugInPort;
@@ -116,12 +118,20 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     }
     return componentTypeCache;
   }
+  
+  public void setClickInProgress(boolean clickInProgress) {
+    this.clickInProgress = clickInProgress;
+  }
+
+  public boolean isClickInProgress() {
+    return clickInProgress;
+  }
 
   private void initializeDnD() {
     // Initialize drag source recognizer.
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
         DnDConstants.ACTION_COPY_OR_MOVE | DnDConstants.ACTION_LINK,
-        new CanvasDragGestureListener(plugInPort));
+        new CanvasDragGestureListener(plugInPort, this));
     // Initialize drop target.
     new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CanvasTargetListener(plugInPort),
         true);
