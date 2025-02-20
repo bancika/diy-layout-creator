@@ -4494,18 +4494,6 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Loading files that contain lines with end arrows sometimes produces errors in the log and lines not to be loaded</description>
 				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>4</major>
-				<minor>41</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-01-25 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Mouse click to select intermittently doesn't register on Mac machines</description>
