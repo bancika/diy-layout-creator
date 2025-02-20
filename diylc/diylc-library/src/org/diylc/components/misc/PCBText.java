@@ -144,7 +144,7 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 
     if (gerberDrawingObserver != null)
-      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperTop,  GerberFunctions.CONDUCTOR, hsb[2] > 0.5);
+      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperBot,  GerberFunctions.CONDUCTOR, hsb[2] > 0.5);
     g2d.drawString(text, (int)x, (int)y);
     if (gerberDrawingObserver != null)
       gerberDrawingObserver.stopGerberOutput();

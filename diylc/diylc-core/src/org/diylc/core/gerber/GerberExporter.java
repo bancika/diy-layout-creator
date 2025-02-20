@@ -22,7 +22,6 @@ import org.diylc.core.Project;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
 import com.bancika.gerberwriter.DataLayer;
-import com.bancika.gerberwriter.GenerationSoftware;
 import com.bancika.gerberwriter.Point;
 import com.bancika.gerberwriter.path.MoveTo;
 import com.bancika.gerberwriter.path.Path;
@@ -75,17 +74,15 @@ public class GerberExporter {
       }
     }
 
-    GenerationSoftware genSoftware =
-        new GenerationSoftware("bancika", "DIY Layout Creator", diylcVersion);
-
     List<String> generatedFiles = new ArrayList<String>();
 
     gerberBoards.forEach(b -> {
       IDIYComponent<?> boardComponent = (IDIYComponent<?>) b;
 
-      DataLayer outlineLayer = new DataLayer("Profile,NP", false, genSoftware);
+      GerberLayer gerberLayer = GerberLayer.Outline;
+      DataLayer outlineLayer = gerberLayer.buildLayer(diylcVersion);
       final PathIterator pathIterator = b.getBoardRectangle().getPathIterator(null);
-      outputPathOutline(pathIterator, outlineLayer, 1d, false, "Profile", OUTLINE_THICKNESS);
+      outputPathOutline(pathIterator, outlineLayer, 1d, false, gerberLayer.isMirrored(), "Profile", OUTLINE_THICKNESS);
       // Path path = buildOutlinePath(b);
       // outlineLayer.addTracesPath(path, OUTLINE_THICKNESS, "Profile", false);
       String fileNameOutline = fileNameBase + (fileNameBase.endsWith(".") ? "" : ".")
@@ -163,18 +160,18 @@ public class GerberExporter {
   }
 
   public static void outputPathArea(PathIterator pathIterator, DataLayer dataLayer, double d,
-      boolean isNegative, String function) {
-    outputPath(pathIterator, d, isNegative,
+      boolean isNegative, boolean isMirrored, String function) {
+    outputPath(pathIterator, d, isNegative, isMirrored,
         (path, negative) -> dataLayer.addRegion(path, function, negative));
   }
 
   public static void outputPathOutline(PathIterator pathIterator, DataLayer dataLayer, double d,
-      boolean isNegative, String function, double width) {
-    outputPath(pathIterator, d, isNegative, (path, negative) -> dataLayer.addTracesPath(path,
+      boolean isNegative, boolean isMirrored, String function, double width) {
+    outputPath(pathIterator, d, isNegative, isMirrored, (path, negative) -> dataLayer.addTracesPath(path,
         width * SizeUnit.px.getFactor(), function, negative));
   }
 
-  private static void outputPath(PathIterator pathIterator, double d, boolean isNegative,
+  private static void outputPath(PathIterator pathIterator, double d, boolean isNegative, boolean isMirrored,
       IGerberOutput outputAction) {
     double x = 0;
     double y = 0;
@@ -190,14 +187,14 @@ public class GerberExporter {
           path = new Path();
           lastPath = new Path2D.Double();
           lastPath.moveTo(coords[0], coords[1]);
-          path.moveTo(new Point(-coords[0] * SizeUnit.px.getFactor(),
+          path.moveTo(new Point((isMirrored ? -1 : 1) * coords[0] * SizeUnit.px.getFactor(),
               -coords[1] * SizeUnit.px.getFactor()));
           x = coords[0];
           y = coords[1];
           break;
         case PathIterator.SEG_LINETO:
           lastPath.lineTo(coords[0], coords[1]);
-          path.lineTo(new Point(-coords[0] * SizeUnit.px.getFactor(),
+          path.lineTo(new Point((isMirrored ? -1 : 1) * coords[0] * SizeUnit.px.getFactor(),
               -coords[1] * SizeUnit.px.getFactor()));
           x = coords[0];
           y = coords[1];
@@ -226,7 +223,7 @@ public class GerberExporter {
           lastPath.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
           CubicCurve2D curve1 = new CubicCurve2D.Double(x, y, coords[0], coords[1], coords[2],
               coords[3], coords[4], coords[5]);
-          subdivide(curve1, path, d);
+          subdivide(curve1, path, d, isMirrored);
           x = coords[4];
           y = coords[5];
           break;
@@ -235,7 +232,7 @@ public class GerberExporter {
               (coords[3] + 2 * coords[1]) / 3, coords[2], coords[3]);
           QuadCurve2D curve2 =
               new QuadCurve2D.Double(x, y, coords[0], coords[1], coords[2], coords[3]);
-          subdivide(curve2, path, d);
+          subdivide(curve2, path, d, isMirrored);
           x = coords[2];
           y = coords[3];
           break;
@@ -258,36 +255,36 @@ public class GerberExporter {
     }
   }
 
-  private static void subdivide(CubicCurve2D curve, Path path, double d) {
+  private static void subdivide(CubicCurve2D curve, Path path, double d, boolean isMirrored) {
     if (/* curve.getFlatness() < d || */new Point2D.Double(curve.getX1(), curve.getY1())
         .distance(curve.getX2(), curve.getY2()) < d) {
       // path.lineTo(new Point(curve.getX1() * SizeUnit.px.getFactor(), curve.getY1() *
       // SizeUnit.px.getFactor()));
-      path.lineTo(new Point(-curve.getX2() * SizeUnit.px.getFactor(),
+      path.lineTo(new Point((isMirrored ? -1 : 1) * curve.getX2() * SizeUnit.px.getFactor(),
           -curve.getY2() * SizeUnit.px.getFactor()));
       return;
     }
     CubicCurve2D left = new CubicCurve2D.Double();
     CubicCurve2D right = new CubicCurve2D.Double();
     curve.subdivide(left, right);
-    subdivide(left, path, d);
-    subdivide(right, path, d);
+    subdivide(left, path, d, isMirrored);
+    subdivide(right, path, d, isMirrored);
   }
 
-  private static void subdivide(QuadCurve2D curve, Path path, double d) {
+  private static void subdivide(QuadCurve2D curve, Path path, double d, boolean isMirrored) {
     if (/* curve.getFlatness() < d || */new Point2D.Double(curve.getX1(), curve.getY1())
         .distance(curve.getX2(), curve.getY2()) < d) {
       // path.lineTo(new Point(curve.getX1() * SizeUnit.px.getFactor(), curve.getY1() *
       // SizeUnit.px.getFactor()));
-      path.lineTo(new Point(-curve.getX2() * SizeUnit.px.getFactor(),
+      path.lineTo(new Point((isMirrored ? -1 : 1) * curve.getX2() * SizeUnit.px.getFactor(),
           -curve.getY2() * SizeUnit.px.getFactor()));
       return;
     }
     QuadCurve2D left = new QuadCurve2D.Double();
     QuadCurve2D right = new QuadCurve2D.Double();
     curve.subdivide(left, right);
-    subdivide(left, path, d);
-    subdivide(right, path, d);
+    subdivide(left, path, d, isMirrored);
+    subdivide(right, path, d, isMirrored);
   }
 
   // private static Path buildOutlinePath(IGerberBoard b) {

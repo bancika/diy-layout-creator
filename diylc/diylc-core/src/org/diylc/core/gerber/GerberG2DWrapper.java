@@ -32,7 +32,8 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.utils.Constants;
 import com.bancika.gerberwriter.DataLayer;
 
-public class GerberG2DWrapper extends Graphics2D implements IDrawingObserver, IGerberDrawingObserver {
+public class GerberG2DWrapper extends Graphics2D
+    implements IDrawingObserver, IGerberDrawingObserver {
 
   private static final double CURVE_APPROXIMATION_TOLERANCE = 1d;
 
@@ -117,12 +118,12 @@ public class GerberG2DWrapper extends Graphics2D implements IDrawingObserver, IG
   public void setGerberNegative(GerberLayer layer, boolean negative) {
     currentLayers.get(layer).negative = negative;
   }
-  
+
   @Override
   public void setApproximationToleranceOverride(double tolerance) {
     this.tolerance = tolerance;
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
@@ -153,7 +154,8 @@ public class GerberG2DWrapper extends Graphics2D implements IDrawingObserver, IG
         }
         DataLayer dataLayer = layerMap.get(entry.getKey());
         GerberExporter.outputPathOutline(s.getPathIterator(tx), dataLayer,
-            Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance, entry.getValue().negative, entry.getValue().function,
+            Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
+            entry.getValue().negative, entry.getKey().isMirrored(), entry.getValue().function,
             width);
       });
     }
@@ -202,7 +204,8 @@ public class GerberG2DWrapper extends Graphics2D implements IDrawingObserver, IG
       currentLayers.entrySet().forEach(entry -> {
         DataLayer dataLayer = layerMap.get(entry.getKey());
         GerberExporter.outputPathArea(s.getPathIterator(tx), dataLayer,
-            Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance, entry.getValue().negative, entry.getValue().function);
+            Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
+            entry.getValue().negative, entry.getKey().isMirrored(), entry.getValue().function);
       });
     }
   }

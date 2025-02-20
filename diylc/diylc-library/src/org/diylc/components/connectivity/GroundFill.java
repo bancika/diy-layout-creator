@@ -200,7 +200,7 @@ public class GroundFill extends AbstractComponent<Void> implements ILayeredCompo
   
   @Override
   public GerberLayer getGerberLayer() {
-    return GerberLayer.CopperTop;
+    return GerberLayer.CopperBot;
   }
 
   @Override

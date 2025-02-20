@@ -82,8 +82,8 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
             : color);
     drawingObserver.startTrackingContinuityArea(true);
     if (gerberDrawingObserver != null) {
-      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperTop, GerberFunctions.CONNECTOR_PAD, false);
-      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskTop, "Material", false);
+      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.CopperBot, GerberFunctions.CONNECTOR_PAD, false);
+      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot, "Material", false);
     }
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
@@ -100,10 +100,10 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
     }
     drawingObserver.stopTrackingContinuityArea();
     if (gerberDrawingObserver != null)
-      gerberDrawingObserver.stopGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskTop);
+      gerberDrawingObserver.stopGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot);
     if (getHoleSize().getValue() > 0) {
       if (gerberDrawingObserver != null) {
-        gerberDrawingObserver.setGerberNegative(org.diylc.core.gerber.GerberLayer.CopperTop, true);
+        gerberDrawingObserver.setGerberNegative(org.diylc.core.gerber.GerberLayer.CopperBot, true);
         gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.Drill, GerberFunctions.COMPONENT_DRILL, false);
       }
       g2d.setColor(Constants.CANVAS_COLOR);

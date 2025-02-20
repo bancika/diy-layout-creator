@@ -136,7 +136,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   
   @Override
   public GerberLayer getGerberLayer() {
-    return GerberLayer.CopperTop;
+    return GerberLayer.CopperBot;
   }
 
   @Override
