@@ -51,6 +51,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Current;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -61,7 +62,7 @@ import org.diylc.utils.Constants;
     category = "Semiconductors", instanceNamePrefix = "BR",
     description = "Few variations of bridge rectifier chips", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class BridgeRectifier extends AbstractLabeledComponent<String> {
+public class BridgeRectifier extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

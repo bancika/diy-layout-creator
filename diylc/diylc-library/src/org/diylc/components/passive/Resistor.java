@@ -39,6 +39,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -46,7 +47,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "Resistor layout symbol",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true)
-public class Resistor extends AbstractLeadedComponent<Resistance> {
+public class Resistor extends AbstractLeadedComponent<Resistance> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

@@ -47,6 +47,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -55,7 +56,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "IC", description = "Dual-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,
     transformer = DIL_ICTransformer.class, enableCache = true)
-public class DIL_IC extends AbstractLabeledComponent<String> {
+public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

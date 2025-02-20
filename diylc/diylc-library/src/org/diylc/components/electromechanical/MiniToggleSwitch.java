@@ -48,6 +48,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -55,7 +56,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", autoEdit = false, enableCache = true, transformer = MiniToggleSwitchTransformer.class)
-public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch, ILayeredComponent {
+public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch, ILayeredComponent, IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 
