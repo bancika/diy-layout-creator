@@ -12,8 +12,8 @@
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
 	<property name="diylc.version" value="4.40.0" />
 	
-	<property name="osx.jre.x64.path" value="tools\jre\osx\x86\temurin17\Contents\Home\" />
-	<property name="osx.jre.arm.path" value="tools\jre\osx\arm\temurin17\Contents\Home\" />
+	<property name="osx.jre.x64.path" value="tools\jre\osx\x86\jre17.zip" />
+	<property name="osx.jre.arm.path" value="tools\jre\osx\arm\jre17.zip" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -80,7 +80,8 @@
 	</target>
 
 	<target name="mac" depends="jar">
-				<bundleapp
+		<unzip src="${osx.jre.x86.path}" dest="${build.dir}/jre_x86"/>
+		<bundleapp
 			        outputdirectory="${build.dir}"
 			        name="DIYLC"
 							jvmrequired="17"
@@ -102,9 +103,8 @@
 								icon="icons/diylc_file.icns"
 								conformsTo="public.xml,public.text"
 								extensions="diy" />
-					<runtime dir="${osx.jre.arm.path}" />
+					<runtime dir="${build.dir}/jre_x86" />
 					<arch name="x86_64"/>
-					<arch name="i386"/>
 					<classpath file="${jar.dir}\diylc.jar" />
 					<classpath file="${jar.dir}\lib\*.jar" />
 					<classpath file="${jar.dir}\library\*.jar" />
@@ -138,6 +138,7 @@
 			</target>
 	
 	<target name="mac-arm" depends="jar">
+			<unzip src="${osx.jre.arm.path}" dest="${build.dir}/jre_arm"/>
 			<bundleapp
 		        outputdirectory="${build.dir}"
 		        name="DIYLC"
@@ -160,7 +161,7 @@
 							icon="icons/diylc_file.icns"
 							conformsTo="public.xml,public.text"
 							extensions="diy" />
-				<runtime dir="${osx.jre.arm.path}" />
+				<runtime dir="${build.dir}/jre_arm" />
 				<arch name="arm64" />
 				<arch name="arm64e" />
 				<classpath file="${jar.dir}\diylc.jar" />
