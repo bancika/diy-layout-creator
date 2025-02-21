@@ -12,8 +12,9 @@
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
 	<property name="diylc.version" value="4.40.0" />
 	
-	<property name="osx.jre.x64.path" value="tools\jre\osx\x86\jre17.zip" />
-	<property name="osx.jre.arm.path" value="tools\jre\osx\arm\jre17.zip" />
+	<property name="win.jre.path" value="tools/jre/win/jre1.8.0_211.zip" />
+	<property name="osx.jre.x86.path" value="tools/jre/osx/x86/jre17.zip" />
+	<property name="osx.jre.arm.path" value="tools/jre/osx/arm/jre17.zip" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -103,7 +104,7 @@
 								icon="icons/diylc_file.icns"
 								conformsTo="public.xml,public.text"
 								extensions="diy" />
-					<runtime dir="${build.dir}/jre_x86" />
+					<runtime dir="${build.dir}/jre_x86/Contents/Home" />
 					<arch name="x86_64"/>
 					<classpath file="${jar.dir}\diylc.jar" />
 					<classpath file="${jar.dir}\lib\*.jar" />
@@ -161,7 +162,7 @@
 							icon="icons/diylc_file.icns"
 							conformsTo="public.xml,public.text"
 							extensions="diy" />
-				<runtime dir="${build.dir}/jre_arm" />
+				<runtime dir="${build.dir}/jre_arm/Contents/Home" />
 				<arch name="arm64" />
 				<arch name="arm64e" />
 				<classpath file="${jar.dir}\diylc.jar" />
@@ -205,6 +206,7 @@
 	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask" classpathref="lib.path" />
 
 	<target name="win" depends="jar">
+		<unzip src="${win.jre.path}" dest="${build.dir}/jre_win"/>
 		<exec executable="tools\innosetup\iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
 			<arg value="/Fdiylc-${diylc.version}-win"/>
@@ -236,7 +238,7 @@
 			<zipfileset dir="icons" includes="*.png" prefix="icons" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.desktop" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.metainfo.xml" />
-			<zipfileset dir="tools/jre/win/jre1.8.0_211" prefix="jre" />
+			<!--<zipfileset dir="tools/jre/win/jre1.8.0_211" prefix="jre" />-->
 		</zip>
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
