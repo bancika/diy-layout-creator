@@ -64,10 +64,6 @@ java/lang/ClassCastException
 java/lang/ClassLoader
 java/lang/ClassLoader$ParallelLoaders
 java/lang/ClassNotFoundException
-java/lang/ClassValue
-java/lang/ClassValue$Entry
-java/lang/ClassValue$Identity
-java/lang/ClassValue$Version
 java/lang/Cloneable
 java/lang/Comparable
 java/lang/CompoundEnumeration
@@ -269,7 +265,6 @@ java/lang/invoke/VarHandleReferences$Array
 java/lang/invoke/VarHandleReferences$FieldInstanceReadOnly
 java/lang/invoke/VarHandleReferences$FieldInstanceReadWrite
 java/lang/invoke/VarHandles
-java/lang/invoke/VarHandles$1
 java/lang/invoke/VolatileCallSite
 java/lang/module/Configuration
 java/lang/module/ModuleDescriptor
