@@ -20,6 +20,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
@@ -50,9 +51,12 @@ public class GerberG2DWrapper extends Graphics2D
   private AffineTransform tx;
   private double tolerance;
 
-  public GerberG2DWrapper(Graphics2D graphics2d, String diylcVersion) {
+  private Rectangle2D boardRect;
+
+  public GerberG2DWrapper(Graphics2D graphics2d, String diylcVersion, Rectangle2D boardRect) {
     super();
     this.graphics2d = graphics2d;
+    this.boardRect = boardRect;
     this.layerMap = new HashMap<GerberLayer, DataLayer>();
     this.diylcVersion = diylcVersion;
   }
@@ -153,12 +157,45 @@ public class GerberG2DWrapper extends Graphics2D
           width = ((BasicStroke) stroke).getLineWidth();
         }
         DataLayer dataLayer = layerMap.get(entry.getKey());
-        GerberExporter.outputPathOutline(s.getPathIterator(tx), dataLayer,
+        AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
+        GerberExporter.outputPathOutline(s.getPathIterator(finalTx), dataLayer,
             Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
-            entry.getValue().negative, entry.getKey().isMirrored(), entry.getValue().function,
+            entry.getValue().negative, entry.getValue().function,
             width);
       });
     }
+  }
+  
+  @Override
+  public void drawString(String str, float x, float y) {
+    TextLayout layout = new TextLayout(str, getFont(), graphics2d.getFontRenderContext());
+    Shape shape = layout.getOutline(AffineTransform.getTranslateInstance(x, y));
+    fill(shape);
+  }
+  
+  @Override
+  public void fill(Shape s) {
+    if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
+      currentLayers.entrySet().forEach(entry -> {
+        DataLayer dataLayer = layerMap.get(entry.getKey());
+        AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
+        GerberExporter.outputPathArea(s.getPathIterator(finalTx), dataLayer,
+            Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
+            entry.getValue().negative, entry.getValue().function);
+      });
+    }
+  }
+  
+  private AffineTransform getFinalTx(boolean isMirrored) {
+    AffineTransform finalTx = new AffineTransform();
+    if (isMirrored) {
+      finalTx.translate(boardRect.getWidth(), 0);
+      finalTx.scale(-1, 1);
+    }
+    finalTx.scale(1, -1);
+    finalTx.translate(-boardRect.getMinX(), -boardRect.getMaxY());
+    finalTx.concatenate(tx);
+    return finalTx;
   }
 
   @Override
@@ -183,13 +220,6 @@ public class GerberG2DWrapper extends Graphics2D
   }
 
   @Override
-  public void drawString(String str, float x, float y) {
-    TextLayout layout = new TextLayout(str, getFont(), graphics2d.getFontRenderContext());
-    Shape shape = layout.getOutline(AffineTransform.getTranslateInstance(x, y));
-    fill(shape);
-  }
-
-  @Override
   public void drawString(AttributedCharacterIterator iterator, int x, int y) {}
 
   @Override
@@ -197,18 +227,6 @@ public class GerberG2DWrapper extends Graphics2D
 
   @Override
   public void drawGlyphVector(GlyphVector g, float x, float y) {}
-
-  @Override
-  public void fill(Shape s) {
-    if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
-      currentLayers.entrySet().forEach(entry -> {
-        DataLayer dataLayer = layerMap.get(entry.getKey());
-        GerberExporter.outputPathArea(s.getPathIterator(tx), dataLayer,
-            Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
-            entry.getValue().negative, entry.getKey().isMirrored(), entry.getValue().function);
-      });
-    }
-  }
 
   @Override
   public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
