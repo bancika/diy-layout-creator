@@ -172,6 +172,9 @@ public class GerberG2DWrapper extends Graphics2D
 
   @Override
   public void drawString(String str, float x, float y) {
+    if (str == null || str.trim().isEmpty()) {
+      return;
+    }
     TextLayout layout = new TextLayout(str, getFont(), graphics2d.getFontRenderContext());
     Shape shape = layout.getOutline(AffineTransform.getTranslateInstance(x, y));
     fillShape(shape);
