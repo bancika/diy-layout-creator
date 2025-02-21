@@ -20,6 +20,8 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -30,8 +32,11 @@ import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 import com.bancika.gerberwriter.DataLayer;
+import com.bancika.gerberwriter.Point;
+import com.bancika.gerberwriter.padmasters.Circle;
 
 public class GerberG2DWrapper extends Graphics2D
     implements IDrawingObserver, IGerberDrawingObserver {
@@ -158,34 +163,66 @@ public class GerberG2DWrapper extends Graphics2D
         }
         DataLayer dataLayer = layerMap.get(entry.getKey());
         AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
-        GerberExporter.outputPathOutline(s.getPathIterator(finalTx), dataLayer,
+        GerberUtils.outputPathOutline(s.getPathIterator(finalTx), dataLayer,
             Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
-            entry.getValue().negative, entry.getValue().function,
-            width);
+            entry.getValue().negative, entry.getValue().function, width);
       });
     }
   }
-  
+
   @Override
   public void drawString(String str, float x, float y) {
     TextLayout layout = new TextLayout(str, getFont(), graphics2d.getFontRenderContext());
     Shape shape = layout.getOutline(AffineTransform.getTranslateInstance(x, y));
-    fill(shape);
+    fillShape(shape);
   }
-  
+
   @Override
   public void fill(Shape s) {
+    if (s instanceof Ellipse2D
+        && (((Ellipse2D) s).getWidth() - ((Ellipse2D) s).getHeight()) < 0.1) {
+      Ellipse2D e = (Ellipse2D) s;
+      fillFlash(e);
+    } else {
+      fillShape(s);
+    }
+  }
+
+  public void fillShape(Shape s) {
     if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
       currentLayers.entrySet().forEach(entry -> {
         DataLayer dataLayer = layerMap.get(entry.getKey());
         AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
-        GerberExporter.outputPathArea(s.getPathIterator(finalTx), dataLayer,
+        GerberUtils.outputPathArea(s.getPathIterator(finalTx), dataLayer,
             Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
             entry.getValue().negative, entry.getValue().function);
       });
     }
   }
-  
+
+  private void fillFlash(Ellipse2D c) {
+    if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
+      currentLayers.entrySet().forEach(entry -> {
+        DataLayer dataLayer = layerMap.get(entry.getKey());
+        AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
+        if (Math.abs(c.getWidth() - c.getHeight()) < 0.1 && finalTx.getShearX() == 0
+            && finalTx.getShearY() == 0
+            && Math.abs(finalTx.getScaleX() - finalTx.getScaleY()) < 0.0001) {
+          final double d = Math.abs(c.getWidth() * finalTx.getScaleX()) * SizeUnit.px.getFactor();
+          Circle circle = new Circle(d, entry.getValue().function, entry.getValue().negative);
+          dataLayer.addPad(circle, new Point(
+              (c.getX() * finalTx.getScaleX() + finalTx.getTranslateX()) * SizeUnit.px.getFactor()
+                  - d / 2,
+              (c.getY() * finalTx.getScaleY() + finalTx.getTranslateY()) * SizeUnit.px.getFactor()
+                  - d / 2));
+        } else {
+          // not a circle after transformation, default to polygon approximation
+          fillShape(c);
+        }
+      });
+    }
+  }
+
   private AffineTransform getFinalTx(boolean isMirrored) {
     AffineTransform finalTx = new AffineTransform();
     if (isMirrored) {
@@ -199,83 +236,7 @@ public class GerberG2DWrapper extends Graphics2D
   }
 
   @Override
-  public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-    return false;
-  }
-
-  @Override
-  public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {}
-
-  @Override
-  public void drawRenderedImage(RenderedImage img, AffineTransform xform) {}
-
-  @Override
-  public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-
-  }
-
-  @Override
-  public void drawString(String str, int x, int y) {
-    drawString(str, (float) x, (float) y);
-  }
-
-  @Override
-  public void drawString(AttributedCharacterIterator iterator, int x, int y) {}
-
-  @Override
-  public void drawString(AttributedCharacterIterator iterator, float x, float y) {}
-
-  @Override
-  public void drawGlyphVector(GlyphVector g, float x, float y) {}
-
-  @Override
-  public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
-    return false;
-  }
-
-  @Override
-  public GraphicsConfiguration getDeviceConfiguration() {
-    return null;
-  }
-
-  @Override
-  public void setComposite(Composite comp) {}
-
-  @Override
-  public void setPaint(Paint paint) {}
-
-  @Override
-  public void setStroke(Stroke s) {
-    this.stroke = s;
-  }
-
-  @Override
-  public void setRenderingHint(Key hintKey, Object hintValue) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public Object getRenderingHint(Key hintKey) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void setRenderingHints(Map<?, ?> hints) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void addRenderingHints(Map<?, ?> hints) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
   public RenderingHints getRenderingHints() {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -325,50 +286,8 @@ public class GerberG2DWrapper extends Graphics2D
   }
 
   @Override
-  public Paint getPaint() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Composite getComposite() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void setBackground(Color color) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public Color getBackground() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Stroke getStroke() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void clip(Shape s) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
   public FontRenderContext getFontRenderContext() {
     return graphics2d.getFontRenderContext();
-  }
-
-  @Override
-  public Graphics create() {
-    // TODO Auto-generated method stub
-    return null;
   }
 
   @Override
@@ -379,18 +298,6 @@ public class GerberG2DWrapper extends Graphics2D
   @Override
   public void setColor(Color c) {
     this.color = c;
-  }
-
-  @Override
-  public void setPaintMode() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void setXORMode(Color c1) {
-    // TODO Auto-generated method stub
-
   }
 
   @Override
@@ -409,148 +316,207 @@ public class GerberG2DWrapper extends Graphics2D
   }
 
   @Override
-  public Rectangle getClipBounds() {
-    // TODO Auto-generated method stub
-    return null;
+  public void setStroke(Stroke s) {
+    this.stroke = s;
   }
 
   @Override
-  public void clipRect(int x, int y, int width, int height) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void setClip(int x, int y, int width, int height) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public Shape getClip() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void setClip(Shape clip) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void drawLine(int x1, int y1, int x2, int y2) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void fillRect(int x, int y, int width, int height) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void clearRect(int x, int y, int width, int height) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void drawOval(int x, int y, int width, int height) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void fillOval(int x, int y, int width, int height) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-    // TODO Auto-generated method stub
-
+  public Stroke getStroke() {
+    return stroke;
   }
 
   @Override
   public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-    fill(new Polygon(xPoints, yPoints, nPoints));
+    fillShape(new Polygon(xPoints, yPoints, nPoints));
   }
 
   @Override
+  public void drawString(String str, int x, int y) {
+    drawString(str, (float) x, (float) y);
+  }
+
+  @Override
+  public void drawLine(int x1, int y1, int x2, int y2) {
+    draw(new Line2D.Double(x1, y1, x2, y2));
+  }
+
+  @Override
+  public void fillRect(int x, int y, int width, int height) {
+    fillShape(new Rectangle2D.Double(x, y, width, height));
+  }
+
+  @Override
+  public void drawOval(int x, int y, int width, int height) {
+    draw(new Ellipse2D.Double(x, y, width, height));
+  }
+
+  @Override
+  public void fillOval(int x, int y, int width, int height) {
+    if (width == height) {
+      fillFlash(new Ellipse2D.Double(x, y, width, height));
+    } else {
+      fillShape(new Ellipse2D.Double(x, y, width, height));
+    }
+  }
+
+  @Override
+  public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
+    return false;
+  }
+
+  @Override
+  public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {}
+
+  @Override
+  public void drawRenderedImage(RenderedImage img, AffineTransform xform) {}
+
+  @Override
+  public void drawRenderableImage(RenderableImage img, AffineTransform xform) {}
+
+  @Override
+  public void drawString(AttributedCharacterIterator iterator, int x, int y) {}
+
+  @Override
+  public void drawString(AttributedCharacterIterator iterator, float x, float y) {}
+
+  @Override
+  public void drawGlyphVector(GlyphVector g, float x, float y) {}
+
+  @Override
+  public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
+    return false;
+  }
+
+  @Override
+  public GraphicsConfiguration getDeviceConfiguration() {
+    return null;
+  }
+
+  @Override
+  public void setComposite(Composite comp) {}
+
+  @Override
+  public void setPaint(Paint paint) {}
+
+  @Override
+  public void setRenderingHint(Key hintKey, Object hintValue) {}
+
+  @Override
+  public Object getRenderingHint(Key hintKey) {
+    return null;
+  }
+
+  @Override
+  public void setRenderingHints(Map<?, ?> hints) {}
+
+  @Override
+  public void addRenderingHints(Map<?, ?> hints) {}
+
+  @Override
+  public Paint getPaint() {
+    return null;
+  }
+
+  @Override
+  public Composite getComposite() {
+    return null;
+  }
+
+  @Override
+  public void setBackground(Color color) {}
+
+  @Override
+  public Color getBackground() {
+    return null;
+  }
+
+  @Override
+  public void clip(Shape s) {}
+
+  @Override
+  public Graphics create() {
+    return null;
+  }
+
+  @Override
+  public void setPaintMode() {}
+
+  @Override
+  public void setXORMode(Color c1) {}
+
+  @Override
+  public Rectangle getClipBounds() {
+    return null;
+  }
+
+  @Override
+  public void clipRect(int x, int y, int width, int height) {}
+
+  @Override
+  public void setClip(int x, int y, int width, int height) {}
+
+  @Override
+  public Shape getClip() {
+    return null;
+  }
+
+  @Override
+  public void setClip(Shape clip) {}
+
+  @Override
+  public void copyArea(int x, int y, int width, int height, int dx, int dy) {}
+
+  @Override
+  public void clearRect(int x, int y, int width, int height) {}
+
+  @Override
+  public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {}
+
+  @Override
+  public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {}
+
+  @Override
+  public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {}
+
+  @Override
+  public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {}
+
+  @Override
+  public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {}
+
+  @Override
+  public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {}
+
+  @Override
   public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor,
       ImageObserver observer) {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2,
       int sy2, ImageObserver observer) {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2,
       int sy2, Color bgcolor, ImageObserver observer) {
-    // TODO Auto-generated method stub
     return false;
   }
 
