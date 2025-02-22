@@ -4520,7 +4520,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Export traces, pads (with holes), ground fill and PCB text to gerber files</description>
+					<description>Export traces, pads (with holes), ground fill and PCB text to Gerber files</description>
 				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
