@@ -42,6 +42,7 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -50,7 +51,7 @@ import org.diylc.utils.Constants;
     author = "Branislav Stojkovic", description = "Horizontal PCB terminal block with 5mm pitch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "TB", autoEdit = false,
     enableCache = true, transformer = PCBTerminalBlockTransformer.class)
-public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBlockCount> {
+public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBlockCount> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

@@ -45,6 +45,7 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -52,7 +53,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Plastic DC Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mount plastic DC jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false, enableCache = true)
-public class PlasticDCJack extends AbstractMultiPartComponent<String> {
+public class PlasticDCJack extends AbstractMultiPartComponent<String> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

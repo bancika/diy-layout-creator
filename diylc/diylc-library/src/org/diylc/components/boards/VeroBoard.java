@@ -31,7 +31,7 @@ import org.diylc.components.transform.VeroBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -43,7 +43,7 @@ import org.diylc.utils.Constants;
     description = "Perforated FR4 board with copper strips connecting all holes in a row",
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     transformer = VeroBoardTransformer.class, enableCache = true)
-public class VeroBoard extends AbstractVeroBoard implements ILayer {
+public class VeroBoard extends AbstractVeroBoard implements ILayeredComponent {
 
   private static final long serialVersionUID = 1L;
 

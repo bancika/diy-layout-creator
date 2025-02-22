@@ -24,6 +24,7 @@ package org.diylc.components.passive;
 import java.awt.Rectangle;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
@@ -35,7 +36,7 @@ import org.diylc.core.measures.SizeUnit;
  * 
  * @param <T>
  */
-public abstract class AbstractRadialComponent<T> extends AbstractLeadedComponent<T> {
+public abstract class AbstractRadialComponent<T> extends AbstractLeadedComponent<T> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

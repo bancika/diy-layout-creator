@@ -52,6 +52,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.AreaUtils;
@@ -63,7 +64,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
     transformer = AngledComponentTransformer.class)
 public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenType>
-    implements ISwitch {
+    implements ISwitch, IGerberComponentSimple {
 
   private static final int ANGLE_OFFSET = -15;
   private static final int INNER_COMMON_ANGLE_OFFSET = -90;

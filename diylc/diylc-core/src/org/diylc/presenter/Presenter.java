@@ -75,6 +75,7 @@ import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.IAutoCreator;
+import org.diylc.core.gerber.GerberExporter;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
@@ -417,6 +418,11 @@ public class Presenter implements IPlugInPort {
             IView.ERROR_MESSAGE);
       }
     }
+  }
+  
+  @Override
+  public void exportToGerber(String fileNameBase, Graphics2D g2d) {
+    GerberExporter.exportGerber(fileNameBase, currentProject, view, g2d, getCurrentVersionNumber().toString());    
   }
 
   @Override

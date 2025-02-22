@@ -39,6 +39,25 @@ import org.diylc.core.ExpansionMode;
 import org.diylc.core.Project;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.actions.FindAction;
+import org.diylc.swing.actions.FlexibleLeadsAction;
+import org.diylc.swing.actions.RenumberAction;
+import org.diylc.swing.actions.edit.BringToFrontAction;
+import org.diylc.swing.actions.edit.CopyAction;
+import org.diylc.swing.actions.edit.CutAction;
+import org.diylc.swing.actions.edit.DeleteSelectionAction;
+import org.diylc.swing.actions.edit.DuplicateAction;
+import org.diylc.swing.actions.edit.EditSelectionAction;
+import org.diylc.swing.actions.edit.ExpandSelectionAction;
+import org.diylc.swing.actions.edit.GroupAction;
+import org.diylc.swing.actions.edit.MirrorSelectionAction;
+import org.diylc.swing.actions.edit.NudgeAction;
+import org.diylc.swing.actions.edit.PasteAction;
+import org.diylc.swing.actions.edit.RotateSelectionAction;
+import org.diylc.swing.actions.edit.SaveAsBlockAction;
+import org.diylc.swing.actions.edit.SaveAsTemplateAction;
+import org.diylc.swing.actions.edit.SendToBackAction;
+import org.diylc.swing.actions.edit.UngroupAction;
 import org.diylc.swing.images.IconLoader;
 
 public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
@@ -53,30 +72,30 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
   private Clipboard clipboard;
 
-  private ActionFactory.CutAction cutAction;
-  private ActionFactory.CopyAction copyAction;
-  private ActionFactory.PasteAction pasteAction;
-  private ActionFactory.DuplicateAction duplicateAction;
-  private ActionFactory.EditSelectionAction editSelectionAction;
-  private ActionFactory.DeleteSelectionAction deleteSelectionAction;
-  private ActionFactory.GroupAction groupAction;
-  private ActionFactory.UngroupAction ungroupAction;
-  private ActionFactory.SendToBackAction sendToBackAction;
-  private ActionFactory.BringToFrontAction bringToFrontAction;
-  private ActionFactory.NudgeAction nudgeAction;
-  private ActionFactory.RenumberAction renumberXAxisAction;
-  private ActionFactory.RenumberAction renumberYAxisAction;
-  private ActionFactory.ExpandSelectionAction expandSelectionAllAction;
-  private ActionFactory.ExpandSelectionAction expandSelectionImmediateAction;
-  private ActionFactory.ExpandSelectionAction expandSelectionSameTypeAction;
-  private ActionFactory.SaveAsTemplateAction saveAsTemplateAction;
-  private ActionFactory.SaveAsBlockAction saveAsBlockAction;
-  private ActionFactory.RotateSelectionAction rotateClockwiseAction;
-  private ActionFactory.RotateSelectionAction rotateCounterClockwiseAction;
-  private ActionFactory.MirrorSelectionAction mirrorHorizontallyAction;
-  private ActionFactory.MirrorSelectionAction mirrorVerticallyAction;
-  private ActionFactory.FindAction findAction;
-  private ActionFactory.FlexibleLeadsAction flexibleLeadsAction;
+  private CutAction cutAction;
+  private CopyAction copyAction;
+  private PasteAction pasteAction;
+  private DuplicateAction duplicateAction;
+  private EditSelectionAction editSelectionAction;
+  private DeleteSelectionAction deleteSelectionAction;
+  private GroupAction groupAction;
+  private UngroupAction ungroupAction;
+  private SendToBackAction sendToBackAction;
+  private BringToFrontAction bringToFrontAction;
+  private NudgeAction nudgeAction;
+  private RenumberAction renumberXAxisAction;
+  private RenumberAction renumberYAxisAction;
+  private ExpandSelectionAction expandSelectionAllAction;
+  private ExpandSelectionAction expandSelectionImmediateAction;
+  private ExpandSelectionAction expandSelectionSameTypeAction;
+  private SaveAsTemplateAction saveAsTemplateAction;
+  private SaveAsBlockAction saveAsBlockAction;
+  private RotateSelectionAction rotateClockwiseAction;
+  private RotateSelectionAction rotateCounterClockwiseAction;
+  private MirrorSelectionAction mirrorHorizontallyAction;
+  private MirrorSelectionAction mirrorVerticallyAction;
+  private FindAction findAction;
+  private FlexibleLeadsAction flexibleLeadsAction;
 
   private UndoHandler<Project> undoHandler;
 
@@ -107,105 +126,105 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     });
   }
 
-  public ActionFactory.CutAction getCutAction() {
+  public CutAction getCutAction() {
     if (cutAction == null) {
       cutAction = ActionFactory.getInstance().createCutAction(plugInPort, clipboard, this);
     }
     return cutAction;
   }
 
-  public ActionFactory.CopyAction getCopyAction() {
+  public CopyAction getCopyAction() {
     if (copyAction == null) {
       copyAction = ActionFactory.getInstance().createCopyAction(plugInPort, clipboard, this);
     }
     return copyAction;
   }
 
-  public ActionFactory.PasteAction getPasteAction() {
+  public PasteAction getPasteAction() {
     if (pasteAction == null) {
       pasteAction = ActionFactory.getInstance().createPasteAction(plugInPort, clipboard);
     }
     return pasteAction;
   }
 
-  public ActionFactory.DuplicateAction getDuplicateAction() {
+  public DuplicateAction getDuplicateAction() {
     if (duplicateAction == null) {
       duplicateAction = ActionFactory.getInstance().createDuplicateAction(plugInPort);
     }
     return duplicateAction;
   }
 
-  public ActionFactory.EditSelectionAction getEditSelectionAction() {
+  public EditSelectionAction getEditSelectionAction() {
     if (editSelectionAction == null) {
       editSelectionAction = ActionFactory.getInstance().createEditSelectionAction(plugInPort);
     }
     return editSelectionAction;
   }
 
-  public ActionFactory.DeleteSelectionAction getDeleteSelectionAction() {
+  public DeleteSelectionAction getDeleteSelectionAction() {
     if (deleteSelectionAction == null) {
       deleteSelectionAction = ActionFactory.getInstance().createDeleteSelectionAction(plugInPort);
     }
     return deleteSelectionAction;
   }
 
-  public ActionFactory.GroupAction getGroupAction() {
+  public GroupAction getGroupAction() {
     if (groupAction == null) {
       groupAction = ActionFactory.getInstance().createGroupAction(plugInPort);
     }
     return groupAction;
   }
 
-  public ActionFactory.UngroupAction getUngroupAction() {
+  public UngroupAction getUngroupAction() {
     if (ungroupAction == null) {
       ungroupAction = ActionFactory.getInstance().createUngroupAction(plugInPort);
     }
     return ungroupAction;
   }
 
-  public ActionFactory.SendToBackAction getSendToBackAction() {
+  public SendToBackAction getSendToBackAction() {
     if (sendToBackAction == null) {
       sendToBackAction = ActionFactory.getInstance().createSendToBackAction(plugInPort);
     }
     return sendToBackAction;
   }
 
-  public ActionFactory.BringToFrontAction getBringToFrontAction() {
+  public BringToFrontAction getBringToFrontAction() {
     if (bringToFrontAction == null) {
       bringToFrontAction = ActionFactory.getInstance().createBringToFrontAction(plugInPort);
     }
     return bringToFrontAction;
   }
 
-  public ActionFactory.NudgeAction getNudgeAction() {
+  public NudgeAction getNudgeAction() {
     if (nudgeAction == null) {
       nudgeAction = ActionFactory.getInstance().createNudgeAction(plugInPort);
     }
     return nudgeAction;
   }
 
-  public ActionFactory.RenumberAction getRenumberXAxisAction() {
+  public RenumberAction getRenumberXAxisAction() {
     if (renumberXAxisAction == null) {
       renumberXAxisAction = ActionFactory.getInstance().createRenumberAction(plugInPort, true);
     }
     return renumberXAxisAction;
   }
 
-  public ActionFactory.RenumberAction getRenumberYAxisAction() {
+  public RenumberAction getRenumberYAxisAction() {
     if (renumberYAxisAction == null) {
       renumberYAxisAction = ActionFactory.getInstance().createRenumberAction(plugInPort, false);
     }
     return renumberYAxisAction;
   }
 
-  public ActionFactory.ExpandSelectionAction getExpandSelectionAllAction() {
+  public ExpandSelectionAction getExpandSelectionAllAction() {
     if (expandSelectionAllAction == null) {
       expandSelectionAllAction = ActionFactory.getInstance().createExpandSelectionAction(plugInPort, ExpansionMode.ALL);
     }
     return expandSelectionAllAction;
   }
 
-  public ActionFactory.ExpandSelectionAction getExpandSelectionImmediateAction() {
+  public ExpandSelectionAction getExpandSelectionImmediateAction() {
     if (expandSelectionImmediateAction == null) {
       expandSelectionImmediateAction =
           ActionFactory.getInstance().createExpandSelectionAction(plugInPort, ExpansionMode.IMMEDIATE);
@@ -213,7 +232,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     return expandSelectionImmediateAction;
   }
 
-  public ActionFactory.ExpandSelectionAction getExpandSelectionSameTypeAction() {
+  public ExpandSelectionAction getExpandSelectionSameTypeAction() {
     if (expandSelectionSameTypeAction == null) {
       expandSelectionSameTypeAction =
           ActionFactory.getInstance().createExpandSelectionAction(plugInPort, ExpansionMode.SAME_TYPE);
@@ -221,35 +240,35 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     return expandSelectionSameTypeAction;
   }
 
-  public ActionFactory.SaveAsTemplateAction getSaveAsTemplateAction() {
+  public SaveAsTemplateAction getSaveAsTemplateAction() {
     if (saveAsTemplateAction == null) {
       saveAsTemplateAction = ActionFactory.getInstance().createSaveAsTemplateAction(plugInPort);
     }
     return saveAsTemplateAction;
   }
 
-  public ActionFactory.SaveAsBlockAction getSaveAsBlockAction() {
+  public SaveAsBlockAction getSaveAsBlockAction() {
     if (saveAsBlockAction == null) {
       saveAsBlockAction = ActionFactory.getInstance().createSaveAsBlockAction(plugInPort);
     }
     return saveAsBlockAction;
   }
 
-  public ActionFactory.RotateSelectionAction getRotateClockwiseAction() {
+  public RotateSelectionAction getRotateClockwiseAction() {
     if (rotateClockwiseAction == null) {
       rotateClockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, 1);
     }
     return rotateClockwiseAction;
   }
 
-  public ActionFactory.RotateSelectionAction getRotateCounterclockwiseAction() {
+  public RotateSelectionAction getRotateCounterclockwiseAction() {
     if (rotateCounterClockwiseAction == null) {
       rotateCounterClockwiseAction = ActionFactory.getInstance().createRotateSelectionAction(plugInPort, -1);
     }
     return rotateCounterClockwiseAction;
   }
 
-  public ActionFactory.MirrorSelectionAction getMirrorHorizontallyAction() {
+  public MirrorSelectionAction getMirrorHorizontallyAction() {
     if (mirrorHorizontallyAction == null) {
       mirrorHorizontallyAction =
           ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.HORIZONTAL);
@@ -257,7 +276,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     return mirrorHorizontallyAction;
   }
 
-  public ActionFactory.MirrorSelectionAction getMirrorVerticallyAction() {
+  public MirrorSelectionAction getMirrorVerticallyAction() {
     if (mirrorVerticallyAction == null) {
       mirrorVerticallyAction =
           ActionFactory.getInstance().createMirrorSelectionAction(plugInPort, IComponentTransformer.VERTICAL);
@@ -265,13 +284,13 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     return mirrorVerticallyAction;
   }
   
-  public ActionFactory.FindAction getFindAction() {
+  public FindAction getFindAction() {
     if (findAction == null)
       findAction = ActionFactory.getInstance().createFindAction(plugInPort, swingUI);
     return findAction;
   }
   
-  public ActionFactory.FlexibleLeadsAction getFlexibleLeadsAction() {
+  public FlexibleLeadsAction getFlexibleLeadsAction() {
     if (flexibleLeadsAction == null)
       flexibleLeadsAction = ActionFactory.getInstance().createFlexibleLeadsAction(plugInPort);
     return flexibleLeadsAction;

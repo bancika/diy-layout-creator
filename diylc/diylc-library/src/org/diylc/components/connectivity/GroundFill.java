@@ -25,6 +25,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Set;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
@@ -32,19 +34,23 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.GerberLayer;
+import org.diylc.core.gerber.GerberRenderMode;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "Ground Fill", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.TRACE,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
-public class GroundFill extends AbstractComponent<Void> implements ILayer {
+public class GroundFill extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 
@@ -59,10 +65,10 @@ public class GroundFill extends AbstractComponent<Void> implements ILayer {
   protected Color color = COLOR;
   protected PointCount pointCount = PointCount._4;
   private PCBLayer layer = PCBLayer._1;
-
+  
   @Override
-  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     Color fillColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
@@ -185,5 +191,25 @@ public class GroundFill extends AbstractComponent<Void> implements ILayer {
     public String toString() {
       return name().substring(1);
     };
+  }
+
+  @Override
+  public Set<GerberRenderMode> getGerberRenderModes() {
+    return EnumSet.of(GerberRenderMode.Normal);
+  }
+  
+  @Override
+  public GerberLayer getGerberLayer() {
+    return getLayer().toGerberCopperLayer();
+  }
+
+  @Override
+  public String getGerberFunction() {
+    return GerberFunctions.CONDUCTOR;
+  }
+
+  @Override
+  public boolean isGerberNegative() {
+    return false;
   }
 }

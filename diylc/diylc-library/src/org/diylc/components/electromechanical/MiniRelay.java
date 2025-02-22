@@ -45,6 +45,7 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.Voltage;
@@ -54,7 +55,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1 or G5V-2",
     zOrder = IDIYComponent.COMPONENT, enableCache = true)
-public class MiniRelay extends AbstractLabeledComponent<String> {
+public class MiniRelay extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

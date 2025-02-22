@@ -34,7 +34,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractLabeledComponent;
-import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -44,6 +43,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -52,7 +52,7 @@ import org.diylc.utils.Constants;
     category = "Electro-Mechanical", instanceNamePrefix = "SW",
     description = "4-pin tactile momentary switch", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class TactileMicroSwitch extends AbstractLabeledComponent<String> {
+public class TactileMicroSwitch extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

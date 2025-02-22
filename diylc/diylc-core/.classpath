@@ -10,6 +10,7 @@
 	<classpathentry kind="lib" path="lib/AppleJavaExtensions.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.19.jar"/>
 	<classpathentry kind="lib" path="lib/guava-31.1-jre.jar"/>
+	<classpathentry kind="lib" path="lib/gerber-writer-api-1.0.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

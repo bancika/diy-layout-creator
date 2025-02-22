@@ -21,15 +21,32 @@
 */
 package org.diylc.common;
 
+import org.diylc.core.gerber.GerberLayer;
+
 public enum PCBLayer {
 
-  _1, _2, _3, _4, _5, _6, _7, _8;
+  _1("Bottom"), _2("Top"), _3("Inner 1"), _4("Inner 2"), _5("Inner 3"), _6("Inner 4"), _7("Inner 5"), _8("Inner 6");
+  
+  private String label;
+  
+  private PCBLayer(String label) {
+    this.label = label;
+  }
 
   public String toString() {
-    return name().substring(1);
+    return label;
   };
   
   public int getId() {
     return Integer.parseInt(toString());
+  }
+  
+  public GerberLayer toGerberCopperLayer() {
+    switch (this) {
+      case _1: return GerberLayer.CopperBot;
+      case _2: return GerberLayer.CopperTop;
+      default:
+        throw new RuntimeException("Unsupported PCB layer: " + this);
+    }
   }
 }

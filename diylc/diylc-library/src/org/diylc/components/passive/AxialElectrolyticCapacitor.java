@@ -38,6 +38,7 @@ import org.diylc.core.Theme;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -48,7 +49,7 @@ import org.diylc.utils.Constants;
     description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class,
     enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 3)
-public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> implements IDatasheetSupport {
+public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> implements IDatasheetSupport, IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

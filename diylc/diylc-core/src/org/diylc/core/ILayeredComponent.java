@@ -1,6 +1,6 @@
 package org.diylc.core;
 
-public interface ILayer {
+public interface ILayeredComponent {
 
   int getLayerId();
 }
