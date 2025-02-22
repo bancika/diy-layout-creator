@@ -207,6 +207,8 @@ public class CanvasPlugin implements IPlugIn{
 
         @Override
         public void mouseClicked(MouseEvent e) {
+          canvasPanel.setClickInProgress(false);
+          
           if (scrollPane.isMouseScrollMode() || e.getButton() == MouseEvent.BUTTON2)
             return;
           
@@ -220,6 +222,7 @@ public class CanvasPlugin implements IPlugIn{
         @Override
         public void mousePressed(MouseEvent e) {
           canvasPanel.requestFocus();
+          canvasPanel.setClickInProgress(true);
           pressedEvent = e;
         }
 
@@ -238,6 +241,14 @@ public class CanvasPlugin implements IPlugIn{
                 int y = e.getY();
                 getPopupMenu().prepareAndShowAt(plugInPort.findComponentsAt(new Point(x, y), false),
                     plugInPort.findComponentsAt(new Point(x, y), true), x, y);                
+              } else if (canvasPanel.isClickInProgress()) {
+                // ensure that the click is not lost in case mouseClicked was not triggered
+                // and no drag action is performed
+                canvasPanel.setClickInProgress(false);
+                // do not pass isMetaDown on mac when button3 (two finger click) is pressed
+                boolean ctrlDown = Utils.isMac() ? (e.getButton() == MouseEvent.BUTTON3 ? false : e.isMetaDown()): e.isControlDown();
+                plugInPort.mouseClicked(e.getPoint(), e.getButton(),
+                        ctrlDown, e.isShiftDown(), e.isAltDown(), e.getClickCount());
               }
             }
           });

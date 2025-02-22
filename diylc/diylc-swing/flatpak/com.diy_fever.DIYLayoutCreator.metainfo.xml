@@ -37,6 +37,30 @@
   <update_contact>nbenitezl_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
+  	<release version="4.40.0" date="2025-02-20">
+         <description>
+           <ul>
+             <li>[New Feature] Freeway 3x3-03 Toggle switch added</li>
+             <li>[New Feature] Guitar wiring analyzer can now detect treble bleed circuit on volume controls</li>
+             <li>[New Feature] Added headless mode for direct render to file without the GUI - use 'inputFile --export (--force) outputFile' syntax</li>
+             <li>[New Feature] Added two types of 4PDT On/On/On Switches, e.g. DiMarzio EP1111 (thank you Lukasz Tekieli)</li>
+             <li>[New Feature] Ability to set explicit dimensions of basic shapes - rectangles and ellipses</li>
+             <li>[New Feature] Ability to change pitch and appearance of PCB Terminal Block component</li>
+             <li>[Improvement] Better rendering of the effective circuit graph in the guitar wiring analyzer, showing series and parallel connections in a more intuitive way</li>
+             <li>[Improvement] Increased max undo stack size to 128 versions</li>
+             <li>[Improvement] Added 1-pole DIP switch option</li>
+             <li>[Improvement] Allow guitar wiring analyzer when some of the switching configuration do not produce output</li>
+             <li>[Improvement] 'Save As' displays the current file name by default</li>
+             <li>[Improvement] 'Proto Board 780 Holes' now aligns with the grid</li>
+             <li>[Improvement] Show Label text in 'Project Explorer' in addition to the name</li>
+             <li>[Bug Fix] Fixed null pointer exceptions when trying to add components to the layout in some cases</li>
+             <li>[Bug Fix] Loading files that contain lines with end arrows sometimes produces errors in the log and lines not to be loaded</li>
+             <li>[Bug Fix] Mouse click to select intermittently doesn't register on Mac machines</li>
+             <li>[Bug Fix] Ctrl + Minus sign sometimes doesn't zoom out</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.40.0</url>
+     </release>
   	<release version="4.39.0" date="2025-01-25">
          <description>
            <ul>

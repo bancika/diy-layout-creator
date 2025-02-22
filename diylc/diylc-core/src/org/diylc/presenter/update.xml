@@ -4498,6 +4498,14 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Loading files that contain lines with end arrows sometimes produces errors in the log and lines not to be loaded</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Mouse click to select intermittently doesn't register on Mac machines</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Ctrl + Minus sign sometimes doesn't zoom out</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

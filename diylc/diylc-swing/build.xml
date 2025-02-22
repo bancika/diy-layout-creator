@@ -12,8 +12,9 @@
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
 	<property name="diylc.version" value="4.40.0" />
 	
-	<property name="osx.jre8.x64.path" value="tools\jre\osx\x86\jre8u321\Contents\Home\" />
-	<property name="osx.jre8.arm.path" value="tools\jre\osx\arm\temurin17\Contents\Home\" />
+	<property name="win.jre.path" value="tools/jre/win/jre1.8.0_211.zip" />
+	<property name="osx.jre.x86.path" value="tools/jre/osx/x86/jre17.zip" />
+	<property name="osx.jre.arm.path" value="tools/jre/osx/arm/jre17.zip" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -80,53 +81,65 @@
 	</target>
 
 	<target name="mac" depends="jar">
+		<unzip src="${osx.jre.x86.path}" dest="${build.dir}/jre_x86"/>
 		<bundleapp
-	        outputdirectory="${build.dir}"
-	        name="DIYLC"
-					jvmrequired="1.8"
-					copyright="2025 bancika"
-	        displayname="DIY Layout Creator"
-	        identifier="org.diylc.Desktop"
-	        shortversion="${diylc.version}"
-	        applicationCategory="public.app-category.graphics-design"
-					icon="icons/diylc.icns"
-	        mainclassname="${main.class}">
-					<bundledocument contentTypes="org.diylc.diy"
-						name="DIYLC document"
-						role="Editor"
-						handlerRank="Owner">
-					</bundledocument>
-					<typedeclaration
-						identifier="org.diylc.diy"
-						description="DIYLC file type"
-						icon="icons/diylc_file.icns"
-						conformsTo="public.xml,public.text"
-						extensions="diy" />
-			<runtime dir="${osx.jre8.x64.path}" />
-			<classpath file="${jar.dir}\diylc.jar" />
-			<classpath file="${jar.dir}\lib\*.jar" />
-			<classpath file="${jar.dir}\library\*.jar" />
-			<option value="-Xms512m" />
-			<option value="-Xmx4096m" />
-			<!--<option value="-javaagent:Contents/Java/jar-loader.jar" />-->
-			<option value="-Dorg.diylc.scriptRun=true" />
-			<option value="-Dfile.encoding=UTF-8" />
-			<option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
-			<option value="-Dapple.laf.useScreenMenuBar=true"/>
-			<option value="-Dapple.awt.application.name=DIY Layout Creator"/>
-			<option value="-Dcom.apple.smallTabs=true"/>
-			<option value="-Xdock:name=DIY Layout Creator"/>
-			<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
-		</bundleapp>
-		<zip destfile="${build.dir}/diylc-${diylc.version}-osx-x86.zip">
-			<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />
-			<zipfileset filemode="755" dir="${basedir}/themes" prefix="DIYLC.app/Contents/Resources/themes" />
-			<zipfileset filemode="755" dir="${basedir}/fonts" prefix="DIYLC.app/Contents/Resources/fonts" />
-			<zipfileset filemode="755" dir="${basedir}/lang" prefix="DIYLC.app/Contents/Resources/lang" />
-		</zip>
-	</target>
+			        outputdirectory="${build.dir}"
+			        name="DIYLC"
+							jvmrequired="17"
+							copyright="2025 bancika"
+			        displayname="DIY Layout Creator"
+			        identifier="org.diylc.Desktop"
+			        shortversion="${diylc.version}"
+			        applicationCategory="public.app-category.graphics-design"
+							icon="icons/diylc.icns"
+			        mainclassname="${main.class}">
+							<bundledocument contentTypes="org.diylc.diy"
+								name="DIYLC document"
+								role="Editor"
+								handlerRank="Owner">
+							</bundledocument>
+							<typedeclaration
+								identifier="org.diylc.diy"
+								description="DIYLC file type"
+								icon="icons/diylc_file.icns"
+								conformsTo="public.xml,public.text"
+								extensions="diy" />
+					<runtime dir="${build.dir}/jre_x86/Contents/Home" />
+					<arch name="x86_64"/>
+					<classpath file="${jar.dir}\diylc.jar" />
+					<classpath file="${jar.dir}\lib\*.jar" />
+					<classpath file="${jar.dir}\library\*.jar" />
+					<option value="-Xms512m" />
+					<option value="-Xmx4096m" />
+					<!--<option value="-javaagent:Contents/Java/jar-loader.jar" />-->
+					<option value="--add-exports=java.desktop/com.apple.eawt.event=ALL-UNNAMED" />
+					<option value="--add-exports=java.desktop/com.apple.eio=ALL-UNNAMED" />
+					<option value="--add-opens=java.base/java.util=ALL-UNNAMED" />
+					<option value="--add-opens=java.base/java.lang=ALL-UNNAMED" />
+					<option value="--add-opens=java.base/java.text=ALL-UNNAMED" />
+					<option value="--add-opens=java.desktop/java.awt=ALL-UNNAMED" />
+					<option value="--add-opens=java.desktop/java.awt.font=ALL-UNNAMED" />
+					<option value="--add-opens=java.desktop/java.awt.geom=ALL-UNNAMED" />
+					<option value="-Dorg.diylc.scriptRun=true" />
+					<option value="-Dfile.encoding=UTF-8" />
+					<option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
+					<option value="-Dapple.laf.useScreenMenuBar=true"/>
+					<option value="-Dapple.awt.application.name=DIY Layout Creator"/>
+					<option value="-Dcom.apple.smallTabs=true"/>
+					<option value="-Dsun.java2d.metal=true"/>
+					<option value="-Xdock:name=DIY Layout Creator"/>
+					<option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
+				</bundleapp>
+				<zip destfile="${build.dir}/diylc-${diylc.version}-osx-x86.zip">
+					<zipfileset filemode="755" dir="${build.dir}/DIYLC.app" prefix="DIYLC.app" />
+					<zipfileset filemode="755" dir="${basedir}/themes" prefix="DIYLC.app/Contents/Resources/themes" />
+					<zipfileset filemode="755" dir="${basedir}/fonts" prefix="DIYLC.app/Contents/Resources/fonts" />
+					<zipfileset filemode="755" dir="${basedir}/lang" prefix="DIYLC.app/Contents/Resources/lang" />
+				</zip>
+			</target>
 	
 	<target name="mac-arm" depends="jar">
+			<unzip src="${osx.jre.arm.path}" dest="${build.dir}/jre_arm"/>
 			<bundleapp
 		        outputdirectory="${build.dir}"
 		        name="DIYLC"
@@ -149,7 +162,7 @@
 							icon="icons/diylc_file.icns"
 							conformsTo="public.xml,public.text"
 							extensions="diy" />
-				<runtime dir="${osx.jre8.arm.path}" />
+				<runtime dir="${build.dir}/jre_arm/Contents/Home" />
 				<arch name="arm64" />
 				<arch name="arm64e" />
 				<classpath file="${jar.dir}\diylc.jar" />
@@ -158,14 +171,14 @@
 				<option value="-Xms512m" />
 				<option value="-Xmx4096m" />
 				<!--<option value="-javaagent:Contents/Java/jar-loader.jar" />-->
-				<option value="--add-exports java.desktop/com.apple.eawt.event=ALL-UNNAMED" />
-				<option value="--add-exports java.desktop/com.apple.eio=ALL-UNNAMED" />
-				<option value="--add-opens java.base/java.util=ALL-UNNAMED" />
-				<option value="--add-opens java.base/java.lang=ALL-UNNAMED" />
-				<option value="--add-opens java.base/java.text=ALL-UNNAMED" />
-				<option value="--add-opens java.desktop/java.awt=ALL-UNNAMED" />
-				<option value="--add-opens java.desktop/java.awt.font=ALL-UNNAMED" />
-				<option value="--add-opens java.desktop/java.awt.geom=ALL-UNNAMED" />
+				<option value="--add-exports=java.desktop/com.apple.eawt.event=ALL-UNNAMED" />
+				<option value="--add-exports=java.desktop/com.apple.eio=ALL-UNNAMED" />
+				<option value="--add-opens=java.base/java.util=ALL-UNNAMED" />
+				<option value="--add-opens=java.base/java.lang=ALL-UNNAMED" />
+				<option value="--add-opens=java.base/java.text=ALL-UNNAMED" />
+				<option value="--add-opens=java.desktop/java.awt=ALL-UNNAMED" />
+				<option value="--add-opens=java.desktop/java.awt.font=ALL-UNNAMED" />
+				<option value="--add-opens=java.desktop/java.awt.geom=ALL-UNNAMED" />
 				<option value="-Dorg.diylc.scriptRun=true" />
 				<option value="-Dfile.encoding=UTF-8" />
 				<option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
@@ -193,6 +206,7 @@
 	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask" classpathref="lib.path" />
 
 	<target name="win" depends="jar">
+		<unzip src="${win.jre.path}" dest="${build.dir}/jre_win"/>
 		<exec executable="tools\innosetup\iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
 			<arg value="/Fdiylc-${diylc.version}-win"/>
@@ -224,7 +238,7 @@
 			<zipfileset dir="icons" includes="*.png" prefix="icons" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.desktop" />
 			<zipfileset dir="flatpak" includes="com.diy_fever.DIYLayoutCreator.metainfo.xml" />
-			<zipfileset dir="tools/jre/win/jre1.8.0_211" prefix="jre" />
+			<!--<zipfileset dir="tools/jre/win/jre1.8.0_211" prefix="jre" />-->
 		</zip>
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
