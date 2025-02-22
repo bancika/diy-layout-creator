@@ -35,10 +35,12 @@ import org.diylc.common.IPlugInPort;
 class CanvasDragGestureListener implements DragGestureListener {
 
   private IPlugInPort presenter;
+  private CanvasPanel canvasPanel;
 
-  public CanvasDragGestureListener(IPlugInPort presenter) {
+  public CanvasDragGestureListener(IPlugInPort presenter, CanvasPanel canvasPanel) {
     super();
     this.presenter = presenter;
+    this.canvasPanel = canvasPanel;
   }
 
   @Override
@@ -49,6 +51,7 @@ class CanvasDragGestureListener implements DragGestureListener {
       MouseEvent me = (MouseEvent) e;
       forceReSelection = me.getButton() != MouseEvent.BUTTON1;
     }
+    canvasPanel.setClickInProgress(false);
     presenter.dragStarted(dge.getDragOrigin(), dge.getDragAction(), forceReSelection);
     dge.startDrag(presenter.getCursorAt(dge.getDragOrigin(), false, false, false), new EmptyTransferable(), new CanvasSourceListener(
         presenter));

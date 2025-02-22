@@ -20,7 +20,7 @@ Source: "..\build\jar\library\*"; DestDir: "{app}\library"
 Source: "..\themes\*"; DestDir: "{app}\themes"
 Source: "..\lang\*"; DestDir: "{app}\lang"
 Source: "..\fonts\*"; DestDir: "{app}\fonts"
-Source: "jre\win\jre1.8.0_211\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs
+Source: "..\build\jre_win\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs
 Source: "innosetup\donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
 
 [Registry]
