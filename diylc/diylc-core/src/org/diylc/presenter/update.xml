@@ -4487,6 +4487,10 @@
 					<description>Show Label text in 'Project Explorer' in addition to the name</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>MacOS version for x86 platform upgraded to java 17 and metal rendering engine</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed null pointer exceptions when trying to add components to the layout in some cases</description>
 				</org.diylc.appframework.update.Change>
