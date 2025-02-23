@@ -1861,7 +1861,7 @@ public class Presenter implements IPlugInPort {
 
       @Override
       public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-        return new Integer(currentProject.getComponents().indexOf(o2)).compareTo(currentProject.getComponents()
+        return Integer.valueOf(currentProject.getComponents().indexOf(o2)).compareTo(currentProject.getComponents()
             .indexOf(o1));
       }
     });
@@ -1914,7 +1914,7 @@ public class Presenter implements IPlugInPort {
 
       @Override
       public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-        return new Integer(currentProject.getComponents().indexOf(o1)).compareTo(currentProject.getComponents()
+        return Integer.valueOf(currentProject.getComponents().indexOf(o1)).compareTo(currentProject.getComponents()
             .indexOf(o2));
       }
     });
@@ -1966,7 +1966,7 @@ public class Presenter implements IPlugInPort {
 
       @Override
       public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-        return new Integer(currentProject.getComponents().indexOf(o1))
+        return Integer.valueOf(currentProject.getComponents().indexOf(o1))
             .compareTo(currentProject.getComponents().indexOf(o2));
       }
     });
@@ -2872,7 +2872,7 @@ public class Presenter implements IPlugInPort {
 
       for (Class<?> clazz : classes) {
         if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistAnalyzer.class.isAssignableFrom(clazz)) {
-          result.add((INetlistAnalyzer) clazz.newInstance());
+          result.add((INetlistAnalyzer) clazz.getDeclaredConstructor().newInstance());
         }
       }
 

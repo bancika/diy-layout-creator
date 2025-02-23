@@ -79,6 +79,6 @@ public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> 
 
   @Override
   public int compareTo(Size o) {
-    return new Double(value * unit.getFactor()).compareTo(o.getValue() * o.getUnit().getFactor());
+    return Double.valueOf(value * unit.getFactor()).compareTo(o.getValue() * o.getUnit().getFactor());
   }
 }

@@ -173,7 +173,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
     try {
       // Instantiate object of the same type
       Class<?> clazz = this.getClass();
-      AbstractComponent<T> newInstance = (AbstractComponent<T>) clazz.newInstance();      
+      AbstractComponent<T> newInstance = (AbstractComponent<T>) clazz.getDeclaredConstructor().newInstance();      
       while (AbstractComponent.class.isAssignableFrom(clazz)) {
         Field[] fields = clazz.getDeclaredFields();
         clazz = clazz.getSuperclass();
