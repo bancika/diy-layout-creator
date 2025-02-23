@@ -1,11 +1,24 @@
+
 package org.diylc.core.gerber;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import javax.imageio.ImageIO;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -15,7 +28,7 @@ import com.bancika.gerberwriter.Point;
 import com.bancika.gerberwriter.path.MoveTo;
 import com.bancika.gerberwriter.path.Path;
 
-public class GerberUtils {
+public class GerberPathRenderer {
 
   public static void drawComponent(Project currentProject, GerberG2DWrapper g2d, IDIYComponent<?> c,
       boolean outlineMode) {
@@ -35,27 +48,35 @@ public class GerberUtils {
 
   public static void outputPathArea(PathIterator pathIterator, DataLayer dataLayer, double d,
       boolean isNegative, String function) {
-    outputPath(pathIterator, d, isNegative,
-        (path, negative) -> dataLayer.addRegion(path, function, negative));
+    List<PathWithNegative> outputPath =
+        approximatePathWithPolygonPaths(pathIterator, d, isNegative);
+    outputPath.forEach(p -> dataLayer.addRegion(p.path, function, p.negative));
   }
 
   public static void outputPathOutline(PathIterator pathIterator, DataLayer dataLayer, double d,
       boolean isNegative, String function, double width) {
-    outputPath(pathIterator, d, isNegative, (path, negative) -> dataLayer.addTracesPath(path,
-        width * SizeUnit.px.getFactor(), function, negative));
+    List<PathWithNegative> outputPath =
+        approximatePathWithPolygonPaths(pathIterator, d, isNegative);
+    outputPath.forEach(p -> dataLayer.addTracesPath(p.path, width * SizeUnit.px.getFactor(),
+        function, p.negative));
   }
 
-  private static void outputPath(PathIterator pathIterator, double d, boolean isNegative,
-      IGerberOutput outputAction) {
+  public static List<PathWithNegative> approximatePathWithPolygonPaths(PathIterator pathIterator,
+      double d, boolean isNegative) {
+    // List<PathWithNegative> convert = PathIteratorConverter.convert(pathIterator, d, isNegative);
+    // convert.forEach(c -> outputAction.write(c.path, c.negative));
+    // if (true)
+    // return;
+    List<PathWithNegative> results = new ArrayList<PathWithNegative>();
     double x = 0;
     double y = 0;
     Path path = null;
     Path2D lastPath = null;
     Area lastArea = null;
-    boolean currentIsNegative = isNegative;
     while (!pathIterator.isDone()) {
       double[] coords = new double[6];
       int operation = pathIterator.currentSegment(coords);
+      // int windingRule = pathIterator.getWindingRule();
       switch (operation) {
         case PathIterator.SEG_MOVETO:
           path = new Path();
@@ -80,15 +101,10 @@ public class GerberUtils {
           }
           lastPath.closePath();
           if (lastArea == null) {
-            outputAction.write(path, currentIsNegative);
+            results.add(new PathWithNegative(path, lastPath));
           } else {
             lastArea.intersect(new Area(lastPath));
-            if (lastArea.isEmpty()) {
-              currentIsNegative = isNegative;
-            } else {
-              currentIsNegative = !currentIsNegative;
-            }
-            outputAction.write(path, currentIsNegative);
+            results.add(new PathWithNegative(path, lastPath));
           }
           lastArea = new Area(lastPath);
           path = null;
@@ -115,16 +131,43 @@ public class GerberUtils {
     }
     // check any leftover open path
     if (path != null) {
-      if (lastArea == null) {
-        outputAction.write(path, currentIsNegative);
-      } else {
-        lastArea.intersect(new Area(lastPath));
-        if (lastArea.isEmpty()) {
-          currentIsNegative = isNegative;
-        } else {
-          currentIsNegative = !currentIsNegative;
+      if (!path.isContour()) {
+        path.lineTo(((MoveTo) path.getOperators().get(0)).getTo());
+      }
+      lastPath.closePath();
+      results.add(new PathWithNegative(path, lastPath));
+    }
+
+    results.sort(Comparator.comparing(a -> a.getArea(), Comparator.reverseOrder()));
+
+    assignNegativeFlags(results, isNegative);
+
+    return results;
+  }
+
+  public static void assignNegativeFlags(List<PathWithNegative> paths, boolean initialNegative) {
+    if (paths == null || paths.isEmpty())
+      return;
+
+    // Assume the list is already sorted with larger (outer) paths first.
+    // Set the first one to the given initial value.
+    paths.get(0).negative = initialNegative;
+
+    // For each subsequent path...
+    for (int i = 1; i < paths.size(); i++) {
+      boolean foundParent = false;
+      // Check larger paths (starting from the closest; i.e. immediately before i)
+      for (int j = i - 1; j >= 0; j--) {
+        if (paths.get(j).contains(paths.get(i).currentPoint)) {
+          // If candidate is inside parent, assign the opposite polarity.
+          paths.get(i).negative = !paths.get(j).negative;
+          foundParent = true;
+          break; // stop after the first containing parent is found
         }
-        outputAction.write(path, currentIsNegative);
+      }
+      // If no parent was found, assign the initial value.
+      if (!foundParent) {
+        paths.get(i).negative = initialNegative;
       }
     }
   }
@@ -157,5 +200,66 @@ public class GerberUtils {
     curve.subdivide(left, right);
     subdivide(left, path, d);
     subdivide(right, path, d);
+  }
+
+  public static void renderShapeToPNG(Shape shape, String outputPath) throws IOException {
+    // 1. Determine the bounding box of the shape.
+    Rectangle2D bounds = shape.getBounds2D();
+
+    // Ensure we have a positive width/height.
+    // (You may want to add padding or checks if shape is empty or negative sized.)
+    int width = (int) Math.ceil(bounds.getWidth());
+    int height = (int) Math.ceil(bounds.getHeight());
+    if (width <= 0 || height <= 0) {
+      throw new IllegalArgumentException("Shape has invalid bounds: " + bounds);
+    }
+
+    // 2. Create a BufferedImage (RGB) with the required dimensions.
+    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+    // 3. Draw the shape.
+    Graphics2D g2d = image.createGraphics();
+    try {
+      // Enable anti-aliasing if desired
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+      // White background
+      g2d.setColor(Color.WHITE);
+      g2d.fillRect(0, 0, width, height);
+
+      // Translate the graphics context so the shape appears at (0,0)
+      g2d.translate(-bounds.getX(), -bounds.getY());
+
+      // Draw the shape in black
+      g2d.setColor(Color.BLACK);
+      g2d.fill(shape);
+    } finally {
+      g2d.dispose();
+    }
+
+    // 4. Write the result to a PNG file
+    ImageIO.write(image, "png", new File(outputPath));
+  }
+  
+  private static class PathWithNegative {
+    
+    Path path;
+    boolean negative;
+    Area lastPath;
+    Point2D currentPoint;
+
+    public PathWithNegative(Path path, Path2D lastPath) {
+        this.path = path;
+        this.lastPath = new Area(lastPath);
+        currentPoint = lastPath.getCurrentPoint();
+    }
+    
+    double getArea() {
+      return lastPath.getBounds2D().getWidth() * lastPath.getBounds2D().getHeight();
+    }
+    
+    boolean contains(Point2D point) {
+      return lastPath.contains(point);
+    }
   }
 }

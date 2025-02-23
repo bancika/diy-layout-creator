@@ -163,7 +163,7 @@ public class GerberG2DWrapper extends Graphics2D
         }
         DataLayer dataLayer = layerMap.get(entry.getKey());
         AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
-        GerberUtils.outputPathOutline(s.getPathIterator(finalTx), dataLayer,
+        GerberPathRenderer.outputPathOutline(s.getPathIterator(finalTx), dataLayer,
             Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
             entry.getValue().negative, entry.getValue().function, width);
       });
@@ -175,9 +175,22 @@ public class GerberG2DWrapper extends Graphics2D
     if (str == null || str.trim().isEmpty()) {
       return;
     }
-    TextLayout layout = new TextLayout(str, getFont(), graphics2d.getFontRenderContext());
-    Shape shape = layout.getOutline(AffineTransform.getTranslateInstance(x, y));
-    fillShape(shape);
+
+    
+    GlyphVector gv = font.createGlyphVector(graphics2d.getFontRenderContext(), str);
+    
+    AffineTransform translateInstance = AffineTransform.getTranslateInstance(x, y);
+
+    for (int i = 0; i < gv.getNumGlyphs(); i++) {
+        Shape glyphShape = gv.getGlyphOutline(i);
+        
+        fillShape(translateInstance.createTransformedShape(glyphShape));
+    }
+    
+//    Font f = getFont();
+//    TextLayout layout = new TextLayout(str, f, graphics2d.getFontRenderContext());
+//    Shape shape = layout.getOutline(AffineTransform.getTranslateInstance(x, y));
+//    fillShape(shape);
   }
 
   @Override
@@ -196,7 +209,7 @@ public class GerberG2DWrapper extends Graphics2D
       currentLayers.entrySet().forEach(entry -> {
         DataLayer dataLayer = layerMap.get(entry.getKey());
         AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
-        GerberUtils.outputPathArea(s.getPathIterator(finalTx), dataLayer,
+        GerberPathRenderer.outputPathArea(s.getPathIterator(finalTx), dataLayer,
             Double.isNaN(tolerance) ? CURVE_APPROXIMATION_TOLERANCE : tolerance,
             entry.getValue().negative, entry.getValue().function);
       });
@@ -210,7 +223,7 @@ public class GerberG2DWrapper extends Graphics2D
         AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
         if (Math.abs(c.getWidth() - c.getHeight()) < 0.1 && finalTx.getShearX() == 0
             && finalTx.getShearY() == 0
-            && Math.abs(finalTx.getScaleX() - finalTx.getScaleY()) < 0.0001) {
+            && Math.abs(Math.abs(finalTx.getScaleX()) - Math.abs(finalTx.getScaleY())) < 0.0001) {
           final double d = Math.abs(c.getWidth() * finalTx.getScaleX()) * SizeUnit.px.getFactor();
           Circle circle = new Circle(d, entry.getValue().function, entry.getValue().negative);
           dataLayer.addPad(circle, new Point(

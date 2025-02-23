@@ -82,7 +82,7 @@ public class GerberExporter {
       final AffineTransform boardTx = AffineTransform.getScaleInstance(1, -1);
       boardTx.translate(-boardRect.getX(), -boardRect.getMaxY());
       final PathIterator pathIterator = boardRect.getPathIterator(boardTx);
-      GerberUtils.outputPathOutline(pathIterator, outlineLayer, 1d, false, "Profile", OUTLINE_THICKNESS);
+      GerberPathRenderer.outputPathOutline(pathIterator, outlineLayer, 1d, false, "Profile", OUTLINE_THICKNESS);
       // Path path = buildOutlinePath(b);
       // outlineLayer.addTracesPath(path, OUTLINE_THICKNESS, "Profile", false);
       String fileNameOutline = fileNameBase + (fileNameBase.endsWith(".") ? "" : ".")
