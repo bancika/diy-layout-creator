@@ -38,7 +38,7 @@ public enum PCBLayer {
   };
   
   public int getId() {
-    return Integer.parseInt(toString());
+    return this.ordinal() + 1;
   }
   
   public GerberLayer toGerberCopperLayer() {
