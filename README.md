@@ -44,15 +44,14 @@ DIY Layout Creator (DIYLC) is a specialized software tool designed for hobbyists
 <p>To report bugs or request a new feature go to <a href="https://github.com/bancika/diy-layout-creator/issues" rel="nofollow">Issues</a> page and create a new issue describing your problem or request. </p>
 <p>To join the discussion or request technical assistance, use the dedicated <a href="http://groups.google.com/group/diy-layout-creator" rel="nofollow">Discussion Group</a>. </p>
 <h3><a name="Want_to_contribute?"></a>Want to contribute?<a href="#Want_to_contribute?" class="section_anchor"></a></h3>
-<p>If you want to help the DIYLC project, there are several things you can do: </p>
+<p align="justify"><strong>DIYLC is provided free of charge and can be used and redistributed freely. Please note that it takes a lot of time and effort to build, test and maintain it and to interact with the growing community of users. If you find DIYLC useful and want to support further development, these are some of the ways you can contribute</strong></p>
 <ul>
-   <li>Help with adding the information to the <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/Manual.md">user manual</a>. </li>
-   <li>Extend the component base, read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md" rel="nofollow">this wiki</a> to learn how to create new components. </li>
-   <li>Add a new functionality though plug-ins, read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/PluginAPI.md" rel="nofollow">this wiki</a> to learn how to create new plug-ins. </li>
    <li><a href="https://www.patreon.com/c/user?u=5213116">Become a Patreon.</a></li>
    <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88">Make a one-time donation with PayPal.</a></li>
+   <li>Help with adding the information to the <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/Manual.md">user manual</a> or other project documentation.</li>
+   <li>Extend the component base, read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md" rel="nofollow">this wiki</a> to learn how to create new components. </li>
+   <li>Add a new functionality though plug-ins, read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/PluginAPI.md" rel="nofollow">this wiki</a> to learn how to create new plug-ins. </li>
 </ul>
-<p align="justify"><strong>DIYLC is provided free of charge and can be used and redistributed freely. Please note that it takes a lot of time and effort to build, test and maintain it and to interact with the growing community of users. If you find DIYLC useful and want to support further development, please consider making a small PayPal donation.</strong></p>
 <!--<p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif"></a> </p>-->
 <h3><a name="License_information"></a>License information<a href="#License_information" class="section_anchor"></a></h3>
 <p>Source code is released under <a href="https://www.gnu.org/licenses/gpl-3.0.txt">GNU General Public License version 3</a>. Contact the project owner to obtain a license in case you plan to use the source code, or any part of it, in commercial purposes. </p>
