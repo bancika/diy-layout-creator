@@ -728,7 +728,7 @@ public class DrawingManager {
       Collection<Area> positiveAreas = a.getContinuityPositiveAreas();
       if (positiveAreas != null) {
         for (Area a1 : positiveAreas) {
-          preliminaryAreas.add(new ContinuityArea(a.getZOrder(), layerId, a1));
+          preliminaryAreas.add(new ContinuityArea(layerId, a1));
           checkBreakout.add(false);
         }
       }
@@ -757,7 +757,7 @@ public class DrawingManager {
           areas.add(a);
         } else {
           areas.addAll(breakoutAreas.stream()
-              .map(area -> new ContinuityArea(a.getZIndex(), a.getLayerId(), area))
+              .map(area -> new ContinuityArea(a.getLayerId(), area))
               .collect(Collectors.toList())); 
         }        
       } else
