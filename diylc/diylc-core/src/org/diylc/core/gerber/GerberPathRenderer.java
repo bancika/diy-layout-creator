@@ -131,10 +131,6 @@ public class GerberPathRenderer {
     }
     // check any leftover open path
     if (path != null) {
-      if (!path.isContour()) {
-        path.lineTo(((MoveTo) path.getOperators().get(0)).getTo());
-      }
-      lastPath.closePath();
       results.add(new PathWithNegative(path, lastPath));
     }
 

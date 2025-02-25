@@ -94,6 +94,7 @@ English
 Español
 Export
 Export to Gerber
+Exporting outline for board %s to file %s
 Filament Voltage
 Français
 G-D-S     JFET
@@ -104,7 +105,10 @@ G-S-D     JFET
 G-S-D     MOSFET
 Generate DIYLC Netlist (excl. Switches)
 Generate DIYLC Netlist (incl. Switches)
+Gerber Export
+Gerber export completed successfully. The following files were created:%s
 Gray
+Hole Type
 Humbucking - 4 leads
 I-G-O     REGULATOR
 IEC
@@ -124,6 +128,7 @@ NPN
 Nand
 Nederlands
 Nine
+Non-Plated Through Hole
 Non-shorting
 Nor
 Not
@@ -140,6 +145,7 @@ PAF
 PCB
 PNP
 Pitch
+Plated Through Hole
 Poles
 Português
 RS
@@ -167,6 +173,7 @@ Srpski
 Stroke
 Ten
 Terminal
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?
 Timing
 Tubular Beveled
 Xnor

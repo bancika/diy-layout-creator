@@ -83,10 +83,7 @@ public class GerberExporter {
       boardTx.translate(-boardRect.getX(), -boardRect.getMaxY());
       final PathIterator pathIterator = boardRect.getPathIterator(boardTx);
       GerberPathRenderer.outputPathOutline(pathIterator, outlineLayer, 1d, false, "Profile", OUTLINE_THICKNESS);
-      // Path path = buildOutlinePath(b);
-      // outlineLayer.addTracesPath(path, OUTLINE_THICKNESS, "Profile", false);
-      String fileNameOutline = fileNameBase + (fileNameBase.endsWith(".") ? "" : ".")
-          + boardComponent.getName() + ".gko";
+      String fileNameOutline = GerberLayer.Outline.formatFileName(fileNameBase, boardComponent.getName());
       try {
         LOG.info(String.format(LangUtil.translate("Exporting outline for board %s to file %s"),
             boardComponent.getName(), fileNameOutline));
@@ -118,8 +115,7 @@ public class GerberExporter {
         org.diylc.core.gerber.GerberLayer layer = entry.getKey();
         DataLayer dataLayer = entry.getValue();
         try {
-          String fileName = fileNameBase + (fileNameBase.endsWith(".") ? "" : ".")
-              + boardComponent.getName() + "." + layer.getExtension();
+          String fileName = layer.formatFileName(fileNameBase, boardComponent.getName());
           LOG.info("Exporting layer: " + layer + " for board " + boardComponent.getName()
               + " to file: " + fileName);
           dataLayer.dumpGerberToFile(fileName);
