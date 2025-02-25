@@ -4533,7 +4533,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Pasting a building block sometimes messes up the z-order of components</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Pasting a building block sometimes switches selection to previously added components and canvas moves to the wrong position</description>
+				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

@@ -629,12 +629,9 @@ public class Presenter implements IPlugInPort {
               if (componentSlot.size() > 1 && !componentTypeSlot.getName().toLowerCase().contains("clipboard")) {
                 this.currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(componentSlot));
               }
-              // Select the new component
-              // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
-              // selectedComponents);
-              // messageDispatcher.dispatchMessage(EventType.SELECTION_SIZE_CHANGED,
-              // calculateSelectionDimension());
-              messageDispatcher.dispatchMessage(EventType.REPAINT);
+              
+              notifyProjectModifiedIfNeeded(oldProject, "Add " + componentTypeSlot.getName(), true, true);
+
               updateSelection(newSelection);
             } catch (Exception e) {
               LOG.error("Error instatiating component of type: " + componentTypeSlot.getInstanceClass().getName(), e);
@@ -663,24 +660,19 @@ public class Presenter implements IPlugInPort {
                 view.showMessage(ERROR_CREATE, ERROR, IView.ERROR_MESSAGE);
                 LOG.error("Could not create component", e);
               }
+              
+              notifyProjectModifiedIfNeeded(oldProject, "Add " + componentTypeSlot.getName(), true, true);
+              
               messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, componentTypeSlot,
                   instantiationManager.getFirstControlPoint());
-              messageDispatcher.dispatchMessage(EventType.REPAINT);
             } else {
               // On the second click, add the component to the
               // project.
-              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template, model);
+              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template, model, oldProject);
             }
             break;
           default:
             LOG.error("Unknown creation method: " + componentTypeSlot.getCreationMethod());
-        }
-        // Notify the listeners.
-        if (!oldProject.equals(currentProject)) {
-          messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, "Add "
-              + componentTypeSlot.getName());
-          drawingManager.clearContinuityArea();
-          projectFileManager.notifyFileChange();
         }
       } else if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false) || altDown) {
         drawingManager.findContinuityAreaAtPoint(scaledPoint);
@@ -724,7 +716,20 @@ public class Presenter implements IPlugInPort {
     }
   }
 
-  private void addPendingComponentsToProject(Point2D scaledPoint, ComponentType componentTypeSlot, Template template, String[] model) {
+  private void notifyProjectModifiedIfNeeded(Project oldProject, String action, boolean clearContinuityArea, boolean repaint) {
+    // Notify the listeners.
+    if (oldProject == null || !currentProject.equals(oldProject)) {
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, action);
+      if (clearContinuityArea)
+        drawingManager.clearContinuityArea();
+      projectFileManager.notifyFileChange();
+      if (repaint)
+        messageDispatcher.dispatchMessage(EventType.REPAINT);
+    }
+  }
+
+  private void addPendingComponentsToProject(Point2D scaledPoint, ComponentType componentTypeSlot, Template template, String[] model,
+      Project oldProject) {
     List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
     Point2D firstPoint = componentSlot.get(0).getControlPoint(0);
     // don't allow to create component with the same points
@@ -740,6 +745,8 @@ public class Presenter implements IPlugInPort {
       }
     }
 
+    notifyProjectModifiedIfNeeded(oldProject, "Add " + componentTypeSlot.getName(), true, true);
+    
     updateSelection(newSelection);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
 
@@ -801,10 +808,9 @@ public class Presenter implements IPlugInPort {
         mirrorComponents(this.selectedComponents, IComponentTransformer.VERTICAL, snapToGrid);
       } else
         return false;
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-          "Rotate Selection");
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
-      drawingManager.clearContinuityArea();
+      
+      notifyProjectModifiedIfNeeded(oldProject, "Rotate Selection", true, true);
+     
       return true;
     }
 
@@ -845,8 +851,7 @@ public class Presenter implements IPlugInPort {
 
     Project oldProject = currentProject.clone();
     moveComponents(controlPointMap, dx, dy, snapToGrid, snapToObjects);
-    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, "Move Selection");
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
+    notifyProjectModifiedIfNeeded(oldProject, "Move Selection", true, true);
     return true;
   }
 
@@ -1063,9 +1068,7 @@ public class Presenter implements IPlugInPort {
 
     Project oldProject = currentProject.clone();
     moveComponents(controlPointMap, dx, dy, false, false);
-    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, "Move Selection");
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
-    drawingManager.clearContinuityArea();
+    notifyProjectModifiedIfNeeded(oldProject, "Move Selection", true, true);
   }
   
   @SuppressWarnings("unchecked")
@@ -1432,10 +1435,8 @@ public class Presenter implements IPlugInPort {
       LOG.trace("Rotating selected components");
       Project oldProject = currentProject.clone();
       rotateComponents(this.selectedComponents, direction, isSnapToGrid());
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-          "Rotate Selection");
-      drawingManager.clearContinuityArea();
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
+      
+      notifyProjectModifiedIfNeeded(oldProject,  "Rotate Selection", true, true);
     }
   }
 
@@ -1475,66 +1476,6 @@ public class Presenter implements IPlugInPort {
     // Remove from area map.    
     drawingManager.clearComponentAreaMap();
     drawingManager.clearContinuityArea();
-
-    // AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.x,
-    // center.y);
-    //
-    // // Update all points to new location.
-    // for (IDIYComponent<?> component : components) {
-    // drawingManager.invalidateComponent(component);
-    // ComponentType type =
-    // ComponentProcessor.getInstance().extractComponentTypeFrom(
-    // (Class<? extends IDIYComponent<?>>) component.getClass());
-    // if (type.isRotatable()) {
-    // for (int index = 0; index < component.getControlPointCount(); index++) {
-    // Point p = new Point(component.getControlPoint(index));
-    // rotate.transform(p, p);
-    // component.setControlPoint(p, index);
-    // }
-    // // If component has orientation, change it too
-    // List<PropertyWrapper> newProperties =
-    // ComponentProcessor.getInstance().extractProperties(component.getClass());
-    // for (PropertyWrapper property : newProperties) {
-    // if (property.getType() == Orientation.class) {
-    // try {
-    // property.readFrom(component);
-    // Orientation orientation = (Orientation) property.getValue();
-    // Orientation[] values = Orientation.values();
-    // int newIndex = orientation.ordinal() + direction;
-    // if (newIndex < 0)
-    // newIndex = values.length - 1;
-    // else if (newIndex >= values.length)
-    // newIndex = 0;
-    // property.setValue(values[newIndex]);
-    // property.writeTo(component);
-    // } catch (Exception e) {
-    // LOG.error("Could not change component orientation for " + component.getName(), e);
-    // }
-    // } else if (property.getType() == OrientationHV.class) {
-    // try {
-    // property.readFrom(component);
-    // OrientationHV orientation = (OrientationHV) property.getValue();
-    // property.setValue(OrientationHV.values()[1 - orientation.ordinal()]);
-    // property.writeTo(component);
-    // } catch (Exception e) {
-    // LOG.error("Could not change component orientation for " + component.getName(), e);
-    // }
-    // }
-    // }
-    // } else {
-    // // Non-rotatable
-    // Point componentCenter = getCenterOf(Arrays.asList(new IDIYComponent<?>[] {component}),
-    // false);
-    // Point rotatedComponentCenter = new Point();
-    // rotate.transform(componentCenter, rotatedComponentCenter);
-    // for (int index = 0; index < component.getControlPointCount(); index++) {
-    // Point p = new Point(component.getControlPoint(index));
-    // p.translate(rotatedComponentCenter.x - componentCenter.x, rotatedComponentCenter.y -
-    // componentCenter.y);
-    // component.setControlPoint(p, index);
-    // }
-    // }
-    // }
   }
 
   @Override
@@ -1545,10 +1486,7 @@ public class Presenter implements IPlugInPort {
 
       mirrorComponents(selectedComponents, direction, isSnapToGrid());
 
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-          MIRROR_SELECTION);
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
-      drawingManager.clearContinuityArea();
+      notifyProjectModifiedIfNeeded(oldProject, "Mirror Selection", true, true);
     }
   }
 
@@ -1665,6 +1603,7 @@ public class Presenter implements IPlugInPort {
           }
         }
       selectionRect = null;
+      
       updateSelection(newSelection);
       // messageDispatcher.dispatchMessage(EventType.SELECTION_CHANGED,
       // selectedComponents);
@@ -1672,19 +1611,12 @@ public class Presenter implements IPlugInPort {
       // calculateSelectionDimension());
     } else if (instantiationManager.getComponentSlot() != null) {
       preDragProject = currentProject.clone();
-      addPendingComponentsToProject(scaledPoint, instantiationManager.getComponentTypeSlot(), null, null);
+      addPendingComponentsToProject(scaledPoint, instantiationManager.getComponentTypeSlot(), null, null, preDragProject);
     } else {
       updateSelection(selectedComponents);
     }
     // There is selection, so we need to finalize the drag&drop
     // operation.
-
-    if (!preDragProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, currentProject, "Drag");
-      drawingManager.clearContinuityArea();
-      projectFileManager.notifyFileChange();
-    }
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
     dragInProgress = false;
   }
 
@@ -1728,12 +1660,8 @@ public class Presenter implements IPlugInPort {
       }
     }
 
+    notifyProjectModifiedIfNeeded(oldProject, "Duplicate", true, true);
     updateSelection(newSelection);
-
-    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, "Duplicate");
-    drawingManager.clearContinuityArea();
-    projectFileManager.notifyFileChange();
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
   @Override
@@ -1754,11 +1682,8 @@ public class Presenter implements IPlugInPort {
     currentProject.getComponents().removeAll(selectedComponents);
     DrawingCache.Instance.invalidate(selectedComponents);
     
-    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, "Delete");
-    drawingManager.clearContinuityArea();
-    projectFileManager.notifyFileChange();
+    notifyProjectModifiedIfNeeded(oldProject, "Delete", true, true);
     updateSelection(EMPTY_SELECTION);
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
   @Override
@@ -1787,11 +1712,7 @@ public class Presenter implements IPlugInPort {
     // Then group them together.
     currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(selectedComponents));
     // Notify the listeners.
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
-    if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, "Group");
-      projectFileManager.notifyFileChange();
-    }
+    notifyProjectModifiedIfNeeded(oldProject, "Group", false, true);
   }
 
   @Override
@@ -1800,11 +1721,7 @@ public class Presenter implements IPlugInPort {
     Project oldProject = currentProject.clone();
     ungroupComponents(selectedComponents);
     // Notify the listeners.
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
-    if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, "Ungroup");
-      projectFileManager.notifyFileChange();
-    }
+    notifyProjectModifiedIfNeeded(oldProject, "Ungroup", false, true);
   }
 
   @Override
@@ -1817,13 +1734,9 @@ public class Presenter implements IPlugInPort {
       currentProject.getLockedLayers().remove(layerZOrder);
     }
     updateSelection(EMPTY_SELECTION);
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
-    if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-          locked ? "Lock Layer" : "Unlock Layer");
-      projectFileManager.notifyFileChange();
-    }
+    
+    notifyProjectModifiedIfNeeded(oldProject, locked ? "Lock Layer" : "Unlock Layer", false, true);
   }
 
   @Override
@@ -1836,13 +1749,9 @@ public class Presenter implements IPlugInPort {
       currentProject.getHiddenLayers().add(layerZOrder);
     }
     updateSelection(EMPTY_SELECTION);
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_VISIBILITY_CHANGED, currentProject.getHiddenLayers());
-    if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-          visible ? "Show Layer" : "Hide Layer");
-      projectFileManager.notifyFileChange();
-    }
+    
+    notifyProjectModifiedIfNeeded(oldProject,  visible ? "Show Layer" : "Hide Layer", false, true);
   }
 
   @SuppressWarnings("unchecked")
@@ -1891,11 +1800,7 @@ public class Presenter implements IPlugInPort {
           index--;
         }
     }
-    if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, "Send to Back");
-      projectFileManager.notifyFileChange();
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
-    }
+    notifyProjectModifiedIfNeeded(oldProject, "Send to Back", false, true);
   }
 
   @SuppressWarnings("unchecked")
@@ -1944,12 +1849,7 @@ public class Presenter implements IPlugInPort {
           index++;
         }
     }
-    if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-          "Bring to Front");
-      projectFileManager.notifyFileChange();
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
-    }
+    notifyProjectModifiedIfNeeded(oldProject, "Bring to Front", false, true);
   }
   
   @Override
@@ -1980,12 +1880,7 @@ public class Presenter implements IPlugInPort {
         currentProject.getComponents().add(zIndex, component);
       }
     }
-    if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-          "Change Z-order");
-      projectFileManager.notifyFileChange();
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
-    }
+    notifyProjectModifiedIfNeeded(oldProject, "Change Z-order", false, true);
   }
 
   @Override
@@ -2074,10 +1969,7 @@ public class Presenter implements IPlugInPort {
           .getComponents()));
     }
 
-    messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-        "Renumber selection");
-    projectFileManager.notifyFileChange();
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
+    notifyProjectModifiedIfNeeded(oldProject,  "Renumber selection", false, true);
   }
 
   public void setSelection(Collection<IDIYComponent<?>> newSelection, boolean panToSelection) {
@@ -2433,14 +2325,7 @@ public class Presenter implements IPlugInPort {
       view.showMessage("Could not apply changes to the selection. Check the log for details.", ERROR,
           IView.ERROR_MESSAGE);
     } finally {
-      // Notify the listeners.
-      if (!oldProject.equals(currentProject)) {
-        messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-            "Edit Selection");
-        drawingManager.clearContinuityArea();
-        projectFileManager.notifyFileChange();
-      }
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
+      notifyProjectModifiedIfNeeded(oldProject, "Edit Selection", true, true);
     }
   }
 
@@ -2471,13 +2356,7 @@ public class Presenter implements IPlugInPort {
       LOG.error("Could not apply properties", e);
       view.showMessage(APPLY_ERROR, ERROR, IView.ERROR_MESSAGE);
     } finally {
-      // Notify the listeners.
-      if (!oldProject.equals(currentProject)) {
-        messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-            "Edit Project");
-        drawingManager.clearContinuityArea();
-        projectFileManager.notifyFileChange();
-      }
+      notifyProjectModifiedIfNeeded(oldProject, "Edit Project", true, true);
       drawingManager.fireZoomChanged();
     }
   }
@@ -2494,13 +2373,7 @@ public class Presenter implements IPlugInPort {
       LOG.error("Could not apply editor", e);
       view.showMessage("Could not apply " + editor.getEditAction() + ". Check the log for details.", ERROR, IView.ERROR_MESSAGE);
     } finally {
-      // Notify the listeners.
-      if (!oldProject.equals(currentProject)) {
-        messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-            editor.getEditAction());
-        drawingManager.clearContinuityArea();
-        projectFileManager.notifyFileChange();
-      }
+      notifyProjectModifiedIfNeeded(oldProject, editor.getEditAction(), true, true);
       drawingManager.fireZoomChanged();
     }
   }
@@ -2516,13 +2389,7 @@ public class Presenter implements IPlugInPort {
       LOG.warn("Could not apply datasheet to component", e);
       view.showMessage(APPLY_ERROR, ERROR, IView.ERROR_MESSAGE);
     } finally {
-      // Notify the listeners.
-      if (!oldProject.equals(currentProject)) {
-        messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject,
-            currentProject, "Edit Project");
-        drawingManager.clearContinuityArea();
-        projectFileManager.notifyFileChange();
-      }
+      notifyProjectModifiedIfNeeded(oldProject, "Edit Project", true, true);
       drawingManager.fireZoomChanged();
     }
   }
@@ -2743,14 +2610,7 @@ public class Presenter implements IPlugInPort {
       }
     }
 
-    // Notify the listeners.
-    if (!oldProject.equals(currentProject)) {
-      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-          "Edit Selection");
-      drawingManager.clearContinuityArea();
-      projectFileManager.notifyFileChange();
-    }
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
+    notifyProjectModifiedIfNeeded(oldProject, "Edit Selection", true, true);
   }
   
   @Override
@@ -2809,13 +2669,8 @@ public class Presenter implements IPlugInPort {
         currentProject.getLockedComponents().remove(c);        
       }
     } finally {
-      // Notify the listeners.
-      if (!oldProject.equals(currentProject)) {
-        messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject,
-            locked ? "Lock Component" : "Unlock Component");
-        projectFileManager.notifyFileChange();
-      }
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
+      notifyProjectModifiedIfNeeded(oldProject, locked ? "Lock Component" : "Unlock Component", false, true);
+
       if (locked)
         updateSelection(selectedComponents);      
     }
