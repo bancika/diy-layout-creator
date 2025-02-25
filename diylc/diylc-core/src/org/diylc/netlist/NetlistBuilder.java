@@ -299,6 +299,14 @@ public class NetlistBuilder {
 
     joinPointsWithConnectionNodes(nodeMapByPoint, builder);
 
+    buildAndConnectAreaNodes(continuityAreas, nodeMapByPoint, areaTree, builder);
+
+    return builder.build();
+  }
+
+  private static void buildAndConnectAreaNodes(Collection<ContinuityArea> continuityAreas,
+      Map<Point2D, List<ProjectGraphNode>> nodeMapByPoint, RTree<ProjectGraphNode> areaTree,
+      Builder<ProjectGraphNode> builder) {
     for (ContinuityArea area : continuityAreas) {
       ProjectGraphNode areaNode = new ProjectGraphNode(area);
       builder.addNode(areaNode);
@@ -336,8 +344,6 @@ public class NetlistBuilder {
         }
       }
     }
-
-    return builder.build();
   }
 
   private static void joinPointsWithConnectionNodes(
