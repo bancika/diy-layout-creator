@@ -622,11 +622,8 @@ public class Presenter implements IPlugInPort {
                 CalcUtils.snapPointToGrid(scaledPoint, currentProject.getGridSpacing());
               }
               List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
-              List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
-              for (IDIYComponent<?> component : componentSlot) {
-                addComponent(component, true);
-                newSelection.add(component);
-              }
+              List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(componentSlot);
+              addComponents(componentSlot);
               // group components if there's more than one, e.g. building blocks, but not clipboard
               // contents
               if (componentSlot.size() > 1 && !componentTypeSlot.getName().toLowerCase().contains("clipboard")) {
@@ -2352,12 +2349,59 @@ public class Presenter implements IPlugInPort {
       currentProject.getComponents().add(component);
     }
 
-    // Check if we should auto-create something.
-    for (IAutoCreator creator : ReflectionUtils.getAutoCreators()) {
-      List<IDIYComponent<?>> newComponents = creator.createIfNeeded(component);
-      if (newComponents != null) {
-        for (IDIYComponent<?> c : newComponents)
-          addComponent(c, false);
+    if (allowAutoCreate) {
+      // Check if we should auto-create something.
+      for (IAutoCreator creator : ReflectionUtils.getAutoCreators()) {
+        List<IDIYComponent<?>> newComponents = creator.createIfNeeded(component);
+        if (newComponents != null) {
+          for (IDIYComponent<?> c : newComponents)
+            addComponent(c, false);
+        }
+      }
+    }
+  }
+  
+  /**
+   * Adds components to the project taking z-order into account. It places the first component according to the z-index rules 
+   * and then places all the others ensuring they are on top of the first one
+   * 
+   * @param components
+   */
+  @SuppressWarnings("unchecked")
+  private void addComponents(List<IDIYComponent<?>> components) {
+    if (components.isEmpty())
+      return;
+    int maxIndex = 0;
+    for (IDIYComponent<?> component : components) {
+      int index = currentProject.getComponents().size();
+      while (index > maxIndex && ComponentProcessor.getInstance()
+          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass())
+          .getZOrder() < ComponentProcessor.getInstance()
+              .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) currentProject
+                  .getComponents().get(index - 1).getClass())
+              .getZOrder()) {
+        index--;
+      }
+      
+      if (index < currentProject.getComponents().size()) {
+        currentProject.getComponents().add(index, component);
+        if (index > maxIndex) {
+          maxIndex = index;
+        }
+      } else {
+        currentProject.getComponents().add(component);
+        maxIndex = currentProject.getComponents().size();
+      }
+    }
+
+    for (IDIYComponent<?> component : components) {
+      // Check if we should auto-create something.
+      for (IAutoCreator creator : ReflectionUtils.getAutoCreators()) {
+        List<IDIYComponent<?>> newComponents = creator.createIfNeeded(component);
+        if (newComponents != null) {
+          for (IDIYComponent<?> c : newComponents)
+            addComponent(c, false);
+        }
       }
     }
   }
