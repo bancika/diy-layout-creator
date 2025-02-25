@@ -4523,6 +4523,10 @@
 					<description>Export traces, pads (with holes), ground fill and PCB text to Gerber files</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to select PTH or NPTH holes for solder pads</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Optimize continuity calculations</description>
 				</org.diylc.appframework.update.Change>				
