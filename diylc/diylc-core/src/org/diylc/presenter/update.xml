@@ -4537,6 +4537,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Pasting a building block sometimes switches selection to previously added components and canvas moves to the wrong position</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Highlight Continuity Areas' sometimes renders stale areas when clicked</description>
 				</org.diylc.appframework.update.Change>					
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

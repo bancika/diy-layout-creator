@@ -48,6 +48,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
@@ -98,7 +99,7 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
  * 
  * @author Branislav Stojkovic
  */
-public class Presenter implements IPlugInPort {
+public class Presenter implements IPlugInPort, IConfigListener {
 
   private static final String REACHED_BOTTOM =
       LangUtil.translate("Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?");
@@ -232,6 +233,8 @@ public class Presenter implements IPlugInPort {
       variantManager.importDefaultVariants();
       buildingBlockManager.importDefaultBlocks();
     }
+    
+    this.configManager.addConfigListener(HIGHLIGHT_CONTINUITY_AREA, this);
   }
 
   public void installPlugin(Supplier<IPlugIn> plugInSupplier) {
@@ -720,11 +723,13 @@ public class Presenter implements IPlugInPort {
     // Notify the listeners.
     if (oldProject == null || !currentProject.equals(oldProject)) {
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, action);
-      if (clearContinuityArea)
+      if (clearContinuityArea) {
         drawingManager.clearContinuityArea();
+      }
       projectFileManager.notifyFileChange();
-      if (repaint)
+      if (repaint) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
+      }
     }
   }
 
@@ -2829,5 +2834,18 @@ public class Presenter implements IPlugInPort {
   @Override
   public List<Area> checkContinuityAreaProximity(Size threshold) {
     return drawingManager.getContinuityAreaProximity((float)threshold.convertToPixels());    
+  }
+  
+  // IConfigListener
+
+  @Override
+  public void valueChanged(String configKey, Object value) {
+    if (HIGHLIGHT_CONTINUITY_AREA.equalsIgnoreCase(configKey)) {
+      drawingManager.clearContinuityArea();
+      if (Boolean.TRUE.equals(value)) {
+        drawingManager.clearComponentAreaMap();
+      }
+      messageDispatcher.dispatchMessage(EventType.REPAINT);
+    }
   }
 }
