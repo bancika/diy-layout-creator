@@ -67,6 +67,7 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
   private Type type = Type.ROUND;
   private Size holeSize = HOLE_SIZE;
   private PCBLayer layer = PCBLayer._1;
+  private HoleType holeType = HoleType.NTPH;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
@@ -103,10 +104,11 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
     drawingObserver.stopTrackingContinuityArea();
     if (gerberDrawingObserver != null)
       gerberDrawingObserver.stopGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot);
-    if (getHoleSize().getValue() > 0) {
+    if (getHoleSize().getValue() > 0 && !HoleType.NONE.equals(getHoleType())) {
       if (gerberDrawingObserver != null) {
         gerberDrawingObserver.setGerberNegative(gerberCopperLayer, true);
-        gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.Drill, GerberFunctions.COMPONENT_DRILL, false);
+        GerberLayer holeLayer = HoleType.PTH.equals(getHoleType()) ? GerberLayer.DrillPlated : GerberLayer.DrillNonPlated;
+        gerberDrawingObserver.startGerberOutput(holeLayer, GerberFunctions.COMPONENT_DRILL, false);
       }
       g2d.setColor(Constants.CANVAS_COLOR);
       g2d.fill(new Ellipse2D.Double(point.getX() - holeDiameter / 2,
@@ -127,6 +129,7 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
     int diameter = getClosestOdd(width / 2);
     int holeDiameter = 5;
     g2d.setColor(COLOR);
+    
     g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fillOval((width - holeDiameter) / 2, (height - holeDiameter) / 2, holeDiameter,
@@ -140,6 +143,18 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
 
   public void setSize(Size size) {
     this.size = size;
+  }
+  
+  @EditableProperty(name = "Hole Type")
+  public HoleType getHoleType() {
+    if (holeType == null) {
+      holeType = HoleType.NTPH;
+    }
+    return holeType;
+  }
+  
+  public void setHoleType(HoleType holeType) {
+    this.holeType = holeType;
   }
 
   @EditableProperty(name = "Hole", validatorClass = PositiveMeasureValidator.class)
@@ -249,6 +264,21 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
     @Override
     public String toString() {
       return name().substring(0, 1) + name().substring(1).toLowerCase().replace('_', ' ');
+    }
+  }
+  
+  public static enum HoleType {
+    NONE("None"), PTH("Plated Through Hole"), NTPH("Non-Plated Through Hole");
+
+    private String label;
+
+    HoleType(String label) {
+      this.label = label;
+    }
+    
+    @Override
+    public String toString() {
+      return label;
     }
   }
 }
