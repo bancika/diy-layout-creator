@@ -38,6 +38,7 @@ import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Orientation;
+import org.diylc.common.Orientation45;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.Angle;
@@ -436,6 +437,7 @@ public class InstantiationManager {
     for (PropertyWrapper propertyWrapper : properties) {
       if (propertyWrapper.getType().getName().equals(Orientation.class.getName())
           || propertyWrapper.getType().getName().equals(OrientationHV.class.getName())
+          || propertyWrapper.getType().getName().equals(Orientation45.class.getName())
           || propertyWrapper.getName().equalsIgnoreCase("angle")) {
         angleProperty = propertyWrapper;
         break;
@@ -455,6 +457,9 @@ public class InstantiationManager {
         } else if (value instanceof OrientationHV) {
           angleProperty.setValue(OrientationHV.values()[(((OrientationHV) value).ordinal() + 1)
               % OrientationHV.values().length]);
+        } else if (value instanceof Orientation45) {
+          angleProperty.setValue(Orientation45.values()[(((Orientation45) value).ordinal() + 1)
+              % Orientation45.values().length]);
         } else if (value instanceof Angle) {
           Angle angle = (Angle) angleProperty.getValue();
           Angle newAngle = angle.rotate(1);
