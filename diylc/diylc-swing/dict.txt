@@ -74,6 +74,8 @@ And
 Angle
 Angle Offset
 Anti-Aliasing
+Apply Model
+Apply Variant
 Arrow Size
 Author
 Auto-Create Pads
@@ -287,6 +289,7 @@ Horizontal X-Small
 Humbucking - 4 leads
 I-G-O     REGULATOR
 IEC
+If this box is checked application will use the current value as a<br>default when creating new components of the same type
 Image
 Immediate Only
 Import
@@ -298,6 +301,7 @@ In-line
 Indent
 Information
 Inline
+Input error for "%s": %s
 Inside Color
 Integration
 Invert Polarity
@@ -419,6 +423,7 @@ Power Rating
 Power Strip
 Primary CT
 Print...
+Probe1
 Project Cloud
 Public Announcement
 RS
@@ -463,6 +468,7 @@ Screws
 Search The Cloud
 Searchable Tree
 Secondary CT
+Select
 Select All
 Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?
 Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?
@@ -569,6 +575,7 @@ Underside Trace Color
 Undo
 Ungroup Selection
 Unit
+Unlock
 Upload A Project
 User Manual
 Value
