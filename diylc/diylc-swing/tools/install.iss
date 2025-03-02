@@ -12,7 +12,7 @@ ChangesAssociations=yes
 AlwaysShowDirOnReadyPage=yes
 
 [Files]
-Source: "..\deploy\diylc.exe"; DestDir: "{app}"
+Source: "..\build\diylc.exe"; DestDir: "{app}"
 Source: "..\icons\diylc_file.ico"; DestDir: "{app}"
 Source: "..\build\jar\diylc.jar"; DestDir: "{app}"
 Source: "..\build\jar\lib\*"; DestDir: "{app}\lib"

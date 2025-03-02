@@ -12,7 +12,8 @@
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
 	<property name="diylc.version" value="4.41.0" />
 	
-	<property name="win.jre.path" value="tools/jre/win/jre1.8.0_211.zip" />
+	<property name="win.jre.x86.path" value="tools/jre/win/x86/jre17.0.14_7.zip" />
+	<property name="win.jre.x64.path" value="tools/jre/win/x64/jre17.0.14_7.zip" />
 	<property name="osx.jre.x86.path" value="tools/jre/osx/x86/jre17.zip" />
 	<property name="osx.jre.arm.path" value="tools/jre/osx/arm/jre17.zip" />
 
@@ -205,11 +206,22 @@
 
 	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask" classpathref="lib.path" />
 
-	<target name="win" depends="jar">
-		<unzip src="${win.jre.path}" dest="${build.dir}/jre_win"/>
+	<target name="win_x86" depends="jar">
+		<unzip src="${win.jre.x86.path}" dest="${build.dir}/jre_win"/>
+		<copy file="deploy/diylc-x86.exe" tofile="${build.dir}/diylc.exe" overwrite="true"/>
 		<exec executable="tools\innosetup\iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
-			<arg value="/Fdiylc-${diylc.version}-win"/>
+			<arg value="/Fdiylc-${diylc.version}-win32"/>
+			<arg value="tools/install.iss"/>
+		</exec>
+	</target>
+	
+	<target name="win_x64" depends="jar">
+		<unzip src="${win.jre.x64.path}" dest="${build.dir}/jre_win"/>
+		<copy file="deploy/diylc-x64.exe" tofile="${build.dir}/diylc.exe" overwrite="true"/>
+		<exec executable="tools/innosetup/iscc.exe">
+			<arg value="/Ddiylcver=${diylc.version}"/>
+			<arg value="/Fdiylc-${diylc.version}-win64"/>
 			<arg value="tools/install.iss"/>
 		</exec>
 	</target>
@@ -243,7 +255,7 @@
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
 
-	<target name="full" depends="win,universal,mac,mac-arm" />
+	<target name="full" depends="win_x86,win_x64,universal,mac,mac-arm" />
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">
