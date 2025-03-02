@@ -61,9 +61,10 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
   public static Color PROBE_COLOR = METAL_COLOR;
   public static Size HANDLE_DIAMETER = new Size(0.2d, SizeUnit.in);
   public static Size HANDLE_LENGTH = new Size(0.4d, SizeUnit.in);  
+  public static Color HANDLE_COLOR = Color.red;
   
   private Point2D.Double point = new Point2D.Double(0, 0);
-  private Color handleColor = Color.red;
+  private Color handleColor = HANDLE_COLOR;
   private Orientation45 orientation = Orientation45._315;
   
   private transient Shape[] body = null;
@@ -99,17 +100,31 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
   }
 
   @Override
-  public void drawIcon(Graphics2D g2d, int width, int height) {
-    int diameter = getClosestOdd(width / 2);
-    int holeDiameter = 5;
-    g2d.setColor(METAL_COLOR);
-    g2d.fillOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
-    g2d.setColor(METAL_COLOR.darker());
-    g2d.drawOval((width - diameter) / 2, (height - diameter) / 2, diameter, diameter);
-    g2d.setColor(Constants.CANVAS_COLOR);
-    g2d.fillOval((width - holeDiameter) / 2, (height - holeDiameter) / 2, holeDiameter, holeDiameter);
-    g2d.setColor(METAL_COLOR.darker());
-    g2d.drawOval((width - holeDiameter) / 2, (height - holeDiameter) / 2, holeDiameter, holeDiameter);
+  public void drawIcon(Graphics2D g2d, int width, int height) {    
+    double probeDiameter = 2;
+    double probeLength = height / 2 + 2;
+    double handleDiameter = width / 4;
+    double handleLength = height / 2 + 2;
+    double x = 2;
+    double y = height - 2;
+    Shape probe = buildProbeShape(probeDiameter, probeLength, x, y);
+    Shape handle = buildHandleShape(probeDiameter, probeLength, handleDiameter, handleLength, x, y);
+    
+    double theta = Math.PI / 4;
+    AffineTransform tx = AffineTransform.getRotateInstance(theta, x, y);
+    probe = tx.createTransformedShape(probe);
+    handle = tx.createTransformedShape(handle);
+    
+    g2d.setColor(PROBE_COLOR);
+    g2d.fill(probe);
+    g2d.setColor(HANDLE_COLOR);
+    g2d.fill(handle);
+    
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.setColor(PROBE_COLOR.darker());
+    g2d.draw(probe);
+    g2d.setColor(HANDLE_COLOR.darker());
+    g2d.draw(handle);
   }
   
   public Shape[] getBody() {
@@ -121,22 +136,9 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
       double x = point.getX();
       double y = point.getY();
       body = new Shape[2];
-      Path2D probe = new Path2D.Double();
-      probe.moveTo(x, y);
-      probe.lineTo(x - probeDiameter / 2, y - probeDiameter);
-      probe.lineTo(x - probeDiameter / 2, y - probeLength);
-      probe.lineTo(x + probeDiameter / 2, y - probeLength);
-      probe.lineTo(x + probeDiameter / 2, y - probeDiameter);
-      probe.lineTo(x, y);
-      probe.closePath();
+      Path2D probe = buildProbeShape(probeDiameter, probeLength, x, y);
       body[0] = probe;
-      Path2D handle = new Path2D.Double();
-      handle.moveTo(x + probeDiameter, y - probeLength);
-      handle.lineTo(x + handleDiameter / 2, y - handleLength - probeLength);
-      handle.lineTo(x - handleDiameter / 2, y - handleLength - probeLength);
-      handle.lineTo(x - probeDiameter, y - probeLength);      
-      handle.moveTo(x + probeDiameter, y - probeLength);
-      handle.closePath();
+      Path2D handle = buildHandleShape(probeDiameter, probeLength, handleDiameter, handleLength, x, y);
       body[1] = handle;
       
       double theta = orientation.toRadians();
@@ -148,6 +150,30 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
     }
     return body;
   }
+
+private Path2D buildHandleShape(double probeDiameter, double probeLength, double handleDiameter, double handleLength,
+		double x, double y) {
+	Path2D handle = new Path2D.Double();
+      handle.moveTo(x + probeDiameter, y - probeLength);
+      handle.lineTo(x + handleDiameter / 2, y - handleLength - probeLength);
+      handle.lineTo(x - handleDiameter / 2, y - handleLength - probeLength);
+      handle.lineTo(x - probeDiameter, y - probeLength);      
+      handle.moveTo(x + probeDiameter, y - probeLength);
+      handle.closePath();
+	return handle;
+}
+
+private Path2D buildProbeShape(double probeDiameter, double probeLength, double x, double y) {
+	Path2D probe = new Path2D.Double();
+      probe.moveTo(x, y);
+      probe.lineTo(x - probeDiameter / 2, y - probeDiameter);
+      probe.lineTo(x - probeDiameter / 2, y - probeLength);
+      probe.lineTo(x + probeDiameter / 2, y - probeLength);
+      probe.lineTo(x + probeDiameter / 2, y - probeDiameter);
+      probe.lineTo(x, y);
+      probe.closePath();
+	return probe;
+}
 
   @Override
   public int getControlPointCount() {

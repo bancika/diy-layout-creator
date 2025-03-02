@@ -13,15 +13,20 @@
 #34 / 0.16mm
 #36 / 0.13mm
 #8 / 3.26mm
+(Building Blocks)
+(Favorites)
+(Recently Used)
 1 throws / 2 positions
 10 throws / 10 positions
 11 throws / 11 positions
 12 throws / 12 positions
 135 degrees clockwise
+180 degrees clockwise
 1P12T
 2 throws / 2 positions
 2 throws / 3 positions / OFF even positions
 225 degrees clockwise
+270 degrees clockwise
 2P5T
 2P6T
 3 throws / 3 positions
@@ -49,22 +54,115 @@
 7 throws / 7 positions
 8 throws / 8 positions
 9 throws / 9 positions
+90 degrees clockwise
+A variant with that name already exists. Overwrite?
 A-O-I     REGULATOR
 AC
 ANSI
 AWG
+About
+Above
+Access User Files
+Add Flexible Leads
+Add Validation Step
+All Connected
+Alpha
 Alternate
+Analyze
+Analyze Guitar Diagrams
 And
+Angle
 Angle Offset
+Anti-Aliasing
+Arrow Size
+Author
+Auto-Create Pads
+Auto-Edit Mode
 B-C-E     BJT
 Background
+Base
+Below
+Board
+Board Color
+Board Width
+Boards
+Bobbin 1
+Bobbin 2
+Body
+Border
+Border Thickness
+Both
+Both Sides
+Bottom
+Bottom Left
+Bottom Right
 Box
+Bracket
+Bring Forward
+Bring Selection to Front
+Buffer
 C-B-E     BJT
+Center
+Center Negative
+Center Positive
+Center Terminal
+Central
+Change Password
+Channel
+Chassis
+Check Trace Proximity
 Circle
+Circular
+Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF
+Click on the canvas to create a new %s or press %s to cancel
+Click on the canvas to set the %s control point of a new %s or press %s to cancel
+Click the lightbulb icon in the bottom-right corner of the window for more info.
+Click to fetch the most recent public announcement
+Click to show recent changes and updates
+Click to toggle to the next option
+Coil
+Coil Border
+Coil Length
+Coil Width
 Coil(s)
+Color
+Color 1
+Color 2
+Color code
+Column Spacing
+Columns
+Component
+Component API
 Component reordering is possible only when Project Explorer is sorted by z-index.
+Components
+Config
 Configuration
+Connectivity
+Connector
+Connector (Mirrored)
+Contacts
+Continuous Creation
+Coordinate Color
+Coordinate Origin
+Coordinates
+Copy
+Core
+Core Border
+Core Thickness
+Core Width
 Could not apply changes. Check the log for details.
+Could not create a new file. Check the log for details.
+Could not create component. Check log for details.
+Could not fetch public announcements.
+Could not save the project to file. Check the log for details.
+Could not set component type slot. Check log for details.
+Cover
+Create B.O.M.
+Create New Account
+Current
+Cut
+Cut Between Holes
+Cut Orientation
 D-G-S     JFET
 D-G-S     MOSFET
 D-S-G     JFET
@@ -73,8 +171,12 @@ DC
 DFM A
 DFM B
 DIP
+DIP (Mirrored)
 DP3T
 DP3T (Import 5-Position Strat)
+DP3T (Standard 3-Position Strat)
+DP3T (Standard 5-Position Strat)
+DP4T (4-Position Tele)
 DP4T (6-Position Oak Grigsby)
 DP5T
 DPDT
@@ -82,22 +184,76 @@ DPDT (On/Off/On)
 DPDT (On/On)
 DPDT (On/On/On Type 1)
 DPDT (On/On/On Type 2)
+Dashed
+Decimals
+Default
+Default Font
+Default Font Size
+Delete Selection
+Description
 Designation
-Deutsch
+Diameter
 Dimension Mode
+Directional
+Directly heated
+Display
+Display Pin #s
+Dog Ear
+Donate
+Dot Spacing
 Dots (Gradual)
 Dots (Uniform)
+Dotted
 Double Rails
 Double Rods
+Drag control point(s) of
+Drag the mouse over the canvas to place a new
 Draw Standard
 Drop
+Duodecar B12C
+Duplicate
 E+
 E-B-C     BJT
+Edges
+Edit
+Edit Project Settings
+Edit Selection
 Eight
-English
-Español
+Electro-Mechanical
+Electrode Labels
+Enable Cache Boost
+End Arrow
+Enjoying DIYLC? Click here to buy me a coffee :)
+Error
+Error occurred while editing selection. Check the log for details.
+Exit
+Expand Selection
+Explicit Dimensions
+Explicit Length
+Explicit Width
+Export Building Blocks
+Export Grid
+Export Variants
+Export to PDF
+Export to PNG
+Extra Working Area
+Eyelet color
+FAQ
 Filament Voltage
-Français
+File
+Filtertron
+Find
+Five
+Flip
+Folded
+Font
+Font Bold
+Font Italic
+Font Size
+Font Size Override
+Four
+Full
+Fuse
 G-D-S     JFET
 G-D-S     MOSFET
 G-I-O     REGULATOR
@@ -106,41 +262,189 @@ G-S-D     JFET
 G-S-D     MOSFET
 Generate DIYLC Netlist (excl. Switches)
 Generate DIYLC Netlist (incl. Switches)
-Gray
+Generate Spice Netlist
+Grid
+Grid Spacing
+Group Selection
+Guitar
+Half
+Heaters
+Height
+Help
+Hi-Quality Rendering
+Highlight Connected Areas
+Hole
+Hole Size
+Hole Spacing
+Holes Per Strip
+Horizontal
+Horizontal Alignment
+Horizontal Large
+Horizontal Medium
+Horizontal Small 1
+Horizontal Small 2
+Horizontal X-Small
 Humbucking - 4 leads
 I-G-O     REGULATOR
 IEC
-Italiano
+Image
+Immediate Only
+Import
+Import Building Blocks
+Import Netlist
+Import Variants
+In-Line D-44
+In-line
+Indent
+Information
+Inline
+Inside Color
+Integration
+Invert Polarity
+Label
+Label Color
+Label Orientation
+Label Position
+Labels
+Language
+Language selection will be applied after the application is restarted.
+Layer
+Layers
+Lead Color
+Lead Count
+Lead Length
+Lead Spacing
+Left
+Left click to instantiate this component, right click for more options
+Left-to-Right
+Legs
+Length
+Letters
 Lin
+Loadline Editor
+Lock
 Log
+Log In
+Log Out
+Lug Size
+Lugs
 MPJA
+Make a Donation
+Manage Account
+Manage My Uploads
+Mark Common Lugs
+Marker
+Marker Size
 Markers
 Maximum number of switching combinations exceeded. Allowed: %s, actual: %s
+Mini
+Miniature
+Mirror Horizontally
+Mirror Selection
+Mirror Vertically
+Mirroring operation will change the circuit. Do you want to continue?
+Misc
+Model
+Mono
+Mount
+Mounting Lugs
+Mouse Wheel Zoom
+Moveable Label
 NPN
+Name
 Nand
-Nederlands
+Negative
+New
+New version available
 Nine
+No
+No new public announcements available.
 Non-shorting
+None
 Nor
 Not
+Noval B9A
+Nudge
+Numbers
 Numeric (0-10)
 Numeric (1-10)
 Numeric (1-11)
 Numeric (1-12)
 Numeric (Even, No Ticks)
 Numeric (Even, With Ticks)
+Nut
 O-G-I     REGULATOR
+Octal
+Offset
 One
+One Side
+Open
+Opposing Points
 Or
+Orientation
+Outer Foil
+Outer Foil Mark
+Outline Mode
+Outside
+Oval horizontal
+Oval vertical
 PAF
 PCB
 PNP
+Pad Color
+Pad color
+Panel
+Passive
+Paste
+Pin Arrangement
+Pin Color
+Pin Spacing
+Pin spacing
+Pinout
+Pins
 Pitch
+Play Test
+Plugin API
+Point Count
+Polarity
+Polarized
+Pole Color
+Pole Pieces
+Pole Pieces 1
+Pole Pieces 2
 Poles
-Português
+Positions
+Positive
+Power Rating
+Power Strip
+Primary CT
+Print...
+Project Cloud
+Public Announcement
 RS
+Radius
+Rail
+Recent Files
+Recent Updates
 Rectangle
+Redo
+Renumber On Paste
+Renumber Selection
+Resistance
 Rev log
+Reverse (standing)
+Right
+Rim
+Rods
+Rotate Clockwise
+Rotate Counterclockwise
+Rotate Selection
+Round
+Round WOG A
+Round WOG B
+Row Spacing
+Rows
+Ruler Inch Subdivision...
 S-G-D     JFET
 S-G-D     MOSFET
 SMD
@@ -148,28 +452,151 @@ SPDT
 SPDT (On/Off/On)
 SPDT (On/On)
 SPST
+Same Type Only
+Save
+Save As
+Save as Variant
+Scale
+Schematic Symbols
 Screw Position
+Screws
+Search The Cloud
+Searchable Tree
+Secondary CT
+Select All
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?
+Selection
+Selection Size
+Selection contains components that cannot be mirrored. Do you want to exclude them?
+Selection contains components that cannot be rotated. Do you want to exclude them?
+Selection is empty.
+Semiconductors
+Send Backward
+Send Selection to Back
+Seven
+Shaft Down
+Shaft Up
+Shape
+Shapes
 Shorting
+Show Bracket
+Show Grid
 Show Project Explorer
+Show Rulers
+Shroud
+Shrouded
 Single - North
 Single - South
+Single Rail
+Single Rods
 Six
+Size
+Sizing Mode
+Small-button B7G
+Smooth
+Snap To
+Soap Bar
+Solid
 Sort by Name
 Sort by Type
 Sort by Z-index
 Source Style
 Source Type
-Srpski
+Spacing
+Square
+Square BR-3
+Standard
+Start Arrow
+Start Recording
+Stereo
+Sticky Points
+Stop Recording
+Stratocaster
+Strip Color
+Stripe
+Stripe 1
+Stripe 2
+Stripe Color
+Stripe Color 1
+Stripe Color 2
 Stroke
+Style
+Submit a Bug
+Suppressor grid
+Switched
+Switches
+Tab
+Tab Border
+Tabbed Toolbar
+Taper
+Telecaster
 Ten
 Terminal
+Terminal Spacing
+Terminals
+Test
+Text
+Text Color
+There are unsaved changes. Would you like to save them?
+Thickness
+Three
+Through Hole
+Tick
+Tick Width
+Ticks
 Timing
+Title
+Toolbox
+Top
+Top Lead
+Top Left
+Top Right
+Top-to-Bottom
+Trace
+Trace Color
+Trace Mask
+Transform Selection
+Triangle
+Tubes
+Tubular
 Tubular Beveled
+Two
+Type
+Ultra-miniature
+Underside Pad Color
+Underside Trace Color
+Undo
+Ungroup Selection
+Unit
+Upload A Project
+User Manual
+Value
+Version history is not available.
+Vertical
+Vertical Alignment
+Vertical Inline
+Vertical Offset 1
+Vertical Offset 2
+View
 Virtual Multimeter
+Visible
+Voltage
+Wafer
+Warning
+Width
+Winding Spacing
+Wiring
+X-axis
 Xnor
 Xor
+Y-axis
+Zoom
+base of 10
+base of 2
 cm
 ft
+hold %s and drag to unstick from
 in
 mm
 px
