@@ -73,7 +73,7 @@ public class MultimeterAnalyzer extends NetlistAnalyzer implements INetlistAnaly
       }
     }
 
-    return new Summary(netlist, tree.toAsciiString());
+    return new Summary(netlist, sb.toString());
   }
 
   public Tree constructTree(Netlist netlist) throws TreeException {

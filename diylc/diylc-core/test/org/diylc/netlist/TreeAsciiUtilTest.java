@@ -20,6 +20,17 @@ public class TreeAsciiUtilTest {
     assertEquals("yy-yyy", result.get(1));
     assertEquals("&nbsp;&nbsp;&nbsp;aaa", result.get(2));
   }
+  
+  @Test
+  public void testSimpleParallel() {
+    List<String> result = TreeAsciiUtil.concatenateMultiLineParallel(
+        Arrays.asList(Arrays.asList("xx"), Arrays.asList("yy")));
+    assertNotNull(result);
+    assertEquals(3, result.size());
+    assertEquals("&nbsp;&#x250C;xx&#x2510;&nbsp;", result.get(0));
+    assertEquals("&#x2500;&#x2524;&nbsp;&nbsp;&#x251C;&#x2500;", result.get(1));
+    assertEquals("&nbsp;&#x2514;yy&#x2518;&nbsp;", result.get(2));
+  } 
 
   @Test
   public void testConcatenateMultiLineSerial_singleInput() {
