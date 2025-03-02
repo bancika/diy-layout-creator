@@ -191,6 +191,12 @@ public class NetlistBuilder {
 
     return netlists;
   }
+  
+  static void cleanupSwitchConfigurations(List<Netlist> netlists) {
+    netlists.forEach(netlist -> {
+      
+    });
+  }
 
   public static Netlist buildNetlist(List<IDIYComponent<?>> components, Collection<Node> nodes,
       Collection<ContinuityArea> continuityAreas, Collection<Connection> connections) {
