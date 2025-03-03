@@ -19,8 +19,6 @@
 	<property name="osx.jre.x86.path" value="tools/jre/osx/x86/jre17.zip" />
 	<property name="osx.jre.arm.path" value="tools/jre/osx/arm/jre17.zip" />
 
-	<property name="jdk.version" value="17.0.14+7" />
-
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
 
