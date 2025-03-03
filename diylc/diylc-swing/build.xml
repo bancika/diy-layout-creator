@@ -3,6 +3,8 @@
 	<taskdef name="bundleapp"
 	             classname="com.oracle.appbundler.AppBundlerTask"  />
 
+	<import file="download_jre.xml" />
+
 	<property name="src.dir" value="${basedir}/src" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
@@ -86,27 +88,6 @@
 		</jar>
 	</target>
 
-	<target name="fetch-jre-macos-x86">
-		<property name="jdk.archive.macos.intel" value="OpenJDK17U-jre_x64_mac_hotspot_${jdk.version}.tar.gz" />
-		<property name="jdk.url.macos.intel" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.macos.intel}" />
-		<property name="jre.macos.dest" value="${build.dir}/jre_x86" />
-
-		<!-- Clean old jre_macos folder -->
-		<delete dir="${jre.macos.dest}" />
-
-		<!-- Create folder to hold extracted JRE -->
-		<mkdir dir="${jre.macos.dest}" />
-
-		<!-- Download JRE 17 for macOS Intel -->
-		<mkdir dir="${build.dir}/downloads" />
-		<get src="${jdk.url.macos.intel}" dest="${build.dir}/downloads/${jdk.archive.macos.intel}" usetimestamp="true" />
-
-		<!-- Extract JRE into jre_macos -->
-		<untar src="${build.dir}/downloads/${jdk.archive.macos.intel}" dest="${jre.macos.dest}" compression="gzip" />
-
-		<echo message="JRE 17 (macOS Intel) extracted to ${jre.macos.dest}" />
-	</target>
-
 	<target name="mac" depends="jar, fetch-jre-macos-x86">
 <!--		<unzip src="${osx.jre.x86.path}" dest="${build.dir}/jre_x86"/>-->
 		<bundleapp
@@ -164,27 +145,6 @@
 					<zipfileset filemode="755" dir="${basedir}/lang" prefix="DIYLC.app/Contents/Resources/lang" />
 				</zip>
 			</target>
-
-	<target name="fetch-jre-macos-arm">
-		<property name="jdk.archive.macos.intel" value="OpenJDK17U-jre_aarch64_mac_hotspot_${jdk.version}.tar.gz" />
-		<property name="jdk.url.macos.intel" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.macos.intel}" />
-		<property name="jre.macos.dest" value="${build.dir}/jre_arm" />
-
-		<!-- Clean old jre_macos folder -->
-		<delete dir="${jre.macos.dest}" />
-
-		<!-- Create folder to hold extracted JRE -->
-		<mkdir dir="${jre.macos.dest}" />
-
-		<!-- Download JRE 17 for macOS Intel -->
-		<mkdir dir="${build.dir}/downloads" />
-		<get src="${jdk.url.macos.intel}" dest="${build.dir}/downloads/${jdk.archive.macos.intel}" usetimestamp="true" />
-
-		<!-- Extract JRE into jre_macos -->
-		<untar src="${build.dir}/downloads/${jdk.archive.macos.intel}" dest="${jre.macos.dest}" compression="gzip" />
-
-		<echo message="JRE 17 (macOS Intel) extracted to ${jre.macos.dest}" />
-	</target>
 	
 	<target name="mac-arm" depends="jar, fetch-jre-macos-arm">
 <!--			<unzip src="${osx.jre.arm.path}" dest="${build.dir}/jre_arm"/>-->
@@ -253,27 +213,6 @@
 
 	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask" classpathref="lib.path" />
 
-	<target name="fetch-jre-win32">
-		<property name="jdk.archive.win32" value="OpenJDK17U-jre_x86-32_windows_hotspot_${jdk.version}.zip" />
-		<property name="jdk.url.win32" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10+7/${jdk.archive.win32}" />
-		<property name="jre.win.dest" value="${build.dir}/jre_win" />
-
-		<!-- Clean old jre_win folder -->
-		<delete dir="${jre.win.dest}" />
-
-		<!-- Create folder to hold extracted JRE -->
-		<mkdir dir="${jre.win.dest}" />
-
-		<!-- Download JRE 32-bit for Windows -->
-		<mkdir dir="${build.dir}/downloads" />
-		<get src="${jdk.url.win32}" dest="${build.dir}/downloads/${jdk.archive.win32}" usetimestamp="true" />
-
-		<!-- Extract JRE into jre_win -->
-		<unzip src="${build.dir}/downloads/${jdk.archive.win32}" dest="${jre.win.dest}" />
-
-		<echo message="JRE 17 (32-bit) extracted to ${jre.win.dest}" />
-	</target>
-
 	<target name="win_x86" depends="jar, fetch-jre-win32">
 <!--		<unzip src="${win.jre.x86.path}" dest="${build.dir}/jre_win"/>-->
 		<copy file="deploy/diylc-x86.exe" tofile="${build.dir}/diylc.exe" overwrite="true"/>
@@ -282,27 +221,6 @@
 			<arg value="/Fdiylc-${diylc.version}-win32"/>
 			<arg value="tools/install.iss"/>
 		</exec>
-	</target>
-
-	<target name="fetch-jre-win64">
-		<property name="jdk.archive.win64" value="OpenJDK17U-jre_x64_windows_hotspot_${jdk.version}.zip" />
-		<property name="jdk.url.win64" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10+7/${jdk.archive.win64}" />
-		<property name="jre.win.dest" value="${build.dir}/jre_win" />
-
-		<!-- Clean old jre_win folder -->
-		<delete dir="${jre.win.dest}" />
-
-		<!-- Create folder to hold extracted JRE -->
-		<mkdir dir="${jre.win.dest}" />
-
-		<!-- Download JRE 64-bit for Windows -->
-		<mkdir dir="${build.dir}/downloads" />
-		<get src="${jdk.url.win64}" dest="${build.dir}/downloads/${jdk.archive.win64}" usetimestamp="true" />
-
-		<!-- Extract JRE into jre_win -->
-		<unzip src="${build.dir}/downloads/${jdk.archive.win64}" dest="${jre.win.dest}" />
-
-		<echo message="JRE 17 (64-bit) extracted to ${jre.win.dest}" />
 	</target>
 	
 	<target name="win_x64" depends="jar, fetch-jre-win64">
@@ -313,32 +231,6 @@
 			<arg value="/Fdiylc-${diylc.version}-win64"/>
 			<arg value="tools/install.iss"/>
 		</exec>
-	</target>
-
-	<target name="fetch-jre-linux">
-		<property name="jdk.archive" value="OpenJDK17U-jre_x64_linux_hotspot_${jdk.version}.tar.gz" />
-		<property name="jdk.url" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10+7/${jdk.archive}" />
-		<property name="jdk.dest" value="${basedir}/build/jre" />
-		<property name="appdir.jre" value="${appdir}/usr/diylc/jre" />
-
-		<!-- Ensure clean jre folder -->
-		<delete dir="${jdk.dest}" />
-		<mkdir dir="${jdk.dest}" />
-
-		<!-- Download JRE 17 if not already present -->
-		<mkdir dir="${build.dir}/downloads" />
-		<get src="${jdk.url}" dest="${build.dir}/downloads/${jdk.archive}" usetimestamp="true" />
-
-		<!-- Extract JRE -->
-		<untar src="${build.dir}/downloads/${jdk.archive}" dest="${jdk.dest}" compression="gzip" />
-
-		<!-- Move extracted folder into AppImage location -->
-		<mkdir dir="${appdir.jre}" />
-		<move todir="${appdir.jre}">
-			<fileset dir="${jdk.dest}" />
-		</move>
-
-		<echo message="JRE 17 bundled into AppDir/usr/diylc/jre" />
 	</target>
 
 	<target name="appimage" depends="jar, fetch-jre-linux">
