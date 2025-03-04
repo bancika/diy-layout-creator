@@ -1,7 +1,4 @@
-<project name="diylc-swing" basedir="." default="appimage">
-
-	<taskdef name="bundleapp"
-	             classname="com.oracle.appbundler.AppBundlerTask"  />
+<project name="diylc-swing-appimage" basedir="." default="appimage">
 
 	<import file="download_jre.xml" />
 	<import file="build.xml" />
@@ -11,10 +8,9 @@
 
 	<target name="appimage" depends="jar, fetch-jre-linux">
 
-		<!-- Ensure clean AppDir -->
-		<delete dir="${appdir}" />
 		<mkdir dir="${appdir}/usr/bin" />
 		<mkdir dir="${appdir}/usr/share/icons/hicolor/512x512/apps" />
+		<mkdir dir="${appdir}/usr/share/metainfo" />
 
 		<!-- Copy app files -->
 		<zipfileset dir="${jar.dir}" includes="diylc.jar" />
@@ -26,8 +22,8 @@
 		<zipfileset dir="lang" prefix="lang" />
 		<zipfileset dir="deploy" includes="splash.png" />
 
-		<copy file="${jar.dir}/diylc.jar" todir="${appdir}/usr/diylc" />
-		<copy todir="${appdir}/usr/diylc/lib">
+		<copy file="${jar.dir}/diylc.jar" todir="${appdir}/usr/bin" />
+		<copy todir="${appdir}/usr/bin/lib">
 			<fileset dir="${jar.dir}/lib">
 				<include name="*"/>
 			</fileset>
@@ -38,22 +34,22 @@
 			</fileset>
 		</copy>
 		<copy todir="${appdir}/usr/bin/templates">
-			<fileset dir="${jar.dir}/templates">
+			<fileset dir="${basedir}/templates">
 				<include name="*"/>
 			</fileset>
 		</copy>
 		<copy todir="${appdir}/usr/bin/themes">
-			<fileset dir="${jar.dir}/themes">
+			<fileset dir="${basedir}/themes">
 				<include name="*"/>
 			</fileset>
 		</copy>
 		<copy todir="${appdir}/usr/bin/fonts">
-			<fileset dir="${jar.dir}/fonts">
+			<fileset dir="${basedir}/fonts">
 				<include name="*"/>
 			</fileset>
 		</copy>
 		<copy todir="${appdir}/usr/bin/lang">
-			<fileset dir="${jar.dir}/lang">
+			<fileset dir="${basedir}/lang">
 				<include name="*"/>
 			</fileset>
 		</copy>
@@ -64,20 +60,56 @@
 		<!-- Copy icons and desktop file -->
 		<copy file="icons/icon_512x512.png" tofile="${appdir}/usr/share/icons/hicolor/512x512/apps/com.diy_fever.DIYLayoutCreator.png" />
 		<copy file="appimage/com.diy_fever.DIYLayoutCreator.desktop" todir="${appdir}/usr/share/applications" />
+		<copy file="appimage/com.diy_fever.DIYLayoutCreator.metainfo.xml" todir="${appdir}/usr/share/metainfo" />
 
 		<!-- Download appimagetool if not present -->
-		<mkdir dir="${basedir}/tools" />
+		<!--<mkdir dir="${basedir}/tools" />
 		<get src="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
 			 dest="${appimagetool}"
 			 usetimestamp="true" />
-		<chmod file="${appimagetool}" perm="755" />
-
+		<chmod file="${appimagetool}" perm="755" />-->
+		
 		<!-- Create AppImage -->
-		<exec executable="${appimagetool}" dir="${appdir}/..">
+		<!--<exec executable="${appimagetool}" dir="${appdir}/..">
 			<arg value="AppDir" />
 			<arg value="DIYLayoutCreator-${version}-x86_64.AppImage" />
-		</exec>
+		</exec>-->
+		
+		<!-- Step 1: Build Docker Image -->
+        <echo message="Building Docker image for AppImage..."/>
+        <exec executable="docker">
+            <arg line="build -t diylc-appimage appimage"/>
+        </exec>
+		
+		<property name="output.file" value="DIYLC-${diylc.version}-x86_64.AppImage" />
+		
+		<chmod dir="${appdir}" perm="755"
+		       includes="**/*"/>
+		
+		<!-- Debugging: Print the full Docker run command -->
+	    <echo message="Running Docker container with command:"/>
+	    <echo message="docker run --rm --privileged --device=/dev/fuse \
+	        --mount type=bind,source=${basedir}/build,target=/build \
+	        --mount type=bind,source=${basedir}/build/AppDir,target=/build/AppDir \
+	        diylc-appimage"/>
 
-		<echo message="AppImage built: DIYLayoutCreator-${diylc.version}-x86_64.AppImage" />
+	    <!-- Run Docker container with AppDir mounted -->
+	    <exec executable="docker">
+	    	<arg value="run"/>
+    	    <arg value="--rm"/>
+    	    <arg value="--privileged"/>
+    	    <arg value="--device=/dev/fuse"/>
+    	    <arg value="--mount"/>
+    	    <arg value="type=bind,source=${basedir}/build,target=/build"/>
+    	    <arg value="--mount"/>
+    	    <arg value="type=bind,source=${basedir}/build/AppDir,target=/build/AppDir"/>
+    	    <arg value="diylc-appimage"/>
+	    </exec>
+
+	    <!-- Verify that the AppImage was created -->
+	    <available file="${build.dir}/${output.file}" property="appimage.built"/>
+	    <fail message="AppImage build failed!" unless="appimage.built"/>
+	    
+	    <echo message="AppImage successfully built: ${build.dir}/${output.file}"/>
 	</target>
 </project>

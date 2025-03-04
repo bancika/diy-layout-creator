@@ -1,7 +1,7 @@
 <project name="diylc-swing" basedir="." default="full">
 
-	<taskdef name="bundleapp"
-	             classname="com.oracle.appbundler.AppBundlerTask"  />
+	<!--<taskdef name="bundleapp"
+	             classname="com.oracle.appbundler.AppBundlerTask"  />-->
 
 	<import file="download_jre.xml" />
 
