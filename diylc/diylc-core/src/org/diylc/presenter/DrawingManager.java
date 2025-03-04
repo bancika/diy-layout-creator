@@ -224,7 +224,7 @@ public class DrawingManager {
           RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
     }
     g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
 
     // AffineTransform initialTx = g2d.getTransform();
     Dimension canvasDimension =
