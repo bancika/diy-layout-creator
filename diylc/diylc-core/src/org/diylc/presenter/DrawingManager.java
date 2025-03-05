@@ -166,6 +166,7 @@ public class DrawingManager {
    * @param componentSlot
    * @param dragInProgress
    * @param externalZoom
+   * @param scaleFactor 
    * @param visibleRect
    * @return
    */
@@ -174,7 +175,7 @@ public class DrawingManager {
       Collection<IDIYComponent<?>> selectedComponents, Set<IDIYComponent<?>> lockedComponents,
       Set<IDIYComponent<?>> groupedComponents, List<Point2D> controlPointSlot,
       List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom,
-      Rectangle2D visibleRect) {
+      Double scaleFactor, Rectangle2D visibleRect) {
     long totalStartTime = System.nanoTime();
     failedComponents.clear();
     if (project == null) {
@@ -278,7 +279,7 @@ public class DrawingManager {
 
     // give the cache a chance to prepare all the components in multiple threads
     if (drawOptions.contains(DrawOption.ENABLE_CACHING)) {
-      DrawingCache.Instance.bulkPrepare(componentForRenderList, g2dWrapper, outlineMode, project, zoom);
+      DrawingCache.Instance.bulkPrepare(componentForRenderList, g2dWrapper, outlineMode, project, zoom, scaleFactor);
     }
 
     // componentAreaMap.clear();
@@ -312,7 +313,7 @@ public class DrawingManager {
 
           if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
             DrawingCache.Instance.draw(component, g2dWrapper, state,
-                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, i, visibleRect);
+                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect);
           else // go straight to the wrapper
             component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
 

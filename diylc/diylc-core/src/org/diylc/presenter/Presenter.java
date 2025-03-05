@@ -503,7 +503,8 @@ public class Presenter implements IPlugInPort, IConfigListener {
   }
 
   @Override
-  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFilter filter, java.lang.Double externalZoom, Rectangle2D visibleRect) {
+  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFilter filter, Double externalZoom, 
+      Double scaleFactor, Rectangle2D visibleRect) {
     if (currentProject == null) {
       return;
     }
@@ -545,7 +546,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
                 getLockedComponents(),
                 groupedComponents,
                 Arrays.asList(instantiationManager.getFirstControlPoint(),
-                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress, externalZoom,
+                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress, externalZoom, scaleFactor,
                 visibleRect);
     List<String> failedComponentNames = new ArrayList<String>();
     for (IDIYComponent<?> component : failedComponents) {

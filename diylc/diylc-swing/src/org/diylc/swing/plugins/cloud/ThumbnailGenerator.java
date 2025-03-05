@@ -79,6 +79,6 @@ public class ThumbnailGenerator {
     }
 
     // g2d.scale(zoomRatio, zoomRatio);
-    this.plugInPort.draw(g2d, EnumSet.of(DrawOption.ANTIALIASING), null, zoomRatio, null);
+    this.plugInPort.draw(g2d, EnumSet.of(DrawOption.ANTIALIASING), null, zoomRatio, null, null);
   }
 }

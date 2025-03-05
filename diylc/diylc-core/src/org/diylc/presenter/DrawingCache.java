@@ -35,6 +35,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.utils.Pair;
+import org.diylc.utils.ScaledBufferedImage;
 
 /**
  * A layer that injects itself between the provided {@link G2DWrapper} instance and the underlying
@@ -64,14 +65,15 @@ public class DrawingCache {
    * @param zoom
    */
   @SuppressWarnings("unchecked")
-  public void bulkPrepare(Collection<ComponentForRender> components, G2DWrapper g2d, boolean outlineMode, Project project, double zoom) {
+  public void bulkPrepare(Collection<ComponentForRender> components, G2DWrapper g2d, boolean outlineMode, Project project, 
+      double zoom, double scaleFactor) {
     // run all renders in parallel to utilize all CPU cores
     components.stream().parallel().forEach(x -> {      
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getComponent().getClass());
 
       if (type != null && type.getEnableCache()) {
-        renderAndCache(x.getComponent(), g2d, x.getState(), outlineMode, project, zoom, x.getZOrder());
+        renderAndCache(x.getComponent(), g2d, x.getState(), outlineMode, project, zoom, scaleFactor, x.getZOrder());
       }
     });
   }
@@ -89,7 +91,7 @@ public class DrawingCache {
    */
   @SuppressWarnings("unchecked")
   public void draw(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom, int zOrder, Rectangle2D visibleRect) {
+      boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder, Rectangle2D visibleRect) {
     ComponentType type = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
 
@@ -97,7 +99,7 @@ public class DrawingCache {
       // if we need to apply caching
       Point2D firstPoint = component.getControlPoint(0);
       
-      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom, zOrder); 
+      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom, scaleFactor, zOrder); 
       
       if (value == null) {
         return;
@@ -113,8 +115,9 @@ public class DrawingCache {
         }
         try {
           // draw cached image
-          g2d.getCanvasGraphics().drawImage(value.getImage(), (int) ((firstPoint.getX() - value.getDx()) * zoom),
-              (int) ((firstPoint.getY() - value.getDy())* zoom), null);
+          g2d.scale(1 / scaleFactor, 1 / scaleFactor);
+          g2d.getCanvasGraphics().drawImage(value.getImage(), (int) ((firstPoint.getX() - value.getDx()) * zoom * scaleFactor),
+              (int) ((firstPoint.getY() - value.getDy())* zoom * scaleFactor), null);
         } finally {
           if (Math.abs(1.0 - zoom) > 1e-4) {
             g2d.getCanvasGraphics().scale(zoom, zoom);
@@ -176,7 +179,7 @@ public class DrawingCache {
   }
   
   private CacheValue renderAndCache(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom, int zOrder) {
+      boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder) {
     // if we need to apply caching
     Point2D firstPoint = component.getControlPoint(0);
 
@@ -191,7 +194,8 @@ public class DrawingCache {
 
     // only honor the cache if the component hasn't changed in the meantime
     if (value == null || !value.getComponent().equalsTo(component)
-        || value.getState() != componentState || value.getZoom() != zoom || value.getOutlineMode() != outlineMode) {
+        || value.getState() != componentState || value.getZoom() != zoom || value.getOutlineMode() != outlineMode
+        || value.getScaleFactor() != scaleFactor) {
       // figure out size and placement of buffer image
       Rectangle2D rect = component.getCachingBounds();
       int width = (int)Math.round(rect.getWidth() * zoom);
@@ -205,7 +209,7 @@ public class DrawingCache {
       }
       
       // create image
-      BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      BufferedImage image = new ScaledBufferedImage(width, height, BufferedImage.TYPE_INT_ARGB, scaleFactor);
       // create graphics
       Graphics2D cg2d = image.createGraphics();
 
@@ -265,7 +269,7 @@ public class DrawingCache {
       
       // add to the cache        
       value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
-          wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, dx, dy, rect);        
+          wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, scaleFactor, dx, dy, rect);        
       imageCache.put(component, new SoftReference<DrawingCache.CacheValue>(value));
     }
     
@@ -281,13 +285,15 @@ public class DrawingCache {
     ComponentState state;
     boolean outlineMode;
     double zoom;
+    double scaleFactor;
     int dx;
     int dy;
     Rectangle2D cacheBounds;
 
     public CacheValue(IDIYComponent<?> component, BufferedImage image, Area currentArea,
         Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas,
-        ComponentState state, boolean outlineMode, double zoom, int dx, int dy, Rectangle2D cacheBounds) {
+        ComponentState state, boolean outlineMode, double zoom, double scaleFactor, int dx, int dy,
+        Rectangle2D cacheBounds) {
       super();
       this.cacheBounds = cacheBounds;
       // take a copy of the component, so we can check if it changed in the meantime
@@ -338,6 +344,10 @@ public class DrawingCache {
       return zoom;
     }
     
+    public double getScaleFactor() {
+      return scaleFactor;
+    }
+
     public int getDx() {
       return dx;
     }
