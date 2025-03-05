@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.diylc.core.IDIYComponent;
 
 public class Netlist implements Comparable<Netlist> {
@@ -58,10 +60,6 @@ public class Netlist implements Comparable<Netlist> {
     return switchSetup;
   }
 
-  public void done() {
-    Collections.sort(switchSetup);
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -86,11 +84,16 @@ public class Netlist implements Comparable<Netlist> {
       return false;
     return true;
   }
+  
+  public String getSwitchSetupString() {
+    return getSwitchSetup().isEmpty() ? "[ ALL ]" : "[ " + 
+        getSwitchSetup().stream().map(x -> x.toString()).collect(Collectors.joining(",")) + " ]";
+  }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("Switch setup: ").append(getSwitchSetup()).append("\n\n");
+    sb.append("Switch setup: ").append(getSwitchSetupString()).append("\n\n");
     List<Group> list = getSortedGroups();
     for (Group g : list) {
       sb.append("\t").append(g).append("\n");

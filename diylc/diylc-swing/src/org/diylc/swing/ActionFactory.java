@@ -2002,7 +2002,7 @@ public class ActionFactory {
             sb.append("<p style=\"font-family: " + new JLabel().getFont().getName()
                 + "; font-size: 9px\">");
             if (includeSwitches) {
-              sb.append("<b>Switch configuration: ").append(netlist.getSwitchSetup())
+              sb.append("<b>Switch configuration: ").append(netlist.getSwitchSetupString())
                   .append("</b><br><br>");
             }
             sb.append("Connected node groups:<br><br>");
@@ -2072,7 +2072,7 @@ public class ActionFactory {
                 .append("; font-size: 9px\">");
 
             if (res.size() > 1)
-              sb.append("<b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup())
+              sb.append("<b>Switch configuration: ").append(summary.getNetlist().getSwitchSetupString())
                   .append("</b><br><br>");
 
             sb.append(summary.getSummary());
