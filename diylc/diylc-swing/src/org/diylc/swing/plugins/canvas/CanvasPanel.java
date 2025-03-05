@@ -298,7 +298,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     this.plugInPort.mouseMoved(getMousePosition(), false, false, false);
   }
 
-  protected void createBufferImage() {
+  protected void createBufferImage(double scaleFactor) {
     int imageWidth;
     int imageHeight;
     if (RENDER_VISIBLE_RECT_ONLY) {
@@ -315,7 +315,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
           screenGraphicsConfiguration.createCompatibleVolatileImage(imageWidth, imageHeight);
       ((VolatileImage) bufferImage).validate(screenGraphicsConfiguration);
     } else {
-      bufferImage = createImage(imageWidth, imageHeight);
+      bufferImage = new ScaledBufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB, scaleFactor);
     }
   }
 
@@ -324,8 +324,11 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     if (plugInPort == null) {
       return;
     }
+
+    double scaleFactor = Math.sqrt(g.getTransform().getDeterminant());
+
     if (bufferImage == null) {
-      createBufferImage();
+      createBufferImage(scaleFactor);
     }
     Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
 
@@ -365,14 +368,14 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       drawOptions.add(DrawOption.LOCKED_ALPHA);
     }
 
-    plugInPort.draw(g2d, drawOptions, null, null, visibleRect);
+    plugInPort.draw(g2d, drawOptions, null, scaleFactor, visibleRect);
 
     if (useHardwareAcceleration) {
       VolatileImage volatileImage = (VolatileImage) bufferImage;
       do {
         try {
           if (volatileImage.contentsLost()) {
-            createBufferImage();
+            createBufferImage(scaleFactor);
           }
           // int validation =
           // volatileImage.validate(screenGraphicsConfiguration);
@@ -381,7 +384,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
           // }
           g.drawImage(bufferImage, x, y, this);
         } catch (NullPointerException e) {
-          createBufferImage();
+          createBufferImage(scaleFactor);
         }
       } while (volatileImage == null || volatileImage.contentsLost());
     } else {
@@ -439,5 +442,25 @@ public class CanvasPanel extends JComponent implements Autoscroll {
   public void setUseHardwareAcceleration(boolean useHardwareAcceleration) {
 //    this.useHardwareAcceleration = useHardwareAcceleration;
 //    bufferImage = null;
+  }
+
+  static class ScaledBufferedImage extends BufferedImage {
+    private final int virtualWidth;
+    private final int virtualHeight;
+    private final double scaleFactor;
+
+    public ScaledBufferedImage(int width, int height, int imageType, double scaleFactor) {
+      super( (int) Math.round(width * scaleFactor), (int) Math.round(height * scaleFactor), imageType);
+      virtualHeight = height;
+      virtualWidth = width;
+      this.scaleFactor = scaleFactor;
+    }
+
+    @Override
+    public Graphics2D createGraphics() {
+      Graphics2D returnValue = super.createGraphics();
+      returnValue.scale(scaleFactor, scaleFactor);
+      return returnValue;
+    }
   }
 }
