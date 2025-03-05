@@ -35,6 +35,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -325,26 +326,26 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       return;
     }
 
-    double scaleFactor = Math.sqrt(g.getTransform().getDeterminant());
+    final Graphics2D g2d = (Graphics2D)g;
+    double scaleFactor = Math.sqrt(g2d.getTransform().getDeterminant());
 
     if (bufferImage == null) {
       createBufferImage(scaleFactor);
     }
-    Graphics2D g2d = (Graphics2D) bufferImage.getGraphics();
+    Graphics2D bufferG2d = (Graphics2D) bufferImage.getGraphics();
 
     Rectangle visibleRect = getVisibleRect();
 
-    int x = 0;
-    int y = 0;
+    double x = 0;
+    double y = 0;
 
     if (RENDER_VISIBLE_RECT_ONLY) {
-      x = visibleRect.x;
-      y = visibleRect.y;
-      g2d.translate(-x, -y);
+      x = visibleRect.x / scaleFactor;
+      y = visibleRect.y / scaleFactor;
+      bufferG2d.translate(-x, -y);
     } else {
-      g2d.setClip(visibleRect);
+      bufferG2d.setClip(visibleRect);
     }
-
 
     Set<DrawOption> drawOptions =
         EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
@@ -368,7 +369,9 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       drawOptions.add(DrawOption.LOCKED_ALPHA);
     }
 
-    plugInPort.draw(g2d, drawOptions, null, scaleFactor, visibleRect);
+    plugInPort.draw(bufferG2d, drawOptions, null, null, visibleRect);
+    
+    g2d.scale(1 / scaleFactor, 1 / scaleFactor);
 
     if (useHardwareAcceleration) {
       VolatileImage volatileImage = (VolatileImage) bufferImage;
@@ -382,16 +385,16 @@ public class CanvasPanel extends JComponent implements Autoscroll {
           // if (validation == VolatileImage.IMAGE_INCOMPATIBLE) {
           // createBufferImage();
           // }
-          g.drawImage(bufferImage, x, y, this);
+          g.drawImage(bufferImage, (int)x, (int)y, this);
         } catch (NullPointerException e) {
           createBufferImage(scaleFactor);
         }
       } while (volatileImage == null || volatileImage.contentsLost());
     } else {
-      g.drawImage(bufferImage, x, y, this);
+      g.drawImage(bufferImage, (int)x, (int)y, this);
       // bufferImage.flush();
     }
-    g2d.dispose();
+    bufferG2d.dispose();
   }
 
   @Override
