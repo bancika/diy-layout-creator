@@ -27,9 +27,10 @@ import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Resistance;
 
-public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Resistance> {
+public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Resistance> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

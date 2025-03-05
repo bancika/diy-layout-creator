@@ -68,7 +68,7 @@ public class BomMaker {
           if (compare != 0) {
             return compare;
           }
-          return new Integer(value1).compareTo(value2);
+          return Integer.valueOf(value1).compareTo(value2);
         }
         return name1.compareToIgnoreCase(name2);
       }

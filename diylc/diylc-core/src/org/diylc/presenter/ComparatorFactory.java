@@ -102,7 +102,7 @@ public class ComparatorFactory {
             return 1;
           if (!o1.isReadOnly() && o2.isReadOnly())
             return -1;
-          int comp = new Integer(o1.getSortOrder()).compareTo(o2.getSortOrder());
+          int comp = Integer.valueOf(o1.getSortOrder()).compareTo(o2.getSortOrder());
           if (comp != 0)
             return comp;
           return o1.getName().compareToIgnoreCase(o2.getName());
@@ -126,7 +126,7 @@ public class ComparatorFactory {
           ComponentType type2 =
               ComponentProcessor.getInstance().extractComponentTypeFrom(
                   (Class<? extends IDIYComponent<?>>) o2.getClass());
-          return new Double(type1.getZOrder()).compareTo(type2.getZOrder());
+          return Double.valueOf(type1.getZOrder()).compareTo(type2.getZOrder());
         }
       };
     }
@@ -140,7 +140,7 @@ public class ComparatorFactory {
         public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
           int index1 = project.getComponents().indexOf(o1);
           int index2 = project.getComponents().indexOf(o2);
-          return new Integer(index1).compareTo(index2);
+          return Integer.valueOf(index1).compareTo(index2);
         }
       };
   }

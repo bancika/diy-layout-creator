@@ -132,7 +132,7 @@ public abstract class AbstractNetlistParser implements INetlistParser {
       Class<?> clazz = parsedComponent.getType();
       IDIYComponent<?> component;
       try {
-        component = (IDIYComponent<?>) clazz.newInstance();
+        component = (IDIYComponent<?>) clazz.getDeclaredConstructor().newInstance();
       } catch (Exception e) {
         outputWarnings.add(e.getMessage());
         continue;

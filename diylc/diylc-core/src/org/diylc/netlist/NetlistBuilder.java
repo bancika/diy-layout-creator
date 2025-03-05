@@ -289,85 +289,33 @@ public class NetlistBuilder {
     Map<Point2D, List<ProjectGraphNode>> nodeMapByPoint =
         new HashMap<Point2D, List<ProjectGraphNode>>();
 
-    // RTree<ProjectGraphNode> nodeTree = new RTree<ProjectGraphNode>();
     RTree<ProjectGraphNode> areaTree = new RTree<ProjectGraphNode>();
 
     Builder<ProjectGraphNode> builder = GraphBuilder.undirected().<ProjectGraphNode>immutable();
 
-    List<ProjectGraphNode> controlPointNodeList = new ArrayList<ProjectGraphNode>();
+    buildPointNodes(nodes, nodeMapByPoint, builder);
 
-    for (Node node : nodes) {
-      Point2D p = snapToEps(node.getPoint2D(), eps);
-      ProjectGraphNode graphNode = new ProjectGraphNode(p, node);
-      builder.addNode(graphNode);
-      // nodeTree.insert(new float[] {(float) (p.getX() - eps), (float) (p.getY() - eps)},
-      // new float[] {eps * 2, eps * 2}, graphNode);
-      nodeMapByPoint.computeIfAbsent(p, (point) -> new ArrayList<ProjectGraphNode>())
-          .add(new ProjectGraphNode(p, node));
-      controlPointNodeList.add(graphNode);
-    }
+    buildConnectionNodes(connections, nodeMapByPoint, builder);
 
-    for (Connection conn : connections) {
-      Point2D p1 = snapToEps(conn.getP1(), eps);
-      Point2D p2 = snapToEps(conn.getP2(), eps);
+    joinPointsWithConnectionNodes(nodeMapByPoint, builder);
 
-      ProjectGraphNode graphNode1 = new ProjectGraphNode(p1, conn.getZIndex());
-      ProjectGraphNode graphNode2 = new ProjectGraphNode(p2, conn.getZIndex());
+    buildAndConnectAreaNodes(continuityAreas, nodeMapByPoint, areaTree, builder);
 
-      // nodeTree.insert(new float[] {(float) p1.getX() - eps, (float) p1.getY() - eps},
-      // new float[] {eps * 2, eps * 2}, graphNode1);
-      // nodeTree.insert(new float[] {(float) p2.getX() - eps, (float) p2.getY() - eps},
-      // new float[] {eps * 2, eps * 2}, graphNode2);
+    return builder.build();
+  }
 
-      builder.addNode(graphNode1);
-      builder.addNode(graphNode2);
-      builder.putEdge(graphNode1, graphNode2);
-
-      nodeMapByPoint.computeIfAbsent(p1, (point) -> new ArrayList<ProjectGraphNode>())
-          .add(graphNode1);
-      nodeMapByPoint.computeIfAbsent(p2, (point) -> new ArrayList<ProjectGraphNode>())
-          .add(graphNode2);
-    }
-
-    for (Map.Entry<Point2D, List<ProjectGraphNode>> entry : nodeMapByPoint.entrySet()) {
-      ProjectGraphNode[] nodeArr = entry.getValue().toArray(new ProjectGraphNode[0]);
-      for (int i = 0; i < nodeArr.length - 1; i++) {
-        for (int j = i + 1; j < nodeArr.length; j++) {
-          builder.putEdge(nodeArr[i], nodeArr[j]);
-        }
-      }
-    }
-
+  private static void buildAndConnectAreaNodes(Collection<ContinuityArea> continuityAreas,
+      Map<Point2D, List<ProjectGraphNode>> nodeMapByPoint, RTree<ProjectGraphNode> areaTree,
+      Builder<ProjectGraphNode> builder) {
     for (ContinuityArea area : continuityAreas) {
       ProjectGraphNode areaNode = new ProjectGraphNode(area);
       builder.addNode(areaNode);
 
-      // List<ProjectGraphNode> candidateNodes = nodeTree.search(area.getArea()).stream()
-      // .filter(graphNode -> area.getArea().contains(graphNode.getPoint())
-      // || area.getArea().intersects(graphNode.getPoint().getX() - eps / 2,
-      // graphNode.getPoint().getY() - eps / 2, eps, eps))
-      // .collect(Collectors.toList());
-      //
-      // List<ProjectGraphNode> nodesAbove = candidateNodes.stream()
-      // .filter(x -> x.getNode().getZIndex() > area.getZOrder())
-      // .sorted(Comparator.comparing(x -> x.getNode().getZIndex(), Comparator.reverseOrder()))
-      // .collect(Collectors.toList());
-      //
-      // for (ProjectGraphNode node : nodeArr) {
-      // builder.putEdge(node, areaNode);
-      // }
-
-      // for (int i = 0; i < nodeArr.length - 1; i++) {
-      // for (int j = i + 1; j < nodeArr.length; j++) {
-      // builder.putEdge(nodeArr[i], nodeArr[j]);
-      // }
-      // }
-
       areaTree.search(area.getArea()).stream().filter(graphNode -> {
         if (graphNode.getArea() != null && graphNode.getArea() != area
             && (graphNode.getArea().getLayerId() == 0 || area.getLayerId() == 0 || graphNode.getArea().getLayerId() == area.getLayerId())) {
-          Area a = new Area(graphNode.getArea().getArea());
-          a.intersect(area.getArea());
+          Area a = new Area(graphNode.getArea().getSimplifiedArea());
+          a.intersect(area.getSimplifiedArea());
           return !a.isEmpty();
         }
         return false;
@@ -391,25 +339,54 @@ public class NetlistBuilder {
         continue;
       
       for (ProjectGraphNode pointNode : entry.getValue()) {
-      
-//        List<ProjectGraphNode> areaNodes = candidateAreaNodes.stream()
-//          .filter(x -> x.getArea().getZIndex() <= pointNode.getZIndex())
-////          .sorted(Comparator.comparing(x -> x.getArea().getZIndex(), Comparator.reverseOrder()))
-//          .collect(Collectors.toList());
-        
         for (ProjectGraphNode areaNode : candidateAreaNodes) {
           builder.putEdge(pointNode, areaNode);
         }
-        
-//        if (areaNodesBelowPoint.isEmpty()) {
-//          builder.putEdge(pointNode, candidateAreaNodes.get(0));
-//        } else {
-//          builder.putEdge(pointNode, areaNodesBelowPoint.get(0));
-//        }
       }
     }
+  }
 
-    return builder.build();
+  private static void joinPointsWithConnectionNodes(
+      Map<Point2D, List<ProjectGraphNode>> nodeMapByPoint, Builder<ProjectGraphNode> builder) {
+    for (Map.Entry<Point2D, List<ProjectGraphNode>> entry : nodeMapByPoint.entrySet()) {
+      ProjectGraphNode[] nodeArr = entry.getValue().toArray(new ProjectGraphNode[0]);
+      for (int i = 0; i < nodeArr.length - 1; i++) {
+        for (int j = i + 1; j < nodeArr.length; j++) {
+          builder.putEdge(nodeArr[i], nodeArr[j]);
+        }
+      }
+    }
+  }
+
+  private static void buildConnectionNodes(Collection<Connection> connections,
+      Map<Point2D, List<ProjectGraphNode>> nodeMapByPoint, Builder<ProjectGraphNode> builder) {
+    for (Connection conn : connections) {
+      Point2D p1 = snapToEps(conn.getP1(), eps);
+      Point2D p2 = snapToEps(conn.getP2(), eps);
+
+      ProjectGraphNode graphNode1 = new ProjectGraphNode(p1, conn.getZIndex());
+      ProjectGraphNode graphNode2 = new ProjectGraphNode(p2, conn.getZIndex());
+
+      builder.addNode(graphNode1);
+      builder.addNode(graphNode2);
+      builder.putEdge(graphNode1, graphNode2);
+
+      nodeMapByPoint.computeIfAbsent(p1, (point) -> new ArrayList<ProjectGraphNode>())
+          .add(graphNode1);
+      nodeMapByPoint.computeIfAbsent(p2, (point) -> new ArrayList<ProjectGraphNode>())
+          .add(graphNode2);
+    }
+  }
+
+  private static void buildPointNodes(Collection<Node> nodes,
+      Map<Point2D, List<ProjectGraphNode>> nodeMapByPoint, Builder<ProjectGraphNode> builder) {
+    for (Node node : nodes) {
+      Point2D p = snapToEps(node.getPoint2D(), eps);
+      ProjectGraphNode graphNode = new ProjectGraphNode(p, node);
+      builder.addNode(graphNode);
+      nodeMapByPoint.computeIfAbsent(p, (point) -> new ArrayList<ProjectGraphNode>())
+          .add(new ProjectGraphNode(p, node));
+    }
   }
 
   @SuppressWarnings({"unchecked", "unlikely-arg-type"})
@@ -470,18 +447,15 @@ public class NetlistBuilder {
     private Point2D point;
     private Node node;
     private ContinuityArea area;
-    private int zIndex;
 
     public ProjectGraphNode(ContinuityArea area) {
       super();
       this.area = area;
-      this.zIndex = area.getZIndex();
     }
 
     public ProjectGraphNode(Point2D point, int zIndex) {
       super();
       this.point = point;
-      this.zIndex = zIndex;
       this.node = null;
     }
 
@@ -489,15 +463,10 @@ public class NetlistBuilder {
       super();
       this.point = point;
       this.node = node;
-      this.zIndex = node.getZIndex();
     }
 
     public Point2D getPoint() {
       return point;
-    }
-    
-    public int getZIndex() {
-      return zIndex;
     }
 
     public Node getNode() {

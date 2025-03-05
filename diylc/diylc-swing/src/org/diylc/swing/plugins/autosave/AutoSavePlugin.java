@@ -143,7 +143,7 @@ public class AutoSavePlugin implements IPlugIn {
 
       @Override
       public int compare(File o1, File o2) {
-        return new Long(o1.lastModified()).compareTo(o2.lastModified());
+        return Long.valueOf(o1.lastModified()).compareTo(o2.lastModified());
       }
     });
     long totalSize = 0;

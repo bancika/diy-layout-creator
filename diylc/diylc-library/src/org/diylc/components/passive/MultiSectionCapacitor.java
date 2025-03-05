@@ -50,6 +50,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -58,7 +59,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Multi-Section Capacitor", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "C", description = "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[]> {
+public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[]> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

@@ -21,6 +21,7 @@
 	<classpathentry kind="lib" path="lib/guava-31.1-jre.jar"/>
 	<classpathentry kind="lib" path="lib/pdfbox-2.0.27.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/gerber-writer-api-1.0.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/diylc-core"/>
 	<classpathentry kind="lib" path="lib/java-http-proxy.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

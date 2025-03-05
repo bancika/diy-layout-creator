@@ -34,13 +34,14 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "LED", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Light Emitting Diode",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class)
-public class LED extends AbstractLeadedComponent<String> {
+public class LED extends AbstractLeadedComponent<String> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

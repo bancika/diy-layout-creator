@@ -42,11 +42,12 @@ import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.MultiLineText;
+import org.diylc.core.gerber.IGerberComponentSimple;
 
 @ComponentDescriptor(name = "Label", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined label", instanceNamePrefix = "LAB", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
     bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
-public class Label extends AbstractComponent<String> {
+public class Label extends AbstractComponent<String> implements IGerberComponentSimple {
 
   public static String DEFAULT_TEXT = "Double click to edit text";
 
