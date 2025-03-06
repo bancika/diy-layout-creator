@@ -2,7 +2,7 @@
 	
 	<import file="build.xml"/>
 
-	<property name="appdir" value="${build.dir}/AppDir" />
+	<property name="appdir" value="build/AppDir" />
 	<property name="appimagetool" value="${basedir}/tools/appimagetool-x86_64.AppImage" />
 	<property name="wsl.command" value="wsl bash -c"/>
 
@@ -94,7 +94,7 @@
         <echo message="AppImage created successfully in WSL! Copying back to Windows..."/>
         
     	<exec executable="cmd.exe" failonerror="true">
-    	    <arg line="/c wsl bash -c &quot;cp /tmp/${appimage.output.file} $(wslpath -u '${build.dir}\\${appimage.output.file}')&quot;"/>
+    	    <arg line="/c wsl bash -c &quot;cp /tmp/${appimage.output.file} $(wslpath -u 'build\\${appimage.output.file}')&quot;"/>
     	</exec>
 
         <echo message="AppImage build completed successfully! Output: ${appimage.output.file}"/>

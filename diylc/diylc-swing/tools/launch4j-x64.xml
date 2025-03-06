@@ -19,7 +19,7 @@
     <cp>lib</cp>
   </classPath>
   <jre>
-    <path>jre</path>
+    <path>jre17</path>
     <requiresJdk>false</requiresJdk>
     <requires64Bit>true</requires64Bit>
     <minVersion>17</minVersion>

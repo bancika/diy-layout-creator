@@ -6,6 +6,7 @@
 	<import file="download_jre.xml" />
 	<import file="appimage.xml" />
 
+	<property environment="env"/>
 	<property name="src.dir" value="${basedir}/src" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
@@ -24,6 +25,7 @@
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
 	
 	<property name="appimage.output.file" value="DIYLayoutCreator-${diylc.version}-x86_64.AppImage"/>
+	<property name="innosetup.path" value="c:/Program Files (x86)/Inno Setup 6"/><!--${env.INNOSETUP_PATH}"-->
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
@@ -214,8 +216,9 @@
 	<target name="win_x86" depends="jar, fetch-jre-win32">
 <!--		<unzip src="${win.jre.x86.path}" dest="${build.dir}/jre_win"/>-->
 		<copy file="deploy/diylc-x86.exe" tofile="${build.dir}/diylc.exe" overwrite="true"/>
-		<exec executable="tools/innosetup/iscc.exe">
+		<exec executable="${innosetup.path}/iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
+			<arg value="/Darch=x86os"/>
 			<arg value="/Fdiylc-${diylc.version}-win32"/>
 			<arg value="tools/install.iss"/>
 		</exec>
@@ -224,8 +227,9 @@
 	<target name="win_x64" depends="jar, fetch-jre-win64">
 <!--		<unzip src="${win.jre.x64.path}" dest="${build.dir}/jre_win"/>-->
 		<copy file="deploy/diylc-x64.exe" tofile="${build.dir}/diylc.exe" overwrite="true"/>
-		<exec executable="tools/innosetup/iscc.exe">
+		<exec executable="${innosetup.path}/iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
+			<arg value="/Darch=x64os"/>
 			<arg value="/Fdiylc-${diylc.version}-win64"/>
 			<arg value="tools/install.iss"/>
 		</exec>
@@ -233,7 +237,7 @@
 	
 	<target name="linux" depends="jar, fetch-jre-linux, build-appimage">
 		<zip destfile="${build.dir}/diylc-${diylc.version}-linux.zip">
-			<zipfileset filemode="755" dir="${build.dir}" prefix="${appimage.output.file}" />
+			<zipfileset filemode="755" dir="${build.dir}" includes="${appimage.output.file}"/>
 		</zip>
 		<delete file="${appimage.output.file}" />
 	</target>
