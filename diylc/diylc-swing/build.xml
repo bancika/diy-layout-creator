@@ -1,9 +1,10 @@
 <project name="diylc-swing" basedir="." default="full">
 
-	<!--<taskdef name="bundleapp"
-	             classname="com.oracle.appbundler.AppBundlerTask"  />-->
+	<taskdef name="bundleapp"
+	             classname="com.oracle.appbundler.AppBundlerTask"  />
 
 	<import file="download_jre.xml" />
+	<import file="appimage.xml" />
 
 	<property name="src.dir" value="${basedir}/src" />
 
@@ -21,6 +22,8 @@
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
+	
+	<property name="appimage.output.file" value="DIYLayoutCreator-${diylc.version}-x86_64.AppImage"/>
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
@@ -227,6 +230,8 @@
 			<arg value="tools/install.iss"/>
 		</exec>
 	</target>
+	
+	<target name="appimage" depends="jar, fetch-jre-linux, build-appimage" />
 	
 	<target name="universal_installer" depends="jar">
 		<izpack input="${basedir}/izpack.xml"
