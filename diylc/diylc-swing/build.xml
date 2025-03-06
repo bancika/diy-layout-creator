@@ -231,7 +231,12 @@
 		</exec>
 	</target>
 	
-	<target name="appimage" depends="jar, fetch-jre-linux, build-appimage" />
+	<target name="linux" depends="jar, fetch-jre-linux, build-appimage">
+		<zip destfile="${build.dir}/diylc-${diylc.version}-linux.zip">
+			<zipfileset filemode="755" dir="${build.dir}" prefix="${appimage.output.file}" />
+		</zip>
+		<delete file="${appimage.output.file}" />
+	</target>
 	
 	<target name="universal_installer" depends="jar">
 		<izpack input="${basedir}/izpack.xml"
@@ -262,7 +267,7 @@
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
 
-	<target name="full" depends="win_x86,win_x64,universal,mac,mac-arm" />
+	<target name="full" depends="win_x86,win_x64,universal,mac,mac-arm,linux" />
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">

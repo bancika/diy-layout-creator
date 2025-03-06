@@ -4515,7 +4515,7 @@
 				<minor>41</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-02-25 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -4537,6 +4537,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded Java JRE to version 17 LTE</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added support for high DPI displays</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
