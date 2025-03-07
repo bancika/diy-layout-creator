@@ -6,7 +6,28 @@
 	<property name="appimagetool" value="${basedir}/tools/appimagetool-x86_64.AppImage" />
 	<property name="wsl.command" value="wsl bash -c"/>
 
-	<target name="build-appimage">
+	<target name="setup-wsl">
+		<!-- Check if WSL is installed, install if necessary -->
+		<exec executable="cmd.exe" failonerror="false">
+			<arg line="/c wsl --version" />
+		</exec>
+
+		<exec executable="cmd.exe" failonerror="true">
+			<arg line="/c wsl --set-default Ubuntu-18.04" />
+		</exec>
+
+		<!-- Install necessary Linux dependencies inside WSL -->
+		<exec executable="cmd.exe" failonerror="true">
+			<arg line="/c ${wsl.command} &quot;sudo apt update &amp;&amp; sudo apt install -y wget libfuse2 fuse&quot;" />
+		</exec>
+
+		<!-- Download AppImageTool into WSL -->
+		<exec executable="cmd.exe" failonerror="true">
+			<arg line="/c ${wsl.command} &quot;wget -O ~/appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage &amp;&amp; chmod +x ~/appimagetool&quot;" />
+		</exec>
+	</target>
+
+	<target name="build-appimage" depends="setup-wsl">
 
 		<mkdir dir="${appdir}/usr/bin" />
 		<mkdir dir="${appdir}/usr/share/icons/hicolor/512x512/apps" />
