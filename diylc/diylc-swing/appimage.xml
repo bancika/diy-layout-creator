@@ -53,9 +53,9 @@
 				<include name="*"/>
 			</fileset>
 		</copy>
-		<copy file="appimage/diylc.sh" tofile="${appdir}/usr/bin/diylc" />
+		<copy file="appimage/diylc.sh" tofile="${appdir}/AppRun" />
 		<copy file="deploy/splash.png" todir="${appdir}/usr/bin" />
-		<chmod file="${appdir}/usr/bin/diylc" perm="755" />
+		<chmod file="${appdir}/AppRun" perm="755" />
 
 		<!-- Copy icons and desktop file -->
 		<copy file="icons/icon_512x512.png" tofile="${appdir}/usr/share/icons/hicolor/512x512/apps/com.diy_fever.DIYLayoutCreator.png" />
