@@ -89,6 +89,12 @@
 		<exec executable="cmd.exe" failonerror="true">
 		    <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/com.diy_fever.DIYLayoutCreator.desktop&quot;"/>
 		</exec>
+    	<exec executable="cmd.exe" failonerror="true">
+		    <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/AppRun&quot;"/>
+		</exec>
+    	<exec executable="cmd.exe" failonerror="true">
+		    <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/usr/bin/diylc.sh&quot;"/>
+		</exec>
 		
 		<echo message="Starting AppImage build process using WSL..."/>
 
