@@ -2,7 +2,7 @@
 HERE="$(dirname "$(readlink -f "$0")")"
 
 # Set JRE path inside AppImage
-if [ -d "$HERE/../lib/jre" ]; then
+if [ -d "$HERE/usr/lib/jre" ]; then
     JAVA_HOME="$HERE/../lib/jre"
     PATH="$JAVA_HOME/bin:$PATH"
     export JAVA_HOME PATH
