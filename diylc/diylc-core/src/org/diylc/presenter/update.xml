@@ -4574,6 +4574,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Do not mirror bottom layers for Gerber export as fabrication service providers expect a top view for everything</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Selecting components by drawing a rectangle around them works glitchy</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

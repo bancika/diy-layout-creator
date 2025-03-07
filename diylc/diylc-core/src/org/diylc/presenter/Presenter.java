@@ -1624,6 +1624,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
     // There is selection, so we need to finalize the drag&drop
     // operation.
     dragInProgress = false;
+    messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
   @Override
