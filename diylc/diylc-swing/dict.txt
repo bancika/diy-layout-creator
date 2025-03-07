@@ -17,18 +17,22 @@
 10 throws / 10 positions
 11 throws / 11 positions
 12 throws / 12 positions
+135 degrees clockwise
 1P12T
 2 throws / 2 positions
 2 throws / 3 positions / OFF even positions
+225 degrees clockwise
 2P5T
 2P6T
 3 throws / 3 positions
 3 throws / 5 positions / SHORT even positions
+315 degrees clockwise
 3P4T
 3PDT
 3PDT (On/Off/On)
 4 band
 4 throws / 4 positions
+45 degrees clockwise
 4P3T
 4P5T
 4P5T (Super/Mega)
@@ -92,8 +96,6 @@ E-B-C     BJT
 Eight
 English
 Español
-Export
-Export to Gerber
 Filament Voltage
 Français
 G-D-S     JFET
@@ -105,16 +107,9 @@ G-S-D     MOSFET
 Generate DIYLC Netlist (excl. Switches)
 Generate DIYLC Netlist (incl. Switches)
 Gray
-Hole Type
 Humbucking - 4 leads
 I-G-O     REGULATOR
 IEC
-Inner 1
-Inner 2
-Inner 3
-Inner 4
-Inner 5
-Inner 6
 Italiano
 Lin
 Log
@@ -125,7 +120,6 @@ NPN
 Nand
 Nederlands
 Nine
-Non-Plated Through Hole
 Non-shorting
 Nor
 Not
@@ -142,7 +136,6 @@ PAF
 PCB
 PNP
 Pitch
-Plated Through Hole
 Poles
 Português
 RS
@@ -172,6 +165,7 @@ Ten
 Terminal
 Timing
 Tubular Beveled
+Virtual Multimeter
 Xnor
 Xor
 cm
