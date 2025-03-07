@@ -126,7 +126,7 @@
 		<property name="jdk.archive.linux" value="OpenJDK17U-jre_x64_linux_hotspot_${jdk.version.file}.tar.gz" />
 		<property name="jdk.url.linux" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.linux}" />
 		<property name="jre.dest.linux" value="${basedir}/build/jre" />
-		<property name="appdir.jre" value="${appdir}/usr/lib/jre" />
+		<property name="appdir.jre" value="${appdir}/usr/bin/jre" />
 
 		<!-- Ensure clean jre folder -->
 		<delete dir="${jre.dest.linux}" />

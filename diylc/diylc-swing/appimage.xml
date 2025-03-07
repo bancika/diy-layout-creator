@@ -7,14 +7,6 @@
 	<property name="wsl.command" value="wsl bash -c"/>
 
 	<target name="setup-wsl">
-		<!-- Check if WSL is installed, install if necessary -->
-		<exec executable="cmd.exe" failonerror="false">
-			<arg line="/c wsl --version" />
-		</exec>
-
-		<exec executable="cmd.exe" failonerror="true">
-			<arg line="/c wsl --set-default Ubuntu-18.04" />
-		</exec>
 
 		<!-- Install necessary Linux dependencies inside WSL -->
 		<exec executable="cmd.exe" failonerror="true">
@@ -27,7 +19,7 @@
 		</exec>
 	</target>
 
-	<target name="build-appimage" depends="setup-wsl">
+	<target name="build-appimage">
 
 		<mkdir dir="${appdir}/usr/bin" />
 		<mkdir dir="${appdir}/usr/share/icons/hicolor/512x512/apps" />
