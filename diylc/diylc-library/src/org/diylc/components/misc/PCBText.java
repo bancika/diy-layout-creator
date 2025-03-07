@@ -37,16 +37,21 @@ import org.diylc.components.transform.TextTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.GerberLayer;
+import org.diylc.core.gerber.IGerberComponentCustom;
+import org.diylc.core.gerber.IGerberDrawingObserver;
+import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,
     flexibleZOrder = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
-public class PCBText extends AbstractComponent<Void> {
+public class PCBText extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponentCustom {
 
   public static String DEFAULT_TEXT = "Double click to edit text";
 
@@ -63,18 +68,26 @@ public class PCBText extends AbstractComponent<Void> {
   private Orientation orientation = Orientation.DEFAULT;
   
   private PCBLayer layer = PCBLayer._1;
-
+  
   @SuppressWarnings("incomplete-switch")
   @Override
-  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver,
+      IGerberDrawingObserver gerberDrawingObserver) {
     g2d.setColor(componentState == ComponentState.SELECTED ? LABEL_COLOR_SELECTED : color);
     g2d.setFont(font);
+    
+//    FontRenderContext frc = new FontRenderContext(null, false, true);
+//    TextLayout layout = new TextLayout(getText(), getFont(), frc);
+//    Rectangle2D rect = layout.getBounds();
+    
     FontMetrics fontMetrics = g2d.getFontMetrics();
-    Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);
+    // hack to store bounding rect, due to inconsistencies between methods that calculate it
+    // to be used for gerber export
+    Rectangle2D boundingRect = fontMetrics.getStringBounds(text, g2d);
 
-    int textHeight = (int) rect.getHeight();
-    int textWidth = (int) rect.getWidth();
+    int textHeight = (int) boundingRect.getHeight();
+    int textWidth = (int) boundingRect.getWidth();
 
     double x = point.getX();
     double y = point.getY();
@@ -123,10 +136,25 @@ public class PCBText extends AbstractComponent<Void> {
     AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
     tx.translate(-2 * x - textWidth, 0);
     g2d.transform(tx);
+    
+    Color c = getColor();
+    // treat light colors as negative etched into a ground plane
+    float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 
+    GerberLayer gerberCopperLayer = this.getLayer().toGerberCopperLayer();
+    if (gerberDrawingObserver != null)
+      gerberDrawingObserver.startGerberOutput(gerberCopperLayer,  GerberFunctions.CONDUCTOR, hsb[2] > 0.5);
     g2d.drawString(text, (int)x, (int)y);
+    if (gerberDrawingObserver != null)
+      gerberDrawingObserver.stopGerberOutput();
     
     g2d.setTransform(oldTx);
+  }
+
+  @Override
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
+      IDrawingObserver drawingObserver) {
+    this.draw(g2d, componentState, outlineMode, project, drawingObserver, null);
   }
 
   @Override
@@ -319,5 +347,10 @@ public class PCBText extends AbstractComponent<Void> {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
+  }
+
+  @Override
+  public int getLayerId() {
+    return getLayer().getId();
   }
 }

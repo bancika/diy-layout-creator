@@ -48,7 +48,7 @@ public class ContinuityGraph {
     List<ContinuityNode> matchingNodes = groupTree.search(point, NetlistBuilder.eps)
         .stream()
         .filter(node -> node.getArea().getArea().contains(point))
-        .sorted(Comparator.comparing(x -> x.getArea().getZIndex(), Comparator.reverseOrder()))
+        .sorted(Comparator.comparing(x -> x.getArea().getLayerId(), Comparator.reverseOrder()))
         .collect(Collectors.toList());
     
     if (matchingNodes.isEmpty())

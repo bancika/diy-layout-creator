@@ -3,6 +3,10 @@
 	<taskdef name="bundleapp"
 	             classname="com.oracle.appbundler.AppBundlerTask"  />
 
+	<import file="download_jre.xml" />
+	<import file="appimage.xml" />
+
+	<property environment="env"/>
 	<property name="src.dir" value="${basedir}/src" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
@@ -10,14 +14,18 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.40.0" />
+	<property name="diylc.version" value="4.41.0" />
 	
-	<property name="win.jre.path" value="tools/jre/win/jre1.8.0_211.zip" />
+	<property name="win.jre.x86.path" value="tools/jre/win/x86/jre17.0.14_7.zip" />
+	<property name="win.jre.x64.path" value="tools/jre/win/x64/jre17.0.14_7.zip" />
 	<property name="osx.jre.x86.path" value="tools/jre/osx/x86/jre17.zip" />
 	<property name="osx.jre.arm.path" value="tools/jre/osx/arm/jre17.zip" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
+	
+	<property name="appimage.output.file" value="DIYLayoutCreator-${diylc.version}-x86_64.AppImage"/>
+	<property name="innosetup.path" value="c:/Program Files (x86)/Inno Setup 6"/><!--${env.INNOSETUP_PATH}"-->
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
@@ -80,8 +88,8 @@
 		</jar>
 	</target>
 
-	<target name="mac" depends="jar">
-		<unzip src="${osx.jre.x86.path}" dest="${build.dir}/jre_x86"/>
+	<target name="mac" depends="jar, fetch-jre-macos-x86">
+<!--		<unzip src="${osx.jre.x86.path}" dest="${build.dir}/jre_x86"/>-->
 		<bundleapp
 			        outputdirectory="${build.dir}"
 			        name="DIYLC"
@@ -138,8 +146,8 @@
 				</zip>
 			</target>
 	
-	<target name="mac-arm" depends="jar">
-			<unzip src="${osx.jre.arm.path}" dest="${build.dir}/jre_arm"/>
+	<target name="mac-arm" depends="jar, fetch-jre-macos-arm">
+<!--			<unzip src="${osx.jre.arm.path}" dest="${build.dir}/jre_arm"/>-->
 			<bundleapp
 		        outputdirectory="${build.dir}"
 		        name="DIYLC"
@@ -205,13 +213,33 @@
 
 	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask" classpathref="lib.path" />
 
-	<target name="win" depends="jar">
-		<unzip src="${win.jre.path}" dest="${build.dir}/jre_win"/>
-		<exec executable="tools\innosetup\iscc.exe">
+	<target name="win_x86" depends="jar, fetch-jre-win32">
+<!--		<unzip src="${win.jre.x86.path}" dest="${build.dir}/jre_win"/>-->
+		<copy file="deploy/diylc-x86.exe" tofile="${build.dir}/diylc.exe" overwrite="true"/>
+		<exec executable="${innosetup.path}/iscc.exe">
 			<arg value="/Ddiylcver=${diylc.version}"/>
-			<arg value="/Fdiylc-${diylc.version}-win"/>
+			<arg value="/Darch=x86os"/>
+			<arg value="/Fdiylc-${diylc.version}-win32"/>
 			<arg value="tools/install.iss"/>
 		</exec>
+	</target>
+	
+	<target name="win_x64" depends="jar, fetch-jre-win64">
+<!--		<unzip src="${win.jre.x64.path}" dest="${build.dir}/jre_win"/>-->
+		<copy file="deploy/diylc-x64.exe" tofile="${build.dir}/diylc.exe" overwrite="true"/>
+		<exec executable="${innosetup.path}/iscc.exe">
+			<arg value="/Ddiylcver=${diylc.version}"/>
+			<arg value="/Darch=x64os"/>
+			<arg value="/Fdiylc-${diylc.version}-win64"/>
+			<arg value="tools/install.iss"/>
+		</exec>
+	</target>
+	
+	<target name="linux" depends="jar, fetch-jre-linux, build-appimage">
+		<zip destfile="${build.dir}/diylc-${diylc.version}-linux.zip">
+			<zipfileset filemode="755" dir="${build.dir}" includes="${appimage.output.file}"/>
+		</zip>
+		<delete file="${appimage.output.file}" />
 	</target>
 	
 	<target name="universal_installer" depends="jar">
@@ -243,7 +271,7 @@
 		<checksum file="${build.dir}/diylc-${diylc.version}.zip" algorithm="SHA-256"/>
 	</target>
 
-	<target name="full" depends="win,universal,mac,mac-arm" />
+	<target name="full" depends="win_x86,win_x64,universal,mac,mac-arm,linux" />
 
 	<target name="javadoc">
 		<javadoc access="public" author="true" classpathref="class.path" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" splitindex="true" use="true" version="true">

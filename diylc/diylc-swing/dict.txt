@@ -92,6 +92,8 @@ E-B-C     BJT
 Eight
 English
 Español
+Export
+Export to Gerber
 Filament Voltage
 Français
 G-D-S     JFET
@@ -103,9 +105,16 @@ G-S-D     MOSFET
 Generate DIYLC Netlist (excl. Switches)
 Generate DIYLC Netlist (incl. Switches)
 Gray
+Hole Type
 Humbucking - 4 leads
 I-G-O     REGULATOR
 IEC
+Inner 1
+Inner 2
+Inner 3
+Inner 4
+Inner 5
+Inner 6
 Italiano
 Lin
 Log
@@ -116,6 +125,7 @@ NPN
 Nand
 Nederlands
 Nine
+Non-Plated Through Hole
 Non-shorting
 Nor
 Not
@@ -132,6 +142,7 @@ PAF
 PCB
 PNP
 Pitch
+Plated Through Hole
 Poles
 Português
 RS

@@ -1,0 +1,102 @@
+<project name="diylc-swing-appimage" basedir=".">
+	
+	<import file="build.xml"/>
+
+	<property name="appdir" value="build/AppDir" />
+	<property name="appimagetool" value="${basedir}/tools/appimagetool-x86_64.AppImage" />
+	<property name="wsl.command" value="wsl bash -c"/>
+
+	<target name="build-appimage">
+
+		<mkdir dir="${appdir}/usr/bin" />
+		<mkdir dir="${appdir}/usr/share/icons/hicolor/512x512/apps" />
+		<mkdir dir="${appdir}/usr/share/metainfo" />
+
+		<!-- Copy app files -->
+		<zipfileset dir="${jar.dir}" includes="diylc.jar" />
+		<zipfileset dir="${jar.dir}/lib" prefix="lib" />
+		<zipfileset dir="${jar.dir}/library/" prefix="library" />
+		<zipfileset dir="templates" prefix="templates" />
+		<zipfileset dir="themes" prefix="themes" />
+		<zipfileset dir="fonts" prefix="fonts" />
+		<zipfileset dir="lang" prefix="lang" />
+		<zipfileset dir="deploy" includes="splash.png" />
+
+		<copy file="${jar.dir}/diylc.jar" todir="${appdir}/usr/bin" />
+		<copy todir="${appdir}/usr/bin/lib">
+			<fileset dir="${jar.dir}/lib">
+				<include name="*"/>
+			</fileset>
+		</copy>
+		<copy todir="${appdir}/usr/bin/library">
+			<fileset dir="${jar.dir}/library">
+				<include name="*"/>
+			</fileset>
+		</copy>
+		<copy todir="${appdir}/usr/bin/templates">
+			<fileset dir="${basedir}/templates">
+				<include name="*"/>
+			</fileset>
+		</copy>
+		<copy todir="${appdir}/usr/bin/themes">
+			<fileset dir="${basedir}/themes">
+				<include name="*"/>
+			</fileset>
+		</copy>
+		<copy todir="${appdir}/usr/bin/fonts">
+			<fileset dir="${basedir}/fonts">
+				<include name="*"/>
+			</fileset>
+		</copy>
+		<copy todir="${appdir}/usr/bin/lang">
+			<fileset dir="${basedir}/lang">
+				<include name="*"/>
+			</fileset>
+		</copy>
+		<copy file="appimage/diylc.sh" tofile="${appdir}/usr/bin/diylc" />
+		<copy file="deploy/splash.png" todir="${appdir}/usr/bin" />
+		<chmod file="${appdir}/usr/bin/diylc" perm="755" />
+
+		<!-- Copy icons and desktop file -->
+		<copy file="icons/icon_512x512.png" tofile="${appdir}/usr/share/icons/hicolor/512x512/apps/com.diy_fever.DIYLayoutCreator.png" />
+		<copy file="icons/icon_512x512.png" tofile="${appdir}/com.diy_fever.DIYLayoutCreator.png" />
+		<!--<copy file="appimage/com.diy_fever.DIYLayoutCreator.desktop" todir="${appdir}/usr/share/applications" />-->
+		<copy file="appimage/com.diy_fever.DIYLayoutCreator.desktop" todir="${appdir}" />
+		<copy file="appimage/com.diy_fever.DIYLayoutCreator.metainfo.xml" todir="${appdir}/usr/share/metainfo" />
+
+		<exec executable="cmd.exe" failonerror="true">
+            <arg line="/c wsl echo 'WSL is available'"/>
+        </exec>
+		
+		<exec executable="cmd.exe">
+		    <arg line="/c wsl rm -rf /tmp/AppDir"/>
+		</exec>
+		
+		<exec executable="cmd.exe">
+			<arg line="/c wsl cp -r &quot;$(wslpath -u '${appdir}')&quot; /tmp/AppDir"/>
+        </exec>
+		
+		<!--<exec executable="cmd.exe" failonerror="true">
+		    <arg line="/c wsl tree /tmp/AppDir"/>
+		</exec>-->
+		
+		<!-- Convert to Unix line endings -->
+		<exec executable="cmd.exe" failonerror="true">
+		    <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/com.diy_fever.DIYLayoutCreator.desktop&quot;"/>
+		</exec>
+		
+		<echo message="Starting AppImage build process using WSL..."/>
+
+		<exec executable="cmd.exe" failonerror="true">
+		    <arg line="/c ${wsl.command} &quot;cd /tmp &amp;&amp; ~/appimagetool /tmp/AppDir /tmp/${appimage.output.file}&quot;"/>
+		</exec>
+
+        <echo message="AppImage created successfully in WSL! Copying back to Windows..."/>
+        
+    	<exec executable="cmd.exe" failonerror="true">
+    	    <arg line="/c wsl bash -c &quot;cp /tmp/${appimage.output.file} $(wslpath -u 'build\\${appimage.output.file}')&quot;"/>
+    	</exec>
+
+        <echo message="AppImage build completed successfully! Output: ${appimage.output.file}"/>
+	</target>
+</project>

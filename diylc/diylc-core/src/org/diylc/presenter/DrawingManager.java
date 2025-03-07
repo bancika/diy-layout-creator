@@ -58,7 +58,7 @@ import org.diylc.core.ComponentForRender;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
@@ -166,6 +166,7 @@ public class DrawingManager {
    * @param componentSlot
    * @param dragInProgress
    * @param externalZoom
+   * @param scaleFactor 
    * @param visibleRect
    * @return
    */
@@ -174,7 +175,7 @@ public class DrawingManager {
       Collection<IDIYComponent<?>> selectedComponents, Set<IDIYComponent<?>> lockedComponents,
       Set<IDIYComponent<?>> groupedComponents, List<Point2D> controlPointSlot,
       List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom,
-      Rectangle2D visibleRect) {
+      Double scaleFactor, Rectangle2D visibleRect) {
     long totalStartTime = System.nanoTime();
     failedComponents.clear();
     if (project == null) {
@@ -223,6 +224,8 @@ public class DrawingManager {
       g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
           RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
     }
+    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+        RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
 
     // AffineTransform initialTx = g2d.getTransform();
     Dimension canvasDimension =
@@ -276,7 +279,7 @@ public class DrawingManager {
 
     // give the cache a chance to prepare all the components in multiple threads
     if (drawOptions.contains(DrawOption.ENABLE_CACHING)) {
-      DrawingCache.Instance.bulkPrepare(componentForRenderList, g2dWrapper, outlineMode, project, zoom);
+      DrawingCache.Instance.bulkPrepare(componentForRenderList, g2dWrapper, outlineMode, project, zoom, scaleFactor);
     }
 
     // componentAreaMap.clear();
@@ -310,7 +313,7 @@ public class DrawingManager {
 
           if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
             DrawingCache.Instance.draw(component, g2dWrapper, state,
-                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, i, visibleRect);
+                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect);
           else // go straight to the wrapper
             component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
 
@@ -717,8 +720,8 @@ public class DrawingManager {
       
       int layerId;
       
-      if (component instanceof ILayer) {
-        layerId = ((ILayer)component).getLayerId();
+      if (component instanceof ILayeredComponent) {
+        layerId = ((ILayeredComponent)component).getLayerId();
       } else {
         layerId = 0;
       }
@@ -726,7 +729,7 @@ public class DrawingManager {
       Collection<Area> positiveAreas = a.getContinuityPositiveAreas();
       if (positiveAreas != null) {
         for (Area a1 : positiveAreas) {
-          preliminaryAreas.add(new ContinuityArea(a.getZOrder(), layerId, a1));
+          preliminaryAreas.add(new ContinuityArea(layerId, a1));
           checkBreakout.add(false);
         }
       }
@@ -755,7 +758,7 @@ public class DrawingManager {
           areas.add(a);
         } else {
           areas.addAll(breakoutAreas.stream()
-              .map(area -> new ContinuityArea(a.getZIndex(), a.getLayerId(), area))
+              .map(area -> new ContinuityArea(a.getLayerId(), area))
               .collect(Collectors.toList())); 
         }        
       } else

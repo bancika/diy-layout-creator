@@ -20,30 +20,35 @@ package org.diylc.presenter;
 
 import java.awt.geom.Area;
 import java.io.Serializable;
+import org.diylc.netlist.AreaSimplifier;
 
 public class ContinuityArea implements Serializable {
 
+  private static final double FLATNESS = 5d;
+
   private static final long serialVersionUID = 1L;
 
-  private int zIndex;
   private int layerId;
   private Area area;
+  private Area simplifiedArea;
 
   public ContinuityArea() {}
 
-  public ContinuityArea(int zIndex, int layerId, Area area) {
+  public ContinuityArea(int layerId, Area area) {
     super();
-    this.zIndex = zIndex;
     this.layerId = layerId;
     this.area = area;
-  }
-  
-  public int getZIndex() {
-    return zIndex;
   }
 
   public Area getArea() {
     return area;
+  }
+  
+  public Area getSimplifiedArea() {
+    if (simplifiedArea == null) {
+      simplifiedArea = AreaSimplifier.simplifyArea(area, FLATNESS);
+    }
+    return simplifiedArea;
   }
 
   public int getLayerId() {

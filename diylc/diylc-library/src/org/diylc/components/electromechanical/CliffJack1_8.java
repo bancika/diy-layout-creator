@@ -46,6 +46,7 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -54,7 +55,7 @@ import org.diylc.utils.Constants;
     author = "Branislav Stojkovic", description = "Cliff-style closed 1/8\" phono jack",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false,
     transformer = CliffJackTransformer.class, enableCache = true)
-public class CliffJack1_8 extends AbstractMultiPartComponent<JackType> {
+public class CliffJack1_8 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

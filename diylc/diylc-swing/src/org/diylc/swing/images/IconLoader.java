@@ -68,7 +68,8 @@ public enum IconLoader {
       Unlock("lock_open.png"), Earth("earth.png"), Loadline("loadline.png"), LoadlineAdd("loadline_add.png"), SnapToGrid("snap_to_grid.png"),
       SnapToComponents("snap_to_components.png"), SnapToNone("snap_to_none.png"), TraceProximity("trace_proximity.png"),
       ComponentLarge("component_large.png"), ImportNetlist("import_netlist.png"), SplashIC("splash_ic.png"), 
-      ComponentPreferences("component_preferences.png"), ComponentReplace("component_replace.png"), Barcode("barcode.png");
+      ComponentPreferences("component_preferences.png"), ComponentReplace("component_replace.png"), Barcode("barcode.png"),
+      DocumentGerber("document_gerber.png"), DocumentX2("document_x2.png"), Export("export.png");
 
   protected String name;
 

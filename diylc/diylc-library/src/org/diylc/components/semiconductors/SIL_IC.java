@@ -49,6 +49,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -57,7 +58,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "IC", description = "Single-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = SIL_ICTransformer.class,
     enableCache = true)
-public class SIL_IC extends AbstractTransparentComponent<String> {
+public class SIL_IC extends AbstractTransparentComponent<String> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

@@ -34,9 +34,10 @@ import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.netlist.ISpiceMapper;
 
-public abstract class AbstractTransistorPackage extends AbstractLabeledComponent<String> implements ISpiceMapper {
+public abstract class AbstractTransistorPackage extends AbstractLabeledComponent<String> implements ISpiceMapper, IGerberComponentSimple {
   
   private static final long serialVersionUID = 1L;
   

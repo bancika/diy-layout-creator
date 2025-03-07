@@ -51,7 +51,7 @@ public class ReflectionUtils {
         classes = Utils.getClasses("org.diylc.components.autocreate");
         for (Class<?> clazz : classes) {
           if (IAutoCreator.class.isAssignableFrom(clazz)) {
-            autoCreators.add((IAutoCreator) clazz.newInstance());
+            autoCreators.add((IAutoCreator) clazz.getDeclaredConstructor().newInstance());
             LOG.debug("Loaded auto-creator: " + clazz.getName());
           }
         }
@@ -70,7 +70,7 @@ public class ReflectionUtils {
 
       for (Class<?> clazz : classes) {
         if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistParser.class.isAssignableFrom(clazz)) {
-          result.add((INetlistParser) clazz.newInstance());
+          result.add((INetlistParser) clazz.getDeclaredConstructor().newInstance());
         }
       }
 

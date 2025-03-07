@@ -170,7 +170,7 @@ public class BuildingBlockManager {
 
       @Override
       public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-        return new Integer(allComponents.indexOf(o1)).compareTo(allComponents.indexOf(o2));
+        return Integer.valueOf(allComponents.indexOf(o1)).compareTo(allComponents.indexOf(o2));
       }
     });
     blocks.put(blockName, blockComponents);

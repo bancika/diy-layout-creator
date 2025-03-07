@@ -1,6 +1,0 @@
-JAVA_VERSION="1.8.0_321"
-OS_NAME="Darwin"
-OS_VERSION="11.2"
-OS_ARCH="x86_64"
-SOURCE=" .:1308b9c331b9"
-BUILD_TYPE="commercial"

@@ -10,9 +10,13 @@ OutputDir=../build
 OutputBaseFilename=diylc
 ChangesAssociations=yes
 AlwaysShowDirOnReadyPage=yes
+; Only allow the installer to run on x64-compatible systems,
+; and enable 64-bit install mode.
+ArchitecturesAllowed={#arch}
+ArchitecturesInstallIn64BitMode={#arch}
 
 [Files]
-Source: "..\deploy\diylc.exe"; DestDir: "{app}"
+Source: "..\build\diylc.exe"; DestDir: "{app}"
 Source: "..\icons\diylc_file.ico"; DestDir: "{app}"
 Source: "..\build\jar\diylc.jar"; DestDir: "{app}"
 Source: "..\build\jar\lib\*"; DestDir: "{app}\lib"
@@ -20,7 +24,7 @@ Source: "..\build\jar\library\*"; DestDir: "{app}\library"
 Source: "..\themes\*"; DestDir: "{app}\themes"
 Source: "..\lang\*"; DestDir: "{app}\lang"
 Source: "..\fonts\*"; DestDir: "{app}\fonts"
-Source: "..\build\jre_win\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs
+Source: "..\build\jre_win\*"; DestDir: "{app}\jre17"; Flags: ignoreversion recursesubdirs
 Source: "innosetup\donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
 
 [Registry]
