@@ -34,22 +34,13 @@
 		<mkdir dir="${appdir}/usr/share/metainfo" />
 
 		<!-- Copy app files -->
-		<zipfileset dir="${jar.dir}" includes="diylc.jar" />
-		<zipfileset dir="${jar.dir}/lib" prefix="lib" />
-		<zipfileset dir="${jar.dir}/library/" prefix="library" />
-		<zipfileset dir="templates" prefix="templates" />
-		<zipfileset dir="themes" prefix="themes" />
-		<zipfileset dir="fonts" prefix="fonts" />
-		<zipfileset dir="lang" prefix="lang" />
-		<zipfileset dir="deploy" includes="splash.png" />
-
-		<copy file="${jar.dir}/diylc.jar" todir="${appdir}/usr/bin" />
-		<copy todir="${appdir}/usr/bin/lib">
+		<copy file="${jar.dir}/diylc.jar" todir="${appdir}/usr/lib" />
+		<copy todir="${appdir}/usr/lib/lib">
 			<fileset dir="${jar.dir}/lib">
 				<include name="*"/>
 			</fileset>
 		</copy>
-		<copy todir="${appdir}/usr/bin/library">
+		<copy todir="${appdir}/usr/lib/library">
 			<fileset dir="${jar.dir}/library">
 				<include name="*"/>
 			</fileset>
@@ -74,7 +65,8 @@
 				<include name="*"/>
 			</fileset>
 		</copy>
-		<copy file="appimage/diylc.sh" tofile="${appdir}/AppRun" />
+		<copy file="appimage/diylc.sh" tofile="${appdir}/usr/bin/diylc.sh" />
+		<copy file="appimage/AppRun" tofile="${appdir}/AppRun" />
 		<copy file="deploy/splash.png" todir="${appdir}/usr/bin" />
 		<chmod file="${appdir}/AppRun" perm="755" />
 
