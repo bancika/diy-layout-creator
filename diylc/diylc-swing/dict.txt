@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 #10 / 2.59mm
 #12 / 2.05mm
 #14 / 1.63mm
@@ -180,3 +181,192 @@ in
 mm
 px
 yd
+=======
+#10 / 2.59mm
+#12 / 2.05mm
+#14 / 1.63mm
+#16 / 1.29mm
+#18 / 1.02mm
+#20 / 0.81mm
+#22 / 0.64mm
+#24 / 0.51mm
+#26 / 0.40mm
+#28 / 0.32mm
+#30 / 0.25mm
+#32 / 0.20mm
+#34 / 0.16mm
+#36 / 0.13mm
+#8 / 3.26mm
+1 throws / 2 positions
+10 throws / 10 positions
+11 throws / 11 positions
+12 throws / 12 positions
+135 degrees clockwise
+1P12T
+2 throws / 2 positions
+2 throws / 3 positions / OFF even positions
+225 degrees clockwise
+2P5T
+2P6T
+3 throws / 3 positions
+3 throws / 5 positions / SHORT even positions
+315 degrees clockwise
+3P4T
+3PDT
+3PDT (On/Off/On)
+4 band
+4 throws / 4 positions
+45 degrees clockwise
+4P3T
+4P5T
+4P5T (Super/Mega)
+4P6T
+4PDT
+4PDT (On/Off/On)
+4PDT (On/On/On Type 1)
+4PDT (On/On/On Type 2)
+5 band
+5 throws / 5 positions
+5PDT
+5PDT (On/Off/On)
+6 throws / 6 positions
+7 throws / 7 positions
+8 throws / 8 positions
+9 throws / 9 positions
+A-O-I     REGULATOR
+AC
+ANSI
+AWG
+Alternate
+And
+Angle Offset
+B-C-E     BJT
+Background
+Box
+C-B-E     BJT
+Circle
+Coil(s)
+Component reordering is possible only when Project Explorer is sorted by z-index.
+Configuration
+Could not apply changes. Check the log for details.
+D-G-S     JFET
+D-G-S     MOSFET
+D-S-G     JFET
+D-S-G     MOSFET
+DC
+DFM A
+DFM B
+DIP
+DP3T
+DP3T (Import 5-Position Strat)
+DP4T (6-Position Oak Grigsby)
+DP5T
+DPDT
+DPDT (On/Off/On)
+DPDT (On/On)
+DPDT (On/On/On Type 1)
+DPDT (On/On/On Type 2)
+Designation
+Deutsch
+Dimension Mode
+Dots (Gradual)
+Dots (Uniform)
+Double Rails
+Double Rods
+Draw Standard
+Drop
+E+
+E-B-C     BJT
+Eight
+English
+Español
+Export
+Export to Gerber
+Filament Voltage
+Français
+G-D-S     JFET
+G-D-S     MOSFET
+G-I-O     REGULATOR
+G-O-I     REGULATOR
+G-S-D     JFET
+G-S-D     MOSFET
+Generate DIYLC Netlist (excl. Switches)
+Generate DIYLC Netlist (incl. Switches)
+Gray
+Hole Type
+Humbucking - 4 leads
+I-G-O     REGULATOR
+IEC
+Inner 1
+Inner 2
+Inner 3
+Inner 4
+Inner 5
+Inner 6
+Italiano
+Lin
+Log
+MPJA
+Markers
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s
+NPN
+Nand
+Nederlands
+Nine
+Non-Plated Through Hole
+Non-shorting
+Nor
+Not
+Numeric (0-10)
+Numeric (1-10)
+Numeric (1-11)
+Numeric (1-12)
+Numeric (Even, No Ticks)
+Numeric (Even, With Ticks)
+O-G-I     REGULATOR
+One
+Or
+PAF
+PCB
+PNP
+Pitch
+Plated Through Hole
+Poles
+Português
+RS
+Rectangle
+Rev log
+S-G-D     JFET
+S-G-D     MOSFET
+SMD
+SPDT
+SPDT (On/Off/On)
+SPDT (On/On)
+SPST
+Screw Position
+Shorting
+Show Project Explorer
+Single - North
+Single - South
+Six
+Sort by Name
+Sort by Type
+Sort by Z-index
+Source Style
+Source Type
+Srpski
+Stroke
+Ten
+Terminal
+Timing
+Tubular Beveled
+Virtual Multimeter
+Xnor
+Xor
+cm
+ft
+in
+mm
+px
+yd
+>>>>>>> Stashed changes

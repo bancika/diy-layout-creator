@@ -1,4 +1,8 @@
 #!/bin/bash
+#set -x  # Enable debug mode (prints each command before execution)
+
 HERE="$(dirname "$(readlink -f "$0")")"
+echo "AppRun: Running from directory: $HERE"
+echo "AppRun: Executing $HERE/usr/bin/diylc.sh with args: $@"
 
 exec "$HERE/usr/bin/diylc.sh" "$@"
