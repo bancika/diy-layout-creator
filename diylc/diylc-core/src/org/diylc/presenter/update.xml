@@ -4561,5 +4561,21 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>41</minor>
+				<build>1</build>
+			</versionNumber>
+			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Do not mirror bottom layers for Gerber export as fabrication service providers expect a top view for everything</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
