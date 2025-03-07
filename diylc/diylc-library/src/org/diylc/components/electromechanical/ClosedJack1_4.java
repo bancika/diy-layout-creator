@@ -51,6 +51,7 @@ import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -58,7 +59,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Enclosed panel mount 1/4\" phono jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false, transformer = ClosedJackTransformer.class, enableCache = true)
-public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> {
+public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

@@ -20,6 +20,8 @@ package org.diylc.components.connectivity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.util.EnumSet;
+import java.util.Set;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
@@ -28,20 +30,24 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ILayer;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.gerber.GerberLayer;
+import org.diylc.core.gerber.GerberRenderMode;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "Trace", description = "Curved copper trace with two control points",
     zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, 
     enableCache = true)
-public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer {
+public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayeredComponent, IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 
@@ -55,7 +61,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   protected Color getDefaultColor() {
     return COLOR;
   }
-
+  
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
     float thickness = (float) size.convertToPixels();
@@ -121,5 +127,25 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   @Override
   public String getControlPointNodeName(int index) {   
     return null;
+  }
+  
+  @Override
+  public Set<GerberRenderMode> getGerberRenderModes() {
+    return EnumSet.of(GerberRenderMode.Normal);
+  }
+  
+  @Override
+  public GerberLayer getGerberLayer() {
+    return this.getLayer().toGerberCopperLayer();
+  }
+
+  @Override
+  public String getGerberFunction() {
+    return GerberFunctions.CONDUCTOR;
+  }
+
+  @Override
+  public boolean isGerberNegative() {
+    return false;
   }
 }

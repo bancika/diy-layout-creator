@@ -25,6 +25,9 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
@@ -38,6 +41,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
+import com.google.common.collect.Streams;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> {
@@ -440,5 +444,72 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     curve.subdivide(left, right);
     return calculateLength(left.getP1(), left.getCtrlP1(), left.getCtrlP2(), left.getP2()) + 
         calculateLength(right.getP1(), right.getCtrlP1(), right.getCtrlP2(), right.getP2());
+  }
+  
+  protected List<CubicCurve2D> subdivide(double d) {
+    Point2D[] p = getControlPoints();
+    Path2D path = new Path2D.Double();
+    path.moveTo(p[0].getX(), p[0].getY());
+    if (getPointCount() == PointCount.TWO) {
+      List<CubicCurve2D> result = new ArrayList<CubicCurve2D>();
+      result.add(new CubicCurve2D.Double(p[0].getX(), p[0].getY(), 
+          (p[0].getX() + p[1].getX()) / 2,
+          (p[0].getY() + p[1].getY()) / 2,
+          (p[0].getX() + p[1].getX()) / 2,
+          (p[0].getY() + p[1].getY()) / 2,
+          p[1].getX(), p[1].getY()));
+      return result;
+    } else if (getPointCount() == PointCount.THREE) {
+      CubicCurve2D curve = new CubicCurve2D.Double(p[0].getX(), p[0].getY(), 
+          (p[0].getX() + 2 * p[1].getX()) / 3,
+          (p[0].getY() + 2 * p[1].getY()) / 3,
+          (p[2].getX() + 2 * p[1].getX()) / 3,
+          (p[2].getY() + 2 * p[1].getY()) / 3,
+          p[2].getX(), p[2].getY());
+      return subdivide(curve, d);      
+    } else if (getPointCount() == PointCount.FOUR) {
+      CubicCurve2D curve = new CubicCurve2D.Double(p[0].getX(), p[0].getY(),           
+          p[1].getX(), p[1].getY(),
+          p[2].getX(), p[2].getY(),
+          p[3].getX(), p[3].getY());
+      return subdivide(curve, d);      
+    } else if (getPointCount() == PointCount.FIVE) {
+      CubicCurve2D curve1 = new CubicCurve2D.Double(p[0].getX(), p[0].getY(), 
+          (p[0].getX() + 2 * p[1].getX()) / 3,
+          (p[0].getY() + 2 * p[1].getY()) / 3,
+          (p[2].getX() + 2 * p[1].getX()) / 3,
+          (p[2].getY() + 2 * p[1].getY()) / 3,
+          p[2].getX(), p[2].getY());
+      CubicCurve2D curve2 = new CubicCurve2D.Double(p[2].getX(), p[2].getY(), 
+          (p[2].getX() + 2 * p[3].getX()) / 3,
+          (p[2].getY() + 2 * p[3].getY()) / 3,
+          (p[4].getX() + 2 * p[3].getX()) / 3,
+          (p[4].getY() + 2 * p[3].getY()) / 3,
+          p[4].getX(), p[4].getY());
+      return Streams.concat(subdivide(curve1, d).stream(), subdivide(curve2, d).stream()).collect(Collectors.toList());     
+    } else if (getPointCount() == PointCount.SEVEN) {
+      CubicCurve2D curve1 = new CubicCurve2D.Double(p[0].getX(), p[0].getY(),           
+          p[1].getX(), p[1].getY(),
+          p[2].getX(), p[2].getY(),
+          p[3].getX(), p[3].getY());
+      CubicCurve2D curve2 = new CubicCurve2D.Double(p[3].getX(), p[3].getY(),           
+          p[4].getX(), p[4].getY(),
+          p[5].getX(), p[5].getY(),
+          p[6].getX(), p[6].getY());
+      return Streams.concat(subdivide(curve1, d).stream(), subdivide(curve2, d).stream()).collect(Collectors.toList());
+    }
+    return null;
+  }
+  
+  private List<CubicCurve2D> subdivide(CubicCurve2D curve, double d) {
+    if (curve.getFlatness() < d || new Point2D.Double(curve.getX1(), curve.getY1()).distance(curve.getX2(), curve.getY2()) < d) {
+      List<CubicCurve2D> result = new ArrayList<CubicCurve2D>();
+      result.add(curve);
+      return result;
+    }
+    CubicCurve2D left = new CubicCurve2D.Double();
+    CubicCurve2D right = new CubicCurve2D.Double();
+    curve.subdivide(left, right);
+    return Streams.concat(subdivide(left, d).stream(), subdivide(right, d).stream()).collect(Collectors.toList());
   }
 }

@@ -48,6 +48,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -56,7 +57,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "V", description = "Various types of tube/valve sockets",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
     transformer = AngledComponentTransformer.class)
-public class TubeSocket extends AbstractAngledComponent<String> {
+public class TubeSocket extends AbstractAngledComponent<String> implements IGerberComponentSimple {
 
   private static final Size B9A_PIN_SPACING_CHASSIS = new Size(12.5d, SizeUnit.mm);
   private static final Size B9A_PIN_SPACING_PCB = new Size(21d, SizeUnit.mm);

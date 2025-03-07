@@ -126,7 +126,7 @@ public class ComponentProcessor {
     icon = null;
     // Draw component icon.
     try {
-      IDIYComponent<?> componentInstance = (IDIYComponent<?>) clazz.newInstance();
+      IDIYComponent<?> componentInstance = (IDIYComponent<?>) clazz.getDeclaredConstructor().newInstance();
       Image image =
           new BufferedImage(Presenter.ICON_SIZE, Presenter.ICON_SIZE, java.awt.image.BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2d = (Graphics2D) image.getGraphics();
@@ -268,7 +268,7 @@ public class ComponentProcessor {
     }
     IPropertyValidator validator;
     try {
-      validator = clazz.newInstance();
+      validator = clazz.getDeclaredConstructor().newInstance();
     } catch (Exception e) {
       LOG.error("Could not instantiate validator for " + clazz.getName(), e);
       return null;
@@ -285,7 +285,7 @@ public class ComponentProcessor {
     }
     IComponentTransformer transformer;
     try {
-      transformer = clazz.newInstance();
+      transformer = clazz.getDeclaredConstructor().newInstance();
     } catch (Exception e) {
       LOG.error("Could not instantiate validator for " + clazz.getName(), e);
       return null;

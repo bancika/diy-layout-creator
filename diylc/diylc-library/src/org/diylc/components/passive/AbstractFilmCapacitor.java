@@ -27,12 +27,13 @@ import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.Theme;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capacitance> {
+public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capacitance> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

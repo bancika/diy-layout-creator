@@ -137,6 +137,9 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
    * @return true if none of the control points lie in the clip rectangle.
    */
   protected boolean checkPointsClipped(Shape clip) {
+    if (clip == null) {
+      return false;
+    }
     for (int i = 0; i < getControlPointCount(); i++) {
       if (clip.contains(getControlPoint(i))) {
         return false;
@@ -170,7 +173,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
     try {
       // Instantiate object of the same type
       Class<?> clazz = this.getClass();
-      AbstractComponent<T> newInstance = (AbstractComponent<T>) clazz.newInstance();      
+      AbstractComponent<T> newInstance = (AbstractComponent<T>) clazz.getDeclaredConstructor().newInstance();      
       while (AbstractComponent.class.isAssignableFrom(clazz)) {
         Field[] fields = clazz.getDeclaredFields();
         clazz = clazz.getSuperclass();

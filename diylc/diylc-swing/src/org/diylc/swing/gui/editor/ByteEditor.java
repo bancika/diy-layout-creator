@@ -80,7 +80,7 @@ public class ByteEditor extends JPanel {
         property.setChanged(true);
         setBackground(oldBg);
         slider.setBackground(oldBg);
-        property.setValue(new Integer(slider.getValue() / 100).byteValue());
+        property.setValue(Integer.valueOf(slider.getValue() / 100).byteValue());
         valueField.setText(Integer.toString((int) Math.round(percentFactor * (double) slider.getValue()
             / default100Percent)));
       }

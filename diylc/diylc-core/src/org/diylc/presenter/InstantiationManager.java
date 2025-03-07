@@ -280,7 +280,7 @@ public class InstantiationManager {
     // Instantiate the component.
     IDIYComponent<?> component;
     if (model == null) {
-      component = componentType.getInstanceClass().newInstance();
+      component = componentType.getInstanceClass().getDeclaredConstructor().newInstance();
     } else {
       Constructor<? extends IDIYComponent<?>> constructor = componentType.getInstanceClass().getConstructor(String[].class);
       component = constructor.newInstance((Object)model);

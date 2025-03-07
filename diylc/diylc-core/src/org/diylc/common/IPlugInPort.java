@@ -169,6 +169,14 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param isBackup
    */
   void saveProjectToFile(String fileName, boolean isBackup);
+  
+  /**
+   * Exports the current project into one or more files - one per layer and potentially drill layer.
+   * 
+   * @param fileNameBase
+   * @param g2d
+   */
+  void exportToGerber(String fileNameBase, Graphics2D g2d);
 
   /**
    * @return the current file name.
@@ -204,9 +212,10 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param drawOptions specific drawing options
    * @param filter
    * @param externalZoom
+   * @param scaleFactor
    * @param visibleRect
    */
-  void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFilter filter, Double externalZoom, Rectangle2D visibleRect);
+  void draw(Graphics2D g2d, Set<DrawOption> drawOptions, IComponentFilter filter, Double externalZoom, Double scaleFactor, Rectangle2D visibleRect);
 
   Double[] getAvailableZoomLevels();
 

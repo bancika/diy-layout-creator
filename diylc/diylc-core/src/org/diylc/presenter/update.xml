@@ -4431,7 +4431,7 @@
 				<minor>40</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-01-25 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-02-22 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -4487,6 +4487,10 @@
 					<description>Show Label text in 'Project Explorer' in addition to the name</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>MacOS version for x86 platform upgraded to java 17 and metal rendering engine</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed null pointer exceptions when trying to add components to the layout in some cases</description>
 				</org.diylc.appframework.update.Change>
@@ -4501,6 +4505,74 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Ctrl + Minus sign sometimes doesn't zoom out</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>41</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Export traces, pads (with holes), ground fill and PCB text to Gerber files</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to select PTH or NPTH holes for solder pads</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Optimized continuity calculations to be faster</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increased maximum available memory for DIYLC to 4GB</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded Java JRE to version 17 LTE</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added support for high DPI displays</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added windows x64 build</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Pasting a building block sometimes messes up the z-order of components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Pasting a building block sometimes switches selection to previously added components and canvas moves to the wrong position</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Highlight Continuity Areas' sometimes renders stale areas when clicked</description>
+				</org.diylc.appframework.update.Change>					
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>41</minor>
+				<build>1</build>
+			</versionNumber>
+			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Do not mirror bottom layers for Gerber export as fabrication service providers expect a top view for everything</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

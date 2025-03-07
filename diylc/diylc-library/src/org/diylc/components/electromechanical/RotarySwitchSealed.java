@@ -49,6 +49,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
@@ -57,7 +58,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "SW", description = "Sealed plastic rotary switch in several different switching configurations",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
     transformer = AngledComponentTransformer.class)
-public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSealedType> implements ISwitch {
+public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSealedType> implements ISwitch, IGerberComponentSimple {
 
   private static final int OUTER_ANGLE_OFFSET = 15;
   private static final int INNER_ANGLE_OFFSET = 30;
