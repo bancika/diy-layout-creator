@@ -2,6 +2,34 @@
 	<a class="org.diylc.appframework.update.Version-array">
 		<org.diylc.appframework.update.Version>
 			<versionNumber>
+				<major>5</major>
+				<minor>0</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Switched to AppImage distribution for Linux system, abandoning Flatpak as a means of distribution. DIYLC AppImage will be available alongside with other executables on the official DIYLC GitHub page.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded Windows installer version and Windows EXE launcher version</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed alignment issues of round elements (e.g. solder pads and holes) in exported Gerber files</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue with opening DIY files on Mac OS</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
 				<major>4</major>
 				<minor>38</minor>
 				<build>0</build>
@@ -212,29 +240,5 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
-				<minor>0</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>			
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Switched to AppImage distribution for Linux system, abandoning Flatpak as a means of distribution. DIYLC AppImage will be available alongside with other executables on the official DIYLC GitHub page.</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Upgraded Windows installer version and Windows EXE launcher version</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed alignment issues of round elements (e.g. solder pads and holes) in exported Gerber files</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
