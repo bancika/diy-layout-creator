@@ -14,7 +14,7 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="report.dir" value="${build.dir}/junitreport" />
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
-	<property name="diylc.version" value="4.41.1" />
+	<property name="diylc.version" value="5.0.0" />
 	
 	<property name="win.jre.x86.path" value="tools/jre/win/x86/jre17.0.14_7.zip" />
 	<property name="win.jre.x64.path" value="tools/jre/win/x64/jre17.0.14_7.zip" />
