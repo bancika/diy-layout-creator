@@ -223,11 +223,12 @@ public class GerberG2DWrapper extends Graphics2D
         if (Math.abs(c.getWidth() - c.getHeight()) < 0.1 && finalTx.getShearX() == 0
             && finalTx.getShearY() == 0
             && Math.abs(Math.abs(finalTx.getScaleX()) - Math.abs(finalTx.getScaleY())) < 0.0001) {
+          
           final double d = Math.abs(c.getWidth() * finalTx.getScaleX()) * SizeUnit.px.getFactor();
           Circle circle = new Circle(d, entry.getValue().function, entry.getValue().negative);
           dataLayer.addPad(circle, new Point(
               (c.getX() * finalTx.getScaleX() + finalTx.getTranslateX()) * SizeUnit.px.getFactor()
-                  - d / 2,
+                + (entry.getKey().isMirrored() ? -1 : 1) * d / 2,
               (c.getY() * finalTx.getScaleY() + finalTx.getTranslateY()) * SizeUnit.px.getFactor()
                   - d / 2));
         } else {

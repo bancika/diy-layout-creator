@@ -17,11 +17,11 @@
  */
 package org.diylc;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -41,8 +41,6 @@ import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.swingframework.fonts.FontOptimizer;
-import com.apple.eawt.AppEvent;
-import com.apple.eawt.Application;
 import com.thoughtworks.xstream.XStream;
 import ca.cgjennings.jvm.JarLoader;
 
@@ -204,16 +202,8 @@ public class DIYLCStarter {
 		if (Utils.isMac()) {
 			LOG.info("Setting up open file handler for Mac...");
 			SwingUtilities.invokeLater(() -> {
-				Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
-					List<File> files = ofe.getFiles();
-					if (files != null && files.size() > 0) {
-						String filePath = files.get(0).getAbsolutePath();
-						if (presenter.allowFileAction()) {
-							presenter.loadProjectFromFile(filePath);
-						}
-					}
-					LOG.info("Finished setting up open file handler for Mac.");
-				});
+			  // On macOS this function is called when a new file is opened.
+		      Desktop.getDesktop().setOpenFileHandler(new OpenDIYFilesHandler(presenter));
 			});
 		}
 

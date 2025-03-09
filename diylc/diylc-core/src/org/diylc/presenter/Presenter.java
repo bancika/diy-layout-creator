@@ -143,14 +143,10 @@ public class Presenter implements IPlugInPort, IConfigListener {
 				List<Version> allVersions = (List<Version>) xStream.fromXML(in);
 				CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
 				LOG.info("Current DIYLC version: " + CURRENT_VERSION);
-				RECENT_VERSIONS = allVersions.subList(allVersions.size() - 10, allVersions.size());
-				Collections.sort(RECENT_VERSIONS, new Comparator<Version>() {
-
-					@Override
-					public int compare(Version o1, Version o2) {
-						return -o1.getVersionNumber().compareTo(o2.getVersionNumber());
-					}
-				});
+				RECENT_VERSIONS = allVersions.stream()
+				    .sorted(Comparator.comparing(x -> ((Version)x).getVersionNumber()).reversed())
+				    .limit(10)
+				    .collect(Collectors.toList());
 				in.close();
 			}
 		} catch (Exception e) {
