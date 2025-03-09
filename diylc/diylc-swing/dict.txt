@@ -190,6 +190,7 @@ Default Font Size
 Delete Selection
 Description
 Designation
+Deutsch
 Diameter
 Dimension Mode
 Directional
@@ -221,9 +222,11 @@ Electro-Mechanical
 Electrode Labels
 Enable Cache Boost
 End Arrow
+English
 Enjoying DIYLC? Click here to buy me a coffee :)
 Error
 Error occurred while editing selection. Check the log for details.
+Español
 Exit
 Expand Selection
 Explicit Dimensions
@@ -253,6 +256,7 @@ Font Italic
 Font Size
 Font Size Override
 Four
+Français
 Full
 Fuse
 G-D-S     JFET
@@ -266,6 +270,7 @@ Generate DIYLC Netlist (incl. Switches)
 Generate Spice Netlist
 Gerber Export
 Gerber export completed successfully. The following files were created:%s
+Gray
 Grid
 Grid Spacing
 Group Selection
@@ -313,6 +318,7 @@ Input error for "%s": %s
 Inside Color
 Integration
 Invert Polarity
+Italiano
 Label
 Label Color
 Label Orientation
@@ -365,6 +371,7 @@ Moveable Label
 NPN
 Name
 Nand
+Nederlands
 Negative
 New
 New version available
@@ -427,6 +434,7 @@ Pole Pieces
 Pole Pieces 1
 Pole Pieces 2
 Poles
+Português
 Positions
 Positive
 Power Rating
@@ -521,6 +529,7 @@ Source Type
 Spacing
 Square
 Square BR-3
+Srpski
 Standard
 Start Arrow
 Start Recording
