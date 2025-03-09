@@ -223,7 +223,7 @@
 			<changes>			
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Switched to AppImage distribution for Linux system, abandoning Flatpak as a means of distribution. DIYLC AppImage will be available alongside with other executables on the official DIYLC GitHub page.</description>
+					<description>Switched to AppImage distribution for Linux system, abandoning Flatpak as a means of distribution. DIYLC AppImage will be available alongside with other executables on the official DIYLC GitHub page</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -237,6 +237,26 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed the issue with opening DIY files on Mac OS</description>
 				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>1</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-03-09 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Multimeter Probe' component added and 'Virtual Multimeter' functionality that uses it</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Cleaner text representation of switch configuration in analyzer windows - removed switches and positions that have no effect on the effective circuit</description>
+				</org.diylc.appframework.update.Change>				
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
