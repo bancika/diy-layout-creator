@@ -105,6 +105,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   private double zoom;
   private int zOrder;  
+  
+  private AffineTransform mirrorTransform;
 
   /**
    * Creates a wrapper around specified {@link Graphics2D} object.
@@ -218,8 +220,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void setContinuityMarker(String marker) {
     continuityMarker = marker;    
-  }    
-
+  }
+  
+  public void setMirrorTransform(AffineTransform mirrorTransform) {
+    this.mirrorTransform = mirrorTransform;
+  }
+  
   /**
    * Appends shape interior to the current component area.
    * 
@@ -344,22 +350,73 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void drawString(String str, int x, int y) {
-    canvasGraphics.drawString(str, x, y);
-    if (drawingComponent && trackingAllowed) {
-      FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
-      Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
-      Point2D point = new Point2D.Double(x, y);
-      // currentTx.transform(point, point);
-      Rectangle2D finalRec =
-          new Rectangle2D.Double(rect.getX() + point.getX(), rect.getY() + point.getY(), rect.getWidth(),
-              rect.getHeight());
-      appendShape(finalRec);
-    }
+    this.drawString(str, (float)x, (float)y);
   }
 
   @Override
   public void drawString(String str, float x, float y) {
-    canvasGraphics.drawString(str, x, y);
+    if (this.mirrorTransform == null) {
+      canvasGraphics.drawString(str, x, y);
+    } else {
+      drawStringUnmirrored(str, x, y);
+    }
+    handleDrawString(str, x, y);
+  }
+  
+  private void drawStringUnmirrored(String str, float x, float y) {
+    // Save the current transform (T), which includes the mirror.
+    AffineTransform originalTransform = new AffineTransform(getTransform());
+
+    // Compute the non-mirrored transform A by "canceling" the mirror:
+    // Since T = A × M and M is self-inverse, we have A = T × M.
+    AffineTransform nonMirroredTransform = new AffineTransform(originalTransform);
+    nonMirroredTransform.concatenate(mirrorTransform);
+
+    GlyphVector gv = getFont().createGlyphVector(this.getFontRenderContext(), str);
+    Rectangle2D visualBounds = gv.getVisualBounds();
+    // Use a temporary Graphics2D (with transform A) to obtain correct FontMetrics.
+    Graphics2D gTemp = (Graphics2D) canvasGraphics.create();
+    gTemp.setTransform(nonMirroredTransform);
+    FontMetrics fm = gTemp.getFontMetrics();
+    double textWidth  = fm.stringWidth(str);
+    // Use ascent + descent as the bounding box height.
+    double textHeight = visualBounds.getHeight();//fm.getAscent() + fm.getDescent();
+    double ascent     = fm.getAscent();
+    gTemp.dispose();
+
+    // 1. Compute the center of the text’s bounding box in the mirrored (T) space.
+    Point2D centerMirrored = new Point2D.Double(x + textWidth / 2.0,
+                                                y + textHeight / 2.0);
+
+    // 2. Convert that center to screen coordinates using the original transform T.
+    Point2D centerScreen = originalTransform.transform(centerMirrored, null);
+
+    // 3. Map the screen coordinate into the non-mirrored coordinate system (A).
+    Point2D centerNonMirrored;
+    try {
+        centerNonMirrored = nonMirroredTransform.createInverse().transform(centerScreen, null);
+    } catch (NoninvertibleTransformException e) {
+        e.printStackTrace();
+        centerNonMirrored = centerMirrored; // Fallback if inversion fails.
+    }
+
+    // 4. Compute the new top-left in A so that the bounding box (width x height)
+    //     remains centered at centerNonMirrored.
+    double newTopLeftX = centerNonMirrored.getX() - textWidth / 2.0;
+    double newTopLeftY = centerNonMirrored.getY() - textHeight / 2.0;
+    // Adjust for the baseline (drawString uses the baseline for y)
+    float drawX = (float) newTopLeftX;
+    float drawY = (float) (newTopLeftY + ascent);
+
+    // 5. Set the transform to the non-mirrored transform (A) so that mirror is canceled.
+    canvasGraphics.setTransform(nonMirroredTransform);
+    canvasGraphics.drawString(str, drawX, drawY);
+
+    // 6. Restore the original transform.
+    setTransform(originalTransform);
+  }
+
+  private void handleDrawString(String str, float x, float y) {
     if (drawingComponent && trackingAllowed) {
       FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
       Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);

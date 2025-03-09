@@ -174,7 +174,6 @@ public class GerberG2DWrapper extends Graphics2D
     if (str == null || str.trim().isEmpty()) {
       return;
     }
-
     
     GlyphVector gv = font.createGlyphVector(graphics2d.getFontRenderContext(), str);
     

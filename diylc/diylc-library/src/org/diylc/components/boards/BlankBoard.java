@@ -37,12 +37,11 @@ import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.gerber.IGerberBoard;
 
 @ComponentDescriptor(name = "Blank Board", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Blank circuit board",
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, transformer = SimpleComponentTransformer.class)
-public class BlankBoard extends AbstractBoard implements IGerberBoard {
+public class BlankBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -132,6 +131,11 @@ public class BlankBoard extends AbstractBoard implements IGerberBoard {
   public String getControlPointNodeName(int index) {
     return null;
   }
+  
+  @Override
+  public boolean shouldExportToGerber() {
+    return true;
+  }
 
   static enum Type {
     ROUND, SQUARE;
@@ -140,13 +144,5 @@ public class BlankBoard extends AbstractBoard implements IGerberBoard {
     public String toString() {
       return name().substring(0, 1) + name().substring(1).toLowerCase();
     }
-  }
-
-  @Override
-  public Rectangle2D getBoardRectangle() {
-    Point2D finalSecondPoint = getFinalSecondPoint();
-    
-    return new Rectangle2D.Double(firstPoint.getX(), firstPoint.getY(), 
-        finalSecondPoint.getX() - firstPoint.getX(), finalSecondPoint.getY() - firstPoint.getY());    
   }
 }

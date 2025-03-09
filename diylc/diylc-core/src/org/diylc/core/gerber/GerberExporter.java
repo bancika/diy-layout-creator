@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoard;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
@@ -29,12 +30,15 @@ public class GerberExporter {
 
   public static void exportGerber(String fileNameBase, Project currentProject, IView view,
       Graphics2D graphics2d, String diylcVersion) {
-    List<IGerberBoard> gerberBoards =
-        currentProject.getComponents().stream().filter(c -> c instanceof IGerberBoard)
-            .map(x -> (IGerberBoard) x).collect(Collectors.toList());
+    
+    List<IBoard> gerberBoards =
+        currentProject.getComponents().stream()
+        .filter(IBoard.class::isInstance)
+        .map(IBoard.class::cast)
+        .filter(IBoard::shouldExportToGerber).collect(Collectors.toList());
 
-    Map<IGerberBoard, List<IDIYComponent<?>>> boardComponentMap =
-        new HashMap<IGerberBoard, List<IDIYComponent<?>>>();
+    Map<IBoard, List<IDIYComponent<?>>> boardComponentMap =
+        new HashMap<IBoard, List<IDIYComponent<?>>>();
 
     // DefaultGerberBoard defaultGerberBoard = new DefaultGerberBoard();
 
@@ -43,7 +47,7 @@ public class GerberExporter {
     currentProject.getComponents().stream().filter(c -> c instanceof IGerberComponent)
         .forEach(c -> {
           Point2D firstPoint = c.getControlPoint(0);
-          IGerberBoard board = gerberBoards.stream()
+          IBoard board = gerberBoards.stream()
               .filter(b -> b.getBoardRectangle().contains(firstPoint)).findFirst().orElse(null);
           if (board == null) {
             componentsWithoutBoard.add(c);

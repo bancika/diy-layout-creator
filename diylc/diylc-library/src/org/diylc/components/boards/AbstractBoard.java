@@ -34,7 +34,9 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.core.BoardUndersideDisplay;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoard;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
@@ -42,7 +44,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-public abstract class AbstractBoard extends AbstractTransparentComponent<String> {
+public abstract class AbstractBoard extends AbstractTransparentComponent<String> implements IBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -72,6 +74,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Size length;
   protected Size width;
   protected BoardSizingMode mode = BoardSizingMode.TwoPoints;
+  
+  protected BoardUndersideDisplay boardUndersideDisplay = BoardUndersideDisplay.NONE;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -361,6 +365,32 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   public void setMode(BoardSizingMode mode) {
     this.mode = mode;
+  }
+  
+  @EditableProperty(name = "Underside Display")
+  @Override  
+  public BoardUndersideDisplay getBoardUndersideDisplay() {
+    if (this.boardUndersideDisplay == null) {
+      this.boardUndersideDisplay = BoardUndersideDisplay.NONE;
+    }
+    return this.boardUndersideDisplay;
+  }
+  
+  public void setBoardUndersideDisplay(BoardUndersideDisplay boardUndersideDisplay) {
+    this.boardUndersideDisplay = boardUndersideDisplay;
+  }
+  
+  @Override
+  public Rectangle2D getBoardRectangle() {
+    Point2D finalSecondPoint = getFinalSecondPoint();
+    
+    return new Rectangle2D.Double(firstPoint.getX(), firstPoint.getY(), 
+        finalSecondPoint.getX() - firstPoint.getX(), finalSecondPoint.getY() - firstPoint.getY());    
+  }
+  
+  @Override
+  public boolean shouldExportToGerber() {
+    return false;
   }
   
   @Override
