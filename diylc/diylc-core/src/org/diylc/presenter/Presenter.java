@@ -1619,8 +1619,13 @@ public class Presenter implements IPlugInPort, IConfigListener {
     }
     // There is selection, so we need to finalize the drag&drop
     // operation.
-    dragInProgress = false;
+    if (!preDragProject.equals(currentProject)) {
+      messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, currentProject, "Drag");
+      drawingManager.clearContinuityArea();
+      projectFileManager.notifyFileChange();
+    }
     messageDispatcher.dispatchMessage(EventType.REPAINT);
+    dragInProgress = false;
   }
 
   @Override

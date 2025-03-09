@@ -2,3 +2,4 @@
 *.iml
 *.eml
 /.project
+**/.DS_Store
