@@ -70,8 +70,6 @@ And
 Angle
 Angle Offset
 Anti-Aliasing
-Apply Model
-Apply Variant
 Arrow Size
 Author
 Auto-Create Pads
@@ -190,7 +188,6 @@ Default Font Size
 Delete Selection
 Description
 Designation
-Deutsch
 Diameter
 Dimension Mode
 Directional
@@ -222,11 +219,9 @@ Electro-Mechanical
 Electrode Labels
 Enable Cache Boost
 End Arrow
-English
 Enjoying DIYLC? Click here to buy me a coffee :)
 Error
 Error occurred while editing selection. Check the log for details.
-Español
 Exit
 Expand Selection
 Explicit Dimensions
@@ -239,7 +234,6 @@ Export Variants
 Export to Gerber
 Export to PDF
 Export to PNG
-Exporting outline for board %s to file %s
 Extra Working Area
 Eyelet color
 FAQ
@@ -256,7 +250,6 @@ Font Italic
 Font Size
 Font Size Override
 Four
-Français
 Full
 Fuse
 G-D-S     JFET
@@ -268,9 +261,6 @@ G-S-D     MOSFET
 Generate DIYLC Netlist (excl. Switches)
 Generate DIYLC Netlist (incl. Switches)
 Generate Spice Netlist
-Gerber Export
-Gerber export completed successfully. The following files were created:%s
-Gray
 Grid
 Grid Spacing
 Group Selection
@@ -296,7 +286,6 @@ Horizontal X-Small
 Humbucking - 4 leads
 I-G-O     REGULATOR
 IEC
-If this box is checked application will use the current value as a<br>default when creating new components of the same type
 Image
 Immediate Only
 Import
@@ -314,11 +303,9 @@ Inner 3
 Inner 4
 Inner 5
 Inner 6
-Input error for "%s": %s
 Inside Color
 Integration
 Invert Polarity
-Italiano
 Label
 Label Color
 Label Orientation
@@ -371,7 +358,6 @@ Moveable Label
 NPN
 Name
 Nand
-Nederlands
 Negative
 New
 New version available
@@ -434,7 +420,6 @@ Pole Pieces
 Pole Pieces 1
 Pole Pieces 2
 Poles
-Português
 Positions
 Positive
 Power Rating
@@ -485,7 +470,6 @@ Screws
 Search The Cloud
 Searchable Tree
 Secondary CT
-Select
 Select All
 Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?
 Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?
@@ -529,7 +513,6 @@ Source Type
 Spacing
 Square
 Square BR-3
-Srpski
 Standard
 Start Arrow
 Start Recording
@@ -562,7 +545,6 @@ Terminals
 Test
 Text
 Text Color
-There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?
 There are unsaved changes. Would you like to save them?
 Thickness
 Three
@@ -581,7 +563,6 @@ Top-to-Bottom
 Trace
 Trace Color
 Trace Mask
-Trace1
 Transform Selection
 Triangle
 Tubes
@@ -595,7 +576,6 @@ Underside Trace Color
 Undo
 Ungroup Selection
 Unit
-Unlock
 Upload A Project
 User Manual
 Value
