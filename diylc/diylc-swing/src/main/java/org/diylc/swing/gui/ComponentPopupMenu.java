@@ -63,7 +63,7 @@ import org.diylc.swing.actions.edit.SaveAsBlockAction;
 import org.diylc.swing.actions.edit.SaveAsTemplateAction;
 import org.diylc.swing.actions.edit.SendToBackAction;
 import org.diylc.swing.actions.edit.UngroupAction;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
 
 public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {

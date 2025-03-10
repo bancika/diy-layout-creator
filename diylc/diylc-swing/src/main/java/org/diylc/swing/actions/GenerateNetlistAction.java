@@ -14,7 +14,7 @@ import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class GenerateNetlistAction extends AbstractAction {
 

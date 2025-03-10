@@ -12,7 +12,7 @@ import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.IPlugInPort;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ActionFactory;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class PasteAction extends AbstractAction {
 

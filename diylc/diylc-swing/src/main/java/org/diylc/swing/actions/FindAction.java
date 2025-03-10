@@ -9,7 +9,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.edit.FindDialog;
 
 public class FindAction extends AbstractAction {

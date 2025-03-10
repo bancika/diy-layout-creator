@@ -13,7 +13,7 @@ import org.diylc.common.ITask;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Summary;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class SummarizeNetlistAction extends AbstractAction {
 

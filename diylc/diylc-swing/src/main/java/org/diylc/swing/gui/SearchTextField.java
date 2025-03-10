@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class SearchTextField extends JTextField {
 

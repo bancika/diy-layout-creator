@@ -44,7 +44,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
 import org.diylc.swing.plugins.cloud.view.LoginDialog;
 import org.diylc.swing.plugins.cloud.view.UploadDialog;

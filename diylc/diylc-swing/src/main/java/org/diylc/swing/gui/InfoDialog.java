@@ -28,7 +28,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.swingframework.ButtonDialog;
 
 import org.diylc.common.IPlugInPort;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class InfoDialog extends ButtonDialog {
 

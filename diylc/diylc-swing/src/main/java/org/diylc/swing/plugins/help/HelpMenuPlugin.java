@@ -43,7 +43,7 @@ import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 /**
  * Entry point class for help-related utilities.

@@ -13,7 +13,7 @@ import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.common.ITask;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class PrintAction extends AbstractAction {
 

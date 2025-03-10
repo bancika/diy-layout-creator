@@ -36,7 +36,7 @@ import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class UploadManagerFrame extends JFrame implements ISimpleView {
 

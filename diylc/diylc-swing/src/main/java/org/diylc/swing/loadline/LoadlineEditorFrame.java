@@ -65,7 +65,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.TranslatedPanel;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.canvas.CanvasPanel;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 

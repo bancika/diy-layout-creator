@@ -59,7 +59,7 @@ import org.diylc.swing.actions.edit.SaveAsBlockAction;
 import org.diylc.swing.actions.edit.SaveAsTemplateAction;
 import org.diylc.swing.actions.edit.SendToBackAction;
 import org.diylc.swing.actions.edit.UngroupAction;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 

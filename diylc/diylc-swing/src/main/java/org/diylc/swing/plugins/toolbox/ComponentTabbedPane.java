@@ -56,7 +56,7 @@ import org.diylc.lang.LangUtil;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.tree.TreePanel;
 import org.diylc.swing.plugins.tree.TreePanel.DeleteBlockAction;
 import org.diylc.swing.plugins.tree.TreePanel.SelectAllAction;

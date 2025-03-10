@@ -19,7 +19,9 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.flags;
+package org.diylc.utils;
+
+import org.apache.log4j.Logger;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -32,11 +34,11 @@ import javax.swing.ImageIcon;
 public class FlagLoader {
 
   public static Icon getIcon(String name) {
-    java.net.URL imgURL = FlagLoader.class.getResource("flag_" + name + ".png");
+    java.net.URL imgURL = FlagLoader.class.getResource("/flags/flag_" + name + ".png");
     if (imgURL != null) {
       return new ImageIcon(imgURL, name);
     } else {
-      System.err.println("Couldn't find file: " + name);
+      Logger.getLogger(FlagLoader.class).error("Couldn't find file: " + name);
       return null;
     }
   }

@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 /**
  * JPanel that shows cloud animation while visible.

@@ -72,7 +72,7 @@ import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class StatusBar extends JPanel implements IPlugIn {
 

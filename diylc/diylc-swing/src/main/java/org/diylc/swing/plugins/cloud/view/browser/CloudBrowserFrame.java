@@ -49,7 +49,7 @@ import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.SearchSession;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.utils.Pair;
 
 /**

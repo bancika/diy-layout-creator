@@ -68,7 +68,7 @@ import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.DummyView;
 import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.cloud.ThumbnailGenerator;
 import org.diylc.swing.plugins.cloud.view.CommentDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;

@@ -70,7 +70,7 @@ import org.diylc.core.Template;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.SearchTextField;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
 
 public class TreePanel extends JPanel {

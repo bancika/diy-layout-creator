@@ -41,7 +41,7 @@ import org.diylc.lang.LangUtil;
 import org.diylc.lang.Language;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.utils.ResourceLoader;
 
 /**

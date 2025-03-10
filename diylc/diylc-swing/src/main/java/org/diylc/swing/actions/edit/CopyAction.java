@@ -11,7 +11,7 @@ import javax.swing.KeyStroke;
 import org.diylc.clipboard.ComponentTransferableFactory;
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.ActionFactory;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class CopyAction extends AbstractAction {
 

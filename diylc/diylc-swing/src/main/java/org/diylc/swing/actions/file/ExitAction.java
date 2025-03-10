@@ -5,7 +5,7 @@ import javax.swing.AbstractAction;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.ActionFactory;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class ExitAction extends AbstractAction {
 

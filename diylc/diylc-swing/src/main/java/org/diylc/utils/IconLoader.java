@@ -19,10 +19,9 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.swing.images;
+package org.diylc.utils;
 
 import org.apache.log4j.Logger;
-import org.diylc.components.misc.SVGImage;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

@@ -8,7 +8,7 @@ import javax.swing.AbstractAction;
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.utils.BomEntry;
 

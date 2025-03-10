@@ -15,7 +15,7 @@ import org.diylc.core.Project;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 public class NewAction extends AbstractAction {
 

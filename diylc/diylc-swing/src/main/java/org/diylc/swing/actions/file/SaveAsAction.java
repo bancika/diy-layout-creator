@@ -13,7 +13,7 @@ import org.diylc.common.ITask;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 
 public class SaveAsAction extends AbstractAction {

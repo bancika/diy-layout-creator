@@ -58,7 +58,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
-import org.diylc.swing.images.IconLoader;
+import org.diylc.utils.IconLoader;
 
 /**
  * Factory that creates {@link JButton}s which display component type icons and instantiates the
