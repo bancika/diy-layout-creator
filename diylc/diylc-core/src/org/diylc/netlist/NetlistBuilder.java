@@ -22,6 +22,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.core.ICommonNode;
@@ -42,6 +44,7 @@ import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.Connection;
 import org.diylc.presenter.ContinuityArea;
 import org.diylc.utils.RTree;
+
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
 import com.google.common.graph.ImmutableGraph.Builder;
@@ -188,10 +191,29 @@ public class NetlistBuilder {
     // sort everything alphabetically
     List<Netlist> netlists = new ArrayList<Netlist>(result.keySet());
     Collections.sort(netlists);
+    netlists.forEach(netlist -> cleanupRedundantSwitches(netlist.getSwitchSetup()));
 
     return netlists;
   }
-
+  
+  public static void cleanupRedundantSwitches(List<SwitchSetup> switchSetups) {
+    Map<ISwitch, Set<Integer>> positionCountMap = new HashMap<>();
+    switchSetups.forEach(s -> s.getPositions().forEach(pos -> {
+      positionCountMap.computeIfAbsent(pos.getSwitch(), k -> new HashSet<Integer>()).add(pos.getPosition());
+    }));
+    // find switches that are here in all the positions, meaning that they don't affect the circuit
+    Set<ISwitch> switchesToPrune = positionCountMap.entrySet().stream()
+      .filter(e -> e.getKey().getPositionCount() == e.getValue().size())
+      .map(x -> x.getKey())
+      .collect(Collectors.toSet());
+    switchSetups.forEach(s -> s.getPositions().removeIf(x -> switchesToPrune.contains(x.getSwitch())));
+    switchSetups.removeIf(x -> x.getPositions().isEmpty());
+    HashSet<SwitchSetup> uniqueSetups = new HashSet<>(switchSetups);
+    switchSetups.clear();
+    switchSetups.addAll(uniqueSetups);
+    switchSetups.sort(Comparator.comparing(x -> x.toString()));
+  }
+  
   public static Netlist buildNetlist(List<IDIYComponent<?>> components, Collection<Node> nodes,
       Collection<ContinuityArea> continuityAreas, Collection<Connection> connections) {
     ImmutableGraph<ProjectGraphNode> graph = buildGraph(nodes, continuityAreas, connections);
