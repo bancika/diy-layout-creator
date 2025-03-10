@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.diy_fever.DIYLayoutCreator</id>
+  <launchable type="desktop-id">com.diy_fever.DIYLayoutCreator.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <developer_name>Branislav Stojkovic (bancika)</developer_name>
+  <name>DIY Layout Creator</name>
+  <summary>Circuit layout design tool supporting PCB, vero-board, point-to-point, perf-board and guitar wiring diagrams</summary>
+  <description>
+    <p>
+      DIY Layout Creator (DIYLC in short) is a powerful, but simple to use and intuitive tool for visualizing electronic circuit schematic and layout diagrams. It provides a simple WYSIWYG interface and supports designing PCB, vero-board, point-to-point, perf-board and guitar wiring diagrams as well as circuit schematics quickly and without the steep learning curve.
+    </p>
+    <p>
+      In addition to drawing, the projects can be shared with other users through the integrated 'Cloud' feature. Guitar wiring diagrams can be analyzed and debugged.
+    </p>
+    <p>
+      DIYLC is geared towards DIY hobby enthusiasts and is developed by an enthusiast with the help of the large community of DIY builders.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+    <image type="source">http://diy-fever.com/wordpress/wp-content/gallery/diylc/diylc_3_36_rangemaster.png</image>
+    <caption>First look</caption>
+    </screenshot>
+    <screenshot>
+    <image type="source">https://scfxguide.files.wordpress.com/2016/01/diylc1-e1453557339678.png</image>
+    <caption>Second look</caption>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/bancika/diy-layout-creator</url>
+  <url type="bugtracker">https://github.com/bancika/diy-layout-creator/issues</url>
+  <url type="donation">http://diy-fever.com/donate</url>
+  <url type="help">https://github.com/bancika/diy-layout-creator/tree/wiki</url>
+  <url type="faq">https://github.com/bancika/diy-layout-creator/blob/wiki/FAQ.md</url>
+  <!--<url type="contact">mailto:bancika_AT_gmail.com</url>-->
+  <update_contact>nbenitezl_AT_gmail.com</update_contact>
+  <content_rating type="oars-1.1"/>
+  <releases>
+  	<release version="4.40.0" date="2025-02-20">
+         <description>
+           <ul>
+             <li>[New Feature] Freeway 3x3-03 Toggle switch added</li>
+             <li>[New Feature] Guitar wiring analyzer can now detect treble bleed circuit on volume controls</li>
+             <li>[New Feature] Added headless mode for direct render to file without the GUI - use 'inputFile --export (--force) outputFile' syntax</li>
+             <li>[New Feature] Added two types of 4PDT On/On/On Switches, e.g. DiMarzio EP1111 (thank you Lukasz Tekieli)</li>
+             <li>[New Feature] Ability to set explicit dimensions of basic shapes - rectangles and ellipses</li>
+             <li>[New Feature] Ability to change pitch and appearance of PCB Terminal Block component</li>
+             <li>[Improvement] Better rendering of the effective circuit graph in the guitar wiring analyzer, showing series and parallel connections in a more intuitive way</li>
+             <li>[Improvement] Increased max undo stack size to 128 versions</li>
+             <li>[Improvement] Added 1-pole DIP switch option</li>
+             <li>[Improvement] Allow guitar wiring analyzer when some of the switching configuration do not produce output</li>
+             <li>[Improvement] 'Save As' displays the current file name by default</li>
+             <li>[Improvement] 'Proto Board 780 Holes' now aligns with the grid</li>
+             <li>[Improvement] Show Label text in 'Project Explorer' in addition to the name</li>
+             <li>[Bug Fix] Fixed null pointer exceptions when trying to add components to the layout in some cases</li>
+             <li>[Bug Fix] Loading files that contain lines with end arrows sometimes produces errors in the log and lines not to be loaded</li>
+             <li>[Bug Fix] Mouse click to select intermittently doesn't register on Mac machines</li>
+             <li>[Bug Fix] Ctrl + Minus sign sometimes doesn't zoom out</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.40.0</url>
+     </release>
+  	<release version="4.39.0" date="2025-01-25">
+         <description>
+           <ul>
+             <li>[Improvement] Upgraded JRE version of Mac builds to Temurin 17 and switched OpenGL to Metal rendering engine for improved performance</li>
+             <li>[Bug Fix] Choosing "Print" option from the menu starts printing immediately before choosing printing preferences</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.39.0</url>
+     </release>
+  	<release version="4.38.0" date="2024-12-23">
+         <description>
+           <ul>
+             <li>[New Feature] Buzzer component and symbol added (thanks M0JXD)</li>
+             <li>[New Feature] Resistor symbol now has two draw standards - ANSI and IEC (thanks M0JXD)</li>
+             <li>[Improvement] Fixed run.sh application starter for Linux and Apple OSX with M1/M2 processors when using Java 17 or newer</li>
+             <li>[Improvement] When editing Label components, default focus to the text editor</li>
+             <li>[Bug Fix] Unable to move selected components if one of them is close to being reduced to a point</li>
+             <li>[Bug Fix] Toroidal Inductor hangs the application if it doesn't have inductance value set</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.38.0</url>
+	</release>
+  	<release version="4.37.0" date="2023-04-27">
+         <description>
+           <ul>
+             <li>[New Feature] 'Proto Board 780 Holes' added with two variations (sponsored by Pete Olivier)</li>
+             <li>[Improvement] Ability to rotate (almost) all components using keyboard shortcuts and 'Transform Selection' menu</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.37.0</url>
+     </release>
+  	<release version="4.36.0" date="2023-03-30">
+         <description>
+           <ul>
+             <li>[New Feature] Title Block added as one of factory building blocks (was missing in 4.35 by mistake)</li>
+             <li>[New Feature] Configurable max switch combination count for circuit analysis (using org.diylc.maxSwitchCombinations argument)</li>
+             <li>[Improvement] Added resilience to the code that saves the configuration file to avoid it getting corrupted</li>
+             <li>[Improvement] When backing up the configuration file, append the current timestamp at the end instead of a '~'</li>
+             <li>[Improvement] Improve the format of timestamp in file backups</li>
+             <li>[Bug Fix] General application slowness when Inductor component is added to the drawing</li>
+             <li>[Bug Fix] Lever switch orientation not loaded correctly from files created prior to version 4.35</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.36.0</url>
+     </release>
+  	<release version="4.35.0" date="2022-12-23">
+         <description>
+           <ul>
+             <li>[New Feature] Added '1/8" Cliff Jack' component - stereo and mono</li>
+             <li>[New Feature] Added 'Solder Lug' component</li>
+             <li>[New Feature] Added 'PCB Terminal Block' component</li>
+             <li>[New Feature] Show component values in the project explorer</li>
+             <li>[New Feature] Double click in the project explorer to edit selected component</li>
+             <li>[New Feature] Title Block added as one of factory building blocks</li>
+             <li>[New Feature] 'Renumber On Paste' feature now applies to variants as well. When set to OFF, the app honors the name saved in the variant</li>
+             <li>[New Feature] New file icons for Mac OS</li>
+             <li>[Improvement] Ability to use up/down arrow keys in the project explorer to select components</li>
+             <li>[Improvement] Use scroll buttons in 'Tabbed Toolbar' instead of arranging tabs into multiple lines when the screen is not large enough to show them all</li>
+             <li>[Improvement] Escape comma in BOM CSV files to avoid component names being split into separate columns</li>
+             <li>[Improvement] Show jack type in the BOM and project explorer</li>
+             <li>[Improvement] Show wire gauge in the BOM and project explorer</li>
+             <li>[Improvement] Improved find tool usability, make the screen pan to the selected components</li>
+             <li>[Bug Fix] Trace cut doesn't affect continuity of vero board traces</li>
+             <li>[Bug Fix] DIL IC pin labels incorrect in the netlist</li>
+             <li>[Bug Fix] Diode symbol doesn't appear in the BOM</li>
+             <li>[Bug Fix] Upon starting or opening a project, the ruler is slightly miss-aligned with the project boundaries</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.35.0</url>
+     </release>
+  	<release version="4.34.0" date="2022-12-09">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Project Explorer' pane in the right-hand side for quick access to components</li>
+             <li>[New Feature] Keyboard shortcuts for toggling layer visibility using Ctrl + 1 through Ctrl + 6</li>
+             <li>[Improvement] Circuit analysis algorithm that supports netlist extraction, 'Highlight connected Areas' and 'Guitar Wiring Analyzer' features improved to take PCB trace layer and component z-order into account for better accuracy</li>
+             <li>[Improvement] Potentiometer bodies are no longer considered as conductive surfaces to avoid unwanted shorts</li>
+             <li>[Improvement] Optimized memory usage when having many Hookup Wire components</li>
+             <li>[Improvement] Improved conductivity tracking of Terminal Strip</li>
+             <li>[Bug Fix] Do not apply any user-default property values when creating a standard datasheet model (e.g. a capacitor)</li>
+             <li>[Bug Fix] Variants of boards having explicit sizing mode fail when trying to add to a project</li>
+             <li>[Bug Fix] Font settings (e.g. bold) sometimes bleed into wrong component</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.34.0</url>
+     </release>
+  	<release version="4.33.0" date="2022-11-16">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed an issue that would cause capacitors to fail when creating, editing, moving or deleting</li>
+             <li>[New Feature] Added standard models in the drop down menu of the component toolbar</li>
+             <li>[New Feature] Radial Electrolytic Capacitor - added standard models from Nichicon FW datasheet</li>
+             <li>[New Feature] Radial Film Capacitor - added standard models from Epcos MKT datasheet</li>
+             <li>[New Feature] Radial Film Capacitor - added ability to select package shape - drop or box style</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.33.0</url>
+     </release>
+  	<release version="4.32.0" date="2022-11-11">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Radial Mica Capacitor' component</li>
+             <li>[New Feature] Introduced support for standard models of components, defined in the product datasheet. Right click menu in the toolbox now contains additional options for creating components with exact values and dimension as specified in the datasheet. Right click on the existing components now has 'Apply Model' option which can apply properties of a standard component model from the datasheet to selected component(s)</li>
+             <li>[New Feature] Axial Film Capacitor - added standard models from Mallory 150 and Solen Fast datasheet</li>
+             <li>[New Feature] Radial Film Capacitor - added standard models from Orange Drop 225P, 715P and 716P, WIMA FKP-02, FKP-2, FKS-2, MKP-2, MKP-4, MKS-02, MKS-2 datasheet</li>
+             <li>[New Feature] Axial Electrolytic Capacitor - added standard models from F&amp;T A Typ, Illinois TTA, JJ ANH and Sprague TVA Atom datasheet</li>
+             <li>[New Feature] Radial Electrolytic Capacitor - added standard models from Elna Silmic II, Nichicon FG, KZ, Panasonic FC, FM and HNG datasheet</li>
+             <li>[New Feature] Radial Mica Capacitor - added standard models from Cornell Dubilier CD10, CD15, CD19, CD30, CD42, CDV19, CDV30 datasheet</li>
+             <li>[New Feature] Added 'Tubular Beveled' shape option to Resistor component and added Dale C*F55 and C*F60 resistor variants</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.32.0</url>
+     </release>
+  	<release version="4.31.0" date="2022-10-31">
+         <description>
+           <ul>
+             <li>[New Feature] Added "Switch (Latching)" schematic symbol with many variations</li>
+             <li>[New Feature] Added "Common Node" component that ties all nodes with the same label together, e.g. B+, V+, GND, etc</li>
+             <li>[Improvement] "Snap to Components" features now works when creating new components as well as when moving existing ones</li>
+             <li>[Improvement] Added more variants of existing and new components</li>
+             <li>[Improvement] Increase the opacity of locked components</li>
+             <li>[Improvement] Improved ground symbol mouse selection tracking and added stroke width as a parameter</li>
+             <li>[Bug Fix] Ground symbol ties all grounded points together for circuit analysis</li>
+             <li>[Bug Fix] Printed projects are sometimes missing parts of components or text</li>
+             <li>[Bug Fix] "Snap to" configuration menu does not work properly when using translated UI to any language other than English</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.31.0</url>
+     </release>
+  	 <release version="4.30.1" date="2022-10-23">
+         <description>
+           <ul>
+             <li>[New Feature] Fix the build that wouldn't run due to a missing package</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.30.1</url>
+     </release>
+  	 <release version="4.30.0" date="2022-10-22">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Rotary Switch (Sealed)' component in several switching configurations</li>
+             <li>[New Feature] Added 'Rotary Switch (Open)' component in several switching configurations</li>
+             <li>[New Feature] Added 'S1 Switch' component that can be combined with potentiometer component or used on its own</li>
+             <li>[New Feature] Added 'DP4T (6-Position Oak Grigsby)' as a new type of Lever Switch component</li>
+             <li>[New Feature] Ability to rotate 'Lever Switch' and 'Schaller Megaswitch' by any angle</li>
+             <li>[New Feature] DIYLC Netlists can be generated including or excluding switching configurations</li>
+             <li>[Improvement] Ability to rotate all guitar/bass pickups through the 'Transform Selection' feature or keyboard shortcut</li>
+             <li>[Improvement] Improved the speed and accuracy of circuit analysis and netlist calculation</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.30.0</url>
+     </release>
+  	 <release version="4.29.0" date="2022-10-04">
+         <description>
+           <ul>
+             <li>[New Feature] Added 6 variations of Schaller Megaswitch</li>
+             <li>[New Feature] Added 'DP3T (Import 5-Position Strat)' type of lever switch</li>
+             <li>[New Feature] Added 'Stingray Bass Pickup' component. Thank you JD!</li>
+             <li>[New Feature] Added 'Bulb' schematic symbol. Thank you JD!</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.29.0</url>
+     </release>
+     <release version="4.28.0" date="2022-09-25">
+         <description>
+           <ul>
+             <li>[New Feature] Added '4-pin Jumbo Tube Socket' component for 211, 805 and 845 tubes</li>
+             <li>[Improvement] More convenient way of editing angle of rotation of all tube sockets</li>
+             <li>[Improvement] Ability to rotate all tube sockets through the 'Transform Selection' feature or keyboard shortcot</li>
+             <li>[Bug Fix] Tube socket pin designations are not rendered until property editor dialog is opened and closed</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.28.0</url>
+     </release>
+  	 <release version="4.27.0" date="2022-08-28">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Current Source' symbol. Thank you, JD!</li>
+             <li>[Improvement] Few minor improvements</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.27.0</url>
+     </release>
+     <release version="4.26.0" date="2022-08-27">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Voltage Source' symbol. Thank you, JD!</li>
+             <li>[New Feature] Added two DPDT ON/ON/ON variations to 'Mini Toggle Switch' component</li>
+             <li>[Bug Fix] The app crashes if there's a component that is reduced to 0 pixels with 'Cache Boost' enabled</li>
+             <li>[Bug Fix] Removed 'Hardware Acceleration' feature as it causes issues with modern graphic cards</li>
+             <li>[Improvement] When opening files from the 'Recent Files' menu, show busy cursor instead of blocking the main app thread</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.26.0</url>
+     </release>
+     <release version="4.25.0" date="2022-07-09">
+         <description>
+           <ul>
+             <li>[Bug Fix] Status bar shows a wrong number of selected components</li>
+             <li>[Bug Fix] Fix run.sh to Unix line breaks</li>
+             <li>[Improvement] Limit memory usage to avoid out of memory errors when 'Cache Boost' feature is enabled on complex project</li>
+             <li>[Improvement] Cleanup cache when a component is deleted from the project</li>
+             <li>[Improvement] Added BJT B-C-E pinout to transistor components</li>
+             <li>[Improvement] Changed resistor orange band color to more intense orange</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.25.0</url>
+     </release>
+  	 <release version="4.24.0" date="2022-06-05">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed a bug that causes the background of exported images and PDFs to be very light gray instead of pure white</li>
+             <li>[Improvement] Automatically run Java garbage collector when available memory reaches 10%</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.24.0</url>
+     </release>
+  	 <release version="4.23.0" date="2022-04-23">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed the issue with the application not starting under Windows</li>
+             <li>[New Feature] Added 'Slide Switch' component</li>
+             <li>[Improvement] Improved rendering performance significantly</li>
+             <li>[Improvement] Include JRE in the universal ZIP package (the embedded JRE is only for Windows)</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.23.0</url>
+     </release>
+  	 <release version="4.22.2" date="2022-03-18">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed the issue with application hanging when loading certain files</li>
+             <li>[Bug Fix] Fixed importing building blocks and variants from a file</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.22.2</url>
+     </release>
+  	  <release version="4.22.1" date="2022-03-07">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed backwards compatibility issue with older files failing to open because of an issue with 'Tape Measure' component serialization</li>
+             <li>[Bug Fix] Fixed the issue with 'Add Flexible Leads' functionality placing the flexible leads wrong on leaded components (e.g. resistors, capacitors...)</li>
+             <li>[Bug Fix] Fixed display issue with Trace layer showing up as Wiring in the menu</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.22.1</url>
+     </release>
+  	 <release version="4.22.0" date="2022-03-03">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed backwards compatibility issue with older files failing to open because of an issue with 'Mini Toggle Switch' component serialization</li>
+             <li>[Bug Fix] Fix component prefix for SMD Resistor</li>
+             <li>[Improvement] Separate WIRING layer (containing 'Hookup Wire' and 'Twisted Wire' at the moment) from TRACE layer and render it above the COMPONENT layer by default</li>
+             <li>[Improvement] Upgrade OSX application package built-in Java to JRE 1.8.0_321-b07</li>
+             <li>[New Feature] Added regression test suite that validates each release candidate version against a barrage of different DIY files</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.22.0</url>
+     </release>
+  	  <release version="4.21.4" date="2022-02-27">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed the issue with stereo phono jack rendering issues when rotated</li>
+             <li>[Improvement] Improved precision of zooming in and out when nothing is selected</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.4</url>
+     </release>
+     <release version="4.21.3" date="2022-02-22">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed the issue with the app going back to .diylc user directory for configuration storage. Only diylc directory is used going forward, please copy config.xml from .diylc to diylc if you are missing any configuration</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.3</url>
+     </release>  
+  	<release version="4.21.2" date="2022-02-21">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed broken Linux app package</li>             
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.2</url>
+     </release>
+  	 <release version="4.21.1" date="2022-02-19">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed broken OSX app package</li>
+             <li>[New Feature] Added regulator pinouts to transistor body components</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.1</url>
+     </release>
+  	 <release version="4.21.0" date="2022-02-16">
+         <description>
+           <ul>
+             <li>[Bug Fix] Fixed compatibility issues with Java version 16 and above</li>
+             <li>[New Feature] Added 'Gray' theme</li>
+             <li>[Improvement] Add shabang to run.sh for *nix systems</li>
+             <li>[Improvement] Prevent the donation label from wrapping into several lines</li>
+             <li>[Improvement] Use Backspace key to delete selection in Mac OS</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.21.0</url>
+     </release>
+  	 <release version="4.20.0" date="2021-09-12">
+         <description>
+           <ul>
+             <li>[New Feature] Added 'Open 1/8" Jack' component</li>
+           </ul>
+         </description>
+         <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.20.0</url>
+     </release>
+	 <release version="4.19.0" date="2021-08-21">
+	     <description>
+	       <ul>
+	         <li>[New Feature] Added 'Dial Scale' component for designing device face-plates</li>
+	         <li>[New Feature] Keep grouped components together when pasting</li>
+	       </ul>
+	     </description>
+	     <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.19.0</url>
+	</release>
+	<release version="4.18.0" date="2021-07-11">
+	  <description>
+	    <ul>
+	      <li>[New Feature] Added 'SVG Image' component, to allow importing vector graphics into projects</li>
+	      <li>[Bug Fix] Mini Toggle Switch - lugs do not get rotated when changing orientation; rotate from the context menu doesn't work</li>
+	      <li>[Bug Fix] Fixed the issue with Perf Board, Vero Board and TriPad Board sometimes rendering an extra row with pads when there's no space for them</li>
+	    </ul>
+	  </description>
+	  <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.18.0</url>
+	</release>
+	<release version="4.17.0" date="2021-02-14">
+	  <description>
+	    <ul>
+	      <li>[New Feature] Added 'Eurorack Stripboard' component, designed by David Haillant</li>
+	      <li>[New Feature] Allow multi-line text in label components</li>
+	      <li>[Improvement] Slightly fancier splash screen :)</li>
+	      <li>[Bug Fix] Fixed a major memory leak when using Undo functionality</li>
+	    </ul>
+	  </description>
+	  <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.17.0</url>
+	</release>
+    <release version="4.16.0" date="2021-01-17">
+      <description>
+        <ul>
+          <li>[New Feature] Flatpak integration for easier deployments to Linux systems</li>
+          <li>[New Feature] When editing component colors, honor the specified 'alpha' value specified on each color individually in addition to the component-level alpha property</li>
+          <li>[Improvement] Color chooser dialog defaults to the existing color value being edited</li>
+          <li>[Improvement] Single click to expand and collapse categories in the component tree</li>
+          <li>[Improvement] Improved code robustness</li>
+          <li>[Improvement] Improved Dark theme look</li>
+          <li>[Bug Fix] Auto-Wrap Label crashes the application if it's shrunken into zero-length</li>
+        </ul>
+      </description>
+      <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.16.0</url>
+    </release>
+    <release version="4.15.1" date="2021-01-04">
+    <description>
+      <ul>
+        <li>[Bug Fix] macOS: issues with scrollable toolbar that prevent it from starting on mac machines.</li>
+      </ul>
+    </description>
+    <url>https://github.com/bancika/diy-layout-creator/releases/tag/v4.15.1</url>
+    </release>
+  </releases>
+</component>

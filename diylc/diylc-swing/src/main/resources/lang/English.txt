@@ -1,0 +1,465 @@
+#start-internal
+icon=usa
+#end-internal
+(Building Blocks)
+(Favorites)
+(Recently Used)
+180 degrees clockwise
+270 degrees clockwise
+90 degrees clockwise
+A variant with that name already exists. Overwrite?
+About
+Above
+Access User Files
+Add Flexible Leads
+Add Validation Step
+All Connected
+Alpha
+Analyze
+Analyze Guitar Diagrams
+Angle
+Anti-Aliasing
+Arrow Size
+Author
+Auto-Create Pads
+Auto-Edit Mode
+Base
+Below
+Blueprint
+Board
+Boards
+Board Color
+Board Width
+Bobbin 1
+Bobbin 2
+Body
+Border
+Border Thickness
+Both
+Both Sides
+Bottom
+Bottom Left
+Bottom Right
+Bracket
+Bring Forward
+Bring Selection to Front
+Buffer
+Center
+Center Negative
+Center Positive
+Center Terminal
+Central
+Change Password
+Channel
+Chassis
+Check Trace Proximity
+Circular
+Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF
+Click on the canvas to create a new %s or press %s to cancel
+Click on the canvas to set the %s control point of a new %s or press %s to cancel
+Click the lightbulb icon in the bottom-right corner of the window for more info.
+Click to fetch the most recent public announcement
+Click to show recent changes and updates
+Click to toggle to the next option
+Coil
+Coil Border
+Coil Length
+Coil Width
+Color
+Color 1
+Color 2
+Color code
+Column Spacing
+Columns
+Component
+Component API
+Components
+Config
+Connector
+Connector (Mirrored)
+Connectivity
+Contacts
+Continuous Creation
+Coordinate Color
+Coordinate Origin
+Coordinates
+Copy
+Core
+Core Border
+Core Thickness
+Core Width
+Could not create a new file. Check the log for details.
+Could not create component. Check log for details.
+Could not fetch public announcements.
+Could not save the project to file. Check the log for details.
+Could not set component type slot. Check log for details.
+Cover
+Create B.O.M.
+Create New Account
+Current
+Cut
+Cut Between Holes
+Cut Orientation
+DIP (Mirrored)
+DP3T (Standard 3-Position Strat)
+DP3T (Standard 5-Position Strat)
+DP4T (4-Position Tele)
+Dark
+Dashed
+Decimals
+Default
+Default Font
+Default Font Size
+Delete Selection
+Description
+Diameter
+Directional
+Directly heated
+Display
+Display Pin #s
+Dog Ear
+Dot Spacing
+Donate
+Dotted
+Drag control point(s) of
+Drag the mouse over the canvas to place a new
+Dual Rail Humbucker
+Dual Rods
+Duodecar B12C
+Duplicate
+Edges
+Edit
+Edit Project Settings
+Edit Selection
+Electrode Labels
+Electro-Mechanical
+Enable Cache Boost
+End Arrow
+Enjoying DIYLC? Click here to buy me a coffee :)
+Error
+Error occurred while editing selection. Check the log for details.
+Exit
+Expand Selection
+Explicit Dimensions
+Explicit Length
+Explicit Width
+Export Building Blocks
+Export Grid
+Export Variants
+Export to PDF
+Export to PNG
+Extra Working Area
+Eyelet color
+FAQ
+File
+Filtertron
+Find
+Five
+Flip
+Folded
+Font
+Font Bold
+Font Italic
+Font Size
+Font Size Override
+Four
+Full
+Fuse
+Generate DIYLC Netlist
+Generate Spice Netlist
+Grid
+Grid Spacing
+Group Selection
+Guitar
+Half
+Hardware Acceleration
+Heaters
+Height
+Help
+Hi-Quality Rendering
+Highlight Connected Areas
+Hole
+Hole Size
+Hole Spacing
+Hole size
+Holes per strip
+Horizontal
+Horizontal Alignment
+Horizontal Large
+Horizontal Medium
+Horizontal Small 1
+Horizontal Small 2
+Horizontal X-Small
+Humbucking
+If this box is checked application will use the current value as a<br>default when creating new components of the same type
+Image
+Immediate Only
+Import
+Import Building Blocks
+Import Netlist
+Import Variants
+In-Line D-44
+In-line
+Indent
+Information
+Inline
+Input error for "%s": %s
+Inside color
+Integration
+Invert polarity
+Label
+Label Color
+Label Orientation
+Label Position
+Labels
+Language
+Language selection will be applied after the application is restarted.
+Layer
+Layers
+Lead Color
+Lead Count
+Lead Length
+Lead Spacing
+Left
+Left-to-Right
+Left click to instantiate this component, right click for more options
+Legs
+Length
+Letters
+Light
+Lock
+Log In
+Log Out
+Look for
+Lug Size
+Lugs
+Make a Donation
+Manage Account
+Manage My Uploads
+Mark Common Lugs
+Marker
+Marker Size
+Mini
+Miniature
+Mirror Horizontally
+Mirror Selection
+Mirror Vertically
+Mirroring operation will change the circuit. Do you want to continue?
+Misc
+Model
+Mono
+Mount
+Mounting Lugs
+Mouse Wheel Zoom
+Moveable Label
+Name
+Negative
+New
+New version available
+No new public announcements available.
+No
+None
+North
+Noval B9A
+Nudge
+Numbers
+Nut
+Octal
+Offset
+One Side
+Open
+Opposing Points
+Orientation
+Outer Foil
+Outer Foil Mark
+Outline Mode
+Outside
+Oval horizontal
+Oval vertical
+Pad Color
+Panel
+Passive
+Paste
+Pin Arrangement
+Pin Color
+Pin Spacing
+Pinout
+Pins
+Play Test
+Plugin API
+Point Count
+Polarity
+Polarized
+Pole Color
+Pole Pieces
+Pole Pieces 1
+Pole Pieces 2
+Positions
+Positive
+Power Rating
+Power Strip
+Primary CT
+Print...
+Project Cloud
+Public Announcement
+Radius
+Rail
+Recent Files
+Recent Updates
+Redo
+Renumber On Paste
+Renumber Selection
+Resistance
+Reverse (standing)
+Right
+Rim
+Rods
+Rotate Clockwise
+Rotate Counterclockwise
+Rotate Selection
+Round
+Round WOG A
+Round WOG B
+Row Spacing
+Rows
+Ruler Inch Subdivision...
+Same Type Only
+Save
+Save As
+Save as Variant
+Scale
+Schematic Symbols
+Screws
+Selection
+Selection Size
+Selection is empty.
+Search The Cloud
+Searchable Tree
+Secondary CT
+Select All
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?
+Selection contains components that cannot be mirrored. Do you want to exclude them?
+Selection contains components that cannot be rotated. Do you want to exclude them?
+Semiconductors
+Send Backward
+Send Selection to Back
+Seven
+Shaft Down
+Shaft Up
+Shape
+Shapes
+Show Bracket
+Show Grid
+Show Rulers
+Shroud
+Shrouded
+Single Rail
+Single Rods
+Size
+Sizing Mode
+Small-button B7G
+Smooth
+Snap To
+Soap Bar
+Solid
+South
+Spacing
+Square
+Square BR-3
+Standard
+Start Arrow
+Start Recording
+Stereo
+Sticky Points
+Stop Recording
+Stratocaster
+Strip Color
+Stripe
+Stripe 1
+Stripe 2
+Stripe Color
+Stripe Color 1
+Stripe Color 2
+Style
+Submit a Bug
+Suppressor grid
+Switched
+Switches
+Tab
+Tab Border
+Tabbed Toolbar
+Taper
+Telecaster
+Terminal Spacing
+Terminals
+Test
+Text
+Text Color
+Theme
+There are unsaved changes. Would you like to save them?
+Thickness
+Three
+Through Hole
+Tick
+Tick Width
+Ticks
+Title
+Toolbox
+Top
+Top Lead
+Top Left
+Top Right
+Top-to-Bottom
+Trace
+Trace Color
+Trace Mask
+Transform Selection
+Triangle
+Tubular
+Tubes
+Two
+Type
+Ultra-miniature
+Underside Pad Color
+Underside Trace Color
+Undo
+Ungroup Selection
+Unit
+Upload A Project
+User Manual
+Value
+Version history is not available.
+Vertical
+Vertical Alignment
+Vertical Inline
+Vertical Offset 1
+Vertical Offset 2
+View
+Visible
+Voltage
+Wafer
+Warning
+Width
+Winding Spacing
+Wiring
+X-axis
+Y-axis
+Zoom
+base of 10
+base of 2
+hold %s and drag to unstick from
+Add a Curve
+Clear
+Insert Image
+Load From File
+Loadline Editor
+Max Current (mA)
+Max Dissipation (W)
+Max Voltage (V)
+Save To File
+Update Axis
+Apply Variant
+Save as Building Block
+Select
+Unlock

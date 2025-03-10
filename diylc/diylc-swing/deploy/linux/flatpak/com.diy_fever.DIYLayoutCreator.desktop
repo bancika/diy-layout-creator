@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=DIY Layout Creator
+GenericName=Electronic circuit drawing tool
+Comment=Multi platform circuit layout and schematic drawing tool
+Exec=diylc
+Icon=com.diy_fever.DIYLayoutCreator
+Terminal=false
+Type=Application
+Categories=Development;Electronics;Graphics;
+Keywords=EDA;PCB;Schematics;
+StartupNotify=false

@@ -1,0 +1,459 @@
+#start-internal
+icon=netherlands
+#end-internal
+(Building Blocks)|(Bouwstenen)
+(Favorites)|(Favorieten) 
+(Recently Used)|(Recentelijk gebruikt) 
+180 degrees clockwise|180 graden
+270 degrees clockwise|270 graden rechtsom 
+90 degrees clockwise|90 graden rechtsom 
+A variant with that name already exists. Overwrite?|Er bestaat al een variant met die naam. Overschrijven? 
+About|Over 
+Above|Boven
+Open User Directory|Map van de gebruiker openen
+Add a Curve|Lijn toevoegen
+Add Flexible Leads|Flexibele draaden toevoegen
+Add Validation Step|Controlestap toevoegen 
+All Connected|Alle verbonden 
+Alpha|Opaciteit 
+Analyze|Analyseren 
+Apply Variant|Variant toepassen
+Analyze Guitar Diagrams|Gitaar diagrammen analyseren
+Angle|Hoek 
+Anti-Aliasing|Anti-aliasing 
+Arrow Size|Pijlgrootte 
+Author|Ontwerper
+Auto-Create Pads|Automatisch aanmaken van soldeereilandjes 
+Auto-Edit Mode|Automatisch bewerken modus
+Base|Basis
+Below|Onder
+Blueprint|Blauwdruk
+Board|Printplaat
+Boards|Printplaten
+Board Color|Printplaat kleur
+Board Width|Printplaat breedte
+Bobbin 1|Spoel 1 
+Bobbin 2|Spoel 2 
+Body|Lichaam 
+Border|Rand
+Border Thickness|Randdikte 
+Both|Beide 
+Both Sides|Beide kanten 
+Bottom|Onderkant
+Bottom Left|Linksonder 
+Bottom Right|Rechtsonder 
+Bring Forward|Verhogen
+Bring Selection to Front|Selectie naar top brengen
+Buffer|Buffer 
+Center|Midden 
+Center Negative|Middenpin negatief 
+Center Positive|Middenpin positief 
+Center Terminal|Middenpin aansluiting
+Central|Centraal 
+Change Password|Wachtwoord wijzigen 
+Channel|Channel
+Chassis|Chassis
+Circular|Rond
+Clear|Alles wissen
+Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|Klik op een component om het gebied te markeren dat direct of indirect verbonden is met het gebied onder de cursor. Om door te gaan met bewerken, moet deze modus worden uitgeschakeld 
+Click on the canvas to create a new %s or press %s to cancel|Klik op het werkblad om een nieuwe %s te maken of druk op %s om te annuleren 
+Click on the canvas to set the %s control point of a new %s or press %s to cancel|Klik op het werkblad om het %s-controlepunt van een nieuwe %s in te stellen of druk op %s om te annuleren 
+Click the lightbulb icon in the bottom-right corner of the window for more info.|Klik op het gloeilampicoon in de rechteronderhoek van het venster voor meer informatie.
+Click to fetch the most recent public announcement|Klik om de meest recente openbare aankondiging op te halen 
+Click to show recent changes and updates|Klik om recente wijzigingen en updates weer te geven
+Click to toggle to the next option|Klik om naar de volgende optie te gaan 
+Coil|Spoel
+Coil Border|Spoelrand
+Coil Length|Spoellengte
+Coil Width|Spoelbreedte
+Color|Kleur 
+Color 1|Kleur 1 
+Color 2|Kleur 2 
+Color code|Kleurcode 
+Columns|Kolommen
+Component|Component
+Component API|Component API
+Components|Componenten
+Config|Configuratie
+Connector|Connector 
+Connector (Mirrored)|Connector (gespiegeld) 
+Connectivity|Connectiviteit 
+Contacts|Contacten 
+Continuous Creation|Doorgaan met invoegen
+Coordinate Color|Coördinaatkleur
+Coordinate Origin|Coördinaatoorsprong
+Coordinates|Coördinaten 
+Copy|Kopiëren
+Core|Kern
+Core Border|Kernrand
+Core Thickness|Kerndikte
+Core Width|Kernbreedte
+Could not create a new file. Check the log for details.|Kon geen nieuw bestand maken. Controleer het logbestand voor details.
+Could not create component. Check log for details.|Kon component niet maken. Controleer het logbestand voor details.
+Could not fetch public announcements.|Kon geen openbare aankondigingen ophalen.
+Could not save the project to file. Check the log for details.|Kon het project niet opslaan in  bestand. Controleer het logbestand voor details.
+Could not set component type slot. Check log for details.|Kon sleuf voor componenttype niet instellen. Controleer logbestand voor details. 
+Cover|Deksel
+Create B.O.M.|Stuklijst maken
+Create New Account|Nieuw account aanmaken
+Current|Stroom
+Cut|Snijden
+Cut Between Holes|Tussen gaten onderbreken
+Cut Orientation|Onderbrekingsoriëntatie
+DIP (Mirrored)|DIP (gespiegeld) 
+DP3T (Standard 3-Position Strat)|DP3T (standaard Strat met 3 posities) 
+DP3T (Standard 5-Position Strat)|DP3T (standaard Strat met 5 posities) 
+DP4T (4-Position Tele)|DP4T (Tele met 4 posities) 
+Dark|Donker 
+Dashed|Gestreept
+Decimals|Decimalen
+Default|Standard waarde
+Default Font|Standaard lettertype 
+Default Font Size|Standaard lettergrootte 
+Delete Selection|Selectie verwijderen 
+Description|Beschrijving 
+Diameter|Diameter 
+Directional|Directioneel
+Directly heated|Direct verwarmd
+Display|Weergeven
+Display Pin #s|Pin #s weergeven
+Dog Ear|Dog Ear
+Dot Spacing|Spatiëring
+Dotted|Gestippeld
+Drag control point(s) of|Sleep de controlepunt(en) van
+Drag the mouse over the canvas to place a new|De muis over het doek slepen plaatst een nieuwe
+Dual Rail Humbucker|Dubbele rail Humbucker
+Dual Rods|Dubbele polen 
+Duodecar B12C|Duodecar B12C 
+Duplicate|Dupliceren
+Edges|Randen
+Edit|Bewerken
+Edit Project Settings|Projectinstellingen bewerken 
+Edit Selection|Selectie bewerken 
+Electrode Labels|Elektrodelabels
+Electro-Mechanical|Elektromechanische
+Enable Cache Boost|Cachegeheugen boost inschakelen
+End Arrow|Eindpijl
+Enjoying DIYLC? Click here to buy me a coffee :)|Vindt je DIYLC leuk? Klik hier om een kopje koffie voor me te kopen :)
+Error|Fout
+Error occurred while editing selection. Check the log for details.|Er is een fout opgetreden bij het bewerken van de selectie. Controleer het logbestand voor details. 
+Exit|Afsluiten
+Expand Selection|Selectie uitbreiden
+Explicit Dimensions|Expliciete dimensies 
+Explicit Length|Expliciete lengte 
+Explicit Width|Expliciete breedte 
+Export Building Blocks|Bouwstenen exporteren
+Export Grid|Raster exporteren 
+Export Variants|Varianten exporteren 
+Export to PDF|Naar PDF exporteren
+Export to PNG|Naar PNG exporteren 
+Extra Working Area|Extra werkruimte
+Eyelet color|Via kleur
+FAQ|Veelgestelde vragen
+File|Bestand
+Fill|Vullen
+Filtertron|Filtertron
+Find|Vinden
+Five|Vijf
+Flip|Omkeren
+Folded|Gevouwen 
+Font|Lettertype 
+Font Bold|Vet lettertype 
+Font Italic|Cursief lettertype 
+Font Size|Tekengrootte
+Font Size Override|Tekengrootte overschrijven
+Four|Vier
+Full|Vol
+Fuse|Zekering
+Generate DIYLC Netlist|DIYLC netlist genereren
+Generate Spice Netlist|Spice netlist genereren
+Grid|Raster
+Grid Spacing|Rasterafstand
+Group Selection|Selectie groeperen
+Guitar|Gitaar 
+Half|Helft 
+Hardware Acceleration|Hardware versnelling 
+Heaters|Gloeidraden
+Height|Hoogte
+Help|Hulp
+Hi-Quality Rendering|Hoge kwaliteit rendering
+Highlight Connected Areas|Verbonden gebieden markeren
+Hole|Gat 
+Hole Size|Gatgrootte 
+Hole Spacing|Gatafstand 
+Holes per strip|Gaten per strip 
+Horizontal|Horizontaal 
+Horizontal Alignment|Horizontale uitlijning 
+Horizontal Large|Horizontaal groot 
+Horizontal Medium|Horizontaal medium 
+Horizontal Small 1|Horizontaal klein 1 
+Horizontal Small 2|Horizontaal klein 2 
+Horizontal X-Small|Horizontaal extra klein
+Humbucking|Humbucking 
+If this box is checked application will use the current value as a<br>default when creating new components of the same type|Als dit vakje is aangevinkt, gebruikt het programma de huidige waarde als<br>standaardinstelling bij het maken van nieuwe componenten van hetzelfde type 
+Image|Afbeelding 
+Immediate Only|Alleen direct 
+Import|Importeren
+Import Building Blocks|Bouwstenen importeren
+Import Variants|Varianten importeren
+In-Line D-44|Inline D-44
+In-line|Inline
+Indent|Inspringen 
+Information|Informatie 
+Input error for "%s": %s|Invoerfout voor " %s": %s
+Insert Image|Afbeelding invoegen
+Inside color|Binenkant kleur
+Integration|Integratie
+Invert polarity|Wissel polariteit
+Label|Label
+Label Color|Labelkleur
+Label Orientation|Labeloriëntatie
+Label Position|Labelpositie
+Labels|Labels
+Language|Taal 
+Language selection will be applied after the application is restarted.|Taalkeuze wordt toegepast nadat het programma opnieuw is opgestart. 
+Layer|Laag 
+Layers|Lagen 
+Lead Color|Draadkleur
+Lead Count|Aantal draaden 
+Lead Length|Draad lengte
+Lead Spacing|Pitch
+Left|Linkerzijde
+Left-to-Right|Links naar rechts
+Left click to instantiate this component, right click for more options|Klik met de linkermuisknop om dit onderdeel te instantiëren, klik met de rechtermuisknop voor meer opties 
+Legs|Pootjes
+Length|Lengte 
+Letters|Letteren
+Light|Licht
+Lin|Lineair
+Load From File|Bestand Laden
+Loadline Editor|Belastingslijn opmaakprogramma
+Lock|Vastpinnen
+Log|Logaritmisch
+Log In|Inloggen
+Log Out|Uitloggen
+Lug Size|Solderooggrootte
+Lugs|Solderogen
+Make a Donation|Doneren
+Manage Account|Account beheren
+Manage My Uploads|Uploads beheren
+Mark Common Lugs|Gemeenschappelijke Solderogen markeren
+Marker|Merkteken
+Max Current (mA)|Max. stroom (mA)
+Max Dissipation (W)|Max. dissipatie (W)
+Max Voltage (V)|Max. spanning (V)
+Mini|Mini
+Miniature|Miniatuur
+Mirror Horizontally|Horizontaal spiegelen
+Mirror Selection|Selectie spiegelen
+Mirror Vertically|Verticaal spiegelen
+Mirroring operation will change the circuit. Do you want to continue?|Het spiegelen zal het circuit veranderen. Wil je doorgaan? 
+Misc|Diversen
+Model|Model
+Mono|Mono
+Mount|Bevestiging
+Mounting Lugs|Bevestingslippen
+Mouse Wheel Zoom|Muiswiel zoom
+Moveable Label|Verplaatsbaar label
+Name|Naam
+Nand|NAND
+Negative|Negatief 
+New|Nieuw 
+New version available|Nieuwe versie beschikbaar 
+No new public announcements available.|Geen nieuwe aankondigingen beschikbaar. 
+No|Nr.
+None|Niets
+North|Noord
+Noval B9A|Noval B9A
+Nudge|Duwen
+Numbers|Nummeren
+Nut|Moer
+Octal|Octal
+Offset|Offset
+One Side|Een kant
+Open|Open
+Opposing Points|Tegenoverstaande punten
+Orientation|Oriëntatie
+Outer Foil|Buitentste folie
+Outer Foil Mark|Buitenste folie markering
+Outline Mode|Omtrekmodus
+Outside|Buiten
+Oval horizontal|Horizontaale ovaal
+Oval vertical|Verticale ovaal
+Pad Color|Soldeereilandje kleur
+Passive|Passief
+Paste|Plakken
+Pin Arrangement|Pin indeling
+Pin Color|Pin kleur 
+Pin Spacing|Pin afstand 
+Pinout|Pinout
+Pins|Pins
+Play Test|Test afspelen
+Plugin API|API plugin
+Point Count|Aantal punten
+Polarity|Polariteit 
+Polarized|Gepolariseerd 
+Pole Color|Pool kleur 
+Pole Pieces|Poolstukken
+Pole Pieces 1|Poolstukken 1
+Pole Pieces 2|Poolstukken 2
+Positions|Posities 
+Positive|Positief 
+Power Rating|Nominale vermogen
+Power Strip|Voedingslijn
+Primary CT|Primaire middenaftakking
+Print...|Afdrukken...
+Project Cloud|Project cloud
+Public Announcement|Openbare aankondiging 
+Radius|Straal 
+Rail|Rail 
+Recent Files|Recente bestanden 
+Recent Updates|Recente updates 
+Redo|Opniew uitvoeren
+Renumber On Paste|Bij plakken hernummeren
+Renumber Selection|Selectie hernummeren
+Resistance|Weerstand
+Rev log|Antilog
+Reverse (standing)|Kopstaand
+Right|Rechts
+Rim|Zijwand
+Rods|Poolstaven
+Rotate Clockwise|Rechtsom draaien
+Rotate Counterclockwise|Linksom draaien
+Rotate Selection|Selectie draaien
+Round|Rond
+Round package A|Ronde behuizing A
+Round package B|Ronde behuizing B
+Row Spacing|Rijafstand
+Rows|Rijen
+Ruler Inch Subdivision. . .|Inch lineaal onderverdelen in. . .
+Same Type Only|Alleen hetzelfde type
+Save|Opslaan
+Save As|Opslaan als
+Save as Variant|Als variant opslaan
+Save to File|Opslaan
+Scale|Schaal
+Schematic Symbols|Schemasymbolen 
+Screws|Schroeven 
+Save as Building Block|Als Bouwsteen Opslaan
+Select|Selecteren
+Selection|Selectie 
+Selection Size|Selectie grootte 
+Selection is empty.|Selectie is leeg.
+Search The Cloud|Zoek in de cloud
+Searchable Tree|Doorzoekbare boom
+Secondary CT|Secundaire middenaftakking
+Select All|Alles selecteren 
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|Geselecteerde componenten hebben de bodem van hun laag bereikt. Wilt u ze honder hun laag dwingen?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|Geselecteerde componenten hebben de top van hun laag bereikt. Wilt u ze boven hun laag dwingen?
+Selection contains components that cannot be mirrored. Do you want to exclude them?|Selectie bevat componenten die niet kunnen worden gespiegeld. Wil je ze uitsluiten? 
+Save as Building Block|Als bouwsteen opslaan
+Save To File|Opslaan
+Select|Selecteer
+Selection contains components that cannot be rotated. Do you want to exclude them?|Selectie bevat componenten die niet kunnen worden geroteerd. Wil je ze uitsluiten? 
+Semiconductors|Transistors
+Send Backward|Verlagen
+Send Selection to Back|Selectie naar bodem zenden
+Seven|Zeven
+Shaft Down|As naar beneden
+Shaft Up|As omhoog
+Shape|Vorm
+Shapes|Vormen
+Show Grid|Raster weergeven
+Show Rulers|Linialen weergeven
+Shroud|Beschermrand
+Shrouded|Afgeschermd
+Single Rail|Enkele rail 
+Single Rods|Enkelvoudige polen 
+Size|Maat 
+Sizing Mode|Dimensioneringsmethode
+Small-button B7G|B7G met Kleine Knop
+Smooth|Egaliseren
+Snap To|Uitlijnen op
+Soap Bar|Soap Bar
+Solid|Ononderbroken
+South|Zuid
+Spacing|Afstand
+Square|Vierkant
+Square BR-3|Vierkant BR-3
+Standard|Standaard 
+Start Arrow|Startpijl 
+Start Recording|Met opnemen beginnen
+Stereo|Stereo
+Sticky Points|Kleverige punten
+Stop Recording|Met opnemen stoppen
+Stratocaster|Stratocaster 
+Strip Color|Stripkleur 
+Stripe|Streep 
+Stripe 1|Streep 1 
+Stripe 2|Streep 2 
+Stripe Color|Streep kleur 
+Stripe Color 1|Streepkleur 1 
+Stripe Color 2|Streepkleur 2 
+Style|Stijl 
+Submit a Bug|Bugrapport indienen
+Suppressor grid|Suppressorrooster
+Switched|Geschakeld
+Switches|Schakelaars
+Tab|Tab
+Tab Border|Tabbladkleur
+Tabbed Toolbar|Werkbalk met tabbladen
+Taper|Weerstandsverloop
+Telecaster|Telecaster
+Terminal Spacing|Aansluitpunt afstand
+Terminals|Aansluitpunten
+Test|Test 
+Text|Tekst 
+Text Color|Tekstkleur 
+Theme|Thema 
+There are unsaved changes. Would you like to save them?|Er zijn niet-opgeslagen wijzigingen. Wil je ze opslaan? 
+Thickness|Breedte
+Three|Drie
+Through Hole|THT
+Tick|Maatstreep
+Title|Titel
+Toolbox|Gereedschapskist
+Top|Bovenkant
+Top Lead|Bovenste draad
+Top Left|Linksboven 
+Top Right|Rechtsboven 
+Top-to-Bottom|Boven naar beneden
+Trace|Spoor
+Trace Color|Spoorkleur
+Trace Mask|Spoormasker
+Transform Selection|Selectie transformeren
+Triangle|Driehoek 
+Tubular|Buis
+Tubes|Elektronenbuizen
+Two|Twee
+Type|Soort
+Ultra-miniature|Ultra-miniatuur
+Underside Pad Color|Kleur soldeereilandje aan onderzijde
+Underside Trace Color|Spoorkleur aan onderzijde 
+Undo|Ongedaan maken
+Ungroup Selection|Selectie degroeperen
+Unit|Metenheed
+Unlock|Ontgrendelen
+Update Axis|Grafiek-as bijwerken
+Upload A Project|Een project uploaden
+User Manual|Gebruikershandleiding
+Value|Waarde 
+Version history is not available.|Versiegeschiedenis is niet beschikbaar.
+Vertical|Verticaal 
+Vertical Alignment|Verticale uitlijning 
+Vertical Inline|Verticaal inline 
+Vertical Offset 1|Verticale offset 1 
+Vertical Offset 2|Verticale offset 2 
+View|Weergave
+Visible|Zichtbaarheid
+Voltage|Spanning
+Wafer|Dek
+Warning|Waarschuwing
+Width|Breedte 
+Winding Spacing|Wikkelafstand 
+X-axis|X-as 
+Y-axis|Y-as 
+Zoom|Zoom 
+base of 10|Tienden 
+base of 2|Achtsten
+hold %s and drag to unstick from|houd %s vast en sleep, om los te maken van
