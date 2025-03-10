@@ -6,7 +6,7 @@
 
     <groupId>org.diylc</groupId>
     <artifactId>diylc-parent</artifactId>
-    <version>5.0.0}</version>
+    <version>5.0.0</version>
     <packaging>pom</packaging>
     
     <name>DIY Layout Creator</name>
